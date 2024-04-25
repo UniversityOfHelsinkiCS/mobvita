@@ -31,6 +31,11 @@ const filterPrevious = (previous, snippet) => {
   return previous.concat(snippet)
 }
 
+export const setSnippetChatHistory = (snippet_chat_history={}) => ({ 
+  type: 'SET_SNIPPET_CHAT_HISTORY', 
+  snippet_chat_history: snippet_chat_history,
+});
+
 export const getCurrentSnippet = (storyId, controlledStory, exerciseMode) => {
   const route = controlledStory
     ? `/stories/${storyId}/snippets/next?frozen_exercise=True`
@@ -311,6 +316,14 @@ export default (state = { previous: [], pending: false, error: false }, action) 
         ...state,
         eloHearts: {},
       }
+    case 'SET_SNIPPET_CHAT_HISTORY':
+      return {
+        ...state,
+        focused: {
+          ...state.focused,
+          chat_history: action.snippet_chat_history,
+        },
+      };
     default:
       return state
   }

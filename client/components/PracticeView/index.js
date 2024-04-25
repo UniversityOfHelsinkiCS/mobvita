@@ -58,7 +58,8 @@ const PracticeView = () => {
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
-    return snippetid[snippetid.length - 1]
+    if (snippetid == undefined || snippetid == null) return -1
+    return snippetid[snippetid?.length - 1]
   }
 
   const currentSnippetNum = currentSnippetId() + 1

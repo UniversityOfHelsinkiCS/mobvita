@@ -19,8 +19,12 @@ import {
 } from 'Utilities/common'
 import { 
     getResponse, 
-    getConversationHistory 
-} from 'Utilities/redux/chatbotReducer' 
+    // getConversationHistory,
+    setConversationHistory
+} from 'Utilities/redux/chatbotReducer'
+import {
+    setSnippetChatHistory
+} from 'Utilities/redux/snippetsReducer'
 
 const Chatbot = () => {
     const intl = useIntl()
@@ -33,11 +37,11 @@ const Chatbot = () => {
     const [requested_hints, setRequestedHints] = useState([])
     const [currentMessage, setCurrentMessage] = useState("")
     const [currentAnswer, setCurrentAnswer] = useState("")
-    // const { id: storyId } = useParams()
-    // const { session_id } = useSelector(({ snippets }) => snippets)
-    const { session_id, storyid } = useSelector(({ snippets }) => ({
+
+    const { session_id, storyid, chat_history } = useSelector(({ snippets }) => ({
         session_id: snippets.focused?.session_id,
-        storyid: snippets.focused?.storyid
+        storyid: snippets.focused?.storyid,
+        chat_history: snippets.focused?.chat_history
     }));
     const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
@@ -117,15 +121,27 @@ const Chatbot = () => {
             setRequestedHints([])
             setValidToChat(false)
         }
-        dispatch(getConversationHistory(storyid, snippet_id, sentence_id, wordId, surface?.trim())) 
     }, [currentWord, attempt])
+
+    useEffect(() => {
+        let word_chat_history = []
+        if (chat_history && typeof wordId !== 'undefined' && chat_history.hasOwnProperty(wordId.toString())) {
+            word_chat_history = chat_history[wordId.toString()];
+        }
+        dispatch(setConversationHistory(word_chat_history))
+    }, [currentWord])
+
+    useEffect(() => {
+        let updatedChatHistory = { ...chat_history };
+        updatedChatHistory[wordId] = messages;
+        dispatch(setSnippetChatHistory(updatedChatHistory))
+    }, [messages])
 
     const checkString = hint => {
         const explanationKey = Object.keys(explanation)[0]
         if (hint?.includes(explanationKey)) {
             return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
         }
-
         return null
     }
     
@@ -187,8 +203,6 @@ const Chatbot = () => {
     }
     }
 
-    
-
     const handleHintRequest = newHintList => {
         const newRequestNum = preHints.length + 1
         const penalties = newHintList
@@ -199,8 +213,6 @@ const Chatbot = () => {
         setSpentHints(spentHints.concat(1))
         setEloScoreHearts(eloScoreHearts.slice(0, -1))
     }
-
-
 
     return (
         <div className="chatbot">

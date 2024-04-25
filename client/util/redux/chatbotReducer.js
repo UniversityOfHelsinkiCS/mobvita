@@ -11,6 +11,11 @@ export const getConversationHistory = (story_id, snippet_id, sentence_id, word_i
     return callBuilder(route, prefix, 'get');
 }
 
+export const setConversationHistory = (chatbot_history=[]) => ({ 
+    type: 'SET_CHATBOT_HISTORY', 
+    chatbot_history: chatbot_history,
+});
+
 export const getResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
@@ -69,6 +74,13 @@ export default (state = initialState, action) => {
                 ...state,
                 isLoadingHistory: false,
                 messages: response.history,
+            };
+
+        case 'SET_CHATBOT_HISTORY':
+            return {
+                ...state,
+                isLoadingHistory: false,
+                messages: action.chatbot_history,
             };
 
         default:
