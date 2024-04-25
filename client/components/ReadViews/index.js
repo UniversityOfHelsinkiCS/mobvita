@@ -214,7 +214,7 @@ const ReadViews = ({ match }) => {
             content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
             trigger={
               <Icon 
-                name="cog" size="larger" 
+                name="cog" size="large" 
                 style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
                 onClick={() => {setOpen(true)}}
               />
