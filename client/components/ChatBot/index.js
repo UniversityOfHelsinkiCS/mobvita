@@ -29,6 +29,7 @@ import {
 const Chatbot = () => {
     const intl = useIntl()
     const dispatch = useDispatch()
+    const [hintMessageIdx, setHintMessageIdx] = useState(0)
     const [preHints, setPreHints] = useState([])
     const [spentHints, setSpentHints] = useState([])
     const [filteredHintsList, setFilteredHintsList] = useState([])
@@ -41,7 +42,8 @@ const Chatbot = () => {
     const { session_id, storyid, chat_history } = useSelector(({ snippets }) => ({
         session_id: snippets.focused?.session_id,
         storyid: snippets.focused?.storyid,
-        chat_history: snippets.focused?.chat_history
+        // chat_history: snippets.focused?.chat_history
+        chat_history: snippets.focused_snippet_chat_history
     }));
     const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
     const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
@@ -212,7 +214,10 @@ const Chatbot = () => {
 
         setSpentHints(spentHints.concat(1))
         setEloScoreHearts(eloScoreHearts.slice(0, -1))
+        setHintMessageIdx(messages.length > 0 ? messages.length : 0);
     }
+
+    console.log("HintMessageIdx", hintMessageIdx)
 
     return (
         <div className="chatbot">
@@ -260,7 +265,7 @@ const Chatbot = () => {
                             <Spinner animation="border" variant="info" className="spinner-history" />
                         ) : (
                             <>
-                                {Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                                {hintMessageIdx == 0 && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
                                     <div className="message message-bot flex space-between"
                                         onMouseDown={handleTooltipClick}>
                                         <ul>
@@ -302,9 +307,47 @@ const Chatbot = () => {
                                     </div>
                                 )}
                                 {messages.map((message, index) => (
-                                    <div key={index} className={`message message-${message.type}`}>
-                                        {message.text}
-                                    </div>
+                                    <>
+                                        <div key={index} className={`message message-${message.type}`}>
+                                            {message.text}
+                                        </div>
+                                        {(index === hintMessageIdx - 1 && hintMessageIdx > 0) && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                                            <div className="message message-bot flex space-between" onMouseDown={handleTooltipClick}>
+                                                <ul>
+                                                    {/* Your content to display after the message at index hintMessageIdx */}
+                                                    {hintMessage && attempt === 0 && (
+                                                        <span className="flex">
+                                                            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
+                                                            {ref && (
+                                                                <Icon
+                                                                    name="info circle"
+                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                                                />
+                                                            )}
+                                                            {explanation && (
+                                                                <Icon
+                                                                    name="info circle"
+                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                                                />
+                                                            )}
+                                                        </span>
+                                                    )}
+                                                    {preHints?.map((hint, index) => (
+                                                        <span key={index} className="flex">
+                                                            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+                                                            {ref && showRefIcon(hint) && (
+                                                                <Icon
+                                                                    name="info circle"
+                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                                                />
+                                                            )}
+                                                            {explanation && checkString(hint)}
+                                                        </span>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </>
                                 ))}
                             </>
                         )}

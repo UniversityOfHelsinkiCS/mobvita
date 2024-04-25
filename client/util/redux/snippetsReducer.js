@@ -184,6 +184,7 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
         focused: focused_snippet,
+        focused_snippet_chat_history: action.response.chat_history,
         session_id: action.response.session_id,
         testTime: action.response.test_time,
         eloHearts: {},
@@ -207,6 +208,7 @@ export default (state = initialState, action) => {
         return {
           ...state,
           focused: action.response,
+
           answersPending: false,
         }
 
@@ -226,6 +228,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         focused: action.response,
+        focused_snippet_chat_history: action.response.chat_history,
         sessionId: action.response.session_id,
         testTime: action.response.test_time,
         pending: false,
@@ -273,6 +276,7 @@ export default (state = initialState, action) => {
         ...state,
         // previous: filterPrevious(state.previous, state.focused),
         focused: action.response,
+        focused_snippet_chat_history: action.snippet_chat_history,
         testTime: action.response.test_time,
         pending: false,
         error: false,
@@ -356,10 +360,11 @@ export default (state = initialState, action) => {
     case 'SET_SNIPPET_CHAT_HISTORY':
       return {
         ...state,
-        focused: {
-          ...state.focused,
-          chat_history: action.snippet_chat_history,
-        },
+        // focused: {
+        //   ...state.focused,
+        //   chat_history: action.snippet_chat_history,
+        // },
+        focused_snippet_chat_history: action.snippet_chat_history,
       };
 
     case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
