@@ -107,7 +107,7 @@ const rootReducer = combineReducers({
   levelUp,
   contextTranslation,
   activity,
-  chatbot
+  chatbot,
 })
 
 export default (state, action) =>

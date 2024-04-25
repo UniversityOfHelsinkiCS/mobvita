@@ -13,19 +13,11 @@ export const competitionStartNow = () => ({
   startTime: new Date().getTime(),
 })
 
-const filterDuplicates = snippets => {
-  return snippets.filter((v, i, a) => a.findIndex(t => t.snippetid[0] === v.snippetid[0]) === i)
-}
 
 export const addWrongExercises = amount => ({ type: 'WRONG_ADD', amount })
 
 export const addTotalExercises = amount => ({ type: 'TOTAL_ADD', amount })
 
-export const getAndCacheNextSnippet = (storyId, currentSnippetId) => {
-  const route = `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
-  const prefix = 'GET_AND_CACHE_NEXT_SNIPPET'
-  return callBuilder(route, prefix)
-}
 
 export const sendActivity = (
   storyId,
@@ -55,9 +47,7 @@ export const sendActivity = (
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const resetCachedSnippets = () => ({
-  type: 'RESET_CACHED_SNIPPETS',
-})
+
 
 export const initializeTimer = timerControls => ({
   type: 'INITIALIZE_TIMER',
@@ -74,7 +64,7 @@ export const setIsPaused = value => ({
   value,
 })
 
-const initialState = { cachedSnippets: [], timerControls: null, isPaused: false, willPause: false }
+const initialState = { timerControls: null, isPaused: false, willPause: false }
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -119,34 +109,6 @@ export default (state = initialState, action) => {
         startTime: new Date(),
         willPause: false,
         isPaused: false,
-      }
-
-    case 'GET_AND_CACHE_NEXT_SNIPPET_ATTEMPT':
-      return {
-        ...state,
-        pending: true,
-        error: false,
-      }
-    case 'GET_AND_CACHE_NEXT_SNIPPET_FAILURE':
-      return {
-        ...state,
-        pending: false,
-        error: true,
-      }
-
-    case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
-      return {
-        ...state,
-        cachedSnippets: filterDuplicates(state.cachedSnippets.concat(action.response)),
-        pending: false,
-        error: false,
-      }
-    case 'RESET_CACHED_SNIPPETS':
-      return {
-        ...state,
-        cachedSnippets: [],
-        pending: false,
-        error: false,
       }
     default:
       return state
