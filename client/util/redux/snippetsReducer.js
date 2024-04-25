@@ -59,8 +59,17 @@ export const getNextSnippet = (
   return callBuilder(route, prefix)
 }
 
-export const getAndCacheNextSnippet = (storyId, currentSnippetId) => {
-  const route = `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
+export const getAndCacheNextSnippet = (
+  storyId,
+  currentSnippetId,
+  isControlledStory=false,
+  sessionId=null,
+  exerciseMode=null,
+) => {
+  const route =
+  isControlledStory && sessionId
+    ? `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&frozen_exercise=True&session_id=${sessionId}`
+    : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&exercise_mode=${exerciseMode}`
   const prefix = 'GET_AND_CACHE_NEXT_SNIPPET'
   return callBuilder(route, prefix)
 }
@@ -94,8 +103,9 @@ export const initializePrevious = (storyId, controlledStory) => {
   return callBuilder(route, prefix)
 }
 
-export const getNextSnippetFromCache = snippet => ({
+export const getNextSnippetFromCache = (snippetKey, snippet) => ({
   type: 'GET_NEXT_FROM_CACHE',
+  nextSnippetKey: snippetKey,
   nextSnippet: snippet,
 })
 
@@ -131,6 +141,7 @@ const initialState = {
   previous: [], 
   cachedSnippets: {}, 
   lastCachedSnippetKey: null,
+  nextSnippetKeyFromCache: null,
   conceptsInCache: [],
   cacheSize: 0,
   pending: false, 
@@ -228,6 +239,7 @@ export default (state = initialState, action) => {
         focused: action.response,
         sessionId: action.response.session_id,
         testTime: action.response.test_time,
+        lastCachedSnippetKey: 'any-key', // to trigger caching
         pending: false,
         error: false,
         eloHearts: {},
@@ -324,7 +336,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         focused: action.nextSnippet,
-        pending: false,
+        nextSnippetKeyFromCache: action.nextSnippetKey,
+        pending: action.nextSnippet === undefined,
         error: false,
       }
     case 'SET_INITIAL_ELO_HEARTS':
@@ -360,13 +373,24 @@ export default (state = initialState, action) => {
           ...state.focused,
           chat_history: action.snippet_chat_history,
         },
-      };
+      }
 
     case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
+      const thisSnippetKey = `${action.response.storyid}-${action.response.snippetid[0]}`
+      if (state.nextSnippetKeyFromCache === thisSnippetKey || 
+      state.nextSnippetKeyFromCache === 'any-key') {
+        return {
+          ...state,
+          focused: action.response,
+          nextSnippetKeyFromCache: null,
+          pending: false,
+          error: false,
+        }
+      }
       const snippets = {
         ...state.cachedSnippets,
-        [`${action.response.storyid}-${action.response.snippetid[0]}`]: action.response,
-    }
+        [thisSnippetKey]: action.response,
+      }
       return {
         ...state,
         cachedSnippets: snippets,
@@ -389,6 +413,7 @@ export default (state = initialState, action) => {
         cachedSnippetIds: [], 
         conceptsInCache: [],
         lastCachedSnippetKey: null,
+        nextSnippetKeyFromCache: null,
         cacheSize: 0,
       }
     default:

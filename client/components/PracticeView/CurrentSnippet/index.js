@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getCurrentSnippet,
-  getNextSnippet,
+  getAndCacheNextSnippet,
+  getNextSnippetFromCache,
+  dropCachedSnippet,
+  resetCachedSnippets,
   addToPrevious,
   setPrevious,
   resetSessionId,
@@ -50,12 +53,20 @@ const CurrentSnippet = ({
   groupId,
   lessonStartOver,
 }) => {
+  const CACHE_LIMIT = 5
+  const SNIPPET_FETCH_INTERVAL = 5000
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
-  const answersPending = useSelector(({ snippets }) => snippets.answersPending)
+  const {
+    answersPending,
+    cachedSnippets, 
+    lastCachedSnippetKey, 
+    cachedSnippetIds,
+    cacheSize,
+  } = snippets
   const {
     practiceFinished,
     snippetFinished,
@@ -248,10 +259,15 @@ const CurrentSnippet = ({
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
       if (lessonId) {
         dispatch(getLessonSnippet(lessonId, groupId))
+        // const nextSnippetKey = cachedSize && Object.keys(cachedSnippets)[0] || 'any-key'
+        // const nextSnippet = cachedSize && cachedSnippets[nextSnippetKey] || undefined
+        // dispatch(dropCachedSnippet(nextSnippetKey))
+        // dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
       } else {
-        dispatch(
-          getNextSnippet(storyId, currentSnippetId(), isControlledStory, sessionId, exerciseMode)
-        )
+        const nextSnippetKey = `${storyId}-${currentSnippetId() + 1}`
+        const nextSnippet = cachedSnippets[nextSnippetKey]
+        dispatch(dropCachedSnippet(nextSnippetKey))
+        dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
       }
     } else {
       dispatch(setPracticeFinished(true))
@@ -279,7 +295,23 @@ const CurrentSnippet = ({
     }
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
+    dispatch(resetCachedSnippets())
   }, [])
+
+  const fetchSnippet = async () => {
+    const nextCachedSnippetId = Math.min(...Array.from(
+      {length: CACHE_LIMIT}, (_, i) => currentSnippetId() + i).filter(
+          e => !cachedSnippetIds?.map(x => x-1).includes(e) && e <= numSnippets - 1))
+    if (snippets.focused && currentSnippetId() >= 0 && nextCachedSnippetId <= numSnippets - 1 && !lessonId) {
+      await dispatch(
+        getAndCacheNextSnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
+      )
+    }
+  }
+
+  useEffect(() => {
+    fetchSnippet()
+  }, [lastCachedSnippetKey, cacheSize, snippets.focused?.snippetid])
 
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
@@ -332,6 +364,7 @@ const CurrentSnippet = ({
   const startOver = async () => {
     dispatch(clearPractice())
     dispatch(resetAnnotations())
+    dispatch(resetCachedSnippets())
     dispatch(setPrevious([]))
     dispatch(resetCurrentSnippet(storyId, isControlledStory, exerciseMode))
     dispatch(setPracticeFinished(false))

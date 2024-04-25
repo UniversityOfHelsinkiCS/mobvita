@@ -5,7 +5,11 @@ import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
-import { postAnswers, resetCurrentSnippet, postLessonSnippetAnswers } from 'Utilities/redux/snippetsReducer'
+import { 
+  postAnswers, 
+  resetCurrentSnippet, 
+  resetCachedSnippets, 
+  postLessonSnippetAnswers } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import {
   finishSnippet,
@@ -198,6 +202,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
 
   const handleRestart = () => {
     dispatch(clearPractice())
+    dispatch(resetCachedSnippets())
     setcheckAnswersButtonTempDisable(true)
     if (lessonId){
       lessonStartOver()
@@ -222,7 +227,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
           <Button
             variant="secondary"
             size="sm"
-            disabled={snippets.answersPending || snippets.pending || !snippets.focused}
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused || snippets.cacheSize === 0 && !lessonId}
             onClick={submitAnswers}
             style={{ marginBottom: '0.5em' }}
           >

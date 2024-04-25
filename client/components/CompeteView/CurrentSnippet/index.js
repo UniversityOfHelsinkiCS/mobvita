@@ -185,8 +185,8 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
       const nextSnippetKey = `${storyId}-${currentSnippetId() + 1}`
       const nextSnippet = cachedSnippets[nextSnippetKey]
-      dispatch(getNextSnippetFromCache(nextSnippet))
       dispatch(dropCachedSnippet(nextSnippetKey))
+      dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
     } else {
       setYouWon(true)
     }
@@ -218,7 +218,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   useEffect(() => {
     async function fetchSnippet() {
       if (snippetToCacheId < focused.paragraph.length - 1) {
-        await dispatch(getAndCacheNextSnippet(storyId, snippetToCacheId))
+        await dispatch(getAndCacheNextSnippet(storyId, snippetToCacheId, exerciseMode='all'))
       }
     }
     fetchSnippet()
