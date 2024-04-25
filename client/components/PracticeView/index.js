@@ -141,7 +141,6 @@ const PracticeView = () => {
         penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
       },
     }
-
     dispatch(setAnswers(newAnswer))
   }
 
