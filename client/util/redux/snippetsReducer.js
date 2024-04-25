@@ -54,6 +54,33 @@ export const getNextSnippet = (
   return callBuilder(route, prefix)
 }
 
+export const getAndCacheNextSnippet = (storyId, currentSnippetId) => {
+  const route = `/stories/${storyId}/snippets/next?previous=${currentSnippetId}`
+  const prefix = 'GET_AND_CACHE_NEXT_SNIPPET'
+  return callBuilder(route, prefix)
+}
+
+export const dropCachedSnippet = (snippetKey) => ({
+  type: 'DROP_CACHED_SNIPPET',
+  snippetKey
+})
+
+export const resetCachedSnippets = () => ({
+  type: 'RESET_CACHED_SNIPPETS',
+})
+
+const processCachedSnippets = (snippets) => {
+  const snippetIds = Object.values(snippets).map(snippet => snippet.snippetid).flat()
+  const coveredConcepts = new Set(Object.values(snippets).map(
+      snippet => snippet.practice_snippet.filter(token=>token.concept).map(
+          token=>token.concept.replace('concept_id: ', ''))).flat())
+  return {
+      cachedSnippetIds: Array.from(snippetIds).sort(),
+      conceptsInCache: Array.from(coveredConcepts).sort(),
+      cacheSize: Object.keys(snippets).length
+  }
+}
+
 export const initializePrevious = (storyId, controlledStory) => {
   const route = controlledStory
     ? `/stories/${storyId}/snippets/completed?frozen_exercise=True`
@@ -95,9 +122,19 @@ export const decreaseEloHearts = wordId => ({ type: 'DECREASE_ELO_HEARTS', wordI
 
 export const clearEloHearts = () => ({ type: 'CLEAR_ELO_HEARTS' })
 
+const initialState = {
+  previous: [], 
+  cachedSnippets: {}, 
+  lastCachedSnippetKey: null,
+  conceptsInCache: [],
+  cacheSize: 0,
+  pending: false, 
+  error: false
+}
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
-export default (state = { previous: [], pending: false, error: false }, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'RESET_SNIPPET_INDEX_ATTEMPT':
       return {
@@ -310,6 +347,36 @@ export default (state = { previous: [], pending: false, error: false }, action) 
       return {
         ...state,
         eloHearts: {},
+      }
+
+    case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
+      const snippets = {
+        ...state.cachedSnippets,
+        [`${action.response.storyid}-${action.response.snippetid[0]}`]: action.response,
+    }
+      return {
+        ...state,
+        cachedSnippets: snippets,
+        lastCachedSnippetKey: `${action.response.storyid}-${action.response.snippetid[0]}`,
+        ...processCachedSnippets(snippets),
+      }
+
+    case 'DROP_CACHED_SNIPPET':
+      const { [action.snippetKey]: undefined, ...newSnippets } = state.cachedSnippets
+      return {
+        ...state,
+        cachedSnippets: newSnippets,
+        ...processCachedSnippets(newSnippets),
+      }
+
+    case 'RESET_CACHED_SNIPPETS':
+      return {
+        ...state,
+        cachedSnippets: {}, 
+        cachedSnippetIds: [], 
+        conceptsInCache: [],
+        lastCachedSnippetKey: null,
+        cacheSize: 0,
       }
     default:
       return state

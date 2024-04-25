@@ -17,17 +17,16 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
   const [botScore, setBotScore] = useState(0)
   const [endModalOpen, setEndModalOpen] = useState(false)
 
-  const { botSnippetTimes, botCorrectPercent, cachedSnippets, snippets } = useSelector(
-    ({ stories, compete, snippets, cachedSnippets }) => ({
+  const { botSnippetTimes, botCorrectPercent, snippets } = useSelector(
+    ({ stories, compete, snippets }) => ({
       snippets,
       story: stories.focused,
       startTime: compete.startTime,
       botSnippetTimes: compete.snippetCompleteTime,
       botCorrectPercent: compete.botCorrectPercent,
-      cachedSnippets: cachedSnippets.snippets,
     })
   )
-
+  const { cachedSnippets, lastCachedSnippetKey, cacheSize } = snippets
   const smallScreen = width < 700
   const snippetsTotal = snippets.focused?.total_num
 
@@ -46,7 +45,7 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
   }, [snippets])
 
   useEffect(() => {
-    if (Object.keys(cachedSnippets).length > 0) {
+    if (cacheSize > 0) {
       const exercisesPerSnippet = []
 
       Object.values(cachedSnippets).sort((a, b) => a.snippetid[0] - b.snippetid[0]).forEach(x => {
@@ -55,7 +54,7 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
       exercisesPerSnippet.unshift(exercisesInFirst)
       setExercisesInSnippets(exercisesPerSnippet)
     }
-  }, [cachedSnippets])
+  }, [lastCachedSnippetKey])
 
   if (!botSnippetTimes) {
     return (

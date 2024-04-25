@@ -25,7 +25,7 @@ import {
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 
-const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, ...props }) => {
+const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()

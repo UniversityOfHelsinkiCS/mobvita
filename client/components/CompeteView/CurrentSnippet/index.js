@@ -3,17 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   addToPrevious,
   getNextSnippetFromCache,
-  initEloHearts,
-  clearEloHearts,
+  getAndCacheNextSnippet,
+  dropCachedSnippet,
+  resetCachedSnippets,
 } from 'Utilities/redux/snippetsReducer'
 import {
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/competitionReducer'
-import {
-  getAndCacheNextSnippet,
-  resetCachedSnippets,
-} from 'Utilities/redux/cachedSnippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -47,7 +44,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   const snippets = useSelector(({ snippets }) => snippets)
   const { answersPending } = snippets
   const { snippetFinished, isNewSnippet, attempt, currentAnswers } = useSelector(({ practice }) => practice)
-  const { snippets: cachedSnippets } = useSelector(({ cachedSnippets }) => cachedSnippets)
+  const { cachedSnippets } = useSelector(({ snippets }) => snippets)
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { willPause, isPaused, timerControls } = useSelector(({ compete }) => compete)
@@ -186,9 +183,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-      const nextSnippet = cachedSnippets[`${storyId}-${currentSnippetId()}`]
-      console.log(nextSnippet)
+      const nextSnippetKey = `${storyId}-${currentSnippetId() + 1}`
+      const nextSnippet = cachedSnippets[nextSnippetKey]
       dispatch(getNextSnippetFromCache(nextSnippet))
+      dispatch(dropCachedSnippet(nextSnippetKey))
     } else {
       setYouWon(true)
     }

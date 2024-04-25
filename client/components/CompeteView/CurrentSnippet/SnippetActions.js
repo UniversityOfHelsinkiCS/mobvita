@@ -19,7 +19,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
     pending: snippetPending,
     answersPending,
   } = useSelector(({ snippets }) => snippets)
-  const { snippets: cachedSnippets } = useSelector(({ cachedSnippets }) => cachedSnippets)
+  const { cacheSize } = useSelector(({ snippets }) => snippets)
   const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
@@ -36,8 +36,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
 
   const noSnippetToFetchFromCache = () => {
     return (
-      currentSnippetId() === Object.keys(cachedSnippets).length &&
-      Object.keys(cachedSnippets).length !== focusedSnippet.total_num - 1
+      currentSnippetId() === cacheSize &&
+      cacheSize !== focusedSnippet.total_num - 1
     )
   }
 
@@ -104,7 +104,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
 const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const learningLanguage = useLearningLanguage()
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
-  const { snippets: cachedSnippets } = useSelector(({ cachedSnippets }) => cachedSnippets)
+  const { cacheSize } = useSelector(({ snippets }) => snippets)
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
     ({ practice }) => practice
   )
@@ -138,8 +138,8 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
 
   const noSnippetToFetchFromCache = () => {
     return (
-      currentSnippetId() === Object.keys(cachedSnippets).length &&
-      Object.keys(cachedSnippets).length !== snippets.focused?.total_num - 1
+      currentSnippetId() === cacheSize &&
+      cacheSize !== snippets.focused?.total_num - 1
     )
   }
 
