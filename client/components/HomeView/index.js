@@ -117,7 +117,9 @@ const HomeviewButtons = ({
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           <div className="add-new-stories-btn-cont tour-add-new-stories">
             <HomeviewButton
-              wide
+              imgSrc={images.addStoriesIcon}
+              altText="Add stories"
+              // wide
               translationKey="add-your-stories"
               handleClick={() => setAddStoryModalOpen(true)}
               dataCy="add-story-button"

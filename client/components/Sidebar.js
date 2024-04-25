@@ -137,7 +137,8 @@ export default function Sidebar({ history }) {
     <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="sidebar-content" ref={sidebar}>
-        <div style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
+        <div className="revitaLogo"
+             style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
           <Icon
             name="bars"
             size="big"

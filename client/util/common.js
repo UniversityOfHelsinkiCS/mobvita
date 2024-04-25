@@ -41,6 +41,8 @@ import group1 from 'Assets/images/group.png'
 import private1 from 'Assets/images/private.png'
 import dices from 'Assets/images/dices.png'
 import diveIn from 'Assets/images/diveIn.png'
+import addStoriesIcon from 'Assets/images/add_plus_green.png'
+
 import practice from 'Assets/images/practice.png'
 import adaptiveTest from 'Assets/images/adaptive_test.png'
 import exhaustiveTest from 'Assets/images/exhaustive_test.png'
@@ -123,6 +125,7 @@ export const images = {
   flagEnglish,
   tests,
   addStory,
+  addStoriesIcon,  
   logo,
   navbarLogo,
   flashcardIcon,
@@ -962,6 +965,40 @@ const tourSign = () => {
   )
 }
 
+/////////////////////////////////////////////////////////
+// OLD tour item #3
+//-   {
+//-     target: '.tour-add-new-stories',
+//-     title: <FormattedMessage id="add-content" />,
+//-     content: (
+//-       <div style={{ position: 'realitive' }}>
+//-         <Sparkle flicker={false} />
+//-         <FormattedHTMLMessage id="tour-add-content-message" />
+//-       </div>
+//-     ),
+//-     placement: 'top',
+//-     disableBeacon: true,
+//-     styles: {
+//-       tooltipContainer: {
+//-         textAlign: 'left',
+//-       },
+//-       options: {
+//-         arrowColor: 'rgb(50, 170, 248)',
+//-         primaryColor: 'rgb(50, 170, 248)',
+//-         backgroundColor: 'rgb(50, 170, 248',
+//-         zIndex: 1000,
+//-         textColor: 'white',
+//-       },
+//-       buttonNext: {
+//-         backgroundColor: 'white',
+//-         borderRadius: 8,
+//-         color: 'black',
+//-       },
+//-     },
+//-   },
+/////////////////////////////////////////////////////////
+
+
 const desktopHomeTourSteps = [
   {
     target: '.tour-start-finish',
@@ -992,31 +1029,19 @@ const desktopHomeTourSteps = [
     },
   },
   {
-    target: '.tour-add-new-stories',
-    title: <FormattedMessage id="add-content" />,
+    target: '.tour-sidebar',
+    title: <FormattedMessage id="sidebar" />,
     content: (
-      <div style={{ position: 'realitive' }}>
-        <Sparkle flicker={false} />
-        <FormattedHTMLMessage id="tour-add-content-message" />
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-sidebar-message" />
       </div>
     ),
-    placement: 'top',
+    textAlign: 'center',
+    placement: 'bottom',
     disableBeacon: true,
     styles: {
-      tooltipContainer: {
-        textAlign: 'left',
-      },
       options: {
-        arrowColor: 'rgb(50, 170, 248)',
-        primaryColor: 'rgb(50, 170, 248)',
-        backgroundColor: 'rgb(50, 170, 248',
-        zIndex: 1000,
-        textColor: 'white',
-      },
-      buttonNext: {
-        backgroundColor: 'white',
-        borderRadius: 8,
-        color: 'black',
+        zIndex: 10000,
       },
     },
   },
@@ -1106,6 +1131,9 @@ const desktopHomeTourSteps = [
   },
 ]
 
+
+
+/////////////////////////////////////////////////////////
 const mobileHomeTourSteps = [
   {
     target: '.tour-start-finish',
@@ -1259,6 +1287,8 @@ const mobileHomeTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const desktopProgressTourSteps = [
   {
     target: '.progress-button',
@@ -1319,6 +1349,8 @@ const desktopProgressTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const mobileProgressTourSteps = [
   {
     target: '.sidebar-profile-button',
@@ -1367,6 +1399,8 @@ const mobileProgressTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const anonymousDesktopProgressTourSteps = [
   {
     target: '.navbar-register-button',
@@ -1395,6 +1429,8 @@ const anonymousMobileProgressTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const desktopLibraryTourSteps = [
   {
     target: '.library-tour-start',
@@ -1466,6 +1502,8 @@ const desktopLibraryTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const mobileLibraryTourSteps = [
   {
     target: '.library-tour-start',
@@ -1546,6 +1584,8 @@ const mobileLibraryTourSteps = [
   },
 ]
 
+
+/////////////////////////////////////////////////////////
 const desktopPracticeTourSteps = [
   {
     target: '.tour-button',
@@ -1753,6 +1793,7 @@ const mobilePracticeTourSteps = [
   },
 ]
 
+/////////////////////////////////////////////////////////
 const desktopLessonsTourSteps = [
   {
     target: '.cont-tall',
