@@ -167,8 +167,8 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       {
         frozen_messages?.length>0 && (<div className="tooltip-hint" style={{ textAlign: 'left' }}>
         <ul style={{paddingLeft: '20px'}}>
-          {frozen_messages.map(mess => (
-            <span className="flex">
+          {frozen_messages.map((mess, index) => (
+            <span key={index} className="flex">
               <li
                 style={{ fontWeight: 'bold', fontStyle: 'italic' }}
                 dangerouslySetInnerHTML={formatGreenFeedbackText(mess)}

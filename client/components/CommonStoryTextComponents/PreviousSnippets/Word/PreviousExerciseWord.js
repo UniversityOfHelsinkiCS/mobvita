@@ -200,8 +200,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
       )}
       {word.hints?.length > 0 && !isPreviewMode && (
         <div>
-          {word.hints.map(hint => (
-            <span className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{(ref || explanation) && (
+          {word.hints.map((hint, index) => (
+            <span key={index} className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{(ref || explanation) && (
               checkString(hint)
             )}
             </span>

@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   addToPrevious,
   getNextSnippetFromCache,
-  initEloHearts,
-  clearEloHearts,
+  getAndCacheNextSnippet,
+  dropCachedSnippet,
+  resetCachedSnippets,
 } from 'Utilities/redux/snippetsReducer'
 import {
-  getAndCacheNextSnippet,
-  resetCachedSnippets,
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/competitionReducer'
@@ -45,7 +44,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   const snippets = useSelector(({ snippets }) => snippets)
   const { answersPending } = snippets
   const { snippetFinished, isNewSnippet, attempt, currentAnswers } = useSelector(({ practice }) => practice)
-  const { cachedSnippets } = useSelector(({ compete }) => compete)
+  const { cachedSnippets } = useSelector(({ snippets }) => snippets)
   const { focused } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { willPause, isPaused, timerControls } = useSelector(({ compete }) => compete)
@@ -184,7 +183,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || finished) {
-      dispatch(getNextSnippetFromCache(cachedSnippets[currentSnippetId()]))
+      const nextSnippetKey = `${storyId}-${currentSnippetId() + 1}`
+      const nextSnippet = cachedSnippets[nextSnippetKey]
+      dispatch(getNextSnippetFromCache(nextSnippet))
+      dispatch(dropCachedSnippet(nextSnippetKey))
     } else {
       setYouWon(true)
     }
