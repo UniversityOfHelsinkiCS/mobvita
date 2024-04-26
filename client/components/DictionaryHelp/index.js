@@ -210,7 +210,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     if (translation === 'no-clue-translation') {
       return (
         <>
-          <div style={{ marginBottom: '1em', width: '100%', ...getTextStyle(learningLanguage) }}>
+          <div style={{ marginBottom: '1em', width: '100%',
+                        ...getTextStyle(learningLanguage) }}>
             <Speaker word={parsedLemmas()[0]} />
             {maskSymbol || parsedLemmas()[0]}
           </div>
@@ -230,11 +231,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div style={{ display: 'flex' }}>
             <div>{translations}</div>
             <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {!inWordNestModal &&
-                words?.length > 0 &&
+              {!inWordNestModal && words?.length > 0 &&
                 (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
                 !clue && (
-                  <Button basic size="mini" onClick={handleNestButtonClick} data-cy="nest-button">
+                  <Button basic size="mini" onClick={handleNestButtonClick}
+                          data-cy="nest-button">
                     <img src={images.nestIcon} alt="nest icon" width="22" />
                   </Button>
                 )}

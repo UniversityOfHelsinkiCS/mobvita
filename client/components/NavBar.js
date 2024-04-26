@@ -61,6 +61,9 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
   )
 }
 
+const NewsWebSite = "https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
+
+
 export default function NavBar() {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const {
@@ -290,6 +293,7 @@ export default function NavBar() {
           data-cy="hamburger"
         />
         <Navbar.Collapse>
+          {/********************************* HAMBURGER *********************************/}
           <Nav className="mr-auto">
             <div className="navbar-container">
               <Link to="/home">
@@ -310,6 +314,7 @@ export default function NavBar() {
               </Link>
             </div>
           </Nav>
+          {/********************************* ELO SCORE *********************************/}
           <Nav className="mr-auto">
             <div className="navbar-container">
               <Navbar.Text
@@ -338,6 +343,7 @@ export default function NavBar() {
               </Navbar.Text>
             </div>
           </Nav>
+          {/******************************* STUDENT VIEW *******************************/}
           {isTeacher && showTeacherViewSwitch && (
             <Nav>
               <Popup
@@ -355,9 +361,9 @@ export default function NavBar() {
                 }
                 position="bottom center"
               />
-              
             </Nav>
           )}
+          {/******************************* PROGRESS *******************************/}
           {(!isTeacher || (isTeacher && !teacherView)) && (
             <Nav>
               <Popup
@@ -371,6 +377,7 @@ export default function NavBar() {
               />
             </Nav>
           )}
+          {/******************************* TOUR BUTTON *******************************/}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
@@ -386,71 +393,61 @@ export default function NavBar() {
                     </Button>
                   }
                 />
-                
               )}
-              {!smallWindow &&  user && user.user.last_used_language && (
-                <span style={{ position: 'relative', cursor: 'pointer' }}>
-                  <Link to="/learningLanguage">
+            </div>
+          </Nav>
+          {/******************************* LANGUAGE FLAG *******************************/}
+          {!smallWindow &&  user && user.user.last_used_language && (
+          <Nav>
+            <div className="navbar-container" style={{ width: '90%' }}>
+                  <Popup
+                    position="bottom right"
+                    content={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
+                    trigger={
+                      <Link to="/learningLanguage">
+                        <img
+                          className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
+                          src={getLearningLanguageFlag()}
+                          alt="learningLanguageFlag"
+                        />
+                      </Link>
+                    }
+                  />
+                  {!isMajorLanguage && (
                     <Popup
-                      position="top center"
-                      content={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
+                      position="bottom right"
+                      content={
+                        <FormattedMessage
+                          id="beta-language-warning"
+                          values={{ language: user.user.last_used_language }}
+                        />
+                      }
                       trigger={
-                        <>
-                          <img
-                            className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                            src={getLearningLanguageFlag()}
-                            alt="learningLanguageFlag"
-                          />
-                        </>
+                          <Label color="red" size="mini"> <span>&beta;</span> </Label>
                       }
                     />
-                    
-                    {!isMajorLanguage && (
-                      <Popup
-                        position="top right"
-                        content={
-                          <FormattedMessage
-                            id="beta-language-warning"
-                            values={{ language: user.user.last_used_language }}
-                          />
-                        }
-                        trigger={
-                          <Label
-                            onClick={handleNewsClick}
-                            className="navbar-news-label"
-                            color="red"
-                            size="mini"
-                            floating
-                          >
-                            <span>&beta;</span>
-                          </Label>
-                        }
-                      />
-                    )}
-                  </Link>
-                </span>
-              )}
+                  )}
+            </div>
+          </Nav>
+          )}
+          {/******************************* NEWS BELL *******************************/}
+          <Nav>
+            <div className="navbar-container" style={{ width: '90%' }}>
               <Popup
                 trigger={
                   <a
                     className="navbar-basic-icon"
                     style={{ display: 'table-cell' }}
-                    href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
+                    href={NewsWebSite}
                     onClick={event => {
                       confirmNewsClick(
-                        event,
-                        'https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news'
+                        event, NewsWebSite
                       )
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span
-                      style={{
-                        position: 'relative',
-                        cursor: 'pointer',
-                      }}
-                    >
+                    <span style={{position: 'relative', cursor: 'pointer',}}>
                       <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
                       {numUnreadNews > 0 ? (
                         <Label
@@ -474,6 +471,7 @@ export default function NavBar() {
               />
             </div>
           </Nav>
+          {/******************************* END *******************************/}
         </Navbar.Collapse>
       </Navbar>
     </Headroom>
