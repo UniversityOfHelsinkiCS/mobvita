@@ -295,7 +295,7 @@ const CurrentSnippet = ({
 
   const fetchSnippet = async () => {
     if (!lessonId) {
-      if (!cachedSnippetIds.includes(0) && cacheSize === 0) {
+      if (!cachedSnippetIds.includes(0) && cacheSize >= CACHE_LIMIT) {
         dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
       }
       const nextCachedSnippetId = Math.min(...Array.from(
