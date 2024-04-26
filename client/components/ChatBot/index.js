@@ -142,21 +142,21 @@ const Chatbot = () => {
     const checkString = hint => {
         const explanationKey = Object.keys(explanation)[0]
         if (hint?.includes(explanationKey)) {
-            return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+          return <Icon name="info circle"
+                       style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
         }
         return null
     }
     
     const showRefIcon = hint => {
-    if (Object.keys(ref).find(key => hint.includes(key))) {
+      if (Object.keys(ref).find(key => hint.includes(key))) {
         return true
-    }
-
-    return false
+      }
+      return false
     }
     
     const handlePreHints = () => {
-        if (
+      if (
           (!hints && !requested_hints) ||
           (filteredHintsList.length < 1 && requested_hints.length < 1) ||
           hints?.length < 1
@@ -230,9 +230,9 @@ const Chatbot = () => {
       {!isCollapsed && (
         <>
           {/* Display current context: BANNER = current exercise LEMMA */}
-          <div className="context-info">
+          <div className="chatbot-context-info">
             {validToChat && (
-              <div className="context-item flex space-between">
+              <div className="chatbot-context-item flex space-between">
                 <div>
                   {/* make sure the words to display are not too long */
                     currentWord.choices?.length
@@ -269,13 +269,8 @@ const Chatbot = () => {
                       {hintMessage && attempt === 0 && (
                         <span className="flex">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                          {ref && (
-                            <Icon
-                              name="info circle"
-                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                            />
-                          )}
-                          {explanation && (
+                          { // show ONLY ONE (i) if either references or explanation exists
+                            (ref || explanation) && (
                             <Icon
                               name="info circle"
                               style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
