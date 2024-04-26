@@ -33,7 +33,10 @@
 }
 
 .chatbot-context-item {
-    white-space: 'nowrap'; overflow: 'hidden'; text-overflow: 'ellipsis'; max-width: '20em';
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 20em;
     font-size: 1.15rem;
 }
 
