@@ -295,16 +295,15 @@ const CurrentSnippet = ({
 
   const fetchSnippet = async () => {
     if (!lessonId) {
-      if (!cachedSnippetIds.includes(0) && cacheSize >= CACHE_LIMIT) {
-        dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
-      }
       const nextCachedSnippetId = Math.min(...Array.from(
         {length: CACHE_LIMIT}, (_, i) => currentSnippetId() + i).filter(
             e => !cachedSnippetIds?.map(x => x-1).includes(e) && e <= numSnippets - 1))
-      if (nextCachedSnippetId <= numSnippets - 1) {
+      if (nextCachedSnippetId <= numSnippets - 1 && nextCachedSnippetId >= 0) {
         await dispatch(
           cacheStorySnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
         )
+      } else if (!cachedSnippetIds.includes(0)) {
+        await dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
       }
     } else if (lastCachedSnippetKey !== 'endKey' && cacheSize < CACHE_LIMIT) {
       const currentCandidates = attempt===0 && snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []

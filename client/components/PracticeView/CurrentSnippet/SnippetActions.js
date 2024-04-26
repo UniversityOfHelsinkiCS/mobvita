@@ -233,7 +233,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
           <Button
             variant="secondary"
             size="sm"
-            disabled={snippets.answersPending || snippets.pending || !snippets.focused || snippets.cacheSize === 0 && !lessonId}
+            disabled={snippets.answersPending || snippets.pending || !snippets.focused || snippets.cacheSize === 0}
             onClick={submitAnswers}
             style={{ marginBottom: '0.5em' }}
           >
