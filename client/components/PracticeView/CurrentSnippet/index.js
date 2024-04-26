@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getCurrentSnippet,
-  getAndCacheNextSnippet,
+  cacheStorySnippet,
+  cacheLessonSnippet,
   getNextSnippetFromCache,
   dropCachedSnippet,
   resetCachedSnippets,
@@ -64,6 +65,7 @@ const CurrentSnippet = ({
     answersPending,
     cachedSnippets, 
     lastCachedSnippetKey, 
+    candidatesInCache,
     cachedSnippetIds,
     cacheSize,
   } = snippets
@@ -257,18 +259,11 @@ const CurrentSnippet = ({
     dispatch(clearCurrentPractice())
 
     if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
-      if (lessonId) {
-        dispatch(getLessonSnippet(lessonId, groupId))
-        // const nextSnippetKey = cachedSize && Object.keys(cachedSnippets)[0] || 'any-key'
-        // const nextSnippet = cachedSize && cachedSnippets[nextSnippetKey] || undefined
-        // dispatch(dropCachedSnippet(nextSnippetKey))
-        // dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
-      } else {
-        const nextSnippetKey = `${storyId}-${currentSnippetId() + 1}`
-        const nextSnippet = cachedSnippets[nextSnippetKey]
-        dispatch(dropCachedSnippet(nextSnippetKey))
-        dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
-      }
+      const nextSnippetKey = (!lessonId && `${storyId}-${currentSnippetId() + 1}` || 
+                              cacheSize && Object.keys(cachedSnippets)[0] || 'anyKey')
+      const nextSnippet = cachedSnippets[nextSnippetKey]
+      dispatch(dropCachedSnippet(nextSnippetKey))
+      dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
     } else {
       dispatch(setPracticeFinished(true))
     }
@@ -299,18 +294,29 @@ const CurrentSnippet = ({
   }, [])
 
   const fetchSnippet = async () => {
-    const nextCachedSnippetId = Math.min(...Array.from(
-      {length: CACHE_LIMIT}, (_, i) => currentSnippetId() + i).filter(
-          e => !cachedSnippetIds?.map(x => x-1).includes(e) && e <= numSnippets - 1))
-    if (snippets.focused && currentSnippetId() >= 0 && nextCachedSnippetId <= numSnippets - 1 && !lessonId) {
+    if (!lessonId) {
+      if (!cachedSnippetIds.includes(0) && cacheSize === 0) {
+        dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
+      }
+      const nextCachedSnippetId = Math.min(...Array.from(
+        {length: CACHE_LIMIT}, (_, i) => currentSnippetId() + i).filter(
+            e => !cachedSnippetIds?.map(x => x-1).includes(e) && e <= numSnippets - 1))
+      if (nextCachedSnippetId <= numSnippets - 1) {
+        await dispatch(
+          cacheStorySnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
+        )
+      }
+    } else if (lastCachedSnippetKey !== 'endKey' && cacheSize < CACHE_LIMIT) {
+      const currentCandidates = attempt===0 && snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []
+      const exclude_candidates = [...candidatesInCache, ...currentCandidates]
       await dispatch(
-        getAndCacheNextSnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
+        cacheLessonSnippet(lessonId, groupId, exclude_candidates)
       )
     }
   }
 
   useEffect(() => {
-    fetchSnippet()
+    if (snippets.focused) fetchSnippet()
   }, [lastCachedSnippetKey, cacheSize, snippets.focused?.snippetid])
 
   useEffect(() => {
@@ -366,8 +372,12 @@ const CurrentSnippet = ({
     dispatch(resetAnnotations())
     dispatch(resetCachedSnippets())
     dispatch(setPrevious([]))
-    dispatch(resetCurrentSnippet(storyId, isControlledStory, exerciseMode))
     dispatch(setPracticeFinished(false))
+    const initSnippet = snippets.cachedSnippets[`${storyId}-0`]
+    if (initSnippet) {
+      dispatch(dropCachedSnippet(`${storyId}-0`))
+      dispatch(getNextSnippetFromCache(`${storyId}-0`, initSnippet, true))
+    } else dispatch(resetCurrentSnippet(storyId, isControlledStory, exerciseMode))
   }
 
   const handleMultiselectChange = (event, word, data) => {

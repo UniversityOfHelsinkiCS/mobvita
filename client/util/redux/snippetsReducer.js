@@ -16,6 +16,20 @@ export const getLessonSnippet = (lessonId, groupId) => {
   return callBuilder(route, prefix)
 }
 
+export const cacheLessonSnippet = (lessonId, groupId, candidateIds) => {
+  let route = `/lesson/exercise`
+  if (candidateIds.length === 0 && groupId) {
+    route += `?group_id=${groupId}`
+  } else if (groupId) {
+    route += `?group_id=${groupId}&exclude_candidates=${candidateIds.join(',')}`
+  } else {
+    route += `?exclude_candidates=${candidateIds.join(',')}`
+  }
+  const prefix = 'CACHE_NEXT_SNIPPET'
+
+  return callBuilder(route, prefix)
+}
+
 export const postLessonSnippetAnswers = (lessonId, answersObject, compete = false) => {
   const payload = answersObject
   payload.compete = compete
@@ -59,18 +73,20 @@ export const getNextSnippet = (
   return callBuilder(route, prefix)
 }
 
-export const getAndCacheNextSnippet = (
+export const cacheStorySnippet = (
   storyId,
   currentSnippetId,
   isControlledStory=false,
   sessionId=null,
   exerciseMode=null,
+  reset=false
 ) => {
+  const nextOrReset = reset ? 'reset?' : `next?previous=${currentSnippetId}&session_id=${sessionId}&`
   const route =
   isControlledStory && sessionId
-    ? `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&frozen_exercise=True&session_id=${sessionId}`
-    : `/stories/${storyId}/snippets/next?previous=${currentSnippetId}&exercise_mode=${exerciseMode}`
-  const prefix = 'GET_AND_CACHE_NEXT_SNIPPET'
+    ? `/stories/${storyId}/snippets/${nextOrReset}frozen_exercise=True`
+    : `/stories/${storyId}/snippets/${nextOrReset}exercise_mode=${exerciseMode}`
+  const prefix = 'CACHE_NEXT_SNIPPET'
   return callBuilder(route, prefix)
 }
 
@@ -85,12 +101,12 @@ export const resetCachedSnippets = () => ({
 
 const processCachedSnippets = (snippets) => {
   const snippetIds = Object.values(snippets).map(snippet => snippet.snippetid).flat()
-  const coveredConcepts = new Set(Object.values(snippets).map(
-      snippet => snippet.practice_snippet.filter(token=>token.concept).map(
-          token=>token.concept.replace('concept_id: ', ''))).flat())
+  const coveredCandidates = new Set(Object.values(snippets).map(
+      snippet => snippet.practice_snippet.filter(token=>token.id).map(
+          token=>token.id)).flat())
   return {
       cachedSnippetIds: Array.from(snippetIds).sort(),
-      conceptsInCache: Array.from(coveredConcepts).sort(),
+      candidatesInCache: Array.from(coveredCandidates).sort(),
       cacheSize: Object.keys(snippets).length
   }
 }
@@ -103,10 +119,11 @@ export const initializePrevious = (storyId, controlledStory) => {
   return callBuilder(route, prefix)
 }
 
-export const getNextSnippetFromCache = (snippetKey, snippet) => ({
+export const getNextSnippetFromCache = (snippetKey, snippet, reset=false) => ({
   type: 'GET_NEXT_FROM_CACHE',
   nextSnippetKey: snippetKey,
   nextSnippet: snippet,
+  resetStory: reset,
 })
 
 export const resetCurrentSnippet = (storyId, controlledStory, exerciseMode) => {
@@ -114,7 +131,7 @@ export const resetCurrentSnippet = (storyId, controlledStory, exerciseMode) => {
     ? `/stories/${storyId}/snippets/reset?frozen_exercise=True`
     : `/stories/${storyId}/snippets/reset?exercise_mode=${exerciseMode}`
   const prefix = 'RESET_SNIPPET_INDEX'
-  return callBuilder(route, prefix, 'post')
+  return callBuilder(route, prefix)
 }
 
 export const postAnswers = (storyId, answersObject, compete = false) => {
@@ -142,7 +159,7 @@ const initialState = {
   cachedSnippets: {}, 
   lastCachedSnippetKey: null,
   nextSnippetKeyFromCache: null,
-  conceptsInCache: [],
+  candidatesInCache: [],
   cacheSize: 0,
   pending: false, 
   error: false
@@ -242,7 +259,7 @@ export default (state = initialState, action) => {
         focused_snippet_chat_history: action.response.chat_history,
         sessionId: action.response.session_id,
         testTime: action.response.test_time,
-        lastCachedSnippetKey: 'any-key', // to trigger caching
+        lastCachedSnippetKey: 'anyKey', // to trigger caching
         pending: false,
         error: false,
         eloHearts: {},
@@ -339,6 +356,7 @@ export default (state = initialState, action) => {
     case 'GET_NEXT_FROM_CACHE':
       return {
         ...state,
+        previous: !action.resetStory && state.previous || [],
         focused: action.nextSnippet,
         nextSnippetKeyFromCache: action.nextSnippetKey,
         pending: action.nextSnippet === undefined,
@@ -380,13 +398,16 @@ export default (state = initialState, action) => {
         focused_snippet_chat_history: action.snippet_chat_history,
       };
 
-    case 'GET_AND_CACHE_NEXT_SNIPPET_SUCCESS':
-      const thisSnippetKey = `${action.response.storyid}-${action.response.snippetid[0]}`
-      if (state.nextSnippetKeyFromCache === thisSnippetKey || 
-      state.nextSnippetKeyFromCache === 'any-key') {
+    case 'CACHE_NEXT_SNIPPET_SUCCESS':
+      const snippet = {...action.response, 
+        practice_snippet: action.response.practice_snippet.map(
+          token => ({...token, story_id: action.response.storyid}))}
+      const snippetKey = snippet.snippetid.length && `${snippet.storyid}-${snippet.snippetid[0]}` || 'endKey'
+      if (state.nextSnippetKeyFromCache === snippetKey || 
+      state.nextSnippetKeyFromCache === 'anyKey') {
         return {
           ...state,
-          focused: action.response,
+          focused: snippet,
           nextSnippetKeyFromCache: null,
           pending: false,
           error: false,
@@ -394,12 +415,12 @@ export default (state = initialState, action) => {
       }
       const snippets = {
         ...state.cachedSnippets,
-        [thisSnippetKey]: action.response,
+        [snippetKey]: snippet,
       }
       return {
         ...state,
         cachedSnippets: snippets,
-        lastCachedSnippetKey: `${action.response.storyid}-${action.response.snippetid[0]}`,
+        lastCachedSnippetKey: snippetKey,
         ...processCachedSnippets(snippets),
       }
 
@@ -416,7 +437,7 @@ export default (state = initialState, action) => {
         ...state,
         cachedSnippets: {}, 
         cachedSnippetIds: [], 
-        conceptsInCache: [],
+        candidatesInCache: [],
         lastCachedSnippetKey: null,
         nextSnippetKeyFromCache: null,
         cacheSize: 0,

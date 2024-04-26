@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   addToPrevious,
   getNextSnippetFromCache,
-  getAndCacheNextSnippet,
+  cacheStorySnippet,
   dropCachedSnippet,
   resetCachedSnippets,
 } from 'Utilities/redux/snippetsReducer'
@@ -218,7 +218,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
   useEffect(() => {
     async function fetchSnippet() {
       if (snippetToCacheId < focused.paragraph.length - 1) {
-        await dispatch(getAndCacheNextSnippet(storyId, snippetToCacheId, false, null, 'all'))
+        await dispatch(cacheStorySnippet(storyId, snippetToCacheId, false, null, 'all'))
       }
     }
     fetchSnippet()

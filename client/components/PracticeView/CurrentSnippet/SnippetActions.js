@@ -8,6 +8,8 @@ import { confettiRain, finalConfettiRain } from 'Utilities/common'
 import { 
   postAnswers, 
   resetCurrentSnippet, 
+  getNextSnippetFromCache,
+  dropCachedSnippet,
   resetCachedSnippets, 
   postLessonSnippetAnswers } from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -207,9 +209,13 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     if (lessonId){
       lessonStartOver()
     } else {
-      dispatch(resetCurrentSnippet(id, isControlledStory, exerciseMode))
       dispatch(resetAnnotations())
       setcheckAnswersButtonTempDisable(true)
+      const initSnippet = snippets.cachedSnippets[`${id}-0`]
+      if (initSnippet) {
+        dispatch(dropCachedSnippet(`${id}-0`))
+        dispatch(getNextSnippetFromCache(`${id}-0`, initSnippet, true))
+      } else dispatch(resetCurrentSnippet(id, isControlledStory, exerciseMode))
     }
     setTimeout(() => {
       setcheckAnswersButtonTempDisable(false)
