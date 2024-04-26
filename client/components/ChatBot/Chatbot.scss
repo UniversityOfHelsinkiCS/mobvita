@@ -26,17 +26,17 @@
     padding: 10px;
 }
 
-.chatbot-context-info {
+.context-info {
     background-color: #17a2b8;  // backgroundColor: darkblue;
     padding-left: 0.6em;
     color: white;
 }
 
-.chatbot-context-item {
+.context-item {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 20em;
+    max-width: 30em;
     font-size: 1.15rem;
 }
 

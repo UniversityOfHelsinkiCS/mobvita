@@ -230,9 +230,9 @@ const Chatbot = () => {
       {!isCollapsed && (
         <>
           {/* Display current context: BANNER = current exercise LEMMA */}
-          <div className="chatbot-context-info">
+          <div className="context-info">
             {validToChat && (
-              <div className="chatbot-context-item flex space-between">
+              <div className="context-item flex space-between">
                 <div>
                   {/* make sure the words to display are not too long */
                     currentWord.choices?.length
