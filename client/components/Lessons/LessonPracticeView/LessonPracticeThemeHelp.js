@@ -13,6 +13,7 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
     for (let i = 0; i < selectedThemes.length; i++) {
         theme_rows.push(
             <h6
+                key={i}
                 className="lesson-themes"
                 style={{
                     marginBottom: '.5rem',
@@ -22,8 +23,8 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
                     ...getTextStyle(learningLanguage)
                 }}
             >
-                <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '25px', 'min-width': '25px' }}></div>
-                <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '15px' }}>
+                <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', maxWidth: '25px', minWidth: '25px' }}></div>
+                <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px' }}>
                     <Icon name="check" />
                 </div>
                 <div style={{ width: '88%' }}>{selectedThemes[i].charAt(0).toUpperCase() + selectedThemes[i].slice(1)}</div>
@@ -47,9 +48,9 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
                         style={{
                             ...getTextStyle(learningLanguage, 'title'),
                             width: `${'100%'}`,
-                            'font-weight': 'bold',
-                            'font-size': 'large',
-                            'margin-bottom': '15px',
+                            fontWeight: 'bold',
+                            fontSize: 'large',
+                            marginBottom: '15px',
                         }}
                     >
                         <FormattedMessage id={'selected-lesson-themes'} />

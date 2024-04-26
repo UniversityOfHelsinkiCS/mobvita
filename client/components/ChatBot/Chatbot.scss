@@ -28,12 +28,12 @@
 
 .chatbot-context-info {
     background-color: #17a2b8;  // backgroundColor: 'darkblue';
-    paddingLeft: '0.5em';
+    padding-left: '0.5em';
     color: 'white';
 }
 
 .chatbot-context-item {
-    whiteSpace: 'nowrap'; overflow: 'hidden'; textOverflow: 'ellipsis'; maxWidth: '20em';
+    white-space: 'nowrap'; overflow: 'hidden'; text-overflow: 'ellipsis'; max-width: '20em';
     font-size: 1.15rem;
 }
 

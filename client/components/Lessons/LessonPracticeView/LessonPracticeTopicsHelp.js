@@ -49,6 +49,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
             if (k === 0) {
                 topic_rows.push(
                     <h6
+                        key={k}
                         className="lesson-item-topics"
                         style={{
                             marginBottom: '.5rem',
@@ -58,10 +59,10 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
                             ...getTextStyle(learningLanguage)
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '25px', 'min-width': '25px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', maxWidth: '25px', minWidth: '25px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {String(Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)).padEnd(3,' ')}
                         </div>
-                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '15px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
+                        <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {'%'}
                         </div>
                         <div style={{ width: '88%' }}>
@@ -72,6 +73,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
             } else {
                 topic_rows.push(
                     <h6
+                        key={k}
                         className="lesson-item-topics"
                         style={{
                             marginBottom: '.5rem',
@@ -81,8 +83,8 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
                             ...getTextStyle(learningLanguage)
                         }}
                     >
-                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', 'max-width': '25px', 'min-width': '25px' }}></div>
-                        <div style={{ width: '3%', textAlign: 'center', 'max-width': '20px', 'min-width': '10px', marginRight: '15px' }}></div>
+                        <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', maxWidth: '25px', minWidth: '25px' }}></div>
+                        <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px' }}></div>
                         <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
                     </h6>
                 );
@@ -106,9 +108,9 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
                         style={{
                             ...getTextStyle(learningLanguage, 'title'),
                             width: `${'100%'}`,
-                            'font-weight': 'bold',
-                            'font-size': 'large',
-                            'margin-bottom': '15px',
+                            fontWeight: 'bold',
+                            fontSize: 'large',
+                            marginBottom: '15px',
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',

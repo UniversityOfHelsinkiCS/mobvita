@@ -501,7 +501,6 @@ const LessonList = () => {
                  justifyContent: 'space-between', width: '70%', /* was '100%'*/
                  margin: '18px' /* to match above: id="lessons-ready-for-practice" */
                }}>
-            <Link to={link} style={{ flex: 1 }}>
               <Button
                 size="big"
                 className="lesson-practice"
@@ -522,7 +521,6 @@ const LessonList = () => {
                 {lessonPending && <Icon name="spinner" loading />}
                 <FormattedMessage id="start-practice-lesson" />
               </Button>
-            </Link>
           </div>
         </Link>)}
     </div>

@@ -94,7 +94,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               marginRight: '5px',
               maxWidth: '25px',
               minWidth: '25px',
-              'vertical-align': 'top',
+              verticalAlign: 'top',
               ...color
             }}
           >
@@ -111,7 +111,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               maxWidth: '20px',
               minWidth: '18px',
               marginRight: '7px',
-              'vertical-align': 'top',
+              verticalAlign: 'top',
               ...color
             }}
           >
