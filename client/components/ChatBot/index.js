@@ -219,160 +219,158 @@ const Chatbot = () => {
 
     console.log("HintMessageIdx", hintMessageIdx)
 
-    return (
-        <div className="chatbot">
-            <Button onClick={toggleCollapse} className="chatbot-toggle">
-                {isCollapsed ? <Icon name="angle up" size='large' /> : <Icon name="angle down" size='large' />}
-            </Button>
-            {!isCollapsed && (
-                <>
-                    {/* Display current context: BANNER = current exercise LEMMA */}
-                    <div 
-                        className="context-info" 
-                        style={{ 
-                            backgroundColor: 'darkblue',
-                            paddingLeft: '0.5em',
-                            color: 'white',
-                        }}
-                    >
-                        {validToChat && (
-                            <div className="context-item flex space-between">
-                                <div style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '20em'}}>
-                                    {/* make sure not too long */
-                                      currentWord.choices?.length
-                                        ? cut_and_ellipsis(currentWord.choices.join('/'),12)
-                                        : currentWord.base}
-                                </div>
-                                {
-                                    /* Display lightbulbs */
-                                    Object.keys(currentWord).length > 0 && (
-                                        <div>
-                                        {eloScoreHearts.map(heart => (
-                                            <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
-                                        ))}
-                                        {spentHints.map(hint => (
-                                        <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
-                                        ))}
-                                        </div>
-                                    )
-                                }
-                            </div>
-                        )}
+  return (
+    <div className="chatbot">
+      <Button onClick={toggleCollapse} className="chatbot-toggle"
+              style={{background: "mistyrose"}}>
+        {isCollapsed ?
+         <Icon name="angle up" size='large' /> :
+         <Icon name="angle down" size='large' />}
+      </Button>
+      {!isCollapsed && (
+        <>
+          {/* Display current context: BANNER = current exercise LEMMA */}
+          <div className="chatbot-context-info">
+            {validToChat && (
+              <div className="chatbot-context-item flex space-between">
+                <div>
+                  {/* make sure the words to display are not too long */
+                    currentWord.choices?.length
+                      ? cut_and_ellipsis(currentWord.choices.join('/'),15)
+                      : currentWord.base}
+                </div>
+                {
+                  /* Display lightbulbs */
+                  Object.keys(currentWord).length > 0 && (
+                    <div>
+                      {eloScoreHearts.map(heart => (
+                        <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+                      ))}
+                      {spentHints.map(hint => (
+                        <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
+                      ))}
                     </div>
-
-                    <div className="chatbot-messages">
-                        {isLoadingHistory ? (
-                            <Spinner animation="border" variant="info" className="spinner-history" />
-                        ) : (
-                            <>
-                                {hintMessageIdx == 0 && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
-                                    <div className="message message-bot flex space-between"
-                                        onMouseDown={handleTooltipClick}>
-                                        <ul>
-                                            {hintMessage && attempt === 0 && (
-                                                <span className="flex">
-                                                    <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                                                    {ref && (
-                                                        <Icon
-                                                            name="info circle"
-                                                            style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                        />
-                                                    )}
-                                                    {explanation && (
-                                                        <Icon
-                                                            name="info circle"
-                                                            style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                        />
-                                                    )}
-                                                </span>
-                                            )}
-                                            {preHints?.map((hint, index) => (
-                                                <span key={index} className="flex">
-                                                    <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-                                                    {ref && showRefIcon(hint) && (
-                                                        <Icon
-                                                            name="info circle"
-                                                            style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                        />
-                                                    )}
-                                                    {explanation && checkString(hint)}
-                                                </span>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                                {!validToChat && (
-                                    <div className="message message-bot flex space-between">
-                                        <FormattedMessage id="chatbox-initial-instruction" />
-                                    </div>
-                                )}
-                                {messages.map((message, index) => (
-                                    <>
-                                        <div key={index} className={`message message-${message.type}`}>
-                                            {message.text}
-                                        </div>
-                                        {(index === hintMessageIdx - 1 && hintMessageIdx > 0) && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
-                                            <div className="message message-bot flex space-between" onMouseDown={handleTooltipClick}>
-                                                <ul>
-                                                    {/* Your content to display after the message at index hintMessageIdx */}
-                                                    {hintMessage && attempt === 0 && (
-                                                        <span className="flex">
-                                                            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                                                            {ref && (
-                                                                <Icon
-                                                                    name="info circle"
-                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                                />
-                                                            )}
-                                                            {explanation && (
-                                                                <Icon
-                                                                    name="info circle"
-                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                                />
-                                                            )}
-                                                        </span>
-                                                    )}
-                                                    {preHints?.map((hint, index) => (
-                                                        <span key={index} className="flex">
-                                                            <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-                                                            {ref && showRefIcon(hint) && (
-                                                                <Icon
-                                                                    name="info circle"
-                                                                    style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                                                />
-                                                            )}
-                                                            {explanation && checkString(hint)}
-                                                        </span>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </>
-                                ))}
-                            </>
-                        )}
-                    </div>
-                    {eloScoreHearts == 0 ? (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                        <input 
-                            type="text" 
-                            name="userInput" 
-                            placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-                            value={currentMessage} 
-                            disabled={!validToChat || isWaitingForResponse}
-                            onChange={(e) => setCurrentMessage(e.target.value)} 
-                        />
-                        <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
-                            {isWaitingForResponse ? <Spinner animation="border" variant="white" size="sm" /> : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />}
-                        </Button>
-                    </form>): (
-                        <Button primary onMouseDown={handlePreHints}>
-                            <FormattedMessage id="ask-for-a-hint" />
-                        </Button>
-                    )}
-                </>
+                  )
+                }
+              </div>
             )}
-        </div>
-    );
+          </div>
+
+          <div className="chatbot-messages">
+            {isLoadingHistory ? (
+              <Spinner animation="border" variant="info" className="spinner-history" />
+            ) : (
+              <>
+                {hintMessageIdx == 0 && Object.keys(currentWord).length > 0
+                 && (spentHints.length > 0 || emptyHintsList) && (
+                  <div className="message message-bot flex space-between"
+                       onMouseDown={handleTooltipClick}>
+                    <ul>
+                      {hintMessage && attempt === 0 && (
+                        <span className="flex">
+                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
+                          {ref && (
+                            <Icon
+                              name="info circle"
+                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                            />
+                          )}
+                          {explanation && (
+                            <Icon
+                              name="info circle"
+                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                            />
+                          )}
+                        </span>
+                      )}
+                      {preHints?.map((hint, index) => (
+                        <span key={index} className="flex">
+                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+                          {ref && showRefIcon(hint) && (
+                            <Icon
+                              name="info circle"
+                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                            />
+                          )}
+                          {explanation && checkString(hint)}
+                        </span>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {!validToChat && (
+                  <div className="message message-bot flex space-between">
+                    <FormattedMessage id="chatbox-initial-instruction" />
+                  </div>
+                )}
+                {messages.map((message, index) => (
+                  <>
+                    <div key={index} className={`message message-${message.type}`}>
+                      {message.text}
+                    </div>
+                    {(index === hintMessageIdx - 1 && hintMessageIdx > 0) && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                      <div className="message message-bot flex space-between" onMouseDown={handleTooltipClick}>
+                        <ul>
+                          {/* Your content to display after the message at index hintMessageIdx */}
+                          {hintMessage && attempt === 0 && (
+                            <span className="flex">
+                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
+                              {ref && (
+                                <Icon
+                                  name="info circle"
+                                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                />
+                              )}
+                              {explanation && (
+                                <Icon
+                                  name="info circle"
+                                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                />
+                              )}
+                            </span>
+                          )}
+                          {preHints?.map((hint, index) => (
+                            <span key={index} className="flex">
+                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
+                              {ref && showRefIcon(hint) && (
+                                <Icon
+                                  name="info circle"
+                                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                                />
+                              )}
+                              {explanation && checkString(hint)}
+                            </span>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </>
+                ))}
+              </>
+            )}
+          </div>
+          {eloScoreHearts == 0 ?
+           (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
+              <input 
+                type="text" 
+                name="userInput" 
+                placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+                value={currentMessage} 
+                disabled={!validToChat || isWaitingForResponse}
+                onChange={(e) => setCurrentMessage(e.target.value)} 
+              />
+              <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
+                {isWaitingForResponse ? <Spinner animation="border" variant="white" size="sm" /> : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />}
+              </Button>
+            </form>): (
+              <Button primary onMouseDown={handlePreHints}>
+                <FormattedMessage id="ask-for-a-hint" />
+              </Button>
+            )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Chatbot;

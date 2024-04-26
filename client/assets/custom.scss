@@ -31,7 +31,9 @@ $wrong-answer-background-color: #FFDADA;
 $secondary-text-color: #777;
 $action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
-$tooltip-green: green;
+// was: green
+$tooltip-green:  #0b869a; //  #0890a6; //   #098fa5; // was: #17a2b8;
+
 
 // button-related colors
 $btn-color-primary: rgb(50, 170, 248);
