@@ -139,16 +139,18 @@ const Chatbot = () => {
         dispatch(setSnippetChatHistory(updatedChatHistory))
     }, [messages])
 
-    const checkString = hint => {
+    /* ??? move to CSS */
+    const info_circle_style = { alignSelf: 'flex-start', marginLeft: '0.5rem' }
+
+    const checkHintForExplanation = hint => {
         const explanationKey = Object.keys(explanation)[0]
         if (hint?.includes(explanationKey)) {
-          return <Icon name="info circle"
-                       style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+          return true
         }
-        return null
+        return false
     }
     
-    const showRefIcon = hint => {
+    const showReferenceIcon = hint => {
       if (Object.keys(ref).find(key => hint.includes(key))) {
         return true
       }
@@ -271,23 +273,17 @@ const Chatbot = () => {
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref || explanation) && (
-                            <Icon
-                              name="info circle"
-                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                            />
+                            <Icon name="info circle" style={info_circle_style} />
                           )}
                         </span>
                       )}
                       {preHints?.map((hint, index) => (
                         <span key={index} className="flex PreHints ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-                          {ref && showRefIcon(hint) && (
-                            <Icon
-                              name="info circle"
-                              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                            />
-                          )}
-                          {explanation && checkString(hint)}
+                          {/*show ONLY ONE (i) if either references or explanation exists*/
+                            (ref && showReferenceIcon(hint)
+                             || explanation && checkStringForExplanation(hint))
+                              && (<Icon name="info circle" style={info_circle_style} />)}
                         </span>
                       ))}
                     </ul>
@@ -330,13 +326,9 @@ const Chatbot = () => {
                           {preHints?.map((hint, index) => (
                             <span key={index} className="flex PreHints nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
-                              {ref && showRefIcon(hint) && (
-                                <Icon
-                                  name="info circle"
-                                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                />
-                              )}
-                              {explanation && checkString(hint)}
+                              {(ref && showReferenceIcon(hint)
+                                || explanation && checkStringForExplanation(hint))
+                               && (<Icon name="info circle" style={info_circle_style} />)}
                             </span>
                           ))}
                         </ul>
