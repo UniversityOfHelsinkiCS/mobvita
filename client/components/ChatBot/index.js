@@ -282,7 +282,7 @@ const Chatbot = () => {
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref && showReferenceIcon(hint)
-                             || explanation && checkStringForExplanation(hint))
+                             || explanation && checkHintForExplanation(hint))
                               && (<Icon name="info circle" style={info_circle_style} />)}
                         </span>
                       ))}
@@ -327,7 +327,7 @@ const Chatbot = () => {
                             <span key={index} className="flex PreHints nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                               {(ref && showReferenceIcon(hint)
-                                || explanation && checkStringForExplanation(hint))
+                                || explanation && checkHintForExplanation(hint))
                                && (<Icon name="info circle" style={info_circle_style} />)}
                             </span>
                           ))}
