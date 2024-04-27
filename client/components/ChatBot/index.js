@@ -229,7 +229,7 @@ const Chatbot = () => {
       </Button>
       {!isCollapsed && (
         <>
-          {/* Display current context: BANNER = current exercise LEMMA */}
+          {/************ current context BANNER = current exercise LEMMA ************/}
           <div className="chatbot-context-info">
             {validToChat && (
               <div className="chatbot-context-item flex space-between">
@@ -255,7 +255,7 @@ const Chatbot = () => {
               </div>
             )}
           </div>
-          {/************************* BELOW BANNER: messages *************************/}
+          {/************************* BELOW BANNER: BUBBLES *************************/}
           <div className="chatbot-messages">
             {isLoadingHistory ? (
               <Spinner animation="border" variant="info" className="spinner-history" />
@@ -267,7 +267,7 @@ const Chatbot = () => {
                        onMouseDown={handleTooltipClick}>
                     <ul>
                       {hintMessage && attempt === 0 && (
-                        <span className="flex">
+                        <span className="flex Hints ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref || explanation) && (
@@ -279,7 +279,7 @@ const Chatbot = () => {
                         </span>
                       )}
                       {preHints?.map((hint, index) => (
-                        <span key={index} className="flex">
+                        <span key={index} className="flex PreHints ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                           {ref && showRefIcon(hint) && (
                             <Icon
@@ -293,17 +293,21 @@ const Chatbot = () => {
                     </ul>
                   </div>
                 )}
-                {/* Show bubble: before exercise is selected, no feedback yet to show  */}
+                {/***** BUBBLE before exercise is selected: no feedback yet to show *****/}
                 {!validToChat && (
                   <div className="message message-bot flex space-between">
                     <FormattedMessage id="chatbox-initial-instruction" />
                   </div>
                 )}
+                {/******************* iterate over messages=BUBBLES *******************/}
                 {messages.map((message, index) => (
                   <>
+                    {/******** ??? this must be for MESSAGE-USER ? ********/}
+                    {/******** ??? MESSAGE-USER + MESSAGE-BOT: what other types? ********/}
                     <div key={index} className={`message message-${message.type}`}>
                       {message.text}
                     </div>
+                    {/******** ??? this must be for MESSAGE-BOT ? ********/}
                     {(index === hintMessageIdx - 1 && hintMessageIdx > 0)
                      && Object.keys(currentWord).length > 0
                      && (spentHints.length > 0 || emptyHintsList) && (
@@ -311,7 +315,7 @@ const Chatbot = () => {
                            onMouseDown={handleTooltipClick}>
                         <ul>
                           {hintMessage && attempt === 0 && (
-                            <span className="flex">
+                            <span className="flex Hints nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
                               {/* content to show AFTER message at index hintMessageIdx */}
                               {(ref || explanation) && (
@@ -322,8 +326,9 @@ const Chatbot = () => {
                               )}
                             </span>
                           )}
+                          {/******** ??? why are prehints here ? ********/}
                           {preHints?.map((hint, index) => (
-                            <span key={index} className="flex">
+                            <span key={index} className="flex PreHints nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                               {ref && showRefIcon(hint) && (
                                 <Icon
@@ -342,6 +347,7 @@ const Chatbot = () => {
               </>
             )}
           </div>
+          {/******************* OUT OF feedback: allow CHATTING *******************/}
           {eloScoreHearts == 0 ?
            (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
               <input 
