@@ -255,7 +255,7 @@ const Chatbot = () => {
               </div>
             )}
           </div>
-
+          {/************************* BELOW BANNER: messages *************************/}
           <div className="chatbot-messages">
             {isLoadingHistory ? (
               <Spinner animation="border" variant="info" className="spinner-history" />
@@ -269,7 +269,7 @@ const Chatbot = () => {
                       {hintMessage && attempt === 0 && (
                         <span className="flex">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                          { // show ONLY ONE (i) if either references or explanation exists
+                          {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref || explanation) && (
                             <Icon
                               name="info circle"
@@ -293,6 +293,7 @@ const Chatbot = () => {
                     </ul>
                   </div>
                 )}
+                {/* Show bubble: before exercise is selected, no feedback yet to show  */}
                 {!validToChat && (
                   <div className="message message-bot flex space-between">
                     <FormattedMessage id="chatbox-initial-instruction" />
@@ -303,21 +304,18 @@ const Chatbot = () => {
                     <div key={index} className={`message message-${message.type}`}>
                       {message.text}
                     </div>
-                    {(index === hintMessageIdx - 1 && hintMessageIdx > 0) && Object.keys(currentWord).length > 0 && (spentHints.length > 0 || emptyHintsList) && (
-                      <div className="message message-bot flex space-between" onMouseDown={handleTooltipClick}>
+                    {(index === hintMessageIdx - 1 && hintMessageIdx > 0)
+                     && Object.keys(currentWord).length > 0
+                     && (spentHints.length > 0 || emptyHintsList) && (
+                      <div className="message message-bot flex space-between"
+                           onMouseDown={handleTooltipClick}>
                         <ul>
-                          {/* Your content to display after the message at index hintMessageIdx */}
                           {hintMessage && attempt === 0 && (
                             <span className="flex">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
-                              {ref && (
-                                <Icon
-                                  name="info circle"
-                                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                                />
-                              )}
-                              {explanation && (
-                                <Icon
+                              {/* content to show AFTER message at index hintMessageIdx */}
+                              {(ref || explanation) && (
+                                <Icon 
                                   name="info circle"
                                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                                 />
