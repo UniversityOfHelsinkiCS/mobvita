@@ -13,7 +13,6 @@ import {
     mcExerciseTouched,
 } from 'Utilities/redux/practiceReducer'
 import {
-  cut_and_ellipsis,
   formatGreenFeedbackText,
   hiddenFeatures
 } from 'Utilities/common'
@@ -224,7 +223,7 @@ const Chatbot = () => {
   return (
     <div className="chatbot">
       <Button onClick={toggleCollapse} className="chatbot-toggle"
-              style={{background: "mistyrose"}}>
+              style={{background: "mistyrose", margin: 0}}>
         {isCollapsed ?
          <Icon name="angle up" size='large' /> :
          <Icon name="angle down" size='large' />}
@@ -234,12 +233,9 @@ const Chatbot = () => {
           {/************ current context BANNER = current exercise LEMMA ************/}
           <div className="chatbot-context-info">
             {validToChat && (
-              <div className="chatbot-context-item flex space-between">
-                <div>
-                  {/* make sure the words to display are not too long */
-                    currentWord.choices?.length
-                      ? cut_and_ellipsis(currentWord.choices.join('/'),15)
-                      : currentWord.base}
+              <div className="flex space-between">
+                <div className="chatbot-context-item">
+                  {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
                 </div>
                 {
                   /* Display lightbulbs */
