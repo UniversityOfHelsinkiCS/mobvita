@@ -41,7 +41,7 @@ import group1 from 'Assets/images/group.png'
 import private1 from 'Assets/images/private.png'
 import dices from 'Assets/images/dices.png'
 import diveIn from 'Assets/images/diveIn.png'
-import addStoriesIcon from 'Assets/images/add_plus_green.png'
+import addStoriesIcon from 'Assets/images/add-orange.png'
 
 import practice from 'Assets/images/practice.png'
 import adaptiveTest from 'Assets/images/adaptive_test.png'
