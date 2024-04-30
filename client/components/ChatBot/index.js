@@ -259,13 +259,14 @@ const Chatbot = () => {
               <Spinner animation="border" variant="info" className="spinner-history" />
             ) : (
               <>
+                {/* hintMessageIdx === 0 means FIRST ATTEMPT */}
                 {hintMessageIdx == 0 && Object.keys(currentWord).length > 0
                  && (spentHints.length > 0 || emptyHintsList) && (
                   <div className="message message-bot flex space-between"
                        onMouseDown={handleTooltipClick}>
                     <ul>
                       {hintMessage && attempt === 0 && (
-                        <span className="flex Hints ZERO">
+                        <span className="flex debug_Hints debug_ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref || explanation) && (
@@ -274,7 +275,7 @@ const Chatbot = () => {
                         </span>
                       )}
                       {preHints?.map((hint, index) => (
-                        <span key={index} className="flex PreHints ZERO">
+                        <span key={index} className="flex debug_PreHints debug_ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (ref && showReferenceIcon(hint)
@@ -294,12 +295,12 @@ const Chatbot = () => {
                 {/******************* iterate over messages=BUBBLES *******************/}
                 {messages.map((message, index) => (
                   <>
-                    {/******** ??? this must be for MESSAGE-USER ? ********/}
-                    {/******** ??? MESSAGE-USER + MESSAGE-BOT: what other types? ********/}
+                    {/********this is for CHATTING: MESSAGE-USER + MESSAGE-BOT ********/}
+                    {/******** MESSAGE-USER + MESSAGE-BOT: no other types ********/}
                     <div key={index} className={`message message-${message.type}`}>
                       {message.text}
                     </div>
-                    {/******** ??? this must be for MESSAGE-BOT ? ********/}
+                    {/******** HINT: this must be for MESSAGE-BOT ********/}
                     {(index === hintMessageIdx - 1 && hintMessageIdx > 0)
                      && Object.keys(currentWord).length > 0
                      && (spentHints.length > 0 || emptyHintsList) && (
@@ -307,7 +308,7 @@ const Chatbot = () => {
                            onMouseDown={handleTooltipClick}>
                         <ul>
                           {hintMessage && attempt === 0 && (
-                            <span className="flex Hints nonZERO">
+                            <span className="flex debug_Hints debug_nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage)} />
                               {/* content to show AFTER message at index hintMessageIdx */}
                               {(ref || explanation) && (
@@ -320,7 +321,7 @@ const Chatbot = () => {
                           )}
                           {/******** ??? why are prehints here ? ********/}
                           {preHints?.map((hint, index) => (
-                            <span key={index} className="flex PreHints nonZERO">
+                            <span key={index} className="flex debug_PreHints debug_nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />
                               {(ref && showReferenceIcon(hint)
                                 || explanation && checkHintForExplanation(hint))
