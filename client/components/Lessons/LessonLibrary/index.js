@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Popup, Icon, Select } from 'semantic-ui-react'
+import { Placeholder, Popup, Icon, Select, Container } from 'semantic-ui-react'
 import { Segment } from 'semantic-ui-react'
 
 import ScrollArrow from 'Components/ScrollArrow'
@@ -469,12 +469,15 @@ const LessonList = () => {
 
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   let lessonStartControls = (
-    <div>
-      <div style={{
+    <Container>
+      <div 
+        className='row justify-center align-center'
+        style={{
              color: '#0088CB', textAlign: 'center',
-             width: '70%', fontWeight: 500,
+             fontWeight: 500,
              margin: '18px', fontSize: 'large'
            }}>
+        <div class='col col-12'>
         <FormattedMessage id="lessons-ready-for-practice" />
         {!customizeLessonConfigs && (
           <Popup
@@ -489,41 +492,42 @@ const LessonList = () => {
             inverted // Optional for inverted dark style
           />
         )}
+        </div>
       </div>
-      <div style={{ 'display': 'flex' }}>
-        <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
-        <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
+      <div className='row justify-center align-center space-between' style={{ 'display': 'flex' }}>
+        <div className='col col-md-5 offset-md-1' style={{padding: 0}}>
+          <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
+        </div>
+        <div className='col col-md-5' style={{padding: 0}}>
+          <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
+        </div>
       </div>
       {!teacherView &&
-       (<Link to={link}>
-          <div style={{
-                 display: 'flex', alignItems: 'center',
-                 justifyContent: 'space-between', width: '70%', /* was '100%'*/
-                 margin: '18px' /* to match above: id="lessons-ready-for-practice" */
-               }}>
-              <Button
-                size="big"
-                className="lesson-practice"
-                disabled={
-                  lessonPending ||
-                    !selectedTopicIds ||
-                    !selectedSemantics ||
-                    selectedTopicIds.length === 0 ||
-                    selectedSemantics.length === 0 ||
-                    noResults
-                }
-                style={{
-                  fontSize: '1.3em', fontWeight: 500,
-                  margin: '1em 0', padding: '1rem 0',
-                  width: '100%', border: '2px solid #000',
-                }}
-              >
-                {lessonPending && <Icon name="spinner" loading />}
-                <FormattedMessage id="start-practice-lesson" />
-              </Button>
-          </div>
+       (<Link 
+          to={link} className='row justify-center align-center'
+        >
+            <Button
+              size="big"
+              className="lesson-practice"
+              disabled={
+                lessonPending ||
+                  !selectedTopicIds ||
+                  !selectedSemantics ||
+                  selectedTopicIds.length === 0 ||
+                  selectedSemantics.length === 0 ||
+                  noResults
+              }
+              style={{
+                fontSize: '1.3em', fontWeight: 500,
+                margin: '3em 0', padding: '1rem 0',
+                width: '100%', border: '2px solid #000',
+              }}
+            >
+              {lessonPending && <Icon name="spinner" loading />}
+              <FormattedMessage id="start-practice-lesson" />
+            </Button>
         </Link>)}
-    </div>
+    </Container>
   )
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0

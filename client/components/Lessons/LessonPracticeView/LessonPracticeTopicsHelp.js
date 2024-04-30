@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 
-const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
+const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
     const dispatch = useDispatch()
     const { width } = useWindowDimensions()
     const learningLanguage = useSelector(learningLanguageSelector)
@@ -14,7 +14,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
     const snippets = useSelector(({ snippets }) => snippets)
     const topics = lessonTopics && selectedTopics ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id)) : []
     
-    const [collapsed, setCollapsed] = useState(!always_show)
+    const [collapsed, setCollapsed] = useState(true)
 
     useEffect(() => {
         dispatch(getLessonTopics())
@@ -101,7 +101,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=true, }) => {
 
     if (width >= 1024 || always_show) {
         return (
-            <div className="annotations-box">
+            <div className="lesson-topic-box">
                 <Segment style={segment_style}>
                     <div
                         className="lesson-title"

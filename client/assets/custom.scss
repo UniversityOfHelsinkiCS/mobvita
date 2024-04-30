@@ -1313,10 +1313,16 @@ $value in $spacing {
 
 .save-edited-story-box,
 .story-topics-box,
-.annotations-box {
+.annotations-box,
+.lesson-topic-box {
   width: 350px;
   margin-left: 1em;
   height: auto;
+
+  @media (max-width: 639px) {
+    margin-left: 0;
+    margin-bottom: 1em;
+  }
 }
 
 .listening-highlighted-word {

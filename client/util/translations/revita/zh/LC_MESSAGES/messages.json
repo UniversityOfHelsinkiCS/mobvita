@@ -474,7 +474,7 @@
     "next": "下一步",
     "tour-begin-practicing-message": "现在你可以开始练习了！\n<br /><br />点击此图标重新开始导览。如需查看线上帮助，点击信息图标下的帮助按钮\n<br /><br />请注册并登录，以便Revita能保存你的\n<ul><li>文章和卡片，</li>\n<li>设置和偏好，</li>\n<li>技能水平和进步。</li></ul>\n<br /><i>Bon voyage!</i>",
     "tour-flashcards-message": "当您点击文章中陌生的单词，Revita会自动创建生词卡片。<br/><br/>你可以在这里练习它们！",
-    "tour-welcome-message": "Revita通过你所选的故事来帮助你学习语言。<br/><br/>现在将为你展示它的主要功能 →",
+    "tour-welcome-message": "Revita通过你所选的故事来帮助你学习语言。\n<br/><br/>现在将为你展示它的主要功能  →",
     "tour-welcome-message-OLD": "Revita通过你所选的故事来帮助你学习语言。<br/><br/>现在将为你展示它的主要功能<br/><br/>（此导览需要1分钟） →",
     "sidebar": "侧边栏",
     "start-tour": "开始导览",
@@ -958,7 +958,7 @@
     "all-flashcards": "所有单词卡",
     "flashcards-go-to-all-cards-EXPLANATION": "In this story, you saw some words and did not not ask for their translations.\nWe want to assume that you <i>probably</i> know these words.\nWe use these 5 <i>special blue</i> cards to check that you know all of these words.\nIf you answer these 5 cards correctly, you will get credit for all the words you know in this story.\n<br/>\nClick here if you want to go back to working with <i>all</i> your flashcards.",
     "flashcards-edit-card-list-EXPLANATION": "Here you can review and modify the <i>complete</i> list of your flashcards",
-    "flashcards-add-cards-EXPLANATION": "Here you can add flashcards for any new words you like",
+    "flashcards-add-cards-EXPLANATION": "Here you can add any new words you like to your flashcards",
     "flashcards-translate-cards-EXPLANATION": "Exercise with flashcards: translate words into the language you chose",
     "flashcards-quick-cards-EXPLANATION": "Click here for quick flashcards: no need to translate — answer only \"I know this word\" or  \"I don't know\"",
     "progress-results-not-available": "Results not available",
@@ -972,11 +972,12 @@
     "practice-listening-cloze-exercises": "Practice <b>Listening</b> — fill-in-the-blank exercises",
     "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>",
     "enter-question-to-chatbot": "Ask a question from the chatbot ...",
-    "chatbox-initial-instruction": "Click on an exercise - then you can ask questions here, if it's unclear.",
+    "chatbox-initial-instruction": "Click on an exercise — then you can ask for hints here, if you have questions.",
     "click-to-see-translation": "点击查看翻译",
     "summary-people-added-to-group": "People added to group",
     "no-available-exercise-OLD": "该课程暂无更多练习，Revita稍后会添加更多练习，敬请期待！",
     "chatbot-response-error": "连接超时，请在稍后重试",
     "story-blue-cards": "您之前遇见了{nWords}个新单词，在练习文章\n<ul><li><i>{story}</i></li></ul>的过程中，您并未要求过这些单词的翻译\n<br/>您可以通过练习这{nWords}个单词获得奖励!\n<br/>让我们来练习其中5个吧 ！",
-    "story-flashcards": "出自：\n<ul><li><i>{story}</i></li></ul>"
+    "story-flashcards": "出自：\n<ul><li><i>{story}</i></li></ul>",
+    "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words."
 }

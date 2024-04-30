@@ -39,9 +39,9 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
         segment_style['height'] = '100%'
     }
 
-    if (width >= 1024 || always_show) {
+    if (width >= 900 || always_show) {
         return (
-            <div className="annotations-box">
+            <div className="lesson-topic-box">
                 <Segment style={segment_style}>
                     <div
                         className="lesson-title"
