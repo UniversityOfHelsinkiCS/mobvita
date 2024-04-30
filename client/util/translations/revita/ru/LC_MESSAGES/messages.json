@@ -701,7 +701,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "Перевод временно недоступен, пожалуйста, попробуй позже...",
     "not-accessible": "Недоступно",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Нет флеш-карт для этой истории. В режиме \"Практика\" кликни на незнакомое слово, оно будет добавлено в набор флеш-карт!",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Нет флеш-карт для этой истории.<br/>Кликни на незнакомые слова в тексте, они будут добавлены в набор флеш-карт!",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Еще нет карточек для этой истории.<br/>\nТы можешь добавить карточки двумя способами:\n<ul><li>Когда ты тренируешься с текстом и нажимаешь на любое незнакомое слово, чтобы увидеть его перевод, оно будет <i>автоматически</i> добавлено в твой набор флеш-карт!</li>\n<li>Ты можешь добавить карточку для любого слова, нажав кнопку «<i>Добавить новую карточку</i>» слева</li>\n</ul>",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Нет флеш-карт для данного упражнения. В режиме \"Практика\" кликни на незнакомое слово, оно будет добавлено в набор флеш-карт!",
     "Previous": "<",
     "Next": ">",
@@ -868,7 +868,7 @@
     "participle-exercise": "Выбери уровень упражнений с причастиями",
     "participle-base-exer": "Упражнения с причастной базой (проще)",
     "verb-base-exer": "Упражнения с глагольной базой (сложнее)",
-    "tour-welcome-message": "Ревита помогает тебе изучать языки! Она создает упражнения на основе <b>любого</b> текста, который ученик загружает сам.<br/><br/>Сейчас мы покажем основные функции. &rarr;",
+    "tour-welcome-message": "Ревита помогает тебе изучать языки! Она создает упражнения на основе <b>любого</b> текста, который ученик загружает сам.\n<br/><br/>Сейчас мы покажем основные функции. &rarr;",
     "sidebar": "Боковая панель",
     "tour-sidebar-message": "Здесь открывается боковая панель.  На ней находятся различные функции и настройки.",
     "tour-learning-language-message": "Здесь можно выбрать язык для изучения.",
@@ -1549,7 +1549,7 @@
     "student-view": "Режим ученика",
     "click-here-to-see-progress-explanation": "Нажми здесь, чтобы просмотреть свой прогресс",
     "click-to-see-TOUR-explanation": "Нажми здесь, чтобы получить Обзор Функций системы",
-    "click-to-change-learning-language-explanation": "Нажми здесь, чтобы изменить язык, который ты изучаешь",
+    "click-to-change-learning-language-explanation": "Нажми здесь, чтобы выбрать язык, который ты изучаешь",
     "bell-explanation": "Вас ожидают {} рекомендаций",
     "download-reading-comprehension-report": "Скачать отчет",
     "self-reflection-submit": "OK",
@@ -1606,5 +1606,6 @@
     "no-available-exercise-OLD": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернись чуть позже!",
     "chatbot-response-error": "Проблема с подключением, повтори попытку через 30 секунд!",
     "story-blue-cards": "В тексте:\n<ul><li><i>{story}</i></li></ul>\n{nWords} новых слов, для которых ты не проверял/а переводы.\nМы <i>предпологаем</i>, что ты наверное знаешь эти слова.\n<br/>\nТы можешь получить баллы за <b>все</b> новые слова, если мы проверим всего 5 из них!",
-    "story-flashcards": "From story:\\n<ul><li><i>{story}</i></li></ul>"
+    "story-flashcards": "From story:\n<ul><li><i>{story}</i></li></ul>",
+    "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words."
 }
