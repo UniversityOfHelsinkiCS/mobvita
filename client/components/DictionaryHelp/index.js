@@ -106,7 +106,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   }
 
   useEffect(() => {
-    if (translation) setWordNestChosenWord(translation[0]?.lemma)
+    if (translation) setWordNestChosenWord(translation?.filter(t=>t.lemma).map(t=>t.lemma).join('+'))
   }, [translation])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
@@ -123,6 +123,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     translation
       ?.sort((a, b) => b.preferred - a.preferred)
       .map(translated => (
+        <div className='space-between'>
         <div
           key={translated.URL}
           data-cy="translations"
@@ -158,6 +159,18 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
               <List.Item key={word}>{word}</List.Item>
             ))}
           </List>
+          
+        </div>
+        <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
+          {!inWordNestModal && words && words[translated.lemma]?.length > 0 &&
+            (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
+            !clue && (
+              <Button basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
+                      data-cy="nest-button">
+                <img src={images.nestIcon} alt="nest icon" width="22" />
+              </Button>
+            )}
+        </div>
         </div>
       ))
 
@@ -192,7 +205,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
   }
 
-  const handleNestButtonClick = () => {
+  const handleNestButtonClick = (lemma) => {
+    setWordNestChosenWord(lemma)
     setWordNestModalOpen(true)
   }
 
@@ -228,18 +242,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
             smallWindow ? !inWordNestModal && ' dictionary-translations-overlay' : ''
           }`}
         >
-          <div style={{ display: 'flex' }}>
-            <div>{translations}</div>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {!inWordNestModal && words?.length > 0 &&
-                (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
-                !clue && (
-                  <Button basic size="mini" onClick={handleNestButtonClick}
-                          data-cy="nest-button">
-                    <img src={images.nestIcon} alt="nest icon" width="22" />
-                  </Button>
-                )}
-            </div>
+          <div>
+            {translations}
           </div>
         </div>
       )

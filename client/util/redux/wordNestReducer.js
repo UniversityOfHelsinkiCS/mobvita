@@ -3,11 +3,11 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
-export const getWordNestAction = ({ word, language }) => {
-  if (word === '-') return null
+export const getWordNestAction = ({ words, language }) => {
+  if (words === '-') return null
 
   const query = {
-    word,
+    words,
     language,
   }
   const route = '/nests'
@@ -36,7 +36,7 @@ export default (state = { data: [] }, action) => {
     case 'GET_WORD_NEST_SUCCESS':
       return {
         ...state,
-        data: action.response.words,
+        data: action.response.nests,
         pending: false,
         error: false,
       }
@@ -56,10 +56,10 @@ export default (state = { data: [] }, action) => {
         error: false,
       }
     case 'GET_LINKED_WORD_NEST_SUCCESS':
-      if (action.response.words) {
+      if (action.response.nests) {
         return {
           ...state,
-          data: action.response.words,
+          data: action.response.nests,
           pending: false,
           error: false,
         }

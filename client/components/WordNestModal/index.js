@@ -188,12 +188,15 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { data: words } = useSelector(({ wordNest }) => wordNest)
+  const { data: nests } = useSelector(({ wordNest }) => wordNest)
+  
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
 
   const [modalTitle, setModalTitle] = useState()
   const [showMoreInfo, setShowMoreInfo] = useState(false)
+  const [previousCheckedWord, setPreviousCheckedWord] = useState('')
+  const words = nests && nests[wordToCheck] || nests && nests[previousCheckedWord] || []
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
   const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
     rootLemmas?.some(r => e.parents?.includes(r.nest_id)))
@@ -218,12 +221,13 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
 
   useEffect(() => {
     if (wordToCheck) {
-      const nestLemmas = words?.map(w => w.word)
+      const nestLemmas = nests && nests[previousCheckedWord]?.map(w => w.word) || []
 
       if (!nestLemmas?.includes(wordToCheck)) {
+        setPreviousCheckedWord(wordToCheck)
         dispatch(
           getWordNestAction({
-            word: wordToCheck,
+            words: wordToCheck,
             language: learningLanguage,
           })
         )
