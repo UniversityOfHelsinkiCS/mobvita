@@ -29,6 +29,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const [lastWord, setLastWord] = useState('')
   const inputRef = createRef(null)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
+  const { answersPending } = useSelector(({ snippets }) => snippets)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const learningLanguage = useSelector(learningLanguageSelector)
   const mode = getMode()
@@ -205,6 +206,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
           onBlur={handleBlur}
           onMouseDown={handleMouseDown}
           className={className}
+          disabled={answersPending}
           style={{
             fontFamily: 'monospace',
             width: getTextWidth(word.surface, 'monospace') * 1.25 + 20,

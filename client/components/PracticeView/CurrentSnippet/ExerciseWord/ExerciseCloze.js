@@ -39,6 +39,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [touched, setTouched] = useState(false)
   const [show, setShow] = useState(false)
   const storyId = useSelector(({ snippets }) => snippets.focused?.storyid)
+  const { answersPending } = useSelector(({ snippets }) => snippets)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const learningLanguage = useSelector(learningLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
@@ -268,6 +269,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         onClick={() => dispatch(mcExerciseTouched(null))}
         onFocus={handleFocus}
         className={className}
+        disabled={answersPending}
         style={{
           width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) : getTextWidth(word.base),
           backgroundColor: getWordColor(

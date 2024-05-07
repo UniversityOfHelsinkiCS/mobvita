@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { useLearningLanguage } from 'Utilities/common'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
@@ -95,7 +95,10 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
         }}
       />
       <span style={{ ...getFontStyle() }}>
+      {
+        answersPending && <Spinner animation="border" variant={attemptRatioPercentage > 60 && "white" || "dark"} size="md" /> ||
         <FormattedMessage id="check-answer" />
+      }
       </span>
     </button>
   )

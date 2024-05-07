@@ -59,7 +59,10 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         }}
       />
       <span style={{ ...getFontStyle(attemptRatioPercentage) }}>
+      {
+        answersPending && <Spinner animation="border" variant={attemptRatioPercentage > 60 && "white" || "dark"} size="md" /> ||
         <FormattedMessage id="check-answer" />
+      }
       </span>
     </button>
   )

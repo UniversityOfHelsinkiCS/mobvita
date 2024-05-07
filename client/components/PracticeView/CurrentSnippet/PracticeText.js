@@ -18,16 +18,9 @@ const PracticeText = props => {
       setPreviousHeight(textComponent.current.clientHeight)
     }
   }, [practiceSnippet])
+  
 
-  if (!practiceSnippet && !snippets.pending) {
-    return (
-      <div className="spinner-container" style={{ minHeight: previousHeight }}>
-        <Spinner animation="border" variant="primary" size="lg" />
-      </div>
-    )
-  }
-
-  if (snippets.pending || snippets.answersPending) {
+  if (snippets.pending || !practiceSnippet) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
         <Spinner animation="border" variant="primary" size="lg" />

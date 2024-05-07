@@ -18,7 +18,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const mode = getMode()
   const { show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
   const [keepOpen, setKeepOpen] = useState(false)
-
+  const { answersPending } = useSelector(({ snippets }) => snippets)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
@@ -166,7 +166,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     >
       <Dropdown
         key={word.ID}
-        disabled={tested && !isWrong}
+        disabled={tested && !isWrong || answersPending}
         options={options}
         placeholder={placeholder}
         value={value}

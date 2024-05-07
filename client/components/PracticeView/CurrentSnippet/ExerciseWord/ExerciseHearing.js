@@ -26,6 +26,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const inputRef = createRef(null)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
+  const { answersPending } = useSelector(({ snippets }) => snippets)
   const learningLanguage = useSelector(learningLanguageSelector)
   const mode = getMode()
   const { resource_usage, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
@@ -168,6 +169,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           onBlur={handleBlur}
           onMouseDown={handleMouseDown}
           className={className}
+          disabled={answersPending}
           style={{
             width: getTextWidth(word.surface) + 10,
             minWidth: getTextWidth(word.surface) + 10,
