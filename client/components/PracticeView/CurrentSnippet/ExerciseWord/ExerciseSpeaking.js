@@ -196,8 +196,8 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
       <span>
         <input
           onKeyDown={handleKeyDown}
-          data-cy="exercise-speaking"
-          readOnly={tested && !isWrong}
+          data-cy={!answersPending && 'exercise-speaking' || 'exercise-speaking-pending'}
+          readOnly={tested && !isWrong || answersPending}
           ref={inputRef}
           key={word.ID}
           onChange={handle}
@@ -206,7 +206,6 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
           onBlur={handleBlur}
           onMouseDown={handleMouseDown}
           className={className}
-          disabled={answersPending}
           style={{
             fontFamily: 'monospace',
             width: getTextWidth(word.surface, 'monospace') * 1.25 + 20,

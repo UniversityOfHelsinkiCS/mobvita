@@ -159,8 +159,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
       <span>
         <input
           onKeyDown={handleKeyDown}
-          data-cy="exercise-hearing"
-          readOnly={tested && !isWrong}
+          data-cy={!answersPending && 'exercise-hearing' || 'exercise-hearing-pending'}
+          readOnly={tested && !isWrong || answersPending}
           ref={inputRef}
           key={word.ID}
           onChange={handle}

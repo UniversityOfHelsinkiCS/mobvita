@@ -256,9 +256,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       <input
         onKeyDown={handleKeyDown}
         ref={target}
-        data-cy="exercise-cloze"
+        data-cy={!answersPending && "exercise-cloze" || "exercise-cloze-pending"}
         autoCapitalize="off"
-        readOnly={tested && !isWrong}
+        readOnly={tested && !isWrong || answersPending}
         key={word.ID}
         name={word.ID}
         placeholder={`${word.base || word.bases}`}
@@ -269,7 +269,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         onClick={() => dispatch(mcExerciseTouched(null))}
         onFocus={handleFocus}
         className={className}
-        disabled={answersPending}
         style={{
           width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) : getTextWidth(word.base),
           backgroundColor: getWordColor(
