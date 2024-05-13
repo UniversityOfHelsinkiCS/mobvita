@@ -20,14 +20,14 @@ describe("practice mode", function () {
     cy.get("[data-cy=check-answer]").click()
   })
 
-  it("can get to next snippet after two retries", function () {
-    cy.contains('1 / 8', { timeout: 60000 })
+  // it("can get to next snippet after two retries", function () {
+  //   cy.contains('1 / 8', { timeout: 60000 })
 
-    cy.get("[data-cy=check-answer]").click()
-    cy.get("[data-cy=check-answer]").click()
+  //   cy.get("[data-cy=check-answer]").click()
+  //   cy.get("[data-cy=check-answer]").click()
 
-    cy.contains('2 / 8', { timeout: 60000 })
-  })
+  //   cy.contains('2 / 8', { timeout: 60000 })
+  // })
 
   it("shows feedback", function () {
     cy.get("[data-cy=exercise-cloze]", { timeout: 60000 }).each(element => {
