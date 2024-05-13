@@ -93,20 +93,20 @@ export default function Profile({ location }) {
       {
         menuItem: {
           as: Link,
-          content: intl.formatMessage({ id: 'Account' }),
-          to: '/profile/account',
-          key: 'account',
-        },
-        render: () => <Account />,
-      },
-      {
-        menuItem: {
-          as: Link,
           content: intl.formatMessage({ id: 'following-view-tab' }),
           to: '/profile/following',
           key: 'following',
         },
         render: () => <Following />,
+      },
+      {
+        menuItem: {
+          as: Link,
+          content: intl.formatMessage({ id: 'Account' }),
+          to: '/profile/account',
+          key: 'account',
+        },
+        render: () => <Account />,
       },
       {
         menuItem: {
