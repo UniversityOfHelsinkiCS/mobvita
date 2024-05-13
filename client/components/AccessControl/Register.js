@@ -120,14 +120,14 @@ const Register = () => {
             onChange={e => handleFormChange(e)}
             placeholder={intl.formatMessage({ id: 'repeat-password' })}
           />
-          <Form.Input
+          {/* <Form.Input
             name="registrationCode"
             error={error}
             type="registrationCode"
             value={formState.registrationCode}
             onChange={e => handleFormChange(e)}
             placeholder={intl.formatMessage({ id: 'registrationCode' })}
-          />
+          /> */}
         </Form.Field>
         <hr />
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
