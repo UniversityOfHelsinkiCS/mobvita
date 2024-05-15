@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 import { Spinner, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 import { 
     sendReadingTestAnswer, 
     finishExhaustiveTest, 
     updateTestFeedbacks, 
     updateReadingTestElicitation,
     nextReadingTestQuestion,
+    finishReadingTest,
     markAnsweredChoice,
     sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
@@ -56,6 +58,8 @@ const ReadingTest = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
 
+  const history = useHistory()
+
   let in_experimental_grp = false;
   let in_control_grp = false;
 
@@ -78,7 +82,15 @@ const ReadingTest = () => {
     setShowSelfReflect(false)
     setCurrentAnswer(null)
     setCurrentElicatedConstruct(null)
-    dispatch(nextReadingTestQuestion())
+    if (currentReadingQuestionIndex === readingTestQuestions.length - 1){
+      dispatch(finishReadingTest())
+    } else {
+      dispatch(nextReadingTestQuestion())
+    }
+  }
+
+  const goToHomePage = () => {
+    history.push('/home')
   }
 
   const submitSelfReflectionResponse = (response_json) => {
@@ -87,7 +99,11 @@ const ReadingTest = () => {
       setFirstMediationSelfReflectionDone(true)
     }
     else {
-      setShowNextSetDialog(true)
+      if (currentReadingQuestionIndex === readingTestQuestions.length - 1){
+        goToHomePage()
+      } else {
+        setShowNextSetDialog(true)
+      }
     }
     setShowSelfReflect(false)
     if (currentReadingSet !== prevReadingSet && prevReadingSet !== null && currentReadingSet !== null) {
@@ -169,7 +185,7 @@ const ReadingTest = () => {
             setQuestionDone(true)
             setCurrentAnswer(null)
           }
-        } 
+        }             
         
         if (!isSelectedChoice){
           dispatch(
@@ -302,10 +318,14 @@ const ReadingTest = () => {
                   className="next-reading-question-button"
                   style={{ marginLeft: '0.5em' }}
                   onClick={() => nextQuestion()}
-                  disabled={!questionDone || showFeedbacks || currentReadingQuestionIndex === readingTestQuestions.length - 1}
+                  disabled={!questionDone || showFeedbacks } // || currentReadingQuestionIndex === readingTestQuestions.length - 1
                 >
                   <span>
-                    <FormattedMessage id="next-reading-question" />
+                    {currentReadingQuestionIndex === readingTestQuestions.length - 1 ? (
+                      <FormattedMessage id="finish-reading-question" />
+                    ) : (
+                      <FormattedMessage id="next-reading-question" />
+                    )}
                   </span>
                 </Button>
               )}

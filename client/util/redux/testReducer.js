@@ -175,6 +175,8 @@ export const nextTestQuestion = () => ({ type: 'NEXT_TEST_QUESTION' })
 
 export const nextReadingTestQuestion = () => ({ type: 'NEXT_READING_TEST_QUESTION' })
 
+export const finishReadingTest = () => ({ type: 'FINISH_READING_TEST' })
+
 export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
 export default (state = initialState, action) => {
@@ -298,6 +300,15 @@ export default (state = initialState, action) => {
         currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
         feedbacks: [],
+      }
+
+    case 'FINISH_READING_TEST':
+      let _lastSet = readingTestQuestions[currentReadingQuestionIndex].set;
+      let _finishedSet = _lastSet + 1;
+      return {
+        ...state,
+        currentReadingSet: _finishedSet,
+        prevReadingSet: _lastSet,
       }
 
     case 'NEXT_READING_TEST_QUESTION':
