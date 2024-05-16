@@ -36,8 +36,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     tested,
     wrong,
     lemmas,
-    ref,
-    explanation,
     translation_lemmas,
     bases,
     ID: wordId,
@@ -45,6 +43,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     snippet_id,
     sentence_id,
   } = word
+  const ref = word.hints && word.hints.filter(
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+  const explanation = word.hints && word.hints.filter(
+    hint => hint.explanation?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.explanation}), {})
   const [show, setShow] = useState(false)
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
@@ -128,29 +130,15 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
 
   const handleTooltipClick = () => {
-    if (ref) dispatch(setReferences(ref))
-    if (explanation) dispatch(setExplanation(explanation))
+    if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
+    if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
   }
 
   const wordShouldBeHighlighted = word => {
     return word.ID >= highlightRange?.start && word.ID <= highlightRange?.end
   }
 
-  const checkString = hint => {
-    if (explanation) {
-      const explanationKey = Object.keys(explanation)[0]
-      if (hint?.includes(explanationKey)) {
-        return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-      }
-    } else if (ref) {
-      const refKey = Object.keys(ref)[0]
-      if (hint?.includes(refKey)) {
-        return <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-      }
-    }
-
-    return null
-  }
+  
 
   const wordStartsSpan = word => !!word?.annotation
 
@@ -201,9 +189,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
       {word.hints?.length > 0 && !isPreviewMode && (
         <div>
           {word.hints.map((hint, index) => (
-            <span key={index} className="flex"><li dangerouslySetInnerHTML={formatGreenFeedbackText(hint)} />{(ref || explanation) && (
-              checkString(hint)
-            )}
+            <span key={index} className="flex">
+              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.meta)} />
+              {(hint.explanation?.length || hint.ref?.length) && (
+                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />)}
             </span>
           ))}
         </div>

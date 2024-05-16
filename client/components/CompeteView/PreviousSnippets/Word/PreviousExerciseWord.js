@@ -26,14 +26,16 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
     lemmas,
     translation_lemmas,
     bases,
-    ref,
-    explanation,
     ID: wordId,
     id: storyId,
     inflection_ref: inflectionRef,
     sentence_id,
     snippet_id,
   } = word
+  const ref = word.hints && word.hints.filter(
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+  const explanation = word.hints && word.hints.filter(
+    hint => hint.explanation?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.explanation}), {})
   const {focused: story} = useSelector(({ stories }) => stories)
   const [show, setShow] = useState(false)
 
@@ -81,8 +83,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   }
 
   const handleTooltipClick = () => {
-    if (ref) dispatch(setReferences(ref))
-    if (explanation) dispatch(setExplanation(explanation))
+    if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
+    if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
   }
 
   const youAnsweredTooltip = answer || tiedAnswer
@@ -91,11 +93,11 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && (
         <div className="flex">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
-          {ref && (
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.meta)} />{' '}
+          {ref && Object.keys(ref).length && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
-          {explanation && (
+          {explanation && Object.keys(explanation).length && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}
         </div>

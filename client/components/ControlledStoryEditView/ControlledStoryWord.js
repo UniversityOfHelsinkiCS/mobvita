@@ -36,13 +36,15 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     lemmas,
     translation_lemmas,
     bases,
-    ref,
-    explanation,
     ID: wordId,
     inflection_ref: inflectionRef,
     snippet_id,
     sentence_id,
   } = word
+  const ref = word.hints && word.hints.filter(
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+  const explanation = word.hints && word.hints.filter(
+    hint => hint.explanation?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.explanation}), {})
   const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
@@ -254,8 +256,8 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   }
 
   const handleTooltipClick = () => {
-    if (ref) dispatch(setReferences(ref))
-    if (explanation) dispatch(setExplanation(explanation))
+    if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
+    if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
   }
 
   const wordShouldBeHighlighted = word => {

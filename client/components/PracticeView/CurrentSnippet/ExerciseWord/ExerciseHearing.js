@@ -140,7 +140,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
     <div>
       {word.message && (
         <div className="tooltip-green">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.meta)} />
         </div>
       )}
     </div>
