@@ -29,7 +29,7 @@ const WrongAnswer = ({ word, snippet }) => {
     sentence_id
   } = word
   const ref = word.hints && word.hints.filter(
-    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.easy]: v.ref}), {}) 
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
