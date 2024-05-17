@@ -42,9 +42,11 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     sentence_id,
   } = word
   const ref = word.hints && word.hints.filter(
-    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const explanation = word.hints && word.hints.filter(
-    hint => hint.explanation?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.explanation}), {})
+    hint => hint.explanation?.length).reduce((obj, v) => ({ 
+      ...obj, 
+      [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...v.explanation]}), {})
   const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)

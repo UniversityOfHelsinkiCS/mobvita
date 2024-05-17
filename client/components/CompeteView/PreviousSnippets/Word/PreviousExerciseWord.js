@@ -33,9 +33,11 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
     snippet_id,
   } = word
   const ref = word.hints && word.hints.filter(
-    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const explanation = word.hints && word.hints.filter(
-    hint => hint.explanation?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.explanation}), {})
+    hint => hint.explanation?.length).reduce((obj, v) => ({ 
+      ...obj, 
+      [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...v.explanation]}), {})
   const {focused: story} = useSelector(({ stories }) => stories)
   const [show, setShow] = useState(false)
 
@@ -93,7 +95,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && (
         <div className="flex">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.meta)} />{' '}
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.easy)} />{' '}
           {ref && Object.keys(ref).length && (
             <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
           )}

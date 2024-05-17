@@ -90,7 +90,7 @@ const RightAnswer = ({ word, snippet }) => {
         </div>
       ) || (
         <div>
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message?.meta)} />
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message?.easy)} />
         </div>
       )}
     </div>

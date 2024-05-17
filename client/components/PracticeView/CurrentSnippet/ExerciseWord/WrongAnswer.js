@@ -29,7 +29,7 @@ const WrongAnswer = ({ word, snippet }) => {
     sentence_id
   } = word
   const ref = word.hints && word.hints.filter(
-    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.meta]: v.ref}), {}) 
+    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.easy]: v.ref}), {}) 
   const answer = useSelector(({ practice }) => practice.currentAnswers[word.tiedTo || word.ID])
 
   const [show, setShow] = useState(false)
@@ -84,7 +84,7 @@ const WrongAnswer = ({ word, snippet }) => {
     <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
       {word.message && (
         <div className="flex">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.meta)} />{' '}
+          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.easy)} />{' '}
           {ref && Object.keys(ref).length && (
             <Icon
               name="external"

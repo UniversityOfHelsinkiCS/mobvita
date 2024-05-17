@@ -68,7 +68,7 @@ const Chatbot = () => {
         let formattedContext = `Exercise context: ${exerciseContext}`;
         formattedContext += "\n\nExpected answer: " + currentWord.surface
         if (hints && hints.length > 0) {
-            const formattedHints = hints.map(hint => `- ${hint.meta}`);
+            const formattedHints = hints.map(hint => `- ${hint.easy}`);
             formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
         }
         if (currentAnswer){
@@ -106,7 +106,7 @@ const Chatbot = () => {
                 setFilteredHintsList(hints || [])
                 setPreHints(totalRequestedHints)
             } else {
-                setFilteredHintsList(hints?.filter(hint => !hintMessage || hint.meta !== hintMessage.meta))
+                setFilteredHintsList(hints?.filter(hint => !hintMessage || hint.easy !== hintMessage.easy))
                 setPreHints(totalRequestedHints)
             }
             setRequestedHints(totalRequestedHints)
@@ -157,8 +157,10 @@ const Chatbot = () => {
     }
 
     const handleTooltipClick = (hint) => {
-      if (hint.ref?.length) dispatch(setReferences({[hint.meta]: hint.ref}))
-      if (hint.explanation?.length) dispatch(setExplanation({[hint.meta]: hint.explanation}))
+      if (hint.ref?.length) dispatch(setReferences({[hint.keyword || hint.easy]: hint.ref}))
+      if (hint.explanation?.length) dispatch(setExplanation({
+        [hint.keyword || hint.easy]: hint.easy === hint.meta && hint.explanation || [hint.meta, ...hint.explanation]
+      }))
     }
 
     const handleHintRequest = newHintList => {
@@ -221,7 +223,7 @@ const Chatbot = () => {
                     <ul>
                       {hintMessage && attempt === 0 && (
                         <span className="flex debug_Hints debug_ZERO">
-                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.meta)} />
+                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.easy)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (hintMessage.ref?.length || hintMessage.explanation?.length) && (
                             <Icon name="info circle" style={info_circle_style} 
@@ -231,7 +233,7 @@ const Chatbot = () => {
                       )}
                       {preHints?.map((hint, index) => (
                         <span key={index} className="flex debug_PreHints debug_ZERO">
-                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.meta)} />
+                          <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (hint.ref?.length || hint.explanation?.length)
                               && (<Icon name="info circle" style={info_circle_style} 
@@ -263,7 +265,7 @@ const Chatbot = () => {
                         <ul>
                           {hintMessage && attempt === 0 && (
                             <span className="flex debug_Hints debug_nonZERO">
-                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.meta)} />
+                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.easy)} />
                               {/* content to show AFTER message at index hintMessageIdx */}
                               {(hintMessage.ref?.length || hintMessage.explanation?.length) && (
                                 <Icon 
@@ -277,7 +279,7 @@ const Chatbot = () => {
                           {/******** ??? why are prehints here ? ********/}
                           {preHints?.map((hint, index) => (
                             <span key={index} className="flex debug_PreHints debug_nonZERO">
-                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.meta)} />
+                              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                               {( hint.ref?.length || hint.explanation?.length)
                                && (<Icon name="info circle" style={info_circle_style} />)}
                             </span>
