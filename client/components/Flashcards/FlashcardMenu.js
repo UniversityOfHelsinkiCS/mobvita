@@ -47,7 +47,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
           <img src={images.flashcardIcon} alt="three cards" width="40px" />
         </MenuItem>
       )}
-      <MenuItem
+      {storyId && (<MenuItem
         handleClick={() => handleOptionClickWithStory('list')}
         translationId="Flashcard list"
         style={{
@@ -57,7 +57,20 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         tooltip='flashcards-edit-card-list-EXPLANATION'
       >
         <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
-      </MenuItem>
+      </MenuItem>) || (
+        <MenuItem
+          handleClick={() => handleOptionClick('list')}
+          translationId="Flashcard list"
+          style={{
+            backgroundColor: 'rgb(131, 215, 181)',
+            border: 'none',
+          }}
+          tooltip='flashcards-edit-card-list-EXPLANATION'
+        >
+          <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
+        </MenuItem>
+      
+      )}
       <MenuItem
         handleClick={() => handleOptionClick('new')}
         translationId="add-new-flashcard"
