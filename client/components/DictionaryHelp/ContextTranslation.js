@@ -13,6 +13,8 @@ import {
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 
 const ContextTranslation = ({surfaceWord, wordTranslated}) => {
+    const glossCheckLanguage = ['English']
+
     const dispatch = useDispatch()
     const learningLanguage = useLearningLanguage()
     const dictionaryLanguage = useDictionaryLanguage()
@@ -23,7 +25,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
 
     const translated_glosses =  wordTranslated ? wordTranslated.map(
         translated=>translated.glosses).flat().map(gloss=>gloss.toLowerCase()) : []
-    const glosses = dictionaryLanguage == 'English' ? [
+    const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
         ...translated_glosses,
         ...translated_glosses.map(
             gloss=>gloss.includes(' ') && [gloss, ...gloss.split(' '), ...gloss.split(' ').map(g=>lemmatizer(g))] || [lemmatizer(gloss)]).flat(),
@@ -44,6 +46,11 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     useEffect(() => {
         setShow(false)
     }, [wordTranslated])
+
+    const glossCheck = (p) => (
+        !glossCheckLanguage.includes(dictionaryLanguage) ||
+        glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase()))
+    )
 
     const highlightTarget = (translation) => {
         const targetSents = []
@@ -77,8 +84,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
             for(let s in translation['target-segments'][sentId]){
                 const segment = translation['target-segments'][sentId][s]
                 if (segment[0] === '▁' || segment[0].toLowerCase() === segment[0].toUpperCase()) {
-                    if (p.trim().length && targetIds.filter(x=> q.includes(x)).length && 
-                        (glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase())))){
+                    if (p.trim().length && targetIds.filter(x=> q.includes(x)).length && glossCheck(p)){
                         target += '<b>' + p + '</b>'
                         targetSentIds.add(sentId)
                     } else
@@ -92,9 +98,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                 }
             }
             
-            if (p.length && targetIds.filter(x=> q.includes(x)).length &&
-                (glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase())))
-            ){
+            if (p.length && targetIds.filter(x=> q.includes(x)).length && glossCheck(p)){
                 target += '<b>' + p + '</b>'
                 targetSentIds.add(sentId)
             } 
