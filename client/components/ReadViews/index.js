@@ -161,7 +161,7 @@ const ReadViews = ({ match }) => {
   const showFooter = width > 640
   const url = history.location.pathname
   const processingCurrentStory = id === storyId
-
+  const underProcessing = progress !== 0 && processingCurrentStory || story.progress !== 1
   const refreshPage = () => {
     dispatch(getStoryAction(id, mode))
     setShowRefreshButton(false)
@@ -259,7 +259,7 @@ const ReadViews = ({ match }) => {
                 </div>
                 {!isGroupPreview && !isGroupReview && (
                   <div>
-                    {ownedStory && mode !== 'practice-preview' && !(progress !== 0 && processingCurrentStory) && (
+                    {ownedStory && mode !== 'practice-preview' && !underProcessing && (
                       <Link to={`/stories/${id}/edit`}>
                         <Button style={{ marginRight: '.5em' }} variant="secondary">
                           <Icon name="edit" /> <FormattedMessage id="edit-story" />
@@ -337,7 +337,7 @@ const ReadViews = ({ match }) => {
                 </div>
               )}
             </div>
-            {progress !== 0 && processingCurrentStory && (
+            {underProcessing && (
               <div className="bold" style={{ marginTop: '.5rem' }}>
                 <span style={{ color: 'red' }}>
                   <FormattedMessage id="story-not-yet-processed" />
