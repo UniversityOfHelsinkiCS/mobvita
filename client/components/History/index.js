@@ -20,8 +20,6 @@ const TotalRowText = ({ testView, isControlStory, hasZeroExercises, rawOneDaySta
       <>
         {Math.round((rawOneDayStatistics.points / rawOneDayStatistics.total_points) * 100)} %{' '}
         <FormattedMessage id="correct" />
-        <br />({Math.round(rawOneDayStatistics.points * 10) / 10} /{' '}
-        {rawOneDayStatistics.total_points})
       </>
     )
   if (hasZeroExercises) return null
