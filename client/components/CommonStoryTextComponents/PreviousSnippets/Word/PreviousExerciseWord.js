@@ -46,9 +46,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const ref = word.hints && word.hints.filter(
     hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const explanation = word.hints && word.hints.filter(
-    hint => hint.explanation?.length).reduce((obj, v) => ({ 
+    hint => hint.explanation?.length || hint.meta !== hint.easy).reduce((obj, v) => ({ 
       ...obj, 
-      [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...v.explanation]}), {})
+      [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...(v.explanation || [])]}), {})
   const [show, setShow] = useState(false)
   const history = useHistory()
   const isPreviewMode = history.location.pathname.includes('preview')
@@ -193,7 +193,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           {word.hints.map((hint, index) => (
             <span key={index} className="flex">
               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
-              {(hint.explanation?.length || hint.ref?.length) && (
+              {(hint.explanation?.length || hint.meta !== hint.easy || hint.ref?.length) && (
                 <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />)}
             </span>
           ))}
