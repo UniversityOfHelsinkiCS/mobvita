@@ -55,7 +55,7 @@ const FeedbackInfoModal = () => {
             <ul>
               {
                 explanation[title].map((explanation, index) => (
-                  <li key={index}>{explanation}</li>
+                  <li key={index} dangerouslySetInnerHTML={explanation} />
                 ))
               }
             </ul>
