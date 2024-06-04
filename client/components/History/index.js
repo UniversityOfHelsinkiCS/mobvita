@@ -14,7 +14,7 @@ const sumPropertyValues = (items, property) => {
   }, 0)
 }
 
-const TotalRowText = ({ isControlStory, hasZeroExercises, rawOneDayStatistics, oneDayCounts }) => {
+const TotalRowText = ({ testView, isControlStory, hasZeroExercises, rawOneDayStatistics, oneDayCounts }) => {
   if (isControlStory)
     return (
       <>
@@ -34,13 +34,19 @@ const TotalRowText = ({ isControlStory, hasZeroExercises, rawOneDayStatistics, o
           100
       )}{' '}
       % <FormattedMessage id="correct" />
-      <br />({sumPropertyValues(Object.values(oneDayCounts), 'correct')} /{' '}
-      {sumPropertyValues(Object.values(oneDayCounts), 'total')})
+      {
+        testView && (
+          <>
+          <br />({sumPropertyValues(Object.values(oneDayCounts), 'correct')} /{' '}
+          {sumPropertyValues(Object.values(oneDayCounts), 'total')})
+          </>
+        )
+      }
     </>
   )
 }
 
-const TotalRow = ({ history, rootConcepts }) => {
+const TotalRow = ({ history, testView, rootConcepts }) => {
   const rootConceptResults = []
 
   history.forEach(oneDayResults => {
@@ -76,6 +82,7 @@ const TotalRow = ({ history, rootConcepts }) => {
           positive
         >
           <TotalRowText
+            testView={testView}
             isControlStory={history[index].type === 'control story'}
             hasZeroExercises={sumPropertyValues(Object.values(oneDayCounts), 'total') < 1}
             rawOneDayStatistics={history[index]}
@@ -194,8 +201,8 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   const [fillFromHistory, setFillFromHistory] = useState(false)
 
   const [page, setPage] = useState(0)
-  const { concepts } = useSelector(({ metadata }) => metadata)
-
+  const { concepts: allConcepts } = useSelector(({ metadata }) => metadata)
+  const concepts = allConcepts?.filter(c => testView && c.test_settings || !testView && c.exercise_settings)
   const rootConcepts = concepts?.filter(e => e.super)?.map(e => e.concept_id)
 
   const windowWidth = useWindowDimensions().width
@@ -288,7 +295,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
 
   const buildSingleConcept = conceptId => {
     const concept = concepts.find(concept => concept.concept_id === conceptId)
-    if (!concept.children) return { id: conceptId, children: [] }
+    if (!concept?.children) return { id: conceptId, children: [] }
     return {
       id: conceptId,
       children: concept.children
@@ -421,6 +428,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           <TotalRow
             history={history.slice(page * pageSize, page * pageSize + pageSize)}
             rootConcepts={rootConcepts}
+            testView={testView}
           />
         </Table.Body>
       </Table>
