@@ -158,8 +158,8 @@ const Chatbot = () => {
 
     const handleTooltipClick = (hint) => {
       if (hint.ref?.length) dispatch(setReferences({[hint.keyword || hint.easy]: hint.ref}))
-      if (hint.explanation?.length) dispatch(setExplanation({
-        [hint.keyword || hint.easy]: hint.easy === hint.meta && hint.explanation || [hint.meta, ...hint.explanation]
+      if (hint.explanation?.length || hint.meta !== hint.easy ) dispatch(setExplanation({
+        [hint.keyword || hint.easy]: hint.easy === hint.meta && hint.explanation || [hint.meta, ...(hint.explanation || [])]
       }))
     }
 
@@ -235,7 +235,7 @@ const Chatbot = () => {
                         <span key={index} className="flex debug_PreHints debug_ZERO">
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
-                            (hint.ref?.length || hint.explanation?.length)
+                            (hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy)
                               && (<Icon name="info circle" style={info_circle_style} 
                               onMouseDown={() => handleTooltipClick(hint)}/>)}
                         </span>
@@ -280,7 +280,7 @@ const Chatbot = () => {
                           {preHints?.map((hint, index) => (
                             <span key={index} className="flex debug_PreHints debug_nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
-                              {( hint.ref?.length || hint.explanation?.length)
+                              {( hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy)
                                && (<Icon name="info circle" style={info_circle_style} />)}
                             </span>
                           ))}
