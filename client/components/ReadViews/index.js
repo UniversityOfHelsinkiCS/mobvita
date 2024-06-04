@@ -259,7 +259,7 @@ const ReadViews = ({ match }) => {
                 </div>
                 {!isGroupPreview && !isGroupReview && (
                   <div>
-                    {ownedStory && mode !== 'practice-preview' && (
+                    {ownedStory && mode !== 'practice-preview' && !(progress !== 0 && processingCurrentStory) && (
                       <Link to={`/stories/${id}/edit`}>
                         <Button style={{ marginRight: '.5em' }} variant="secondary">
                           <Icon name="edit" /> <FormattedMessage id="edit-story" />
