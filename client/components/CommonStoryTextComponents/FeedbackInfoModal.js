@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Divider } from 'semantic-ui-react'
 import { clearReferences, clearExplanation } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
-import { capitalize_first_char_only } from 'Utilities/common'
+import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/common'
 
 const BookReference = ({ reference }) => (
   <li>
@@ -55,7 +55,7 @@ const FeedbackInfoModal = () => {
             <ul>
               {
                 explanation[title].map((explanation, index) => (
-                  <li key={index} dangerouslySetInnerHTML={explanation} />
+                  <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(explanation)} />
                 ))
               }
             </ul>
