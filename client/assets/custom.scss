@@ -1343,7 +1343,7 @@ $value in $spacing {
 }
 
 .notes-info-text {
-  color: slategrey;
+  color: darkslategrey;
   font-style: italic;
 }
 
@@ -1705,6 +1705,19 @@ label.file-upload-btn {
   margin-right: .5em;
   margin-top: .5em;
 }
+
+
+.blue-flashcard-intro {
+    background-color: white;
+    margin-bottom: 2em;
+    border-color: aqua;
+    /* border-style: outset; */
+    border-radius: 10px;
+    padding: 10px;
+    color: darkslategray;
+    box-shadow: .5em .5em .6em grey;
+}    
+
 
 .flashcard {
   display: flex;

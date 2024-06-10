@@ -37,7 +37,7 @@ const Flashcards = () => {
     <div className="cont-tall cont pb-nm flex-col auto pt-xl">
       {
         title && type==='test' && (
-          <h5 className="flex pb-nm" style={{marginBottom: '2em'}}>
+          <h5 className="blue-flashcard-intro flex pb-nm" style={{marginBottom: '2em'}}>
             <FormattedHTMLMessage
                 id="story-blue-cards"
                 values={{
