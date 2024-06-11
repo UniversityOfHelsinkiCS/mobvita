@@ -11,6 +11,7 @@ import Following from './Following'
 
 export default function Profile({ location }) {
   const intl = useIntl()
+  const dispatch = useDispatch()
   const { teacherView } = useSelector(({ user }) => user.data)
   let panes
   let index
@@ -76,6 +77,19 @@ export default function Profile({ location }) {
       case '/profile/main':
         index = 0
         break
+
+      case '/profile/progress':
+        index = 1
+        break
+      case '/profile/progress/flashcards':
+        index = 1
+        dispatch({ type: 'SET_VOCABULARY_CHART' })
+        break
+      case '/profile/progress/grammar':
+        index = 1
+        dispatch({ type: 'SET_GRAMMAR_CHART' })
+        break
+
       default:
         index = 1
     }

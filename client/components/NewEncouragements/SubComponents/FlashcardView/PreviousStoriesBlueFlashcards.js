@@ -1,6 +1,7 @@
 import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router"
@@ -54,12 +55,12 @@ const PreviousStoriesBlueFlashcards = () => {
                 }}
               />
               &nbsp;
-              <Link
+              <Button
                 className="interactable"
                 onClick={() => handleClick()}
               >
                 <FormattedMessage id="flashcards-review" />
-              </Link>
+              </Button>
             </div>
           </div>
         </div>

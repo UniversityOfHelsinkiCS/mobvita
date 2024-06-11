@@ -5,7 +5,7 @@ import {
   showAllEncouragements
 } from "Utilities/common"
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -62,9 +62,12 @@ const ConfirmBlueCardsEncouragement = () => {
                 }}
               />
               &nbsp;
-              <Link className="interactable" onClick={() => handleClick()}>
+              <Button
+                className="interactable"
+                onClick={() => handleClick()}
+              >
                 <FormattedMessage id="flashcards-review" />
-              </Link>
+              </Button>
             </div>
           </div>
         </div>
