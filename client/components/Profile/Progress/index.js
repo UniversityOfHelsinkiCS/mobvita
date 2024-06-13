@@ -227,7 +227,7 @@ const Progress = () => {
         */
         wordsAtEnd += oldBins[i].encountered
       }
-      wordsAtEnd < 500 ? setXAxisLength(50) : setXAxisLength(102)
+      wordsAtEnd < 700 ? setXAxisLength(50) : setXAxisLength(102)
       setInitComplete(true)
       /*
       setNotMasteredBefore(initBeforeList)
