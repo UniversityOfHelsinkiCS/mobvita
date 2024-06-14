@@ -2,8 +2,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Popup, Icon, Select, Container } from 'semantic-ui-react'
-import { Segment } from 'semantic-ui-react'
+import { 
+  Placeholder, 
+  Popup, 
+  Icon, 
+  Select, 
+  Container, 
+  Accordion, 
+  AccordionTitle,
+  AccordionContent } from 'semantic-ui-react'
 
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
@@ -77,6 +84,7 @@ const LessonList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLessons, setFilteredLessons] = useState(lessons);
   const [customizeLessonConfigs, setCustomizeLessonConfigs] = useState(false);
+  const [accordionState, setAccordionState] = useState(-1)
 
   // const [lesson2info, setLesson2info] = useState({})
 
@@ -393,7 +401,12 @@ const LessonList = () => {
       </div>
     </div>
   )
-
+  const lessonGroups = filteredLessons && Object.groupBy(filteredLessons, ({group})=> group) || {}
+  const handleClick = (e, props) => {
+    const { index } = props
+    const newIndex = accordionState === index ? -1 : index
+    setAccordionState(newIndex)
+  }
   const lessonTopicsControls = (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
@@ -432,13 +445,40 @@ const LessonList = () => {
         />
       </div>
 
-      {filteredLessons && filteredLessons.map((lesson, index) => (
-        rowRenderer({
-          key: 'lesson-' + index,
-          index: index,
-          style: {}
-        })
-      ))}
+      {lessonGroups && (
+        <Accordion fluid styled>
+        {
+          Object.keys(lessonGroups).sort().map((group, index) => (
+            <>
+              <AccordionTitle
+                key={`lesson-group-title-${group}`}
+                active={accordionState === index}
+                index={index}
+                onClick={handleClick}
+              >
+                <h4>
+                <Icon name='dropdown' />
+                <FormattedMessage id='lesson-group' values={{group}}/>
+                </h4>
+              </AccordionTitle>
+              <AccordionContent 
+                key={`lesson-group-content-${group}`}
+                active={accordionState === index}
+              >
+                {
+                  lessonGroups[group].map((lesson) => (
+                    rowRenderer({
+                      key: `lesson-${lesson.ID}`,
+                      lesson: lesson,
+                      style: {}
+                    })))
+                }
+              </AccordionContent>
+            </>))
+        }     
+        </Accordion>
+      )}
+      
 
       {/* <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
         <WindowScroller>
@@ -574,8 +614,7 @@ const LessonList = () => {
     return { score, correct, total };
   }
 
-  function rowRenderer({ key, index, style }) {
-    const lesson = filteredLessons && filteredLessons[index]
+  function rowRenderer({ key, lesson, style }) {
     if (!lesson) return null
 
     const lowestScore = calculateLowestScore(topics.filter(topic => lesson.topics && lesson.topics?.includes(topic.topic_id)))

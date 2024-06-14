@@ -1188,7 +1188,7 @@
     "shared-with-following-groups": "Текст отослан группам:",
     "???": "Сравнительная степень",
     "story-processing-now-finished": "История загружена! Пожалуйста обнови страницу!",
-    "delete-account": "Удалить аккаунт",
+    "delete-account": "Удалить мой аккаунт",
     "delete-account-confirmation": "Ты уверен, что хочешь удалить свой аккаунт?",
     "delete-account-information": "Вместе с аккаунтом будут удалены все твои истории. Введи пароль, чтобы подтвердить удаление.",
     "delete-account-success": "Аккаунт удален",
@@ -1607,5 +1607,8 @@
     "chatbot-response-error": "Проблема с подключением, повтори попытку через 30 секунд!",
     "story-blue-cards": "В тексте:\n<ul><li><i>{story}</i></li></ul>\n{nWords} новых слов, для которых ты не проверял/а переводы.\nМы <i>предпологаем</i>, что ты наверное знаешь эти слова.\n<br/>\nТы можешь получить баллы за <b>все</b> новые слова, если мы проверим всего 5 из них!",
     "story-flashcards": "From story:\n<ul><li><i>{story}</i></li></ul>",
-    "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words."
+    "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
+    "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
+    "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Кликни на незнакомое слово, чтобы получить его перевод  ⇒  слово сохранится в набор флеш-карт!",
+    "lesson-group": "Group {group}"
 }
