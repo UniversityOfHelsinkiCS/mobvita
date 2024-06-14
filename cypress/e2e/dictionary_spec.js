@@ -18,7 +18,7 @@ describe("dictionary", function () {
   })
 
   it("dictionary opens", function () {
-    cy.contains("Klikkaa sinulle tuntemattomia sanoja tekstissä saadaksesi käännöksiä.")
+    cy.get("[data-cy=dictionary-info]")
   })
 
   it("translate-to language can be changed", function () {
