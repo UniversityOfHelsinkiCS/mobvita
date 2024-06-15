@@ -288,7 +288,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
               style={{
                 marginLeft: '0.5em',
                 border: 'none',
-                color: 'slateGrey',
+                color: 'darkSlateGrey',
                 backgroundColor: 'white',
                 marginBottom: '1em',
               }}
