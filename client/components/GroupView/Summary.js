@@ -103,6 +103,7 @@ const Summary = ({
       if (summaryType === 'test' || summaryType === 'all') {
         temp.push(
           'Test correct rate',
+          'Number of tests',
           'CEFR'
         )
       }

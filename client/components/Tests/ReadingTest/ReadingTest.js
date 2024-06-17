@@ -129,19 +129,6 @@ const ReadingTest = () => {
       confettiRain(0,0.45,60)
       confettiRain(1,0.45,120)
 
-      dispatch(
-        sendReadingTestAnswer(
-            learningLanguage,
-            readingTestSessionId,
-            {
-                type: currentReadingTestQuestion.type,
-                question_id: currentReadingTestQuestion.question_id,
-                answer: choice.option,
-                seenFeedbacks: feedbacks,
-            }
-        )
-      )
-
       if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
       } else {
@@ -153,6 +140,20 @@ const ReadingTest = () => {
       setShowCorrect(true)
       setQuestionDone(true)
       setCurrentAnswer(null)
+
+      dispatch(
+        sendReadingTestAnswer(
+            learningLanguage,
+            readingTestSessionId,
+            {
+                type: currentReadingTestQuestion.type,
+                question_id: currentReadingTestQuestion.question_id,
+                answer: choice.option,
+                seenFeedbacks: feedbacks,
+                questionDone: true,
+            }
+        )
+      )
     }
 
     if (choice.is_correct == false){
@@ -176,6 +177,7 @@ const ReadingTest = () => {
               .map(([, value]) => value)
           : [];
 
+        let markQuestionDone = questionDone;
         if (choice.is_correct == false){
           if (countNotSelectedChoices > 2){
             const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
@@ -191,6 +193,7 @@ const ReadingTest = () => {
                 dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
                 setShowCorrect(true)
                 setQuestionDone(true)
+                markQuestionDone = true
               }
             }
           } else {
@@ -198,6 +201,7 @@ const ReadingTest = () => {
             setShowCorrect(true)
             setQuestionDone(true)
             setCurrentAnswer(null)
+            markQuestionDone = true
           }
         }             
         
@@ -211,6 +215,7 @@ const ReadingTest = () => {
                     question_id: currentReadingTestQuestion.question_id,
                     answer: choice.option,
                     seenFeedbacks: feedbacks,
+                    questionDone: markQuestionDone
                 }
             )
           )
