@@ -128,6 +128,20 @@ const ReadingTest = () => {
     if (choice.is_correct){
       confettiRain(0,0.45,60)
       confettiRain(1,0.45,120)
+
+      dispatch(
+        sendReadingTestAnswer(
+            learningLanguage,
+            readingTestSessionId,
+            {
+                type: currentReadingTestQuestion.type,
+                question_id: currentReadingTestQuestion.question_id,
+                answer: choice.option,
+                seenFeedbacks: feedbacks,
+            }
+        )
+      )
+
       if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
         dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
       } else {

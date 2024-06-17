@@ -20,6 +20,7 @@ const Summary = ({
   firstFetch,
   setCefrHistory,
   setFirstFetch,
+  summaryType = 'all',
 }) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
@@ -64,7 +65,6 @@ const Summary = ({
         const convertedA = convertCellValue(a[field], field)
         const convertedB = convertCellValue(b[field], field)
 
-
         if (convertedA < convertedB) return direction[field] === 1 ? -1 : 1
         if (convertedA > convertedB) return direction[field] === 1 ? 1 : -1
 
@@ -78,7 +78,34 @@ const Summary = ({
 
   useEffect(() => {
     if (summary && colOrder && summary.length > 0) {
-      const temp = Object.values(colOrder)
+      const temp = [
+        'Email',
+        'Username',
+        'xp_gained',
+      ]
+
+      if (summaryType === 'exercise' || summaryType === 'all') {
+        temp.push(
+          'Number of Snippets',
+          'Exercise correct rate',
+          'Number of Exercises',
+          'current_proficiency_score'
+        )
+      }
+
+      if (summaryType === 'vocab' || summaryType === 'all') {
+        temp.push(
+          '%% Flashcards correct',
+          'Flashcard exercises'
+        )
+      }
+
+      if (summaryType === 'test' || summaryType === 'all') {
+        temp.push(
+          'Test correct rate',
+          'CEFR'
+        )
+      }
 
       let directionsObj = {}
       temp.forEach(column => {
@@ -89,13 +116,14 @@ const Summary = ({
       })
 
       setSorter({
-        field: intl.formatMessage({ id: 'Email' }),
+        field: 'Email',
         direction: directionsObj,
       })
 
       setColumns(temp)
     }
-  }, [summary])
+  }, [summary, summaryType])
+
 
   const pending = useSelector(({ summary }) => summary.pending)
 

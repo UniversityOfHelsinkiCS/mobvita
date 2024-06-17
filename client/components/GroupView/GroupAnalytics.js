@@ -1,7 +1,6 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ButtonGroup, ToggleButton, Button } from 'react-bootstrap'
+import { ButtonGroup, ToggleButton, Button, Tabs, Tab } from 'react-bootstrap'
 import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, skillLevels, downloadReadingReport } from 'Utilities/common'
@@ -37,6 +36,8 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
+  const [summaryTab, setSummaryTab] = useState('group-exercise-summary');
+
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
@@ -181,6 +182,16 @@ const GroupAnalytics = ({ role }) => {
     )
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
+
+  // Styles for the Tabs
+  const tabsStyle = {
+    marginTop: '1em',
+  }
+
+  const tabStyle = isActive => ({
+    color: 'black',
+    fontWeight: isActive ? 'bold' : '300',
+  })
 
   return (
     <div className="group-container">
@@ -386,58 +397,83 @@ const GroupAnalytics = ({ role }) => {
       )}
 
       {content === 'summary' && currentGroup.is_teaching ? (
-        <>
-          <div
-            className="space-evenly"
-            style={{ display: 'flex', fontWeight: 'bold', marginTop: '1em', marginBottom: '.5em' }}
+        <Tabs
+          activeKey={summaryTab}
+          id="group-analytics-tabs"
+          className="mb-3"
+          style={tabsStyle}
+          onSelect={(key) => setSummaryTab(key)}
+        >
+          <Tab
+            eventKey="group-exercise-summary"
+            title={<span style={tabStyle(summaryTab === 'group-exercise-summary')}>{intl.formatMessage({ id: 'group-exercise-summary' })}</span>}
           >
-            <span style={{ marginRight: '.5em' }}>
-              <input
-                type="radio"
-                onChange={() => setGroupSummaryShown(!groupSummaryShown)}
-                checked={groupSummaryShown}
-              />
-              <span style={{ marginLeft: '.5em' }}>
-                <FormattedHTMLMessage id="general-group-summary" />
-              </span>
-            </span>
-            <span style={{ marginRight: '.5em' }}>
-              <input
-                style={{ marginRight: '.5em' }}
-                type="radio"
-                onChange={() => setGroupSummaryShown(!groupSummaryShown)}
-                checked={!groupSummaryShown}
-              />
-              <span style={{ marginLft: '.5em' }}>
-                <FormattedHTMLMessage id="group-grammar-progress" />
-              </span>
-            </span>
-          </div>
-          {groupSummaryShown ? (
             <Summary
               setStudent={setCurrentStudent}
               startDate={startDate}
               endDate={endDate}
               group={currentGroup}
-              groupName={currentGroup.groupName}
               isTeaching={currentGroup.is_teaching}
-              learningLanguage={learningLanguage}
               getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
               getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
               setContent={setContent}
               firstFetch={firstFetch}
               setCefrHistory={setCefrHistory}
               setFirstFetch={setFirstFetch}
+              summaryType="exercise"
             />
-          ) : (
+          </Tab>
+          <Tab
+            eventKey="group-vocab-summary"
+            title={<span style={tabStyle(summaryTab === 'group-vocab-summary')}>{intl.formatMessage({ id: 'group-vocab-summary' })}</span>}
+          >
+            <Summary
+              setStudent={setCurrentStudent}
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+              isTeaching={currentGroup.is_teaching}
+              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+              setContent={setContent}
+              firstFetch={firstFetch}
+              setCefrHistory={setCefrHistory}
+              setFirstFetch={setFirstFetch}
+              summaryType="vocab"
+            />
+          </Tab>
+          <Tab
+            eventKey="group-test-summary"
+            title={<span style={tabStyle(summaryTab === 'group-test-summary')}>{intl.formatMessage({ id: 'group-test-summary' })}</span>}
+          >
+            <Summary
+              setStudent={setCurrentStudent}
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+              isTeaching={currentGroup.is_teaching}
+              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+              setContent={setContent}
+              firstFetch={firstFetch}
+              setCefrHistory={setCefrHistory}
+              setFirstFetch={setFirstFetch}
+              summaryType="test"
+            />
+          </Tab>
+          <Tab
+            eventKey="group-grammar-summary"
+            title={<span style={tabStyle(summaryTab === 'group-grammar-summary')}>{intl.formatMessage({ id: 'group-grammar-summary' })}</span>}
+          >
             <StudentGrammarProgress
               summaryView
               startDate={startDate}
               endDate={endDate}
               group={currentGroup}
             />
-          )}
-        </>
+          </Tab>
+        </Tabs>
+      
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
         <div>
           <div className="row-flex align center">
