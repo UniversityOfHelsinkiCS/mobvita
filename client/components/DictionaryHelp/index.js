@@ -266,7 +266,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     }
     return (
       <div data-cy="dictionary-info" className="notes-info-text" style={{ marginBottom: '1em',  }}>
-        <FormattedMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
+        <FormattedHTMLMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
       </div>
     )
   }
