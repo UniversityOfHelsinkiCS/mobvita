@@ -401,7 +401,10 @@ const LessonList = () => {
       </div>
     </div>
   )
-  const lessonGroups = filteredLessons && Object.groupBy(filteredLessons, ({group})=> group) || {}
+  const lessonGroups = filteredLessons && filteredLessons.reduce((x, y) => {
+    (x[y.group] = x[y.group] || []).push(y);
+    return x;
+  }, {}) || {} // Object.groupBy(filteredLessons, ({group})=> group)
   const handleClick = (e, props) => {
     const { index } = props
     const newIndex = accordionState === index ? -1 : index
