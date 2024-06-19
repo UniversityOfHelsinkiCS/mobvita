@@ -1139,7 +1139,7 @@
     "click-to-remove-exercise": "Click to remove this exercise",
     "click-to-add-exercise": "Click to add this exercise",
     "create-controlled-exercise": "Create controlled story",
-    "controlled-story-saved": "Tailored story saved!",
+    "controlled-story-saved": "Tailored story saved successfully",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regenerate exercises",
@@ -1609,5 +1609,8 @@
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Click on any unfamiliar word to explore its meaning  ⇒  the word will be saved into your flashcards!",
-    "lesson-group": "Group {group}"
+    "lesson-group": "Group {group}",
+    "group-exercise-summary": "Group Exercise Performance Summary",
+    "group-vocab-summary": "Group Vocabulary Performance Summary",
+    "group-test-summary": "Group Test Performance Summary"
 }

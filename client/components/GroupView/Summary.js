@@ -79,35 +79,37 @@ const Summary = ({
   useEffect(() => {
     if (summary && colOrder && summary.length > 0) {
       const temp = [
-        'Email',
-        'Username',
-        'xp_gained',
+        colOrder[0], // 'Email'
+        colOrder[1], // 'Username'
+        colOrder[2], // 'xp_gained'
       ]
-
+  
       if (summaryType === 'exercise' || summaryType === 'all') {
         temp.push(
-          'Number of Snippets',
-          'Exercise correct rate',
-          'Number of Exercises',
-          'current_proficiency_score'
+          colOrder[3], // 'Number of Snippets'
+          colOrder[4], // 'Exercise correct rate'
+          colOrder[5], // 'Number of Exercises'
+          colOrder[6]  // 'current_proficiency_score'
         )
       }
-
+  
       if (summaryType === 'vocab' || summaryType === 'all') {
         temp.push(
-          '%% Flashcards correct',
-          'Flashcard exercises'
+          colOrder[7], // '%% Flashcards correct'
+          colOrder[8]  // 'Flashcard exercises'
         )
       }
-
+  
       if (summaryType === 'test' || summaryType === 'all') {
         temp.push(
-          'Test correct rate',
-          'Number of tests',
-          'CEFR'
+          colOrder[9],  // 'Test correct rate'
+          colOrder[10], // 'Number of test questions'
+          colOrder[11], // 'Number of meditation steps (hints) given'
+          colOrder[12], // 'Number of meditation steps (hints) given per question'
+          colOrder[13]  // 'CEFR'
         )
       }
-
+  
       let directionsObj = {}
       temp.forEach(column => {
         directionsObj = {
@@ -115,12 +117,12 @@ const Summary = ({
           [column]: 1,
         }
       })
-
+  
       setSorter({
-        field: 'Email',
+        field: colOrder[0], // 'Email'
         direction: directionsObj,
       })
-
+  
       setColumns(temp)
     }
   }, [summary, summaryType])

@@ -726,7 +726,7 @@
     "download-csv": "Lataa csv",
     "completed-exercises": "Suoritetut tehtävät",
     "join-group-message": "Liity opettajan hallinnoimaan ryhmään, niin saat pääsyn ryhmän jaettuihin tarinoihin.",
-    "create-group": "Luo ryhmä",
+    "create-group": "Luo",
     "create-group-message": "Luo ryhmä, niin voit jakaa tarinoita ja seurata ryhmäläistesi edistymistä.",
     "post-answers-error": "Jotain meni vikaan vastausten tarkistamisen yhteydessä. Ole hyvä ja yritä uudelleen.",
     "token-copied": "Koodi kopioitu leikepöydälle",
@@ -1138,7 +1138,7 @@
     "click-to-remove-exercise": "Klikkaa poistaaksesi tehtävän",
     "click-to-add-exercise": "Klikkaa lisätäksesi tehtävän",
     "create-controlled-exercise": "Luo ohjattu harjoitus",
-    "controlled-story-saved": "Räätälöity tarina tallennettu!",
+    "controlled-story-saved": "Räätälöity tarina tallennettu onnistuneesti",
     "refresh": "Päivitä",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regeneroi tehtävät",
@@ -1608,5 +1608,8 @@
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "Seuraavat harjoitustehtävät auttavat sinua kehittämään englannin taitojasi.  Ensimmäisessä osassa voit suorittaa luetun ymmärtämistä harjoittavia tehtäviä (20 lyhyttä tehtävää).  Pyydämme sinua myös kertomaan, mitä mieltä olet tehtävistä ja niistä saamastasi palautteesta, jotta voimme kehittää niitä edelleen.\n\nSinun ei tarvitse tehdä kaikkia tehtäviä yhdellä kertaa, vaan voit halutessasi poistua ohjelmasta ja jatkaa vastaamista myöhemmin siitä kohtaa, johon olit jäänyt. \n\nLukemistehtävien jälkeen pääset tekemään erilaisia englannin kielen rakenteita ja sanastoa harjoittavia tehtäviä.  Niistä saat tarkemmat ohjeet kun pääset sinne asti ohjelmassa.  Voit myöhemmin harjoitella lukemista uusilla tehtävillä; saat niistä ilmoituksen, kun ne ovat valmiit suoritettaviksi.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset. Nämä sanat lisätään kortteihisi!",
-    "lesson-group": "Group {group}"
+    "lesson-group": "Group {group}",
+    "group-exercise-summary": "Group Exercise Performance Summary",
+    "group-vocab-summary": "Group Vocabulary Performance Summary",
+    "group-test-summary": "Group Test Performance Summary"
 }

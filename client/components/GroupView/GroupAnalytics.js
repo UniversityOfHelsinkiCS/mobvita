@@ -462,8 +462,8 @@ const GroupAnalytics = ({ role }) => {
             />
           </Tab>
           <Tab
-            eventKey="group-grammar-summary"
-            title={<span style={tabStyle(summaryTab === 'group-grammar-summary')}>{intl.formatMessage({ id: 'group-grammar-summary' })}</span>}
+            eventKey="group-grammar-progress"
+            title={<span style={tabStyle(summaryTab === 'group-grammar-progress')}>{intl.formatMessage({ id: 'group-grammar-progress' })}</span>}
           >
             <StudentGrammarProgress
               summaryView

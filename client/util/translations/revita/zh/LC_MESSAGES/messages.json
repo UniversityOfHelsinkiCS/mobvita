@@ -83,7 +83,7 @@
     "Send": "发送",
     "click-to-add-exercise": "点击参与练习",
     "click-to-remove-exercise": "点击删除练习",
-    "controlled-story-saved": "测试文本成功保存",
+    "controlled-story-saved": "测试保存成功",
     "freeze-snippet": "保存段落",
     "freeze-and-save-control-story": "保存段落和测试文本",
     "regenerate-exercises": "重新生成练习",
@@ -982,5 +982,8 @@
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "单击任意生词以获取翻译⇒ 该单词将保存至你的卡片中！",
-    "lesson-group": "课程组{group}"
+    "lesson-group": "课程组{group}",
+    "group-exercise-summary": "Group Exercise Performance Summary",
+    "group-vocab-summary": "Group Vocabulary Performance Summary",
+    "group-test-summary": "Group Test Performance Summary"
 }

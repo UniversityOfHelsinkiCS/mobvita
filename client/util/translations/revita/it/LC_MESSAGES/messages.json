@@ -729,7 +729,7 @@
     "download-csv": "Download csv",
     "completed-exercises": "Esercizi completati",
     "join-group-message": "Unisciti ad un gruppo creato da un insegnante per accedere alle storie di gruppo.",
-    "create-group": "Crea un nuovo gruppo",
+    "create-group": "Crea gruppo",
     "create-group-message": "Crea un nuovo gruppo per condividere storie e tenere traccia dei progressi dei tuoi studenti.",
     "post-answers-error": "Qualcosa è andato storto mentre processavamo la tua risposta. Perfavore ritenta.",
     "token-copied": "Il token è stato copiato nella tua clipboard",
@@ -1139,7 +1139,7 @@
     "click-to-remove-exercise": "Clicca per rimuovere l'esercizio",
     "click-to-add-exercise": "Clicca per aggiungere l'esercizio",
     "create-controlled-exercise": "Crea una storia di valutazione",
-    "controlled-story-saved": "Testo su misura salvato!",
+    "controlled-story-saved": "Testo su misura salvato correttamente",
     "refresh": "Ricarica",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Rigenera esercizi",
@@ -1607,5 +1607,8 @@
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Clicca sulle parole sconosciute per ottenerne la traduzione. Le parole si salvano tra le flashcard!",
-    "lesson-group": "Group {group}"
+    "lesson-group": "Group {group}",
+    "group-exercise-summary": "Group Exercise Performance Summary",
+    "group-vocab-summary": "Group Vocabulary Performance Summary",
+    "group-test-summary": "Group Test Performance Summary"
 }
