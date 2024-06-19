@@ -5,6 +5,7 @@ import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
+import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
@@ -19,13 +20,33 @@ const Register = () => {
     password: '',
     passwordAgain: '',
     registrationCode: '',
+    ddlangConfirm: undefined,
+    years: '',
+    obligatoryCourses: [],
+    optionalCourses: [],
+    grade: ''
   })
   const [accepted, setAccepted] = useState(false)
+  const [ddlangAccepted, setddLangAccepted] = useState(false)
+  const [showDDLangModal, setShowDDLangModal] = useState(false)
 
   const toggleAccepted = () => {
     setAccepted(!accepted)
   }
 
+  const validateDDLangFields = () => {
+    const { years, obligatoryCourses, grade } = formState
+    return years !== '' && obligatoryCourses.length > 0 && grade !== ''
+  }
+  
+  const toggleDDLangAccepted = () => {
+    if (validateDDLangFields()) {
+      setddLangAccepted(!ddlangAccepted)
+    } else {
+      setShowDDLangModal(true)
+    }
+  }
+  
   const {
     error,
     message: errorMessage,
@@ -55,17 +76,22 @@ const Register = () => {
   }, [userEmail])
 
   const handleSubmit = () => {
-    const { email, username, password, passwordAgain, registrationCode } = formState
+    const { email, username, password, passwordAgain, registrationCode, years, obligatoryCourses, optionalCourses, grade } = formState
 
     if (password !== passwordAgain) {
-      dispatch(setNotification('passwords-do-not-match', 'error'))
+      dispatch(setNotification('passwords-do not-match', 'error'))
     } else if (accepted) {
       const payload = {
         username,
         password,
         email,
         interface_language: localeCodeToName(locale),
-        registrationCode
+        registrationCode,
+        ddlangTermsConfirm: ddlangAccepted,
+        years,
+        obligatoryCourses,
+        optionalCourses,
+        grade
       }
 
       dispatch(registerUser(payload))
@@ -84,6 +110,14 @@ const Register = () => {
       [name]: value,
     })
   }
+
+  const handleDDLangChange = (name, value) => {
+    setFormState({
+      ...formState,
+      [name]: value,
+    })
+  }
+
   return (
     <div className="login-form">
       <Form onSubmit={handleSubmit}>
@@ -134,6 +168,15 @@ const Register = () => {
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions
             trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>}
+          />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
+          <Checkbox data-cy="accept-terms" checked={ddlangAccepted} onChange={() => toggleDDLangAccepted()} />
+          <DDLangTermsAndConditions
+            trigger={<Button variant="link" onClick={() => setShowDDLangModal(true)}> DDLANG policy statement </Button>} 
+            handleChange={handleDDLangChange}
+            openModal={showDDLangModal}
+            setOpenModal={setShowDDLangModal}
           />
         </div>
         <div>
