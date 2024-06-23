@@ -449,7 +449,7 @@ const LessonList = () => {
       </div>
 
       {lessonGroups && (
-        <Accordion fluid styled>
+        <Accordion fluid styled style={{background: '#fffaf0'}}>
         {
           Object.keys(lessonGroups).sort().map((group, index) => (
             <>
