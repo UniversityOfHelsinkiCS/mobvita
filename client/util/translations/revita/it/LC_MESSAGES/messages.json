@@ -1603,12 +1603,15 @@
     "no-available-exercise-OLD": "Al momento non abbiamo più esercizi per questa lezione. Revita creerà altri esercizi a breve: torna un po' più tardi!",
     "chatbot-response-error": "Un problema di connessione, riprova tra 30 secondi!",
     "story-blue-cards": "Nella storia:\n<ul><li><i>{story}</i></li></ul>\nhai incontrato {nWords} nuove parole per le quali non hai controllato la traduzione.  Vediamo se li conosci veramente!\n<br/>\nOttieni credito per tutte queste parole \ncontrollando solo 5 delle <i>carte blu</i> di loro!",
-    "story-flashcards": "From story:\n<ul><li><i>{story}</i></li></ul>",
+    "story-flashcards": "Queste parole vengono da <ul><li><i>{story}</i></li></ul>",
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Clicca sulle parole sconosciute per ottenerne la traduzione. Le parole si salvano tra le flashcard!",
-    "lesson-group": "Group {group}",
-    "group-exercise-summary": "Group Exercise Performance Summary",
-    "group-vocab-summary": "Group Vocabulary Performance Summary",
-    "group-test-summary": "Group Test Performance Summary"
+    "lesson-group": "Livello {group}",
+    "group-exercise-summary": "Prestazioni dei esercizi",
+    "group-vocab-summary": "Prestazioni del vocabolario",
+    "group-test-summary": "Prestazioni dei test",
+    "select-lesson-themes-and-vocabulary": "Seleziona i temi della lezione",
+    "Recommended vocabulary difficulty": "Raccomandato livello di difficoltà del vocabolario",
+    "submit-chat-message": "Invia"
 }
