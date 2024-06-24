@@ -68,6 +68,7 @@ const CurrentSnippet = ({
     candidatesInCache,
     cachedSnippetIds,
     cacheSize,
+    cacheRequesting,
   } = snippets
   const {
     practiceFinished,
@@ -315,8 +316,8 @@ const CurrentSnippet = ({
   }
 
   useEffect(() => {
-    if (snippets.focused) setTimeout(fetchSnippet, 5000)
-  }, [lastCachedSnippetKey, cacheSize, snippets.focused?.snippetid])
+    if (snippets.focused && !cacheRequesting) fetchSnippet()
+  }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
 
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused

@@ -162,7 +162,8 @@ const initialState = {
   candidatesInCache: [],
   cacheSize: 0,
   pending: false, 
-  error: false
+  error: false,
+  cacheRequesting: false,
 }
 
 // Reducer
@@ -397,6 +398,12 @@ export default (state = initialState, action) => {
         // },
         focused_snippet_chat_history: action.snippet_chat_history,
       };
+    
+    case 'CACHE_NEXT_SNIPPET_ATTEMPT':
+      return {
+        ...state,
+        cacheRequesting: true,
+      }
 
     case 'CACHE_NEXT_SNIPPET_SUCCESS':
       const snippet = {...action.response, 
@@ -411,6 +418,7 @@ export default (state = initialState, action) => {
           nextSnippetKeyFromCache: null,
           pending: false,
           error: false,
+          cacheRequesting: false,
         }
       }
       const snippets = {
@@ -419,6 +427,7 @@ export default (state = initialState, action) => {
       }
       return {
         ...state,
+        cacheRequesting: false,
         cachedSnippets: snippets,
         lastCachedSnippetKey: snippetKey,
         ...processCachedSnippets(snippets),

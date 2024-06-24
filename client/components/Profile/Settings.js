@@ -150,9 +150,9 @@ const Settings = ({teacherView}) => {
                         style={{ marginRight: '.75em' }}
                         onChange={() => dispatch(updateIsTeacher(false))}
                         checked={!user.is_teacher}
-                        disabled={isTeachingAGroup}
+                        disabled={true}
                       />
-                      <span style={{ color: isTeachingAGroup ? '#D3D3D3' : '#000000' }}>
+                      <span style={{ color: user.is_teacher ? '#D3D3D3' : '#000000' }}>
                         <FormattedMessage id="user-role-select-student" />
                       </span>
                     </span>
@@ -162,9 +162,9 @@ const Settings = ({teacherView}) => {
                         style={{ marginRight: '.75em' }}
                         onChange={() => dispatch(updateIsTeacher(true))}
                         checked={user.is_teacher}
-                        disabled={userIsAnonymous}
+                        disabled={true}
                       />
-                      <span style={{ color: userIsAnonymous ? '#D3D3D3' : '#000000' }}>
+                      <span style={{ color: !user.is_teacher ? '#D3D3D3' : '#000000' }}>
                         <FormattedMessage id="user-role-select-teacher" />
                       </span>
                     </span>
