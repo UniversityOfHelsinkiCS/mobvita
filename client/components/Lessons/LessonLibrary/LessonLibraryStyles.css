@@ -1,22 +1,3 @@
-.personal_vocab_score_mark {
-    border-left: 7px solid transparent; 
-    border-right: 7px solid transparent; 
-    border-top: 7px solid #000; 
-}
-.personal_vocab_score_mark:hover::before {
-    content: "Recommended vocabulary difficulty";
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0.9;
-    z-index: 1;
-}
-
 /* THUMB styles */
 .white-slider.exercise-density-slider-thumb {
     background-color: white; 
