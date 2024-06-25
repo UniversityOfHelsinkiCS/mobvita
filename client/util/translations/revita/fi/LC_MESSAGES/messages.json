@@ -1606,13 +1606,13 @@
     "story-blue-cards": "Tarinassa:\n<ul><li><i>{story}</i></li></ul>\noli {nWords} uutta sanaa, joiden käännöstä et katsonut.  Tarkistetaanpa, että osaat ne varmasti!\n<br/>\nSaat pisteet kaikistä näistä sanoista tarkistamalla <i>sinisistä erikoiskorteista</i> vain viisi!",
     "story-flashcards": "Nämä sanat ovat tarinasta nimeltä <ul><li><i>{story}</i></li></ul>",
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
-    "DDLANG-onboarding-message": "Seuraavat harjoitustehtävät auttavat sinua kehittämään englannin taitojasi.  Ensimmäisessä osassa voit suorittaa luetun ymmärtämistä harjoittavia tehtäviä (20 lyhyttä tehtävää).  Pyydämme sinua myös kertomaan, mitä mieltä olet tehtävistä ja niistä saamastasi palautteesta, jotta voimme kehittää niitä edelleen.\n\nSinun ei tarvitse tehdä kaikkia tehtäviä yhdellä kertaa, vaan voit halutessasi poistua ohjelmasta ja jatkaa vastaamista myöhemmin siitä kohtaa, johon olit jäänyt. \n\nLukemistehtävien jälkeen pääset tekemään erilaisia englannin kielen rakenteita ja sanastoa harjoittavia tehtäviä.  Niistä saat tarkemmat ohjeet kun pääset sinne asti ohjelmassa.  Voit myöhemmin harjoitella lukemista uusilla tehtävillä; saat niistä ilmoituksen, kun ne ovat valmiit suoritettaviksi.",
+    "DDLANG-onboarding-message": "Seuraavat harjoitustehtävät auttavat sinua kehittämään englannin taitojasi.  Ensimmäisessa osassa voit harjoitella luetun ymmärtämistä (20 lyhyttä tehtävää).  Auta meitä kehittämään tehtäviä edelleen ja kerro meille, mitä mieltä olet tehtävistä sekä niistä saamastasi palautteesta.\n\nSinun ei tarvitse tehdä kaikkia tehtäviä kerralla, vaan voit halutessasi poistua ohjelmasta ja jatkaa vastaamista myöhemmin siitä, mihin jäit. \n\nKun olet suorittanut luetun ymmärtämistehtävät, pääset tekemään erilaisia englannin kielen rakenteisiin sekä sanastoon liittyviä harjoituksia.  Saat tarkemmat ohjeet harjoitustehtävien suorittamisesta harjoitusten alussa.  Jos haluat, voit jatkossa tehdä lisää luetun ymmärtämistehtäviä; saat ilmoituksen, kun uudet tehtävät ovat saatavilla.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset. Nämä sanat lisätään kortteihisi!",
     "lesson-group": "Taso {group}",
     "group-exercise-summary": "Tehtäväsuoritukset",
     "group-vocab-summary": "Sanastosuoritukset",
     "group-test-summary": "Testisuoritukset",
-    "select-lesson-themes-and-vocabulary": "Valitse oppitunnin teemat",
+    "select-lesson-themes-and-vocabulary": "Valitse oppitunnin teemat ja sanaston taso",
     "Recommended vocabulary difficulty": "Suositeltu sanaston vaikeusaste",
     "submit-chat-message": "Lähetä"
 }

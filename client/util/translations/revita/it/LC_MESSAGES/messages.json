@@ -1585,9 +1585,9 @@
     "Sidebar-user-score-EXPLANATION": "Il tuo livello attuale: fai clic per visualizzare i progressi",
     "flashcards-go-to-all-cards-EXPLANATION": "In questa storia hai visto alcune parole e non hai chiesto la loro traduzione.\nVogliamo presumere che tu <i>probabilmente</i> conosca queste parole.\nUsiamo queste 5 carte <i>blu speciali</i> per verificare che tu conosca tutte queste parole.\nSe rispondi correttamente a queste 5 carte, otterrai credito per tutte le parole che conosci in questa storia.\n<br/>\nClicca qui se vuoi tornare a lavorare con <i>tutte</i> le tue flashcard.",
     "flashcards-edit-card-list-EXPLANATION": "Qui puoi rivedere e modificare l'elenco <i>completo</i> delle tue flashcard",
-    "flashcards-add-cards-EXPLANATION": "Qui puoi aggiungere flashcard per qualsiasi nuova parola",
+    "flashcards-add-cards-EXPLANATION": "Qui puoi aggiungere nuove parole per i flashcard",
     "flashcards-translate-cards-EXPLANATION": "Esercitati con le flashcard: traduci le parole nella lingua che hai scelto",
-    "flashcards-quick-cards-EXPLANATION": "Clicca qui per flashcard veloci: non c'è bisogno di tradurre – rispondi solo \"Conosco questa parola\" o \"Non la conosco\"",
+    "flashcards-quick-cards-EXPLANATION": "Clicca qui per flashcard rapido: non c'è bisogno di tradurre – rispondi solo \"Conosco questa parola\" o \"Non la conosco\"",
     "progress-results-not-available": "Risultati non disponibili",
     "customize-lesson-configurations-EXPLAIN": "Clicca qui per configurare la lezione: su quali argomenti vuoi esercitarti?",
     "customize-story-practice-EXPLAIN": "Seleziona cosa vorresti praticare...",
@@ -1611,7 +1611,7 @@
     "group-exercise-summary": "Prestazioni dei esercizi",
     "group-vocab-summary": "Prestazioni del vocabolario",
     "group-test-summary": "Prestazioni dei test",
-    "select-lesson-themes-and-vocabulary": "Seleziona i temi della lezione",
+    "select-lesson-themes-and-vocabulary": "Scegli livello di vocabolario e temi della lezione",
     "Recommended vocabulary difficulty": "Raccomandato livello di difficoltà del vocabolario",
     "submit-chat-message": "Invia"
 }
