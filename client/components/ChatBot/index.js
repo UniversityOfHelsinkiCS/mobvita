@@ -295,17 +295,20 @@ const Chatbot = () => {
           {/******************* OUT OF feedback: allow CHATTING *******************/}
           {eloScoreHearts == 0 ?
            (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-              <input 
-                type="text" 
-                name="userInput" 
-                placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-                value={currentMessage} 
-                disabled={!validToChat || isWaitingForResponse}
-                onChange={(e) => setCurrentMessage(e.target.value)} 
-              />
-              <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
-                {isWaitingForResponse ? <Spinner animation="border" variant="white" size="sm" /> : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />}
-              </Button>
+                <input 
+                    type="text" 
+                    name="userInput" 
+                    placeholder={intl.formatMessage({id: 'enter-question-to-chatbot'})}
+                    value={currentMessage} 
+                    disabled={!validToChat || isWaitingForResponse}
+                    onChange={(e) => setCurrentMessage(e.target.value)} 
+                />
+                <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
+                    {isWaitingForResponse /* variant="info" variant="white" size="sm" */
+                     ? <Spinner animation="border" variant="warning" />
+                     : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
+                    }
+                </Button>
             </form>): (
               <Button primary onMouseDown={handlePreHints}>
                 <FormattedMessage id="ask-for-a-hint" />

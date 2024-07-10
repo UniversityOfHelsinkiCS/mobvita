@@ -34,12 +34,36 @@ import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
-
+import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
 import './LessonLibraryStyles.css';
+
+const StyledMark = (localizedMarkString) => 
+  (props) => {
+    const StyledMarkSpan = styled.span`
+      border-left: 7px solid transparent; 
+      border-right: 7px solid transparent; 
+      border-top: 7px solid #000; 
+      padding: 0;
+      &:hover::before {
+        content: "${localizedMarkString}" ;
+        position: absolute;
+        background-color: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.9;
+        z-index: 1;
+      }
+    `
+    return <StyledMarkSpan {...props} />
+  }
 
 const LessonList = () => {
   const intl = useIntl()
@@ -217,8 +241,8 @@ const LessonList = () => {
     dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
   }
 
-  const finnishSelectingSemantics = () => {
-    const payload = { semantic: selectedSemantics }
+  const finnishSelectingSemanticsAndVocabDiff = () => {
+    const payload = { semantic: selectedSemantics, vocab_diff: sliderValue }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
   }
@@ -229,12 +253,6 @@ const LessonList = () => {
 
   const handleSlider = value => {
     setSliderValue(value)
-  }
-
-  const finnishSelectingVocabularyDifficulty = () => {
-    const payload = { vocab_diff: sliderValue }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
   }
 
   const handleLibraryChange = library => {
@@ -328,6 +346,7 @@ const LessonList = () => {
     return 'white-slider';
   };
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`;
+  const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
   const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
       <h5>
@@ -350,7 +369,7 @@ const LessonList = () => {
           onAfterChange={value => handleSlider(value)}
           onSliderClick={value => handleSlider(value)}
           snapDragDisabled={false}
-          markClassName="personal_vocab_score_mark"
+          renderMark={markComp}
           marks={[roundToNearestHalfInt(vocabulary_score)]}
           min={0.8} // 0.8
           max={3.3} // 3.3
@@ -386,7 +405,7 @@ const LessonList = () => {
           onAfterChange={value => handleSlider(value)}
           onSliderClick={value => handleSlider(value)}
           snapDragDisabled={false}
-          markClassName="personal_vocab_score_mark"
+          renderMark={markComp}
           marks={[roundToNearestHalfInt(vocabulary_score)]}
           min={0.8} // 0.8
           max={3.3} // 3.3
@@ -449,7 +468,7 @@ const LessonList = () => {
       </div>
 
       {lessonGroups && (
-        <Accordion fluid styled>
+        <Accordion fluid styled style={{background: '#fffaf0'}}>
         {
           Object.keys(lessonGroups).sort().map((group, index) => (
             <>
@@ -520,7 +539,7 @@ const LessonList = () => {
              fontWeight: 500,
              margin: '18px', fontSize: 'large'
            }}>
-        <div class='col col-12'>
+        <div className='col col-12'>
         <FormattedMessage id="lessons-ready-for-practice" />
         {!customizeLessonConfigs && (
           <Popup
@@ -687,59 +706,36 @@ const LessonList = () => {
                     }}
                   >
                     <Step
-                      label={<FormattedMessage id="select-lesson-themes" />}
+                      label={<FormattedMessage id="select-lesson-themes-and-vocabulary" />}
                       active={goStep == 0}
                       completed={goStep > 0}
                       onClick={() => {
                         if (goStep == 1){
-                          finnishSelectingVocabularyDifficulty()
-                        }
-                        if (goStep == 2){
                           finnishSelectingTopics()
                         }
                         dispatch(setLessonStep(0))
                       }}
                     />
                     <Step
-                      label={<FormattedMessage id="select-lesson-vocab" />}
+                      label={<FormattedMessage id="select-lesson-grammar" />}
                       active={goStep == 1}
                       completed={goStep > 1}
                       onClick={() => {
                         if (goStep == 1){
-                          finnishSelectingVocabularyDifficulty()
-                        }
-                        if (goStep == 2){
                           finnishSelectingTopics()
                         }
                         dispatch(setLessonStep(1))
                       }}
                     />
                     <Step
-                      label={<FormattedMessage id="select-lesson-grammar" />}
+                      label={<FormattedMessage id="start-lesson-practice" />}
                       active={goStep == 2}
                       completed={goStep > 2}
                       onClick={() => {
                         if (goStep == 1){
-                          finnishSelectingVocabularyDifficulty()
-                        }
-                        if (goStep == 2){
                           finnishSelectingTopics()
                         }
                         dispatch(setLessonStep(2))
-                      }}
-                    />
-                    <Step
-                      label={<FormattedMessage id="start-lesson-practice" />}
-                      active={goStep == 3}
-                      completed={goStep > 3}
-                      onClick={() => {
-                        if (goStep == 1){
-                          finnishSelectingVocabularyDifficulty()
-                        }
-                        if (goStep == 2){
-                          finnishSelectingTopics()
-                        }
-                        dispatch(setLessonStep(3))
                       }}
                     />
                   </Stepper>
@@ -753,12 +749,9 @@ const LessonList = () => {
                     disabled={lessonPending || goStep >= 3}
                     onClick={() => {
                       if (goStep == 0){
-                        finnishSelectingSemantics()
+                        finnishSelectingSemanticsAndVocabDiff()
                       }
                       if (goStep == 1){
-                        finnishSelectingVocabularyDifficulty()
-                      }
-                      if (goStep == 2){
                         finnishSelectingTopics()
                       }
                       dispatch(setLessonStep(goStep + 1))
@@ -768,21 +761,21 @@ const LessonList = () => {
                 </div>
 
                 {(goStep === 0 || goStep === -1) && (
+                 <>
                   <div>
                     {lessonSemanticControls}
                   </div>
-                )}
-                {goStep === 1 && (
-                  <div>
+                  <div style={{marginTop: '20px'}}>
                     {lessonVocabularyControls}
                   </div>
+                 </>
                 )}
-                {goStep === 2 && (
+                {goStep === 1 && (
                   <div>
                     {lessonTopicsControls}
                   </div>
                 )}
-                {goStep === 3 && (
+                {goStep === 2 && (
                   <div>
                     {lessonStartControls}
                   </div>

@@ -894,7 +894,7 @@
     "encouragements-default-4": "做得好！",
     "show preview-HIDE-FOR-LATER": "高亮练习和难度",
     "have-a-break": "休息一下回到{link}",
-    "selected-lesson-themes": "选择课程主题",
+    "selected-lesson-themes": "选择课程内容主题",
     "select-lesson-themes": "选择课程主题",
     "select-lesson-vocab": "选择课程词汇难度",
     "select-lesson-grammar": "选择语法内容",
@@ -983,7 +983,10 @@
     "DDLANG-onboarding-message": "The following exercises will help you improve your English skills.  The first stage is reading comprehension — 20 short tasks.  We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks.\n\nYou don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off.\n\nAfter completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary.  You will get detailed instructions about these tasks when you are ready to start working on them.  Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "单击任意生词以获取翻译⇒ 该单词将保存至你的卡片中！",
     "lesson-group": "课程组{group}",
-    "group-exercise-summary": "Group Exercise Performance Summary",
-    "group-vocab-summary": "Group Vocabulary Performance Summary",
-    "group-test-summary": "Group Test Performance Summary"
+    "group-exercise-summary": "Exercise Performance Summary",
+    "group-vocab-summary": "Vocabulary Performance Summary",
+    "group-test-summary": "Test Performance Summary",
+    "select-lesson-themes-and-vocabulary": "选择课程内容主题和词汇难度",
+    "Recommended vocabulary difficulty": "Recommended vocabulary difficulty",
+    "submit-chat-message": "Send"
 }

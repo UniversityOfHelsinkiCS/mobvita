@@ -68,6 +68,7 @@ const CurrentSnippet = ({
     candidatesInCache,
     cachedSnippetIds,
     cacheSize,
+    cacheRequesting,
   } = snippets
   const {
     practiceFinished,
@@ -306,7 +307,7 @@ const CurrentSnippet = ({
         await dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
       }
     } else if (lastCachedSnippetKey !== 'endKey' && cacheSize < CACHE_LIMIT) {
-      const currentCandidates = attempt===0 && snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []
+      const currentCandidates = snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []
       const exclude_candidates = [...candidatesInCache, ...currentCandidates]
       await dispatch(
         cacheLessonSnippet(lessonId, groupId, exclude_candidates)
@@ -315,8 +316,8 @@ const CurrentSnippet = ({
   }
 
   useEffect(() => {
-    if (snippets.focused) fetchSnippet()
-  }, [lastCachedSnippetKey, cacheSize, snippets.focused?.snippetid])
+    if (snippets.focused && !cacheRequesting) fetchSnippet()
+  }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
 
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused

@@ -41,6 +41,7 @@ export default function Sidebar({ history }) {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
   const locale = useSelector(({ locale }) => locale)
+  const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const intl = useIntl()
@@ -252,7 +253,7 @@ export default function Sidebar({ history }) {
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
-                <Link to="/adaptive-test">
+                {hasAdaptiveTests && (<Link to="/adaptive-test">
                   <Button
                     variant="secondary"
                     style={{ 
@@ -267,7 +268,7 @@ export default function Sidebar({ history }) {
                     <Icon size="small" name="file alternate outline" bordered />{' '}
                     <FormattedMessage id="adaptive-test" />
                   </Button>
-                </Link>
+                </Link>)}
                 {hiddenFeatures && (
                   <>
                     <Link to="/test-construction">
