@@ -32,7 +32,7 @@ const ReadingTestMC = ({ exercise, onAnswer, answerPending, showFeedbacks, showC
                         <div
                             className="test-question"
                             dangerouslySetInnerHTML={sanitizeHtml(question)}
-                            style={{ fontSize: '1.3em' }}
+                            style={{ fontSize: '1.3em', paddingTop: "0", margin: "0 0 0 0" }}
                         />
                     )}
                     {choices && (

@@ -20,6 +20,9 @@ import ReadingTestFeedbacks from './ReadingTestFeedbacks'
 import ReadingTestSelfReflect from '././ReadingTestSelfReflect'
 import ReadingTestElicationDialog from '././ReadingTestElicitationDialog'
 import ReadingTestNextSetDialog from '././ReadingTestNextSetDialog'
+import {
+  getReadingTestQuestions,
+} from 'Utilities/redux/testReducer'
 
 
 const ReadingTest = () => {
@@ -88,6 +91,10 @@ const ReadingTest = () => {
       dispatch(nextReadingTestQuestion())
     }
   }
+
+  const restartTest = () => {
+    dispatch(getReadingTestQuestions(learningLanguage, false));
+  };
 
   const goToHomePage = () => {
     history.push('/home')
@@ -321,7 +328,7 @@ const ReadingTest = () => {
 
               {feedbacks.length > 0 && (
                 <Button
-                  className="show-reading-feedbacks-button"
+                  className="show-reading-feedbacks-button btn-secondary"
                   style={{ marginLeft: 'auto' }}
                   onClick={() => setShowFeedbacks(true)}
                   disabled={showFeedbacks}
@@ -334,7 +341,7 @@ const ReadingTest = () => {
 
               {questionDone && (
                 <Button
-                  className="next-reading-question-button"
+                  className="next-reading-question-button btn-secondary"
                   style={{ marginLeft: '0.5em' }}
                   onClick={() => nextQuestion()}
                   disabled={!questionDone || showFeedbacks } // || currentReadingQuestionIndex === readingTestQuestions.length - 1
@@ -368,6 +375,18 @@ const ReadingTest = () => {
                   <Spinner animation="border" variant="info" size="lg" />
                 </div>
               )}
+            </div>
+            <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
+              <Button
+                className="restart-reading-test-button btn-secondary"
+                style={{ marginRight: 'auto', marginTop: '1rem' }}
+                onClick={() => restartTest()}
+                disabled={showFeedbacks}
+              >
+                <span>
+                  <FormattedMessage id="restart-reading-test" />
+                </span>
+              </Button>
             </div>
           </div>
         </div>

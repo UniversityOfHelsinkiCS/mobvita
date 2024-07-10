@@ -237,6 +237,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
                         disabled={self_reflection_questions.length==0 || current == 0}
+                        style={{ fontSize: '2.5em' }}
                     >
                         <Icon
                             className='left-arrow'
@@ -295,6 +296,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
                         disabled={self_reflection_questions.length==0 || current == self_reflection_questions.length - 1}
+                        style={{ fontSize: '2.5em' }}
                     >
                         <Icon
                             className='right-arrow'

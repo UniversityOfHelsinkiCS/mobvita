@@ -69,6 +69,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
                         disabled={filteredSlides.length==0}
+                        style={{ fontSize: '2.5em' }}
                     >
                         <Icon
                             className='left-arrow'
@@ -117,6 +118,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
                         disabled={filteredSlides.length==0}
+                        style={{ fontSize: '2.5em' }}
                     >
                         <Icon
                             className='right-arrow'

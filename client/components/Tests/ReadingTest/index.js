@@ -25,7 +25,7 @@ const ReadingTestView = () => {
   const bigScreen = useWindowDimension().width >= 650
 
   useEffect(() => {
-    dispatch(getReadingTestQuestions(learningLanguage))
+    dispatch(getReadingTestQuestions(learningLanguage, true))
   }, [dispatch, learningLanguage])
   
   if (pending) {
