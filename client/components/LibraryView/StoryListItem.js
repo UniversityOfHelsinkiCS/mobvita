@@ -144,12 +144,12 @@ const StoryFunctionsDropdown = ({
               className='library-tour-mobile-review-button'
             />
           )}
-          {/* {!isTeacher && (<Dropdown.Item
+          {!isTeacher && (<Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
             to={`/flashcards/fillin/story/${story._id}/`}
             icon="lightning"
-          />)} */}
+          />)}
           {!isTeacher && (<Dropdown.Item
             text={<FormattedMessage id="compete" />}
             as={Link}
@@ -195,14 +195,16 @@ const StoryActions = ({
           </Link>
         )}
 
-        {/* <Link to={`/flashcards/fillin/story/${story._id}/`}>
+        {!isTeacher && (
+          <Link to={`/flashcards/fillin/story/${story._id}/`}>
           <Button
-            variant={teacherInGroupView ? 'secondary' : 'primary'}
+            variant='primary'
             disabled={enableOnlyPractice}
           >
             <FormattedMessage id="Flashcards" />
           </Button>
-        </Link> */}
+        </Link>
+        )}
         {isTeacher && (inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/preview`}>
             <Button
