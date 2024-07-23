@@ -1139,7 +1139,7 @@
     "click-to-remove-exercise": "Click to remove this exercise",
     "click-to-add-exercise": "Click to add this exercise",
     "create-controlled-exercise": "Create controlled story",
-    "controlled-story-saved": "Tailored story saved successfully",
+    "controlled-story-saved": "Tailored story saved!",
     "refresh": "Refresh",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Regenerate exercises",
@@ -1525,7 +1525,7 @@
     "encouragements-default-4": "Great job!",
     "have-a-break": "Have a break and go to {link} page",
     "show preview-HIDE-FOR-LATER": "Highlight exercises and difficulty levels",
-    "selected-lesson-themes": "Selected Lesson Themes",
+    "selected-lesson-themes": "Lesson Themes",
     "select-lesson-themes": "Select lesson themes",
     "select-lesson-vocab": "Choose level of vocabulary for lesson",
     "select-lesson-grammar": "Select grammar topics",
@@ -1615,5 +1615,8 @@
     "group-test-summary": "Test Performance Summary",
     "select-lesson-themes-and-vocabulary": "Select lesson themes and level of vocabulary for lesson",
     "Recommended vocabulary difficulty": "Recommended vocabulary difficulty",
-    "submit-chat-message": "Send"
+    "submit-chat-message": "Send",
+    "click-here-to-configure-lesson": "Click here to configure your lesson →",
+    "restart-reading-test": "Restart Test",
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards"
 }

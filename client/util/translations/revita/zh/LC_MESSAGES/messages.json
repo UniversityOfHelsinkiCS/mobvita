@@ -83,7 +83,7 @@
     "Send": "发送",
     "click-to-add-exercise": "点击参与练习",
     "click-to-remove-exercise": "点击删除练习",
-    "controlled-story-saved": "测试保存成功",
+    "controlled-story-saved": "测试文本成功保存",
     "freeze-snippet": "保存段落",
     "freeze-and-save-control-story": "保存段落和测试文本",
     "regenerate-exercises": "重新生成练习",
@@ -988,5 +988,8 @@
     "group-test-summary": "Test Performance Summary",
     "select-lesson-themes-and-vocabulary": "选择课程内容主题和词汇难度",
     "Recommended vocabulary difficulty": "Recommended vocabulary difficulty",
-    "submit-chat-message": "Send"
+    "submit-chat-message": "Send",
+    "click-here-to-configure-lesson": "Click here to configure your lesson →",
+    "restart-reading-test": "Restart Test",
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards"
 }

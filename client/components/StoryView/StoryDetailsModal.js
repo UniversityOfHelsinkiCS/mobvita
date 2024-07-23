@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Modal, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -72,17 +72,27 @@ const StoryDetailsModal = ({
       <Modal.Actions>
         <div>
           <div className="flex wrap" style={{ gap: '5px' }}>
-            {!isTeacher && (<LinkButton
+            {!isTeacher && !story.flashcardOnly && (<LinkButton
               variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
               to={`/stories/${story._id}/preview`}
               translationId="practice"
             />)}
             {!enableOnlyPractice && (
               <>
-                {!isTeacher && (<LinkButton
-                  variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
-                  to={`/flashcards/fillin/story/${story._id}/`}
-                  translationId="Flashcards"
+                {!isTeacher && (<Popup
+                  content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+                  trigger={ 
+                    <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                      <Button
+                        variant='primary'
+                        disabled={enableOnlyPractice || story.flashcard_count === 0}
+                      >
+                        <FormattedMessage id="Flashcards" />
+                      </Button>
+                    </Link>
+                  }
+                  disabled={story.flashcard_count > 0}
+                  position="top center"
                 />)}
                 {isTeacher && inGroupLibrary ? (
                   <LinkButton

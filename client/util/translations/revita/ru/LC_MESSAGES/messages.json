@@ -1141,7 +1141,7 @@
     "click-to-remove-exercise": "Удалить упражнение",
     "click-to-add-exercise": "Добавить упражнение",
     "create-controlled-exercise": "Создать контрольный текст",
-    "controlled-story-saved": "Контрольная история успешно сохранена",
+    "controlled-story-saved": "Контрольный текст сохранен!",
     "refresh": "Обновить",
     "save-and-go-to-next-snippet": "Save chosen exercises and go to next snippet",
     "regenerate-exercises": "Обновить упражнения",
@@ -1525,7 +1525,7 @@
     "encouragements-default-4": "Отличная работа!",
     "show preview-HIDE-FOR-LATER": "Показать упражнения и уровни сложности",
     "have-a-break": "Сделать перерыв и перейти на страницу {link}",
-    "selected-lesson-themes": "Выбранные темы урока",
+    "selected-lesson-themes": "Темы урока",
     "select-lesson-themes": "Выбери темы урока",
     "select-lesson-vocab": "Выбери сложность лексики для урока",
     "select-lesson-grammar": "Выбери грамматические темы",
@@ -1542,7 +1542,7 @@
     "next-reading-question": "Следующее упражнение",
     "reset-lesson-message": "Настроить урок",
     "Reset Lesson": "Настроить урок",
-    "lessons-ready-for-practice": "Урок готов для практики!",
+    "lessons-ready-for-practice": "Настроить урок →",
     "start-practice-lesson": "Начать урок!",
     "practice-button-story-mode": "Начать практику!",
     "continue-streak-explanation": "Ударный режим показывает, сколько дней подряд ты занимаешься!",
@@ -1616,5 +1616,8 @@
     "group-test-summary": "Итог по тестам",
     "select-lesson-themes-and-vocabulary": "Выбери темы и сложность лексики для урока",
     "Recommended vocabulary difficulty": "Рекомендуемая словарная сложность",
-    "submit-chat-message": "Послать"
+    "submit-chat-message": "Послать",
+    "click-here-to-configure-lesson": "Настроить урок →",
+    "restart-reading-test": "Restart Test",
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards"
 }

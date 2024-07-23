@@ -40,6 +40,7 @@ const StoryTitle = ({
       trigger={
         <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
+          {story.flashcardsOnly && (<Icon size="small" name="question" bordered />)}
           <h5
             className="story-item-title"
             style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
@@ -117,7 +118,7 @@ const StoryFunctionsDropdown = ({
         trigger={<React.Fragment />}
       >
         <Dropdown.Menu className="story-item-dropdown">
-          {!isTeacher && (
+          {!isTeacher && !story.flashcardsOnly && (
             <Dropdown.Item
               text={<FormattedMessage id="practice" />}
               as={Link}
@@ -144,7 +145,7 @@ const StoryFunctionsDropdown = ({
               className='library-tour-mobile-review-button'
             />
           )}
-          {!isTeacher && (<Dropdown.Item
+          {!isTeacher && story.flashcard_count && (<Dropdown.Item
             text={<FormattedMessage id="Flashcards" />}
             as={Link}
             to={`/flashcards/fillin/story/${story._id}/`}
@@ -187,7 +188,7 @@ const StoryActions = ({
   if (width >= 700) {
     return (
       <div className="story-actions">
-        {!isTeacher && (
+        {!isTeacher && !story.flashcardsOnly && (
           <Link to={practiceLink}>
             <Button className='library-tour-practice-button' variant='primary'>
               <FormattedMessage id="practice" />
@@ -195,16 +196,21 @@ const StoryActions = ({
           </Link>
         )}
 
-        {!isTeacher && (
-          <Link to={`/flashcards/fillin/story/${story._id}/`}>
-          <Button
-            variant='primary'
-            disabled={enableOnlyPractice}
-          >
-            <FormattedMessage id="Flashcards" />
-          </Button>
-        </Link>
-        )}
+        {!isTeacher && (<Popup
+          content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+          trigger={
+            <Link to={`/flashcards/fillin/story/${story._id}/`}>
+              <Button
+                variant='primary'
+                disabled={enableOnlyPractice || story.flashcard_count === 0}
+              >
+                <FormattedMessage id="Flashcards" />
+              </Button>
+            </Link>
+          }
+          disabled={story.flashcard_count > 0}
+          position="top center"
+        />)}
         {isTeacher && (inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/preview`}>
             <Button
