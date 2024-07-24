@@ -72,7 +72,7 @@ const StoryDetailsModal = ({
       <Modal.Actions>
         <div>
           <div className="flex wrap" style={{ gap: '5px' }}>
-            {!isTeacher && !story.flashcardOnly && (<LinkButton
+            {!isTeacher && !story.flashcardsOnly && (<LinkButton
               variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
               to={`/stories/${story._id}/preview`}
               translationId="practice"
@@ -94,6 +94,7 @@ const StoryDetailsModal = ({
                   disabled={story.flashcard_count > 0}
                   position="top center"
                 />)}
+                {!story.flashcardsOnly && (<>
                 {isTeacher && inGroupLibrary ? (
                   <LinkButton
                     variant="primary"
@@ -139,6 +140,7 @@ const StoryDetailsModal = ({
                     <FormattedMessage id="Crossword" />
                   </Button>
                 </Link>)}
+                </>)}
               </>
             )}
           </div>

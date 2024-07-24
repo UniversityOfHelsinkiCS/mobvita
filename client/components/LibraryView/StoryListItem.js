@@ -40,7 +40,6 @@ const StoryTitle = ({
       trigger={
         <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
-          {story.flashcardsOnly && (<Icon size="small" name="question" bordered />)}
           <h5
             className="story-item-title"
             style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
@@ -211,6 +210,7 @@ const StoryActions = ({
           disabled={story.flashcard_count > 0}
           position="top center"
         />)}
+        { !story.flashcardsOnly && (<>
         {isTeacher && (inGroupLibrary ? (
           <Link to={`/stories/${story._id}/group/preview`}>
             <Button
@@ -263,6 +263,7 @@ const StoryActions = ({
               <FormattedMessage id="Crossword" />
             </Button>
           </Link>
+        )}</>
         )}
       </div>
     )
@@ -295,7 +296,7 @@ const GroupsSharedTo = ({ groups }) => {
             </ul>
           </div>
         }
-        trigger={<Icon size="large" color="black" name="users" />}
+        trigger={<Icon size="large" color="black" name="users" style={{marginRight: '10px'}} />}
       />
     </div>
   )
@@ -357,6 +358,8 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           isTeacher={isTeacher}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
+          {story.flashcardsOnly && (<Icon size="small" name="question" bordered style={{marginRight: '10px'}}/>)}
+
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
           {uploadUnfinished && (
@@ -366,7 +369,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
                 content={<FormattedMessage id="story-not-yet-processed" />}
                 trigger={
                   <div>
-                    <Icon name="hourglass half" color="black" />
+                    <Icon name="hourglass half" color="black" style={{marginRight: '10px'}}/>
                   </div>
                 }
               />
@@ -379,7 +382,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
               content={<FormattedMessage id="timed-practice-explanation" />}
               trigger={
                 <div>
-                  <Icon color="black" name="clock outline" />
+                  <Icon color="black" name="clock outline" style={{marginRight: '10px'}}/>
                 </div>
               }
             />
@@ -390,7 +393,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
               content={<FormattedMessage id="comments-on-story-explanation" />}
               trigger={
                 <div>
-                  <Icon color="black" name="comments" />
+                  <Icon color="black" name="comments" style={{marginRight: '10px'}}/>
                 </div>
               }
             />
@@ -403,7 +406,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
                 content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
                 trigger={
                   <div>
-                    <Icon color="black" name="envelope outline" />
+                    <Icon color="black" name="envelope outline" style={{marginRight: '10px'}}/>
                   </div>
                 }
               />
@@ -416,7 +419,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
               content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
               trigger={
                 <div>
-                  <Icon color="black" name="envelope outline" />
+                  <Icon color="black" name="envelope outline" style={{marginRight: '10px'}}/>
                 </div>
               }
             />
