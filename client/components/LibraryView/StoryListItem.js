@@ -26,7 +26,7 @@ const StoryTitle = ({
   const {user, teacherView} = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
   const isControlledStory = !!story?.control_story
-  const showDeleteButton = libraryShown.private || teacherView
+  const showDeleteButton = libraryShown.private || !libraryShown.public && teacherView
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     teacherView && !isControlledStory && story.user === user?.oid
@@ -87,6 +87,16 @@ const StoryFunctionsDropdown = ({
   inGroupLibrary,
   enableOnlyPractice,
   }) => {
+  if (story.flashcardsOnly) return (
+    <SemanticButton
+      as={Link}
+      to={`/flashcards/fillin/story/${story._id}/`}
+      style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+    >
+      <FormattedMessage id="Flashcard" />
+    </SemanticButton>
+  )
+  
   return (
     <SemanticButton.Group className='library-tour-mobile-practice-button'>
       {teacherInGroupView ? (
@@ -413,7 +423,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
             </>
           )}
 
-          {!libraryShown.group && story?.sharedwith?.includes(userId) && (
+          {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
             <Popup
               basic
               content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
