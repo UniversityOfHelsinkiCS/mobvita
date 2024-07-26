@@ -16,7 +16,7 @@ export const Speaker = ({ word }) => {
     const [lastWord, setLastWord] = useState('')
   
     const handleSpeakerClick = () => {
-      speak(word, voice, 'dictionary', resource_usage, count)
+      speak(word, voice, 'dictionary', resource_usage)
       if (lastWord === ''){
         setCount(count + 1)
         setLastWord(word)
