@@ -1617,5 +1617,6 @@
     "submit-chat-message": "Lähetä",
     "click-here-to-configure-lesson": "Muokkaa tästä oppituntisi →",
     "restart-reading-test": "Restart Test",
-    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards"
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards",
+    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!"
 }

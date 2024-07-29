@@ -73,6 +73,10 @@ export const saveSelf = changes => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const saveSelfIntermediate = changes => (
+  {type: 'SAVE_SELF_INTERMEDIATE', changes}
+)
+
 const saveConceptSetting = changes => {
   const route = '/user/'
   const prefix = 'SAVE_USER_CONCEPTS'
@@ -286,6 +290,18 @@ export default (state = { data: null, learningLanguageChanged: false }, action) 
         pending: false,
         error: false,
         refreshed: true,
+      }
+
+    case 'SAVE_SELF_INTERMEDIATE':
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          user: {
+            ...state.data.user,
+            ...action.changes,
+          }
+        },
       }
     
     case 'SAVE_USER_CONCEPTS_SUCCESS':

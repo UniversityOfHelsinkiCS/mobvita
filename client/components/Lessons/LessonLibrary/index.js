@@ -40,6 +40,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
 import './LessonLibraryStyles.css';
+import { set } from 'lodash'
 
 const StyledMark = (localizedMarkString) => 
   (props) => {
@@ -88,7 +89,7 @@ const LessonList = () => {
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
 
-  const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
+  const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
@@ -108,7 +109,7 @@ const LessonList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLessons, setFilteredLessons] = useState(lessons);
   const [customizeLessonConfigs, setCustomizeLessonConfigs] = useState(false);
-  const [accordionState, setAccordionState] = useState(-1)
+  const [accordionState, setAccordionState] = useState(0)
 
   // const [lesson2info, setLesson2info] = useState({})
 
@@ -164,7 +165,10 @@ const LessonList = () => {
     if (!lessonPending) {
         setSliderValue(vocab_diff)
         if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
-          dispatch(setLessonStep(3))
+          dispatch(setLessonStep(2))
+        }
+        else if (goStep == -1 && (libraries.private || teacherView && libraries.group)) {
+          dispatch(setLessonStep(0))
         }
     }
     
@@ -178,6 +182,17 @@ const LessonList = () => {
     }
     
   }, [lessonPending, metaPending])
+
+  useEffect(() => {
+    if (!groupPending && groups.length === 0 && libraries.group) {
+      setLibrary('private')
+    }
+  }, [groupPending])
+
+  useEffect(() => {
+    if (userPending && (libraries.group && savedLibrarySelection === 'private' || 
+      libraries.private && savedLibrarySelection === 'group')) setLibrary(savedLibrarySelection)
+  }, [savedLibrarySelection])
 
   useEffect(() => {
     // Filter lessons based on search query
@@ -260,7 +275,7 @@ const LessonList = () => {
     setLibrary(library)
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
-    dispatch(setLessonStep(0))
+    dispatch(setLessonStep(-1))
   }
 
   const groupDropdownOptions = groups.map(group => ({
@@ -274,7 +289,7 @@ const LessonList = () => {
     dispatch(updateGroupSelect(option.value))
     dispatch(clearLessonInstanceState())
     dispatch(getLessonInstance(option.value))
-    dispatch(setLessonStep(0))
+    dispatch(setLessonStep(-1))
   }
 
   const lessonSemanticControls = (
@@ -530,30 +545,20 @@ const LessonList = () => {
   }
 
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
+  const lessonReady = selectedSemantics && selectedSemantics.length > 0 && selectedTopicIds && selectedTopicIds.length > 0
+  const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (
     <Container>
       <div 
         className='row justify-center align-center'
         style={{
-             color: '#0088CB', textAlign: 'center',
+             color: `${lessonReadyColor}`, textAlign: 'center',
              fontWeight: 500,
              margin: '18px', fontSize: 'large'
            }}>
         <div className='col col-12'>
-        <FormattedMessage id="lessons-ready-for-practice" />
-        {!customizeLessonConfigs && (
-          <Popup
-            content={intl.formatMessage({ id: 'customize-lesson-configurations-EXPLAIN' })}
-            trigger={
-              <Icon 
-                name="cog" // size="small" 
-                style={{ cursor: 'pointer', marginLeft: '1em' }} 
-                onClick={handleCustomizeLessonCofigCogClick}
-              />
-            }
-            inverted // Optional for inverted dark style
-          />
-        )}
+        {!lessonPending && lessonReady ? <FormattedMessage id="lessons-ready-for-practice" />
+        : <FormattedMessage id="lessons-not-ready-for-practice" />}
         </div>
       </div>
       <div className='row justify-center align-center space-between' style={{ 'display': 'flex' }}>
@@ -662,7 +667,7 @@ const LessonList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
 
-      {metaPending ? (
+      {metaPending || groupPending ? (
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
@@ -675,7 +680,8 @@ const LessonList = () => {
           <>
             <div className="library-selection">
               <LibraryTabs
-                values={Object.fromEntries(Object.entries(libraries).filter(([key]) => key!== 'private' || !teacherView))}
+                values={Object.fromEntries(Object.entries(libraries).filter(([key]) => 
+                  (key === 'private' && !teacherView) || (key === 'group' && (teacherView || groups.length > 0))))}
                 additionalClass="wrap-and-grow align-center pt-sm"
                 onClick={handleLibraryChange}
                 reverse
@@ -691,7 +697,7 @@ const LessonList = () => {
               )}
             </div>
 
-            {!customizeLessonConfigs ? (
+            {libraries.group && !teacherView ? (
               <div>
                 {lessonStartControls}
               </div>
@@ -746,7 +752,8 @@ const LessonList = () => {
                       cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
                         ? 'not-allowed' : 'pointer'
                     }}
-                    disabled={lessonPending || goStep >= 3}
+                    disabled={lessonPending || goStep >= 2 || selectedSemantics && selectedSemantics.length === 0 && goStep == 0 || 
+                      selectedTopicIds && selectedTopicIds.length === 0 && goStep == 1}
                     onClick={() => {
                       if (goStep == 0){
                         finnishSelectingSemanticsAndVocabDiff()
@@ -759,8 +766,12 @@ const LessonList = () => {
                     <FormattedMessage id="next-step" />
                   </Button>
                 </div>
-
-                {(goStep === 0 || goStep === -1) && (
+                {lessonPending && goStep === -1 && (
+                  <Placeholder>
+                    <Placeholder.Line />
+                  </Placeholder>
+                )}
+                {(goStep === 0 || !lessonPending && goStep === -1) && (
                  <>
                   <div>
                     {lessonSemanticControls}

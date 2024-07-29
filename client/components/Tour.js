@@ -5,6 +5,7 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
 import { getLessonInstance, setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
+import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -23,7 +24,8 @@ const Tour = () => {
   const history = useHistory()
 
   const bigScreen = useWindowDimensions().width >= 700
-
+  const { pending: userPending, data: userData } = useSelector(({ user }) => user)
+  const { teacherView, user } = userData
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
   const callback = data => {
@@ -103,22 +105,24 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
+          console.log('lessons tour steps')
           if (!metaPending && !lessonPending && lesson.topic_ids.length === 0) {
             const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           switch (index) {
             case 0:
+              if (!teacherView) {
+                dispatch(updateLibrarySelect('private'))
+                dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+              }
               dispatch(setLessonStep(0))
               break
-            case 1:
+            case 2:
               dispatch(setLessonStep(1))
               break
-            case 2:
-              dispatch(setLessonStep(2))
-              break
             case 5:
-              dispatch(setLessonStep(3))
+              dispatch(setLessonStep(2))
               break
             // case 8:
             //   const currentPath = history.location.pathname
@@ -217,22 +221,24 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
+          console.log('lessons tour steps')
           if (!metaPending && lesson.topic_ids.length === 0) {
             const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           switch (index) {
             case 0:
+              if (!teacherView) {
+                dispatch(updateLibrarySelect('private'))
+                dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+              }
               dispatch(setLessonStep(0))
               break
-            case 1:
+            case 2:
               dispatch(setLessonStep(1))
               break
-            case 2:
-              dispatch(setLessonStep(2))
-              break
             case 5:
-              dispatch(setLessonStep(3))
+              dispatch(setLessonStep(2))
               break
             // case 8:
             //   const currentPath = history.location.pathname
