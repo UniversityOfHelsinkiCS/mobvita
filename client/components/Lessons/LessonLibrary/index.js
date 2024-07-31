@@ -195,6 +195,10 @@ const LessonList = () => {
   }, [savedLibrarySelection])
 
   useEffect(() => {
+    if (teacherView) handleLibraryChange('group')
+  }, [teacherView])
+
+  useEffect(() => {
     // Filter lessons based on search query
     if (searchQuery){
       const filtered = lessons.filter(lesson => {

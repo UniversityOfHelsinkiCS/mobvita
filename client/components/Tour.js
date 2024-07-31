@@ -4,7 +4,12 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
-import { getLessonInstance, setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
+import { 
+  getLessonInstance, 
+  setLessonInstance, 
+  setLessonStep, 
+  clearLessonInstanceState 
+} from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -105,16 +110,17 @@ const Tour = () => {
         }
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
-          console.log('lessons tour steps')
           if (!metaPending && !lessonPending && lesson.topic_ids.length === 0) {
             const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           switch (index) {
             case 0:
-              if (!teacherView) {
+              if (!teacherView && user.last_selected_library !== 'private') {
                 dispatch(updateLibrarySelect('private'))
                 dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+                dispatch(clearLessonInstanceState())
+                dispatch(getLessonInstance(null))
               }
               dispatch(setLessonStep(0))
               break
@@ -221,16 +227,17 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
-          console.log('lessons tour steps')
           if (!metaPending && lesson.topic_ids.length === 0) {
             const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
           switch (index) {
             case 0:
-              if (!teacherView) {
+              if (!teacherView && user.last_selected_library !== 'private') {
                 dispatch(updateLibrarySelect('private'))
                 dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+                dispatch(clearLessonInstanceState())
+                dispatch(getLessonInstance(null))
               }
               dispatch(setLessonStep(0))
               break
