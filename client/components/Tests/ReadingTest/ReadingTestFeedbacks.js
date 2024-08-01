@@ -7,8 +7,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 
-
-
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
     const { feedbacks } = useSelector(({ tests }) => tests);
     const [current, setCurrent] = useState(0);

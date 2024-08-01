@@ -14,6 +14,8 @@ import moment from 'moment'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import ReadingTest from './ReadingTest'
+import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
+
 
 const ReadingTestView = () => {
   const dispatch = useDispatch()
@@ -23,6 +25,7 @@ const ReadingTestView = () => {
     ({ tests }) => tests
   )
   const bigScreen = useWindowDimension().width >= 650
+  const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
 
   useEffect(() => {
     dispatch(getReadingTestQuestions(learningLanguage, true))
@@ -34,8 +37,20 @@ const ReadingTestView = () => {
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
+      {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
       <div className="grow ps-nm flex-col gap-row-sm">
         {readingTestSessionId && <ReadingTest />}
+        <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
+          <Button
+            className="show-ddlang-introductory-button btn-secondary"
+            style={{ marginRight: 'auto', marginTop: '1rem' }}
+            onClick={() => setShowDDLangIntroductory(true)}
+          >
+            <span>
+              <FormattedMessage id="show-ddlang-introductory" />
+            </span>
+          </Button>
+        </div>
       </div>
     </div>
   )

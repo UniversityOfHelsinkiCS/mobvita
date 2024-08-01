@@ -13,12 +13,14 @@ import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
 import { startTour } from 'Utilities/redux/tourReducer'
-import { homeTourViewed } from 'Utilities/redux/userReducer'
+import { homeTourViewed, ddlangIntroductoryViewed } from 'Utilities/redux/userReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
+import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
+
 
 const HomeviewButton = ({imgSrc, altText,
                          translationKey, handleClick,
@@ -286,6 +288,8 @@ const HomeView = () => {
   const homeView = history.location.pathname.endsWith('/home')
   const showDAModal = open && homeView && !userIsAnonymous
   const showWelcomeModal = open && welcomeView && !userIsAnonymous && !userData.is_new_user
+  const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
+
   useEffect(() => {
     dispatch(getGroups())
     if (showDAModal && !showWelcomeModal) {
@@ -316,10 +320,18 @@ const HomeView = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!user.user.has_seen_ddlang_introductory && user.user.last_used_language == "English") {
+      dispatch(ddlangIntroductoryViewed())
+      setShowDDLangIntroductory(true)
+    }
+  }, [])
+
   const homeviewButtonsContainerClassName = user?.user.is_teacher && user?.teacherView ? "pn-nm" : "flex pb-nm"
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
+      {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <BetaLanguageModal
