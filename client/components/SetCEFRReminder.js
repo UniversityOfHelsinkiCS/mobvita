@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { updateUserGrade, updateIsTeacher } from 'Utilities/redux/userReducer'
+import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer'
 import CERFLevelSlider from './CEFRLevelSlider'
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
@@ -17,6 +17,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   // const lastUsedLanguage = user.user.last_used_language
 
   const closeModal = () => {
+    if (newUser) dispatch(updateToNonNewUser())
     setOpen(false)
     /*
     if (newUser) {
