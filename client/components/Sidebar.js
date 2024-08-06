@@ -201,7 +201,8 @@ export default function Sidebar({ history }) {
                   onClick={() => setPracticeModalOpen(true)}
                   block
                 >
-                  <Icon name="user" /> <FormattedMessage id="practice-now" />
+                  <Icon name="flag checkered" OLD="user" />
+                  <FormattedMessage id="practice-now" />
                 </Button>
                 <Link to="/library">
                   <Button
@@ -233,7 +234,9 @@ export default function Sidebar({ history }) {
                     
                     block
                   >
-                    <Icon size="small" name="calendar check outline" bordered />{' '}
+                    <Icon oldsize="small" old="calendar check outline / bordered"
+                          name="file alternate"/>
+                      {' '}
                     <FormattedMessage id="Lessons" />
                   </Button>
                 </Link>
@@ -249,7 +252,7 @@ export default function Sidebar({ history }) {
                   }}
                     block
                   >
-                    <Icon size="small" name="question" bordered />{' '}
+                    <Icon oldsize="small / bordered" name="clone outline" OLD="question" />{' '}
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
@@ -265,7 +268,7 @@ export default function Sidebar({ history }) {
                   }}
                     block
                   >
-                    <Icon size="small" name="file alternate outline" bordered />{' '}
+                    <Icon OLDsize="small / bordered" name="trophy" />{' '}
                     <FormattedMessage id="adaptive-test" />
                   </Button>
                 </Link>)}
@@ -346,7 +349,7 @@ export default function Sidebar({ history }) {
               block
               data-cy="navbar-settings-button"
             >
-              <Icon size="small" name="settings" bordered />{' '}
+              <Icon OLDsize="small / bordered" name="settings" />{' '}
               <FormattedMessage id="Settings" />
             </Button>
           </Link>

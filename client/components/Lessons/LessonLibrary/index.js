@@ -302,6 +302,7 @@ const LessonList = () => {
         <FormattedMessage id="select-lesson-semantic-topic" />:
       </h5>
       <div className="group-buttons sm lesson-story-topic">
+          <div style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
         {lesson_semantics &&
           lesson_semantics.map(semantic => (
             <Button
@@ -324,6 +325,7 @@ const LessonList = () => {
               {semantic}
             </Button>
           ))}
+        </div>
       </div>
     </div>
   )
@@ -777,12 +779,13 @@ const LessonList = () => {
                 )}
                 {(goStep === 0 || !lessonPending && goStep === -1) && (
                  <>
-                  <div>
-                    {lessonSemanticControls}
-                  </div>
-                  <div style={{marginTop: '20px'}}>
-                    {lessonVocabularyControls}
-                  </div>
+                     <div style={{marginTop: '40px'}}>
+                         {lessonSemanticControls}
+                     </div>
+                     <hr/>
+                     <div style={{marginTop: '40px'}}>
+                         {lessonVocabularyControls}
+                     </div>
                  </>
                 )}
                 {goStep === 1 && (
