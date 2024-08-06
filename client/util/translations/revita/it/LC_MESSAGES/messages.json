@@ -1616,8 +1616,8 @@
     "submit-chat-message": "Invia",
     "click-here-to-configure-lesson": "Configurare la lezione →",
     "restart-reading-test": "Restart Test",
-    "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on some words to create flashcards!",
-    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!",
-    "no-lessons-found": "Lessons are not configured for this language ...",
-    "story-group": "Difficulty {group}"
+    "disabled-flashcard-btn-explanation": "Questa storia non ha ancora delle flashcard: clicca sulle parole sconosciute nella storia per creare delle flashcard!",
+    "lessons-not-ready-for-practice": "La lezione non è ancora configurata per la pratica!",
+    "no-lessons-found": "Le lezioni non sono ancora configurate...",
+    "story-group": "Livello {group}"
 }

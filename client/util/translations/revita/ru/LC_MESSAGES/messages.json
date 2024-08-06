@@ -1619,8 +1619,8 @@
     "submit-chat-message": "Послать",
     "click-here-to-configure-lesson": "Настроить урок →",
     "restart-reading-test": "Restart Test",
-    "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on some words to create flashcards!",
-    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!",
-    "no-lessons-found": "Lessons are not configured for this language ...",
-    "story-group": "Difficulty {group}"
+    "disabled-flashcard-btn-explanation": "В этом тексте еще нет карточек — нажми на незнакомые слова в тексте, чтобы создать карточки!",
+    "lessons-not-ready-for-practice": "Урок еще не настроен для практики!",
+    "no-lessons-found": "Уроки еще не настроены...",
+    "story-group": "Уровень {group}"
 }

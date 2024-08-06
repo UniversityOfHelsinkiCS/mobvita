@@ -1407,7 +1407,7 @@
     "continue-practice": "Practice lesson",
     "lesson-story-topic": "Lesson setup",
     "start-practice-lesson": "Begin practice",
-    "select-lesson-semantic-topic": "Choose lesson themes",
+    "select-lesson-semantic-topic": "Choose themes for lesson",
     "lesson-activities": "Activities",
     "no-available-exercise": "We have run out of exercises on these topics at the moment.  Please upload more texts, which contain these topics—or ask your teacher to upload more texts.  Revita will create more exercises as soon as the texts are uploaded!",
     "next-exercise-batch": "Next batch of exercises!",
@@ -1613,13 +1613,13 @@
     "group-exercise-summary": "Exercise Performance Summary",
     "group-vocab-summary": "Vocabulary Performance Summary",
     "group-test-summary": "Test Performance Summary",
-    "select-lesson-themes-and-vocabulary": "Select lesson themes and level of vocabulary for lesson",
+    "select-lesson-themes-and-vocabulary": "Select themes and level of vocabulary for lesson",
     "Recommended vocabulary difficulty": "Recommended vocabulary difficulty",
     "submit-chat-message": "Send",
     "click-here-to-configure-lesson": "Click here to configure your lesson →",
     "restart-reading-test": "Restart Test",
-    "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on some words to create flashcards!",
-    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!",
-    "no-lessons-found": "Lessons are not configured for this language ...",
-    "story-group": "Difficulty {group}"
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on unknown words in the story to create flashcards!",
+    "lessons-not-ready-for-practice": "Lesson is not yet configured for practice!",
+    "no-lessons-found": "Lessons are not configured yet...",
+    "story-group": "Level {group}"
 }
