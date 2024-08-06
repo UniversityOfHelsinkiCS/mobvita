@@ -1,6 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Placeholder, Card, Select, Icon, Dropdown } from 'semantic-ui-react'
+import { 
+  Placeholder, 
+  Card, 
+  Select, 
+  Icon, 
+  Dropdown,
+  Accordion, 
+  AccordionTitle,
+  AccordionContent
+ } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -49,6 +58,7 @@ const StoryList = () => {
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
+  const [accordionState, setAccordionState] = useState(-1)
   const groupsLibrary = history.location.pathname.includes('group')
   const privateLibrary = history.location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
@@ -158,15 +168,15 @@ const StoryList = () => {
 
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
-    {
-      key: 'difficulty',
-      text: intl.formatMessage({ id: 'story-difficulty' }),
-      value: 'difficulty',
-    },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
   ]
 
   if (savedLibrarySelection === 'private' || savedLibrarySelection === 'group') {
+    sortDropdownOptions.push({
+      key: 'difficulty',
+      text: intl.formatMessage({ id: 'difficulty' }),
+      value: 'difficulty',
+    })
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
@@ -380,6 +390,59 @@ const StoryList = () => {
     )
   }
 
+  const accordionView = () => {
+    const storyId2Index = libraryFilteredStories.reduce((acc, story, index) => {
+      acc[story._id] = index
+      return acc
+    }, {})
+    const libraryGroup = libraryFilteredStories && libraryFilteredStories.reduce((x, y) => {
+      (x[y.difficulty] = x[y.difficulty] || []).push(y);
+      return x;
+    }, {}) || {}
+    const handleClick = (e, props) => {
+      const { index } = props
+      const newIndex = accordionState === index ? -1 : index
+      setAccordionState(newIndex)
+    }
+    return (
+      <Accordion fluid styled style={{background: '#fffaf0'}}>
+        {
+          Object.keys(libraryGroup).sort(
+            (a, b) => stringToDifficulty(a) - stringToDifficulty(b)).map(
+              (group, index) => (
+            <>
+              <AccordionTitle
+                key={`story-group-title-${group}`}
+                active={accordionState === index}
+                index={index}
+                onClick={handleClick}
+              >
+                <h4>
+                <Icon name='dropdown' />
+                <FormattedMessage id='story-group' values={{group}}/>
+                </h4>
+              </AccordionTitle>
+              <AccordionContent 
+                key={`story-group-content-${group}`}
+                active={accordionState === index}
+              >
+                {
+                  libraryGroup[group].map((story) => (
+                    rowRenderer({
+                      key: `story-${story._id}`,
+                      index: storyId2Index[story._id],
+                      style: {height: '130px'}
+                    })))
+                }
+              </AccordionContent>
+            </>))
+        }     
+        </Accordion>
+    )
+
+  }
+
+
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm library-tour-start">
       {libraryControls}
@@ -391,11 +454,13 @@ const StoryList = () => {
         </div>
       )}
 
-      {noResults ? (
+      {noResults && (
         <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
           <FormattedMessage id="no-stories-found" />
         </div>
-      ) : (
+      )}
+      {!noResults && libraries.public && accordionView()}
+      {!noResults && !libraries.public && (
         <Card.Group itemsPerRow={1} doubling data-cy="story-items" style={{ marginTop: '.5em' }}>
           <WindowScroller>
             {({ height, isScrolling, onChildScroll, scrollTop }) => (

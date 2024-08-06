@@ -13,9 +13,9 @@ runs:
       shell: bash
       run: npm ci
 
-    - name: docker-compose up -d
+    - name: docker compose up -d
       shell: bash
-      run: docker-compose up -d
+      run: docker compose up -d
 
     - name: Run cypress tests
       shell: bash

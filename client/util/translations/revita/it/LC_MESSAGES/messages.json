@@ -1616,6 +1616,8 @@
     "submit-chat-message": "Invia",
     "click-here-to-configure-lesson": "Configurare la lezione →",
     "restart-reading-test": "Restart Test",
-    "disabled-flashcard-btn-explanation": "This story has no flashcards yet, click on words to add flashcards",
-    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!"
+    "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on some words to create flashcards!",
+    "lessons-not-ready-for-practice": "Lesson is not yet ready for practice!",
+    "no-lessons-found": "Lessons are not configured for this language ...",
+    "story-group": "Difficulty {group}"
 }
