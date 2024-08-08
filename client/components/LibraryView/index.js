@@ -174,7 +174,7 @@ const StoryList = () => {
   if (savedLibrarySelection === 'private' || savedLibrarySelection === 'group') {
     sortDropdownOptions.push({
       key: 'difficulty',
-      text: intl.formatMessage({ id: 'difficulty' }),
+      text: intl.formatMessage({ id: 'story-difficulty' }),
       value: 'difficulty',
     })
     sortDropdownOptions.push({
