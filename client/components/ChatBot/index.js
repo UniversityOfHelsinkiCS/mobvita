@@ -34,7 +34,7 @@ const Chatbot = () => {
     const [filteredHintsList, setFilteredHintsList] = useState([])
     const [emptyHintsList, setEmptyHintsList] = useState(false)
     const [eloScoreHearts, setEloScoreHearts] = useState([])
-    const [requested_hints, setRequestedHints] = useState([])
+    const [numHints, setNumHints] = useState(0)
     const [currentMessage, setCurrentMessage] = useState("")
     const [currentAnswer, setCurrentAnswer] = useState("")
 
@@ -109,14 +109,12 @@ const Chatbot = () => {
                 setFilteredHintsList(hints?.filter(hint => !hintMessage || hint.easy !== hintMessage.easy))
                 setPreHints(totalRequestedHints)
             }
-            setRequestedHints(totalRequestedHints)
             setValidToChat(true)
         } else {
             setEloScoreHearts([])
             setSpentHints([])
             setPreHints([])
             setFilteredHintsList([])
-            setRequestedHints([])
             setValidToChat(false)
         }
     }, [currentWord, attempt])
@@ -141,16 +139,14 @@ const Chatbot = () => {
     
     const handlePreHints = () => {
       if (
-          (!hints && !requested_hints) ||
-          (filteredHintsList.length < 1 && requested_hints.length < 1) ||
+          (!hints && !preHints) ||
+          (filteredHintsList.length < 1 && preHints.length < 1) ||
           hints?.length < 1
         ) {
           setEmptyHintsList(true)
           handleHintRequest()
         } else {
-          const newHintList = preHints.concat(
-            filteredHintsList[preHints.length - requested_hints?.length]
-          )
+          const newHintList = preHints.concat(filteredHintsList[preHints.length - requestedBEHints.length])
           setPreHints(newHintList)
           handleHintRequest(newHintList)
         }
@@ -175,7 +171,6 @@ const Chatbot = () => {
         setHintMessageIdx(messages.length > 0 ? messages.length : 0);
     }
 
-    console.log("HintMessageIdx", hintMessageIdx)
 
   return (
     <div className="chatbot">
