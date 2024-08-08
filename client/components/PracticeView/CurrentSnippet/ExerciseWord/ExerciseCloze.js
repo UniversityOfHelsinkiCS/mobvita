@@ -71,7 +71,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     hint2penalty,
     sentence_id,
     snippet_id,
-    inflectionRef,
+    inflection_ref,
   } = word
   
   
@@ -101,7 +101,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
           dictionaryLanguage,
           storyId,
           wordId,
-          inflectionRef,
+          inflection_ref,
           prefLemma,
         })
       )
