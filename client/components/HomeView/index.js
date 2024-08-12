@@ -13,14 +13,18 @@ import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
 import { startTour } from 'Utilities/redux/tourReducer'
-import { homeTourViewed, ddlangIntroductoryViewed } from 'Utilities/redux/userReducer'
+import { 
+  homeTourViewed, 
+  ddlangIntroductoryViewed, 
+  ddlangBackgroundQuestionsAnswered 
+} from 'Utilities/redux/userReducer'
 import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
-
+import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
 
 const HomeviewButton = ({imgSrc, altText,
                          translationKey, handleClick,
@@ -288,7 +292,9 @@ const HomeView = () => {
   const homeView = history.location.pathname.endsWith('/home')
   const showDAModal = open && homeView && !userIsAnonymous
   const showWelcomeModal = open && welcomeView && !userIsAnonymous && !userData.is_new_user
+
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
+  const [showDDLangBackGroundQuestions, setShowDDLangBackGroundQuestions] = useState(false)
 
   useEffect(() => {
     dispatch(getGroups())
@@ -321,9 +327,36 @@ const HomeView = () => {
   }, [])
 
   useEffect(() => {
-    if (!user.user.has_seen_ddlang_introductory && user.user.last_used_language == "English") {
+    if (
+        !user.user.has_seen_ddlang_introductory && 
+        user.user.last_used_language == "English" &&
+        (
+          user.user.developer_of_language == "all" ||
+          user.user.in_any_ddlang_groups == true
+        )
+      ) {
       dispatch(ddlangIntroductoryViewed())
       setShowDDLangIntroductory(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (
+      // !user.user.has_answer_ddlang_background_questions && 
+      (
+        !user.user.ddlang_years || 
+        !user.user.ddlang_obligatoryCourses || 
+        !user.user.ddlang_optionalCourses || 
+        !user.user.ddlang_grade
+      ) &&
+      user.user.last_used_language == "English" &&
+      (
+        user.user.developer_of_language == "all" ||
+        user.user.in_any_ddlang_groups == true
+      )
+    ) {
+      dispatch(ddlangBackgroundQuestionsAnswered())
+      setShowDDLangBackGroundQuestions(true)
     }
   }, [])
 
@@ -332,6 +365,7 @@ const HomeView = () => {
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
+      {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <BetaLanguageModal

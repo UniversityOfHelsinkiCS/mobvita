@@ -296,7 +296,6 @@ const ReadingTest = () => {
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
                 if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
-                  console.log("firstMediationSelfReflectionDone",firstMediationSelfReflectionDone)
                   setShowSelfReflect(true)
                   // Show questionair for experimental group after first mediation completed
                 }

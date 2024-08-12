@@ -29,7 +29,7 @@ const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
                 }}
             >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>{"introductory_for_ddlang"}</div>
+                    <FormattedMessage id='ddlang-introductory-text' />
                     <Icon name='close' style={{ cursor: 'pointer' }} onClick={() => setShowDDLangIntroductory(false)} />
                 </div>
             </div>

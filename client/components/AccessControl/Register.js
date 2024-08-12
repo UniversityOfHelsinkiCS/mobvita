@@ -170,7 +170,7 @@ const Register = () => {
             trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>}
           />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
+        {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
           <Checkbox data-cy="accept-terms" checked={ddlangAccepted} onChange={() => toggleDDLangAccepted()} />
           <DDLangTermsAndConditions
             trigger={<Button variant="link" onClick={() => setShowDDLangModal(true)}> DDLANG policy statement </Button>} 
@@ -178,7 +178,7 @@ const Register = () => {
             openModal={showDDLangModal}
             setOpenModal={setShowDDLangModal}
           />
-        </div>
+        </div> */}
         <div>
           <button type="submit" className="landing-page-button" disabled={registerPending}>
             {registerPending ? (
