@@ -71,7 +71,7 @@ cypress/screenshots/
 # others
 divide_rus_construction_rows.py
 requests
-
+creds.json
 # emacs temporary files and backup directories
 \#*
 .-Backup

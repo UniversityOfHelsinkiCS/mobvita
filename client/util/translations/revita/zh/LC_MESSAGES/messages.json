@@ -924,15 +924,15 @@
     "self-reflection-submit": "OK",
     "reading-test-self-reflection-header": "请回答一组小问题",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "这不是最佳选项，我们将提供一些提示",
+    "first-time-meta-help-message": "This was not the best option. We will now offer some help and hints…",
     "do-not-know": "我不知道",
     "not-useful-at-all": "没用",
     "very-useful": "很有用",
     "paradigm table": "See the inflection table →",
-    "experimental-elicitation-question": "哪一个对你更难？",
+    "experimental-elicitation-question": "Which is more of a challenge for you",
     "elicitation-construct-specific-details": "I can’t find the right place in the text",
     "elicitation-construct-deducing-vocabulary": "I don’t understand the meaning of some words",
-    "move-to-next-set-of-reading-items": "现在我们继续下一组联系。它们比之前的会更难一点",
+    "move-to-next-set-of-reading-items": "Now we move to the next set of tasks. They are somewhat different from the previous ones.",
     "experimental-after-first-mediation-slider-question": "提示有用么？",
     "experimental-after-first-mediation-open-ended-question": "提示对你回答问题有帮助么？有怎样的帮助？",
     "experimental-after-last-item-slider-question": "在回答了这些问题后，你觉得提示有用么",
@@ -994,5 +994,8 @@
     "disabled-flashcard-btn-explanation": "没有单词卡。请点击文本中不认识的单词，它们将被添加到单词卡中！",
     "lessons-not-ready-for-practice": "课程还未完成配置！",
     "no-lessons-found": "课程不可用",
-    "story-group": "难度等级{group}"
+    "story-group": "难度等级{group}",
+    "show-ddlang-introductory": "DDLANG background information",
+    "finish-reading-question": "",
+    "ddlang-introductory-text": "<b>How does the Revita/DD-LANG system help you?</b>\n\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n\nYou will receive feedback on some exercises; this increases your understanding of what reading and writing are about so that you can do new tasks better in the future. If you get the same feedback many times, don't worry: It just helps you to remember the advice.\n\nYou can exit the exercises at any time and come back to the same point to continue.\n\n<b>What should you do next?</b>\n\nStart by choosing <b>Reading Practice</b>. Revita includes other types of activities (e.g. Flashcards, Library) but they are not yet ready for English. Take the Tour (upper right-hand corner of the screen) to read more about them.\n\nReading Practice includes about 20 exercises. After completing them, you can practice your grammar and vocabulary skills. \n\nIf you use the system long enough, it can give you feedback about your learning of English."
 }

@@ -799,7 +799,7 @@
     "cards total": "{numberOfCards} korttia yhteensä",
     "report-button": "Ilmoita ongelmasta",
     "report-problem": "Ilmoita ongelmasta",
-    "thank-you-for-reporting-problem": "Kiitos kun ilmoitit ongelmasta — tarkistamme sen mahdollisimman pian!",
+    "thank-you-for-reporting-problem": "Kiitos kun ilmoitit ongelmasta — tarkastelemme sitä mahdollisimman pian!",
     "enter-more-about-problem": "Revita-tiimi saa tiedot kohdasta, jossa ongelma ilmeni. Ole hyvä ja kuvaile ongelma lyhyesti.",
     "Participate in weekly leaderboards": "Osallistu viikottaisiin pistetaulukkoihin",
     "Privacy": "Yksityisyys",
@@ -1620,5 +1620,8 @@
     "disabled-flashcard-btn-explanation": "Tässä tarinassa ei ole vielä muistikortteja – napsauta tarinan tuntemattomia sanoja luodaksesi muistikortteja!",
     "lessons-not-ready-for-practice": "Oppitunti ei ole vielä konfiguroitu harjoittelua varten!",
     "no-lessons-found": "Oppitunteja ei ole vielä määritetty...",
-    "story-group": "Taso {group}"
+    "story-group": "Taso {group}",
+    "show-ddlang-introductory": "DDLANG taustatietoja",
+    "finish-reading-question": "",
+    "ddlang-introductory-text": "<b>How does the Revita/DD-LANG system help you?</b>\n\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n\nYou will receive feedback on some exercises; this increases your understanding of what reading and writing are about so that you can do new tasks better in the future. If you get the same feedback many times, don't worry: It just helps you to remember the advice.\n\nYou can exit the exercises at any time and come back to the same point to continue.\n\n<b>What should you do next?</b>\n\nStart by choosing <b>Reading Practice</b>. Revita includes other types of activities (e.g. Flashcards, Library) but they are not yet ready for English. Take the Tour (upper right-hand corner of the screen) to read more about them.\n\nReading Practice includes about 20 exercises. After completing them, you can practice your grammar and vocabulary skills. \n\nIf you use the system long enough, it can give you feedback about your learning of English."
 }

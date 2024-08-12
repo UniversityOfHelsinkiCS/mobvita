@@ -4,30 +4,39 @@ const path = require('path')
 const { google } = require('googleapis');
 require('dotenv').config()
 
-const apiClient = google.auth.fromAPIKey(process.env.GOOGLE_APIKEY)
+const apiClient = new google.auth.GoogleAuth({
+  keyFile: path.resolve(__dirname, 'creds.json'),
+  scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+})
 addTranslations(apiClient)
 
 async function addTranslations(auth) {
   const sheets = google.sheets({version: 'v4', auth});
-
-  sheets.spreadsheets.values.get({
-    spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-    range: 'C:I',
-  }).then(res => {
-    const rows = res.data.values.slice(1);
+  Promise.all([
+    sheets.spreadsheets.values.get({
+      spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
+      range: 'C:I',
+    }),
+    sheets.spreadsheets.values.get({
+      spreadsheetId: '1qUitRG9RYZALDQId0CGM6tWOdmZmqCKEw6iEQcSyBMk',
+      range: 'C:I',
+    }),
+  ]).then(results => {
     const translations = {}
-
-    for (row of rows) {
-      row.map(e => e.trim())
-      if (!row[0]) continue
-      const trimmedRow = row.map(e => e.trim())
-      const eng = trimmedRow[2] || ''
-      translations[trimmedRow[0]] = {
-        en: eng,
-        fi: trimmedRow[3] || eng,
-        it: trimmedRow[4] || eng,
-        ru: trimmedRow[5] || eng,
-        zh: trimmedRow[6] || eng,
+    for (res of results){
+      const rows = res.data.values.slice(1);
+      for (row of rows) {
+        row.map(e => e.trim())
+        if (!row[0]) continue
+        const trimmedRow = row.map(e => e.trim())
+        const eng = trimmedRow[2] || ''
+        translations[trimmedRow[0]] = {
+          en: eng,
+          fi: trimmedRow[3] || eng,
+          it: trimmedRow[4] || eng,
+          ru: trimmedRow[5] || eng,
+          zh: trimmedRow[6] || eng,
+        }
       }
     }
     makeTranslations(translations)

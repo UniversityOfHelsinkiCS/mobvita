@@ -1555,15 +1555,15 @@
     "self-reflection-submit": "OK",
     "reading-test-self-reflection-header": "Пожалуйста, ответь на пару коротких вопросов:",
     "elicitation-submit": "OK",
-    "first-time-meta-help-message": "Это не лучший вариант. Мы предложим тебе помощь и подсказки…",
+    "first-time-meta-help-message": "This was not the best option. We will now offer some help and hints…",
     "do-not-know": "Я не знаю",
     "not-useful-at-all": "Бесполезно",
     "very-useful": "Очень полезно",
     "paradigm table": "См. таблицу словоизменений →",
-    "experimental-elicitation-question": "Что для тебя сложнее",
+    "experimental-elicitation-question": "Which is more of a challenge for you",
     "elicitation-construct-specific-details": "Не могу найти нужное место в тексте",
     "elicitation-construct-deducing-vocabulary": "Не понимаю значения некоторых слов",
-    "move-to-next-set-of-reading-items": "Теперь переходим к следующему набору заданий. Они немного отличаются от предыдущих.",
+    "move-to-next-set-of-reading-items": "Now we move to the next set of tasks. They are somewhat different from the previous ones.",
     "experimental-after-first-mediation-slider-question": "Насколько полезен был этот отзыв?",
     "experimental-after-first-mediation-open-ended-question": "Изменила ли обратная связь твой подход к задаче? Как?",
     "experimental-after-last-item-slider-question": "Насколько полезной кажется эта обратная связь после выполнения этих задач?",
@@ -1622,5 +1622,8 @@
     "disabled-flashcard-btn-explanation": "В этом тексте еще нет карточек — нажми на незнакомые слова в тексте, чтобы создать карточки!",
     "lessons-not-ready-for-practice": "Урок еще не настроен для практики!",
     "no-lessons-found": "Уроки еще не настроены...",
-    "story-group": "Уровень {group}"
+    "story-group": "Уровень {group}",
+    "show-ddlang-introductory": "Информация о DDLANG",
+    "finish-reading-question": "",
+    "ddlang-introductory-text": "<b>How does the Revita/DD-LANG system help you?</b>\n\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n\nYou will receive feedback on some exercises; this increases your understanding of what reading and writing are about so that you can do new tasks better in the future. If you get the same feedback many times, don't worry: It just helps you to remember the advice.\n\nYou can exit the exercises at any time and come back to the same point to continue.\n\n<b>What should you do next?</b>\n\nStart by choosing <b>Reading Practice</b>. Revita includes other types of activities (e.g. Flashcards, Library) but they are not yet ready for English. Take the Tour (upper right-hand corner of the screen) to read more about them.\n\nReading Practice includes about 20 exercises. After completing them, you can practice your grammar and vocabulary skills. \n\nIf you use the system long enough, it can give you feedback about your learning of English."
 }

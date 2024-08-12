@@ -1621,5 +1621,8 @@
     "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on unknown words in the story to create flashcards!",
     "lessons-not-ready-for-practice": "Lesson is not yet configured for practice!",
     "no-lessons-found": "Lessons are not configured yet...",
-    "story-group": "Level {group}"
+    "story-group": "Level {group}",
+    "show-ddlang-introductory": "DDLANG background information",
+    "finish-reading-question": "",
+    "ddlang-introductory-text": "<b>How does the Revita/DD-LANG system help you?</b>\n\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n\nYou will receive feedback on some exercises; this increases your understanding of what reading and writing are about so that you can do new tasks better in the future. If you get the same feedback many times, don't worry: It just helps you to remember the advice.\n\nYou can exit the exercises at any time and come back to the same point to continue.\n\n<b>What should you do next?</b>\n\nStart by choosing <b>Reading Practice</b>. Revita includes other types of activities (e.g. Flashcards, Library) but they are not yet ready for English. Take the Tour (upper right-hand corner of the screen) to read more about them.\n\nReading Practice includes about 20 exercises. After completing them, you can practice your grammar and vocabulary skills. \n\nIf you use the system long enough, it can give you feedback about your learning of English."
 }
