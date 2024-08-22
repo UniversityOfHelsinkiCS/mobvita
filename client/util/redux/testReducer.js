@@ -4,6 +4,7 @@ import callBuilder from '../apiConnection'
 const initialState = {
   language: window.localStorage.getItem('testLanguage'),
 
+  lastReadingSessionFinished: false,
   readingTestSessionId: null,
   currentReadingQuestionIndex: 0,
   currentReadingTestQuestion: null,
@@ -360,6 +361,7 @@ export default (state = initialState, action) => {
         ...state,
         currentReadingSet: _finishedSet,
         prevReadingSet: _lastSet,
+        lastReadingSessionFinished: true,
       }
 
     case 'NEXT_READING_TEST_QUESTION':
