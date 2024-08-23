@@ -1640,9 +1640,12 @@
     "TOS-question-2a": "Which obligatory English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment);",
     "TOS-question-2b": "Which optional English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment)",
     "TOS-question-3": "What is your latest course grade in English?",
-    "correct-first-attempts": "Number of questions with correct answer at the first attempt (no hint)",
-    "first-attempt-correct-rate": "Correct rate at the first attempt (no hint)",
-    "overall-correct-rate": "Correct rate with hints",
-    "average-hints-used": "Average number of hints needed to get the correct answer",
-    "time-spent": "Time spent"
+    "correct-first-attempts": "Number of correct answers on first attempt (no hints)",
+    "first-attempt-correct-rate": "Correct rate on first attempt (no hints)",
+    "overall-correct-rate": "Correct rate",
+    "average-hints-used": "Average number of hints needed to get correct answer",
+    "time-spent": "Time spent",
+    "test-completed": "Report: your performance on reading comprehension",
+    "ddlang-total-questions": "Questions in total",
+    "go-to-home": "Back to Home Page"
 }

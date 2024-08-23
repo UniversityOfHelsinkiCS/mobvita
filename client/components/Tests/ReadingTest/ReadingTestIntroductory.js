@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
-import { useSelector } from 'react-redux';
-import { sanitizeHtml } from 'Utilities/common';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
-
-
 const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
-
+    const intl = useIntl();
     const bigScreen = useWindowDimensions().width >= 700;
+
+    // Retrieve the HTML content from the translations
+    const introductoryTextHtml = intl.formatMessage({ id: 'ddlang-introductory-text' });
+
+    // For testing: Bypass sanitization to see if the issue persists
+    // const sanitizedHtmlContent = sanitizeHtml(introductoryTextHtml);
+    const sanitizedHtmlContent = introductoryTextHtml;  // Bypassing sanitization for testing
+
+    // Debugging: Log the content
+    console.log("Sanitized HTML Content:", sanitizedHtmlContent);
 
     const renderIntroductory = () => (
         <Draggable cancel=".interactable">
@@ -29,7 +35,10 @@ const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
                 }}
             >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <FormattedMessage id='ddlang-introductory-text' />
+                    <div
+                        className="interactable"
+                        dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+                    />
                     <Icon name='close' style={{ cursor: 'pointer' }} onClick={() => setShowDDLangIntroductory(false)} />
                 </div>
             </div>
