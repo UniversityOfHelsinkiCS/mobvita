@@ -28,7 +28,7 @@ const ReadingTestView = () => {
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
 
   useEffect(() => {
-    dispatch(getReadingTestQuestions(learningLanguage, lastReadingSessionFinished!=false))
+    dispatch(getReadingTestQuestions(learningLanguage, lastReadingSessionFinished==false))
   }, [dispatch, learningLanguage])
   
   if (pending) {

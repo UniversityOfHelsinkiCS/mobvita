@@ -35,6 +35,7 @@ const clearLocalStorage = () => {
 }
 
 export const getReadingTestQuestions = (language, is_continue=true) => {
+  console.log("is_continue", is_continue)
   const route = `/test/${language}/reading`
   const prefix = 'GET_READING_TEST_QUESTIONS'
   const query = {

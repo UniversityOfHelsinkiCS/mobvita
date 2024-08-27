@@ -36,6 +36,7 @@ const ReadingTest = () => {
   const [showCorrect, setShowCorrect] = useState(false)
   const [questionDone, setQuestionDone] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(null)
+  const [attempts, setAttempts] = useState(0) 
 
   const [showFeedbacks, setShowFeedbacks] = useState(false)
 
@@ -84,6 +85,10 @@ const ReadingTest = () => {
       in_control_grp = true;
     }
   });
+  
+  if (in_control_grp == true) {
+    in_experimental_grp = false;
+  }
 
   const dispatch = useDispatch()
 
@@ -95,6 +100,7 @@ const ReadingTest = () => {
     setShowSelfReflect(false)
     setCurrentAnswer(null)
     setCurrentElicatedConstruct(null)
+    setAttempts(0)
 
     setTotalQuestions(prev => prev + 1) // Increase the total questions count
 
@@ -141,32 +147,42 @@ const ReadingTest = () => {
 
   const checkAnswer = choice => {
     if (!currentReadingTestQuestion) return
-
+  
+    if (in_control_grp) {
+      setAttempts(prev => prev + 1)
+    }
+  
     setCurrentAnswer(choice)
-
+  
     const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
     const question_concept_feedbacks = currentReadingTestQuestion.question_concept_feedbacks[currentElicatedConstruct]
-
+  
     if (choice.is_correct){
-      confettiRain(0,0.45,60)
-      confettiRain(1,0.45,120)
-
+      if (in_experimental_grp) {
+        confettiRain(0,0.45,60)
+        confettiRain(1,0.45,120)
+      }
+  
       if (hintsUsedThisQuestion === 0) {
         setCorrectFirstAttempt(prev => prev + 1) // Track correct on first attempt
       }
+      console.log("random", attempts)
 
-      if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
-        dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
-      } else {
-        if (question_concept_feedbacks && question_concept_feedbacks?.synthesis){
-          dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))
+  
+      if (in_experimental_grp) {
+        if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
+          dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
+        } else {
+          if (question_concept_feedbacks && question_concept_feedbacks?.synthesis){
+            dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))
+          }
         }
       }
-      
+  
       setShowCorrect(true)
       setQuestionDone(true)
       setCurrentAnswer(null)
-
+  
       dispatch(
         sendReadingTestAnswer(
             learningLanguage,
@@ -181,82 +197,89 @@ const ReadingTest = () => {
         )
       )
     } else {
-      setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
-    }
-
-    if (choice.is_correct && hintsUsedThisQuestion > 0) {
-      setCorrectAfterHints(prev => prev + 1) // Track correct after using hints
-      setTotalHints(prev => prev + hintsUsedThisQuestion) // Add to total hints count
-    }
-
-    if (choice.is_correct == false){
-      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined){
-        setShowElicitDialog(true)
-      } else {
-        const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
-          ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
-          : false;
-        const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
-          ? question_concept_feedbacks.synthesis
-          : undefined;
-        const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
-          ? Object.entries(currentReadingTestQuestion.item_feedbacks)
-            .filter(([, value]) => value !== undefined)
-            .map(([, value]) => value)
-          : [];   
-        const mediationFeedbacks = question_concept_feedbacks
-          ? Object.entries(question_concept_feedbacks)
-              .filter(([key]) => key.startsWith('mediation_'))
-              .map(([, value]) => value)
-          : [];
-
-        let markQuestionDone = questionDone;
-        if (choice.is_correct == false){
-          if (countNotSelectedChoices > 2){
-            const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-            const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-            if (remainMediationFeedbacks.length > 0){
-              dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
-              setReceivedFeedback(receivedFeedback + 1)
-            } else { 
-              if (remainItemFeedbacks.length > 0) {
-                dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
-                setReceivedFeedback(receivedFeedback + 1)
-              } else if (!feedbacks.includes(synthesis_feedback)) {
-                dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-                setShowCorrect(true)
-                setQuestionDone(true)
-                markQuestionDone = true
-              }
-            }
-          } else {
-            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-            setShowCorrect(true)
-            setQuestionDone(true)
-            setCurrentAnswer(null)
-            markQuestionDone = true
-          }
-        }             
-        
-        if (!isSelectedChoice){
-          dispatch(
-            sendReadingTestAnswer(
-                learningLanguage,
-                readingTestSessionId,
-                {
-                    type: currentReadingTestQuestion.type,
-                    question_id: currentReadingTestQuestion.question_id,
-                    answer: choice.option,
-                    seenFeedbacks: feedbacks,
-                    questionDone: markQuestionDone
-                }
-            )
-          )
-          dispatch(markAnsweredChoice(choice.option))
-        }
+      if (in_experimental_grp) {
+        setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
       }
-    } 
+  
+      if (choice.is_correct && hintsUsedThisQuestion > 0) {
+        setCorrectAfterHints(prev => prev + 1) // Track correct after using hints
+        setTotalHints(prev => prev + hintsUsedThisQuestion) // Add to total hints count
+      }
+    }
+
+    const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
+      ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
+      : false;
+    let markQuestionDone = questionDone;
+  
+    if (!choice.is_correct && in_experimental_grp) {
+      const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
+        ? question_concept_feedbacks.synthesis
+        : undefined;
+      const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
+        ? Object.entries(currentReadingTestQuestion.item_feedbacks)
+          .filter(([, value]) => value !== undefined)
+          .map(([, value]) => value)
+        : [];   
+      const mediationFeedbacks = question_concept_feedbacks
+        ? Object.entries(question_concept_feedbacks)
+            .filter(([key]) => key.startsWith('mediation_'))
+            .map(([, value]) => value)
+        : [];
+  
+      if (choice.is_correct == false){
+        if (countNotSelectedChoices > 2){
+          const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+          const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+          if (remainMediationFeedbacks.length > 0){
+            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+            setReceivedFeedback(receivedFeedback + 1)
+          } else { 
+            if (remainItemFeedbacks.length > 0) {
+              dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+              setReceivedFeedback(receivedFeedback + 1)
+            } else if (!feedbacks.includes(synthesis_feedback)) {
+              dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+              setShowCorrect(true)
+              setQuestionDone(true)
+              markQuestionDone = true
+            }
+          }
+        } else {
+          dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+          setShowCorrect(true)
+          setQuestionDone(true)
+          setCurrentAnswer(null)
+          markQuestionDone = true
+        }
+      }             
+    }
+
+    if (!isSelectedChoice){
+      dispatch(
+        sendReadingTestAnswer(
+            learningLanguage,
+            readingTestSessionId,
+            {
+                type: currentReadingTestQuestion.type,
+                question_id: currentReadingTestQuestion.question_id,
+                answer: choice.option,
+                seenFeedbacks: feedbacks,
+                questionDone: markQuestionDone
+            }
+        )
+      )
+      dispatch(markAnsweredChoice(choice.option))
+    }
+
+    if (in_control_grp) {
+      if (attempts >= 1) {
+        setQuestionDone(true)
+        return
+      }
+    }
   }
+  
 
   useEffect(() => {
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
