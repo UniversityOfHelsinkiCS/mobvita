@@ -166,8 +166,6 @@ const ReadingTest = () => {
       if (hintsUsedThisQuestion === 0) {
         setCorrectFirstAttempt(prev => prev + 1) // Track correct on first attempt
       }
-      console.log("random", attempts)
-
   
       if (in_experimental_grp) {
         if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
@@ -211,48 +209,52 @@ const ReadingTest = () => {
       ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
       : false;
     let markQuestionDone = questionDone;
-  
-    if (!choice.is_correct && in_experimental_grp) {
-      const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
-        ? question_concept_feedbacks.synthesis
-        : undefined;
-      const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
-        ? Object.entries(currentReadingTestQuestion.item_feedbacks)
-          .filter(([, value]) => value !== undefined)
-          .map(([, value]) => value)
-        : [];   
-      const mediationFeedbacks = question_concept_feedbacks
-        ? Object.entries(question_concept_feedbacks)
-            .filter(([key]) => key.startsWith('mediation_'))
+
+    if (choice.is_correct == false && in_experimental_grp){
+      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined){
+        setShowElicitDialog(true)
+      } else {
+        const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
+          ? question_concept_feedbacks.synthesis
+          : undefined;
+        const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
+          ? Object.entries(currentReadingTestQuestion.item_feedbacks)
+            .filter(([, value]) => value !== undefined)
             .map(([, value]) => value)
-        : [];
-  
-      if (choice.is_correct == false){
-        if (countNotSelectedChoices > 2){
-          const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-          const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-          if (remainMediationFeedbacks.length > 0){
-            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
-            setReceivedFeedback(receivedFeedback + 1)
-          } else { 
-            if (remainItemFeedbacks.length > 0) {
-              dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+          : [];   
+        const mediationFeedbacks = question_concept_feedbacks
+          ? Object.entries(question_concept_feedbacks)
+              .filter(([key]) => key.startsWith('mediation_'))
+              .map(([, value]) => value)
+          : [];
+    
+        if (choice.is_correct == false){
+          if (countNotSelectedChoices > 2){
+            const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+            const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
+            if (remainMediationFeedbacks.length > 0){
+              dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
               setReceivedFeedback(receivedFeedback + 1)
-            } else if (!feedbacks.includes(synthesis_feedback)) {
-              dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-              setShowCorrect(true)
-              setQuestionDone(true)
-              markQuestionDone = true
+            } else { 
+              if (remainItemFeedbacks.length > 0) {
+                dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+                setReceivedFeedback(receivedFeedback + 1)
+              } else if (!feedbacks.includes(synthesis_feedback)) {
+                dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+                setShowCorrect(true)
+                setQuestionDone(true)
+                markQuestionDone = true
+              }
             }
+          } else {
+            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+            setShowCorrect(true)
+            setQuestionDone(true)
+            setCurrentAnswer(null)
+            markQuestionDone = true
           }
-        } else {
-          dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-          setShowCorrect(true)
-          setQuestionDone(true)
-          setCurrentAnswer(null)
-          markQuestionDone = true
         }
-      }             
+      }
     }
 
     if (!isSelectedChoice){
