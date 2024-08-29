@@ -45,9 +45,9 @@ import { set } from 'lodash'
 const StyledMark = (localizedMarkString) => 
   (props) => {
     const StyledMarkSpan = styled.span`
-      border-left: 7px solid transparent; 
-      border-right: 7px solid transparent; 
-      border-top: 7px solid #000; 
+      border-left: 10px solid transparent; 
+      border-right: 10px solid transparent; 
+      border-top: 15px solid #000; 
       padding: 0;
       &:hover::before {
         content: "${localizedMarkString}" ;
@@ -322,7 +322,7 @@ const LessonList = () => {
               {selectedSemantics && selectedSemantics.includes(semantic) && (
                 <Icon name="check" />
               )}
-              {semantic}
+              <FormattedMessage id={semantic}/>
             </Button>
           ))}
         </div>
@@ -367,7 +367,8 @@ const LessonList = () => {
     return 'white-slider';
   };
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`;
-  const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
+  const markComp = StyledMark(intl.formatMessage({
+      id: 'Recommended vocabulary difficulty' }))
   const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
       <h5>
@@ -473,7 +474,7 @@ const LessonList = () => {
 
         <input
           type="text"
-          placeholder="Search lessons / topics ..."
+          placeholder={intl.formatMessage({id: "Search lessons / topics ..." }) }
           value={searchQuery}
           onChange={handleSearchChange}
           style={{
