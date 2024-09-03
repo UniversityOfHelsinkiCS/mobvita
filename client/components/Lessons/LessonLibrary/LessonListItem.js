@@ -3,7 +3,6 @@ import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import ReactTooltip from 'react-tooltip';
 
 import { useIntl, FormattedMessage } from 'react-intl'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -118,7 +117,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             %
           </span>
           <span
-            data-tip="The number indicates the performance of the lesson topic"
+            title={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
             style={{
               cursor: 'pointer',
               display: 'inline-block',
@@ -127,7 +126,6 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             }}
           >
             <Icon name="info circle" />
-            <ReactTooltip place="top" type="dark" effect="solid" />
           </span>
         </div>
         <div className="lesson-content" style={{ width: '88%' }}>
