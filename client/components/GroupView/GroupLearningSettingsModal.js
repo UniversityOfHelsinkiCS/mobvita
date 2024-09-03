@@ -56,17 +56,6 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         {groupName}: <FormattedMessage id="learning-settings" />
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <div className="flex-reverse" style={{ marginBottom: '.5em' }}>
-          <Button
-            variant="primary"
-            size="lg"
-            as={Link}
-            to={`/groups/teacher/${groupId}/concepts`}
-            style={{ color: 'yellow', fontWeight: 600 }}
-          >
-            <FormattedMessage id="custom" />
-          </Button>
-        </div>
         {/* 
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
@@ -89,14 +78,29 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         />
         <Divider />
         */}
-        <>
-          <div>
-            <CERFLevelSlider sliderValue={cefrSliderValue} setSliderValue={setCefrSliderValue} />
-          </div>
-          <Button variant="primary" size="lg" onClick={submitSettings}>
-            <FormattedMessage id="update-settings" />
-          </Button>
-        </>
+          <>
+              {/* slider */}
+              <div>
+                  <CERFLevelSlider sliderValue={cefrSliderValue}
+                                   setSliderValue={setCefrSliderValue} />
+              </div>
+              {/* customize learning settings */}
+              <div className="flex-reverse" style={{ marginBottom: '1.5em', marginTop: '1.0em' }}>
+                  <Button
+                      variant="primary"
+                      size="lg"
+                      as={Link}
+                      to={`/groups/teacher/${groupId}/concepts`}
+                      style={{ color: 'yellow', fontWeight: 600, margin: '0 auto'}}
+                  >
+                      <FormattedMessage id="customize-learning-settings" />
+                  </Button>
+              </div>
+              {/* save learning settings */}
+              <Button variant="primary" size="lg" onClick={submitSettings}>
+                  <FormattedMessage id="update-settings" />
+              </Button>
+          </>
       </Modal.Content>
     </Modal>
   )

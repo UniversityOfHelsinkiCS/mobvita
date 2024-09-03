@@ -27,7 +27,14 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
                 <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px' }}>
                     <Icon name="check" />
                 </div>
-                <div style={{ width: '88%' }}>{selectedThemes[i].charAt(0).toUpperCase() + selectedThemes[i].slice(1)}</div>
+                <div style={{ width: '88%' }}>
+                    { /* why capitalize? 
+                         selectedThemes[i].charAt(0).toUpperCase() +
+                         selectedThemes[i].slice(1) */
+                        
+                    }
+                    <FormattedMessage id={selectedThemes[i]}/>
+                </div>
             </h6>
         );
     }
