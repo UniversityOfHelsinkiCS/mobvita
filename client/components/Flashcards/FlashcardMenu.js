@@ -74,7 +74,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
   )
 }
 
-const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
+const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
@@ -82,7 +82,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
   return (
     <div className="flex-col">
       <MenuItem
-        handleClick={() => handleOptionClickWithStory('fillin')}
+        handleClick={() => handleOptionClick('fillin')}
         translationId="fill-in"
         style={{
           backgroundColor: 'rgb(142, 187, 249)',
@@ -108,7 +108,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
         </button>
       )}
       <MenuItem
-        handleClick={() => handleOptionClickWithStory('quick')}
+        handleClick={() => handleOptionClick('quick')}
         translationId="Quick cards"
         style={{
           backgroundColor: 'rgb(255, 217, 112)',
@@ -143,7 +143,10 @@ const FlashcardMenu = () => {
         handleOptionClick={handleOptionClick}
         handleOptionClickWithStory={handleOptionClickWithStory}
       />
-      <PracticeModeOptions handleOptionClickWithStory={handleOptionClickWithStory} />
+      <PracticeModeOptions 
+        handleOptionClick={handleOptionClick}
+        handleOptionClickWithStory={handleOptionClickWithStory}
+      />
     </div>
   )
 }

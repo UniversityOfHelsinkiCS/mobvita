@@ -78,7 +78,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
   )
 }
 
-const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
+const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join('/')
@@ -86,7 +86,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
   return (
     <div className="gap-row-sm mt-nm">
       <FabOption
-        handleClick={() => handleOptionClickWithStory('fillin')}
+        handleClick={() => { handleOptionClick('fillin'); }}
         iconStyle={{
           paddingBottom: '0.4em',
           paddingRight: '0.05em',
@@ -113,7 +113,7 @@ const PracticeModeOptions = ({ handleOptionClickWithStory }) => {
         </button>
       )}
       <FabOption
-        handleClick={() => handleOptionClickWithStory('quick')}
+        handleClick={() => handleOptionClick('quick')}
         iconStyle={{
           paddingBottom: '0.4em',
           paddingTop: '0.2em',
@@ -157,7 +157,10 @@ const FloatMenu = () => {
       </button>
       {open && (
         <div className="flex-column-reverse pb-sm slide-from-left" style={{ paddingLeft: '0.3em' }}>
-          <PracticeModeOptions handleOptionClickWithStory={handleOptionClickWithStory} />
+          <PracticeModeOptions 
+            handleOptionClick={handleOptionClick}
+            handleOptionClickWithStory={handleOptionClickWithStory} 
+          />
           <CardManagmentOptions
             handleOptionClick={handleOptionClick}
             handleOptionClickWithStory={handleOptionClickWithStory}

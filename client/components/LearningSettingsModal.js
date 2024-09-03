@@ -260,7 +260,7 @@ const LearningSettingsModal = ({ trigger }) => {
           <CEFRLevelSlider
             sliderValue={cerfSliderValue}
             setSliderValue={setCerfSliderValue}
-            isDisabled={practicePrctMode !== 'custom'}
+            // isDisabled={practicePrctMode !== 'custom'} temporarily comment out since we dont have practice mode anymore
           />
           <br />
           <Button variant="primary" size="lg" onClick={submitSettings}>

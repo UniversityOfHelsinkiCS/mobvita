@@ -500,8 +500,8 @@ const LessonList = () => {
                 onClick={handleClick}
               >
                 <h4>
-                <Icon name='dropdown' />
-                <FormattedMessage id='lesson-group' values={{group}}/>
+                  <Icon name='dropdown' />
+                  <FormattedMessage id='lesson-group' values={{group}}/>
                 </h4>
               </AccordionTitle>
               <AccordionContent 

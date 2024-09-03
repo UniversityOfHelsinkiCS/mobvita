@@ -418,8 +418,9 @@ const StoryList = () => {
                 onClick={handleClick}
               >
                 <h4>
-                <Icon name='dropdown' />
-                <FormattedMessage id='story-group' values={{group}}/>
+                  <Icon name='dropdown' />
+                  <FormattedMessage id={`level-${group}`}/>
+                  {/* <FormattedMessage id='story-group' values={{group}}/> */}
                 </h4>
               </AccordionTitle>
               <AccordionContent 
