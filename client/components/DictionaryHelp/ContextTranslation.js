@@ -141,7 +141,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                     marginBottom: '1em',
                     padding: '1em',
                     borderRadius: '15px',
-                    backgroundColor: '#9e9e9e4d'
+                    backgroundColor: 'rgb(126 222 249 / 30%)' /* #9e9e9e4d */
                     }}
                     dangerouslySetInnerHTML={{__html: highlightTarget(data)}} 
                 />
