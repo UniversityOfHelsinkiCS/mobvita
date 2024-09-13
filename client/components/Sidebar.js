@@ -353,7 +353,7 @@ export default function Sidebar({ history }) {
               <FormattedMessage id="Settings" />
             </Button>
           </Link>
-          <Dropdown item text='More' >
+          <Dropdown item text={intl.formatMessage({id: 'Menu-more'})} >
             <DropdownMenu style={{minHeight: '18.5em'}}>
               <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
               <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
