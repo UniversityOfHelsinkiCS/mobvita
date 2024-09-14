@@ -64,8 +64,8 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
       >
         <div className="lesson-performance" 
           style={{
-            minWidth: '75px',
-            maxWidth: '80px',
+            minWidth: '90px',
+            maxWidth: '95px',
           }}
         >
           <span
@@ -121,6 +121,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             style={{
               cursor: 'pointer',
               display: 'inline-block',
+              marginLeft: '5px',
               marginRight: '7px',
               verticalAlign: 'top',
             }}
@@ -128,7 +129,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             <Icon name="info circle" />
           </span>
         </div>
-        <div className="lesson-content" style={{ width: '88%' }}>
+        <div className="lesson-content" style={{ width: '80%' }}>
           {lesson_topics[k].charAt(0).toUpperCase() + lesson_topics[k].slice(1)}
         </div>
       </h6>
