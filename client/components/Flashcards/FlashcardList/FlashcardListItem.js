@@ -81,7 +81,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         </Accordion.Toggle>
         <Popup
           position="top center"
-          content={<FormattedMessage id="i-know-tooltip" />}
+          content={<FormattedMessage id="explain-i-know-word" />}
           trigger={
             <Icon
               name="check"
@@ -92,7 +92,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         />
         <Popup
           position="top center"
-          content={<FormattedMessage id="i-dont-know-tooltip" />}
+          content={<FormattedMessage id="explain-i-dont-know-word" />}
           trigger={
             <Icon
               name="question"

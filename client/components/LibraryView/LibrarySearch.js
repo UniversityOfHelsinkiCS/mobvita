@@ -45,8 +45,10 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
   return (
     <div style={{ position: 'relative' }}>
       <Popup
-        content={intl.formatMessage({ id: 'explanation-library-search' })}
-        trigger={<Icon style={{ paddingRight: '0.5em' }} name="info circle" color="grey" />}
+          content={intl.formatMessage({ id: 'explain-library-search' })}
+          trigger={<Icon style={{ paddingRight: '0.5em' }}
+                         name="info circle"
+                         color="grey" />}
       />
       <Input
         action={{ icon: 'search', onClick: handleLibrarySearch, color: 'grey' }}

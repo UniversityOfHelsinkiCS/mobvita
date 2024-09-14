@@ -165,10 +165,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           {!inWordNestModal && words && words[translated.lemma]?.length > 0 &&
             (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
             !clue && (
+                <Popup
+                    content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
+                    trigger={
               <Button basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
                       data-cy="nest-button">
                 <img src={images.nestIcon} alt="nest icon" width="22" />
               </Button>
+                    }
+                />
             )}
         </div>
         </div>
@@ -226,7 +231,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
         <>
           <div style={{ marginBottom: '1em', width: '100%',
                         ...getTextStyle(learningLanguage) }}>
-            <Speaker word={parsedLemmas()[0]} />
+              <Popup
+                  content={intl.formatMessage({ id: 'explain-speaker-lemma' })}
+                  trigger={<Speaker word={parsedLemmas()[0]} />
+                          } />
             {maskSymbol || parsedLemmas()[0]}
           </div>
           <div className="additional-info">
@@ -252,7 +260,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
         <List.Item style={{ color: '#555555' }}>
           {!clue && !inWordNestModal && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
-              <Speaker word={parsedLemmas()[0]} />
+                <Popup
+                    content={intl.formatMessage({ id: 'explain-speaker-lemma' })}
+                    trigger={<Speaker word={parsedLemmas()[0]} />}
+                />
               {maskSymbol || parsedLemmas()[0]}
             </div>
           )}
@@ -316,7 +327,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                         ...getTextStyle(learningLanguage),
                       }}
                     >
-                      <Speaker word={surfaceWord} />
+                        <Popup
+                            content={intl.formatMessage({ id: 'explain-speaker-surface' })}
+                            trigger={<Speaker word={surfaceWord} />}
+                        />
                       <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
                     </div>
                   )}

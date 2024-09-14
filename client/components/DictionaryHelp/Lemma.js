@@ -20,27 +20,31 @@ const Lemma = ({
   }) => {
     const learningLanguage = useLearningLanguage()
     const { maskSymbol } = useSelector(({ translation }) => translation)
-  
+
     return (
       <div className="flex space-between" style={getTextStyle(learningLanguage)}>
         <div className="flex">
           <Speaker word={lemma} />
           {maskSymbol || (
             <a href={userUrl} target="_blank" rel="noopener noreferrer">
-              {lemma}
+                {// ??? <Popup content={<FormattedMessage id="explain-lemma-goto-dictionary" /> }
+                    lemma
+                }
             </a>
           )}
           {inflectionRef && (
-            <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
-              <Icon name="external" style={{ marginLeft: '1rem' }} />
-            </a>
+              <a href={// ??? <Popup content={<FormattedMessage id="explain-goto-inflection-table" /> }
+                     inflectionRef.url
+                 } target="_blank" rel="noopener noreferrer" className="flex">
+                  <Icon name="external" style={{ marginLeft: '1rem' }} />
+              </a>
           )}
         </div>
         {preferred && (
           <div className="flex-col" style={{ alignItems: 'center' }}>
             <Popup
               position="top center"
-              content={<FormattedHTMLMessage id="i-know-tooltip" />}
+              content={<FormattedHTMLMessage id="explain-i-know-word" />}
               trigger={
                 <Icon
                   name="check"
@@ -51,7 +55,7 @@ const Lemma = ({
             />
             <Popup
               position="top center"
-              content={<FormattedHTMLMessage id="i-dont-know-tooltip" />}
+              content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
               trigger={
                 <Icon
                   name="question"
