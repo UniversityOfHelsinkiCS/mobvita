@@ -3,11 +3,12 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer'
 import CERFLevelSlider from './CEFRLevelSlider'
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
+  const history = useHistory()
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(121)
   const [isTeacher, setIsTeacher] = useState(false)
@@ -34,6 +35,12 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     closeModal()
   }
 
+  const startAdapterTest = () => {
+    dispatch(updateIsTeacher(isTeacher))
+    closeModal()
+    history.push('/adaptive-test')
+  }
+
   if (pending) {
     return null
   }
@@ -45,8 +52,11 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
       size="tiny"
       centered={false}
       dimmer="blurring"
-      closeIcon={{ style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      onClose={closeModal}
+      closeIcon={false} // { style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+      // onClose={closeModal}
+      closeOnDimmerClick={false}
+      closeOneDocumentClick={false}
+      closeOnEscape={false}
     >
       <Modal.Content>
         <div className="encouragement" style={{ padding: '1.5rem' }}>
@@ -114,17 +124,16 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                         <FormattedMessage id="offer-adaptive-test" />
                       </h3>
                       &nbsp;
-                      <Link to="/adaptive-test">
-                        <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
+                      <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
                           <Button 
                             style={{ fontSize: '18px', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }} 
                             variant="primary" 
                             disabled={isTeacher}
+                            onClick={startAdapterTest}
                           >
                             <FormattedMessage id="adaptive-test-button" />
                           </Button>
                         </div>
-                      </Link>
                     </div>
                   </>
                 )}
