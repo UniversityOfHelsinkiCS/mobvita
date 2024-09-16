@@ -26,18 +26,26 @@ const Lemma = ({
         <div className="flex">
           <Speaker word={lemma} />
           {maskSymbol || (
-            <a href={userUrl} target="_blank" rel="noopener noreferrer">
-                {// ??? <Popup content={<FormattedMessage id="explain-lemma-goto-dictionary" /> }
-                    lemma
-                }
-            </a>
+            <Popup 
+              content={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}
+              trigger={(
+                <a href={userUrl} target="_blank" rel="noopener noreferrer">
+                  {lemma}
+              </a>
+              )} 
+            />
           )}
           {inflectionRef && (
-              <a href={// ??? <Popup content={<FormattedMessage id="explain-goto-inflection-table" /> }
-                     inflectionRef.url
-                 } target="_blank" rel="noopener noreferrer" className="flex">
-                  <Icon name="external" style={{ marginLeft: '1rem' }} />
-              </a>
+            <Popup 
+              content={<FormattedHTMLMessage id="explain-goto-inflection-table" />}
+              trigger={(
+                <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" className="flex">
+                    <Icon name="external" style={{ marginLeft: '1rem' }} />
+                </a>
+              )} 
+            />
+
+             
           )}
         </div>
         {preferred && (
