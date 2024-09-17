@@ -53,6 +53,8 @@ import levelUp from './levelUpReducer'
 import activity from './activityReducer'
 import contextTranslation from './contextTranslationReducer'
 import chatbot from './chatbotReducer'
+import gec from './gecReducer'
+
 
 const rootReducer = combineReducers({
   stories,
@@ -108,6 +110,7 @@ const rootReducer = combineReducers({
   contextTranslation,
   activity,
   chatbot,
+  gec,
 })
 
 export default (state, action) =>

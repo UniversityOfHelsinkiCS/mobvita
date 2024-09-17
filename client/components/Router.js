@@ -47,6 +47,7 @@ import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
 import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
+import GecView from './GecView'
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -58,7 +59,6 @@ export default () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // This closes and opens recommendations on page changes
     dispatch(closeEncouragement())
     dispatch(closeFCEncouragement())
     if (
@@ -147,11 +147,6 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
 
-            {/* <ProtectedRoute
-              exact
-              path="/stories/:id/preview-controlled-story/"
-              component={ControlledStoryPreviewView}
-            /> */}
             <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
             <ProtectedRoute
               exact
@@ -186,7 +181,7 @@ export default () => {
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
             <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
-
+            <ProtectedRoute exact path="/gec" component={GecView} />
             <ProtectedRoute exact path="/reference" component={ReferenceView} />
           </Switch>
         </main>
