@@ -13,7 +13,11 @@ import {
     markAnsweredChoice,
     sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
-import { learningLanguageSelector, confettiRain } from 'Utilities/common'
+import { 
+  learningLanguageSelector, 
+  confettiRain, 
+  hiddenFeatures 
+} from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
@@ -443,18 +447,20 @@ const ReadingTest = () => {
                 </div>
               )}
             </div>
-            <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
-              <Button
-                className="restart-reading-test-button btn-secondary"
-                style={{ marginRight: 'auto', marginTop: '1rem' }}
-                onClick={() => restartTest()}
-                disabled={showFeedbacks}
-              >
-                <span>
-                  <FormattedMessage id="restart-reading-test" />
-                </span>
-              </Button>
-            </div>
+            {hiddenFeatures && (
+              <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
+                <Button
+                  className="restart-reading-test-button btn-secondary"
+                  style={{ marginRight: 'auto', marginTop: '1rem' }}
+                  onClick={() => restartTest()}
+                  disabled={showFeedbacks}
+                >
+                  <span>
+                    <FormattedMessage id="restart-reading-test" />
+                  </span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </Segment>
