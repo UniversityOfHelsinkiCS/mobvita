@@ -81,6 +81,8 @@ const ReadingTest = () => {
   let in_experimental_grp = false;
   let in_control_grp = false;
 
+  console.log(currentReadingQuestionIndex, currentQuestionIdxinSet)
+
   groups.forEach(group => {
     if (group.group_type === "experimental") {
       in_experimental_grp = true;
@@ -368,7 +370,7 @@ const ReadingTest = () => {
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
-                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
+                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone && currentQuestionIdxinSet === currentReadingQuestionIndex) {
                   setShowSelfReflect(true)
                 }
               }}
