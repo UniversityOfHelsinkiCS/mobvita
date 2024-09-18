@@ -81,7 +81,6 @@ const ReadingTest = () => {
   let in_experimental_grp = false;
   let in_control_grp = false;
 
-  console.log(currentReadingQuestionIndex, currentQuestionIdxinSet)
 
   groups.forEach(group => {
     if (group.group_type === "experimental") {
