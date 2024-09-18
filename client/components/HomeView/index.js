@@ -112,6 +112,9 @@ const HomeviewButtons = ({
       case 'crossword':
         return `/crossword/${lastActivity.story_id}`
 
+      case 'reading-test':
+        if (learningLanguage == lastActivity.language && aReadingComprehensionEnabled) return `/reading-test`
+        else return null
       default:
         return null
     }
