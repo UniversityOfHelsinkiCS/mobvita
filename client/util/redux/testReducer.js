@@ -273,6 +273,7 @@ export default (state = initialState, action) => {
         feedbacks: [],
         readingSetLength: tmpreadingSetLength,
         pending: false,
+        resumedTest: Object.values(questionsBySet).some(x=>x.seen.length>0),
       };
       
     case 'GET_READING_TEST_QUESTIONS_FAILURE':

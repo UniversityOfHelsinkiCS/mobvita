@@ -72,6 +72,7 @@ const ReadingTest = () => {
     currentQuestionIdxinSet,
     answerPending,
     answerFailure,
+    resumedTest,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
@@ -309,13 +310,13 @@ const ReadingTest = () => {
     setShowFeedbacks(false)
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
       if (in_experimental_grp && receivedFeedback > 0) {
-        setShowSelfReflect(true)
+        setShowSelfReflect(!resumedTest)
       }
       if (in_control_grp && receivedFeedback == 0) {
-        setShowSelfReflect(true)
+        setShowSelfReflect(!resumedTest)
       }
     }
-    setFirstMediationSelfReflectionDone(false)
+    setFirstMediationSelfReflectionDone(resumedTest)
   }, [currentReadingSet])
 
   useEffect(() => {
@@ -369,7 +370,7 @@ const ReadingTest = () => {
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
-                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone && currentQuestionIdxinSet === currentReadingQuestionIndex) {
+                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
                   setShowSelfReflect(true)
                 }
               }}
