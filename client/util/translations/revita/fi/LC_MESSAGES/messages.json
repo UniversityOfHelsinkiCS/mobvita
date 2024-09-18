@@ -1669,5 +1669,6 @@
     "explain-wordnest-modal": "Sanapesä: katso muut liittyvät sanat",
     "Menu-more": "Lisää",
     "explain-library-search": "Hae tarinoita sanan tai lauseen perusteella.",
-    "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa"
+    "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa",
+    "copy-key": "Kopioi avain"
 }

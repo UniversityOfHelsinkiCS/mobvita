@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FormattedMessage } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
 const GroupKey = () => {
@@ -25,12 +25,18 @@ const GroupKey = () => {
           wordBreak: 'break-all',
         }}
       >
-        <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
         <CopyToClipboard text={token}>
-          <Button type="button" onClick={handleTokenCopy}>
-            <Icon name="copy" size="large" />
-          </Button>
+          <Popup
+            position="top center"
+            content={<FormattedMessage id="copy-key" />}
+            trigger={
+              <Button type="button" onClick={handleTokenCopy}>
+                <Icon name="copy" size="large" />
+              </Button>
+            }
+          />
         </CopyToClipboard>
+        <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
       </div>
       <div
         style={{

@@ -1043,5 +1043,6 @@
     "explain-wordnest-modal": "Word-nest: Go to see other related words",
     "Menu-more": "更多信息",
     "explain-library-search": "您可在此处按文中词句搜索",
-    "lesson-performance-info-tooltip": "This is your current level of performance on this topic: percent of correct answers in exercises"
+    "lesson-performance-info-tooltip": "This is your current level of performance on this topic: percent of correct answers in exercises",
+    "copy-key": "复制代码"
 }
