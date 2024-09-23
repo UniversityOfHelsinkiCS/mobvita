@@ -31,7 +31,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
 import LearningSettingsModal from './LearningSettingsModal'
 import PracticeModal from './HomeView/PracticeModal'
-import { hiddenFeatures } from 'Utilities/common'
+import { hiddenFeatures, getHelpLink } from 'Utilities/common'
 
 export default function Sidebar({ history }) {
   const dispatch = useDispatch()
@@ -46,6 +46,7 @@ export default function Sidebar({ history }) {
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const intl = useIntl()
   const isTeacher = user?.user.is_teacher
+  const [helpLink, setHelpLink] = useState(null)
 
   const handleLocaleChange = newLocale => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
@@ -53,6 +54,12 @@ export default function Sidebar({ history }) {
   }
 
   const marginTopButton = '8px'
+
+  useEffect(() => {
+    if (user) {
+      setHelpLink(getHelpLink(locale, isTeacher, learningLanguage))
+    }
+  }, [user, learningLanguage])
 
   useEffect(() => {
     const temp = localeOptions.map(option => ({
@@ -364,7 +371,7 @@ export default function Sidebar({ history }) {
                   text={intl.formatMessage({id: 'start-tour'})} icon='info circle'
                 />
               )}
-              <DropdownItem as={Link} to="/help" text={intl.formatMessage({id: 'help'})} icon='help circle' />
+              {/* <DropdownItem as={Link} to={helpLink} text={intl.formatMessage({id: 'help'})} icon='help circle' /> */}
               <DropdownItem
                 data-cy="about-button"
                 as={Link}

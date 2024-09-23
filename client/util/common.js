@@ -958,6 +958,30 @@ const tourSign = () => {
   )
 }
 
+
+export const getHelpLink = (locale, isTeacher, learningLanguage) => {
+  const interface_language = localeCodeToName(locale)
+  if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish') 
+    return 'https://docs.google.com/presentation/d/1MKh8e15yEziO4iJtG2-rovP4nRMciUS8cCSpy4KnsUg/edit?usp=drive_link'
+  else if (isTeacher && interface_language == 'English' && learningLanguage == 'Finnish')
+    return 'https://docs.google.com/presentation/d/16wRAQjgfRIqkXig9JAxkC3Ll1Zoi35P0chjG3KO_cgI/edit?usp=drive_link'
+  else if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Russian')
+    return 'https://docs.google.com/presentation/d/1lORT0jD_UOxzDI7Tar2k_5nyYXSkp8r8Ywa-njpS2uk/edit?usp=drive_link'
+  else if (isTeacher && interface_language == 'Finnish' && learningLanguage == 'Finnish')
+    return 'https://docs.google.com/presentation/d/11zzFn62Xl1dYxA0GSYOjls7cVH7hqZstjha5GOnO1m4/edit?usp=drive_link'
+  else if (!isTeacher && interface_language == 'Chinese' && learningLanguage == 'Russian')
+    return 'https://docs.google.com/presentation/d/1JtCkK1x48ZuC3URpMAJShQwdI9qBel8A35heXuJ7NFs/edit?usp=drive_link'
+  else if (!isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish')
+    return 'https://docs.google.com/presentation/d/16g-k_DupoDkf814LVjQVy7u7hGsS6Rh255DaWUN0ywQ/edit?usp=drive_link'
+  else if (!isTeacher && interface_language == 'Finnish' && learningLanguage == 'Finnish')
+    return 'https://docs.google.com/presentation/d/1hOOekSdDC3MeIJoWphPDg3xk3LTJ16jsFQ5fJKrhxGQ/edit?usp=drive_link'
+  else if (!isTeacher && interface_language == 'English' && learningLanguage == 'Finnish')
+    return 'https://docs.google.com/presentation/d/1qZ9syaJZVgUXgr0DATDehJl-xefZSA2C6yZnkN6NyiY/edit?usp=drive_link'
+  else if (!isTeacher && interface_language == 'English' && learningLanguage == 'Russian')
+    return 'https://docs.google.com/presentation/d/1OSNXy5cydhqMRqRO4I2csG2DqN70Po1HTW-3DYJMxZ8/edit?usp=drive_link'
+  else return '/help'
+}
+
 /////////////////////////////////////////////////////////
 // OLD tour item #3
 //-   {
