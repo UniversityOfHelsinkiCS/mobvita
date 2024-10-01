@@ -45,7 +45,7 @@ const ReadingTest = () => {
   const [showFeedbacks, setShowFeedbacks] = useState(false)
 
   const [currentReadingSetLength, setCurrentReadingSetLength] = useState(0)
-  const [firstMediationSelfReflectionDone, setFirstMediationSelfReflectionDone] = useState(false)
+  // const [firstMediationSelfReflectionDone, setFirstMediationSelfReflectionDone] = useState(false)
   const [showSelfReflect, setShowSelfReflect] = useState(false)
   
   const [showElicitDialog, setShowElicitDialog] = useState(false)
@@ -73,6 +73,7 @@ const ReadingTest = () => {
     answerPending,
     answerFailure,
     resumedTest,
+    readingTestSetDict,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
@@ -129,16 +130,16 @@ const ReadingTest = () => {
 
   const submitSelfReflectionResponse = (response_json) => {
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
-    if (response_json.is_end_set_questionair !== true){
-      setFirstMediationSelfReflectionDone(true)
-    }
-    else {
+    if (response_json.is_end_set_questionair == true){
       if (currentReadingQuestionIndex === readingTestQuestions.length - 1){
         goToHomePage()
       } else {
         setShowNextSetDialog(true)
       }
     }
+    // else {
+    //   setFirstMediationSelfReflectionDone(true)
+    // }
     setShowSelfReflect(false)
     if (currentReadingSet !== prevReadingSet && prevReadingSet !== null && currentReadingSet !== null) {
       setReceivedFeedback(0)
@@ -309,14 +310,17 @@ const ReadingTest = () => {
   useEffect(() => {
     setShowFeedbacks(false)
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
-      if (in_experimental_grp && receivedFeedback > 0) {
-        setShowSelfReflect(!resumedTest)
-      }
-      if (in_control_grp && receivedFeedback == 0) {
-        setShowSelfReflect(!resumedTest)
+      const currentSet = readingTestSetDict[currentReadingSet]
+      if (currentSet && currentSet.collect_final_reflection) {
+        if (in_experimental_grp && receivedFeedback > 0) {
+          setShowSelfReflect(!resumedTest)
+        }
+        if (in_control_grp && receivedFeedback == 0) {
+          setShowSelfReflect(!resumedTest)
+        }
       }
     }
-    setFirstMediationSelfReflectionDone(resumedTest)
+    // setFirstMediationSelfReflectionDone(resumedTest)
   }, [currentReadingSet])
 
   useEffect(() => {
@@ -370,9 +374,9 @@ const ReadingTest = () => {
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
-                if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
-                  setShowSelfReflect(true)
-                }
+                // if (firstMediationSelfReflectionDone === false && receivedFeedback > 0 && in_experimental_grp && currentQuestionIdxinSet < currentReadingSetLength && questionDone) {
+                //   setShowSelfReflect(true)
+                // }
               }}
             />
             <ReadingTestSelfReflect 
