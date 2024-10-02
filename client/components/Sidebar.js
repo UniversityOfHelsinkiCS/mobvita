@@ -361,7 +361,7 @@ export default function Sidebar({ history }) {
             </Button>
           </Link>
           <Dropdown item text={intl.formatMessage({id: 'Menu-more'})} >
-            <DropdownMenu style={{minHeight: '15.5em'}}>
+            <DropdownMenu style={{minHeight: '16em'}}>
               <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
               <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
               {learningLanguage && (
