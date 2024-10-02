@@ -13,6 +13,7 @@ const initialState = {
   prevReadingSet: null,
   readingSetLength: 0,
   readingTestQuestions: [],
+  readingTestSetDict: {},
 
   exhaustiveTestSessionId: null,
   currentExhaustiveQuestionIndex: 0,
@@ -208,7 +209,7 @@ export default (state = initialState, action) => {
         language: action.language,
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
-      const { question_list, session_id } = response;
+      const { question_list, session_id, question_set_dict } = response;
     
       // Split questions by set
       const questionsBySet = question_list.reduce((acc, question) => {
@@ -263,6 +264,7 @@ export default (state = initialState, action) => {
     
       return {
         ...state,
+        readingTestSetDict: question_set_dict,
         readingTestQuestions: tempreadingTestQuestions,
         currentReadingTestQuestion: tmpcurrentReadingTestQuestion,
         currentReadingSet: currentSet,
