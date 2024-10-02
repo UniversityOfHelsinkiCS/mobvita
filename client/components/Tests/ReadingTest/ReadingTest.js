@@ -13,6 +13,7 @@ import {
     markAnsweredChoice,
     sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import { 
   learningLanguageSelector, 
   confettiRain, 
@@ -60,6 +61,10 @@ const ReadingTest = () => {
   const [timeSpent, setTimeSpent] = useState(0)
   const [showStats, setShowStats] = useState(false)
 
+  // State for experimental and control groups
+  const [in_experimental_grp, setInExperimentalGrp] = useState(false);
+  const [in_control_grp, setInControlGrp] = useState(false);
+
   const {
     feedbacks,
     currentReadingTestQuestion,
@@ -79,23 +84,6 @@ const ReadingTest = () => {
   const { groups } = useSelector(({ groups }) => groups)
 
   const history = useHistory()
-
-  let in_experimental_grp = false;
-  let in_control_grp = false;
-
-
-  groups.forEach(group => {
-    if (group.group_type === "experimental") {
-      in_experimental_grp = true;
-    }
-    if (group.group_type === "control") {
-      in_control_grp = true;
-    }
-  });
-  
-  if (in_control_grp == true) {
-    in_experimental_grp = false;
-  }
 
   const dispatch = useDispatch()
 
@@ -284,11 +272,39 @@ const ReadingTest = () => {
     if (in_control_grp) {
       if (attempts >= 1) {
         setQuestionDone(true)
+        setShowCorrect(true)
         return
       }
     }
   }
   
+  useEffect(() => {
+    dispatch(getGroups());
+  }, []);
+
+  useEffect(() => {
+    let experimental = false;
+    let control = false;
+
+    if (groups && groups.length) {
+      groups.forEach((group) => {
+        if (group.group_type === 'experimental') {
+          experimental = true;
+        }
+        if (group.group_type === 'control') {
+          control = true;
+        }
+      });
+
+      // If in control group, don't set experimental group
+      if (control) {
+        experimental = false;
+      }
+    }
+
+    setInExperimentalGrp(experimental);
+    setInControlGrp(control);
+  }, [groups]);
 
   useEffect(() => {
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
