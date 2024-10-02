@@ -15,7 +15,7 @@ export const updateEssay = (text) => ({
 
 const initialState = {
   essay: "",           // Essay input by the user
-  edits: null,         // Grammar corrections received
+  edits: {},         // Grammar corrections received
   pending: false,      // Loading state
   error: null,         // Error message if request fails
 }
