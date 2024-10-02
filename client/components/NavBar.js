@@ -368,7 +368,7 @@ export default function NavBar() {
                   content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
                   trigger={
                     <Button className="tour-button" onClick={handleTourStart}>
-                      <img src={images.direction} alt="direction icon" width="21" height="21" />
+                      <Icon name="map signs" size="large" style={{ color: 'black' }} />
                     </Button>
                   }
                 />
@@ -455,7 +455,7 @@ export default function NavBar() {
               <Popup
                 trigger={
                   <a
-                    className="navbar-basic-icon"
+                    className="navbar-basic-icon tour-help"
                     style={{ display: 'table-cell' }}
                     href={helpLink}
                     target="_blank"

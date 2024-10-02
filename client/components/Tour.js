@@ -65,6 +65,9 @@ const Tour = () => {
             confettiRain()
           }, 800)
         }
+        if (tourState.steps === homeTourSteps && index === 1) {
+          dispatch(sidebarSetOpen(true))
+        }
 
         // progress tour tour step index related desktop actions
         if (tourState.steps === progressTourSteps) {
@@ -155,27 +158,36 @@ const Tour = () => {
       } else {
         // home tour control
         if (tourState.steps === homeTourSteps) {
-          if (index === 0) {
-            if (!history.location.pathname.includes('/home')) {
-              history.push('/home')
-            }
-          } else if (index === 1 || index === 8) {
-            setTimeout(() => {
-              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            }, 600)
-            return
-          } else if (index === 2) {
-            confettiRain()
-            confettiRain()
-            setTimeout(() => {
+          console.log('home tour', index)
+          switch (index) {
+            case 0:
+              if (!history.location.pathname.includes('/home')) {
+                history.push('/home')
+              }
+              break
+            case 1:
+              dispatch(sidebarSetOpen(true))
+              setTimeout(() => {
+                dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              }, 600)
+            case 8:
+              setTimeout(() => {
+                dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              }, 600)
+              break
+            case 2:
               confettiRain()
-            }, 400)
-            setTimeout(() => {
               confettiRain()
-            }, 600)
-            setTimeout(() => {
-              confettiRain()
-            }, 800)
+              setTimeout(() => {
+                confettiRain()
+              }, 400)
+              setTimeout(() => {
+                confettiRain()
+              }, 600)
+              setTimeout(() => {
+                confettiRain()
+              }, 800)
+              break
           }
         }
         // library tour control

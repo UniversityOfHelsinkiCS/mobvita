@@ -361,14 +361,14 @@ export default function Sidebar({ history }) {
             </Button>
           </Link>
           <Dropdown item text={intl.formatMessage({id: 'Menu-more'})} >
-            <DropdownMenu style={{minHeight: '18.5em'}}>
+            <DropdownMenu style={{minHeight: '15.5em'}}>
               <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
               <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
               {learningLanguage && (
                 <DropdownItem
                   className='tour-mobile-start-button'
                   onClick={() => handleTourStart()}
-                  text={intl.formatMessage({id: 'start-tour'})} icon='info circle'
+                  text={intl.formatMessage({id: 'start-tour'})} icon='map signs'
                 />
               )}
               {/* <DropdownItem as={Link} to={helpLink} text={intl.formatMessage({id: 'help'})} icon='help circle' /> */}
@@ -379,13 +379,22 @@ export default function Sidebar({ history }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 text={intl.formatMessage({id: 'about'})}
+                icon='info circle'
               />
-              <DropdownItem>
-                <ContactUs trigger={<a><FormattedMessage id="contact-us" /></a>} />
-              </DropdownItem>
-              <DropdownItem data-cy="logout-button" onClick={signOut}>
-                <FormattedMessage id="sign-out" />
-              </DropdownItem>
+              
+              <ContactUs trigger={
+                <DropdownItem
+                  text={intl.formatMessage({id: 'contact-us'})}
+                  icon='envelope outline'
+                />
+              } />
+              
+              <DropdownItem 
+                data-cy="logout-button" 
+                onClick={signOut} 
+                icon='sign out alternate' 
+                text={intl.formatMessage({id: 'sign-out'})}
+              />
             </DropdownMenu>
           </Dropdown>
            

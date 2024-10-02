@@ -1121,7 +1121,7 @@ const desktopHomeTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.navbar-dropdown-icon-cont-HELP',
+    target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
     content: (
       <div>

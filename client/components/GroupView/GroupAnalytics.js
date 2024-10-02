@@ -102,7 +102,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handleVocabulary = () => {
-    if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
+    if (moment(endDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
       dispatch(
         getStudentVocabulary(
           currentStudent._id,
