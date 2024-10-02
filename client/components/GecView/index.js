@@ -46,7 +46,7 @@ const Word = ({ word, isError, edit, index }) => {
     </span>
   ) : (
     <span key={index} style={{ marginRight: '5px' }}>
-      {word}
+      {word}{' '}
     </span>
   )
 }
@@ -74,16 +74,15 @@ const GrammarCheck = () => {
     let currentEditIndex = 0
     let currentWordIndex = 0
 
-    // Find matching edits and insert editable inputs
+    // Iterate through each word in the essay
     while (currentWordIndex < words.length) {
       const word = words[currentWordIndex]
       const currentEdit = edits[currentEditIndex]
       const o_start = currentEdit ? currentEdit.o_start : null
       const o_end = currentEdit ? currentEdit.o_end : null
 
-      // Check if the current word is in the range of the edit
+      // If the current word falls under an edit's range
       if (currentEdit && currentWordIndex >= o_start && currentWordIndex < o_end) {
-        // Wrap the word in an input box if it's within the edit range
         modifiedText.push(
           <Word
             key={currentWordIndex}
@@ -94,14 +93,15 @@ const GrammarCheck = () => {
           />
         )
 
+        // Move to the next edit once we've processed all the words for the current edit
         if (currentWordIndex + 1 === o_end) {
           currentEditIndex++
         }
       } else {
-        // Regular word (no edit)
+        // Render a regular word (without edit)
         modifiedText.push(
           <span key={currentWordIndex} style={{ marginRight: '5px' }}>
-            {word + ' '}
+            {word}{' '}
           </span>
         )
       }
@@ -130,8 +130,16 @@ const GrammarCheck = () => {
           onChange={handleEssayChange}
         />
       ) : (
-        <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', height: '200px', overflowY: 'auto' }}>
-          <span>{renderTextWithHighlights(essay, edits[0])}</span>
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '10px',
+            border: '1px solid #ccc',
+            height: '200px',
+            overflowY: 'auto',
+          }}
+        >
+          <span>{renderTextWithHighlights(essay, edits)}</span>
         </div>
       )}
 
@@ -146,7 +154,7 @@ const GrammarCheck = () => {
           cursor: 'pointer',
         }}
         onClick={handleGrammarCheck}
-        disabled={pending} // Disable button when pending
+        disabled={pending}
       >
         {pending ? '...' : <FormattedMessage id="check-gec-grammar" />}
       </button>
