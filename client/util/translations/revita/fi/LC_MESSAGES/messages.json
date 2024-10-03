@@ -1670,5 +1670,6 @@
     "Menu-more": "Lisää",
     "explain-library-search": "Hae tarinoita sanan tai lauseen perusteella.",
     "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa",
-    "copy-key": "Kopioi avain"
+    "copy-key": "Kopioi avain",
+    "flashcard-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li><li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li></ul>"
 }

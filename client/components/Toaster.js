@@ -115,7 +115,7 @@ export default function Toaster() {
   }, [uploaded])
 
   useEffect(() => {
-    if (storyId !== null) {
+    if (storyId !== null && progress !== 1) {
       const progressCheckInterval = setInterval(() => {
         dispatch(getProgress(storyId))
       }, 5000)

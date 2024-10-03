@@ -1640,7 +1640,7 @@
     "TOS-question-1-2": "this is my second year",
     "TOS-question-1-3": "this is my third year",
     "TOS-question-1-4": "this is my fourth (or more) year",
-    "TOS-question-2a": "Which obligatory English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment);",
+    "TOS-question-2a": "",
     "TOS-question-2b": "Which optional English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment)",
     "TOS-question-3": "What is your latest course grade in English?",
     "correct-first-attempts": "Number of correct answers on first attempt (no hints)",
@@ -1672,5 +1672,6 @@
     "Menu-more": "Больше информации",
     "explain-library-search": "Поиск по словам в тексте",
     "lesson-performance-info-tooltip": "Твой уровень успеваемости по этой теме на данный момент: процент правильных ответов на упражнения",
-    "copy-key": "Скопировать ключ"
+    "copy-key": "Скопировать ключ",
+    "flashcard-upload-instructions": "Пожалуйста, выбери файл, в котором содержится текст:<ul><li>У файла должно быть расширение .TXT или .DOCX</li><li>На первой строке обязательно должен быть только <b>заголовок</b> — название текста</li></ul>"
 }

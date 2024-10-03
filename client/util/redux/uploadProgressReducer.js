@@ -12,6 +12,12 @@ export const postStory = newStory => {
   return callBuilder(route, prefix, 'post', newStory)
 }
 
+export const postFlashcard = newFlashcards => {
+  const route = '/flashcards/pack'
+  const prefix = 'POST_NEW_FLASHCARD'
+  return callBuilder(route, prefix, 'post', newFlashcards)
+}
+
 export const editStory = newStory => {
   const route = '/stories'
   const prefix = 'EDIT_STORY'
@@ -102,6 +108,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         custom: action.custom,
+      }
+    case 'POST_NEW_FLASHCARD_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'POST_NEW_FLASHCARD_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'POST_NEW_FLASHCARD_SUCCESS':
+      return {
+        ...state,
+        pending: false,
+        storyId: action.response.story_ids?.length > 0 ? action.response.story_ids[action.response.story_ids.length - 1] : null,
+        progress: 1,
+        error: false,
+        custom: false,
       }
     case 'CLEAR_UPLOADPROGRESS':
       return {
