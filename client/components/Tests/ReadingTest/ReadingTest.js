@@ -326,8 +326,8 @@ const ReadingTest = () => {
   useEffect(() => {
     setShowFeedbacks(false)
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
-      const currentSet = readingTestSetDict[currentReadingSet]
-      if (currentSet && currentSet.collect_final_reflection) {
+      const prevSet = readingTestSetDict[prevReadingSet]
+      if (prevSet && prevSet.collect_final_reflection) {
         if (in_experimental_grp && receivedFeedback > 0) {
           setShowSelfReflect(!resumedTest)
         }
