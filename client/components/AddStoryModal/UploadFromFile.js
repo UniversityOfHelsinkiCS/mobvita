@@ -100,7 +100,7 @@ const UploadFromFile = ({ closeModal }) => {
       <Divider />
       <br />
       <span className="upload-instructions">
-        <FormattedHTMLMessage id="flashcards-upload-instructions" />
+        <FormattedHTMLMessage id="flashcard-upload-instructions" />
       </span>
       <div className="space-evenly pt-lg">
         <input id="flashcard" name="flashcard" type="file" accept=".docx, .txt" onChange={onFlashcardChange} />
