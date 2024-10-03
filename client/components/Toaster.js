@@ -121,6 +121,14 @@ export default function Toaster() {
       }, 5000)
       saveInterval(progressCheckInterval)
     }
+    else if (storyId !== null && progress === 1) {
+      dispatch(
+        getAllStories(learningLanguage, {
+          sort_by: 'date',
+          order: -1,
+        })
+      )
+    }
   }, [storyId])
 
   useEffect(() => {
