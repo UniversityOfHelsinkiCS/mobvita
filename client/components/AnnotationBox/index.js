@@ -44,7 +44,7 @@ const AnnotationBox = () => {
     return <NoAnnotationsView handleAnnotationBoxCollapse={handleAnnotationBoxCollapse} />
   }
 
-  if (width >= 1024 && teacherView) {
+  if (width >= 1024) {
     return (
       <div className="annotations-box">
         <Segment>

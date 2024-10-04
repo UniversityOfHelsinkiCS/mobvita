@@ -81,8 +81,11 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           <>
               {/* slider */}
               <div>
-                  <CERFLevelSlider sliderValue={cefrSliderValue}
-                                   setSliderValue={setCefrSliderValue} />
+                  <CERFLevelSlider 
+                    sliderValue={cefrSliderValue}
+                    setSliderValue={setCefrSliderValue} 
+                    noExtremeValue={false}
+                  />
               </div>
               {/* customize learning settings */}
               <div className="flex-reverse" style={{ marginBottom: '1.5em', marginTop: '1.0em' }}>
