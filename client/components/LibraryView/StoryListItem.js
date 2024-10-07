@@ -205,19 +205,32 @@ const StoryActions = ({
           </Link>
         )}
 
-        {!isTeacher && (<Popup
-          content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+        {!isTeacher && story.flashcard_count > 0 && (<Popup
+          content={<FormattedMessage id="flashcard-btn-explanation" />}
           trigger={
             <Link to={`/flashcards/fillin/story/${story._id}/`}>
               <Button
                 variant='primary'
-                disabled={enableOnlyPractice || story.flashcard_count === 0}
+                disabled={enableOnlyPractice}
               >
                 <FormattedMessage id="Flashcards" />
               </Button>
             </Link>
           }
-          disabled={story.flashcard_count > 0}
+          position="top center"
+        />)}
+        {!isTeacher && story.flashcard_count === 0 && (<Popup
+          content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+          trigger={
+            <Link to={`/flashcards/fillin/story/${story._id}/`}>
+              <Button
+                variant='primary'
+                disabled={true}
+              >
+                <FormattedMessage id="Flashcards" />
+              </Button>
+            </Link>
+          }
           position="top center"
         />)}
         { !story.flashcardsOnly && (<>

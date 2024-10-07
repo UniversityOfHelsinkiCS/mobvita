@@ -732,7 +732,7 @@
     "token-copied": "Koodi kopioitu leikepöydälle",
     "server-issues": "Palvelinvirhe. Yritä hetken päästä uudelleen.",
     "learning-settings-saved": "Opiskeluasetukset tallennettu",
-    "validating-url": "Validoidaan URL-osoitetta...",
+    "validating-url": "Validoidaan teksti...",
     "processing-story": "Prosessoidaan tarinaa...",
     "done": "prosessoitu",
     "failed-to-share-the-story": "Tarinan jakaminen epäonnistui",
@@ -1558,7 +1558,7 @@
     "not-useful-at-all": "Ei hyödyllistä",
     "very-useful": "Erittäin hyödyllistä",
     "paradigm table": "Katso taivutustaulukko →",
-    "experimental-elicitation-question": "Tässä tehtävässä on useita haasteita. Valitse yksi. Jos tuntuu siltä, että vinkit eivät auta, ei huolta! Voit valita eri vinkit seuraavalla kerralla. <b>Mihin seuraavista haasteista haluaisit apua?</b>",
+    "experimental-elicitation-question": "Tässä tehtävässä on useita haasteita. Valitse yksi. Jos tuntuu siltä, että vinkit eivät auta, ei huolta! Voit valita eri vinkit seuraavalla kerralla.\n<br/>\n<b>Mihin seuraavista haasteista haluaisit apua?</b>",
     "elicitation-construct-specific-details": "En löydä tekstistä oikeaa kohtaa",
     "elicitation-construct-deducing-vocabulary": "Joidenkin sanojen merkitystä en ymmärrä",
     "move-to-next-set-of-reading-items": "Nyt siirrytään seuraavaan tehtäväryhmään.",
@@ -1671,5 +1671,6 @@
     "explain-library-search": "Hae tarinoita sanan tai lauseen perusteella.",
     "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa",
     "copy-key": "Kopioi avain",
-    "flashcard-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li><li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li></ul>"
+    "flashcard-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li><li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li></ul>",
+    "flashcard-btn-explanation": "Click to practice flashcards of this story!"
 }

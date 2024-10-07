@@ -494,7 +494,7 @@
     "paste-a-text": "粘贴文章",
     "processing-story": "文章分析中",
     "this-text-is-too-long-maximum-50000-characters": "文章过长。最多50000个字符。",
-    "validating-url": "正在验证URL地址...",
+    "validating-url": "正在验证...",
     "warning-for-anonymous-users": "只有注册用户可以保存故事以便下次使用。",
     "paste-text-upload-instructions": "请粘贴故事。文章标题<b>至少3个字符</>。文章本体<b>最少50个字符</>。",
     "file-upload-instructions": "请选择包含该故事的文件：<ul><li>文件扩展名应为.TXT 或 .DOCX （不支持其他扩展名）</li><li> Revita 将使用第一行作为故事的标题 </li></ul>",
@@ -929,7 +929,7 @@
     "not-useful-at-all": "没用",
     "very-useful": "很有用",
     "paradigm table": "See the inflection table →",
-    "experimental-elicitation-question": "This task has several challenging points. Choose one. If you feel that the tips are not helpful, don't worry! You can choose different advice next time. <b>Which of these would you like to get more help with?</b>",
+    "experimental-elicitation-question": "This task has several challenging points. Choose one. If you feel that the tips are not helpful, don't worry! You can choose different advice next time.\n<br/>\n<b>Which of these would you like to get more help with?</b>",
     "elicitation-construct-specific-details": "I can’t find the right place in the text",
     "elicitation-construct-deducing-vocabulary": "I don’t understand the meaning of some words",
     "move-to-next-set-of-reading-items": "Now we move to the next set of tasks.",
@@ -1012,7 +1012,7 @@
     "TOS-question-1-2": "this is my second year",
     "TOS-question-1-3": "this is my third year",
     "TOS-question-1-4": "this is my fourth (or more) year",
-    "TOS-question-2a": "",
+    "TOS-question-2a": "Which obligatory English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment);",
     "TOS-question-2b": "Which optional English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment)",
     "TOS-question-3": "What is your latest course grade in English?",
     "correct-first-attempts": "Number of correct answers on first attempt (no hints)",
@@ -1045,5 +1045,6 @@
     "explain-library-search": "您可在此处按文中词句搜索",
     "lesson-performance-info-tooltip": "This is your current level of performance on this topic: percent of correct answers in exercises",
     "copy-key": "复制代码",
-    "flashcard-upload-instructions": "请选择包含单词卡的文件：<ul><li>文件扩展名应为.TXT 或 .DOCX （不支持其他扩展名）</li><li> Revita 将使用第一行作为卡组的标题 </li></ul>"
+    "flashcard-upload-instructions": "请选择包含单词卡的文件：<ul><li>文件扩展名应为.TXT 或 .DOCX （不支持其他扩展名）</li><li> Revita 将使用第一行作为卡组的标题 </li></ul>",
+    "flashcard-btn-explanation": "Click to practice flashcards of this story!"
 }
