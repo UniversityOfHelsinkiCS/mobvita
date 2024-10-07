@@ -20,6 +20,7 @@ const StoryTitle = ({
   currentGroup,
   libraryShown,
   setConfirmationOpen,
+  storyGroupShareInfo,
   handleControlledStoryCancel,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -38,14 +39,25 @@ const StoryTitle = ({
   return (
     <StoryDetailsModal
       trigger={
-        <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+        <span className="flex" style={{ overflow: 'hidden', width: '100%' }}>
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
           <h5
             className="story-item-title"
-            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+            style={{ marginBottom: '.5rem', width: '65%', ...getTextStyle(learningLanguage) }}
           >
             {story.title}
           </h5>
+          {inGroupLibrary && storyGroupShareInfo && (
+            <span style={{
+              whiteSpace: 'nowrap', 
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              '-o-text-overflow': 'ellipsis',
+              width: '30%',
+            }}>
+              {storyGroupShareInfo.message}
+            </span>
+          )}
         </span>
       }
       story={story}
@@ -368,6 +380,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           currentGroup={currentGroup}
           libraryShown={libraryShown}
+          storyGroupShareInfo={storyGroupShareInfo}
           handleControlledStoryCancel={handleControlledStoryCancel}
         />
       </Card.Content>
