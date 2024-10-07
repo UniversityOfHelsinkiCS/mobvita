@@ -368,7 +368,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           isTeacher={isTeacher}
         />
         <div className="flex align-center" style={{ overflow: 'hidden' }}>
-          {story.flashcardsOnly && (<Icon size="small" name="question" bordered style={{marginRight: '10px'}}/>)}
+          {story.flashcardsOnly && (<Icon size="small" name="clone outline" bordered style={{marginRight: '10px'}}/>)}
 
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
