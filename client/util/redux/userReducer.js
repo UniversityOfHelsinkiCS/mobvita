@@ -15,10 +15,10 @@ export const getLatestIRTScore = (language) => {
   return callBuilder(route, prefix, 'get')
 }
 
-export const createRealToken = (email, password) => {
+export const createRealToken = (email, password, locale) => {
   const route = '/session/'
   const prefix = 'LOGIN'
-  const payload = { email, password }
+  const payload = { email, password, interface_language: locale }
   return callBuilder(route, prefix, 'post', payload)
 }
 

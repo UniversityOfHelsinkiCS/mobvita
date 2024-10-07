@@ -54,7 +54,7 @@ const Register = () => {
     accountCreated,
   } = useSelector(({ register }) => register)
   const userEmail = useSelector(({ user }) => user.data?.user?.email)
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
 
   const dispatch = useDispatch()
 

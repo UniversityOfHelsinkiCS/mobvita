@@ -21,7 +21,7 @@ const LandingPage = () => {
   const [registering, setRegistering] = useState(false)
 
   const open = useSelector(({ sidebar }) => sidebar.open)
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
   const { landingPageLangManuallySelected } = useSelector(({ user }) => user)
   const { pending, accountCreated } = useSelector(({ register }) => register)
 

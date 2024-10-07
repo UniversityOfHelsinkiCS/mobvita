@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
+import { localeCodeToName } from 'Utilities/common'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -14,6 +15,7 @@ const Login = () => {
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
   const { user, pending } = useSelector(({ user }) => user)
+  const { locale, updated } = useSelector(({ locale }) => locale)
   const location = useLocation()
   const history = useHistory()
   const intl = useIntl()
@@ -21,7 +23,7 @@ const Login = () => {
   const dispatch = useDispatch()
 
   const login = () => {
-    dispatch(createRealToken(email, password))
+    dispatch(createRealToken(email, password, updated && localeCodeToName(locale) || null))
   }
 
   useEffect(() => {

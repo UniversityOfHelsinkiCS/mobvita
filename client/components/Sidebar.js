@@ -40,7 +40,7 @@ export default function Sidebar({ history }) {
   // const irtScore = useSelector(({ user }) => user.irt_dummy_score)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)

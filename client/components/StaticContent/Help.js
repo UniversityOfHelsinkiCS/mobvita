@@ -4,7 +4,7 @@ import { Segment } from 'semantic-ui-react'
 
 const Help = () => {
   const interfaceLanguage = useSelector(({ user }) => user.data && user.data.user.interfaceLanguage)
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
 
   const lang = interfaceLanguage || locale
 

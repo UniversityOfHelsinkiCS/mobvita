@@ -29,7 +29,7 @@ const SettingToggle = ({ translationId, ...props }) => {
 const Settings = ({teacherView}) => {
   const { data, pending } = useSelector(({ user }) => user)
   const { user } = data
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
   const { groups } = useSelector(({ groups }) => groups)
   const dispatch = useDispatch()
   const intl = useIntl()

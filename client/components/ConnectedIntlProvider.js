@@ -4,7 +4,7 @@ import translations from 'Utilities/translations'
 import { localeNameToCode } from '../util/common'
 
 const mapStateToProps = ({ locale, user }) => {
-  let actualLocale = locale
+  let actualLocale = locale.locale
 
   if (user.data && user.data.user && user.data.user.interfaceLanguage) {
     // If user has logged in, use locale from user object, else use value from localeReducer

@@ -79,7 +79,7 @@ export default function NavBar() {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const storyLanguage = (storyPending == false) & (story != undefined) ? story.language : undefined
   const learningLanguage = useSelector(learningLanguageSelector)
-  const locale = useSelector(({ locale }) => locale)
+  const { locale } = useSelector(({ locale }) => locale)
   const dispatch = useDispatch()
   const history = useHistory()
   const smallWindow = useWindowDimensions().width < 700
