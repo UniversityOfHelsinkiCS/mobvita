@@ -1671,5 +1671,6 @@
     "lesson-performance-info-tooltip": "Tuo livello attuale di prestazione su questo argomento: percentuale di risposte corrette negli esercizi",
     "copy-key": "Copia chiave",
     "flashcard-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>La prima riga deve contenere il <b>titolo</b> della storia.</li></ul>",
-    "flashcard-btn-explanation": "Click to practice flashcards of this story!"
+    "flashcard-btn-explanation": "Click to practice flashcards of this story!",
+    "group-hidden-story": "This story is hidden for this group"
 }

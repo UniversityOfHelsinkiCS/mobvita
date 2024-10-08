@@ -412,6 +412,20 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
             </div>
           )}
 
+          {libraryShown.group && storyGroupShareInfo.hidden && (
+            <>
+              <Popup
+                basic
+                content={<FormattedMessage id="group-hidden-story" />}
+                trigger={
+                  <div>
+                    <Icon color="black" name="low vision" style={{marginRight: '10px'}}/>
+                  </div>
+                }
+              />
+            </>
+          )}
+
           {timedExercise && (
             <Popup
               basic

@@ -1046,5 +1046,6 @@
     "lesson-performance-info-tooltip": "This is your current level of performance on this topic: percent of correct answers in exercises",
     "copy-key": "复制代码",
     "flashcard-upload-instructions": "请选择包含单词卡的文件：<ul><li>文件扩展名应为.TXT 或 .DOCX （不支持其他扩展名）</li><li> Revita 将使用第一行作为卡组的标题 </li></ul>",
-    "flashcard-btn-explanation": "Click to practice flashcards of this story!"
+    "flashcard-btn-explanation": "Click to practice flashcards of this story!",
+    "group-hidden-story": "This story is hidden for this group"
 }
