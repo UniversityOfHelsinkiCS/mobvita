@@ -1673,5 +1673,6 @@
     "copy-key": "Kopioi avain",
     "flashcard-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li><li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li></ul>",
     "flashcard-btn-explanation": "Click to practice flashcards of this story!",
-    "group-hidden-story": "This story is hidden for this group"
+    "group-hidden-story": "This story is hidden for this group",
+    "flashcard-translation-target-language": "Käännöksen kieli:"
 }

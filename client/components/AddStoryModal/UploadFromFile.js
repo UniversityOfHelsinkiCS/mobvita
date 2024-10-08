@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Spinner, Button } from 'react-bootstrap'
+import { Spinner, Button, Dropdown } from 'react-bootstrap'
 import { Divider } from 'semantic-ui-react'
-import { learningLanguageSelector, dictionaryLanguageSelector, useCurrentUser } from 'Utilities/common'
+import { learningLanguageSelector, dictionaryLanguageSelector, useCurrentUser, translatableLanguages } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 
@@ -23,7 +23,16 @@ const UploadFromFile = ({ closeModal }) => {
   const [flashcardFilename, setFlashcardFilename] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const [flashcardLanguage, setFlashcardLanguage] = useState(dictionaryLanguage)
   const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
+
+  const dictionaryOptions = translatableLanguages[learningLanguage]
+    ? translatableLanguages[learningLanguage].map(element => ({
+        key: element,
+        value: element,
+        text: intl.formatMessage({ id: element }),
+      }))
+    : []
 
   const onStoryChange = e => {
     if (e.target.files[0]) {
@@ -58,7 +67,7 @@ const UploadFromFile = ({ closeModal }) => {
     const data = new FormData()
     data.append('file', flashcardFile)
     data.append('lan_in', learningLanguage)
-    data.append('lan_out', dictionaryLanguage)
+    data.append('lan_out', flashcardLanguage)
     dispatch(setCustomUpload(true))
     dispatch(postFlashcard(data))
     dispatch(updateLibrarySelect('private'))
@@ -102,6 +111,28 @@ const UploadFromFile = ({ closeModal }) => {
       <span className="upload-instructions">
         <FormattedHTMLMessage id="flashcard-upload-instructions" />
       </span>
+      <br />
+      <div>
+        <FormattedMessage id="flashcard-translation-target-language" />
+        <select
+          disabled={dictionaryOptions.length <= 1}
+          defaultValue={flashcardLanguage}
+          style={{
+            marginLeft: '0.5em',
+            border: 'none',
+            color: 'darkSlateGrey',
+            backgroundColor: 'white',
+            marginBottom: '1em',
+          }}
+          onChange={e => setFlashcardLanguage(e.target.value)}
+        >
+          {dictionaryOptions.map(option => (
+            <option key={option.key} value={option.value}>
+              {option.text}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="space-evenly pt-lg">
         <input id="flashcard" name="flashcard" type="file" accept=".docx, .txt" onChange={onFlashcardChange} />
         <label className="file-upload-btn" htmlFor="flashcard">

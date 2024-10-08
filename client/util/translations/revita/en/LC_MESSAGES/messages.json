@@ -1674,5 +1674,6 @@
     "copy-key": "Copy key",
     "flashcard-upload-instructions": "Please select a text file containing flashcards:<ul><li>Select a file with extension .TXT or .DOCX (other extensions not supported)</li><li>The first line must contain the <b>title</b> of the flashcard pack</li></ul>",
     "flashcard-btn-explanation": "Click to practice flashcards of this story!",
-    "group-hidden-story": "This story is hidden for this group"
+    "group-hidden-story": "This story is hidden for this group",
+    "flashcard-translation-target-language": "Translation target language:"
 }

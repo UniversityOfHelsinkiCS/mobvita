@@ -1675,5 +1675,6 @@
     "copy-key": "Скопировать ключ",
     "flashcard-upload-instructions": "Пожалуйста, выбери файл, в котором содержится текст:<ul><li>У файла должно быть расширение .TXT или .DOCX</li><li>На первой строке обязательно должен быть только <b>заголовок</b> — название текста</li></ul>",
     "flashcard-btn-explanation": "Click to practice flashcards of this story!",
-    "group-hidden-story": "This story is hidden for this group"
+    "group-hidden-story": "This story is hidden for this group",
+    "flashcard-translation-target-language": "Язык перевода:"
 }
