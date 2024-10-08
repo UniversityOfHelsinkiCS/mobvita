@@ -75,7 +75,7 @@ const AnnotationForm = ({
             onChange={(_, { value }) => setCategory(value)}
           />
         </div>
-        {(inGroupStory || sharedStory || (!publicStory && is_teacher)) && (
+        {((inGroupStory && is_teacher) || sharedStory || (!publicStory && is_teacher )) && (
           <div style={{ marginTop: '.25rem', marginBottom: '.25rem' }}>
             <Checkbox
               label={intl.formatMessage({ id: 'public-note-checkbox' })}
