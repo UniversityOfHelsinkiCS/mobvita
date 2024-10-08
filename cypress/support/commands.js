@@ -36,8 +36,8 @@ function randomCredentials() {
   const email = `mobvita${id}@testcypress.foobar123`
   const username = `mobvita${id}`
   const password = 'securepassword'
-
-  return { email, username, password }
+  const interface_language = null
+  return { email, username, password, interface_language }
 }
 
 function createRandomUser() {
