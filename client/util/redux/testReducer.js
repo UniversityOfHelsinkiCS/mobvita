@@ -14,12 +14,13 @@ const initialState = {
   readingSetLength: 0,
   readingTestQuestions: [],
   readingTestSetDict: {},
+  readingHistory: {},
 
   exhaustiveTestSessionId: null,
   currentExhaustiveQuestionIndex: 0,
   currentExhaustiveTestQuestion: null,
   exhaustiveTestQuestions: [],
-  
+
   adaptiveTestSessionId: null,
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
@@ -27,6 +28,7 @@ const initialState = {
   timedTest: true,
   report: null,
   feedbacks: [],
+  testDone: false,
 }
 
 const clearLocalStorage = () => {
@@ -35,8 +37,7 @@ const clearLocalStorage = () => {
   window.localStorage.removeItem('testLanguage')
 }
 
-export const getReadingTestQuestions = (language, is_continue=true) => {
-  console.log("is_continue", is_continue)
+export const getReadingTestQuestions = (language, is_continue = true) => {
   const route = `/test/${language}/reading`
   const prefix = 'GET_READING_TEST_QUESTIONS'
   const query = {
@@ -92,7 +93,7 @@ export const sendReadingTestAnswer = (language, sessionId, answer) => {
 }
 
 export const sendReadingTestQuestionnaireResponses = (reflection_response, language) => {
-  const route = `/questionnaire/${language}`; 
+  const route = `/questionnaire/${language}`;
   const prefix = 'SEND_READING_TEST_QUESTIONNAIRE_RESPONSES';
   const payload = reflection_response;
   return callBuilder(route, prefix, 'post', payload);
@@ -149,6 +150,13 @@ export const finishExhaustiveTest = (language, sessionId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const getReadingHistory = (language, sessionId) => {
+  console.log("getReadingHistory", sessionId)
+  const route = `/test/${language}/reading/history?session_id=${sessionId}`
+  const prefix = 'GET_READING_TEST_HISTORY'
+  return callBuilder(route, prefix, 'get')
+}
+
 export const getHistory = language => {
   const now = moment().format('YYYY-MM-DD')
   const route = `/test/${language}/history?start_time=2019-01-01&end_time=${now}`
@@ -170,7 +178,7 @@ export const resetTests = () => {
 }
 
 export const updateTestFeedbacks = (answer, feedbacks) => ({
-  type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks 
+  type: 'UPDATE_TEST_FEEDBACKS', answer, feedbacks
 })
 
 export const updateReadingTestElicitation = (eliciated_construct) => ({
@@ -186,10 +194,10 @@ export const finishReadingTest = () => ({ type: 'FINISH_READING_TEST' })
 export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
 export default (state = initialState, action) => {
-  const { 
+  const {
     currentAdaptiveQuestionIndex,
     currentExhaustiveQuestionIndex, exhaustiveTestQuestions,
-    currentReadingQuestionIndex, readingTestQuestions, 
+    currentReadingQuestionIndex, readingTestQuestions,
     currentReadingSet, prevReadingSet, currentQuestionIdxinSet
   } = state
   const { response, startingIndex } = action
@@ -210,7 +218,7 @@ export default (state = initialState, action) => {
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
       const { question_list, session_id, question_set_dict } = response;
-    
+
       // Split questions by set
       const questionsBySet = question_list.reduce((acc, question) => {
         const set = question.set;
@@ -224,10 +232,10 @@ export default (state = initialState, action) => {
         }
         return acc;
       }, {});
-    
+
       // Sort sets by set number
       const sortedSets = Object.keys(questionsBySet).sort((a, b) => parseInt(a) - parseInt(b));
-    
+
       // Find the current question
       let tmpcurrentReadingTestQuestion = null;
       let currentSet = null;
@@ -235,7 +243,7 @@ export default (state = initialState, action) => {
       let tmpcurrentReadingQuestionIndex = -1;
       let tmpreadingSetLength = 0;
       let tempreadingTestQuestions = []
-    
+
       let tmp_reading_question_idx = 0
       let current_question_is_set = false
       for (const set of sortedSets) {
@@ -253,15 +261,15 @@ export default (state = initialState, action) => {
           tmp_reading_question_idx = seen.length
         }
       }
-    
+
       // Calculate previous reading set
       const prevReadingSet = currentSet && parseInt(currentSet) > 1 ? parseInt(currentSet) - 1 : null;
-    
+
       // If the current question has only one construct, set the eliciated_construct field
       if (tmpcurrentReadingTestQuestion?.constructs?.length === 1) {
         tmpcurrentReadingTestQuestion.eliciated_construct = tmpcurrentReadingTestQuestion.constructs[0];
       }
-    
+
       return {
         ...state,
         readingTestSetDict: question_set_dict,
@@ -275,9 +283,11 @@ export default (state = initialState, action) => {
         feedbacks: [],
         readingSetLength: tmpreadingSetLength,
         pending: false,
-        resumedTest: Object.values(questionsBySet).some(x=>x.seen.length>0),
+        resumedTest: Object.values(questionsBySet).some(x => x.seen.length > 0),
+        testDone: tempreadingTestQuestions.filter(question => !question.seen).length === 0,
       };
-      
+
+
     case 'GET_READING_TEST_QUESTIONS_FAILURE':
       return {
         ...state,
@@ -349,7 +359,7 @@ export default (state = initialState, action) => {
         resumePending: false,
         answerFailure: true,
       }
-    
+
     case 'NEXT_TEST_QUESTION':
       return {
         ...state,
@@ -359,21 +369,81 @@ export default (state = initialState, action) => {
       }
 
     case 'FINISH_READING_TEST':
-      let _lastSet = readingTestQuestions[currentReadingQuestionIndex].set;
+      let _lastSet = readingTestQuestions[currentReadingQuestionIndex]?.set;
       let _finishedSet = _lastSet + 1;
       return {
         ...state,
         currentReadingSet: _finishedSet,
         prevReadingSet: _lastSet,
         lastReadingSessionFinished: true,
+        testDone: true
+      }
+
+    case 'GET_READING_TEST_HISTORY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+
+    case 'GET_READING_TEST_HISTORY_SUCCESS': {
+      const { history } = response;
+
+      // Initialize variables for tracking the statistics
+      let totalQuestions = 0;
+      let firstTimeCorrectCount = 0;
+      let overallCorrectCount = 0;
+
+      console.log("history", history)
+
+      // Iterate through each question's history
+      for (const questionId in history) {
+        const attempts = history[questionId].attempts;
+
+        if (attempts.length > 0) {
+          totalQuestions += 1;
+
+          // Check if the first attempt was correct
+          if (attempts[0].correct) {
+            firstTimeCorrectCount += 1;
+          }
+
+          // Check if any attempt was correct
+          if (attempts.some(attempt => attempt.correct)) {
+            overallCorrectCount += 1;
+          }
+        }
+      }
+
+      // Calculate rates
+      const firstTimeCorrectRate = totalQuestions > 0 ? (firstTimeCorrectCount / totalQuestions) * 100 : 0;
+      const overallCorrectRate = totalQuestions > 0 ? (overallCorrectCount / totalQuestions) * 100 : 0;
+
+      // Return the updated state
+      return {
+        ...state,
+        pending: false,
+        readingHistory: {
+          total_num_question: totalQuestions,
+          first_time_answer_correct_rate: firstTimeCorrectRate,
+          overall_correct_rate: overallCorrectRate,
+        },
+      };
+    }
+
+    case 'GET_READING_TEST_HISTORY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
       }
 
     case 'NEXT_READING_TEST_QUESTION':
-      if (currentReadingQuestionIndex < readingTestQuestions.length - 1){
+      if (currentReadingQuestionIndex < readingTestQuestions.length - 1) {
         let _currentReadingSet = readingTestQuestions[currentReadingQuestionIndex + 1].set;
         let _prevReadingSet = readingTestQuestions[currentReadingQuestionIndex].set;
         let currentReadingTestQuestion = readingTestQuestions[currentReadingQuestionIndex + 1];
-        if (currentReadingTestQuestion?.constructs?.length === 1) { 
+        if (currentReadingTestQuestion?.constructs?.length === 1) {
           currentReadingTestQuestion.eliciated_construct = currentReadingTestQuestion.constructs[0];
         }
         let readingSetLength = readingTestQuestions.filter(question => question.set === _currentReadingSet).length;
@@ -388,7 +458,7 @@ export default (state = initialState, action) => {
           readingSetLength: readingSetLength,
         }
       }
-      
+
     case 'ANSWER_TEST_QUESTION_ATTEMPT':
       return {
         ...state,
@@ -466,7 +536,7 @@ export default (state = initialState, action) => {
       }
 
     case 'UPDATE_READING_TEST_QUESTION_ELICITATION':
-      if (state.currentReadingTestQuestion) { 
+      if (state.currentReadingTestQuestion) {
         return {
           ...state,
           currentReadingTestQuestion: {
@@ -485,18 +555,18 @@ export default (state = initialState, action) => {
             return { ...choice };
           }
         });
-      
+
         const updatedCurrentReadingTestQuestion = {
           ...state.currentReadingTestQuestion,
           choices: updatedChoices,
         };
-      
+
         return {
           ...state,
           currentReadingTestQuestion: updatedCurrentReadingTestQuestion,
         };
       }
-      
+
     default:
       return state
   }

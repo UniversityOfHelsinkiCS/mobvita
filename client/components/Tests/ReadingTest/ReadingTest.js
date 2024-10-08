@@ -3,21 +3,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 import { Spinner, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
-import { 
-    sendReadingTestAnswer, 
-    finishExhaustiveTest, 
-    updateTestFeedbacks, 
-    updateReadingTestElicitation,
-    nextReadingTestQuestion,
-    finishReadingTest,
-    markAnsweredChoice,
-    sendReadingTestQuestionnaireResponses,
+import {
+  resetTests,
+  sendReadingTestAnswer,
+  getReadingHistory,
+  updateTestFeedbacks,
+  updateReadingTestElicitation,
+  nextReadingTestQuestion,
+  finishReadingTest,
+  markAnsweredChoice,
+  sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { 
-  learningLanguageSelector, 
-  confettiRain, 
-  hiddenFeatures 
+import {
+  learningLanguageSelector,
+  confettiRain,
+  hiddenFeatures
 } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReadingTestMC from './ReadingTestMC'
@@ -41,24 +42,18 @@ const ReadingTest = () => {
   const [showCorrect, setShowCorrect] = useState(false)
   const [questionDone, setQuestionDone] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(null)
-  const [attempts, setAttempts] = useState(0) 
+  const [attempts, setAttempts] = useState(0)
 
   const [showFeedbacks, setShowFeedbacks] = useState(false)
 
   const [currentReadingSetLength, setCurrentReadingSetLength] = useState(0)
   // const [firstMediationSelfReflectionDone, setFirstMediationSelfReflectionDone] = useState(false)
   const [showSelfReflect, setShowSelfReflect] = useState(false)
-  
+
   const [showElicitDialog, setShowElicitDialog] = useState(false)
   const [currentElicatedConstruct, setCurrentElicatedConstruct] = useState(null)
 
-  const [correctFirstAttempt, setCorrectFirstAttempt] = useState(0)
-  const [totalQuestions, setTotalQuestions] = useState(0)
-  const [correctAfterHints, setCorrectAfterHints] = useState(0)
-  const [totalHints, setTotalHints] = useState(0)
   const [hintsUsedThisQuestion, setHintsUsedThisQuestion] = useState(0)
-  const [startTime] = useState(Date.now())
-  const [timeSpent, setTimeSpent] = useState(0)
   const [showStats, setShowStats] = useState(false)
 
   // State for experimental and control groups
@@ -66,6 +61,7 @@ const ReadingTest = () => {
   const [in_control_grp, setInControlGrp] = useState(false);
 
   const {
+    pending,
     feedbacks,
     currentReadingTestQuestion,
     currentReadingSet,
@@ -79,6 +75,8 @@ const ReadingTest = () => {
     answerFailure,
     resumedTest,
     readingTestSetDict,
+    readingHistory,
+    testDone,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
@@ -87,28 +85,8 @@ const ReadingTest = () => {
 
   const dispatch = useDispatch()
 
-  const nextQuestion = () => {
-    setShowCorrect(false)
-    setQuestionDone(false)
-    setShowFeedbacks(false)
-    setShowElicitDialog(false)
-    setShowSelfReflect(false)
-    setCurrentAnswer(null)
-    setCurrentElicatedConstruct(null)
-    setAttempts(0)
-
-    setTotalQuestions(prev => prev + 1) // Increase the total questions count
-
-    if (currentReadingQuestionIndex === readingTestQuestions.length - 1){
-      dispatch(finishReadingTest())
-      setShowStats(true)
-    } else {
-      dispatch(nextReadingTestQuestion())
-    }
-    setHintsUsedThisQuestion(0) // Reset hints count for the next question
-  }
-
   const restartTest = () => {
+    dispatch(resetTests())
     dispatch(getReadingTestQuestions(learningLanguage, false));
   };
 
@@ -118,12 +96,14 @@ const ReadingTest = () => {
 
   const submitSelfReflectionResponse = (response_json) => {
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
-    if (response_json.is_end_set_questionair == true){
-      if (currentReadingQuestionIndex === readingTestQuestions.length - 1){
+    if (response_json.is_end_set_questionair == true) {
+      if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
         goToHomePage()
-      } else {
-        setShowNextSetDialog(true)
       }
+      // else {
+      //   // the self reflection does not show after every set - need to move this is to somewhere else
+      //   setShowNextSetDialog(true)
+      // }
     }
     // else {
     //   setFirstMediationSelfReflectionDone(true)
@@ -141,59 +121,42 @@ const ReadingTest = () => {
   }
 
   const checkAnswer = choice => {
+    console.log("checkAnswer", choice)
     if (!currentReadingTestQuestion) return
-  
+
     if (in_control_grp) {
       setAttempts(prev => prev + 1)
     }
-  
+
     setCurrentAnswer(choice)
-  
+
     const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
     const question_concept_feedbacks = currentReadingTestQuestion.question_concept_feedbacks[currentElicatedConstruct]
-  
-    if (choice.is_correct){
+
+    if (choice.is_correct) {
       if (in_experimental_grp) {
-        confettiRain(0,0.45,60)
-        confettiRain(1,0.45,120)
+        confettiRain(0, 0.45, 60)
+        confettiRain(1, 0.45, 120)
       }
-  
-      if (hintsUsedThisQuestion === 0) {
-        setCorrectFirstAttempt(prev => prev + 1) // Track correct on first attempt
-      }
-  
+
       if (in_experimental_grp) {
-        if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length){
+        if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length) {
           dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
         } else {
-          if (question_concept_feedbacks && question_concept_feedbacks?.synthesis){
+          if (question_concept_feedbacks && question_concept_feedbacks?.synthesis) {
             dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))
           }
         }
       }
-  
+
       setShowCorrect(true)
       setQuestionDone(true)
       setCurrentAnswer(null)
-  
-      dispatch(
-        sendReadingTestAnswer(
-            learningLanguage,
-            readingTestSessionId,
-            {
-                type: currentReadingTestQuestion.type,
-                question_id: currentReadingTestQuestion.question_id,
-                answer: choice.option,
-                seenFeedbacks: feedbacks,
-                questionDone: true,
-            }
-        )
-      )
     } else {
       if (in_experimental_grp) {
         setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
       }
-  
+
       if (choice.is_correct && hintsUsedThisQuestion > 0) {
         setCorrectAfterHints(prev => prev + 1) // Track correct after using hints
         setTotalHints(prev => prev + hintsUsedThisQuestion) // Add to total hints count
@@ -205,8 +168,8 @@ const ReadingTest = () => {
       : false;
     let markQuestionDone = questionDone;
 
-    if (choice.is_correct == false && in_experimental_grp){
-      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined){
+    if (choice.is_correct == false && in_experimental_grp) {
+      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined) {
         setShowElicitDialog(true)
       } else {
         const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
@@ -216,21 +179,21 @@ const ReadingTest = () => {
           ? Object.entries(currentReadingTestQuestion.item_feedbacks)
             .filter(([, value]) => value !== undefined)
             .map(([, value]) => value)
-          : [];   
+          : [];
         const mediationFeedbacks = question_concept_feedbacks
           ? Object.entries(question_concept_feedbacks)
-              .filter(([key]) => key.startsWith('mediation_'))
-              .map(([, value]) => value)
+            .filter(([key]) => key.startsWith('mediation_'))
+            .map(([, value]) => value)
           : [];
-    
-        if (choice.is_correct == false){
-          if (countNotSelectedChoices > 2){
+
+        if (choice.is_correct == false) {
+          if (countNotSelectedChoices > 2) {
             const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
             const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-            if (remainMediationFeedbacks.length > 0){
+            if (remainMediationFeedbacks.length > 0) {
               dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
               setReceivedFeedback(receivedFeedback + 1)
-            } else { 
+            } else {
               if (remainItemFeedbacks.length > 0) {
                 dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
                 setReceivedFeedback(receivedFeedback + 1)
@@ -252,18 +215,18 @@ const ReadingTest = () => {
       }
     }
 
-    if (!isSelectedChoice){
+    if (!isSelectedChoice) {
       dispatch(
         sendReadingTestAnswer(
-            learningLanguage,
-            readingTestSessionId,
-            {
-                type: currentReadingTestQuestion.type,
-                question_id: currentReadingTestQuestion.question_id,
-                answer: choice.option,
-                seenFeedbacks: feedbacks,
-                questionDone: markQuestionDone
-            }
+          learningLanguage,
+          readingTestSessionId,
+          {
+            type: currentReadingTestQuestion.type,
+            question_id: currentReadingTestQuestion.question_id,
+            answer: choice.option,
+            seenFeedbacks: feedbacks,
+            questionDone: choice.is_correct ? true : markQuestionDone
+          }
         )
       )
       dispatch(markAnsweredChoice(choice.option))
@@ -277,9 +240,41 @@ const ReadingTest = () => {
       }
     }
   }
-  
+
+  const nextQuestion = () => {
+    console.log("nextQuestion")
+    setShowCorrect(false)
+    setQuestionDone(false)
+    setShowFeedbacks(false)
+    setShowElicitDialog(false)
+    setShowSelfReflect(false)
+    setCurrentAnswer(null)
+    setCurrentElicatedConstruct(null)
+    setAttempts(0)
+
+
+    if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
+      console.log("finish")
+      dispatch(finishReadingTest())
+      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
+    } else {
+      console.log("next")
+      dispatch(nextReadingTestQuestion())
+      setHintsUsedThisQuestion(0) // Reset hints count for the next question
+    }
+  }
+
   useEffect(() => {
-    dispatch(getGroups());
+    if (readingHistory != undefined & testDone) {
+      setShowStats(true);
+    }
+  }, [readingHistory]);
+
+  useEffect(() => {
+    dispatch(getGroups()); 
+    if (learningLanguage && readingTestSessionId && testDone && readingHistory == {}) {
+      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
+    }
   }, []);
 
   useEffect(() => {
@@ -307,13 +302,6 @@ const ReadingTest = () => {
   }, [groups]);
 
   useEffect(() => {
-    if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
-      const endTime = Date.now()
-      setTimeSpent(Math.floor((endTime - startTime) / 60000)) // Time in minutes
-    }
-  }, [currentReadingQuestionIndex, readingTestQuestions.length, startTime])
-
-  useEffect(() => {
     setCurrentReadingSetLength(readingSetLength)
   }, [readingSetLength]);
 
@@ -322,8 +310,9 @@ const ReadingTest = () => {
       checkAnswer(currentAnswer)
     }
   }, [currentElicatedConstruct]);
-  
+
   useEffect(() => {
+    console.log("currentReadingSet", currentReadingSet)
     setShowFeedbacks(false)
     if (currentReadingSet !== null && prevReadingSet !== null && currentReadingSet !== prevReadingSet) {
       const prevSet = readingTestSetDict[prevReadingSet]
@@ -336,11 +325,13 @@ const ReadingTest = () => {
         }
       }
     }
-    // setFirstMediationSelfReflectionDone(resumedTest)
+    if (prevReadingSet !== null) {
+      setShowNextSetDialog(true)
+    }
   }, [currentReadingSet])
 
   useEffect(() => {
-    if (feedbacks.length == 0){
+    if (feedbacks.length == 0) {
       setShowFeedbacks(false)
     } else {
       setShowFeedbacks(true)
@@ -350,12 +341,10 @@ const ReadingTest = () => {
   useEffect(() => {
     if (!readingTestSessionId) return
     if (!currentReadingTestQuestion) {
-      dispatch(finishExhaustiveTest(learningLanguage, readingTestSessionId))
-    } 
+      dispatch(finishReadingTest(learningLanguage, readingTestSessionId))
+    }
     setCurrentElicatedConstruct(currentReadingTestQuestion ? currentReadingTestQuestion.eliciated_construct : null)
   }, [currentReadingTestQuestion])
-
-  useEffect(() => () => checkAnswer(''), [])
 
   if (!currentReadingTestQuestion) {
     return null
@@ -364,19 +353,8 @@ const ReadingTest = () => {
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
 
   if (showStats) {
-    const firstAttemptCorrectRate = (correctFirstAttempt / totalQuestions) * 100
-    const overallCorrectRate = ((correctFirstAttempt + correctAfterHints) / totalQuestions) * 100
-    const avgHintsUsed = totalHints / correctAfterHints
-
     return (
-      <ReadingTestStats 
-        correctFirstAttempt={correctFirstAttempt}
-        firstAttemptCorrectRate={firstAttemptCorrectRate}
-        overallCorrectRate={overallCorrectRate}
-        avgHintsUsed={avgHintsUsed}
-        totalQuestions={totalQuestions}
-        timeSpent={timeSpent}
-      />
+      <ReadingTestStats restartTest={restartTest}/>
     )
   }
 
@@ -384,9 +362,9 @@ const ReadingTest = () => {
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
-          <div className="test-container" style={{width: '90%'}}>
+          <div className="test-container" style={{ width: '90%' }}>
             <ReadingTestNextSetDialog showNextSetDialog={showNextSetDialog} confirmNextSet={() => setShowNextSetDialog(false)} />
-            <ReadingTestFeedbacks 
+            <ReadingTestFeedbacks
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
                 setShowFeedbacks(false)
@@ -395,7 +373,7 @@ const ReadingTest = () => {
                 // }
               }}
             />
-            <ReadingTestSelfReflect 
+            <ReadingTestSelfReflect
               currentReadingTestQuestion={currentReadingTestQuestion}
               currentReadingSet={currentReadingSet}
               prevReadingSet={prevReadingSet}
@@ -408,7 +386,7 @@ const ReadingTest = () => {
               receieved_feedback={receivedFeedback}
               submitSelfReflection={submitSelfReflectionResponse}
             />
-            <ReadingTestElicationDialog 
+            <ReadingTestElicationDialog
               question={currentReadingTestQuestion}
               showElication={showElicitDialog}
               submitElication={submitElication}
@@ -437,7 +415,7 @@ const ReadingTest = () => {
                   className="next-reading-question-button btn-secondary"
                   style={{ marginLeft: '0.5em' }}
                   onClick={() => nextQuestion()}
-                  disabled={!questionDone || showFeedbacks }
+                  disabled={!questionDone || showFeedbacks}
                 >
                   <span>
                     {currentReadingQuestionIndex === readingTestQuestions.length - 1 ? (

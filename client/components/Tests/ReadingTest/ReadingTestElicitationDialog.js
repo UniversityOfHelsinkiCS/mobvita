@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
-  
+
 
 const ReadingTestElicationDialog = ({ question, showElication, submitElication }) => {
     const bigScreen = useWindowDimensions().width >= 700;
@@ -42,14 +42,20 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             paddingRight: '1em',
                             width: '100%'
                         }
-                    }> 
+                    }>
                         <div className='elicitation-header' style={{
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
+                            display: 'flex',
+                            justifyContent: 'space-between',
                             alignItems: 'center'
                         }}>
                             <h3 style={{ textAlign: 'left', margin: 0, paddingLeft: '10px' }}>
-                                <FormattedMessage id='experimental-elicitation-question' />
+                                <FormattedMessage
+                                    id='experimental-elicitation-question'
+                                    values={{
+                                        b: (chunks) => <b>{chunks}</b>,
+                                        i: (chunks) => <i>{chunks}</i>,
+                                    }}
+                                />
                             </h3>
                         </div>
                         <div
@@ -63,11 +69,11 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             }}
                         >
                             {Object.keys(question.question_concept_feedbacks).map((key, index) => (
-                                <button 
-                                    key={index} 
+                                <button
+                                    key={index}
                                     className={`btn ${key === selectedConstruct ? "btn-selected" : ""}`}
                                     style={{
-                                        margin: "5px", 
+                                        margin: "5px",
                                         width: "100%",
                                         padding: "10px"
                                     }}
@@ -76,13 +82,13 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                                     {question.question_concept_feedbacks[key].elicitation_message}
                                 </button>
                             ))}
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary" 
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
                                 onClick={submitResponse}
                                 disabled={selectedConstruct == null}
                                 style={{
-                                    margin: "5px", 
+                                    margin: "5px",
                                     width: "100%",
                                     padding: "20px"
                                 }}

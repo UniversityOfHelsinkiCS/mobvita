@@ -2,7 +2,7 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
-  
+
 
 const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
     const bigScreen = useWindowDimensions().width >= 700;
@@ -30,7 +30,7 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                         paddingRight: '1em',
                         width: '100%'
                     }
-                }> 
+                }>
                     <div
                         className='slide-container'
                         style={{
@@ -42,14 +42,19 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                         }}
                     >
                         <h4 style={{ textAlign: 'left', margin: 0 }}>
-                            <FormattedMessage id='move-to-next-set-of-reading-items' />
+                            <FormattedMessage
+                                id='move-to-next-set-of-reading-items'
+                                values={{
+                                    b: (chunks) => <b>{chunks}</b>,
+                                    i: (chunks) => <i>{chunks}</i>,
+                                }} />
                         </h4>
-                        <button 
-                            type="confirm" 
-                            className="btn btn-primary" 
+                        <button
+                            type="confirm"
+                            className="btn btn-primary"
                             onClick={confirmNextSet}
                             style={{
-                                margin: "5px", 
+                                margin: "5px",
                                 // width: "100%",
                                 padding: "10px"
                             }}

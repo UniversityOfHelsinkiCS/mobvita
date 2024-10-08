@@ -21,14 +21,14 @@ const ReadingTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
   const [sessionToDelete, setSessionToDelete] = useState(false)
-  const { readingTestSessionId, pending, lastReadingSessionFinished } = useSelector(
+  const { readingTestSessionId, pending, testDone } = useSelector(
     ({ tests }) => tests
   )
   const bigScreen = useWindowDimension().width >= 650
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
 
   useEffect(() => {
-    dispatch(getReadingTestQuestions(learningLanguage, lastReadingSessionFinished==false))
+    dispatch(getReadingTestQuestions(learningLanguage, !testDone))
   }, [dispatch, learningLanguage])
   
   if (pending) {

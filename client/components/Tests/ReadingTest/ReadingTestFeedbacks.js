@@ -24,7 +24,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
         });
         setFilteredSlides(filteredSlidesArray);
         setLength(filteredSlidesArray.length);
-        setCurrent(filteredSlidesArray.length-1);
+        setCurrent(filteredSlidesArray.length - 1);
     }, [feedbacks]);
 
     const nextSlide = () => {
@@ -66,7 +66,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         className='left-arrow'
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
-                        disabled={filteredSlides.length==0}
+                        disabled={filteredSlides.length == 0}
                         style={{ fontSize: '2.5em' }}
                     >
                         <Icon
@@ -96,7 +96,13 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             <div className='slide active' key={current}>
                                 {current === 0 && filteredSlides[current][0] !== "Correct!" && (
                                     <div style={{ marginBottom: "0.5em", fontStyle: "italic", color: "gray" }}>
-                                        <FormattedMessage id="first-time-meta-help-message" />
+                                        <FormattedMessage
+                                            id="first-time-meta-help-message"
+                                            values={{
+                                                b: (chunks) => <b>{chunks}</b>,
+                                                i: (chunks) => <i>{chunks}</i>,
+                                            }}
+                                        />
                                     </div>
                                 )}
                                 <hr />
@@ -115,7 +121,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         className='right-arrow'
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
-                        disabled={filteredSlides.length==0}
+                        disabled={filteredSlides.length == 0}
                         style={{ fontSize: '2.5em' }}
                     >
                         <Icon
@@ -136,7 +142,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                     ))}
                 </div>
 
-                
+
                 <div
                     style={{
                         position: 'absolute',
