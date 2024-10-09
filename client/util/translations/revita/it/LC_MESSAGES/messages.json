@@ -1147,7 +1147,7 @@
     "controlled-exercise-popup-text": "Clicca sugli esercizi generati (rossi) per selezionarli per il test. Se gli esercizi che hai selezionato ti soddisfano, ma desideri più esercizi per questo snippet, puoi cliccare su \"Rigenera esercizi\" — questo manterrà gli esercizi slezionati, e genererà altri esercizi da selezionare (se disponibili).\n\nQuando gli esercizi selezionati per l'attuale snippet (verdi) ti soddisfano, puoi salvarli e passare allo snippet successivo cliccando \"Congela lo snippet\".",
     "control story": "Storia di valutazione",
     "exhaustive-test": "Test esteso",
-    "control-story": "Testo su misura",
+    "control-story": "Test su misura",
     "freeze-and-save-control-story": "Congela lo snippet e salva il testo su misura",
     "cancel-controlled-exercise": "Cancel controlled story",
     "create-controlled-story": "Crea un testo su misura",
@@ -1670,8 +1670,9 @@
     "explain-library-search": "Qui puoi cercare una parola o una frase contenuta nel testo",
     "lesson-performance-info-tooltip": "Tuo livello attuale di prestazione su questo argomento: percentuale di risposte corrette negli esercizi",
     "copy-key": "Copia chiave",
-    "flashcard-upload-instructions": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>La prima riga deve contenere il <b>titolo</b> della storia.</li></ul>",
-    "flashcard-btn-explanation": "Click to practice flashcards of this story!",
-    "group-hidden-story": "This story is hidden for this group",
-    "flashcard-translation-target-language": "Lingua di traduzione:"
+    "flashcard-upload-instructions": "Seleziona un file contenente le flashcard:\n<ul>\n<li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate)</li>\n<li>La prima riga deve contenere il <b>titolo</b> del pacchetto di flashcard</li>\n<li>Ogni riga deve contenere <b>una parola/frase</b>, quindi le traduzioni, separate da punto e virgola; ad esempio:<li>\n<ul>\n<li>parola;traduzione 1; traduzione 2; ... </li>\n</ul>\n</ul>",
+    "flashcard-btn-explanation": "Clicca per esercitarti con le flashcard di questa storia!",
+    "group-hidden-story": "La storia è nascosta per questo gruppo",
+    "flashcard-translation-target-language": "Lingua di traduzione:",
+    "old": "Seleziona un file di testo contenente la storia:<ul><li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate).</li><li>La prima riga deve contenere il <b>titolo</b> della storia.</li></ul>"
 }

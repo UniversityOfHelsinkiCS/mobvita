@@ -1671,8 +1671,9 @@
     "explain-library-search": "Hae tarinoita sanan tai lauseen perusteella.",
     "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa",
     "copy-key": "Kopioi avain",
-    "flashcard-upload-instructions": "Valitse tiedosto, jonka sisällöllä haluat harjoitella<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li><li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li></ul>",
-    "flashcard-btn-explanation": "Click to practice flashcards of this story!",
-    "group-hidden-story": "This story is hidden for this group",
-    "flashcard-translation-target-language": "Käännöksen kieli:"
+    "flashcard-upload-instructions": "Valitse muistikortteja sisältävä tiedosto:\n<ul>\n<li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li>\n<li>Ensimmäisellä rivillä on oltava muistikorttipaketin <b>otsikko</b></li>\n<li>Jokaisen rivin tulee sisältää <b>yksi sana/ilmaus</b>, sitten käännökset puolipisteillä erotettuina. esimerkiksi:<li><ul>\n<li>sana;käännös 1; käännös 2; ... </li>\n</ul>\n</ul>",
+    "flashcard-btn-explanation": "Harjoittele tämän tarinan muistikortteja napsauttamalla tässä!",
+    "group-hidden-story": "Tarina on piilotettu tältä ryhmältä",
+    "flashcard-translation-target-language": "Käännöksen kieli:",
+    "old": "Valitse tiedosto, jonka sisällöllä haluat harjoitella\n<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li>\n<li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li>\n</ul>"
 }
