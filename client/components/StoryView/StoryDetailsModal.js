@@ -19,6 +19,8 @@ const StoryDetailsModal = ({
   isTeacher,
   currentGroup,
   handleControlledStoryCancel,
+  hidden,
+  setSharedStoryVisibility,
 }) => {
   const {
     title,
@@ -178,6 +180,11 @@ const StoryDetailsModal = ({
                 onClick={() => setShareModalOpen(true)}
                 variant="secondary"
                 translationId="Share"
+              />
+              <CustomButton
+                onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
+                variant="secondary"
+                translationId={hidden && "release-story" || "hide-story"}
               />
             </div>
             <div>

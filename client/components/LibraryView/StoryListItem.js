@@ -4,7 +4,12 @@ import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { removeStory, getAllStories, unshareStory as unshare } from 'Utilities/redux/storiesReducer'
+import { 
+  removeStory, 
+  getAllStories, 
+  unshareStory as unshare, 
+  storyVisibilityChange
+} from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -22,6 +27,7 @@ const StoryTitle = ({
   setConfirmationOpen,
   storyGroupShareInfo,
   handleControlledStoryCancel,
+  setSharedStoryVisibility,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const {user, teacherView} = useSelector(({ user }) => user.data)
@@ -71,6 +77,8 @@ const StoryTitle = ({
       isTeacher={teacherView}
       currentGroup={currentGroup}
       handleControlledStoryCancel={handleControlledStoryCancel}
+      hidden={storyGroupShareInfo.hidden}
+      setSharedStoryVisibility={setSharedStoryVisibility}
     />
   )
 }
@@ -366,6 +374,16 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
     )
   }
 
+  const setSharedStoryVisibility = async (storyId, visibility) => {
+    await dispatch(storyVisibilityChange(selectedGroup, storyId, visibility))
+    dispatch(
+      getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1,
+      })
+    )
+  }
+
   const storyGroupShareInfo = libraryShown.group
     ? story.groups.find(g => g?.group_id === currentGroup?.group_id)
     : null
@@ -382,6 +400,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           libraryShown={libraryShown}
           storyGroupShareInfo={storyGroupShareInfo}
           handleControlledStoryCancel={handleControlledStoryCancel}
+          setSharedStoryVisibility={setSharedStoryVisibility}
         />
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">

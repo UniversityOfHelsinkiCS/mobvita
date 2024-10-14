@@ -1,11 +1,12 @@
 import callBuilder from '../apiConnection'
 
-export const shareStory = (storyId, groups, users, message) => {
+export const shareStory = (storyId, groups, users, message, hidden_story) => {
   const route = `/stories/${storyId}/share`
   const payload = {
     share_groups: groups,
     share_users: users,
     share_message: message,
+    hidden_story,
   }
   const prefix = 'SHARE_STORY'
   return callBuilder(route, prefix, 'post', payload)

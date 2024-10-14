@@ -1677,5 +1677,8 @@
     "flashcard-btn-explanation": "Практиковаться с карточками из этой истории!",
     "group-hidden-story": "История скрыта для этой группы",
     "flashcard-translation-target-language": "Язык перевода:",
-    "old": "Пожалуйста, выбери файл, в котором содержится текст:<ul><li>У файла должно быть расширение .TXT или .DOCX</li><li>На первой строке обязательно должен быть только <b>заголовок</b> — название текста</li></ul>"
+    "flashcard-upload-instructions-2": "Примечание (на данный момент): слова будут переведены только на язык выбранный выше. Чтобы они работали с другим языком, загрузи другую колоду карт в другом файле.",
+    "release-story": "Release story",
+    "hide-story": "Hide story",
+    "share-as-a-hidden-story": "Share as a hidden story"
 }

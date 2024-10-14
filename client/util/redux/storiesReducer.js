@@ -91,6 +91,12 @@ export const unshareStory = (groupId, storyId) => {
   return callBuilder(route, prefix, 'post', {})
 }
 
+export const storyVisibilityChange = (groupId, storyId, visibility) => {
+  const route = `/groups/${groupId}/visibility`
+  const prefix = 'SET_STORY_VISIBILITY'
+  return callBuilder(route, prefix, 'post', {visibility, storyId})
+}
+
 export const addEditStoryAnnotation = (
   publicStory,
   publicNote,
@@ -412,6 +418,32 @@ export default (state = initialState, action) => {
         draft.pending = false
         draft.error = false
       })
+
+    case 'SET_STORY_VISIBILITY_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+        error: false,
+      }
+    case 'SET_STORY_VISIBILITY_FAILURE':
+      return {
+        ...state,
+        pending: false,
+        error: true,
+      }
+    case 'SET_STORY_VISIBILITY_SUCCESS':
+      return produce(state, draft => {
+        const story = draft.data.find(story => story._id === action.response.story_id)
+        const changedGroup = story.groups.find(group => group.group_id === action.response.group_id)
+        story.groups = story.groups.map(
+          group => group.group_id !== action.response.group_id && group || {...changedGroup, hidden: action.response.hidden}
+        )
+        draft.pending = false
+        draft.error = false
+      })
+
+
+
     default:
       return state
   }

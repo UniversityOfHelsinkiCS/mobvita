@@ -1675,5 +1675,8 @@
     "flashcard-btn-explanation": "Harjoittele tämän tarinan muistikortteja napsauttamalla tässä!",
     "group-hidden-story": "Tarina on piilotettu tältä ryhmältä",
     "flashcard-translation-target-language": "Käännöksen kieli:",
-    "old": "Valitse tiedosto, jonka sisällöllä haluat harjoitella\n<ul><li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li>\n<li>Ensimmäisellä rivillä on oltava tarinan <b>otsikko</b></li>\n</ul>"
+    "flashcard-upload-instructions-2": "Huomautus (toistaiseksi): nämä kortit käännetään vain yllä valitsemaksesi kieleksi. Jos haluat niiden toimivan toisella kielellä, lataa toinen korttipakka toisessa tiedostossa.",
+    "release-story": "Release story",
+    "hide-story": "Hide story",
+    "share-as-a-hidden-story": "Share as a hidden story"
 }

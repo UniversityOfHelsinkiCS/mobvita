@@ -3,6 +3,7 @@ import { Modal, Radio } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
+import { Checkbox } from 'semantic-ui-react'
 import { shareStory } from 'Utilities/redux/shareReducer'
 import { formatEmailList } from 'Utilities/common'
 
@@ -17,6 +18,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
   const [message, setMessage] = useState(
     intl.formatMessage({ id: 'share-story-with-group-default' })
   )
+  const [isHiddenStory, setIsHiddenStory] = useState(false)
 
   const EMAIL_MIN_LENGTH = 6
   const ownEmail = useSelector(({ user }) => user.data.user.email)
@@ -38,9 +40,9 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       setShowSelfAddWarning(true)
     } else {
       if (showOption === 'group') {
-        dispatch(shareStory(story._id, [shareTargetGroupId], [], message))
+        dispatch(shareStory(story._id, [shareTargetGroupId], [], message, isHiddenStory))
       } else {
-        dispatch(shareStory(story._id, [], formatEmailList(shareTargetUserEmails), message))
+        dispatch(shareStory(story._id, [], formatEmailList(shareTargetUserEmails), message, false))
       }
       setMessage('')
       setOpen(false)
@@ -106,6 +108,12 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                           </option>
                         ))}
                       </select>
+                      <Checkbox
+                        label={intl.formatMessage({ id: 'share-as-a-hidden-story' })}
+                        checked={isHiddenStory}
+                        onChange={() => setIsHiddenStory(!isHiddenStory)}
+                        style={{ marginLeft: '2rem' }}
+                      />
                     </div>
                     <span className="sm-label" style={{ marginTop: '5em' }}>
                       <FormattedMessage id="write-a-message-for-the-receiver-optional" />
