@@ -77,7 +77,7 @@ const StoryTitle = ({
       isTeacher={teacherView}
       currentGroup={currentGroup}
       handleControlledStoryCancel={handleControlledStoryCancel}
-      hidden={storyGroupShareInfo.hidden}
+      hidden={storyGroupShareInfo && storyGroupShareInfo.hidden || false}
       setSharedStoryVisibility={setSharedStoryVisibility}
     />
   )
