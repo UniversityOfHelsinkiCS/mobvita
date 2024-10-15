@@ -25,17 +25,17 @@ const GroupKey = () => {
           wordBreak: 'break-all',
         }}
       >
-        <CopyToClipboard text={token}>
-          <Popup
-            position="top center"
-            content={<FormattedMessage id="copy-key" />}
-            trigger={
-              <Button type="button" onClick={handleTokenCopy}>
+        <Popup
+          position="top center"
+          content={<FormattedMessage id="copy-key" />}
+          trigger={
+            <CopyToClipboard text={token}>
+              <Button type="button" onClick={handleTokenCopy} disabled={!token}>
                 <Icon name="copy" size="large" />
               </Button>
-            }
-          />
-        </CopyToClipboard>
+            </CopyToClipboard>
+          }
+        />
         <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
       </div>
       <div
