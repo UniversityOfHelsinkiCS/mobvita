@@ -181,11 +181,11 @@ const StoryDetailsModal = ({
                 variant="secondary"
                 translationId="Share"
               />
-              <CustomButton
+              { inGroupLibrary && (<CustomButton
                 onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
                 variant="secondary"
                 translationId={hidden && "release-story" || "hide-story"}
-              />
+              />)}
             </div>
             <div>
               <CustomButton
