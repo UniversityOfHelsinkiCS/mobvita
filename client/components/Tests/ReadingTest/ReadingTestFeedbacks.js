@@ -101,6 +101,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                             values={{
                                                 b: (chunks) => <b>{chunks}</b>,
                                                 i: (chunks) => <i>{chunks}</i>,
+                                                br: () => <br />,
                                             }}
                                         />
                                     </div>

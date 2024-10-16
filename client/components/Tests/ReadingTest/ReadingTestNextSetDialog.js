@@ -47,6 +47,7 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                                 values={{
                                     b: (chunks) => <b>{chunks}</b>,
                                     i: (chunks) => <i>{chunks}</i>,
+                                    br: () => <br />,
                                 }} />
                         </h4>
                         <button

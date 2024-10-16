@@ -368,7 +368,7 @@ const HomeView = () => {
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
       {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
-      {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>}
+      {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <BetaLanguageModal
@@ -380,13 +380,15 @@ const HomeView = () => {
       {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
         <Recommender />
       )}
-
-      {!userData.is_teacher && !userData.grade && !userIsAnonymous && userData.is_new_user && (
-        <SetCEFRReminder
-          open={openReminder}
-          setOpen={setOpenReminder}
-          newUser={userData.is_new_user}
-        />
+      {(!userData.is_teacher || !userData.is_teacher[learningLanguage]) &&
+        !userData.grade &&
+        !userIsAnonymous &&
+        userData.is_new_user && (
+          <SetCEFRReminder
+            open={openReminder}
+            setOpen={setOpenReminder}
+            newUser={userData.is_new_user}
+          />
       )}
       <div className="grow flex-col">
         {bigScreen ? (
