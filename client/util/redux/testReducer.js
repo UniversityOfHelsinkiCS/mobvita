@@ -258,7 +258,7 @@ export default (state = initialState, action) => {
           tmpreadingSetLength = unseen.length + seen.length;
           current_question_is_set = true
         } else {
-          tmp_reading_question_idx = seen.length
+          tmp_reading_question_idx = tempreadingTestQuestions.length;
         }
       }
 
