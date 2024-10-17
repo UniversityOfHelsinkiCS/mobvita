@@ -55,7 +55,9 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                                         b: (chunks) => <b>{chunks}</b>,
                                         i: (chunks) => <i>{chunks}</i>,
                                         br: () => <br />,
-                                    }}
+                                        ul: (chunks) => <ul>{chunks}</ul>,
+                                        li: (chunks) => <li>{chunks}</li>
+                                      }}
                                 />
                             </h3>
                         </div>

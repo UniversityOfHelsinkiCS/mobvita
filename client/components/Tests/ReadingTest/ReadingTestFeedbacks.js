@@ -102,7 +102,9 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                                 b: (chunks) => <b>{chunks}</b>,
                                                 i: (chunks) => <i>{chunks}</i>,
                                                 br: () => <br />,
-                                            }}
+                                                ul: (chunks) => <ul>{chunks}</ul>,
+                                                li: (chunks) => <li>{chunks}</li>
+                                              }}
                                         />
                                     </div>
                                 )}
@@ -111,10 +113,12 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                     id={filteredSlides[current]} 
                                     defaultMessage={filteredSlides[current]} 
                                     values={{
-                                        b: (chunks) => <b>{chunks}</b>, 
-                                        i: (chunks) => <i>{chunks}</i>, 
-                                        br: () => <br />, 
-                                    }}
+                                        b: (chunks) => <b>{chunks}</b>,
+                                        i: (chunks) => <i>{chunks}</i>,
+                                        br: () => <br />,
+                                        ul: (chunks) => <ul>{chunks}</ul>,
+                                        li: (chunks) => <li>{chunks}</li>
+                                      }}
                                 />
                             </div>
                         </div>
