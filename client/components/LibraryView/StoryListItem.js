@@ -431,7 +431,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
             </div>
           )}
 
-          {libraryShown.group && storyGroupShareInfo.hidden && (
+          {libraryShown.group && storyGroupShareInfo?.hidden && (
             <>
               <Popup
                 basic
