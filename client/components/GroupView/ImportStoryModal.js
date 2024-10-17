@@ -15,7 +15,8 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   const group = groups.find(group => group.group_id === groupId)
   const { groupName } = group
 
-  const options = groups.map(group => ({key: group.group_id, text: group.groupName, value: group.group_id}))
+  const options = groups.filter(group => group.group_id !== groupId).map(
+    group => ({key: group.group_id, text: group.groupName, value: group.group_id}))
   const submitGroupImport = async () => {
     // console.log(selectedGroups)
     // console.log(message)
