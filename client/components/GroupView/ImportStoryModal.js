@@ -13,7 +13,6 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   const [selectedGroups, setSelectedGroups] = useState([])
   const [message, setMessage] = useState('')
   const group = groups.find(group => group.group_id === groupId)
-  const { groupName } = group
 
   const options = groups.filter(group => group.group_id !== groupId).map(
     group => ({key: group.group_id, text: group.groupName, value: group.group_id}))
@@ -22,7 +21,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
     // console.log(message)
     await dispatch(importStoriesFromGroup(groupId, selectedGroups, message))
     dispatch(
-      getAllStories(learningLanguage, {
+      getAllStories(group.language, {
         sort_by: 'date',
         order: -1,
       })
@@ -35,7 +34,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   return (
     <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open}>
       <Modal.Header>
-        <FormattedMessage id="import-story" /> : {groupName}
+        <FormattedMessage id="import-story" /> : {group.groupName}
       </Modal.Header>
       <Modal.Content style={{ display: 'flex', flexDirection: 'column', height: '260px' }}>
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
