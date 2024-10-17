@@ -10,6 +10,7 @@ import { getTestQuestions } from 'Utilities/redux/testReducer'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupLearningSettingsModal from './GroupLearningSettingsModal'
+import ImportStoryModal from './ImportStoryModal'
 
 const GroupFunctions = ({
   group,
@@ -29,6 +30,7 @@ const GroupFunctions = ({
   } = group
   const teacherView = useSelector(({ user }) => user.data.user.is_teacher)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
+  const [importStoryModalOpen, setImportStoryModalOpen] = useState(false)
   const { width } = useWindowDimensions()
   const testEnabled = currTestDeadline - Date.now() > 0
   const testButtonVariant = testEnabled ? 'danger' : 'primary'
@@ -89,6 +91,9 @@ const GroupFunctions = ({
     dispatch(getTestQuestions(language, groupId, true))
   }
 
+  
+
+
   return (
     <>
       {width >= 640 ? (
@@ -113,6 +118,9 @@ const GroupFunctions = ({
               setOpen={setLearningModalGroupId}
               groupId={learningModalGroupId}
             />
+          )}
+          {isTeaching && teacherView && (
+            <ImportStoryModal open={importStoryModalOpen} setOpen={setImportStoryModalOpen} groupId={groupId} />
           )}
           {isTeaching && teacherView && (
             <Button
@@ -145,6 +153,12 @@ const GroupFunctions = ({
             <Button onClick={handleShowTokenClick}>
               <Icon name="key" /> <FormattedMessage id="show-group-token" />
             </Button>
+          )}
+          {isTeaching && teacherView && (
+            <Button onClick={()=> setImportStoryModalOpen(true)}>
+              <Icon name="share" /> <FormattedMessage id="import-story" />
+            </Button>
+            
           )}
         </div>
       ) : (

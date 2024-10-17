@@ -1678,7 +1678,13 @@
     "group-hidden-story": "История скрыта для этой группы",
     "flashcard-translation-target-language": "Язык перевода:",
     "flashcard-upload-instructions-2": "Примечание (на данный момент): слова будут переведены только на язык выбранный выше. Чтобы они работали с другим языком, загрузи другую колоду карт в другом файле.",
-    "release-story": "Release story",
+    "release-story": "Unhide story",
     "hide-story": "Hide story",
-    "share-as-a-hidden-story": "Share as a hidden story"
+    "share-as-a-hidden-story": "Share as hidden",
+    "import-story": "Import story",
+    "import-story-label": "Import stories from other groups",
+    "import-story-description": "<h5>Select groups to import</h5>",
+    "import-from": "Import stories from ...",
+    "import-story-message": "Message:",
+    "correct-answer-to-question": "Correct!"
 }

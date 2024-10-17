@@ -1675,7 +1675,13 @@
     "group-hidden-story": "La storia è nascosta per questo gruppo",
     "flashcard-translation-target-language": "Lingua di traduzione:",
     "flashcard-upload-instructions-2": "Nota (per ora): le parole saranno tradotte solo nella lingua selezionata sopra. Se vuoi che funzionino con un'altra lingua, carica un altro mazzo di carte in un altro file.",
-    "release-story": "Release story",
+    "release-story": "Unhide story",
     "hide-story": "Hide story",
-    "share-as-a-hidden-story": "Share as a hidden story"
+    "share-as-a-hidden-story": "Share as hidden",
+    "import-story": "Import story",
+    "import-story-label": "Import stories from other groups",
+    "import-story-description": "<h5>Select groups to import</h5>",
+    "import-from": "Import stories from ...",
+    "import-story-message": "Message:",
+    "correct-answer-to-question": "Correct!"
 }

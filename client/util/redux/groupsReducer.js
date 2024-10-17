@@ -123,11 +123,18 @@ export const confirmGroupInvitation = token => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const importStoriesFromGroup = (groupId, selectedGroups, message) => {
+  const route = `/groups/${groupId}/import`
+  const prefix = 'IMPORT_STORIES'
+  const payload = { src_group_ids: selectedGroups, message }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const emptyLastAddInfo = () => ({
   type: 'EMPTY_LAST_ADD_INFO',
 })
 
-export default (state = { groups: [], joinPending: false, deleteSuccessful: false }, action) => {
+export default (state = { groups: [], joinPending: false, deleteSuccessful: false, storyImported: -1 }, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
       return {
@@ -408,6 +415,30 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
         ...state,
         pending: false,
       }
+
+    case 'IMPORT_STORIES_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'IMPORT_STORIES_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'IMPORT_STORIES_SUCCESS':
+      return {
+        ...state,
+        storyImported: action.response.num_story_imported,
+        pending: false,
+      }
+
+    case 'CLEAN_STORY_IMPORT':
+      return {
+        ...state,
+        storyImported: -1,
+      }
+
     default:
       return state
   }
