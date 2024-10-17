@@ -1050,7 +1050,13 @@
     "group-hidden-story": "本文在当前小组内处于隐藏状态",
     "flashcard-translation-target-language": "翻译目标语言:",
     "flashcard-upload-instructions-2": "Note (for now): the words will be translated only into the language you select above. If you want them to work with another language, please upload another deck of cards in another file.",
-    "release-story": "Release story",
+    "release-story": "Unhide story",
     "hide-story": "Hide story",
-    "share-as-a-hidden-story": "Share as a hidden story"
+    "share-as-a-hidden-story": "Share as hidden",
+    "import-story": "Import story",
+    "import-story-label": "Import stories from other groups",
+    "import-story-description": "<h5>Select groups to import</h5>",
+    "import-from": "Import stories from ...",
+    "import-story-message": "Message:",
+    "correct-answer-to-question": "Correct!"
 }
