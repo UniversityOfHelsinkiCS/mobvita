@@ -1,6 +1,6 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 
@@ -42,7 +42,7 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                         }}
                     >
                         <h4 style={{ textAlign: 'left', margin: 0 }}>
-                            <FormattedMessage
+                            <FormattedHTMLMessage
                                 id='move-to-next-set-of-reading-items'
                                 values={{
                                     b: (chunks) => <b>{chunks}</b>,

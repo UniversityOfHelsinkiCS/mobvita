@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 
@@ -49,7 +49,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             alignItems: 'center'
                         }}>
                             <h3 style={{ textAlign: 'left', margin: 0, paddingLeft: '10px' }}>
-                                <FormattedMessage
+                                <FormattedHTMLMessage
                                     id='experimental-elicitation-question'
                                     values={{
                                         b: (chunks) => <b>{chunks}</b>,

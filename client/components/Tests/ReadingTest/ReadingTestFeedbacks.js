@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 
@@ -96,7 +96,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             <div className='slide active' key={current}>
                                 {current === 0 && filteredSlides[current][0] !== "Correct!" && (
                                     <div style={{ marginBottom: "0.5em", fontStyle: "italic", color: "gray" }}>
-                                        <FormattedMessage
+                                        <FormattedHTMLMessage
                                             id="first-time-meta-help-message"
                                             values={{
                                                 b: (chunks) => <b>{chunks}</b>,
@@ -109,7 +109,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                     </div>
                                 )}
                                 <hr />
-                                <FormattedMessage
+                                <FormattedHTMLMessage
                                     id={filteredSlides[current]} 
                                     defaultMessage={filteredSlides[current]} 
                                     values={{
