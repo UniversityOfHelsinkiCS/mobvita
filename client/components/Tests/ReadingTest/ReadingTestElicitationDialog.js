@@ -51,13 +51,13 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             <h3 style={{ textAlign: 'left', margin: 0, paddingLeft: '10px' }}>
                                 <FormattedHTMLMessage
                                     id='experimental-elicitation-question'
-                                    values={{
-                                        b: (chunks) => <b>{chunks}</b>,
-                                        i: (chunks) => <i>{chunks}</i>,
-                                        br: () => <br />,
-                                        ul: (chunks) => <ul>{chunks}</ul>,
-                                        li: (chunks) => <li>{chunks}</li>
-                                      }}
+                                    // values={{
+                                    //     b: (chunks) => <b>{chunks}</b>,
+                                    //     i: (chunks) => <i>{chunks}</i>,
+                                    //     // br: () => <br />,
+                                    //     ul: (chunks) => <ul>{chunks}</ul>,
+                                    //     li: (chunks) => <li>{chunks}</li>
+                                    //   }}
                                 />
                             </h3>
                         </div>

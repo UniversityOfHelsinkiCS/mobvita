@@ -16,15 +16,22 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
     const bigScreen = useWindowDimensions().width >= 700;
 
     useEffect(() => {
+        console.log(feedbacks)
         const filteredSlidesArray = [];
         feedbacks.forEach((slide, index) => {
             if (slide != undefined) {
-                filteredSlidesArray.push(slide);
+                if (typeof slide === 'string') {
+                    filteredSlidesArray.push(slide.replace(/<br\s*\/?>/g, '\n'));
+                } else {
+                    
+                    console.warn('Expected slide to be a string but received:', slide);
+                }
             }
         });
         setFilteredSlides(filteredSlidesArray);
         setLength(filteredSlidesArray.length);
         setCurrent(filteredSlidesArray.length - 1);
+        console.log("filteredSlidesArray", filteredSlidesArray)
     }, [feedbacks]);
 
     const nextSlide = () => {
@@ -82,6 +89,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             overflowX: 'hidden',
                             paddingLeft: '1em',
                             paddingRight: '1em',
+                            paddingTop: '1.5em',
                             width: '100%'
                         }
                     }>
@@ -94,31 +102,16 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             }}
                         >
                             <div className='slide active' key={current}>
-                                {current === 0 && filteredSlides[current][0] !== "Correct!" && (
+                                {current === 0 && filteredSlides[current] !== "correct-answer-to-question" && (
                                     <div style={{ marginBottom: "0.5em", fontStyle: "italic", color: "gray" }}>
                                         <FormattedHTMLMessage
                                             id="first-time-meta-help-message"
-                                            values={{
-                                                b: (chunks) => <b>{chunks}</b>,
-                                                i: (chunks) => <i>{chunks}</i>,
-                                                br: () => <br />,
-                                                ul: (chunks) => <ul>{chunks}</ul>,
-                                                li: (chunks) => <li>{chunks}</li>
-                                              }}
                                         />
+                                        <hr />
                                     </div>
                                 )}
-                                <hr />
                                 <FormattedHTMLMessage
                                     id={filteredSlides[current]} 
-                                    defaultMessage={filteredSlides[current]} 
-                                    values={{
-                                        b: (chunks) => <b>{chunks}</b>,
-                                        i: (chunks) => <i>{chunks}</i>,
-                                        br: () => <br />,
-                                        ul: (chunks) => <ul>{chunks}</ul>,
-                                        li: (chunks) => <li>{chunks}</li>
-                                      }}
                                 />
                             </div>
                         </div>

@@ -141,7 +141,7 @@ const ReadingTest = () => {
 
       if (in_experimental_grp) {
         if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length) {
-          dispatch(updateTestFeedbacks(choice.option, ["Correct!"]))
+          dispatch(updateTestFeedbacks(choice.option, "correct-answer-to-question"))
         } else {
           if (question_concept_feedbacks && question_concept_feedbacks?.synthesis) {
             dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))

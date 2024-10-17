@@ -44,13 +44,13 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                         <h4 style={{ textAlign: 'left', margin: 0 }}>
                             <FormattedHTMLMessage
                                 id='move-to-next-set-of-reading-items'
-                                values={{
-                                    b: (chunks) => <b>{chunks}</b>,
-                                    i: (chunks) => <i>{chunks}</i>,
-                                    br: () => <br />,
-                                    ul: (chunks) => <ul>{chunks}</ul>,
-                                    li: (chunks) => <li>{chunks}</li>
-                                }}
+                                // values={{
+                                //     b: (chunks) => <b>{chunks}</b>,
+                                //     i: (chunks) => <i>{chunks}</i>,
+                                //     // br: () => <br />,
+                                //     ul: (chunks) => <ul>{chunks}</ul>,
+                                //     li: (chunks) => <li>{chunks}</li>
+                                // }}
                             />
                         </h4>
                         <button
