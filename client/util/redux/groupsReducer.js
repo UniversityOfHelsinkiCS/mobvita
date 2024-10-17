@@ -134,7 +134,7 @@ export const emptyLastAddInfo = () => ({
   type: 'EMPTY_LAST_ADD_INFO',
 })
 
-export default (state = { groups: [], joinPending: false, deleteSuccessful: false, storyImported: -1 }, action) => {
+export default (state = { groups: [], joinPending: false, deleteSuccessful: false}, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
       return {
@@ -429,7 +429,6 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
     case 'IMPORT_STORIES_SUCCESS':
       return {
         ...state,
-        storyImported: action.response.num_story_imported,
         pending: false,
       }
 

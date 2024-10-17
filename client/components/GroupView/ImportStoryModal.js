@@ -9,7 +9,7 @@ import { getAllStories } from 'Utilities/redux/storiesReducer'
 const ImportStoryModal = ({ open, setOpen, groupId }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const { groups, pending, storyImported } = useSelector(({ groups }) => groups)
+  const { groups } = useSelector(({ groups }) => groups)
   const [selectedGroups, setSelectedGroups] = useState([])
   const [message, setMessage] = useState('')
   const group = groups.find(group => group.group_id === groupId)

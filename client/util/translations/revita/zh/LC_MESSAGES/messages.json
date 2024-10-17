@@ -1058,5 +1058,9 @@
     "import-story-description": "<h5>Select groups to import</h5>",
     "import-from": "Import stories from ...",
     "import-story-message": "Message:",
-    "correct-answer-to-question": "Correct!"
+    "correct-answer-to-question": "Correct!",
+    "import-success": "Import story  successfully",
+    "import-failure": "Failed to import stories",
+    "story-visibility-success": "Story visibility updated",
+    "story-visibility-failure": "Failed to update story visibility"
 }

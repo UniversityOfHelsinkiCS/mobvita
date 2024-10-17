@@ -313,6 +313,30 @@ export default (state = initialState, action) => {
         type: type.error,
       }
 
+    case 'IMPORT_STORIES_SUCCESS':
+      return {
+        translationId: 'import-success',
+        contextVariables: { num: action.response.num_story_imported },
+        type: type.success,
+      }
+    case 'IMPORT_STORIES_FAILURE':
+      return {
+        translationId: 'import-failure',
+        type: type.error,
+      }
+
+    case 'SET_STORY_VISIBILITY_SUCCESS':
+      return {
+        translationId: 'story-visibility-success',
+        contextVariables: { hidden: action.response.hidden },
+        type: type.success,
+      }
+    case 'SET_STORY_VISIBILITY_FAILURE':
+      return {
+        translationId: 'story-visibility-failure',
+        type: type.error,
+      }
+
     default:
       return state
   }
