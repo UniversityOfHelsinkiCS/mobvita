@@ -107,12 +107,14 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                     </div>
                                 )}
                                 <hr />
-                                <div
-                                    style={{
-                                        whiteSpace: 'pre-line',
+                                <FormattedMessage
+                                    id={filteredSlides[current]} 
+                                    defaultMessage={filteredSlides[current]} 
+                                    values={{
+                                        b: (chunks) => <b>{chunks}</b>, 
+                                        i: (chunks) => <i>{chunks}</i>, 
+                                        br: () => <br />, 
                                     }}
-                                    className="feedback"
-                                    dangerouslySetInnerHTML={sanitizeHtml(filteredSlides[current])}
                                 />
                             </div>
                         </div>
