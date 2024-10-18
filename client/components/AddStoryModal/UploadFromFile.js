@@ -79,7 +79,7 @@ const UploadFromFile = ({ closeModal }) => {
 
   useEffect(() => {
     if (progress) {
-      if (progress === 1) setFile('')
+      if (progress === 1) setStoryFile('')
     }
   }, [progress])
 
