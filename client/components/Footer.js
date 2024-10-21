@@ -27,7 +27,7 @@ const Footer = () => {
             </div>
           </>
         )}
-        <div className="footer-item">© University of Helsinki 2020–2023</div>
+        <div className="footer-item">© University of Helsinki 2020–2024</div>
 
         {showResonsiveVoiceMention && (
           <div className="footer-item">
