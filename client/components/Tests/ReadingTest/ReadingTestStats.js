@@ -26,7 +26,7 @@ const ReadingTestStats = ({ restartTest }) => {
         <div className="test-container" style={{ width: '90%' }}>
           <h2><FormattedMessage id="test-completed" /></h2>
           <div className="test-stats">
-            <p><FormattedMessage id="total-questions" />: {totalQuestions}</p>
+            <p><FormattedMessage id="ddlang-total-questions" />: {totalQuestions}</p>
             <p><FormattedMessage id="first-attempt-correct-rate" />: {firstAttemptCorrectRate?.toFixed(2)}%</p>
             <p><FormattedMessage id="overall-correct-rate" />: {overallCorrectRate?.toFixed(2)}%</p>
           </div>
