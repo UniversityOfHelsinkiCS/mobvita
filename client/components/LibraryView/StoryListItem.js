@@ -36,9 +36,9 @@ const StoryTitle = ({
   const showDeleteButton = libraryShown.private || !libraryShown.public && teacherView
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
-    teacherView && !isControlledStory && story.user === user?.oid
+    teacherView && !isControlledStory && story.user === user?.oid && !story.flashcardsOnly
   const showCancelControlStoryButton =
-    teacherView && isControlledStory && story.user === user?.oid
+    teacherView && isControlledStory && story.user === user?.oid && !story.flashcardsOnly
 
   const handleDelete = () => setConfirmationOpen(true)
 

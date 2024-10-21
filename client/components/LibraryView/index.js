@@ -42,6 +42,7 @@ const StoryList = () => {
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
+  const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
@@ -326,7 +327,8 @@ const StoryList = () => {
     }
 
     if (story.groups) {
-      if (story.groups.map(g => g.group_id).includes(savedGroupSelection)) {
+      const group =  story.groups.find(g => g.group_id == savedGroupSelection)
+      if (group && (group.hidden === undefined || !group.hidden || currentGroup?.is_teaching)) {
         showLibraries.push('Group')
       }
     }
