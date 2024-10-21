@@ -65,7 +65,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     <Modal dimmer="inverted" closeIcon open={isOpen} onClose={() => setOpen(false)}>
       <Modal.Header>
         <span style={{ color: '#777' }}>
-          <FormattedMessage id="share-story" />:{' '}
+          <FormattedMessage id="Share" />:{' '}
         </span>
         <span style={{ color: '#000', opacity: '.4' }}> {story.shortTitle}</span>
       </Modal.Header>
@@ -109,7 +109,10 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                         ))}
                       </select>
                       <Checkbox
-                        label={intl.formatMessage({ id: 'share-as-a-hidden-story' })}
+                        label={
+                          !story.flashcardsOnly && intl.formatMessage({ id: 'share-as-a-hidden-story' }) || 
+                          intl.formatMessage({ id: 'share-as-a-hidden-flashcards' })
+                        }
                         checked={isHiddenStory}
                         onChange={() => setIsHiddenStory(!isHiddenStory)}
                         style={{ marginLeft: '2rem' }}
@@ -125,7 +128,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                       onChange={e => setMessage(e.target.value)}
                     />
                     <Button disabled={!shareTargetGroupId} type="submit">
-                      <FormattedMessage id="share-story" />
+                      <FormattedMessage id="Share" />
                     </Button>
                   </div>
                 ) : (
@@ -168,7 +171,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                 onChange={e => setMessage(e.target.value)}
               />
               <Button disabled={shareTargetUserEmails?.length < EMAIL_MIN_LENGTH} type="submit">
-                <FormattedMessage id="share-story" />
+                <FormattedMessage id="Share" />
               </Button>
             </Form>
           </>
