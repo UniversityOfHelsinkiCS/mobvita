@@ -1208,7 +1208,7 @@
     "words-seen-encouragement": "Nelle storie che hai studiato, ora hai incontrato {vocabulary_seen} nuove parole.<br/>Vuoi continuare",
     "first-story-covered-encouragement": "Congratulazioni! Hai completato la tua prima storia!",
     "words-interacted-encouragement": "Da questa storia hai interagito con {nWords} nuove parole.<br/>Vuoi recensire",
-    "welcome-back-encouragement": "Bentornata/o, {username}!",
+    "welcome-back-encouragement": "Benvenuta/o, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story: {story}.<br>Would you like to continue?",
     "yes": "Si",
     "no": "No",
@@ -1494,7 +1494,7 @@
     "tour-step9-HELP-message": "Fai clic sul pulsante <b>Guida</b> per vedere:\n<ul>\n<li>Video introduttivo,</li>\n<li>Istruzioni dettagliate e aiuto,</li>\n<li>FAQ.</li></ul>",
     "streak-done": "La tua striscia sta andando forte per <b>{daysStreaked}</b> giorni!",
     "streak-undone": "Mantieni la tua striscia!",
-    "streak-broken": "La tua striscia è interrotta – inizia una nuova serie!",
+    "streak-broken": "Inizia una nuova serie!",
     "continue-streak": "Modi per mantenere la tua striscia oggi",
     "start-streak": "Inizia una nuova striscia",
     "do-snippets": "Completa 10 frammenti di storia",
@@ -1699,5 +1699,9 @@
     "import-success-flaschards": "Importazione riuscita",
     "import-failure-flashcards": "Importazione non riuscita",
     "flashcards-visibility-success": "Visibilità delle flashcard aggiornata",
-    "flashcards-visibility-failure": "Visibilità delle flashcard non era aggiornata"
+    "flashcards-visibility-failure": "Visibilità delle flashcard non era aggiornata",
+    "sharing": "Sharing...",
+    "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
+    "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
+    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers"
 }

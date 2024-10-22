@@ -1207,7 +1207,7 @@
     "words-seen-encouragement": "Olet nähnyt yhteensä {vocabulary_seen} uutta sanaa harjoittelemissasi tarinoissa.<br/>Haluaisitko käydä sanastoa läpi",
     "first-story-covered-encouragement": "Onneksi olkoon! Teit ensimmäisen tarinan loppuun!",
     "words-interacted-encouragement": "Tässä tarinassa kohtasit {nWords} uutta sanaa.<br/>Haluaisitko tarkastella",
-    "welcome-back-encouragement": "Tervetuloa takaisin, {username}!",
+    "welcome-back-encouragement": "Tervetuloa, {username}!",
     "would-you-like-to-continue-story": "Viimeksi sinulla jäi kesken tarina \"{story}\".<br> Haluaisitko jatkaa tarinan lukemista?",
     "yes": "Kyllä",
     "no": "Ei",
@@ -1493,7 +1493,7 @@
     "tour-step9-HELP-message": "Napsauta <b>Ohje</b>-painiketta nähdäksesi:\n<ul>\n<li>Esittelyvideo,</li>\n<li>Ohjeet,</li>\n<li>FAQ / UKK.</li></ul>",
     "streak-done": "Sinulla on <b>{daysStreaked}</b> päivän harjoitteluputki päällä!",
     "streak-undone": "Säilytä harjoitteluputkesi!",
-    "streak-broken": "Harjoitteluputkesi katkesi – aloita uusi harjoitteluputki!",
+    "streak-broken": "Aloita uusi harjoitteluputki!",
     "continue-streak": "Ylläpidä harjoitteluputkeasi tänään",
     "start-streak": "Aloita uusi harjoitteluputki",
     "do-snippets": "Tee 10 tarinaosaa",
@@ -1700,5 +1700,9 @@
     "import-success-flaschards": "Periminen onnistui",
     "import-failure-flashcards": "Korttien periminen epäonnistui",
     "flashcards-visibility-success": "Korttien näkyvyys päivitetty",
-    "flashcards-visibility-failure": "Korttien näkyvyyden päivittäminen epäonnistui"
+    "flashcards-visibility-failure": "Korttien näkyvyyden päivittäminen epäonnistui",
+    "sharing": "Sharing...",
+    "correct-first-attempts-CONTROL": "Oikeiden vastausten määrä ensimmäisellä yrityksellä (ilman vinkkejä)",
+    "first-attempt-correct-rate-CONTROL": "Oikeiden vastausten osuus ensimmäisellä yrityksellä (ilman vinkkejä)",
+    "overall-correct-rate-CONTROL": "Oikeiden vastausten osuus kaikista vastauksista (ml. vinkkien avulla)"
 }

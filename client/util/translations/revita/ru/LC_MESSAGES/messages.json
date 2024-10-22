@@ -1496,7 +1496,7 @@
     "tour-step9-HELP-message": "Пожалуйста, посмотри через эту кнопку:\n<ul>\n<li/>вводное видео,\n<li/>подробные инструкции,\n<li/>FAQ &mdash; часто задаваемые вопросы</ul>",
     "streak-done": "Ты в ударном режиме: <b>{daysStreaked}</b> дней!",
     "streak-undone": "Продолжай работать в ударном режиме!",
-    "streak-broken": "Ударный режим прерван — начни новую серию!",
+    "streak-broken": "Начни новую серию!",
     "continue-streak": "Продолжай работу в ударном режиме",
     "start-streak": "Вернуться в ударный режим",
     "do-snippets": "Выполни упражнения в 10-и фрагментах из текста",
@@ -1702,5 +1702,9 @@
     "import-success-flaschards": "Импорт выполнен успешно",
     "import-failure-flashcards": "Не удалось импортировать карточки",
     "flashcards-visibility-success": "Видимость карточек обновлена",
-    "flashcards-visibility-failure": "Не удалось обновить видимость карточек"
+    "flashcards-visibility-failure": "Не удалось обновить видимость карточек",
+    "sharing": "Sharing...",
+    "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
+    "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
+    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers"
 }

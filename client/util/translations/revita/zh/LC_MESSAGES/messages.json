@@ -562,7 +562,7 @@
     "words-seen-encouragement": "在您学习过的文章中，您遇见了{vocabulary_seen}个单词。你是否需要回顾一下您的",
     "first-story-covered-encouragement": "恭喜！您已经完成了您的第一篇文章！",
     "words-interacted-encouragement": "您已经练习到了{nWords}个新单词。是否需要回顾您的",
-    "welcome-back-encouragement": "欢迎回来, {username}!",
+    "welcome-back-encouragement": "欢迎, {username}!",
     "would-you-like-to-continue-story": "您上次在学习的文章是：{story}.<br>是否继续?",
     "yes": "是",
     "no": "否",
@@ -865,7 +865,7 @@
     "tour-step9-HELP-message": "点击<b>帮助p</b>可以查看:\n<ul>\n<li>视频说明,</li>\n<li>在线帮助和文字说明,</li>\n<li>FAQ</li></ul>",
     "streak-done": "您已经连续练习了<b>{daysStreaked}</b>天了!",
     "streak-undone": "继续保持练习！",
-    "streak-broken": "您的连续记录被打破了",
+    "streak-broken": "开始一个新记录！",
     "continue-streak": "继续您的记录，练习",
     "start-streak": "开始您的新纪录，练习",
     "do-snippets": "7个段落",
@@ -1074,5 +1074,9 @@
     "import-success-flaschards": "Import was successful",
     "import-failure-flashcards": "Failed to import flashcards",
     "flashcards-visibility-success": "Flashcards visibility updated",
-    "flashcards-visibility-failure": "Failed to update flashcards visibility"
+    "flashcards-visibility-failure": "Failed to update flashcards visibility",
+    "sharing": "Sharing...",
+    "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
+    "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
+    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers"
 }

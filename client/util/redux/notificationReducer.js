@@ -58,6 +58,13 @@ export default (state = initialState, action) => {
         type: type.success,
         options: { autoClose: false },
       }
+
+    case 'SHARE_STORY_ATTEMPT':
+      return {
+        translationId: 'sharing',
+        type: type.info,
+      }
+
     case 'SHARE_STORY_FAILURE':
       return {
         translationId: 'failed-to-share-the-story',

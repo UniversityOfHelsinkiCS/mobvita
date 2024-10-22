@@ -1208,7 +1208,7 @@
     "words-seen-encouragement": "From the stories you have studied, you have now encountered {vocabulary_seen} new words.<br/>Would you like to review vocabulary",
     "first-story-covered-encouragement": "Congratulations! You have completed your first story!",
     "words-interacted-encouragement": "From this story you looked up {nWords} new words.<br/>Would you like to review",
-    "welcome-back-encouragement": "Welcome back, {username}!",
+    "welcome-back-encouragement": "Welcome, {username}!",
     "would-you-like-to-continue-story": "Last time your were working on the story  \"{story}\".<br>Would you like to continue?",
     "yes": "Yes",
     "no": "No",
@@ -1495,7 +1495,7 @@
     "tour-step9-HELP-message": "Click the <b>Help</b> button to see:\n<ul>\n<li>Introduction video,</li>\n<li>Instructions and online help,</li>\n<li>FAQ.</li></ul>",
     "streak-done": "Your streak is going strong for <b>{daysStreaked}</b> days!",
     "streak-undone": "Keep you streak going!",
-    "streak-broken": "Your streak is interrupted — begin a new streak!",
+    "streak-broken": "Begin a new streak!",
     "continue-streak": "Keep up your streak today",
     "start-streak": "To begin a new streak",
     "do-snippets": "Complete 10 snippets from a story",
@@ -1701,5 +1701,9 @@
     "import-success-flaschards": "Import was successful",
     "import-failure-flashcards": "Failed to import flashcards",
     "flashcards-visibility-success": "Flashcards visibility updated",
-    "flashcards-visibility-failure": "Failed to update flashcards visibility"
+    "flashcards-visibility-failure": "Failed to update flashcards visibility",
+    "sharing": "Sharing...",
+    "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
+    "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
+    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers"
 }
