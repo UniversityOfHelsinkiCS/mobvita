@@ -96,14 +96,10 @@ const ReadingTest = () => {
   // }
 
   const submitSelfReflectionResponse = (response_json) => {
-    console.log("submitSelfReflectionResponse", response_json)
-    console.log("currentReadingQuestionIndex", currentReadingQuestionIndex)
-    console.log("readingTestQuestions.length", readingTestQuestions.length)
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
     if (response_json.is_end_set_questionair == true) {
       if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
         // goToHomePage()
-        console.log("AAAAAAAAA")
         dispatch(finishReadingTest())
         dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
       }
