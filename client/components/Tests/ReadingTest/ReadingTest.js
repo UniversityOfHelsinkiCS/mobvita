@@ -11,6 +11,7 @@ import {
   updateReadingTestElicitation,
   nextReadingTestQuestion,
   finishReadingTest,
+  finishLastReadingTestQuestion,
   markAnsweredChoice,
   sendReadingTestQuestionnaireResponses,
 } from 'Utilities/redux/testReducer'
@@ -90,15 +91,21 @@ const ReadingTest = () => {
     dispatch(getReadingTestQuestions(learningLanguage, false));
   };
 
-  const goToHomePage = () => {
-    history.push('/home')
-  }
+  // const goToHomePage = () => {
+  //   history.push('/home')
+  // }
 
   const submitSelfReflectionResponse = (response_json) => {
+    console.log("submitSelfReflectionResponse", response_json)
+    console.log("currentReadingQuestionIndex", currentReadingQuestionIndex)
+    console.log("readingTestQuestions.length", readingTestQuestions.length)
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
     if (response_json.is_end_set_questionair == true) {
       if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
-        goToHomePage()
+        // goToHomePage()
+        console.log("AAAAAAAAA")
+        dispatch(finishReadingTest())
+        dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
       }
       // else {
       //   // the self reflection does not show after every set - need to move this is to somewhere else
@@ -255,8 +262,7 @@ const ReadingTest = () => {
 
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
       console.log("finish")
-      dispatch(finishReadingTest())
-      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
+      dispatch(finishLastReadingTestQuestion())
     } else {
       console.log("next")
       dispatch(nextReadingTestQuestion())
@@ -276,6 +282,13 @@ const ReadingTest = () => {
       dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(getGroups()); 
+    if (learningLanguage && readingTestSessionId && testDone && readingHistory == {}) {
+      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
+    }
+  }, [testDone]);
 
   useEffect(() => {
     let experimental = false;
@@ -341,7 +354,7 @@ const ReadingTest = () => {
   useEffect(() => {
     if (!readingTestSessionId) return
     if (!currentReadingTestQuestion) {
-      dispatch(finishReadingTest(learningLanguage, readingTestSessionId))
+      dispatch(finishReadingTest())
     }
     setCurrentElicatedConstruct(currentReadingTestQuestion ? currentReadingTestQuestion.eliciated_construct : null)
   }, [currentReadingTestQuestion])
