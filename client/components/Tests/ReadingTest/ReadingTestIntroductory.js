@@ -1,22 +1,37 @@
-import React from 'react';
 import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useIntl } from 'react-intl';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions';
+
+import { getGroups } from 'Utilities/redux/groupsReducer'
 
 const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
     const intl = useIntl();
+    const dispatch = useDispatch()
+
     const bigScreen = useWindowDimensions().width >= 700;
+    const { groups } = useSelector(({ groups }) => groups);
 
-    // Retrieve the HTML content from the translations
-    const introductoryTextHtml = intl.formatMessage({ id: 'ddlang-introductory-text' });
+    const [introductoryTextHtml, setIntroductoryTextHtml] = useState('');
 
-    // For testing: Bypass sanitization to see if the issue persists
-    // const sanitizedHtmlContent = sanitizeHtml(introductoryTextHtml);
-    const sanitizedHtmlContent = introductoryTextHtml;  // Bypassing sanitization for testing
+    useEffect(() => {
+        dispatch(getGroups()); 
+    }, []);
 
-    // Debugging: Log the content
-    console.log("Sanitized HTML Content:", sanitizedHtmlContent);
+    useEffect(() => {
+        let experimental = groups.some(group => group.group_type === 'experimental');
+        let control = groups.some(group => group.group_type === 'control');
+    
+        if (control) experimental = false; 
+    
+        if (experimental) {
+            setIntroductoryTextHtml(intl.formatMessage({ id: 'ddlang-introductory-text-experimental' }));
+        } else if (control) {
+            setIntroductoryTextHtml(intl.formatMessage({ id: 'ddlang-introductory-text-control' }));
+        }
+    }, [groups]);
 
     const renderIntroductory = () => (
         <Draggable cancel=".interactable">
@@ -37,7 +52,7 @@ const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div
                         className="interactable"
-                        dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+                        dangerouslySetInnerHTML={{ __html: introductoryTextHtml }}
                     />
                     <Icon name='close' style={{ cursor: 'pointer' }} onClick={() => setShowDDLangIntroductory(false)} />
                 </div>
