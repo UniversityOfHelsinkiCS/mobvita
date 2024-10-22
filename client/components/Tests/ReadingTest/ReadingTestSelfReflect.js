@@ -138,6 +138,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                 "control-end-of-set-open-ended-question-b",
                 "control-end-of-set-open-ended-question-c"
             ]
+            setIsEndSetQuestionair(true)
         } else {
             open_ended_questions = []
         }
