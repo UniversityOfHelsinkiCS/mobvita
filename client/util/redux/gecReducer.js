@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
-        error: action.error, 
+        error: action.response, 
       }
     case 'UPDATE_ESSAY': 
       return {
