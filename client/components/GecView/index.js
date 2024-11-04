@@ -3,11 +3,59 @@ import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkGrammar, updateEssay } from 'Utilities/redux/gecReducer'
 
-const Word = ({ word, isError, edit, index, onEditChange }) => {
-  const [hovered, setHovered] = useState(false)
+const getFeedback = (edit, errorAction, errorFeedback) => {
+  const [edit_action, edit_feedback] = edit.type.split(/:(.+)/); 
+  const mapped_action = errorAction[edit_action.trim()]
+  const mapped_feedback = errorFeedback[edit_feedback.trim()]; 
+  const feedback = mapped_feedback ? `${mapped_action}: ${mapped_feedback}` : edit.type;
+  return feedback;
+};
 
-  return isError ? (
+const Word = ({ word, isError, edit, index, onEditChange, errorAction, errorFeedback }) => {
+  const [hovered, setHovered] = useState(false)
+  const feedback = getFeedback(edit, errorAction, errorFeedback)
+
+  return isError && edit.o_start === edit.o_end && edit.o_str === "" ? (
     <span
+      class={"word" + index}
+      key={index}
+      style={{ position: 'relative', display: 'inline-block' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <input
+        type="text"
+        style={{
+          color: 'red',
+          fontWeight: 'bold',
+          border: '1px solid red',
+          padding: '2px',
+          margin: '0 2px',
+        }}
+        onChange={(e) => onEditChange(e.target.value, index)} 
+      />
+      {hovered && (
+        <span
+          style={{
+            position: 'absolute',
+            top: '-25px',
+            left: '0',
+            backgroundColor: '#333',
+            color: '#fff',
+            padding: '5px',
+            borderRadius: '3px',
+            fontSize: '12px',
+            zIndex: '10',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {feedback}
+        </span>
+      )}
+    </span>
+  ) : isError ? (
+    <span
+      class={"word" + index}
       key={index}
       style={{ position: 'relative', display: 'inline-block' }}
       onMouseEnter={() => setHovered(true)}
@@ -41,12 +89,12 @@ const Word = ({ word, isError, edit, index, onEditChange }) => {
             whiteSpace: 'nowrap',
           }}
         >
-          {edit.type}
+          {feedback}
         </span>
       )}
     </span>
   ) : (
-    <span key={index} style={{ marginRight: '5px' }}>
+    <span class={"word" + index} key={index} style={{ marginRight: '5px' }}>
       {word}{' '}
     </span>
   )
@@ -54,7 +102,7 @@ const Word = ({ word, isError, edit, index, onEditChange }) => {
 
 const GrammarCheck = () => {
   const dispatch = useDispatch()
-  const { essay, edits, pending, error } = useSelector(state => state.gec)
+  const { essay, edits, pending, error, error_type2feedback, error_type2action } = useSelector(state => state.gec)
   const [submitted, setSubmitted] = useState(false)
   const [editedWords, setEditedWords] = useState({})
 
@@ -88,7 +136,6 @@ const GrammarCheck = () => {
     const updatedEssay = updatedSentences.join(' ')
     dispatch(updateEssay(updatedEssay))
 
-    console.log("handleGrammarCheck", updatedEssay)
     if (updatedEssay.trim() !== '') {
       dispatch(checkGrammar(updatedEssay));
       setSubmitted(true);
@@ -106,21 +153,21 @@ const GrammarCheck = () => {
       text: sentence,
       index: idx
     }));
-
+  
     return sentences.map(({ text, index }) => {
       const words = text.split(' ')
       const sentenceEdits = edits[index] || []
       const modifiedSentence = []
-
+  
       let currentEditIndex = 0
       let currentWordIndex = 0
-
+  
       while (currentWordIndex < words.length) {
         const word = words[currentWordIndex]
         const currentEdit = sentenceEdits[currentEditIndex]
         const c_start = currentEdit ? currentEdit.c_start : null
         const c_end = currentEdit ? currentEdit.c_end : null
-
+  
         if (currentEdit && currentWordIndex >= c_start && currentWordIndex < c_end) {
           modifiedSentence.push(
             <Word
@@ -129,32 +176,33 @@ const GrammarCheck = () => {
               isError={true}
               edit={currentEdit}
               index={currentWordIndex}
+              errorAction={error_type2action}
+              errorFeedback={error_type2feedback}
               onEditChange={handleEditChange}
             />
-          )
-
-          if (currentWordIndex + 1 === c_end) {
-            currentEditIndex++
+          );
+          currentWordIndex = c_end;
+          if (currentEditIndex < sentenceEdits.length) {
+            currentEditIndex++;
           }
         } else {
           modifiedSentence.push(
-            <span key={`${index}-${currentWordIndex}`} style={{ marginRight: '5px' }}>
+            <span key={`${index}-${currentWordIndex}`} className={"word" + currentWordIndex} style={{ marginRight: '5px' }}>
               {word}{' '}
             </span>
-          )
+          );
+          currentWordIndex++;
         }
-
-        currentWordIndex++
       }
-
+  
       return (
-        <div key={`sentence-${index}`} style={{ marginBottom: '10px' }}>
+        <div key={`sentence-${index}`} style={{ marginBottom: '10px', paddingTop: index === 0 ? '20px' : '0' }}>
           {modifiedSentence}
           {index < sentences.length - 1 && '.'}
         </div>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', height: '100vh' }}>
