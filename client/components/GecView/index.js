@@ -17,7 +17,6 @@ const Word = ({ word, isError, edit, index, onEditChange, errorAction, errorFeed
 
   return isError && edit.o_start === edit.o_end && edit.o_str === "" ? (
     <span
-      class={"word" + index}
       key={index}
       style={{ position: 'relative', display: 'inline-block' }}
       onMouseEnter={() => setHovered(true)}
@@ -55,7 +54,6 @@ const Word = ({ word, isError, edit, index, onEditChange, errorAction, errorFeed
     </span>
   ) : isError ? (
     <span
-      class={"word" + index}
       key={index}
       style={{ position: 'relative', display: 'inline-block' }}
       onMouseEnter={() => setHovered(true)}
@@ -94,7 +92,7 @@ const Word = ({ word, isError, edit, index, onEditChange, errorAction, errorFeed
       )}
     </span>
   ) : (
-    <span class={"word" + index} key={index} style={{ marginRight: '5px' }}>
+    <span key={index} style={{ marginRight: '5px' }}>
       {word}{' '}
     </span>
   )
@@ -158,6 +156,14 @@ const GrammarCheck = () => {
       const words = text.split(' ')
       const sentenceEdits = edits[index] || []
       const modifiedSentence = []
+
+      // Loop through the sentence edits to adjust the words array with placeholders
+      sentenceEdits.forEach(edit => {
+        if (edit.o_start === edit.o_end && edit.o_str === "") {
+          // Insert an empty string at the insertion index
+          words.splice(edit.c_start, 0, "");
+        }
+      });
   
       let currentEditIndex = 0
       let currentWordIndex = 0
