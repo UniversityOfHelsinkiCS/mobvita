@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
 import { Table, Form } from 'semantic-ui-react'
 import { Button, Spinner } from 'react-bootstrap'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 
 const DebugTestView = () => {
   const dispatch = useDispatch()
@@ -49,9 +50,16 @@ const DebugTestView = () => {
           </Form>
           {feedback && (
             <div>
-              <br/>
-              <br/>
-            <h4>Feedback: {feedback.message}</h4>
+                <br/>
+                <h4>
+                    Feedback:
+                    <FormattedHTMLMessage
+                        id={"<ul> <li />" +
+                            feedback.message.replace(/---/g, "<li />") +
+                            "</ul>"
+                           } />
+                    
+                </h4>
             <Table celled fixed unstackable>
               <Table.Header>
                 <Table.Row textAlign="center">
