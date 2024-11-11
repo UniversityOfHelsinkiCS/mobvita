@@ -134,7 +134,13 @@ const Chatbot = () => {
     }, [messages])
 
     /* ??? move to CSS */
-    const info_circle_style = { alignSelf: 'flex-start', marginLeft: '0.5rem' }
+    const info_circle_style = {
+        alignSelf: 'flex-start',
+        marginLeft: '0.5rem',
+        marginTop: '-4px',
+        color: '#17a2b8',
+        fontSize: 'larger'
+    }
 
     
     const handlePreHints = () => {

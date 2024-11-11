@@ -153,7 +153,7 @@ const StoryDetailsModal = ({
             </div>
           )}
 
-          <div className="flex space-between">
+          <div className="flex space-between" style={{ marginTop: '5px' }}>
             <div className="flex wrap" style={{ gap: '5px' }}>
               {showCreateControlStoryButton && (
                 <LinkButton
