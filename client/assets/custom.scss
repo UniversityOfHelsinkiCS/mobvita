@@ -332,6 +332,7 @@ $value in $spacing {
   color: #FFF;
   background-color: $btn-color-primary;
   border: $btn-border-primary;
+  font-weight: 500;
   border-color: $btn-border-color-primary;
   border-radius: $btn-border-radius-primary;
 }
@@ -347,8 +348,8 @@ $value in $spacing {
 }
 
 .btn-secondary {
-  color: black;
-  background-color: white;
+  color: darkslateblue;
+  background-color: #e1fedf;
   border: $btn-border-primary;
   border-color: $btn-border-color-primary;
   border-radius: $btn-border-radius-primary;

@@ -1671,7 +1671,7 @@
     "lesson-performance-info-tooltip": "Tuo livello attuale di prestazione su questo argomento: percentuale di risposte corrette negli esercizi",
     "copy-key": "Copia chiave",
     "flashcard-upload-instructions": "Seleziona un file contenente le flashcard:\n<ul>\n<li>Seleziona un file con estensione .TXT o .DOCX (altre estensioni non supportate)</li>\n<li>La prima riga deve contenere il <b>titolo</b> del pacchetto di flashcard</li>\n<li>Ogni riga deve contenere <b>una parola/frase</b>, quindi le traduzioni, separate da punto e virgola; ad esempio:<li>\n<ul>\n<li>parola;traduzione 1; traduzione 2; ... </li>\n</ul>\n</ul>",
-    "flashcard-btn-explanation": "Clicca per esercitarti con le flashcard di questa storia!",
+    "flashcard-btn-explanation": "Esercitati con le flashcard di questa storia!",
     "group-hidden-story": "La storia è nascosta per questo gruppo",
     "flashcard-translation-target-language": "Lingua di traduzione:",
     "flashcard-upload-instructions-2": "Nota (per ora): le parole saranno tradotte solo nella lingua selezionata sopra. Se vuoi che funzionino con un'altra lingua, carica un altro mazzo di carte in un altro file.",
