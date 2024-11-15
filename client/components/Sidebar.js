@@ -379,7 +379,7 @@ export default function Sidebar({ history }) {
               <DropdownItem
                 data-cy="about-button"
                 as={Link}
-                to={{pathname: "https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"}}
+                to={{pathname: "https://revitaai.github.io/"}}
                 target="_blank"
                 rel="noopener noreferrer"
                 text={intl.formatMessage({id: 'about'})}

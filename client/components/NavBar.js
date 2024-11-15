@@ -61,7 +61,7 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
   )
 }
 
-const NewsWebSite = "https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/news"
+const NewsWebSite = "https://revitaai.github.io/faq-LEARNER-TOC.html"
 
 
 export default function NavBar() {

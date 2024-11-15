@@ -109,7 +109,7 @@ const LandingPage = () => {
               <Dropdown.Menu style={{ fontSize: '1.05rem' }}>
                 <Dropdown.Item
                   text={<FormattedMessage id="about" />}
-                  href="https://www2.helsinki.fi/en/projects/revita-language-learning-and-ai/about-the-project"
+                  href="https://revitaai.github.io/"
                   target="_blank"
                   rel="noopener noreferrer"
                 />
