@@ -26,7 +26,7 @@ class GridText extends Component {
       )
     else {
         const splitted_string = []
-        let remaining_string = children
+        let remaining_string = children.length > 30 ? children.slice(0, 27) + '...' : children
         /*if (remaining_string.includes(': ') && remaining_string.length >= 18){
             const temp = remaining_string.split(': ')
             splited_string.push(temp[0] + ':')

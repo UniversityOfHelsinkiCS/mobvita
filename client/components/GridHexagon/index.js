@@ -154,7 +154,7 @@ const HexagonTest = props => {
                 .filter(concept => concept.hex_coords)
                 .map(hex => (
                   <ConstructionHexagon
-                    name={hex.short_name}
+                    name={hex.name}
                     position={hex.hex_coords}
                     statistics={accumulatedConcepts[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
