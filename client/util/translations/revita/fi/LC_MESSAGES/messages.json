@@ -1704,5 +1704,6 @@
     "sharing": "Sharing...",
     "correct-first-attempts-CONTROL": "Oikeiden vastausten määrä ensimmäisellä yrityksellä (ilman vinkkejä)",
     "first-attempt-correct-rate-CONTROL": "Oikeiden vastausten osuus ensimmäisellä yrityksellä (ilman vinkkejä)",
-    "overall-correct-rate-CONTROL": "Oikeiden vastausten osuus kaikista vastauksista (ml. vinkkien avulla)"
+    "overall-correct-rate-CONTROL": "Oikeiden vastausten osuus kaikista vastauksista (ml. vinkkien avulla)",
+    "story-top-dict": "Dictionary"
 }

@@ -29,6 +29,7 @@ import ContextTranslation from './ContextTranslation'
 
 
 const DictionaryHelp = ({ minimized, inWordNestModal }) => {
+
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
@@ -44,6 +45,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     lemmas,
     clue,
     maskSymbol,
+    showDictionaryBox,
   } = useSelector(({ translation }) => translation)
 
   const { focusedSpan, mobileDisplayAnnotations } = useSelector(({ annotations }) => annotations)
@@ -54,6 +56,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
   const dispatch = useDispatch()
   const intl = useIntl()
+
+
+  const handleDictionaryBoxClick = () => {
+    if (showDictionaryBox) {
+      dispatch({ type: 'CLOSE_DICTIONARY_BOX' })
+    } else {
+      dispatch({ type: 'SHOW_DICTIONARY_BOX' })
+    }
+  }
 
   useEffect(() => {
     if (
@@ -290,6 +301,26 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
     >
       <Segment>
         {!mobileDisplayAnnotations && (
+          <div className="flex space-between">
+            <div style={{ marginBottom: '.5em' }}>
+              <div className="header-3" style={{ fontWeight: '500' }}>
+                <FormattedMessage id="story-top-dict" />
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                handleDictionaryBoxClick()}}
+              onKeyDown={() => {handleDictionaryBoxClick()}}
+              role="button"
+              tabIndex={0}
+            >
+              <Icon name={showDictionaryBox ? 'angle up' : 'angle down'} size="large" />
+            </div>
+          </div>
+        )}
+
+
+        {!mobileDisplayAnnotations && showDictionaryBox && (
           <div className="align-right" style={{ color: 'slateGrey' }}>
             <FormattedMessage id="translation-target-language" />
             <select
@@ -316,6 +347,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
 
         <div >
           {!mobileDisplayAnnotations ? (
+           <>
+           {showDictionaryBox && (
             <div>
               <div className="space-between pt-sm">
                 <div>
@@ -346,8 +379,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                     />
                 )}
               </div>
-              <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>
+              {!inWordNestModal && <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>}
             </div>
+          )}
+           </>
           ) : (
             <div style={{ width: '100%' }}>
               <div className="header-3" style={{ fontWeight: '500' }}>

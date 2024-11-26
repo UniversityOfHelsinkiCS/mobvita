@@ -1706,5 +1706,6 @@
     "sharing": "Sharing...",
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
-    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers"
+    "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
+    "story-top-dict": "Dictionary"
 }

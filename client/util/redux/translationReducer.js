@@ -73,7 +73,7 @@ export const setWords = ({ surface, lemmas, clue, maskSymbol }) => {
   }
 }
 
-export default (state = { data: [] }, action) => {
+export default (state = { data: [], showDictionaryBox: true }, action) => {
   switch (action.type) {
     case 'GET_TRANSLATION_ATTEMPT':
       return {
@@ -152,6 +152,18 @@ export default (state = { data: [] }, action) => {
           && translated || { ...translated, stage: action.stage, is_new_word: false }),
       }
     }
+
+    case 'SHOW_DICTIONARY_BOX':
+      return {
+        ...state,
+        showDictionaryBox: true
+      }
+    case 'CLOSE_DICTIONARY_BOX':
+      return {
+        ...state,
+        showDictionaryBox: false
+      }
+
     default:
       return state
   }
