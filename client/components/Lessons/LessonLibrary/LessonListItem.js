@@ -51,6 +51,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
     const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
     const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
     const color = {color: get_lesson_performance_style(correct, total)}
+    const name = topic2info[lesson_topics[k]].topic
     topic_rows.push(
       <h6
         key={k}
@@ -130,7 +131,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
           </span>
         </div>
         <div className="lesson-content" style={{ width: '80%' }}>
-          {lesson_topics[k].charAt(0).toUpperCase() + lesson_topics[k].slice(1)}
+          {name.charAt(0).toUpperCase() + name.slice(1)}
         </div>
       </h6>
     )
