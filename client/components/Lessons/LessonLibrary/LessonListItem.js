@@ -148,10 +148,8 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             <h5
               className="story-item-title"
               style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
-            >
-              {`${lesson.name.split('—')[0].trim()}`}
-              {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
-            </h5>
+              dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
+            />
           </div>
           <Card.Content extra className="lesson-card-actions-cont">
             <div className="lesson-actions">
@@ -194,7 +192,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               }}
             >
               <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
-              {`${lesson.name.split('—')[0].trim()}`}
+              <span dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }} />
               {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
             </h5>
           </div>
