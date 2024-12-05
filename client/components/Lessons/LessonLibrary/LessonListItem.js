@@ -51,7 +51,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
     const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
     const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
     const color = {color: get_lesson_performance_style(correct, total)}
-    const name = topic2info[lesson_topics[k]].topic
+    const name = topic2info[lesson_topics[k]].topic.charAt(0).toUpperCase() + topic2info[lesson_topics[k]].topic.slice(1)
     topic_rows.push(
       <h6
         key={k}
@@ -130,9 +130,11 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             <Icon name="info circle" />
           </span>
         </div>
-        <div className="lesson-content" style={{ width: '80%' }}>
-          {name.charAt(0).toUpperCase() + name.slice(1)}
-        </div>
+        <div 
+          className="lesson-content"
+          style={{ width: '80%' }} 
+          dangerouslySetInnerHTML={{ __html: name }}
+        />
       </h6>
     )
   }
@@ -147,7 +149,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               className="story-item-title"
               style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
             >
-              {`${lesson.name}`}
+              {`${lesson.name.split('—')[0].trim()}`}
               {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
             </h5>
           </div>
@@ -192,7 +194,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               }}
             >
               <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
-              {`${lesson.name}`}
+              {`${lesson.name.split('—')[0].trim()}`}
               {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
             </h5>
           </div>

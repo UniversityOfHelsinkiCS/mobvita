@@ -46,6 +46,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
         let topic_concepts = topics[i].topic.split(';')
 
         for (let k = 0; k < topic_concepts.length; k++) {
+            const name = (topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)) //.split('—')[0].trim()
             if (k === 0) {
                 topic_rows.push(
                     <h6
@@ -65,9 +66,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
                         <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px', ...get_lesson_performance_style(topics[i].correct, topics[i].total) }}>
                             {'%'}
                         </div>
-                        <div style={{ width: '88%' }}>
-                            {topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}
-                        </div>
+                        <div style={{ width: '88%' }} dangerouslySetInnerHTML={{__html: name}}/>
                     </h6>
                 );
             } else {
@@ -85,7 +84,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
                     >
                         <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', maxWidth: '25px', minWidth: '25px' }}></div>
                         <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px' }}></div>
-                        <div style={{ width: '88%' }}>{topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1)}</div>
+                        <div style={{ width: '88%' }} dangerouslySetInnerHTML={{__html: name}}/>
                     </h6>
                 );
             }
