@@ -536,7 +536,10 @@ export default (state = initialState, action) => {
       }
 
     case 'RESET_TESTS':
-      return initialState
+      return {
+        ...initialState,
+        testDone: false,
+      }
 
     case 'UPDATE_TEST_FEEDBACKS':
       return {
