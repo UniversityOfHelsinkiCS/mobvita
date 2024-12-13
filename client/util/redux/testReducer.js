@@ -28,7 +28,7 @@ const initialState = {
   timedTest: true,
   report: null,
   feedbacks: [],
-  testDone: false,
+  testDone: undefined,
 }
 
 const clearLocalStorage = () => {
@@ -43,6 +43,8 @@ export const getReadingTestQuestions = (language, is_continue = true) => {
   const query = {
     'is_continue': is_continue
   }
+
+  console.log("check the query", query)
 
   const call = callBuilder(route, prefix, 'get', undefined, query, 'questions')
   return { ...call, language, startingIndex: 0 }
@@ -214,6 +216,7 @@ export default (state = initialState, action) => {
     case 'GET_READING_TEST_QUESTIONS_ATTEMPT':
       return {
         ...initialState,
+        testDone: state.testDone,
         timedTest: state.timedTest,
         pending: true,
         language: action.language,

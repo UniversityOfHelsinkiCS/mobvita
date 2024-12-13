@@ -20,18 +20,35 @@ import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroduc
 const ReadingTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
-  const [sessionToDelete, setSessionToDelete] = useState(false)
+  // const [sessionToDelete, setSessionToDelete] = useState(false)
+  // const bigScreen = useWindowDimension().width >= 650
+  const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
+
   const { readingTestSessionId, pending, testDone, readingTestQuestions } = useSelector(
     ({ tests }) => tests
   )
-  const bigScreen = useWindowDimension().width >= 650
-  const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
+
+  // useEffect(() => {
+  //   console.log("readingTestQuestions", readingTestQuestions)
+  //   console.log("testDone", testDone)
+  //   const hasUnseenQuestions = readingTestQuestions.some((element) => !element.seen);
+  //   const continue_test = hasUnseenQuestions && !testDone
+  //   dispatch(getReadingTestQuestions(learningLanguage, continue_test))
+  // }, [dispatch, learningLanguage])
 
   useEffect(() => {
-    const hasUnseenQuestions = readingTestQuestions.some((element) => !element.seen);
-    const continue_test = hasUnseenQuestions && !testDone
-    dispatch(getReadingTestQuestions(learningLanguage, continue_test))
-  }, [dispatch, learningLanguage])
+    const hasUnseenQuestions = readingTestQuestions?.some((element) => element.seen === false);
+  
+    if (testDone === undefined && readingTestQuestions.length === 0) {
+      dispatch(getReadingTestQuestions(learningLanguage, true));
+    } else if (
+      testDone === true &&
+      hasUnseenQuestions === false &&
+      readingTestQuestions.length > 0
+    ) {
+      dispatch(getReadingTestQuestions(learningLanguage, false));
+    }
+  }, [dispatch, learningLanguage, testDone]);
   
   if (pending) {
     return <Spinner fullHeight />
