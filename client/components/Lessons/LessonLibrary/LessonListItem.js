@@ -65,8 +65,8 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
       >
         <div className="lesson-performance" 
           style={{
-            minWidth: '90px',
-            maxWidth: '95px',
+            minWidth: '100px',
+            maxWidth: '100px',
           }}
         >
           <span
@@ -87,9 +87,10 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
             />
           </span>
           <span
-            display="inline"
             float="left"
             style={{
+              display: 'inline-grid',
+              justifyContent: 'end',
               width: '6%',
               textAlign: 'right',
               marginRight: '5px',
@@ -127,7 +128,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
               verticalAlign: 'top',
             }}
           >
-            <Icon name="info circle" />
+            <Icon name="info circle" style={{ marginRight: '0px' }}/>
           </span>
         </div>
         <div 

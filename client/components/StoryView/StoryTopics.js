@@ -154,7 +154,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                       />}
                       {topic[0]}
                     </span>
-                    <span style={{ marginRight: '.5em' }}>
+                    <span style={{ marginRight: '.5em', marginLeft: '8px' }}>
                       {topic[1].freq}
                     </span>
                   </li>
