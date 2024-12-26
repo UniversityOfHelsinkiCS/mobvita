@@ -569,6 +569,9 @@ export const tooltipFontSizes = { Syriac: '1rem' }
 
 export const getTextStyle = (language, type) => {
   let style = {}
+
+  if (type !== 'title') {style = { fontSize: '1.15rem' }}
+
   if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
   if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
   if (type === 'title' && titleFontSizes[language]) {
