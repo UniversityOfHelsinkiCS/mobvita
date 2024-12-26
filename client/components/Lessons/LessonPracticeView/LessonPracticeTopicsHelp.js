@@ -115,7 +115,7 @@ const LessonPracticeTopicsHelp = ({selectedTopics, always_show=false, }) => {
                             alignItems: 'center',
                         }}
                     >
-                        <FormattedMessage id={'topics'} />
+                        <FormattedMessage id={'topics-header'} />
                         <Icon
                             name={collapsed ? 'chevron down' : 'chevron up'}
                             onClick={toggleCollapse}

@@ -276,7 +276,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
 
       {word.concepts?.length > 0 && (
         <div style={{ textAlign: 'left' }}>
-          <FormattedMessage id="topics" />:
+          <FormattedMessage id="topics-header" />:
           <ul className="mb-0">
             {word.concepts.map(concept => (
               <li>{concept.concept}</li>

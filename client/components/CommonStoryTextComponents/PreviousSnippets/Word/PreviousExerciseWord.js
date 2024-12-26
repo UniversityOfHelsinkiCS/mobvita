@@ -215,7 +215,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
       {isPreviewMode && word.concepts?.length > 0 && (
         <div style={{ textAlign: 'left' }}>
-          <FormattedMessage id="topics" />:
+          <FormattedMessage id="topics-header" />:
           <ul className="mb-0">
             {word.concepts.map(concept => (
               <li key={concept.concept}>{concept.concept}</li>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
 const AnnotationsHiddenView = () => {
@@ -16,13 +16,13 @@ const AnnotationsHiddenView = () => {
       tabIndex={0}
       data-cy="annotations-visibility-button"
     >
-      <div className="header-3">
+      <div className="header-3" style={{ fontWeight: '500' }}>
         <Popup
           position="top center"
-          content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
+          content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
           trigger={<Icon name="info circle" size="small" color="grey" />}
         />{' '}
-        <FormattedMessage id="notes" />
+        <FormattedMessage id="notes-header" />
       </div>
       <Icon name="angle down" size="large" />
     </div>

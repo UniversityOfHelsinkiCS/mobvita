@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 
 const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
   const intl = useIntl()
@@ -19,13 +19,13 @@ const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
         tabIndex={0}
       >
         <div>
-          <div className="header-3">
+          <div className="header-3" style={{ fontWeight: '500' }}>
             <Popup
-              position="top center"
-              content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
-              trigger={<Icon name="info circle" size="small" color="grey" />}
+                position="top center"
+                content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
+                trigger={<Icon name="info circle" size="small" color="grey" />}
             />{' '}
-            <FormattedMessage id="notes" />
+            <FormattedMessage id="notes-header" />
           </div>
         </div>
         <Icon name="angle up" size="large" />

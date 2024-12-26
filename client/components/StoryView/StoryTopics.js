@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon, Segment } from 'semantic-ui-react'
+import { Icon, Popup, Segment } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
 import { skillLevels, hiddenFeatures } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
 
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
   const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
@@ -87,7 +88,17 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
         <div style={{ backgroundColor: '#FFFFFF' }}>
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
-              <FormattedMessage id="story-top-topics" />:
+              <div className="header-3" style={{ fontWeight: '500' }}>
+                  <Popup
+                      content={<FormattedHTMLMessage id={'story-top-topics-explain'} />}
+                      trigger={<Icon style={{ paddingRight: '0.5em' }}
+                                     name="info circle"
+                                     size="small"
+                                     color="grey"
+                               />}
+                  />{' '}
+                  <FormattedMessage id="topics-header" />
+              </div>
             </div>
             <div
               onClick={() => {
@@ -152,7 +163,10 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                         }}
                         onChange={() => toggleExerciseTopic(topic[0], topic[1].freq)}
                       />}
-                      {topic[0]}
+                        { /* topic[0] */
+                            <span dangerouslySetInnerHTML={{ __html: topic[0].split('—')[0].trim() }}
+                            />
+                        }
                     </span>
                     <span style={{ marginRight: '.5em', marginLeft: '8px' }}>
                       {topic[1].freq}

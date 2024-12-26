@@ -697,7 +697,7 @@
     "currently-anyone-can-share-stories-with-you-automatically-you-can-modify-this-in-your-profile-prefer": "",
     "PROFILE": "Profile",
     "unfamiliar-word": "Unfamiliar word?",
-    "click-on-words-near-the-exercises-to-explore-their-meaning": "Click any <u>unfamiliar</u> word to see its translations.\n<br/><br/>\nRevita will assume you are learning these words &mdash;\nthey will appear as <span style=\"font-weight: 500; color: red\">RED</span> in your <a href=\"/profile/progress/flashcards\">Vocabulary Progress</a> View.\n<br/><br/>\nPractice your words with <a href=\"/flashcards\">Flashcards</a>!\n<br/>\nOnce you have learned them, words turn from <span style=\"font-weight: 500; color: red\">RED</span> to <span style=\"font-weight: 500; color: green\">GREEN</span>.",
+    "click-on-words-near-the-exercises-to-explore-their-meaning": "Click any <u>unfamiliar</u> word to see its translations.\n<br/><br/>\nRevita will display the words you are learning &mdash;\nas <span style=\"font-weight: 500; color: red\">RED</span> \nin your <a href=\"/profile/progress/flashcards\">Vocabulary Progress</a> View.\n<br/><br/>\nPractice your words with <a href=\"/flashcards\">Flashcards</a>!\n<br/>\nOnce you have learned them, words turn from <span style=\"font-weight: 500; color: red\">RED</span> to <span style=\"font-weight: 500; color: green\">GREEN</span>.",
     "translate-to": "Translate to",
     "translation-temporarily-unavailable-please-try-again-later": "",
     "not-accessible": "",
@@ -1064,7 +1064,7 @@
     "note-delete-failure": "Deleting note failed. Please try again.",
     "log-in-to-create-own-notes": "Log in to create your own notes",
     "notes-popup-info-text": "You can add notes to any word — something important or interesting about how the language works.",
-    "annotations-popup-info-text": "Click any word to add your own notes. \nYou can add notes to any word or phrase in the story — something important or something interesting about how the language works.",
+    "annotations-popup-info-text": "Click any word to add your own notes!\n<br/>\n<br/>\nYou can add notes to any word or phrase in the story — something important or something interesting about how the language works.",
     "notes-added-to-history-appear-here": "Notes added to words in completed snippets will appear here.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "",
@@ -1076,7 +1076,7 @@
     "show-feedback": "Show feedback",
     "upload-from-web-instructions": "Revita will try to find the story from the URL. If it fails, or if the result contains unwanted text, please use the \"Paste a text\" box below to enter the story manually.",
     "word-not-in-note-yet": "No notes yet for this word.",
-    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons «  »  to expand/shrink the selection.",
+    "click-arrow-buttons-to-expand-shrink": "Click the arrow buttons « and »  to expand/shrink the selection.",
     "words-not-in-note-yet": "No notes yet for these words.",
     "exercise-density": "Exercise density",
     "custom": "Customize learning settings",
@@ -1706,5 +1706,10 @@
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
     "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
-    "story-top-dict": "Dictionary"
+    "story-top-dict": "Dictionary",
+    "topics-header": "Topics",
+    "notes-header": "Notes",
+    "story-top-topics-explain": "Working with this story helps you master especially these topics.\n<br/>\n<br/>\nNB: When you practice, only topics suitable for <b>your level</b> will be selected for exercises.",
+    "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Click any <u>unfamiliar</u> word to see its translations!",
+    "dictionary-header": "Dictionary"
 }

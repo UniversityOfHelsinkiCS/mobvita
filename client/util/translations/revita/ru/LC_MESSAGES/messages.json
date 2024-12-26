@@ -696,7 +696,7 @@
     "currently-anyone-can-share-stories-with-you-automatically-you-can-modify-this-in-your-profile-prefer": "На данный момент любой пользователь может поделиться с тобой текстами. Это можно изменить в настройках на страничке \"Профиль\".  Можно получать истории только от друзей, добавить %(stranger)s в список друзей, или заблокировать %(stranger)s, используя следующие ссылки:",
     "PROFILE": "Профиль",
     "unfamiliar-word": "Незнакомое слово?",
-    "click-on-words-near-the-exercises-to-explore-their-meaning": "Кликни на незнакомое слово, чтобы получить его перевод  ⇒  слово сохранится в набор флеш-карт!",
+    "click-on-words-near-the-exercises-to-explore-their-meaning": "Нажми на любое <u>незнакомое</u> слово, чтобы увидеть его перевод.\n<br/><br/>\nRevita отобразит слова, которые ты изучаешь &mdash;\n<span style=\"font-weight: 500; color: red\">красным</span> в твоем \n<a href=\"/profile/progress/flashcards\">Словарном Графике</a>.\n<br/><br/>\nВсе слова сохраняются в твой <a href=\"/flashcards\">набор флеш-карт</a> &mdash;\nтренируй словарный запас с помощью флеш-карт!\n<br/>\nКогда слова выучены, они меняют цвет с <span style=\"font-weight: 500; color: red\">красного</span> на <span style=\"font-weight: 500; color: green\">зеленый</span>.",
     "translate-to": "Перевод на",
     "translation-temporarily-unavailable-please-try-again-later": "Перевод временно недоступен, пожалуйста, попробуй позже...",
     "not-accessible": "Недоступно",
@@ -1066,7 +1066,7 @@
     "note-delete-failure": "Не удалось удалить заметку.  Попробуй еще раз.",
     "log-in-to-create-own-notes": "Зарегистрируйся в систему, чтобы добавить свои заметки",
     "notes-popup-info-text": "Добавь заметки о важных или интересных особенностях слов в тексте.",
-    "annotations-popup-info-text": "Кликни на любое слово, чтобы добавить заметку!\nК любому слову или выражению можно прикрепить заметки — о свойствах языка, которые тебе кажутся важными или интересными !",
+    "annotations-popup-info-text": "Кликни на любое слово, чтобы добавить заметку!\n<br/>\n<br/>\nК любому слову или выражению можно прикрепить заметки — о свойствах языка, которые тебе важны и интересны!",
     "notes-added-to-history-appear-here": "Заметки, прикрепленные к словам в тексте.",
     "click-any-word-in-history-to-create-note": "Click any word before the exercise snippet to add a note.",
     "click-any-word-in-history-to-add-new": "",
@@ -1078,7 +1078,7 @@
     "show-feedback": "Ответы и обратную связь",
     "upload-from-web-instructions": "Ревита попытается извлечь текст из данной веб-страницы. Если результат будет неудачным, пожалуйста, скопируй текст вручную и введи в поле для загрузки текста (ниже)",
     "word-not-in-note-yet": "У этого слова eще нет заметок.",
-    "click-arrow-buttons-to-expand-shrink": "Нажми на стрелочки «  » — чтобы удлинить или укоротить текст под заметкой.",
+    "click-arrow-buttons-to-expand-shrink": "Нажми на стрелочки « и » — чтобы удлинить или укоротить текст под заметкой.",
     "words-not-in-note-yet": "У этих слов eще нет заметок.",
     "exercise-density": "Количество упражнений",
     "custom": "Персонализировать настройки обучения",
@@ -1707,5 +1707,10 @@
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
     "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
-    "story-top-dict": "Dictionary"
+    "story-top-dict": "Dictionary",
+    "topics-header": "Темы",
+    "notes-header": "Заметки",
+    "story-top-topics-explain": "Работа с этой историей поможет тебе освоить эти темы.\n<br/>\n<br/>\nNB: Во время практики в упражнения будут попадать только те темы, которые подходят для <b>твоего уровня</b>.",
+    "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Нажми на любое <u>незнакомое</u> слово, чтобы увидеть его перевод!",
+    "dictionary-header": "Словарь"
 }
