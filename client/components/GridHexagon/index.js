@@ -43,8 +43,9 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
       <div>{name}</div>
       {stat_total > 0 && (
         <div>
-          {stat_correct}/{stat_total} {intl.formatMessage({ id: 'correct' })}:{' '}
-          {percentageCorrect}%
+            <br/>{intl.formatMessage({ id: 'correct-performance' })}:{' '}
+            {percentageCorrect}%
+            <br/>{stat_correct}/{stat_total}
         </div>
       )}
     </span>
