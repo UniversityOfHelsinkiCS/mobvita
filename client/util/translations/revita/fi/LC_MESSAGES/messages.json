@@ -1711,5 +1711,6 @@
     "story-top-topics-explain": "Tämän tarinan avulla harjoittelet erityisesti näitä kielioppiasioita.\n<br/>\n<br/>\nHUOM: Kun harjoittelet, vain <b>tasosi</b> sopivat aiheet valitaan harjoituksiin.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset!",
     "dictionary-header": "Sanasto",
-    "correct-performance": "oikein"
+    "correct-performance": "oikein",
+    "server-status": "Server status"
 }

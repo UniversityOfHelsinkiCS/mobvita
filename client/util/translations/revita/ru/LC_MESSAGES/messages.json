@@ -1713,5 +1713,6 @@
     "story-top-topics-explain": "Работа с этой историей поможет тебе освоить эти темы.\n<br/>\n<br/>\nNB: Во время практики в упражнения будут попадать только те темы, которые подходят для <b>твоего уровня</b>.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Нажми на любое <u>незнакомое</u> слово, чтобы увидеть его перевод!",
     "dictionary-header": "Словарь",
-    "correct-performance": "правильно"
+    "correct-performance": "правильно",
+    "server-status": "Server status"
 }
