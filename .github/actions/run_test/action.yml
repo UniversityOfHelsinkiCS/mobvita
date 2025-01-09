@@ -30,7 +30,7 @@ runs:
       #   CYPRESS_baseUrl: http://localhost:8000
 
     - name: 'Upload screenshots if tests fail'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: cypress-screenshots
@@ -38,7 +38,7 @@ runs:
 
     # Test run video was always captured, so this action uses "always()" condition
     - name: 'Upload Cypress videos'
-      uses: actions/upload-artifact@v3 
+      uses: actions/upload-artifact@v4 
       if: always()
       with:
         name: cypress-videos
