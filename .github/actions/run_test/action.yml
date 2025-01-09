@@ -5,6 +5,9 @@ inputs:
   spec:
     required: true
     description: 'Path to Cypress file'
+  context:
+    required: true
+    description: 'Artifact identifier'
 
 runs:
   using: composite
