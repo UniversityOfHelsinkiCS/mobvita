@@ -1703,7 +1703,7 @@
     "import-failure-flashcards": "Не удалось импортировать карточки",
     "flashcards-visibility-success": "Видимость карточек обновлена",
     "flashcards-visibility-failure": "Не удалось обновить видимость карточек",
-    "sharing": "Sharing...",
+    "sharing": "Файл отправляется...",
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
     "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
@@ -1714,5 +1714,5 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Нажми на любое <u>незнакомое</u> слово, чтобы увидеть его перевод!",
     "dictionary-header": "Словарь",
     "correct-performance": "правильно",
-    "server-status": "Server status"
+    "server-status": "Текущее состояние сервера"
 }
