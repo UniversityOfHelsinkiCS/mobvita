@@ -1700,7 +1700,7 @@
     "import-failure-flashcards": "Importazione non riuscita",
     "flashcards-visibility-success": "Visibilità delle flashcard aggiornata",
     "flashcards-visibility-failure": "Visibilità delle flashcard non era aggiornata",
-    "sharing": "Sharing...",
+    "sharing": "Inviando...",
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
     "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
@@ -1711,5 +1711,5 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Clicca sulle parole sconosciute per ottenerne la traduzione!",
     "dictionary-header": "Dizionario",
     "correct-performance": "corretto",
-    "server-status": "Server status"
+    "server-status": "Stato del server"
 }

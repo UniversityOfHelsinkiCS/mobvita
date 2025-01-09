@@ -1701,7 +1701,7 @@
     "import-failure-flashcards": "Korttien periminen epäonnistui",
     "flashcards-visibility-success": "Korttien näkyvyys päivitetty",
     "flashcards-visibility-failure": "Korttien näkyvyyden päivittäminen epäonnistui",
-    "sharing": "Sharing...",
+    "sharing": "Jaetaan...",
     "correct-first-attempts-CONTROL": "Oikeiden vastausten määrä ensimmäisellä yrityksellä (ilman vinkkejä)",
     "first-attempt-correct-rate-CONTROL": "Oikeiden vastausten osuus ensimmäisellä yrityksellä (ilman vinkkejä)",
     "overall-correct-rate-CONTROL": "Oikeiden vastausten osuus kaikista vastauksista (ml. vinkkien avulla)",
@@ -1712,5 +1712,5 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset!",
     "dictionary-header": "Sanasto",
     "correct-performance": "oikein",
-    "server-status": "Server status"
+    "server-status": "Nykyinen palvelimen tila"
 }
