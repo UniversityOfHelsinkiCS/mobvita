@@ -5,7 +5,7 @@ import { Howl } from 'howler'
 /**
  * ApiConnection simplifies redux usage
  */
-
+const locks = {}
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
 export const callApi = async (url, method = 'get', data, query) => {
@@ -22,17 +22,25 @@ export const callApi = async (url, method = 'get', data, query) => {
   })
 }
 
-export default (route, prefix, method = 'get', data, query, cache) => ({
-  type: `${prefix}_ATTEMPT`,
-  requestSettings: {
-    route,
-    method,
-    data,
-    prefix,
-    query,
-    cache,
-  },
-})
+export default (route, prefix, method = 'get', data, query, cache) => {
+  if (method==='get' && locks[route]) {
+    return {
+      type: `${prefix}_LOCKED`,
+    }
+  }
+  locks[route] = true
+  return {
+    type: `${prefix}_ATTEMPT`,
+    requestSettings: {
+      route,
+      method,
+      data,
+      prefix,
+      query,
+      cache,
+    },
+  }
+}
 
 const SERVER_UNRESPONSIVE_STATUSES = [502, 503, 504]
 const SERVER_INTERNAL_ERROR_STATUS = 500
@@ -172,6 +180,7 @@ export const handleRequest = store => next => async action => {
         handleError(store, err, prefix, query)
       }
     }
+    locks[route] = false
   }
 }
 
