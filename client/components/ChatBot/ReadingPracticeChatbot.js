@@ -18,7 +18,7 @@ const ReadingPracticeChatBot = () => {
     const { 
         readingTestSessionId: session_id, 
         currentReadingTestQuestion: current_reading_test_question,
-        feedbacks,
+        attempt_and_feedbacks,
     } = useSelector(({ tests }) => tests);
 
     const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
@@ -37,7 +37,7 @@ const ReadingPracticeChatBot = () => {
             getReadingPracticeChatbotResponse(
                 session_id,
                 current_reading_test_question.question_id,
-                feedbacks,
+                attempt_and_feedbacks,
                 currentMessage
             )
         );
