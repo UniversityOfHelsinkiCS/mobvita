@@ -64,19 +64,22 @@ export default function Toaster() {
     dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
 
-  const { streak } = useSelector(state => state.streak)
+  const { streak } = useSelector((state) => state.streak);
+  const prevStreakRef = useRef(null); 
 
   useEffect(() => {
-    if (streak === 'just_streaked') {
+    // Trigger toast if transition is from 'not_streaked' to 'streaked'
+    if (prevStreakRef.current === 'not_streaked' && streak === 'streaked') {
       toast(<StreakToast />, {
         transition: Flip,
         type: 'warning',
         className: 'streak-toast',
         position: 'top-center',
         closeButton: false,
-      })
+      });
     }
-  }, [streak])
+    prevStreakRef.current = streak;
+  }, [streak]);
 
   const { levelUp } = useSelector(state => state.levelUp)
 
