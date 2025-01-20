@@ -33,6 +33,8 @@ import {
   getReadingTestQuestions,
 } from 'Utilities/redux/testReducer'
 
+import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
+
 const ReadingTest = () => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
@@ -473,6 +475,7 @@ const ReadingTest = () => {
           </div>
         </div>
       </Segment>
+      {questionDone && <ReadingPracticeChatbot />}
     </div>
   )
 }

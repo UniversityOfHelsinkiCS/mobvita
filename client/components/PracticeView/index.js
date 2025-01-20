@@ -17,7 +17,7 @@ import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
-import Chatbot from 'Components/ChatBot'
+import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
@@ -256,7 +256,7 @@ const PracticeView = () => {
           <DictionaryHelp />
           <AnnotationBox />
         </div>
-        <Chatbot />
+        <PracticeChatbot />
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}

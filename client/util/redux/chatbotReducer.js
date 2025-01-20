@@ -5,21 +5,34 @@ export const setCurrentContext = (context) => ({
     context: context,
 });
 
-export const getConversationHistory = (story_id, snippet_id, sentence_id, word_id, surface="") => {
-    const route = `/chatbot/history?story_id=${encodeURIComponent(story_id)}&snippet_id=${encodeURIComponent(snippet_id)}&sentence_id=${encodeURIComponent(sentence_id)}&word_id=${encodeURIComponent(word_id)}&surface=${encodeURIComponent(surface)}`;
+export const getPracticeAgentConversationHistory = (session_id, story_id, snippet_id, sentence_id, word_id, surface = "") => {
+    const route = `/chatbot/history?chatbot_type=practice&session_id=${encodeURIComponent(session_id)}&story_id=${encodeURIComponent(story_id)}&snippet_id=${encodeURIComponent(snippet_id)}&sentence_id=${encodeURIComponent(sentence_id)}&word_id=${encodeURIComponent(word_id)}&surface=${encodeURIComponent(surface)}`;
     const prefix = 'GET_CHATBOT_HISTORY';
     return callBuilder(route, prefix, 'get');
-}
+};
+
+export const getReadingPracticeAgentConversationHistory = (session_id, reading_question_id) => {
+    const route = `/chatbot/history?chatbot_type=reading_practice&session_id=${encodeURIComponent(session_id)}&reading_question_id=${encodeURIComponent(reading_question_id)}`;
+    const prefix = 'GET_CHATBOT_HISTORY';
+    return callBuilder(route, prefix, 'get');
+};
 
 export const setConversationHistory = (chatbot_history=[]) => ({ 
     type: 'SET_CHATBOT_HISTORY', 
     chatbot_history: chatbot_history,
 });
 
-export const getResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
+export const getPracticeChatbotResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
     const payload = { session_id, story_id, snippet_id, sentence_id, word_id, message, context, surface }
+    return callBuilder(route, prefix, 'post', payload)
+}
+
+export const getReadingPracticeChatbotResponse = (session_id, reading_question_id, user_attempts_and_feedbacks, message) => {
+    const route = `/reading_practice_chatbot`
+    const prefix = 'GET_CHATBOT_RESPONSE'
+    const payload = { session_id, reading_question_id, user_attempts_and_feedbacks, message }
     return callBuilder(route, prefix, 'post', payload)
 }
 

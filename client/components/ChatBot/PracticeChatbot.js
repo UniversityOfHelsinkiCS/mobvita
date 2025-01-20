@@ -17,7 +17,7 @@ import {
   hiddenFeatures
 } from 'Utilities/common'
 import { 
-    getResponse, 
+    getPracticeChatbotResponse, 
     // getConversationHistory,
     setConversationHistory
 } from 'Utilities/redux/chatbotReducer'
@@ -25,7 +25,7 @@ import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
 
-const Chatbot = () => {
+const PracticeChatbot = () => {
     const intl = useIntl()
     const dispatch = useDispatch()
     const [hintMessageIdx, setHintMessageIdx] = useState(0)
@@ -75,7 +75,7 @@ const Chatbot = () => {
             formattedContext += "\n\nStudent's answer: " + currentAnswer
         }
         dispatch(
-            getResponse(
+            getPracticeChatbotResponse(
                 session_id, 
                 storyid, 
                 snippet_id, 
@@ -321,4 +321,4 @@ const Chatbot = () => {
   );
 };
 
-export default Chatbot;
+export default PracticeChatbot;
