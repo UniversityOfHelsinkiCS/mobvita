@@ -28,6 +28,7 @@ const initialState = {
   timedTest: true,
   report: null,
   feedbacks: [],
+  attempt_and_feedbacks: [],
   testDone: undefined,
 }
 
@@ -286,6 +287,7 @@ export default (state = initialState, action) => {
         currentReadingQuestionIndex: tmpcurrentReadingQuestionIndex,
         currentQuestionIdxinSet: tmpcurrentQuestionIdxinSet,
         feedbacks: [],
+        attempt_and_feedbacks: [],
         readingSetLength: tmpreadingSetLength,
         pending: false,
         resumedTest: Object.values(questionsBySet).some(x => x.seen.length > 0),
@@ -371,6 +373,7 @@ export default (state = initialState, action) => {
         currentExhaustiveQuestionIndex: currentExhaustiveQuestionIndex + 1,
         currentExhaustiveTestQuestion: exhaustiveTestQuestions[currentExhaustiveQuestionIndex + 1],
         feedbacks: [],
+        attempt_and_feedbacks: []
       }
 
     case 'FINISH_LAST_READING_TEST_QUESTION':
@@ -464,6 +467,7 @@ export default (state = initialState, action) => {
           prevReadingSet: _prevReadingSet,
           currentQuestionIdxinSet: _currentReadingSet !== _prevReadingSet ? 0 : currentQuestionIdxinSet + 1,
           feedbacks: [],
+          attempt_and_feedbacks: [],
           readingSetLength: readingSetLength,
         }
       }
@@ -545,7 +549,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         feedbacks: [...state.feedbacks, action.feedbacks],
-      }
+        attempt_and_feedbacks: [
+          ...(state.attempt_and_feedbacks || []),
+          { attempt: action.answer, feedback: action.feedbacks },
+        ],
+      };
 
     case 'UPDATE_READING_TEST_QUESTION_ELICITATION':
       if (state.currentReadingTestQuestion) {
