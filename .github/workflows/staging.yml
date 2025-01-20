@@ -15,6 +15,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/competition_spec.js
+          context: competition
   
   test_dictionary:
     name: "Test dictionary"
@@ -25,6 +26,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/dictionary_spec.js
+          context: dictionary
 
   test_flashcards:
     name: "Test flashcards"
@@ -35,6 +37,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/flashcards_spec.js
+          context: flashcards
 
   test_follow_and_block:
     name: "Test follow and block"
@@ -45,6 +48,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/follow_and_block_spec.js
+          context: follow_and_block
 
   test_groups:
     name: "Test groups"
@@ -55,6 +59,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/groups_spec.js
+          context: groups
 
   test_mobvita:
     name: "Test mobvita"
@@ -65,6 +70,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/mobvita_spec.js
+          context: mobvita
 
   test_practice:
     name: "Test practice"
@@ -75,6 +81,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/practice_spec.js
+          context: practice
   
   test_tests:
     name: "Test tests"
@@ -85,6 +92,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/tests_spec.js
+          context: tests
 
   test_wordnest:
     name: "Test wordnest"
@@ -95,6 +103,7 @@ jobs:
         uses: ./.github/actions/run_test
         with:
           spec: cypress/e2e/wordnest_spec.js
+          context: wordnest
 
   build:
     name: 'Publish to dockerhub'

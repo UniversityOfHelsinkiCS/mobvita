@@ -474,6 +474,29 @@ export default function NavBar() {
               />
             </div>
           </Nav>
+          <Nav>
+            <Popup
+              trigger={
+                <a
+                  href="https://revitaai.github.io/SERVER-STATUS.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ marginRight: '3em', alignSelf: 'center' }}
+                >
+                  <img
+                      src={images.heartbeat}
+                      alt="heartbeat icon"
+                      style={{ height: '20px' }}
+                    />
+                </a>
+              }
+              content={
+                <FormattedMessage id="server-status" />
+              }
+              on="hover"
+              position="bottom right"
+            />
+          </Nav>
           {/******************************* END *******************************/}
         </Navbar.Collapse>
       </Navbar>

@@ -304,7 +304,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
               <div className="header-3" style={{ fontWeight: '500' }}>
-                <FormattedMessage id="story-top-dict" />
+                  <Popup
+                      content={<FormattedHTMLMessage id={'click-on-words-near-the-exercises-to-explore-their-meaning'} />}
+                      trigger={<Icon style={{ paddingRight: '0.5em' }}
+                                     name="info circle"
+                                     size="small"
+                                     color="grey"
+                               />}
+                  />{' '}
+                  <FormattedMessage id="dictionary-header" />
               </div>
             </div>
             <div
@@ -386,11 +394,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
           ) : (
             <div style={{ width: '100%' }}>
               <div className="header-3" style={{ fontWeight: '500' }}>
-                <FormattedMessage id="notes" />
+                <FormattedMessage id="notes-header" />
               </div>
               <FocusedView focusedSpan={focusedSpan} />
             </div>
-          )}
+          ) /* ??? WHAT IS THIS? why NOTES ??? */}
 
           {smallWindow && !inWordNestModal ? (
             <div className="flex align-self-end">

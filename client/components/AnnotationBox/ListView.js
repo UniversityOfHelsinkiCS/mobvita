@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
 import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
 
 const ListView = ({ handleAnnotationBoxCollapse }) => {
@@ -25,13 +25,13 @@ const ListView = ({ handleAnnotationBoxCollapse }) => {
         tabIndex={0}
       >
         <div>
-          <div className="header-3">
+          <div className="header-3" style={{ fontWeight: '500' }}>
             <Popup
               position="top center"
-              content={intl.formatMessage({ id: 'annotations-popup-info-text' })}
+              content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
               trigger={<Icon name="info circle" size="small" color="grey" />}
             />{' '}
-            <FormattedMessage id="notes" />
+            <FormattedMessage id="notes-header" />
           </div>
         </div>
         <Icon name="angle up" size="large" />

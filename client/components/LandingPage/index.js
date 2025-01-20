@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Icon, Dropdown } from 'semantic-ui-react'
+import { Icon, Dropdown, Popup } from 'semantic-ui-react'
 import { images, localeOptions, localeCodeToName } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -97,7 +97,7 @@ const LandingPage = () => {
               scrolling={false}
               direction="left"
               floating
-              style={{ marginRight: '3em', alignSelf: 'center' }}
+              style={{ alignSelf: 'center' }}
               icon={
                 <img
                   src={images.infoIcon}
@@ -138,6 +138,27 @@ const LandingPage = () => {
                 />
               </Dropdown.Menu>
             </Dropdown>
+            <Popup
+              trigger={
+                <a
+                  href="https://revitaai.github.io/SERVER-STATUS.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ marginRight: '3em', alignSelf: 'center' }}
+                >
+                  <img
+                      src={images.heartbeat}
+                      alt="heartbeat icon"
+                      style={{ width: '24px', height: '24px', filter: 'grayscale(1) invert(1)' }}
+                    />
+                </a>
+              }
+              content={
+                <FormattedMessage id="server-status" />
+              }
+              on="hover"
+              position="bottom right"
+            />
           </div>
         )}
       </div>

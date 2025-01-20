@@ -86,6 +86,7 @@ import flameIcon from 'Assets/images/flame_icon.png'
 import flame from 'Assets/images/flame.png'
 import flameColorless from 'Assets/images/flame_colorless.png'
 import greenArrow from 'Assets/images/green_arrow.png'
+import heartbeat from 'Assets/images/heartbeat.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -177,6 +178,7 @@ export const images = {
   flameColorless,
   flameIcon,
   greenArrow,
+  heartbeat,
 }
 
 export const backgroundColors = [
@@ -569,6 +571,9 @@ export const tooltipFontSizes = { Syriac: '1rem' }
 
 export const getTextStyle = (language, type) => {
   let style = {}
+
+  if (type !== 'title') {style = { fontSize: '1.15rem' }}
+
   if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
   if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
   if (type === 'title' && titleFontSizes[language]) {

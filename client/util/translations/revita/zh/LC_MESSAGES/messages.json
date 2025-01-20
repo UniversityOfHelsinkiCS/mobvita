@@ -31,7 +31,7 @@
     "write-your-note-here": "添加注释",
     "(you)wrote": "已写",
     "(he/she)wrote": "已写",
-    "annotations-popup-info-text": "单机任意单词添加注释！ 对任意单词或文本——你认为有趣或者重要的语言性质——添加注释",
+    "annotations-popup-info-text": "单机任意单词添加注释！\n<br/>\n<br/>\n 对任意单词或文本——你认为有趣或者重要的语言性质——添加注释",
     "click-arrow-buttons-to-expand-shrink": "单击书名号按钮展开或收缩文本注释",
     "better-luck-next-time": "祝你下次更上一层楼！",
     "competition-mode": "竞赛模式",
@@ -1023,8 +1023,8 @@
     "test-completed": "Report: Your performance on reading comprehension exercises",
     "ddlang-total-questions": "Questions in total",
     "go-to-home": "Back to Home Page",
-    "***this is subtracted***": "请使用",
-    "***this is added***": "您使用了",
+    "***this is subtracted***": "Введи",
+    "***this is added***": "Ты использовал(а)",
     "Search lessons / topics ...": "搜索：",
     "customize-learning-settings": "自定义",
     "level-low": "简单难度",
@@ -1079,5 +1079,12 @@
     "correct-first-attempts-CONTROL": "Number of correct answers on first attempt",
     "first-attempt-correct-rate-CONTROL": "Correct rate on first attempt",
     "overall-correct-rate-CONTROL": "Rate of correct answers of all answers",
-    "story-top-dict": "词典"
+    "story-top-dict": "词典",
+    "topics-header": "主题",
+    "notes-header": "注释",
+    "story-top-topics-explain": "通过练习这篇文章，你将掌握这些概念",
+    "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "单击任意生词以获取翻译⇒ 该单词将保存至你的卡片中！",
+    "dictionary-header": "词典",
+    "correct-performance": "正确",
+    "server-status": "Server status"
 }

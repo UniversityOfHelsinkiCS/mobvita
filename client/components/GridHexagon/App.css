@@ -22,7 +22,8 @@ svg g.hexagon {
 }
 
 svg g.hexagon-general g.hexagon {
-  fill: #add8e6;
+    /* fill: #add8e6; */
+    fill: cyan;
 }
 
 svg g.hexagon-root g.hexagon {
