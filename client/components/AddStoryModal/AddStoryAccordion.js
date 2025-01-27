@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Accordion, Menu } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useCurrentUser } from 'Utilities/common'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
+import GenerateStories from './GenerateStories'
 import RecommendedSites from './RecommendedSites'
 
 const AddStoryAccordion = ({ closeModal }) => {
@@ -112,20 +111,9 @@ const AddStoryAccordion = ({ closeModal }) => {
           className="add-story-accordion-item-content"
           active={accordionState === 3}
           content={
-            <div>
-              <br />
-              <span className="pb-sm upload-instructions">
-                <FormattedHTMLMessage id="generate-story-instruction" />
-              </span>
-              <br />
-              <Link  to={'/story-generation'}  className="space-evenly pt-lg">
-                <Button style={{ marginTop: '1em' }}>
-                  <span>
-                    <FormattedMessage id="go-generating" />
-                  </span>
-                </Button>
-              </Link>
-            </div>
+            <GenerateStories
+              closeModal={closeModal}
+            />
           }
         />
       </Menu.Item>
