@@ -512,8 +512,7 @@ const StoryGeneration = () => {
     setCustomizeLessonConfigs(true)
     dispatch(setLessonStep(0))
   }
-
-  const link = '/story-generation'
+  
   const lessonReady = lessonInstance.semantics && lessonInstance.semantics.length > 0 && lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (

@@ -1718,5 +1718,8 @@
     "upload-generated-story": "Save to library",
     "story-generation-additional-comment": "Generation comment",
     "story-generation-summary": "Generation comment",
-    "story-generated": ""
+    "story-generated": "Story generated",
+    "generate-a-story": "Generate a story",
+    "generate-story-instruction": "Instruction for generating a story",
+    "go-generating": "Generate!"
 }

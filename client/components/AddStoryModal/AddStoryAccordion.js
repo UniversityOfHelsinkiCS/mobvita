@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Accordion, Menu } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useCurrentUser } from 'Utilities/common'
 import UploadFromWeb from './UploadFromWeb'
@@ -92,6 +94,39 @@ const AddStoryAccordion = ({ closeModal }) => {
           className="add-story-accordion-item-content"
           active={accordionState === 2}
           content={<UploadPastedText closeModal={closeModal} />}
+        />
+      </Menu.Item>
+
+      <Menu.Item className="add-story-accordion-item">
+        <Accordion.Title
+          active={accordionState === 3}
+          content={
+            <span className={getAccordionItemTitleClass(accordionState, 3)}>
+              <FormattedMessage id="generate-a-story" />
+            </span>
+          }
+          index={3}
+          onClick={handleClick}
+        />
+        <Accordion.Content
+          className="add-story-accordion-item-content"
+          active={accordionState === 3}
+          content={
+            <div>
+              <br />
+              <span className="pb-sm upload-instructions">
+                <FormattedHTMLMessage id="generate-story-instruction" />
+              </span>
+              <br />
+              <Link  to={'/story-generation'}  className="space-evenly pt-lg">
+                <Button style={{ marginTop: '1em' }}>
+                  <span>
+                    <FormattedMessage id="go-generating" />
+                  </span>
+                </Button>
+              </Link>
+            </div>
+          }
         />
       </Menu.Item>
 
