@@ -3,7 +3,8 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { 
-  Placeholder, 
+  Placeholder,
+  Segment,
   Popup, 
   Icon, 
   Select, 
@@ -14,15 +15,15 @@ import {
 
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
-import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
-import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
+import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
+import LessonPracticeThemeHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeThemeHelp'
 import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper';
-import { useLearningLanguage, getTextStyle } from 'Utilities/common'
+import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
@@ -31,9 +32,11 @@ import {
   setLessonStep,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { getGroups } from 'Utilities/redux/groupsReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { generateStory } from 'Utilities/redux/storyGenerationReducer'
+import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { setNotification } from 'Utilities/redux/notificationReducer'
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 // import AddStoryModal from 'Components/AddStoryModal'
@@ -41,6 +44,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 
 import './LessonLibraryStyles.css';
 import { set } from 'lodash'
+
 
 const StyledMark = (localizedMarkString) => 
   (props) => {
@@ -66,16 +70,15 @@ const StyledMark = (localizedMarkString) =>
     return <StyledMarkSpan {...props} />
   }
 
-const LessonList = () => {
+const StoryGeneration = () => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
+  const history = useHistory()
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
   const {
-    last_selected_library: savedLibrarySelection,
-    last_selected_group: savedGroupSelection,
     oid: userId,
     has_seen_lesson_tour,
     vocabulary_score,
@@ -87,28 +90,29 @@ const LessonList = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
-
-  const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
-  const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
+  const { pending: generationPending, text } = useSelector(({ storyGeneration }) => storyGeneration)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   // const smallWindow = useWindowDimensions().width < 520
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
+  const [goStep, setGoStep] = useState(0)
 
-  const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff, num_visited_exercises } = lesson
-  const [sliderValue, setSliderValue] = useState(vocabulary_score)
 
-  const [libraries, setLibraries] = useState({
-    private: false,
-    group: false,
+  const [lessonInstance, setLessonInstance] = useState({
+    topic_ids: [],
+    semantics: ['Sport', 'Culture', 'Science', 'Politics'],
+    vocab_diff: vocabulary_score,
+    learner_ideas: ''
   })
+  const [generatedStory, setGeneratedStory] = useState('')
+
+
+  const [sliderValue, setSliderValue] = useState(vocabulary_score)
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredLessons, setFilteredLessons] = useState(lessons);
-  const [customizeLessonConfigs, setCustomizeLessonConfigs] = useState(false);
   const [accordionState, setAccordionState] = useState(0)
 
   // const [lesson2info, setLesson2info] = useState({})
@@ -122,25 +126,6 @@ const LessonList = () => {
   
   const dispatch = useDispatch()
 
-  const setLibrary = library => {
-    const librariesCopy = {}
-    Object.keys(libraries).forEach(key => {
-      librariesCopy[key] = false
-    })
-
-    setLibraries({ ...librariesCopy, [library]: true })
-  }
-
-  useEffect(() => {
-    if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
-      dispatch(updateGroupSelect(groups[0].group_id))
-    }
-  }, [groups])
-
-  useEffect(() => {
-    if (!userPending && teacherView) setLibrary('group')
-  }, [teacherView, userPending])
-
   useEffect(() => {
     if (!metaPending) {
       dispatch(getMetadata(learningLanguage))
@@ -149,54 +134,25 @@ const LessonList = () => {
 
   useEffect(() => {
     dispatch(getLessonTopics())
-    dispatch(getGroups())
-    if (teacherView) setLibrary('group')
-    if (has_seen_lesson_tour && (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView) ) {
-      setLibrary('group')
-      dispatch(getLessonInstance(savedGroupSelection))
-    }
-    else {
-      setLibrary('private')
-      dispatch(getLessonInstance())
-    }
   }, [])
-  
-  useEffect(() => {
-    if (!lessonPending) {
-        setSliderValue(vocab_diff)
-        if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
-          dispatch(setLessonStep(2))
-        }
-        else if (goStep == -1 && (libraries.private || teacherView && libraries.group)) {
-          dispatch(setLessonStep(0))
-        }
-    }
-    
-  }, [lessonPending])
 
   useEffect(() => {
-    if (!lessonPending && !metaPending && !has_seen_lesson_tour ) {
+    if (!generationPending && text) {
+      setGeneratedStory(text)
+    }
+  }, [generationPending])
+  
+  
+  useEffect(() => {
+    if (!metaPending && !has_seen_lesson_tour ) {
       dispatch(setLessonStep(0))
       dispatch(lessonsTourViewed())
       dispatch(startLessonsTour())
     }
     
-  }, [lessonPending, metaPending])
+  }, [metaPending])
 
-  useEffect(() => {
-    if (!groupPending && groups.length === 0 && libraries.group) {
-      setLibrary('private')
-    }
-  }, [groupPending])
-
-  useEffect(() => {
-    if (userPending && (libraries.group && savedLibrarySelection === 'private' || 
-      libraries.private && savedLibrarySelection === 'group')) setLibrary(savedLibrarySelection)
-  }, [savedLibrarySelection])
-
-  useEffect(() => {
-    if (teacherView) handleLibraryChange('group')
-  }, [teacherView])
+  
 
   useEffect(() => {
     // Filter lessons based on search query
@@ -220,81 +176,77 @@ const LessonList = () => {
     setSearchQuery(event.target.value);
   };
 
-  const finnishSelectingTopics = () => {
-    const payload = { topic_ids: selectedTopicIds }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
-  }
+  
 
   const excludeAllTopics = () => {
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: [] })
+    setLessonInstance({
+      ...lessonInstance,
+      topic_ids: [],
+    })
   }
 
   const toggleTopic = topicId => {
     let newTopics
-    if (selectedTopicIds.includes(topicId)) {
-      newTopics = selectedTopicIds.filter(id => id !== topicId)
+    if (lessonInstance.topic_ids.includes(topicId)) {
+      newTopics = lessonInstance.topic_ids.filter(id => id !== topicId)
     } else {
-      newTopics = [...selectedTopicIds, topicId]
+      newTopics = [...lessonInstance.topic_ids, topicId]
     }
 
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+    setLessonInstance({
+      ...lessonInstance,
+      topic_ids: newTopics,
+    })
   }
 
   const includeLesson = LessonId => {
     let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = selectedTopicIds
+    let newTopics = lessonInstance.topic_ids
     for (let lesson_topic of lessonTopics){
-      if (!selectedTopicIds.includes(lesson_topic)){
+      if (!lessonInstance.topic_ids.includes(lesson_topic)){
         newTopics = [...newTopics, lesson_topic]
       }
     }
 
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+    setLessonInstance({
+      ...lessonInstance,
+      topic_ids: newTopics,
+    })
   }
 
   const excludeLesson = LessonId => {
     let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
+    let newTopics = lessonInstance.topic_ids.filter(id => !lessonTopics.includes(id))
 
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
-  }
-
-  const finnishSelectingSemanticsAndVocabDiff = () => {
-    const payload = { semantic: selectedSemantics, vocab_diff: sliderValue }
-    if (libraries.group) payload.group_id = savedGroupSelection
-    dispatch(setLessonInstance(payload))
-  }
+    setLessonInstance({
+      ...lessonInstance,
+      topic_ids: newTopics,
+    })
+  }  
 
   const toggleSemantic = semantic => {
-    dispatch({ type: 'TOGGLE_LESSON_SEMANTIC', semantic: semantic })
+    let newSemantics
+    if (lessonInstance.semantics.includes(semantic)) {
+      newSemantics = lessonInstance.semantics.filter(s => s !== semantic)
+    } else {
+      newSemantics = [...lessonInstance.semantics, semantic]
+    }
+
+    setLessonInstance({
+      ...lessonInstance,
+      semantics: newSemantics,
+    })
   }
 
   const handleSlider = value => {
     setSliderValue(value)
+    setLessonInstance({
+      ...lessonInstance,
+      vocab_diff: value,
+    })
   }
 
-  const handleLibraryChange = library => {
-    dispatch(updateLibrarySelect(library))
-    setLibrary(library)
-    dispatch(clearLessonInstanceState())
-    dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
-    dispatch(setLessonStep(-1))
-  }
-
-  const groupDropdownOptions = groups.map(group => ({
-    key: group.group_id,
-    text: group.groupName,
-    value: group.group_id,
-  }))
-
-
-  const handleGroupChange = (_e, option) => {
-    dispatch(updateGroupSelect(option.value))
-    dispatch(clearLessonInstanceState())
-    dispatch(getLessonInstance(option.value))
-    dispatch(setLessonStep(-1))
-  }
+  
 
   const lessonSemanticControls = (
     <div className="align-center">
@@ -308,23 +260,38 @@ const LessonList = () => {
             <Button
               key={semantic}
               variant={
-                selectedSemantics && selectedSemantics.includes(semantic)
+                lessonInstance.semantics && lessonInstance.semantics.includes(semantic)
                   ? 'primary'
                   : 'outline-primary'
               }
               onClick={() => toggleSemantic(semantic)}
-              disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
               style={{
-                margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-                  ? 'not-allowed' : 'pointer'
+                margin: '0.5em', cursor: 'pointer'
               }}
             >
-              {selectedSemantics && selectedSemantics.includes(semantic) && (
+              {lessonInstance.semantics && lessonInstance.semantics.includes(semantic) && (
                 <Icon name="check" />
               )}
               <FormattedMessage id={semantic}/>
             </Button>
           ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  const generationComment = (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="input-story-generation-comment" />:
+      </h5>
+      <div className="group-buttons sm lesson-story-topic">
+        <div style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
+          <textarea
+            style={{width: "100%", height: "100px", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", outline: "none", fontSize: "16px"}}
+            value={lessonInstance.learner_ideas}
+            onChange={e => setLessonInstance({...lessonInstance, learner_ideas: e.target.value})}
+          />
         </div>
       </div>
     </div>
@@ -397,7 +364,6 @@ const LessonList = () => {
           max={3.3} // 3.3
           step={0.2}
           value={sliderValue}
-          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
         />
         <div className="space-between exercise-density-slider-label-cont bold">
           <span><FormattedMessage id='Easy' /></span>
@@ -433,7 +399,6 @@ const LessonList = () => {
           max={3.3} // 3.3
           step={0.02}
           value={sliderValue}
-          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
         />
         <div className="space-between exercise-density-slider-label-cont bold">
           <span><FormattedMessage id='Easy' /></span>
@@ -457,14 +422,11 @@ const LessonList = () => {
         <Button
           variant='primary'
           disabled={
-            lessonPending ||
-            !selectedTopicIds ||
-            selectedTopicIds.length === 0 ||
-            !(libraries.private || (currentGroup && currentGroup.is_teaching))
+            !lessonInstance.topic_ids ||
+            lessonInstance.topic_ids.length === 0
           }
           style={{
-            cursor: lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
-              ? 'not-allowed' : 'pointer',
+            cursor: 'pointer',
           }}
           onClick={() => excludeAllTopics()}
         >
@@ -513,7 +475,7 @@ const LessonList = () => {
                   lessonGroups[group].map((lesson) => (
                     rowRenderer({
                       key: `lesson-${lesson.ID}`,
-                      lesson_obj: lesson,
+                      lesson: lesson,
                       style: {}
                     })))
                 }
@@ -551,8 +513,8 @@ const LessonList = () => {
     dispatch(setLessonStep(0))
   }
 
-  const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
-  const lessonReady = selectedSemantics && selectedSemantics.length > 0 && selectedTopicIds && selectedTopicIds.length > 0
+  const link = '/story-generation'
+  const lessonReady = lessonInstance.semantics && lessonInstance.semantics.length > 0 && lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (
     <Container>
@@ -564,44 +526,99 @@ const LessonList = () => {
              margin: '18px', fontSize: 'large'
            }}>
         <div className='col col-12'>
-        {!lessonPending && lessonReady ? <FormattedMessage id="lessons-ready-for-practice" />
-        : <FormattedMessage id="lessons-not-ready-for-practice" />}
+        <FormattedMessage id="story-ready-for-generation" />
         </div>
       </div>
       <div className='row justify-center align-center space-between' style={{ 'display': 'flex' }}>
         <div className='col col-md-5 offset-md-1' style={{padding: 0}}>
-          <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
+          <LessonPracticeThemeHelp selectedThemes={lessonInstance.semantics ? lessonInstance.semantics : []} always_show={true} />
         </div>
         <div className='col col-md-5' style={{padding: 0}}>
-          <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
+          <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
         </div>
       </div>
-      {!teacherView &&
-       (<Link 
-          to={link} className='row justify-center align-center'
-        >
-            <Button
-              size="big"
-              className="lesson-practice"
-              disabled={
-                lessonPending ||
-                  !selectedTopicIds ||
-                  !selectedSemantics ||
-                  selectedTopicIds.length === 0 ||
-                  selectedSemantics.length === 0 ||
-                  noResults
-              }
-              style={{
-                fontSize: '1.3em', fontWeight: 500,
-                margin: '3em 0', padding: '1rem 0',
-                width: '100%', border: '2px solid #000',
-              }}
-            >
-              {lessonPending && <Icon name="spinner" loading />}
-              <FormattedMessage id="start-practice-lesson" />
-            </Button>
-        </Link>)}
+      {lessonInstance.learner_ideas && (
+        <div className='row justify-center align-center space-between' style={{ 'display': 'flex', marginTop: '40px' }}>
+          <div className='col col-md-8'>
+            <div className="lesson-topic-box"  style={{width: '100%'}}>
+              <Segment style={{backgroundColor: 'azure'}}>
+                  <div
+                      className="lesson-title"
+                      style={{
+                          ...getTextStyle(learningLanguage, 'title'),
+                          width: `${'100%'}`,
+                          fontWeight: 'bold',
+                          fontSize: 'large',
+                          marginBottom: '15px',
+                      }}
+                  >
+                      <FormattedMessage id={'additional-comment'} />
+                  </div>
+                  <span style={{ overflow: 'hidden', width: '100%' }}>
+                    {lessonInstance.learner_ideas}
+                  </span>
+              </Segment>
+            </div>
+          </div>
+        </div>
+    )}
     </Container>
+  )
+
+  const uploadStory = async () => {
+    const newStory = {
+      language: capitalize(learningLanguage),
+      text: generatedStory,
+    }
+
+    dispatch(updateLibrarySelect('private'))
+    dispatch(setCustomUpload(true))
+    await dispatch(postStory(newStory))
+    dispatch(setNotification('processing-story', 'info'))
+    history.push('/library')
+  }
+
+  const generatedStoryControl = (
+    <div className="align-center">
+      <div className="group-buttons sm lesson-story-topic">
+        <div style={{width: "100%", maxWidth: "800px", margin: "auto"}}>
+          { generationPending ? (
+            <Placeholder>
+              <Placeholder.Line />
+            </Placeholder>
+          ): (
+            <>
+              <textarea
+                style={{width: "100%", height: "600px", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", outline: "none", fontSize: "16px"}}
+                value={generatedStory}
+                onChange={e => setGeneratedStory(e.target.value)}
+              />
+              <div className='row justify-center align-center'>
+                <Button
+                  size="big"
+                  className="lesson-practice"
+                  disabled={
+                      !lessonInstance.topic_ids ||
+                      !lessonInstance.semantics ||
+                      lessonInstance.topic_ids.length === 0 ||
+                      lessonInstance.semantics.length === 0 ||
+                      noResults
+                  }
+                  style={{
+                    fontSize: '1.3em', fontWeight: 500,
+                    margin: '3em 0', padding: '1rem 0',
+                    width: '100%', border: '2px solid #000',
+                  }}
+                  onClick={() => uploadStory()}
+                >
+                  <FormattedMessage id="upload-generated-story" />
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   )
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
@@ -625,7 +642,7 @@ const LessonList = () => {
   function isLessonItemSelected(lesson_id) {
     const lesson_topics = lesson2info?.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
     for (let lesson_topic of lesson_topics) {
-      if (selectedTopicIds !== undefined && selectedTopicIds?.includes(lesson_topic)) {
+      if (lessonInstance.topic_ids !== undefined && lessonInstance.topic_ids?.includes(lesson_topic)) {
         return true;
       }
     }
@@ -648,25 +665,24 @@ const LessonList = () => {
     return { score, correct, total };
   }
 
-  function rowRenderer({ key, lesson_obj, style }) {
-    if (!lesson_obj) return null
+  function rowRenderer({ key, lesson, style }) {
+    if (!lesson) return null
 
-    const lowestScore = calculateLowestScore(topics.filter(topic => lesson_obj.topics && lesson_obj.topics?.includes(topic.topic_id)))
-    lesson_obj.correct = lowestScore.correct
-    lesson_obj.total = lowestScore.total
+    const lowestScore = calculateLowestScore(topics.filter(topic => lesson.topics && lesson.topics?.includes(topic.topic_id)))
+    lesson.correct = lowestScore.correct
+    lesson.total = lowestScore.total
     return (
       <div
         key={key}
         style={{ ...style, marginBottom: '1.5em' }}
       >
         <LessonListItem
-          lesson={lesson_obj}
-          lesson_instance={lesson}
-          selected={isLessonItemSelected(lesson_obj.ID)}
+          lesson={lesson}
+          lesson_instance={lessonInstance}
+          selected={isLessonItemSelected(lesson.ID)}
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
-          disabled={(!currentGroup || !currentGroup.is_teaching) && !libraries.private}
         />
       </div>
     )
@@ -675,7 +691,7 @@ const LessonList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
 
-      {metaPending || groupPending ? (
+      {metaPending  ? (
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
@@ -686,123 +702,110 @@ const LessonList = () => {
           </div>
         ) : (
           <>
-            <div className="library-selection">
-              <LibraryTabs
-                values={Object.fromEntries(Object.entries(libraries).filter(([key]) => 
-                  (key === 'private' && !teacherView) || (key === 'group' && (teacherView || groups.length > 0))))}
-                additionalClass="wrap-and-grow align-center pt-sm"
-                onClick={handleLibraryChange}
-                reverse
-              />
-              {libraries.group && (
-                <Select
-                  value={savedGroupSelection}
-                  options={groupDropdownOptions}
-                  onChange={handleGroupChange}
-                  disabled={!libraries.group}
-                  style={{ color: '#777', marginTop: '0.5em' }}
-                />
+            <div>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
+                <Stepper
+                  styleConfig={{
+                    completedBgColor: '#c6e2ff',
+                    activeBgColor: '#003366',
+                    inactiveBgColor: '#d2d3d6',
+                  }}
+                >
+                  <Step
+                    label={<FormattedMessage id="select-lesson-themes-and-vocabulary" />}
+                    active={goStep == 0}
+                    completed={goStep > 0}
+                    onClick={() => {
+                      setGoStep(0)
+                    }}
+                  />
+                  <Step
+                    label={<FormattedMessage id="select-lesson-grammar" />}
+                    active={goStep == 1}
+                    completed={goStep > 1}
+                    onClick={() => {
+                      setGoStep(1)
+                    }}
+                  />
+                  <Step
+                    label={<FormattedMessage id="story-generation-additional-comment" />}
+                    active={goStep == 2}
+                    completed={goStep > 2}
+                    onClick={() => {
+                      setGoStep(2)
+                    }}
+                  />
+                  <Step
+                    label={<FormattedMessage id="story-generation-summary" />}
+                    active={goStep == 3}
+                    completed={goStep > 3}
+                    onClick={() => {
+                      setGoStep(3)
+                    }}
+                  />
+                  <Step
+                    label={<FormattedMessage id="story-generated" />}
+                    active={goStep == 4}
+                    completed={goStep > 4}
+                    onClick={() => {
+                      setGoStep(4)
+                    }}
+                  />
+                </Stepper>
+
+                <Button
+                  style={{
+                    float: 'right', marginBottom: '8%',
+                    cursor: 'pointer'
+                  }}
+                  disabled={ goStep >= 4 || lessonInstance.semantics && lessonInstance.semantics.length === 0 && goStep == 0 || 
+                    lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1}
+                  onClick={() => {
+                    setGoStep(goStep + 1)
+                    if (goStep === 3) {
+                      dispatch(generateStory(lessonInstance))
+                    }
+                  }}>
+                  <FormattedMessage id="next-step" />
+                </Button>
+              </div>
+              { goStep === -1 && (
+                <Placeholder>
+                  <Placeholder.Line />
+                </Placeholder>
+              )}
+              {(goStep === 0 || goStep === -1) && (
+                <>
+                    <div style={{marginTop: '40px'}}>
+                        {lessonSemanticControls}
+                    </div>
+                    <hr/>
+                    <div style={{marginTop: '40px'}}>
+                        {lessonVocabularyControls}
+                    </div>
+                </>
+              )}
+              {goStep === 1 && (
+                <div>
+                  {lessonTopicsControls}
+                </div>
+              )}
+              {goStep === 2 && (
+                <div style={{marginTop: '40px'}}>
+                  {generationComment}
+                </div>
+              )}
+              {goStep === 3 && (
+                <div>
+                  {lessonStartControls}
+                </div>
+              )}
+              {goStep === 4 && (
+                <div>
+                  {generatedStoryControl}
+                </div>
               )}
             </div>
-
-            {libraries.group && !teacherView ? (
-              <div>
-                {lessonStartControls}
-              </div>
-            ) : (
-              <div>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', alignSelf: 'center' }}>
-                  <Stepper
-                    styleConfig={{
-                      completedBgColor: '#c6e2ff',
-                      activeBgColor: '#003366',
-                      inactiveBgColor: '#d2d3d6',
-                    }}
-                  >
-                    <Step
-                      label={<FormattedMessage id="select-lesson-themes-and-vocabulary" />}
-                      active={goStep == 0}
-                      completed={goStep > 0}
-                      onClick={() => {
-                        if (goStep == 1){
-                          finnishSelectingTopics()
-                        }
-                        dispatch(setLessonStep(0))
-                      }}
-                    />
-                    <Step
-                      label={<FormattedMessage id="select-lesson-grammar" />}
-                      active={goStep == 1}
-                      completed={goStep > 1}
-                      onClick={() => {
-                        if (goStep == 1){
-                          finnishSelectingTopics()
-                        }
-                        dispatch(setLessonStep(1))
-                      }}
-                    />
-                    <Step
-                      label={<FormattedMessage id="start-lesson-practice" />}
-                      active={goStep == 2}
-                      completed={goStep > 2}
-                      onClick={() => {
-                        if (goStep == 1){
-                          finnishSelectingTopics()
-                        }
-                        dispatch(setLessonStep(2))
-                      }}
-                    />
-                  </Stepper>
-
-                  <Button
-                    style={{
-                      float: 'right', marginBottom: '8%',
-                      cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-                        ? 'not-allowed' : 'pointer'
-                    }}
-                    disabled={lessonPending || goStep >= 2 || selectedSemantics && selectedSemantics.length === 0 && goStep == 0 || 
-                      selectedTopicIds && selectedTopicIds.length === 0 && goStep == 1}
-                    onClick={() => {
-                      if (goStep == 0){
-                        finnishSelectingSemanticsAndVocabDiff()
-                      }
-                      if (goStep == 1){
-                        finnishSelectingTopics()
-                      }
-                      dispatch(setLessonStep(goStep + 1))
-                    }}>
-                    <FormattedMessage id="next-step" />
-                  </Button>
-                </div>
-                {lessonPending && goStep === -1 && (
-                  <Placeholder>
-                    <Placeholder.Line />
-                  </Placeholder>
-                )}
-                {(goStep === 0 || !lessonPending && goStep === -1) && (
-                 <>
-                     <div style={{marginTop: '40px'}}>
-                         {lessonSemanticControls}
-                     </div>
-                     <hr/>
-                     <div style={{marginTop: '40px'}}>
-                         {lessonVocabularyControls}
-                     </div>
-                 </>
-                )}
-                {goStep === 1 && (
-                  <div>
-                    {lessonTopicsControls}
-                  </div>
-                )}
-                {goStep === 2 && (
-                  <div>
-                    {lessonStartControls}
-                  </div>
-                )}
-                {/* {libraryControls} */}
-              </div>
-            )}
             <ScrollArrow />
           </>
         )}
@@ -810,4 +813,4 @@ const LessonList = () => {
   )
 }
 
-export default LessonList
+export default StoryGeneration

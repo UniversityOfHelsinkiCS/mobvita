@@ -54,6 +54,7 @@ import activity from './activityReducer'
 import contextTranslation from './contextTranslationReducer'
 import chatbot from './chatbotReducer'
 import gec from './gecReducer'
+import storyGeneration from './storyGenerationReducer'
 
 
 const rootReducer = combineReducers({
@@ -111,6 +112,7 @@ const rootReducer = combineReducers({
   activity,
   chatbot,
   gec,
+  storyGeneration,
 })
 
 export default (state, action) =>

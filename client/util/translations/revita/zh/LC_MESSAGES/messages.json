@@ -1086,5 +1086,12 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "单击任意生词以获取翻译⇒ 该单词将保存至你的卡片中！",
     "dictionary-header": "词典",
     "correct-performance": "正确",
-    "server-status": "Server status"
+    "server-status": "Server status",
+    "input-story-generation-comment": "Specify more details about the story",
+    "story-ready-for-generation": "Story is ready for generation",
+    "additional-comment": "Additional comment",
+    "upload-generated-story": "Save to library",
+    "story-generation-additional-comment": "Generation comment",
+    "story-generation-summary": "Generation comment",
+    "story-generated": ""
 }

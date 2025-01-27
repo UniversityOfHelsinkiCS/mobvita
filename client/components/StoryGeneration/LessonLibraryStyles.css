@@ -1,0 +1,30 @@
+/* THUMB styles */
+.white-slider.exercise-density-slider-thumb {
+    background-color: white; 
+}
+
+.red0-slider.exercise-density-slider-thumb {
+    background-color: #ffe6e6; 
+}
+.red1-slider.exercise-density-slider-thumb {
+    background-color: #ffb3b3; 
+}
+.red2-slider.exercise-density-slider-thumb {
+    background-color: #ff8080; 
+}
+.red3-slider.exercise-density-slider-thumb {
+    background-color: #ff4d4d; 
+}
+
+.green1-slider.exercise-density-slider-thumb {
+    background-color: #e6ffe6; 
+}
+.green1-slider.exercise-density-slider-thumb {
+    background-color: #b3ffb3; 
+}
+.green2-slider.exercise-density-slider-thumb {
+    background-color: #80ff80; 
+}
+.green3-slider.exercise-density-slider-thumb {
+    background-color: #4dff4d; 
+}

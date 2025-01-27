@@ -1712,5 +1712,12 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset!",
     "dictionary-header": "Sanasto",
     "correct-performance": "oikein",
-    "server-status": "Nykyinen palvelimen tila"
+    "server-status": "Nykyinen palvelimen tila",
+    "input-story-generation-comment": "Specify more details about the story",
+    "story-ready-for-generation": "Story is ready for generation",
+    "additional-comment": "Additional comment",
+    "upload-generated-story": "Save to library",
+    "story-generation-additional-comment": "Generation comment",
+    "story-generation-summary": "Generation comment",
+    "story-generated": ""
 }

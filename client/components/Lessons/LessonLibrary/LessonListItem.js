@@ -29,13 +29,12 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, excludeLesson }) => {
+const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic, includeLesson, excludeLesson }) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { topics } = useSelector(({ lessons }) => lessons)
-  const { lesson: lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
 
   let topic2info = {}
   for (let topic of topics) {
@@ -231,7 +230,7 @@ const LessonTitle = ({ lesson, selected, disabled, toggleTopic, includeLesson, e
   )
 }
 
-const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
+const LessonListItem = ({ lesson, lesson_instance, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.80) backgroundColor = '#E2FFE1'
@@ -244,7 +243,8 @@ const LessonListItem = ({ lesson, selected, toggleTopic, includeLesson, excludeL
     >
       <Card.Content extra className="lesson-card-title-cont">
         <LessonTitle 
-          lesson={lesson} 
+          lesson={lesson}
+          lesson_instance={lesson_instance}
           selected={selected}
           disabled={disabled}
           toggleTopic={toggleTopic}

@@ -48,6 +48,7 @@ import EditStoryView from './EditStoryView'
 import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 import GecView from './GecView'
+import StoryGeneration from './StoryGeneration'
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -183,6 +184,7 @@ export default () => {
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
             <ProtectedRoute exact path="/gec" component={GecView} />
             <ProtectedRoute exact path="/reference" component={ReferenceView} />
+            <ProtectedRoute exact path="/story-generation" component={StoryGeneration} />
           </Switch>
         </main>
       </Route>

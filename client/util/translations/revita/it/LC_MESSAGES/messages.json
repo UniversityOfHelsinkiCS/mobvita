@@ -1711,5 +1711,12 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Clicca sulle parole sconosciute per ottenerne la traduzione!",
     "dictionary-header": "Dizionario",
     "correct-performance": "corretto",
-    "server-status": "Stato del server"
+    "server-status": "Stato del server",
+    "input-story-generation-comment": "Specify more details about the story",
+    "story-ready-for-generation": "Story is ready for generation",
+    "additional-comment": "Additional comment",
+    "upload-generated-story": "Save to library",
+    "story-generation-additional-comment": "Generation comment",
+    "story-generation-summary": "Generation comment",
+    "story-generated": ""
 }

@@ -1499,7 +1499,7 @@
     "continue-streak": "Keep up your streak today",
     "start-streak": "To begin a new streak",
     "do-snippets": "Complete 10 snippets from a story",
-    "do-flashcards": "Play with two batches of flashcards",
+    "do-flashcards": "Practice with two batches of flashcards",
     "include-into-lesson": "Include in lesson",
     "included-in-lesson": "Included",
     "lesson-setup": "Lesson setup",
@@ -1713,5 +1713,12 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Click any <u>unfamiliar</u> word to see its translations!",
     "dictionary-header": "Dictionary",
     "correct-performance": "correct",
-    "server-status": "Server status"
+    "server-status": "Server status",
+    "input-story-generation-comment": "Specify more details about the story",
+    "story-ready-for-generation": "Story is ready for generation",
+    "additional-comment": "Additional comment",
+    "upload-generated-story": "Save to library",
+    "story-generation-additional-comment": "Generation comment",
+    "story-generation-summary": "Generation comment",
+    "story-generated": ""
 }
