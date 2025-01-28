@@ -4,6 +4,7 @@ import callBuilder from '../apiConnection'
 const initialState = { 
     text: '',
     pending: false,
+    error: false,
 }
 
 export const generateStory = (instance) => {
@@ -23,13 +24,15 @@ export default (state = initialState, action) => {
       }
     case 'GENERATE_STORY_FAILURE':
       return {
-        initialState,
+        ...initialState,
+        error: true,
       }
     case 'GENERATE_STORY_SUCCESS':
         return {
             ...state,
             text: action.response.text,
             pending: false,
+            error: false,
         }
     default:
       return state

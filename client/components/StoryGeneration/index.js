@@ -90,7 +90,7 @@ const StoryGeneration = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: generationPending, text } = useSelector(({ storyGeneration }) => storyGeneration)
+  const { pending: generationPending, text, error } = useSelector(({ storyGeneration }) => storyGeneration)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   // const smallWindow = useWindowDimensions().width < 520
@@ -137,7 +137,10 @@ const StoryGeneration = () => {
   }, [])
 
   useEffect(() => {
-    if (!generationPending && text) {
+    if (generationPending) {
+      setGeneratedStory('')
+    }
+    else if (!generationPending && text) {
       setGeneratedStory(text)
     }
   }, [generationPending])
@@ -485,33 +488,10 @@ const StoryGeneration = () => {
         </Accordion>
       )}
       
-
-      {/* <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={filteredLessons.length}
-              rowHeight={
-                index => get_lesson_row_height(index)
-              }
-              rowRenderer={rowRenderer}
-              scrollTop={scrollTop}
-              width={10000}
-            />
-          )}
-        </WindowScroller>
-      </Card.Group> */}
     </div>
   )
 
-  const handleCustomizeLessonCofigCogClick = () => {
-    setCustomizeLessonConfigs(true)
-    dispatch(setLessonStep(0))
-  }
+
   
   const lessonReady = lessonInstance.semantics && lessonInstance.semantics.length > 0 && lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
@@ -587,30 +567,55 @@ const StoryGeneration = () => {
             </Placeholder>
           ): (
             <>
-              <textarea
-                style={{width: "100%", height: "600px", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", outline: "none", fontSize: "16px"}}
-                value={generatedStory}
-                onChange={e => setGeneratedStory(e.target.value)}
-              />
+              {!error && text.length && (<>
+                <textarea
+                  style={{width: "100%", height: "600px", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", outline: "none", fontSize: "16px"}}
+                  value={generatedStory}
+                  onChange={e => setGeneratedStory(e.target.value)}
+                />
+                <div className='row justify-center align-center'>
+                  <Button
+                    size="big"
+                    className="lesson-practice"
+                    disabled={
+                        !lessonInstance.topic_ids ||
+                        !lessonInstance.semantics ||
+                        lessonInstance.topic_ids.length === 0 ||
+                        lessonInstance.semantics.length === 0 ||
+                        noResults
+                    }
+                    style={{
+                      fontSize: '1.3em', fontWeight: 500,
+                      margin: '0.5em 0', padding: '1rem 0',
+                      width: '100%', border: '2px solid #000',
+                    }}
+                    onClick={() => uploadStory()}
+                  >
+                    <FormattedMessage id="upload-generated-story" />
+                  </Button>
+                </div>
+              </>)}
               <div className='row justify-center align-center'>
+                {(error || !text.length) && (<span style={{
+                  color: 'red', 
+                  textAlign: 'center',
+                  fontWeight: 500,
+                  margin: '18px', 
+                  fontSize: 'large'
+                }}>
+                  <FormattedMessage id='story-generation-error'/>
+                </span>)}
                 <Button
                   size="big"
                   className="lesson-practice"
-                  disabled={
-                      !lessonInstance.topic_ids ||
-                      !lessonInstance.semantics ||
-                      lessonInstance.topic_ids.length === 0 ||
-                      lessonInstance.semantics.length === 0 ||
-                      noResults
-                  }
                   style={{
                     fontSize: '1.3em', fontWeight: 500,
-                    margin: '3em 0', padding: '1rem 0',
+                    margin: '0.5em 0', padding: '1rem 0',
                     width: '100%', border: '2px solid #000',
                   }}
-                  onClick={() => uploadStory()}
+                  onClick={() => dispatch(generateStory(lessonInstance))}
                 >
-                  <FormattedMessage id="upload-generated-story" />
+                  <FormattedMessage id="regenerate-story" />
                 </Button>
               </div>
             </>

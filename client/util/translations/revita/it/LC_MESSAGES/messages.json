@@ -1717,9 +1717,11 @@
     "additional-comment": "Additional comment",
     "upload-generated-story": "Save to library",
     "story-generation-additional-comment": "Generation comment",
-    "story-generation-summary": "Generation comment",
+    "story-generation-summary": "Generation summary",
     "story-generated": "Story generated",
     "generate-a-story": "Generate a story",
     "generate-story-instruction": "Instruction for generating a story",
-    "go-generating": "Generate!"
+    "go-generating": "Generate!",
+    "story-generation-error": "Error in text generation. Try again!",
+    "regenerate-story": "Regenerate a text"
 }
