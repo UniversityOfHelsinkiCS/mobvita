@@ -548,6 +548,7 @@ const StoryGeneration = () => {
     const newStory = {
       language: capitalize(learningLanguage),
       text: generatedStory,
+      topics: lessonInstance.topic_ids,
     }
 
     dispatch(updateLibrarySelect('private'))
