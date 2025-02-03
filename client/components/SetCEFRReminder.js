@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Divider, Modal } from 'semantic-ui-react';
+import { Modal } from 'semantic-ui-react';
 import { Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer';
@@ -21,22 +21,25 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   };
 
   const submitSettings = () => {
-    const minified = sliderValue / 11;
-    const rounded = Math.floor(minified / 10);
-    dispatch(updateUserGrade(rounded));
-    dispatch(updateIsTeacher(isTeacher));
-    closeModal();
+    if (isTeacher) {
+      dispatch(updateIsTeacher(true));
+      closeModal();
+    } else {
+      const minified = sliderValue / 11;
+      const rounded = Math.floor(minified / 10);
+      dispatch(updateUserGrade(rounded));
+      dispatch(updateIsTeacher(false));
+      closeModal();
+    }
   };
 
   const startAdaptiveTest = () => {
-    dispatch(updateIsTeacher(isTeacher));
+    dispatch(updateIsTeacher(false));
     closeModal();
     history.push('/adaptive-test');
   };
 
-  if (pending) {
-    return null;
-  }
+  if (pending) return null;
 
   return (
     <Modal basic open={open} size="tiny" centered={false} dimmer="blurring" closeIcon={false} closeOnDimmerClick={false} closeOnDocumentClick={false} closeOnEscape={false}>
@@ -46,7 +49,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
             <>
               <h3><FormattedMessage id="user-role-select" /></h3>
               <ToggleButtonGroup type="radio" name="role" value={isTeacher} onChange={setIsTeacher} className="d-flex justify-content-center" style={{ transition: '0.3s' }}>
-                <ToggleButton variant={isTeacher ? 'secondary' : 'primary'} value={false}><FormattedMessage id="user-role-select-student" /></ToggleButton>
+                <ToggleButton variant={!isTeacher ? 'primary' : 'secondary'} value={false}><FormattedMessage id="user-role-select-student" /></ToggleButton>
                 <ToggleButton variant={isTeacher ? 'primary' : 'secondary'} value={true}><FormattedMessage id="user-role-select-teacher" /></ToggleButton>
               </ToggleButtonGroup>
             </>
@@ -56,14 +59,13 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <h3><FormattedMessage id="select-cefr-reminder" /></h3>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 <Button variant="primary" size="lg" onClick={() => setStep(3)}>
-                  {/* outline-primary */}
                   <FormattedMessage id="set-cefr-manually" />
                 </Button>
                 {hasAdaptiveTests && (
                   <Button variant="primary" size="lg" onClick={startAdaptiveTest}>
                     <FormattedMessage id="adaptive-test-button" />
                   </Button>
-                  )}
+                )}
               </div>
             </>
           )}
@@ -73,21 +75,20 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />
             </>
           )}
-          {/* <Divider /> */}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
-            {step > 1 && (
+            {step > 1 && !isTeacher && (
               <Button variant="secondary" onClick={() => setStep(step - 1)}>
                 <FormattedMessage id="Back" />
               </Button>
             )}
             <div style={{ marginLeft: 'auto' }}>
-              {step < 3 ? (
-                <Button variant="primary" onClick={() => setStep(step + 1)}>
-                  <FormattedMessage id="next" />
-                </Button>
-              ) : (
+              {isTeacher || step === 3 ? (
                 <Button variant="primary" onClick={submitSettings}>
                   <FormattedMessage id="Save" />
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={() => setStep(step + 1)}>
+                  <FormattedMessage id="next" />
                 </Button>
               )}
             </div>

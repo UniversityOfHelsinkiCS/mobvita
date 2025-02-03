@@ -66,6 +66,8 @@ const LearningLanguageSelectView = () => {
   useEffect(() => {
     if (!user.data.user?.interfaceLanguage) {
       setShowInterfaceModal(true)  
+    } else {
+      setShowInterfaceModal(false)
     }
   }, [user])
 
@@ -135,7 +137,7 @@ const LearningLanguageSelectView = () => {
       </Segment>
 
       {/* Interface Language View */}
-      {showInterfaceModal && <InterfaceLanguageView setShowLangModal={setShowInterfaceModal} />}
+      {showInterfaceModal && <InterfaceLanguageView setShowLangModal={setShowInterfaceModal} showInterfaceModal={showInterfaceModal} />}
     </Container>
   )
 }
