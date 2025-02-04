@@ -6,16 +6,20 @@ import { useHistory, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button, Spinner } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
+import InterfaceLanguageView from '../LanguageSelectView/InterfaceLanguageView'
 import { localeCodeToName } from 'Utilities/common'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false)
+  const [showLangModal, setShowLangModal] = useState(false)
+
   const loginError = useSelector(({ user }) => user.error)
   const errorMessage = useSelector(({ user }) => user.errorMessage)
   const { user, pending } = useSelector(({ user }) => user)
   const { locale, updated } = useSelector(({ locale }) => locale)
+
   const location = useLocation()
   const history = useHistory()
   const intl = useIntl()
@@ -28,15 +32,17 @@ const Login = () => {
 
   useEffect(() => {
     const { from } = location.state || { from: { pathname: '/' } }
-
     if (user) {
-      if (!user.user.last_used_language) {
+      if (!user.user.interfaceLanguage) {
+        setShowLangModal(true)
+      } else if (!user.user.last_used_language) {
         history.replace('/learningLanguage')
       } else {
         history.replace(from)
       }
     }
   }, [user])
+
   return (
     <div className="login-form">
       <Form onSubmit={login}>
@@ -77,6 +83,9 @@ const Login = () => {
         <FormattedMessage id="forgot-password" />
       </Button>
       <ForgotPassword isOpen={forgotPasswordOpen} setOpen={setForgotPasswordOpen} />
+
+      {/* Interface Language Selection Modal */}
+      {showLangModal && <InterfaceLanguageView setShowLangModal={setShowLangModal} />}
     </div>
   )
 }

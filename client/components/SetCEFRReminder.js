@@ -1,165 +1,102 @@
-import React, { useState } from 'react'
-import { FormattedMessage } from 'react-intl'
-import { useDispatch, useSelector } from 'react-redux'
-import { Divider, Modal } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
-import { Link, useHistory } from 'react-router-dom'
-import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer'
-import CERFLevelSlider from './CEFRLevelSlider'
+import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal } from 'semantic-ui-react';
+import { Button, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer';
+import CERFLevelSlider from './CEFRLevelSlider';
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const [sliderValue, setSliderValue] = useState(121)
-  const [isTeacher, setIsTeacher] = useState(false)
-  const { hasAdaptiveTests, pending } = useSelector(({ metadata }) => metadata)
-
-  // const user = useSelector(({ user }) => user.data)
-  // const lastUsedLanguage = user.user.last_used_language
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [sliderValue, setSliderValue] = useState(121);
+  const [isTeacher, setIsTeacher] = useState(false);
+  const { hasAdaptiveTests, pending } = useSelector(({ metadata }) => metadata);
+  const [step, setStep] = useState(1);
 
   const closeModal = () => {
-    if (newUser) dispatch(updateToNonNewUser())
-    setOpen(false)
-    /*
-    if (newUser) {
-      startTour()
-    }
-    */
-  }
+    if (newUser) dispatch(updateToNonNewUser());
+    setOpen(false);
+  };
 
   const submitSettings = () => {
-    const minified = sliderValue / 11
-    const rounded = Math.floor(minified / 10)
-    dispatch(updateUserGrade(rounded))
-    dispatch(updateIsTeacher(isTeacher))
-    closeModal()
-  }
+    if (isTeacher) {
+      dispatch(updateIsTeacher(true));
+      closeModal();
+    } else {
+      const minified = sliderValue / 11;
+      const rounded = Math.floor(minified / 10);
+      dispatch(updateUserGrade(rounded));
+      dispatch(updateIsTeacher(false));
+      closeModal();
+    }
+  };
 
-  const startAdapterTest = () => {
-    dispatch(updateIsTeacher(isTeacher))
-    closeModal()
-    history.push('/adaptive-test')
-  }
+  const startAdaptiveTest = () => {
+    dispatch(updateIsTeacher(false));
+    closeModal();
+    history.push('/adaptive-test');
+  };
 
-  if (pending) {
-    return null
-  }
+  if (pending) return null;
 
   return (
-    <Modal
-      basic
-      open={open}
-      size="tiny"
-      centered={false}
-      dimmer="blurring"
-      closeIcon={false} // { style: { top: '2.5rem', right: '2.5rem' }, color: 'black', name: 'close' }}
-      // onClose={closeModal}
-      closeOnDimmerClick={false}
-      closeOneDocumentClick={false}
-      closeOnEscape={false}
-    >
+    <Modal basic open={open} size="tiny" centered={false} dimmer="blurring" closeIcon={false} closeOnDimmerClick={false} closeOnDocumentClick={false} closeOnEscape={false}>
       <Modal.Content>
-        <div className="encouragement" style={{ padding: '1.5rem' }}>
-          <div className="space-evenly" style={{ marginTop: '.5em' }}>
-            <span style={{ marginRight: '.5em', fontSize: '18px' }}>
-              <input
-                type="radio"
-                style={{ marginRight: '.75em' }}
-                onChange={() => {
-                  setIsTeacher(false); 
-                }}
-                checked={!isTeacher}
-              />
-              <FormattedMessage id="user-role-select-student" />
-            </span>
-            <span style={{ marginRight: '.5em', fontSize: '18px' }}>
-              <input
-                type="radio"
-                style={{ marginRight: '.75em' }}
-                onChange={() => {
-                  setIsTeacher(true); 
-                }}
-                checked={isTeacher}
-              />
-              <FormattedMessage id="user-role-select-teacher" />
-            </span>
-          </div>
-          {
-            !isTeacher && 
-            (
-              <>
-                <hr />
-                <h3 style={{ marginTop: '1em', color: isTeacher ? '#D3D3D3' : '#000000' }}>
-                  <FormattedMessage id="select-cefr-reminder" />
-                </h3>
-                <div>
-                  <CERFLevelSlider
-                    isDisabled={isTeacher}
-                    sliderValue={sliderValue}
-                    setSliderValue={setSliderValue}
-                  />
-                </div>
-                <br />
-                <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
-                  <Button
-                    style={{ marginBottom: '1em', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }}
-                    variant="primary"
-                    size="lg"
-                    onClick={submitSettings}
-                  >
-                    <FormattedMessage id="Save-CEFR" />
-                  </Button>
-                </div>
-                
+        <div className="encouragement" style={{ padding: '1.5rem', textAlign: 'center' }}>
+          {step === 1 && (
+            <>
+              <h3><FormattedMessage id="user-role-select" /></h3>
+              <ToggleButtonGroup type="radio" name="role" value={isTeacher} onChange={setIsTeacher} className="d-flex justify-content-center" style={{ transition: '0.3s' }}>
+                <ToggleButton variant={!isTeacher ? 'primary' : 'secondary'} value={false}><FormattedMessage id="user-role-select-student" /></ToggleButton>
+                <ToggleButton variant={isTeacher ? 'primary' : 'secondary'} value={true}><FormattedMessage id="user-role-select-teacher" /></ToggleButton>
+              </ToggleButtonGroup>
+            </>
+          )}
+          {step === 2 && !isTeacher && (
+            <>
+              <h3><FormattedMessage id="select-cefr-reminder" /></h3>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                <Button variant="primary" size="lg" onClick={() => setStep(3)}>
+                  <FormattedMessage id="set-cefr-manually" />
+                </Button>
                 {hasAdaptiveTests && (
-                  <>
-                    <Divider />
-                    <div
-                      style={{
-                        marginTop: '1em',
-                        color: isTeacher ? 'lightgrey' : '#000000',
-                      }}
-                    >
-                      <h3>
-                        <FormattedMessage id="offer-adaptive-test" />
-                      </h3>
-                      &nbsp;
-                      <div style={{display: 'flex', 'justify-content': 'center', width: '100%'}}>
-                          <Button 
-                            style={{ fontSize: '18px', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }} 
-                            variant="primary" 
-                            disabled={isTeacher}
-                            onClick={startAdapterTest}
-                          >
-                            <FormattedMessage id="adaptive-test-button" />
-                          </Button>
-                        </div>
-                    </div>
-                  </>
+                  <Button variant="primary" size="lg" onClick={startAdaptiveTest}>
+                    <FormattedMessage id="adaptive-test-button" />
+                  </Button>
                 )}
-              </>
-            )
-          }
-          {
-            isTeacher && (
-              <div style={{ marginTop: '1em', display: 'flex', 'justify-content': 'center', width: '100%' }}>
-                <Button 
-                  style={{ fontSize: '18px', display: 'flex',  'align-items': 'center', 'justify-content': 'center', width: '100%' }} 
-                  variant="primary" 
-                  onClick={() => {
-                    dispatch(updateIsTeacher(isTeacher));
-                    closeModal()
-                  }}
-                >
+              </div>
+            </>
+          )}
+          {step === 3 && !isTeacher && (
+            <>
+              <h3><FormattedMessage id="select-cefr-reminder" /></h3>
+              <CERFLevelSlider sliderValue={sliderValue} setSliderValue={setSliderValue} />
+            </>
+          )}
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', borderTop: '1px solid #ddd', paddingTop: '1rem' }}>
+            {step > 1 && !isTeacher && (
+              <Button variant="secondary" onClick={() => setStep(step - 1)}>
+                <FormattedMessage id="Back" />
+              </Button>
+            )}
+            <div style={{ marginLeft: 'auto' }}>
+              {isTeacher || step === 3 ? (
+                <Button variant="primary" onClick={submitSettings}>
                   <FormattedMessage id="Save" />
                 </Button>
-              </div>
-            )
-          }
+              ) : (
+                <Button variant="primary" onClick={() => setStep(step + 1)}>
+                  <FormattedMessage id="next" />
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </Modal.Content>
     </Modal>
-  )
-}
+  );
+};
 
-export default SetCEFRReminder
+export default SetCEFRReminder;

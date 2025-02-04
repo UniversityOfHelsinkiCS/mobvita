@@ -13,6 +13,7 @@ import ConstructTestView from 'Components/ConstructTestView'
 import VocabularyView from 'Components/VocabularyView'
 import PracticeView from 'Components/PracticeView'
 import LanguageSelectView from 'Components/LanguageSelectView'
+// import InterfaceLanguageView from 'Components/LanguageSelectView/InterfaceLanguageView'
 import EmailConfirm from 'Components/AccessControl/EmailConfirm'
 import AcceptSharedStory from 'Components/AccessControl/AcceptStory'
 import BlockStorySender from 'Components/AccessControl/BlockStorySender'
@@ -110,6 +111,13 @@ export default () => {
               path="/accept_and_add"
               render={() => <AcceptStoryFollowUser queryParams={location.search} />}
             />
+
+            {/* <ProtectedRoute
+              languageRequired={false}
+              exact
+              path="/interfaceLearningLanguage"
+              component={InterfaceLanguageView}
+            /> */}
 
             <ProtectedRoute
               languageRequired={false}

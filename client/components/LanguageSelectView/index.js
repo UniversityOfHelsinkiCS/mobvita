@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Container, Segment, Loader, Dimmer } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   images,
   capitalize,
@@ -16,43 +17,41 @@ import {
   updateDictionaryLanguage,
   resetLearningLanguageChanged,
 } from 'Utilities/redux/userReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import InterfaceLanguageView from './InterfaceLanguageView'
 
-const LanguageGroup = ({ languages, handleLearningLanguageChange }) => {
-  return (
-    <div className="language-group">
-      {languages.map(lang => (
-        <div
-          key={lang}
-          role="button"
-          tabIndex={0}
-          onClick={() => handleLearningLanguageChange(lang)}
-          onKeyPress={() => handleLearningLanguageChange(lang)}
-          className="language"
-        >
-          <img
-            src={images[`flag${capitalize(lang.split('-').join(''))}`]}
-            className="language-image"
-            alt={lang}
+const LanguageGroup = ({ languages, handleLearningLanguageChange }) => (
+  <div className="language-group">
+    {languages.map(lang => (
+      <div
+        key={lang}
+        role="button"
+        tabIndex={0}
+        onClick={() => handleLearningLanguageChange(lang)}
+        onKeyPress={() => handleLearningLanguageChange(lang)}
+        className="language"
+      >
+        <img
+          src={images[`flag${capitalize(lang.split('-').join(''))}`]}
+          className="language-image"
+          alt={lang}
+        />
+        <span className="language-name">
+          <FormattedMessage
+            id={lang
+              .split('-')
+              .map(l => capitalize(l))
+              .join('-')}
           />
-          <span className="language-name">
-            <FormattedMessage
-              id={lang
-                .split('-')
-                .map(l => capitalize(l))
-                .join('-')}
-            />
-            {betaLanguages.includes(lang) && (
-              <sup>
-                <b>&beta;</b>
-              </sup>
-            )}
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
+          {betaLanguages.includes(lang) && (
+            <sup>
+              <b>&beta;</b>
+            </sup>
+          )}
+        </span>
+      </div>
+    ))}
+  </div>
+)
 
 const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
@@ -62,9 +61,19 @@ const LearningLanguageSelectView = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { pending, learningLanguageChanged } = user
 
+  const [showInterfaceModal, setShowInterfaceModal] = useState(false)
+
+  useEffect(() => {
+    if (!user.data.user?.interfaceLanguage) {
+      setShowInterfaceModal(true)  
+    } else {
+      setShowInterfaceModal(false)
+    }
+  }, [user])
+
   useEffect(() => {
     if (learningLanguageChanged) {
-      history.push('/home')
+      history.push('/home') 
       dispatch(resetLearningLanguageChanged())
     }
   }, [learningLanguageChanged])
@@ -126,7 +135,11 @@ const LearningLanguageSelectView = () => {
           </div>
         )}
       </Segment>
+
+      {/* Interface Language View */}
+      {showInterfaceModal && <InterfaceLanguageView setShowLangModal={setShowInterfaceModal} showInterfaceModal={showInterfaceModal} />}
     </Container>
   )
 }
+
 export default LearningLanguageSelectView
