@@ -96,7 +96,6 @@ const StoryGeneration = () => {
 
   const [lessonInstance, setLessonInstance] = useState({
     topic_ids: [],
-    semantics: ['Sport', 'Culture', 'Science', 'Politics'],
     vocab_diff: vocabulary_score,
     learner_ideas: '',
     instancePending: false
@@ -140,20 +139,6 @@ const StoryGeneration = () => {
   // }, [metaPending])
 
 
-  const toggleSemantic = semantic => {
-    let newSemantics
-    if (lessonInstance.semantics.includes(semantic)) {
-      newSemantics = lessonInstance.semantics.filter(s => s !== semantic)
-    } else {
-      newSemantics = [...lessonInstance.semantics, semantic]
-    }
-
-    setLessonInstance({
-      ...lessonInstance,
-      semantics: newSemantics,
-    })
-  }
-
   const handleSlider = value => {
     setSliderValue(value)
     setLessonInstance({
@@ -164,37 +149,7 @@ const StoryGeneration = () => {
 
   
 
-  const lessonSemanticControls = (
-    <div className="align-center">
-      <h5>
-        <FormattedMessage id="select-lesson-semantic-topic" />:
-      </h5>
-      <div className="group-buttons sm lesson-story-topic">
-          <div style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
-        {lesson_semantics &&
-          lesson_semantics.map(semantic => (
-            <Button
-              key={semantic}
-              variant={
-                lessonInstance.semantics && lessonInstance.semantics.includes(semantic)
-                  ? 'primary'
-                  : 'outline-primary'
-              }
-              onClick={() => toggleSemantic(semantic)}
-              style={{
-                margin: '0.5em', cursor: 'pointer'
-              }}
-            >
-              {lessonInstance.semantics && lessonInstance.semantics.includes(semantic) && (
-                <Icon name="check" />
-              )}
-              <FormattedMessage id={semantic}/>
-            </Button>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+  
 
   const generationComment = (
     <div className="align-center">
@@ -333,7 +288,7 @@ const StoryGeneration = () => {
     setAccordionState(newIndex)
   }
   
-  const lessonReady = lessonInstance.semantics && lessonInstance.semantics.length > 0 && lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
+  const lessonReady = lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (
     <Container>
@@ -350,9 +305,6 @@ const StoryGeneration = () => {
       </div>
       <div className='row justify-center align-center space-between' style={{ 'display': 'flex' }}>
         <div className='col col-md-5 offset-md-1' style={{padding: 0}}>
-          <LessonPracticeThemeHelp selectedThemes={lessonInstance.semantics ? lessonInstance.semantics : []} always_show={true} />
-        </div>
-        <div className='col col-md-5' style={{padding: 0}}>
           <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
         </div>
       </div>
@@ -420,9 +372,7 @@ const StoryGeneration = () => {
                     className="lesson-practice"
                     disabled={
                         !lessonInstance.topic_ids ||
-                        !lessonInstance.semantics ||
                         lessonInstance.topic_ids.length === 0 ||
-                        lessonInstance.semantics.length === 0 ||
                         noResults
                     }
                     style={{
@@ -531,7 +481,7 @@ const StoryGeneration = () => {
                     }}
                   />
                   <Step
-                    label={<FormattedMessage id="story-generation-additional-comment" />}
+                    label={<FormattedMessage id="story-generation-summary" />}
                     active={goStep == 2}
                     completed={goStep > 2}
                     onClick={() => {
@@ -539,19 +489,11 @@ const StoryGeneration = () => {
                     }}
                   />
                   <Step
-                    label={<FormattedMessage id="story-generation-summary" />}
+                    label={<FormattedMessage id="story-generated" />}
                     active={goStep == 3}
                     completed={goStep > 3}
                     onClick={() => {
                       setGoStep(3)
-                    }}
-                  />
-                  <Step
-                    label={<FormattedMessage id="story-generated" />}
-                    active={goStep == 4}
-                    completed={goStep > 4}
-                    onClick={() => {
-                      setGoStep(4)
                     }}
                   />
                 </Stepper>
@@ -561,11 +503,11 @@ const StoryGeneration = () => {
                     float: 'right', marginBottom: '8%',
                     cursor: 'pointer'
                   }}
-                  disabled={ goStep >= 4 || lessonInstance.semantics && lessonInstance.semantics.length === 0 && goStep == 0 || 
+                  disabled={ goStep >= 3 || 
                     lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1}
                   onClick={() => {
                     setGoStep(goStep + 1)
-                    if (goStep === 3) {
+                    if (goStep === 2 && generatedStory === '') {
                       dispatch(generateStory(lessonInstance))
                     }
                   }}>
@@ -579,12 +521,13 @@ const StoryGeneration = () => {
               )}
               {(goStep === 0 || goStep === -1) && (
                 <>
+                    
                     <div style={{marginTop: '40px'}}>
-                        {lessonSemanticControls}
+                        {lessonVocabularyControls}
                     </div>
                     <hr/>
                     <div style={{marginTop: '40px'}}>
-                        {lessonVocabularyControls}
+                      {generationComment}
                     </div>
                 </>
               )}
@@ -599,16 +542,11 @@ const StoryGeneration = () => {
                 </div>
               )}
               {goStep === 2 && (
-                <div style={{marginTop: '40px'}}>
-                  {generationComment}
-                </div>
-              )}
-              {goStep === 3 && (
                 <div>
                   {lessonStartControls}
                 </div>
               )}
-              {goStep === 4 && (
+              {goStep === 3 && (
                 <div>
                   {generatedStoryControl}
                 </div>
