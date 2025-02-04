@@ -17,7 +17,7 @@ import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeThemeHelp'
-import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
+import Topics from 'Components/Topics'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
@@ -25,12 +25,6 @@ import { Link, useHistory } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper';
 import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
-import {
-  getLessonInstance,
-  setLessonInstance,
-  clearLessonInstanceState,
-  setLessonStep,
-} from 'Utilities/redux/lessonInstanceReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -104,25 +98,15 @@ const StoryGeneration = () => {
     topic_ids: [],
     semantics: ['Sport', 'Culture', 'Science', 'Politics'],
     vocab_diff: vocabulary_score,
-    learner_ideas: ''
+    learner_ideas: '',
+    instancePending: false
   })
   const [generatedStory, setGeneratedStory] = useState('')
-
-
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
-
-  const [searchQuery, setSearchQuery] = useState("");
   const [filteredLessons, setFilteredLessons] = useState(lessons);
   const [accordionState, setAccordionState] = useState(0)
 
-  // const [lesson2info, setLesson2info] = useState({})
-
-  let lesson2info = {}
-  if (lessons && lessons?.length){
-    lessons.forEach((lesson) => {
-      lesson2info[lesson.ID] = lesson;
-    });
-  }
+  
   
   const dispatch = useDispatch()
 
@@ -146,86 +130,15 @@ const StoryGeneration = () => {
   }, [generationPending])
   
   
-  useEffect(() => {
-    if (!metaPending && !has_seen_lesson_tour ) {
-      dispatch(setLessonStep(0))
-      dispatch(lessonsTourViewed())
-      dispatch(startLessonsTour())
-    }
+  // useEffect(() => {
+  //   if (!metaPending && !has_seen_lesson_tour ) {
+  //     dispatch(setLessonStep(0))
+  //     dispatch(lessonsTourViewed())
+  //     dispatch(startLessonsTour())
+  //   }
     
-  }, [metaPending])
+  // }, [metaPending])
 
-  
-
-  useEffect(() => {
-    // Filter lessons based on search query
-    if (searchQuery){
-      const filtered = lessons.filter(lesson => {
-        const lowercaseSearchQuery = searchQuery.toLowerCase();
-        const nameMatch = lesson.name.toLowerCase().includes(lowercaseSearchQuery);
-        const topicsMatch = lesson.topics.some(topic =>
-          topic.toLowerCase().includes(lowercaseSearchQuery)
-        );
-        return nameMatch || topicsMatch;
-      });
-      
-      setFilteredLessons(filtered);
-    } else {
-      setFilteredLessons(lessons);
-    }
-  }, [lessons, searchQuery]);
-
-  const handleSearchChange = event => {
-    setSearchQuery(event.target.value);
-  };
-
-  
-
-  const excludeAllTopics = () => {
-    setLessonInstance({
-      ...lessonInstance,
-      topic_ids: [],
-    })
-  }
-
-  const toggleTopic = topicId => {
-    let newTopics
-    if (lessonInstance.topic_ids.includes(topicId)) {
-      newTopics = lessonInstance.topic_ids.filter(id => id !== topicId)
-    } else {
-      newTopics = [...lessonInstance.topic_ids, topicId]
-    }
-
-    setLessonInstance({
-      ...lessonInstance,
-      topic_ids: newTopics,
-    })
-  }
-
-  const includeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = lessonInstance.topic_ids
-    for (let lesson_topic of lessonTopics){
-      if (!lessonInstance.topic_ids.includes(lesson_topic)){
-        newTopics = [...newTopics, lesson_topic]
-      }
-    }
-
-    setLessonInstance({
-      ...lessonInstance,
-      topic_ids: newTopics,
-    })
-  }
-
-  const excludeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = lessonInstance.topic_ids.filter(id => !lessonTopics.includes(id))
-
-    setLessonInstance({
-      ...lessonInstance,
-      topic_ids: newTopics,
-    })
-  }  
 
   const toggleSemantic = semantic => {
     let newSemantics
@@ -419,79 +332,6 @@ const StoryGeneration = () => {
     const newIndex = accordionState === index ? -1 : index
     setAccordionState(newIndex)
   }
-  const lessonTopicsControls = (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
-        <Button
-          variant='primary'
-          disabled={
-            !lessonInstance.topic_ids ||
-            lessonInstance.topic_ids.length === 0
-          }
-          style={{
-            cursor: 'pointer',
-          }}
-          onClick={() => excludeAllTopics()}
-        >
-          <Icon name="trash alternate" />
-          <FormattedMessage id="exclude-all-topics" />
-        </Button>
-
-        <input
-          type="text"
-          placeholder={intl.formatMessage({id: "Search lessons / topics ..." }) }
-          value={searchQuery}
-          onChange={handleSearchChange}
-          style={{
-            marginLeft: '0.5em',
-            flex: '1', 
-            padding: '5.5px', 
-            borderRadius: '16px',
-            border: '1px solid #ccc', 
-            outline: 'none', 
-            fontSize: '16px',
-          }}
-        />
-      </div>
-
-      {lessonGroups && (
-        <Accordion fluid styled style={{background: '#fffaf0'}}>
-        {
-          Object.keys(lessonGroups).sort().map((group, index) => (
-            <>
-              <AccordionTitle
-                key={`lesson-group-title-${group}`}
-                active={accordionState === index}
-                index={index}
-                onClick={handleClick}
-              >
-                <h4>
-                  <Icon name='dropdown' />
-                  <FormattedMessage id='lesson-group' values={{group}}/>
-                </h4>
-              </AccordionTitle>
-              <AccordionContent 
-                key={`lesson-group-content-${group}`}
-                active={accordionState === index}
-              >
-                {
-                  lessonGroups[group].map((lesson) => (
-                    rowRenderer({
-                      key: `lesson-${lesson.ID}`,
-                      lesson: lesson,
-                      style: {}
-                    })))
-                }
-              </AccordionContent>
-            </>))
-        }     
-        </Accordion>
-      )}
-      
-    </div>
-  )
-
-
   
   const lessonReady = lessonInstance.semantics && lessonInstance.semantics.length > 0 && lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
@@ -644,53 +484,11 @@ const StoryGeneration = () => {
     return dir * multiplier
   })
 
-  function isLessonItemSelected(lesson_id) {
-    const lesson_topics = lesson2info?.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
-    for (let lesson_topic of lesson_topics) {
-      if (lessonInstance.topic_ids !== undefined && lessonInstance.topic_ids?.includes(lesson_topic)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function calculateLowestScore(topics) {
-    if (topics.length === 0) {
-      return { score: 0, correct: 0, total: 0 }
-    }
-  
-    const { score, correct, total } = topics.reduce((lowest, topic) => {
-      const currentScore = topic.correct / topic.total;
-      if (currentScore < lowest.score) {
-        return { score: currentScore, correct: topic.correct, total: topic.total };
-      }
-      return lowest;
-    }, { score: topics[0].correct / topics[0].total, correct: topics[0].correct, total: topics[0].total });
-  
-    return { score, correct, total };
-  }
-
-  function rowRenderer({ key, lesson, style }) {
-    if (!lesson) return null
-
-    const lowestScore = calculateLowestScore(topics.filter(topic => lesson.topics && lesson.topics?.includes(topic.topic_id)))
-    lesson.correct = lowestScore.correct
-    lesson.total = lowestScore.total
-    return (
-      <div
-        key={key}
-        style={{ ...style, marginBottom: '1.5em' }}
-      >
-        <LessonListItem
-          lesson={lesson}
-          lesson_instance={lessonInstance}
-          selected={isLessonItemSelected(lesson.ID)}
-          toggleTopic={toggleTopic}
-          includeLesson={includeLesson}
-          excludeLesson={excludeLesson}
-        />
-      </div>
-    )
+  const setSelectedTopics = topic_ids => {
+    setLessonInstance({
+      ...lessonInstance,
+      topic_ids: topic_ids
+    })
   }
 
   return (
@@ -792,7 +590,12 @@ const StoryGeneration = () => {
               )}
               {goStep === 1 && (
                 <div>
-                  {lessonTopicsControls}
+                  <Topics
+                    topicInstance={lessonInstance}
+                    editable={true}
+                    setSelectedTopics={setSelectedTopics}
+                    showPerf={true}
+                  />
                 </div>
               )}
               {goStep === 2 && (
