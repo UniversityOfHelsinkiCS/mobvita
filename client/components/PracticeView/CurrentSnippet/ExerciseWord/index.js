@@ -10,7 +10,13 @@ import WrongAnswer from './WrongAnswer'
 
 const ExerciseWord = ({ word, snippet, handleAnswerChange, handleMultiselectChange, hideDifficulty }) => {
   const { attempt, correctAnswerIDs, snippetFinished } = useSelector(({ practice }) => practice)
-  if ((word.tested && !word.isWrong) || correctAnswerIDs.includes(word.ID.toString())) {
+  const { answersPending } = useSelector(({ snippets }) => snippets)
+  const currentAnswer = useSelector(
+      ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
+    )
+  if ((word.tested && !word.isWrong) || 
+    correctAnswerIDs.includes(word.ID.toString()) || 
+    answersPending && currentAnswer && currentAnswer.correct === currentAnswer.users_answer) {
     return <RightAnswer word={word} snippet={snippet} hideDifficulty={hideDifficulty} />
   }
 
