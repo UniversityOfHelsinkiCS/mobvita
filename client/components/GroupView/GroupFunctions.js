@@ -135,7 +135,7 @@ const GroupFunctions = ({
             <Button
               variant="primary"
               as={Link}
-              to={`/groups/teacher/${groupId}/concepts/settings`}
+              to={`/groups/teacher/${groupId}/settings`}
               style={{ color: 'white' }}
             >
               <Icon name="settings" /> <FormattedMessage id="test-settings" />

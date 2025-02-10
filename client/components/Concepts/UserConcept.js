@@ -21,6 +21,7 @@ const UserConcept = ({ concept, children, ...props }) => {
   return (
     <Concept
       concept={concept}
+      target='user'
       conceptTurnedOn={conceptTurnedOn}
       handleCheckboxChange={handleCheckboxChange}
       {...props}

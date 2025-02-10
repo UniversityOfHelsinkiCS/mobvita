@@ -93,7 +93,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
                       variant="primary"
                       size="lg"
                       as={Link}
-                      to={`/groups/teacher/${groupId}/concepts`}
+                      to={`/groups/teacher/${groupId}/topics`}
                       style={{ color: 'yellow', fontWeight: 600, margin: '0 auto'}}
                   >
                       <FormattedMessage id="customize-learning-settings" />

@@ -25,6 +25,7 @@ const StoryConcept = ({ concept, children, ...props }) => {
   return (
     <Concept
       concept={concept}
+      target='stories'
       conceptTurnedOn={conceptTurnedOn}
       handleCheckboxChange={handleCheckboxChange}
       {...props}

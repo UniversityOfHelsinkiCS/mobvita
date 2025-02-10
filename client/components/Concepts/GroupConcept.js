@@ -41,6 +41,7 @@ const GroupConcept = ({ concept, children, ...props }) => {
     <>
       <Concept
         concept={concept}
+        target='groups'
         conceptTurnedOn={conceptTurnedOn}
         testConceptQuestionAmount={testConceptQuestionAmount}
         handleTestQuestionAmountChange={handleTestQuestionAmountChange}

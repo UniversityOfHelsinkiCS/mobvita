@@ -9,6 +9,7 @@ import { skillLevels } from 'Utilities/common'
 
 const Concept = ({
   concept,
+  target,
   showTestConcepts,
   showLevels,
   conceptTurnedOn,
@@ -30,7 +31,6 @@ const Concept = ({
   } = concept
 
   const [numberError, setNumberError] = useState(false)
-  const { target } = useParams()
   const intl = useIntl()
   const caretIconName = open ? 'caret down' : 'caret right'
   const isLeaf = concept.children.length === 0
