@@ -29,7 +29,7 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic, includeLesson, excludeLesson }) => {
+const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic, includeLesson, excludeLesson, showPerf }) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const intl = useIntl()
@@ -62,19 +62,13 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
           ...getTextStyle(learningLanguage),
         }}
       >
-        <div className="lesson-performance" 
-          style={{
-            minWidth: '100px',
-            maxWidth: '100px',
-          }}
-        >
-          <span
+        <span
             display="inline"
             float="left"
             style={{
               width: '4%',
               textAlign: 'right',
-              marginRight: '5px',
+              marginRight: '10px',
               maxWidth: '25px',
               minWidth: '25px',
               ...color
@@ -85,54 +79,57 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
               onChange={() => {toggleTopic(lesson_topics[k])}}
             />
           </span>
-          <span
-            float="left"
-            style={{
-              display: 'inline-grid',
-              justifyContent: 'end',
-              width: '6%',
-              textAlign: 'right',
-              marginRight: '5px',
-              maxWidth: '25px',
-              minWidth: '25px',
-              verticalAlign: 'top',
-              ...color
-            }}
-          >
-            {String(
-              Math.round(
-                get_lesson_performance(correct, total) * 100
-              )
-            ).padEnd(3, ' ')}
-          </span>
-          <span
-            style={{
-              width: '3%',
-              textAlign: 'center',
-              maxWidth: '20px',
-              minWidth: '18px',
-              verticalAlign: 'top',
-              ...color
-            }}
-          >
-            %
-          </span>
-          <span
-            title={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
-            style={{
-              cursor: 'pointer',
-              display: 'inline-block',
-              marginLeft: '5px',
-              marginRight: '7px',
-              verticalAlign: 'top',
-            }}
-          >
-            <Icon name="info circle" style={{ marginRight: '0px' }}/>
-          </span>
-        </div>
+        {showPerf && (
+          <Popup
+            position="top center"
+            // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
+            content={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
+            trigger={
+              <div className="lesson-performance" 
+              style={{
+                minWidth: '50px',
+                maxWidth: '50px',
+              }}
+            >
+              <span
+                float="left"
+                style={{
+                  display: 'inline-grid',
+                  justifyContent: 'end',
+                  width: '6%',
+                  textAlign: 'right',
+                  marginRight: '5px',
+                  maxWidth: '25px',
+                  minWidth: '25px',
+                  verticalAlign: 'top',
+                  ...color
+                }}
+              >
+                {String(
+                  Math.round(
+                    get_lesson_performance(correct, total) * 100
+                  )
+                ).padEnd(3, ' ')}
+              </span>
+              <span
+                style={{
+                  width: '3%',
+                  textAlign: 'center',
+                  maxWidth: '20px',
+                  minWidth: '18px',
+                  verticalAlign: 'top',
+                  ...color
+                }}
+              >
+                %
+              </span>
+            </div>
+            }
+          />
+        )}
         <div 
           className="lesson-content"
-          style={{ width: '80%' }} 
+          style={{ width: '80%', marginLeft: '15px' }} 
           dangerouslySetInnerHTML={{ __html: name }}
         />
       </h6>
@@ -230,7 +227,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
   )
 }
 
-const LessonListItem = ({ lesson, lesson_instance, selected, toggleTopic, includeLesson, excludeLesson, disabled }) => {
+const TopicListItem = ({ lesson, lesson_instance, selected, toggleTopic, includeLesson, excludeLesson, disabled, showPerf }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   let backgroundColor = '#ffffff'
   if (correct_perc >= 0.80) backgroundColor = '#E2FFE1'
@@ -250,10 +247,11 @@ const LessonListItem = ({ lesson, lesson_instance, selected, toggleTopic, includ
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
+          showPerf={showPerf}
         />
       </Card.Content>
     </Card>
   )
 }
 
-export default LessonListItem
+export default TopicListItem

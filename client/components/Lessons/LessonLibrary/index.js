@@ -4,25 +4,21 @@ import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { 
   Placeholder, 
-  Popup, 
   Icon, 
   Select, 
-  Container, 
-  Accordion, 
-  AccordionTitle,
-  AccordionContent } from 'semantic-ui-react'
+  Container, } from 'semantic-ui-react'
 
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
-import LessonListItem from 'Components/Lessons/LessonLibrary/LessonListItem'
+import Topics from 'Components/Topics'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper';
-import { useLearningLanguage, getTextStyle } from 'Utilities/common'
+
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
@@ -30,17 +26,16 @@ import {
   clearLessonInstanceState,
   setLessonStep,
 } from 'Utilities/redux/lessonInstanceReducer'
-import { getMetadata } from 'Utilities/redux/metadataReducer'
+
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
-// import AddStoryModal from 'Components/AddStoryModal'
-// import LessonLibrarySearch from './LessonLibrarySearch'
+
 
 import './LessonLibraryStyles.css';
-import { set } from 'lodash'
+
 
 const StyledMark = (localizedMarkString) => 
   (props) => {
@@ -70,7 +65,7 @@ const LessonList = () => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  const learningLanguage = useLearningLanguage()
+  
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
   const {
@@ -106,19 +101,6 @@ const LessonList = () => {
     group: false,
   })
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredLessons, setFilteredLessons] = useState(lessons);
-  const [customizeLessonConfigs, setCustomizeLessonConfigs] = useState(false);
-  const [accordionState, setAccordionState] = useState(0)
-
-  // const [lesson2info, setLesson2info] = useState({})
-
-  let lesson2info = {}
-  if (lessons && lessons?.length){
-    lessons.forEach((lesson) => {
-      lesson2info[lesson.ID] = lesson;
-    });
-  }
   
   const dispatch = useDispatch()
 
@@ -141,11 +123,7 @@ const LessonList = () => {
     if (!userPending && teacherView) setLibrary('group')
   }, [teacherView, userPending])
 
-  useEffect(() => {
-    if (!metaPending) {
-      dispatch(getMetadata(learningLanguage))
-    }
-  }, [learningLanguage])
+  
 
   useEffect(() => {
     dispatch(getLessonTopics())
@@ -198,66 +176,14 @@ const LessonList = () => {
     if (teacherView) handleLibraryChange('group')
   }, [teacherView])
 
-  useEffect(() => {
-    // Filter lessons based on search query
-    if (searchQuery){
-      const filtered = lessons.filter(lesson => {
-        const lowercaseSearchQuery = searchQuery.toLowerCase();
-        const nameMatch = lesson.name.toLowerCase().includes(lowercaseSearchQuery);
-        const topicsMatch = lesson.topics.some(topic =>
-          topic.toLowerCase().includes(lowercaseSearchQuery)
-        );
-        return nameMatch || topicsMatch;
-      });
-      
-      setFilteredLessons(filtered);
-    } else {
-      setFilteredLessons(lessons);
-    }
-  }, [lessons, searchQuery]);
-
-  const handleSearchChange = event => {
-    setSearchQuery(event.target.value);
-  };
-
   const finnishSelectingTopics = () => {
     const payload = { topic_ids: selectedTopicIds }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
   }
 
-  const excludeAllTopics = () => {
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: [] })
-  }
-
-  const toggleTopic = topicId => {
-    let newTopics
-    if (selectedTopicIds.includes(topicId)) {
-      newTopics = selectedTopicIds.filter(id => id !== topicId)
-    } else {
-      newTopics = [...selectedTopicIds, topicId]
-    }
-
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
-  }
-
-  const includeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = selectedTopicIds
-    for (let lesson_topic of lessonTopics){
-      if (!selectedTopicIds.includes(lesson_topic)){
-        newTopics = [...newTopics, lesson_topic]
-      }
-    }
-
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
-  }
-
-  const excludeLesson = LessonId => {
-    let lessonTopics = lesson_topics.filter(lesson => lesson.lessons.includes(LessonId)).map(topic => topic.topic_id);
-    let newTopics = selectedTopicIds.filter(id => !lessonTopics.includes(id))
-
-    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: newTopics })
+  const setSelectedTopics = topic_ids => {
+    dispatch({ type: 'SET_LESSON_SELECTED_TOPICS', topic_ids: topic_ids })
   }
 
   const finnishSelectingSemanticsAndVocabDiff = () => {
@@ -442,115 +368,6 @@ const LessonList = () => {
       </div>
     </div>
   )
-  const lessonGroups = filteredLessons && filteredLessons.reduce((x, y) => {
-    (x[y.group] = x[y.group] || []).push(y);
-    return x;
-  }, {}) || {} // Object.groupBy(filteredLessons, ({group})=> group)
-  const handleClick = (e, props) => {
-    const { index } = props
-    const newIndex = accordionState === index ? -1 : index
-    setAccordionState(newIndex)
-  }
-  const lessonTopicsControls = (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
-        <Button
-          variant='primary'
-          disabled={
-            lessonPending ||
-            !selectedTopicIds ||
-            selectedTopicIds.length === 0 ||
-            !(libraries.private || (currentGroup && currentGroup.is_teaching))
-          }
-          style={{
-            cursor: lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
-              ? 'not-allowed' : 'pointer',
-          }}
-          onClick={() => excludeAllTopics()}
-        >
-          <Icon name="trash alternate" />
-          <FormattedMessage id="exclude-all-topics" />
-        </Button>
-
-        <input
-          type="text"
-          placeholder={intl.formatMessage({id: "Search lessons / topics ..." }) }
-          value={searchQuery}
-          onChange={handleSearchChange}
-          style={{
-            marginLeft: '0.5em',
-            flex: '1', 
-            padding: '5.5px', 
-            borderRadius: '16px',
-            border: '1px solid #ccc', 
-            outline: 'none', 
-            fontSize: '16px',
-          }}
-        />
-      </div>
-
-      {lessonGroups && (
-        <Accordion fluid styled style={{background: '#fffaf0'}}>
-        {
-          Object.keys(lessonGroups).sort().map((group, index) => (
-            <>
-              <AccordionTitle
-                key={`lesson-group-title-${group}`}
-                active={accordionState === index}
-                index={index}
-                onClick={handleClick}
-              >
-                <h4>
-                  <Icon name='dropdown' />
-                  <FormattedMessage id='lesson-group' values={{group}}/>
-                </h4>
-              </AccordionTitle>
-              <AccordionContent 
-                key={`lesson-group-content-${group}`}
-                active={accordionState === index}
-              >
-                {
-                  lessonGroups[group].map((lesson) => (
-                    rowRenderer({
-                      key: `lesson-${lesson.ID}`,
-                      lesson_obj: lesson,
-                      style: {}
-                    })))
-                }
-              </AccordionContent>
-            </>))
-        }     
-        </Accordion>
-      )}
-      
-
-      {/* <Card.Group itemsPerRow={1} doubling data-cy="lesson-items" style={{ marginTop: '.5em' }}>
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={filteredLessons.length}
-              rowHeight={
-                index => get_lesson_row_height(index)
-              }
-              rowRenderer={rowRenderer}
-              scrollTop={scrollTop}
-              width={10000}
-            />
-          )}
-        </WindowScroller>
-      </Card.Group> */}
-    </div>
-  )
-
-  const handleCustomizeLessonCofigCogClick = () => {
-    setCustomizeLessonConfigs(true)
-    dispatch(setLessonStep(0))
-  }
-
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   const lessonReady = selectedSemantics && selectedSemantics.length > 0 && selectedTopicIds && selectedTopicIds.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
@@ -621,56 +438,6 @@ const LessonList = () => {
     const multiplier = sortDirection === 'asc' ? 1 : -1
     return dir * multiplier
   })
-
-  function isLessonItemSelected(lesson_id) {
-    const lesson_topics = lesson2info?.hasOwnProperty(lesson_id) ? lesson2info[lesson_id]['topics'] : []
-    for (let lesson_topic of lesson_topics) {
-      if (selectedTopicIds !== undefined && selectedTopicIds?.includes(lesson_topic)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function calculateLowestScore(topics) {
-    if (topics.length === 0) {
-      return { score: 0, correct: 0, total: 0 }
-    }
-  
-    const { score, correct, total } = topics.reduce((lowest, topic) => {
-      const currentScore = topic.correct / topic.total;
-      if (currentScore < lowest.score) {
-        return { score: currentScore, correct: topic.correct, total: topic.total };
-      }
-      return lowest;
-    }, { score: topics[0].correct / topics[0].total, correct: topics[0].correct, total: topics[0].total });
-  
-    return { score, correct, total };
-  }
-
-  function rowRenderer({ key, lesson_obj, style }) {
-    if (!lesson_obj) return null
-
-    const lowestScore = calculateLowestScore(topics.filter(topic => lesson_obj.topics && lesson_obj.topics?.includes(topic.topic_id)))
-    lesson_obj.correct = lowestScore.correct
-    lesson_obj.total = lowestScore.total
-    return (
-      <div
-        key={key}
-        style={{ ...style, marginBottom: '1.5em' }}
-      >
-        <LessonListItem
-          lesson={lesson_obj}
-          lesson_instance={lesson}
-          selected={isLessonItemSelected(lesson_obj.ID)}
-          toggleTopic={toggleTopic}
-          includeLesson={includeLesson}
-          excludeLesson={excludeLesson}
-          disabled={(!currentGroup || !currentGroup.is_teaching) && !libraries.private}
-        />
-      </div>
-    )
-  }
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
@@ -792,7 +559,12 @@ const LessonList = () => {
                 )}
                 {goStep === 1 && (
                   <div>
-                    {lessonTopicsControls}
+                    <Topics
+                      topicInstance={{...lesson, instancePending: lessonPending}}
+                      editable={(libraries.private || (currentGroup && currentGroup.is_teaching))}
+                      setSelectedTopics={setSelectedTopics}
+                      showPerf={libraries.private}
+                    />
                   </div>
                 )}
                 {goStep === 2 && (
