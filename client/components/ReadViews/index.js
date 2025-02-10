@@ -216,7 +216,7 @@ const ReadViews = ({ match }) => {
               <Icon 
                 name="cog" size="large" 
                 style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
-                onClick={() => {setOpen(true)}}
+                onClick={() => {history.push(`/stories/${id}/topics`)}}
               />
             }
             inverted // Optional for inverted dark style

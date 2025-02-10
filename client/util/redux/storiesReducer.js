@@ -73,6 +73,17 @@ export const updateTempExerciseSettings = (conceptSetting) => (
   {type: 'SAVE_STORY_INTERMEDIATE', conceptSetting}
 )
 
+export const updateExerciseTopics = (topics, storyId) => {
+  const route = `/stories/${storyId}`
+  const prefix = 'SAVE_STORY'
+  const payload = { topics }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
+export const updateTempExerciseTopics = (topics) => (
+  {type: 'SAVE_STORY_INTERMEDIATE', topics}
+)
+
 export const removeStory = storyId => {
   const route = `/stories/${storyId}/remove`
   const prefix = 'REMOVE_STORY'
@@ -327,7 +338,7 @@ export default (state = initialState, action) => {
         ...state,
         focused: { 
           ...state.focused, 
-          exercise_setting: action.conceptSetting
+          topics: action.topics
         },
         pending: false,
         error: false,
