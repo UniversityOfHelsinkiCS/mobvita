@@ -5,13 +5,15 @@ import { Button } from 'react-bootstrap'
 import { updateTestConcepts } from 'Utilities/redux/groupsReducer'
 
 const TotalTestQuestions = ({
-  concepts,
   setShowTestConcepts,
   groupId,
   learningLanguage,
   showTestConcepts,
 }) => {
   const { testConcepts, testConceptsPending } = useSelector(({ groups }) => groups)
+  const { concepts: all_concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
+  const concepts = all_concepts.filter(concept => !showTestConcepts && concept.exercise_settings || 
+    showTestConcepts && concept.test_settings)
   const [totalQuestions, setTotalQuestions] = useState(0)
   const hidden = showTestConcepts
     ? {

@@ -35,14 +35,10 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { topics } = useSelector(({ lessons }) => lessons)
+  const { lesson_topics:all_topics } = useSelector(({ metadata }) => metadata)
 
-  let topic2info = {}
-  for (let topic of topics) {
-    let { topic_id } = topic;
-    if (!topic2info.hasOwnProperty(topic_id)) {
-      topic2info[topic_id] = topic;
-    }
-  }
+  const topic2info = topics.reduce((obj, topic) => ({ ...obj, [topic.topic_id]: topic }), {})
+  const topicId2Name = all_topics.reduce((obj, topic) => ({ ...obj, [topic.topic_id]: topic.topic }), {})
 
   const topic_rows = []
   const lesson_topics = lesson.topics
@@ -50,7 +46,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
     const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
     const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
     const color = {color: get_lesson_performance_style(correct, total)}
-    const name = topic2info[lesson_topics[k]].topic.charAt(0).toUpperCase() + topic2info[lesson_topics[k]].topic.slice(1)
+    const name = topicId2Name[lesson_topics[k]].charAt(0).toUpperCase() + topicId2Name[lesson_topics[k]].slice(1)
     topic_rows.push(
       <h6
         key={k}

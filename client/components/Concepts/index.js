@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
+import { useSelector, useDispatch } from 'react-redux'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'
 import StoryConcept from './StoryConcept'
@@ -48,7 +48,10 @@ const ConceptTree = ({
   )
 }
 
-const Concepts = ({concepts, target, showTestConcepts, showLevels}) => {
+const Concepts = ({target, showTestConcepts, showLevels}) => {
+  const { concepts: all_concepts } = useSelector(({ metadata }) => metadata)
+  const concepts = all_concepts.filter(concept => !showTestConcepts && concept.exercise_settings || 
+    showTestConcepts && concept.test_settings)
   const [expandConcepts, setExpandConcepts] = useState(false)
   const [collapseConcepts, setCollapseConcepts] = useState(false)
   

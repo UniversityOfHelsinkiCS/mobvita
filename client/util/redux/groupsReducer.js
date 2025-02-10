@@ -79,8 +79,19 @@ export const updateExerciseSettings = (settings, groupId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+export const updateExerciseTopics = (topics, groupId) => {
+  const route = `/groups/${groupId}`
+  const prefix = 'SET_GROUP_EXERCISE_TOPICS'
+  const payload = { topics }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const updateTempExerciseSettings = (conceptSetting) => (
   {type: 'SET_GROUP_EXERCISE_CONCEPTS_INTERMEDIATE', conceptSetting}
+)
+
+export const updateTempExerciseTopics = (topics) => (
+  {type: 'SET_GROUP_EXERCISE_TOPICS_INTERMEDIATE', topics}
 )
 
 export const updateExerciseTemplate = (template, groupId) => {
@@ -317,6 +328,29 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
         group: { ...state.group, ...action.response },
         pending: false,
       }
+    case 'SET_GROUP_EXERCISE_TOPICS_ATTEMPT':
+      return {
+        ...state,
+        pending: true,
+      }
+    case 'SET_GROUP_EXERCISE_TOPICS_FAILURE':
+      return {
+        ...state,
+        pending: false,
+      }
+    case 'SET_GROUP_EXERCISE_TOPICS_INTERMEDIATE':
+      return {
+        ...state,
+        group: { ...state.group, topics: action.topics },
+        pending: false,
+      }
+    case 'SET_GROUP_EXERCISE_TOPICS_SUCCESS':
+      return {
+        ...state,
+        group: { ...state.group, ...action.response },
+        pending: false,
+      }
+    
     case 'SET_GROUP_EXERCISE_TEMPLATE_ATTEMPT':
       return {
         ...state,

@@ -4,7 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Dropdown, Checkbox } from 'semantic-ui-react'
-import { getTestConcepts, getGroup, getGroups } from 'Utilities/redux/groupsReducer'
+import { 
+    getTestConcepts, 
+    getGroup, 
+    getGroups, 
+    updateExerciseTopics, 
+    updateTempExerciseTopics 
+} from 'Utilities/redux/groupsReducer'
 
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -13,6 +19,7 @@ import useWindowDimension from 'Utilities/windowDimensions'
 
 import TotalTestQuestions from 'Components/Concepts/TotalTestQuestions'
 import Concepts from 'Components/Concepts'
+import Topics from 'Components/Topics'
 
 const GroupSetting = () => {
     const dispatch = useDispatch()
@@ -20,7 +27,8 @@ const GroupSetting = () => {
     const intl = useIntl()
     const { id } = useParams()
     const bigScreen = useWindowDimension().width >= 650
-    const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
+    const { pending } = useSelector(({ metadata }) => metadata)
+    
     const learningLanguage = useSelector(learningLanguageSelector)
     const { isTeaching, group, pending: testConceptsPending } = useSelector(({ groups }) => ({
       isTeaching:
@@ -39,6 +47,10 @@ const GroupSetting = () => {
       history.location.pathname.endsWith('/settings')
     )
     const [showLevels, setShowLevels] = useState(true)
+    const lessonInstance = {
+        topic_ids: group?.group.topics || [],
+        instancePending: pending || !group,
+    }
     
   
     useEffect(() => {
@@ -50,15 +62,21 @@ const GroupSetting = () => {
     useEffect(() => {
       if (!isTeaching && isTeaching !== undefined) history.replace('/groups')
     }, [isTeaching])
-  
-    if (conceptsPending || !concepts || !group) return <Spinner fullHeight />
-    const conceptsToShow = concepts.filter(concept => !showTestConcepts && concept.exercise_settings || 
-        showTestConcepts && concept.test_settings)
+    
+    if (pending || !group) return <Spinner fullHeight />
+    
     
   
     const handleTestConceptToggle = async () => {
       if (!showTestConcepts) await dispatch(getTestConcepts(id, learningLanguage))
       setShowTestConcepts(!showTestConcepts)
+    }
+
+    const setSelectedTopics = topic_ids => {
+        // setLessonInstance({...lessonInstance, topic_ids: topic_ids})
+        dispatch(updateExerciseTopics(topic_ids, id))
+        dispatch(updateTempExerciseTopics(topic_ids, id))
+        
     }
   
     return (
@@ -106,23 +124,26 @@ const GroupSetting = () => {
                 className="concept-toggle"
             />
             </div>
-            <div>
-                <TotalTestQuestions
-                    concepts={conceptsToShow}
-                    setShowTestConcepts={setShowTestConcepts}
-                    groupId={group.group.group_id}
-                    learningLanguage={learningLanguage}
-                    showTestConcepts={showTestConcepts}
-                />
-            </div>
+            {showTestConcepts && (<TotalTestQuestions
+                setShowTestConcepts={setShowTestConcepts}
+                groupId={group.group.group_id}
+                learningLanguage={learningLanguage}
+                showTestConcepts={showTestConcepts}
+            />)}
         </div>
         <br />
-        <Concepts 
-            concepts={conceptsToShow}
+        {showTestConcepts ? (<Concepts 
             target={'groups'}
             showTestConcepts={showTestConcepts}
             showLevels={showLevels}
-        />
+        />): (
+            <Topics
+                topicInstance={lessonInstance}
+                editable={true}
+                setSelectedTopics={setSelectedTopics}
+                showPerf={false}
+            />
+        )}
         <ReportButton extraClass="align-self-end auto-top" />
       </div>
     )
