@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Accordion, Menu } from 'semantic-ui-react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -9,7 +10,9 @@ import UploadPastedText from './UploadPastedText'
 import GenerateStories from './GenerateStories'
 import RecommendedSites from './RecommendedSites'
 
+
 const AddStoryAccordion = ({ closeModal }) => {
+  const { lesson_topics } = useSelector(({ metadata }) => metadata)
   const [accordionState, setAccordionState] = useState(0)
   const smallWindow = useWindowDimensions().width < 500
   const user = useCurrentUser()
@@ -96,7 +99,7 @@ const AddStoryAccordion = ({ closeModal }) => {
         />
       </Menu.Item>
 
-      <Menu.Item className="add-story-accordion-item">
+      {lesson_topics?.length !== 0 && (<Menu.Item className="add-story-accordion-item">
         <Accordion.Title
           active={accordionState === 3}
           content={
@@ -116,7 +119,7 @@ const AddStoryAccordion = ({ closeModal }) => {
             />
           }
         />
-      </Menu.Item>
+      </Menu.Item>)}
 
       <Menu.Item className="add-story-accordion-item">
         <Accordion.Title

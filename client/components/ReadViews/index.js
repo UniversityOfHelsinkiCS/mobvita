@@ -82,6 +82,7 @@ const ReadViews = ({ match }) => {
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
+  const { lesson_topics } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
@@ -189,6 +190,15 @@ const ReadViews = ({ match }) => {
   // console.log('story ', story.paragraph)
   // console.log('focused ', focusedConcept)
 
+  const handle_cog_click = () => {
+    if( lesson_topics?.length !== 0) {
+      history.push(`/stories/${id}/topics`)
+    } else {
+      setOpen(true)
+    }
+  }
+
+
   const StoryFunctionsDropdown = () => {
 
     // gives the style to to dropdown menu based on is user on mobile
@@ -216,7 +226,7 @@ const ReadViews = ({ match }) => {
               <Icon 
                 name="cog" size="large" 
                 style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
-                onClick={() => {history.push(`/stories/${id}/topics`)}}
+                onClick={handle_cog_click}
               />
             }
             inverted // Optional for inverted dark style
