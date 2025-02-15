@@ -191,7 +191,7 @@ const ReadViews = ({ match }) => {
   // console.log('focused ', focusedConcept)
 
   const handle_cog_click = () => {
-    if( lesson_topics?.length !== 0) {
+    if( lesson_topics?.length !== 0 && ownedStory) {
       history.push(`/stories/${id}/topics`)
     } else {
       setOpen(true)
