@@ -215,14 +215,14 @@ const LessonPracticeView = () => {
                     progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
                   />
                 </div>
-                {timedExercise && (
+                {/*timedExercise && (
                   <PracticeTimer
                     controlledPractice={controlledPractice}
                     timerContent={getTimerContent()}
                     showPauseButton={showPauseButton}
                     handlePauseOrResumeClick={handlePauseOrResumeClick}
                   />
-                )}
+                )*/}
                 {/* <div
                   className="lesson-title"
                   style={{
