@@ -1467,7 +1467,7 @@
     "Grammar topics": "Грамматические темы",
     "grammar-topics-message": "Это грамматические темы, которые охватывает этот урок.",
     "Grammar performance": "Грамматические показатели",
-    "grammar-performance-message": "Это показывает твои показатели по каждой теме.",
+    "grammar-performance-message": "Здесь видны твои показатели по каждой теме.",
     "Lesson setup": "Настройка урока",
     "lesson-setup-message": "Здесь вы можете настроить урок: вы можете выбрать, из каких историй Revita выберет упражнения.",
     "Lesson topic": "Тема урока",
@@ -1726,5 +1726,6 @@
     "generate-story-instruction": "Revita может создать новую историю:\n<ul><li/>которая будет посвящена <b>любым темам уроков</b>, которые ты хочешь практиковать,\n<li/>и на любую тему, которая тебя интересует!",
     "go-generating": "Создать новую историю!",
     "story-generation-error": "Возникла проблема при создании текста. Попробуй еще раз!",
-    "regenerate-story": "Сгенерировать другой текст"
+    "regenerate-story": "Сгенерировать другой текст",
+    "candidate-available": "{candidate_count} candidates available"
 }

@@ -1725,5 +1725,6 @@
     "generate-story-instruction": "Revita can generate a new story:\n<ul><li/>which will focus on <b>any lesson topics</b> you want to practice,\n<li/>and about <b>any subject</b> that interests you!",
     "go-generating": "Generate new story!",
     "story-generation-error": "A problem occurred in generating the text. Please try again!",
-    "regenerate-story": "Generate another text"
+    "regenerate-story": "Generate another text",
+    "candidate-available": "{candidate_count} candidates available"
 }

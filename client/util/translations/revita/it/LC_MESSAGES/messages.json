@@ -1465,7 +1465,7 @@
     "Grammar topics": "Argomenti grammaticali",
     "grammar-topics-message": "Questi sono gli argomenti di grammatica trattati in questa lezione.",
     "Grammar performance": "Punteggi di grammatica",
-    "grammar-performance-message": "Questo mostra il tuo punteggio attuale su ogni argomento.",
+    "grammar-performance-message": "Questo é il tuo punteggio attuale su ogni argomento.",
     "Lesson setup": "Configurazione della lezione",
     "lesson-setup-message": "Qui puoi impostare la lezione: puoi selezionare da quale tipo di storie Revita sceglierà gli esercizi",
     "Lesson topic": "Argomento della lezione",
@@ -1723,5 +1723,6 @@
     "generate-story-instruction": "Revita può generare una nuova storia:\n<ul><li/>che si concentrerà su tutti gli <b>argomenti delle lezioni</b> su cui desideri esercitarti,\n<li/>e su qualsiasi <b>tema</b> che ti interessa!",
     "go-generating": "Genera nuova storia!",
     "story-generation-error": "Si è verificato un problema nella generazione del testo. Riprova!",
-    "regenerate-story": "Genera un altro testo"
+    "regenerate-story": "Genera un altro testo",
+    "candidate-available": "{candidate_count} candidates available"
 }

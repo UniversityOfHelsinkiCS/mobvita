@@ -1464,7 +1464,7 @@
     "Grammar topics": "Aihepiiri",
     "grammar-topics-message": "Tässä näet kielioppiasiat, joita oppintunti käsittelee.",
     "Grammar performance": "Kieliopin hallinta",
-    "grammar-performance-message": "Tämä prosenttiluku kertoo nykyisen tasosi aihepiirin asioissa.",
+    "grammar-performance-message": "Tämä on tämänhetkinen aihekohtainen tasosi.",
     "Lesson setup": "Tarinan aihe",
     "lesson-story-topic-message": "Täältä voit valita oppitunnillesi teeman/aiheen.",
     "Lesson topic": "Oppitunnin aihe",
@@ -1669,7 +1669,7 @@
     "explain-wordnest-modal": "Sanapesä: katso muut liittyvät sanat",
     "Menu-more": "Lisää",
     "explain-library-search": "Hae tarinoita sanan tai lauseen perusteella.",
-    "lesson-performance-info-tooltip": "Nykyinen suoritustasosi tästä aiheesta: prosenttiosuus oikeista vastauksista harjoituksissa",
+    "lesson-performance-info-tooltip": "Suoritustasosi tässä aiheessa: prosenttiosuus oikeista vastauksista harjoituksissa",
     "copy-key": "Kopioi avain",
     "flashcard-upload-instructions": "Valitse muistikortteja sisältävä tiedosto:\n<ul>\n<li>Sallitut tiedostomuodot ovat .TXT ja .DOCX (.DOC ei ole tuettu)</li>\n<li>Ensimmäisellä rivillä on oltava muistikorttipaketin <b>otsikko</b></li>\n<li>Jokaisen rivin tulee sisältää <b>yksi sana/ilmaus</b>, sitten käännökset puolipisteillä erotettuina. esimerkiksi:<li><ul>\n<li>sana;käännös 1; käännös 2; ... </li>\n</ul>\n</ul>",
     "flashcard-btn-explanation": "Harjoittele tämän tarinan muistikortteja napsauttamalla tässä!",
@@ -1712,7 +1712,7 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset!",
     "dictionary-header": "Sanasto",
     "correct-performance": "oikein",
-    "server-status": "Nykyinen palvelimen tila",
+    "server-status": "Tämänhetkinen palvelimen tila",
     "input-story-generation-comment": "Kuvaile, mistä haluat tarinan kertovan",
     "story-ready-for-generation": "Valmis luomaan tarinan pyyntösi perusteella",
     "additional-comment": "Additional comment",
@@ -1724,5 +1724,6 @@
     "generate-story-instruction": "Revita voi luoda uuden tarinan:\n<ul><li/>joka keskittyy kaikkiin <b>oppitunnin aiheisiin</b>, joita haluat harjoitella,\n<li/>ja mistä tahansa sinua kiinnostavasta aiheesta!",
     "go-generating": "Luo uusi tarina!",
     "story-generation-error": "Tekstin luomisessa ilmeni ongelma. Yritä uudelleen!",
-    "regenerate-story": "Luo uusi teksti"
+    "regenerate-story": "Luo uusi teksti",
+    "candidate-available": "{candidate_count} candidates available"
 }
