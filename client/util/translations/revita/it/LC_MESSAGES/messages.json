@@ -1724,5 +1724,6 @@
     "go-generating": "Genera nuova storia!",
     "story-generation-error": "Si è verificato un problema nella generazione del testo. Riprova!",
     "regenerate-story": "Genera un altro testo",
-    "candidate-available": "{candidate_count} candidates available"
+    "candidate-available": "{candidate_count} candidates available",
+    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
 }

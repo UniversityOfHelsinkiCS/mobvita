@@ -1725,5 +1725,6 @@
     "go-generating": "Luo uusi tarina!",
     "story-generation-error": "Tekstin luomisessa ilmeni ongelma. Yritä uudelleen!",
     "regenerate-story": "Luo uusi teksti",
-    "candidate-available": "{candidate_count} candidates available"
+    "candidate-available": "{candidate_count} candidates available",
+    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
 }

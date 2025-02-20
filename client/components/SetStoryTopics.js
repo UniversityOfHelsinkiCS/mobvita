@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
-import { Icon} from 'semantic-ui-react'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { Icon, Popup } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getStoryAction, updateExerciseTopics, updateTempExerciseTopics } from 'Utilities/redux/storiesReducer'
 import Spinner from 'Components/Spinner'
 import Topics from 'Components/Topics'
+
 
 const SetStoryTopics = ({ match }) => {
     const { id } = match.params
@@ -43,9 +44,17 @@ const SetStoryTopics = ({ match }) => {
                         {story.title}
                     </h3>
                 </Link>
-                <h4 className="col-md-4 text-right">
-                    <FormattedMessage id="candidate-available" values={{candidate_count: story.candidate_count}}/>
-                </h4>
+                
+                <Popup
+                    position="top center"
+                    content={<FormattedHTMLMessage id='candidate-available-explain' />}
+                    trigger={
+                        <h4 className="col-md-4 text-right" style={{color: story.candidate_count === 0 ? 'red' : 'black'}}>
+                        <FormattedMessage id="candidate-available" values={{candidate_count: story.candidate_count}}/>
+                        </h4>
+                    }
+                />
+                
             </div>
             <br />
             <br />

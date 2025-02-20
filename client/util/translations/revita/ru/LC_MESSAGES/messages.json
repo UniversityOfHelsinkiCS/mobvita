@@ -1727,5 +1727,6 @@
     "go-generating": "Создать новую историю!",
     "story-generation-error": "Возникла проблема при создании текста. Попробуй еще раз!",
     "regenerate-story": "Сгенерировать другой текст",
-    "candidate-available": "{candidate_count} candidates available"
+    "candidate-available": "{candidate_count} candidates available",
+    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
 }
