@@ -5,6 +5,12 @@ export const setCurrentContext = (context) => ({
     context: context,
 });
 
+export const getGeneralAgentConversationHistory = (session_id) => {
+    const route = `/chatbot/history?chatbot_type=general&session_id=${encodeURIComponent(session_id)}`;
+    const prefix = 'GET_CHATBOT_HISTORY';
+    return callBuilder(route, prefix, 'get');
+};
+
 export const getPracticeAgentConversationHistory = (session_id, story_id, snippet_id, sentence_id, word_id, surface = "") => {
     const route = `/chatbot/history?chatbot_type=practice&session_id=${encodeURIComponent(session_id)}&story_id=${encodeURIComponent(story_id)}&snippet_id=${encodeURIComponent(snippet_id)}&sentence_id=${encodeURIComponent(sentence_id)}&word_id=${encodeURIComponent(word_id)}&surface=${encodeURIComponent(surface)}`;
     const prefix = 'GET_CHATBOT_HISTORY';
@@ -21,6 +27,13 @@ export const setConversationHistory = (chatbot_history=[]) => ({
     type: 'SET_CHATBOT_HISTORY', 
     chatbot_history: chatbot_history,
 });
+
+export const getGeneralChatbotResponse = (session_id, message) => {
+    const route = `/api/general_chatbot`;
+    const prefix = 'GET_CHATBOT_RESPONSE';
+    const payload = { session_id, message };
+    return callBuilder(route, prefix, 'post', payload);
+};
 
 export const getPracticeChatbotResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
     const route = `/chatbot`
