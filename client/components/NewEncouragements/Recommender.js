@@ -186,7 +186,6 @@ const Recommender = () => {
                   review_stories_encourage,
                   leader_board_encourage,
                   num_of_rewardable_words,
-                  latest_incomplete_story,
                   words_seen_encourage,
                   new_words_interacted_exercise_encourage,
                   <GrammarReviewExerciseEncouragement />,

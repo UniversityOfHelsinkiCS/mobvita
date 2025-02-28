@@ -28,10 +28,10 @@ export const setConversationHistory = (chatbot_history=[]) => ({
     chatbot_history: chatbot_history,
 });
 
-export const getGeneralChatbotResponse = (session_id, message) => {
-    const route = `/api/general_chatbot`;
+export const getGeneralChatbotResponse = (message) => {
+    const route = `/general_chatbot`;
     const prefix = 'GET_CHATBOT_RESPONSE';
-    const payload = { session_id, message };
+    const payload = { message };
     return callBuilder(route, prefix, 'post', payload);
 };
 

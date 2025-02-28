@@ -13,22 +13,25 @@ const GeneralReadingChatBot = () => {
     const intl = useIntl();
     const dispatch = useDispatch();
     const [currentMessage, setCurrentMessage] = useState("");
-    const [isCollapsed, setIsCollapsed] = useState(false); // Collapse state
+    const [isCollapsed, setIsCollapsed] = useState(true); // Default collapsed state
 
-    const { generalChatbotSessionId: session_id } = useSelector(({ chatbot }) => chatbot);
     const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
 
     // Fetch conversation history when chatbot starts
     useEffect(() => {
-        if (session_id) {
-            dispatch(getGeneralAgentConversationHistory(session_id));
-        }
-    }, [session_id, dispatch]);
+        dispatch(getGeneralAgentConversationHistory());
+    }, []);
+
+    // Add a static "init" message from the bot if there are no messages yet
+    const initialMessage = {
+        text: <FormattedMessage id="general-chatbot-init-mess" values={{ language: intl.locale }} />,
+        type: 'bot',
+    };
 
     const handleMessageSubmit = (event) => {
         event.preventDefault();
         if (currentMessage.trim() === '') return;
-        dispatch(getGeneralChatbotResponse(session_id, currentMessage));
+        dispatch(getGeneralChatbotResponse(currentMessage));
         setCurrentMessage("");
     };
 
@@ -57,11 +60,21 @@ const GeneralReadingChatBot = () => {
                         {isLoadingHistory ? (
                             <Spinner animation="border" variant="info" className="spinner-history" />
                         ) : (
-                            messages.map((message, index) => (
-                                <div key={index} className={`message message-${message.type}`}>
-                                    {message.text}
-                                </div>
-                            ))
+                            <>
+                                {/* Display initial static bot message if no messages are present */}
+                                {messages.length === 0 && (
+                                    <div className="message message-bot">
+                                        {initialMessage.text}
+                                    </div>
+                                )}
+
+                                {/* Display other messages */}
+                                {messages.map((message, index) => (
+                                    <div key={index} className={`message message-${message.type}`}>
+                                        {message.text}
+                                    </div>
+                                ))}
+                            </>
                         )}
                     </div>
                     <form onSubmit={handleMessageSubmit} className="chatbot-input-form">

@@ -24,7 +24,9 @@ import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
-import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
+// import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
+import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+
 
 const HomeviewButton = ({imgSrc, altText,
                          translationKey, handleClick,
@@ -432,6 +434,7 @@ const HomeView = () => {
             )}
           </div>
         )}
+        <GeneralChatbot />
         {showFooter && <Footer />}
       </div>
     </div>
