@@ -227,7 +227,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   }, [windowWidth])
 
   const conceptIdToConceptName = id => {
-    const concept = concepts.find(c => c.concept_id === id)
+    const concept = allConcepts.find(c => c.concept_id === id)
     return concept ? concept.name : id
   }
 

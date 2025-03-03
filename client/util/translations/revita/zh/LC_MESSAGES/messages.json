@@ -1102,5 +1102,6 @@
     "candidate-available": "{candidate_count} candidates available",
     "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available.",
     "email-address": "电子邮箱地址",
-    "Password": "密码"
+    "Password": "密码",
+    "Groups": "群组"
 }
