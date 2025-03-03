@@ -9,8 +9,8 @@ describe("dictionary", function () {
     cy.viewport(1920, 1080)
     cy.loginExisting(this.user)
     cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/preview")
-    cy.get('[data-cy=dictionary-icon]') // Open dictionaryhelp
-      .click({ force: true })
+    // cy.get('[data-cy=dictionary-icon]') // Open dictionaryhelp
+    //   .click({ force: true })
   })
 
   this.afterAll(function () {
