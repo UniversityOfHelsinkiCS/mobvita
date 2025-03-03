@@ -9,34 +9,35 @@ const apiClient = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
 })
 addTranslations(apiClient)
-
+const languages = ['fi', 'en', 'ru', 'it', 'zh', 'sv', 'uk']
 async function addTranslations(auth) {
   const sheets = google.sheets({version: 'v4', auth});
   Promise.all([
     sheets.spreadsheets.values.get({
       spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-      range: 'C:I',
+      range: 'C:K',
     }),
     sheets.spreadsheets.values.get({
       spreadsheetId: '1qUitRG9RYZALDQId0CGM6tWOdmZmqCKEw6iEQcSyBMk',
-      range: 'C:I',
+      range: 'C:K',
     }),
   ]).then(results => {
     const translations = {}
     for (res of results){
+      const keyMap = res.data.values[0].reduce((acc, key, i) => {
+        acc[key] = i
+        return acc
+      }
+      , {})
       const rows = res.data.values.slice(1);
       for (row of rows) {
         row.map(e => e.trim())
         if (!row[0]) continue
         const trimmedRow = row.map(e => e.trim())
-        const eng = trimmedRow[2] || ''
-        translations[trimmedRow[0]] = {
-          en: eng,
-          fi: trimmedRow[3] || eng,
-          it: trimmedRow[4] || eng,
-          ru: trimmedRow[5] || eng,
-          zh: trimmedRow[6] || eng,
-        }
+        translations[trimmedRow[0]] = {}
+        languages.map(lang => {
+          translations[trimmedRow[0]][lang] = trimmedRow[keyMap[lang]] || trimmedRow[keyMap['en']] || ''
+        })
       }
     }
     makeTranslations(translations)
@@ -46,7 +47,6 @@ async function addTranslations(auth) {
 }
 
 function makeTranslations(translations) {
-  const languages = ['fi', 'en', 'ru', 'it', 'zh']
   for (lang of languages) {
     let changes = 0
     let news = 0
