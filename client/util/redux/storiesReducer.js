@@ -37,11 +37,9 @@ export const setStoryUploadUnfinished = (value, storyId) => ({
 })
 
 export const uploadCachedStory = cachedId => {
-  const route = '/stories/cached'
+  const route = `/stories/cached?cached_id=${cachedId}`
   const prefix = 'UPLOAD_CACHED_STORY'
-  const payload = { cached_id: cachedId }
-
-  return callBuilder(route, prefix, 'post', payload)
+  return callBuilder(route, prefix)
 }
 
 export const searchStories = (language, query) => {
