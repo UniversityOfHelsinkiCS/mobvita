@@ -141,7 +141,7 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
 
 
     return (
-        <div>
+    <div style={{ paddingBottom: '2em' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
         <Button
           variant='primary'
