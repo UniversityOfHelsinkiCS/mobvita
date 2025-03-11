@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
+import ReactMarkdown from 'react-markdown';
 import { useIntl, FormattedMessage } from 'react-intl';
 import './Chatbot.scss';
 import {
     getGeneralAgentConversationHistory,
     getGeneralChatbotResponse,
 } from 'Utilities/redux/chatbotReducer';
+
+console.log("ReactMarkdown:", ReactMarkdown);
 
 const GeneralReadingChatBot = () => {
     const intl = useIntl();
@@ -71,7 +74,7 @@ const GeneralReadingChatBot = () => {
                                 {/* Display other messages */}
                                 {messages.map((message, index) => (
                                     <div key={index} className={`message message-${message.type}`}>
-                                        {message.text}
+                                        {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
                                     </div>
                                 ))}
                             </>
