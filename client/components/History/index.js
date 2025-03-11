@@ -227,7 +227,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   }, [windowWidth])
 
   const conceptIdToConceptName = id => {
-    const concept = concepts.find(c => c.concept_id === id)
+    const concept = allConcepts.find(c => c.concept_id === id)
     return concept ? concept.name : id
   }
 
@@ -292,7 +292,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   }
 
   const buildSingleConcept = conceptId => {
-    const concept = concepts.find(concept => concept.concept_id === conceptId)
+    const concept = allConcepts.find(concept => concept.concept_id === conceptId)
     if (!concept?.children) return { id: conceptId, children: [] }
     return {
       id: conceptId,

@@ -434,7 +434,7 @@ const HomeView = () => {
             )}
           </div>
         )}
-        <GeneralChatbot />
+        {hiddenFeatures && (<GeneralChatbot />)}
         {showFooter && <Footer />}
       </div>
     </div>

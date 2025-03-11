@@ -479,8 +479,9 @@ export const flashcardColors = {
 
 const stagingOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
-  // { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
+  { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
+  { displayName: 'Українська', name: 'Ukrainian', code: 'uk' },
   { displayName: 'English', name: 'English', code: 'en' },
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
   { displayName: '简体中文', name: 'Chinese', code: 'zh' },
@@ -490,6 +491,7 @@ const prodOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
   // { displayName: 'Svenska', name: 'Swedish', code: 'sv' },
   { displayName: 'Русский', name: 'Russian', code: 'ru' },
+  { displayName: 'Українська', name: 'Ukrainian', code: 'uk' },
   { displayName: 'English', name: 'English', code: 'en' },
   { displayName: 'Italiano', name: 'Italian', code: 'it' },
   { displayName: '简体中文', name: 'Chinese', code: 'zh' },
