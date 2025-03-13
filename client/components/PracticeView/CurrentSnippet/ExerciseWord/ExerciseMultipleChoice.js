@@ -8,6 +8,7 @@ import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 // import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
+import { composeExerciseContext } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const dispatch = useDispatch()
@@ -97,16 +98,6 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   }
 
 
-  const exerciseContext = snippet.reduce((acc, curr) => {
-    if (curr.id && curr.id == word.id) {
-      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
-    } else if (curr.id && curr.id != word.id) {
-      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
-    } else {
-        acc += curr.surface;
-    }
-    return acc;
-  }, '');
 
 
   const handleBlur = () => {
@@ -121,7 +112,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
       setShow(!show)
     }
     dispatch(setFocusedWord(word))
-    dispatch(setCurrentContext(exerciseContext))
+    dispatch(setCurrentContext(composeExerciseContext(snippet, word)))
   }
 
   const getInputWidth = () => {

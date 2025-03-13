@@ -64,8 +64,8 @@ const PracticeChatbot = () => {
 
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
-        if (exerciseContext.trim() === '' || currentMessage.trim() === '') return;
-        let formattedContext = `Exercise context: ${exerciseContext}`;
+        if (exerciseContext.context.trim() === '' || currentMessage.trim() === '') return;
+        let formattedContext = `Exercise context: ${exerciseContext.context}`;
         formattedContext += "\n\nExpected answer: " + currentWord.surface
         if (hints && hints.length > 0) {
             const formattedHints = hints.map(hint => `- ${hint.easy}`);
@@ -83,7 +83,8 @@ const PracticeChatbot = () => {
                 wordId,
                 currentMessage.trim(), 
                 formattedContext.trim(), 
-                surface.trim()
+                surface.trim(),
+                exerciseContext.surfaces,
             )
         );
         setCurrentMessage("");

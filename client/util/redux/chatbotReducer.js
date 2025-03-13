@@ -35,10 +35,21 @@ export const getGeneralChatbotResponse = (message) => {
     return callBuilder(route, prefix, 'post', payload);
 };
 
-export const getPracticeChatbotResponse = (session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="") => {
+export const getPracticeChatbotResponse = (
+    session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="", hidden_words=[]) => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
-    const payload = { session_id, story_id, snippet_id, sentence_id, word_id, message, context, surface }
+    const payload = { 
+        session_id, 
+        story_id, 
+        snippet_id, 
+        sentence_id, 
+        word_id, 
+        message, 
+        context, 
+        surface, 
+        hidden_words 
+    }
     return callBuilder(route, prefix, 'post', payload)
 }
 

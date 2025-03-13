@@ -17,6 +17,7 @@ import {
   learningLanguageLocaleCodes,
   useMTAvailableLanguage,
   getMode,
+  composeExerciseContext,
 } from 'Utilities/common'
 import {
   setFocusedWord,
@@ -122,19 +123,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   }
   
 
-  const exerciseContext = snippet.reduce((acc, curr) => {
-    if (curr.id && curr.id == word.id) {
-      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
-    } else if (curr.id && curr.id != word.id) {
-      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
-    } else {
-        acc += curr.surface;
-    }
-    return acc;
-  }, '');
-
-  
-
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
@@ -220,7 +208,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setShow(!show)
     dispatch(setFocusedWord(word))
     changeElementFont(e.target)
-    dispatch(setCurrentContext(exerciseContext))
+    dispatch(setCurrentContext(composeExerciseContext(snippet, word)))
   }
 
   const handleMouseDown = e => {

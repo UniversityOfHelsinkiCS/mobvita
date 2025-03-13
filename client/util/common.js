@@ -329,6 +329,21 @@ function ConvertRGBtoHex(red, green, blue) {
   return `#${ColorToHex(red)}${ColorToHex(green)}${ColorToHex(blue)}`
 }
 
+export const composeExerciseContext = (snippet, word) => {
+  const context = snippet.reduce((acc, curr) => {
+    if (curr.id && curr.id == word.id) {
+      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
+    } else if (curr.id && curr.id != word.id) {
+      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
+    } else {
+        acc += curr.surface;
+    }
+    return acc;
+  }, '')
+  const surfaces = snippet.filter(curr => curr.id).map(curr => curr.surface.trim())
+  return {context, surfaces}
+}
+
 export function getWordColor(
   word_level,
   user_grade,
