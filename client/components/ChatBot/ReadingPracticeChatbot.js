@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import ReactMarkdown from 'react-markdown'
 import './Chatbot.scss';
 import {
     getReadingPracticeChatbotResponse,
@@ -70,8 +71,8 @@ const ReadingPracticeChatBot = () => {
                             <Spinner animation="border" variant="info" className="spinner-history" />
                         ) : (
                             messages.map((message, index) => (
-                                <div key={index} className={`message message-${message.type}`}>
-                                    {message.text}
+                                <div key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
+                                    {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
                                 </div>
                             ))
                         )}

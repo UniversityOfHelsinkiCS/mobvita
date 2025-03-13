@@ -330,17 +330,19 @@ function ConvertRGBtoHex(red, green, blue) {
 }
 
 export const composeExerciseContext = (snippet, word) => {
+  const surfaces = {}
   const context = snippet.reduce((acc, curr) => {
     if (curr.id && curr.id == word.id) {
-      acc += `<EXERCISE START>${curr.base}<EXERCISE END>`;
+      surfaces[curr.surface] = curr.base
+      acc += `<EXERCISE START>${curr.surface}(${curr.base})<EXERCISE END>`;
     } else if (curr.id && curr.id != word.id) {
-      acc += `<HIDDEN WORD START>${curr.base}<HIDDEN WORD END>`;
+      surfaces[curr.surface] = curr.base
+      acc += `<HIDDEN WORD START>${curr.surface}(${curr.base})<HIDDEN WORD END>`;
     } else {
         acc += curr.surface;
     }
     return acc;
   }, '')
-  const surfaces = snippet.filter(curr => curr.id).map(curr => curr.surface.trim())
   return {context, surfaces}
 }
 

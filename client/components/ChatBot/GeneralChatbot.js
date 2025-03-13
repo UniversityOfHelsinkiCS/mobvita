@@ -73,7 +73,7 @@ const GeneralReadingChatBot = () => {
 
                                 {/* Display other messages */}
                                 {messages.map((message, index) => (
-                                    <div key={index} className={`message message-${message.type}`}>
+                                    <div key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
                                         {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
                                     </div>
                                 ))}

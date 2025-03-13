@@ -257,7 +257,7 @@ const PracticeChatbot = () => {
                   <>
                     {/********this is for CHATTING: MESSAGE-USER + MESSAGE-BOT ********/}
                     {/******** MESSAGE-USER + MESSAGE-BOT: no other types ********/}
-                    <div key={index} className={`message message-${message.type}`}>
+                    <div key={index} className={`message message-${message.type}`} style={{display: 'block'}}>
                       {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
                     </div>
                     {/******** HINT: this must be for MESSAGE-BOT ********/}
