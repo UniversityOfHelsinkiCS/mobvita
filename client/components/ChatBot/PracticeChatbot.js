@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 import { Button, Icon } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
+import ReactMarkdown from 'react-markdown'
 import './Chatbot.scss';
 import {
     setFocusedWord,
@@ -257,7 +258,7 @@ const PracticeChatbot = () => {
                     {/********this is for CHATTING: MESSAGE-USER + MESSAGE-BOT ********/}
                     {/******** MESSAGE-USER + MESSAGE-BOT: no other types ********/}
                     <div key={index} className={`message message-${message.type}`}>
-                      {message.text}
+                      {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
                     </div>
                     {/******** HINT: this must be for MESSAGE-BOT ********/}
                     {(index === hintMessageIdx - 1 && hintMessageIdx > 0)
