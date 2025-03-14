@@ -1727,6 +1727,12 @@
     "go-generating": "Создать новую историю!",
     "story-generation-error": "Возникла проблема при создании текста. Попробуй еще раз!",
     "regenerate-story": "Сгенерировать другой текст",
-    "candidate-available": "{candidate_count} candidates available",
-    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
+    "candidate-available": "{candidate_count} доступных упражнений",
+    "candidate-available-explain": "Это количество доступных упражнений. Если ни одна тема не выбрана, то будут доступны все упражнения.",
+    "Report error": "Сообщить об ошибке",
+    "An error has occurred in the system.  The develper team has been notified.": "Произошла ошибка в системе. Команда разработчиков получила уведомление.",
+    "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "Ты можешь помочь нам быстрее устранить ошибку, послав нам ее краткое описание — в форме, которая открывается при нажатии этой кнопки:",
+    "(Please write in any language that is convenient for you.)": "(Пожалуйста, пиши на любом удобном для тебя языке.)",
+    "Next, please refresh the page, or click \"Go back\"": "Далее, обнови страницу или нажми «Назад».",
+    "candidate-available-explain-1": "Это количество доступных упражнений. Если ни одна тема не выбрана, то будут доступны все упражнения"
 }
