@@ -71,7 +71,7 @@ const RightAnswer = ({ word, snippet }) => {
 
   const tooltip = (
     <div className="tooltip-green" style={{ textAlign: 'left', padding: '15px' }}>
-      {mc_correct && (
+      {mc_correct && choices && (
         <div>
           <div>
             <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
