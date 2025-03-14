@@ -1141,7 +1141,7 @@
     "well-done-click-next-card-to-play-another-set-of-cards-1": "*TODO*",
     "well-done-click-next-card-to-play-another-set-of-cards-2": "*TODO*",
     "remove-card-tooltip": "Remove from card list",
-    "story-flashcards": "These cards are from story:\n<ul><li><i>{story}</i></li></ul>",
+    "story-flashcards": "These cards are from:\n<ul><li><i>{story}</i></li></ul>",
     "flashcards-go-to-all-cards-EXPLANATION": "In this story, you saw some words and did not not ask for their translations.\nWe want to assume that you <i>probably</i> know these words.\nWe use these 5 <i>special blue</i> cards to check that you know all of these words.\nIf you answer these 5 cards correctly, you will get credit for all the words you know in this story.\n<br/>\nClick here if you want to go back to working with <i>all</i> your flashcards.",
     "flashcards-edit-card-list-EXPLANATION": "Here you can review and modify the <i>complete</i> list of your flashcards",
     "flashcards-add-cards-EXPLANATION": "Here you can add any new words you like to your flashcards",

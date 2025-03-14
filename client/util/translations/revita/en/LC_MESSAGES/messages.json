@@ -1604,7 +1604,7 @@
     "summary-people-added-to-group": "People added to group",
     "no-available-exercise-OLD": "We have no more exercises for this lesson at the moment. Revita will create more exercises shortly — please come back a bit later!",
     "chatbot-response-error": "A connection problem has occurred, please try again in 30 seconds!",
-    "story-flashcards": "These cards are from story:\n<ul><li><i>{story}</i></li></ul>",
+    "story-flashcards": "These cards are from:\n<ul><li><i>{story}</i></li></ul>",
     "story-blue-cards": "Let's confirm that you know the words in the story:\n<ul><li><i>{story}</i></li></ul>\n<br/>\nLet's check just 5 of these {nWords} words, so Revita can update your <a href=\"/profile/progress/flashcards\">Vocabulary Scores</a>\n<br/>→",
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "THIS IS AN OLD VERSION OF THE ABOVE INTRO TEXT (DONT USE THIS): The following exercises will help you improve your English skills. The first stage is reading comprehension — 20 short tasks. We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks. You don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off. After completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary. You will get detailed instructions about these tasks when you are ready to start working on them. Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
