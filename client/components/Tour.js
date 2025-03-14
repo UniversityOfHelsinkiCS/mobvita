@@ -239,7 +239,7 @@ const Tour = () => {
         }
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
-          if (!metaPending && lesson.topic_ids.length === 0) {
+          if (!metaPending && !lessonPending && lesson.topic_ids.length === 0) {
             const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
             dispatch(setLessonInstance({ topic_ids:  newTopics}))
           }
