@@ -36,7 +36,7 @@ export const getGeneralChatbotResponse = (message) => {
 };
 
 export const getPracticeChatbotResponse = (
-    session_id, story_id, snippet_id, sentence_id, word_id, message, context="", surface="", hidden_words=[]) => {
+    session_id, story_id, snippet_id, sentence_id, word_id, message, answer, context={}, hints=[]) => {
     const route = `/chatbot`
     const prefix = 'GET_CHATBOT_RESPONSE'
     const payload = { 
@@ -46,9 +46,9 @@ export const getPracticeChatbotResponse = (
         sentence_id, 
         word_id, 
         message, 
-        context, 
-        surface, 
-        hidden_words 
+        answer,
+        context,
+        hints
     }
     return callBuilder(route, prefix, 'post', payload)
 }

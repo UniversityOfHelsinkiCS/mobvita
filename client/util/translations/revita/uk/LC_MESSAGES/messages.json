@@ -835,5 +835,11 @@
     "Groups": "Групи",
     "Politics": "Політика",
     "Science": "Наука",
-    "Sport": "Спорт"
+    "Sport": "Спорт",
+    "Report error": "Report error",
+    "An error has occurred in the system.  The develper team has been notified.": "An error has occurred in the system.  The develper team has been notified.",
+    "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
+    "(Please write in any language that is convenient for you.)": "(Please write in any language convenient for you.)",
+    "Next, please refresh the page, or click \"Go back\"": "Next, refresh the page, or click \"Go back\"",
+    "candidate-available-explain-1": "Це кількість доступних вправ для кандидатів. При виборі без теми, всі вправи доступні"
 }

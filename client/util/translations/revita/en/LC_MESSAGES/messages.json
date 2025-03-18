@@ -1726,6 +1726,12 @@
     "go-generating": "Generate new story!",
     "story-generation-error": "A problem occurred in generating the text. Please try again!",
     "regenerate-story": "Generate another text",
-    "candidate-available": "{candidate_count} candidates available",
-    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
+    "candidate-available": "{candidate_count} exercises available",
+    "candidate-available-explain": "This is the number of candidate exercises available. If you select no topics, then all exercises are available.",
+    "Report error": "Report error",
+    "An error has occurred in the system.  The develper team has been notified.": "An error has occurred in the system.  The develper team has been notified.",
+    "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
+    "(Please write in any language that is convenient for you.)": "(Please write in any language convenient for you.)",
+    "Next, please refresh the page, or click \"Go back\"": "Next, refresh the page, or click \"Go back\"",
+    "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available"
 }

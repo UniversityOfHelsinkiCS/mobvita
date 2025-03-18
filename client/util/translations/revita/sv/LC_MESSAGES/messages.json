@@ -1527,8 +1527,8 @@
     "go-generating": "Generate new story!",
     "story-generation-error": "A problem occurred in generating the text. Please try again!",
     "regenerate-story": "Generate another text",
-    "candidate-available": "{candidate_count} candidates available",
-    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available.",
+    "candidate-available": "{candidate_count} exercises available",
+    "candidate-available-explain": "This is the number of candidate exercises available. If you select no topics, then all exercises are available.",
     "ddlang-introductory-text-experimental": "<b>How does the Revita/DD-LANG system help you?</b>\n<br/>\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n<br/>\nYou will receive feedback that helps you become better a reader/writer. You may get the same feedback many times: This helps you to remember the advice.\n<br/>\nYou can exit and come back to the exercises at any time. Just close the Revita window in your browser to exit.\n<br/>\n<b>What should you do next?</b>\n<br/>\nStart by choosing <b>Reading Practice</b>. Some of the other activities may not yet be ready for English. Take the Tour (upper right-hand corner of the screen) for more details.\n<br/>\nReading Practice includes two sets of 10 exercises. After completing them, you can practice your grammar and vocabulary by using texts in the Library or by using texts that you can upload to Revita yourself. We will let you know when more reading (and also writing) exercises are ready for you.\n<br/>\nRemember that your goal is not to just to complete tasks but to learn something new from them.\n<br/>\nYou can change the language of the interface and feedback to Finnish in the Settings (via the menu in the upper left corner of the screen).",
     "ddlang-introductory-text-control": "<b>How does the Revita/DD-LANG system help you?</b>\n<br/>\nRevita/DD-LANG develops your English skills, particularly reading and writing. It also helps you to prepare for the Matriculation Examination.\n<br/>\nYou will receive feedback on how well you did on each exercise.\n<br/>\nYou can exit and come back to the exercises at any time. Just close the Revita window in your browser to exit.\n<br/>\n<b>What should you do next?</b>\n<br/>\nStart by choosing <b>Reading Practice</b>. Other activities (e.g. Flashcards) are not yet ready for English. Take the Tour (upper right-hand corner of the screen) for more details.\n<br/>\nReading Practice includes two sets of 10 exercises. We will let you know when more reading (and also writing) exercises are ready for you.\n<br/>\nYou can change the language of the interface and feedback to Finnish in the Settings (via the menu in the upper left corner of the screen).",
     "experimental-elicitation-question": "This task has several challenging points. Choose one. If you feel that the tips are not helpful, don't worry! You can choose different advice next time.\n<br/>\n<b>Which of these would you like to get more help with?</b>",
@@ -1580,5 +1580,11 @@
     "average-hints-used": "Average number of hints needed to get correct answer",
     "time-spent": "Time spent",
     "go-to-home": "Back to Home Page",
-    "correct-answer-to-question": "Correct!"
+    "correct-answer-to-question": "Correct!",
+    "Report error": "Report error",
+    "An error has occurred in the system.  The develper team has been notified.": "An error has occurred in the system.  The develper team has been notified.",
+    "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
+    "(Please write in any language that is convenient for you.)": "(Please write in any language convenient for you.)",
+    "Next, please refresh the page, or click \"Go back\"": "Next, refresh the page, or click \"Go back\"",
+    "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available"
 }

@@ -1725,6 +1725,12 @@
     "go-generating": "Luo uusi tarina!",
     "story-generation-error": "Tekstin luomisessa ilmeni ongelma. Yritä uudelleen!",
     "regenerate-story": "Luo uusi teksti",
-    "candidate-available": "{candidate_count} candidates available",
-    "candidate-available-explain": "This is the amount of exercise candidates available. When selecting no topic, all exercises are available."
+    "candidate-available": "{candidate_count} käytettävissä olevaa harjoitusta",
+    "candidate-available-explain": "Tämä on saatavilla olevien harjoitusten lukumäärä. Jos et valitse aiheita, kaikki harjoitukset ovat käytettävissä.",
+    "Report error": "Segnala un errore",
+    "An error has occurred in the system.  The develper team has been notified.": "Järjestelmässä on tapahtunut virhe. Kehittäjätiimille on ilmoitettu.",
+    "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "Voit auttaa meitä korjaamaan ongelman nopeammin lähettämällä meille siitä lyhyen kuvauksen — tällä painikkeella avautuvassa muodossa:",
+    "(Please write in any language that is convenient for you.)": "(Kirjoita millä tahansa sinulle sopivalla kielellä.)",
+    "Next, please refresh the page, or click \"Go back\"": "Seuraavaksi päivitä sivu tai napsauta \"Palaa takaisin\".",
+    "candidate-available-explain-1": "Tämä on saatavilla olevien harjoitusten lukumäärä. Jos et valitse aiheita, kaikki harjoitukset ovat käytettävissä"
 }
