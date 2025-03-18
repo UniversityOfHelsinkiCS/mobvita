@@ -111,6 +111,8 @@ export default function NavBar() {
   }
   const tourOngoing = useSelector(state => state.tour.run)
   const lessons = useSelector(({ metadata }) => metadata.lessons)
+  const lessonsPageWithNoLessons =
+    history.location.pathname.includes('/lessons') && lessons.length === 0
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
   const profileDropdownRef = useRef()
 
@@ -133,9 +135,7 @@ export default function NavBar() {
         dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons')) {
-      if (lessons.length) {
-        dispatch(startLessonsTour())
-      }
+      dispatch(startLessonsTour())
     } else if (history.location.pathname.includes('library')) {
       dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview')) {
@@ -365,7 +365,7 @@ export default function NavBar() {
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
-              {!smallWindow && (
+              {!smallWindow && !lessonsPageWithNoLessons && (
                 <Popup
                   position="top center"
                   content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
