@@ -330,20 +330,10 @@ function ConvertRGBtoHex(red, green, blue) {
 }
 
 export const composeExerciseContext = (snippet, word) => {
-  const surfaces = {}
-  const context = snippet.reduce((acc, curr) => {
-    if (curr.id && curr.id == word.id) {
-      surfaces[curr.surface] = curr.base
-      acc += `<EXERCISE START>${curr.surface}(${curr.base})<EXERCISE END>`;
-    } else if (curr.id && curr.id != word.id) {
-      surfaces[curr.surface] = curr.base
-      acc += `<HIDDEN WORD START>${curr.surface}(${curr.base})<HIDDEN WORD END>`;
-    } else {
-        acc += curr.surface;
-    }
-    return acc;
-  }, '')
-  return {context, surfaces}
+  return snippet.filter(curr=>curr.id).reduce((acc, curr) => ({
+    ...acc,
+    [curr.ID]: curr.base
+  }), {})
 }
 
 export function getWordColor(

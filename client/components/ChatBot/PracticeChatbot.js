@@ -65,16 +65,8 @@ const PracticeChatbot = () => {
 
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
-        if (exerciseContext.context.trim() === '' || currentMessage.trim() === '') return;
-        let formattedContext = `Exercise context: ${exerciseContext.context}`;
-        formattedContext += "\n\nExpected answer: " + currentWord.surface
-        if (hints && hints.length > 0) {
-            const formattedHints = hints.map(hint => `- ${hint.easy}`);
-            formattedContext += "\n\nProvided hints:\n" + formattedHints.join("\n");
-        }
-        if (currentAnswer){
-            formattedContext += "\n\nStudent's answer: " + currentAnswer
-        }
+        if (Object.keys(exerciseContext).length === 0 || currentMessage.trim() === '') return
+        
         dispatch(
             getPracticeChatbotResponse(
                 session_id, 
@@ -83,9 +75,9 @@ const PracticeChatbot = () => {
                 sentence_id, 
                 wordId,
                 currentMessage.trim(), 
-                formattedContext.trim(), 
-                surface.trim(),
-                exerciseContext.surfaces,
+                currentAnswer.trim(),
+                exerciseContext,
+                hints.map(hint => hint.easy)
             )
         );
         setCurrentMessage("");
@@ -96,12 +88,12 @@ const PracticeChatbot = () => {
     useEffect(() => {
         if(Object.keys(currentWord).length && !listen && !speak) {
             let totalRequestedHints = []
-            const { requestedHintsList, user_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
+            const { requestedHintsList, users_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
             totalRequestedHints = (requestedBEHints || [])
             totalRequestedHints = totalRequestedHints.concat((requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint)))
             setEloScoreHearts(Array.from({length: hints ? hints.filter(hint => !totalRequestedHints.includes(hint)).length : 0}, (_, i) => i + 1))
             setSpentHints(Array.from({length: requestedHintsList ? requestedHintsList.length : 0}, (_, i) => i + 1))
-            setCurrentAnswer(user_answer)
+            setCurrentAnswer(users_answer)
             if (hintMessage && !hints && !totalRequestedHints) {
                 setPreHints([])
             } else if (attempt !== 0) {
