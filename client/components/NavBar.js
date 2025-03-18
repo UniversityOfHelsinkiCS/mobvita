@@ -110,9 +110,6 @@ export default function NavBar() {
     history.push('/')
   }
   const tourOngoing = useSelector(state => state.tour.run)
-  const lessons = useSelector(({ metadata }) => metadata.lessons)
-  const lessonsPageWithNoLessons =
-    history.location.pathname.includes('/lessons') && lessons.length === 0
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
   const profileDropdownRef = useRef()
 
@@ -365,7 +362,7 @@ export default function NavBar() {
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
               </Offline>
-              {!smallWindow && !lessonsPageWithNoLessons && (
+              {!smallWindow && (
                 <Popup
                   position="top center"
                   content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
