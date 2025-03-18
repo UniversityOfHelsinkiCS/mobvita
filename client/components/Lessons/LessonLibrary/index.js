@@ -153,7 +153,7 @@ const LessonList = () => {
   }, [lessonPending])
 
   useEffect(() => {
-    if (!lessonPending && !metaPending && !has_seen_lesson_tour ) {
+    if (!lessonPending && !metaPending && !has_seen_lesson_tour && lessons.length) {
       dispatch(setLessonStep(0))
       dispatch(lessonsTourViewed())
       dispatch(startLessonsTour())

@@ -110,6 +110,7 @@ export default function NavBar() {
     history.push('/')
   }
   const tourOngoing = useSelector(state => state.tour.run)
+  const lessons = useSelector(({ metadata }) => metadata.lessons)
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
   const profileDropdownRef = useRef()
 
@@ -132,7 +133,9 @@ export default function NavBar() {
         dispatch(startProgressTour())
       }
     } else if (history.location.pathname.includes('lessons')) {
-      dispatch(startLessonsTour())
+      if (lessons.length) {
+        dispatch(startLessonsTour())
+      }
     } else if (history.location.pathname.includes('library')) {
       dispatch(startLibraryTour())
     } else if (history.location.pathname.includes('preview')) {
