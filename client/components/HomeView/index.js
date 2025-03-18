@@ -83,8 +83,9 @@ const HomeviewButtons = ({
   const {lastActivity} = useSelector(({activity}) => activity)
   const {data: stories} = useSelector(({stories}) => stories)
   const userData = useSelector(state => state.user.data.user)
+  const lessons = useSelector(({ metadata }) => metadata.lessons)
   const learningLanguage = userData ? userData.last_used_language : null
-  
+
   const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher" : "student"
   
   const assembleActivityLink = (lastActivity) => {
@@ -156,14 +157,16 @@ const HomeviewButtons = ({
             />
           </div>
           <div className="lesson-btn-cont tour-lesson">
-            <HomeviewButton
-              imgSrc={images.readingBook}
-              altText="reading a book"
-              translationKey="lesson-home-btn"
-              beta_feature={true}
-              handleClick={() => history.push('/lessons/library')}
-              content="Home-Lessons-EXPLANATION"
-            />
+            {lessons && lessons.length > 0 && (
+              <HomeviewButton
+                imgSrc={images.readingBook}
+                altText="reading a book"
+                translationKey="lesson-home-btn"
+                beta_feature={true}
+                handleClick={() => history.push('/lessons/library')}
+                content="Home-Lessons-EXPLANATION"
+              />
+            )}
           </div>
         </div>
       )}
@@ -195,14 +198,16 @@ const HomeviewButtons = ({
             />
           </div>
           <div className="lesson-btn-cont tour-lesson">
-            <HomeviewButton
-              imgSrc={images.readingBook}
-              altText="reading a book"
-              translationKey="lesson-home-btn"
-              beta_feature={true}
-              handleClick={() => history.push('/lessons/library')}
-              content="Home-Lessons-EXPLANATION"
-            />
+            {lessons && lessons.length > 0 && (
+              <HomeviewButton
+                imgSrc={images.readingBook}
+                altText="reading a book"
+                translationKey="lesson-home-btn"
+                beta_feature={true}
+                handleClick={() => history.push('/lessons/library')}
+                content="Home-Lessons-EXPLANATION"
+              />
+            )}
           </div>
           <div className="library-btn-cont tour-library">
             <HomeviewButton
