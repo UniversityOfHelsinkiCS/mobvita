@@ -29,7 +29,7 @@ export default class ErrorBoundary extends Component {
     }
     return (
       <Container style={{ margin: 15 }}>
-        <Message color="red" style={{ display: block }}>
+        <Message color="red" style={{ display: 'block' }}>
             <Message.Header>
                 <FormattedMessage id="An error has occurred in the system.  The develper team has been notified." />
             </Message.Header>
