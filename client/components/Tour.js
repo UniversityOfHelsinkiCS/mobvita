@@ -44,6 +44,11 @@ const Tour = () => {
     ) {
       dispatch(stopTour())
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+      // Skip lesson step if there are no lessons for selected language
+      if (tourState.steps === homeTourSteps && !lesson_topics.length && index === 3) {
+        dispatch(handleNextTourStep(index + 2))
+        return
+      }
       // desktop
       if (bigScreen) {
         if (tourState.steps === homeTourSteps && !history.location.pathname.includes('/home')) {
