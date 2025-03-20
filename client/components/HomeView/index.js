@@ -156,8 +156,8 @@ const HomeviewButtons = ({
               content="Home-Library-EXPLANATION"
             />
           </div>
-          <div className="lesson-btn-cont tour-lesson">
-            {lessons && lessons.length > 0 && (
+          {lessons && lessons.length > 0 && (
+            <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
                 imgSrc={images.readingBook}
                 altText="reading a book"
@@ -166,8 +166,8 @@ const HomeviewButtons = ({
                 handleClick={() => history.push('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -197,8 +197,8 @@ const HomeviewButtons = ({
               content="Home-Dive-In-EXPLANATION"
             />
           </div>
-          <div className="lesson-btn-cont tour-lesson">
-            {lessons && lessons.length > 0 && (
+          {lessons && lessons.length > 0 && (
+            <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
                 imgSrc={images.readingBook}
                 altText="reading a book"
@@ -207,8 +207,8 @@ const HomeviewButtons = ({
                 handleClick={() => history.push('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
-            )}
-          </div>
+            </div>
+          )}
           <div className="library-btn-cont tour-library">
             <HomeviewButton
               imgSrc={images.library}
