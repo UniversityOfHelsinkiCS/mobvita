@@ -77,7 +77,7 @@ const PracticeChatbot = () => {
                 currentMessage.trim(), 
                 currentAnswer.trim(),
                 exerciseContext,
-                hints.map(hint => hint.easy)
+                (hints || []).map(hint => hint.easy)
             )
         );
         setCurrentMessage("");
