@@ -1109,5 +1109,7 @@
     "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "您可以通过向我们发送问题的简短描述来帮助我们快速解决问题 - 以通过此按钮打开的格式：",
     "(Please write in any language that is convenient for you.)": "（请用你习惯的语言说谎。）",
     "Next, please refresh the page, or click \"Go back\"": "接下来，刷新页面，或点击“返回”",
-    "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available"
+    "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available",
+    "general-chatbot-init-mess": "",
+    "Error rendering message": ""
 }
