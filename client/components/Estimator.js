@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Button, Form, Table } from 'react-bootstrap'
+import { callApi } from 'Utilities/apiConnection'
 
 const Estimator = () => {
   const [text, setText] = useState('')
@@ -7,16 +8,8 @@ const Estimator = () => {
 
   const estimate = async () => {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-      })
-      const data = await response.json()
-      setDifficulty(data.id)
-      console.log('API Response:', data)
+      const response = await callApi('/estimate', 'POST', { text })
+      setDifficulty(response.data.difficulty)
     } catch (error) {
       console.error('Error submitting text:', error)
     }
