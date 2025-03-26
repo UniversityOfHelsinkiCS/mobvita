@@ -387,7 +387,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                     />
                 )}
               </div>
-              {!inWordNestModal && !inCrossword && <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>}
+                  {!inWordNestModal && !inCrossword && !pending &&
+                    <ContextTranslation surfaceWord={surfaceWord} wordTranslated={translation} />}
             </div>
           )}
            </>

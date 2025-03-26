@@ -114,7 +114,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     }
     
 
-    if (!translatable || !wordTranslated || !pending && !data) return null
+    if (!translatable || !pending && !data) return null
     if (!show && translatable) return (
         <Popup
             position="top center"
