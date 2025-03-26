@@ -45,7 +45,7 @@ const Estimator = () => {
       </Row>
       <Row className="justify-content-center">
         <Col xs="auto">
-          <Button type="button" onClick={e => handleClick(e)}>
+          <Button type="button" disabled={!text} onClick={e => handleClick(e)}>
             Estimate
           </Button>
         </Col>
