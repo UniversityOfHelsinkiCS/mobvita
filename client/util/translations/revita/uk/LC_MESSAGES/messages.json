@@ -841,5 +841,7 @@
     "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "Ти можеш допомогти нам швидше усунути помилку, надіславши її короткий опис — у формі, що відкривається при натисканні цієї кнопки:",
     "(Please write in any language that is convenient for you.)": "(Пиши будь-якою зручною для тебе мовою.)",
     "Next, please refresh the page, or click \"Go back\"": "Далі, онови сторінку чи натисніть «Назад».",
-    "candidate-available-explain-1": "Це кількість доступних вправ для кандидатів. При виборі без теми, всі вправи доступні"
+    "candidate-available-explain-1": "Це кількість доступних вправ для кандидатів. При виборі без теми, всі вправи доступні",
+    "general-chatbot-init-mess": "",
+    "Error rendering message": ""
 }

@@ -28,7 +28,7 @@ import Lemma from './Lemma'
 import ContextTranslation from './ContextTranslation'
 
 
-const DictionaryHelp = ({ minimized, inWordNestModal }) => {
+const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
 
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
@@ -117,7 +117,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
   }
 
   useEffect(() => {
-    if (translation) setWordNestChosenWord(translation?.filter(t=>t.lemma).map(t=>t.lemma).join('+'))
+    if (!inCrossword && translation) setWordNestChosenWord(translation?.filter(t=>t.lemma).map(t=>t.lemma).join('+'))
   }, [translation])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
@@ -387,7 +387,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal }) => {
                     />
                 )}
               </div>
-              {!inWordNestModal && <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>}
+              {!inWordNestModal && !inCrossword && <ContextTranslation surfaceWord={surfaceWord} wordTranslated={!pending && translation}/>}
             </div>
           )}
            </>
