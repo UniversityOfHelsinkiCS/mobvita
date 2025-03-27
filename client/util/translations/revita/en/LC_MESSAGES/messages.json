@@ -1672,7 +1672,7 @@
     "explain-library-search": "Here you can search for text contained in the story",
     "lesson-performance-info-tooltip": "This is your current level of performance on this topic: percent of correct answers in exercises",
     "copy-key": "Copy key",
-    "flashcard-upload-instructions": "Please upload a text file containing your flashcards:\r\n<ul>\r\n<li>Select a file with extension .TXT or .DOCX (other extensions not supported)</li>\r\n<li>The first line must contain the <b>title</b> of the flashcard pack</li>\r\n<li>Each line contains <b>one word/phrase</b>, then translations, separated by semicolons; for example:</li><li>\r\n<ul>\r\n<li>word;translation 1; translation 2; ... </li>\r\n</ul>\r\n</li></ul>",
+    "flashcard-upload-instructions": "Please upload a text file containing your flashcards:\n<ul>\n<li>Select a file with extension .TXT or .DOCX (other extensions not supported)</li>\n<li>The first line must contain the <b>title</b> of the flashcard pack</li>\n<li>Each line contains <b>one word/phrase</b>, then translations, separated by semicolons; for example:\n<ul>\n<li>word;translation 1; translation 2; ... </li>\n</ul>\n</li></ul>",
     "flashcard-btn-explanation": "Practice with flashcards from this story!",
     "group-hidden-story": "Thе story is hidden for this group",
     "flashcard-translation-target-language": "Translation target language:",
