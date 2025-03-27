@@ -51,6 +51,7 @@ import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 import GecView from './GecView'
 import StoryGeneration from './StoryGeneration'
+import Estimator from './Estimator'
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -77,6 +78,7 @@ export default () => {
 
   return (
     <Switch>
+      <Route exact path="/selkomitta" component={Estimator} />
       <Route exact path="/">
         {userData ? <Redirect to="/welcome" /> : <LandingPage />}
       </Route>
