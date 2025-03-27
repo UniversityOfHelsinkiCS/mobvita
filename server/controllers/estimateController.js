@@ -1,4 +1,4 @@
-const getEstimate = async (req, res) => {
+const estimate = async (req, res) => {
   const { text } = req.body
 
   if (!text) {
@@ -11,4 +11,4 @@ const getEstimate = async (req, res) => {
   res.json({ difficulty: 10 })
 }
 
-module.exports = { getEstimate }
+module.exports = { estimate }
