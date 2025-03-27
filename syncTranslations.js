@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path')
 const { google } = require('googleapis');
+const sanitize = require('sanitize-html');
+const { exit } = require('process');
 require('dotenv').config()
 
 const apiClient = new google.auth.GoogleAuth({
@@ -46,6 +48,30 @@ async function addTranslations(auth) {
   });
 }
 
+// validate html strings
+// check if tags are closed properly
+function validateHtml(html) {
+  const config = {
+    allowedAttributes: {
+      a: ['href'],
+      span: ['style']
+    },
+    '*': {
+      // Match HEX and RGB
+      'color': [/^.?$/],
+      'text-align': [/^left$/, /^right$/, /^center$/],
+      // Match any number with px, em, or %
+      'font-size': [/^\d+(?:px|em|%)$/],
+      'font-weight': [/^.+$/],
+    },
+  }
+  // console.log(sanitize(html, config))
+  // console.log(html)
+  // console.log()
+  // console.log()
+  return html === sanitize(html, config)
+}
+
 function makeTranslations(translations) {
   for (lang of languages) {
     let changes = 0
@@ -56,7 +82,11 @@ function makeTranslations(translations) {
     for ([key, langs] of Object.entries(translations)) {
       const orig = file[key]
       file[key] = langs[lang]
-      if (orig === undefined) {
+      if (!validateHtml(file[key].replace(/\s*\/>/g, ' />'))) {
+        console.log(`invalid html in ${lang} ${key} -> ${file[key]}`)
+        exit(1)
+      }
+      else if (orig === undefined) {
         news++
       }
       else if (orig != file[key]) {
