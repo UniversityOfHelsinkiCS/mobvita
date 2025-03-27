@@ -10,7 +10,8 @@ import {
   voiceLanguages,
   hiddenFeatures,
   learningLanguageLocaleCodes,
-  useMTAvailableLanguage
+  useMTAvailableLanguage,
+  sanitizeHtml
 } from 'Utilities/common'
 import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
@@ -278,8 +279,8 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
         <div style={{ textAlign: 'left' }}>
           <FormattedMessage id="topics-header" />:
           <ul className="mb-0">
-            {word.concepts.map(concept => (
-              <li>{concept.concept}</li>
+            {word.concepts.map((concept, i) => (
+              <li key={i} dangerouslySetInnerHTML={sanitizeHtml(concept.concept)} />
             ))}
           </ul>
         </div>

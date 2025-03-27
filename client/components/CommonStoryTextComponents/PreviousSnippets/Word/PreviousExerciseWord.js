@@ -11,6 +11,7 @@ import {
   speak,
   voiceLanguages,
   formatGreenFeedbackText,
+  sanitizeHtml,
   hiddenFeatures,
   getWordColor,
   skillLevels,
@@ -217,8 +218,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
         <div style={{ textAlign: 'left' }}>
           <FormattedMessage id="topics-header" />:
           <ul className="mb-0">
-            {word.concepts.map(concept => (
-              <li key={concept.concept}>{concept.concept}</li>
+            {word.concepts.map((concept, i) => (
+              <li key={i} dangerouslySetInnerHTML={sanitizeHtml(concept.concept)} />
             ))}
           </ul>
         </div>
