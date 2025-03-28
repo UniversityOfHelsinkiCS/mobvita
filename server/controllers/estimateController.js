@@ -16,19 +16,45 @@ const estimate = async (req, res) => {
 
   try {
     const db = await open({ filename: 'estimate.db', driver: sqlite3.Database })
-    await db.exec('CREATE TABLE IF NOT EXISTS users (ip TEXT, word_count INTEGER)')
+    await db.exec(
+      'CREATE TABLE IF NOT EXISTS users (ip TEXT, word_count INTEGER, last_reset INTEGER)'
+    )
     const user = await db.get('SELECT * FROM users WHERE ip = ?', ip)
-    const totalWordCount = user ? wordCount + user.word_count : wordCount
-
-    if (totalWordCount > wordCountLimit) {
-      res.status(400).json({ error: `You have exceeded the word limit of ${wordCountLimit}` })
-      return
-    }
 
     if (!user) {
-      await db.run('INSERT INTO users(ip, word_count) VALUES(?, ?)', [ip, wordCount])
+      if (wordCount > wordCountLimit) {
+        res
+          .status(400)
+          .json({ error: `This estimate exceeds the daily word limit of ${wordCountLimit} words` })
+        return
+      }
+
+      await db.run('INSERT INTO users(ip, word_count, last_reset) VALUES(?, ?, ?)', [
+        ip,
+        wordCount,
+        Date.now(),
+      ])
     } else {
-      await db.run('UPDATE users SET word_count = word_count + ? WHERE ip = ?', [wordCount, ip])
+      let totalWordCount = wordCount + user.word_count
+      let lastReset = user.last_reset
+
+      if (Date.now() - lastReset >= 24 * 60 * 60 * 1000) {
+        totalWordCount = wordCount
+        lastReset = Date.now()
+      }
+
+      if (totalWordCount > wordCountLimit) {
+        res
+          .status(400)
+          .json({ error: `This estimate exceeds the daily word limit of ${wordCountLimit} words` })
+        return
+      }
+
+      await db.run('UPDATE users SET word_count = ?, last_reset = ? WHERE ip = ?', [
+        totalWordCount,
+        lastReset,
+        ip,
+      ])
     }
 
     await db.close()
