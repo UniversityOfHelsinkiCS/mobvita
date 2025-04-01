@@ -12,7 +12,6 @@ const Estimator = () => {
       const response = await axios.post('/api/estimate', { text })
       setDifficulty(response.data.difficulty)
     } catch (error) {
-      setDifficulty(null)
       setErrorMessage(error.response.data.error)
     }
   }
@@ -52,6 +51,15 @@ const Estimator = () => {
           </Button>
         </Col>
       </Row>
+      {errorMessage && (
+        <Row className="mt-5">
+          <Col>
+            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
+              {errorMessage}
+            </Alert>
+          </Col>
+        </Row>
+      )}
       {difficulty && (
         <Row className="my-5">
           <Col>
@@ -63,15 +71,6 @@ const Estimator = () => {
                 </tr>
               </tbody>
             </Table>
-          </Col>
-        </Row>
-      )}
-      {errorMessage && (
-        <Row className="my-5">
-          <Col>
-            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
-              {errorMessage}
-            </Alert>
           </Col>
         </Row>
       )}

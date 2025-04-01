@@ -25,7 +25,7 @@ const estimate = async (req, res) => {
       if (wordCount > wordCountLimit) {
         res
           .status(400)
-          .json({ error: `This estimate exceeds the daily word limit of ${wordCountLimit} words` })
+          .json({ error: `This estimate exceeds the daily limit of ${wordCountLimit} words` })
         return
       }
 
@@ -46,7 +46,7 @@ const estimate = async (req, res) => {
       if (totalWordCount > wordCountLimit) {
         res
           .status(400)
-          .json({ error: `This estimate exceeds the daily word limit of ${wordCountLimit} words` })
+          .json({ error: `This estimate exceeds the daily limit of ${wordCountLimit} words` })
         return
       }
 
