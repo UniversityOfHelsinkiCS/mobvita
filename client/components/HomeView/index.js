@@ -105,7 +105,7 @@ const HomeviewButtons = ({
         if (story?.control_story) 
           return `/stories/${lastActivity.story_id}/controlled-practice/`
         else if (story) 
-          return `/stories/${lastActivity.story_id}/${story.exercise_mode}/practice/`
+          return `/stories/${lastActivity.story_id}/practice/`
         else return null
       
       case 'lesson':
