@@ -568,6 +568,7 @@ export const formatEmailList = emailListAsString => {
     .toLowerCase()
     .split(new RegExp(`[${separators.join('')}]`, 'g'))
     .map(p => p.trim())
+    .filter(p => p.length > 0)
 }
 
 export * from '@root/config/common'
