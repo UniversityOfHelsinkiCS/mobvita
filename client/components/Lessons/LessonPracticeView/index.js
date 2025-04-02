@@ -84,8 +84,6 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     setCurrentSnippetNum(0)
-    dispatch(clearLessonInstanceState())
-    dispatch(resetSnippets())
     // dispatch(clearExerciseState())
     if (isGroupLesson) {
       dispatch(getLessonInstance(groupId))
@@ -93,6 +91,11 @@ const LessonPracticeView = () => {
     else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
+
+    return () => {
+      dispatch(clearLessonInstanceState())
+      dispatch(resetSnippets())
+    }
   }, [])
 
   useEffect(() => {
