@@ -87,6 +87,7 @@ import flame from 'Assets/images/flame.png'
 import flameColorless from 'Assets/images/flame_colorless.png'
 import greenArrow from 'Assets/images/green_arrow.png'
 import heartbeat from 'Assets/images/heartbeat.png'
+import uhLogo from 'Assets/images/uh_logo.png'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -179,6 +180,7 @@ export const images = {
   flameIcon,
   greenArrow,
   heartbeat,
+  uhLogo,
 }
 
 export const backgroundColors = [

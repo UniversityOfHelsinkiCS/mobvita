@@ -1,5 +1,5 @@
 import React from 'react'
-import { getBackgroundColor } from 'Utilities/common'
+import { getBackgroundColor, images } from 'Utilities/common'
 import { useHistory } from 'react-router-dom'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 
@@ -27,8 +27,10 @@ const Footer = () => {
             </div>
           </>
         )}
-        <div className="footer-item">© University of Helsinki 2020–2025</div>
-
+        <div className="footer-item">
+          <img src={images.uhLogo} alt="logo" width={20} height={20} /> © University of Helsinki
+          2020–2025
+        </div>
         {showResonsiveVoiceMention && (
           <div className="footer-item">
             Powered by {' '}
