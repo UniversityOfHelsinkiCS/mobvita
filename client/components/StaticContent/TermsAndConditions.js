@@ -44,14 +44,14 @@ const TermsAndConditions = ({ trigger }) => (
       <p>
         Unless otherwise stated, Revita and/or it's licensors own the intellectual property rights
         for all material on Revita. All intellectual property rights are reserved. You may view
-        and/or print pages from https://revita.cs.helsinki.fi/ for your own personal use subject to
+        and/or print pages from https://revita.helsinki.fi/ for your own personal use subject to
         restrictions set in these terms and conditions.
       </p>
       <p>You must not:</p>
       <ol>
-        <li>Republish material from https://revita.cs.helsinki.fi/</li>
-        <li>Sell, rent or sub-license material from https://revita.cs.helsinki.fi/</li>
-        <li>Reproduce, duplicate or copy material from https://revita.cs.helsinki.fi/</li>
+        <li>Republish material from https://revita.helsinki.fi/</li>
+        <li>Sell, rent or sub-license material from https://revita.helsinki.fi/</li>
+        <li>Reproduce, duplicate or copy material from https://revita.helsinki.fi/</li>
       </ol>
       <p>
         Redistribute content from Revita (unless content is specifically made for redistribution).
@@ -212,8 +212,8 @@ const TermsAndConditions = ({ trigger }) => (
       <p>
         It is Revita's policy to respect your privacy regarding any information we may collect while
         operating our website. This Privacy Policy applies to{' '}
-        <a href="https://revita.cs.helsinki.fi/">https://revita.cs.helsinki.fi/</a> (hereinafter,
-        "us", "we", or "https://revita.cs.helsinki.fi/"). We respect your privacy and are committed
+        <a href="https://revita.helsinki.fi/">https://revita.helsinki.fi/</a> (hereinafter,
+        "us", "we", or "https://revita.helsinki.fi/"). We respect your privacy and are committed
         to protecting personally identifiable information you may provide us through the Website. We
         have adopted this privacy policy ("Privacy Policy") to explain what information may be
         collected on our Website, how we use this information, and under what circumstances we may
@@ -285,7 +285,7 @@ const TermsAndConditions = ({ trigger }) => (
         parties or the public at large.
       </p>
       <p>
-        If you are a registered user of https://revita.cs.helsinki.fi/ and have supplied your email
+        If you are a registered user of https://revita.helsinki.fi/ and have supplied your email
         address, Revita may occasionally send you an email to tell you about new features, solicit
         your feedback, or just keep you up to date with what's going on with Revita and our
         products. We primarily use our blog to communicate this type of information, so we expect to
@@ -314,7 +314,7 @@ const TermsAndConditions = ({ trigger }) => (
         A cookie is a string of information that a website stores on a visitor's computer, and that
         the visitor's browser provides to the website each time the visitor returns. Revita uses
         cookies to help Revita identify and track visitors, their usage of
-        https://revita.cs.helsinki.fi/, and their website access preferences. Revita visitors who do
+        https://revita.helsinki.fi/, and their website access preferences. Revita visitors who do
         not wish to have cookies placed on their computers should set their browsers to refuse
         cookies before using Revita's websites, with the drawback that certain features of Revita's
         websites may not function properly without the aid of cookies.
