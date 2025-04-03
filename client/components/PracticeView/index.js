@@ -94,8 +94,10 @@ const PracticeView = () => {
   }, [currentSnippetId()])
 
   useEffect(() => {
-    dispatch(getStoryAction(id, mode))
-  }, [learningLanguage])
+    if (!story) {
+      dispatch(getStoryAction(id, mode))
+    }
+  }, [])
 
   useEffect(() => {
     if (!isPaused) timer.start()
