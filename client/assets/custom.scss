@@ -1442,6 +1442,10 @@ $value in $spacing {
   }
 }
 
+.library-tab {
+  flex: 1;
+}
+
 .library-search-cancel {
   position: absolute;
   right: 2em;
@@ -1553,6 +1557,7 @@ label.file-upload-btn {
   border-width: 2px 2px 0px 2px;
   border-style: solid;
   border-color: black;
+  width: 100%;
 }
 
 .library-toggle-button-chosen:focus {
@@ -1571,6 +1576,7 @@ label.file-upload-btn {
   border-width: 0px 0px 2px 0px;
   border-style: solid;
   border-color: black;
+  width: 100%;
 }
 
 .library-toggle-button:hover {

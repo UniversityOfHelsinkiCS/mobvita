@@ -453,24 +453,16 @@ const LessonList = () => {
           </div>
         ) : (
           <>
-            <div className="library-selection">
-              <LibraryTabs
-                values={Object.fromEntries(Object.entries(libraries).filter(([key]) => 
-                  (key === 'private' && !teacherView) || (key === 'group' && (teacherView || groups.length > 0))))}
-                additionalClass="wrap-and-grow align-center pt-sm"
-                onClick={handleLibraryChange}
-                reverse
-              />
-              {libraries.group && (
-                <Select
-                  value={savedGroupSelection}
-                  options={groupDropdownOptions}
-                  onChange={handleGroupChange}
-                  disabled={!libraries.group}
-                  style={{ color: '#777', marginTop: '0.5em' }}
-                />
-              )}
-            </div>
+            <LibraryTabs
+              values={Object.fromEntries(Object.entries(libraries).filter(([key]) => 
+                (key === 'private' && !teacherView) || (key === 'group' && (teacherView || groups.length > 0))))}
+              onClick={handleLibraryChange}
+              reverse
+              savedGroupSelection={savedGroupSelection}
+              groupDropdownOptions={groupDropdownOptions}
+              groupDropdownDisabled={!libraries.group}
+              handleGroupChange={handleGroupChange}
+            />
 
             {libraries.group && !teacherView ? (
               <div>

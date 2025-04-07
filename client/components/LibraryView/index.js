@@ -239,23 +239,15 @@ const StoryList = () => {
           {intl.formatMessage({ id: 'add-your-stories' })}
         </Button>
       </span>
-      <div className="library-selection">
-        <LibraryTabs
-          values={libraries}
-          additionalClass="wrap-and-grow align-center pt-sm"
-          onClick={handleLibraryChange}
-          reverse
-        />
-        {libraries.group && (
-          <Select
-            value={savedGroupSelection}
-            options={groupDropdownOptions}
-            onChange={handleGroupChange}
-            disabled={!libraries.group}
-            style={{ color: '#777', marginTop: '0.5em' }}
-          />
-        )}
-      </div>
+      <LibraryTabs
+        values={libraries}
+        onClick={handleLibraryChange}
+        reverse
+        savedGroupSelection={savedGroupSelection}
+        groupDropdownOptions={groupDropdownOptions}
+        groupDropdownDisabled={!libraries.group}
+        handleGroupChange={handleGroupChange}
+      />
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown
