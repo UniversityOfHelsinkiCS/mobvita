@@ -28,3 +28,24 @@
 .green3-slider.exercise-density-slider-thumb {
     background-color: #4dff4d; 
 }
+
+.lesson-setup-btn {
+    padding: 10px 5px 15px 5px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.lesson-setup-btn.inactive {
+    background-color: white;
+}
+
+.lesson-setup-btn:hover {
+    background-color: rgb(255, 227, 150);
+}
+
+.lesson-setup-btn.active, .lesson-setup-btn.active:hover {
+    background-color: rgb(255, 209, 80);
+}

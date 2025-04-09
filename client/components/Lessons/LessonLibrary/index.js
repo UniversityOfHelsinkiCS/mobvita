@@ -1,23 +1,24 @@
+/* eslint-disable no-nested-ternary */
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { 
-  Placeholder, 
-  Icon, 
-  Select, 
-  Container, } from 'semantic-ui-react'
+import { Placeholder, Icon, Select, Container, Modal, TabPane, Tab } from 'semantic-ui-react'
+import Stepper from '@keyvaluesystems/react-stepper'
 
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import Topics from 'Components/Topics'
+import ThemeView from '../ThemeView'
+import GrammarView from '../GrammarView'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { Stepper, Step } from 'react-form-stepper';
+import { Link, useHistory } from 'react-router-dom'
+// import { Stepper, Step } from 'react-form-stepper';
 
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
@@ -82,7 +83,7 @@ const LessonList = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending: lessonPending, lesson, step: goStep, showCustomModal } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -101,8 +102,9 @@ const LessonList = () => {
     group: false,
   })
 
-  
+  const [modal, setModal] = useState(false)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const setLibrary = library => {
     const librariesCopy = {}
@@ -296,10 +298,10 @@ const LessonList = () => {
   const markComp = StyledMark(intl.formatMessage({
       id: 'Recommended vocabulary difficulty' }))
   const lessonVocabularyControls = bigScreen ? (
-    <div className="align-center">
-      <h5>
+    <>
+      {/* <h5>
         <FormattedMessage id="select-lesson-vocab-diff" />:
-      </h5>
+      </h5> */}
 
       <div
         className="lesson-vocab-slider-container"
@@ -330,12 +332,12 @@ const LessonList = () => {
           <span><FormattedMessage id='Hard' /></span>
         </div>
       </div>
-    </div>
+    </>
   ) : (
-    <div className="align-center">
-      <h5>
+    <>
+      {/* <h5>
         <FormattedMessage id="select-lesson-vocab-diff" />:
-      </h5>
+      </h5> */}
 
       <div
         className="lesson-vocab-slider-container"
@@ -366,7 +368,7 @@ const LessonList = () => {
           <span><FormattedMessage id='Hard' /></span>
         </div>
       </div>
-    </div>
+    </>
   )
   const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
   const lessonReady = selectedSemantics && selectedSemantics.length > 0 && selectedTopicIds && selectedTopicIds.length > 0
@@ -439,23 +441,79 @@ const LessonList = () => {
     return dir * multiplier
   })
 
-  return (
-    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+  const panes = [
+    { menuItem: 'Tab 1', render: () => <TabPane style={{ flex: 1 }}>Tab 1 Content</TabPane> },
+    {
+      menuItem: 'Tab 2',
+      render: () => (
+        <TabPane>
+          <Topics
+            topicInstance={{ ...lesson, instancePending: lessonPending }}
+            editable={libraries.private || (currentGroup && currentGroup.is_teaching)}
+            setSelectedTopics={setSelectedTopics}
+            showPerf={libraries.private}
+          />
+        </TabPane>
+      ),
+    },
+  ]
 
+  const setupViewTitle = () => {
+    switch (goStep) {
+      case 0:
+        return 'Choose themes'
+      case 1:
+        return 'Set vocabulary level'
+      case 2:
+        return 'Select grammar topics'
+      default:
+        return ''
+    }
+  }
+
+  const handleContinueClick = () => {
+    if (goStep === 1) {
+      finnishSelectingSemanticsAndVocabDiff()
+    }
+
+    dispatch(setLessonStep(goStep + 1))
+  }
+
+  const handleBackClick = () => {
+    dispatch(setLessonStep(goStep - 1))
+  }
+
+  const handleBeginClick = () => {
+    finnishSelectingTopics()
+    setTimeout(() => {
+      history.push(link)
+    }, 10000)
+  }
+
+  return (
+    <>
+      <Modal open={modal} onClose={() => setModal(false)} closeOnEscape closeOnDimmerClick>
+        <Tab panes={panes} />
+      </Modal>
       {metaPending || groupPending ? (
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
-      ) :
-        noResults ? (
-          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
-            <FormattedMessage id="no-lessons-found" />
-          </div>
-        ) : (
-          <>
+      ) : noResults ? (
+        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-lessons-found" />
+        </div>
+      ) : (
+        <div style={{ display: 'flex', height: '100%' }}>
+          <div style={{ flex: 1 }}>
             <LibraryTabs
-              values={Object.fromEntries(Object.entries(libraries).filter(([key]) => 
-                (key === 'private' && !teacherView) || (key === 'group' && (teacherView || groups.length > 0))))}
+              values={Object.fromEntries(
+                Object.entries(libraries).filter(
+                  ([key]) =>
+                    (key === 'private' && !teacherView) ||
+                    (key === 'group' && (teacherView || groups.length > 0))
+                )
+              )}
               onClick={handleLibraryChange}
               reverse
               savedGroupSelection={savedGroupSelection}
@@ -463,8 +521,103 @@ const LessonList = () => {
               groupDropdownDisabled={!libraries.group}
               handleGroupChange={handleGroupChange}
             />
+            <h1 style={{ textAlign: 'center', marginTop: '30px', marginBottom: '30px' }}>
+              {setupViewTitle()}
+            </h1>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '450px',
+              }}
+            >
+              <ThemeView
+                currentStepIndex={goStep}
+                selectedSemantics={selectedSemantics}
+                lesson_semantics={lesson_semantics}
+                toggleSemantic={toggleSemantic}
+              />
+              {goStep === 1 && lessonVocabularyControls}
+              <GrammarView
+                currentStepIndex={goStep}
+                setShowGrammarModal={setModal}
+                lessons={lessons}
+                selectedTopicIds={selectedTopicIds}
+                setSelectedTopics={setSelectedTopics}
+              />
+            </div>
+            <div
+              style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '20px' }}
+            >
+              {goStep !== 0 && (
+                <Button
+                  variant="secondary"
+                  style={{ width: '90px' }}
+                  type="button"
+                  onClick={handleBackClick}
+                >
+                  Back
+                </Button>
+              )}
+              {goStep === 2 ? (
+                <Button
+                  style={{ width: '90px' }}
+                  type="button"
+                  onClick={handleBeginClick}
+                  disabled={
+                    selectedSemantics.length === 0 ||
+                    selectedTopicIds.length === 0 ||
+                    lessonPending ||
+                    !lessonReady
+                  }
+                >
+                  Begin
+                </Button>
+              ) : (
+                <Button
+                  variant="primary"
+                  style={{ width: '90px' }}
+                  type="button"
+                  onClick={handleContinueClick}
+                >
+                  Continue
+                </Button>
+              )}
+            </div>
+          </div>
+          <div
+            style={{
+              width: '300px',
+              height: '100vh',
+              backgroundColor: '#ebebeb',
+              padding: '20px',
+              marginLeft: '0.2rem',
+            }}
+          >
+            <Stepper
+              steps={[
+                {
+                  stepLabel: 'Choose themes',
+                  stepDescription: '',
+                  completed: goStep > 0,
+                },
+                {
+                  stepLabel: 'Set vocabulary level',
+                  stepDescription: '',
+                  completed: goStep > 1,
+                },
+                {
+                  stepLabel: 'Select grammar topics',
+                  stepDescription: '',
+                  completed: false,
+                },
+              ]}
+              currentStepIndex={goStep}
+            />
+          </div>
 
-            {libraries.group && !teacherView ? (
+            {/* libraries.group && !teacherView ? (
               <div>
                 {lessonStartControls}
               </div>
@@ -564,13 +717,13 @@ const LessonList = () => {
                     {lessonStartControls}
                   </div>
                 )}
-                {/* {libraryControls} */}
+                {libraryControls}
               </div>
-            )}
-            <ScrollArrow />
-          </>
-        )}
-    </div>
+            ) */}
+          <ScrollArrow />
+        </div>
+      )}
+    </>
   )
 }
 
