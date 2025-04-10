@@ -442,9 +442,8 @@ const LessonList = () => {
   })
 
   const panes = [
-    { menuItem: 'Tab 1', render: () => <TabPane style={{ flex: 1 }}>Tab 1 Content</TabPane> },
     {
-      menuItem: 'Tab 2',
+      menuItem: 'Select grammar topics',
       render: () => (
         <TabPane>
           <Topics
@@ -455,6 +454,10 @@ const LessonList = () => {
           />
         </TabPane>
       ),
+    },
+    {
+      menuItem: 'Choose audio exercise types',
+      render: () => <TabPane style={{ flex: 1 }}>Tab 1 Content</TabPane>,
     },
   ]
 
