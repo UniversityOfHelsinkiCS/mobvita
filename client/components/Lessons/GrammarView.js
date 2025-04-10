@@ -17,14 +17,16 @@ const GrammarView = ({
       if (!groups[groupName]) {
         groups[groupName] = []
       }
-      groups[groupName].push(lesson.ID)
+      lesson.topics.forEach(topic => {
+        groups[groupName].push(topic)
+      })
       return groups
     }, {})
 
     return levelTopics
   }
 
-  const isButtonActive = level => {
+  const isLevelButtonActive = level => {
     if (selectedTopicIds.length === 0) return false
 
     return getTopicsByLevel()[level].every(topic => selectedTopicIds.includes(topic))
@@ -33,13 +35,44 @@ const GrammarView = ({
   const handleLevelClick = level => {
     let newTopics
 
-    if (isButtonActive(level)) {
-      newTopics = selectedTopicIds.filter(topicId => Number(topicId[0]) !== level)
+    console.log('topics: ', getTopicsByLevel()[level])
+
+    if (isLevelButtonActive(level)) {
+      newTopics = selectedTopicIds.filter(topicId => !getTopicsByLevel()[level].includes(topicId))
     } else {
-      newTopics = selectedTopicIds.concat(getTopicsByLevel()[level])
+      console.log('topicsByLevel: ', getTopicsByLevel()[level])
+      console.log('selectedTopicIds: ', selectedTopicIds)
+
+      if (isCustomButtonActive()) {
+        newTopics = getTopicsByLevel()[level]
+      } else {
+        newTopics = selectedTopicIds.concat(getTopicsByLevel()[level])
+      }
     }
 
     setSelectedTopics(newTopics)
+  }
+
+  const isCustomButtonActive = () => {
+    if (selectedTopicIds.length === 0) return false
+
+    let isActive = false
+
+    selectedTopicIds.forEach(topicId => {
+      let levelOfTopic
+
+      [1, 2, 3, 4].forEach(level => {
+        if (getTopicsByLevel()[level].includes(topicId)) {
+          levelOfTopic = level
+        }
+      })
+
+      if (!isLevelButtonActive(levelOfTopic)) {
+        isActive = true
+      }
+    })
+
+    return isActive
   }
 
   const handleCustomClick = () => {
@@ -67,12 +100,17 @@ const GrammarView = ({
             handleClick={() => handleLevelClick(level)}
             name={`level ${level}`}
             width="100px"
-            active={isButtonActive(level)}
+            active={isLevelButtonActive(level) && !isCustomButtonActive()}
           />
         ))}
       </div>
       <hr style={{ color: '#333', width: '320px' }} />
-      <ToggleButton handleClick={handleCustomClick} name="custom" width="100px" />
+      <ToggleButton
+        handleClick={handleCustomClick}
+        name="custom"
+        width="100px"
+        active={isCustomButtonActive()}
+      />
     </div>
   )
 }
