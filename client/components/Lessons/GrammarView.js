@@ -32,6 +32,27 @@ const GrammarView = ({
     return getTopicsByLevel()[level].every(topic => selectedTopicIds.includes(topic))
   }
 
+  const isCustomButtonActive = () => {
+    if (selectedTopicIds.length === 0) return false
+
+    let isActive = false
+
+    selectedTopicIds.forEach(topicId => {
+      let levelOfTopic
+      ;[1, 2, 3, 4].forEach(level => {
+        if (getTopicsByLevel()[level].includes(topicId)) {
+          levelOfTopic = level
+        }
+      })
+
+      if (!isLevelButtonActive(levelOfTopic)) {
+        isActive = true
+      }
+    })
+
+    return isActive
+  }
+
   const handleLevelClick = level => {
     let newTopics
 
@@ -44,28 +65,6 @@ const GrammarView = ({
     }
 
     setSelectedTopics(newTopics)
-  }
-
-  const isCustomButtonActive = () => {
-    if (selectedTopicIds.length === 0) return false
-
-    let isActive = false
-
-    selectedTopicIds.forEach(topicId => {
-      let levelOfTopic
-
-      [1, 2, 3, 4].forEach(level => {
-        if (getTopicsByLevel()[level].includes(topicId)) {
-          levelOfTopic = level
-        }
-      })
-
-      if (!isLevelButtonActive(levelOfTopic)) {
-        isActive = true
-      }
-    })
-
-    return isActive
   }
 
   const handleCustomClick = () => {
