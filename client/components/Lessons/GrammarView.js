@@ -35,19 +35,12 @@ const GrammarView = ({
   const handleLevelClick = level => {
     let newTopics
 
-    console.log('topics: ', getTopicsByLevel()[level])
-
     if (isLevelButtonActive(level)) {
       newTopics = selectedTopicIds.filter(topicId => !getTopicsByLevel()[level].includes(topicId))
+    } else if (isCustomButtonActive()) {
+      newTopics = getTopicsByLevel()[level]
     } else {
-      console.log('topicsByLevel: ', getTopicsByLevel()[level])
-      console.log('selectedTopicIds: ', selectedTopicIds)
-
-      if (isCustomButtonActive()) {
-        newTopics = getTopicsByLevel()[level]
-      } else {
-        newTopics = selectedTopicIds.concat(getTopicsByLevel()[level])
-      }
+      newTopics = selectedTopicIds.concat(getTopicsByLevel()[level])
     }
 
     setSelectedTopics(newTopics)
