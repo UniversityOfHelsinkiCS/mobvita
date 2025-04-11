@@ -12,13 +12,10 @@ import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import Topics from 'Components/Topics'
-import ThemeView from '../ThemeView'
-import GrammarView from '../GrammarView'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
-// import { Stepper, Step } from 'react-form-stepper';
 
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
@@ -33,7 +30,8 @@ import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import { lessonsTourViewed, updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
-
+import ThemeView from '../ThemeView'
+import GrammarView from '../GrammarView'
 
 import './LessonLibraryStyles.css';
 
@@ -89,7 +87,6 @@ const LessonList = () => {
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
-  // const smallWindow = useWindowDimensions().width < 520
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
@@ -223,40 +220,6 @@ const LessonList = () => {
     dispatch(getLessonInstance(option.value))
     dispatch(setLessonStep(-1))
   }
-
-  const lessonSemanticControls = (
-    <div className="align-center">
-      <h5>
-        <FormattedMessage id="select-lesson-semantic-topic" />:
-      </h5>
-      <div className="group-buttons sm lesson-story-topic">
-          <div style={{width: "100%", maxWidth: "500px", margin: "auto"}}>
-        {lesson_semantics &&
-          lesson_semantics.map(semantic => (
-            <Button
-              key={semantic}
-              variant={
-                selectedSemantics && selectedSemantics.includes(semantic)
-                  ? 'primary'
-                  : 'outline-primary'
-              }
-              onClick={() => toggleSemantic(semantic)}
-              disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
-              style={{
-                margin: '0.5em', cursor: lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)
-                  ? 'not-allowed' : 'pointer'
-              }}
-            >
-              {selectedSemantics && selectedSemantics.includes(semantic) && (
-                <Icon name="check" />
-              )}
-              <FormattedMessage id={semantic}/>
-            </Button>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
 
   function roundToNearestHalfInt(number) {
     const roundedNumber = Math.round(number);
