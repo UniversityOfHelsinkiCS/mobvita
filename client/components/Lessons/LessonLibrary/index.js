@@ -475,7 +475,7 @@ const LessonList = () => {
   }
 
   const handleContinueClick = () => {
-    if (goStep === 1) {
+    if (goStep === 0 || goStep === 1) {
       finnishSelectingSemanticsAndVocabDiff()
     }
 
@@ -483,6 +483,14 @@ const LessonList = () => {
   }
 
   const handleBackClick = () => {
+    if (goStep === 1) {
+      finnishSelectingSemanticsAndVocabDiff()
+    }
+
+    if (goStep === 2) {
+      finnishSelectingTopics()
+    }
+
     dispatch(setLessonStep(goStep - 1))
   }
 
