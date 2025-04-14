@@ -10,10 +10,9 @@ const Estimator = () => {
 
   const estimate = async () => {
     try {
-      const scoreResponse = await axios.post('svm-58.cs.helsinki.fi:5000/predict_score', { text })
-      setDifficulty(scoreResponse.data.score)
-      const levelResponse = await axios.get('svm-58.cs.helsinki.fi:5000/predict_level', { text })
-      setLevel(levelResponse.data.level)
+      const response = await axios.post('/api/estimate', { text })
+      setDifficulty(response.data.difficulty)
+      setLevel(response.data.level)
     } catch (error) {
       setErrorMessage(error.response.data.error)
     }
