@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Button, Form, Table } from 'react-bootstrap'
-import { callApi } from 'Utilities/apiConnection'
+import { Container, Row, Col, Button, Form, Table, Alert } from 'react-bootstrap'
+import axios from 'axios'
 
 const Estimator = () => {
   const [text, setText] = useState('')
   const [difficulty, setDifficulty] = useState(null)
+  const [level, setLevel] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const estimate = async () => {
     try {
-      const response = await callApi('/estimate', 'POST', { text })
-      setDifficulty(response.data.difficulty)
+      const scoreResponse = await axios.post('svm-58.cs.helsinki.fi:5000/predict_score', { text })
+      setDifficulty(scoreResponse.data.score)
+      const levelResponse = await axios.get('svm-58.cs.helsinki.fi:5000/predict_level', { text })
+      setLevel(levelResponse.data.level)
     } catch (error) {
-      console.error('Error submitting text:', error)
+      setErrorMessage(error.response.data.error)
     }
   }
 
@@ -43,13 +47,22 @@ const Estimator = () => {
           </Form>
         </Col>
       </Row>
-      <Row className="justify-content-center">
+      <Row className="justify-content-center my-3">
         <Col xs="auto">
           <Button type="button" disabled={!text} onClick={e => handleClick(e)}>
             Estimate
           </Button>
         </Col>
       </Row>
+      {errorMessage && (
+        <Row className="mt-5">
+          <Col>
+            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
+              {errorMessage}
+            </Alert>
+          </Col>
+        </Row>
+      )}
       {difficulty && (
         <Row className="my-5">
           <Col>
@@ -58,6 +71,20 @@ const Estimator = () => {
                 <tr>
                   <td>Difficulty</td>
                   <td>{difficulty}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      )}
+      {level && (
+        <Row className="my-5">
+          <Col>
+            <Table bordered>
+              <tbody>
+                <tr>
+                  <td>Level</td>
+                  <td>{level}</td>
                 </tr>
               </tbody>
             </Table>
