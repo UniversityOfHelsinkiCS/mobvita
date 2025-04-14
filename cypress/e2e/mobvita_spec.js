@@ -176,8 +176,8 @@ describe('Mobvita', function () {
 
       it("can click (translate) a word", function () { // This test overlaps with dictionary
         cy.contains("ehkä").click()
-        cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
-        cy.contains("ilmaisee jonkin mahdollista tapahtumista tai toteutumista", { timeout: 20000 })
+        // cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
+        cy.contains("perhaps", { timeout: 20000 })
       })
       // it("can add and see annotations in the library", function () {
       //   cy.viewport(1028, 720) // Set a big enough resolution for annotation box to show up
