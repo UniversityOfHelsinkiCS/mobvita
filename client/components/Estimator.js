@@ -5,12 +5,15 @@ import axios from 'axios'
 const Estimator = () => {
   const [text, setText] = useState('')
   const [difficulty, setDifficulty] = useState(null)
+  const [level, setLevel] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
   const estimate = async () => {
     try {
-      const response = await axios.post('/api/estimate', { text })
-      setDifficulty(response.data.difficulty)
+      const scoreResponse = await axios.post('svm-58.cs.helsinki.fi:5000/predict_score', { text })
+      setDifficulty(scoreResponse.data.score)
+      const levelResponse = await axios.get('svm-58.cs.helsinki.fi:5000/predict_level', { text })
+      setLevel(levelResponse.data.level)
     } catch (error) {
       setErrorMessage(error.response.data.error)
     }
@@ -68,6 +71,20 @@ const Estimator = () => {
                 <tr>
                   <td>Difficulty</td>
                   <td>{difficulty}</td>
+                </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      )}
+      {level && (
+        <Row className="my-5">
+          <Col>
+            <Table bordered>
+              <tbody>
+                <tr>
+                  <td>Level</td>
+                  <td>{level}</td>
                 </tr>
               </tbody>
             </Table>
