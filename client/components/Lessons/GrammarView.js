@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Modal, Tab, TabPane } from 'semantic-ui-react'
+
+import Topics from 'Components/Topics'
+import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import ToggleButton from './ToggleButton'
 
 const GrammarView = ({
   currentStepIndex,
-  setShowGrammarModal,
   lessons,
   selectedTopicIds,
   setSelectedTopics,
+  topicInstance,
+  editable,
+  showPerf,
 }) => {
+  const [modal, setModal] = useState(false)
+
   const getTopicsByLevel = () => {
     const levelTopics = lessons.reduce((groups, lesson) => {
       const groupName = lesson.group[0]
@@ -67,43 +75,68 @@ const GrammarView = ({
     setSelectedTopics(newTopics)
   }
 
-  const handleCustomClick = () => {
-    setShowGrammarModal(true)
-  }
-
   if (currentStepIndex !== 2) {
     return null
   }
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '30px',
-      }}
-    >
-      <div style={{ display: 'flex', gap: '25px', justifyContent: 'center', width: '500px' }}>
-        {[1, 2, 3, 4].map(level => (
-          <ToggleButton
-            key={level}
-            handleClick={() => handleLevelClick(level)}
-            name={`level ${level}`}
-            width="100px"
-            active={isLevelButtonActive(level) && !isCustomButtonActive()}
+  const panes = [
+    {
+      menuItem: 'Select grammar topics',
+      render: () => (
+        <TabPane>
+          <Topics
+            topicInstance={topicInstance}
+            editable={editable}
+            setSelectedTopics={setSelectedTopics}
+            showPerf={showPerf}
           />
-        ))}
+        </TabPane>
+      ),
+    },
+    {
+      menuItem: 'Listening exercise settings',
+      render: () => (
+        <TabPane style={{ display: 'flex', justifyContent: 'center' }}>
+          <ListeningExerciseSettings />
+        </TabPane>
+      ),
+    },
+  ]
+
+  return (
+    <>
+      <Modal open={modal} onClose={() => setModal(false)} closeOnEscape closeOnDimmerClick>
+        <Tab panes={panes} />
+      </Modal>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '30px',
+        }}
+      >
+        <div style={{ display: 'flex', gap: '25px', justifyContent: 'center', width: '500px' }}>
+          {[1, 2, 3, 4].map(level => (
+            <ToggleButton
+              key={level}
+              handleClick={() => handleLevelClick(level)}
+              name={`level ${level}`}
+              width="100px"
+              active={isLevelButtonActive(level) && !isCustomButtonActive()}
+            />
+          ))}
+        </div>
+        <hr style={{ color: '#333', width: '320px' }} />
+        <ToggleButton
+          handleClick={() => setModal(true)}
+          name="custom"
+          width="100px"
+          active={isCustomButtonActive()}
+        />
       </div>
-      <hr style={{ color: '#333', width: '320px' }} />
-      <ToggleButton
-        handleClick={handleCustomClick}
-        name="custom"
-        width="100px"
-        active={isCustomButtonActive()}
-      />
-    </div>
+    </>
   )
 }
 
