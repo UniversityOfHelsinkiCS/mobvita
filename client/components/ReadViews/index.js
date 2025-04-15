@@ -10,12 +10,19 @@ import {
   Checkbox,
   Dropdown,
   Button as SemanticButton,
-  Modal
+  Modal,
+  Tab,
+  TabPane,
 } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getStoryAction, getStudentStoryAction } from 'Utilities/redux/storiesReducer'
+import {
+  getStoryAction,
+  getStudentStoryAction,
+  updateExerciseTopics,
+  updateTempExerciseTopics,
+} from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -40,7 +47,8 @@ import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
-import { set } from 'lodash'
+import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
+import GrammarView from 'Components/Lessons/GrammarView'
 
 const SettingToggle = ({ translationId, ...props }) => {
   return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
@@ -82,13 +90,14 @@ const ReadViews = ({ match }) => {
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
-  const { lesson_topics } = useSelector(({ metadata }) => metadata)
+  const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const [open, setOpen] = useState(false)
+  const [topicsModal, setTopicsModal] = useState(false)
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : intl.formatMessage({ id: 'group-review-dropdown-placeholder' })
@@ -192,7 +201,8 @@ const ReadViews = ({ match }) => {
 
   const handle_cog_click = () => {
     if( lesson_topics?.length !== 0 && ownedStory) {
-      history.push(`/stories/${id}/topics`)
+      // history.push(`/stories/${id}/topics`)
+      setTopicsModal(true)
     } else {
       setOpen(true)
     }
@@ -244,6 +254,42 @@ const ReadViews = ({ match }) => {
       </>
     )
   }
+
+  const setSelectedTopics = topics => {
+    dispatch(updateExerciseTopics(topics, id))
+    dispatch(updateTempExerciseTopics(topics, id))
+  }
+
+  const panes = [
+    {
+      menuItem: 'Select grammar topics',
+      render: () => (
+        <TabPane>
+          <GrammarView
+            topicInstance={{
+              topic_ids: story?.topics || [],
+              instancePending: pending || !story,
+            }}
+            editable={true}
+            setSelectedTopics={setSelectedTopics}
+            selectedTopicIds={story?.topics || []}
+            showPerf={true}
+            setShowPerf={setShowDifficulty}
+            lessons={lessons}
+            currentStepIndex={2}
+          />
+        </TabPane>
+      ),
+    },
+    {
+      menuItem: 'Listening exercise settings',
+      render: () => (
+        <TabPane style={{ display: 'flex', justifyContent: 'center' }}>
+          <ListeningExerciseSettings />
+        </TabPane>
+      ),
+    },
+  ]
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
@@ -446,7 +492,9 @@ const ReadViews = ({ match }) => {
           </div>
         </Modal.Content>
       </Modal>
-
+      <Modal open={topicsModal} onClose={() => setTopicsModal(false)} closeOnEscape closeOnDimmerClick>
+        <Tab panes={panes} />
+      </Modal>
     </div>
   )
 }
