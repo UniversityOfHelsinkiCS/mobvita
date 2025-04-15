@@ -407,7 +407,7 @@ const LessonList = () => {
       ),
     },
     {
-      menuItem: 'Choose audio exercise types',
+      menuItem: 'Listening exercise settings',
       render: () => (
         <TabPane style={{ display: 'flex', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', margin: '40px 0' }}>
@@ -422,21 +422,21 @@ const LessonList = () => {
               checked={word_audio}
               onChange={() => dispatch(updateWordAudio(!word_audio))}
               disabled={!task_audio}
-              style={{ marginLeft: '32px' }}
+              style={{ marginLeft: '37px' }}
             />
             <Checkbox
               label="Listen to phrases without context"
               checked={chunk_audio}
               onChange={() => dispatch(updateChunkAudio(!chunk_audio))}
               disabled={!task_audio}
-              style={{ marginLeft: '32px' }}
+              style={{ marginLeft: '37px' }}
             />
             <Checkbox
               label="Listen to phrases with context"
               checked={chunk_context_audio}
               onChange={() => dispatch(updateChunkContextAudio(!chunk_context_audio))}
               disabled={!task_audio}
-              style={{ marginLeft: '32px' }}
+              style={{ marginLeft: '37px' }}
             />
           </div>
         </TabPane>
