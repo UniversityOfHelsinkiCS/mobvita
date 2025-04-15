@@ -39,13 +39,13 @@
 }
 
 .lesson-setup-btn.inactive {
-    background-color: white;
+    background-color: rgb(50, 170, 248);
 }
 
 .lesson-setup-btn:hover {
-    background-color: rgb(255, 227, 150);
+    background-color: rgb(255, 209, 80);
 }
 
 .lesson-setup-btn.active, .lesson-setup-btn.active:hover {
-    background-color: rgb(255, 209, 80);
+    background-color: rgb(255, 191, 13);
 }
