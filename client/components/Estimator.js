@@ -62,7 +62,7 @@ const Estimator = () => {
           </Col>
         </Row>
       )}
-      {difficulty && (
+      {/* {difficulty && (
         <Row className="my-5">
           <Col>
             <Table bordered>
@@ -75,7 +75,7 @@ const Estimator = () => {
             </Table>
           </Col>
         </Row>
-      )}
+      )} */}
       {level && (
         <Row className="my-5">
           <Col>
