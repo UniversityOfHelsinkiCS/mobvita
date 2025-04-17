@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Icon, Container } from 'semantic-ui-react'
+import { Placeholder, Icon, Container, Select } from 'semantic-ui-react'
 import Stepper from '@keyvaluesystems/react-stepper'
 
 import ScrollArrow from 'Components/ScrollArrow'
@@ -84,7 +84,7 @@ const LessonList = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson, step: goStep, showCustomModal } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -422,21 +422,23 @@ const LessonList = () => {
 
   return (
     <>
-      <LibraryTabs
-        values={Object.fromEntries(
-          Object.entries(libraries).filter(
-            ([key]) =>
-              (key === 'private' && !teacherView) ||
-              (key === 'group' && (teacherView || groups.length > 0))
-          )
-        )}
-        onClick={handleLibraryChange}
-        reverse
-        savedGroupSelection={savedGroupSelection}
-        groupDropdownOptions={groupDropdownOptions}
-        groupDropdownDisabled={!libraries.group}
-        handleGroupChange={handleGroupChange}
-      />
+      {!teacherView && (
+        <LibraryTabs
+          values={Object.fromEntries(
+            Object.entries(libraries).filter(
+              ([key]) =>
+                (key === 'private' && !teacherView) ||
+                (key === 'group' && (teacherView || groups.length > 0))
+            )
+          )}
+          onClick={handleLibraryChange}
+          reverse
+          savedGroupSelection={savedGroupSelection}
+          groupDropdownOptions={groupDropdownOptions}
+          groupDropdownDisabled={!libraries.group}
+          handleGroupChange={handleGroupChange}
+        />
+      )}
       {metaPending || groupPending ? (
         <Placeholder>
           <Placeholder.Line />
@@ -460,6 +462,17 @@ const LessonList = () => {
                   justifyContent: 'center',
                 }}
               >
+                {teacherView && (
+                  <div style={{ marginBottom: '30px' }}>
+                    <span style={{ marginRight: '10px', fontSize: 'medium' }}>Group:</span>
+                    <Select
+                      placeholder="Select group"
+                      value={savedGroupSelection}
+                      options={groupDropdownOptions}
+                      onChange={handleGroupChange}
+                    />
+                  </div>
+                )}
                 <h1 style={{ marginTop: '30px', marginBottom: '30px' }}>{setupViewTitle()}</h1>
                 <div
                   style={{
