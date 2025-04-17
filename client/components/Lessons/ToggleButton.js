@@ -1,12 +1,19 @@
 import React from 'react'
 import { images, capitalize } from 'Utilities/common'
 
-const ToggleButton = ({ handleClick, name, extraImgSrc, width = '100%', active }) => {
+const ToggleButton = ({
+  handleClick,
+  name,
+  extraImgSrc,
+  width = '100%',
+  height = '100%',
+  active,
+}) => {
   const imgSrc = extraImgSrc ?? `${name}1`
 
   return (
     <button
-      style={{ width }}
+      style={{ width, height }}
       className={`lesson-setup-btn ${active ? 'active' : 'inactive'}`}
       variant="light"
       data-cy={name}
