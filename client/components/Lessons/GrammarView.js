@@ -54,7 +54,10 @@ const GrammarView = ({
         }
       })
 
-      if (!isLevelButtonActive(levelOfTopic)) {
+      if (!levelOfTopic) {
+        // This topic is a listening topic which are not included in any level
+        isActive = true
+      } else if (!isLevelButtonActive(levelOfTopic)) {
         isActive = true
       }
     })
