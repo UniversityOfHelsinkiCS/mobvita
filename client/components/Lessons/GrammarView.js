@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, Tab, TabPane } from 'semantic-ui-react'
+import { Modal, Tab, TabPane, Icon } from 'semantic-ui-react'
 
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
@@ -13,6 +13,7 @@ const GrammarView = ({
   topicInstance,
   editable,
   showPerf,
+  showListeningSettings,
 }) => {
   const [modal, setModal] = useState(false)
 
@@ -105,8 +106,35 @@ const GrammarView = ({
 
   return (
     <>
-      <Modal open={modal} onClose={() => setModal(false)} closeOnEscape closeOnDimmerClick>
-        <Tab panes={panes} />
+      <Modal open={modal} onClose={() => setModal(false)} size="large" closeIcon>
+        {showListeningSettings ? (
+          <Tab panes={panes} />
+        ) : (
+          <>
+            <Modal.Header>
+              <button
+                type="button"
+                onClick={() => setModal(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  marginRight: '20px',
+                }}
+              >
+                <Icon name="arrow left" />
+              </button>
+              Set grammar topics
+            </Modal.Header>
+            <Modal.Content>
+              <Topics
+                topicInstance={topicInstance}
+                editable={editable}
+                setSelectedTopics={setSelectedTopics}
+                showPerf={showPerf}
+              />
+            </Modal.Content>
+          </>
+        )}
       </Modal>
       <div
         style={{
@@ -124,6 +152,7 @@ const GrammarView = ({
               handleClick={() => handleLevelClick(level)}
               name={`level ${level}`}
               width="100px"
+              height="55px"
               active={isLevelButtonActive(level) && !isCustomButtonActive()}
             />
           ))}
@@ -133,6 +162,7 @@ const GrammarView = ({
           handleClick={() => setModal(true)}
           name="custom"
           width="100px"
+          height="55px"
           active={isCustomButtonActive()}
         />
       </div>
