@@ -50,6 +50,8 @@ import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import GrammarView from 'Components/Lessons/GrammarView'
 
+import './ReadViewsStyles.css'
+
 const SettingToggle = ({ translationId, ...props }) => {
   return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
 }
@@ -200,8 +202,7 @@ const ReadViews = ({ match }) => {
   // console.log('focused ', focusedConcept)
 
   const handle_cog_click = () => {
-    if( lesson_topics?.length !== 0 && ownedStory) {
-      // history.push(`/stories/${id}/topics`)
+    if (lesson_topics?.length !== 0 && ownedStory) {
       setTopicsModal(true)
     } else {
       setOpen(true)
@@ -239,6 +240,7 @@ const ReadViews = ({ match }) => {
                 onClick={handle_cog_click}
               />
             }
+            open={story.topics.length === 0 && !topicsModal && !open}
             inverted // Optional for inverted dark style
           />
           <SemanticButton
@@ -246,6 +248,7 @@ const ReadViews = ({ match }) => {
             to={`/stories/${id}/practice/`}
             className='practice-tour-start-practice-story'
             style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+            disabled={story.topics.length === 0}
           >
             <FormattedMessage id="start-practice-story" />
           </SemanticButton>
@@ -262,18 +265,27 @@ const ReadViews = ({ match }) => {
 
   const panes = [
     {
-      menuItem: 'Select grammar topics',
+      menuItem: 'Grammar topics',
       render: () => (
-        <TabPane>
+        <TabPane
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '500px',
+          }}
+        >
+          <h1 style={{ marginBottom: '100px' }}>Select grammar topics</h1>
           <GrammarView
             topicInstance={{
               topic_ids: story?.topics || [],
               instancePending: pending || !story,
             }}
-            editable={true}
+            editable
             setSelectedTopics={setSelectedTopics}
             selectedTopicIds={story?.topics || []}
-            showPerf={true}
+            showPerf
             setShowPerf={setShowDifficulty}
             lessons={lessons}
             currentStepIndex={2}
@@ -282,9 +294,16 @@ const ReadViews = ({ match }) => {
       ),
     },
     {
-      menuItem: 'Listening exercise settings',
+      menuItem: 'Listening exercises',
       render: () => (
-        <TabPane style={{ display: 'flex', justifyContent: 'center' }}>
+        <TabPane
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '500px',
+          }}
+        >
           <ListeningExerciseSettings />
         </TabPane>
       ),
@@ -492,7 +511,15 @@ const ReadViews = ({ match }) => {
           </div>
         </Modal.Content>
       </Modal>
-      <Modal open={topicsModal} onClose={() => setTopicsModal(false)} closeOnEscape closeOnDimmerClick>
+      <Modal
+        open={topicsModal}
+        onClose={() => setTopicsModal(false)}
+        size="large"
+        closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+      >
+        <Modal.Header>
+          <FormattedMessage id="practice-settings" />
+        </Modal.Header>
         <Tab panes={panes} />
       </Modal>
     </div>
