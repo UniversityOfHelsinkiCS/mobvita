@@ -417,9 +417,7 @@ const LessonList = () => {
 
   const handleBeginClick = () => {
     finnishSelectingTopics()
-    setTimeout(() => {
-      history.push(link)
-    }, 10000)
+    history.push(link)
   }
 
   return (
@@ -486,6 +484,7 @@ const LessonList = () => {
                     topicInstance={{ ...lesson, instancePending: lessonPending }}
                     editable={libraries.private || (currentGroup && currentGroup.is_teaching)}
                     showPerf={libraries.private}
+                    showListeningSettings
                   />
                 </div>
                 <div
