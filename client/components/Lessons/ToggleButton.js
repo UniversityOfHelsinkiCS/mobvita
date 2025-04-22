@@ -1,5 +1,7 @@
 import React from 'react'
 import { images, capitalize } from 'Utilities/common'
+import { Button } from 'react-bootstrap'
+import { Icon } from 'semantic-ui-react'
 
 const ToggleButton = ({
   handleClick,
@@ -12,24 +14,37 @@ const ToggleButton = ({
   const imgSrc = extraImgSrc ?? `${name}1`
 
   return (
-    <button
-      style={{ width, height }}
-      className={`lesson-setup-btn ${active ? 'active' : 'inactive'}`}
-      variant="light"
-      data-cy={name}
-      type="button"
-      onClick={handleClick}
-    >
-      <div>
-        <div style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
-          {/* <FormattedMessage id={capitalize(name)} /> */}
-          {capitalize(name)}
+    <>
+      <Button
+        className="toggle-button"
+        variant={active ? 'primary' : 'outline-primary'}
+        onClick={handleClick}
+        style={{ width, height }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+          <div>
+            <Icon name="check" style={{ flex: '0.1', visibility: active ? 'visible' : 'hidden' }} />
+          </div>
+          <div
+            style={{
+              flex: '1',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>{capitalize(name)}</span>
+            {images[imgSrc] && (
+              <img src={images[imgSrc]} alt={name} style={{ maxWidth: '50%', maxHeight: '50%' }} />
+            )}
+          </div>
+          <div>
+            <Icon name="check" style={{ flex: '0.1', visibility: 'hidden' }} />
+          </div>
         </div>
-        {images[imgSrc] && (
-          <img src={images[imgSrc]} alt={name} style={{ maxWidth: '45%', maxHeight: '45%' }} />
-        )}
-      </div>
-    </button>
+      </Button>
+    </>
   )
 }
 

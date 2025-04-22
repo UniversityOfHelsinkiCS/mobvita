@@ -337,6 +337,10 @@ $value in $spacing {
   border-radius: $btn-border-radius-primary;
 }
 
+.btn-outline-primary {
+  border-radius: 10px;
+}
+
 .btn-primary[disabled] {
   background: $btn-color-primary-disabled;
   border: 1px solid rgb(112, 114, 120);
