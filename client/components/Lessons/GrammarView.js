@@ -85,7 +85,7 @@ const GrammarView = ({
 
   const panes = [
     {
-      menuItem: 'Select grammar topics',
+      menuItem: 'Grammar topics',
       render: () => (
         <TabPane>
           <Topics
@@ -98,9 +98,16 @@ const GrammarView = ({
       ),
     },
     {
-      menuItem: 'Listening exercise settings',
+      menuItem: 'Listening exercises',
       render: () => (
-        <TabPane style={{ display: 'flex', justifyContent: 'center' }}>
+        <TabPane
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '500px',
+          }}
+        >
           <ListeningExerciseSettings />
         </TabPane>
       ),
@@ -109,9 +116,17 @@ const GrammarView = ({
 
   return (
     <>
-      <Modal open={modal} onClose={() => setModal(false)} size="large" closeIcon>
+      <Modal
+        open={modal}
+        onClose={() => setModal(false)}
+        size="large"
+        closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+      >
         {showListeningSettings ? (
-          <Tab panes={panes} />
+          <>
+            <Modal.Header>Settings for practice with lessons</Modal.Header>
+            <Tab panes={panes} />
+          </>
         ) : (
           <>
             <Modal.Header>
@@ -148,13 +163,13 @@ const GrammarView = ({
           gap: '30px',
         }}
       >
-        <div style={{ display: 'flex', gap: '25px', justifyContent: 'center', width: '500px' }}>
+        <div style={{ display: 'flex', gap: '25px', justifyContent: 'center' }}>
           {[1, 2, 3, 4].map(level => (
             <ToggleButton
               key={level}
               handleClick={() => handleLevelClick(level)}
               name={`level ${level}`}
-              width="100px"
+              width="130px"
               height="55px"
               active={isLevelButtonActive(level) && !isCustomButtonActive()}
             />
@@ -164,7 +179,7 @@ const GrammarView = ({
         <ToggleButton
           handleClick={() => setModal(true)}
           name="custom"
-          width="100px"
+          width="130px"
           height="55px"
           active={isCustomButtonActive()}
         />
