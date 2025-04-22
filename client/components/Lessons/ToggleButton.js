@@ -2,6 +2,7 @@ import React from 'react'
 import { images, capitalize } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
+import { FormattedMessage } from 'react-intl'
 
 const ToggleButton = ({
   handleClick,
@@ -10,6 +11,7 @@ const ToggleButton = ({
   width = '100%',
   height = '100%',
   active,
+  level,
 }) => {
   const imgSrc = extraImgSrc ?? `${name}1`
 
@@ -34,7 +36,17 @@ const ToggleButton = ({
               alignItems: 'center',
             }}
           >
-            <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>{capitalize(name)}</span>
+            {level ? (
+              <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
+                <FormattedMessage id="lesson-group" values={{ group: level }} />
+              </span>
+            ) : (
+              <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
+                <FormattedMessage
+                  id={name === 'custom' ? 'open-custom-grammar-topics-modal' : capitalize(name)}
+                />
+              </span>
+            )}
             {images[imgSrc] && (
               <img src={images[imgSrc]} alt={name} style={{ maxWidth: '50%', maxHeight: '50%' }} />
             )}

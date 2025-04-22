@@ -3,6 +3,7 @@ import { Modal, Tab, TabPane, Icon } from 'semantic-ui-react'
 
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
+import { FormattedMessage, useIntl } from 'react-intl'
 import ToggleButton from './ToggleButton'
 
 const GrammarView = ({
@@ -16,6 +17,8 @@ const GrammarView = ({
   showListeningSettings,
 }) => {
   const [modal, setModal] = useState(false)
+
+  const intl = useIntl()
 
   const getTopicsByLevel = () => {
     const levelTopics = lessons.reduce((groups, lesson) => {
@@ -85,7 +88,7 @@ const GrammarView = ({
 
   const panes = [
     {
-      menuItem: 'Grammar topics',
+      menuItem: intl.formatMessage({ id: 'Grammar topics' }),
       render: () => (
         <TabPane>
           <Topics
@@ -98,7 +101,7 @@ const GrammarView = ({
       ),
     },
     {
-      menuItem: 'Listening exercises',
+      menuItem: intl.formatMessage({ id: 'listening-exercises' }),
       render: () => (
         <TabPane
           style={{
@@ -124,7 +127,9 @@ const GrammarView = ({
       >
         {showListeningSettings ? (
           <>
-            <Modal.Header>Settings for practice with lessons</Modal.Header>
+            <Modal.Header>
+              <FormattedMessage id="custom" />
+            </Modal.Header>
             <Tab panes={panes} />
           </>
         ) : (
@@ -141,7 +146,7 @@ const GrammarView = ({
               >
                 <Icon name="arrow left" />
               </button>
-              Set grammar topics
+              <FormattedMessage id="select-lesson-grammar" />
             </Modal.Header>
             <Modal.Content>
               <Topics
@@ -172,6 +177,7 @@ const GrammarView = ({
               width="130px"
               height="55px"
               active={isLevelButtonActive(level) && !isCustomButtonActive()}
+              level={level}
             />
           ))}
         </div>

@@ -385,11 +385,11 @@ const LessonList = () => {
   const setupViewTitle = () => {
     switch (goStep) {
       case 0:
-        return 'Choose themes'
+        return <FormattedMessage id="select-lesson-themes" />
       case 1:
-        return 'Set vocabulary level'
+        return <FormattedMessage id="select-lesson-vocab-diff" />
       case 2:
-        return 'Select grammar topics'
+        return <FormattedMessage id="select-lesson-grammar" />
       default:
         return ''
     }
@@ -483,7 +483,9 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 style={{ marginTop: '30px', marginBottom: '30px' }}>{setupViewTitle()}</h1>
+                    <h1 style={{ marginTop: '30px', marginBottom: '30px', textAlign: 'center' }}>
+                      {setupViewTitle()}
+                    </h1>
                     <div
                       style={{
                         display: 'flex',
@@ -525,7 +527,7 @@ const LessonList = () => {
                           type="button"
                           onClick={handleBackClick}
                         >
-                          Back
+                          <FormattedMessage id="Back" />
                         </Button>
                       )}
                       {goStep === 2 ? (
@@ -540,7 +542,7 @@ const LessonList = () => {
                             !lessonReady
                           }
                         >
-                          Begin
+                          <FormattedMessage id="start" />
                         </Button>
                       ) : (
                         <Button
@@ -549,7 +551,7 @@ const LessonList = () => {
                           type="button"
                           onClick={handleContinueClick}
                         >
-                          Continue
+                          <FormattedMessage id="next-step" />
                         </Button>
                       )}
                     </div>
@@ -559,17 +561,17 @@ const LessonList = () => {
                   <Stepper
                     steps={[
                       {
-                        stepLabel: 'Choose themes',
+                        stepLabel: <FormattedMessage id="selected-lesson-themes" />,
                         stepDescription: '',
                         completed: goStep > 0,
                       },
                       {
-                        stepLabel: 'Set vocabulary level',
+                        stepLabel: <FormattedMessage id="Lesson vocab" />,
                         stepDescription: '',
                         completed: goStep > 1,
                       },
                       {
-                        stepLabel: 'Select grammar topics',
+                        stepLabel: <FormattedMessage id="Grammar topics" />,
                         stepDescription: '',
                         completed: false,
                       },

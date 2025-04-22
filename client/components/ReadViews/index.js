@@ -265,7 +265,7 @@ const ReadViews = ({ match }) => {
 
   const panes = [
     {
-      menuItem: 'Grammar topics',
+      menuItem: intl.formatMessage({ id: 'Grammar topics' }),
       render: () => (
         <TabPane
           style={{
@@ -276,7 +276,9 @@ const ReadViews = ({ match }) => {
             height: '500px',
           }}
         >
-          <h1 style={{ marginBottom: '100px' }}>Select grammar topics</h1>
+          <h1 style={{ marginBottom: '100px' }}>
+            <FormattedMessage id="select-lesson-grammar" />
+          </h1>
           <GrammarView
             topicInstance={{
               topic_ids: story?.topics || [],
@@ -294,7 +296,7 @@ const ReadViews = ({ match }) => {
       ),
     },
     {
-      menuItem: 'Listening exercises',
+      menuItem: intl.formatMessage({ id: 'listening-exercises' }),
       render: () => (
         <TabPane
           style={{
