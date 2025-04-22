@@ -17,10 +17,14 @@ const ListeningExerciseSettings = () => {
   const { word_audio, chunk_audio, chunk_context_audio, task_audio } = user
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', margin: '40px 0' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' /* , margin: '40px 0' */ }}>
       <Checkbox
         toggle
-        label={<label style={{ fontWeight: '500' }}>Practice Listening</label>}
+        label={
+          <label>
+            Practice <b>Listening</b>
+          </label>
+        }
         checked={task_audio}
         onChange={() => dispatch(updateAudioTask(!task_audio))}
       />
