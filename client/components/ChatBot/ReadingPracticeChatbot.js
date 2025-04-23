@@ -72,7 +72,7 @@ const ReadingPracticeChatBot = () => {
                         ) : (
                             messages.map((message, index) => (
                                 <div key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
-                                    {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
+                                    {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
                                 </div>
                             ))
                         )}

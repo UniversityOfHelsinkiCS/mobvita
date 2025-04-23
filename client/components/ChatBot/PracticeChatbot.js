@@ -20,7 +20,8 @@ import {
 import { 
     getPracticeChatbotResponse, 
     // getConversationHistory,
-    setConversationHistory
+    setConversationHistory,
+    getPracticeChatbotErrorResponse
 } from 'Utilities/redux/chatbotReducer'
 import {
     setSnippetChatHistory
@@ -67,7 +68,7 @@ const PracticeChatbot = () => {
         event.preventDefault(); 
         if (Object.keys(exerciseContext).length === 0 || currentMessage.trim() === '') return
         
-        dispatch(
+        /* dispatch(
             getPracticeChatbotResponse(
                 session_id, 
                 storyid, 
@@ -79,7 +80,21 @@ const PracticeChatbot = () => {
                 exerciseContext,
                 (hints || []).map(hint => hint.easy)
             )
-        );
+        ); */
+
+        dispatch(
+          getPracticeChatbotErrorResponse(
+              session_id, 
+              storyid, 
+              snippet_id, 
+              sentence_id, 
+              wordId,
+              currentMessage.trim(), 
+              currentAnswer.trim(),
+              exerciseContext,
+              (hints || []).map(hint => hint.easy)
+          )
+      );
         setCurrentMessage("");
     };
 
@@ -250,7 +265,11 @@ const PracticeChatbot = () => {
                     {/********this is for CHATTING: MESSAGE-USER + MESSAGE-BOT ********/}
                     {/******** MESSAGE-USER + MESSAGE-BOT: no other types ********/}
                     <div key={index} className={`message message-${message.type}`} style={{display: 'block'}}>
-                      {message.text ? <ReactMarkdown children={message.text} /> : "Error rendering message"}
+                      {message.text ? (
+                        <ReactMarkdown children={message.text} />
+                      ) : (
+                        <FormattedMessage id="Error rendering message" />
+                      )}
                     </div>
                     {/******** HINT: this must be for MESSAGE-BOT ********/}
                     {(index === hintMessageIdx - 1 && hintMessageIdx > 0)
