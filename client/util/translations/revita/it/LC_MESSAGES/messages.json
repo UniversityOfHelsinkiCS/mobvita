@@ -1725,13 +1725,19 @@
     "story-generation-error": "Si è verificato un problema nella generazione del testo. Riprova!",
     "regenerate-story": "Genera un altro testo",
     "candidate-available": "{candidate_count} esercizi sono disponibili",
-    "candidate-available-explain": "Questo è il numero di esercizi disponibili. Se non selezioni argomenti, allora tutti gli esercizi sono disponibili.",
+    "candidate-available-explain": "Questo è il numero di esercizi disponibili.",
     "Report error": "Segnala un errore",
     "An error has occurred in the system.  The develper team has been notified.": "Si è verificato un errore nel sistema. Il team degli sviluppatori è stato avvisato.",
     "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:": "Puoi aiutarci a risolvere il problema più velocemente, inviandoci una breve descrizione dello stesso, nel modulo che si apre con questo pulsante:",
     "(Please write in any language that is convenient for you.)": "(Si prega di scrivere nella lingua che si preferisce.)",
     "Next, please refresh the page, or click \"Go back\"": "Quindi, aggiorna la pagina o fai clic su \"Torna indietro\"",
     "candidate-available-explain-1": "Questo è il numero di esercizi disponibili. Se non selezioni argomenti, allora tutti gli esercizi sono disponibili",
-    "general-chatbot-init-mess": "",
-    "Error rendering message": ""
+    "general-chatbot-init-mess": "Puoi farmi domande sull'uso del sistema e farò del mio meglio per rispondere!",
+    "Error rendering message": "Il chatbot non risponde. Riprova! Se il problema persiste, ti preghiamo di segnalarcelo.",
+    "Under processing": "The story is being processed, its description will be available shortly",
+    "Flashcards only": "This is a deck of flashcards",
+    "open-custom-grammar-topics-modal": "Custom",
+    "select-word-audio-exercise-type": "Listen to words with context",
+    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
+    "select-chunk-audio-excercise-type": "Listen to phrases without context"
 }

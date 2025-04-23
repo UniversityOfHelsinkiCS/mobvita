@@ -1100,7 +1100,7 @@
     "story-generation-error": "并且文本生成的问题已经解决。请三遍！",
     "regenerate-story": "生成注释文本",
     "candidate-available": "{candidate_count} exercises available",
-    "candidate-available-explain": "This is the number of candidate exercises available. If you select no topics, then all exercises are available.",
+    "candidate-available-explain": "This is the number of exercises available for practice.",
     "email-address": "电子邮箱地址",
     "Password": "密码",
     "Groups": "群组",
@@ -1110,6 +1110,12 @@
     "(Please write in any language that is convenient for you.)": "（请用你习惯的语言说谎。）",
     "Next, please refresh the page, or click \"Go back\"": "接下来，刷新页面，或点击“返回”",
     "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available",
-    "general-chatbot-init-mess": "",
-    "Error rendering message": ""
+    "general-chatbot-init-mess": "您可以通过向我提出问题，我们会尽全力回答！",
+    "Error rendering message": "聊天机器人无法回答问题。请重试。如果还是无法响应，请联系我们",
+    "Under processing": "The story is being processed, its description will be available shortly",
+    "Flashcards only": "This is a deck of flashcards",
+    "open-custom-grammar-topics-modal": "Custom",
+    "select-word-audio-exercise-type": "Listen to words with context",
+    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
+    "select-chunk-audio-excercise-type": "Listen to phrases without context"
 }
