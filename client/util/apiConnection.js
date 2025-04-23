@@ -125,6 +125,12 @@ const handleNewVocabulary = (store, newVocabulary) => {
   }
 }
 
+const handleErroneusChatbotResponse = (prefix, message) => {
+  const sentryMessage = message
+  const sentryFingerprint = [`Action: ${prefix}`]
+  sendSentryEvent(sentryMessage, sentryFingerprint)
+}
+
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -148,6 +154,12 @@ export const handleRequest = store => next => async action => {
       const { route, method, data, prefix, query, cache } = requestSettings
       try {
         const res = await callApi(route, method, data, query)
+
+        if (prefix === 'GET_CHATBOT_RESPONSE' && !res.data.response) {
+          console.log('No response from chatbot, res: ', res)
+          handleErroneusChatbotResponse(prefix, res.data.message)
+        }
+
         if (cache) {
           window.localStorage.setItem(cache, JSON.stringify(res.data))
         }
