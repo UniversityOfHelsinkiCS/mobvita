@@ -240,7 +240,7 @@ const ReadViews = ({ match }) => {
                 onClick={handle_cog_click}
               />
             }
-            open={story.topics.length === 0 && !topicsModal && !open}
+            open={story.topics.length === 0 && ownedStory && !topicsModal && !open}
             inverted // Optional for inverted dark style
           />
           <SemanticButton
@@ -248,7 +248,7 @@ const ReadViews = ({ match }) => {
             to={`/stories/${id}/practice/`}
             className='practice-tour-start-practice-story'
             style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-            disabled={story.topics.length === 0}
+            disabled={story.topics.length === 0 && ownedStory}
           >
             <FormattedMessage id="start-practice-story" />
           </SemanticButton>
