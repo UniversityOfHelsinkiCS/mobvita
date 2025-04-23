@@ -46,7 +46,6 @@ import DebugTestView from './DebugTestView'
 import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
-import SetStoryTopics from './SetStoryTopics'
 import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 import GecView from './GecView'
@@ -156,7 +155,6 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/edit" component={EditStoryView} />
-            <ProtectedRoute exact path="/stories/:id/topics" component={SetStoryTopics} />
             <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
 

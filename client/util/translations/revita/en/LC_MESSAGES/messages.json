@@ -1735,5 +1735,9 @@
     "Next, please refresh the page, or click \"Go back\"": "Next, refresh the page, or click \"Go back\"",
     "candidate-available-explain-1": "This is the number of candidate exercises available. If you select no topics, then all exercises are available",
     "general-chatbot-init-mess": "",
-    "Error rendering message": ""
+    "Error rendering message": "",
+    "open-custom-grammar-topics-modal": "Custom",
+    "select-word-audio-exercise-type": "Listen to words with context",
+    "select-chunk-audio-excercise-type": "Listen to phrases without context",
+    "select-chunk-context-audio-exercise-type": "Listen to phrases with context"
 }

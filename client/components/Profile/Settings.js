@@ -20,6 +20,7 @@ import {
   updateMultiChoice,
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
+import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import LearningSettingsModal from '../LearningSettingsModal'
 
 const SettingToggle = ({ translationId, ...props }) => {
@@ -202,12 +203,13 @@ const Settings = ({teacherView}) => {
                     onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
                     disabled={pending}
                   />
-                  <SettingToggle
+                  {/* <SettingToggle
                     translationId="practice-listening-cloze-exercises"
                     checked={user.task_audio}
                     onChange={() => dispatch(updateAudioTask(!user.task_audio))}
                     disabled={pending}
-                  />
+                  /> */}
+                  <ListeningExerciseSettings />
                   {hiddenFeatures && (<SettingToggle
                     translationId="practice-pronunciation-exercises"
                     checked={user.task_speech}
