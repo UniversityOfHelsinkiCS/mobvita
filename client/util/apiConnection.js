@@ -44,6 +44,13 @@ class EndpointError extends Error {
   }
 }
 
+class ChatbotError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'ChatbotError'
+  }
+}
+
 const sendSentryEvent = (message, fingerprint) => {
   Sentry.captureException(new EndpointError(message), { fingerprint })
 }
@@ -125,12 +132,6 @@ const handleNewVocabulary = (store, newVocabulary) => {
   }
 }
 
-const handleErroneusChatbotResponse = (prefix, message) => {
-  const sentryMessage = message
-  const sentryFingerprint = [`Action: ${prefix}`]
-  sendSentryEvent(sentryMessage, sentryFingerprint)
-}
-
 /**
  * This is a redux middleware used for tracking api calls
  */
@@ -156,8 +157,7 @@ export const handleRequest = store => next => async action => {
         const res = await callApi(route, method, data, query)
 
         if (prefix === 'GET_CHATBOT_RESPONSE' && !res.data.response) {
-          console.log('No response from chatbot, res: ', res)
-          handleErroneusChatbotResponse(prefix, res.data.message)
+          Sentry.captureException(new ChatbotError(`Chatbot response missing: ${res.data.message}`))
         }
 
         if (cache) {
