@@ -21,7 +21,6 @@ import {
     getPracticeChatbotResponse, 
     // getConversationHistory,
     setConversationHistory,
-    getPracticeChatbotErrorResponse
 } from 'Utilities/redux/chatbotReducer'
 import {
     setSnippetChatHistory
@@ -68,7 +67,7 @@ const PracticeChatbot = () => {
         event.preventDefault(); 
         if (Object.keys(exerciseContext).length === 0 || currentMessage.trim() === '') return
         
-        /* dispatch(
+        dispatch(
             getPracticeChatbotResponse(
                 session_id, 
                 storyid, 
@@ -80,21 +79,7 @@ const PracticeChatbot = () => {
                 exerciseContext,
                 (hints || []).map(hint => hint.easy)
             )
-        ); */
-
-        dispatch(
-          getPracticeChatbotErrorResponse(
-              session_id, 
-              storyid, 
-              snippet_id, 
-              sentence_id, 
-              wordId,
-              currentMessage.trim(), 
-              currentAnswer.trim(),
-              exerciseContext,
-              (hints || []).map(hint => hint.easy)
-          )
-      );
+        );
         setCurrentMessage("");
     };
 
