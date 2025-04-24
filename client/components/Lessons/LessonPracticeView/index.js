@@ -14,9 +14,6 @@ import {
   setWillPause,
   setIsPaused,
 } from 'Utilities/redux/practiceReducer'
-import {
-  openLPEncouragement,
-} from 'Utilities/redux/encouragementsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
@@ -43,6 +40,7 @@ import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
 import Recommender from 'Components/NewEncouragements/Recommender'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
+import LessonCompleted from '../LessonCompleted'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
@@ -66,6 +64,7 @@ const LessonPracticeView = () => {
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
+  const [showLessonCompleted, setShowLessonCompleted] = useState(true)
 
   const mode = getMode()
   const TIMER_START_DELAY = 2000
@@ -111,11 +110,11 @@ const LessonPracticeView = () => {
   }, [])
 
   useEffect(() => {
-    setCurrentSnippetNum(snippets.previous.length + 1)
-    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10) // snippets?.focused?.total_num
-    if ((snippets.previous.length % 10 == 0) && (snippets.previous.length >= 10)){
-      dispatch(openLPEncouragement())
+    if (currentSnippetNum === 10) {
+      setShowLessonCompleted(true)
     }
+    setCurrentSnippetNum(snippets.previous.length + 1)
+    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10)
   }, [snippets.focused])
 
   useEffect(() => {
@@ -198,6 +197,15 @@ const LessonPracticeView = () => {
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)
+  }
+
+  if (showLessonCompleted) {
+    return (
+      <LessonCompleted
+        startOvertLessonSnippets={startOvertLessonSnippets}
+        setShowLessonCompleted={setShowLessonCompleted}
+      />
+    )
   }
 
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
