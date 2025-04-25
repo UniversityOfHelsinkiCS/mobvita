@@ -64,7 +64,7 @@ const LessonPracticeView = () => {
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
-  const [showLessonCompleted, setShowLessonCompleted] = useState(true)
+  const [showLessonCompleted, setShowLessonCompleted] = useState(false)
 
   const mode = getMode()
   const TIMER_START_DELAY = 2000
