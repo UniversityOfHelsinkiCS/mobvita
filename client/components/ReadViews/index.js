@@ -48,7 +48,7 @@ import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
-import GrammarView from 'Components/Lessons/GrammarView'
+import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
 
 import './ReadViewsStyles.css'
 
@@ -279,7 +279,7 @@ const ReadViews = ({ match }) => {
           <h1 style={{ marginBottom: '100px' }}>
             <FormattedMessage id="select-lesson-grammar" />
           </h1>
-          <GrammarView
+          <SelectGrammarLevel
             topicInstance={{
               topic_ids: story?.topics || [],
               instancePending: pending || !story,

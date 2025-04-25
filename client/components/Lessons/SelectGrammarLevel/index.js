@@ -4,9 +4,11 @@ import { Modal, Tab, TabPane, Icon } from 'semantic-ui-react'
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import { FormattedMessage, useIntl } from 'react-intl'
-import ToggleButton from './ToggleButton'
+import ToggleButton from '../ToggleButton'
 
-const GrammarView = ({
+import './SelectGrammarLevelStyles.css'
+
+const SelectGrammarLevel = ({
   currentStepIndex,
   lessons,
   selectedTopicIds,
@@ -168,7 +170,7 @@ const GrammarView = ({
           gap: '30px',
         }}
       >
-        <div style={{ display: 'flex', gap: '25px', justifyContent: 'center' }}>
+        <div className="grammar-level-button-group">
           {[1, 2, 3, 4].map(level => (
             <ToggleButton
               key={level}
@@ -194,4 +196,4 @@ const GrammarView = ({
   )
 }
 
-export default GrammarView
+export default SelectGrammarLevel

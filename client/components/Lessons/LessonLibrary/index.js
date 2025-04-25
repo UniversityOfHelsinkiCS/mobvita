@@ -34,7 +34,7 @@ import {
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ThemeView from '../ThemeView'
-import GrammarView from '../GrammarView'
+import SelectGrammarLevel from '../SelectGrammarLevel'
 
 import './LessonLibraryStyles.css';
 
@@ -422,7 +422,7 @@ const LessonList = () => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '1000px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
         {!teacherView && (
           <LibraryTabs
             values={Object.fromEntries(
@@ -453,27 +453,28 @@ const LessonList = () => {
             {libraries.group && !teacherView ? (
               <div>{lessonStartControls}</div>
             ) : (
-              <div style={{ display: 'flex', height: '90vh' }}>
+              <div style={{ display: 'flex', height: '80vh' }}>
                 <div
                   style={{
                     flex: 1,
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'start',
+                    alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
                   <div
                     style={{
+                      flex: 1,
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      width: '600px',
+                      gap: '100px',
                     }}
                   >
                     {teacherView && (
-                      <div style={{ marginBottom: '30px' }}>
+                      <div style={{ paddingTop: '50px' }}>
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>Group:</span>
                         <Select
                           placeholder="Select group"
@@ -483,15 +484,13 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 style={{ marginTop: '30px', marginBottom: '30px', textAlign: 'center' }}>
-                      {setupViewTitle()}
-                    </h1>
+                    <h1 style={{ flex: '0.10', textAlign: 'center', paddingTop: '50px' }}>{setupViewTitle()}</h1>
                     <div
                       style={{
+                        flex: '1',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: '500px',
                       }}
                     >
                       <ThemeView
@@ -501,7 +500,7 @@ const LessonList = () => {
                         toggleSemantic={toggleSemantic}
                       />
                       {goStep === 1 && lessonVocabularyControls}
-                      <GrammarView
+                      <SelectGrammarLevel
                         currentStepIndex={goStep}
                         lessons={lessons}
                         selectedTopicIds={selectedTopicIds}
@@ -514,10 +513,10 @@ const LessonList = () => {
                     </div>
                     <div
                       style={{
+                        flex: '0.10',
                         display: 'flex',
                         gap: '20px',
                         justifyContent: 'center',
-                        marginTop: '20px',
                       }}
                     >
                       {goStep !== 0 && (
@@ -557,28 +556,30 @@ const LessonList = () => {
                     </div>
                   </div>
                 </div>
-                <div style={{ flex: 0.3, marginTop: '100px' }}>
-                  <Stepper
-                    steps={[
-                      {
-                        stepLabel: <FormattedMessage id="selected-lesson-themes" />,
-                        stepDescription: '',
-                        completed: goStep > 0,
-                      },
-                      {
-                        stepLabel: <FormattedMessage id="Lesson vocab" />,
-                        stepDescription: '',
-                        completed: goStep > 1,
-                      },
-                      {
-                        stepLabel: <FormattedMessage id="Grammar topics" />,
-                        stepDescription: '',
-                        completed: false,
-                      },
-                    ]}
-                    currentStepIndex={goStep}
-                  />
-                </div>
+                {bigScreen && (
+                  <div style={{ flex: 0.3, marginTop: '100px', marginLeft: '100px' }}>
+                    <Stepper
+                      steps={[
+                        {
+                          stepLabel: <FormattedMessage id="selected-lesson-themes" />,
+                          stepDescription: '',
+                          completed: goStep > 0,
+                        },
+                        {
+                          stepLabel: <FormattedMessage id="Lesson vocab" />,
+                          stepDescription: '',
+                          completed: goStep > 1,
+                        },
+                        {
+                          stepLabel: <FormattedMessage id="Grammar topics" />,
+                          stepDescription: '',
+                          completed: false,
+                        },
+                      ]}
+                      currentStepIndex={goStep}
+                    />
+                  </div>
+                )}
               </div>
             )}
             <ScrollArrow />

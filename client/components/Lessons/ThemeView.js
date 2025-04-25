@@ -15,10 +15,11 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, 260px)',
-        gridTemplateRows: 'repeat(2, 200px)',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateRows: 'repeat(2, 1fr)',
         gap: '30px',
-        justifyContent: 'center',
+        height: '100%',
+        maxWidth: '500px',
       }}
       data-cy="practice-categories"
     >
