@@ -298,7 +298,7 @@ const LessonPracticeView = () => {
               onBackClick={() => history.push('/library')}
             />
             <div className="dictionary-and-annotations-cont">
-              <LessonPracticeTopicsHelp selectedTopics={lesson_instance.topic_ids} />
+              <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               <DictionaryHelp />
               <AnnotationBox />
             </div>
