@@ -16,7 +16,7 @@ export const getLessonSnippet = (lessonId, groupId) => {
   return callBuilder(route, prefix)
 }
 
-export const cacheLessonSnippet = (lessonId, groupId, candidateIds) => {
+export const cacheLessonSnippet = (lessonId, groupId, candidateIds, topics) => {
   let route = `/lesson/exercise`
   if (candidateIds.length === 0 && groupId) {
     route += `?group_id=${groupId}`
@@ -25,6 +25,13 @@ export const cacheLessonSnippet = (lessonId, groupId, candidateIds) => {
   } else {
     route += `?exclude_candidates=${candidateIds.join(',')}`
   }
+
+  if (topics.length && route.includes('?')) {
+    route += `&topics=${encodeURIComponent(topics.join('#'))}`
+  } else if (topics.length) {
+    route += `?topics=${encodeURIComponent(topics.join('#'))}`
+  }
+
   const prefix = 'CACHE_NEXT_SNIPPET'
 
   return callBuilder(route, prefix)
