@@ -78,6 +78,7 @@ const positionOffset = coords => {
 }
 
 const HexagonTest = props => {
+  const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const hexagonSize = { x: 15, y: 15 }
   const generator = GridGenerator.getGenerator('rectangle')
@@ -148,7 +149,7 @@ const HexagonTest = props => {
                 r={props.root_hex_coord.r}
                 s={props.root_hex_coord.s}
               >
-                <Text className="hexagon-root">{learningLanguage}</Text>
+                <Text className="hexagon-root">{intl.formatMessage(learningLanguage)}</Text>
               </Hexagon>
 
               {props.concepts
