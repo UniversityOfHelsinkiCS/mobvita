@@ -3,7 +3,7 @@
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { useSelector } from 'react-redux'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
@@ -78,7 +78,6 @@ const positionOffset = coords => {
 }
 
 const HexagonTest = props => {
-  const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const hexagonSize = { x: 15, y: 15 }
   const generator = GridGenerator.getGenerator('rectangle')
@@ -149,7 +148,7 @@ const HexagonTest = props => {
                 r={props.root_hex_coord.r}
                 s={props.root_hex_coord.s}
               >
-                <Text className="hexagon-root">{intl.formatMessage(learningLanguage)}</Text>
+                <Text className="hexagon-root"><FormattedMessage id={learningLanguage} /></Text>
               </Hexagon>
 
               {props.concepts
