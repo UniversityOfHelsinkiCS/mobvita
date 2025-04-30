@@ -12,7 +12,7 @@ export default ({
   sharingInfo,
   percentCovered,
   percentCorrect,
-  URL,
+  URL: UrlString,
   category,
   publicStory,
   date,
@@ -23,10 +23,10 @@ export default ({
       <col width="60%" />
     </colgroup>
     <tbody>
-      {URL && (
+      {UrlString && (
         <Row translationId="Source">
-          <a href={URL} target="_blank" rel="noopener noreferrer">
-            {URL}
+          <a href={UrlString} target="_blank" rel="noopener noreferrer">
+            {new URL(UrlString).hostname}
           </a>
         </Row>
       )}

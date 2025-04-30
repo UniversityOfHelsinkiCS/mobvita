@@ -1413,6 +1413,14 @@ $value in $spacing {
   gap: .5em;
 }
 
+.story-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 70%;
+}
+
 .library-control {
   display: flex;
   flex-direction: column;

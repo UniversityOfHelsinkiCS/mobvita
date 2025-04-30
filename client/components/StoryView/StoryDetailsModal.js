@@ -43,7 +43,8 @@ const StoryDetailsModal = ({
     showCreateControlStoryButton ||
     showCancelControlStoryButton ||
     showShareButton ||
-    showDeleteButton
+    showDeleteButton ||
+    inGroupLibrary
 
   const storyGroupSharingInfo = inGroupLibrary
     ? groupsSharedWith.find(g => g?.group_id === currentGroup?.group_id)
@@ -53,6 +54,7 @@ const StoryDetailsModal = ({
     <Modal
       trigger={trigger}
       closeIcon={{ style: { top: '0.75em', right: '1rem' }, color: 'black', name: 'close' }}
+      size="tiny"
     >
       <Modal.Header>
         <div className="pr-lg">{title}</div>
@@ -73,7 +75,7 @@ const StoryDetailsModal = ({
       </Modal.Content>
       <Modal.Actions>
         <div>
-          <div className="flex wrap" style={{ gap: '5px' }}>
+          <div className="flex wrap" style={{ gap: '10px' }}>
             {!isTeacher && !story.flashcardsOnly && (<LinkButton
               variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
               to={`/stories/${story._id}/preview`}
@@ -97,19 +99,19 @@ const StoryDetailsModal = ({
                   position="top center"
                 />)}
                 {!story.flashcardsOnly && (<>
-                {isTeacher && inGroupLibrary ? (
+                {isTeacher /* && inGroupLibrary */ && (
                   <LinkButton
                     variant="primary"
                     to={`/stories/${story._id}/group/preview`}
                     translationId="preview"
                   />
-                ) : (
+                ) /* : (
                   <LinkButton
                     variant="secondary"
                     to={`/stories/${story._id}/preview`}
                     translationId="preview"
                   />
-                )}
+                ) */}
                 {isTeacher && inGroupLibrary ? (
                   <Link to={`/stories/${story._id}/group/review`}>
                     <Button variant="primary">
@@ -126,27 +128,36 @@ const StoryDetailsModal = ({
                     </Button>
                   </Link>
                 )}
-                {!isTeacher && (<Link to={`/stories/${story._id}/compete`}>
+                </>)}
+              </>
+            )}
+          </div>
+          {!isTeacher && (
+            <div style={{ textAlign: 'left' }}>
+              <p style={{ margin: '20px 0 10px' }}>Games</p>
+              {!isTeacher && (
+                <Link to={`/stories/${story._id}/compete`}>
                   <Button
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
+                    style={{ marginRight: '10px' }}
                   >
                     <FormattedMessage id="compete" />
                   </Button>
-                </Link>)}
-                {!isTeacher && (<Link to={`/crossword/${story._id}`}>
+                </Link>
+              )}
+              {!isTeacher && (
+                <Link to={`/crossword/${story._id}`}>
                   <Button
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
                     <FormattedMessage id="Crossword" />
                   </Button>
-                </Link>)}
-                </>)}
-              </>
-            )}
-          </div>
-
+                </Link>
+              )}
+            </div>
+          )}
           {displayDivider && (
             <div style={{ width: '100%' }}>
               <hr />
@@ -154,7 +165,7 @@ const StoryDetailsModal = ({
           )}
 
           <div className="flex space-between" style={{ marginTop: '5px' }}>
-            <div className="flex wrap" style={{ gap: '5px' }}>
+            <div className="flex wrap" style={{ gap: '10px' }}>
               {showCreateControlStoryButton && (
                 <LinkButton
                   to={`/stories/${story._id}/controlled-story-editor`}
