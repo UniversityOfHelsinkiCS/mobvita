@@ -31,7 +31,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
 import LearningSettingsModal from './LearningSettingsModal'
 import PracticeModal from './HomeView/PracticeModal'
-import { hiddenFeatures, getHelpLink } from 'Utilities/common'
+import { hiddenFeatures, getHelpLink, cefrNum2Cefr } from 'Utilities/common'
 
 export default function Sidebar({ history }) {
   const dispatch = useDispatch()
@@ -117,29 +117,7 @@ export default function Sidebar({ history }) {
 
   const smallWindow = useWindowDimensions().width < 640
 
-  const cefr_num2cefr_str = num => {
-    if (num == null || num === undefined) return '?'
-    if (num < 1) return 'Pre-A1';
-    if (num > 13) return 'C2+';
   
-    const levels = [
-      'Pre-A1', 
-      'A1',
-      'A1/A2',
-      'A2',
-      'A2/B1',
-      'B1',
-      'B1/B2',
-      'B2',
-      'B2/C1',
-      'C1',
-      'C1/C2',
-      'C2',
-      'C2+'
-    ];
-  
-    return levels[Math.round(num)];
-  };
 
   return (
     <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
@@ -330,7 +308,7 @@ export default function Sidebar({ history }) {
                 style={{ fontSize: '18px', color: '#777', textDecoration: 'none', marginTop: '50px' }}
               > 
                 <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
-                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefr_num2cefr_str(user.user.current_cerf)}`}</div>
+                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cerf)}`}</div>
               </Link>
             }
           />
