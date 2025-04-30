@@ -3,7 +3,7 @@
 import React from 'react'
 import { UncontrolledReactSVGPanZoom } from 'react-svg-pan-zoom'
 import { useSelector } from 'react-redux'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
@@ -148,7 +148,7 @@ const HexagonTest = props => {
                 r={props.root_hex_coord.r}
                 s={props.root_hex_coord.s}
               >
-                <Text className="hexagon-root">{learningLanguage}</Text>
+                <Text className="hexagon-root"><FormattedMessage id={learningLanguage} /></Text>
               </Hexagon>
 
               {props.concepts
