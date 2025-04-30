@@ -308,7 +308,7 @@ export default function Sidebar({ history }) {
                 style={{ fontSize: '18px', color: '#777', textDecoration: 'none', marginTop: '50px' }}
               > 
                 <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
-                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cerf)}`}</div>
+                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cefr)}`}</div>
               </Link>
             }
           />
