@@ -243,7 +243,7 @@ export default (state = initialState, action) => {
         }
         return {
           ...state,
-          focused: action.response,
+          focused: { ...action.response, topics: state.focused.topics },
 
           answersPending: false,
         }
