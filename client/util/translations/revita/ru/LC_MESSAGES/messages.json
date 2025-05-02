@@ -1737,10 +1737,14 @@
     "candidate-available-explain-1": "Это количество доступных упражнений. Если ни одна тема не выбрана, то будут доступны все упражнения",
     "general-chatbot-init-mess": "Здесь можно задавать мне вопросы об использовании системы — и я постараюсь ответить!",
     "Error rendering message": "Чат-бот не отвечает. Попробуй еще раз! Если проблема не будет устранена, пожалуйста, сообщи нам.",
-    "Under processing": "The story is being processed, its description will be available shortly",
-    "Flashcards only": "This is a deck of flashcards",
-    "open-custom-grammar-topics-modal": "Custom",
-    "select-word-audio-exercise-type": "Listen to words with context",
-    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
-    "select-chunk-audio-excercise-type": "Listen to phrases without context"
+    "Under processing": "История обрабатывается, описание будет доступно в ближайшее время.",
+    "Flashcards only": "Комплект карточек",
+    "open-custom-grammar-topics-modal": "Настроить",
+    "select-word-audio-exercise-type": "Прослушивание слов в контексте",
+    "select-chunk-context-audio-exercise-type": "Прослушивание фраз в контексте",
+    "select-chunk-audio-excercise-type": "Прослушивание фраз вне контекста",
+    "exercises-answered-correctly-EXPLAIN": "%% упражнений, выполненных правильно",
+    "part-of-story-covered-EXPLAIN": "Часть истории пройдена",
+    "user-role-select": "",
+    "set-cefr-manually": ""
 }

@@ -1735,10 +1735,14 @@
     "candidate-available-explain-1": "Tämä on saatavilla olevien harjoitusten lukumäärä. Jos et valitse aiheita, kaikki harjoitukset ovat käytettävissä",
     "general-chatbot-init-mess": "Voit kysyä minulta kysymyksiä järjestelmän käytöstä – yritän vastata parhaani mukaan!",
     "Error rendering message": "Chatbot ei vastaa. Yritä uudelleen! Jos ongelma jatkuu, ilmoita siitä meille.",
-    "Under processing": "The story is being processed, its description will be available shortly",
-    "Flashcards only": "This is a deck of flashcards",
-    "open-custom-grammar-topics-modal": "Custom",
-    "select-word-audio-exercise-type": "Listen to words with context",
-    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
-    "select-chunk-audio-excercise-type": "Listen to phrases without context"
+    "Under processing": "Tarinaa käsitellään, sen kuvaus on saatavilla pian",
+    "Flashcards only": "Paketti muistikortteja",
+    "open-custom-grammar-topics-modal": "Mukauta",
+    "select-word-audio-exercise-type": "Kuuntele sana kontekstissaan",
+    "select-chunk-context-audio-exercise-type": "Kuuntele lauseita kontekstissaan",
+    "select-chunk-audio-excercise-type": "Kuuntele lauseita ilman kontekstia",
+    "exercises-answered-correctly-EXPLAIN": "%% Vastattu oikein",
+    "part-of-story-covered-EXPLAIN": "%% Luettu osa",
+    "user-role-select": "",
+    "set-cefr-manually": ""
 }
