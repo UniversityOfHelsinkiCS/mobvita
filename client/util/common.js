@@ -222,6 +222,15 @@ export const skillLevels = [
   'C2+',
 ]
 
+export const cefrNum2Cefr = num => {
+  if (num == null || num === undefined) return ''
+  if (num < 1) return 'pre-A1';
+  if (num > 13) return 'C2+';
+
+
+  return skillLevels[Math.round(num)];
+};
+
 export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
   function randomInRange(min, max) {
     return Math.random() * (max - min) + min;
