@@ -351,6 +351,7 @@ export default function Sidebar({ history }) {
                   className='tour-mobile-start-button'
                   onClick={() => handleTourStart()}
                   text={intl.formatMessage({id: 'start-tour'})} icon='map signs'
+                  disabled={history.location.pathname.includes('lessons/library')}
                 />
               )}
               {/* <DropdownItem as={Link} to={helpLink} text={intl.formatMessage({id: 'help'})} icon='help circle' /> */}

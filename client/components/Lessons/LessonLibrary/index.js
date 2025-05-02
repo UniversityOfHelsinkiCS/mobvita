@@ -76,7 +76,9 @@ const LessonList = () => {
     oid: userId,
     has_seen_lesson_tour,
     vocabulary_score,
+    email,
   } = user
+  const isAnonymousUser = email === 'anonymous_email'
   const {
     pending: metaPending,
     lesson_semantics,
@@ -156,8 +158,8 @@ const LessonList = () => {
   useEffect(() => {
     if (!lessonPending && !metaPending && !has_seen_lesson_tour && lessons.length) {
       dispatch(setLessonStep(0))
-      dispatch(lessonsTourViewed())
-      dispatch(startLessonsTour())
+      /* dispatch(lessonsTourViewed())
+      dispatch(startLessonsTour()) */
     }
     
   }, [lessonPending, metaPending])
@@ -423,7 +425,7 @@ const LessonList = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
-        {!teacherView && (
+        {!teacherView && !isAnonymousUser && (
           <LibraryTabs
             values={Object.fromEntries(
               Object.entries(libraries).filter(

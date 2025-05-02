@@ -3220,7 +3220,7 @@ label.file-upload-btn {
   }
 }
 
-.tour-button {
+.tour-button, .tour-button:disabled {
   background-color: transparent;
   border: none;
 }

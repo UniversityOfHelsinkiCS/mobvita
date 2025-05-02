@@ -367,7 +367,7 @@ export default function NavBar() {
                   position="top center"
                   content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
                   trigger={
-                    <Button className="tour-button" onClick={handleTourStart}>
+                    <Button className="tour-button" onClick={handleTourStart} disabled={history.location.pathname.includes('lessons/library')}>
                       <Icon name="map signs" size="large" style={{ color: 'black' }} />
                     </Button>
                   }
