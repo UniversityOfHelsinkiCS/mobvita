@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Popup } from 'semantic-ui-react'
+import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -133,8 +133,8 @@ const StoryDetailsModal = ({
             )}
           </div>
           {!isTeacher && (
-            <div style={{ textAlign: 'left' }}>
-              <p style={{ margin: '20px 0 10px' }}>Games</p>
+            <div style={{ textAlign: 'left', marginTop: '15px' }}>
+              <span style={{ marginRight: '10px' }}>Games:</span>
               {!isTeacher && (
                 <Link to={`/stories/${story._id}/compete`}>
                   <Button
@@ -192,6 +192,13 @@ const StoryDetailsModal = ({
                 variant="secondary"
                 translationId="Share"
               />
+              {story.owner && (
+                <Link to={`/stories/${story._id}/edit`}>
+                  <Button variant="secondary">
+                    <Icon name="edit" /> <FormattedMessage id="edit-story" />
+                  </Button>
+                </Link>
+              )}
               { inGroupLibrary && (<CustomButton
                 onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
                 variant="secondary"

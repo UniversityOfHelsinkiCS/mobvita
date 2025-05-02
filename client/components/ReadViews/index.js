@@ -334,17 +334,6 @@ const ReadViews = ({ match }) => {
                     </a>
                   )}
                 </div>
-                {!isGroupPreview && !isGroupReview && (
-                  <div>
-                    {ownedStory && mode !== 'practice-preview' && !underProcessing && (
-                      <Link to={`/stories/${id}/edit`}>
-                        <Button style={{ marginRight: '.5em' }} variant="secondary">
-                          <Icon name="edit" /> <FormattedMessage id="edit-story" />
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                )}
               </Header>
             </div>
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
