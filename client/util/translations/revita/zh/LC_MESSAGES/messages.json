@@ -1113,9 +1113,13 @@
     "general-chatbot-init-mess": "您可以通过向我提出问题，我们会尽全力回答！",
     "Error rendering message": "聊天机器人无法回答问题。请重试。如果还是无法响应，请联系我们",
     "Under processing": "The story is being processed, its description will be available shortly",
-    "Flashcards only": "This is a deck of flashcards",
+    "Flashcards only": "Pack of flashcards",
     "open-custom-grammar-topics-modal": "Custom",
-    "select-word-audio-exercise-type": "Listen to words with context",
-    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
-    "select-chunk-audio-excercise-type": "Listen to phrases without context"
+    "select-word-audio-exercise-type": "听取上下文中的单词",
+    "select-chunk-context-audio-exercise-type": "听取上下文中的短语",
+    "select-chunk-audio-excercise-type": "听取不带上下文的短语",
+    "exercises-answered-correctly-EXPLAIN": "已正确完成%%的练习",
+    "part-of-story-covered-EXPLAIN": "已完成文章的%%",
+    "user-role-select": "",
+    "set-cefr-manually": ""
 }

@@ -518,7 +518,7 @@
     "Source": "Source",
     "Level": "Level",
     "story-rating": "Story Rating",
-    "exercises-answered-correctly": "%% of exercises answered correctly",
+    "exercises-answered-correctly": "%% correct answers",
     "part-of-story-covered": "%% of story covered",
     "delete-story": "",
     "share-story-with-a-friend": "Share story with a user",
@@ -1737,9 +1737,13 @@
     "general-chatbot-init-mess": "You can ask me questions about using the system — and I'll try my best to answer!",
     "Error rendering message": "The chatbot is not responding. Please try again!  If it still does not respond, please notify us.",
     "open-custom-grammar-topics-modal": "Custom",
-    "select-word-audio-exercise-type": "Listen to words with context",
+    "select-word-audio-exercise-type": "Listen to words in context",
     "select-chunk-audio-excercise-type": "Listen to phrases without context",
-    "select-chunk-context-audio-exercise-type": "Listen to phrases with context",
+    "select-chunk-context-audio-exercise-type": "Listen to phrases in context",
     "Under processing": "The story is being processed, its description will be available shortly",
-    "Flashcards only": "This is a deck of flashcards"
+    "Flashcards only": "Pack of flashcards",
+    "exercises-answered-correctly-EXPLAIN": "%% of exercises answered correctly",
+    "part-of-story-covered-EXPLAIN": "Part of story that you have covered so far",
+    "user-role-select": "",
+    "set-cefr-manually": ""
 }
