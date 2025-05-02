@@ -6,10 +6,10 @@ on:
 
 jobs:
   healthcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run API checks
         run: cd healthchecks && npm install && REVITA_USER_TOKEN="${{ secrets.REVITA_USER_TOKEN }}" npm run test
       - name: Report failure
