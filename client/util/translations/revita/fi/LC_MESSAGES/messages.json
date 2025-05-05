@@ -1744,5 +1744,6 @@
     "exercises-answered-correctly-EXPLAIN": "%% Vastattu oikein",
     "part-of-story-covered-EXPLAIN": "%% Luettu osa",
     "user-role-select": "",
-    "set-cefr-manually": ""
+    "set-cefr-manually": "",
+    "story-dialog-games": "Pelit"
 }

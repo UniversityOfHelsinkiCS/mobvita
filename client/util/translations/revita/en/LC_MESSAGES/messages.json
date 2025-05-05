@@ -1745,5 +1745,6 @@
     "exercises-answered-correctly-EXPLAIN": "%% of exercises answered correctly",
     "part-of-story-covered-EXPLAIN": "Part of story that you have covered so far",
     "user-role-select": "",
-    "set-cefr-manually": ""
+    "set-cefr-manually": "",
+    "story-dialog-games": "Games"
 }

@@ -1121,5 +1121,6 @@
     "exercises-answered-correctly-EXPLAIN": "已正确完成%%的练习",
     "part-of-story-covered-EXPLAIN": "已完成文章的%%",
     "user-role-select": "",
-    "set-cefr-manually": ""
+    "set-cefr-manually": "",
+    "story-dialog-games": "Games"
 }
