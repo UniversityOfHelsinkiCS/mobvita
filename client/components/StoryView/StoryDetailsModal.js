@@ -21,6 +21,7 @@ const StoryDetailsModal = ({
   handleControlledStoryCancel,
   hidden,
   setSharedStoryVisibility,
+  user,
 }) => {
   const {
     title,
@@ -194,7 +195,7 @@ const StoryDetailsModal = ({
                 variant="secondary"
                 translationId="Share"
               />
-              {story.owner && (
+              {story.user === user.oid && (
                 <Link to={`/stories/${story._id}/edit`}>
                   <Button variant="secondary">
                     <Icon name="edit" /> <FormattedMessage id="edit-story" />

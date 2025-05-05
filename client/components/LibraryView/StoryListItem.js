@@ -79,6 +79,7 @@ const StoryTitle = ({
       handleControlledStoryCancel={handleControlledStoryCancel}
       hidden={storyGroupShareInfo && storyGroupShareInfo.hidden || false}
       setSharedStoryVisibility={setSharedStoryVisibility}
+      user={user}
     />
   )
 }
