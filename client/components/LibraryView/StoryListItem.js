@@ -49,7 +49,7 @@ const StoryTitle = ({
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
           <h5
             className="story-item-title"
-            style={{ marginBottom: '.5rem', width: '65%', ...getTextStyle(learningLanguage) }}
+            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
           >
             {story.title}
           </h5>

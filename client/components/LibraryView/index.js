@@ -50,6 +50,7 @@ const StoryList = () => {
   const smallWindow = useWindowDimensions().width < 520
 
   const smallScreenSearchbar = useRef()
+  const bigScreen = useWindowDimensions().width >= 700
 
   const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
   const [sortDirection, setSortDirection] = useState(
@@ -456,8 +457,21 @@ const StoryList = () => {
       )}
       {!noResults && libraries.public && accordionView()}
       {!noResults && !libraries.public && (
-        <Card.Group itemsPerRow={1} doubling data-cy="story-items" style={{ marginTop: '.5em' }}>
-          <WindowScroller>
+        <Card.Group
+          itemsPerRow={2}
+          doubling={!bigScreen}
+          data-cy="story-items"
+          style={{ marginTop: '.5em' }}
+        >
+          {libraryFilteredStories.map((story, index) => (
+            <StoryListItem
+              key={story._id}
+              libraryShown={libraries}
+              story={libraryFilteredStories[index]}
+              selectedGroup={savedGroupSelection}
+            />
+          ))}
+          {/* <WindowScroller>
             {({ height, isScrolling, onChildScroll, scrollTop }) => (
               <List
                 autoHeight
@@ -471,7 +485,7 @@ const StoryList = () => {
                 width={10000}
               />
             )}
-          </WindowScroller>
+          </WindowScroller> */}
         </Card.Group>
       )}
     </div>
