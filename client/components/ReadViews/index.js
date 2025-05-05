@@ -322,17 +322,6 @@ const ReadViews = ({ match }) => {
                       style={getTextStyle(learningLanguage, 'title')}>
                 <div>
                   <span className="pr-sm practice-tour-start">{story.title}</span>
-                  <br/>
-                  {story.url && (
-                    <a
-                      href={story.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontSize: '1rem', fontWeight: '300' }}
-                    >
-                      <FormattedMessage id="Source" />
-                    </a>
-                  )}
                 </div>
               </Header>
             </div>
