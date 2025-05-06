@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 const { axios } = require('@util/common')
 const { open } = require('sqlite')
 
-const wordCountLimit = 100
+const wordCountLimit = 5000
 
 const estimate = async (req, res) => {
   const { ip } = req
@@ -14,7 +14,6 @@ const estimate = async (req, res) => {
   }
 
   const wordCount = text.trim().split(/\s+/).length
-
 
   try {
     const db = await open({ filename: 'estimate.db', driver: sqlite3.Database })
@@ -64,11 +63,20 @@ const estimate = async (req, res) => {
     console.error(error.message)
   }
 
-  const scoreResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_score', { text })
-  const levelResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_level', { text })
+  // const scoreResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_score', { text })
+  // const levelResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_level', { text })
 
+  const estimatorHost =
+    process.env.ENVIRONMENT === 'development' ? 'http://localhost' : 'http://svm-58.cs.helsinki.fi'
+  const estimatorResponse = await axios.post(`${estimatorHost}:5001/infer_reg_difficulty`, {
+    text,
+    language: 'Finnish',
+  })
 
-  res.json({ difficulty: scoreResponse.data.score, level: levelResponse.data.level })
+  res.json({
+    level: estimatorResponse.data.level,
+    explanation: estimatorResponse.data.explanation,
+  })
 }
 
 module.exports = { estimate }
