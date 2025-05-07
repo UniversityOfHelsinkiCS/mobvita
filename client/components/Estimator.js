@@ -4,8 +4,7 @@ import axios from 'axios'
 
 const Estimator = () => {
   const [text, setText] = useState('')
-  const [level, setLevel] = useState(null)
-  const [explanations, setExplanations] = useState(null)
+  const [results, setResults] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
@@ -13,8 +12,7 @@ const Estimator = () => {
     setIsLoading(true)
     try {
       const response = await axios.post('/api/estimate', { text })
-      setLevel(response.data.level)
-      setExplanations(response.data.explanation)
+      setResults(response.data)
       setIsLoading(false)
     } catch (error) {
       setErrorMessage(error.response.data.error)
@@ -78,23 +76,31 @@ const Estimator = () => {
           </Col>
         </Row>
       )}
-      {explanations && (
+      {results && (
         <Row className="my-5">
           <Col>
             <h4 style={{ marginBottom: '20px' }}>Results</h4>
             <Table bordered>
               <tbody>
                 <tr>
+                  <td>Score</td>
+                  <td>{results.score}</td>
+                </tr>
+                <tr>
+                  <td>CEFR</td>
+                  <td>{results.cefr}</td>
+                </tr>
+                <tr>
                   <td>Level</td>
-                  <td>{level}</td>
+                  <td>{results.level}</td>
                 </tr>
                 <tr>
                   <td>Top features</td>
                   <td>
-                    {explanations.slice(0, 10).map(explanation => (
+                    {results.topFeatures.map(feature => (
                       <>
                         <Badge variant="info" pill>
-                          {explanation.feature}
+                          {feature}
                         </Badge>{' '}
                       </>
                     ))}

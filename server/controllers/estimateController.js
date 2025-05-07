@@ -63,19 +63,21 @@ const estimate = async (req, res) => {
     console.error(error.message)
   }
 
-  // const scoreResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_score', { text })
-  // const levelResponse = await axios.post('http://svm-58.cs.helsinki.fi:5000/predict_level', { text })
-
   const estimatorHost =
     process.env.ENVIRONMENT === 'development' ? 'http://localhost' : 'http://svm-58.cs.helsinki.fi'
-  const estimatorResponse = await axios.post(`${estimatorHost}:5001/infer_reg_difficulty`, {
+  const scoreResponse = await axios.post(`${estimatorHost}:5000/predict_score`, { text })
+  const cefrResponse = await axios.post(`${estimatorHost}:5000/predict_level`, { text })
+  const featureResponse = await axios.post(`${estimatorHost}:5001/infer_reg_difficulty`, {
     text,
     language: 'Finnish',
   })
+  const topFeatures = featureResponse.data.explanation.slice(0, 10).map(item => item.feature)
 
   res.json({
-    level: estimatorResponse.data.level,
-    explanation: estimatorResponse.data.explanation,
+    score: scoreResponse.data.score,
+    cefr: cefrResponse.data.level,
+    level: featureResponse.data.level,
+    topFeatures,
   })
 }
 
