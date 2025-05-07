@@ -404,6 +404,9 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           setSharedStoryVisibility={setSharedStoryVisibility}
         />
       </Card.Content>
+      <Card.Content extra>
+        <div className="story-description">{story.description}</div>
+      </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
         {/* <StoryActions
           story={story}
@@ -413,8 +416,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           inGroupLibrary={inGroupLibrary}
           isTeacher={isTeacher}
         /> */}
-        <div className="story-description">{story.description}</div>
-        <div className="flex align-center" style={{ overflow: 'hidden' }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }} >
           {story.flashcardsOnly && (<Icon size="small" name="clone outline" bordered style={{marginRight: '15px'}}/>)}
 
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
@@ -498,7 +500,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           <DifficultyStars
             className='library-tour-difficulty-stars'
             difficulty={story.difficulty}
-            style={{ whiteSpace: 'nowrap', marginLeft: '1em' }}
+            style={{ whiteSpace: 'nowrap' }}
           />
         </div>
       </Card.Content>

@@ -422,14 +422,17 @@ const StoryList = () => {
                 key={`story-group-content-${group}`}
                 active={accordionState === index}
               >
-                {
-                  libraryGroup[group].map((story) => (
-                    rowRenderer({
-                      key: `story-${story._id}`,
-                      index: storyId2Index[story._id],
-                      style: {height: '130px'}
-                    })))
-                }
+                <Card.Group itemsPerRow={2} doubling={!bigScreen}>
+                  {libraryGroup[group].map((story, index) => (
+                    <StoryListItem
+                      key={`story-${story._id}`}
+                      libraryShown={libraries}
+                      story={libraryFilteredStories[index]}
+                      selectedGroup={savedGroupSelection}
+                      style={{ padding: '0' }}
+                    />
+                  ))}
+                </Card.Group>
               </AccordionContent>
             </>))
         }     
