@@ -71,13 +71,12 @@ const estimate = async (req, res) => {
     text,
     language: 'Finnish',
   })
-  const topFeatures = featureResponse.data.explanation.slice(0, 10).map(item => item.feature)
 
   res.json({
     score: scoreResponse.data.score,
     cefr: cefrResponse.data.level,
     level: featureResponse.data.level,
-    topFeatures,
+    explanation: featureResponse.data.explanation,
   })
 }
 

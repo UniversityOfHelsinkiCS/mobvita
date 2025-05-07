@@ -84,7 +84,7 @@ const Estimator = () => {
               <tbody>
                 <tr>
                   <td>Score</td>
-                  <td>{results.score}</td>
+                  <td>{results.score.toFixed(1)}</td>
                 </tr>
                 <tr>
                   <td>CEFR</td>
@@ -97,10 +97,10 @@ const Estimator = () => {
                 <tr>
                   <td>Top features</td>
                   <td>
-                    {results.topFeatures.map(feature => (
+                    {results.explanation.slice(0, 10).map(item => (
                       <>
-                        <Badge variant="info" pill>
-                          {feature}
+                        <Badge variant={item.contribution > 0 ? 'success' : 'danger'} pill>
+                          {item.feature}
                         </Badge>{' '}
                       </>
                     ))}
