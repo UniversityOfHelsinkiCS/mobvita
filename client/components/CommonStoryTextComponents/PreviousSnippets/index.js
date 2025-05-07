@@ -5,7 +5,7 @@ import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { useParams, useHistory } from 'react-router-dom'
-import { Segment, Divider } from 'semantic-ui-react'
+import { Divider, Placeholder, PlaceholderHeader, PlaceholderLine } from 'semantic-ui-react'
 
 const PreviousSnippets = (props) => {
   const isLesson = props.isLesson
@@ -18,7 +18,7 @@ const PreviousSnippets = (props) => {
   const { learningLanguage } = useSelector(learningLanguageSelector)
   const { previousAnswers } = useSelector(({ practice }) => practice)
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
-  const { previous } = useSelector(({ snippets }) => {
+  const { previous, pending } = useSelector(({ snippets }) => {
     const { focused: focusedSnippet, pending } = snippets
     const previous = snippets.previous.filter(Boolean)
     return { previous, focusedSnippet, pending }
@@ -49,6 +49,26 @@ const PreviousSnippets = (props) => {
       dispatch(setPrevious(updatedPrevious))
     }
   }, [focusedStory])
+
+  if (pending || !annotationsInitialized) {
+    return (
+      <div className="pt-nm" style={{ marginBottom: '2rem' }}>
+        <Placeholder fluid>
+          <PlaceholderHeader>
+            <PlaceholderLine length="very long" />
+          </PlaceholderHeader>
+          <PlaceholderHeader>
+            <PlaceholderLine length="full" />
+            <PlaceholderLine length="long" />
+          </PlaceholderHeader>
+          <PlaceholderHeader>
+            <PlaceholderLine length="full" />
+            <PlaceholderLine length="medium" />
+          </PlaceholderHeader>
+        </Placeholder>
+      </div>
+    )
+  }
 
   if (previous?.length > 0 && previous[0].practice_snippet) {
     return null
