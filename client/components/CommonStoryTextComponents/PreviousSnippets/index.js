@@ -54,11 +54,11 @@ const PreviousSnippets = (props) => {
     return null
   }
 
-  if (focusedSnippet && focusedSnippet.snippetid[0] === 0) {
+  if (!isLesson && focusedSnippet && focusedSnippet.snippetid[0] === 0) {
     return null
   }
 
-  if (pending || (!isLesson && focusedSnippet?.snippetid[0] !== 0 && previous?.length === 0)) {
+  if (!isLesson && (pending || (focusedSnippet?.snippetid[0] !== 0 && previous?.length === 0))) {
     return (
       <div className="pt-nm" style={{ marginBottom: '2rem' }}>
         <Placeholder fluid>
