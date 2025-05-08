@@ -18,7 +18,7 @@ const PreviousSnippets = (props) => {
   const { learningLanguage } = useSelector(learningLanguageSelector)
   const { previousAnswers } = useSelector(({ practice }) => practice)
   const { focused: focusedStory } = useSelector(({ stories }) => stories)
-  const { previous, pending } = useSelector(({ snippets }) => {
+  const { previous, focusedSnippet, pending } = useSelector(({ snippets }) => {
     const { focused: focusedSnippet, pending } = snippets
     const previous = snippets.previous.filter(Boolean)
     return { previous, focusedSnippet, pending }
@@ -50,7 +50,15 @@ const PreviousSnippets = (props) => {
     }
   }, [focusedStory])
 
-  if (pending || !annotationsInitialized) {
+  if (previous?.length > 0 && previous[0].practice_snippet) {
+    return null
+  }
+
+  if (focusedSnippet && focusedSnippet.snippetid[0] === 0) {
+    return null
+  }
+
+  if (pending || (!isLesson && focusedSnippet?.snippetid[0] !== 0 && previous?.length === 0)) {
     return (
       <div className="pt-nm" style={{ marginBottom: '2rem' }}>
         <Placeholder fluid>
@@ -68,10 +76,6 @@ const PreviousSnippets = (props) => {
         </Placeholder>
       </div>
     )
-  }
-
-  if (previous?.length > 0 && previous[0].practice_snippet) {
-    return null
   }
 
   if (isLesson === true){
