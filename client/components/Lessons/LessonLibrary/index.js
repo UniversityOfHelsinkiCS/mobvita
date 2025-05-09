@@ -537,10 +537,12 @@ const LessonList = () => {
                           type="button"
                           onClick={handleBeginClick}
                           disabled={
-                            selectedSemantics.length === 0 ||
-                            selectedTopicIds.length === 0 ||
                             lessonPending ||
-                            !lessonReady
+                            !lessonReady ||
+                            !selectedTopicIds ||
+                            !selectedSemantics ||
+                            selectedSemantics.length === 0 ||
+                            selectedTopicIds.length === 0
                           }
                         >
                           <FormattedMessage id="start" />
