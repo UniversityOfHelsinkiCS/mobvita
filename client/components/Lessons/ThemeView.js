@@ -28,7 +28,7 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
           key={name}
           handleClick={() => handleThemeClick(name)}
           name={name.toLowerCase()}
-          active={selectedSemantics.includes(name)}
+          active={selectedSemantics?.includes(name)}
         />
       ))}
     </div>
