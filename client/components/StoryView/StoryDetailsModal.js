@@ -99,37 +99,40 @@ const StoryDetailsModal = ({
                   disabled={story.flashcard_count > 0}
                   position="top center"
                 />)}
-                {!story.flashcardsOnly && (<>
-                {isTeacher /* && inGroupLibrary */ && (
-                  <LinkButton
-                    variant="primary"
-                    to={`/stories/${story._id}/group/preview`}
-                    translationId="preview"
-                  />
-                ) /* : (
-                  <LinkButton
-                    variant="secondary"
-                    to={`/stories/${story._id}/preview`}
-                    translationId="preview"
-                  />
-                ) */}
-                {isTeacher && inGroupLibrary ? (
-                  <Link to={`/stories/${story._id}/group/review`}>
-                    <Button variant="primary">
-                      <FormattedMessage id="review" />
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link to={`/stories/${story._id}/review`}>
-                    <Button
-                      variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
-                      disabled={story.percent_cov === 0}
-                    >
-                      <FormattedMessage id="review" />
-                    </Button>
-                  </Link>
+                {!story.flashcardsOnly && (
+                  <>
+                    {isTeacher && inGroupLibrary && (
+                      <LinkButton
+                        variant="primary"
+                        to={`/stories/${story._id}/group/preview`}
+                        translationId="preview"
+                      />
+                    )}
+                    {isTeacher && !inGroupLibrary && (
+                      <LinkButton
+                        variant="secondary"
+                        to={`/stories/${story._id}/preview`}
+                        translationId="preview"
+                      />
+                    )}
+                    {isTeacher && inGroupLibrary ? (
+                      <Link to={`/stories/${story._id}/group/review`}>
+                        <Button variant="primary">
+                          <FormattedMessage id="review" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link to={`/stories/${story._id}/review`}>
+                        <Button
+                          variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
+                          disabled={story.percent_cov === 0}
+                        >
+                          <FormattedMessage id="review" />
+                        </Button>
+                      </Link>
+                    )}
+                  </>
                 )}
-                </>)}
               </>
             )}
           </div>
