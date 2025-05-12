@@ -25,9 +25,6 @@ const SelectGrammarLevel = ({
   const getTopicsByLevel = () => {
     const levelTopics = lessons.reduce((groups, lesson) => {
       const groupName = lesson.group[0]
-      if (!/^[0-9]$/.test(groupName)) {
-        return groups
-      }
       if (!groups[groupName]) {
         groups[groupName] = []
       }
@@ -59,10 +56,7 @@ const SelectGrammarLevel = ({
         }
       })
 
-      if (!levelOfTopic) {
-        // This topic is a listening topic which are not included in any level
-        isActive = true
-      } else if (!isLevelButtonActive(levelOfTopic)) {
+      if (levelOfTopic && !isLevelButtonActive(levelOfTopic)) {
         isActive = true
       }
     })
