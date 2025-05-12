@@ -10,7 +10,8 @@ describe('basics', () => {
     _http.requestOptions = {
       headers: {
         Authorization: process.env.REVITA_USER_TOKEN
-      }
+      },
+      socketTimeout: 30000
     }
   })
 
