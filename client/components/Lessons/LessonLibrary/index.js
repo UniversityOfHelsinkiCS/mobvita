@@ -156,15 +156,6 @@ const LessonList = () => {
   }, [lessonPending])
 
   useEffect(() => {
-    if (!lessonPending && !metaPending && !has_seen_lesson_tour && lessons?.length) {
-      dispatch(setLessonStep(0))
-      /* dispatch(lessonsTourViewed())
-      dispatch(startLessonsTour()) */
-    }
-    
-  }, [lessonPending, metaPending])
-
-  useEffect(() => {
     if (!groupPending && groups.length === 0 && libraries.group) {
       setLibrary('private')
     }
