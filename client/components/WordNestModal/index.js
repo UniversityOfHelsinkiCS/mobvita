@@ -21,6 +21,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     others,
     general_ref: generalRef,
     part_of_compound: partOfCompound,
+    translation_lemmas: translationLemmas,
   } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
@@ -94,7 +95,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
       <div className="wordnest-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <span
-            onClick={() => handleWordClick(word, word)}
+            onClick={() => handleWordClick(word, translationLemmas || word)}
             onKeyPress={() => setOpen(!open)}
             role="button"
             tabIndex="0"
