@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Modal, Tab, TabPane, Icon } from 'semantic-ui-react'
+import { useSelector } from 'react-redux'
+import { Modal, Tab, TabPane, Icon, Popup } from 'semantic-ui-react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
+import { cefrNumberToLevel } from 'Utilities/common'
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
-import { FormattedMessage, useIntl } from 'react-intl'
 import ToggleButton from '../ToggleButton'
 
 import './SelectGrammarLevelStyles.css'
@@ -19,8 +21,9 @@ const SelectGrammarLevel = ({
   showListeningSettings,
 }) => {
   const [modal, setModal] = useState(false)
-
   const intl = useIntl()
+  const { grade, current_cefr: currentCefr } = useSelector(state => state.user.data.user)
+  const recommendedLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
 
   const getTopicsByLevel = () => {
     const levelTopics = lessons.reduce((groups, lesson) => {
@@ -155,26 +158,27 @@ const SelectGrammarLevel = ({
           </>
         )}
       </Modal>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '30px',
-        }}
-      >
+      <div className="grammar-buttons-container">
         <div className="grammar-level-button-group">
           {[1, 2, 3, 4].map(level => (
-            <ToggleButton
-              key={level}
-              handleClick={() => handleLevelClick(level)}
-              name={`level ${level}`}
-              width="130px"
-              height="55px"
-              active={isLevelButtonActive(level) && !isCustomButtonActive()}
-              level={level}
-            />
+            <div className="button-with-marker" key={level}>
+              {recommendedLevel === level && (
+                <Popup
+                  trigger={<Icon name="caret down" size="large" />}
+                  content={intl.formatMessage({ id: 'recommended-grammar-topics-level-popup' })}
+                  inverted
+                  basic
+                />
+              )}
+              <ToggleButton
+                handleClick={() => handleLevelClick(level)}
+                name={`level ${level}`}
+                width="130px"
+                height="55px"
+                active={isLevelButtonActive(level) && !isCustomButtonActive()}
+                level={level}
+              />
+            </div>
           ))}
         </div>
         <hr style={{ color: '#333', width: '320px' }} />

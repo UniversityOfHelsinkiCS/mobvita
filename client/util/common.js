@@ -231,6 +231,12 @@ export const cefrNum2Cefr = num => {
   return skillLevels[Math.round(num)];
 };
 
+export const cefrNumberToLevel = num => {
+  if (num == null || num === undefined) return null
+  const level = Math.round((num / skillLevels.length) * 4)
+  return Math.min(level, 3) + 1
+}
+
 export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
   function randomInRange(min, max) {
     return Math.random() * (max - min) + min;

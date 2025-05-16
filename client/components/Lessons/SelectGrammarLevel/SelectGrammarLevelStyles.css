@@ -1,3 +1,11 @@
+.grammar-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
 .grammar-level-button-group {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -9,4 +17,15 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
+}
+
+.button-with-marker {
+  position: relative;
+}
+
+.button-with-marker > i {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
 }
