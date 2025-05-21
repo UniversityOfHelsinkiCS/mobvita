@@ -202,13 +202,8 @@ const ReadViews = ({ match }) => {
   // console.log('focused ', focusedConcept)
 
   const handle_cog_click = () => {
-    if (lesson_topics?.length !== 0 && ownedStory) {
-      setTopicsModal(true)
-    } else {
-      setOpen(true)
-    }
+    setOpen(true)
   }
-
 
   const StoryFunctionsDropdown = () => {
 
@@ -240,7 +235,6 @@ const ReadViews = ({ match }) => {
                 onClick={handle_cog_click}
               />
             }
-            open={story.topics.length === 0 && ownedStory && !topicsModal && !open}
             inverted // Optional for inverted dark style
           />
           <SemanticButton
