@@ -21,6 +21,7 @@ import {
 import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
+import LessonModal from './LessonModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
@@ -204,7 +205,7 @@ const HomeviewButtons = ({
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 beta_feature={true}
-                handleClick={() => history.push('/lessons/library')}
+                handleClick={() => setLessonModalOpen(true)}
                 content="Home-Lessons-EXPLANATION"
               />
             </div>
@@ -378,6 +379,7 @@ const HomeView = () => {
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      <LessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
       <BetaLanguageModal
         open={betaModalOpen}
         setOpen={setBetaModalOpen}
