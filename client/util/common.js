@@ -1154,7 +1154,7 @@ const desktopHomeTourSteps = [
   },
   {
     target: '.chatbot',
-    title: 'Chatbot',
+    title: <FormattedMessage id="tour-chatbot-message-title" />,
     content: (
       <div>
         <FormattedHTMLMessage id="tour-chatbot-message" />
