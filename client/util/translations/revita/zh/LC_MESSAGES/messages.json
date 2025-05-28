@@ -1120,7 +1120,8 @@
     "select-chunk-audio-excercise-type": "听取不带上下文的短语",
     "exercises-answered-correctly-EXPLAIN": "已正确完成%%的练习",
     "part-of-story-covered-EXPLAIN": "已完成文章的%%",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Games"
+    "user-role-select": "Are you a student or a teacher?",
+    "set-cefr-manually": "Set my CEFR level manually",
+    "story-dialog-games": "Games",
+    "recommended-grammar-topics-level-popup": "Recommended level of grammar topics"
 }

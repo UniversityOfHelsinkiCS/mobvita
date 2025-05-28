@@ -1742,7 +1742,8 @@
     "select-chunk-audio-excercise-type": "Ascolta frasi senza contesto",
     "exercises-answered-correctly-EXPLAIN": "Esercizi eseguiti correttamente",
     "part-of-story-covered-EXPLAIN": "La parte della storia che hai completato",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Giochi"
+    "user-role-select": "Sei uno studente o un insegnante?",
+    "set-cefr-manually": "Imposta manualmente il mio livello CEFR",
+    "story-dialog-games": "Giochi",
+    "recommended-grammar-topics-level-popup": "Livello consigliato degli argomenti grammaticali"
 }

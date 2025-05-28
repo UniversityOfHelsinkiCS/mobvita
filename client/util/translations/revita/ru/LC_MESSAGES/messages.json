@@ -919,7 +919,7 @@
     "management": "Настройки",
     "about": "О нас",
     "help": "Помощь",
-    "choose-interface-language": "Choose interface language",
+    "choose-interface-language": "Выбери язык интерфейса",
     "terms-and-conditions": "Условия и положения",
     "privacy-policy": "Политика конфиденциальности",
     "groups": "Группы",
@@ -1745,7 +1745,8 @@
     "select-chunk-audio-excercise-type": "Прослушивание фраз вне контекста",
     "exercises-answered-correctly-EXPLAIN": "%% упражнений, выполненных правильно",
     "part-of-story-covered-EXPLAIN": "Часть истории пройдена",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Игры"
+    "user-role-select": "Ты ученик или учитель?",
+    "set-cefr-manually": "Установить уровень CEFR вручную",
+    "story-dialog-games": "Игры",
+    "recommended-grammar-topics-level-popup": "Рекомендуемый уровень грамматических тем"
 }

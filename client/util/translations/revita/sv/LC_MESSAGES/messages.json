@@ -1597,7 +1597,8 @@
     "select-chunk-audio-excercise-type": "Listen to phrases without context",
     "exercises-answered-correctly-EXPLAIN": "Andel besvarad korrekt",
     "part-of-story-covered-EXPLAIN": "Läst andel",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Games"
+    "user-role-select": "Are you a student or a teacher?",
+    "set-cefr-manually": "Set my CEFR level manually",
+    "story-dialog-games": "Games",
+    "recommended-grammar-topics-level-popup": "Recommended level of grammar topics"
 }

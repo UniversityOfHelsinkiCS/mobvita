@@ -1743,7 +1743,8 @@
     "select-chunk-audio-excercise-type": "Kuuntele lauseita ilman kontekstia",
     "exercises-answered-correctly-EXPLAIN": "%% Vastattu oikein",
     "part-of-story-covered-EXPLAIN": "%% Luettu osa",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Pelit"
+    "user-role-select": "Oletko opiskelija vai opettaja?",
+    "set-cefr-manually": "Aseta CEFR-tasoni käsin",
+    "story-dialog-games": "Pelit",
+    "recommended-grammar-topics-level-popup": "Suositeltu kielioppiaiheiden taso"
 }

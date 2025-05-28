@@ -1744,8 +1744,8 @@
     "Flashcards only": "Pack of flashcards",
     "exercises-answered-correctly-EXPLAIN": "%% of exercises answered correctly",
     "part-of-story-covered-EXPLAIN": "Part of story that you have covered so far",
-    "user-role-select": "",
-    "set-cefr-manually": "",
+    "user-role-select": "Are you a student or a teacher?",
+    "set-cefr-manually": "Set my CEFR level manually",
     "story-dialog-games": "Games",
-    "recommended-grammar-topics-level-popup": "Recommended grammar topics level"
+    "recommended-grammar-topics-level-popup": "Recommended level of grammar topics"
 }

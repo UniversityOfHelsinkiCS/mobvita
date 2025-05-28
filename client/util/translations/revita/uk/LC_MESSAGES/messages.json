@@ -852,7 +852,8 @@
     "select-chunk-audio-excercise-type": "Прослухай фрази без контексту",
     "exercises-answered-correctly-EXPLAIN": "%% вправ виконано правильно",
     "part-of-story-covered-EXPLAIN": "%% історії розглянуто",
-    "user-role-select": "",
-    "set-cefr-manually": "",
-    "story-dialog-games": "Ігри"
+    "user-role-select": "Ти студент чи вчитель?",
+    "set-cefr-manually": "Встановіть мій рівень CEFR вручну",
+    "story-dialog-games": "Ігри",
+    "recommended-grammar-topics-level-popup": "Рекомендований рівень знань з граматики"
 }
