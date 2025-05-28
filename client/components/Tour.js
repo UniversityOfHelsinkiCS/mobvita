@@ -74,6 +74,14 @@ const Tour = () => {
           dispatch(sidebarSetOpen(true))
         }
 
+        if (tourState.steps === homeTourSteps && index === 7) {
+          dispatch({ type: 'TOGGLE_CHATBOT' })
+        }
+
+        if (tourState.steps === homeTourSteps && index === 8) {
+          dispatch({ type: 'TOGGLE_CHATBOT' })
+        }
+
         // progress tour tour step index related desktop actions
         if (tourState.steps === progressTourSteps) {
           dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })

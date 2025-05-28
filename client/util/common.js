@@ -1153,6 +1153,16 @@ const desktopHomeTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.chatbot',
+    title: 'Chatbot',
+    content: (
+      <div>
+        <FormattedHTMLMessage id="tour-chatbot-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
     content: (

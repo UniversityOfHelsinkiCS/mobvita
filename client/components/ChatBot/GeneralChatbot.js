@@ -16,9 +16,8 @@ const GeneralReadingChatBot = () => {
     const intl = useIntl();
     const dispatch = useDispatch();
     const [currentMessage, setCurrentMessage] = useState("");
-    const [isCollapsed, setIsCollapsed] = useState(true); // Default collapsed state
 
-    const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
+    const { messages, isWaitingForResponse, isLoadingHistory, isOpen } = useSelector(({ chatbot }) => chatbot);
 
     // Fetch conversation history when chatbot starts
     useEffect(() => {
@@ -39,7 +38,7 @@ const GeneralReadingChatBot = () => {
     };
 
     const toggleCollapse = () => {
-        setIsCollapsed(!isCollapsed);
+        dispatch({ type: 'TOGGLE_CHATBOT' })
     };
 
     return (
@@ -50,14 +49,14 @@ const GeneralReadingChatBot = () => {
                 className="chatbot-toggle" 
                 style={{ background: "mistyrose", margin: 0 }}
             >
-                {isCollapsed ? (
+                {!isOpen ? (
                     <Icon name="angle up" size="large" />
                 ) : (
                     <Icon name="angle down" size="large" />
                 )}
             </Button>
 
-            {!isCollapsed && (
+            {isOpen && (
                 <>
                     <div className="chatbot-messages">
                         {isLoadingHistory ? (

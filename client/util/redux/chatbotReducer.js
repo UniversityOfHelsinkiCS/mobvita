@@ -65,6 +65,7 @@ const initialState = {
     exerciseContext: '',
     isWaitingForResponse: false,
     isLoadingHistory: false,
+    isOpen: false,
 };
   
 export default (state = initialState, action) => {
@@ -118,6 +119,11 @@ export default (state = initialState, action) => {
                 ...state,
                 isLoadingHistory: false,
                 messages: action.chatbot_history,
+            };
+        case 'TOGGLE_CHATBOT':
+            return {
+                ...state,
+                isOpen: !state.isOpen,
             };
 
         default:
