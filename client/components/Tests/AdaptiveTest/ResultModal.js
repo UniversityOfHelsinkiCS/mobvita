@@ -2,10 +2,12 @@ import React from 'react'
 import { Modal, Table } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import { useHistory } from 'react-router'
 import { resetTests } from 'Utilities/redux/testReducer'
 
 const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const { A1, A2, B1, B2, C1, C2, overall } = adaptiveTestResults
 
@@ -24,11 +26,16 @@ const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
     return ((scoreObj.correct / scoreObj.total) * 100).toFixed(1)
   }
 
+  const handleClose = () => {
+    dispatch(resetTests())
+    history.push('/home')
+  }
+
   return (
     <Modal
       size="tiny"
       defaultOpen
-      onClose={() => dispatch(resetTests())}
+      onClose={handleClose}
       closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
     >
       <Modal.Header>
