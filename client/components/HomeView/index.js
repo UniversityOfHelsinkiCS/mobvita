@@ -331,11 +331,11 @@ const HomeView = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-    if (!user.user.has_seen_home_tour) {
+    if (!user.user.has_seen_home_tour && !userData.is_new_user && !showDDLangIntroductory) {
       dispatch(homeTourViewed())
       dispatch(startTour())
     }
-  }, [])
+  }, [userData.is_new_user, showDDLangIntroductory])
 
   useEffect(() => {
     if (
