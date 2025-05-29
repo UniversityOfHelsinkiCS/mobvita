@@ -176,6 +176,7 @@ describe('Mobvita', function () {
 
       it("can click (translate) a word", function () { // This test overlaps with dictionary
         cy.contains("ehkä").click()
+        cy.wait(2000)
         cy.get("[data-cy=dictionary-dropdown]").select("Englanti")
         cy.contains("perhaps", { timeout: 20000 })
       })
