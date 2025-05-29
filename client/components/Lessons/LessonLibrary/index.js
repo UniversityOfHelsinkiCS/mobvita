@@ -35,6 +35,7 @@ import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ThemeView from '../ThemeView'
 import SelectGrammarLevel from '../SelectGrammarLevel'
+import LessonStartMenu from '../LessonStartMenu'
 
 import './LessonLibraryStyles.css';
 
@@ -95,6 +96,7 @@ const LessonList = () => {
 
   const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
+  const [showStartMenu, setShowStartMenu] = useState(true)
 
   const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff, num_visited_exercises } = lesson
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
@@ -445,6 +447,8 @@ const LessonList = () => {
           <>
             {libraries.group && !teacherView ? (
               <div>{lessonStartControls}</div>
+            ) : showStartMenu ? (
+              <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
               <div style={{ display: 'flex', height: '80vh' }}>
                 <div
@@ -477,7 +481,9 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 style={{ flex: '0.10', textAlign: 'center', paddingTop: '50px' }}>{setupViewTitle()}</h1>
+                    <h1 style={{ flex: '0.10', textAlign: 'center', paddingTop: '50px' }}>
+                      {setupViewTitle()}
+                    </h1>
                     <div
                       style={{
                         flex: '1',

@@ -21,7 +21,6 @@ import {
 import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
-import LessonModal from './LessonModal'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
@@ -73,7 +72,6 @@ const HomeviewButton = ({imgSrc, altText,
 const HomeviewButtons = ({
   setPracticeModalOpen,
   setAddStoryModalOpen,
-  setLessonModalOpen,
   aTestIsEnabled,
   aReadingComprehensionEnabled,
 }) => {
@@ -205,7 +203,7 @@ const HomeviewButtons = ({
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 beta_feature={true}
-                handleClick={() => setLessonModalOpen(true)}
+                handleClick={() => history.push('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
             </div>
@@ -296,7 +294,6 @@ const HomeView = () => {
   const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [lessonModalOpen, setLessonModalOpen] = useState(false)
   const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = history.location.pathname.endsWith('/welcome')
@@ -379,7 +376,6 @@ const HomeView = () => {
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
-      <LessonModal open={lessonModalOpen} setOpen={setLessonModalOpen} />
       <BetaLanguageModal
         open={betaModalOpen}
         setOpen={setBetaModalOpen}
@@ -406,7 +402,6 @@ const HomeView = () => {
               <HomeviewButtons
                 setPracticeModalOpen={setPracticeModalOpen}
                 setAddStoryModalOpen={setAddStoryModalOpen}
-                setLessonModalOpen={setLessonModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
                 aReadingComprehensionEnabled={aReadingComprehensionEnabled}
               />

@@ -1,0 +1,33 @@
+.lesson-start-menu-container {
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-content {
+  display: grid;
+  grid-template-columns: 50px 200px;
+  grid-template-rows: 50px 50px 40px;
+}
+
+.card-content > img {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.card-content > i {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.card-content > h3 {
+  font-weight: 700;
+  align-self: center;
+}
+
+.card-content > button {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  width: 80%;
+}
