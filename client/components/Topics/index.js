@@ -14,7 +14,7 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
     const { lessons, lesson_topics } = useSelector(({ metadata }) => metadata)
     const { topics } = useSelector(({ lessons }) => lessons)
     const [filteredLessons, setFilteredLessons] = useState(lessons)
-    const [accordionState, setAccordionState] = useState(0)
+    const [accordionState, setAccordionState] = useState(-1)
     const [searchQuery, setSearchQuery] = useState("")
     
     const lesson2info = lessons.reduce((obj, lesson) => ({ ...obj, [lesson.ID]: lesson}), {})
