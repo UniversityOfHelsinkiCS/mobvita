@@ -64,10 +64,12 @@ const LessonStartMenu = ({ setOpen }) => {
           <CardContent>
             <div className="card-content">
               <img src={images.readingBook} alt="open book" />
-              <h3>Jump right in!</h3>
+              <h3>
+                <FormattedMessage id="lesson-quick-start-title" />
+              </h3>
               <Popup
                 trigger={<Icon name="info circle" />}
-                content="Start practicing with lessons for your current language level"
+                content={<FormattedMessage id="lesson-quick-start-info" />}
                 inverted
                 basic
               />
@@ -81,10 +83,12 @@ const LessonStartMenu = ({ setOpen }) => {
           <CardContent>
             <div className="card-content">
               <img src={images.settingsIcon} alt="open book" />
-              <h3>Customize</h3>
+              <h3>
+                <FormattedMessage id="lesson-customize-title" />
+              </h3>
               <Popup
                 trigger={<Icon name="info circle" />}
-                content="Create your own custom lesson where you decide what to practice"
+                content={<FormattedMessage id="lesson-customize-info" />}
                 inverted
                 basic
               />
