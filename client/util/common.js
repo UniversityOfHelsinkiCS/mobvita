@@ -548,6 +548,18 @@ export const downloadReadingReport = async (groupId, startDate, endDate) => {
   link.click()
 }
 
+export const downloadReadingHistory = async (groupId, groupName, startDate, endDate) => {
+  const result = await callApi(
+    `/groups/${groupId}/reading_history?start_date=${startDate}&end_date=${endDate}`
+  )
+  const blob = new Blob([result.data], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.download = `exercise_history_dump_${groupName}_${startDate.toDateString()}-${endDate.toDateString()}.csv`
+  link.href = url
+  link.click()
+}
+
 export const getMode = () => useHistory().location.pathname.split('/').filter(x=>x.length).pop()
 
 const defaultAllowed = [
