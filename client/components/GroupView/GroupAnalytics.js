@@ -209,33 +209,36 @@ const GroupAnalytics = ({ role }) => {
 
         <div style={{ alignSelf: 'flex-end', marginBottom: '0.5em' }}>
           {currentGroup?.is_teaching && (
-            <>
-              <ButtonGroup toggle>
-                <ToggleButton
-                  type="radio"
-                  value="summary"
-                  variant="info"
-                  checked={content === 'summary'}
-                  onChange={() => setContent('summary')}
-                >
-                  <FormattedMessage id="summary" />
-                </ToggleButton>
-                {currentGroup?.reading_comprehension && (<Button
-                  onClick={()=> downloadReadingReport(currentGroupId, startDate, endDate)}
-                >
-                  <FormattedMessage id="download-reading-comprehension-report" />
-                </Button>)}
-              </ButtonGroup>
-              <Button
-                style={{ marginLeft: '.25em' }}
-                variant="primary"
-                onClick={() =>
-                  downloadReadingHistory(currentGroupId, currentGroup.groupName, startDate, endDate)
-                }
+            <ButtonGroup toggle>
+              <ToggleButton
+                type="radio"
+                value="summary"
+                variant="info"
+                checked={content === 'summary'}
+                onChange={() => setContent('summary')}
               >
-                <FormattedMessage id="download-group-reading-history" />
-              </Button>
-            </>
+                <FormattedMessage id="summary" />
+              </ToggleButton>
+              {currentGroup?.reading_comprehension && (
+                <>
+                  <Button onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}>
+                    <FormattedMessage id="download-reading-comprehension-report" />
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      downloadReadingHistory(
+                        currentGroupId,
+                        currentGroup.groupName,
+                        startDate,
+                        endDate
+                      )
+                    }
+                  >
+                    <FormattedMessage id="download-reading-comprehension-history" />
+                  </Button>
+                </>
+              )}
+            </ButtonGroup>
           )}
         </div>
       </div>
