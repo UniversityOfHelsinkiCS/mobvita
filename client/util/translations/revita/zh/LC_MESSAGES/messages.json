@@ -920,7 +920,7 @@
     "click-to-see-TOUR-explanation": "点击此处开始使用教程",
     "click-to-change-learning-language-explanation": "点击此处更改学习语言",
     "bell-explanation": "You have {} recommendations waiting",
-    "download-reading-comprehension-report": "下载报告",
+    "download-reading-comprehension-report": "下载概览报告",
     "self-reflection-submit": "OK",
     "reading-test-self-reflection-header": "请回答一组小问题",
     "elicitation-submit": "OK",
@@ -1124,10 +1124,11 @@
     "set-cefr-manually": "Set my CEFR level manually",
     "story-dialog-games": "Games",
     "recommended-grammar-topics-level-popup": "Recommended level of grammar topics",
-    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> can give you hints about the exercises and any problems you encounter.",
-    "tour-chatbot-message-title": "Vita the personal AI-assistant",
+    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> will give you hints about the exercises and any problems you encounter.",
+    "tour-chatbot-message-title": "Vita — your personal AI-assistant",
     "lesson-quick-start-title": "Jump right in!",
-    "lesson-quick-start-info": "Start practicing with lessons for your current language level",
+    "lesson-quick-start-info": "Start practicing with topics tailored to your current level",
     "lesson-customize-title": "Customize",
-    "lesson-customize-info": "Create your own custom lesson where you decide what to practice"
+    "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
+    "download-exercise-history": "下载详细报告"
 }

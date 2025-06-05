@@ -234,7 +234,7 @@ const GroupAnalytics = ({ role }) => {
                       )
                     }
                   >
-                    <FormattedMessage id="download-reading-comprehension-history" />
+                    <FormattedMessage id="download-exercise-history" />
                   </Button>
                 </>
               )}

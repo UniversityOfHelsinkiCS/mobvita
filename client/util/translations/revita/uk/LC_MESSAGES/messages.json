@@ -84,7 +84,7 @@
     "delete-account-success": "Акаунт успішно видалено",
     "submit-changes": "Зберегти зміни",
     "search-input-placeholder": "Пошук...",
-    "download-reading-comprehension-report": "Завантажити звіт",
+    "download-reading-comprehension-report": "Завантажити оглядовий звіт",
     "resend-invitation": "Відправити запрошення ще раз",
     "multiple-email-separate-instructions": "Адреси електронної пошти розділяються комами або пробілами",
     "teachers-added-to-the-group": "Вчителі додані до групи",
@@ -856,10 +856,11 @@
     "set-cefr-manually": "Встановіть мій рівень CEFR вручну",
     "story-dialog-games": "Ігри",
     "recommended-grammar-topics-level-popup": "Рекомендований рівень знань з граматики",
-    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> can give you hints about the exercises and any problems you encounter.",
-    "tour-chatbot-message-title": "Vita the personal AI-assistant",
-    "lesson-quick-start-title": "Jump right in!",
-    "lesson-quick-start-info": "Start practicing with lessons for your current language level",
-    "lesson-customize-title": "Customize",
-    "lesson-customize-info": "Create your own custom lesson where you decide what to practice"
+    "tour-chatbot-message": "Твій персональний ІІ-помічник <i><b>Віта</b></i> відповість на питання про використання Revita!<br/><br/>Під час практики <i><b>Віта</b></i> дасть тобі підказки щодо вправ та з будь-яких питань.",
+    "tour-chatbot-message-title": "Vita – твій персональний AI-помічник",
+    "lesson-quick-start-title": "Розпочати практику!",
+    "lesson-quick-start-info": "Практикуватись з темами, підібраними до твого рівня",
+    "lesson-customize-title": "Налаштувати",
+    "lesson-customize-info": "Створи свій власний урок – виріши, що саме ти хочеш практикувати",
+    "download-exercise-history": "Скачати детальний звіт"
 }

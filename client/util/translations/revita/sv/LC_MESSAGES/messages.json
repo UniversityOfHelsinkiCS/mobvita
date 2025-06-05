@@ -724,7 +724,7 @@
     "summary-for-language": "Summary",
     "date-start": "Start date",
     "date-end": "End date",
-    "download-csv": "Download csv",
+    "download-csv": "Download CSV",
     "completed-exercises": "Completed exercises",
     "join-group-message": "Join a group maintained by a teacher to get access to the group's shared stories.",
     "create-group-message": "Create a new group to share stories and track your students progress.",
@@ -1166,7 +1166,7 @@
     "delete-account-success": "Account successfully deleted",
     "submit-changes": "Save changes",
     "search-input-placeholder": "Search...",
-    "download-reading-comprehension-report": "Download the report",
+    "download-reading-comprehension-report": "Download overview report",
     "summary-people-added-to-group": "People added to group",
     "copy-key": "Copy key",
     "groups-for-only-registered-users": "Creating a group and joining a group is possible for registered users only. Please register and log in!",
@@ -1601,10 +1601,11 @@
     "set-cefr-manually": "Set my CEFR level manually",
     "story-dialog-games": "Games",
     "recommended-grammar-topics-level-popup": "Recommended level of grammar topics",
-    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> can give you hints about the exercises and any problems you encounter.",
-    "tour-chatbot-message-title": "Vita the personal AI-assistant",
+    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> will give you hints about the exercises and any problems you encounter.",
+    "tour-chatbot-message-title": "Vita — your personal AI-assistant",
     "lesson-quick-start-title": "Jump right in!",
-    "lesson-quick-start-info": "Start practicing with lessons for your current language level",
+    "lesson-quick-start-info": "Start practicing with topics tailored to your current level",
     "lesson-customize-title": "Customize",
-    "lesson-customize-info": "Create your own custom lesson where you decide what to practice"
+    "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
+    "download-exercise-history": "Download detailed report"
 }

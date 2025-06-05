@@ -1551,7 +1551,7 @@
     "click-to-see-TOUR-explanation": "Нажми здесь, чтобы получить Обзор Функций системы",
     "click-to-change-learning-language-explanation": "Нажми здесь, чтобы выбрать язык, который ты изучаешь",
     "bell-explanation": "Вас ожидают {} рекомендаций",
-    "download-reading-comprehension-report": "Скачать отчет",
+    "download-reading-comprehension-report": "Скачать обзорный отчет",
     "self-reflection-submit": "OK",
     "reading-test-self-reflection-header": "Пожалуйста, ответь на пару коротких вопросов:",
     "elicitation-submit": "OK",
@@ -1749,10 +1749,11 @@
     "set-cefr-manually": "Установить уровень CEFR вручную",
     "story-dialog-games": "Игры",
     "recommended-grammar-topics-level-popup": "Рекомендуемый уровень грамматических тем",
-    "tour-chatbot-message": "You can ask your personal AI-assistant <i><b>Vita</b></i> questions about using Revita!<br/><br/>During practice, <i><b>Vita</b></i> can give you hints about the exercises and any problems you encounter.",
-    "tour-chatbot-message-title": "Vita the personal AI-assistant",
-    "lesson-quick-start-title": "Jump right in!",
-    "lesson-quick-start-info": "Start practicing with lessons for your current language level",
-    "lesson-customize-title": "Customize",
-    "lesson-customize-info": "Create your own custom lesson where you decide what to practice"
+    "tour-chatbot-message": "Твой персональный ИИ-помощник <i><b>Вита</b></i> ответит на вопросы об использовании Revita!<br/><br/>Во время практики <i><b>Вита</b></i> даст тебе подсказки по упражнениям и по любым вопросам.",
+    "tour-chatbot-message-title": "Vita — твой персональный AI-помощник",
+    "lesson-quick-start-title": "Начать практику!",
+    "lesson-quick-start-info": "Практиковаться с темами, подобранными к твоему уровню",
+    "lesson-customize-title": "Настроить",
+    "lesson-customize-info": "Создай свой собственный урок — реши, что именно ты хочешь практиковать",
+    "download-exercise-history": "Скачать подробный отчет"
 }
