@@ -95,7 +95,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handlePreviousVocabulary = () => {
-    if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
+    if (moment(startDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
       dispatch(
         getPreviousStudentVocabulary(
           currentStudent._id,
