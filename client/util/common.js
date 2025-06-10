@@ -1059,20 +1059,36 @@ export const getHelpLink = (locale, isTeacher, learningLanguage) => {
 //-   },
 /////////////////////////////////////////////////////////
 
-
-const desktopHomeTourSteps = [
-  {
+const homeTourSteps = {
+  welcome: {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
     content: (
-      <div>
+      <div className="tour-mobile-message">
         <FormattedHTMLMessage id="tour-welcome-message" />
         <div>{tourSign()}</div>
       </div>
     ),
     disableBeacon: true,
   },
-  {
+  sideBar: {
+    target: '.tour-sidebar',
+    title: <FormattedMessage id="sidebar" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-sidebar-message" />
+      </div>
+    ),
+    textAlign: 'center',
+    placement: 'bottom',
+    disableBeacon: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  learningLanguage: {
     target: '.tour-navbar-learning-language',
     title: <FormattedMessage id="Learning-language" />,
     content: (
@@ -1089,24 +1105,36 @@ const desktopHomeTourSteps = [
       },
     },
   },
-  {
-    target: '.tour-sidebar',
-    title: <FormattedMessage id="sidebar" />,
+  addNewStories: {
+    target: '.tour-add-new-stories',
+    title: <FormattedMessage id="add-content" />,
     content: (
       <div className="tour-mobile-message">
-        <FormattedHTMLMessage id="tour-sidebar-message" />
+        <Sparkle flicker={false} />
+        <FormattedHTMLMessage id="tour-add-content-message" />
       </div>
     ),
-    textAlign: 'center',
-    placement: 'bottom',
+    placement: 'top',
     disableBeacon: true,
     styles: {
+      tooltipContainer: {
+        textAlign: 'left',
+      },
       options: {
-        zIndex: 10000,
+        arrowColor: 'rgb(50, 170, 248)',
+        primaryColor: 'rgb(50, 170, 248)',
+        backgroundColor: 'rgb(50, 170, 248',
+        zIndex: 1000,
+        textColor: 'white',
+      },
+      buttonNext: {
+        backgroundColor: 'white',
+        borderRadius: 8,
+        color: 'black',
       },
     },
   },
-  {
+  library: {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
     content: (
@@ -1118,7 +1146,7 @@ const desktopHomeTourSteps = [
     placementBeacon: 'left',
     disableBeacon: true,
   },
-  {
+  lesson: {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
     content: (
@@ -1130,7 +1158,7 @@ const desktopHomeTourSteps = [
     placementBeacon: 'left',
     disableBeacon: true,
   },
-  {
+  practiceNow: {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
     content: (
@@ -1142,7 +1170,7 @@ const desktopHomeTourSteps = [
     placementBeacon: 'left',
     disableBeacon: true,
   },
-  {
+  flashcards: {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
     content: (
@@ -1154,7 +1182,7 @@ const desktopHomeTourSteps = [
     placementBeacon: 'left',
     disableBeacon: true,
   },
-  {
+  progress: {
     target: '.tour-progress',
     title: <FormattedMessage id="Progress" />,
     content: (
@@ -1164,7 +1192,7 @@ const desktopHomeTourSteps = [
     ),
     disableBeacon: true,
   },
-  {
+  chatbot: {
     target: '.chatbot',
     title: <FormattedMessage id="tour-chatbot-message-title" />,
     content: (
@@ -1174,7 +1202,7 @@ const desktopHomeTourSteps = [
     ),
     disableBeacon: true,
   },
-  {
+  help: {
     target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
     content: (
@@ -1187,7 +1215,7 @@ const desktopHomeTourSteps = [
     opacity: 0,
     disableBeacon: true,
   },
-  {
+  beginPracticing: {
     target: '.tour-button',
     title: <FormattedMessage id="begin-practicing" />,
     content: (
@@ -1200,12 +1228,10 @@ const desktopHomeTourSteps = [
     opacity: 0,
     disableBeacon: true,
   },
-]
-
-
+}
 
 /////////////////////////////////////////////////////////
-const mobileHomeTourSteps = [
+/* const mobileHomeTourSteps = [
   {
     target: '.tour-start-finish',
     title: <FormattedMessage id="welcome" />,
@@ -1218,23 +1244,6 @@ const mobileHomeTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.tour-sidebar',
-    title: <FormattedMessage id="sidebar" />,
-    content: (
-      <div className="tour-mobile-message">
-        <FormattedHTMLMessage id="tour-sidebar-message" />
-      </div>
-    ),
-    textAlign: 'center',
-    placement: 'bottom',
-    disableBeacon: true,
-    styles: {
-      options: {
-        zIndex: 10000,
-      },
-    },
-  },
-  {
     target: '.tour-learning-language',
     title: <FormattedMessage id="Learning-language" />,
     content: (
@@ -1244,6 +1253,23 @@ const mobileHomeTourSteps = [
     ),
     placement: 'right',
     placementBeacon: 'left',
+    disableBeacon: true,
+    styles: {
+      options: {
+        zIndex: 10000,
+      },
+    },
+  },
+  {
+    target: '.tour-sidebar',
+    title: <FormattedMessage id="sidebar" />,
+    content: (
+      <div className="tour-mobile-message">
+        <FormattedHTMLMessage id="tour-sidebar-message" />
+      </div>
+    ),
+    textAlign: 'center',
+    placement: 'bottom',
     disableBeacon: true,
     styles: {
       options: {
@@ -1356,7 +1382,7 @@ const mobileHomeTourSteps = [
       },
     },
   },
-]
+] */
 
 
 /////////////////////////////////////////////////////////
@@ -2092,7 +2118,32 @@ export const progressTourSteps =
   window.innerWidth >= 700 ? desktopProgressTourSteps : mobileProgressTourSteps
 export const anonymousProgressTourSteps =
   window.innerWidth >= 700 ? anonymousDesktopProgressTourSteps : anonymousMobileProgressTourSteps
-export const homeTourSteps = window.innerWidth >= 700 ? desktopHomeTourSteps : mobileHomeTourSteps
+export const studentHomeTourSteps =
+  window.innerWidth >= 700
+    ? Object.entries(homeTourSteps)
+        .filter(([key]) => key !== 'addNewStories')
+        .map(([, value]) => value)
+    : Object.entries(homeTourSteps)
+        .filter(([key]) => !['learningLanguage', 'addNewStories', 'beginPracticing'].includes(key))
+        .map(([, value]) => value)
+
+export const teacherHomeTourSteps =
+  window.innerWidth >= 700
+    ? Object.entries(homeTourSteps)
+        .filter(([key]) => !['practiceNow', 'flashcards', 'progress'].includes(key))
+        .map(([, value]) => value)
+    : Object.entries(homeTourSteps)
+        .filter(
+          ([key]) =>
+            ![
+              'learningLanguage',
+              'practiceNow',
+              'flashcards',
+              'progress',
+              'beginPracticing',
+            ].includes(key)
+        )
+        .map(([, value]) => value)
 export const libraryTourSteps =
   window.innerWidth >= 700 ? desktopLibraryTourSteps : mobileLibraryTourSteps
 export const lessonsTourSteps =

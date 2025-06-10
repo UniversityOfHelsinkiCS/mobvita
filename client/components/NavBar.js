@@ -206,8 +206,14 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-
-  
+  const handleStudentViewSwitch = () => {
+    dispatch(teacherSwitchView())
+    if (teacherView) {
+      dispatch({ type: 'SET_STUDENT_HOME_TOUR_STEPS' })
+    } else {
+      dispatch({ type: 'SET_TEACHER_HOME_TOUR_STEPS' })
+    }
+  }
 
   const irt_score =
     irtExerciseHistory && irtExerciseHistory.length > 0
@@ -334,7 +340,7 @@ export default function NavBar() {
                     toggle
                     label={intl.formatMessage({ id: 'student-view' })}
                     checked={!teacherView}
-                    onChange={() => dispatch(teacherSwitchView())}
+                    onChange={handleStudentViewSwitch}
                   />
                   </div>
                 }

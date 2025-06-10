@@ -328,6 +328,11 @@ const HomeView = () => {
   }, [learningLanguage])
 
   useEffect(() => {
+    if (user.teacherView) {
+      dispatch({ type: 'SET_TEACHER_HOME_TOUR_STEPS' })
+    } else {
+      dispatch({ type: 'SET_STUDENT_HOME_TOUR_STEPS' })
+    }
     if (!user.user.has_seen_home_tour && !userData.is_new_user && !showDDLangIntroductory) {
       dispatch(homeTourViewed())
       dispatch(startTour())
