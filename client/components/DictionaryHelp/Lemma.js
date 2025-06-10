@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
 import {  FormattedHTMLMessage } from 'react-intl'
 import {
   useLearningLanguage,
@@ -19,22 +19,34 @@ const Lemma = ({
     preferred,
   }) => {
     const learningLanguage = useLearningLanguage()
-    const { maskSymbol } = useSelector(({ translation }) => translation)
+    const { maskSymbol, pending } = useSelector(({ translation }) => translation)
+
+  const title = (
+    <>
+      {pending ? (
+        <div style={{ height: '10px', width: '80px' }}>
+          <Placeholder>
+            <PlaceholderLine />
+          </Placeholder>
+        </div>
+      ) : (
+        <Popup
+          content={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}
+          trigger={
+            <a href={userUrl} target="_blank" rel="noopener noreferrer">
+              {lemma}
+            </a>
+          }
+        />
+      )}
+    </>
+  )
 
     return (
       <div className="flex space-between" style={getTextStyle(learningLanguage)}>
         <div className="flex">
           <Speaker word={lemma} />
-          {maskSymbol || (
-            <Popup 
-              content={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}
-              trigger={(
-                <a href={userUrl} target="_blank" rel="noopener noreferrer">
-                  {lemma}
-              </a>
-              )} 
-            />
-          )}
+          {maskSymbol || title}
           {inflectionRef && (
             <Popup 
               content={<FormattedHTMLMessage id="explain-goto-inflection-table" />}
