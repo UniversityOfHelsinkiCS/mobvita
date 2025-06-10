@@ -410,46 +410,46 @@ export default function NavBar() {
           </Nav>
           )}
           {/******************************* NEWS BELL *******************************/}
-          <Nav>
-            <div className="navbar-container" style={{ width: '90%' }}>
-              <Popup
-                trigger={
-                  <a
-                    className="navbar-basic-icon"
-                    style={{ display: 'table-cell' }}
-                    href={NewsWebSite}
-                    onClick={event => {
-                      confirmNewsClick(
-                        event, NewsWebSite
-                      )
-                    }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span style={{position: 'relative', cursor: 'pointer',}}>
-                      <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                      {numUnreadNews > 0 ? (
-                        <Label
-                          onClick={handleNewsClick}
-                          className="navbar-news-label"
-                          color="red"
-                          size="mini"
-                          floating
-                        >
-                          <span>{numUnreadNews}</span>
-                        </Label>
-                      ) : null}
-                    </span>
-                  </a>
-                }
-                content={
-                  <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
-                }
-                on="hover"
-                position="bottom right"
-              />
-            </div>
-          </Nav>
+          {!smallWindow && (
+            <Nav>
+              <div className="navbar-container" style={{ width: '90%' }}>
+                <Popup
+                  trigger={
+                    <a
+                      className="navbar-basic-icon"
+                      style={{ display: 'table-cell' }}
+                      href={NewsWebSite}
+                      onClick={event => {
+                        confirmNewsClick(event, NewsWebSite)
+                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span style={{ position: 'relative', cursor: 'pointer' }}>
+                        <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
+                        {numUnreadNews > 0 ? (
+                          <Label
+                            onClick={handleNewsClick}
+                            className="navbar-news-label"
+                            color="red"
+                            size="mini"
+                            floating
+                          >
+                            <span>{numUnreadNews}</span>
+                          </Label>
+                        ) : null}
+                      </span>
+                    </a>
+                  }
+                  content={
+                    <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
+                  }
+                  on="hover"
+                  position="bottom right"
+                />
+              </div>
+            </Nav>
+          )}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Popup
