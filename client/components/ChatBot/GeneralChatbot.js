@@ -49,11 +49,14 @@ const GeneralReadingChatBot = () => {
                 className="chatbot-toggle" 
                 style={{ background: "mistyrose", margin: 0 }}
             >
-                {!isOpen ? (
-                    <Icon name="angle up" size="large" />
-                ) : (
-                    <Icon name="angle down" size="large" />
-                )}
+                <div>
+                    <FormattedMessage id="chatbot-toggle-label" />
+                    {!isOpen ? (
+                        <Icon name="angle up" size="large" />
+                    ) : (
+                        <Icon name="angle down" size="large" />
+                    )}
+                </div>
             </Button>
 
             {isOpen && (
