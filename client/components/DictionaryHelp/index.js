@@ -240,6 +240,13 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     setWordNestModalOpen(true)
   }
 
+  const getWindowCornerIcon = () => {
+    if (windowWidth < 1024) {
+      return showDictionaryBox ? 'angle down' : 'angle up'
+    }
+    return showDictionaryBox ? 'angle up' : 'angle down'
+  }
+
   const translationResults = () => {
     if (translation === 'no-clue-translation') {
       return (
@@ -319,15 +326,20 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                   <FormattedMessage id="dictionary-header" />
               </div>
             </div>
-            <div
-              onClick={() => {
-                handleDictionaryBoxClick()}}
-              onKeyDown={() => {handleDictionaryBoxClick()}}
-              role="button"
-              tabIndex={0}
-            >
-              <Icon name={showDictionaryBox ? 'angle up' : 'angle down'} size="large" />
-            </div>
+            {!inWordNestModal && (
+              <div
+                onClick={() => {
+                  handleDictionaryBoxClick()
+                }}
+                onKeyDown={() => {
+                  handleDictionaryBoxClick()
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                <Icon name={getWindowCornerIcon()} size="large" />
+              </div>
+            )}
           </div>
         )}
 
@@ -405,7 +417,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             </div>
           ) /* ??? WHAT IS THIS? why NOTES ??? */}
 
-          {smallWindow && !inWordNestModal ? (
+          {/* smallWindow && !inWordNestModal ? (
             <div className="flex align-self-end">
               {focusedSpan && (
                 <Button
@@ -425,7 +437,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 <Icon name="angle down" size="large" color="blue" />
               </Button>
             </div>
-          ) : null}
+          ) : null */}
         </div>
       </Segment>
     </div>
