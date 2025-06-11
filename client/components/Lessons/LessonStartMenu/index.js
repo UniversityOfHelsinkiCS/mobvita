@@ -22,7 +22,7 @@ const LessonStartMenu = ({ setOpen }) => {
   } = useSelector(state => state.user.data.user)
   const { lessons, lesson_semantics: lessonSemantics } = useSelector(({ metadata }) => metadata)
 
-  const bigScreen = useWindowDimensions().width > 600
+  const bigScreen = useWindowDimensions().width > 1000
 
   const recommendedGrammarLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
 
@@ -64,15 +64,17 @@ const LessonStartMenu = ({ setOpen }) => {
           <CardContent>
             <div className="card-content">
               <img src={images.readingBook} alt="open book" />
-              <h3>
-                <FormattedMessage id="lesson-quick-start-title" />
-              </h3>
-              <Popup
-                trigger={<Icon name="info circle" />}
-                content={<FormattedMessage id="lesson-quick-start-info" />}
-                inverted
-                basic
-              />
+              <div className="card-content-header">
+                <span>
+                  <FormattedMessage id="lesson-quick-start-title" />
+                </span>
+                <Popup
+                  trigger={<Icon name="info circle" />}
+                  content={<FormattedMessage id="lesson-quick-start-info" />}
+                  inverted
+                  basic
+                />
+              </div>
               <Button variant="primary" type="button" onClick={handleStartClick}>
                 <FormattedMessage id="start" />
               </Button>
@@ -83,15 +85,17 @@ const LessonStartMenu = ({ setOpen }) => {
           <CardContent>
             <div className="card-content">
               <img src={images.settingsIcon} alt="open book" />
-              <h3>
-                <FormattedMessage id="lesson-customize-title" />
-              </h3>
-              <Popup
-                trigger={<Icon name="info circle" />}
-                content={<FormattedMessage id="lesson-customize-info" />}
-                inverted
-                basic
-              />
+              <div className="card-content-header">
+                <span>
+                  <FormattedMessage id="lesson-customize-title" />
+                </span>
+                <Popup
+                  trigger={<Icon name="info circle" />}
+                  content={<FormattedMessage id="lesson-customize-info" />}
+                  inverted
+                  basic
+                />
+              </div>
               <Button variant="secondary" type="button" onClick={handleLessonSetupClick}>
                 <FormattedMessage id="lesson-setup" />
               </Button>
