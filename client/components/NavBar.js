@@ -354,8 +354,8 @@ export default function NavBar() {
               <Popup
                 content={<FormattedMessage id="click-here-to-see-progress-explanation" />}
                 trigger={
-                  <Link to="/profile/main" style={{ textDecoration: 'none' }}>
-                    <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
+                  <Link className="navbar-basic-icon" to="/profile/main" style={{ textDecoration: 'none' }}>
+                    <div className="navbar-level">{user.user.level}</div>
                   </Link>
                 }
                 position="top center"
@@ -484,10 +484,10 @@ export default function NavBar() {
             <Popup
               trigger={
                 <a
+                  className="navbar-basic-icon"
                   href="https://revitaai.github.io/SERVER-STATUS.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ marginRight: '3em', alignSelf: 'center' }}
                 >
                   <img
                       src={images.heartbeat}
