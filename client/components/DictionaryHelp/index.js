@@ -57,10 +57,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
+  const smallWindow = minimized || windowWidth < 1024
 
   const handleDictionaryBoxClick = () => {
     if (showDictionaryBox) {
-      dispatch({ type: 'CLOSE_DICTIONARY_BOX' })
+      if (smallWindow && !inWordNestModal) {
+        setShow(false)
+      } else {
+        dispatch({ type: 'CLOSE_DICTIONARY_BOX' })
+      }
     } else {
       dispatch({ type: 'SHOW_DICTIONARY_BOX' })
     }
@@ -214,8 +219,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     }
     dispatch(updateDictionaryLanguage(value))
   }
-
-  const smallWindow = minimized || windowWidth < 1024
 
   if (!showHelp && smallWindow && !inWordNestModal) {
     return (
