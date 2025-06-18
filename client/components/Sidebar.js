@@ -137,7 +137,7 @@ export default function Sidebar({ history }) {
       icon="labeled"
       vertical
       visible={open}
-      style={{ width: smallWindow ? '170px' : '350px' }}
+      style={{ width: smallWindow ? '170px' : '350px', zIndex: 1001 }}
     >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="sidebar-content" ref={sidebar}>
