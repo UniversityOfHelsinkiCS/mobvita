@@ -161,7 +161,6 @@ const HomeviewButtons = ({
                 imgSrc={images.readingBook}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
-                beta_feature={true}
                 handleClick={() => history.push('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
@@ -202,7 +201,6 @@ const HomeviewButtons = ({
                 imgSrc={images.readingBook}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
-                beta_feature={true}
                 handleClick={() => history.push('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
