@@ -329,7 +329,7 @@ export default function NavBar() {
             </div>
           </Nav>
           {/******************************* STUDENT VIEW *******************************/}
-          {isTeacher && showTeacherViewSwitch && (
+          {isTeacher && showTeacherViewSwitch && !smallWindow && (
             <Nav>
               <Popup
                 content={<FormattedMessage id="teacher-view-explanation" />}
