@@ -131,7 +131,14 @@ export default function Sidebar({ history }) {
   
 
   return (
-    <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
+    <SemanticSidebar
+      as={Menu}
+      animation="push"
+      icon="labeled"
+      vertical
+      visible={open}
+      style={{ width: smallWindow ? '170px' : '350px' }}
+    >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="sidebar-content" ref={sidebar}>
         <div className="revitaLogo"
@@ -154,7 +161,7 @@ export default function Sidebar({ history }) {
           >
             <Link to="/home">
               <img
-                style={{ width: '15em', margin: '6px auto' }}
+                style={{ width: '100%', margin: '6px auto' }}
                 src={images.logo}
                 alt="revitaLogo"
               />
