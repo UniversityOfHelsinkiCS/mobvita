@@ -198,9 +198,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 <Popup
                     content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
                     trigger={
-              <Button basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
+              <Button style={{ padding: '5px' }} basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
                       data-cy="nest-button">
-                <img src={images.nestIcon} alt="nest icon" width="22" />
+                <img src={images.network} alt="network icon" width="32" />
               </Button>
                     }
                 />
