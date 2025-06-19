@@ -1,7 +1,7 @@
 .chatbot {
     position: fixed; 
     bottom: 42px; 
-    right: 3px; 
+    right: 3px;
     width: 31.6vw;
     max-height: 80%; 
     z-index: 1000; 
@@ -15,7 +15,14 @@
 
     @media (max-width: 900px) {
         max-height: 35%;
-        width: 80%; 
+        width: 80%;
+    }
+}
+
+.practice-chatbot {
+    @media (max-width: 900px) {
+        left: 3px;
+        bottom: 10px;
     }
 }
 
@@ -24,6 +31,12 @@
     // must be inline: overridden by ui-button background-color: #f9f9f9; 
     border-bottom: 1px solid #eee;
     padding: 10px;
+}
+
+.chatbot-toggle div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .chatbot-context-info {

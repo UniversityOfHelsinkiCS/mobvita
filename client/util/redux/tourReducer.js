@@ -1,5 +1,6 @@
 import {
-  homeTourSteps,
+  studentHomeTourSteps,
+  teacherHomeTourSteps,
   libraryTourSteps,
   progressTourSteps,
   anonymousProgressTourSteps,
@@ -14,7 +15,7 @@ const initialState = {
   continuous: true,
   loading: false,
   stepIndex: 0,
-  steps: homeTourSteps,
+  steps: studentHomeTourSteps,
 }
 
 export const startTour = () => ({
@@ -63,11 +64,20 @@ export default (state = initialState, action) => {
     case 'TOUR_RESTART':
       return {
         ...state,
-        steps: homeTourSteps,
         stepIndex: 0,
         run: true,
         loading: false,
         key: new Date(),
+      }
+    case 'SET_STUDENT_HOME_TOUR_STEPS':
+      return {
+        ...state,
+        steps: studentHomeTourSteps,
+      }
+    case 'SET_TEACHER_HOME_TOUR_STEPS':
+      return {
+        ...state,
+        steps: teacherHomeTourSteps,
       }
     case 'LIBRARY_TOUR_RESTART':
       return {

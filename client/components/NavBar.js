@@ -206,8 +206,14 @@ export default function NavBar() {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-
-  
+  const handleStudentViewSwitch = () => {
+    dispatch(teacherSwitchView())
+    if (teacherView) {
+      dispatch({ type: 'SET_STUDENT_HOME_TOUR_STEPS' })
+    } else {
+      dispatch({ type: 'SET_TEACHER_HOME_TOUR_STEPS' })
+    }
+  }
 
   const irt_score =
     irtExerciseHistory && irtExerciseHistory.length > 0
@@ -323,7 +329,7 @@ export default function NavBar() {
             </div>
           </Nav>
           {/******************************* STUDENT VIEW *******************************/}
-          {isTeacher && showTeacherViewSwitch && (
+          {isTeacher && showTeacherViewSwitch && !smallWindow && (
             <Nav>
               <Popup
                 content={<FormattedMessage id="teacher-view-explanation" />}
@@ -334,7 +340,7 @@ export default function NavBar() {
                     toggle
                     label={intl.formatMessage({ id: 'student-view' })}
                     checked={!teacherView}
-                    onChange={() => dispatch(teacherSwitchView())}
+                    onChange={handleStudentViewSwitch}
                   />
                   </div>
                 }
@@ -348,8 +354,8 @@ export default function NavBar() {
               <Popup
                 content={<FormattedMessage id="click-here-to-see-progress-explanation" />}
                 trigger={
-                  <Link to="/profile/main" style={{ textDecoration: 'none' }}>
-                    <Navbar.Brand className="navbar-level">{user.user.level}</Navbar.Brand>
+                  <Link className="navbar-basic-icon" to="/profile/main" style={{ textDecoration: 'none' }}>
+                    <div className="navbar-level">{user.user.level}</div>
                   </Link>
                 }
                 position="top center"
@@ -410,46 +416,46 @@ export default function NavBar() {
           </Nav>
           )}
           {/******************************* NEWS BELL *******************************/}
-          <Nav>
-            <div className="navbar-container" style={{ width: '90%' }}>
-              <Popup
-                trigger={
-                  <a
-                    className="navbar-basic-icon"
-                    style={{ display: 'table-cell' }}
-                    href={NewsWebSite}
-                    onClick={event => {
-                      confirmNewsClick(
-                        event, NewsWebSite
-                      )
-                    }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span style={{position: 'relative', cursor: 'pointer',}}>
-                      <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                      {numUnreadNews > 0 ? (
-                        <Label
-                          onClick={handleNewsClick}
-                          className="navbar-news-label"
-                          color="red"
-                          size="mini"
-                          floating
-                        >
-                          <span>{numUnreadNews}</span>
-                        </Label>
-                      ) : null}
-                    </span>
-                  </a>
-                }
-                content={
-                  <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
-                }
-                on="hover"
-                position="bottom right"
-              />
-            </div>
-          </Nav>
+          {!smallWindow && (
+            <Nav>
+              <div className="navbar-container" style={{ width: '90%' }}>
+                <Popup
+                  trigger={
+                    <a
+                      className="navbar-basic-icon"
+                      style={{ display: 'table-cell' }}
+                      href={NewsWebSite}
+                      onClick={event => {
+                        confirmNewsClick(event, NewsWebSite)
+                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span style={{ position: 'relative', cursor: 'pointer' }}>
+                        <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
+                        {numUnreadNews > 0 ? (
+                          <Label
+                            onClick={handleNewsClick}
+                            className="navbar-news-label"
+                            color="red"
+                            size="mini"
+                            floating
+                          >
+                            <span>{numUnreadNews}</span>
+                          </Label>
+                        ) : null}
+                      </span>
+                    </a>
+                  }
+                  content={
+                    <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
+                  }
+                  on="hover"
+                  position="bottom right"
+                />
+              </div>
+            </Nav>
+          )}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Popup
@@ -478,10 +484,10 @@ export default function NavBar() {
             <Popup
               trigger={
                 <a
+                  className="navbar-basic-icon"
                   href="https://revitaai.github.io/SERVER-STATUS.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ marginRight: '3em', alignSelf: 'center' }}
                 >
                   <img
                       src={images.heartbeat}

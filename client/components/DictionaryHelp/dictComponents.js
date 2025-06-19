@@ -48,11 +48,9 @@ export const DictionaryButton = ({ setShow }) => {
         dispatch(setAnnotationvisibilityMobile(false))
     }
 
-    return (
-        <div className="dictionary-button">
-        <Button className="navigationbuttonopen" icon basic onClick={handleDictionaryButtonClick}>
-            <Icon size="large" name="book" data-cy="dictionary-icon" />
-        </Button>
-        </div>
-    )
+  return (
+    <Button className="dictionary-button" icon basic onClick={handleDictionaryButtonClick}>
+      <Icon size="large" name="book" data-cy="dictionary-icon" />
+    </Button>
+  )
 }

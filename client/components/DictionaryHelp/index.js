@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, Button, Segment, Icon, Popup } from 'semantic-ui-react'
+import { List, Button, Segment, Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
@@ -57,10 +57,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
+  const smallWindow = minimized || windowWidth < 1024
 
   const handleDictionaryBoxClick = () => {
     if (showDictionaryBox) {
-      dispatch({ type: 'CLOSE_DICTIONARY_BOX' })
+      if (smallWindow && !inWordNestModal) {
+        setShow(false)
+      } else {
+        dispatch({ type: 'CLOSE_DICTIONARY_BOX' })
+      }
     } else {
       dispatch({ type: 'SHOW_DICTIONARY_BOX' })
     }
@@ -128,6 +133,25 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       }))
     : []
 
+  const translationsList = translated =>
+    pending ? (
+      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
+        {[1, 2, 3, 4, 5].map(line => (
+          <List.Item key={line}>
+            <Placeholder>
+              <PlaceholderLine />
+            </Placeholder>
+          </List.Item>
+        ))}
+      </List>
+    ) : (
+      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
+        {translated.glosses.map(word => (
+          <List.Item key={word}>{word}</List.Item>
+        ))}
+      </List>
+    )
+
   const translations =
     translation &&
     translation !== 'no-clue-translation' &&
@@ -165,12 +189,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               preferred={translated.preferred}
             />
           )}
-          <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
-            {translated.glosses.map(word => (
-              <List.Item key={word}>{word}</List.Item>
-            ))}
-          </List>
-          
+          {translationsList(translated)}
         </div>
         <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
           {!inWordNestModal && words && words[translated.lemma]?.length > 0 &&
@@ -179,9 +198,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 <Popup
                     content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
                     trigger={
-              <Button basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
+              <Button style={{ padding: '5px' }} basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
                       data-cy="nest-button">
-                <img src={images.nestIcon} alt="nest icon" width="22" />
+                <img src={images.network} alt="network icon" width="32" />
               </Button>
                     }
                 />
@@ -200,8 +219,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     }
     dispatch(updateDictionaryLanguage(value))
   }
-
-  const smallWindow = minimized || windowWidth < 1024
 
   if (!showHelp && smallWindow && !inWordNestModal) {
     return (
@@ -226,17 +243,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     setWordNestModalOpen(true)
   }
 
+  const getWindowCornerIcon = () => {
+    if (windowWidth < 1024) {
+      return showDictionaryBox ? 'angle down' : 'angle up'
+    }
+    return showDictionaryBox ? 'angle up' : 'angle down'
+  }
+
   const translationResults = () => {
-    if (pending)
-      return (
-        <div>
-          <span>
-            <FormattedMessage id="dictionaryhelp-loading-please-wait" />
-            ...{' '}
-          </span>
-          <Spinner animation="border" />
-        </div>
-      )
     if (translation === 'no-clue-translation') {
       return (
         <>
@@ -258,7 +272,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       return (
         <div
           className={`dictionary-translations${
-            smallWindow ? !inWordNestModal && ' dictionary-translations-overlay' : ''
+            smallWindow && !inWordNestModal ? ' dictionary-translations-overlay' : ''
           }`}
         >
           <div>
@@ -315,15 +329,20 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                   <FormattedMessage id="dictionary-header" />
               </div>
             </div>
-            <div
-              onClick={() => {
-                handleDictionaryBoxClick()}}
-              onKeyDown={() => {handleDictionaryBoxClick()}}
-              role="button"
-              tabIndex={0}
-            >
-              <Icon name={showDictionaryBox ? 'angle up' : 'angle down'} size="large" />
-            </div>
+            {!inWordNestModal && (
+              <div
+                onClick={() => {
+                  handleDictionaryBoxClick()
+                }}
+                onKeyDown={() => {
+                  handleDictionaryBoxClick()
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                <Icon name={getWindowCornerIcon()} size="large" />
+              </div>
+            )}
           </div>
         )}
 
@@ -401,7 +420,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             </div>
           ) /* ??? WHAT IS THIS? why NOTES ??? */}
 
-          {smallWindow && !inWordNestModal ? (
+          {/* smallWindow && !inWordNestModal ? (
             <div className="flex align-self-end">
               {focusedSpan && (
                 <Button
@@ -421,7 +440,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 <Icon name="angle down" size="large" color="blue" />
               </Button>
             </div>
-          ) : null}
+          ) : null */}
         </div>
       </Segment>
     </div>

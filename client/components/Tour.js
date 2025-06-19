@@ -14,7 +14,8 @@ import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userR
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
-  homeTourSteps,
+  studentHomeTourSteps,
+  teacherHomeTourSteps,
   libraryTourSteps,
   progressTourSteps,
   confettiRain,
@@ -33,53 +34,45 @@ const Tour = () => {
   const { teacherView, user } = userData
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
+
+  const homeTour =
+    tourState.steps === studentHomeTourSteps || tourState.steps === teacherHomeTourSteps
+
   const callback = data => {
     const { action, index, type, status } = data
-    //console.log(action)
-
     if (
       action === ACTIONS.CLOSE ||
       (status === STATUS.SKIPPED && tourState.run) ||
       status === STATUS.FINISHED
     ) {
       dispatch(stopTour())
+    } else if (action === ACTIONS.START && homeTour) {
+      dispatch(sidebarSetOpen(false))
     } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
       // Skip lesson step if there are no lessons for selected language
-      if (tourState.steps === homeTourSteps && !lesson_topics?.length && index === 3) {
+      if (homeTour && !lesson_topics?.length && index === 3) {
         dispatch(handleNextTourStep(index + 2))
         return
       }
       // desktop
       if (bigScreen) {
-        if (tourState.steps === homeTourSteps && !history.location.pathname.includes('/home')) {
+        if (homeTour && !history.location.pathname.includes('/home')) {
           history.push('/home') // This statement pushes the use to home page if tour is started
           // on a page that doesnt have a tour
         }
 
-        // home tour
-        if (tourState.steps === homeTourSteps && index === 1) {
-          confettiRain()
-          confettiRain()
-          setTimeout(() => {
-            confettiRain()
-          }, 400)
-          setTimeout(() => {
-            confettiRain()
-          }, 600)
-          setTimeout(() => {
-            confettiRain()
-          }, 800)
-        }
-        if (tourState.steps === homeTourSteps && index === 1) {
-          dispatch(sidebarSetOpen(true))
-        }
-
-        if (tourState.steps === homeTourSteps && index === 7) {
-          dispatch({ type: 'TOGGLE_CHATBOT' })
-        }
-
-        if (tourState.steps === homeTourSteps && index === 8) {
-          dispatch({ type: 'TOGGLE_CHATBOT' })
+        if (homeTour) {
+          if (index === 0) {
+            dispatch(sidebarSetOpen(true))
+          } else if (index === 5 && teacherView) {
+            dispatch({ type: 'TOGGLE_CHATBOT' })
+          } else if (index === 6 && teacherView) {
+            dispatch({ type: 'TOGGLE_CHATBOT' })
+          } else if (index === 7 && !teacherView) {
+            dispatch({ type: 'TOGGLE_CHATBOT' })
+          } else if (index === 8 && !teacherView) {
+            dispatch({ type: 'TOGGLE_CHATBOT' })
+          }
         }
 
         // progress tour tour step index related desktop actions
@@ -170,20 +163,15 @@ const Tour = () => {
         // mobile
       } else {
         // home tour control
-        if (tourState.steps === homeTourSteps) {
-          console.log('home tour', index)
+        if (homeTour) {
           switch (index) {
             case 0:
               if (!history.location.pathname.includes('/home')) {
                 history.push('/home')
               }
+              dispatch(sidebarSetOpen(true))
               break
             case 1:
-              dispatch(sidebarSetOpen(true))
-              setTimeout(() => {
-                dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-              }, 600)
-            case 8:
               setTimeout(() => {
                 dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               }, 600)
@@ -201,6 +189,27 @@ const Tour = () => {
                 confettiRain()
               }, 800)
               break
+            case 4:
+              if (teacherView) {
+                dispatch({ type: 'TOGGLE_CHATBOT' })
+              }
+              break
+            case 5:
+              if (teacherView) {
+                dispatch({ type: 'TOGGLE_CHATBOT' })
+              }
+              break
+            case 6:
+              if (!teacherView) {
+                dispatch({ type: 'TOGGLE_CHATBOT' })
+              }
+              break
+            case 7:
+              if (!teacherView) {
+                dispatch({ type: 'TOGGLE_CHATBOT' })
+              }
+              break
+            default:
           }
         }
         // library tour control

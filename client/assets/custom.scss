@@ -468,6 +468,10 @@ $value in $spacing {
   height: 0;
 }
 
+.dictionary-translations .ui.placeholder, .dictionary-translations .ui.placeholder .line {
+  background-color: inherit;
+}
+
 .ui.segment{
   box-shadow: 6px 11px 10px 0px rgba(0,0,0,.5);
 }
@@ -914,6 +918,7 @@ $value in $spacing {
   }
 
   &-level {
+    color: black;
     width: 25px;
     height: 25px;
     border: 2px solid #000;
@@ -1264,8 +1269,9 @@ $value in $spacing {
 
 .dictionary-button {
   position: fixed;
-  right: 0.5%;
-  bottom: 0.5%;
+  height: 43px;
+  right: 3px;
+  bottom: 10px;
   background-color: #fafafa;
   z-index: 1;
 

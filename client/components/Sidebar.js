@@ -8,7 +8,8 @@ import {
   Segment,
   DropdownItem,
   DropdownMenu,
-  Popup
+  Popup,
+  Checkbox,
 } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl' 
@@ -17,7 +18,7 @@ import { FormattedMessage } from 'react-intl'
 import { localeOptions, capitalize, localeNameToCode, images, timerExpired } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { logout, updateLocale } from 'Utilities/redux/userReducer'
+import { logout, updateLocale, teacherSwitchView } from 'Utilities/redux/userReducer'
 import {
   startAnonymousProgressTour,
   startLessonsTour,
@@ -46,6 +47,7 @@ export default function Sidebar({ history }) {
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const intl = useIntl()
   const isTeacher = user?.user.is_teacher
+  const teacherView = user?.teacherView
   const [helpLink, setHelpLink] = useState(null)
 
   const handleLocaleChange = newLocale => {
@@ -109,6 +111,15 @@ export default function Sidebar({ history }) {
     }
   }
 
+  const handleStudentViewSwitch = () => {
+    dispatch(teacherSwitchView())
+    if (teacherView) {
+      dispatch({ type: 'SET_STUDENT_HOME_TOUR_STEPS' })
+    } else {
+      dispatch({ type: 'SET_TEACHER_HOME_TOUR_STEPS' })
+    }
+  }
+
   let actualLocale = locale
   if (user && user.user.interfaceLanguage) {
     // If user has logged in, use locale from user object, else use value from localeReducer
@@ -120,7 +131,14 @@ export default function Sidebar({ history }) {
   
 
   return (
-    <SemanticSidebar as={Menu} animation="push" icon="labeled" vertical visible={open} >
+    <SemanticSidebar
+      as={Menu}
+      animation="push"
+      icon="labeled"
+      vertical
+      visible={open}
+      style={{ width: smallWindow ? '170px' : '350px', zIndex: 1001 }}
+    >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="sidebar-content" ref={sidebar}>
         <div className="revitaLogo"
@@ -143,7 +161,7 @@ export default function Sidebar({ history }) {
           >
             <Link to="/home">
               <img
-                style={{ width: '15em', margin: '6px auto' }}
+                style={{ width: '100%', margin: '6px auto' }}
                 src={images.logo}
                 alt="revitaLogo"
               />
@@ -338,6 +356,23 @@ export default function Sidebar({ history }) {
               <FormattedMessage id="Settings" />
             </Button>
           </Link>
+            {isTeacher && smallWindow && (
+              <Popup
+                content={<FormattedMessage id="teacher-view-explanation" />}
+                trigger={
+                  <div>
+                    <Checkbox
+                      style={{ marginTop: '0.5em', marginRight: '0.5em' }}
+                      toggle
+                      label={intl.formatMessage({ id: 'student-view' })}
+                      checked={!teacherView}
+                      onChange={handleStudentViewSwitch}
+                    />
+                  </div>
+                }
+                position="bottom center"
+              />
+            )}
           <Dropdown item style={{color: 'darkslateblue', 
                                  borderColor: 'slateblue',
                                  fontSize: 'larger',
