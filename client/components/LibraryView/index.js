@@ -423,11 +423,11 @@ const StoryList = () => {
                 active={accordionState === index}
               >
                 <Card.Group itemsPerRow={2} doubling={!bigScreen}>
-                  {libraryGroup[group].map((story, index) => (
+                  {libraryGroup[group].map((story, storyIdx) => (
                     <StoryListItem
                       key={`story-${story._id}`}
                       libraryShown={libraries}
-                      story={libraryFilteredStories[index]}
+                      story={libraryGroup[group][storyIdx]}
                       selectedGroup={savedGroupSelection}
                       style={{ padding: '0' }}
                     />
