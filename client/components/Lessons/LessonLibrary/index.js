@@ -447,7 +447,7 @@ const LessonList = () => {
           <>
             {libraries.group && !teacherView ? (
               <div>{lessonStartControls}</div>
-            ) : showStartMenu ? (
+            ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
               <div style={{ display: 'flex', height: '80vh' }}>
