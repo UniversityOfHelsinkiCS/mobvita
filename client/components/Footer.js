@@ -21,10 +21,6 @@ const Footer = () => {
                 </button>
               }
             />
-            <div className="footer-item">
-              {/* eslint-disable no-undef */}
-              {`Built: ${__VERSION__} (${__COMMIT__})`}
-            </div>
           </>
         )}
         <div className="footer-item">

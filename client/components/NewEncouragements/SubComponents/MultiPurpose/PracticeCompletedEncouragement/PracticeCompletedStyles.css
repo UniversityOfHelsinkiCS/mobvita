@@ -1,29 +1,29 @@
-.lesson-completed-container {
+.practice-completed-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  height: calc(100vh - 3em - .5rem);
+  height: 100%;
+  margin: 26.25px 0;
 }
 
-.lesson-completed-container h5 {
+.practice-completed-container h5 {
   margin-top: 10px;
   margin-bottom: 50px;
 }
 
-.lesson-completed-container img {
+.practice-completed-container img {
   max-width: 20%;
   max-height: 20%;
   margin-bottom: 30px;
 }
 
-.lesson-completed-button-group {
+.practice-completed-button-group {
   display: flex;
   gap: 20px;
   justify-content: center;
 }
 
-.lesson-completed-button-group button {
-  width: 100px;
+.practice-completed-button-group button {
+  width: 150px;
 }

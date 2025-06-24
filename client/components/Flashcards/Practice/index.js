@@ -159,6 +159,10 @@ const Practice = ({ mode, open }) => {
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
   const handleIndexChange = index => {
+    if (index === 25) {
+      dispatch(openFCEncouragement())
+    }
+
     const oldIndex = swipeIndex
     setSwipeIndex(index)
 
@@ -288,7 +292,7 @@ const Practice = ({ mode, open }) => {
   }
   return (
     <div className="cont grow flex space-evenly">
-      <Recommender />
+      <Recommender continueAction={handleNewDeck} />
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}

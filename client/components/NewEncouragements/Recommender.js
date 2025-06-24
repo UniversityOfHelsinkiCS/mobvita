@@ -34,12 +34,13 @@ import WordsSeenEncouragement from './SubComponents/MultiPurpose/WordsSeenEncour
 import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/PracticeView/StoryCompletedToBluecardsExerciseEncouragement'
 import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
 import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
+import PracticeCompletedEncouragement from './SubComponents/MultiPurpose/PracticeCompletedEncouragement'
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
 import FlashcardsProgress from './SubComponents/FlashcardView/FlashcardsProgress'
 import RecommendSlider from './RecommendSlider'
 
-const Recommender = () => {
+const Recommender = ({ continueAction }) => {
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = userData ? userData.last_used_language : null
   const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
@@ -369,12 +370,12 @@ const Recommender = () => {
       ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
         // "normal" flashcard view related encouragements
         <div>
-          <Draggable cancel=".interactable">
+          <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}>
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
               <div className="col-flex">
-                <div className="flex-reverse">
+                {/* <div className="flex-reverse">
                   <Icon
                     className="interactable"
                     style={{
@@ -385,15 +386,15 @@ const Recommender = () => {
                     name="close"
                     onClick={handleCloseClick}
                   />
-                </div>
-
-                <RecommendSlider slides={[
+                </div> */}
+                <PracticeCompletedEncouragement practiceType="flashcard" continueAction={continueAction} />
+                {/*<RecommendSlider slides={[
                   <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
                   <TryAnotherBatch handleNewDeck={handleNewDeck} />,
                   list_of_recent_stories_flashcards_encourage,
                   <BackToLibraryFromFlashcards />
                 ]} />
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
 
                 {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
@@ -409,7 +410,7 @@ const Recommender = () => {
       ) : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
         // bluecards test view related encouragements
         <div>
-          <Draggable cancel=".interactable">
+          <Draggable cancel=".interactable" positionOffset={{ x: '-50%', y: '-50%' }}>
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
@@ -448,13 +449,13 @@ const Recommender = () => {
         </div>
       ) : inLessonPracticeView && fcOpen ? (
         // lesson practice view related encouragements
-        <div>
-          <Draggable cancel=".interactable">
+        <div /* style={{ position: 'fixed', top: '0', left: '0', /* display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: '100000'}} */>
+          <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}>
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
               <div className="col-flex">
-                <div className="flex-reverse">
+                {/*<div className="flex-reverse">
                   <Icon
                     className="interactable"
                     style={{
@@ -465,13 +466,17 @@ const Recommender = () => {
                     name="close"
                     onClick={handleCloseClick}
                   />
-                </div>
-
-                <RecommendSlider slides={[
+                </div> */}
+                <PracticeCompletedEncouragement
+                  practiceType="lesson"
+                  continueAction={continueAction}
+                />
+                {/* <RecommendSlider slides={[
+                  <PracticeCompletedEncouragement startOverLessonSnippets={startOverLessonSnippets} />,
                   <GoodJobEncouragement />,
                   <RedirectHomeEncouragement />
                 ]} />
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
 
                 {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
                   <GoodJobEncouragement />

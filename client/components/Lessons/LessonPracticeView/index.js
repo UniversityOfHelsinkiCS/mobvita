@@ -21,6 +21,7 @@ import {
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import { openLPEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
@@ -40,7 +41,6 @@ import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
 import Recommender from 'Components/NewEncouragements/Recommender'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
-import LessonCompleted from '../LessonCompleted'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
@@ -64,7 +64,6 @@ const LessonPracticeView = () => {
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
-  const [showLessonCompleted, setShowLessonCompleted] = useState(false)
 
   const mode = getMode()
   const TIMER_START_DELAY = 2000
@@ -111,7 +110,8 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     if (currentSnippetNum === 10) {
-      setShowLessonCompleted(true)
+      dispatch(openLPEncouragement())
+      return
     }
     setCurrentSnippetNum(snippets.previous.length + 1)
     setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10)
@@ -199,19 +199,10 @@ const LessonPracticeView = () => {
     return Math.round(timer.getTime() / 1000)
   }
 
-  if (showLessonCompleted) {
-    return (
-      <LessonCompleted
-        startOvertLessonSnippets={startOvertLessonSnippets}
-        setShowLessonCompleted={setShowLessonCompleted}
-      />
-    )
-  }
-
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
       <div>
-        <Recommender />
+        <Recommender continueAction={startOvertLessonSnippets} />
         <div className="cont-tall pt-sm flex-col space-between">
           <div className="justify-center">
             <div className="cont">
