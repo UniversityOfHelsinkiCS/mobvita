@@ -40,7 +40,7 @@ const FlashcardEndView = ({ handleNewDeck, open }) => {
   //}
 
   return (
-    <div className="flashcard justify-center">
+    <div className="flashcard justify-center" style={{ visibility: 'hidden' }}>
       <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
         <FormattedMessage id="well-done-flashcards" />
       </p>
