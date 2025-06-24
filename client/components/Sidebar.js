@@ -137,7 +137,7 @@ export default function Sidebar({ history }) {
       icon="labeled"
       vertical
       visible={open}
-      style={{ width: smallWindow ? '170px' : '350px', zIndex: 1001 }}
+      style={{ width: smallWindow ? '80%' : '350px', zIndex: 1001 }}
     >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <div className="sidebar-content" ref={sidebar}>
@@ -373,7 +373,7 @@ export default function Sidebar({ history }) {
                 position="bottom center"
               />
             )}
-          <Dropdown item style={{color: 'darkslateblue', 
+          <Dropdown item direction={smallWindow ? "left" : "right"} style={{color: 'darkslateblue', 
                                  borderColor: 'slateblue',
                                  fontSize: 'larger',
                                  fontWeight: 'bold'}}
