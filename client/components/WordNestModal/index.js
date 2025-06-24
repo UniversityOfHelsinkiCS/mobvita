@@ -202,6 +202,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
     rootLemmas?.some(r => e.parents?.includes(r.nest_id)))
   const hasSeveralRoots = rootLemmas?.length > 1 && rootLemmas?.length > 1 || secondRootLemmas?.length > 1
+  const hasAdditionalInfo = words.some(word => word.others?.length > 0)
   const wordNest = makeWordNest(rootLemmas?.length > 1 && rootLemmas || secondRootLemmas, words)
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
@@ -248,7 +249,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
             <FormattedMessage id="nest" />: {modalTitle}{' '}
           </span>
 
-          {!smallWindow && (
+          {!smallWindow && hasAdditionalInfo && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
           <Icon onClick={handleModalclose} size="small" name="close" />

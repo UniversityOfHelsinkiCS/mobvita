@@ -150,8 +150,8 @@ const PracticeModal = ({ open, setOpen }) => {
 
   const handleLibraryChange = library => {
     const initLibraries = {
-      private: false,
       public: false,
+      private: false,
       group: false,
     }
     const initCategories = {
@@ -167,8 +167,8 @@ const PracticeModal = ({ open, setOpen }) => {
 
   const handleClose = () => {
     setLibraries({
-      private: true,
       public: true,
+      private: true,
       group: true,
     })
     setCategories({
@@ -190,8 +190,8 @@ const PracticeModal = ({ open, setOpen }) => {
       uncategorized: false,
     }
     const initLibraries = {
-      private: true,
       public: true,
+      private: true,
       group: true,
     }
     setLibraries(initLibraries)
