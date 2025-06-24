@@ -30,6 +30,7 @@ import {
   openEncouragement,
 } from 'Utilities/redux/encouragementsReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupAnalytics from './GroupView/GroupAnalytics'
 import GroupPeople from './GroupView/GroupPeople'
 import GroupSetting from './GroupView/GroupSetting'
@@ -61,6 +62,8 @@ export default () => {
   const location = useLocation()
   const dispatch = useDispatch()
 
+  const smallWindow = useWindowDimensions().width < 640
+
   useEffect(() => {
     dispatch(closeEncouragement())
     dispatch(closeFCEncouragement())
@@ -72,7 +75,14 @@ export default () => {
     ) {
       dispatch(openEncouragement())
     }
-    dispatch(sidebarSetOpen(['/', '/welcome', '/home'].includes(location.pathname) && userData !== null && userData !== undefined))
+    dispatch(
+      sidebarSetOpen(
+        ['/', '/welcome', '/home'].includes(location.pathname) &&
+          userData !== null &&
+          userData !== undefined &&
+          !smallWindow
+      )
+    )
   }, [location.pathname])
 
   return (
