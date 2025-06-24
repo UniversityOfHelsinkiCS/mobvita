@@ -352,7 +352,7 @@ const Settings = ({teacherView}) => {
               }
             />
           </Menu.Item>)}
-          {!teacherView && (<Menu.Item className="add-story-accordion-item">
+          {/* !teacherView && (<Menu.Item className="add-story-accordion-item">
             <Accordion.Title
               active={accordionState === 6}
               content={
@@ -378,7 +378,7 @@ const Settings = ({teacherView}) => {
                 </div>
               }
             />
-          </Menu.Item>)}
+          </Menu.Item>) */}
         </div>
       </Accordion>
     </div>
