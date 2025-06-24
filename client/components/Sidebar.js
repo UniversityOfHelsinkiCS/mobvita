@@ -420,14 +420,14 @@ export default function Sidebar({ history }) {
           </Menu.Item>
         </div>
         <div style={{ color: 'slateGrey' }}>
-          <TermsAndConditions
+          {/* <TermsAndConditions
             trigger={
               <Button data-cy="tc-button"  variant="link">
                 {' '}
                 Terms and Conditions, Privacy Policy{' '}
               </Button>
             }
-          />
+          /> */}
           {/* eslint-disable no-undef */}
           <div>{`Built: ${__VERSION__}`}</div>
           <div>{`${__COMMIT__}`}</div>
