@@ -250,7 +250,7 @@ const Progress = () => {
   // console.log('num of words at end ', endWords)
   return (
     <div>
-      <Recommender />
+      {/* <Recommender /> */}
       <div className="cont ps-nm">
         <div className="date-pickers-container">
           {bigScreen ? (

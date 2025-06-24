@@ -446,9 +446,9 @@ const CurrentSnippet = ({
           </div>
         ) : (
           <div>
-            <>
+            {/* <>
               <Recommender />
-            </>
+            </> */}
 
             <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
