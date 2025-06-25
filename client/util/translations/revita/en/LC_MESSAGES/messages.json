@@ -1755,5 +1755,7 @@
     "lesson-customize-title": "Customize",
     "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
     "download-exercise-history": "Download detailed report",
-    "chatbot-toggle-label": "Vita — AI-assistant"
+    "chatbot-toggle-label": "Vita — AI-assistant",
+    "chatbot-message-suggestion-performance": "How am I doing?",
+    "chatbot-message-suggestion-next-steps": "What to do next?"
 }
