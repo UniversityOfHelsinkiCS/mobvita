@@ -1752,5 +1752,12 @@
     "lesson-quick-start-info": "Inizia a esercitarti con argomenti adatti al tuo livello attuale",
     "lesson-customize-title": "Personalizzare",
     "lesson-customize-info": "Crea la tua lezione personalizzata: decidi cosa vuoi esercitarti",
-    "download-exercise-history": "Scarica il rapporto dettagliato"
+    "download-exercise-history": "Scarica il rapporto dettagliato",
+    "chatbot-toggle-label": "Vita — assistente AI",
+    "chatbot-message-suggestion-performance": "How am I doing?",
+    "chatbot-message-suggestion-next-steps": "What to do next?",
+    "lesson-completed-title": "Lesson completed!",
+    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
+    "deck-completed-title": "Deck completed!",
+    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
 }

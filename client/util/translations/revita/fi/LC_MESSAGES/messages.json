@@ -1753,5 +1753,12 @@
     "lesson-quick-start-info": "Aloita harjoittelu aiheilla, jotka on räätälöity nykyiselle tasollesi",
     "lesson-customize-title": "Mukauta",
     "lesson-customize-info": "Luo oma oppitunti – päätä, mitä haluat harjoitella",
-    "download-exercise-history": "Lataa yksityiskohtainen raportti"
+    "download-exercise-history": "Lataa yksityiskohtainen raportti",
+    "chatbot-toggle-label": "Vita — AI-avustaja",
+    "chatbot-message-suggestion-performance": "How am I doing?",
+    "chatbot-message-suggestion-next-steps": "What to do next?",
+    "lesson-completed-title": "Lesson completed!",
+    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
+    "deck-completed-title": "Deck completed!",
+    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
 }

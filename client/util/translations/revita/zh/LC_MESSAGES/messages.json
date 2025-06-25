@@ -1130,5 +1130,12 @@
     "lesson-quick-start-info": "Start practicing with topics tailored to your current level",
     "lesson-customize-title": "Customize",
     "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
-    "download-exercise-history": "下载详细报告"
+    "download-exercise-history": "下载详细报告",
+    "chatbot-toggle-label": "Vita — AI-assistant",
+    "chatbot-message-suggestion-performance": "How am I doing?",
+    "chatbot-message-suggestion-next-steps": "What to do next?",
+    "lesson-completed-title": "Lesson completed!",
+    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
+    "deck-completed-title": "Deck completed!",
+    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
 }
