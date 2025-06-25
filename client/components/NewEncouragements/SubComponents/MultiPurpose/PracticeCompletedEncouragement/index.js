@@ -23,12 +23,17 @@ const PracticeCompletedEncouragement = ({ continueAction, practiceType }) => {
     history.push('/home')
   }
 
-  const title = practiceType === 'lesson' ? 'Lesson completed!' : 'Deck completed!'
+  const title = (
+    <FormattedMessage
+      id={practiceType === 'lesson' ? 'lesson-completed-title' : 'deck-completed-title'}
+    />
+  )
 
-  const message =
-    practiceType === 'lesson'
-      ? 'Do you want to continue practicing with another set of 10 snippets?'
-      : 'Do you want to continue practicing with another set of 25 flashcards?'
+  const message = (
+    <FormattedMessage
+      id={practiceType === 'lesson' ? 'lesson-completed-message' : 'deck-completed-message'}
+    />
+  )
 
   return (
     <div className="practice-completed-container">
