@@ -38,7 +38,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
         backgroundColor: '#E6FCE7',
       }
 
-    if (!rank) return { color: '#db2828' }
+    if (!rank) return { color: '#db2828', fontStyle: 'bold' }
     if (rank < 2000) return { color: '#000000' }
     if (rank < 4000) return { color: '#0f066f' }
     if (rank < 8000) return { color: '#0045a4' }
