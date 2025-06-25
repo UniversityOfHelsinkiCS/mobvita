@@ -233,7 +233,7 @@ const Recommender = ({ continueAction }) => {
             </div>
           </Draggable>
         </div>
-      ) : (isInHomeView || isInWelcomeView) && open ? (
+      ) /* : (isInHomeView || isInWelcomeView) && open ? (
         // home- and welcomeView related encouragements
         <div>
           <Draggable cancel=".interactable">
@@ -305,13 +305,6 @@ const Recommender = ({ continueAction }) => {
                   confirm_blue_card_encourage,
                 ]} />
                 <TurnOffRecommendations />
-
-                {/* <div className="col-flex">
-                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <ConfirmBlueCardsEncouragement />
-                  </div>
-                  <TurnOffRecommendations />
-                </div> */}
               </div>
             </div>
           </Draggable>
@@ -351,26 +344,14 @@ const Recommender = ({ continueAction }) => {
                   <GrammarReviewExerciseEncouragement />
                 ]} />
                 <TurnOffRecommendations />
-
-                {/* <div className="col-flex">
-                  <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                    <LeaderboardEncouragement />
-                    <StoryCompletedToBluecardsExerciseEncouragement />
-                    <LatestIncompleteStory />
-                    <WordsSeenEncouragement />
-                    <NewWordsInteractedExerciseEncouragement />
-                    <GrammarReviewExerciseEncouragement />
-                  </div>
-                  <TurnOffRecommendations />
-                </div> */}
               </div>
             </div>
           </Draggable>
         </div>
-      ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
+      ) */ : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
         // "normal" flashcard view related encouragements
         <div>
-          <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}>
+          {/* <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}> */}
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
@@ -405,12 +386,11 @@ const Recommender = ({ continueAction }) => {
                 <TurnOffRecommendations /> */}
               </div>
             </div>
-          </Draggable>
+          {/* </Draggable> */}
         </div>
-      ) : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
+      ) /* : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
         // bluecards test view related encouragements
         <div>
-          <Draggable cancel=".interactable" positionOffset={{ x: '-50%', y: '-50%' }}>
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
@@ -435,22 +415,13 @@ const Recommender = ({ continueAction }) => {
                   <FlashcardsProgress />
                 ]} />
                 <TurnOffRecommendations />
-
-                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
-                  <PreviousStoriesBlueFlashcards />
-                  <WordsSeenEncouragement />
-                  <FlashcardsProgress />
-                </div>
-                <TurnOffRecommendations /> */}
               </div>
             </div>
-          </Draggable>
         </div>
-      ) : inLessonPracticeView && fcOpen ? (
+      ) */ : inLessonPracticeView && fcOpen ? (
         // lesson practice view related encouragements
         <div /* style={{ position: 'fixed', top: '0', left: '0', /* display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: '100000'}} */>
-          <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}>
+          {/* <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}> */}
             <div
               className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
             >
@@ -485,7 +456,7 @@ const Recommender = ({ continueAction }) => {
                 <TurnOffRecommendations /> */}
               </div>
             </div>
-          </Draggable>
+          {/* </Draggable> */}
         </div>
       ) : null}
     </>
