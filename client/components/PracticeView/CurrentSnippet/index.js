@@ -41,7 +41,6 @@ import {
   updateSeveralSpanAnnotationStore,
   resetAnnotations,
 } from 'Utilities/redux/annotationsReducer'
-import Recommender from 'Components/NewEncouragements/Recommender'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -53,6 +52,7 @@ const CurrentSnippet = ({
   lessonId,
   groupId,
   lessonStartOver,
+  currentSnippetNum,
 }) => {
   const CACHE_LIMIT = 5
   const SNIPPET_FETCH_INTERVAL = 5000
@@ -260,7 +260,9 @@ const CurrentSnippet = ({
     dispatch(updateSeveralSpanAnnotationStore(annotationsToInitialize))
     dispatch(clearCurrentPractice())
 
-    if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
+    if (lessonId && currentSnippetNum && numSnippets && currentSnippetNum === numSnippets) {
+      dispatch(setPracticeFinished(true))
+    } else if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
       const nextSnippetKey = (!lessonId && `${storyId}-${currentSnippetId() + 1}` || 
                               cacheSize && Object.keys(cachedSnippets)[0] || 'anyKey')
       const nextSnippet = cachedSnippets[nextSnippetKey]
@@ -446,13 +448,9 @@ const CurrentSnippet = ({
           </div>
         ) : (
           <div>
-            {/* <>
-              <Recommender />
-            </> */}
-
-            <Button variant="primary" block onClick={() => startOver()}>
+            {storyId && <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
-            </Button>
+            </Button>}
           </div>
         )}
       </form>

@@ -254,6 +254,7 @@ const LessonPracticeView = () => {
                   lessonId={lesson_instance?.lesson_id}
                   groupId={groupId}
                   lessonStartOver={startOvertLessonSnippets}
+                  currentSnippetNum={currentSnippetNum}
                 />
                 <ScrollArrow />
 
