@@ -210,7 +210,11 @@ const Summary = ({
                       <th
                         className="clickable"
                         onClick={() => handleSort(column)}
-                        style={{ textAlign: 'center', verticalAlign: 'middle' }}
+                        style={{
+                          textAlign: 'center',
+                          verticalAlign: 'middle',
+                          width: column === 'CEFR' && '70px',
+                        }}
                       >
                         {capitalize(column).replace(/_/g, ' ')}
                         {sorter.field === column && (
