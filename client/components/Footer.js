@@ -7,7 +7,8 @@ const Footer = () => {
   const history = useHistory()
 
   const showResonsiveVoiceMention = history.location.pathname.includes('stories')
-  const showTermsAndConditionsAndBuildVersion = history.location.pathname.includes('home')
+  const showTermsAndConditionsAndBuildVersion =
+    history.location.pathname.includes('home') || history.location.pathname.includes('welcome')
 
   return (
     <footer className="footer-wrapper">
