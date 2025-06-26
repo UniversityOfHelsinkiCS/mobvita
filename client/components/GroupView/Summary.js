@@ -224,7 +224,15 @@ const Summary = ({
                   {summary.map(user => (
                     <tr onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td className="clickable">{cleanColumnValue(user[column], column)}</td>
+                        <td
+                          className="clickable"
+                          style={{
+                            textAlign:
+                              column === 'Email' || column === 'Username' ? 'left' : 'right',
+                          }}
+                        >
+                          {cleanColumnValue(user[column], column)}
+                        </td>
                       ))}
                     </tr>
                   ))}
