@@ -1755,10 +1755,10 @@
     "lesson-customize-info": "Luo oma oppitunti – päätä, mitä haluat harjoitella",
     "download-exercise-history": "Lataa yksityiskohtainen raportti",
     "chatbot-toggle-label": "Vita — AI-avustaja",
-    "chatbot-message-suggestion-performance": "How am I doing?",
-    "chatbot-message-suggestion-next-steps": "What to do next?",
-    "lesson-completed-title": "Lesson completed!",
-    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
-    "deck-completed-title": "Deck completed!",
-    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
+    "chatbot-message-suggestion-performance": "Miten edistyn?",
+    "chatbot-message-suggestion-next-steps": "Mitä tehdä seuraavaksi?",
+    "lesson-completed-title": "Oppitunti suoritettu!",
+    "lesson-completed-message": "Haluatko jatkaa ja harjoitella vielä 10 katkelmalla?",
+    "deck-completed-title": "Korttipakka suoritettu!",
+    "deck-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?"
 }

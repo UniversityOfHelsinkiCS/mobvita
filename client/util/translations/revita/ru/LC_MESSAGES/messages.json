@@ -1757,10 +1757,10 @@
     "lesson-customize-info": "Создай свой собственный урок — реши, что именно ты хочешь практиковать",
     "download-exercise-history": "Скачать подробный отчет",
     "chatbot-toggle-label": "Vita — AI-помощник",
-    "chatbot-message-suggestion-performance": "How am I doing?",
-    "chatbot-message-suggestion-next-steps": "What to do next?",
-    "lesson-completed-title": "Lesson completed!",
-    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
-    "deck-completed-title": "Deck completed!",
-    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
+    "chatbot-message-suggestion-performance": "Каков мой прогресс?",
+    "chatbot-message-suggestion-next-steps": "Что мне делать дальше?",
+    "lesson-completed-title": "Урок завершен!",
+    "lesson-completed-message": "Хочешь продолжить и попрактиковаться еще с 10 отрывками?",
+    "deck-completed-title": "Набор завершен!",
+    "deck-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?"
 }

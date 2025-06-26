@@ -1609,10 +1609,10 @@
     "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
     "download-exercise-history": "Download detailed report",
     "chatbot-toggle-label": "Vita — AI-assistant",
-    "chatbot-message-suggestion-performance": "How am I doing?",
-    "chatbot-message-suggestion-next-steps": "What to do next?",
+    "chatbot-message-suggestion-performance": "How is my progress?",
+    "chatbot-message-suggestion-next-steps": "What should I do next?",
     "lesson-completed-title": "Lesson completed!",
-    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
+    "lesson-completed-message": "Do you want to continue, and practice with 10 more snippets?",
     "deck-completed-title": "Deck completed!",
-    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
+    "deck-completed-message": "Do you want to continue, and practice with 25 more cards?"
 }

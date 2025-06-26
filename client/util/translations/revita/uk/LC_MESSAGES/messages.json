@@ -864,10 +864,10 @@
     "lesson-customize-info": "Створи свій власний урок – виріши, що саме ти хочеш практикувати",
     "download-exercise-history": "Скачати детальний звіт",
     "chatbot-toggle-label": "Vita – AI-помічник",
-    "chatbot-message-suggestion-performance": "How am I doing?",
-    "chatbot-message-suggestion-next-steps": "What to do next?",
-    "lesson-completed-title": "Lesson completed!",
-    "lesson-completed-message": "Do you want to continue practicing with another set of 10 snippets?",
-    "deck-completed-title": "Deck completed!",
-    "deck-completed-message": "Do you want to continue practicing with another set of 25 flashcards?"
+    "chatbot-message-suggestion-performance": "Як мій прогрес?",
+    "chatbot-message-suggestion-next-steps": "Що мені робити далі?",
+    "lesson-completed-title": "Урок завершено!",
+    "lesson-completed-message": "Хочеш продовжити і попрактикуватися ще з 10 відривками?",
+    "deck-completed-title": "Набір закінчений!",
+    "deck-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?"
 }
