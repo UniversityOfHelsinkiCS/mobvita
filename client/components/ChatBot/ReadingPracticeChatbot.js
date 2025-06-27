@@ -9,6 +9,7 @@ import {
     getReadingPracticeChatbotResponse,
     getReadingPracticeAgentConversationHistory,
 } from 'Utilities/redux/chatbotReducer';
+import ChatbotSuggestions from './ChatbotSuggestions'
 
 const ReadingPracticeChatBot = () => {
     const intl = useIntl();
@@ -96,6 +97,7 @@ const ReadingPracticeChatBot = () => {
                                 <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                             )}
                         </Button>
+                        <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
                     </form>
                 </>
             )}

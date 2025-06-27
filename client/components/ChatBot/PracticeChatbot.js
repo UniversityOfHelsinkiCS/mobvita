@@ -25,6 +25,7 @@ import {
 import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
+import ChatbotSuggestions from './ChatbotSuggestions'
 
 const PracticeChatbot = () => {
     const intl = useIntl()
@@ -316,6 +317,7 @@ const PracticeChatbot = () => {
                      : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                     }
                 </Button>
+                <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
             </form>): (
               <Button primary onMouseDown={handlePreHints}>
                 <FormattedMessage id="ask-for-a-hint" />

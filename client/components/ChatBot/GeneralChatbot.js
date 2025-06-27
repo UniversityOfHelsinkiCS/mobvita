@@ -9,6 +9,7 @@ import {
     getGeneralAgentConversationHistory,
     getGeneralChatbotResponse,
 } from 'Utilities/redux/chatbotReducer';
+import ChatbotSuggestions from './ChatbotSuggestions'
 
 console.log("ReactMarkdown:", ReactMarkdown);
 
@@ -36,10 +37,6 @@ const GeneralReadingChatBot = () => {
         dispatch(getGeneralChatbotResponse(currentMessage));
         setCurrentMessage("");
     };
-
-    const handleSuggestedMessage = message => {
-        dispatch(getGeneralChatbotResponse(message));
-    }
 
     const toggleCollapse = () => {
         dispatch({ type: 'TOGGLE_CHATBOT' })
@@ -102,16 +99,9 @@ const GeneralReadingChatBot = () => {
                                 <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                             )}
                         </Button>
-                        <div className="chatbot-suggestions">
-                            <Button type="button" basic disabled={isWaitingForResponse} onClick={() => handleSuggestedMessage('What to do next?')}>
-                                <FormattedMessage id="chatbot-message-suggestion-next-steps" />
-                            </Button>
-                            <Button type="button" basic disabled={isWaitingForResponse} onClick={() => handleSuggestedMessage('How am I doing?')}>
-                                <FormattedMessage id="chatbot-message-suggestion-performance" />
-                            </Button>
-                        </div>
+                        <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
                     </form>
-                </>
+        </>
       )}
         </div>
     );
