@@ -23,11 +23,7 @@ const Summary = ({
   summaryType = 'all',
 }) => {
   const intl = useIntl()
-  const { colOrder } = useSelector(({ summary }) => summary)
-  const [sorter, setSorter] = useState({
-    field: 'Email',
-    direction: Object.fromEntries(colOrder.map(key => [key, 1])),
-  })
+  const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
 
   const groupName = group?.groupName
@@ -78,6 +74,7 @@ const Summary = ({
 
     return summary
   })
+  const { colOrder } = useSelector(({ summary }) => summary)
 
   useEffect(() => {
     if (summary && colOrder && summary.length > 0) {
@@ -120,7 +117,12 @@ const Summary = ({
           [column]: 1,
         }
       })
-
+  
+      setSorter({
+        field: colOrder[0], // 'Email'
+        direction: directionsObj,
+      })
+  
       setColumns(temp)
     }
   }, [summary, summaryType])
