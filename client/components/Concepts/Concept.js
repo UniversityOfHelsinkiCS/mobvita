@@ -23,7 +23,6 @@ const Concept = ({
   const CONCEPT_NAME_MAX_LEN = 50
   const [open, setOpen] = useState(false)
   const {
-    exer_enabled: exerEnabled,
     test_enabled: testEnabled,
     question_num: maxNumQuestions,
     test_count: defaultNumQuestions,
@@ -76,7 +75,7 @@ const Concept = ({
   const truncateConceptName = name => {
     const truncatedName = `${name.slice(0, CONCEPT_NAME_MAX_LEN)}...`
 
-    if ((maxNumQuestions > 0 && showTestConcepts) || (exerEnabled && !showTestConcepts)) {
+    if ((maxNumQuestions > 0 && showTestConcepts) || !showTestConcepts) {
       return <Popup content={name} trigger={<span>{truncatedName}</span>} />
     }
     return <Popup content={name} trigger={<span className="disabled-text">{truncatedName}</span>} />
@@ -109,12 +108,12 @@ const Concept = ({
               type="checkbox"
               inline
               onChange={handleCheckboxChange}
-              checked={conceptTurnedOn && exerEnabled && !showTestConcepts}
+              checked={conceptTurnedOn && !showTestConcepts}
               /* eslint-disable no-param-reassign */
               ref={el => {
                 if (el) el.indeterminate = indeterminateCheck
               }}
-              disabled={(exerEnabled !== undefined && !exerEnabled) || showTestConcepts}
+              disabled={showTestConcepts}
             />
           </Form.Group>
           <span
@@ -128,7 +127,7 @@ const Concept = ({
               <span>{truncateConceptName(name)}</span>
             ) : !isLeaf ||
               (maxNumQuestions > 0 && showTestConcepts) ||
-              (exerEnabled && !showTestConcepts) ? (
+              !showTestConcepts ? (
               <span>{name}</span>
             ) : (
               <span className="disabled-text">{name}</span>
@@ -146,7 +145,7 @@ const Concept = ({
           {renderTestConcepts && (
             <div style={{ marginLeft: '1.5em', display: 'flex' }}>
               <span style={{ marginRight: '0.3em' }}>
-                {(maxNumQuestions > 0 && showTestConcepts) || (exerEnabled && !showTestConcepts) ? (
+                {(maxNumQuestions > 0 && showTestConcepts) || !showTestConcepts ? (
                   <>{intl.formatMessage({ id: 'questions' })}:</>
                 ) : (
                   <span className="disabled-text">

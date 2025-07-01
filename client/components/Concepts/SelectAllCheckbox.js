@@ -32,7 +32,7 @@ const SelectAllCheckbox = ({ showTestConcepts }) => {
 
   if (!exerciseSettings) return null
 
-  const superConcepts = concepts.filter(c => c.super && c.exer_enabled)
+  const superConcepts = concepts.filter(c => c.super)
 
   // Tells if some/all/none of the super concepts are enabled or partially enabled.
   // 1 = all fully enabled, 0 = all fully disabled, 0 < x < 1 partially enabled
