@@ -119,7 +119,7 @@ const Summary = ({
       })
   
       setSorter({
-        field: colOrder[0], // 'Email'
+        field: sorter?.field ?? colOrder[0], // 'Email'
         direction: directionsObj,
       })
   
