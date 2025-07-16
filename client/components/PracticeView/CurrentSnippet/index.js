@@ -54,7 +54,6 @@ const CurrentSnippet = ({
   lessonStartOver,
   currentSnippetNum,
 }) => {
-  const CACHE_LIMIT = 5
   const SNIPPET_FETCH_INTERVAL = 5000
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
@@ -92,6 +91,7 @@ const CurrentSnippet = ({
     ? 'speech'
     : 'all'
   const sessionId = snippets?.sessionId ?? null
+  const CACHE_LIMIT = lessonId ? 5 : Math.min(5, snippets?.focused?.total_num)
   if (!userData) {
     return
   }
@@ -299,9 +299,11 @@ const CurrentSnippet = ({
 
   const fetchSnippet = async () => {
     if (!lessonId) {
-      const nextCachedSnippetId = Math.min(...Array.from(
-        {length: CACHE_LIMIT}, (_, i) => currentSnippetId() + i).filter(
-            e => !cachedSnippetIds?.map(x => x-1).includes(e) && e <= numSnippets - 1))
+      const nextCachedSnippetId = Math.min(
+        ...Array.from({ length: CACHE_LIMIT }, (_, i) => currentSnippetId() + i).filter(
+          e => !cachedSnippetIds?.map(x => x - 1).includes(e) && e <= numSnippets - 1
+        )
+      )
       if (nextCachedSnippetId <= numSnippets - 1 && nextCachedSnippetId >= 0) {
         await dispatch(
           cacheStorySnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
@@ -319,7 +321,9 @@ const CurrentSnippet = ({
   }
 
   useEffect(() => {
-    if (snippets.focused && !cacheRequesting) fetchSnippet()
+    console.log('cache limit: ', CACHE_LIMIT)
+    if (snippets.focused && !cacheRequesting && cachedSnippetIds.length < CACHE_LIMIT)
+      fetchSnippet()
   }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
 
   useEffect(() => {
