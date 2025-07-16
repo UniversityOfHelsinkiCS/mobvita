@@ -133,7 +133,7 @@ const StoryList = () => {
         setSorter('title')
       }
     }
-  }, [savedLibrarySelection])
+  }, [])
 
   useEffect(() => {
     if (stories && !displaySearchResults) setDisplayedStories(stories)
