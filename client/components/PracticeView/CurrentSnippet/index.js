@@ -321,7 +321,6 @@ const CurrentSnippet = ({
   }
 
   useEffect(() => {
-    console.log('cache limit: ', CACHE_LIMIT)
     if (snippets.focused && !cacheRequesting && cachedSnippetIds.length < CACHE_LIMIT)
       fetchSnippet()
   }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
