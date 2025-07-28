@@ -427,7 +427,7 @@ const GroupAnalytics = ({ role }) => {
             eventKey="group-exercise-summary"
             title={<span style={tabStyle(summaryTab === 'group-exercise-summary')}>{intl.formatMessage({ id: 'group-exercise-summary' })}</span>}
           >
-            <Summary
+            {summaryTab == "group-exercise-summary" && <Summary
               setStudent={setCurrentStudent}
               startDate={startDate}
               endDate={endDate}
@@ -440,13 +440,13 @@ const GroupAnalytics = ({ role }) => {
               setCefrHistory={setCefrHistory}
               setFirstFetch={setFirstFetch}
               summaryType="exercise"
-            />
+            />}
           </Tab>
           <Tab
             eventKey="group-vocab-summary"
             title={<span style={tabStyle(summaryTab === 'group-vocab-summary')}>{intl.formatMessage({ id: 'group-vocab-summary' })}</span>}
           >
-            <Summary
+            {summaryTab == "group-vocab-summary" && <Summary
               setStudent={setCurrentStudent}
               startDate={startDate}
               endDate={endDate}
@@ -459,13 +459,13 @@ const GroupAnalytics = ({ role }) => {
               setCefrHistory={setCefrHistory}
               setFirstFetch={setFirstFetch}
               summaryType="vocab"
-            />
+            />}
           </Tab>
           <Tab
             eventKey="group-test-summary"
             title={<span style={tabStyle(summaryTab === 'group-test-summary')}>{intl.formatMessage({ id: 'group-test-summary' })}</span>}
           >
-            <Summary
+            {summaryTab == "group-test-summary" && <Summary
               setStudent={setCurrentStudent}
               startDate={startDate}
               endDate={endDate}
@@ -478,18 +478,18 @@ const GroupAnalytics = ({ role }) => {
               setCefrHistory={setCefrHistory}
               setFirstFetch={setFirstFetch}
               summaryType="test"
-            />
+            />}
           </Tab>
           <Tab
             eventKey="group-grammar-progress"
             title={<span style={tabStyle(summaryTab === 'group-grammar-progress')}>{intl.formatMessage({ id: 'group-grammar-progress' })}</span>}
           >
-            <StudentGrammarProgress
+            {summaryTab == "group-grammar-progress" && <StudentGrammarProgress
               summaryView
               startDate={startDate}
               endDate={endDate}
               group={currentGroup}
-            />
+            />}
           </Tab>
         </Tabs>
       
