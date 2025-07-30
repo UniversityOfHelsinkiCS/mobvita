@@ -1759,5 +1759,8 @@
     "lesson-completed-title": "Lezione completata!",
     "lesson-completed-message": "Vuoi continuare a fare altri 10 frammenti?",
     "deck-completed-title": "Mazzo di carte completato!",
-    "deck-completed-message": "Vuoi continuare a fare altre 25 carte?"
+    "deck-completed-message": "Vuoi continuare a fare altre 25 carte?",
+    "flashcard-completed-title": "Mazzo di carte completato!",
+    "flashcard-completed-message": "Vuoi continuare a fare altre 25 carte?",
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
 }

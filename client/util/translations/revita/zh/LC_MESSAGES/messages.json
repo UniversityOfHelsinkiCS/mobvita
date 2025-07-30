@@ -1137,5 +1137,8 @@
     "lesson-completed-title": "Lesson completed!",
     "lesson-completed-message": "Do you want to continue, and practice with 10 more snippets?",
     "deck-completed-title": "Deck completed!",
-    "deck-completed-message": "Do you want to continue, and practice with 25 more cards?"
+    "deck-completed-message": "Do you want to continue, and practice with 25 more cards?",
+    "flashcard-completed-title": "Deck completed!",
+    "flashcard-completed-message": "Do you want to continue, and practice with 25 more cards?",
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
 }

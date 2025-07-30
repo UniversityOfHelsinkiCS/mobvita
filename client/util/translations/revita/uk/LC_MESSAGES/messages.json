@@ -869,5 +869,8 @@
     "lesson-completed-title": "Урок завершено!",
     "lesson-completed-message": "Хочеш продовжити і попрактикуватися ще з 10 відривками?",
     "deck-completed-title": "Набір закінчений!",
-    "deck-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?"
+    "deck-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?",
+    "flashcard-completed-title": "Набір закінчений!",
+    "flashcard-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?",
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
 }

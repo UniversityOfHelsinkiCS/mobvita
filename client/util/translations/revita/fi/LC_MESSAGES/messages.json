@@ -1760,5 +1760,8 @@
     "lesson-completed-title": "Oppitunti suoritettu!",
     "lesson-completed-message": "Haluatko jatkaa ja harjoitella vielä 10 katkelmalla?",
     "deck-completed-title": "Korttipakka suoritettu!",
-    "deck-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?"
+    "deck-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?",
+    "flashcard-completed-title": "Korttipakka suoritettu!",
+    "flashcard-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?",
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
 }
