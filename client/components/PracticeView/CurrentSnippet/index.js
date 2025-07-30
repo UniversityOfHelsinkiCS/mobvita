@@ -425,7 +425,7 @@ const CurrentSnippet = ({
   return (
     <div>
       <form ref={practiceForm}>
-        {!practiceFinished ? (
+        {!practiceFinished && (
           <div style={{ width: '100%' }}>
             <div
               className="practice-container"
@@ -449,13 +449,13 @@ const CurrentSnippet = ({
               lessonStartOver={lessonStartOver}
             />
           </div>
-        ) : (
+        ) /* : (
           <div>
             {storyId && <Button variant="primary" block onClick={() => startOver()}>
               <FormattedMessage id="restart-story" />
             </Button>}
           </div>
-        )}
+        ) */}
       </form>
     </div>
   )

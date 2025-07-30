@@ -4,7 +4,13 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useHistory } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { clearFocusedSnippet } from 'Utilities/redux/snippetsReducer'
+import {
+  clearFocusedSnippet,
+  resetCachedSnippets,
+  dropCachedSnippet,
+  getNextSnippetFromCache,
+  resetCurrentSnippet,
+} from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
 import {
@@ -12,6 +18,7 @@ import {
   setAnswers,
   setWillPause,
   setIsPaused,
+  clearPractice,
 } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'react-compound-timer'
@@ -23,6 +30,7 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
+import Recommender from 'Components/NewEncouragements/Recommender'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -159,6 +167,24 @@ const PracticeView = () => {
     setShowDifficulty(!showDifficulty)
   }
 
+  const getExerciseMode = () => {
+    if (history.location.pathname.includes('listening')) return 'listening'
+    if (history.location.pathname.includes('grammar')) return 'grammar'
+    if (history.location.pathname.includes('speech')) return 'speech'
+    return 'all'
+  }
+
+  const restartStory = () => {
+    dispatch(clearPractice())
+    dispatch(resetCachedSnippets())
+    dispatch(resetAnnotations())
+    const initSnippet = snippets.cachedSnippets[`${id}-0`]
+    if (initSnippet) {
+      dispatch(dropCachedSnippet(`${id}-0`))
+      dispatch(getNextSnippetFromCache(`${id}-0`, initSnippet, true))
+    } else dispatch(resetCurrentSnippet(id, controlledPractice, getExerciseMode()))
+  }
+
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
 
@@ -248,6 +274,7 @@ const PracticeView = () => {
             </div>
           )}
         </div>
+        <Recommender continueAction={restartStory} />
         <StartModal
           open={startModalOpen}
           setOpen={setStartModalOpen}

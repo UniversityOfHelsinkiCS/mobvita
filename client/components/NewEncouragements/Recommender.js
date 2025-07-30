@@ -309,19 +309,19 @@ const Recommender = ({ continueAction }) => {
             </div>
           </Draggable>
         </div>
-      ) : isInPracticeView && open ? (
+      ) */ : isInPracticeView && open ? (
         // practice view related encouragements
         // this is the exercise encouragement draggable
         // it differs with css from the basic encouragement draggable
         <div>
-          <Draggable cancel=".interactable">
+          {/*<Draggable cancel=".interactable">*/}
             <div
               className={
-                bigScreen ? 'draggable-ex-encouragement' : 'draggable-ex-encouragement-mobile'
+                bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'
               }
             >
               <div className="col-flex">
-                <div className="flex">
+                {/* <div className="flex">
                   <ExerciseEncouragementHeader />
                   <Icon
                     className="interactable"
@@ -333,9 +333,9 @@ const Recommender = ({ continueAction }) => {
                     name="close"
                     onClick={handleCloseClick}
                   />
-                </div>
-
-                <RecommendSlider slides={[
+                </div> */}
+                <PracticeCompletedEncouragement practiceType="story" continueAction={continueAction} />
+                {/* <RecommendSlider slides={[
                   leader_board_encourage,
                   num_of_rewardable_words,
                   latest_incomplete_story,
@@ -343,12 +343,12 @@ const Recommender = ({ continueAction }) => {
                   new_words_interacted_exercise_encourage,
                   <GrammarReviewExerciseEncouragement />
                 ]} />
-                <TurnOffRecommendations />
+                <TurnOffRecommendations /> */}
               </div>
             </div>
-          </Draggable>
+          {/*</Draggable>*/}
         </div>
-      ) */ : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
+      ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
         // "normal" flashcard view related encouragements
         <div>
           {/* <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}> */}
