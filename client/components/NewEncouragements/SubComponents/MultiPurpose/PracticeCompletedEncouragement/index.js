@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
-import { closeLPEncouragement } from 'Utilities/redux/encouragementsReducer'
+import { closeEncouragement, closeLPEncouragement } from 'Utilities/redux/encouragementsReducer'
 
 import './PracticeCompletedStyles.css'
 
@@ -14,32 +14,26 @@ const PracticeCompletedEncouragement = ({ continueAction, practiceType }) => {
   const dispatch = useDispatch()
 
   const handleContinueClick = () => {
+    dispatch(closeEncouragement())
     dispatch(closeLPEncouragement())
     continueAction()
   }
 
   const handleHomeClick = () => {
+    dispatch(closeEncouragement())
     dispatch(closeLPEncouragement())
     history.push('/home')
   }
 
-  const title = (
-    <FormattedMessage
-      id={practiceType === 'lesson' ? 'lesson-completed-title' : 'deck-completed-title'}
-    />
-  )
-
-  const message = (
-    <FormattedMessage
-      id={practiceType === 'lesson' ? 'lesson-completed-message' : 'deck-completed-message'}
-    />
-  )
-
   return (
     <div className="practice-completed-container">
       <img src={images.encTrophy} alt="encouraging trophy" />
-      <h2>{title}</h2>
-      <h5>{message}</h5>
+      <h2>
+        <FormattedMessage id={`${practiceType}-completed-title`} />
+      </h2>
+      <h5>
+        <FormattedMessage id={`${practiceType}-completed-message`} />
+      </h5>
       <div className="practice-completed-button-group">
         <Button variant="primary" type="button" onClick={handleContinueClick}>
           <FormattedMessage id="Continue" />
