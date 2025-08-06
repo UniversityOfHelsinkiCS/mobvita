@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
 
@@ -8,21 +7,15 @@ const FlashcardBack = ({
   glosses,
   focusedAndBigScreen,
   flipped,
-  setSwipeIndex,
   swipeIndex,
   infoMessage,
   lemma,
   handleIndexChange,
   ...props
 }) => {
-  const history = useHistory()
-  const blueCardsTest = history.location.pathname.includes('test')
   const handleEnter = useCallback(event => {
     if (event.keyCode === 13) {
-      if (blueCardsTest) {
-        handleIndexChange(swipeIndex + 1)
-      }
-      setSwipeIndex(swipeIndex + 1)
+      handleIndexChange(swipeIndex + 1)
     }
   })
 
