@@ -14,13 +14,7 @@ import {
   getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import {
-  closeFCEncouragement,
-  openFCEncouragement,
-  closeEncouragement,
-  openEncouragement,
-} from 'Utilities/redux/encouragementsReducer'
-
+import { openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -40,20 +34,14 @@ const Practice = ({ mode, open }) => {
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
   const history = useHistory()
-  const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
-  const blueCardsTest = history.location.pathname.includes('test')
   const [latestStories, setLatestStories] = useState([])
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
-  const { correctAnswers, totalAnswers, storyBlueCards, storyCardsPending } = useSelector(
-    ({ flashcards }) => flashcards
-  )
-  const inBlueCardsTest = history.location.pathname.includes('test')
-  // console.log('MODE ', mode)
+  const { totalAnswers, storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
     loading: incomplete.pending,
@@ -77,17 +65,15 @@ const Practice = ({ mode, open }) => {
     return { cards, pending, deletePending, sessionId }
   }, shallowEqual)
 
+  const inBlueCardsTest = history.location.pathname.includes('test')
   const bigScreen = useWindowDimension().width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-    if (!pending && !loading) {
-      if (enable_recmd && amountAnswered >= cards.length) {
-        dispatch(openFCEncouragement())
-        setAmountAnswered(0)
-      }
+    if (!pending && !loading && swipeIndex >= cards.length) {
+      dispatch(openFCEncouragement())
+      setAmountAnswered(0)
     }
   }, [totalAnswers, cards.length, amountAnswered])
 
@@ -159,14 +145,10 @@ const Practice = ({ mode, open }) => {
   // Limits so that you cant swipe back more than once.
   // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
   const handleIndexChange = index => {
-    if (index === 25) {
-      dispatch(openFCEncouragement())
-    }
-
     const oldIndex = swipeIndex
     setSwipeIndex(index)
 
-    if (index > blueCardsAnswered.length) {
+    if (inBlueCardsTest && index > blueCardsAnswered.length) {
       const wrongAnswerObj = {
         correct: false,
         story: cards[oldIndex].story,
@@ -189,9 +171,6 @@ const Practice = ({ mode, open }) => {
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
-    if (enable_recmd) {
-      dispatch(openFCEncouragement)
-    }
     if (!inBlueCardsTest) {
       dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
     } else {
@@ -213,7 +192,7 @@ const Practice = ({ mode, open }) => {
       lemma,
       session_id: sessionId,
     }
-    if (!blueCardsTest) {
+    if (!inBlueCardsTest) {
       dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
     } else {
       setBlueCardsAnswered(blueCardsAnswered.concat(answerDetails))
@@ -242,7 +221,7 @@ const Practice = ({ mode, open }) => {
 
   const slideRenderer = ({ key, index }) => {
     if (index >= cards.length) {
-      return (
+      return inBlueCardsTest ? (
         <FlashcardEndView
           key="end-view"
           handleNewDeck={handleNewDeck}
@@ -250,6 +229,8 @@ const Practice = ({ mode, open }) => {
           open={open}
           blueCardsAnswered={blueCardsAnswered}
         />
+      ) : (
+        <></>
       )
     }
 
