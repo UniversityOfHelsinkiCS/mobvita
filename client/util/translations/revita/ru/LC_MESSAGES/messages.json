@@ -1765,5 +1765,8 @@
     "deck-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
     "flashcard-completed-title": "Набор завершен!",
     "flashcard-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
-    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?",
+    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
+    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
+    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
 }

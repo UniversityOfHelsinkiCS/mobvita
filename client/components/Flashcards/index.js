@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import BlueCardsTestEncouragement from 'Components/NewEncouragements/SubComponents/MultiPurpose/BlueCardsTestEncouragement'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
@@ -10,6 +11,8 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 
 const Flashcards = () => {
+  const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(true)
+
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const history = useHistory()
   const { width } = useWindowDimensions()
@@ -17,6 +20,13 @@ const Flashcards = () => {
   const {num_of_rewardable_words, title} = type === 'test' && useSelector(({ flashcards }) => 
     flashcards.storyBlueCards?.find(story => story.story_id === storyId)) || useSelector(({ stories }) => 
     stories.data?.find(story => story._id === storyId)) || {}
+  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+
+  useEffect(() => {
+    if (storyBlueCards && storyBlueCards?.length > 0) {
+      setShowBlueCardsTestEncouragement(true)
+    }
+  }, [])
 
   const content = () => {
     switch (mode) {
@@ -58,6 +68,9 @@ const Flashcards = () => {
       }
       
       <div className="flex">
+        {showBlueCardsTestEncouragement && (
+          <BlueCardsTestEncouragement setShow={setShowBlueCardsTestEncouragement} />
+        )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
         {content()}
       </div>

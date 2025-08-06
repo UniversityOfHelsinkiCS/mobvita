@@ -1140,5 +1140,8 @@
     "deck-completed-message": "Do you want to continue, and practice with 25 more cards?",
     "flashcard-completed-title": "Deck completed!",
     "flashcard-completed-message": "Do you want to continue, and practice with 25 more cards?",
-    "story-completed-message": "Do you want to continue, and practice this story with new exercises?"
+    "story-completed-message": "Do you want to continue, and practice this story with new exercises?",
+    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
+    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
+    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
 }
