@@ -15,7 +15,6 @@ import {
 } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
@@ -53,6 +52,8 @@ const CurrentSnippet = ({
   groupId,
   lessonStartOver,
   currentSnippetNum,
+  setShowMessageDialog,
+  setShowPracticeCompletedEncouragement,
 }) => {
   const SNIPPET_FETCH_INTERVAL = 5000
   const [exerciseCount, setExerciseCount] = useState(0)
@@ -262,6 +263,7 @@ const CurrentSnippet = ({
 
     if (lessonId && currentSnippetNum && numSnippets && currentSnippetNum === numSnippets) {
       dispatch(setPracticeFinished(true))
+      setShowPracticeCompletedEncouragement(true)
     } else if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
       const nextSnippetKey = (!lessonId && `${storyId}-${currentSnippetId() + 1}` || 
                               cacheSize && Object.keys(cachedSnippets)[0] || 'anyKey')
@@ -269,6 +271,7 @@ const CurrentSnippet = ({
       dispatch(dropCachedSnippet(nextSnippetKey))
       dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
     } else {
+      setShowMessageDialog(true)
       dispatch(setPracticeFinished(true))
     }
   }
@@ -366,12 +369,6 @@ const CurrentSnippet = ({
       }, 50)
     }
   }, [snippets.pending, snippets.previous])
-
-  useEffect(() => {
-    if (practiceFinished && enable_recmd) {
-      dispatch(openEncouragement())
-    }
-  }, [practiceFinished])
 
   const startOver = async () => {
     dispatch(clearPractice())

@@ -34,7 +34,7 @@ import WordsSeenEncouragement from './SubComponents/MultiPurpose/WordsSeenEncour
 import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/PracticeView/StoryCompletedToBluecardsExerciseEncouragement'
 import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
 import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
-import PracticeCompletedEncouragement from './SubComponents/MultiPurpose/PracticeCompletedEncouragement'
+import PracticeCompletedEncouragement from '../Encouragements/PracticeCompletedEncouragement'
 import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
 import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
 import FlashcardsProgress from './SubComponents/FlashcardView/FlashcardsProgress'

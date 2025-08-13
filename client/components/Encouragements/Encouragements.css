@@ -1,0 +1,39 @@
+.encouragement-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 350px;
+  margin: 26.25px;
+}
+
+.encouragement-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+}
+
+.encouragement-container h5 {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  color: grey;
+}
+
+.encouragement-container img {
+  max-width: 30%;
+  max-height: 30%;
+  margin-bottom: 30px;
+}
+
+.encouragement-button-group {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  height: 10%;
+}
+
+.encouragement-button-group button {
+  width: 150px;
+}

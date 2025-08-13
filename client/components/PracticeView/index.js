@@ -10,6 +10,7 @@ import {
   dropCachedSnippet,
   getNextSnippetFromCache,
   resetCurrentSnippet,
+  resetSnippets,
 } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
@@ -21,16 +22,23 @@ import {
   clearPractice,
 } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
+import {
+  getTextStyle,
+  learningLanguageSelector,
+  getMode,
+  hiddenFeatures,
+  dictionaryLanguageSelector,
+} from 'Utilities/common'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
 import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
-import Recommender from 'Components/NewEncouragements/Recommender'
+import MessageDialog from 'Components/MessageDialog/MessageDialog'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from './VirtualKeyboard'
 import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
@@ -44,6 +52,7 @@ const PracticeView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { id } = useParams()
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
@@ -53,6 +62,7 @@ const PracticeView = () => {
   )
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
+  const [showMessageDialog, setShowMessageDialog] = useState(false)
   const intl = useIntl()
   const smallScreen = width < 700
   const mode = getMode()
@@ -105,6 +115,11 @@ const PracticeView = () => {
     if (!story) {
       dispatch(getStoryAction(id, mode))
     }
+
+    return () => {
+      dispatch(resetSnippets())
+      dispatch(resetCachedSnippets())
+    }
   }, [])
 
   useEffect(() => {
@@ -126,6 +141,12 @@ const PracticeView = () => {
   useEffect(() => {
     if (!startModalOpen) timer.start()
   }, [startModalOpen])
+
+  useEffect(() => {
+    if (!isLesson) {
+      dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    }
+  }, [])
 
   if (!story) return null
 
@@ -246,6 +267,7 @@ const PracticeView = () => {
               timer={timer}
               numSnippets={story?.paragraph?.length}
               isLesson={isLesson}
+              setShowMessageDialog={setShowMessageDialog}
             />
             <ScrollArrow />
 
@@ -274,7 +296,9 @@ const PracticeView = () => {
             </div>
           )}
         </div>
-        <Recommender continueAction={restartStory} />
+        {showMessageDialog && (
+          <MessageDialog continueAction={restartStory} setShow={setShowMessageDialog} />
+        )}
         <StartModal
           open={startModalOpen}
           setOpen={setStartModalOpen}
