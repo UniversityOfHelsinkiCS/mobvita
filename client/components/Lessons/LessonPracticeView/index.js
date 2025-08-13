@@ -3,8 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useHistory } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
-import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
-import { clearFocusedSnippet, resetSnippets } from 'Utilities/redux/snippetsReducer'
+import {
+  clearFocusedSnippet,
+  resetSnippets,
+  resetCachedSnippets,
+} from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import { Spinner } from 'react-bootstrap'
 
@@ -21,7 +24,6 @@ import {
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
-import { openLPEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
@@ -39,7 +41,7 @@ import ProgressBar from 'Components/PracticeView/CurrentSnippet/ProgressBar'
 import PracticeTimer from 'Components/PracticeView/PracticeTimer'
 import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
-import Recommender from 'Components/NewEncouragements/Recommender'
+import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
 
 const LessonPracticeView = () => {
@@ -61,6 +63,8 @@ const LessonPracticeView = () => {
   )
   
   const [startModalOpen, setStartModalOpen] = useState(false)
+  const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
+    useState(false)
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
@@ -82,7 +86,6 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     setCurrentSnippetNum(0)
-    // dispatch(clearExerciseState())
     if (isGroupLesson) {
       dispatch(getLessonInstance(groupId))
     }
@@ -93,6 +96,7 @@ const LessonPracticeView = () => {
     return () => {
       dispatch(clearLessonInstanceState())
       dispatch(resetSnippets())
+      dispatch(resetCachedSnippets())
     }
   }, [])
 
@@ -109,12 +113,8 @@ const LessonPracticeView = () => {
   }, [])
 
   useEffect(() => {
-    if (currentSnippetNum === 10) {
-      dispatch(openLPEncouragement())
-      return
-    }
     setCurrentSnippetNum(snippets.previous.length + 1)
-    setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10)
+    // setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10)
   }, [snippets.focused])
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const LessonPracticeView = () => {
 
   const startOvertLessonSnippets = () => {
     setCurrentSnippetNum(0)
-    setSnippetsTotalNum(10)
+    // setSnippetsTotalNum(10)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     if (isGroupLesson) {
@@ -202,7 +202,6 @@ const LessonPracticeView = () => {
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
       <div>
-        <Recommender continueAction={startOvertLessonSnippets} />
         <div className="cont-tall pt-sm flex-col space-between">
           <div className="justify-center">
             <div className="cont">
@@ -250,11 +249,12 @@ const LessonPracticeView = () => {
                   handleInputChange={handleAnswerChange}
                   timer={timer}
                   // numSnippets={story?.paragraph?.length}
-                  numSnippets={10}
+                  numSnippets={snippetsTotalNum}
                   lessonId={lesson_instance?.lesson_id}
                   groupId={groupId}
                   lessonStartOver={startOvertLessonSnippets}
                   currentSnippetNum={currentSnippetNum}
+                  setShowPracticeCompletedEncouragement={setShowPracticeCompletedEncouragement}
                 />
                 <ScrollArrow />
 
@@ -289,6 +289,21 @@ const LessonPracticeView = () => {
               activity="control-story"
               onBackClick={() => history.push('/library')}
             />
+            {showPracticeCompletedEncouragement && (
+              <div
+                className={
+                  width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'
+                }
+              >
+                <div className="col-flex">
+                  <PracticeCompletedEncouragement
+                    practiceType="lesson"
+                    setShow={setShowPracticeCompletedEncouragement}
+                    continueAction={startOvertLessonSnippets}
+                  />
+                </div>
+              </div>
+            )}
             <div className="dictionary-and-annotations-cont">
               <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               <DictionaryHelp />

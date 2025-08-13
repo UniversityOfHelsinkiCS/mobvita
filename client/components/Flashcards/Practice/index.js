@@ -14,12 +14,11 @@ import {
   getStoriesBlueFlashcards,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { openFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
-import useWindowDimension from 'Utilities/windowDimensions'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import Recommender from 'Components/NewEncouragements/Recommender'
+import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
 
@@ -29,17 +28,19 @@ import Quick from './Quick'
 
 const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableViews)
 
-const Practice = ({ mode, open }) => {
+const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
+  const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
+    useState(false)
   const history = useHistory()
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
   const [latestStories, setLatestStories] = useState([])
-  const [prevBlueCards, setPrevBlueCards] = useState(null)
+  // const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const { totalAnswers, storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -66,13 +67,14 @@ const Practice = ({ mode, open }) => {
   }, shallowEqual)
 
   const inBlueCardsTest = history.location.pathname.includes('test')
-  const bigScreen = useWindowDimension().width >= 415
+  const { width } = useWindowDimensions()
+  const bigScreen = width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!pending && !loading && swipeIndex >= cards.length) {
-      dispatch(openFCEncouragement())
+    if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
+      setShowPracticeCompletedEncouragement(true)
       setAmountAnswered(0)
     }
   }, [totalAnswers, cards.length, amountAnswered])
@@ -87,10 +89,13 @@ const Practice = ({ mode, open }) => {
         sort_by: 'access',
       })
     )
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+
+    if (!inBlueCardsTest) {
+      dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+    }
   }, [])
 
-  useEffect(() => {
+  /* useEffect(() => {
     const filteredBlueCards = storyBlueCards?.find(
       story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
     )
@@ -98,7 +103,7 @@ const Practice = ({ mode, open }) => {
     if (filteredBlueCards) {
       setPrevBlueCards(filteredBlueCards)
     }
-  }, [storyBlueCards])
+  }, [storyBlueCards]) */
 
   useEffect(() => {
     if (incomplete.length > 0) {
@@ -125,6 +130,7 @@ const Practice = ({ mode, open }) => {
       }
       setBlueCardsAnswered([])
       dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
+      setHasAnsweredBlueCards(true)
     }
   }, [blueCardsAnswered])
 
@@ -273,7 +279,17 @@ const Practice = ({ mode, open }) => {
   }
   return (
     <div className="cont grow flex space-evenly">
-      <Recommender continueAction={handleNewDeck} />
+      {showPracticeCompletedEncouragement && (
+        <div className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
+          <div className="col-flex">
+            <PracticeCompletedEncouragement
+              practiceType="flashcard"
+              setShow={setShowPracticeCompletedEncouragement}
+              continueAction={handleNewDeck}
+            />
+          </div>
+        </div>
+      )}
       <VirtualizeSwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
