@@ -1179,7 +1179,7 @@
     "previous": "Предыдущая",
     "competition-mode": "Соревнование",
     "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас дойдет до конца истории — победит тот, у кого больше <b>правильных</b> ответов!",
-    "story-not-yet-processed": "Текст можно использовать, но он еще обрабатывается...",
+    "story-not-yet-processed": "С текстом можно работать, хотя он еще обрабатывается...",
     "groups-for-only-registered-users": "Пожалуйста, войди в систему с зарегистрированным аккаунтом, чтобы создать группу или вступить в группу.",
     "show-exercise-preview": "Показать темы",
     "warning-for-anonymous-users": "Пожалуйста, войди в систему с зарегистрированным аккаунтом, чтобы сохранить историю на будущее.",
@@ -1765,7 +1765,7 @@
     "deck-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
     "flashcard-completed-title": "Набор завершен!",
     "flashcard-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
-    "story-completed-message": "Do you want to continue, and practice this story with new exercises?",
+    "story-completed-message": "Do you want to restart, and practice this story with new exercises?",
     "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
     "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
     "blue-cards-test-encouragement-dismiss-button": "Dismiss"
