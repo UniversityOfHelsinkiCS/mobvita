@@ -21,7 +21,7 @@ const ReadingTestView = () => {
   const learningLanguage = useLearningLanguage()
   // const bigScreen = useWindowDimension().width >= 650
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
-  const [showCyclePopup, setShowCyclePopup] = useState(true)
+  const [showCyclePopup, setShowCyclePopup] = useState(false)
   const [cycle, setCycle] = useState('1')
 
   const {
