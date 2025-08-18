@@ -35,7 +35,7 @@ import {
 
 import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 
-const ReadingTest = () => {
+const ReadingTest = ({ cycle }) => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
 
@@ -98,6 +98,7 @@ const ReadingTest = () => {
   // }
 
   const submitSelfReflectionResponse = (response_json) => {
+    response_json.cycle = cycle
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
     if (response_json.is_end_set_questionair == true) {
       if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
