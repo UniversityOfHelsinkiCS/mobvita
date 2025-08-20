@@ -38,11 +38,15 @@ const clearLocalStorage = () => {
   window.localStorage.removeItem('testLanguage')
 }
 
-export const getReadingTestQuestions = (language, is_continue = true) => {
+export const getReadingTestQuestions = (language, is_continue = true, cycle = null) => {
   const route = `/test/${language}/reading`
   const prefix = 'GET_READING_TEST_QUESTIONS'
   const query = {
     'is_continue': is_continue
+  }
+
+  if (cycle) {
+    query.cycle = cycle
   }
 
   console.log("check the query", query)
@@ -223,7 +227,7 @@ export default (state = initialState, action) => {
         language: action.language,
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS':
-      const { question_list, session_id, question_set_dict } = response;
+      const { question_list, session_id, question_set_dict, all_cycles: allCycles, current_cycle: currentCycle } = response;
 
       // Split questions by set
       const questionsBySet = question_list.reduce((acc, question) => {
@@ -292,6 +296,8 @@ export default (state = initialState, action) => {
         pending: false,
         resumedTest: Object.values(questionsBySet).some(x => x.seen.length > 0),
         testDone: tempreadingTestQuestions.filter(question => !question.seen).length === 0,
+        allCycles,
+        currentCycle,
       };
 
 

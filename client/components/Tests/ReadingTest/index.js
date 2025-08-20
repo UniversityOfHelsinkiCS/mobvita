@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { Modal, Select } from 'semantic-ui-react'
+import { Select, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  getReadingTestQuestions,
-} from 'Utilities/redux/testReducer'
+import { getReadingTestQuestions, resetTests } from 'Utilities/redux/testReducer'
 
 import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -22,25 +20,11 @@ const ReadingTestView = () => {
   // const bigScreen = useWindowDimension().width >= 650
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
   const [showCyclePopup, setShowCyclePopup] = useState(false)
-  const [cycle, setCycle] = useState('1')
+  const [cycle, setCycle] = useState(null)
 
-  const {
-    readingTestSessionId,
-    pending,
-    testDone,
-    readingTestQuestions,
-    currentReadingTestQuestion,
-    currentReadingQuestionIndex,
-  } = useSelector(({ tests }) => tests)
-
-  useEffect(() => {
-    if (
-      !currentReadingQuestionIndex &&
-      !currentReadingTestQuestion?.choices.some(choice => choice.isSelected)
-    ) {
-      setShowCyclePopup(true)
-    }
-  }, [currentReadingQuestionIndex])
+  const { readingTestSessionId, pending, testDone, readingTestQuestions, allCycles } = useSelector(
+    ({ tests }) => tests
+  )
 
   useEffect(() => {
     const hasUnseenQuestions = readingTestQuestions?.some((element) => element.seen === false);
@@ -57,6 +41,8 @@ const ReadingTestView = () => {
   }, [dispatch, learningLanguage, testDone]);
 
   const handleCycleSubmit = () => {
+    dispatch(resetTests())
+    dispatch(getReadingTestQuestions(learningLanguage, false, Number(cycle)))
     setShowCyclePopup(false)
   }
 
@@ -69,29 +55,37 @@ const ReadingTestView = () => {
       {showDDLangIntroductory && (
         <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory} />
       )}
-      <Modal open={showCyclePopup} size="tiny" dimmer="inverted">
-        <div className="cycle-modal-content">
-          <h2>
-            <FormattedMessage id="reading-test-cycle-popup-title" />
-          </h2>
-          <Select
-            options={[...new Set(readingTestQuestions.map(item => item.cycle))]
-              .sort((a, b) => a - b)
-              .map(cycle => ({
-                key: cycle,
-                value: cycle,
-                text: cycle,
-              }))}
-            value={cycle}
-            onChange={(e, data) => setCycle(data.value)}
-          />
-          <Button onClick={handleCycleSubmit}>
-            <FormattedMessage id="Submit" />
-          </Button>
-        </div>
-      </Modal>
       <div className="grow ps-nm flex-col gap-row-sm">
-        {readingTestSessionId && <ReadingTest cycle={cycle} />}
+        {readingTestSessionId && !showCyclePopup && (
+          <ReadingTest setCycle={setCycle} setShowCyclePopup={setShowCyclePopup} />
+        )}
+        {showCyclePopup && (
+          <div className="cont mt-nm">
+            <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
+              <div className="align-center justify-center">
+                <div className="test-container" style={{ width: '90%' }}>
+                  <div className="cycle-modal-content">
+                    <h2>
+                      <FormattedMessage id="reading-test-cycle-popup-title" />
+                    </h2>
+                    <Select
+                      options={allCycles?.map(cycle => ({
+                        key: cycle,
+                        value: cycle,
+                        text: cycle,
+                      }))}
+                      value={cycle}
+                      onChange={(e, data) => setCycle(data.value)}
+                    />
+                    <Button onClick={handleCycleSubmit}>
+                      <FormattedMessage id="Submit" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Segment>
+          </div>
+        )}
         <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
           <Button
             className="show-ddlang-introductory-button btn-secondary"

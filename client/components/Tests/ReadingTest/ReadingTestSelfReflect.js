@@ -147,9 +147,9 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
         setOpenEndedQuestions(open_ended_questions);
         setOpenEndedQuestionAnswers(open_ended_questions.map(() => null));
     }, [
-        currentReadingSet, currentQuestionIdxinSet, 
+        currentReadingSet, currentQuestionIdxinSet,
         in_control_grp, in_experimental_grp, 
-        receieved_feedback, showSelfReflect, submitSelfReflection
+        receieved_feedback, showSelfReflect, // submitSelfReflection
     ]);
 
     const handleAnswerChange = (index, newValue) => {

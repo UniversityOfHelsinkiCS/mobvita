@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Segment } from 'semantic-ui-react'
 import { Spinner, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import {
-  resetTests,
   sendReadingTestAnswer,
   getReadingHistory,
   updateTestFeedbacks,
@@ -29,13 +28,9 @@ import ReadingTestElicationDialog from '././ReadingTestElicitationDialog'
 import ReadingTestNextSetDialog from '././ReadingTestNextSetDialog'
 import ReadingTestStats from '././ReadingTestStats'
 
-import {
-  getReadingTestQuestions,
-} from 'Utilities/redux/testReducer'
-
 import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 
-const ReadingTest = ({ cycle }) => {
+const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
 
@@ -63,6 +58,30 @@ const ReadingTest = ({ cycle }) => {
   const [in_experimental_grp, setInExperimentalGrp] = useState(false);
   const [in_control_grp, setInControlGrp] = useState(false);
 
+  const [timerRunning, setTimerRunning] = useState(false)
+  const [elapsedSeconds, setElapsedSeconds] = useState(0)
+  const startRef = useRef(null)
+  const intervalRef = React.useRef(null)
+
+  const startTimer = () => {
+    console.log('starting timer')
+    startRef.current = Date.now()
+    setTimerRunning(true)
+    setElapsedSeconds(0)
+    intervalRef.current = setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - startRef.current) / 1000))
+    }, 1000)
+  }
+
+  const stopTimer = () => {
+    if (!timerRunning) return
+    console.log('stopping timer')
+    clearInterval(intervalRef.current)
+    const finalSecs = Math.round((Date.now() - startRef.current) / 1000)
+    setTimerRunning(false)
+    setElapsedSeconds(finalSecs)
+  }
+
   const {
     pending,
     feedbacks,
@@ -80,6 +99,8 @@ const ReadingTest = ({ cycle }) => {
     readingTestSetDict,
     readingHistory,
     testDone,
+    allCycles,
+    currentCycle,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
@@ -89,8 +110,13 @@ const ReadingTest = ({ cycle }) => {
   const dispatch = useDispatch()
 
   const restartTest = () => {
-    dispatch(resetTests())
-    dispatch(getReadingTestQuestions(learningLanguage, false));
+    setShowStats(false)
+    if (currentCycle === allCycles[allCycles.length - 1]) {
+      setCycle(null)
+    } else {
+      setCycle(String(Number(currentCycle) + 1))
+    }
+    setShowCyclePopup(true)
   };
 
   // const goToHomePage = () => {
@@ -98,7 +124,7 @@ const ReadingTest = ({ cycle }) => {
   // }
 
   const submitSelfReflectionResponse = (response_json) => {
-    response_json.cycle = cycle
+    response_json.cycle = currentCycle
     dispatch(sendReadingTestQuestionnaireResponses(response_json, learningLanguage))
     if (response_json.is_end_set_questionair == true) {
       if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
@@ -158,6 +184,7 @@ const ReadingTest = ({ cycle }) => {
       setShowCorrect(true)
       setQuestionDone(true)
       setCurrentAnswer(null)
+      stopTimer()
     } else {
       if (in_experimental_grp) {
         setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
@@ -231,7 +258,8 @@ const ReadingTest = ({ cycle }) => {
             question_id: currentReadingTestQuestion.question_id,
             answer: choice.option,
             seenFeedbacks: feedbacks,
-            questionDone: choice.is_correct ? true : markQuestionDone
+            questionDone: choice.is_correct ? true : markQuestionDone,
+            duration: elapsedSeconds,
           }
         )
       )
@@ -266,6 +294,7 @@ const ReadingTest = ({ cycle }) => {
       console.log("next")
       dispatch(nextReadingTestQuestion())
       setHintsUsedThisQuestion(0) // Reset hints count for the next question
+      startTimer()
     }
   }
 
@@ -357,6 +386,10 @@ const ReadingTest = ({ cycle }) => {
     }
     setCurrentElicatedConstruct(currentReadingTestQuestion ? currentReadingTestQuestion.eliciated_construct : null)
   }, [currentReadingTestQuestion])
+
+  useEffect(() => {
+    startTimer()
+  }, [])
 
   if (!currentReadingTestQuestion) {
     return null
