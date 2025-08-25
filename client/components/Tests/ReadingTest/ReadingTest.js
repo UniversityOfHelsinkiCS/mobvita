@@ -59,30 +59,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const [in_experimental_grp, setInExperimentalGrp] = useState(false);
   const [in_control_grp, setInControlGrp] = useState(false);
 
-  /* const [timerRunning, setTimerRunning] = useState(false)
-  const [elapsedSeconds, setElapsedSeconds] = useState(0)
-  const startRef = useRef(null)
-  const intervalRef = React.useRef(null)
-
-  const startTimer = () => {
-    console.log('starting timer')
-    startRef.current = Date.now()
-    setTimerRunning(true)
-    setElapsedSeconds(0)
-    intervalRef.current = setInterval(() => {
-      setElapsedSeconds(Math.floor((Date.now() - startRef.current) / 1000))
-    }, 1000)
-  }
-
-  const stopTimer = () => {
-    if (!timerRunning) return
-    console.log('stopping timer')
-    clearInterval(intervalRef.current)
-    const finalSecs = Math.round((Date.now() - startRef.current) / 1000)
-    setTimerRunning(false)
-    setElapsedSeconds(finalSecs)
-  } */
-
   const { controls: timer } = useTimer({
     initialTime: 0,
     direction: 'forward',
