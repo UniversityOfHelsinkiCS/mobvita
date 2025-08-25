@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTimer } from 'react-compound-timer'
 import { Segment } from 'semantic-ui-react'
 import { Spinner, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
@@ -58,7 +59,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const [in_experimental_grp, setInExperimentalGrp] = useState(false);
   const [in_control_grp, setInControlGrp] = useState(false);
 
-  const [timerRunning, setTimerRunning] = useState(false)
+  /* const [timerRunning, setTimerRunning] = useState(false)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const startRef = useRef(null)
   const intervalRef = React.useRef(null)
@@ -80,7 +81,14 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     const finalSecs = Math.round((Date.now() - startRef.current) / 1000)
     setTimerRunning(false)
     setElapsedSeconds(finalSecs)
-  }
+  } */
+
+  const { controls: timer } = useTimer({
+    initialTime: 0,
+    direction: 'forward',
+    startImmediately: false,
+    timeToUpdate: 100,
+  })
 
   const {
     pending,
@@ -184,7 +192,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       setShowCorrect(true)
       setQuestionDone(true)
       setCurrentAnswer(null)
-      stopTimer()
+      timer.stop()
     } else {
       if (in_experimental_grp) {
         setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
@@ -234,6 +242,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                 dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
                 setShowCorrect(true)
                 setQuestionDone(true)
+                timer.stop()
                 markQuestionDone = true
               }
             }
@@ -242,6 +251,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             setShowCorrect(true)
             setQuestionDone(true)
             setCurrentAnswer(null)
+            timer.stop()
             markQuestionDone = true
           }
         }
@@ -259,7 +269,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             answer: choice.option,
             seenFeedbacks: feedbacks,
             questionDone: choice.is_correct ? true : markQuestionDone,
-            duration: elapsedSeconds,
+            duration: timer.getTime() / 1000,
           }
         )
       )
@@ -270,6 +280,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       if (attempts >= 1) {
         setQuestionDone(true)
         setShowCorrect(true)
+        timer.stop()
         return
       }
     }
@@ -294,7 +305,8 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       console.log("next")
       dispatch(nextReadingTestQuestion())
       setHintsUsedThisQuestion(0) // Reset hints count for the next question
-      startTimer()
+      timer.reset()
+      timer.start()
     }
   }
 
@@ -388,7 +400,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }, [currentReadingTestQuestion])
 
   useEffect(() => {
-    startTimer()
+    timer.start()
   }, [])
 
   if (!currentReadingTestQuestion) {
