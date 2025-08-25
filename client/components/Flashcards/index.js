@@ -31,7 +31,12 @@ const Flashcards = () => {
   const inBlueCardsTest = history.location.pathname.includes('test')
 
   useEffect(() => {
-    if (!hasAnsweredBlueCards && !inBlueCardsTest && type !== 'test' && storyBlueCards) {
+    if (
+      !hasAnsweredBlueCards &&
+      !inBlueCardsTest &&
+      type !== 'test' &&
+      storyBlueCards?.length > 0
+    ) {
       setTimeout(() => {
         setShowBlueCardsTestEncouragement(true)
       }, 2000)
