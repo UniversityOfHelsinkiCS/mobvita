@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
@@ -19,11 +19,20 @@ const GeneralReadingChatBot = () => {
     const [currentMessage, setCurrentMessage] = useState("");
 
     const { messages, isWaitingForResponse, isLoadingHistory, isOpen } = useSelector(({ chatbot }) => chatbot);
+    const messagesEndRef = useRef(null)
 
     // Fetch conversation history when chatbot starts
     useEffect(() => {
         dispatch(getGeneralAgentConversationHistory());
     }, []);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages])
 
     // Add a static "init" message from the bot if there are no messages yet
     const initialMessage = {
@@ -80,6 +89,12 @@ const GeneralReadingChatBot = () => {
                                         {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
                                     </div>
                                 ))}
+                                {isWaitingForResponse && (
+                                    <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
+                                        <Spinner animation="border" variant="info" />
+                                    </div>
+                                )}
+                                <div ref={messagesEndRef} />
                             </>
                         )}
                     </div>
@@ -93,14 +108,15 @@ const GeneralReadingChatBot = () => {
                             onChange={(e) => setCurrentMessage(e.target.value)}
                         />
                         <Button type="submit" primary disabled={isWaitingForResponse}>
-                            {isWaitingForResponse ? (
+                            {/* isWaitingForResponse ? (
                                 <Spinner animation="border" variant="warning" />
                             ) : (
                                 <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                            )}
+                            )*/}
+                            <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
-                        <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
-                    </form>
+            <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
+          </form>
         </>
       )}
         </div>
