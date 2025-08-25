@@ -18,12 +18,13 @@ describe("dictionary", function () {
   })
 
   it("dictionary opens", function () {
-    cy.get("[data-cy=dictionary-info]")
+    cy.get("[data-cy=dictionary-info]").click()
+    cy.contains("Klikkaa niitä tarinan sanoja, joita et tunne")
   })
 
   it("translate-to language can be changed", function () {
+    cy.contains("lentokoneita").click()
     cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
-
   })
 
   it("word translates correctly", function () {

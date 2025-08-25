@@ -324,6 +324,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                       name="info circle"
                       size="small"
                       color="grey"
+                      data-cy="dictionary-info"
                     />
                   }
                   on="click"
