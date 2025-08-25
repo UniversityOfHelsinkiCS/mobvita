@@ -17,7 +17,7 @@ describe("dictionary", function () {
     cy.cleanUsers()
   })
 
-  it("dictionary opens", function () {
+  it("dictionary info opens", function () {
     cy.get("[data-cy=dictionary-info]").click()
     cy.contains("Klikkaa niitä tarinan sanoja, joita et tunne")
   })
