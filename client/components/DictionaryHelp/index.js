@@ -300,11 +300,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         </List.Item>
       )
     }
-    return (
-      <div data-cy="dictionary-info" className="notes-info-text" style={{ marginBottom: '1em',  }}>
-        <FormattedHTMLMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
-      </div>
-    )
+    return null
   }
 
   return (
@@ -318,18 +314,24 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
               <div className="header-3" style={{ fontWeight: '500' }}>
-                  <Popup
-                      content={<FormattedHTMLMessage id={'click-on-words-near-the-exercises-to-explore-their-meaning'} />}
-                      trigger={<Icon style={{ paddingRight: '0.5em' }}
-                                     name="info circle"
-                                     size="small"
-                                     color="grey"
-                               />}
-                  />{' '}
-                  <FormattedMessage id="dictionary-header" />
+                <Popup
+                  content={
+                    <FormattedHTMLMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
+                  }
+                  trigger={
+                    <Icon
+                      style={{ paddingRight: '0.5em', cursor: 'pointer' }}
+                      name="info circle"
+                      size="small"
+                      color="grey"
+                    />
+                  }
+                  on="click"
+                />{' '}
+                <FormattedMessage id="dictionary-header" />
               </div>
             </div>
-            {!inWordNestModal && (
+            {!inWordNestModal && translationResults() && (
               <div
                 onClick={() => {
                   handleDictionaryBoxClick()
@@ -347,7 +349,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         )}
 
 
-        {!mobileDisplayAnnotations && showDictionaryBox && (
+        {!mobileDisplayAnnotations && showDictionaryBox && translationResults() && (
           <div className="align-right" style={{ color: 'slateGrey' }}>
             <FormattedMessage id="translation-target-language" />
             <select
