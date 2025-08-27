@@ -2991,6 +2991,11 @@ label.file-upload-btn {
     border: none;
     text-transform: uppercase;
   }
+
+  &-button:disabled {
+    background-color: #a9cbe6;
+    opacity: 0.6;
+  }
 }
 
 .login-form {

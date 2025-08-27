@@ -181,7 +181,11 @@ const Register = () => {
           />
         </div> */}
         <div>
-          <button type="submit" className="landing-page-button" disabled={registerPending}>
+          <button
+            type="submit"
+            className="landing-page-button"
+            disabled={registerPending || !accepted}
+          >
             {registerPending ? (
               <Spinner animation="border" variant="info" size="sm" />
             ) : (
