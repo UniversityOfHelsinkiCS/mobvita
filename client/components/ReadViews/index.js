@@ -314,7 +314,7 @@ const ReadViews = ({ match }) => {
             <div style={{ marginBottom: '30px' }}>
               <Header className="space-between"
                       style={getTextStyle(learningLanguage, 'title')}>
-                <div>
+                <div className="story-title">
                   <span className="pr-sm practice-tour-start">{story.title}</span>
                 </div>
               </Header>
