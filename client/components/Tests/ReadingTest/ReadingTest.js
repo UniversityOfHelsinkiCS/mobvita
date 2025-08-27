@@ -14,6 +14,7 @@ import {
   finishLastReadingTestQuestion,
   markAnsweredChoice,
   sendReadingTestQuestionnaireResponses,
+  markQuestionAsSeen,
 } from 'Utilities/redux/testReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
@@ -273,6 +274,15 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     setCurrentElicatedConstruct(null)
     setAttempts(0)
 
+    if (!currentReadingTestQuestion.seen) {
+      dispatch(
+        markQuestionAsSeen(
+          learningLanguage,
+          currentReadingTestQuestion.question_id,
+          readingTestSessionId
+        )
+      )
+    }
 
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
       console.log("finish")

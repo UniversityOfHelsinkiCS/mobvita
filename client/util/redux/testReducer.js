@@ -202,6 +202,12 @@ export const finishReadingTest = () => ({ type: 'FINISH_READING_TEST' })
 
 export const markAnsweredChoice = (answer) => ({ type: 'MARK_ANSWERED_CHOICE', answer })
 
+export const markQuestionAsSeen = (learningLanguage, questionId, sessionId) => {
+  const route = `/test/${learningLanguage}/reading/seen?question_id=${questionId}&session_id=${sessionId}`
+  const prefix = 'MARK_QUESTION_AS_SEEN'
+  return callBuilder(route, prefix)
+}
+
 export default (state = initialState, action) => {
   const {
     currentAdaptiveQuestionIndex,
@@ -571,7 +577,7 @@ export default (state = initialState, action) => {
           }
         }
       }
-
+      break
     case 'MARK_ANSWERED_CHOICE':
       if (state.currentReadingTestQuestion) {
         const updatedChoices = state.currentReadingTestQuestion.choices.map(choice => {
@@ -592,7 +598,14 @@ export default (state = initialState, action) => {
           currentReadingTestQuestion: updatedCurrentReadingTestQuestion,
         };
       }
-
+      break
+    case 'MARK_QUESTION_AS_SEEN_SUCCESS':
+      return {
+        ...state,
+        readingTestQuestions: state.readingTestQuestions.map(question =>
+          question.question_id === response.question_id ? { ...question, seen: true } : question
+        ),
+      }
     default:
       return state
   }
