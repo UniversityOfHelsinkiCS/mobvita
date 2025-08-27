@@ -364,7 +364,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         }
       }
     }
-    if (prevReadingSet !== null) {
+    if (prevReadingSet !== null && currentReadingQuestionIndex % 5 === 0) {
       setShowNextSetDialog(true)
     }
   }, [currentReadingSet])
