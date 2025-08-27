@@ -251,7 +251,7 @@ $value in $spacing {
 }
 
 .header-2 {
-  font-size: 26px;
+  font-size: 22px;
   font-family: $default-font;
 }
 
@@ -269,6 +269,10 @@ $value in $spacing {
   font-size: 14px;
   font-weight: 550;
   font-style: italic;
+}
+
+.practice-text {
+  font-size: 1.3rem;
 }
 
 .clickable {

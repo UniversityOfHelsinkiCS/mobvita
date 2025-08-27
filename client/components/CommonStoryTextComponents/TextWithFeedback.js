@@ -319,7 +319,10 @@ const TextWithFeedback = ({
       })
 
   return (
-    <span style={inControlStoryEditor ? { lineHeight: '2' } : { lineHeight: '1.75' }}>
+    <span
+      style={inControlStoryEditor ? { lineHeight: '2' } : { lineHeight: '1.75' }}
+      className="practice-text"
+    >
       {createdText}
     </span>
   )
