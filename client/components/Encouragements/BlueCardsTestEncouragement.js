@@ -24,11 +24,12 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
   useEffect(() => {
     if (!storyBlueCards) {
       dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
+      return
     }
-    if (storyBlueCards?.length > 0) {
+    if (storyBlueCards.length > 0) {
       setPrevBlueCards(storyBlueCards[0])
     } else {
-      setPrevBlueCards(null)
+      history.push('/home')
     }
   }, [storyBlueCards])
 
