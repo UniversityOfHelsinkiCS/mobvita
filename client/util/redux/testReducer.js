@@ -232,7 +232,7 @@ export default (state = initialState, action) => {
         pending: true,
         language: action.language,
       }
-    case 'GET_READING_TEST_QUESTIONS_SUCCESS':
+    case 'GET_READING_TEST_QUESTIONS_SUCCESS': {
       const { question_list, session_id, question_set_dict, all_cycles: allCycles, current_cycle: currentCycle } = response;
 
       // Split questions by set
@@ -305,8 +305,7 @@ export default (state = initialState, action) => {
         allCycles,
         currentCycle,
       };
-
-
+    }
     case 'GET_READING_TEST_QUESTIONS_FAILURE':
       return {
         ...state,

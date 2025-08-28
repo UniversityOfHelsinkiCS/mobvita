@@ -297,7 +297,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }
 
   useEffect(() => {
-    if (readingHistory != undefined & testDone) {
+    if (readingHistory !== undefined && testDone) {
       setShowStats(true);
     }
   }, [readingHistory]);
