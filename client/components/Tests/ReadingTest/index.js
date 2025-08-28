@@ -27,16 +27,8 @@ const ReadingTestView = () => {
   )
 
   useEffect(() => {
-    const hasUnseenQuestions = readingTestQuestions?.some((element) => element.seen === false);
-  
     if (testDone === undefined && readingTestQuestions.length === 0) {
       dispatch(getReadingTestQuestions(learningLanguage, true));
-    } else if (
-      testDone === true &&
-      hasUnseenQuestions === false &&
-      readingTestQuestions.length > 0
-    ) {
-      dispatch(getReadingTestQuestions(learningLanguage, false));
     }
   }, [dispatch, learningLanguage, testDone]);
 
