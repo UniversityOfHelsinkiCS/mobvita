@@ -131,6 +131,13 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     }
   }
 
+  const handleNoFeedbackReceived = () => {
+    if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
+      dispatch(finishReadingTest())
+      dispatch(getReadingHistory(learningLanguage, readingTestSessionId))
+    }
+  }
+
   const submitElication = (eliciated_construct) => {
     dispatch(updateReadingTestElicitation(eliciated_construct))
     setCurrentElicatedConstruct(eliciated_construct)
@@ -358,6 +365,8 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       if (prevSet && prevSet.collect_final_reflection) {
         if (in_experimental_grp && receivedFeedback > 0) {
           setShowSelfReflect(true)
+        } else if (in_experimental_grp && receivedFeedback === 0) {
+          handleNoFeedbackReceived()
         }
         if (in_control_grp && receivedFeedback == 0) {
           setShowSelfReflect(true)
