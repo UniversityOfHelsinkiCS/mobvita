@@ -405,7 +405,13 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
         />
       </Card.Content>
       <Card.Content extra>
-        <div className="story-description">{story.description}</div>
+        <div className="story-description">
+          {story.description === 'Under processing' ? (
+            <FormattedMessage id="processing-story" />
+          ) : (
+            story.description
+          )}
+        </div>
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
         {/* <StoryActions
