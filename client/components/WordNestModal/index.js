@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Popup, Icon, Divider } from 'semantic-ui-react'
+import { Modal, Popup, Icon, Divider, Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -7,7 +7,7 @@ import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
 import { learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 
@@ -151,7 +151,7 @@ const NestBranch = ({
   )
 }
 
-const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo }) => {
+const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, showCompounds }) => {
   return (
     <NestBranch
       wordToCheck={wordToCheck}
@@ -161,15 +161,19 @@ const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo }) => {
       showMoreInfo={showMoreInfo}
     >
       {wordNest.children &&
-        wordNest.children?.map((n, index) => (
-          <WordNest
-            key={`${wordNest.word}-${index}`}
-            wordNest={n}
-            hasSeveralRoots={hasSeveralRoots}
-            wordToCheck={wordToCheck}
-            showMoreInfo={showMoreInfo}
-          />
-        ))}
+        [...wordNest.children]
+          ?.filter(c => (showCompounds ? true : !c.is_compound))
+          .sort((a, b) => a.word.localeCompare(b.word))
+          .map((n, index) => (
+            <WordNest
+              key={`${wordNest.word}-${index}`}
+              wordNest={n}
+              hasSeveralRoots={hasSeveralRoots}
+              wordToCheck={wordToCheck}
+              showMoreInfo={showMoreInfo}
+              showCompounds={showCompounds}
+            />
+          ))}
     </NestBranch>
   )
 }
@@ -197,6 +201,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const [modalTitle, setModalTitle] = useState()
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [previousCheckedWord, setPreviousCheckedWord] = useState('')
+  const [showCompounds, setShowCompounds] = useState(false)
   const words = nests && nests[wordToCheck] || nests && nests[previousCheckedWord] || []
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
   const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
@@ -204,6 +209,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const hasSeveralRoots = rootLemmas?.length > 1 && rootLemmas?.length > 1 || secondRootLemmas?.length > 1
   const hasAdditionalInfo = words.some(word => word.others?.length > 0)
   const wordNest = makeWordNest(rootLemmas?.length > 1 && rootLemmas || secondRootLemmas, words)
+  const wordNestHasCompounds = words.some(w => w.is_compound)
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
@@ -239,8 +245,8 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
 
   return (
     <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
-      <Modal.Header className="bold" as="h2">
-        <div className="space-between" style={{ alignItems: 'center' }}>
+      <Modal.Header className="bold wordnest-modal-header">
+        <div className="wordnest-modal-header-items">
           <span>
             <Popup
               content={intl.formatMessage({ id: 'wordnest-info-text' })}
@@ -248,12 +254,24 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
             />
             <FormattedMessage id="nest" />: {modalTitle}{' '}
           </span>
-
+          {wordNestHasCompounds && (
+            <div className="concept-toggles">
+              <Checkbox
+                toggle
+                label={{
+                  children: <FormattedHTMLMessage id="word-nest-show-compounds-label" />,
+                }}
+                checked={showCompounds}
+                onChange={() => setShowCompounds(!showCompounds)}
+                className="concept-toggle"
+              />
+            </div>
+          )}
           {!smallWindow && hasAdditionalInfo && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
-          <Icon onClick={handleModalclose} size="small" name="close" />
         </div>
+        <Icon onClick={handleModalclose} size="small" name="close" className="clickable" />
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
@@ -271,6 +289,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
                   hasSeveralRoots={hasSeveralRoots}
                   wordToCheck={wordToCheck}
                   showMoreInfo={showMoreInfo}
+                  showCompounds={showCompounds}
                 />
               ))}
             </div>
@@ -305,6 +324,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
                   wordNest={n}
                   hasSeveralRoots={hasSeveralRoots}
                   wordToCheck={wordToCheck}
+                  showCompounds={showCompounds}
                 />
               ))}
             </div>

@@ -1767,5 +1767,6 @@
     "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
     "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
     "blue-cards-test-encouragement-dismiss-button": "Dismiss",
-    "reading-test-cycle-popup-title": "Select test cycle"
+    "reading-test-cycle-popup-title": "Select test cycle",
+    "word-nest-show-compounds-label": "Show compound words"
 }

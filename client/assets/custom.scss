@@ -2268,6 +2268,19 @@ label.file-upload-btn {
   }
 }
 
+.wordnest-modal-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wordnest-modal-header-items {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1em;
+}
+
 .wordnest-cont {
   overflow-y: auto;
   padding: 1em 6em 1em 1em;
