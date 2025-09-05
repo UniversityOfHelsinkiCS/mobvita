@@ -42,6 +42,7 @@ const ReadingTestMC = ({
                     fontSize: '1.1em',
                     textAlign: 'justify',
                     paddingRight: '0.3em',
+                    whiteSpace: 'pre-line',
                   }}
                   dangerouslySetInnerHTML={sanitizeHtml(text['text'])}
                 />
