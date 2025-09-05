@@ -17,12 +17,12 @@ const ReadingTestMC = ({
   const bigScreen = useWindowDimensions().width >= 700
 
   return (
-    <div style={{ display: 'flex', position: 'relative' }}>
+    <div style={{ display: 'flex', position: 'relative', height: '100%' }}>
       <div style={{ display: bigScreen ? 'flex' : 'block', paddingRight: '1em' }}>
         {/* Left Column */}
-        <div style={{ flex: '1', marginRight: '20px' }}>
+        <div style={{ flex: '1', marginRight: '20px', display: 'flex', flexDirection: 'column' }}>
           <div className="test-prephrase">{prephrase}</div>
-          <div className="test-question-context">
+          <div className="test-question-context" style={{ overflowY: 'auto' }}>
             {text && (
               <div>
                 <div
@@ -41,7 +41,7 @@ const ReadingTestMC = ({
                     marginTop: '5px',
                     fontSize: '1.1em',
                     textAlign: 'justify',
-                    paddingRight: '0.3em',
+                    paddingRight: '0.5em',
                     whiteSpace: 'pre-line',
                   }}
                   dangerouslySetInnerHTML={sanitizeHtml(text['text'])}

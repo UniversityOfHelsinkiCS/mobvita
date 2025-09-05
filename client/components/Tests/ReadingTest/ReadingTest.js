@@ -481,17 +481,15 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
               {currentReadingTestQuestion && !paused && !answerFailure && !displaySpinner && (
-                <div>
-                  <ReadingTestMC
-                    exercise={currentReadingTestQuestion}
-                    onAnswer={checkAnswer}
-                    answerPending={answerPending}
-                    showFeedbacks={showFeedbacks}
-                    showCorrect={showCorrect}
-                    showSelfReflect={showSelfReflect}
-                    questionDone={questionDone}
-                  />
-                </div>
+                <ReadingTestMC
+                  exercise={currentReadingTestQuestion}
+                  onAnswer={checkAnswer}
+                  answerPending={answerPending}
+                  showFeedbacks={showFeedbacks}
+                  showCorrect={showCorrect}
+                  showSelfReflect={showSelfReflect}
+                  questionDone={questionDone}
+                />
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
