@@ -1763,8 +1763,10 @@
     "deck-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?",
     "flashcard-completed-title": "Korttipakka suoritettu!",
     "flashcard-completed-message": "Haluatko jatkaa ja harjoitella vielä 25 kortilla?",
-    "story-completed-message": "Do you want to restart, and practice this story with new exercises?",
-    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
-    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
-    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
+    "story-completed-message": "Haluatko aloittaa alusta ja harjoitella tätä tarinaa uudelleen – uusilla harjoituksilla?",
+    "blue-cards-test-encouragement-title": "Kerää pisteitä {nWords} sanasta, jotka oletamme sinun jo tietävän!",
+    "blue-cards-test-encouragement-message": "Paranna <b>sanastopisteitäsi</b> tarkistamalla nopeasti sanat tekstistä",
+    "blue-cards-test-encouragement-dismiss-button": "Ohita",
+    "reading-test-cycle-popup-title": "Valitse kysymyskierros",
+    "word-nest-show-compounds-label": "Show compound words"
 }

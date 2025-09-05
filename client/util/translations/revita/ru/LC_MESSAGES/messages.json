@@ -1765,8 +1765,10 @@
     "deck-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
     "flashcard-completed-title": "Набор завершен!",
     "flashcard-completed-message": "Хочешь продолжить и попрактиковаться еще с 25 карточками?",
-    "story-completed-message": "Do you want to restart, and practice this story with new exercises?",
-    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
-    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
-    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
+    "story-completed-message": "Хочешь снова проработать эту историю с новыми упражнениями?",
+    "blue-cards-test-encouragement-title": "Получи баллы за {nWords} слов, которые, мы предполагаем, что ты уже знаешь!",
+    "blue-cards-test-encouragement-message": "Повысь <b>баллы</b> за свой словарный запас, выполнив быструю проверку слов из",
+    "blue-cards-test-encouragement-dismiss-button": "Закрыть",
+    "reading-test-cycle-popup-title": "Выбери цикл вопросов",
+    "word-nest-show-compounds-label": "Show compound words"
 }

@@ -1762,8 +1762,10 @@
     "deck-completed-message": "Vuoi continuare a fare altre 25 carte?",
     "flashcard-completed-title": "Mazzo di carte completato!",
     "flashcard-completed-message": "Vuoi continuare a fare altre 25 carte?",
-    "story-completed-message": "Do you want to restart, and practice this story with new exercises?",
-    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
-    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
-    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
+    "story-completed-message": "Vuoi ricominciare e mettere in pratica questa storia di nuovo, con nuovi esercizi?",
+    "blue-cards-test-encouragement-title": "Ottieni credito per {nWords} parole, che daremo per scontato tu conosca già!",
+    "blue-cards-test-encouragement-message": "Migliora il tuo <b>punteggio</b> di vocabolario facendo un rapido controllo delle parole da",
+    "blue-cards-test-encouragement-dismiss-button": "Congedare",
+    "reading-test-cycle-popup-title": "Seleziona il ciclo di domande",
+    "word-nest-show-compounds-label": "Show compound words"
 }

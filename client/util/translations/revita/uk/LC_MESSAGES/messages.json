@@ -872,8 +872,10 @@
     "deck-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?",
     "flashcard-completed-title": "Набір закінчений!",
     "flashcard-completed-message": "Хочеш продовжити і попрактикуватись ще з 25 картками?",
-    "story-completed-message": "Do you want to restart, and practice this story with new exercises?",
-    "blue-cards-test-encouragement-title": "Get credit for {nWords} words you probably already know!",
-    "blue-cards-test-encouragement-message": "Improve your vocabulary score by taking a quick test on words from",
-    "blue-cards-test-encouragement-dismiss-button": "Dismiss"
+    "story-completed-message": "Хочеш знову опрацювати цю історію з новими вправами?",
+    "blue-cards-test-encouragement-title": "Отримай бали за {nWords} слів, які ми вважаємо, що ти вже знаєш!",
+    "blue-cards-test-encouragement-message": "Повись <b>балли</b> за свій словниковий запас, виконавши швидку перевірку слів із",
+    "blue-cards-test-encouragement-dismiss-button": "Закрити",
+    "reading-test-cycle-popup-title": "Вибери цикл питань",
+    "word-nest-show-compounds-label": "Show compound words"
 }
