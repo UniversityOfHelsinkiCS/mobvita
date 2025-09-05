@@ -70,7 +70,7 @@ const ReadingTestView = () => {
                       onChange={(e, data) => setCycle(data.value)}
                     />
                     <Button onClick={handleCycleSubmit}>
-                      <FormattedMessage id="Submit" />
+                      <FormattedMessage id="confirm-next-set" />
                     </Button>
                   </div>
                 </div>
