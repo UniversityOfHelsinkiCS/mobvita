@@ -1768,5 +1768,8 @@
     "blue-cards-test-encouragement-message": "Paranna <b>sanastopisteitäsi</b> tarkistamalla nopeasti sanat tekstistä",
     "blue-cards-test-encouragement-dismiss-button": "Ohita",
     "reading-test-cycle-popup-title": "Valitse kysymyskierros",
-    "word-nest-show-compounds-label": "Show compound words"
+    "word-nest-show-compounds-label": "Näytä yhdyssanat",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
 }

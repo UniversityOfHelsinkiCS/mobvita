@@ -1767,5 +1767,8 @@
     "blue-cards-test-encouragement-message": "Migliora il tuo <b>punteggio</b> di vocabolario facendo un rapido controllo delle parole da",
     "blue-cards-test-encouragement-dismiss-button": "Congedare",
     "reading-test-cycle-popup-title": "Seleziona il ciclo di domande",
-    "word-nest-show-compounds-label": "Show compound words"
+    "word-nest-show-compounds-label": "Mostra parole composte",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
 }

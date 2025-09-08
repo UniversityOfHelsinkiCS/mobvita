@@ -1132,10 +1132,10 @@
     "lesson-customize-info": "Create your own custom lesson where you decide what to practice",
     "download-exercise-history": "下载详细报告",
     "chatbot-toggle-label": "Vita — AI-assistant",
-    "chatbot-message-suggestion-performance": "How is my progress?",
-    "chatbot-message-suggestion-next-steps": "What should I do next?",
-    "lesson-completed-title": "Lesson completed!",
-    "lesson-completed-message": "Do you want to continue, and practice with 10 more snippets?",
+    "chatbot-message-suggestion-performance": "我的进度如何？",
+    "chatbot-message-suggestion-next-steps": "我接下来可以做什么？",
+    "lesson-completed-title": "课程结束！",
+    "lesson-completed-message": "再来10个段落练习？",
     "deck-completed-title": "Deck completed!",
     "deck-completed-message": "Do you want to continue, and practice with 25 more cards?",
     "flashcard-completed-title": "Deck completed!",
@@ -1143,7 +1143,10 @@
     "story-completed-message": "Do you want to restart, and practice this story again – with new exercises?",
     "blue-cards-test-encouragement-title": "Get credit for {nWords} words, which we will assume you already know!",
     "blue-cards-test-encouragement-message": "Improve your vocabulary <b>score</b> by doing a quick check on words from",
-    "blue-cards-test-encouragement-dismiss-button": "Dismiss",
-    "reading-test-cycle-popup-title": "Select cycle of questions",
-    "word-nest-show-compounds-label": "Show compound words"
+    "blue-cards-test-encouragement-dismiss-button": "关闭",
+    "reading-test-cycle-popup-title": "选择轮次",
+    "word-nest-show-compounds-label": "显示复合词",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "调节词汇难度",
+    "select-story-themes-and-vocabulary": "选择内容主题和词汇难度"
 }

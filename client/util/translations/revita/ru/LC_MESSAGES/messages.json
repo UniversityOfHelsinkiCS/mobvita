@@ -1770,5 +1770,8 @@
     "blue-cards-test-encouragement-message": "Повысь <b>баллы</b> за свой словарный запас, выполнив быструю проверку слов из",
     "blue-cards-test-encouragement-dismiss-button": "Закрыть",
     "reading-test-cycle-popup-title": "Выбери цикл вопросов",
-    "word-nest-show-compounds-label": "Show compound words"
+    "word-nest-show-compounds-label": "Показать составные слова",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
 }
