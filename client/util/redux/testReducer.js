@@ -246,30 +246,30 @@ export default (state = initialState, action) => {
 
       // Split questions by set
       const questionsBySet = question_list.reduce((acc, question) => {
-        const set = question.set;
+        const { set } = question
         if (!acc[set]) {
-          acc[set] = { seen: [], unseen: [] };
+          acc[set] = { seen: [], unseen: [] }
         }
         if (question.seen) {
-          acc[set].seen.push(question);
+          acc[set].seen.push(question)
         } else {
-          acc[set].unseen.push(question);
+          acc[set].unseen.push(question)
         }
-        return acc;
-      }, {});
+        return acc
+      }, {})
 
       // Sort sets by set number
-      const sortedSets = Object.keys(questionsBySet).sort((a, b) => parseInt(a) - parseInt(b));
+      // const sortedSets = Object.keys(questionsBySet).sort((a, b) => parseInt(a) - parseInt(b));
 
       // Find the current question
-      let tmpcurrentReadingTestQuestion = null;
-      let currentSet = null;
-      let tmpcurrentQuestionIdxinSet = -1;
-      let tmpcurrentReadingQuestionIndex = -1;
-      let tmpreadingSetLength = 0;
-      let tempreadingTestQuestions = []
+      let tmpcurrentReadingTestQuestion = null
+      let currentSet = null
+      let tmpcurrentQuestionIdxinSet = -1
+      let tmpcurrentReadingQuestionIndex = 0
+      let tmpreadingSetLength = 0
+      // let tempreadingTestQuestions = []
 
-      let tmp_reading_question_idx = 0
+      /* let tmp_reading_question_idx = 0
       let current_question_is_set = false
       for (const set of sortedSets) {
         const { seen, unseen } = questionsBySet[set];
@@ -285,17 +285,38 @@ export default (state = initialState, action) => {
         } else {
           tmp_reading_question_idx = tempreadingTestQuestions.length;
         }
-      }
+      } */
+
+      question_list.forEach((q, i) => {
+        if (q.seen === true) {
+          tmpcurrentReadingQuestionIndex = i
+        }
+      })
+
+      /* if (tmpcurrentReadingQuestionIndex === -1) {
+        tmpcurrentReadingTestQuestion = question_list[0]
+        console.log('tmpcurrentReadingTestQuestion 1: ', tmpcurrentReadingTestQuestion)
+      } else {
+        tmpcurrentReadingTestQuestion = question_list[tmpcurrentReadingQuestionIndex]
+      } */
+
+      tmpcurrentReadingTestQuestion = question_list[tmpcurrentReadingQuestionIndex]
+
+      currentSet = Number(tmpcurrentReadingTestQuestion.set)
+      tmpcurrentQuestionIdxinSet = questionsBySet[currentSet].seen.length
+      tmpreadingSetLength =
+        questionsBySet[currentSet].seen.length + questionsBySet[currentSet].unseen.length
 
       // Calculate previous reading set
-      const prevReadingSet = currentSet && parseInt(currentSet) > 1 ? parseInt(currentSet) - 1 : null;
+      const prevReadingSet =
+        currentSet && parseInt(currentSet) > 1 ? parseInt(currentSet) - 1 : null
 
       // If the current question has only one construct, set the eliciated_construct field
       if (tmpcurrentReadingTestQuestion?.constructs?.length === 1) {
         tmpcurrentReadingTestQuestion.eliciated_construct = tmpcurrentReadingTestQuestion.constructs[0];
       }
 
-      if (!previousStatus?.is_correct && previousStatus?.responses?.length && tmpcurrentReadingTestQuestion) {
+      if (previousStatus && !previousStatus.is_correct && previousStatus.responses?.length) {
         tmpcurrentReadingTestQuestion.choices = tmpcurrentReadingTestQuestion.choices.map(choice =>
           previousStatus?.responses.includes(choice.option)
             ? { ...choice, isSelected: true }
@@ -303,20 +324,20 @@ export default (state = initialState, action) => {
         )
       }
 
-      console.log('reducer tempreadingTestQuestions: ', tempreadingTestQuestions)
+      console.log('reducer question_list: ', question_list)
 
       console.log(
         'reducer testDone: ',
-        tempreadingTestQuestions.filter(question => !question.seen).length === 0
+        question_list.filter(question => !question.seen).length === 0
       )
 
       return {
         ...state,
         readingTestSetDict: question_set_dict,
-        readingTestQuestions: tempreadingTestQuestions,
+        readingTestQuestions: question_list, // tempreadingTestQuestions,
         currentReadingTestQuestion: tmpcurrentReadingTestQuestion,
         currentReadingSet: currentSet,
-        prevReadingSet: prevReadingSet,
+        prevReadingSet,
         readingTestSessionId: session_id,
         currentReadingQuestionIndex: tmpcurrentReadingQuestionIndex,
         currentQuestionIdxinSet: tmpcurrentQuestionIdxinSet,
@@ -325,11 +346,11 @@ export default (state = initialState, action) => {
         readingSetLength: tmpreadingSetLength,
         pending: false,
         resumedTest: Object.values(questionsBySet).some(x => x.seen.length > 0),
-        testDone: tempreadingTestQuestions.filter(question => !question.seen).length === 0,
+        testDone: question_list.filter(question => !question.seen).length === 0,
         allCycles,
         currentCycle,
         previousStatus,
-      };
+      }
     }
     case 'GET_READING_TEST_QUESTIONS_FAILURE':
       return {
