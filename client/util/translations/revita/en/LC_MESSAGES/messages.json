@@ -1768,5 +1768,8 @@
     "blue-cards-test-encouragement-message": "Improve your vocabulary <b>score</b> by doing a quick check on words from",
     "blue-cards-test-encouragement-dismiss-button": "Dismiss",
     "reading-test-cycle-popup-title": "Select cycle of questions",
-    "word-nest-show-compounds-label": "Show compound words"
+    "word-nest-show-compounds-label": "Show compound words",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
 }

@@ -12,7 +12,7 @@ import {
   Accordion, 
   AccordionTitle,
   AccordionContent } from 'semantic-ui-react'
-
+import { Spinner } from 'react-bootstrap'
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
@@ -210,7 +210,7 @@ const StoryGeneration = () => {
   const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
       <h5>
-        <FormattedMessage id="select-lesson-vocab-diff" />:
+        <FormattedMessage id="select-story-vocab-diff" />:
       </h5>
 
       <div
@@ -245,7 +245,7 @@ const StoryGeneration = () => {
   ) : (
     <div className="align-center">
       <h5>
-        <FormattedMessage id="select-lesson-vocab-diff" />:
+        <FormattedMessage id="select-story-vocab-diff" />:
       </h5>
 
       <div
@@ -354,13 +354,21 @@ const StoryGeneration = () => {
     <div className="align-center">
       <div className="group-buttons sm lesson-story-topic">
         <div style={{width: "100%", maxWidth: "800px", margin: "auto"}}>
-          { generationPending ? (
-            <Placeholder>
-              <Placeholder.Line />
-            </Placeholder>
+          {generationPending ? (
+            <div className='row justify-center align-center'>
+              <Spinner animation="border" variant="info" />
+              <span style={{
+                textAlign: 'center',
+                fontWeight: 500,
+                margin: '18px',
+                fontSize: 'large'
+              }}>
+                <FormattedMessage id="story-generating" />
+              </span>
+            </div>
           ): (
             <>
-              {!error && text.length && (<>
+              {!error && text?.length && (<>
                 <textarea
                   style={{width: "100%", height: "600px", padding: "10px", borderRadius: "5px", border: "1px solid #ccc", outline: "none", fontSize: "16px"}}
                   value={generatedStory}
@@ -387,7 +395,7 @@ const StoryGeneration = () => {
                 </div>
               </>)}
               <div className='row justify-center align-center'>
-                {(error || !text.length) && (<span style={{
+                {(error || !text?.length) && (<span style={{
                   color: 'red', 
                   textAlign: 'center',
                   fontWeight: 500,
@@ -465,7 +473,7 @@ const StoryGeneration = () => {
                   }}
                 >
                   <Step
-                    label={<FormattedMessage id="select-lesson-themes-and-vocabulary" />}
+                    label={<FormattedMessage id="select-story-themes-and-vocabulary" />}
                     active={goStep == 0}
                     completed={goStep > 0}
                     onClick={() => {

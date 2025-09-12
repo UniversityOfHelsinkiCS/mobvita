@@ -877,5 +877,8 @@
     "blue-cards-test-encouragement-message": "Повись <b>балли</b> за свій словниковий запас, виконавши швидку перевірку слів із",
     "blue-cards-test-encouragement-dismiss-button": "Закрити",
     "reading-test-cycle-popup-title": "Вибери цикл питань",
-    "word-nest-show-compounds-label": "Show compound words"
+    "word-nest-show-compounds-label": "Показати складові слова",
+    "story-generating": "Story generating...",
+    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
 }
