@@ -161,6 +161,7 @@ export const handleRequest = store => next => async action => {
         }
 
         if (cache) {
+          console.log('caching, ', cache, 'data:', res.data)
           window.localStorage.setItem(cache, JSON.stringify(res.data))
         }
         if (res.data?.new_achievements?.length > 0) {

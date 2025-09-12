@@ -233,7 +233,16 @@ export default (state = initialState, action) => {
         language: action.language,
       }
     case 'GET_READING_TEST_QUESTIONS_SUCCESS': {
-      const { question_list, session_id, question_set_dict, all_cycles: allCycles, current_cycle: currentCycle } = response;
+      const {
+        question_list,
+        session_id,
+        question_set_dict,
+        all_cycles: allCycles,
+        current_cycle: currentCycle,
+        previous_status: previousStatus,
+      } = response
+
+      console.log('previousStatus: ', previousStatus)
 
       // Split questions by set
       const questionsBySet = question_list.reduce((acc, question) => {
@@ -286,6 +295,21 @@ export default (state = initialState, action) => {
         tmpcurrentReadingTestQuestion.eliciated_construct = tmpcurrentReadingTestQuestion.constructs[0];
       }
 
+      if (!previousStatus?.is_correct && previousStatus?.responses?.length && tmpcurrentReadingTestQuestion) {
+        tmpcurrentReadingTestQuestion.choices = tmpcurrentReadingTestQuestion.choices.map(choice =>
+          previousStatus?.responses.includes(choice.option)
+            ? { ...choice, isSelected: true }
+            : { ...choice }
+        )
+      }
+
+      console.log('reducer tempreadingTestQuestions: ', tempreadingTestQuestions)
+
+      console.log(
+        'reducer testDone: ',
+        tempreadingTestQuestions.filter(question => !question.seen).length === 0
+      )
+
       return {
         ...state,
         readingTestSetDict: question_set_dict,
@@ -304,6 +328,7 @@ export default (state = initialState, action) => {
         testDone: tempreadingTestQuestions.filter(question => !question.seen).length === 0,
         allCycles,
         currentCycle,
+        previousStatus,
       };
     }
     case 'GET_READING_TEST_QUESTIONS_FAILURE':

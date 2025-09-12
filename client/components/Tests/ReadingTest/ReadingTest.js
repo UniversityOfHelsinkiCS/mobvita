@@ -86,6 +86,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     testDone,
     allCycles,
     currentCycle,
+    previousStatus,
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
@@ -281,16 +282,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     setCurrentElicatedConstruct(null)
     setAttempts(0)
 
-    if (!currentReadingTestQuestion.seen) {
-      dispatch(
-        markQuestionAsSeen(
-          learningLanguage,
-          currentReadingTestQuestion.question_id,
-          readingTestSessionId
-        )
-      )
-    }
-
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
       console.log("finish")
       dispatch(finishLastReadingTestQuestion())
@@ -304,24 +295,73 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }
 
   useEffect(() => {
+    if (!currentReadingTestQuestion) {
+      console.log('no currentReadingTestQuestion')
+      return
+    }
+
+    if (in_control_grp && previousStatus) {
+      if (
+        previousStatus?.is_correct &&
+        previousStatus.last_question_id === currentReadingTestQuestion.question_id
+      ) {
+        console.log('nextQuestion called 1')
+        nextQuestion()
+        return
+      }
+
+      if (
+        previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
+        previousStatus.responses.length === 1
+      ) {
+        console.log('setAttempts called')
+        setAttempts(prev => prev + 1)
+        return
+      }
+
+      if (
+        previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
+        previousStatus?.responses?.length > 1
+      ) {
+        console.log('nextQuestion called 2')
+        nextQuestion()
+        return
+      }
+    }
+
+    if (in_experimental_grp) {
+      if (previousStatus?.is_correct) {
+        console.log('nextQuestion called 3')
+        nextQuestion()
+      }
+    }
+  }, [previousStatus, in_control_grp, in_experimental_grp])
+
+  useEffect(() => {
     if (readingHistory !== undefined && testDone) {
       setShowStats(true);
     }
   }, [readingHistory]);
 
   useEffect(() => {
-    dispatch(getGroups()); 
-    if (learningLanguage && readingTestSessionId && testDone && readingHistory == {}) {
-      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
+    dispatch(getGroups())
+    if (
+      learningLanguage &&
+      readingTestSessionId &&
+      testDone &&
+      readingHistory &&
+      Object.keys(readingHistory).length === 0
+    ) {
+      dispatch(getReadingHistory(learningLanguage, readingTestSessionId))
     }
-  }, []);
+  }, [testDone])
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(getGroups()); 
     if (learningLanguage && readingTestSessionId && testDone && readingHistory == {}) {
       dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
     }
-  }, [testDone]);
+  }, [testDone]); */
 
   useEffect(() => {
     let experimental = false;
@@ -346,6 +386,20 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     setInExperimentalGrp(experimental);
     setInControlGrp(control);
   }, [groups]);
+
+  useEffect(() => {
+    console.log('about to mark question as seen')
+    if (currentReadingTestQuestion && !currentReadingTestQuestion?.seen) {
+      console.log('marking question as seen: ', currentReadingTestQuestion)
+      dispatch(
+        markQuestionAsSeen(
+          learningLanguage,
+          currentReadingTestQuestion.question_id,
+          readingTestSessionId
+        )
+      )
+    }
+  }, [currentReadingTestQuestion])
 
   useEffect(() => {
     setCurrentReadingSetLength(readingSetLength)
@@ -373,7 +427,11 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         }
       }
     }
-    if (prevReadingSet !== null && currentReadingQuestionIndex % 5 === 0) {
+    if (
+      prevReadingSet !== null &&
+      !previousStatus?.responses?.length &&
+      currentReadingQuestionIndex % 5 === 0
+    ) {
       setShowNextSetDialog(true)
     }
   }, [currentReadingSet])
@@ -398,9 +456,9 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     timer.start()
   }, [])
 
-  if (!currentReadingTestQuestion) {
+  /* if (!currentReadingTestQuestion) {
     return null
-  }
+  } */
 
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
 

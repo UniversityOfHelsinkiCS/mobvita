@@ -22,15 +22,19 @@ const ReadingTestView = () => {
   const [showCyclePopup, setShowCyclePopup] = useState(false)
   const [cycle, setCycle] = useState(null)
 
-  const { readingTestSessionId, pending, testDone, readingTestQuestions, allCycles } = useSelector(
+  const { readingTestSessionId, pending, testDone, readingTestQuestions, allCycles, currentCycle } = useSelector(
     ({ tests }) => tests
   )
 
   useEffect(() => {
     if (testDone === undefined && readingTestQuestions.length === 0) {
-      dispatch(getReadingTestQuestions(learningLanguage, true));
+      console.log('getting reading test questions 1')
+      dispatch(getReadingTestQuestions(learningLanguage, true))
+    } else if (testDone === false && currentCycle) {
+      console.log('getting reading test questions 2')
+      dispatch(getReadingTestQuestions(learningLanguage, true, Number(currentCycle)))
     }
-  }, [dispatch, learningLanguage, testDone]);
+  }, [dispatch, learningLanguage /* , testDone */])
 
   const handleCycleSubmit = () => {
     dispatch(resetTests())
