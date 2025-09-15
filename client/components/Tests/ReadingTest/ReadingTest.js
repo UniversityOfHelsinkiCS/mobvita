@@ -296,7 +296,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
   useEffect(() => {
     if (!currentReadingTestQuestion) {
-      console.log('no currentReadingTestQuestion')
       return
     }
 
@@ -305,7 +304,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         previousStatus?.is_correct &&
         previousStatus.last_question_id === currentReadingTestQuestion.question_id
       ) {
-        console.log('nextQuestion called 1')
         nextQuestion()
         return
       }
@@ -314,7 +312,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
         previousStatus.responses.length === 1
       ) {
-        console.log('setAttempts called')
         setAttempts(prev => prev + 1)
         return
       }
@@ -323,15 +320,24 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
         previousStatus?.responses?.length > 1
       ) {
-        console.log('nextQuestion called 2')
         nextQuestion()
         return
       }
     }
 
     if (in_experimental_grp) {
-      if (previousStatus?.is_correct) {
-        console.log('nextQuestion called 3')
+      if (
+        previousStatus?.is_correct &&
+        previousStatus.last_question_id === currentReadingTestQuestion.question_id
+      ) {
+        nextQuestion()
+        return
+      }
+
+      if (
+        previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
+        previousStatus?.responses?.length > 3
+      ) {
         nextQuestion()
       }
     }
@@ -355,13 +361,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       dispatch(getReadingHistory(learningLanguage, readingTestSessionId))
     }
   }, [testDone])
-
-  /* useEffect(() => {
-    dispatch(getGroups()); 
-    if (learningLanguage && readingTestSessionId && testDone && readingHistory == {}) {
-      dispatch(getReadingHistory(learningLanguage, readingTestSessionId));
-    }
-  }, [testDone]); */
 
   useEffect(() => {
     let experimental = false;
@@ -388,9 +387,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }, [groups]);
 
   useEffect(() => {
-    console.log('about to mark question as seen')
     if (currentReadingTestQuestion && !currentReadingTestQuestion?.seen) {
-      console.log('marking question as seen: ', currentReadingTestQuestion)
       dispatch(
         markQuestionAsSeen(
           learningLanguage,
@@ -455,10 +452,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   useEffect(() => {
     timer.start()
   }, [])
-
-  /* if (!currentReadingTestQuestion) {
-    return null
-  } */
 
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
 
@@ -556,18 +549,18 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
               )}
             </div>
             {/* This button used to be in hiddenFeatures, now visible to all */}
-              <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
-                <Button
-                  className="restart-reading-test-button btn-secondary"
-                  style={{ marginRight: 'auto', marginTop: '1rem' }}
-                  onClick={() => restartTest()}
-                  disabled={showFeedbacks}
-                >
-                  <span>
-                    <FormattedMessage id="restart-reading-test" />
-                  </span>
-                </Button>
-              </div>
+            <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
+              <Button
+                className="restart-reading-test-button btn-secondary"
+                style={{ marginRight: 'auto', marginTop: '1rem' }}
+                onClick={() => restartTest()}
+                disabled={showFeedbacks}
+              >
+                <span>
+                  <FormattedMessage id="restart-reading-test" />
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </Segment>

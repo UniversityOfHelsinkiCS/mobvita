@@ -7,34 +7,28 @@ import { getReadingTestQuestions, resetTests } from 'Utilities/redux/testReducer
 
 import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
-import ReadingTest from './ReadingTest'
-
-// import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
+import ReadingTest from './ReadingTest'
 
 import './index.css'
 
 const ReadingTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
-  // const bigScreen = useWindowDimension().width >= 650
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
   const [showCyclePopup, setShowCyclePopup] = useState(false)
   const [cycle, setCycle] = useState(null)
 
-  const { readingTestSessionId, pending, testDone, readingTestQuestions, allCycles, currentCycle } = useSelector(
-    ({ tests }) => tests
-  )
+  const { readingTestSessionId, pending, testDone, readingTestQuestions, allCycles, currentCycle } =
+    useSelector(({ tests }) => tests)
 
   useEffect(() => {
     if (testDone === undefined && readingTestQuestions.length === 0) {
-      console.log('getting reading test questions 1')
       dispatch(getReadingTestQuestions(learningLanguage, true))
     } else if (testDone === false && currentCycle) {
-      console.log('getting reading test questions 2')
       dispatch(getReadingTestQuestions(learningLanguage, true, Number(currentCycle)))
     }
-  }, [dispatch, learningLanguage /* , testDone */])
+  }, [dispatch, learningLanguage])
 
   const handleCycleSubmit = () => {
     dispatch(resetTests())
@@ -94,7 +88,6 @@ const ReadingTestView = () => {
           </Button>
         </div>
       </div>
-      {/* <ReadingPracticeChatbot /> */}
     </div>
   )
 }
