@@ -555,7 +555,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                 </div>
               )}
             </div>
-            {hiddenFeatures && (
+            {/* This button used to be in hiddenFeatures, now visible to all */}
               <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
                 <Button
                   className="restart-reading-test-button btn-secondary"
@@ -568,7 +568,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                   </span>
                 </Button>
               </div>
-            )}
           </div>
         </div>
       </Segment>
