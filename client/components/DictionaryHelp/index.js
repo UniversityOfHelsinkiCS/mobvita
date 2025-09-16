@@ -158,62 +158,76 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       </List>
     )
 
+  const handleNestButtonClick = lemma => {
+    setWordNestChosenWord(lemma)
+    setWordNestModalOpen(true)
+  }
+
   const translations =
     translation &&
     translation !== 'no-clue-translation' &&
     translation
       ?.sort((a, b) => b.preferred - a.preferred)
-      .map(translated => (
-        <div className='space-between'>
-        <div
-          key={translated.URL}
-          data-cy="translations"
-          style={{
-            color: '#555555',
-            marginBottom: '1em',
-            padding: '1em',
-            borderRadius: '15px',
-            backgroundColor: `${
-              (translated.preferred && background[translated.stage || 0]) || '#FFFFFF'
-            }4D`,
-          }}
-        >
-          {clue ? (
-            <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
-              <FormattedMessage id="Your clue" />
-              {`: ${clue.number} ${clue.direction}`}
+      .map(translated => {
+        return (
+          <div className="space-between">
+            <div
+              key={translated.URL}
+              data-cy="translations"
+              style={{
+                color: '#555555',
+                marginBottom: '1em',
+                padding: '1em',
+                borderRadius: '15px',
+                backgroundColor: `${
+                  (translated.preferred && background[translated.stage || 0]) || '#FFFFFF'
+                }4D`,
+              }}
+            >
+              {clue ? (
+                <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
+                  <FormattedMessage id="Your clue" />
+                  {`: ${clue.number} ${clue.direction}`}
+                </div>
+              ) : (
+                <Lemma
+                  lemma={translated.lemma}
+                  sourceWord={translated.source_word}
+                  handleSourceWordClick={handleSourceWordClick}
+                  handleKnowningClick={handleKnowningClick(translated.lemma)}
+                  handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
+                  inflectionRef={translated.ref}
+                  userUrl={translated.user_URL}
+                  preferred={translated.preferred}
+                />
+              )}
+              {translationsList(translated)}
             </div>
-          ) : (
-            <Lemma
-              lemma={translated.lemma}
-              sourceWord={translated.source_word}
-              handleSourceWordClick={handleSourceWordClick}
-              handleKnowningClick={handleKnowningClick(translated.lemma)}
-              handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
-              inflectionRef={translated.ref}
-              userUrl={translated.user_URL}
-              preferred={translated.preferred}
-            />
-          )}
-          {translationsList(translated)}
-        </div>
-        <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-          {!inWordNestModal && words && words[translated.lemma]?.length > 0 &&
-            (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
-            !clue && (
-                <Popup
+            <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
+              {!inWordNestModal &&
+                words &&
+                words[translated.lemma]?.length > 0 &&
+                (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
+                !clue && (
+                  <Popup
                     content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
                     trigger={
-              <Button style={{ padding: '5px' }} basic size="mini" onClick={()=> handleNestButtonClick(translated.lemma)}
-                      data-cy="nest-button">
-                <img src={images.network} alt="network icon" width="32" />
-              </Button>
+                      <Button
+                        style={{ padding: '5px' }}
+                        basic
+                        size="mini"
+                        onClick={() => handleNestButtonClick(translated.lemma)}
+                        data-cy="nest-button"
+                      >
+                        <img src={images.network} alt="network icon" width="32" />
+                      </Button>
                     }
-                />
-            )}
-        </div>
-        </div>
-      ))
+                  />
+                )}
+            </div>
+          </div>
+        )
+      })
 
   const handleDropdownChange = value => {
     if (translation) {
@@ -242,11 +256,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       )
     }
     return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
-  }
-
-  const handleNestButtonClick = (lemma) => {
-    setWordNestChosenWord(lemma)
-    setWordNestModalOpen(true)
   }
 
   const getWindowCornerIcon = () => {
