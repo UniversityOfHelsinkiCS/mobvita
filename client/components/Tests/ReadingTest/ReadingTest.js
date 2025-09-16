@@ -325,7 +325,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       }
     }
 
-    if (in_experimental_grp) {
+    if (in_experimental_grp && previousStatus) {
       if (
         previousStatus?.is_correct &&
         previousStatus.last_question_id === currentReadingTestQuestion.question_id
