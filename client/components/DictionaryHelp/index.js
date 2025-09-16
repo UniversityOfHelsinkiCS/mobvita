@@ -122,8 +122,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   }
 
   useEffect(() => {
-    if (!inCrossword && translation) setWordNestChosenWord(translation?.filter(t=>t.lemma).map(t=>t.lemma).join('+'))
-  }, [translation])
+    if (!inCrossword && translation && !wordNestModalOpen)
+      setWordNestChosenWord(
+        translation
+          ?.filter(t => t.lemma)
+          .map(t => t.lemma)
+          .join('+')
+      )
+  }, [translation, wordNestModalOpen])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
