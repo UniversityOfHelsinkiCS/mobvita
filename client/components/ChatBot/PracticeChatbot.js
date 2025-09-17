@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
@@ -63,6 +63,7 @@ const PracticeChatbot = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [validToChat, setValidToChat] = useState(false);
 
+    const latestMessageRef = useRef(null)
 
     const handleMessageSubmit = (event) => {
         event.preventDefault(); 
@@ -85,6 +86,12 @@ const PracticeChatbot = () => {
     };
 
     const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+
+    const scrollToLatestMessage = () => latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+    useEffect(() => {
+        scrollToLatestMessage()
+    }, [messages])
 
     useEffect(() => {
         if(Object.keys(currentWord).length && !listen && !speak) {
@@ -258,7 +265,7 @@ const PracticeChatbot = () => {
                   <>
                     {/********this is for CHATTING: MESSAGE-USER + MESSAGE-BOT ********/}
                     {/******** MESSAGE-USER + MESSAGE-BOT: no other types ********/}
-                    <div key={index} className={`message message-${message.type}`} style={{display: 'block'}}>
+                    <div ref={index === messages.length - 1 ? latestMessageRef : null} key={index} className={`message message-${message.type}`} style={{display: 'block'}}>
                       {message.text ? (
                         <ReactMarkdown children={message.text} />
                       ) : (
@@ -297,6 +304,11 @@ const PracticeChatbot = () => {
                     )}
                   </>
                 ))}
+                {isWaitingForResponse && (
+                  <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
+                    <Spinner animation="border" variant="info" />
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -312,10 +324,11 @@ const PracticeChatbot = () => {
                     onChange={(e) => setCurrentMessage(e.target.value)} 
                 />
                 <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
-                    {isWaitingForResponse /* variant="info" variant="white" size="sm" */
+                    {/* isWaitingForResponse
                      ? <Spinner animation="border" variant="warning" />
                      : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                    }
+                    */}
+                  <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                 </Button>
                 <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
             </form>): (

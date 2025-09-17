@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
@@ -24,6 +24,14 @@ const ReadingPracticeChatBot = () => {
     } = useSelector(({ tests }) => tests);
 
     const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
+
+    const latestMessageRef = useRef(null)
+
+    const scrollToLatestMessage = () => latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+    useEffect(() => {
+        scrollToLatestMessage()
+    }, [messages])
 
     // Fetch conversation history when the chatbot starts
     useEffect(() => {
@@ -74,11 +82,18 @@ const ReadingPracticeChatBot = () => {
                         {isLoadingHistory ? (
                             <Spinner animation="border" variant="info" className="spinner-history" />
                         ) : (
-                            messages.map((message, index) => (
-                                <div key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
-                                    {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
-                                </div>
-                            ))
+                            <>
+                                {messages.map((message, index) => (
+                                    <div ref={index === messages.length - 1 ? latestMessageRef : null} key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
+                                        {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
+                                    </div>
+                                ))}
+                                {isWaitingForResponse && (
+                                    <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
+                                        <Spinner animation="border" variant="info" />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                     <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
@@ -91,11 +106,7 @@ const ReadingPracticeChatBot = () => {
                             onChange={(e) => setCurrentMessage(e.target.value)}
                         />
                         <Button type="submit" primary disabled={isWaitingForResponse}>
-                            {isWaitingForResponse ? (
-                                <Spinner animation="border" variant="warning" />
-                            ) : (
-                                <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                            )}
+                            <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
                         <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
                     </form>
