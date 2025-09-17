@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Segment } from 'semantic-ui-react'
 import { Spinner, Button } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+
 import {
   sendReadingTestAnswer,
   getReadingHistory,
@@ -17,48 +18,33 @@ import {
   markQuestionAsSeen,
 } from 'Utilities/redux/testReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import {
-  learningLanguageSelector,
-  confettiRain,
-  hiddenFeatures
-} from 'Utilities/common'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { learningLanguageSelector, confettiRain, hiddenFeatures } from 'Utilities/common'
+import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
-import ReadingTestSelfReflect from '././ReadingTestSelfReflect'
-import ReadingTestElicationDialog from '././ReadingTestElicitationDialog'
-import ReadingTestNextSetDialog from '././ReadingTestNextSetDialog'
-import ReadingTestStats from '././ReadingTestStats'
-
-import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
+import ReadingTestSelfReflect from './ReadingTestSelfReflect'
+import ReadingTestElicationDialog from './ReadingTestElicitationDialog'
+import ReadingTestNextSetDialog from './ReadingTestNextSetDialog'
+import ReadingTestStats from './ReadingTestStats'
 
 const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
-
   const [showNextSetDialog, setShowNextSetDialog] = useState(false)
-
   const [receivedFeedback, setReceivedFeedback] = useState(0)
   const [showCorrect, setShowCorrect] = useState(false)
   const [questionDone, setQuestionDone] = useState(false)
   const [currentAnswer, setCurrentAnswer] = useState(null)
   const [attempts, setAttempts] = useState(0)
-
   const [showFeedbacks, setShowFeedbacks] = useState(false)
-
   const [currentReadingSetLength, setCurrentReadingSetLength] = useState(0)
-  // const [firstMediationSelfReflectionDone, setFirstMediationSelfReflectionDone] = useState(false)
   const [showSelfReflect, setShowSelfReflect] = useState(false)
-
   const [showElicitDialog, setShowElicitDialog] = useState(false)
   const [currentElicatedConstruct, setCurrentElicatedConstruct] = useState(null)
-
-  const [hintsUsedThisQuestion, setHintsUsedThisQuestion] = useState(0)
   const [showStats, setShowStats] = useState(false)
-
   // State for experimental and control groups
-  const [in_experimental_grp, setInExperimentalGrp] = useState(false);
-  const [in_control_grp, setInControlGrp] = useState(false);
+  const [in_experimental_grp, setInExperimentalGrp] = useState(false)
+  const [in_control_grp, setInControlGrp] = useState(false)
 
   const { controls: timer } = useTimer({
     initialTime: 0,
@@ -80,7 +66,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     currentQuestionIdxinSet,
     answerPending,
     answerFailure,
-    resumedTest,
     readingTestSetDict,
     readingHistory,
     testDone,
@@ -90,8 +75,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   } = useSelector(({ tests }) => tests)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { groups } = useSelector(({ groups }) => groups)
-
-  const history = useHistory()
 
   const dispatch = useDispatch()
 
@@ -103,11 +86,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       setCycle(String(Number(currentCycle) + 1))
     }
     setShowCyclePopup(true)
-  };
-
-  // const goToHomePage = () => {
-  //   history.push('/home')
-  // }
+  }
 
   const submitSelfReflectionResponse = (response_json) => {
     response_json.cycle = currentCycle
@@ -146,7 +125,6 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }
 
   const checkAnswer = choice => {
-    console.log("checkAnswer", choice)
     if (!currentReadingTestQuestion) return
 
     if (in_control_grp) {
@@ -155,22 +133,20 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
     setCurrentAnswer(choice)
 
-    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(choice => choice.isSelected != true).length;
-    const question_concept_feedbacks = currentReadingTestQuestion.question_concept_feedbacks[currentElicatedConstruct]
+    const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(
+      choice => choice.isSelected !== true
+    ).length
+    const questionConceptFeedbacks =
+      currentReadingTestQuestion.question_concept_feedbacks[currentElicatedConstruct]
 
     if (choice.is_correct) {
       if (in_experimental_grp) {
         confettiRain(0, 0.45, 60)
         confettiRain(1, 0.45, 120)
-      }
-
-      if (in_experimental_grp) {
         if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length) {
-          dispatch(updateTestFeedbacks(choice.option, "correct-answer-to-question"))
-        } else {
-          if (question_concept_feedbacks && question_concept_feedbacks?.synthesis) {
-            dispatch(updateTestFeedbacks(choice.option, question_concept_feedbacks?.synthesis))
-          }
+          dispatch(updateTestFeedbacks(choice.option, 'correct-answer-to-question'))
+        } else if (questionConceptFeedbacks && questionConceptFeedbacks?.synthesis) {
+          dispatch(updateTestFeedbacks(choice.option, questionConceptFeedbacks?.synthesis))
         }
       }
 
@@ -178,85 +154,79 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       setQuestionDone(true)
       setCurrentAnswer(null)
       timer.stop()
-    } else {
-      if (in_experimental_grp) {
-        setHintsUsedThisQuestion(prev => prev + 1) // Increment the hints used
-      }
-
-      if (choice.is_correct && hintsUsedThisQuestion > 0) {
-        setCorrectAfterHints(prev => prev + 1) // Track correct after using hints
-        setTotalHints(prev => prev + hintsUsedThisQuestion) // Add to total hints count
-      }
     }
 
-    const isSelectedChoice = currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)?.length
-      ? currentReadingTestQuestion.choices.filter(ch => ch.option == choice.option)[0].isSelected
-      : false;
-    let markQuestionDone = questionDone;
+    let markQuestionDone = questionDone
 
-    if (choice.is_correct == false && in_experimental_grp) {
-      if (question_concept_feedbacks === undefined || currentReadingTestQuestion.eliciated_construct === undefined) {
+    if (!choice.is_correct && in_experimental_grp) {
+      if (
+        questionConceptFeedbacks === undefined ||
+        currentReadingTestQuestion.eliciated_construct === undefined
+      ) {
         setShowElicitDialog(true)
       } else {
-        const synthesis_feedback = question_concept_feedbacks && question_concept_feedbacks?.synthesis
-          ? question_concept_feedbacks.synthesis
-          : undefined;
+        const synthesisFeedback =
+          questionConceptFeedbacks && questionConceptFeedbacks?.synthesis
+            ? questionConceptFeedbacks.synthesis
+            : undefined
         const itemFeedbacks = currentReadingTestQuestion.item_feedbacks
           ? Object.entries(currentReadingTestQuestion.item_feedbacks)
-            .filter(([, value]) => value !== undefined)
-            .map(([, value]) => value)
-          : [];
-        const mediationFeedbacks = question_concept_feedbacks
-          ? Object.entries(question_concept_feedbacks)
-            .filter(([key]) => key.startsWith('mediation_'))
-            .map(([, value]) => value)
-          : [];
+              .filter(([, value]) => value !== undefined)
+              .map(([, value]) => value)
+          : []
+        const mediationFeedbacks = questionConceptFeedbacks
+          ? Object.entries(questionConceptFeedbacks)
+              .filter(([key]) => key.startsWith('mediation_'))
+              .map(([, value]) => value)
+          : []
 
-        if (choice.is_correct == false) {
-          if (countNotSelectedChoices > 2) {
-            const remainItemFeedbacks = itemFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-            const remainMediationFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
-            if (remainMediationFeedbacks.length > 0) {
-              dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
-              setReceivedFeedback(receivedFeedback + 1)
-            } else {
-              if (remainItemFeedbacks.length > 0) {
-                dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
-                setReceivedFeedback(receivedFeedback + 1)
-              } else if (!feedbacks.includes(synthesis_feedback)) {
-                dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
-                setShowCorrect(true)
-                setQuestionDone(true)
-                timer.stop()
-                markQuestionDone = true
-              }
-            }
-          } else {
-            dispatch(updateTestFeedbacks(choice.option, synthesis_feedback))
+        if (countNotSelectedChoices > 2) {
+          const remainItemFeedbacks = itemFeedbacks.filter(
+            feedback => !feedbacks.includes(feedback)
+          )
+          const remainMediationFeedbacks = mediationFeedbacks.filter(
+            feedback => !feedbacks.includes(feedback)
+          )
+          if (remainMediationFeedbacks.length > 0) {
+            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+            setReceivedFeedback(receivedFeedback + 1)
+          } else if (remainItemFeedbacks.length > 0) {
+            dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+            setReceivedFeedback(receivedFeedback + 1)
+          } else if (!feedbacks.includes(synthesisFeedback)) {
+            dispatch(updateTestFeedbacks(choice.option, synthesisFeedback))
             setShowCorrect(true)
             setQuestionDone(true)
-            setCurrentAnswer(null)
             timer.stop()
             markQuestionDone = true
           }
+        } else {
+          dispatch(updateTestFeedbacks(choice.option, synthesisFeedback))
+          setShowCorrect(true)
+          setQuestionDone(true)
+          setCurrentAnswer(null)
+          timer.stop()
+          markQuestionDone = true
         }
       }
     }
 
+    const isSelectedChoice = currentReadingTestQuestion.choices.filter(
+      ch => ch.option === choice.option
+    )?.length
+      ? currentReadingTestQuestion.choices.filter(ch => ch.option === choice.option)[0].isSelected
+      : false
+
     if (!isSelectedChoice) {
       dispatch(
-        sendReadingTestAnswer(
-          learningLanguage,
-          readingTestSessionId,
-          {
-            type: currentReadingTestQuestion.type,
-            question_id: currentReadingTestQuestion.question_id,
-            answer: choice.option,
-            seenFeedbacks: feedbacks,
-            questionDone: choice.is_correct ? true : markQuestionDone,
-            duration: timer.getTime() / 1000,
-          }
-        )
+        sendReadingTestAnswer(learningLanguage, readingTestSessionId, {
+          type: currentReadingTestQuestion.type,
+          question_id: currentReadingTestQuestion.question_id,
+          answer: choice.option,
+          seenFeedbacks: feedbacks,
+          questionDone: choice.is_correct ? true : markQuestionDone,
+          duration: timer.getTime() / 1000,
+        })
       )
       dispatch(markAnsweredChoice(choice.option))
     }
@@ -266,13 +236,11 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         setQuestionDone(true)
         setShowCorrect(true)
         timer.stop()
-        return
       }
     }
   }
 
   const nextQuestion = () => {
-    console.log("nextQuestion")
     setShowCorrect(false)
     setQuestionDone(false)
     setShowFeedbacks(false)
@@ -283,12 +251,9 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     setAttempts(0)
 
     if (currentReadingQuestionIndex === readingTestQuestions.length - 1) {
-      console.log("finish")
       dispatch(finishLastReadingTestQuestion())
     } else {
-      console.log("next")
       dispatch(nextReadingTestQuestion())
-      setHintsUsedThisQuestion(0) // Reset hints count for the next question
       timer.reset()
       timer.start()
     }
@@ -345,9 +310,9 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
   useEffect(() => {
     if (readingHistory !== undefined && testDone) {
-      setShowStats(true);
+      setShowStats(true)
     }
-  }, [readingHistory]);
+  }, [readingHistory])
 
   useEffect(() => {
     dispatch(getGroups())
@@ -456,9 +421,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
 
   if (showStats) {
-    return (
-      <ReadingTestStats restartTest={restartTest}/>
-    )
+    return <ReadingTestStats restartTest={restartTest} />
   }
 
   return (
@@ -466,7 +429,10 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
           <div className="test-container" style={{ width: '90%' }}>
-            <ReadingTestNextSetDialog showNextSetDialog={showNextSetDialog} confirmNextSet={() => setShowNextSetDialog(false)} />
+            <ReadingTestNextSetDialog
+              showNextSetDialog={showNextSetDialog}
+              confirmNextSet={() => setShowNextSetDialog(false)}
+            />
             <ReadingTestFeedbacks
               showFeedbacks={showFeedbacks}
               closeFeedbacks={() => {
