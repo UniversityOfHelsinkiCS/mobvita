@@ -145,10 +145,10 @@ jobs:
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
-          SENTRY_URL: https://toska.cs.helsinki.fi/
+          SENTRY_URL: https://toska.it.helsinki.fi/
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: toska
-          SENTRY_PROJECT: mobvita
+          SENTRY_ORG: sentryrevita
+          SENTRY_PROJECT: frontend
         with:
           environment: staging
           set_commits: 'skip'
