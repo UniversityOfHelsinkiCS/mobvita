@@ -8,6 +8,7 @@ import './Chatbot.scss';
 import {
     getReadingPracticeChatbotResponse,
     getReadingPracticeAgentConversationHistory,
+    getGeneralChatbotResponse
 } from 'Utilities/redux/chatbotReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
 
@@ -28,6 +29,14 @@ const ReadingPracticeChatBot = () => {
     const latestMessageRef = useRef(null)
 
     const scrollToLatestMessage = () => latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+    const predefinedChatbotRequests = [
+        "chatbot-message-suggestion-next-steps",
+        "chatbot-message-suggestion-performance"
+    ].map(msgId => ({
+        msgId,
+        func: getGeneralChatbotResponse(intl.formatMessage({ id: msgId }))
+    }));
 
     useEffect(() => {
         scrollToLatestMessage()
@@ -108,7 +117,10 @@ const ReadingPracticeChatBot = () => {
                         <Button type="submit" primary disabled={isWaitingForResponse}>
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
-                        <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
+                        <ChatbotSuggestions
+                            isWaitingForResponse={isWaitingForResponse}
+                            predefinedChatbotRequests={predefinedChatbotRequests}
+                        />
                     </form>
                 </>
             )}

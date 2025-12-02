@@ -20,7 +20,13 @@ const GeneralReadingChatBot = () => {
 
     const { messages, isWaitingForResponse, isLoadingHistory, isOpen } = useSelector(({ chatbot }) => chatbot);
     const latestMessageRef = useRef(null)
-
+    const predefinedChatbotRequests = [
+        "chatbot-message-suggestion-next-steps",
+        "chatbot-message-suggestion-performance"
+    ].map(msgId => ({
+        msgId,
+        func: getGeneralChatbotResponse(intl.formatMessage({ id: msgId }))
+    }));
     // Fetch conversation history when chatbot starts
     useEffect(() => {
         dispatch(getGeneralAgentConversationHistory());
@@ -107,7 +113,10 @@ const GeneralReadingChatBot = () => {
                         <Button type="submit" primary disabled={isWaitingForResponse}>
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
-            <ChatbotSuggestions isWaitingForResponse={isWaitingForResponse} />
+                        <ChatbotSuggestions
+                            isWaitingForResponse={isWaitingForResponse}
+                            predefinedChatbotRequests={predefinedChatbotRequests}
+                        />
           </form>
         </>
       )}

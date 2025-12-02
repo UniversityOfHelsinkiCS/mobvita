@@ -1771,5 +1771,7 @@
     "word-nest-show-compounds-label": "Näytä yhdyssanat",
     "story-generating": "Story generating...",
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
-    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story"
+    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
+    "chatbot-message-suggestion-answer-wrong-reason": "Why is the answer wrong",
+    "chatbot-message-suggestion-analyze-context": "Analyze the context structure"
 }
