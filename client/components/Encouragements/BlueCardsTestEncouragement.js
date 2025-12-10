@@ -1,5 +1,5 @@
 import { dictionaryLanguageSelector, images, showAllEncouragements } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -61,7 +61,7 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
           />
         </h2>
         <h5>
-          <FormattedMessage id="blue-cards-test-encouragement-message" />{' '}
+          <FormattedHTMLMessage id="blue-cards-test-encouragement-message" />{': '}
           <span style={{ fontStyle: 'italic' }}>{prevBlueCards?.title}</span>
         </h5>
       </div>
