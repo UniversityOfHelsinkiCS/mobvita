@@ -25,6 +25,7 @@ import FocusedView from 'Components/AnnotationBox/FocusedView'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
 import Lemma from './Lemma'
+import WordNestButton from 'Components/WordNestButton'
 import ContextTranslation from './ContextTranslation'
 
 
@@ -209,20 +210,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 words[translated.lemma]?.length > 0 &&
                 (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
                 !clue && (
-                  <Popup
-                    content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
-                    trigger={
-                      <Button
-                        style={{ padding: '5px' }}
-                        basic
-                        size="mini"
-                        onClick={() => handleNestButtonClick(translated.lemma)}
-                        data-cy="nest-button"
-                      >
-                        <img src={images.network} alt="network icon" width="32" />
-                      </Button>
-                    }
-                  />
+                  <WordNestButton lemma={translated.lemma} />
                 )}
             </div>
           </div>
