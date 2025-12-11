@@ -5,9 +5,17 @@ services:
     build:
       context: ./
       dockerfile: config/dev.Dockerfile
-    image: mobvita_dev
+    image: toska/mobvita:staging
     volumes:
-      - ./:/usr/src/app
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
     ports:
       - 8000:8000
     container_name: mobvita_dev
+    environment:
+      - ENVIRONMENT=development
+      - REVITA_URL=https://revita-test.cs.helsinki.fi/api
+    command: ["npm", "run", "start:dev"]
+    
+volumes:
+  node_modules: {}
