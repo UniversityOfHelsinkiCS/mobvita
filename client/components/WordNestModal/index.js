@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
+import {
+  getWordNestAction,
+  getLinkedWordNestAction,
+  closeWordNestModal,
+} from 'Utilities/redux/wordNestReducer'
 import { learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
@@ -71,12 +75,14 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   const morphemeBoundaryRegex = /[{}()[\]\-/]+/g
   const removeExtraDotRegex = /(^⋅)|(⋅$)|[<>]+/g
   const hyphenCleanupRegex = /(⋅=)|(=⋅)/g
-  const cleanedWord = (word.startsWith('-') && '-' || '') + raw
-    .replace(morphemeBoundaryRegex, '⋅')
-    .replace(removeExtraDotRegex, '')
-    .replace(hyphenCleanupRegex, '-')
-    .replace(/«(.*?)»/g, '<u>$1</u>')
-    .replace('=', '-')
+  const cleanedWord =
+    ((word.startsWith('-') && '-') || '') +
+    raw
+      .replace(morphemeBoundaryRegex, '⋅')
+      .replace(removeExtraDotRegex, '')
+      .replace(hyphenCleanupRegex, '-')
+      .replace(/«(.*?)»/g, '<u>$1</u>')
+      .replace('=', '-')
   // Don't print these words. They are very rare or might even not exist
 
   if (others.includes('---') || others.includes('???') || rank >= 50000) return null
@@ -189,12 +195,14 @@ const makeWordNest = (parents, wordsWithIDs) =>
     return cleanConcept
   })
 
-const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
+const WordNestModal = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
+  const wordNestSlice = useSelector(state => state.wordNest || {})
+  const { modalOpen = false, wordToCheck: modalWordToCheck, data: nests = [] } = wordNestSlice
+
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { data: nests } = useSelector(({ wordNest }) => wordNest)
-  
+
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
 
@@ -202,49 +210,59 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [previousCheckedWord, setPreviousCheckedWord] = useState('')
   const [showCompounds, setShowCompounds] = useState(false)
-  const words = nests && nests[wordToCheck] || nests && nests[previousCheckedWord] || []
+  const words = (nests && nests[modalWordToCheck]) || (nests && nests[previousCheckedWord]) || []
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
-  const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
-    rootLemmas?.some(r => e.parents?.includes(r.nest_id)))
-  const hasSeveralRoots = rootLemmas?.length > 1 && rootLemmas?.length > 1 || secondRootLemmas?.length > 1
+  const secondRootLemmas = words?.filter(
+    e => rootLemmas?.length && rootLemmas?.some(r => e.parents?.includes(r.nest_id))
+  )
+  const hasSeveralRoots =
+    (rootLemmas?.length > 1 && rootLemmas?.length > 1) || secondRootLemmas?.length > 1
+  const wordNestTree = makeWordNest(
+    (rootLemmas?.length > 1 && rootLemmas) || secondRootLemmas,
+    words
+  )
   const hasAdditionalInfo = words.some(word => word.others?.length > 0)
-  const wordNest = makeWordNest(rootLemmas?.length > 1 && rootLemmas || secondRootLemmas, words)
   const wordNestHasCompounds = words.some(w => w.is_compound)
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
   const handleModalclose = () => {
-    setWordToCheck('-')
-    setOpen(false)
+    dispatch(setWordNestWord('-'))
+    dispatch(closeWordNestModal())
   }
 
   useEffect(() => {
     setShowMoreInfo(false)
-    if (wordToCheck) setModalTitle(formatModalTitle())
-  }, [open])
+    if (modalWordToCheck) setModalTitle(formatModalTitle())
+  }, [modalOpen])
 
   useEffect(() => {
     setModalTitle(formatModalTitle())
   }, [rootLemmas])
 
   useEffect(() => {
-    if (wordToCheck) {
-      const nestLemmas = nests && nests[previousCheckedWord]?.map(w => w.word) || []
-
-      if (!nestLemmas?.includes(wordToCheck)) {
-        setPreviousCheckedWord(wordToCheck)
+    if (modalWordToCheck) {
+      const nestLemmas = (nests && nests[previousCheckedWord]?.map(w => w.word)) || []
+      if (!nestLemmas?.includes(modalWordToCheck)) {
+        setPreviousCheckedWord(modalWordToCheck)
         dispatch(
           getWordNestAction({
-            words: wordToCheck,
+            words: modalWordToCheck,
             language: learningLanguage,
           })
         )
       }
     }
-  }, [wordToCheck])
+  }, [modalWordToCheck])
 
   return (
-    <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
+    <Modal
+      open={modalOpen}
+      centered={false}
+      dimmer="blurring"
+      size="large"
+      onClose={handleModalclose}
+    >
       <Modal.Header className="bold wordnest-modal-header">
         <div className="wordnest-modal-header-items">
           <span>
@@ -282,12 +300,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
                 maxHeight: windowHeight * 0.85,
               }}
             >
-              {wordNest?.map((n, index) => (
+              {wordNestTree?.map((n, index) => (
                 <WordNest
                   key={`${n.word}-${index}`}
                   wordNest={n}
                   hasSeveralRoots={hasSeveralRoots}
-                  wordToCheck={wordToCheck}
+                  wordToCheck={modalWordToCheck}
                   showMoreInfo={showMoreInfo}
                   showCompounds={showCompounds}
                 />
@@ -318,12 +336,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
                 overflowY: 'auto',
               }}
             >
-              {wordNest?.map((n, index) => (
+              {wordNestTree?.map((n, index) => (
                 <WordNest
                   key={`${n.word}-${index}`}
                   wordNest={n}
                   hasSeveralRoots={hasSeveralRoots}
-                  wordToCheck={wordToCheck}
+                  wordToCheck={modalWordToCheck}
                   showCompounds={showCompounds}
                 />
               ))}

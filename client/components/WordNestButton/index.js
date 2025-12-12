@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Button, Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
+import { openWordNestModal } from 'Utilities/redux/wordNestReducer'
 
 const WordNestButton = ({
   lemma,
@@ -18,8 +19,10 @@ const WordNestButton = ({
 
   const handleClick = () => {
     console.log('WordNestButton clicked for lemma:', lemma)
-    if (onClick) return onClick(lemma)
-    dispatch({ type: 'OPEN_WORD_NEST_MODAL', payload: lemma })
+    if (onClick) {
+      return onClick(lemma)
+    }
+    dispatch(openWordNestModal(lemma))
   }
 
   const btn = (

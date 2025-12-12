@@ -3,6 +3,15 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+export const OPEN_WORD_NEST_MODAL = 'OPEN_WORD_NEST_MODAL'
+export const CLOSE_WORD_NEST_MODAL = 'CLOSE_WORD_NEST_MODAL'
+export const SET_WORD_NEST_WORD = 'SET_WORD_NEST_WORD'
+
+export const openWordNestModal = lemma => ({ type: OPEN_WORD_NEST_MODAL, payload: lemma })
+export const closeWordNestModal = () => ({ type: CLOSE_WORD_NEST_MODAL })
+export const setWordNestWord = lemma => ({ type: SET_WORD_NEST_WORD, payload: lemma })
+
+
 export const getWordNestAction = ({ words, language }) => {
   if (words === '-') return null
 
@@ -27,6 +36,22 @@ export const getLinkedWordNestAction = ({ word, language }) => {
 
 export default (state = { data: [] }, action) => {
   switch (action.type) {
+    case 'OPEN_WORD_NEST_MODAL':
+      return {
+        ...state,
+        modalOpen: true,
+        wordToCheck: action.payload ?? state.wordToCheck,
+      }
+    case 'CLOSE_WORD_NEST_MODAL':
+      return {
+        ...state,
+        modalOpen: false,
+      }
+    case 'SET_WORD_NEST_WORD':
+      return {
+        ...state,
+        wordToCheck: action.payload,
+      }
     case 'GET_WORD_NEST_ATTEMPT':
       return {
         ...state,
@@ -40,7 +65,6 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
-
     case 'GET_WORD_NEST_FAILURE':
       return {
         ...state,
@@ -48,7 +72,6 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: true,
       }
-
     case 'GET_LINKED_WORD_NEST_ATTEMPT':
       return {
         ...state,
@@ -69,7 +92,6 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: false,
       }
-
     case 'GET_LINKED_WORD_NEST_FAILURE':
       return {
         ...state,
@@ -77,7 +99,6 @@ export default (state = { data: [] }, action) => {
         pending: false,
         error: true,
       }
-
     default:
       return state
   }

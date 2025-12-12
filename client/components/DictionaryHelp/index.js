@@ -8,7 +8,6 @@ import {
   setWords,
   changeTranslationStageAction,
 } from 'Utilities/redux/translationReducer'
-import WordNestModal from 'Components/WordNestModal'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
@@ -24,7 +23,9 @@ import { Spinner } from 'react-bootstrap'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
+import { openWordNestModal, setWordNestWord } from 'Utilities/redux/wordNestReducer'
 import Lemma from './Lemma'
+import WordNestModal from 'Components/WordNestModal'
 import WordNestButton from 'Components/WordNestButton'
 import ContextTranslation from './ContextTranslation'
 
@@ -33,11 +34,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
 
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
-  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
-  const [wordNestChosenWord, setWordNestChosenWord] = useState('')
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  const { modalOpen: wordNestModalOpen, wordToCheck: wordNestChosenWord } = useSelector(({ wordNest }) => wordNest)
   
   const {
     pending,
@@ -123,13 +123,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   }
 
   useEffect(() => {
-    if (!inCrossword && translation && !wordNestModalOpen)
-      setWordNestChosenWord(
-        translation
-          ?.filter(t => t.lemma)
-          .map(t => t.lemma)
-          .join('+')
-      )
+    if (!inCrossword && translation && !wordNestModalOpen) {
+      const joinedLemmas = translation
+        ?.filter(t => t.lemma)
+        .map(t => t.lemma)
+        .join('+')
+      if (joinedLemmas) {
+        dispatch(setWordNestWord(joinedLemmas))
+      }
+    }
   }, [translation, wordNestModalOpen])
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
@@ -158,11 +160,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         ))}
       </List>
     )
-
-  const handleNestButtonClick = lemma => {
-    setWordNestChosenWord(lemma)
-    setWordNestModalOpen(true)
-  }
 
   const translations =
     translation &&
@@ -404,12 +401,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 </div>
                 {!inWordNestModal &&
                   (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
-                    <WordNestModal
-                      wordToCheck={wordNestChosenWord}
-                      setWordToCheck={setWordNestChosenWord}
-                      open={wordNestModalOpen}
-                      setOpen={setWordNestModalOpen}
-                    />
+                    <WordNestModal />
                 )}
               </div>
                   {!inWordNestModal && !inCrossword && !pending &&
