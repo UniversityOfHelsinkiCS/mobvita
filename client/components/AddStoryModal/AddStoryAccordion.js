@@ -123,20 +123,20 @@ const AddStoryAccordion = ({ closeModal }) => {
 
       <Menu.Item className="add-story-accordion-item">
         <Accordion.Title
-          active={accordionState === 3}
+          active={accordionState === 4}
           content={
-            <span className={getAccordionItemTitleClass(accordionState, 3)}>
+            <span className={getAccordionItemTitleClass(accordionState, 4)}>
               <i>
                 <FormattedMessage id="recommended-sites" />
               </i>
             </span>
           }
-          index={3}
+          index={4}
           onClick={handleClick}
         />
         <Accordion.Content
           className="add-story-accordion-item-content"
-          active={accordionState === 3}
+          active={accordionState === 4}
           content={<RecommendedSites />}
         />
       </Menu.Item>
