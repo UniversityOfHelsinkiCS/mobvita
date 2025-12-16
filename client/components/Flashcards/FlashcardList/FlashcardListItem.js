@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { sanitizeHtml, flashcardColors, hiddenFeatures } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
@@ -81,7 +81,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         </Accordion.Toggle>
         <Popup
           position="top center"
-          content={<FormattedMessage id="explain-i-know-word" />}
+          content={<FormattedHTMLMessage id="explain-i-know-word" />}
           trigger={
             <Icon
               name="check"
@@ -92,7 +92,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         />
         <Popup
           position="top center"
-          content={<FormattedMessage id="explain-i-dont-know-word" />}
+          content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
           trigger={
             <Icon
               name="question"
