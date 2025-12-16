@@ -134,22 +134,25 @@ const PracticeChatbot = () => {
           word_chat_history = chat_history[wordId.toString()];
       }
     dispatch(setConversationHistory(word_chat_history))
-    setPredefinedChatbotRequests(predefinedChatbotMsg.map(id => (
-      {
-        msgId: intl.formatMessage({ id }),
-        func: getPracticeChatbotResponse(
-          session_id,
-          storyid,
-          snippet_id,
-          sentence_id,
-          wordId,
-          intl.formatMessage({ id }).trim(),
-          currentAnswer.trim(),
-          exerciseContext,
-          (hints || []).map(hint => hint.easy)
-        )
-      }
-    )))
+    if (Object.keys(currentWord).length) {
+      const { users_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
+      setPredefinedChatbotRequests(predefinedChatbotMsg.map(id => (
+        {
+          msgId: intl.formatMessage({ id }),
+          func: getPracticeChatbotResponse(
+            session_id,
+            storyid,
+            snippet_id,
+            sentence_id,
+            wordId,
+            intl.formatMessage({ id }).trim(),
+            users_answer.trim(),
+            exerciseContext,
+            (hints || []).map(hint => hint.easy)
+          )
+        }
+      )))
+    }
   }, [currentWord])
 
   useEffect(() => {
@@ -358,7 +361,7 @@ const PracticeChatbot = () => {
                 predefinedChatbotRequests={predefinedChatbotRequests}
               />
             </form>): (
-              <Button primary onMouseDown={handlePreHints}>
+              <Button primary onMouseDown={handlePreHints} disabled={!validToChat || isWaitingForResponse}>
                 <FormattedMessage id="ask-for-a-hint" />
               </Button>
             )}
