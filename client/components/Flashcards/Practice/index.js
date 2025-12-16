@@ -62,7 +62,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     } else {
       ;({ cards } = flashcards)
     }
-
+    cards = cards.map(card => ({...card, correct: false }))
     return { cards, pending, deletePending, sessionId }
   }, shallowEqual)
 

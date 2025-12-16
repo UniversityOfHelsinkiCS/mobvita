@@ -43,7 +43,7 @@ const Fillin = ({
   }
 
   useEffect(() => {
-    card['correct'] = answerCorrect
+    card.correct = answerCorrect
     
     if (answerCorrect === true) {
       dispatch(addToCorrectAnswers())
