@@ -881,6 +881,6 @@
     "story-generating": "Story generating...",
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
-    "chatbot-message-suggestion-answer-wrong-reason": "Why is the answer wrong",
-    "chatbot-message-suggestion-analyze-context": "Analyze the context structure"
+    "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
+    "chatbot-message-suggestion-analyze-context": "Help me understand the context"
 }

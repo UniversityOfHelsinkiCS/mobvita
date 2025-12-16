@@ -1396,7 +1396,7 @@
     "save-story": "Save story",
     "story-updated-toaster": "Story updated!",
     "story-title-validation": "Story title has to be at least 3 characters long",
-    "story-top-topics-explain": "Working with this story helps you master especially these topics.\n<br/>\n<br/>\nNB: When you practice, only topics suitable for <b>your level</b> will be selected for exercises.",
+    "story-top-topics-explain": "Working with this story helps you master especially these topics.\n<br/>\n<br/>\nNote: When you practice, only topics suitable for <b>your level</b> will be selected for exercises.",
     "customize-story-practice-EXPLAIN": "Select what you would like to practice...",
     "click-to-see-translation": "Click to see the translation:",
     "start-practice-story": "Begin practice",
@@ -1626,6 +1626,6 @@
     "story-generating": "Story generating...",
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
-    "chatbot-message-suggestion-answer-wrong-reason": "Why is the answer wrong",
-    "chatbot-message-suggestion-analyze-context": "Analyze the context structure"
+    "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
+    "chatbot-message-suggestion-analyze-context": "Help me understand the context"
 }

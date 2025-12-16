@@ -1768,9 +1768,9 @@
     "blue-cards-test-encouragement-dismiss-button": "Congedare",
     "reading-test-cycle-popup-title": "Seleziona il ciclo di domande",
     "word-nest-show-compounds-label": "Mostra parole composte",
-    "story-generating": "Story generating...",
-    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
-    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
-    "chatbot-message-suggestion-answer-wrong-reason": "Why is the answer wrong",
-    "chatbot-message-suggestion-analyze-context": "Analyze the context structure"
+    "story-generating": "La storia è in fase di generazione",
+    "select-story-vocab-diff": "Scegli la difficoltà del vocabolario per la storia",
+    "select-story-themes-and-vocabulary": "Seleziona temi e livello di vocabolario per la storia",
+    "chatbot-message-suggestion-answer-wrong-reason": "Perché la mia risposta è sbagliata?",
+    "chatbot-message-suggestion-analyze-context": "Aiutami a capire il contesto"
 }

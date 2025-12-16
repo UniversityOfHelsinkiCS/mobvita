@@ -1711,7 +1711,7 @@
     "story-top-dict": "Dictionary",
     "topics-header": "Topics",
     "notes-header": "Notes",
-    "story-top-topics-explain": "Working with this story helps you master especially these topics.\n<br/>\n<br/>\nNB: When you practice, only topics suitable for <b>your level</b> will be selected for exercises.",
+    "story-top-topics-explain": "Working with this story helps you master especially these topics.\n<br/>\n<br/>\nNote: When you practice, only topics suitable for <b>your level</b> will be selected for exercises.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Click any <u>unfamiliar</u> word to see its translations!",
     "dictionary-header": "Dictionary",
     "correct-performance": "correct",
@@ -1772,6 +1772,6 @@
     "story-generating": "Story generating...",
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
-    "chatbot-message-suggestion-answer-wrong-reason": "Why is the answer wrong",
-    "chatbot-message-suggestion-analyze-context": "Analyze the context structure"
+    "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
+    "chatbot-message-suggestion-analyze-context": "Help me understand the context"
 }
