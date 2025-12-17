@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
+import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 
 const FlashcardBack = ({
   answerCorrect,
@@ -55,6 +56,7 @@ const FlashcardBack = ({
       <div className="flashcard-input-and-result-container">
         <FlashcardResult answerCorrect={answerCorrect} />
       </div>
+      <WordNestLauncher lemma={lemma} translation={glosses} />
     </Flashcard>
   )
 }

@@ -10,6 +10,7 @@ const WordNestLauncher = ({
   inCrossword = false,
   popupMessageId = 'explain-wordnest-modal',
   buttonStyle = {},
+  divStyle = { alignSelf: 'flex-start', marginLeft: '1em' },
   buttonSize = 'mini',
   dataCy = 'nest-button',
 }) => {
@@ -43,16 +44,16 @@ const WordNestLauncher = ({
       <Popup
         content={intl.formatMessage({ id: popupMessageId })}
         trigger={
-          <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-          <Button
-            style={{ padding: '5px', ...buttonStyle }}
-            basic
-            size={buttonSize}
-            onClick={handleClick}
-            data-cy={dataCy}
-          >
-            <img src={images.network} alt="network icon" width="32" />
-          </Button>
+          <div style={divStyle}>
+            <Button
+              style={{ padding: '5px', ...buttonStyle }}
+              basic
+              size={buttonSize}
+              onClick={handleClick}
+              data-cy={dataCy}
+            >
+              <img src={images.network} alt="network icon" width="32" />
+            </Button>
           </div>
         }
       />
