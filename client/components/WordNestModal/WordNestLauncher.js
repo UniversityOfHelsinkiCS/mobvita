@@ -43,6 +43,7 @@ const WordNestLauncher = ({
       <Popup
         content={intl.formatMessage({ id: popupMessageId })}
         trigger={
+          <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
           <Button
             style={{ padding: '5px', ...buttonStyle }}
             basic
@@ -52,6 +53,7 @@ const WordNestLauncher = ({
           >
             <img src={images.network} alt="network icon" width="32" />
           </Button>
+          </div>
         }
       />
 

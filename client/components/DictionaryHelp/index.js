@@ -148,7 +148,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const canShowWordNest =
     !inWordNestModal &&
     !clue &&
-    words &&
     (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
 
   const translations =
@@ -191,15 +190,13 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               )}
               {translationsList(translated)}
             </div>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {canShowWordNest && (
-                <WordNestLauncher
-                  lemma={translated.lemma}
-                  translation={translation}
-                  inCrossword={inCrossword}
-                />
-              )}
-            </div>
+            {canShowWordNest && (
+              <WordNestLauncher
+                lemma={translated.lemma}
+                translation={translation}
+                inCrossword={inCrossword}
+              />
+            )}
           </div>
         )
       })
