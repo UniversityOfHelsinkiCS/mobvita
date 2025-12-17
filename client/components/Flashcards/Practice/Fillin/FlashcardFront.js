@@ -5,6 +5,7 @@ import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 import FlashcardHint from './FlashcardHint'
 import Flashcard from '../Flashcard'
+import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 
 const FlashcardFront = ({
   answerChecked,
@@ -49,6 +50,13 @@ const FlashcardFront = ({
           />
           <FlashcardResult answerCorrect={answerCorrect} />
         </div>
+      )}
+      {answerChecked && (
+        <WordNestLauncher
+          lemma={lemma}
+          className="pop-in-word-nest"
+          buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
+        />
       )}
     </Flashcard>
   )

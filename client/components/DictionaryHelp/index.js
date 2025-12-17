@@ -8,13 +8,11 @@ import {
   setWords,
   changeTranslationStageAction,
 } from 'Utilities/redux/translationReducer'
-import WordNestModal from 'Components/WordNestModal'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
   translatableLanguages,
   getTextStyle,
-  images,
   flashcardColors,
   hiddenFeatures,
 } from 'Utilities/common'
@@ -26,14 +24,13 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
 import Lemma from './Lemma'
 import ContextTranslation from './ContextTranslation'
+import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 
 
 const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
 
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
-  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
-  const [wordNestChosenWord, setWordNestChosenWord] = useState('')
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -121,16 +118,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
-  useEffect(() => {
-    if (!inCrossword && translation && !wordNestModalOpen)
-      setWordNestChosenWord(
-        translation
-          ?.filter(t => t.lemma)
-          .map(t => t.lemma)
-          .join('+')
-      )
-  }, [translation, wordNestModalOpen])
-
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
         key: element,
@@ -158,10 +145,10 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       </List>
     )
 
-  const handleNestButtonClick = lemma => {
-    setWordNestChosenWord(lemma)
-    setWordNestModalOpen(true)
-  }
+  const canShowWordNest =
+    !inWordNestModal &&
+    !clue &&
+    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
 
   const translations =
     translation &&
@@ -203,28 +190,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               )}
               {translationsList(translated)}
             </div>
-            <div style={{ alignSelf: 'flex-start', marginLeft: '1em' }}>
-              {!inWordNestModal &&
-                words &&
-                words[translated.lemma]?.length > 0 &&
-                (learningLanguage === 'Russian' || learningLanguage === 'Finnish') &&
-                !clue && (
-                  <Popup
-                    content={intl.formatMessage({ id: 'explain-wordnest-modal' })}
-                    trigger={
-                      <Button
-                        style={{ padding: '5px' }}
-                        basic
-                        size="mini"
-                        onClick={() => handleNestButtonClick(translated.lemma)}
-                        data-cy="nest-button"
-                      >
-                        <img src={images.network} alt="network icon" width="32" />
-                      </Button>
-                    }
-                  />
-                )}
-            </div>
+            {canShowWordNest && (
+              <WordNestLauncher
+                lemma={translated.lemma}
+                translation={translation}
+                inCrossword={inCrossword}
+                buttonStyle={{ background: 'none' }}
+              />
+            )}
           </div>
         )
       })
@@ -364,7 +337,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           </div>
         )}
 
-
         {!mobileDisplayAnnotations && showDictionaryBox && translationResults() && (
           <div className="align-right" style={{ color: 'slateGrey' }}>
             <FormattedMessage id="translation-target-language" />
@@ -414,18 +386,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                   )}
                   {translationResults()}
                 </div>
-                {!inWordNestModal &&
-                  (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
-                    <WordNestModal
-                      wordToCheck={wordNestChosenWord}
-                      setWordToCheck={setWordNestChosenWord}
-                      open={wordNestModalOpen}
-                      setOpen={setWordNestModalOpen}
-                    />
-                )}
-              </div>
-                  {!inWordNestModal && !inCrossword && !pending &&
-                    <ContextTranslation surfaceWord={surfaceWord} wordTranslated={translation} />}
+            </div>
+              {!inWordNestModal && !inCrossword && !pending &&
+                <ContextTranslation surfaceWord={surfaceWord} wordTranslated={translation} />}
             </div>
           )}
            </>

@@ -3249,6 +3249,19 @@ label.file-upload-btn {
   }
 }
 
+.pop-in-word-nest {
+  opacity: 0;
+  animation: popInWordNest 0s steps(1, end) forwards;
+  animation-delay: 1s;
+}
+
+@keyframes popInWordNest {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .tour-button, .tour-button:disabled {
   background-color: transparent;
   border: none;
