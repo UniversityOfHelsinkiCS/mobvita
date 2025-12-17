@@ -5,6 +5,7 @@ import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 import FlashcardHint from './FlashcardHint'
 import Flashcard from '../Flashcard'
+import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 
 const FlashcardFront = ({
   answerChecked,
@@ -50,6 +51,7 @@ const FlashcardFront = ({
           <FlashcardResult answerCorrect={answerCorrect} />
         </div>
       )}
+      {answerCorrect && <WordNestLauncher lemma={lemma} />}
     </Flashcard>
   )
 }

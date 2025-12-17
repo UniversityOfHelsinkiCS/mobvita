@@ -46,8 +46,7 @@ const WordNestLauncher = ({
         trigger={
           <div style={divStyle}>
             <Button
-              style={{ padding: '5px', ...buttonStyle }}
-              basic
+              style={{ padding: '5px', outline: '1px solid #ccc', ...buttonStyle }}
               size={buttonSize}
               onClick={handleClick}
               data-cy={dataCy}

@@ -195,6 +195,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 lemma={translated.lemma}
                 translation={translation}
                 inCrossword={inCrossword}
+                buttonStyle={{ background: 'none' }}
               />
             )}
           </div>
