@@ -51,7 +51,13 @@ const FlashcardFront = ({
           <FlashcardResult answerCorrect={answerCorrect} />
         </div>
       )}
-      {answerCorrect && <WordNestLauncher lemma={lemma} />}
+      {answerChecked && (
+        <WordNestLauncher
+          lemma={lemma}
+          className="pop-in-word-nest"
+          buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
+        />
+      )}
     </Flashcard>
   )
 }

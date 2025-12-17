@@ -9,6 +9,7 @@ const WordNestLauncher = ({
   translation,
   inCrossword = false,
   popupMessageId = 'explain-wordnest-modal',
+  className = '',
   buttonStyle = {},
   divStyle = { alignSelf: 'flex-start', marginLeft: '1em' },
   buttonSize = 'mini',
@@ -46,6 +47,7 @@ const WordNestLauncher = ({
         trigger={
           <div style={divStyle}>
             <Button
+              className={className}
               style={{ padding: '5px', outline: '1px solid #ccc', ...buttonStyle }}
               size={buttonSize}
               onClick={handleClick}

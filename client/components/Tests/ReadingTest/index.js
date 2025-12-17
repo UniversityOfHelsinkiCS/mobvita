@@ -4,13 +4,11 @@ import { Select, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getReadingTestQuestions, resetTests } from 'Utilities/redux/testReducer'
-
 import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
 import ReadingTest from './ReadingTest'
 
-import './index.css'
 
 const ReadingTestView = () => {
   const dispatch = useDispatch()

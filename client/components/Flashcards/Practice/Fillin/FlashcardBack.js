@@ -56,7 +56,10 @@ const FlashcardBack = ({
       <div className="flashcard-input-and-result-container">
         <FlashcardResult answerCorrect={answerCorrect} />
       </div>
-      <WordNestLauncher lemma={lemma} buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }} />
+      <WordNestLauncher
+        lemma={lemma}
+        buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
+      />
     </Flashcard>
   )
 }
