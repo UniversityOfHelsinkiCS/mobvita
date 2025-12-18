@@ -39,11 +39,13 @@ const FlashcardBack = ({
     <Flashcard {...props}>
       <span
         style={{
+          display: 'block',
           textAlign: 'center',
           fontWeight: 550,
           fontSize: '20px',
           paddingBottom: '1em',
           paddingTop: '1em',
+          flexShrink: 0,
         }}
       >
         {lemma}

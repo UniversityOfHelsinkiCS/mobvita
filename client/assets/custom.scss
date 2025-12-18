@@ -1788,6 +1788,8 @@ label.file-upload-btn {
     flex-direction: column;
     justify-content: center;
     overflow: auto;
+    padding: 4em 2em;
+    box-sizing: border-box;
   }
 
   &-title {
