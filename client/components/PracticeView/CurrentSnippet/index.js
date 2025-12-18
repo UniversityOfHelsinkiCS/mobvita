@@ -307,7 +307,7 @@ const CurrentSnippet = ({
           e => !cachedSnippetIds?.map(x => x - 1).includes(e) && e <= numSnippets - 1
         )
       )
-      if (nextCachedSnippetId <= numSnippets - 1 && nextCachedSnippetId >= 0) {
+      if (nextCachedSnippetId < numSnippets - 1 && nextCachedSnippetId >= 0) {
         await dispatch(
           cacheStorySnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
         )
