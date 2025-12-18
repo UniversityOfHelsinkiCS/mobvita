@@ -134,11 +134,21 @@ const PracticeChatbot = () => {
           word_chat_history = chat_history[wordId.toString()];
       }
     dispatch(setConversationHistory(word_chat_history))
+  }, [currentWord])
+
+  useEffect(() => {
+      let updatedChatHistory = { ...chat_history };
+      updatedChatHistory[wordId] = messages;
+      dispatch(setSnippetChatHistory(updatedChatHistory))
+  }, [messages])
+
+  useEffect(() => { 
     if (Object.keys(currentWord).length) {
       const { users_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
+      setCurrentAnswer(users_answer)
       setPredefinedChatbotRequests(predefinedChatbotMsg.map(id => (
         {
-          msgId: intl.formatMessage({ id }),
+          msgId: id,
           func: getPracticeChatbotResponse(
             session_id,
             storyid,
@@ -153,13 +163,7 @@ const PracticeChatbot = () => {
         }
       )))
     }
-  }, [currentWord])
-
-  useEffect(() => {
-      let updatedChatHistory = { ...chat_history };
-      updatedChatHistory[wordId] = messages;
-      dispatch(setSnippetChatHistory(updatedChatHistory))
-  }, [messages])
+  }, [currentAnswers])
 
   /* ??? move to CSS */
   const info_circle_style = {
