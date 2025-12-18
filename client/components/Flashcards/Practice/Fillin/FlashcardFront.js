@@ -23,7 +23,6 @@ const FlashcardFront = ({
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const sameLanguage = learningLanguage === dictionaryLanguage
   const fontClass = lemma.length < 15 ? 'flashcard-title' : 'flashcard-title-small'
-
   const [displayedHints, setDisplayedHints] = useState([])
 
   return (

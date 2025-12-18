@@ -71,12 +71,14 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   const morphemeBoundaryRegex = /[{}()[\]\-/]+/g
   const removeExtraDotRegex = /(^⋅)|(⋅$)|[<>]+/g
   const hyphenCleanupRegex = /(⋅=)|(=⋅)/g
-  const cleanedWord = (word.startsWith('-') && '-' || '') + raw
-    .replace(morphemeBoundaryRegex, '⋅')
-    .replace(removeExtraDotRegex, '')
-    .replace(hyphenCleanupRegex, '-')
-    .replace(/«(.*?)»/g, '<u>$1</u>')
-    .replace('=', '-')
+  const cleanedWord =
+    ((word.startsWith('-') && '-') || '') +
+    raw
+      .replace(morphemeBoundaryRegex, '⋅')
+      .replace(removeExtraDotRegex, '')
+      .replace(hyphenCleanupRegex, '-')
+      .replace(/«(.*?)»/g, '<u>$1</u>')
+      .replace('=', '-')
   // Don't print these words. They are very rare or might even not exist
 
   if (others.includes('---') || others.includes('???') || rank >= 50000) return null
@@ -163,7 +165,12 @@ const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, showCo
       {wordNest.children &&
         [...wordNest.children]
           ?.filter(c => (showCompounds ? true : !c.is_compound))
-          .sort((a, b) => a.word.localeCompare(b.word))
+          .sort((a, b) => {
+            if (a.is_compound !== b.is_compound) {
+              return a.is_compound ? 1 : -1
+            }
+            return a.word.localeCompare(b.word)
+          })
           .map((n, index) => (
             <WordNest
               key={`${wordNest.word}-${index}`}
@@ -194,7 +201,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { data: nests } = useSelector(({ wordNest }) => wordNest)
-  
+
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const smallWindow = windowWidth < 1024
 
@@ -202,13 +209,15 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [previousCheckedWord, setPreviousCheckedWord] = useState('')
   const [showCompounds, setShowCompounds] = useState(false)
-  const words = nests && nests[wordToCheck] || nests && nests[previousCheckedWord] || []
+  const words = (nests && nests[wordToCheck]) || (nests && nests[previousCheckedWord]) || []
   const rootLemmas = words?.filter(e => e.parents?.length === 0)
-  const secondRootLemmas = words?.filter(e => rootLemmas?.length && 
-    rootLemmas?.some(r => e.parents?.includes(r.nest_id)))
-  const hasSeveralRoots = rootLemmas?.length > 1 && rootLemmas?.length > 1 || secondRootLemmas?.length > 1
+  const secondRootLemmas = words?.filter(
+    e => rootLemmas?.length && rootLemmas?.some(r => e.parents?.includes(r.nest_id))
+  )
+  const hasSeveralRoots =
+    (rootLemmas?.length > 1 && rootLemmas?.length > 1) || secondRootLemmas?.length > 1
   const hasAdditionalInfo = words.some(word => word.others?.length > 0)
-  const wordNest = makeWordNest(rootLemmas?.length > 1 && rootLemmas || secondRootLemmas, words)
+  const wordNest = makeWordNest((rootLemmas?.length > 1 && rootLemmas) || secondRootLemmas, words)
   const wordNestHasCompounds = words.some(w => w.is_compound)
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
@@ -229,7 +238,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
 
   useEffect(() => {
     if (wordToCheck) {
-      const nestLemmas = nests && nests[previousCheckedWord]?.map(w => w.word) || []
+      const nestLemmas = (nests && nests[previousCheckedWord]?.map(w => w.word)) || []
 
       if (!nestLemmas?.includes(wordToCheck)) {
         setPreviousCheckedWord(wordToCheck)
