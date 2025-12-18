@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Button, Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
+import { useDispatch } from 'react-redux'
 import { images } from 'Utilities/common'
+import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import WordNestModal from 'Components/WordNestModal'
 
 const WordNestLauncher = ({
@@ -16,12 +18,12 @@ const WordNestLauncher = ({
   dataCy = 'nest-button',
 }) => {
   const intl = useIntl()
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
   const [wordToCheck, setWordToCheck] = useState('')
 
   const joinedTranslationLemmas = useMemo(() => {
     if (!translation || translation === 'no-clue-translation') return ''
-    console.log(translation)
     if (!Array.isArray(translation)) return ''
     return translation
       .filter(t => t?.lemma)
@@ -30,13 +32,18 @@ const WordNestLauncher = ({
   }, [translation])
 
   useEffect(() => {
-    if (!inCrossword && joinedTranslationLemmas && !open) {
+    if (!inCrossword && joinedTranslationLemmas) {
       setWordToCheck(joinedTranslationLemmas)
+    } else if (lemma) {
+      setWordToCheck(lemma)
     }
-  }, [inCrossword, joinedTranslationLemmas, open])
+  }, [inCrossword, joinedTranslationLemmas, lemma])
 
   const handleClick = () => {
     setWordToCheck(lemma)
+    if (lemma) {
+      dispatch(getTranslationAction(lemma))
+    }
     setOpen(true)
   }
 

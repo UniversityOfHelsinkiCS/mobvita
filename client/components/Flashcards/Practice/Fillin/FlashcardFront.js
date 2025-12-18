@@ -16,6 +16,7 @@ const FlashcardFront = ({
   phonetics,
   focusedAndBigScreen,
   stage,
+  translation,
   ...props
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -54,6 +55,7 @@ const FlashcardFront = ({
       {answerChecked && (
         <WordNestLauncher
           lemma={lemma}
+          translation={translation}
           className="pop-in-word-nest"
           buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
         />

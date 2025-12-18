@@ -12,6 +12,7 @@ const FlashcardBack = ({
   infoMessage,
   lemma,
   handleIndexChange,
+  translation,
   ...props
 }) => {
   const handleEnter = useCallback(event => {
@@ -58,6 +59,7 @@ const FlashcardBack = ({
       </div>
       <WordNestLauncher
         lemma={lemma}
+        translation={translation}
         buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
       />
     </Flashcard>

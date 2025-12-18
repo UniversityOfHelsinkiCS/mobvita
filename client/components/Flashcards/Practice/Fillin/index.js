@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import { updateFlashcard, addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
+import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import {
   levenshteinDistance,
   normalizeDiacritics,
   confettiRain,
   finalConfettiRain,
+  learningLanguageSelector,
 } from 'Utilities/common'
 import { useIntl } from 'react-intl'
 import FlashcardFront from './FlashcardFront'
@@ -33,8 +35,22 @@ const Fillin = ({
   const [infoMessage, setInfoMessage] = useState('')
   const dispatch = useDispatch()
   const intl = useIntl()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
 
   const { glosses, format, _id: id, stage, lemma, phonetics } = card
+
+  useEffect(() => {
+    if (lemma && flipped) {
+      dispatch(
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: lemma,
+          dictionaryLanguage,
+        })
+      )
+    }
+  }, [lemma, flipped, learningLanguage, dictionaryLanguage])
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
   const getNewHints = unsavedHint => {
@@ -158,12 +174,15 @@ const Fillin = ({
     )
   }
 
+  const translationForWordNest = lemma ? [{ lemma }] : null
+
   return (
     <ReactCardFlip isFlipped={flipped}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
         hints={hints}
+        translation={translationForWordNest}
         {...cardProps}
       />
       <FlashcardBack
@@ -172,6 +191,7 @@ const Fillin = ({
         swipeIndex={swipeIndex}
         handleIndexChange={handleIndexChange}
         infoMessage={infoMessage}
+        translation={translationForWordNest}
         {...cardProps}
       />
     </ReactCardFlip>
