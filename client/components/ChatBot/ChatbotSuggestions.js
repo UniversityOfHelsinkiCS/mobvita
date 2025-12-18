@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl'
 
-const ChatbotSuggestions = ({ isWaitingForResponse, predefinedChatbotRequests }) => {
+const ChatbotSuggestions = ({ predefinedChatbotRequests, disabled }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -15,7 +15,7 @@ const ChatbotSuggestions = ({ isWaitingForResponse, predefinedChatbotRequests })
           key={index}
           type="button"
           basic
-          disabled={isWaitingForResponse}
+          disabled={disabled}
           onClick={() =>dispatch(func)}
         >
           <FormattedMessage id={msgId} />

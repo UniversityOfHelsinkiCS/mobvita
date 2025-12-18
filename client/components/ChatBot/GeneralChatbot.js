@@ -114,8 +114,8 @@ const GeneralReadingChatBot = () => {
                             <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                         </Button>
                         <ChatbotSuggestions
-                            isWaitingForResponse={isWaitingForResponse}
                             predefinedChatbotRequests={predefinedChatbotRequests}
+                            disabled={isWaitingForResponse}
                         />
           </form>
         </>

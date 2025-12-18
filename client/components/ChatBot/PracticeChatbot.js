@@ -357,11 +357,11 @@ const PracticeChatbot = () => {
                   <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                 </Button>
               <ChatbotSuggestions
-                isWaitingForResponse={isWaitingForResponse}
                 predefinedChatbotRequests={predefinedChatbotRequests}
+                disabled={!validToChat || isWaitingForResponse}
               />
             </form>): (
-              <Button primary onMouseDown={handlePreHints} disabled={!validToChat || isWaitingForResponse}>
+              <Button primary onMouseDown={handlePreHints}>
                 <FormattedMessage id="ask-for-a-hint" />
               </Button>
             )}
