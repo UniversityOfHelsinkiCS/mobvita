@@ -1,16 +1,20 @@
-version: '3.5'
-
 services:
   app:
-    build:
-      context: ./
-      dockerfile: config/local.Dockerfile
-    image: mobvita_local
+    image: toska/mobvita:staging
     volumes:
       - ./:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
     ports:
       - 8000:8000
     container_name: mobvita_local
-    environment: 
-      - REVITA_URL=http://${hostname}:5000/api
-    network_mode: "host"
+    environment:
+      - REVITA_URL=https://revita-test.cs.helsinki.fi/api
+      - ENVIRONMENT=development
+      - LANG=C.UTF-8
+      - LANGUAGE=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - CHOKIDAR_USEPOLLING=true
+    command: ["npm", "run", "start:dev"]
+
+volumes:
+  node_modules: {}
