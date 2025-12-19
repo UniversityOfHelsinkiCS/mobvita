@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, Button, Segment, Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
+import { List, Segment, Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
@@ -126,8 +126,29 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       }))
     : []
 
-  const translationsList = translated =>
-    pending ? (
+  const canShowWordNest =
+    !inWordNestModal &&
+    !clue &&
+    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
+
+  const translationEntries = useMemo(() => {
+    return Array.isArray(translation) && translation !== 'no-clue-translation' ? translation : []
+  }, [translation])
+
+  const sortedTranslation = useMemo(() => {
+    return translationEntries
+      .slice()
+      .sort((wordA, wordB) => (wordB?.preferred || 0) - (wordA?.preferred || 0))
+  }, [translationEntries])
+
+  const translationsList = translated => {
+    const glosses = pending
+      ? []
+      : Array.isArray(translated?.glosses)
+        ? translated.glosses
+        : []
+
+    return pending ? (
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
         {[1, 2, 3, 4, 5].map(line => (
           <List.Item key={line}>
@@ -139,23 +160,16 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       </List>
     ) : (
       <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
-        {translated.glosses.map(word => (
+        {glosses.map(word => (
           <List.Item key={word}>{word}</List.Item>
         ))}
       </List>
     )
-
-  const canShowWordNest =
-    !inWordNestModal &&
-    !clue &&
-    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
+  }
 
   const translations =
-    translation &&
     translation !== 'no-clue-translation' &&
-    translation
-      ?.sort((a, b) => b.preferred - a.preferred)
-      .map(translated => {
+    sortedTranslation.map(translated => {
         return (
           <div className="space-between">
             <div
