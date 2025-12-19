@@ -31,6 +31,7 @@ const DebugTestView = () => {
             <div>
               Correct answer:
               <input
+                placeholder="Enter a single word or analytic chunk"
                 type="text"
                 value={correctAnswer}
                 onChange={({ target }) => setCorrectAnswer(target.value)}
@@ -39,6 +40,7 @@ const DebugTestView = () => {
             <div>
               User answer:
               <input
+                placeholder="Enter a single word or analytic chunk"
                 type="text"
                 value={userAnswer}
                 onChange={({ target }) => setUserAnswer(target.value)}
