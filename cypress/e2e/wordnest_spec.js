@@ -41,4 +41,24 @@ describe('wordnest modal', function () {
     cy.contains('метровку', { timeout: 10000 }).click()
     cy.get('[data-cy=nest-button]', { timeout: 2000 }).should('not.exist')
   })
+  
+  it('close wordnest modal when clicking outside', function () {
+    cy.contains('спортсменка', { timeout: 10000 }).click()
+    cy.contains('sportswoman', { timeout: 10000 })
+    
+    cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
+    
+    cy.get('.ui.modal.visible.active', { timeout: 10000 })
+      .filter(':visible')
+      .should('have.length.at.least', 1)
+      .first()
+    
+    cy.get('.ui.dimmer.modals.page')
+      .filter(':visible')
+      .first()
+      .click('bottomLeft')
+    
+    cy.get('.ui.modal.visible.active', { timeout: 2000 }).should('not.exist')
+  })
+
 })
