@@ -179,8 +179,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     translation !== 'no-clue-translation' &&
     sortedTranslation.map(translated => {
         return (
-          console.log(translated),
-          console.log("words", words),
           <div className="space-between">
             <div
               key={translated.URL}
