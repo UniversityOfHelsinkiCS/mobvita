@@ -25,16 +25,19 @@ import { Speaker, DictionaryButton } from './dictComponents'
 import Lemma from './Lemma'
 import ContextTranslation from './ContextTranslation'
 import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
+import WordNestModal from 'Components/WordNestModal'
 
 
 const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
-
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
   const translationLanguageCode = useSelector(({ user }) => user.data.user.last_trans_language)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
-  
+
+  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
+  const [wordNestChosenWord, setWordNestChosenWord] = useState('')
+
   const {
     pending,
     data: translation,
@@ -118,6 +121,16 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
+  useEffect(() => {
+    if (!inCrossword && translation && !wordNestModalOpen)
+      setWordNestChosenWord(
+        translation
+          ?.filter(t => t.lemma)
+          .map(t => t.lemma)
+          .join('+')
+      )
+  }, [translation, wordNestModalOpen])
+
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
         key: element,
@@ -125,11 +138,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         text: intl.formatMessage({ id: element }),
       }))
     : []
-
-  const canShowWordNest =
-    !inWordNestModal &&
-    !clue &&
-    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
 
   const translationEntries = useMemo(() => {
     return Array.isArray(translation) && translation !== 'no-clue-translation' ? translation : []
@@ -171,6 +179,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     translation !== 'no-clue-translation' &&
     sortedTranslation.map(translated => {
         return (
+          console.log(translated),
+          console.log("words", words),
           <div className="space-between">
             <div
               key={translated.URL}
@@ -204,11 +214,18 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               )}
               {translationsList(translated)}
             </div>
-            {canShowWordNest && (
+            {words &&
+              words[translated.lemma]?.length > 0 &&
+              !inWordNestModal &&
+              !clue &&
+              (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
               <WordNestLauncher
                 lemma={translated.lemma}
-                translation={translation}
-                inCrossword={inCrossword}
+                wordNestChosenWord={wordNestChosenWord}
+                setWordNestChosenWord={setWordNestChosenWord}
+                wordNestModalOpen={wordNestModalOpen}
+                setWordNestModalOpen={setWordNestModalOpen}
+                popupMessageId="explain-wordnest-modal"
                 buttonStyle={{ background: 'none' }}
               />
             )}
@@ -400,7 +417,17 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                   )}
                   {translationResults()}
                 </div>
-            </div>
+                {!inWordNestModal &&
+                  (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
+                    <WordNestModal
+                      wordToCheck={wordNestChosenWord}
+                      setWordToCheck={setWordNestChosenWord}
+                      open={wordNestModalOpen}
+                      setOpen={setWordNestModalOpen}
+                    />
+                  )}
+              </div>
+
               {!inWordNestModal && !inCrossword && !pending &&
                 <ContextTranslation surfaceWord={surfaceWord} wordTranslated={translation} />}
             </div>

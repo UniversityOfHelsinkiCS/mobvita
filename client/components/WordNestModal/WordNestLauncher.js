@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
-import { useDispatch } from 'react-redux'
 import { images } from 'Utilities/common'
-import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import WordNestModal from 'Components/WordNestModal'
 
 const WordNestLauncher = ({
   lemma,
-  translation,
-  inCrossword = false,
+  wordNestModalOpen,
+  setWordNestModalOpen,
+  wordNestChosenWord,
+  setWordNestChosenWord,
   popupMessageId = 'explain-wordnest-modal',
   className = '',
   buttonStyle = {},
@@ -18,54 +18,45 @@ const WordNestLauncher = ({
   dataCy = 'nest-button',
 }) => {
   const intl = useIntl()
-  const dispatch = useDispatch()
-  const [open, setOpen] = useState(false)
-  const [wordToCheck, setWordToCheck] = useState('')
 
-  const joinedTranslationLemmas = useMemo(() => {
-    if (!translation || translation === 'no-clue-translation') return ''
-    if (!Array.isArray(translation)) return ''
-    return translation
-      .filter(t => t?.lemma)
-      .map(t => t.lemma)
-      .join('+')
-  }, [translation])
+  const [localOpen, setLocalOpen] = useState(false)
+  const [localWord, setLocalWord] = useState('')
 
-  useEffect(() => {
-    if (!inCrossword && joinedTranslationLemmas) {
-      setWordToCheck(joinedTranslationLemmas)
-    } else if (lemma) {
-      setWordToCheck(lemma)
-    }
-  }, [inCrossword, joinedTranslationLemmas, lemma])
+  const isExternallyControlled =
+    typeof setWordNestModalOpen === 'function' && typeof setWordNestChosenWord === 'function'
+
+  const open = isExternallyControlled ? !!wordNestModalOpen : localOpen
+  const setOpen = isExternallyControlled ? setWordNestModalOpen : setLocalOpen
+
+  const wordToCheck = isExternallyControlled ? wordNestChosenWord : localWord
+  const setWordToCheck = isExternallyControlled ? setWordNestChosenWord : setLocalWord
+
 
   const handleClick = () => {
     setWordToCheck(lemma)
-    if (lemma) {
-      dispatch(getTranslationAction(lemma))
-    }
     setOpen(true)
   }
 
   return (
     <>
-      <Popup
-        content={intl.formatMessage({ id: popupMessageId })}
-        trigger={
-          <div style={divStyle}>
+      <div style={divStyle}>
+        <Popup
+          on="hover"
+          content={intl.formatMessage({ id: popupMessageId })}
+          trigger={
             <Button
               className={className}
               style={{ padding: '5px', outline: '1px solid #ccc', ...buttonStyle }}
               size={buttonSize}
               onClick={handleClick}
               data-cy={dataCy}
+              type="button"
             >
               <img src={images.network} alt="network icon" width="32" />
             </Button>
-          </div>
-        }
-      />
-
+          }
+        />
+      </div>
       <WordNestModal
         wordToCheck={wordToCheck}
         setWordToCheck={setWordToCheck}
