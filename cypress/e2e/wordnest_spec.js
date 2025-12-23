@@ -61,4 +61,22 @@ describe('wordnest modal', function () {
     cy.get('.ui.modal.visible.active', { timeout: 2000 }).should('not.exist')
   })
 
+  it('closes wordnest modal when clicking close button', function () {
+    cy.contains('спортсменка', { timeout: 10000 }).click()
+    cy.contains('sportswoman', { timeout: 10000 })
+    
+    cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
+
+    cy.get('.ui.modal.visible.active', { timeout: 10000 })
+      .filter(':visible')
+      .first()
+      .should('be.visible')
+      .within(() => {
+        cy.get('i.close.small.icon.clickable', { timeout: 10000 })
+          .should('exist')
+          .click()
+      })
+
+    cy.get('.ui.modal.visible.active', { timeout: 2000 }).should('not.exist')
+  })
 })
