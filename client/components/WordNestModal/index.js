@@ -5,7 +5,7 @@ import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
-import { learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
+import { dictionaryLanguageSelector, learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import ReportButton from 'Components/ReportButton'
@@ -200,6 +200,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { data: nests } = useSelector(({ wordNest }) => wordNest)
 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
@@ -251,6 +252,19 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
       }
     }
   }, [wordToCheck])
+
+  useEffect(() => {
+    if (!open) return
+    if (!wordToCheck || wordToCheck === '-') return
+
+    dispatch(
+      getTranslationAction({
+        learningLanguage,
+        wordLemmas: wordToCheck,
+        dictionaryLanguage,
+      })
+    )
+  }, [open, wordToCheck, learningLanguage, dictionaryLanguage, dispatch])
 
   return (
     <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
