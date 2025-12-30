@@ -26,8 +26,6 @@ const Fillin = ({
   handleIndexChange,
   answerCard,
   deckSize,
-  translationFetched,
-  setTranslationFetched,
 }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
@@ -37,23 +35,8 @@ const Fillin = ({
   const [infoMessage, setInfoMessage] = useState('')
   const dispatch = useDispatch()
   const intl = useIntl()
-  const learningLanguage = useSelector(learningLanguageSelector)
-  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
 
   const { glosses, format, _id: id, stage, lemma, phonetics } = card
-
-  useEffect(() => {
-    if (lemma && flipped && !translationFetched) {
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas: lemma,
-          dictionaryLanguage,
-        })
-      )
-      setTranslationFetched(true)
-    }
-  }, [lemma, flipped, learningLanguage, dictionaryLanguage])
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
   const getNewHints = unsavedHint => {
