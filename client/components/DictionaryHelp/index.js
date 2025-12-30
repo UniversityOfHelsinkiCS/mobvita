@@ -35,6 +35,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
 
+  const [storyWord, setStoryWord] = useState('')
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
 
@@ -70,6 +71,13 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       dispatch({ type: 'SHOW_DICTIONARY_BOX' })
     }
   }
+
+  useEffect(() => {
+    if (wordNestModalOpen) return
+    if (!lemmas) return
+  
+    setStoryWord(lemmas)
+  }, [lemmas, wordNestModalOpen])
 
   useEffect(() => {
     if (
@@ -421,6 +429,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                       setWordToCheck={setWordNestChosenWord}
                       open={wordNestModalOpen}
                       setOpen={setWordNestModalOpen}
+                      storyWord={storyWord}
                     />
                   )}
               </div>

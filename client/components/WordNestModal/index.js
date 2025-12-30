@@ -196,7 +196,7 @@ const makeWordNest = (parents, wordsWithIDs) =>
     return cleanConcept
   })
 
-const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
+const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -224,7 +224,18 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck }) => {
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
   const handleModalclose = () => {
-    setWordToCheck('-')
+    const restoreWord = props.storyWord || ''
+  
+    if (restoreWord) {
+      dispatch(
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: restoreWord,
+          dictionaryLanguage,
+        })
+      )
+    }
+    setWordToCheck(restoreWord)
     setOpen(false)
   }
 

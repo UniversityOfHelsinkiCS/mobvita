@@ -57,12 +57,14 @@ const WordNestLauncher = ({
           }
         />
       </div>
-      <WordNestModal
-        wordToCheck={wordToCheck}
-        setWordToCheck={setWordToCheck}
-        open={open}
-        setOpen={setOpen}
-      />
+      {!isExternallyControlled && (
+        <WordNestModal
+          wordToCheck={wordToCheck}
+          setWordToCheck={setWordToCheck}
+          open={open}
+          setOpen={setOpen}
+        />
+      )}
     </>
   )
 }
