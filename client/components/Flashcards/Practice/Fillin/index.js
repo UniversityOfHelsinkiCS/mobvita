@@ -26,6 +26,8 @@ const Fillin = ({
   handleIndexChange,
   answerCard,
   deckSize,
+  translationFetched,
+  setTranslationFetched,
 }) => {
   const [flipped, setFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
@@ -41,7 +43,7 @@ const Fillin = ({
   const { glosses, format, _id: id, stage, lemma, phonetics } = card
 
   useEffect(() => {
-    if (lemma && flipped) {
+    if (lemma && flipped && !translationFetched) {
       dispatch(
         getTranslationAction({
           learningLanguage,
@@ -49,6 +51,7 @@ const Fillin = ({
           dictionaryLanguage,
         })
       )
+      setTranslationFetched(true)
     }
   }, [lemma, flipped, learningLanguage, dictionaryLanguage])
 

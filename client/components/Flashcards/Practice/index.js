@@ -34,6 +34,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [amountAnswered, setAmountAnswered] = useState(0)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
     useState(false)
+  const [translationFetched, setTranslationFetched] = useState(false)
   const history = useHistory()
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -153,6 +154,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const handleIndexChange = index => {
     const oldIndex = swipeIndex
     setSwipeIndex(index)
+    setTranslationFetched(false)
 
     if (inBlueCardsTest && index > blueCardsAnswered.length) {
       const wrongAnswerObj = {
@@ -215,7 +217,12 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         <div className="flashcard">
           <Spinner variant="secondary" />
         </div>
-        <button type="button" disabled className="flashcard-arrow-button" style={{ marginLeft: 0 }}>
+        <button
+          type="button"
+          disabled
+          className="flashcard-arrow-button"
+          style={{ marginLeft: 0 }}
+        >
           <Icon name="angle double right" size="huge" />
         </button>
       </div>
@@ -273,6 +280,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
             focusedAndBigScreen={swipeIndex === index && bigScreen}
             answerCard={answerCard}
             deckSize={cards.length}
+            translationFetched={translationFetched}
+            setTranslationFetched={setTranslationFetched}
           />
         )
     }
