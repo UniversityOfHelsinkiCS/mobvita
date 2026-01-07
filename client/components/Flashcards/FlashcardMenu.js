@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
@@ -23,17 +23,11 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
 
 )
 
-const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
   const { storyId } = useParams()
 
   return (
     <div className="flex-col pb-nm">
-      <div className="flashcard-lang-select">
-        <span className="pr-sm">
-          <FormattedMessage id="translation-target-language" />
-        </span>
-        <SelectLanguage />
-      </div>
       {storyId && (
         <MenuItem
           handleClick={() => handleOptionClick('all')}
@@ -52,6 +46,7 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         translationId="Flashcard list"
         style={{
           backgroundColor: 'rgb(131, 215, 181)',
+          borderRadius: '1em 1em 0 0',
           border: 'none',
         }}
         tooltip='flashcards-edit-card-list-EXPLANATION'
@@ -63,13 +58,18 @@ const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory })
         translationId="add-new-flashcard"
         style={{
           backgroundColor: 'rgb(255, 239, 213)',
-          borderRadius: '0 0 1em 1em',
           border: 'none',
         }}
         tooltip='flashcards-add-cards-EXPLANATION'
       >
         <Icon name="edit outline" size="big" style={{ paddingLeft: '0.1em' }} />
       </MenuItem>
+      <div className="flashcard-lang-select">
+        <span className="flashcard-lang-select-label">
+          <FormattedMessage id="translation-target-language" />
+        </span>
+        <SelectLanguage />
+      </div>
     </div>
   )
 }
@@ -127,6 +127,8 @@ const FlashcardMenu = () => {
   const history = useHistory()
   const { storyId } = useParams()
 
+  const [activeTab, setActiveTab] = useState('practice')
+
   const storyUrl = storyId ? `/${storyId}` : ''
 
   const handleOptionClick = mode => {
@@ -138,15 +140,42 @@ const FlashcardMenu = () => {
   }
 
   return (
-    <div className="flashcard-menu">
-      <CardManagmentOptions
-        handleOptionClick={handleOptionClick}
-        handleOptionClickWithStory={handleOptionClickWithStory}
-      />
-      <PracticeModeOptions 
-        handleOptionClick={handleOptionClick}
-        handleOptionClickWithStory={handleOptionClickWithStory}
-      />
+    <div className="flashcard-menu" data-active={activeTab}>
+      <div className="flashcard-tabs" data-active={activeTab}>
+        <button
+          type="button"
+          className={`flashcard-tab ${activeTab === 'practice' ? 'is-active' : ''}`}
+          onClick={() => setActiveTab('practice')}
+        >
+          <FormattedMessage id="practice" defaultMessage="Practice" />
+        </button>
+
+        <button
+          type="button"
+          className={`flashcard-tab ${activeTab === 'settings' ? 'is-active' : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          <FormattedMessage id="settings" defaultMessage="Settings" />
+        </button>
+
+        <span className="flashcard-tab-indicator" aria-hidden="true" />
+      </div>
+
+      <div className='flashcard-panels'>
+        <div className={`flashcard-panel flashcard-panel--practice ${activeTab === 'practice' ? 'is-active' : ''}`}>
+          <PracticeModeOptions 
+            handleOptionClick={handleOptionClick}
+            handleOptionClickWithStory={handleOptionClickWithStory}
+            />
+          </div>
+        
+        <div className={`flashcard-panel flashcard-panel--settings ${activeTab === 'settings' ? 'is-active' : ''}`}>
+          <CardManagementOptions
+            handleOptionClick={handleOptionClick}
+            handleOptionClickWithStory={handleOptionClickWithStory}
+            />
+        </div>
+      </div>
     </div>
   )
 }
