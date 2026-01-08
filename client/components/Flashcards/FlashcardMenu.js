@@ -76,7 +76,7 @@ const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }
             <FormattedMessage id="translation-target-language" />
           </span>
           <SelectLanguage />
-        </div>
+      </div>
     </div>
   )
 }
@@ -169,19 +169,21 @@ const FlashcardMenu = () => {
       </div>
 
       <div className='flashcard-panels'>
-        <div className={`flashcard-panel flashcard-panel--practice ${activeTab === 'practice' ? 'is-active' : ''}`}>
-          <PracticeModeOptions 
-            handleOptionClick={handleOptionClick}
-            handleOptionClickWithStory={handleOptionClickWithStory}
+        {activeTab === 'practice' ? (
+          <div className="flashcard-panel is-active">
+            <PracticeModeOptions 
+              handleOptionClick={handleOptionClick}
+              handleOptionClickWithStory={handleOptionClickWithStory}
             />
           </div>
-        
-        <div className={`flashcard-panel flashcard-panel--settings ${activeTab === 'settings' ? 'is-active' : ''}`}>
-          <CardManagementOptions
-            handleOptionClick={handleOptionClick}
-            handleOptionClickWithStory={handleOptionClickWithStory}
+        ) : (
+          <div className="flashcard-panel is-active">
+            <CardManagementOptions
+              handleOptionClick={handleOptionClick}
+              handleOptionClickWithStory={handleOptionClickWithStory}
             />
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )

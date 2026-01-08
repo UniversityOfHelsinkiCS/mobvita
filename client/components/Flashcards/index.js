@@ -83,7 +83,7 @@ const Flashcards = () => {
             />
           </h5>
         ))}
-      <div className="flex flashcards-layout">
+      <div className="flex align-start">
         {showBlueCardsTestEncouragement && (
           <div
             className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}

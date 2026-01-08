@@ -459,7 +459,7 @@ $value in $spacing {
 
 .ui.dropdown .menu {
   max-height: 13em !important;
-  overflow: auto;
+  overflow: hidden;
   z-index: 3000;
 }
 
@@ -2106,9 +2106,10 @@ label.file-upload-btn {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
   min-height: 24em;
   margin-right: 2em;
-  padding: 0 1em 2em 1em;
+  padding: 0 1em 1em 1em;
   flex-shrink: 0;
   background-color: rgb(243, 243, 243);
   border-radius: 1em;
@@ -2134,7 +2135,7 @@ label.file-upload-btn {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .flashcard-tab {
@@ -2169,41 +2170,7 @@ label.file-upload-btn {
 }
 
 .flashcard-panels {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: visible;
-}
-
-.flashcard-panel {
-  position: absolute;
-  inset: 0;
-  transition: transform var(--dur) var(--ease-standard);
-  will-change: transform;
-  pointer-events: none;
   overflow: visible;
-  min-height: 220px;
-
-  &.is-active {
-    pointer-events: auto;
-  }
-}
-
-.flashcard-menu[data-active="practice"] .flashcard-panel--practice {
-  transform: translateX(0%);
-}
-
-.flashcard-menu[data-active="practice"] .flashcard-panel--settings {
-  transform: translateX(100%);
-}
-
-.flashcard-menu[data-active="settings"] .flashcard-panel--practice {
-  transform: translateX(-100%);
-}
-
-.flashcard-menu[data-active="settings"] .flashcard-panel--settings {
-  transform: translateX(0%);
 }
 
 @media (prefers-reduced-motion: reduce){
