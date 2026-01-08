@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Dropdown } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import {
   learningLanguageSelector,
@@ -22,23 +23,19 @@ const SelectLanguage = () => {
       }))
     : []
 
-  const handleLanguageChange = async value => {
-    dispatch(updateDictionaryLanguage(value))
+  const handleLanguageChange = async (_, data) => {
+    dispatch(updateDictionaryLanguage(data.value))
   }
 
   return (
-    <select
-      disabled={dictionaryOptions.length <= 1}
-      defaultValue={dictionaryLanguage}
-      style={{}}
-      onChange={e => handleLanguageChange(e.target.value)}
-    >
-      {dictionaryOptions.map(option => (
-        <option key={option.key} value={option.value}>
-          {option.text}
-        </option>
-      ))}
-    </select>
+    <Dropdown
+      selection
+      fluid
+      options={dictionaryOptions}
+      value={dictionaryLanguage}
+      onChange={handleLanguageChange}
+      placeholder={intl.formatMessage({ id: 'select-language' })}
+    />
   )
 }
 

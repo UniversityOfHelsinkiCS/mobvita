@@ -460,6 +460,7 @@ $value in $spacing {
 .ui.dropdown .menu {
   max-height: 13em !important;
   overflow: auto;
+  z-index: 3000;
 }
 
 .ui.attached.tabular.menu {
@@ -1940,51 +1941,6 @@ label.file-upload-btn {
     }
   }
 
-  &-menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
-    margin-right: 2em;
-    padding: 0 1em 2em 1em;
-    flex-shrink: 0;
-    background-color: rgb(243, 243, 243);
-    border-radius: 1em;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  }
-
-  &-lang-select {
-    background-color: rgb(189, 202, 212);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    padding: 1em 2em;
-    justify-content: center;
-    border-bottom: none;
-    border-radius:  0 0 1em 1em;
-    margin-top: auto;
-    overflow: hidden;
-  }
-
-  &-lang-select-label {
-    text-align: center;
-    width: 100%;
-  }
-
-  &-menu-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1em;
-
-    &:focus {
-      outline: 0;
-    }
-  }
-
   &-mobile-template {
     height: auto;
     width: 90%;
@@ -2146,9 +2102,34 @@ label.file-upload-btn {
   }
 }
 
+.flashcard-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 24em;
+  margin-right: 2em;
+  padding: 0 1em 2em 1em;
+  flex-shrink: 0;
+  background-color: rgb(243, 243, 243);
+  border-radius: 1em;
+  overflow: visible;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
 
-/* FlashcardMenu tabs */
-.flashcard-tabs{
+.flashcard-menu-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.flashcard-tabs {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2156,7 +2137,7 @@ label.file-upload-btn {
   border-bottom: 1px solid rgba(0,0,0,0.12);
 }
 
-.flashcard-tab{
+.flashcard-tab {
   appearance: none;
   background: none;
   border: 0;
@@ -2166,13 +2147,13 @@ label.file-upload-btn {
   cursor: pointer;
   opacity: 0.7;
   transition: opacity var(--dur-fast) var(--ease-out);
+
+  &.is-active {
+    opacity: 1;
+  }
 }
 
-.flashcard-tab.is-active{
-  opacity: 1;
-}
-
-.flashcard-tab-indicator{
+.flashcard-tab-indicator {
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -2183,43 +2164,47 @@ label.file-upload-btn {
   transition: transform var(--dur) var(--ease-standard);
 }
 
-.flashcard-tabs[data-active="settings"] .flashcard-tab-indicator{
+.flashcard-tabs[data-active="settings"] .flashcard-tab-indicator {
   transform: translateX(100%);
 }
 
-.flashcard-panels{
+.flashcard-panels {
   position: relative;
-  min-height: 220px;
-  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
-.flashcard-panel{
+.flashcard-panel {
   position: absolute;
   inset: 0;
   transition: transform var(--dur) var(--ease-standard);
   will-change: transform;
   pointer-events: none;
+  overflow: visible;
+  min-height: 220px;
+
+  &.is-active {
+    pointer-events: auto;
+  }
 }
 
-.flashcard-panel.is-active{
-  pointer-events: auto;
-}
-
-.flashcard-menu[data-active="practice"] .flashcard-panel--practice{
+.flashcard-menu[data-active="practice"] .flashcard-panel--practice {
   transform: translateX(0%);
 }
-.flashcard-menu[data-active="practice"] .flashcard-panel--settings{
+
+.flashcard-menu[data-active="practice"] .flashcard-panel--settings {
   transform: translateX(100%);
 }
 
-.flashcard-menu[data-active="settings"] .flashcard-panel--practice{
+.flashcard-menu[data-active="settings"] .flashcard-panel--practice {
   transform: translateX(-100%);
 }
-.flashcard-menu[data-active="settings"] .flashcard-panel--settings{
+
+.flashcard-menu[data-active="settings"] .flashcard-panel--settings {
   transform: translateX(0%);
 }
-
-
 
 @media (prefers-reduced-motion: reduce){
   .flashcard-tab,

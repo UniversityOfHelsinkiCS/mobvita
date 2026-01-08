@@ -19,8 +19,6 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
     }
     position="top center"
   />
-
-
 )
 
 const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
@@ -64,12 +62,21 @@ const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }
       >
         <Icon name="edit outline" size="big" style={{ paddingLeft: '0.1em' }} />
       </MenuItem>
-      <div className="flashcard-lang-select">
-        <span className="flashcard-lang-select-label">
-          <FormattedMessage id="translation-target-language" />
-        </span>
-        <SelectLanguage />
-      </div>
+      <div style={{
+          backgroundColor: 'rgb(189, 202, 212)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '1em 2em',
+          borderRadius: '0 0 1em 1em',
+          marginTop: 'auto',
+          gap: '0.5em',
+        }}>
+          <span style={{ textAlign: 'center', width: '100%' }}>
+            <FormattedMessage id="translation-target-language" />
+          </span>
+          <SelectLanguage />
+        </div>
     </div>
   )
 }
