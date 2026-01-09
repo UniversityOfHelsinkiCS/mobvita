@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon, Popup } from 'semantic-ui-react'
@@ -10,12 +10,20 @@ import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, is_new_word, lan_in, lan_out } = card
   const { background } = flashcardColors
+  const itemRef = useRef(null)
 
   const dispatch = useDispatch()
 
   const handleDelete = () => {
     dispatch(deleteFlashcard(_id))
   }
+
+  const scrollToTopOfCard = useCallback(() => {
+    if (!itemRef.current) return
+    const HEADER_OFFSET = 50
+    const y = itemRef.current.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET
+    window.scrollTo({ top: y, behavior: 'smooth' })
+  }, [])
 
   const handleKnowFlashcard = () => {
     const answerDetails = {
@@ -57,6 +65,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
   )
 
   return (
+    <div ref={itemRef}>
     <Card style={{ backgroundColor: background[stage] }}>
       <ListGroup.Item
         style={{
@@ -109,7 +118,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           }
         />
       </ListGroup.Item>
-      <Accordion.Collapse eventKey={_id}>
+      <Accordion.Collapse eventKey={card._id} onEntered={scrollToTopOfCard}>
         <Card.Body>
           <span className="bold">
             <FormattedMessage id="Translations" />
@@ -126,6 +135,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         </Card.Body>
       </Accordion.Collapse>
     </Card>
+    </div>
   )
 }
 
