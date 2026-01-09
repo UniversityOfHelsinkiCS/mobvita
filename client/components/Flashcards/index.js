@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { FormattedHTMLMessage } from 'react-intl'
+import { FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import FlashcardMenu from './FlashcardMenu'
@@ -9,10 +9,14 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
+import LibraryTabs from 'Components/LibraryTabs'
 
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
+  const [activeTab, setActiveTab] = useState('practice')
+
+  const intl = useIntl()
 
   const history = useHistory()
   const { width } = useWindowDimensions()
@@ -60,8 +64,31 @@ const Flashcards = () => {
     }
   }
 
+  const TAB_PRACTICE = intl.formatMessage({ id: 'practice-flashcards' })
+  const TAB_ADD = intl.formatMessage({ id: 'add-new-flashcard' })
+  const TAB_ALL = intl.formatMessage({ id: 'Flashcard list' })
+
+  const tabValues = {
+    [TAB_PRACTICE]: activeTab === 'practice',
+    [TAB_ADD]: activeTab === 'add',
+    [TAB_ALL]: activeTab === 'all',
+  }
+
+  const handleTabChange = (tabKey) => {
+    if (tabKey === TAB_PRACTICE) setActiveTab('practice')
+    if (tabKey === TAB_ADD) setActiveTab('add')
+    if (tabKey === TAB_ALL) setActiveTab('all')
+  }
+
   return (
     <div className="cont-tall cont pb-nm flex-col auto pt-xl">
+       <div data-cy="library-controls" className="library-control">
+        <LibraryTabs
+          values={tabValues}
+          onClick={handleTabChange}
+        />
+       </div>
+
       {(title && type === 'test' && (
         <h5 className="blue-flashcard-intro flex pb-nm" style={{ marginBottom: '2em' }}>
           <FormattedHTMLMessage
@@ -83,6 +110,7 @@ const Flashcards = () => {
             />
           </h5>
         ))}
+
       <div className="flex">
         {showBlueCardsTestEncouragement && (
           <div

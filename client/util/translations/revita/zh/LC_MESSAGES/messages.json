@@ -971,7 +971,7 @@
     "practice-grammar-MC-exercises": "Practice <b>Grammar</b> — multiple-choice exercises",
     "practice-listening-cloze-exercises": "Practice <b>Listening</b> — fill-in-the-blank exercises",
     "practice-pronunciation-exercises": "Practice <b>Pronunciation</b>",
-    "enter-question-to-chatbot": "Ask a question from the chatbot ...",
+    "enter-question-to-chatbot": "向机器人提问...",
     "chatbox-initial-instruction": "Click on an exercise — then you can get hints here, and ask any questions you have about the exercise.",
     "click-to-see-translation": "点击查看翻译",
     "summary-people-added-to-group": "People added to group",
@@ -1150,5 +1150,6 @@
     "select-story-vocab-diff": "调节词汇难度",
     "select-story-themes-and-vocabulary": "选择内容主题和词汇难度",
     "chatbot-message-suggestion-answer-wrong-reason": "为什么回答是错的",
-    "chatbot-message-suggestion-analyze-context": "分析上下文结构"
+    "chatbot-message-suggestion-analyze-context": "分析上下文结构",
+    "practice-flashcards": "练习闪卡"
 }

@@ -786,7 +786,7 @@
     "medal earned": "ansaittu",
     "Test History": "Testihistoria",
     "Test": "Testit",
-    "Exercise": "Harjoitus",
+    "Exercise": "Harjoitukset",
     "total questions": "kysymystä yhteensä",
     "Showing results for": "Näytetään tuloksia aikavälille:",
     "This will permanently remove these test results, are you sure you want to proceed?": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
@@ -1773,5 +1773,6 @@
     "select-story-vocab-diff": "Valitse tarinan sanaston vaikeusaste",
     "select-story-themes-and-vocabulary": "Valitse tarinan teemat ja sanaston taso",
     "chatbot-message-suggestion-answer-wrong-reason": "Miksi vastaukseni on väärin?",
-    "chatbot-message-suggestion-analyze-context": "Auta minua ymmärtämään kontekstia"
+    "chatbot-message-suggestion-analyze-context": "Auta minua ymmärtämään kontekstia",
+    "practice-flashcards": "Harjoittele muistikortteja"
 }

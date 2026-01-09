@@ -426,7 +426,7 @@
     "multi-choice": "Mångval",
     "next-card": "Nästa kort",
     "back-to-my-flashcards": "",
-    "add-new-flashcard": "Add new flashcard",
+    "add-new-flashcard": "Add flashcard",
     "delete-this-flashcard": "",
     "edit-this-flashcard": "",
     "check-answer": "Kontrollera Svar",
@@ -760,7 +760,7 @@
     "Continue test": "",
     "Show history": "Show history",
     "Hide history": "Hide history",
-    "Flashcard list": "List all flashcards",
+    "Flashcard list": "All flashcards",
     "Go to next snippet": "Next snippet",
     "Your clue": "Your clue",
     "New crossword": "New crossword",
@@ -1627,5 +1627,6 @@
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
-    "chatbot-message-suggestion-analyze-context": "Help me understand the context"
+    "chatbot-message-suggestion-analyze-context": "Help me understand the context",
+    "practice-flashcards": "Öva flashcards"
 }

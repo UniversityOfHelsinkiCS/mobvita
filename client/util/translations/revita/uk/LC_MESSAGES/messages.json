@@ -402,7 +402,7 @@
     "flashcards-done": "Успішно опрацьовано 30 карток",
     "Test History": "Історія тестів",
     "Test": "Тест",
-    "Exercise": "Вправа",
+    "Exercise": "Вправи",
     "total-questions": "всього питань",
     "Showing results for": "Показ результатів для",
     "exercise-history": "Історія вправ",
@@ -882,5 +882,6 @@
     "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
-    "chatbot-message-suggestion-analyze-context": "Help me understand the context"
+    "chatbot-message-suggestion-analyze-context": "Help me understand the context",
+    "practice-flashcards": "Практика флешкарток"
 }

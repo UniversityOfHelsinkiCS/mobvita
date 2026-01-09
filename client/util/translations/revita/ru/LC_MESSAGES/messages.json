@@ -791,7 +791,7 @@
     "medal earned": "полученные награды",
     "Test History": "Пройденные тесты",
     "Test": "Тесты",
-    "Exercise": "Упражнение",
+    "Exercise": "Упражнения",
     "total questions": "всего вопросов",
     "Showing results for": "Результаты за период:",
     "This will permanently remove these test results, are you sure you want to proceed?": "Удалить результаты этого теста?",
@@ -1775,5 +1775,6 @@
     "select-story-vocab-diff": "Выбери уровень лексики для текста",
     "select-story-themes-and-vocabulary": "Выберите темы и уровень лексики для текста",
     "chatbot-message-suggestion-answer-wrong-reason": "Почему мой ответ неверен?",
-    "chatbot-message-suggestion-analyze-context": "Помоги мне понять контекст"
+    "chatbot-message-suggestion-analyze-context": "Помоги мне понять контекст",
+    "practice-flashcards": "Практика флешкарт"
 }

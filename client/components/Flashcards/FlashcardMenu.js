@@ -19,8 +19,6 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
     }
     position="top center"
   />
-
-
 )
 
 const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
