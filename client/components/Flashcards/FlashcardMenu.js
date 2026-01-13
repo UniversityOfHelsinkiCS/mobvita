@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { useHistory, useParams } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
-import { images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
@@ -21,9 +20,7 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
   />
 )
 
-const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
-  const { storyId } = useParams()
-
+const TranslateBar = () => {
   return (
     <div className="flex-col pb-nm">
       <div className="flashcard-lang-select">
@@ -87,27 +84,22 @@ const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) 
 
 const FlashcardMenu = () => {
   const history = useHistory()
-  const { storyId } = useParams()
+  const { type, storyId } = useParams()
 
-  const storyUrl = storyId ? `/${storyId}` : ''
-
-  const handleOptionClick = mode => {
-    history.push(`/flashcards/${mode}`)
-  }
-
-  const handleOptionClickWithStory = mode => {
-    history.push(`/flashcards/${mode}/story${storyUrl}`)
+  const pushWithOptionalContext = (mode) => {
+    if (type && storyId) {
+      history.push(`/flashcards/${mode}/${type}/${storyId}`)
+    } else {
+      history.push(`/flashcards/${mode}`)
+    }
   }
 
   return (
     <div className="flashcard-menu">
-      <CardManagementOptions
-        handleOptionClick={handleOptionClick}
-        handleOptionClickWithStory={handleOptionClickWithStory}
-      />
+      <TranslateBar/>
       <PracticeModeOptions 
-        handleOptionClick={handleOptionClick}
-        handleOptionClickWithStory={handleOptionClickWithStory}
+        handleOptionClick={pushWithOptionalContext}
+        handleOptionClickWithStory={pushWithOptionalContext}
       />
     </div>
   )
