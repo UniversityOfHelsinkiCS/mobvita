@@ -14,7 +14,6 @@ import LibraryTabs from 'Components/LibraryTabs'
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
-  const [activeTab, setActiveTab] = useState('practice')
 
   const intl = useIntl()
 
@@ -68,16 +67,30 @@ const Flashcards = () => {
   const TAB_ADD = intl.formatMessage({ id: 'add-new-flashcard' })
   const TAB_ALL = intl.formatMessage({ id: 'Flashcard list' })
 
+  const selectedTab = (() => {
+    if (mode === 'new') return 'add'
+    if (mode === 'list') return 'all'
+    return 'practice'
+  })()
+
   const tabValues = {
-    [TAB_PRACTICE]: activeTab === 'practice',
-    [TAB_ADD]: activeTab === 'add',
-    [TAB_ALL]: activeTab === 'all',
+    [TAB_PRACTICE]: selectedTab === 'practice',
+    [TAB_ADD]: selectedTab === 'add',
+    [TAB_ALL]: selectedTab === 'all',
   }
 
   const handleTabChange = (tabKey) => {
-    if (tabKey === TAB_PRACTICE) setActiveTab('practice')
-    if (tabKey === TAB_ADD) setActiveTab('add')
-    if (tabKey === TAB_ALL) setActiveTab('all')
+    const pushWithOptionalContext = (nextMode) => {
+      if (type && storyId) {
+        history.push(`/flashcards/${nextMode}/${type}/${storyId}`)
+      } else {
+        history.push(`/flashcards/${nextMode}`)
+      }
+    }
+
+    if (tabKey === TAB_PRACTICE) pushWithOptionalContext('fillin')
+    if (tabKey === TAB_ADD) history.push('/flashcards/new')
+    if (tabKey === TAB_ALL) pushWithOptionalContext('list')
   }
 
   return (

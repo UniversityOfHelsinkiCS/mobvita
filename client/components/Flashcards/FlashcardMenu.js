@@ -32,42 +32,6 @@ const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }
         </span>
         <SelectLanguage />
       </div>
-      {storyId && (
-        <MenuItem
-          handleClick={() => handleOptionClick('all')}
-          translationId="all-flashcards"
-          style={{
-            backgroundColor: 'lightpink',
-            border: 'none',
-          }}
-          tooltip='flashcards-go-to-all-cards-EXPLANATION'
-        >
-          <img src={images.flashcardIcon} alt="three cards" width="40px" />
-        </MenuItem>
-      )}
-      <MenuItem
-        handleClick={() => storyId && handleOptionClickWithStory('list') || handleOptionClick('list')}
-        translationId="Flashcard list"
-        style={{
-          backgroundColor: 'rgb(131, 215, 181)',
-          border: 'none',
-        }}
-        tooltip='flashcards-edit-card-list-EXPLANATION'
-      >
-        <Icon name="list alternate outline" size="big" style={{ paddingLeft: '0.1em' }} />
-      </MenuItem>
-      <MenuItem
-        handleClick={() => handleOptionClick('new')}
-        translationId="add-new-flashcard"
-        style={{
-          backgroundColor: 'rgb(255, 239, 213)',
-          borderRadius: '0 0 1em 1em',
-          border: 'none',
-        }}
-        tooltip='flashcards-add-cards-EXPLANATION'
-      >
-        <Icon name="edit outline" size="big" style={{ paddingLeft: '0.1em' }} />
-      </MenuItem>
     </div>
   )
 }
