@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, shallowEqual, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect, useRef } from 'react'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import moment from 'moment'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import {

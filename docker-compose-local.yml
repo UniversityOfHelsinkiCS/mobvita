@@ -1,11 +1,14 @@
 services:
   app:
-    image: toska/mobvita:staging
+    build:
+      context: .
+      dockerfile: config/local.Dockerfile
+    image: mobvita_local:node18
     volumes:
       - ./:/usr/src/app
       - node_modules:/usr/src/app/node_modules
     ports:
-      - 8000:8000
+      - "8000:8000"
     container_name: mobvita_local
     environment:
       - REVITA_URL=https://revita-test.cs.helsinki.fi/api
