@@ -86,6 +86,7 @@ const Flashcards = () => {
         <LibraryTabs
           values={tabValues}
           onClick={handleTabChange}
+          reverse
         />
        </div>
 

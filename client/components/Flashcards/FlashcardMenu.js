@@ -21,7 +21,7 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
   />
 )
 
-const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
   const { storyId } = useParams()
 
   return (
@@ -137,7 +137,7 @@ const FlashcardMenu = () => {
 
   return (
     <div className="flashcard-menu">
-      <CardManagmentOptions
+      <CardManagementOptions
         handleOptionClick={handleOptionClick}
         handleOptionClickWithStory={handleOptionClickWithStory}
       />

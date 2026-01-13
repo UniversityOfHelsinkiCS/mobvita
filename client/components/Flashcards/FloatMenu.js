@@ -24,7 +24,7 @@ const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children })
   
 )
 
-const CardManagmentOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
   const { storyId } = useParams()
 
   return (
@@ -161,7 +161,7 @@ const FloatMenu = () => {
             handleOptionClick={handleOptionClick}
             handleOptionClickWithStory={handleOptionClickWithStory} 
           />
-          <CardManagmentOptions
+          <CardManagementOptions
             handleOptionClick={handleOptionClick}
             handleOptionClickWithStory={handleOptionClickWithStory}
           />
