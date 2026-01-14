@@ -1756,7 +1756,7 @@ label.file-upload-btn {
   flex-direction: column;
   width: 21em;
   height: 35em;
-  margin: auto auto 3em auto;
+  margin: 0 auto 3em auto;
   padding: 1em 1.5em;
   border: 0.1em solid grey;
   border-radius: 0.8em;
@@ -1766,6 +1766,21 @@ label.file-upload-btn {
 
   &:focus {
     outline: none;
+  }
+
+  &-body {
+    display: flex;
+    align-items: stretch;
+    min-height: 100%;
+    padding: 8px 8px 0 0;
+  }
+
+  &-main {
+    flex: 1 1 auto;          // take remaining width next to the menu
+    display: flex;
+    justify-content: center; // horizontal center
+    align-items: center;     // vertical center (optional)
+    min-width: 0;
   }
 
   &-content {
@@ -1933,6 +1948,16 @@ label.file-upload-btn {
     }
   }
 
+  &-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-shrink: 0;
+    padding: 0 4px 42px 0;
+    margin-left: 4px;
+  }
+
   &-menu-item {
     flex: 1;
     display: flex;
@@ -1944,6 +1969,20 @@ label.file-upload-btn {
     &:focus {
       outline: 0;
     }
+  }
+
+  &-lang-select {
+    background-color: rgb(189, 202, 212);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 14em;
+    padding: 1em 1em;
+    justify-content: space-between;
+    border-bottom: none;
+    border-radius: 1em;
+    gap: 0.5em;
   }
 
   &-mobile-template {
@@ -2026,30 +2065,7 @@ label.file-upload-btn {
     color: white;
   }
 }
-.flashcard-body {
-  display: flex;
-  align-items: stretch;
-  min-height: 100%;
-}
 
-.flashcard-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-shrink: 0;
-  padding: 0 4px 42px 0;
-  margin-left: 4px;
-}
-
-.flashcard-lang-select {
-  background-color: rgb(189, 202, 212);
-  display: flex;
-  padding: 1em 1em;
-  justify-content: space-between;
-  border-bottom: none;
-  border-radius: 1em 1em 1em 1em;
-}
 
 .test {
   &-container {

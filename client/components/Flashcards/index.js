@@ -136,7 +136,9 @@ const Flashcards = () => {
           </div>
         )}
         {width < 940 ? <FloatMenu /> : <FlashcardMenu />}
-        {content()}
+        <div className="flashcard-main">
+          {content()}
+        </div>
       </div>
     </div>
   )
