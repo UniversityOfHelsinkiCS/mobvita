@@ -84,23 +84,29 @@ const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) 
 
 const FlashcardMenu = () => {
   const history = useHistory()
-  const { type, storyId } = useParams()
+  const { mode, storyId } = useParams()
 
-  const pushWithOptionalContext = (mode) => {
-    if (type && storyId) {
-      history.push(`/flashcards/${mode}/${type}/${storyId}`)
-    } else {
-      history.push(`/flashcards/${mode}`)
-    }
+  const storyUrl = storyId ? `/${storyId}` : ''
+
+  const handleOptionClick = mode => {
+    history.push(`/flashcards/${mode}`)
   }
+
+  const handleOptionClickWithStory = mode => {
+    history.push(`/flashcards/${mode}/story${storyUrl}`)
+  }
+
+  const isPracticePage = ['fillin', 'quick', 'article'].includes(mode)
 
   return (
     <div className="flashcard-menu">
       <TranslateBar/>
-      <PracticeModeOptions 
-        handleOptionClick={pushWithOptionalContext}
-        handleOptionClickWithStory={pushWithOptionalContext}
-      />
+      {isPracticePage && (
+        <PracticeModeOptions
+          handleOptionClick={handleOptionClick}
+          handleOptionClickWithStory={handleOptionClickWithStory}
+        />
+      )}
     </div>
   )
 }

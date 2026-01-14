@@ -134,8 +134,6 @@ const FloatMenu = () => {
   const history = useHistory()
   const { storyId } = useParams()
 
-  const storyUrl = storyId ? `/${storyId}` : ''
-
   const handleFabClick = () => {
     setOpen(!open)
   }
@@ -146,7 +144,11 @@ const FloatMenu = () => {
   }
 
   const handleOptionClickWithStory = mode => {
-    history.push(`/flashcards/${mode}/story${storyUrl}`)
+    const path = storyId
+      ? `/flashcards/${mode}/story/${storyId}`
+      : `/flashcards/${mode}`
+
+    history.push(path)
     setOpen(false)
   }
 

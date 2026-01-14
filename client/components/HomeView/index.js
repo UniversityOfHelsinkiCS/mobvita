@@ -221,7 +221,7 @@ const HomeviewButtons = ({
               imgSrc={images.flashcards}
               altText="three playing cards"
               translationKey="Flashcards"
-              handleClick={() => history.push('/flashcards')}
+              handleClick={() => history.push('/flashcards/fillin')}
               content="Home-Flashcards-EXPLANATION"
             />
           </div>

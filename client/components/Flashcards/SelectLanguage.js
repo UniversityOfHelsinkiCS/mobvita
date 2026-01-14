@@ -34,7 +34,6 @@ const SelectLanguage = () => {
       options={dictionaryOptions}
       value={dictionaryLanguage}
       onChange={handleLanguageChange}
-      placeholder={intl.formatMessage({ id: 'select-language' })}
     />
   )
 }

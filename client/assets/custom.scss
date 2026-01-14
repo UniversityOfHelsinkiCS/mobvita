@@ -1756,7 +1756,7 @@ label.file-upload-btn {
   flex-direction: column;
   width: 21em;
   height: 35em;
-  margin: 0 auto 3em auto;
+  margin: 0 auto 40px auto;
   padding: 1em 1.5em;
   border: 0.1em solid grey;
   border-radius: 0.8em;
@@ -1933,7 +1933,6 @@ label.file-upload-btn {
 
   &-arrow-button {
     display: flex;
-    justify-content: right;
     align-items: center;
     border: none;
     color: $btn-color-primary;
@@ -1950,7 +1949,7 @@ label.file-upload-btn {
       color: grey
     }
 
-    @media (max-width: 415px) {
+    @media (max-width: 430px) {
       display: none;
     }
   }
@@ -2079,7 +2078,6 @@ label.file-upload-btn {
     color: white;
   }
 }
-
 
 .test {
   &-container {
