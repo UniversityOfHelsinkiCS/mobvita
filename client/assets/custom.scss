@@ -1933,23 +1933,6 @@ label.file-upload-btn {
     }
   }
 
-  &-menu {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding-right: 1em;
-    flex-shrink: 0;
-  }
-
-  &-lang-select {
-    background-color: rgb(189, 202, 212);
-    display: flex;
-    padding: 1em 1em;
-    justify-content: center;
-    border-bottom: none;
-    border-radius: 1em 1em 0 0;
-  }
-
   &-menu-item {
     flex: 1;
     display: flex;
@@ -2042,6 +2025,30 @@ label.file-upload-btn {
     border-color: #77dd77;
     color: white;
   }
+}
+.flashcard-body {
+  display: flex;
+  align-items: stretch;
+  min-height: 100%;
+}
+
+.flashcard-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-shrink: 0;
+  padding: 0 4px 42px 0;
+  margin-left: 4px;
+}
+
+.flashcard-lang-select {
+  background-color: rgb(189, 202, 212);
+  display: flex;
+  padding: 1em 1em;
+  justify-content: space-between;
+  border-bottom: none;
+  border-radius: 1em 1em 0 0;
 }
 
 .test {
