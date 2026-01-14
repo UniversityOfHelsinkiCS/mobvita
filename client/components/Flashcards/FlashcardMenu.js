@@ -39,7 +39,7 @@ const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) 
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
 
   return (
-    <div className="flex-col">
+    <div className="flex-col flashcard-menu-items-boxshadow">
       <MenuItem
         handleClick={() => handleOptionClick('fillin')}
         translationId="fill-in"

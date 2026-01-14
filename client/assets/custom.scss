@@ -1972,6 +1972,10 @@ label.file-upload-btn {
     }
   }
 
+  &-menu-items-boxshadow {
+    box-shadow: 0.5em 0.5em 0.6em grey;
+  }
+
   &-lang-select {
     background-color: rgb(189, 202, 212);
     display: flex;
@@ -1983,6 +1987,7 @@ label.file-upload-btn {
     justify-content: space-between;
     border-bottom: none;
     border-radius: 1em;
+    box-shadow: 0.2em 0.2em 0.3em grey;
     gap: 0.5em;
   }
 
