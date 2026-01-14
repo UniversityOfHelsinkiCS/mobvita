@@ -72,13 +72,13 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           display: 'flex',
           border: 0,
           alignItems: 'center',
-          backgroundColor: background[stage],
+          backgroundColor: 'transparent',
         }}
       >
         <Accordion.Toggle
           eventKey={_id}
           style={{
-            backgroundColor: background[stage] || 'white',
+            backgroundColor: 'transparent',
             border: 0,
             flex: 1,
             textAlign: 'left',

@@ -1789,6 +1789,12 @@ label.file-upload-btn {
     height: 31em;
   }
 
+  &-list {
+    margin-top: -0.5rem;
+    padding: 2px 12px 16px 12px;
+    flex: 1;
+  }
+
   &-header {
     height: 2em;
     display: flex;
