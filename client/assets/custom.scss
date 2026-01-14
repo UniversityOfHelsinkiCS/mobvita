@@ -1973,6 +1973,8 @@ label.file-upload-btn {
   }
 
   &-menu-items-boxshadow {
+    border: none;
+    border-radius: 1em;
     box-shadow: 0.5em 0.5em 0.6em grey;
   }
 
