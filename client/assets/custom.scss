@@ -1772,14 +1772,14 @@ label.file-upload-btn {
     display: flex;
     align-items: stretch;
     min-height: 100%;
-    padding: 8px 8px 0 0;
+    padding: 8px;
   }
 
   &-main {
-    flex: 1 1 auto;          // take remaining width next to the menu
+    flex: 1 1 auto;
     display: flex;
-    justify-content: center; // horizontal center
-    align-items: center;     // vertical center (optional)
+    justify-content: center;
+    align-items: center;
     min-width: 0;
   }
 
@@ -1926,8 +1926,9 @@ label.file-upload-btn {
   }
 
   &-arrow-button {
-    height: 6em;
-    margin: auto;
+    display: flex;
+    justify-content: right;
+    align-items: center;
     border: none;
     color: $btn-color-primary;
 
