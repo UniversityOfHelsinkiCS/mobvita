@@ -63,34 +63,37 @@ const Flashcards = () => {
     }
   }
 
-  const TAB_PRACTICE = intl.formatMessage({ id: 'practice-flashcards' })
-  const TAB_ADD = intl.formatMessage({ id: 'add-new-flashcard' })
-  const TAB_ALL = intl.formatMessage({ id: 'Flashcard list' })
-
-  const selectedTab = (() => {
-    if (mode === 'new') return 'add'
-    if (mode === 'list') return 'all'
-    return 'practice'
-  })()
-
-  const tabValues = {
-    [TAB_PRACTICE]: selectedTab === 'practice',
-    [TAB_ADD]: selectedTab === 'add',
-    [TAB_ALL]: selectedTab === 'all',
+  const pushWithOptionalContext = (nextMode) => {
+    if (type && storyId) {
+      history.push(`/flashcards/${nextMode}/${type}/${storyId}`)
+    } else {
+      history.push(`/flashcards/${nextMode}`)
+    }
   }
 
-  const handleTabChange = (tabKey) => {
-    const pushWithOptionalContext = (nextMode) => {
-      if (type && storyId) {
-        history.push(`/flashcards/${nextMode}/${type}/${storyId}`)
-      } else {
-        history.push(`/flashcards/${nextMode}`)
-      }
-    }
+  const tabs = [
+    {
+      key: 'Practice-flashcards',
+      selected: mode !== 'new' && mode !== 'list',
+      onSelect: () => pushWithOptionalContext('fillin'),
+    },
+    {
+      key: 'Add-new-flashcard',
+      selected: mode === 'new',
+      onSelect: () => history.push('/flashcards/new'),
+    },
+    {
+      key: 'Flashcard list',
+      selected: mode === 'list',
+      onSelect: () => pushWithOptionalContext('list'),
+    },
+  ]
 
-    if (tabKey === TAB_PRACTICE) pushWithOptionalContext('fillin')
-    if (tabKey === TAB_ADD) history.push('/flashcards/new')
-    if (tabKey === TAB_ALL) pushWithOptionalContext('list')
+  const tabValues = Object.fromEntries(tabs.map(tab => [tab.key, tab.selected]))
+
+  const handleTabChange = (tabKey) => {
+    const tab = tabs.find(t => t.key === tabKey)
+    if (tab) tab.onSelect()
   }
 
   return (

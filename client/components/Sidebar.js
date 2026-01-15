@@ -243,7 +243,7 @@ export default function Sidebar({ history }) {
                     <FormattedMessage id="Lessons" />
                   </Button>
                 </Link>
-                <Link to="/flashcards">
+                <Link to="/flashcards/fillin">
                   <Button
                     variant="secondary"
                     style={{ 
