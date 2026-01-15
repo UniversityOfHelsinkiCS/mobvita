@@ -1776,5 +1776,7 @@
     "select-story-themes-and-vocabulary": "Выберите темы и уровень лексики для текста",
     "chatbot-message-suggestion-answer-wrong-reason": "Почему мой ответ неверен?",
     "chatbot-message-suggestion-analyze-context": "Помоги мне понять контекст",
-    "practice-flashcards": "Практика флешкарт"
+    "practice-flashcards": "Практика флешкарт",
+    "Add flashcard": "Добавить новые флеш-карты",
+    "Practice flashcards": "Практика флешкарт"
 }

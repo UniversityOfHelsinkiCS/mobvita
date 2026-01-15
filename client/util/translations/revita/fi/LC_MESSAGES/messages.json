@@ -1774,5 +1774,7 @@
     "select-story-themes-and-vocabulary": "Valitse tarinan teemat ja sanaston taso",
     "chatbot-message-suggestion-answer-wrong-reason": "Miksi vastaukseni on väärin?",
     "chatbot-message-suggestion-analyze-context": "Auta minua ymmärtämään kontekstia",
-    "practice-flashcards": "Harjoittele muistikortteja"
+    "practice-flashcards": "Harjoittele muistikortteja",
+    "Add flashcard": "Lisää sanakortti",
+    "Practice flashcards": "Harjoittele muistikortteja"
 }

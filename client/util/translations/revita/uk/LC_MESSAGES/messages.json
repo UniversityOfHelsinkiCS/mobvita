@@ -883,5 +883,7 @@
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
     "chatbot-message-suggestion-analyze-context": "Help me understand the context",
-    "practice-flashcards": "Практика флешкарток"
+    "practice-flashcards": "Практика флешкарток",
+    "Add flashcard": "Додати нову флеш-картку",
+    "Practice flashcards": "Практика флешкарток"
 }

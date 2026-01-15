@@ -1774,5 +1774,7 @@
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
     "chatbot-message-suggestion-analyze-context": "Help me understand the context",
-    "practice-flashcards": "Practice flashcards"
+    "practice-flashcards": "Practice flashcards",
+    "Add flashcard": "Add flashcard",
+    "Practice flashcards": "Practice flashcards"
 }

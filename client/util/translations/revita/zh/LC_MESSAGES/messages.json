@@ -1151,5 +1151,7 @@
     "select-story-themes-and-vocabulary": "选择内容主题和词汇难度",
     "chatbot-message-suggestion-answer-wrong-reason": "为什么回答是错的",
     "chatbot-message-suggestion-analyze-context": "分析上下文结构",
-    "practice-flashcards": "练习闪卡"
+    "practice-flashcards": "练习闪卡",
+    "Add flashcard": "添加一些新的单词卡",
+    "Practice flashcards": "练习闪卡"
 }

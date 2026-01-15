@@ -73,12 +73,12 @@ const Flashcards = () => {
 
   const tabs = [
     {
-      key: 'Practice-flashcards',
+      key: 'Practice flashcards',
       selected: mode !== 'new' && mode !== 'list',
       onSelect: () => pushWithOptionalContext('fillin'),
     },
     {
-      key: 'Add-new-flashcard',
+      key: 'Add flashcard',
       selected: mode === 'new',
       onSelect: () => history.push('/flashcards/new'),
     },
