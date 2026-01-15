@@ -24,7 +24,7 @@ const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children })
   
 )
 
-const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const CardManagementOptions = ({ handleOptionClick }) => {
   const { storyId } = useParams()
 
   return (
@@ -59,7 +59,7 @@ const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }
         </FabOption>
       )}
       <FabOption
-        handleClick={() => handleOptionClickWithStory('list')}
+        handleClick={() => handleOptionClick('list')}
         translationId="Flashcard list"
         iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
         tooltip='flashcards-edit-card-list-EXPLANATION'
@@ -78,7 +78,7 @@ const CardManagementOptions = ({ handleOptionClick, handleOptionClickWithStory }
   )
 }
 
-const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const PracticeModeOptions = ({ handleOptionClick }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join('/')
@@ -100,7 +100,7 @@ const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) 
       {flashcardArticles && (
         <button
           type="button"
-          onClick={() => handleOptionClickWithStory('article')}
+          onClick={() => handleOptionClick('article')}
           className="flashcard-fab-option gap-col-nm"
         >
           <div
@@ -139,11 +139,6 @@ const FloatMenu = () => {
   }
 
   const handleOptionClick = mode => {
-    history.push(`/flashcards/${mode}`)
-    setOpen(false)
-  }
-
-  const handleOptionClickWithStory = mode => {
     const path = storyId
       ? `/flashcards/${mode}/story/${storyId}`
       : `/flashcards/${mode}`
@@ -161,11 +156,9 @@ const FloatMenu = () => {
         <div className="flex-column-reverse pb-sm slide-from-left" style={{ paddingLeft: '0.3em' }}>
           <PracticeModeOptions 
             handleOptionClick={handleOptionClick}
-            handleOptionClickWithStory={handleOptionClickWithStory} 
           />
           <CardManagementOptions
             handleOptionClick={handleOptionClick}
-            handleOptionClickWithStory={handleOptionClickWithStory}
           />
         </div>
       )}

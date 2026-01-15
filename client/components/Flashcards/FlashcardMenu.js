@@ -89,11 +89,11 @@ const FlashcardMenu = () => {
   const storyUrl = storyId ? `/${storyId}` : ''
 
   const handleOptionClick = mode => {
-    if (storyUrl) {
-      history.push(`/flashcards/${mode}/story${storyUrl}`)
-    } else {
-      history.push(`/flashcards/${mode}`)
-    }
+    const path = storyUrl
+      ? `/flashcards/${mode}/story${storyUrl}`
+      : `/flashcards/${mode}`
+
+    history.push(path)
   }
 
   const isPracticePage = ['fillin', 'quick', 'article'].includes(mode)
