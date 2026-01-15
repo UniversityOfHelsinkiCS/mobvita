@@ -33,7 +33,7 @@ const TranslateBar = () => {
   )
 }
 
-const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) => {
+const PracticeModeOptions = ({ handleOptionClick }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
@@ -60,7 +60,7 @@ const PracticeModeOptions = ({ handleOptionClick, handleOptionClickWithStory }) 
             backgroundColor: '#FFDAC1',
             border: 'none',
           }}
-          onClick={() => handleOptionClickWithStory('article')}
+          onClick={() => handleOptionClick('article')}
         >
           <Icon name="font" size="big" />
           <span>{articleLabel}</span>
@@ -89,11 +89,11 @@ const FlashcardMenu = () => {
   const storyUrl = storyId ? `/${storyId}` : ''
 
   const handleOptionClick = mode => {
-    history.push(`/flashcards/${mode}`)
-  }
-
-  const handleOptionClickWithStory = mode => {
-    history.push(`/flashcards/${mode}/story${storyUrl}`)
+    if (storyUrl) {
+      history.push(`/flashcards/${mode}/story${storyUrl}`)
+    } else {
+      history.push(`/flashcards/${mode}`)
+    }
   }
 
   const isPracticePage = ['fillin', 'quick', 'article'].includes(mode)
@@ -104,7 +104,6 @@ const FlashcardMenu = () => {
       {isPracticePage && (
         <PracticeModeOptions
           handleOptionClick={handleOptionClick}
-          handleOptionClickWithStory={handleOptionClickWithStory}
         />
       )}
     </div>
