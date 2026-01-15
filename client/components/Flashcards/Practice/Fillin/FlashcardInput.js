@@ -28,9 +28,11 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
       <form onSubmit={handleSubmit}>
         <Form.Control
           ref={answerInput}
+          //className="flashcard-answer-input"
           type="text"
           value={answer}
           onChange={event => setAnswer(event.target.value)}
+          placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' })}
         />
         <Button className="flashcard-button" block variant="outline-primary" type="submit">
           {intl.formatMessage({ id: 'check-answer' })}

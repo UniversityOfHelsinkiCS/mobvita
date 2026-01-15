@@ -885,5 +885,6 @@
     "chatbot-message-suggestion-analyze-context": "Help me understand the context",
     "practice-flashcards": "Практика флешкарток",
     "Add flashcard": "Додати нову флеш-картку",
-    "Practice flashcards": "Практика флешкарток"
+    "Practice flashcards": "Practice flashcards",
+    "flashcard-input-placeholder": "Type English translation here..."
 }

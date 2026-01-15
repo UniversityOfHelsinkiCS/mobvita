@@ -1775,5 +1775,6 @@
     "chatbot-message-suggestion-analyze-context": "Aiutami a capire il contesto",
     "practice-flashcards": "Esercitati con le flashcard",
     "Add flashcard": "Aggiungi nuove flashcard",
-    "Practice flashcards": "Esercitati con le flashcard"
+    "Practice flashcards": "Practice flashcards",
+    "flashcard-input-placeholder": "Type English translation here..."
 }

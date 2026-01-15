@@ -1776,5 +1776,6 @@
     "chatbot-message-suggestion-analyze-context": "Auta minua ymmärtämään kontekstia",
     "practice-flashcards": "Harjoittele muistikortteja",
     "Add flashcard": "Lisää sanakortti",
-    "Practice flashcards": "Harjoittele muistikortteja"
+    "Practice flashcards": "Harjoittele muistikortteja",
+    "flashcard-input-placeholder": "Kirjoita käännös tähän..."
 }
