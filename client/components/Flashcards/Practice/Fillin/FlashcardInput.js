@@ -28,7 +28,6 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
       <form onSubmit={handleSubmit}>
         <Form.Control
           ref={answerInput}
-          //className="flashcard-answer-input"
           type="text"
           value={answer}
           onChange={event => setAnswer(event.target.value)}
