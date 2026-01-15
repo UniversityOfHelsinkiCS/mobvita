@@ -1878,6 +1878,10 @@ label.file-upload-btn {
     padding-right: 1em;
   }
 
+  &-answer-input::placeholder {
+    text-align: center;
+  }
+
   &-button {
     margin-top: 1em;
     background-color: white;
