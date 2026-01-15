@@ -29,6 +29,7 @@ const SelectLanguage = () => {
 
   return (
     <Dropdown
+      data-cy="flashcards-dictionary-language"
       selection
       fluid
       options={dictionaryOptions}

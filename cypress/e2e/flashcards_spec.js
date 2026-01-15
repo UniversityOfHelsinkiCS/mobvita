@@ -69,22 +69,19 @@ describe('flashcards', function () {
     it('language can be changed', function () {
       cy.contains('saapua')
 
-    cy.get('.flashcard-menu .ui.fluid.selection.dropdown')
-      .filter(':visible')
-      .first()
-      .scrollIntoView()
-      .should('be.visible')
-      .click()
+      cy.get('[data-cy=flashcards-dictionary-language]')
+        .should('be.visible')
+        .scrollIntoView()
+        .click()
 
-    cy.get('.ui.fluid.selection.dropdown.visible.active')
-      .find('.menu .item .text')
-      .contains('Espanja')
-      .click()
+      cy.get('[data-cy=flashcards-dictionary-language]')
+        .find('.menu .item .text')
+        .contains('Espanja')
+        .click()
 
-    cy.get('.flashcard-menu .ui.fluid.selection.dropdown .text')
-      .first()
-      .should('contain', 'Espanja')
-      })
+      cy.get('[data-cy=flashcards-dictionary-language] .text')
+        .should('contain', 'Espanja')
+    })
   })
 
   describe('multiple cards', function () {
