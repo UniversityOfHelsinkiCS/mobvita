@@ -4,6 +4,7 @@ import ReactCardFlip from 'react-card-flip'
 import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import Flashcard from '../Flashcard'
+import { set } from 'lodash'
 
 const Article = ({ card, cardNumbering, answerCard }) => {
   const [flipped, setFlipped] = useState(false)
@@ -14,13 +15,13 @@ const Article = ({ card, cardNumbering, answerCard }) => {
 
   const iconRef = useRef()
 
+  const { lemma, _id: id, stage, gender, article, lan_in } = card
+
   useEffect(() => {
     setFlipped(false)
     setAnswerChecked(false)
     setAnswerCorrect(null)
-  }, [card])
-
-  const { lemma, _id: id, stage, gender, lan_in } = card
+  }, [id])
 
   const flipCard = () => {
     setFlipped(!flipped)
@@ -35,37 +36,11 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     }
   }, [iconRef.current])
 
-  const correctArticlesOld = {
-    Fem: 'Die',
-    Neut: 'Das',
-    Masc: 'Der',
-    f: 'La',
-    m: 'Le',
-    nt: 'Ett',
-    ut: 'En',
-  }
-  const correctArticlesByLang = {
-    German: {
-      Feminine: 'Die',
-      Neuter: 'Das',
-      Masculine: 'Der',
-    },
-    Swedish: {
-      Neuter: 'Ett',
-      ut: 'En',
-    },
-    French: {
-      Feminine: 'La',
-      Masculine: 'Le',
-    },
-  }
-
   const checkAnswer = answer => {
-    let correct
-    if (correctArticlesOld.hasOwnProperty(gender)) correct = correctArticlesOld[gender] === answer
-    else correct = correctArticlesByLang[lan_in][gender] === answer
+    const correct = answer === article
     answerCard(answer, correct, 'article')
     setAnswerCorrect(correct)
+    flipCard()
   }
 
   const cardProps = {
@@ -81,10 +56,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     </Button>
   ))
 
-  let rightAnswer
-  if (correctArticlesOld.hasOwnProperty(gender))
-    rightAnswer = `${correctArticlesOld[gender]} ${lemma}`
-  else rightAnswer = `${correctArticlesByLang[lan_in][gender]} ${lemma}`
+  const rightAnswer = `${article} ${lemma}`
 
   const fontClass = lemma.length > 12 ? 'header-4' : 'header-2'
   const resultIconName = answerCorrect ? 'thumbs up outline' : 'thumbs down outline'
