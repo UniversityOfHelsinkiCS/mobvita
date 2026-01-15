@@ -68,9 +68,23 @@ describe('flashcards', function () {
 
     it('language can be changed', function () {
       cy.contains('saapua')
-      cy.get('[class=flashcard-footer]').get('select').eq(0).select('Espanja')
-      cy.get('[data-cy=no-flashcards-text]')
-    })
+
+    cy.get('.flashcard-menu .ui.fluid.selection.dropdown')
+      .filter(':visible')
+      .first()
+      .scrollIntoView()
+      .should('be.visible')
+      .click()
+
+    cy.get('.ui.fluid.selection.dropdown.visible.active')
+      .find('.menu .item .text')
+      .contains('Espanja')
+      .click()
+
+    cy.get('.flashcard-menu .ui.fluid.selection.dropdown .text')
+      .first()
+      .should('contain', 'Espanja')
+      })
   })
 
   describe('multiple cards', function () {

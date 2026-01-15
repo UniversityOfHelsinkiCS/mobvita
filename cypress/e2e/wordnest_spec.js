@@ -6,8 +6,13 @@ describe('wordnest modal', function () {
   })
 
   this.beforeEach(function () {
-    cy.loginExisting()
+    cy.login('Russian')
+
+    cy.intercept('GET', '**/api/stories/**').as('getStory')
     cy.visit(previewURL)
+    cy.wait('@getStory')
+
+    cy.get('body', { timeout: 20000 }).should('be.visible')
   })
 
   this.afterAll(function () {
