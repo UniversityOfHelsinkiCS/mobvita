@@ -1,14 +1,14 @@
-import React, { useMemo, useRef, useCallback } from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { sanitizeHtml, flashcardColors, hiddenFeatures } from 'Utilities/common'
+import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
 const FlashcardListItem = ({ card, handleEdit }) => {
-  const { lemma, _id, stage, is_new_word, lan_in, lan_out } = card
+  const { lemma, _id, stage, lan_in, lan_out } = card
   const { background } = flashcardColors
 
   const dispatch = useDispatch()

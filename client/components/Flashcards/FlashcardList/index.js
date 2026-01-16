@@ -96,7 +96,7 @@ const FlashcardList = () => {
   )
 
   return (
-    <div className="flashcard-list">
+    <div className="flashcard-list-view">
       <div className="flex-reverse space-between wrap pt-sm">
         <span className="additional-info pl-nm">
           <FormattedMessage id="cards total" values={{ numberOfCards }} />
