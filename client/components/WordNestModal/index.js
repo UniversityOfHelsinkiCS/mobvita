@@ -103,6 +103,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
             tabIndex="0"
           >
             <span
+              data-cy="wordnest-word"
               className="wordnest-word"
               style={wordStyle}
               dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
@@ -278,7 +279,14 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props })
   }, [open, wordToCheck, learningLanguage, dictionaryLanguage, dispatch])
 
   return (
-    <Modal open={open} centered={false} dimmer="blurring" size="large" onClose={handleModalclose}>
+    <Modal
+      data-cy="wordnest-modal"
+      open={open}
+      centered={false}
+      dimmer="blurring"
+      size="large"
+      onClose={handleModalclose
+    }>
       <Modal.Header className="bold wordnest-modal-header">
         <div className="wordnest-modal-header-items">
           <span>
@@ -305,7 +313,7 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props })
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
         </div>
-        <Icon onClick={handleModalclose} size="small" name="close" className="clickable" />
+        <Icon data-cy="wordnest-close" onClick={handleModalclose} size="small" name="close" className="clickable" />
       </Modal.Header>
       <Modal.Content>
         {!smallWindow ? (
