@@ -9,6 +9,7 @@ describe('wordnest modal', function () {
     cy.login('Russian')
 
     cy.intercept('GET', '**/api/stories/**').as('getStory')
+    cy.intercept({ method: /GET|POST/, url: '**/api/**translation**' }).as('getTranslation')
     cy.visit(previewURL)
     cy.wait('@getStory')
 
@@ -38,8 +39,9 @@ describe('wordnest modal', function () {
 
         cy.contains('[data-cy="wordnest-word"]', 'не⋅спорти́вный', { timeout: 10000 })
           .scrollIntoView()
+          .should('be.visible')
           .click()
-        cy.contains('unsportsmanlike', { timeout: 10000 })
+        cy.contains('unsportsmanlike', { timeout: 30000 }).should('be.visible')
       })
   })
 

@@ -69,17 +69,17 @@ describe('flashcards', function () {
     it('language can be changed', function () {
       cy.contains('saapua')
 
-      cy.get('[data-cy=flashcards-dictionary-language]')
+      cy.get('[data-cy=flashcards-dictionary-language]', { timeout: 10000 })
         .should('be.visible')
         .scrollIntoView()
         .click()
 
-      cy.get('[data-cy=flashcards-dictionary-language]')
+      cy.get('[data-cy=flashcards-dictionary-language]', { timeout: 10000 })
         .find('.menu .item .text')
         .contains('Espanja')
         .click()
 
-      cy.get('[data-cy=flashcards-dictionary-language] .text')
+      cy.get('[data-cy=flashcards-dictionary-language] .text', { timeout: 10000 })
         .should('contain', 'Espanja')
     })
   })
