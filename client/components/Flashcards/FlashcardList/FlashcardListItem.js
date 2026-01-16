@@ -66,7 +66,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           backgroundColor: 'transparent',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Popup
             position="top center"
             content={<FormattedHTMLMessage id="explain-i-know-word" />}
@@ -111,7 +111,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           {lemma}
         </Accordion.Toggle>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Icon
             name="edit outline"
             style={{ cursor: 'pointer' }}
