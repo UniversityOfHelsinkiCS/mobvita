@@ -66,49 +66,75 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           backgroundColor: 'transparent',
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Popup
+            position="top center"
+            content={<FormattedHTMLMessage id="explain-i-know-word" />}
+            trigger={
+              <Icon
+                name="check"
+                onClick={handleKnowFlashcard}
+                style={{ cursor: 'pointer' }}
+              />
+            }
+          />
+          <Popup
+            position="top center"
+            content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
+            trigger={
+              <Icon
+                name="question"
+                onClick={handleNotKnowFlashcard}
+                style={{ cursor: 'pointer' }}
+              />
+            }
+          />
+        </div>
+
         <Accordion.Toggle
+          as="div"
           eventKey={_id}
           style={{
             backgroundColor: 'transparent',
             border: 0,
             flex: 1,
-            textAlign: 'left',
+            textAlign: 'center',
+            justifyContent: 'center',
             outline: 0,
+            cursor: 'pointer',
+            paddingLeft: '0.5rem',
+            minWidth: 0,
           }}
+          role="button"
+          tabIndex={0}
         >
-          <Icon name="edit outline" onClick={() => handleEdit(card)} />
           {lemma}
         </Accordion.Toggle>
-        <Popup
-          position="top center"
-          content={<FormattedHTMLMessage id="explain-i-know-word" />}
-          trigger={
-            <Icon
-              name="check"
-              onClick={handleKnowFlashcard}
-              style={{ cursor: 'pointer', marginRight: '1em' }}
-            />
-          }
-        />
-        <Popup
-          position="top center"
-          content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
-          trigger={
-            <Icon
-              name="question"
-              onClick={handleNotKnowFlashcard}
-              style={{ cursor: 'pointer', marginRight: '1em' }}
-            />
-          }
-        />
-        <Popup
-          position="top center"
-          content={<FormattedMessage id="remove-card-tooltip" />}
-          trigger={
-            <Icon name="trash alternate" onClick={handleDelete} style={{ cursor: 'pointer' }} />
-          }
-        />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Icon
+            name="edit outline"
+            style={{ cursor: 'pointer' }}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleEdit(card)
+            }}
+          />
+
+          <Popup
+            position="top center"
+            content={<FormattedMessage id="remove-card-tooltip" />}
+            trigger={
+              <Icon
+                name="trash alternate"
+                onClick={handleDelete}
+                style={{ cursor: 'pointer' }}
+              />
+            }
+          />
+        </div>
       </ListGroup.Item>
+
       <Accordion.Collapse eventKey={_id}>
         <Card.Body>
           <span className="bold">
