@@ -30,9 +30,6 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
     }, 500)
   }
 
-  console.log('dictionaryLanguage:', dictionaryLanguage)
-  console.log('selectedLanguage:', selectedLanguage)
-
   return (
     <div className="flashcard-input">
       <form onSubmit={handleSubmit}>
