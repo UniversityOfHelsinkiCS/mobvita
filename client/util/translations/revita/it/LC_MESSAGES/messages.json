@@ -1776,5 +1776,5 @@
     "practice-flashcards": "Esercitati con le flashcard",
     "Add flashcard": "Aggiungi nuove flashcard",
     "Practice flashcards": "Practice flashcards",
-    "flashcard-input-placeholder": "Type English translation here..."
+    "flashcard-input-placeholder": "Type {selectedLanguage} translation here..."
 }

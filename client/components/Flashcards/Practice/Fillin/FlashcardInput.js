@@ -1,11 +1,18 @@
 import React, { useState, useRef } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useIntl } from 'react-intl'
+import { useSelector } from 'react-redux'
+import { dictionaryLanguageSelector } from 'Utilities/common'
 
 const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displayedHints }) => {
   const [answer, setAnswer] = useState('')
-
   const intl = useIntl()
+  const selectedLocale = intl.locale
+
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const selectedLanguage = dictionaryLanguage && selectedLocale !== 'en'
+    ? intl.formatMessage({ id: dictionaryLanguage }).toLowerCase()
+    : intl.formatMessage({ id: dictionaryLanguage })
 
   const answerInput = useRef()
 
@@ -23,6 +30,9 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
     }, 500)
   }
 
+  console.log('dictionaryLanguage:', dictionaryLanguage)
+  console.log('selectedLanguage:', selectedLanguage)
+
   return (
     <div className="flashcard-input">
       <form onSubmit={handleSubmit}>
@@ -31,7 +41,7 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
           type="text"
           value={answer}
           onChange={event => setAnswer(event.target.value)}
-          placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' })}
+          placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
         />
         <Button className="flashcard-button" block variant="outline-primary" type="submit">
           {intl.formatMessage({ id: 'check-answer' })}

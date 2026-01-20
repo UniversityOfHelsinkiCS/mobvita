@@ -1631,5 +1631,5 @@
     "practice-flashcards": "Öva flashcards",
     "Add flashcard": "Add flashcard",
     "Practice flashcards": "Practice flashcards",
-    "flashcard-input-placeholder": "Type English translation here..."
+    "flashcard-input-placeholder": "Type {selectedLanguage} translation here..."
 }

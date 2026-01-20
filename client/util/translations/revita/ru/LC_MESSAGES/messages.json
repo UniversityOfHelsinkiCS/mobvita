@@ -1779,5 +1779,5 @@
     "practice-flashcards": "Практика флешкарт",
     "Add flashcard": "Добавить новые флеш-карты",
     "Practice flashcards": "Practice flashcards",
-    "flashcard-input-placeholder": "Type English translation here..."
+    "flashcard-input-placeholder": "Type {selectedLanguage} translation here..."
 }
