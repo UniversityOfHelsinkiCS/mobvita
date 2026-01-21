@@ -180,14 +180,6 @@ const StoryDetailsModal = ({
                 />
               )}
 
-              {isTeacher && (
-                <LinkButton
-                  to={`/stories/${story._id}/generate-multichoice-options`}
-                  translationId="generate-multichoice-button"
-                  variant="secondary"
-                />
-              )}
-
               {showCancelControlStoryButton && (
                 <>
                   <LinkButton

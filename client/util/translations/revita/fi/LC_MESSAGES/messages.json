@@ -1777,6 +1777,5 @@
     "practice-flashcards": "Harjoittele muistikortteja",
     "Add flashcard": "Lisää sanakortti",
     "Practice flashcards": "Harjoittele muistikortteja",
-    "flashcard-input-placeholder": "Käännöksesi kielelle {selectedLanguage}...",
-    "generate-multichoice-button": "Luo monivalinta"
+    "flashcard-input-placeholder": "Käännöksesi kielelle {selectedLanguage}..."
 }

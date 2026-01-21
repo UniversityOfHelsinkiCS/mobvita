@@ -1154,6 +1154,5 @@
     "practice-flashcards": "练习闪卡",
     "Add flashcard": "添加一些新的单词卡",
     "Practice flashcards": "Practice flashcards",
-    "flashcard-input-placeholder": "Type {selectedLanguage} translation here...",
-    "generate-multichoice-button": "Generate multichoice"
+    "flashcard-input-placeholder": "Type {selectedLanguage} translation here..."
 }
