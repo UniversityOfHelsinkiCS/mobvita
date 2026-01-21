@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion } from 'react-bootstrap'
 import { Icon, Popup } from 'semantic-ui-react'
@@ -7,11 +7,42 @@ import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
+
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
   const { background } = flashcardColors
 
   const dispatch = useDispatch()
+
+  const cardContainerRef = useRef(null)
+
+  const scrollToCardTopIfOpenedAndOffscreen = useCallback(() => {
+    const cardEl = cardContainerRef.current
+    if (!cardEl) return
+
+    const HEADER_OFFSET_PX = 52
+
+    const isCollapseOpen = collapseEl =>
+      Boolean(collapseEl) &&
+      (collapseEl.classList.contains('show') || collapseEl.classList.contains('in'))
+
+    const tryScroll = () => {
+      const el = cardContainerRef.current
+      if (!el) return
+
+      const collapseEl = el.querySelector('.collapse')
+      if (!isCollapseOpen(collapseEl)) return
+
+      const topInViewport = el.getBoundingClientRect().top
+
+      if (topInViewport < 0) {
+        const targetY = topInViewport + window.pageYOffset - HEADER_OFFSET_PX
+        window.scrollTo({ top: targetY, behavior: 'smooth' })
+      }
+    }
+
+    ;[0, 50, 200, 400].forEach(ms => window.setTimeout(tryScroll, ms))
+  }, [])
 
   const handleDelete = () => {
     dispatch(deleteFlashcard(_id))
@@ -57,7 +88,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
   )
 
   return (
-    <Card style={{ backgroundColor: background[stage] }}>
+    <Card ref={cardContainerRef} style={{ backgroundColor: background[stage] }}>
       <ListGroup.Item
         style={{
           display: 'flex',
@@ -94,6 +125,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         <Accordion.Toggle
           as="div"
           eventKey={_id}
+          onClick={scrollToCardTopIfOpenedAndOffscreen}
           style={{
             backgroundColor: 'transparent',
             border: 0,
