@@ -834,16 +834,31 @@ $value in $spacing {
   margin-right: 0.25rem !important;
 }
 
+@mixin claymorphism-surface {
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 29px;
+  box-shadow:
+    35px 35px 68px 0px rgba(145, 192, 255, 0.5),
+    inset -9px -9px 16px 0px rgba(145, 192, 255, 0.6),
+    inset 0px 11px 28px 0px rgb(255, 255, 255);
+}
+
 .homeview-btn {
-  background: #32aaf8;
+  @include claymorphism-surface;
+}
+
+.homeview-btn {
+  @include claymorphism-surface;
+
+  border: none;
+  outline: none;
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
-  border: 2px solid #000;
-  border-radius: 12px;
 
   &-narrow {
     padding: 15px 5px 20px 25px;
-
   }
 
   &-wide {
@@ -2080,7 +2095,6 @@ label.file-upload-btn {
     color: white;
   }
 }
-
 
 
 .test {
