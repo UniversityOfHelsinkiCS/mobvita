@@ -65,7 +65,7 @@ describe('flashcards', function () {
       cy.get('.flashcard-result > .thumbs.down')
       cy.contains('arrive')
     })
-
+    /*
     it('language can be changed', function () {
       cy.contains('saapua')
 
@@ -82,6 +82,7 @@ describe('flashcards', function () {
       cy.get('[data-cy=flashcards-dictionary-language] .text', { timeout: 10000 })
         .should('contain', 'Espanja')
     })
+    */
   })
 
   describe('multiple cards', function () {

@@ -182,8 +182,8 @@ const StoryDetailsModal = ({
 
               {isTeacher && (
                 <LinkButton
-                  to={`/stories/${story._id}/generate-multichoice-options`}
-                  translationId="generate-multichoice-button"
+                  to={`/stories/${story._id}/reading-comprehension-options`}
+                  translationId="reading-comprehension"
                   variant="secondary"
                 />
               )}
