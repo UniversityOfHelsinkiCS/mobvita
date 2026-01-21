@@ -181,11 +181,11 @@ const StoryDetailsModal = ({
               )}
 
               {isTeacher && (
-                <Link to={`/stories/${story._id}/generate-multichoice-options`}>
-                  <Button variant="secondary">
-                    <FormattedMessage id="generate-multichoice-button" />
-                  </Button>
-                </Link>
+                <LinkButton
+                  to={`/stories/${story._id}/generate-multichoice-options`}
+                  translationId="generate-multichoice-button"
+                  variant="secondary"
+                />
               )}
 
               {showCancelControlStoryButton && (
