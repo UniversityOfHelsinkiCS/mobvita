@@ -367,7 +367,7 @@ const StoryList = () => {
     const multiplier = sortDirection === 'asc' ? 1 : -1
     return dir * multiplier
   })
-
+  /*
   function rowRenderer({ key, index, style }) {
     return (
       <div
@@ -384,6 +384,7 @@ const StoryList = () => {
       </div>
     )
   }
+  */
 
   const accordionView = () => {
     const storyId2Index = libraryFilteredStories.reduce((acc, story, index) => {
@@ -472,6 +473,7 @@ const StoryList = () => {
               libraryShown={libraries}
               story={libraryFilteredStories[index]}
               selectedGroup={savedGroupSelection}
+              savedLibrarySelection={savedLibrarySelection}
             />
           ))}
           {/* <WindowScroller>
