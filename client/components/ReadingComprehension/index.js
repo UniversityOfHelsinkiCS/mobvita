@@ -31,7 +31,7 @@ const ReadingComprehensionView = ({ match }) => {
     <main className="reading-comp">
       <Segment className="reading-comp__story" style={getTextStyle(learningLanguage)}>
         <Header
-          className="space-between reading-comp__title"
+          className="reading-comp__title"
           style={getTextStyle(learningLanguage, 'title')}
         >
           <span className="story-title">
@@ -59,8 +59,8 @@ const ReadingComprehensionView = ({ match }) => {
       </Segment>
 
       <section className="reading-comp__questions">
-        <ReadingComprehensionQuestion questionNumber={0} defaultOpen={false}>
-          <div>Example answer here</div>
+        <ReadingComprehensionQuestion questionNumber={0} >
+          <div>For example answer here</div>
         </ReadingComprehensionQuestion>
       </section>
     </main>
