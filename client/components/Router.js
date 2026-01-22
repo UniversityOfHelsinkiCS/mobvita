@@ -52,6 +52,7 @@ import LessonLibrary from './Lessons/LessonLibrary'
 import GecView from './GecView'
 import StoryGeneration from './StoryGeneration'
 import Estimator from './Estimator'
+import ReadingComprehensionView from './ReadingComprehension'
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -167,13 +168,18 @@ export default () => {
             <ProtectedRoute exact path="/stories/:id/edit" component={EditStoryView} />
             <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
             <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
-
             <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
             <ProtectedRoute
               exact
               path="/stories/:id/controlled-story-editor/"
               component={ControlledStoryEditView}
             />
+            <ProtectedRoute
+              exact
+              path="/stories/:storyId/reading-comprehension-options"
+              component={ReadingComprehensionView}
+            />
+
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
 
             <ProtectedRoute exact path="/groups/:role" component={GroupView} />

@@ -1,0 +1,51 @@
+.reading-comp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+  align-items: start;
+}
+
+/* allow both columns to shrink */
+.reading-comp__story,
+.reading-comp__questions {
+  min-width: 0;
+}
+
+/* story panel: keep it in its grid cell */
+.reading-comp__story {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere; /* prevents long tokens forcing overlap */
+}
+
+.rc-question {
+  background: #fff;
+}
+
+.rc-question__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rc-question__title {
+  margin-bottom: 0.5em;
+}
+
+.rc-question__titleText {
+  font-weight: 500;
+}
+
+.rc-question__toggle {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.rc-question__body {
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+  padding-top: 0.25em;
+}
