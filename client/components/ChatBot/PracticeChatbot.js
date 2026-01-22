@@ -215,7 +215,6 @@ const PracticeChatbot = () => {
       <Button
         onClick={toggleCollapse}
         className="chatbot-toggle"
-        style={{ background: 'mistyrose', margin: 0 }}
       >
         <div>
           <FormattedMessage id="chatbot-toggle-label" />
