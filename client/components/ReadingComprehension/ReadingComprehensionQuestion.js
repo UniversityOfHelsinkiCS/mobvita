@@ -1,37 +1,25 @@
-import React, { useState } from 'react'
-import { Icon, Segment } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
-import './ReadingComprehension.css'
+import React from 'react'
+import { Segment } from 'semantic-ui-react'
 
-const ReadingComprehensionQuestion = ({
-  questionNumber,
-  headerTranslationId = 'reading-comprehension-question',
-  defaultOpen = false,
-  children,
-}) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-
+const ReadingComprehensionQuestion = ({ title, selected = false, onToggleSelect, children }) => {
   return (
-    <Segment className="rc-question">
+    <Segment
+      className={`rc-question ${selected ? 'rc-question--selected' : ''}`}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selected}
+      onClick={onToggleSelect}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') onToggleSelect?.()
+      }}
+    >
       <header className="rc-question__header">
         <div className="rc-question__title">
-          <span className="header-3 rc-question__titleText">
-            <FormattedMessage id={headerTranslationId} />{' '}
-            {typeof questionNumber === 'number' ? `#${questionNumber + 1}` : null}
-          </span>
+          <span className="header-3 rc-question__titleText">{title}</span>
         </div>
-
-        <button
-          type="button"
-          className="rc-question__toggle"
-          onClick={() => setIsOpen(prev => !prev)}
-          aria-expanded={isOpen}
-        >
-          <Icon name={isOpen ? 'angle up' : 'angle down'} size="large" />
-        </button>
       </header>
 
-      {isOpen && <section className="rc-question__body">{children}</section>}
+      <section className="rc-question__body">{children}</section>
     </Segment>
   )
 }

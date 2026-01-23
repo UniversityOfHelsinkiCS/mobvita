@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Divider, Header, Segment } from 'semantic-ui-react'
+import { Button, Divider, Header, Segment } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
+import { generateMcQuestionsAction, saveMcQuestionsAction } from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import './ReadingComprehension.css'
@@ -19,21 +20,79 @@ const ReadingComprehensionView = ({ match }) => {
     pending: stories.focusedPending,
   }))
 
-  const [focusedConcept, setFocusedConcept] = useState(null)
+  const { generated, pending: mcPending, saved, error } = useSelector(state => {
+    const slice = state.readingComprehension
+    return (
+      slice || {
+        generated: [],
+        pending: false,
+        saved: false,
+        error: false,
+      }
+    )
+  })
+
+  const [level, setLevel] = useState('B1')
+  const [size, setSize] = useState(4)
+
+  // selected question indices
+  const [selected, setSelected] = useState(() => new Set())
 
   useEffect(() => {
     dispatch(getStoryAction(storyId, 'preview'))
   }, [dispatch, storyId])
+
+  // reset selection when new questions arrive
+  useEffect(() => {
+    setSelected(new Set())
+  }, [generated])
+
+  const previousQuestionTexts = useMemo(
+    () => (Array.isArray(generated) ? generated.map(q => q.question).filter(Boolean) : []),
+    [generated]
+  )
+
+  const handleGenerate = () => {
+    dispatch(
+      generateMcQuestionsAction({
+        storyId,
+        level,
+        size,
+        // Optional: preserve previous questions text but regenerate distractors
+        // questions: previousQuestionTexts,
+      })
+    )
+  }
+
+  const toggleSelected = idx => {
+    setSelected(prev => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+  }
+
+  const selectedQuestions = useMemo(() => {
+    if (!Array.isArray(generated) || selected.size === 0) return []
+    return generated.filter((_, idx) => selected.has(idx))
+  }, [generated, selected])
+
+  const handleSave = () => {
+    dispatch(
+      saveMcQuestionsAction({
+        storyId,
+        questions: selectedQuestions,
+      })
+    )
+  }
 
   if (pending || !story) return <Spinner fullHeight />
 
   return (
     <main className="reading-comp">
       <Segment className="reading-comp__story" style={getTextStyle(learningLanguage)}>
-        <Header
-          className="reading-comp__title"
-          style={getTextStyle(learningLanguage, 'title')}
-        >
+        <Header className="reading-comp__title" style={getTextStyle(learningLanguage, 'title')}>
           <span className="story-title">
             <span className="pr-sm">{story.title}</span>
           </span>
@@ -49,7 +108,7 @@ const ReadingComprehensionView = ({ match }) => {
               mode="preview"
               snippet={paragraph}
               answers={null}
-              focusedConcept={focusedConcept}
+              focusedConcept={null}
               show_preview_exer={false}
             />
             <br />
@@ -59,9 +118,56 @@ const ReadingComprehensionView = ({ match }) => {
       </Segment>
 
       <section className="reading-comp__questions">
-        <ReadingComprehensionQuestion questionNumber={0} >
-          <div>For example answer here</div>
-        </ReadingComprehensionQuestion>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
+          <label>
+            Level:{' '}
+            <input value={level} onChange={e => setLevel(e.target.value)} style={{ width: 80 }} />
+          </label>
+
+          <label>
+            Size:{' '}
+            <input
+              type="number"
+              min={1}
+              value={size}
+              onChange={e => setSize(Number(e.target.value))}
+              style={{ width: 70 }}
+            />
+          </label>
+
+          <Button primary onClick={handleGenerate} loading={mcPending} disabled={mcPending}>
+            Generate
+          </Button>
+
+          <Button
+            secondary
+            onClick={handleSave}
+            disabled={mcPending || selectedQuestions.length === 0}
+          >
+            Save
+          </Button>
+
+          {saved ? <span style={{ color: 'green' }}>Saved</span> : null}
+          {error ? <span style={{ color: 'crimson' }}>Error</span> : null}
+        </div>
+
+        {(generated || []).map((q, idx) => {
+          const options = [q.correct, ...(q.distractors || [])].filter(Boolean)
+          return (
+            <ReadingComprehensionQuestion
+              key={`${idx}-${q.question}`}
+              title={q.question}
+              selected={selected.has(idx)}
+              onToggleSelect={() => toggleSelected(idx)}
+            >
+              <ul className="rc-question__options">
+                {options.map((opt, i) => (
+                  <li key={i}>{opt}</li>
+                ))}
+              </ul>
+            </ReadingComprehensionQuestion>
+          )
+        })}
       </section>
     </main>
   )

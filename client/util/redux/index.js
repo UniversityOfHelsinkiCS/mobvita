@@ -55,6 +55,7 @@ import contextTranslation from './contextTranslationReducer'
 import chatbot from './chatbotReducer'
 import gec from './gecReducer'
 import storyGeneration from './storyGenerationReducer'
+import readingComprehension from './readingComprehensionReducer'
 
 
 const rootReducer = combineReducers({
@@ -113,6 +114,7 @@ const rootReducer = combineReducers({
   chatbot,
   gec,
   storyGeneration,
+  readingComprehension,
 })
 
 export default (state, action) =>
