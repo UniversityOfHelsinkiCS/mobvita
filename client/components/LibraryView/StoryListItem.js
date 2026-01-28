@@ -28,6 +28,7 @@ const StoryTitle = ({
   storyGroupShareInfo,
   handleControlledStoryCancel,
   setSharedStoryVisibility,
+  savedLibrarySelection,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const {user, teacherView} = useSelector(({ user }) => user.data)
@@ -80,6 +81,7 @@ const StoryTitle = ({
       hidden={storyGroupShareInfo && storyGroupShareInfo.hidden || false}
       setSharedStoryVisibility={setSharedStoryVisibility}
       user={user}
+      savedLibrarySelection={savedLibrarySelection}
     />
   )
 }
@@ -346,7 +348,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
+const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelection }) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -402,6 +404,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup }) => {
           storyGroupShareInfo={storyGroupShareInfo}
           handleControlledStoryCancel={handleControlledStoryCancel}
           setSharedStoryVisibility={setSharedStoryVisibility}
+          savedLibrarySelection={savedLibrarySelection}
         />
       </Card.Content>
       <Card.Content extra>
