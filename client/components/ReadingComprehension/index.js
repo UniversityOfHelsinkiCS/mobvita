@@ -124,7 +124,7 @@ const ReadingComprehensionView = ({ match }) => {
             <Select
               value={level}
               options={skillLevels.map(cefr=>({key: cefr, text: cefr, value: cefr}))}
-              onChange={e => setLevel(e.target.value)}
+              onChange={(_e, option) => setLevel(option.value) }
               style={{ width: 80 }}
             />
           </label>
@@ -141,7 +141,7 @@ const ReadingComprehensionView = ({ match }) => {
             <Select
               value={size}
               options={[2,3,4,5].map(s => ({ key: s, text: s, value: s }))}
-              onChange={e => setSize(e.target.value)}
+              onChange={(_e, option) => setSize(option.value) }
               style={{ width: 70 }}
             />
           </label>
