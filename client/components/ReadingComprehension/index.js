@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Divider, Header, Segment } from 'semantic-ui-react'
+import { Button, Divider, Header, Segment, Icon, Select } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
 import { generateMcQuestionsAction, saveMcQuestionsAction } from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle, skillLevels } from 'Utilities/common'
 import './ReadingComprehension.css'
 
 const ReadingComprehensionView = ({ match }) => {
@@ -90,7 +90,7 @@ const ReadingComprehensionView = ({ match }) => {
   if (pending || !story) return <Spinner fullHeight />
 
   return (
-    <main className="reading-comp">
+    <main className="reading-comp pt-lg auto gap-row-sm">
       <Segment className="reading-comp__story" style={getTextStyle(learningLanguage)}>
         <Header className="reading-comp__title" style={getTextStyle(learningLanguage, 'title')}>
           <span className="story-title">
@@ -121,16 +121,27 @@ const ReadingComprehensionView = ({ match }) => {
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
           <label>
             Level:{' '}
-            <input value={level} onChange={e => setLevel(e.target.value)} style={{ width: 80 }} />
+            <Select
+              value={level}
+              options={skillLevels.map(cefr=>({key: cefr, text: cefr, value: cefr}))}
+              onChange={e => setLevel(e.target.value)}
+              style={{ width: 80 }}
+            />
           </label>
 
           <label>
             Size:{' '}
-            <input
+            {/* <input
               type="number"
               min={1}
               value={size}
               onChange={e => setSize(Number(e.target.value))}
+              style={{ width: 70 }}
+            /> */}
+            <Select
+              value={size}
+              options={[2,3,4,5].map(s => ({ key: s, text: s, value: s }))}
+              onChange={e => setSize(e.target.value)}
               style={{ width: 70 }}
             />
           </label>
@@ -152,7 +163,6 @@ const ReadingComprehensionView = ({ match }) => {
         </div>
 
         {(generated || []).map((q, idx) => {
-          const options = [q.correct, ...(q.distractors || [])].filter(Boolean)
           return (
             <ReadingComprehensionQuestion
               key={`${idx}-${q.question}`}
@@ -161,8 +171,10 @@ const ReadingComprehensionView = ({ match }) => {
               onToggleSelect={() => toggleSelected(idx)}
             >
               <ul className="rc-question__options">
-                {options.map((opt, i) => (
-                  <li key={i}>{opt}</li>
+                {q.choices.map((opt, i) => (
+                  <li key={i} style={opt === q.answer ? {color: 'green', fontWeight: 'bold'}: {color: 'red'}}>
+                    {opt}
+                  </li>
                 ))}
               </ul>
             </ReadingComprehensionQuestion>

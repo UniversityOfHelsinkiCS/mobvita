@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
 import DetailsTable from './DetailsTable'
-import { consistsOfOnlyWhitespace } from 'Utilities/common'
+import { hiddenFeatures } from 'Utilities/common'
 
 const StoryDetailsModal = ({
   trigger,
@@ -182,7 +182,7 @@ const StoryDetailsModal = ({
                 />
               )}
 
-              {isTeacher && savedLibrarySelection == 'private' && (
+              {hiddenFeatures && isTeacher && savedLibrarySelection == 'private' && (
                 <LinkButton
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   translationId="reading-comprehension"
