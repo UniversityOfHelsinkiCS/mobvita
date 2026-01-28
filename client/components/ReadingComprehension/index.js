@@ -146,7 +146,7 @@ const ReadingComprehensionView = ({ match }) => {
             />
           </label>
 
-          <Button primary onClick={handleGenerate} loading={mcPending} disabled={mcPending}>
+          <Button primary onClick={handleGenerate} loading={mcPending} disabled={mcPending} style={{ marginBottom: '0.5rem'}}>
             Generate
           </Button>
 
@@ -154,6 +154,7 @@ const ReadingComprehensionView = ({ match }) => {
             secondary
             onClick={handleSave}
             disabled={mcPending || selectedQuestions.length === 0}
+            style={{ marginBottom: '0.5rem' }}
           >
             Save
           </Button>
