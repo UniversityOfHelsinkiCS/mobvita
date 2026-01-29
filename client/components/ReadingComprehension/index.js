@@ -125,7 +125,11 @@ const ReadingComprehensionView = ({ match }) => {
     cancelEditChoice()
   }
 
-  const stop = e => {
+  const stopPropagation = e => {
+    e.stopPropagation()
+  }
+
+  const stopAll = e => {
     e.preventDefault()
     e.stopPropagation()
   }
@@ -243,22 +247,20 @@ const ReadingComprehensionView = ({ match }) => {
               />
 
               {totalQuestions > 0 && (
-                <>
-                  <Button
-                    basic
-                    size="small"
-                    disabled={mcPending || totalQuestions === 0}
-                    onClick={() => {
-                      if (selected.size === totalQuestions) {
-                        handleClearSelection()
-                      } else {
-                        handleSelectAll()
-                      }
-                    }}
-                  >
-                    {intl.formatMessage({ id: 'select-unselect-all' })}
-                  </Button>
-                </>
+                <Button
+                  basic
+                  size="small"
+                  disabled={mcPending || totalQuestions === 0}
+                  onClick={() => {
+                    if (selected.size === totalQuestions) {
+                      handleClearSelection()
+                    } else {
+                      handleSelectAll()
+                    }
+                  }}
+                >
+                  {intl.formatMessage({ id: 'select-unselect-all' })}
+                </Button>
               )}
 
               {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
@@ -294,8 +296,8 @@ const ReadingComprehensionView = ({ match }) => {
                           onChange={(_e, data) => setEditValue(data.value)}
                           fluid
                           size="small"
-                          onClick={stop}
-                          onMouseDown={stop}
+                          onClick={stopPropagation}
+                          onMouseDown={stopPropagation}
                         />
                       ) : (
                         <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>
@@ -304,14 +306,14 @@ const ReadingComprehensionView = ({ match }) => {
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stop} onMouseDown={stop}>
+                    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
                       {isEditing ? (
                         <>
                           <Button
                             icon
                             size="mini"
                             onClick={e => {
-                              stop(e)
+                              stopAll(e)
                               commitEditChoice()
                             }}
                             disabled={(editValue || '').trim().length === 0}
@@ -322,7 +324,7 @@ const ReadingComprehensionView = ({ match }) => {
                             icon
                             size="mini"
                             onClick={e => {
-                              stop(e)
+                              stopAll(e)
                               cancelEditChoice()
                             }}
                           >
@@ -334,10 +336,10 @@ const ReadingComprehensionView = ({ match }) => {
                           icon
                           size="mini"
                           onClick={e => {
-                            stop(e)
+                            stopAll(e)
                             startEditChoice(qIdx, cIdx, opt)
                           }}
-                          onMouseDown={stop}
+                          onMouseDown={stopAll}
                         >
                           <Icon name="pencil" />
                         </Button>
