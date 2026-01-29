@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Divider, Header, Segment, Select, Popup, Icon, Input } from 'semantic-ui-react'
+import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
@@ -11,6 +12,7 @@ import './ReadingComprehension.css'
 
 const ReadingComprehensionView = ({ match }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const { storyId } = match.params
@@ -131,11 +133,7 @@ const ReadingComprehensionView = ({ match }) => {
   if (pending || !story) return <Spinner fullHeight />
 
   const saveDisabled = mcPending || selectedCount === 0
-  const saveTooltip = mcPending
-    ? 'Generating questions…'
-    : selectedCount === 0
-      ? 'Select at least one question to enable Save.'
-      : ''
+  const saveTooltip = mcPending ? intl.formatMessage({ id: 'mc-generating' }) : ''
 
   const fieldStyle = {
     display: 'flex',
@@ -151,7 +149,7 @@ const ReadingComprehensionView = ({ match }) => {
     <main
       className="reading-comp pt-lg auto gap-row-sm"
       style={{
-        maxWidth: 1200,
+        maxWidth: 1250,
         margin: '0 auto',
         width: '100%',
         display: 'flex',
@@ -204,7 +202,7 @@ const ReadingComprehensionView = ({ match }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
             <div style={fieldStyle}>
-              <span style={labelTextStyle}>Level:</span>
+              <span style={labelTextStyle}>{intl.formatMessage({ id: 'level' })}:</span>
               <Select
                 value={level}
                 options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
@@ -214,7 +212,7 @@ const ReadingComprehensionView = ({ match }) => {
             </div>
 
             <div style={fieldStyle}>
-              <span style={labelTextStyle}>Size:</span>
+              <span style={labelTextStyle}>{intl.formatMessage({ id: 'size' })}:</span>
               <Select
                 value={size}
                 options={[2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
@@ -227,17 +225,18 @@ const ReadingComprehensionView = ({ match }) => {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', width: '100%' }}>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               <Button primary onClick={handleGenerate} loading={mcPending} disabled={mcPending}>
-                Generate
+                {intl.formatMessage({ id: 'generate' })}
               </Button>
 
               <Popup
                 content={saveTooltip}
-                disabled={!saveDisabled}
+                disabled={!mcPending}
                 position="top center"
                 trigger={
                   <div style={{ display: 'inline-block' }}>
                     <Button secondary onClick={handleSave} disabled={saveDisabled}>
-                      Save{selectedCount > 0 ? ` (${selectedCount})` : ''}
+                      {intl.formatMessage({ id: 'save' })}
+                      {selectedCount > 0 ? ` (${selectedCount})` : ''}
                     </Button>
                   </div>
                 }
@@ -245,14 +244,25 @@ const ReadingComprehensionView = ({ match }) => {
 
               {totalQuestions > 0 && (
                 <>
-                  <Button basic size="small" onClick={handleSelectAll} disabled={mcPending}>
-                    Select all
-                  </Button>
-                  <Button basic size="small" onClick={handleClearSelection} disabled={mcPending || selected.size === 0}>
-                    Clear
+                  <Button
+                    basic
+                    size="small"
+                    disabled={mcPending || totalQuestions === 0}
+                    onClick={() => {
+                      if (selected.size === totalQuestions) {
+                        handleClearSelection()
+                      } else {
+                        handleSelectAll()
+                      }
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'select-unselect-all' })}
                   </Button>
                 </>
               )}
+
+              {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
+              {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
             </div>
           </div>
         </div>
