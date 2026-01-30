@@ -133,13 +133,7 @@ const StoryDetailsModal = ({
                         </Button>
                       </Link>
                     )}
-                    {isTeacher && (
-                      <LinkButton
-                        variant="secondary"
-                        to={`/stories/${story._id}/reading-comprehension-options`}
-                        translationId="generate-questions-forreading-comprehension"
-                      />
-                    )}
+                    
                   </>
                 )}
               </>
