@@ -53,6 +53,7 @@ import GecView from './GecView'
 import StoryGeneration from './StoryGeneration'
 import Estimator from './Estimator'
 import ReadingComprehensionView from './ReadingComprehension'
+import ReadingPracticeView from 'Components/Tests/ReadingTest/ReadingPracticeByStoryID'
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -178,6 +179,11 @@ export default () => {
               exact
               path="/stories/:storyId/reading-comprehension-options"
               component={ReadingComprehensionView}
+            />
+            <ProtectedRoute
+              exact
+              path="/stories/:id/reading_practice"
+              component={ReadingPracticeView}
             />
 
             <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />

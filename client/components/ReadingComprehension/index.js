@@ -5,10 +5,22 @@ import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
-import { generateMcQuestionsAction, saveMcQuestionsAction } from 'Utilities/redux/readingComprehensionReducer'
+import {
+  generateMcQuestionsAction,
+  regenerateOneMcQuestionAction,
+  saveMcQuestionsAction,
+} from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle, skillLevels } from 'Utilities/common'
 import './ReadingComprehension.css'
+
+const signatureOf = q => {
+  if (!q) return ''
+  const question = q.question || ''
+  const answer = q.answer || ''
+  const choices = Array.isArray(q.choices) ? q.choices.join('||') : ''
+  return `${question}__${choices}__${answer}`
+}
 
 const ReadingComprehensionView = ({ match }) => {
   const dispatch = useDispatch()
@@ -22,7 +34,7 @@ const ReadingComprehensionView = ({ match }) => {
     pending: stories.focusedPending,
   }))
 
-  const { generated, pending: mcPending, saved, error } = useSelector(state => {
+  const { generated, pending: mcPending, saved, error, regenPendingByIndex } = useSelector(state => {
     const slice = state.readingComprehension
     return (
       slice || {
@@ -30,6 +42,7 @@ const ReadingComprehensionView = ({ match }) => {
         pending: false,
         saved: false,
         error: false,
+        regenPendingByIndex: {},
       }
     )
   })
@@ -42,6 +55,9 @@ const ReadingComprehensionView = ({ match }) => {
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
 
+  const [regenLocalByIndex, setRegenLocalByIndex] = useState({})
+  const [prevSignatures, setPrevSignatures] = useState({})
+
   useEffect(() => {
     dispatch(getStoryAction(storyId, 'preview'))
   }, [dispatch, storyId])
@@ -51,9 +67,53 @@ const ReadingComprehensionView = ({ match }) => {
     setDraftQuestions(Array.isArray(generated) ? generated : [])
     setEditing(null)
     setEditValue('')
+    setRegenLocalByIndex({})
+    const nextSigs = {}
+    ;(Array.isArray(generated) ? generated : []).forEach((q, idx) => {
+      nextSigs[idx] = signatureOf(q)
+    })
+    setPrevSignatures(nextSigs)
   }, [generated])
 
+  useEffect(() => {
+    const nextSigs = {}
+    ;(draftQuestions || []).forEach((q, idx) => {
+      nextSigs[idx] = signatureOf(q)
+    })
+
+    Object.keys(regenLocalByIndex || {}).forEach(k => {
+      const idx = Number(k)
+      if (!Number.isFinite(idx)) return
+      if (!regenLocalByIndex[idx]) return
+      if (!prevSignatures[idx] || !nextSigs[idx]) return
+
+      if (prevSignatures[idx] !== nextSigs[idx]) {
+        setRegenLocalByIndex(prev => {
+          if (!prev?.[idx]) return prev
+          const next = { ...prev }
+          delete next[idx]
+          return next
+        })
+      }
+    })
+
+    setPrevSignatures(nextSigs)
+  }, [draftQuestions]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (error) setRegenLocalByIndex({})
+  }, [error])
+
+  const anyRegenerating = useMemo(() => {
+    const local = regenLocalByIndex || {}
+    const redux = regenPendingByIndex || {}
+    return Object.keys(local).some(k => !!local[k]) || Object.keys(redux).some(k => !!redux[k])
+  }, [regenLocalByIndex, regenPendingByIndex])
+
+  const disableTopActions = mcPending || anyRegenerating
+
   const handleGenerate = () => {
+    if (disableTopActions) return
     dispatch(
       generateMcQuestionsAction({
         storyId,
@@ -89,6 +149,7 @@ const ReadingComprehensionView = ({ match }) => {
   }
 
   const handleSave = () => {
+    if (disableTopActions) return
     dispatch(
       saveMcQuestionsAction({
         storyId,
@@ -125,6 +186,35 @@ const ReadingComprehensionView = ({ match }) => {
     cancelEditChoice()
   }
 
+  const handleRegenerateOne = (qIdx, questionText) => {
+    cancelEditChoice()
+
+    setPrevSignatures(prev => ({
+      ...prev,
+      [qIdx]: signatureOf(draftQuestions?.[qIdx]),
+    }))
+
+    setRegenLocalByIndex(prev => ({ ...prev, [qIdx]: true }))
+
+    setTimeout(() => {
+      setRegenLocalByIndex(prev => {
+        if (!prev?.[qIdx]) return prev
+        const next = { ...prev }
+        delete next[qIdx]
+        return next
+      })
+    }, 15000)
+
+    dispatch(
+      regenerateOneMcQuestionAction({
+        storyId,
+        level,
+        question: questionText,
+        index: qIdx,
+      })
+    )
+  }
+
   const stopPropagation = e => {
     e.stopPropagation()
   }
@@ -136,8 +226,12 @@ const ReadingComprehensionView = ({ match }) => {
 
   if (pending || !story) return <Spinner fullHeight />
 
-  const saveDisabled = mcPending || selectedCount === 0
-  const saveTooltip = mcPending ? intl.formatMessage({ id: 'mc-generating' }) : ''
+  const saveDisabled = disableTopActions || selectedCount === 0
+  const saveTooltip = mcPending
+    ? intl.formatMessage({ id: 'mc-generating' })
+    : anyRegenerating
+      ? intl.formatMessage({ id: 'regenerating' })
+      : ''
 
   const fieldStyle = {
     display: 'flex',
@@ -212,6 +306,7 @@ const ReadingComprehensionView = ({ match }) => {
                 options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
                 onChange={(_e, option) => setLevel(option.value)}
                 style={{ width: 100 }}
+                disabled={disableTopActions}
               />
             </div>
 
@@ -222,19 +317,20 @@ const ReadingComprehensionView = ({ match }) => {
                 options={[2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
                 onChange={(_e, option) => setSize(option.value)}
                 style={{ width: 100 }}
+                disabled={disableTopActions}
               />
             </div>
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', width: '100%' }}>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              <Button primary onClick={handleGenerate} loading={mcPending} disabled={mcPending}>
+              <Button primary onClick={handleGenerate} loading={mcPending} disabled={disableTopActions}>
                 {intl.formatMessage({ id: 'generate' })}
               </Button>
 
               <Popup
                 content={saveTooltip}
-                disabled={!mcPending}
+                disabled={!disableTopActions}
                 position="top center"
                 trigger={
                   <div style={{ display: 'inline-block' }}>
@@ -250,13 +346,10 @@ const ReadingComprehensionView = ({ match }) => {
                 <Button
                   basic
                   size="small"
-                  disabled={mcPending || totalQuestions === 0}
+                  disabled={disableTopActions || totalQuestions === 0}
                   onClick={() => {
-                    if (selected.size === totalQuestions) {
-                      handleClearSelection()
-                    } else {
-                      handleSelectAll()
-                    }
+                    if (selected.size === totalQuestions) handleClearSelection()
+                    else handleSelectAll()
                   }}
                 >
                   {intl.formatMessage({ id: 'select-unselect-all' })}
@@ -269,88 +362,115 @@ const ReadingComprehensionView = ({ match }) => {
           </div>
         </div>
 
-        {(draftQuestions || []).map((q, qIdx) => (
-          <ReadingComprehensionQuestion
-            key={`${qIdx}-${q.question}`}
-            title={q.question}
-            selected={selected.has(qIdx)}
-            onToggleSelect={() => toggleSelected(qIdx)}
-          >
-            <ul className="rc-question__options">
-              {(q.choices || []).map((opt, cIdx) => {
-                const isEditing = editing?.qIdx === qIdx && editing?.cIdx === cIdx
-                return (
-                  <li
-                    key={cIdx}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      {isEditing ? (
-                        <Input
-                          value={editValue}
-                          onChange={(_e, data) => setEditValue(data.value)}
-                          fluid
-                          size="small"
-                          onClick={stopPropagation}
-                          onMouseDown={stopPropagation}
-                        />
-                      ) : (
-                        <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>
-                          {opt}
-                        </span>
-                      )}
-                    </div>
+        {(draftQuestions || []).map((q, qIdx) => {
+          const regenLoading = !!regenLocalByIndex?.[qIdx] || !!regenPendingByIndex?.[qIdx]
+          const disableThisQuestionActions = mcPending || regenLoading
 
-                    <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
-                      {isEditing ? (
-                        <>
+          return (
+            <ReadingComprehensionQuestion
+              key={`${qIdx}-${q.question}`}
+              title={q.question}
+              selected={selected.has(qIdx)}
+              onToggleSelect={() => toggleSelected(qIdx)}
+              actions={
+                <Button
+                  icon
+                  basic
+                  size="mini"
+                  loading={regenLoading}
+                  disabled={disableThisQuestionActions}
+                  onClick={e => {
+                    stopAll(e)
+                    handleRegenerateOne(qIdx, q.question)
+                  }}
+                  onMouseDown={stopAll}
+                >
+                  <Icon name="refresh" />
+                </Button>
+              }
+            >
+              <ul
+                className="rc-question__options"
+                style={regenLoading ? { opacity: 0.6, pointerEvents: 'none' } : null}
+              >
+                {(q.choices || []).map((opt, cIdx) => {
+                  const isEditing = editing?.qIdx === qIdx && editing?.cIdx === cIdx
+                  return (
+                    <li
+                      key={cIdx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        {isEditing ? (
+                          <Input
+                            value={editValue}
+                            onChange={(_e, data) => setEditValue(data.value)}
+                            fluid
+                            size="small"
+                            onClick={stopPropagation}
+                            onMouseDown={stopPropagation}
+                            disabled={regenLoading}
+                          />
+                        ) : (
+                          <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>
+                            {opt}
+                          </span>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
+                        {isEditing ? (
+                          <>
+                            <Button
+                              icon
+                              size="mini"
+                              disabled={regenLoading || (editValue || '').trim().length === 0}
+                              onClick={e => {
+                                stopAll(e)
+                                commitEditChoice()
+                              }}
+                            >
+                              <Icon name="check" />
+                            </Button>
+                            <Button
+                              icon
+                              size="mini"
+                              disabled={regenLoading}
+                              onClick={e => {
+                                stopAll(e)
+                                cancelEditChoice()
+                              }}
+                            >
+                              <Icon name="close" />
+                            </Button>
+                          </>
+                        ) : (
                           <Button
                             icon
                             size="mini"
+                            disabled={regenLoading}
                             onClick={e => {
                               stopAll(e)
-                              commitEditChoice()
+                              startEditChoice(qIdx, cIdx, opt)
                             }}
-                            disabled={(editValue || '').trim().length === 0}
+                            onMouseDown={stopAll}
                           >
-                            <Icon name="check" />
+                            <Icon name="pencil" />
                           </Button>
-                          <Button
-                            icon
-                            size="mini"
-                            onClick={e => {
-                              stopAll(e)
-                              cancelEditChoice()
-                            }}
-                          >
-                            <Icon name="close" />
-                          </Button>
-                        </>
-                      ) : (
-                        <Button
-                          icon
-                          size="mini"
-                          onClick={e => {
-                            stopAll(e)
-                            startEditChoice(qIdx, cIdx, opt)
-                          }}
-                          onMouseDown={stopAll}
-                        >
-                          <Icon name="pencil" />
-                        </Button>
-                      )}
-                    </div>
-                  </li>
-                )
-              })}
-            </ul>
-          </ReadingComprehensionQuestion>
-        ))}
+                        )}
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            </ReadingComprehensionQuestion>
+          )
+        })}
       </section>
     </main>
   )
