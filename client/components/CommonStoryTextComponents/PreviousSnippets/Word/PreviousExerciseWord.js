@@ -82,8 +82,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   }
 
   const handleClick = () => {
-    if (word.isWrong || word.mc_correct) setShow(true)
-    if (isPreviewMode && word.concepts) setShow(true)
+    if (!isPreviewMode && (word.isWrong || word.mc_correct)) setShow(true)
+    if (isPreviewMode && word.concepts?.length > 0) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
