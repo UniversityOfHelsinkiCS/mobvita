@@ -183,7 +183,7 @@ const StoryDetailsModal = ({
                 />
               )}
 
-              {hiddenFeatures && isTeacher && savedLibrarySelection == 'private' && (
+              {isTeacher && savedLibrarySelection == 'private' && (
                 <LinkButton
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   translationId="reading-comprehension"

@@ -34,6 +34,7 @@ import {
   updateAudioTask,
   updateSpeechTask,
   updateMultiChoice,
+  updateReadingComprehension,
 } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -53,7 +54,7 @@ import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
 import './ReadViewsStyles.css'
 
 const SettingToggle = ({ translationId, ...props }) => {
-  return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
+  return <Checkbox toggle label={{ children: <FormattedHTMLMessage id={translationId} /> }} {...props} />
 }
 
 const ReadViews = ({ match }) => {
@@ -61,7 +62,6 @@ const ReadViews = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const mode = getMode()
-  // console.log(useHistory().location.pathname)
   const history = useHistory()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
@@ -73,22 +73,15 @@ const ReadViews = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
-  const showPracticeDropdown = useSelector((state) => state.dropdown.showPracticeDropdown)
+  const showPracticeDropdown = useSelector(state => state.dropdown.showPracticeDropdown)
 
   const bigScreen = width > 700
 
   const defineFeedback = () => {
-    if (mode === 'review') {
-      return false
-    }
-    if (mode === 'preview') {
-      return true
-    }
-
+    if (mode === 'review') return false
+    if (mode === 'preview') return true
     return true
   }
-  // console.log('show re ', show_review_diff)
-  // console.log('exer preview ', show_preview_exer)
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
@@ -105,19 +98,18 @@ const ReadViews = ({ match }) => {
     : intl.formatMessage({ id: 'group-review-dropdown-placeholder' })
 
   const truncateStudentName = studentName => {
-    if (studentName.length > 50) {
-      return `${studentName.slice(0, 50)}...`
-    }
-
+    if (studentName.length > 50) return `${studentName.slice(0, 50)}...`
     return studentName
   }
+
   const ownedStory = oid === story?.owner
   const teacherView = useSelector(({ user }) => user.data.teacherView)
+
   const studentOptions = currentGroup?.students
     .map(student => ({
       key: student._id,
       text: truncateStudentName(`${student?.userName} (${student?.email})`),
-      value: JSON.stringify(student), // needs to be string
+      value: JSON.stringify(student),
     }))
     .sort(function (a, b) {
       const textA = a.text.toUpperCase()
@@ -129,6 +121,9 @@ const ReadViews = ({ match }) => {
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
+
+  const readingOn = !!user?.user?.reading_comprehension
+  const disableOtherPracticeToggles = userPending || readingOn
 
   const handleStudentChange = value => {
     const parsedValue = JSON.parse(value)
@@ -144,9 +139,7 @@ const ReadViews = ({ match }) => {
   }, [])
 
   useEffect(() => {
-    if (teacherView) {
-      setHideFeedback(false)
-    }
+    if (teacherView) setHideFeedback(false)
     dispatch(getStoryAction(id, mode))
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
@@ -161,19 +154,16 @@ const ReadViews = ({ match }) => {
   }, [story])
 
   useEffect(() => {
-    if (progress === 1) {
-      setShowRefreshButton(true)
-    }
+    if (progress === 1) setShowRefreshButton(true)
   }, [progress])
 
   if (pending || !user || groupsPending) return <Spinner fullHeight />
-
   if (!story) return null
 
   const showFooter = width > 640
-  const url = history.location.pathname
   const processingCurrentStory = id === storyId
-  const underProcessing = progress !== 0 && processingCurrentStory || story.progress !== 1
+  const underProcessing = (progress !== 0 && processingCurrentStory) || story.progress !== 1
+
   const refreshPage = () => {
     dispatch(getStoryAction(id, mode))
     setShowRefreshButton(false)
@@ -191,61 +181,57 @@ const ReadViews = ({ match }) => {
   }
 
   const handlePracticeButtonClick = () => {
-    if (showPracticeDropdown) {
-      dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-    } else {
-      dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
-    }
+    if (showPracticeDropdown) dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
+    else dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
   }
-
-  // console.log('story ', story.paragraph)
-  // console.log('focused ', focusedConcept)
 
   const handle_cog_click = () => {
     setOpen(true)
   }
 
   const StoryFunctionsDropdown = () => {
-
-    // gives the style to to dropdown menu based on is user on mobile
     const chooseDropdownMenuSide = () => {
-      if (bigScreen) {
-        return null
-      } else {
-        return { right: 'auto', left: 0 }
-      }
+      if (bigScreen) return null
+      return { right: 'auto', left: 0 }
     }
 
     return (
       <>
-        {story.control_story ? (<SemanticButton
-          as={Link}
-          to={`/stories/${id}/controlled-practice`}
-          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-        >
-          <FormattedMessage id="tailored-practice-mode" />
-        </SemanticButton>) : (
-          <>
-          <Popup
-            content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
-            trigger={
-              <Icon 
-                name="cog" size="large" 
-                style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }} 
-                onClick={handle_cog_click}
-              />
-            }
-            inverted // Optional for inverted dark style
-          />
+        {story.control_story ? (
           <SemanticButton
             as={Link}
-            to={`/stories/${id}/practice/`}
-            className='practice-tour-start-practice-story'
+            to={`/stories/${id}/controlled-practice`}
             style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-            disabled={story.topics.length === 0 && ownedStory}
           >
-            <FormattedMessage id="start-practice-story" />
+            <FormattedMessage id="tailored-practice-mode" />
           </SemanticButton>
+        ) : (
+          <>
+            <Popup
+              content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+              trigger={
+                <Icon
+                  name="cog"
+                  size="large"
+                  style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }}
+                  onClick={handle_cog_click}
+                />
+              }
+              inverted
+            />
+            <SemanticButton
+              as={Link}
+              to={
+                user?.user?.reading_comprehension
+                  ? `/stories/${id}/reading_practice`
+                  : `/stories/${id}/practice/`
+              }
+              className="practice-tour-start-practice-story"
+              style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+              disabled={story.topics.length === 0 && ownedStory}
+            >
+              <FormattedMessage id="start-practice-story" />
+            </SemanticButton>
           </>
         )}
       </>
@@ -312,8 +298,7 @@ const ReadViews = ({ match }) => {
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
             <div style={{ marginBottom: '30px' }}>
-              <Header className="space-between"
-                      style={getTextStyle(learningLanguage, 'title')}>
+              <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
                   <span className="pr-sm practice-tour-start">{story.title}</span>
                 </div>
@@ -321,12 +306,10 @@ const ReadViews = ({ match }) => {
             </div>
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
-                {mode === 'practice-preview' && (
-                  <div />
-                )}
+                {mode === 'practice-preview' && <div />}
                 {mode === 'preview' && (
                   <Checkbox
-                    className='highlight-exercises'
+                    className="highlight-exercises"
                     toggle
                     label={intl.formatMessage({ id: 'show preview' })}
                     checked={previewToggleOn}
@@ -450,7 +433,7 @@ const ReadViews = ({ match }) => {
         size="tiny"
         open={open}
         dimmer="inverted"
-        onClose={()=>setOpen(false)}
+        onClose={() => setOpen(false)}
         closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
       >
         <Modal.Header>
@@ -459,29 +442,37 @@ const ReadViews = ({ match }) => {
         <Modal.Content>
           <div className="flex-col gap-row-nm">
             <SettingToggle
+              translationId="practice-reading-comprehension"
+              checked={!!user?.user?.reading_comprehension}
+              onChange={() => dispatch(updateReadingComprehension(!user?.user?.reading_comprehension))}
+              disabled={userPending}
+            />
+            <SettingToggle
               translationId="practice-grammar-cloze-exercises"
               checked={user?.user.blank_filling}
               onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}
-              disabled={userPending}
+              disabled={disableOtherPracticeToggles}
             />
             <SettingToggle
               translationId="practice-grammar-MC-exercises"
               checked={user?.user.multi_choice}
               onChange={() => dispatch(updateMultiChoice(!user?.user.multi_choice))}
-              disabled={userPending}
+              disabled={disableOtherPracticeToggles}
             />
             <SettingToggle
               translationId="practice-listening-cloze-exercises"
               checked={user?.user.task_audio}
               onChange={() => dispatch(updateAudioTask(!user?.user.task_audio))}
-              disabled={userPending}
+              disabled={disableOtherPracticeToggles}
             />
-            {hiddenFeatures && (<SettingToggle
-              translationId="practice-pronunciation-exercises"
-              checked={user?.user.task_speech}
-              onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
-              disabled={userPending}
-            />)}
+            {hiddenFeatures && (
+              <SettingToggle
+                translationId="practice-pronunciation-exercises"
+                checked={user?.user.task_speech}
+                onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
+                disabled={disableOtherPracticeToggles}
+              />
+            )}
           </div>
         </Modal.Content>
       </Modal>
