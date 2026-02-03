@@ -6,10 +6,9 @@ const PORT = process.env.PORT || 8000
 const Axios = require('axios')
 const https = require('https')
 
-let revitaUrl = "https://revita-test.cs.helsinki.fi/api"
-// process.env.REVITA_URL
+const revitaUrl = process.env.REVITA_URL // Please set ENV instead of changing here !!!!
 // https://revita-test.cs.helsinki.fi/api
-// revitaUrl = 'http://127.0.0.1:5000/api/'
+// 'http://127.0.0.1:5000/api/'
 console.log('revitaUrl', revitaUrl)
 
 if (!revitaUrl) {
