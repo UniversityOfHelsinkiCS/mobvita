@@ -34,6 +34,8 @@ export const saveMcQuestionsAction = ({ storyId, questions }) => {
   return callBuilder(route, prefix, 'post', { questions })
 }
 
+export const clearMcSavedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_SAVED' })
+
 const initialState = {
   generated: [],
   pending: false,
@@ -156,6 +158,9 @@ export default (state = initialState, action) => {
         errorDetails: action.response,
         saved: false,
       }
+
+    case 'READING_COMPREHENSION_CLEAR_SAVED':
+      return { ...state, saved: false }
 
     default:
       return state

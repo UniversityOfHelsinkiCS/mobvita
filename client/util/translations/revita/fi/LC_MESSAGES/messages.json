@@ -1779,5 +1779,14 @@
     "Practice flashcards": "Harjoittele muistikortteja",
     "flashcard-input-placeholder": "Käännöksesi kielelle {selectedLanguage}...",
     "generate-multichoice-button": "Luo monivalinta",
-    "reading-comprehension": "Luetun ymmärtäminen"
+    "reading-comprehension": "Luetun ymmärtäminen",
+    "reading-questions-saved": "Question saved!",
+    "edit-saved-questions": "Edit saved questions",
+    "generate-new-questions": "Generate new questions",
+    "no-draft-questions": "No drafting questions",
+    "add-questions-to-story": "Save questions",
+    "generate": "Generate",
+    "size": "Size",
+    "mc-generating": "Generating Multiple choices reading questions for the story",
+    "regenerating": "Regenerating the questions"
 }

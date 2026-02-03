@@ -18,6 +18,10 @@ const ReadingComprehensionQuestion = ({
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') onToggleSelect?.()
       }}
+      style={{
+        boxShadow: 'none',
+        border: '1px solid rgba(0,0,0,0.12)',
+      }}
     >
       <header className="rc-question__header" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <div className="rc-question__title" style={{ flex: 1, minWidth: 0 }}>

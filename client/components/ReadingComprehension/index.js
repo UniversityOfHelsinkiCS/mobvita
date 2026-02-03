@@ -1,15 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Divider, Header, Segment, Select, Popup, Icon, Input } from 'semantic-ui-react'
+import { Button, Divider, Header, Segment, Select, Popup, Icon, Input, Tab } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
-import {
-  generateMcQuestionsAction,
-  regenerateOneMcQuestionAction,
-  saveMcQuestionsAction,
-} from 'Utilities/redux/readingComprehensionReducer'
+import { generateMcQuestionsAction, regenerateOneMcQuestionAction, saveMcQuestionsAction, clearMcSavedAction } from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle, skillLevels } from 'Utilities/common'
 import './ReadingComprehension.css'
@@ -22,11 +18,37 @@ const signatureOf = q => {
   return `${question}__${choices}__${answer}`
 }
 
+const pickStoryQuestions = story => {
+  if (!story) return []
+  if (Array.isArray(story.questions)) return story.questions
+  if (Array.isArray(story.q_and_a)) return story.q_and_a
+  if (Array.isArray(story.reading_questions)) return story.reading_questions
+  return []
+}
+
+const normalizeQuestion = q => {
+  if (!q) return null
+  if (q.question && (q.choices || q.answer)) {
+    return {
+      question: q.question,
+      answer: q.answer,
+      choices: Array.isArray(q.choices) ? q.choices : [],
+    }
+  }
+  if (q.q) {
+    return {
+      question: q.q,
+      answer: q.a,
+      choices: Array.isArray(q.choices) ? q.choices : [],
+    }
+  }
+  return null
+}
+
 const ReadingComprehensionView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
-
   const { storyId } = match.params
 
   const { story, pending } = useSelector(({ stories }) => ({
@@ -47,11 +69,16 @@ const ReadingComprehensionView = ({ match }) => {
     )
   })
 
+  const [activeTabIndex, setActiveTabIndex] = useState(0)
+
   const [level, setLevel] = useState('B1')
   const [size, setSize] = useState(4)
 
-  const [selected, setSelected] = useState(() => new Set())
-  const [draftQuestions, setDraftQuestions] = useState(() => [])
+  const [storyQuestions, setStoryQuestions] = useState([])
+  const [draftQuestions, setDraftQuestions] = useState([])
+
+  const [selectedDraft, setSelectedDraft] = useState(() => new Set())
+
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
 
@@ -63,13 +90,25 @@ const ReadingComprehensionView = ({ match }) => {
   }, [dispatch, storyId])
 
   useEffect(() => {
-    setSelected(new Set())
-    setDraftQuestions(Array.isArray(generated) ? generated : [])
+    const qs = pickStoryQuestions(story).map(normalizeQuestion).filter(Boolean)
+    setStoryQuestions(qs)
+  }, [storyId, story])
+
+  useEffect(() => {
+    if (!saved) return
+    const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
+    return () => clearTimeout(t)
+  }, [saved, dispatch])
+
+  useEffect(() => {
+    const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
+    setDraftQuestions(gen)
+    setSelectedDraft(new Set())
     setEditing(null)
     setEditValue('')
     setRegenLocalByIndex({})
     const nextSigs = {}
-    ;(Array.isArray(generated) ? generated : []).forEach((q, idx) => {
+    gen.forEach((q, idx) => {
       nextSigs[idx] = signatureOf(q)
     })
     setPrevSignatures(nextSigs)
@@ -114,17 +153,12 @@ const ReadingComprehensionView = ({ match }) => {
 
   const handleGenerate = () => {
     if (disableTopActions) return
-    dispatch(
-      generateMcQuestionsAction({
-        storyId,
-        level,
-        size,
-      })
-    )
+    dispatch(generateMcQuestionsAction({ storyId, level, size }))
+    setActiveTabIndex(0)
   }
 
-  const toggleSelected = idx => {
-    setSelected(prev => {
+  const toggleSelectedDraft = idx => {
+    setSelectedDraft(prev => {
       const next = new Set(prev)
       if (next.has(idx)) next.delete(idx)
       else next.add(idx)
@@ -132,34 +166,47 @@ const ReadingComprehensionView = ({ match }) => {
     })
   }
 
-  const selectedQuestions = useMemo(() => {
-    if (!Array.isArray(draftQuestions) || selected.size === 0) return []
-    return draftQuestions.filter((_, idx) => selected.has(idx))
-  }, [draftQuestions, selected])
+  const selectedDraftQuestions = useMemo(() => {
+    if (!Array.isArray(draftQuestions) || selectedDraft.size === 0) return []
+    return draftQuestions.filter((_, idx) => selectedDraft.has(idx))
+  }, [draftQuestions, selectedDraft])
 
-  const totalQuestions = Array.isArray(draftQuestions) ? draftQuestions.length : 0
-  const selectedCount = selectedQuestions.length
+  const totalDraft = draftQuestions.length
+  const selectedCount = selectedDraftQuestions.length
 
-  const handleSelectAll = () => {
-    setSelected(new Set((draftQuestions || []).map((_, idx) => idx)))
+  const selectAllDraft = () => setSelectedDraft(new Set((draftQuestions || []).map((_, idx) => idx)))
+  const clearDraftSelection = () => setSelectedDraft(new Set())
+
+  const saveSelectedDraftToStory = async () => {
+    if (disableTopActions || selectedCount === 0) return
+
+    const merged = [...storyQuestions, ...selectedDraftQuestions]
+
+    dispatch(saveMcQuestionsAction({ storyId, questions: merged }))
+    setStoryQuestions(merged)
+    setDraftQuestions([])
+    setSelectedDraft(new Set())
+    setEditing(null)
+    setEditValue('')
+    // setActiveTabIndex(1)
+    dispatch(getStoryAction(storyId, 'preview'))
   }
 
-  const handleClearSelection = () => {
-    setSelected(new Set())
-  }
-
-  const handleSave = () => {
+  const saveStoryQuestions = () => {
     if (disableTopActions) return
-    dispatch(
-      saveMcQuestionsAction({
-        storyId,
-        questions: selectedQuestions,
-      })
-    )
+    dispatch(saveMcQuestionsAction({ storyId, questions: storyQuestions }))
   }
 
-  const startEditChoice = (qIdx, cIdx, value) => {
-    setEditing({ qIdx, cIdx })
+  const removeStoryQuestion = idx => {
+    setStoryQuestions(prev => prev.filter((_, i) => i !== idx))
+    if (editing?.list === 'story' && editing?.qIdx === idx) {
+      setEditing(null)
+      setEditValue('')
+    }
+  }
+
+  const startEditChoice = (list, qIdx, cIdx, value) => {
+    setEditing({ list, qIdx, cIdx })
     setEditValue(value ?? '')
   }
 
@@ -170,23 +217,25 @@ const ReadingComprehensionView = ({ match }) => {
 
   const commitEditChoice = () => {
     if (!editing) return
-    const { qIdx, cIdx } = editing
+    const { list, qIdx, cIdx } = editing
 
-    setDraftQuestions(prev => {
+    const updater = prev => {
       const next = [...prev]
       const q = next[qIdx]
       if (!q || !Array.isArray(q.choices)) return prev
-
       const newChoices = [...q.choices]
       newChoices[cIdx] = editValue
       next[qIdx] = { ...q, choices: newChoices }
       return next
-    })
+    }
+
+    if (list === 'draft') setDraftQuestions(updater)
+    if (list === 'story') setStoryQuestions(updater)
 
     cancelEditChoice()
   }
 
-  const handleRegenerateOne = (qIdx, questionText) => {
+  const handleRegenerateDraftOne = (qIdx, questionText) => {
     cancelEditChoice()
 
     setPrevSignatures(prev => ({
@@ -205,28 +254,17 @@ const ReadingComprehensionView = ({ match }) => {
       })
     }, 15000)
 
-    dispatch(
-      regenerateOneMcQuestionAction({
-        storyId,
-        level,
-        question: questionText,
-        index: qIdx,
-      })
-    )
+    dispatch(regenerateOneMcQuestionAction({ storyId, level, question: questionText, index: qIdx }))
   }
 
-  const stopPropagation = e => {
-    e.stopPropagation()
-  }
-
+  const stopPropagation = e => e.stopPropagation()
   const stopAll = e => {
     e.preventDefault()
     e.stopPropagation()
   }
 
-  if (pending || !story) return <Spinner fullHeight />
+  if (!story) return <Spinner fullHeight />
 
-  const saveDisabled = disableTopActions || selectedCount === 0
   const saveTooltip = mcPending
     ? intl.formatMessage({ id: 'mc-generating' })
     : anyRegenerating
@@ -242,6 +280,279 @@ const ReadingComprehensionView = ({ match }) => {
   }
 
   const labelTextStyle = { minWidth: 46 }
+
+  const renderChoices = (list, q, qIdx, regenLoading = false) => (
+    <ul className="rc-question__options" style={regenLoading ? { opacity: 0.6, pointerEvents: 'none' } : null}>
+      {(q.choices || []).map((opt, cIdx) => {
+        const isEditing = editing?.list === list && editing?.qIdx === qIdx && editing?.cIdx === cIdx
+        return (
+          <li
+            key={cIdx}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {isEditing ? (
+                <Input
+                  value={editValue}
+                  onChange={(_e, data) => setEditValue(data.value)}
+                  fluid
+                  size="small"
+                  onClick={stopPropagation}
+                  onMouseDown={stopPropagation}
+                  disabled={regenLoading}
+                />
+              ) : (
+                <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>{opt}</span>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
+              {isEditing ? (
+                <>
+                  <Button
+                    icon
+                    size="mini"
+                    disabled={regenLoading || (editValue || '').trim().length === 0}
+                    onClick={e => {
+                      stopAll(e)
+                      commitEditChoice()
+                    }}
+                  >
+                    <Icon name="check" />
+                  </Button>
+                  <Button
+                    icon
+                    size="mini"
+                    disabled={regenLoading}
+                    onClick={e => {
+                      stopAll(e)
+                      cancelEditChoice()
+                    }}
+                  >
+                    <Icon name="close" />
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  icon
+                  size="mini"
+                  disabled={regenLoading}
+                  onClick={e => {
+                    stopAll(e)
+                    startEditChoice(list, qIdx, cIdx, opt)
+                  }}
+                  onMouseDown={stopAll}
+                >
+                  <Icon name="pencil" />
+                </Button>
+              )}
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )
+
+  const panes = [
+    {
+      menuItem: intl.formatMessage({ id: 'generate-new-questions' }),
+      render: () => (
+        <Tab.Pane
+          attached={false}
+          style={{
+            padding: 0,
+            margin: 0,
+            border: 'none',
+            boxShadow: 'none',
+            background: 'transparent',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+              <div style={fieldStyle}>
+                <span style={labelTextStyle}>{intl.formatMessage({ id: 'level' })}:</span>
+                <Select
+                  value={level}
+                  options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
+                  onChange={(_e, option) => setLevel(option.value)}
+                  style={{ width: 100 }}
+                  disabled={disableTopActions}
+                />
+              </div>
+
+              <div style={fieldStyle}>
+                <span style={labelTextStyle}>{intl.formatMessage({ id: 'size' })}:</span>
+                <Select
+                  value={size}
+                  options={[1, 2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
+                  onChange={(_e, option) => setSize(option.value)}
+                  style={{ width: 100 }}
+                  disabled={disableTopActions}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                <Button primary onClick={handleGenerate} loading={mcPending} disabled={disableTopActions}>
+                  {intl.formatMessage({ id: 'generate' })}
+                </Button>
+
+                <Popup
+                  content={saveTooltip}
+                  disabled={!disableTopActions}
+                  position="top center"
+                  trigger={
+                    <div style={{ display: 'inline-block' }}>
+                      <Button primary onClick={saveSelectedDraftToStory} disabled={disableTopActions || selectedCount === 0}>
+                        {intl.formatMessage({ id: 'add-questions-to-story' })}
+                        {selectedCount > 0 ? ` (${selectedCount})` : ''}
+                      </Button>
+                    </div>
+                  }
+                />
+
+                {totalDraft > 0 && (
+                  <Button
+                    basic
+                    size="small"
+                    disabled={disableTopActions}
+                    onClick={() => {
+                      if (selectedDraft.size === totalDraft) clearDraftSelection()
+                      else selectAllDraft()
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'select-unselect-all' })}
+                  </Button>
+                )}
+                
+                {pending ? (
+                  <span style={{ opacity: 0.7, marginLeft: 8 }}>
+                    <Icon name="spinner" loading />
+                  </span>
+                ) : null}
+                {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
+                {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
+              </div>
+            </div>
+          </div>
+
+          {draftQuestions.length === 0 ? (
+            <div style={{ opacity: 0.7 }}>{intl.formatMessage({ id: 'no-draft-questions' })}</div>
+          ) : (
+            draftQuestions.map((q, qIdx) => {
+              const regenLoading = !!regenLocalByIndex?.[qIdx] || !!regenPendingByIndex?.[qIdx]
+              const disableThisQuestionActions = mcPending || regenLoading
+
+              return (
+                <ReadingComprehensionQuestion
+                  key={`draft-${qIdx}-${q.question}`}
+                  title={q.question}
+                  selected={selectedDraft.has(qIdx)}
+                  onToggleSelect={() => toggleSelectedDraft(qIdx)}
+                  actions={
+                    <Button
+                      icon
+                      basic
+                      size="mini"
+                      loading={regenLoading}
+                      disabled={disableThisQuestionActions}
+                      onClick={e => {
+                        stopAll(e)
+                        handleRegenerateDraftOne(qIdx, q.question)
+                      }}
+                      onMouseDown={stopAll}
+                    >
+                      <Icon name="refresh" />
+                    </Button>
+                  }
+                >
+                  {renderChoices('draft', q, qIdx, regenLoading)}
+                </ReadingComprehensionQuestion>
+              )
+            })
+          )}
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: intl.formatMessage({ id: 'edit-saved-questions' }),
+      render: () => (
+        <Tab.Pane
+          attached={false}
+          style={{
+            padding: 0,
+            margin: 0,
+            border: 'none',
+            boxShadow: 'none',
+            background: 'transparent',
+          }}
+        >
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 12 }}>
+            <Popup
+              content={saveTooltip}
+              disabled={!disableTopActions}
+              position="top center"
+              trigger={
+                <div style={{ display: 'inline-block' }}>
+                  <Button
+                    primary
+                    onClick={saveStoryQuestions}
+                    disabled={disableTopActions || storyQuestions.length === 0}
+                  >
+                    {intl.formatMessage({ id: 'save' })}
+                    {storyQuestions.length > 0 ? ` (${storyQuestions.length})` : ''}
+                  </Button>
+                </div>
+              }
+            />
+
+            {pending && story ? (
+              <span style={{ opacity: 0.7, marginLeft: 8 }}>
+                <Icon name="spinner" loading />
+              </span>
+            ) : null}
+            {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
+            {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
+          </div>
+
+          {storyQuestions.length === 0 ? (
+            <div style={{ opacity: 0.7 }}>{intl.formatMessage({ id: 'no-saved-questions' })}</div>
+          ) : (
+            storyQuestions.map((q, qIdx) => (
+              <ReadingComprehensionQuestion
+                key={`story-${qIdx}-${q.question}`}
+                title={q.question}
+                selected={false}
+                onToggleSelect={() => {}}
+                actions={
+                  <Button
+                    icon
+                    basic
+                    size="mini"
+                    onClick={e => {
+                      stopAll(e)
+                      removeStoryQuestion(qIdx)
+                    }}
+                    onMouseDown={stopAll}
+                  >
+                    <Icon name="trash" />
+                  </Button>
+                }
+              >
+                {renderChoices('story', q, qIdx, false)}
+              </ReadingComprehensionQuestion>
+            ))
+          )}
+        </Tab.Pane>
+      ),
+    },
+  ]
 
   return (
     <main
@@ -297,180 +608,17 @@ const ReadingComprehensionView = ({ match }) => {
           width: '100%',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12 }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
-            <div style={fieldStyle}>
-              <span style={labelTextStyle}>{intl.formatMessage({ id: 'level' })}:</span>
-              <Select
-                value={level}
-                options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
-                onChange={(_e, option) => setLevel(option.value)}
-                style={{ width: 100 }}
-                disabled={disableTopActions}
-              />
-            </div>
-
-            <div style={fieldStyle}>
-              <span style={labelTextStyle}>{intl.formatMessage({ id: 'size' })}:</span>
-              <Select
-                value={size}
-                options={[2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
-                onChange={(_e, option) => setSize(option.value)}
-                style={{ width: 100 }}
-                disabled={disableTopActions}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', width: '100%' }}>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              <Button primary onClick={handleGenerate} loading={mcPending} disabled={disableTopActions}>
-                {intl.formatMessage({ id: 'generate' })}
-              </Button>
-
-              <Popup
-                content={saveTooltip}
-                disabled={!disableTopActions}
-                position="top center"
-                trigger={
-                  <div style={{ display: 'inline-block' }}>
-                    <Button secondary onClick={handleSave} disabled={saveDisabled}>
-                      {intl.formatMessage({ id: 'save' })}
-                      {selectedCount > 0 ? ` (${selectedCount})` : ''}
-                    </Button>
-                  </div>
-                }
-              />
-
-              {totalQuestions > 0 && (
-                <Button
-                  basic
-                  size="small"
-                  disabled={disableTopActions || totalQuestions === 0}
-                  onClick={() => {
-                    if (selected.size === totalQuestions) handleClearSelection()
-                    else handleSelectAll()
-                  }}
-                >
-                  {intl.formatMessage({ id: 'select-unselect-all' })}
-                </Button>
-              )}
-
-              {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
-              {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
-            </div>
-          </div>
-        </div>
-
-        {(draftQuestions || []).map((q, qIdx) => {
-          const regenLoading = !!regenLocalByIndex?.[qIdx] || !!regenPendingByIndex?.[qIdx]
-          const disableThisQuestionActions = mcPending || regenLoading
-
-          return (
-            <ReadingComprehensionQuestion
-              key={`${qIdx}-${q.question}`}
-              title={q.question}
-              selected={selected.has(qIdx)}
-              onToggleSelect={() => toggleSelected(qIdx)}
-              actions={
-                <Button
-                  icon
-                  basic
-                  size="mini"
-                  loading={regenLoading}
-                  disabled={disableThisQuestionActions}
-                  onClick={e => {
-                    stopAll(e)
-                    handleRegenerateOne(qIdx, q.question)
-                  }}
-                  onMouseDown={stopAll}
-                >
-                  <Icon name="refresh" />
-                </Button>
-              }
-            >
-              <ul
-                className="rc-question__options"
-                style={regenLoading ? { opacity: 0.6, pointerEvents: 'none' } : null}
-              >
-                {(q.choices || []).map((opt, cIdx) => {
-                  const isEditing = editing?.qIdx === qIdx && editing?.cIdx === cIdx
-                  return (
-                    <li
-                      key={cIdx}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        {isEditing ? (
-                          <Input
-                            value={editValue}
-                            onChange={(_e, data) => setEditValue(data.value)}
-                            fluid
-                            size="small"
-                            onClick={stopPropagation}
-                            onMouseDown={stopPropagation}
-                            disabled={regenLoading}
-                          />
-                        ) : (
-                          <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>
-                            {opt}
-                          </span>
-                        )}
-                      </div>
-
-                      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
-                        {isEditing ? (
-                          <>
-                            <Button
-                              icon
-                              size="mini"
-                              disabled={regenLoading || (editValue || '').trim().length === 0}
-                              onClick={e => {
-                                stopAll(e)
-                                commitEditChoice()
-                              }}
-                            >
-                              <Icon name="check" />
-                            </Button>
-                            <Button
-                              icon
-                              size="mini"
-                              disabled={regenLoading}
-                              onClick={e => {
-                                stopAll(e)
-                                cancelEditChoice()
-                              }}
-                            >
-                              <Icon name="close" />
-                            </Button>
-                          </>
-                        ) : (
-                          <Button
-                            icon
-                            size="mini"
-                            disabled={regenLoading}
-                            onClick={e => {
-                              stopAll(e)
-                              startEditChoice(qIdx, cIdx, opt)
-                            }}
-                            onMouseDown={stopAll}
-                          >
-                            <Icon name="pencil" />
-                          </Button>
-                        )}
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-            </ReadingComprehensionQuestion>
-          )
-        })}
+        <Segment style={{ borderRadius: 12 }}>
+          <Tab
+            menu={{ secondary: true, pointing: true }}
+            panes={panes}
+            activeIndex={activeTabIndex}
+            onTabChange={(_e, data) => {
+              setActiveTabIndex(data.activeIndex)
+              dispatch(clearMcSavedAction())
+            }}
+          />
+        </Segment>
       </section>
     </main>
   )

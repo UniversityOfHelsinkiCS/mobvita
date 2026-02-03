@@ -1777,5 +1777,15 @@
     "Add flashcard": "Aggiungi nuove flashcard",
     "Practice flashcards": "Practice flashcards",
     "flashcard-input-placeholder": "Type {selectedLanguage} translation here...",
-    "generate-multichoice-button": "Generate multichoice"
+    "generate-multichoice-button": "Generate multichoice",
+    "reading-comprehension": "Reading comprehension",
+    "reading-questions-saved": "Question saved!",
+    "edit-saved-questions": "Edit saved questions",
+    "generate-new-questions": "Generate new questions",
+    "no-draft-questions": "No drafting questions",
+    "add-questions-to-story": "Save questions",
+    "generate": "Generate",
+    "size": "Size",
+    "mc-generating": "Generating Multiple choices reading questions for the story",
+    "regenerating": "Regenerating the questions"
 }
