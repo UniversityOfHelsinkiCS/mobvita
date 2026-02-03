@@ -47,6 +47,9 @@ const initialState = {
 
 const getIndexFromAction = action => {
   const idx =
+    action?.response?.index ??
+    action?.response?.questions?.[0]?.index ??
+    action?.response?.[0]?.index ??
     action?.request?.body?.index ??
     action?.request?.index ??
     action?.meta?.index ??

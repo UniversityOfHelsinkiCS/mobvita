@@ -245,15 +245,6 @@ const ReadingComprehensionView = ({ match }) => {
 
     setRegenLocalByIndex(prev => ({ ...prev, [qIdx]: true }))
 
-    setTimeout(() => {
-      setRegenLocalByIndex(prev => {
-        if (!prev?.[qIdx]) return prev
-        const next = { ...prev }
-        delete next[qIdx]
-        return next
-      })
-    }, 15000)
-
     dispatch(regenerateOneMcQuestionAction({ storyId, level, question: questionText, index: qIdx }))
   }
 
