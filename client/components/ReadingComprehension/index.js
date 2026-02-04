@@ -132,6 +132,15 @@ const ReadingComprehensionView = ({ match }) => {
   }, [saved, dispatch, storyId])
 
   useEffect(() => {
+    if (!mcPending) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [mcPending])
+
+  useEffect(() => {
     const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
     setDraftQuestions(gen)
     setSelectedDraft(new Set())
@@ -455,7 +464,6 @@ const ReadingComprehensionView = ({ match }) => {
                 <Button
                   primary
                   onClick={handleGenerate}
-                  loading={mcPending}
                   disabled={disableTopActions}
                 >
                   {intl.formatMessage({ id: 'generate' })}
@@ -633,72 +641,80 @@ const ReadingComprehensionView = ({ match }) => {
   ]
 
   return (
-    <main
-      className="reading-comp pt-lg auto gap-row-sm"
-      style={{
-        maxWidth: 1250,
-        margin: '0 auto',
-        width: '100%',
-        display: 'flex',
-        gap: 16,
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-      }}
-    >
-      <Segment
-        className="reading-comp__story"
+    <>
+      {mcPending ? (
+        <div className="rc-loading-overlay">
+          <Icon className="rc-loading-overlay__spinner" name="spinner" loading size="huge" />
+        </div>
+      ) : null}
+
+      <main
+        className="reading-comp pt-lg auto gap-row-sm"
         style={{
-          ...getTextStyle(learningLanguage),
-          flex: '3 1 600px',
-          minWidth: 320,
-        }}
-      >
-        <Header className="reading-comp__title" style={getTextStyle(learningLanguage, 'title')}>
-          <span className="story-title">
-            <span className="pr-sm">{story.title}</span>
-          </span>
-        </Header>
-
-        <Divider />
-
-        {story.paragraph.map((paragraph, index) => (
-          <React.Fragment key={index}>
-            <TextWithFeedback
-              hideFeedback
-              showDifficulty={false}
-              mode="preview"
-              snippet={paragraph}
-              answers={null}
-              focusedConcept={null}
-              show_preview_exer={false}
-            />
-            <br />
-            <br />
-          </React.Fragment>
-        ))}
-      </Segment>
-
-      <section
-        className="reading-comp__questions"
-        style={{
-          flex: '2 1 360px',
-          minWidth: 320,
+          maxWidth: 1250,
+          margin: '0 auto',
           width: '100%',
+          display: 'flex',
+          gap: 16,
+          alignItems: 'flex-start',
+          flexWrap: 'wrap',
         }}
       >
-        <Segment style={{ borderRadius: 12 }}>
-          <Tab
-            menu={{ secondary: true, pointing: true }}
-            panes={panes}
-            activeIndex={activeTabIndex}
-            onTabChange={(_e, data) => {
-              setActiveTabIndex(data.activeIndex)
-              dispatch(clearMcSavedAction())
-            }}
-          />
+        <Segment
+          className="reading-comp__story"
+          style={{
+            ...getTextStyle(learningLanguage),
+            flex: '3 1 600px',
+            minWidth: 320,
+          }}
+        >
+          <Header className="reading-comp__title" style={getTextStyle(learningLanguage, 'title')}>
+            <span className="story-title">
+              <span className="pr-sm">{story.title}</span>
+            </span>
+          </Header>
+
+          <Divider />
+
+          {story.paragraph.map((paragraph, index) => (
+            <React.Fragment key={index}>
+              <TextWithFeedback
+                hideFeedback
+                showDifficulty={false}
+                mode="preview"
+                snippet={paragraph}
+                answers={null}
+                focusedConcept={null}
+                show_preview_exer={false}
+              />
+              <br />
+              <br />
+            </React.Fragment>
+          ))}
         </Segment>
-      </section>
-    </main>
+
+        <section
+          className="reading-comp__questions"
+          style={{
+            flex: '2 1 360px',
+            minWidth: 320,
+            width: '100%',
+          }}
+        >
+          <Segment style={{ borderRadius: 12 }}>
+            <Tab
+              menu={{ secondary: true, pointing: true }}
+              panes={panes}
+              activeIndex={activeTabIndex}
+              onTabChange={(_e, data) => {
+                setActiveTabIndex(data.activeIndex)
+                dispatch(clearMcSavedAction())
+              }}
+            />
+          </Segment>
+        </section>
+      </main>
+    </>
   )
 }
 
