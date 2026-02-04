@@ -96,9 +96,10 @@ const ReadingComprehensionView = ({ match }) => {
 
   useEffect(() => {
     if (!saved) return
+    dispatch(getStoryAction(storyId, 'preview'))
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
-  }, [saved, dispatch])
+  }, [saved, dispatch, storyId])
 
   useEffect(() => {
     const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
@@ -188,8 +189,6 @@ const ReadingComprehensionView = ({ match }) => {
     setSelectedDraft(new Set())
     setEditing(null)
     setEditValue('')
-    // setActiveTabIndex(1)
-    dispatch(getStoryAction(storyId, 'preview'))
   }
 
   const saveStoryQuestions = () => {
