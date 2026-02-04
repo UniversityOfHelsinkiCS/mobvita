@@ -273,9 +273,19 @@ const ReadingComprehensionView = ({ match }) => {
       const next = [...prev]
       const q = next[qIdx]
       if (!q || !Array.isArray(q.choices)) return prev
+
+      const oldChoice = q.choices[cIdx]
       const newChoices = [...q.choices]
       newChoices[cIdx] = editValue
-      next[qIdx] = { ...q, choices: newChoices }
+
+      const isEditingCorrectAnswer = q.answer === oldChoice
+
+      next[qIdx] = {
+        ...q,
+        choices: newChoices,
+        ...(isEditingCorrectAnswer ? { answer: editValue } : null),
+      }
+      
       return next
     }
 
