@@ -1,11 +1,26 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Divider, Header, Segment, Select, Popup, Icon, Input, Tab } from 'semantic-ui-react'
+import {
+  Button,
+  Divider,
+  Header,
+  Segment,
+  Select,
+  Popup,
+  Icon,
+  Input,
+  Tab,
+} from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
-import { generateMcQuestionsAction, regenerateOneMcQuestionAction, saveMcQuestionsAction, clearMcSavedAction } from 'Utilities/redux/readingComprehensionReducer'
+import {
+  generateMcQuestionsAction,
+  regenerateOneMcQuestionAction,
+  saveMcQuestionsAction,
+  clearMcSavedAction,
+} from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle, skillLevels } from 'Utilities/common'
 import './ReadingComprehension.css'
@@ -56,7 +71,13 @@ const ReadingComprehensionView = ({ match }) => {
     pending: stories.focusedPending,
   }))
 
-  const { generated, pending: mcPending, saved, error, regenPendingByIndex } = useSelector(state => {
+  const {
+    generated,
+    pending: mcPending,
+    saved,
+    error,
+    regenPendingByIndex,
+  } = useSelector(state => {
     const slice = state.readingComprehension
     return (
       slice || {
@@ -81,6 +102,7 @@ const ReadingComprehensionView = ({ match }) => {
 
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
+  const [suppressSavedIndicator, setSuppressSavedIndicator] = useState(false)
 
   const [regenLocalByIndex, setRegenLocalByIndex] = useState({})
   const [prevSignatures, setPrevSignatures] = useState({})
@@ -96,7 +118,15 @@ const ReadingComprehensionView = ({ match }) => {
 
   useEffect(() => {
     if (!saved) return
+    
     dispatch(getStoryAction(storyId, 'preview'))
+
+    if (suppressSavedIndicator) {
+      setSuppressSavedIndicator(false)
+      dispatch(clearMcSavedAction())
+      return
+    }
+  
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
   }, [saved, dispatch, storyId])
@@ -175,11 +205,13 @@ const ReadingComprehensionView = ({ match }) => {
   const totalDraft = draftQuestions.length
   const selectedCount = selectedDraftQuestions.length
 
-  const selectAllDraft = () => setSelectedDraft(new Set((draftQuestions || []).map((_, idx) => idx)))
+  const selectAllDraft = () =>
+    setSelectedDraft(new Set((draftQuestions || []).map((_, idx) => idx)))
   const clearDraftSelection = () => setSelectedDraft(new Set())
 
   const saveSelectedDraftToStory = async () => {
     if (disableTopActions || selectedCount === 0) return
+    setSuppressSavedIndicator(false)
 
     const merged = [...storyQuestions, ...selectedDraftQuestions]
 
@@ -193,14 +225,24 @@ const ReadingComprehensionView = ({ match }) => {
 
   const saveStoryQuestions = () => {
     if (disableTopActions) return
+    setSuppressSavedIndicator(false)
     dispatch(saveMcQuestionsAction({ storyId, questions: storyQuestions }))
   }
 
   const removeStoryQuestion = idx => {
-    setStoryQuestions(prev => prev.filter((_, i) => i !== idx))
-    if (editing?.list === 'story' && editing?.qIdx === idx) {
-      setEditing(null)
-      setEditValue('')
+    setSuppressSavedIndicator(true)
+
+    const remainingStoryQuestions = storyQuestions.filter((_, i) => i !== idx)
+    setStoryQuestions(remainingStoryQuestions)
+    dispatch(saveMcQuestionsAction({ storyId, questions: remainingStoryQuestions }))
+
+    if (editing?.list === 'story') {
+      if (editing.qIdx === idx) {
+        setEditing(null)
+        setEditValue('')
+      } else if (editing.qIdx > idx) {
+        setEditing({ ...editing, qIdx: editing.qIdx - 1 })
+      }
     }
   }
 
@@ -258,8 +300,8 @@ const ReadingComprehensionView = ({ match }) => {
   const saveTooltip = mcPending
     ? intl.formatMessage({ id: 'mc-generating' })
     : anyRegenerating
-      ? intl.formatMessage({ id: 'regenerating' })
-      : ''
+    ? intl.formatMessage({ id: 'regenerating' })
+    : ''
 
   const fieldStyle = {
     display: 'flex',
@@ -272,7 +314,10 @@ const ReadingComprehensionView = ({ match }) => {
   const labelTextStyle = { minWidth: 46 }
 
   const renderChoices = (list, q, qIdx, regenLoading = false) => (
-    <ul className="rc-question__options" style={regenLoading ? { opacity: 0.6, pointerEvents: 'none' } : null}>
+    <ul
+      className="rc-question__options"
+      style={regenLoading ? { opacity: 0.6, pointerEvents: 'none' } : null}
+    >
       {(q.choices || []).map((opt, cIdx) => {
         const isEditing = editing?.list === list && editing?.qIdx === qIdx && editing?.cIdx === cIdx
         return (
@@ -297,11 +342,21 @@ const ReadingComprehensionView = ({ match }) => {
                   disabled={regenLoading}
                 />
               ) : (
-                <span style={opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }}>{opt}</span>
+                <span
+                  style={
+                    opt === q.answer ? { color: 'green', fontWeight: 'bold' } : { color: 'red' }
+                  }
+                >
+                  {opt}
+                </span>
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: 6, flexShrink: 0 }} onClick={stopAll} onMouseDown={stopAll}>
+            <div
+              style={{ display: 'flex', gap: 6, flexShrink: 0 }}
+              onClick={stopAll}
+              onMouseDown={stopAll}
+            >
               {isEditing ? (
                 <>
                   <Button
@@ -387,9 +442,22 @@ const ReadingComprehensionView = ({ match }) => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', width: '100%' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 12,
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Button primary onClick={handleGenerate} loading={mcPending} disabled={disableTopActions}>
+                <Button
+                  primary
+                  onClick={handleGenerate}
+                  loading={mcPending}
+                  disabled={disableTopActions}
+                >
                   {intl.formatMessage({ id: 'generate' })}
                 </Button>
 
@@ -399,7 +467,11 @@ const ReadingComprehensionView = ({ match }) => {
                   position="top center"
                   trigger={
                     <div style={{ display: 'inline-block' }}>
-                      <Button primary onClick={saveSelectedDraftToStory} disabled={disableTopActions || selectedCount === 0}>
+                      <Button
+                        primary
+                        onClick={saveSelectedDraftToStory}
+                        disabled={disableTopActions || selectedCount === 0}
+                      >
                         {intl.formatMessage({ id: 'add-questions-to-story' })}
                         {selectedCount > 0 ? ` (${selectedCount})` : ''}
                       </Button>
@@ -420,14 +492,18 @@ const ReadingComprehensionView = ({ match }) => {
                     {intl.formatMessage({ id: 'select-unselect-all' })}
                   </Button>
                 )}
-                
+
                 {pending ? (
                   <span style={{ opacity: 0.7, marginLeft: 8 }}>
                     <Icon name="spinner" loading />
                   </span>
                 ) : null}
-                {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
-                {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
+                {saved && !suppressSavedIndicator ? (
+                  <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
+                ) : null}
+                {error ? (
+                  <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -483,7 +559,15 @@ const ReadingComprehensionView = ({ match }) => {
             background: 'transparent',
           }}
         >
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 12 }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: 8,
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              marginBottom: 12,
+            }}
+          >
             <Popup
               content={saveTooltip}
               disabled={!disableTopActions}
@@ -502,13 +586,17 @@ const ReadingComprehensionView = ({ match }) => {
               }
             />
 
-            {pending && story ? (
+            {pending && !story ? (
               <span style={{ opacity: 0.7, marginLeft: 8 }}>
                 <Icon name="spinner" loading />
               </span>
             ) : null}
-            {saved ? <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span> : null}
-            {error ? <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span> : null}
+            {saved && !suppressSavedIndicator ? (
+              <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
+            ) : null}
+            {error ? (
+              <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span>
+            ) : null}
           </div>
 
           {storyQuestions.length === 0 ? (
