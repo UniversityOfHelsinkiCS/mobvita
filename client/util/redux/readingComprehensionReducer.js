@@ -34,7 +34,14 @@ export const saveMcQuestionsAction = ({ storyId, questions }) => {
   return callBuilder(route, prefix, 'post', { questions })
 }
 
+export const deleteMcQuestionsAction = ({ storyId, questions }) => {
+  const route = `/stories/${storyId}/delete_questions`
+  const prefix = 'MC_DELETE_QUESTIONS'
+  return callBuilder(route, prefix, 'post', { questions })
+}
+
 export const clearMcSavedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_SAVED' })
+export const clearMcDeletedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_DELETED' })
 
 const initialState = {
   generated: [],
@@ -42,6 +49,12 @@ const initialState = {
   error: false,
   errorDetails: null,
   saved: false,
+
+  deleted: false,
+  deletePending: false,
+  deleteError: false,
+  deleteErrorDetails: null,
+
   regenPendingByIndex: {},
 }
 
@@ -164,6 +177,36 @@ export default (state = initialState, action) => {
 
     case 'READING_COMPREHENSION_CLEAR_SAVED':
       return { ...state, saved: false }
+
+    case 'MC_DELETE_QUESTIONS_ATTEMPT':
+      return {
+        ...state,
+        deleted: false,
+        deletePending: true,
+        deleteError: false,
+        deleteErrorDetails: null,
+      }
+
+    case 'MC_DELETE_QUESTIONS_SUCCESS':
+      return {
+        ...state,
+        deleted: true,
+        deletePending: false,
+        deleteError: false,
+        deleteErrorDetails: null,
+      }
+
+    case 'MC_DELETE_QUESTIONS_FAILURE':
+      return {
+        ...state,
+        deleted: false,
+        deletePending: false,
+        deleteError: true,
+        deleteErrorDetails: action.response,
+      }
+
+    case 'READING_COMPREHENSION_CLEAR_DELETED':
+      return { ...state, deleted: false }
 
     default:
       return state

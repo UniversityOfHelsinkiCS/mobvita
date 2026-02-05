@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
@@ -20,9 +20,11 @@ import {
   regenerateOneMcQuestionAction,
   saveMcQuestionsAction,
   clearMcSavedAction,
+  deleteMcQuestionsAction,
+  clearMcDeletedAction,
 } from 'Utilities/redux/readingComprehensionReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { learningLanguageSelector, getTextStyle, skillLevels } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle, skillLevels, cefrNum2Cefr } from 'Utilities/common'
 import './ReadingComprehension.css'
 
 const signatureOf = q => {
@@ -48,6 +50,7 @@ const normalizeQuestion = q => {
       question: q.question,
       answer: q.answer,
       choices: Array.isArray(q.choices) ? q.choices : [],
+      cefr: q.cefr,
     }
   }
   if (q.q) {
@@ -55,6 +58,7 @@ const normalizeQuestion = q => {
       question: q.q,
       answer: q.a,
       choices: Array.isArray(q.choices) ? q.choices : [],
+      cefr: q.cefr,
     }
   }
   return null
@@ -66,26 +70,31 @@ const ReadingComprehensionView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { storyId } = match.params
 
-  const { story, pending } = useSelector(({ stories }) => ({
+  const { story } = useSelector(({ stories }) => ({
     story: stories.focused,
-    pending: stories.focusedPending,
   }))
 
   const {
     generated,
     pending: mcPending,
+    savePending,
     saved,
     error,
     regenPendingByIndex,
+    deleted,
+    deletePending,
   } = useSelector(state => {
     const slice = state.readingComprehension
     return (
       slice || {
         generated: [],
         pending: false,
+        savePending: false,
         saved: false,
         error: false,
         regenPendingByIndex: {},
+        deleted: false,
+        deletePending: false,
       }
     )
   })
@@ -95,6 +104,10 @@ const ReadingComprehensionView = ({ match }) => {
   const [level, setLevel] = useState('B1')
   const [size, setSize] = useState(4)
 
+  const lastGenerateCefrRef = useRef(level)
+  const hasSetInitialLevelFromStoryRef = useRef(false)
+  const hasInitializedStoryQuestionsRef = useRef(false)
+
   const [storyQuestions, setStoryQuestions] = useState([])
   const [draftQuestions, setDraftQuestions] = useState([])
 
@@ -102,34 +115,44 @@ const ReadingComprehensionView = ({ match }) => {
 
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
-  const [suppressSavedIndicator, setSuppressSavedIndicator] = useState(false)
 
   const [regenLocalByIndex, setRegenLocalByIndex] = useState({})
   const [prevSignatures, setPrevSignatures] = useState({})
 
   useEffect(() => {
     dispatch(getStoryAction(storyId, 'preview'))
+    hasInitializedStoryQuestionsRef.current = false
   }, [dispatch, storyId])
 
   useEffect(() => {
+    if (!hasSetInitialLevelFromStoryRef.current && story?.level != null) {
+      const storyCefr = cefrNum2Cefr(story.level)
+      if (storyCefr) setLevel(storyCefr)
+      hasSetInitialLevelFromStoryRef.current = true
+    }
+  }, [story])
+
+  useEffect(() => {
+    if (!story) return
+    if (hasInitializedStoryQuestionsRef.current) return
+
     const qs = pickStoryQuestions(story).map(normalizeQuestion).filter(Boolean)
-    setStoryQuestions(qs)
-  }, [storyId, story])
+    const storyCefr = story?.level != null ? cefrNum2Cefr(story.level) : null
+
+    setStoryQuestions(qs.map(q => ({ ...q, cefr: q.cefr ?? storyCefr ?? level })))
+    hasInitializedStoryQuestionsRef.current = true
+  }, [story, level])
 
   useEffect(() => {
     if (!saved) return
-
-    dispatch(getStoryAction(storyId, 'preview'))
-
-    if (suppressSavedIndicator) {
-      setSuppressSavedIndicator(false)
-      dispatch(clearMcSavedAction())
-      return
-    }
-
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
-  }, [saved, dispatch, storyId, suppressSavedIndicator])
+  }, [saved, dispatch])
+
+  useEffect(() => {
+    if (!deleted) return
+    dispatch(clearMcDeletedAction())
+  }, [deleted, dispatch])
 
   useEffect(() => {
     if (!mcPending) return
@@ -139,20 +162,6 @@ const ReadingComprehensionView = ({ match }) => {
       document.body.style.overflow = prev
     }
   }, [mcPending])
-
-  useEffect(() => {
-    const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
-    setDraftQuestions(gen)
-    setSelectedDraft(new Set())
-    setEditing(null)
-    setEditValue('')
-    setRegenLocalByIndex({})
-    const nextSigs = {}
-    gen.forEach((q, idx) => {
-      nextSigs[idx] = signatureOf(q)
-    })
-    setPrevSignatures(nextSigs)
-  }, [generated])
 
   useEffect(() => {
     const nextSigs = {}
@@ -190,9 +199,11 @@ const ReadingComprehensionView = ({ match }) => {
   }, [regenLocalByIndex, regenPendingByIndex])
 
   const disableTopActions = mcPending || anyRegenerating
+  const disableSaveButton = disableTopActions || savePending
 
   const handleGenerate = () => {
     if (disableTopActions) return
+    lastGenerateCefrRef.current = level
     dispatch(generateMcQuestionsAction({ storyId, level, size }))
     setActiveTabIndex(0)
   }
@@ -219,8 +230,7 @@ const ReadingComprehensionView = ({ match }) => {
   const clearDraftSelection = () => setSelectedDraft(new Set())
 
   const saveSelectedDraftToStory = async () => {
-    if (disableTopActions || selectedCount === 0) return
-    setSuppressSavedIndicator(false)
+    if (disableSaveButton || selectedCount === 0) return
 
     const merged = [...storyQuestions, ...selectedDraftQuestions]
 
@@ -230,29 +240,6 @@ const ReadingComprehensionView = ({ match }) => {
     setSelectedDraft(new Set())
     setEditing(null)
     setEditValue('')
-  }
-
-  const saveStoryQuestions = () => {
-    if (disableTopActions) return
-    setSuppressSavedIndicator(false)
-    dispatch(saveMcQuestionsAction({ storyId, questions: storyQuestions }))
-  }
-
-  const removeStoryQuestion = idx => {
-    setSuppressSavedIndicator(true)
-
-    const remainingStoryQuestions = storyQuestions.filter((_, i) => i !== idx)
-    setStoryQuestions(remainingStoryQuestions)
-    dispatch(saveMcQuestionsAction({ storyId, questions: remainingStoryQuestions }))
-
-    if (editing?.list === 'story') {
-      if (editing.qIdx === idx) {
-        setEditing(null)
-        setEditValue('')
-      } else if (editing.qIdx > idx) {
-        setEditing({ ...editing, qIdx: editing.qIdx - 1 })
-      }
-    }
   }
 
   const startEditChoice = (list, qIdx, cIdx, value) => {
@@ -294,15 +281,29 @@ const ReadingComprehensionView = ({ match }) => {
     }
 
     if (list === 'story') {
-      setSuppressSavedIndicator(false)
-
       const nextStoryQuestions = updater(storyQuestions)
       setStoryQuestions(nextStoryQuestions)
-      dispatch(saveMcQuestionsAction({ storyId, questions: nextStoryQuestions }))
     }
 
     cancelEditChoice()
   }
+
+  useEffect(() => {
+    const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
+
+    const frozenCefr = lastGenerateCefrRef.current ?? level
+    setDraftQuestions(gen.map(q => ({ ...q, cefr: q.cefr ?? frozenCefr })))
+
+    setSelectedDraft(new Set())
+    setEditing(null)
+    setEditValue('')
+    setRegenLocalByIndex({})
+    const nextSigs = {}
+    gen.forEach((q, idx) => {
+      nextSigs[idx] = signatureOf(q)
+    })
+    setPrevSignatures(nextSigs)
+  }, [generated])
 
   const handleRegenerateDraftOne = (qIdx, questionText) => {
     cancelEditChoice()
@@ -314,7 +315,34 @@ const ReadingComprehensionView = ({ match }) => {
 
     setRegenLocalByIndex(prev => ({ ...prev, [qIdx]: true }))
 
-    dispatch(regenerateOneMcQuestionAction({ storyId, level, question: questionText, index: qIdx }))
+    const frozenCefr = draftQuestions?.[qIdx]?.cefr ?? level
+    dispatch(
+      regenerateOneMcQuestionAction({
+        storyId,
+        level: frozenCefr,
+        question: questionText,
+        index: qIdx,
+      })
+    )
+  }
+
+  const removeStoryQuestion = idx => {
+    const q = storyQuestions?.[idx]
+    const questionText = q?.question || q?.q
+    if (!questionText) return
+
+    setStoryQuestions(prev => prev.filter((_, i) => i !== idx))
+
+    dispatch(deleteMcQuestionsAction({ storyId, questions: [questionText] }))
+
+    if (editing?.list === 'story') {
+      if (editing.qIdx === idx) {
+        setEditing(null)
+        setEditValue('')
+      } else if (editing.qIdx > idx) {
+        setEditing({ ...editing, qIdx: editing.qIdx - 1 })
+      }
+    }
   }
 
   const stopPropagation = e => e.stopPropagation()
@@ -480,7 +508,7 @@ const ReadingComprehensionView = ({ match }) => {
                   options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
                   onChange={(_e, option) => setLevel(option.value)}
                   style={{ width: 100 }}
-                  disabled={disableTopActions}
+                  disabled={disableSaveButton}
                 />
               </div>
 
@@ -491,7 +519,7 @@ const ReadingComprehensionView = ({ match }) => {
                   options={[1, 2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
                   onChange={(_e, option) => setSize(option.value)}
                   style={{ width: 100 }}
-                  disabled={disableTopActions}
+                  disabled={disableSaveButton}
                 />
               </div>
             </div>
@@ -506,20 +534,20 @@ const ReadingComprehensionView = ({ match }) => {
               }}
             >
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Button primary onClick={handleGenerate} disabled={disableTopActions}>
+                <Button primary onClick={handleGenerate} disabled={disableSaveButton}>
                   {intl.formatMessage({ id: 'generate' })}
                 </Button>
 
                 <Popup
                   content={saveTooltip}
-                  disabled={!disableTopActions}
+                  disabled={!disableSaveButton}
                   position="top center"
                   trigger={
                     <div style={{ display: 'inline-block' }}>
                       <Button
                         primary
                         onClick={saveSelectedDraftToStory}
-                        disabled={disableTopActions || selectedCount === 0}
+                        disabled={disableSaveButton || selectedCount === 0}
                       >
                         {intl.formatMessage({ id: 'add-questions-to-story' })}
                         {selectedCount > 0 ? ` (${selectedCount})` : ''}
@@ -532,7 +560,7 @@ const ReadingComprehensionView = ({ match }) => {
                   <Button
                     basic
                     size="small"
-                    disabled={disableTopActions}
+                    disabled={disableSaveButton}
                     onClick={() => {
                       if (selectedDraft.size === totalDraft) clearDraftSelection()
                       else selectAllDraft()
@@ -542,7 +570,7 @@ const ReadingComprehensionView = ({ match }) => {
                   </Button>
                 )}
 
-                {saved && !suppressSavedIndicator ? (
+                {saved ? (
                   <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
                 ) : null}
                 {error ? (
@@ -565,6 +593,7 @@ const ReadingComprehensionView = ({ match }) => {
                   title={q.question}
                   selected={selectedDraft.has(qIdx)}
                   onToggleSelect={() => toggleSelectedDraft(qIdx)}
+                  cefr={q.cefr}
                   actions={
                     <Button
                       icon
@@ -606,23 +635,6 @@ const ReadingComprehensionView = ({ match }) => {
             background: 'transparent',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              gap: 8,
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              marginBottom: 12,
-            }}
-          >
-            {saved && !suppressSavedIndicator ? (
-              <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
-            ) : null}
-            {error ? (
-              <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span>
-            ) : null}
-          </div>
-
           {storyQuestions.length === 0 ? (
             <div style={{ opacity: 0.7 }}>{intl.formatMessage({ id: 'no-saved-questions' })}</div>
           ) : (
@@ -632,11 +644,14 @@ const ReadingComprehensionView = ({ match }) => {
                 title={q.question}
                 selected={false}
                 onToggleSelect={() => {}}
+                cefr={q.cefr}
                 actions={
                   <Button
                     icon
                     basic
                     size="mini"
+                    style={{ padding: '9px' }}
+                    disabled={deletePending}
                     onClick={e => {
                       stopAll(e)
                       removeStoryQuestion(qIdx)
