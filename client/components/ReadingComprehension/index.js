@@ -323,7 +323,17 @@ const ReadingComprehensionView = ({ match }) => {
     e.stopPropagation()
   }
 
-  if (!story) return <Spinner fullHeight />
+  if (!story)
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        variant="secondary"
+        text="Loading story…"
+        textSize={20}
+        textVariant="secondary"
+      />
+    )
 
   const saveTooltip = mcPending
     ? intl.formatMessage({ id: 'mc-generating' })
@@ -380,7 +390,7 @@ const ReadingComprehensionView = ({ match }) => {
                   onChange={(_e, data) => setEditValue(data.value)}
                   fluid
                   size="small"
-                  onKeyDown={handleEditKeyDown} 
+                  onKeyDown={handleEditKeyDown}
                   onClick={stopPropagation}
                   onMouseDown={stopPropagation}
                   disabled={regenLoading}
@@ -532,11 +542,6 @@ const ReadingComprehensionView = ({ match }) => {
                   </Button>
                 )}
 
-                {pending ? (
-                  <span style={{ opacity: 0.7, marginLeft: 8 }}>
-                    <Icon name="spinner" loading />
-                  </span>
-                ) : null}
                 {saved && !suppressSavedIndicator ? (
                   <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
                 ) : null}
@@ -565,7 +570,6 @@ const ReadingComprehensionView = ({ match }) => {
                       icon
                       basic
                       size="mini"
-                      loading={regenLoading}
                       disabled={disableThisQuestionActions}
                       onClick={e => {
                         stopAll(e)
@@ -573,7 +577,11 @@ const ReadingComprehensionView = ({ match }) => {
                       }}
                       onMouseDown={stopAll}
                     >
-                      <Icon name="refresh" />
+                      {regenLoading ? (
+                        <Spinner inline size={24} variant="secondary" />
+                      ) : (
+                        <Icon name="refresh" />
+                      )}
                     </Button>
                   }
                 >
@@ -607,11 +615,6 @@ const ReadingComprehensionView = ({ match }) => {
               marginBottom: 12,
             }}
           >
-            {pending && !story ? (
-              <span style={{ opacity: 0.7, marginLeft: 8 }}>
-                <Icon name="spinner" loading />
-              </span>
-            ) : null}
             {saved && !suppressSavedIndicator ? (
               <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
             ) : null}
@@ -657,7 +660,14 @@ const ReadingComprehensionView = ({ match }) => {
     <>
       {mcPending ? (
         <div className="rc-loading-overlay">
-          <Icon className="rc-loading-overlay__spinner" name="spinner" loading size="huge" />
+          <Spinner
+            fullHeight
+            size={72}
+            variant="secondary"
+            text="Generating questions…"
+            textSize={24}
+            textVariant="secondary"
+          />
         </div>
       ) : null}
 
