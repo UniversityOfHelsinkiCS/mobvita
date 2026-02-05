@@ -118,7 +118,7 @@ const ReadingComprehensionView = ({ match }) => {
 
   useEffect(() => {
     if (!saved) return
-    
+
     dispatch(getStoryAction(storyId, 'preview'))
 
     if (suppressSavedIndicator) {
@@ -126,10 +126,10 @@ const ReadingComprehensionView = ({ match }) => {
       dispatch(clearMcSavedAction())
       return
     }
-  
+
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
-  }, [saved, dispatch, storyId])
+  }, [saved, dispatch, storyId, suppressSavedIndicator])
 
   useEffect(() => {
     if (!mcPending) return
@@ -283,14 +283,23 @@ const ReadingComprehensionView = ({ match }) => {
       next[qIdx] = {
         ...q,
         choices: newChoices,
-        ...(isEditingCorrectAnswer ? { answer: editValue } : null),
+        ...(isEditingCorrectAnswer ? { answer: editValue } : {}),
       }
-      
+
       return next
     }
 
-    if (list === 'draft') setDraftQuestions(updater)
-    if (list === 'story') setStoryQuestions(updater)
+    if (list === 'draft') {
+      setDraftQuestions(updater)
+    }
+
+    if (list === 'story') {
+      setSuppressSavedIndicator(false)
+
+      const nextStoryQuestions = updater(storyQuestions)
+      setStoryQuestions(nextStoryQuestions)
+      dispatch(saveMcQuestionsAction({ storyId, questions: nextStoryQuestions }))
+    }
 
     cancelEditChoice()
   }
@@ -332,6 +341,21 @@ const ReadingComprehensionView = ({ match }) => {
 
   const labelTextStyle = { minWidth: 46 }
 
+  const handleEditKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      e.stopPropagation()
+      if ((editValue || '').trim().length === 0) return
+      commitEditChoice()
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      e.stopPropagation()
+      cancelEditChoice()
+    }
+  }
+
   const renderChoices = (list, q, qIdx, regenLoading = false) => (
     <ul
       className="rc-question__options"
@@ -356,6 +380,7 @@ const ReadingComprehensionView = ({ match }) => {
                   onChange={(_e, data) => setEditValue(data.value)}
                   fluid
                   size="small"
+                  onKeyDown={handleEditKeyDown} 
                   onClick={stopPropagation}
                   onMouseDown={stopPropagation}
                   disabled={regenLoading}
@@ -471,11 +496,7 @@ const ReadingComprehensionView = ({ match }) => {
               }}
             >
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Button
-                  primary
-                  onClick={handleGenerate}
-                  disabled={disableTopActions}
-                >
+                <Button primary onClick={handleGenerate} disabled={disableTopActions}>
                   {intl.formatMessage({ id: 'generate' })}
                 </Button>
 
@@ -586,24 +607,6 @@ const ReadingComprehensionView = ({ match }) => {
               marginBottom: 12,
             }}
           >
-            <Popup
-              content={saveTooltip}
-              disabled={!disableTopActions}
-              position="top center"
-              trigger={
-                <div style={{ display: 'inline-block' }}>
-                  <Button
-                    primary
-                    onClick={saveStoryQuestions}
-                    disabled={disableTopActions || storyQuestions.length === 0}
-                  >
-                    {intl.formatMessage({ id: 'save' })}
-                    {storyQuestions.length > 0 ? ` (${storyQuestions.length})` : ''}
-                  </Button>
-                </div>
-              }
-            />
-
             {pending && !story ? (
               <span style={{ opacity: 0.7, marginLeft: 8 }}>
                 <Icon name="spinner" loading />
