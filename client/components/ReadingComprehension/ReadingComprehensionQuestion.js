@@ -7,6 +7,7 @@ const ReadingComprehensionQuestion = ({
   onToggleSelect,
   children,
   actions,
+  cefr,
 }) => {
   return (
     <Segment
@@ -23,22 +24,21 @@ const ReadingComprehensionQuestion = ({
         border: '1px solid rgba(0,0,0,0.12)',
       }}
     >
-      <header className="rc-question__header" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <div className="rc-question__title" style={{ flex: 1, minWidth: 0 }}>
+      <header className="rc-question__header">
+        <div className="rc-question__title">
           <span className="header-3 rc-question__titleText">{title}</span>
         </div>
 
-        {actions ? (
-          <div
-            className="rc-question__actions"
-            onClick={e => e.stopPropagation()}
-            onMouseDown={e => e.stopPropagation()}
-            onKeyDown={e => e.stopPropagation()}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}
-          >
-            {actions}
-          </div>
-        ) : null}
+        <div
+          className="rc-question__right"
+          onClick={e => e.stopPropagation()}
+          onMouseDown={e => e.stopPropagation()}
+          onKeyDown={e => e.stopPropagation()}
+        >
+          {cefr ? <span className="rc-question__cefr">{cefr}</span> : null}
+
+          {actions ? <div className="rc-question__actions">{actions}</div> : null}
+        </div>
       </header>
 
       <section className="rc-question__body">{children}</section>

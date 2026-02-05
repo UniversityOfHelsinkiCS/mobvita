@@ -42,16 +42,45 @@
 
 .rc-question__header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
+  gap: 8px;
 }
 
 .rc-question__title {
+  flex: 1;
+  min-width: 0;
   margin-bottom: 0.5em;
 }
 
 .rc-question__titleText {
   font-weight: 500;
+}
+
+.rc-question__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex: 0 0 auto;
+
+  align-self: stretch;
+}
+
+.rc-question__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: 4px;
+
+}
+
+.rc-question__cefr {
+  margin: 0;
+  padding: 4px 10px 0 0;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .rc-question__toggle {

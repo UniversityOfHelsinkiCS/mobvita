@@ -65,7 +65,7 @@ const Spinner = ({
       </div>
 
       {text ? (
-        <div className={`spinner-text ${textVariantClass}`} style={{ fontSize: textSize }}>
+        <div className={`spinner-text ${textVariantClass}`} style={{ fontSize: textSize, margin: '8px' }}>
           {text}
         </div>
       ) : null}
