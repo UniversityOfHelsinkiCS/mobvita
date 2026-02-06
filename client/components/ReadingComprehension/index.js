@@ -745,7 +745,7 @@ const ReadingComprehensionView = ({ match }) => {
         >
           <Segment style={{ borderRadius: 12 }}>
             <Tab
-              menu={{ secondary: true, className: 'rc-tabs' }}
+              menu={{ className: 'rc-tabs' }}
               panes={panes}
               activeIndex={activeTabIndex}
               onTabChange={(_e, data) => {
