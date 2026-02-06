@@ -50,7 +50,7 @@ const normalizeQuestion = q => {
       question: q.question,
       answer: q.answer,
       choices: Array.isArray(q.choices) ? q.choices : [],
-      cefr: q.cefr,
+      level: q.level,
     }
   }
   if (q.q) {
@@ -58,7 +58,7 @@ const normalizeQuestion = q => {
       question: q.q,
       answer: q.a,
       choices: Array.isArray(q.choices) ? q.choices : [],
-      cefr: q.cefr,
+      level: q.level,
     }
   }
   return null
@@ -139,7 +139,7 @@ const ReadingComprehensionView = ({ match }) => {
     const qs = pickStoryQuestions(story).map(normalizeQuestion).filter(Boolean)
     const storyCefr = story?.level != null ? cefrNum2Cefr(story.level) : null
 
-    setStoryQuestions(qs.map(q => ({ ...q, cefr: q.cefr ?? storyCefr ?? level })))
+    setStoryQuestions(qs.map(q => ({ ...q, level: q.level ?? storyCefr ?? level })))
     hasInitializedStoryQuestionsRef.current = true
   }, [story, level])
 
@@ -232,7 +232,10 @@ const ReadingComprehensionView = ({ match }) => {
   const saveSelectedDraftToStory = async () => {
     if (disableSaveButton || selectedCount === 0) return
 
-    const merged = [...storyQuestions, ...selectedDraftQuestions]
+    const merged = [...storyQuestions, ...selectedDraftQuestions].map(q => ({
+      ...q,
+      level: q.level ?? q.cefr ?? level,
+    }))
 
     dispatch(saveMcQuestionsAction({ storyId, questions: merged }))
     setStoryQuestions(merged)
@@ -291,8 +294,8 @@ const ReadingComprehensionView = ({ match }) => {
   useEffect(() => {
     const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
 
-    const frozenCefr = lastGenerateCefrRef.current ?? level
-    setDraftQuestions(gen.map(q => ({ ...q, cefr: q.cefr ?? frozenCefr })))
+    const frozenLevel = lastGenerateCefrRef.current ?? level
+    setDraftQuestions(gen.map(q => ({ ...q, level: q.level ?? frozenLevel })))
 
     setSelectedDraft(new Set())
     setEditing(null)
@@ -315,11 +318,11 @@ const ReadingComprehensionView = ({ match }) => {
 
     setRegenLocalByIndex(prev => ({ ...prev, [qIdx]: true }))
 
-    const frozenCefr = draftQuestions?.[qIdx]?.cefr ?? level
+    const frozenLevel = draftQuestions?.[qIdx]?.level ?? level
     dispatch(
       regenerateOneMcQuestionAction({
         storyId,
-        level: frozenCefr,
+        level: frozenLevel,
         question: questionText,
         index: qIdx,
       })
@@ -592,7 +595,7 @@ const ReadingComprehensionView = ({ match }) => {
                   title={q.question}
                   selected={selectedDraft.has(qIdx)}
                   onToggleSelect={() => toggleSelectedDraft(qIdx)}
-                  cefr={q.cefr}
+                  cefr={q.level}
                   actions={
                     <Button
                       icon
@@ -643,7 +646,7 @@ const ReadingComprehensionView = ({ match }) => {
                 title={q.question}
                 selected={false}
                 onToggleSelect={() => {}}
-                cefr={q.cefr}
+                cefr={q.level}
                 actions={
                   <Button
                     icon
