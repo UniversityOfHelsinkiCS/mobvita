@@ -119,3 +119,31 @@
 .rc-loading-overlay__spinner {
   color: #3495e0;
 }
+
+.rc-tabs {
+  display: flex !important;
+  justify-content: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.rc-tabs .item {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.rc-tabs .item.active {
+  background: rgba(47, 0, 255, 0.06) !important;
+  border-color: rgba(51, 0, 255, 0.12) !important;
+}
+
+/* remove semantic underline */
+.rc-tabs .item:after {
+  display: none !important;
+}
+/* ...existing code... */
