@@ -328,11 +328,10 @@ const ReadingComprehensionView = ({ match }) => {
 
   const removeStoryQuestion = idx => {
     const q = storyQuestions?.[idx]
-    const questionText = q?.question || q?.q
+    const questionText = (q?.question || q?.q || '').trim()
     if (!questionText) return
 
     setStoryQuestions(prev => prev.filter((_, i) => i !== idx))
-
     dispatch(deleteMcQuestionsAction({ storyId, questions: [questionText] }))
 
     if (editing?.list === 'story') {
