@@ -286,6 +286,8 @@ const ReadingComprehensionView = ({ match }) => {
     if (list === 'story') {
       const nextStoryQuestions = updater(storyQuestions)
       setStoryQuestions(nextStoryQuestions)
+
+      dispatch(saveMcQuestionsAction({ storyId, questions: nextStoryQuestions }))
     }
 
     cancelEditChoice()
