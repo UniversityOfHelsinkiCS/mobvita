@@ -46,6 +46,7 @@ export const clearMcDeletedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_
 const initialState = {
   generated: [],
   pending: false,
+  savePending: false,
   error: false,
   errorDetails: null,
   saved: false,
@@ -151,7 +152,7 @@ export default (state = initialState, action) => {
     case 'MC_SAVE_QUESTIONS_ATTEMPT':
       return {
         ...state,
-        pending: true,
+        savePending: true,
         error: false,
         errorDetails: null,
         saved: false,
@@ -160,7 +161,7 @@ export default (state = initialState, action) => {
     case 'MC_SAVE_QUESTIONS_SUCCESS':
       return {
         ...state,
-        pending: false,
+        savePending: false,
         error: false,
         errorDetails: null,
         saved: true,
@@ -169,7 +170,7 @@ export default (state = initialState, action) => {
     case 'MC_SAVE_QUESTIONS_FAILURE':
       return {
         ...state,
-        pending: false,
+        savePending: false,
         error: true,
         errorDetails: action.response,
         saved: false,
