@@ -104,8 +104,6 @@ const ReadingComprehensionView = ({ match }) => {
   const [level, setLevel] = useState('B1')
   const [size, setSize] = useState(4)
 
-  const lastGenerateCefrRef = useRef(level)
-  const hasSetInitialLevelFromStoryRef = useRef(false)
   const hasInitializedStoryQuestionsRef = useRef(false)
 
   const [storyQuestions, setStoryQuestions] = useState([])
@@ -125,23 +123,14 @@ const ReadingComprehensionView = ({ match }) => {
   }, [dispatch, storyId])
 
   useEffect(() => {
-    if (!hasSetInitialLevelFromStoryRef.current && story?.level != null) {
-      const storyCefr = cefrNum2Cefr(story.level)
-      if (storyCefr) setLevel(storyCefr)
-      hasSetInitialLevelFromStoryRef.current = true
-    }
-  }, [story])
-
-  useEffect(() => {
     if (!story) return
     if (hasInitializedStoryQuestionsRef.current) return
 
     const qs = pickStoryQuestions(story).map(normalizeQuestion).filter(Boolean)
-    const storyCefr = story?.level != null ? cefrNum2Cefr(story.level) : null
 
-    setStoryQuestions(qs.map(q => ({ ...q, level: q.level ?? storyCefr ?? level })))
+    setStoryQuestions(qs)
     hasInitializedStoryQuestionsRef.current = true
-  }, [story, level])
+  }, [story])
 
   useEffect(() => {
     if (!saved) return
@@ -203,7 +192,6 @@ const ReadingComprehensionView = ({ match }) => {
 
   const handleGenerate = () => {
     if (disableTopActions) return
-    lastGenerateCefrRef.current = level
     dispatch(generateMcQuestionsAction({ storyId, level, size }))
     setActiveTabIndex(0)
   }
@@ -232,10 +220,7 @@ const ReadingComprehensionView = ({ match }) => {
   const saveSelectedDraftToStory = async () => {
     if (disableSaveButton || selectedCount === 0) return
 
-    const merged = [...storyQuestions, ...selectedDraftQuestions].map(q => ({
-      ...q,
-      level: q.level ?? q.cefr ?? level,
-    }))
+    const merged = [...storyQuestions, ...selectedDraftQuestions].map(q => ({ ...q, level: q.level }))
 
     dispatch(saveMcQuestionsAction({ storyId, questions: merged }))
     setStoryQuestions(merged)
@@ -296,9 +281,7 @@ const ReadingComprehensionView = ({ match }) => {
   useEffect(() => {
     const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
 
-    const frozenLevel = lastGenerateCefrRef.current ?? level
-    setDraftQuestions(gen.map(q => ({ ...q, level: q.level ?? frozenLevel })))
-
+    setDraftQuestions(gen)
     setSelectedDraft(new Set())
     setEditing(null)
     setEditValue('')
@@ -320,11 +303,10 @@ const ReadingComprehensionView = ({ match }) => {
 
     setRegenLocalByIndex(prev => ({ ...prev, [qIdx]: true }))
 
-    const frozenLevel = draftQuestions?.[qIdx]?.level ?? level
     dispatch(
       regenerateOneMcQuestionAction({
         storyId,
-        level: frozenLevel,
+        level,
         question: questionText,
         index: qIdx,
       })
