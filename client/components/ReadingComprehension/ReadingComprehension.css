@@ -128,6 +128,11 @@
   box-shadow: none !important;
 }
 
+.rc-tabs .item:before {
+  display: none !important;
+  content: none !important;
+}
+
 .rc-tabs .item {
   background: transparent !important;
   border: 1px solid transparent !important;
@@ -142,8 +147,6 @@
   border-color: rgba(51, 0, 255, 0.12) !important;
 }
 
-/* remove semantic underline */
 .rc-tabs .item:after {
   display: none !important;
 }
-/* ...existing code... */
