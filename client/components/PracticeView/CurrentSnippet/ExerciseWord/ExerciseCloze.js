@@ -75,7 +75,11 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     inflection_ref: inflectionRef,
   } = word
   
-  
+  const focusedChunkIds =
+    focusedWord?.analytic && Array.isArray(focusedWord?.cand_index) ? focusedWord.cand_index : null
+
+  const isInFocusedAnalyticChunk =
+    Array.isArray(focusedChunkIds) && focusedChunkIds.includes(word.ID)
 
   const target = useRef()
   const dispatch = useDispatch()
@@ -122,7 +126,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setValue(e.target.value)
   }
   
-
   const getExerciseClass = (tested, isWrong) => {
     if (!tested) return 'exercise'
     if (isWrong) return 'exercise wrong cloze'
@@ -138,8 +141,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
-  
-
   useEffect(() => {
     if (focusedWord !== word) {
       setShow(false)
@@ -151,7 +152,6 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       setShow(false)
     }
   }, [latestMCTouched])
-
 
   const tooltip = (
     <div>
@@ -261,7 +261,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         className={className}
         style={{
           width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) : getTextWidth(word.base),
-          backgroundColor: getWordColor(
+          backgroundColor: isInFocusedAnalyticChunk
+          ? 'rgba(255, 255, 36, 0.7)'
+          : getWordColor(
             word.level,
             grade,
             skillLevels,
