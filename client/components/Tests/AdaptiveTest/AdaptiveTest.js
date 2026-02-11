@@ -24,10 +24,12 @@ const AdaptiveTest = ({ showingInfo }) => {
     startImmediately: false,
     timeToUpdate: 100,
   })
+
   const [willStop, setWillStop] = useState(false)
   const [willPause, setWillPause] = useState(false)
   const [displaySpinner, setDisplaySpinner] = useState(false)
   const [paused, setPaused] = useState(false)
+
   const {
     adaptiveTestSessionId,
     answerPending,
@@ -36,6 +38,7 @@ const AdaptiveTest = ({ showingInfo }) => {
     currentAdaptiveQuestionIndex,
     timedTest,
   } = useSelector(({ tests }) => tests)
+
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const dispatch = useDispatch()
@@ -121,6 +124,10 @@ const AdaptiveTest = ({ showingInfo }) => {
     }, TIMER_START_DELAY)
   }
 
+  const totalQuestions = 80
+  const progress = currentAdaptiveQuestionIndex + 1 >= 64 ? 'green' : currentAdaptiveQuestionIndex + 1 >= 40 ? 'yellow' : 'red'
+
+
   return (
     <div className="cont mt-nm">
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
@@ -164,6 +171,18 @@ const AdaptiveTest = ({ showingInfo }) => {
                 <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
               </div>
             </div>
+            
+            <div className={`ui progress ${progress}`}>
+              <div
+                className="bar"
+                style={{
+                  width: `${(currentAdaptiveQuestionIndex / totalQuestions) * 100}%`,
+                  minWidth: 0,
+                  transition: 'width 200ms ease',
+                }}
+              />
+            </div>
+
             <div className="test-question-container">
               {willPause && !willStop && (
                 <span className="test-info">

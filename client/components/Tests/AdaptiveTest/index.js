@@ -15,9 +15,15 @@ const AdaptiveTestView = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
-  const { adaptiveTestSessionId, pending, language, cefrLevel, adaptiveTestResults, timedTest, currentAdaptiveQuestion } = useSelector(
-    ({ tests }) => tests
-  )
+  const {
+    adaptiveTestSessionId,
+    pending,
+    language,
+    cefrLevel,
+    adaptiveTestResults,
+    timedTest,
+    currentAdaptiveQuestion,
+  } = useSelector(({ tests }) => tests)
 
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [isTimed, setIsTimed] = useState(timedTest)
@@ -57,7 +63,7 @@ const AdaptiveTestView = () => {
             />
           </div>
         )}
-        {!currentAdaptiveQuestion && adaptiveTestResults &&  (
+        {!currentAdaptiveQuestion && adaptiveTestResults && (
           <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
         )}
         {adaptiveTestSessionId && <TestView showingInfo={startModalOpen} />}
