@@ -30,6 +30,7 @@ const AddToGroup = ({ groupId, setGroupId }) => {
           </span>
           <FormControl
             as="textarea"
+            data-cy="add-to-group-teacher-emails"
             value={teachers}
             placeholder={intl.formatMessage({ id: 'multiple-email-separate-instructions' })}
             onChange={e => setTeachers(e.target.value)}
@@ -44,6 +45,7 @@ const AddToGroup = ({ groupId, setGroupId }) => {
           </span>
           <FormControl
             as="textarea"
+            data-cy="add-to-group-student-emails"
             value={students}
             placeholder={intl.formatMessage({ id: 'multiple-email-separate-instructions' })}
             onChange={e => setStudents(e.target.value)}

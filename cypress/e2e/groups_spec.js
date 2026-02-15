@@ -10,7 +10,7 @@ describe("groups", function () {
     cy.loginExisting().as('user')
     cy.getUser('teacher').as('teacher')
     cy.getUser('student').as('student')
-    cy.visit('http://localhost:8000/groups/teacher')
+    cy.visit('localhost:8000/groups/teacher')
   })
 
   this.afterAll(function () {
@@ -19,22 +19,23 @@ describe("groups", function () {
 
   it('new group can be created with students and teachers', function () {
     cy.get('[data-cy=create-group-button]').click()
-    cy.get('[data-cy=group-name]').eq(0).type('my_test_group')
-    cy.get('textarea').eq(1).type(this.teacher.email)
-    cy.get('textarea').eq(2).type(this.student.email)
-    cy.get('[type=submit]').click()
+    cy.get('[data-cy=add-group-form]').should('be.visible').within(() => {
+      cy.get('[data-cy=group-name]').type('my_test_group')
+      cy.get('[data-cy=teacher-emails]').type(this.teacher.email)
+      cy.get('[data-cy=student-emails]').type(this.student.email)
+      cy.get('[type=submit]').click()
+    })
     
-    // Close modal with esc
-    cy.get('[data-cy=people-add-result-modal').trigger('keydown', { keyCode: 27});
-    cy.wait(200);
-    cy.get('body').trigger('keyup', { keyCode: 27});
+    // Close result modal (more reliable than ESC)
+    cy.get('[data-cy=people-add-result-modal]').should('be.visible')
+    cy.get('[data-cy=people-add-result-modal]').find('i.close.icon').click()
 
     cy.contains('my_test_group')
     cy.get('[data-cy=people-button]').click()
     cy.contains(this.teacher.username)
     cy.contains(this.student.username)
 
-    cy.visit('http://localhost:8000/groups/teacher')
+    cy.visit('localhost:8000/groups/teacher')
     cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
   })
@@ -84,7 +85,7 @@ describe("groups", function () {
         group_name: 'other group'
       }
     })
-    cy.visit('http://localhost:8000/groups/teacher')
+    cy.visit('localhost:8000/groups/teacher')
     cy.reload()
     cy.contains('other group')
 
@@ -92,8 +93,8 @@ describe("groups", function () {
     cy.contains('other group')
     cy.get('[data-cy=add-to-group-button]').click()
 
-    cy.get('textarea').eq(0).type(this.teacher.email)
-    cy.get('textarea').eq(1).type(this.student.email)
+    cy.get('[data-cy=add-to-group-teacher-emails]').should('be.visible').type(this.teacher.email)
+    cy.get('[data-cy=add-to-group-student-emails]').type(this.student.email)
     cy.get('[type=submit]').click()
 
     cy.get('.modal > .close').click()
@@ -103,7 +104,7 @@ describe("groups", function () {
     cy.get(`[data-cy=remove-from-group-${this.student.username}]`).click()
     cy.contains(this.student.username).should('not.exist')
 
-    cy.visit('http://localhost:8000/groups/teacher')
+    cy.visit('localhost:8000/groups/teacher')
     cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
   })
