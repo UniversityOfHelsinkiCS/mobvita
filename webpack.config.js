@@ -60,9 +60,16 @@ module.exports = (env, argv) => {
         Assets: path.resolve(__dirname, 'client/assets/'),
         '@root': path.resolve(__dirname),
       },
+      mainFields: ['browser', 'main', 'module'],
+      extensions: ['.js', '.mjs', '.json'],
     },
     module: {
       rules: [
+        {
+          test: /\.m?js$/,
+          include: [path.resolve(__dirname, 'node_modules/react-draggable')],
+          use: { loader: 'babel-loader' },
+        },
         {
           // Load JS files
           test: /\.js$/,
@@ -100,7 +107,7 @@ module.exports = (env, argv) => {
           include: /node_modules/,
           test: /\.mjs$/,
           type: 'javascript/auto'
-        }
+        },
       ],
     },
     // optimization: {
