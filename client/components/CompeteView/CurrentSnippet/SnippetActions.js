@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 import { useLearningLanguage } from 'Utilities/common'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
@@ -11,6 +11,7 @@ import {
   clearTouchedIds,
   addToCorrectAnswerIDs,
 } from 'Utilities/redux/practiceReducer'
+import Spinner from 'Components/Spinner'
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, playerFinished }) => {
   const attempt = useSelector(({ practice }) => practice.attempt)
@@ -96,7 +97,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
       />
       <span style={{ ...getFontStyle() }}>
       {
-        answersPending && <Spinner animation="border" variant={attemptRatioPercentage > 60 && "white" || "dark"} size="md" /> ||
+        answersPending && <Spinner variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
         <FormattedMessage id="check-answer" />
       }
       </span>
