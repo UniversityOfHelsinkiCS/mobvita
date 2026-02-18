@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Button, Icon, Popup } from 'semantic-ui-react'
 import { lemmatizer } from 'lemmatizer'
-import { Spinner } from 'react-bootstrap'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
@@ -11,6 +10,7 @@ import {
   learningLanguageLocaleCodes
 } from 'Utilities/common'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import Spinner from 'Components/Spinner'
 
 const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const glossCheckLanguage = ['English']
@@ -151,7 +151,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                         <FormattedMessage id="dictionaryhelp-loading-please-wait" />
                         ...{' '}
                     </span>
-                    <Spinner animation="border" />
+                    <Spinner inline />
                 </div>
             )}
             </div>
