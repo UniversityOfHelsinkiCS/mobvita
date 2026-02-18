@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
-import { Spinner } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import Spinner from 'Components/Spinner'
 
 const PracticeText = props => {
   const snippets = useSelector(({ snippets }) => snippets)
@@ -23,7 +23,7 @@ const PracticeText = props => {
   if (snippets.pending || !practiceSnippet) {
     return (
       <div className="spinner-container" style={{ minHeight: previousHeight }}>
-        <Spinner animation="border" variant="primary" size="lg" />
+        <Spinner />
       </div>
     )
   }

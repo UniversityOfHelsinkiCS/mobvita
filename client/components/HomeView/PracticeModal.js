@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
+import Spinner from 'Components/Spinner'
 
 const extractFilters = object =>
   Object.entries(object)
@@ -219,7 +219,7 @@ const PracticeModal = ({ open, setOpen }) => {
               {waiting ? (
                 <button type="button" className="practice-now-modal-btn">
                   <div className="align-center flex-col space-between">
-                    <Spinner animation="border" variant="primary" />
+                    <Spinner inline />
                   </div>
                 </button>
               ) : (

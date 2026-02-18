@@ -13,7 +13,6 @@ import {
   resetSnippets,
 } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
-import { Spinner } from 'react-bootstrap'
 import {
   setTouchedIds,
   setAnswers,
@@ -47,6 +46,7 @@ import ProgressBar from './CurrentSnippet/ProgressBar'
 import PracticeTimer from './PracticeTimer'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
+import Spinner from 'Components/Spinner'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
@@ -211,7 +211,7 @@ const PracticeView = () => {
 
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime())
-      return <Spinner animation="border" variant="info" size="sm" />
+      return <Spinner inline variant="info" />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)

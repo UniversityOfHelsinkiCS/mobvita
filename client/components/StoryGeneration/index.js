@@ -12,7 +12,6 @@ import {
   Accordion, 
   AccordionTitle,
   AccordionContent } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
@@ -33,6 +32,7 @@ import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReduce
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import Spinner from 'Components/Spinner'
 // import AddStoryModal from 'Components/AddStoryModal'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
@@ -356,7 +356,7 @@ const StoryGeneration = () => {
         <div style={{width: "100%", maxWidth: "800px", margin: "auto"}}>
           {generationPending ? (
             <div className='row justify-center align-center'>
-              <Spinner animation="border" variant="info" />
+              <Spinner variant="info" />
               <span style={{
                 textAlign: 'center',
                 fontWeight: 500,
