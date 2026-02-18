@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
 import { useSelector, shallowEqual } from 'react-redux'
-import { Spinner } from 'react-bootstrap'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
-import { Divider } from 'semantic-ui-react'
+import Spinner from 'Components/Spinner'
 
 const PracticeText = props => {
   const textComponent = useRef(null)
@@ -12,7 +10,7 @@ const PracticeText = props => {
   if (!focusing_snippets || pending) {
     return (
       <div className="spinner-container" style={{ minHeight: 0 }}>
-        <Spinner animation="border" variant="primary" size="lg" />
+        <Spinner />
       </div>
     )
   }

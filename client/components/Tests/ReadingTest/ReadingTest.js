@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Segment } from 'semantic-ui-react'
-import { Spinner, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 
 import {
@@ -26,6 +26,7 @@ import ReadingTestSelfReflect from './ReadingTestSelfReflect'
 import ReadingTestElicationDialog from './ReadingTestElicitationDialog'
 import ReadingTestNextSetDialog from './ReadingTestNextSetDialog'
 import ReadingTestStats from './ReadingTestStats'
+import Spinner from 'Components/Spinner'
 
 const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const [displaySpinner, setDisplaySpinner] = useState(false)
@@ -510,7 +511,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
-                  <Spinner animation="border" variant="info" size="lg" />
+                  <Spinner variant="info" />
                 </div>
               )}
             </div>

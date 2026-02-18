@@ -9,8 +9,6 @@ import {
   resetCachedSnippets,
 } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
-import { Spinner } from 'react-bootstrap'
-
 import {
   setTouchedIds,
   setAnswers,
@@ -43,6 +41,7 @@ import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
 import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
+import Spinner from 'Components/Spinner'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
@@ -193,7 +192,7 @@ const LessonPracticeView = () => {
 
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime())
-      return <Spinner animation="border" variant="info" size="sm" />
+      return <Spinner variant="info" />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)

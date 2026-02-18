@@ -7,9 +7,10 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormControl, Spinner, Button } from 'react-bootstrap'
+import { FormControl, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { Divider } from 'semantic-ui-react'
+import Spinner from 'Components/Spinner'
 
 const EditStoryView = ({ match }) => {
   const dispatch = useDispatch()
@@ -106,7 +107,14 @@ const EditStoryView = ({ match }) => {
   const submitDisabled = !content || textTooLong || charactersLeft > 49950 || titleMissing
 
   if (!story || pending) {
-    return <Spinner />
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        text="Loading…"
+        textSize={20}
+      />
+    )
   }
   console.log('text too long ', textTooLong, ' missin title ', titleMissing)
 

@@ -17,7 +17,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
 
   useEffect(() => {
     if (!student && !summaryView) return
-    
+
     if (!summaryView) {
       dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
     } else {
@@ -26,7 +26,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
   }, [student, startDate, endDate])
 
   if (pending) {
-    return <Spinner />
+    return <Spinner fullHeight size={60} text="Loading…" textSize={20} />
   }
 
   if (!history) {

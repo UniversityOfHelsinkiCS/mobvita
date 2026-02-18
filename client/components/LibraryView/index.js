@@ -29,6 +29,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
+import Spinner from 'Components/Spinner'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -290,14 +291,7 @@ const StoryList = () => {
   )
 
   if (pending || !refreshed) {
-    return (
-      <div className="cont-tall cont flex-col auto gap-row-sm">
-        {libraryControls}
-        <Placeholder>
-          <Placeholder.Line />
-        </Placeholder>
-      </div>
-    )
+    return <Spinner fullHeight size={60} text="Loading…" textSize={20} />
   }
 
   const librariesToShow = Object.entries(libraries)

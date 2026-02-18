@@ -4,10 +4,11 @@ import { createRealToken } from 'Utilities/redux/userReducer'
 import { Form } from 'semantic-ui-react'
 import { useHistory, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
 import InterfaceLanguageView from '../LanguageSelectView/InterfaceLanguageView'
 import { localeCodeToName } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -67,7 +68,7 @@ const Login = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <button data-cy="login" type="submit" className="landing-page-button" disabled={pending}>
             {pending ? (
-              <Spinner animation="border" variant="info" size="sm" />
+              <Spinner inline variant='info' />
             ) : (
               <span>{intl.formatMessage({ id: 'Login' })}</span>
             )}

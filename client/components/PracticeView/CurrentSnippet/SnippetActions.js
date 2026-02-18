@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
 import { 
   postAnswers, 
@@ -21,6 +21,7 @@ import {
   addToCorrectAnswerIDs,
 } from 'Utilities/redux/practiceReducer'
 import { setIrtDummyScore } from 'Utilities/redux/userReducer'
+import Spinner from 'Components/Spinner'
 
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
@@ -80,7 +81,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
       />
       <span style={{ ...getFontStyle() }}>
       {
-        answersPending && <Spinner animation="border" variant={attemptRatioPercentage > 60 && "white" || "dark"} size="md" /> ||
+        answersPending && <Spinner inline variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
         <FormattedMessage id="check-answer" />
       }
       </span>

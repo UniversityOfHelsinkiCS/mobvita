@@ -192,7 +192,7 @@ const Summary = ({
   return (
     <>
       {pending ? (
-        <Spinner />
+        <Spinner fullHeight size={60} text="Loading…" textSize={20} />
       ) : (
         <>
           {summary?.length > 0 ? (

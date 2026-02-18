@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postLessonExerciseAnswers, setAttempt, getExerciseLesson } from 'Utilities/redux/lessonExercisesReducer'
 import { clearTouchedIds, addToCorrectAnswerIDs, incrementAttempts } from 'Utilities/redux/practiceReducer'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
 import { finalConfettiRain, confettiRain } from 'Utilities/common'
+import Spinner from 'Components/Spinner'
 
 const getFontStyle = (attemptRatioPercentage) => {
   if (attemptRatioPercentage > 60) return { color: 'white' }
@@ -60,7 +60,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
       />
       <span style={{ ...getFontStyle(attemptRatioPercentage) }}>
       {
-        answersPending && <Spinner animation="border" variant={attemptRatioPercentage > 60 && "white" || "dark"} size="md" /> ||
+        answersPending && <Spinner variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
         <FormattedMessage id="check-answer" />
       }
       </span>
@@ -191,7 +191,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
       } else {
         return (
           <div className="spinner-container" style={{ minHeight: 0 }}>
-            <Spinner animation="border" variant="primary" size="lg" />
+            <Spinner />
           </div>
         )
       }

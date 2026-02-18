@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Spinner } from 'react-bootstrap'
 import { Button, Icon } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
@@ -26,6 +25,7 @@ import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
 import ChatbotSuggestions from './ChatbotSuggestions'
+import Spinner from 'Components/Spinner'
 import { set } from 'lodash';
 
 const PracticeChatbot = () => {
@@ -254,7 +254,7 @@ const PracticeChatbot = () => {
           {/************************* BELOW BANNER: BUBBLES *************************/}
           <div className="chatbot-messages">
             {isLoadingHistory ? (
-              <Spinner animation="border" variant="info" className="spinner-history" />
+              <Spinner inline />
             ) : (
               <>
                 {/* hintMessageIdx === 0 means FIRST ATTEMPT */}
@@ -336,7 +336,7 @@ const PracticeChatbot = () => {
                 ))}
                 {isWaitingForResponse && (
                   <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                    <Spinner animation="border" variant="info" />
+                    <Spinner inline />
                   </div>
                 )}
               </>

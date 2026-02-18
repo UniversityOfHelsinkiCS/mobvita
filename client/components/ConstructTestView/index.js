@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Segment, Input, Divider, Table, Checkbox } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { testConstruction, resetConstructionResults } from 'Utilities/redux/constructionTestReducer'
-import { Spinner } from 'react-bootstrap'
+import Spinner from 'Components/Spinner'
+
 
 const ConstructTestView = () => {
   const dispatch = useDispatch()
@@ -59,7 +60,7 @@ const ConstructTestView = () => {
                 <Input
                   action={{
                     content: pending ? (
-                      <Spinner animation="border" variant="primary" size="sm" />
+                      <Spinner inline />
                     ) : (
                       'Send'
                     ),

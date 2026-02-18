@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Spinner } from 'react-bootstrap'
 import { Divider, Segment } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import Spinner from 'Components/Spinner'
 
 import {
   getOpponent,
@@ -112,7 +112,7 @@ const CompeteView = ({ match }) => {
       dispatch(setWillPause(true))
     }
   }
-
+  // THIS SPINNER HAD LG SIZE
   if (!story || !startTime || !snippets.focused) {
     return (
       <div className="cont-tall pt-sm flex-col space-between">
@@ -120,7 +120,7 @@ const CompeteView = ({ match }) => {
           <div className="cont">
             <Segment>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Spinner animation="border" variant="info" size="lg" />
+                <Spinner inline variant="info" />
               </div>
             </Segment>
           </div>
@@ -129,7 +129,7 @@ const CompeteView = ({ match }) => {
       </div>
     )
   }
-
+  // THIS SPINNER HAD SM SIZE
   return (
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
@@ -157,7 +157,7 @@ const CompeteView = ({ match }) => {
             <Divider />
             {!startTime ? (
               <div>
-                <Spinner animation="border" variant="info" size="sm" />
+                <Spinner inline variant="info" />
               </div>
             ) : (
               <CompetitionProgress

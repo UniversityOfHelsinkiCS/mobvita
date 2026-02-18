@@ -9,7 +9,8 @@ import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndCon
 import { useIntl, FormattedMessage } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import Spinner from 'Components/Spinner'
 
 const Register = () => {
   const intl = useIntl()
@@ -187,7 +188,7 @@ const Register = () => {
             disabled={registerPending || !accepted}
           >
             {registerPending ? (
-              <Spinner animation="border" variant="info" size="sm" />
+              <Spinner inline variant='info' />
             ) : (
               <span>{intl.formatMessage({ id: 'Register' })}</span>
             )}

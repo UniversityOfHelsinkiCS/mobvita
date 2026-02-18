@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { FormControl, Spinner, Button } from 'react-bootstrap'
+import { FormControl, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import Spinner from 'Components/Spinner'
 
 const UploadPastedText = ({ closeModal }) => {
   const intl = useIntl()
@@ -86,7 +87,7 @@ const UploadPastedText = ({ closeModal }) => {
         <div className="row-flex">
           <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
             {pending || storyId ? (
-              <Spinner animation="border" variant="dark" size="lg" />
+              <Spinner inline variant="dark" />
             ) : (
               <span>
                 <FormattedMessage id="Confirm" />
