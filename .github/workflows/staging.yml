@@ -10,7 +10,7 @@ jobs:
     name: "Test competition"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -21,7 +21,7 @@ jobs:
     name: "Test dictionary"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -32,7 +32,7 @@ jobs:
     name: "Test flashcards"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -43,7 +43,7 @@ jobs:
     name: "Test follow and block"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -54,7 +54,7 @@ jobs:
     name: "Test groups"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -65,7 +65,7 @@ jobs:
     name: "Test mobvita"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -76,7 +76,7 @@ jobs:
     name: "Test practice"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -87,7 +87,7 @@ jobs:
     name: "Test tests"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -98,7 +98,7 @@ jobs:
     name: "Test wordnest"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -120,15 +120,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Publish to DockerHub
-        uses: docker/build-push-action@v1.1.0
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
         with:
-          repository: toska/mobvita
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          build_args: ENVIRONMENT=staging,REVITA_URL=https://revita-test.cs.helsinki.fi/api,COMMIT_HASH=${{ github.sha }}
-          tags: staging
+      - name: Build and push (staging)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: toska/mobvita:staging
+          build-args: |
+            ENVIRONMENT=staging
+            REVITA_URL=https://revita-test.cs.helsinki.fi/api
+            COMMIT_HASH=${{ github.sha }}
 
 
   sentry:
@@ -137,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Pull image and create a container
         run: docker create --name mobvita toska/mobvita:staging
       - name: Copy assets from the container
