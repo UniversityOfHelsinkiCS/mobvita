@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from 'react-bootstrap';
 import { Button, Icon } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
@@ -11,6 +10,7 @@ import {
     getGeneralChatbotResponse
 } from 'Utilities/redux/chatbotReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
+import Spinner from 'Components/Spinner'
 
 const ReadingPracticeChatBot = () => {
     const intl = useIntl();
@@ -89,7 +89,7 @@ const ReadingPracticeChatBot = () => {
                 <>
                     <div className="chatbot-messages">
                         {isLoadingHistory ? (
-                            <Spinner animation="border" variant="info" className="spinner-history" />
+                            <Spinner inline />
                         ) : (
                             <>
                                 {messages.map((message, index) => (
@@ -99,7 +99,7 @@ const ReadingPracticeChatBot = () => {
                                 ))}
                                 {isWaitingForResponse && (
                                     <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                                        <Spinner animation="border" variant="info" />
+                                        <Spinner inline />
                                     </div>
                                 )}
                             </>
