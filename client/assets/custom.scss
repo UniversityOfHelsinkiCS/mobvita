@@ -2093,7 +2093,8 @@ label.file-upload-btn {
 
   &-question-container {
     min-width: 100%;
-    height: 500px;
+    min-height: 500px;
+    height: auto;
     padding-top: 1em;
   }
 
