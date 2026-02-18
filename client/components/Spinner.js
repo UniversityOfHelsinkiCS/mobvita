@@ -8,7 +8,7 @@ const Spinner = ({
   size = 24,
   text = '',
   textSize = 16,
-  textVariant,
+  textVariant = 'primary',
   textColor,
 }) => {
   const variantClass = `spinner--${variant}`

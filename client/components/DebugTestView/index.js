@@ -3,8 +3,10 @@ import { learningLanguageSelector } from 'Utilities/common'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
 import { Table, Form } from 'semantic-ui-react'
-import { Button, Spinner } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import Spinner from 'Components/Spinner'
+
 
 const DebugTestView = () => {
   const dispatch = useDispatch()
@@ -20,7 +22,14 @@ const DebugTestView = () => {
   }
 
   if (pending) {
-    return <Spinner />
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        text="Loading…"
+        textSize={20}
+      />
+    )
   }
 
   return (
