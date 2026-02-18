@@ -24,7 +24,7 @@ const GenerateStories = ({ closeModal }) => {
         <Link  to={'/story-generation'} disabled={pending}  className="space-evenly pt-lg">
         <Button style={{ marginTop: '1em' }}>
             {pending || storyId ? (
-                <Spinner inline variant='dark' size='lg' />
+                <Spinner inline variant='dark' />
             ) : (
                 <span>
                 <FormattedMessage id="go-generating" />
