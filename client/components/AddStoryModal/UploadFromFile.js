@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Spinner, Button, Dropdown } from 'react-bootstrap'
+import { Button, Dropdown } from 'react-bootstrap'
 import { Divider } from 'semantic-ui-react'
 import { learningLanguageSelector, dictionaryLanguageSelector, useCurrentUser, translatableLanguages } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import Spinner from 'Components/Spinner'
 
 const UploadFromFile = ({ closeModal }) => {
   const dispatch = useDispatch()
@@ -100,7 +101,7 @@ const UploadFromFile = ({ closeModal }) => {
         </label>
         <Button disabled={submitStoryDisabled} onClick={handleStorySubmit} style={{ minWidth: '10em' }}>
           {storyUploading ? (
-            <Spinner animation="border" variant="white" size="lg" />
+            <Spinner inline variant="white" />
           ) : (
             <FormattedMessage id="Submit" />
           )}
@@ -140,7 +141,7 @@ const UploadFromFile = ({ closeModal }) => {
         </label>
         <Button disabled={submitFlashcardDisabled} onClick={handleFlashcardSubmit} style={{ minWidth: '10em' }}>
           {storyUploading ? (
-            <Spinner animation="border" variant="white" size="lg" />
+            <Spinner inline variant="white" />
           ) : (
             <FormattedMessage id="Submit" />
           )}
