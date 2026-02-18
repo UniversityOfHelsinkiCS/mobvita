@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon, Segment } from 'semantic-ui-react'
-import { Spinner } from 'react-bootstrap'
 import { 
   sendExhaustiveTestAnswer, 
   finishExhaustiveTest, 
@@ -13,6 +12,7 @@ import {
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
+import Spinner from 'Components/Spinner'
 
 const TIMER_START_DELAY = 3000
 
@@ -241,7 +241,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
-                  <Spinner animation="border" variant="info" size="lg" />
+                  <Spinner variant="info" />
                 </div>
               )}
             </div>
