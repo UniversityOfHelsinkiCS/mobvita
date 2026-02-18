@@ -3367,14 +3367,14 @@ label.file-upload-btn {
   opacity: 0.8;
 }
 
-.spinner--primary { color: var(--bs-primary, #0d6efd); }
+.spinner--primary { color: var(--bs-primary, #017bff); }
 .spinner--secondary { color: var(--bs-secondary, #6c757d); }
-.spinner--success { color: var(--bs-success, #198754); }
-.spinner--danger { color: var(--bs-danger, #dc3545); }
-.spinner--warning { color: var(--bs-warning, #ffc107); }
-.spinner--info { color: var(--bs-info, #0dcaf0); }
+.spinner--success { color: var(--bs-success, #28a745); }
+.spinner--danger { color: var(--bs-danger, #dc3444); }
+.spinner--warning { color: var(--bs-warning, #ffc106); }
+.spinner--info { color: var(--bs-info, #18a2b8); }
 .spinner--light { color: var(--bs-light, #f8f9fa); }
-.spinner--dark { color: var(--bs-dark, #212529); }
+.spinner--dark { color: var(--bs-dark, #343a40); }
 
 .lds-roller,
 .lds-roller div,

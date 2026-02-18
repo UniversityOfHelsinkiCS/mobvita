@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Button, Form, Table, Alert, Spinner, Badge } from 'react-bootstrap'
+import { Container, Row, Col, Button, Form, Table, Alert, Badge } from 'react-bootstrap'
 import axios from 'axios'
+import Spinner from 'Components/Spinner'
 
 const Estimator = () => {
   const [text, setText] = useState('')
@@ -62,7 +63,7 @@ const Estimator = () => {
             {!isLoading ? (
               <span>Estimate</span>
             ) : (
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              <Spinner inline />
             )}
           </Button>
         </Col>
