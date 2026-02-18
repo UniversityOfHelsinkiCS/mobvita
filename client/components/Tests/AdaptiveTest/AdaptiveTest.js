@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'react-compound-timer'
 import { Icon, Segment } from 'semantic-ui-react'
-import { Spinner, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { resetTests, sendAdaptiveTestAnswer, resumeAdaptiveTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
+import Spinner from 'Components/Spinner'
 
 const TIMER_START_DELAY = 3000
 
@@ -218,7 +219,7 @@ const AdaptiveTest = ({ showingInfo }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container">
-                  <Spinner animation="border" variant="info" size="lg" />
+                  <Spinner inline />
                 </div>
               )}
             </div>
