@@ -32,7 +32,14 @@ const StudentVocabularyProgress = ({
   }, [previousStudentVocabulary?.stats, studentVocabulary?.stats])
 
   if (vocabularyPending || previousPending) {
-    return <Spinner />
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        text="Loading…"
+        textSize={20}
+      />
+    )
   }
 
   return initComplete ? (

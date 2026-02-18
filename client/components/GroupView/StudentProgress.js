@@ -35,7 +35,16 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
     dispatch(getPracticeHistory(startDate, endDate))
   }, [])
 
-  if (pending) return <Spinner />
+  if (pending) {
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        text="Loading…"
+        textSize={20}
+      />
+    )
+  }
 
   return (
     <div>
