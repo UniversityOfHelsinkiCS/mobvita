@@ -12,13 +12,25 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
 
   const handleHintSave = () => {
     if (hint) {
-      setHints(hints.concat(hint))
+      setHints(prevHints => [...prevHints, hint])
       setHint('')
     }
   }
 
-  const handleHintDelete = selectedHint => {
-    setHints(hints.filter(h => h !== selectedHint))
+  const handleHintDelete = hintIdx => {
+    setHints(prevHints => prevHints.filter((_, idx) => idx !== hintIdx))
+  }
+
+  const handleHintKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleHintSave()
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      setHint('')
+    }
   }
 
   return (
@@ -38,6 +50,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
         placeholder={intl.formatMessage({ id: 'type-new-hint' })}
         value={hint}
         onChange={handleHintChange}
+        onKeyDown={handleHintKeyDown}
         ref={hintRef}
       />
       <Button

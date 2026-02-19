@@ -17,7 +17,11 @@ const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = 
               name="close"
               color="grey"
               style={{ textShadow: 'none', cursor: 'pointer', marginRight: 0 }}
-              onClick={() => handleDelete(value)}
+              onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                handleDelete(index)
+              }}
             />
           </div>
         </li>
