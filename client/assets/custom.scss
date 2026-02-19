@@ -2072,12 +2072,38 @@ label.file-upload-btn {
     background-color: #ffb449;
     border-color: #ffb449;
     color: white;
+
+    &:hover,
+    &:focus {
+      background-color: #f7a32c;
+      border-color: #e09d3e;
+      color: white;
+    }
+
+    &:active {
+      background-color: #fc9f1d;
+      border-color: #fc9f1d;
+      color: white;
+    }
   }
 
   &-template-button-save {
-    background-color: #77dd77;
-    border-color: #77dd77;
+    background-color: #63a9b4;
+    border-color: #529c52;
     color: white;
+
+    &:hover,
+    &:focus {
+      background-color: #478993;
+      border-color: #478993;
+      color: white;
+    }
+
+    &:active {
+      background-color: #3f7f89;
+      border-color: #3f7f89;
+      color: white;
+    }
   }
 }
 
