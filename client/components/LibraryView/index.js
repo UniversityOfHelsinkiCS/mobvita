@@ -223,24 +223,26 @@ const StoryList = () => {
   const libraryControls = (
     <div data-cy="library-controls" className="library-control">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
-      <span>
+
         <Button
           className="tour-add-new-stories"
           onClick={() => setAddStoryModalOpen(true)}
           data-cy="add-story-button"
           size="big"
           style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '0 auto 2em auto',
+            padding: '1rem 0',
+            width: '50%',
+            border: '2px solid #000',
             fontSize: '1.3em',
             fontWeight: 500,
-            margin: '1em 0',
-            padding: '1rem 0',
-            width: '100%',
-            border: '2px solid #000',
           }}
         >
           {intl.formatMessage({ id: 'add-your-stories' })}
         </Button>
-      </span>
+
       <LibraryTabs
         values={libraries}
         onClick={handleLibraryChange}
@@ -436,7 +438,6 @@ const StoryList = () => {
 
   }
 
-
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm library-tour-start">
       {libraryControls}
@@ -459,7 +460,7 @@ const StoryList = () => {
           itemsPerRow={2}
           doubling={!bigScreen}
           data-cy="story-items"
-          style={{ marginTop: '.5em', backgroundColor: '#77c8d4', borderRadius: '12px' }}
+          style={{ margin: '.5em', backgroundColor: '#77c8d4', borderRadius: '12px' }}
         >
           {libraryFilteredStories.map((story, index) => (
             <StoryListItem
