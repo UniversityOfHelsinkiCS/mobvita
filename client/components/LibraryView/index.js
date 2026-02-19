@@ -14,7 +14,7 @@ import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
-import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import { backgroundColors, capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useHistory } from 'react-router'
 import { List, WindowScroller } from 'react-virtualized'
@@ -459,7 +459,7 @@ const StoryList = () => {
           itemsPerRow={2}
           doubling={!bigScreen}
           data-cy="story-items"
-          style={{ marginTop: '.5em' }}
+          style={{ marginTop: '.5em', backgroundColor: '#77c8d4', borderRadius: '12px' }}
         >
           {libraryFilteredStories.map((story, index) => (
             <StoryListItem
