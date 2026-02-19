@@ -20,18 +20,21 @@ const TemplateTranslations = ({
 
   const handleTranslationSave = () => {
     if (translation) {
-      setTranslations(translations.concat(translation))
+      setTranslations(prev => [...prev, translation])
       setTranslation('')
     }
   }
 
-  const handleTranslationDelete = selectedTranslation => {
-    setTranslations(translations.filter(t => t !== selectedTranslation))
+  const handleTranslationDelete = translationIdx => {
+    setTranslations(prev => prev.filter((_, idx) => idx !== translationIdx))
   }
 
   const handleTranslationKeyDown = e => {
     if (e.key === 'Enter') {
       handleTranslationSave()
+    }
+    if (e.key === 'Escape') {
+      setTranslation('')
     }
   }
 
