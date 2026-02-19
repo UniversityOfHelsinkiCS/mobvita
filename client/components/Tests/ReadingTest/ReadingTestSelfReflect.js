@@ -190,7 +190,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
         }));
         submitSelfReflection({
             "open_ended_questions": open_ended_questions_with_responses,
-            "feedback_usefulness": endSetSliderValue,
+            "feedback_usefulness": endSetSliderDoNotKnow ? -1 : endSetSliderValue,
             "question_set": prevReadingSet,
             "group_type": in_experimental_grp ? "experimental" : "control",
             "receieved_feedback": receieved_feedback,
