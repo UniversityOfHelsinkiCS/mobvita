@@ -264,11 +264,14 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                             <h3 style={{ textAlign: 'left', margin: 0 }}>
                                 <FormattedMessage id='reading-test-self-reflection-header' />
                             </h3>
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary" 
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
                                 onClick={submitResponse}
-                                disabled={!openEndedQuestionAnswers.every(answer => answer !== null && answer.trim() !== '')}
+                                disabled={
+                                    !openEndedQuestionAnswers.every(answer => answer !== null && answer.trim() !== '') ||
+                                    (in_experimental_grp && endSetSliderValue === null && !endSetSliderDoNotKnow)
+                                }
                             >
                                 <FormattedMessage id='self-reflection-submit' />
                             </button>
