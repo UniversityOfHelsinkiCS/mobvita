@@ -446,7 +446,7 @@ const StoryList = () => {
   }
 
   return (
-    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm library-tour-start">
+    <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
       <div className='universal-background-color'>
       {searchAndSortControls}
