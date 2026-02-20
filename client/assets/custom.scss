@@ -134,6 +134,12 @@ $value in $spacing {
   }
 }
 
+.universal-background-color {
+  background: #77c8d4;
+  border-radius: 12px;
+  padding: 12px;
+}
+
 .disabled-text {
   color: grey;
 }
@@ -1613,7 +1619,7 @@ label.file-upload-btn {
 .search-and-sort {
   display: flex;
   align-items: center;
-  margin-top: 2em;
+  margin: 8px 12px 16px 12px;
   justify-content: space-between;
 }
 
