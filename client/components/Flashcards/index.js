@@ -128,7 +128,7 @@ const Flashcards = () => {
           </h5>
         ))}
 
-      <div className="flashcard-body universal-background-color">
+      <div className="flashcard-body universal-background">
         {showBlueCardsTestEncouragement && (
           <div
             className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
