@@ -243,15 +243,20 @@ const StoryList = () => {
           {intl.formatMessage({ id: 'add-your-stories' })}
         </Button>
 
-      <LibraryTabs
-        values={libraries}
-        onClick={handleLibraryChange}
-        reverse
-        savedGroupSelection={savedGroupSelection}
-        groupDropdownOptions={groupDropdownOptions}
-        groupDropdownDisabled={!libraries.group}
-        handleGroupChange={handleGroupChange}
-      />
+        <LibraryTabs
+          values={libraries}
+          onClick={handleLibraryChange}
+          reverse
+          savedGroupSelection={savedGroupSelection}
+          groupDropdownOptions={groupDropdownOptions}
+          groupDropdownDisabled={!libraries.group}
+          handleGroupChange={handleGroupChange}
+        />
+    </div>
+  )
+
+  const searchAndSortControls = (
+    <>
       <div className="search-and-sort">
         <div className="flex align-center">
           <Dropdown
@@ -268,6 +273,7 @@ const StoryList = () => {
             onClick={handleDirectionChange}
           />
         </div>
+
         {smallWindow ? (
           <Icon
             name={smallScreenSearchOpen ? 'close' : 'search'}
@@ -282,6 +288,7 @@ const StoryList = () => {
           />
         )}
       </div>
+
       {smallScreenSearchOpen && (
         <LibrarySearch
           setDisplayedStories={setDisplayedStories}
@@ -289,7 +296,7 @@ const StoryList = () => {
           fluid
         />
       )}
-    </div>
+    </>
   )
 
   if (pending || !refreshed) {
@@ -441,6 +448,8 @@ const StoryList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto gap-row-sm library-tour-start">
       {libraryControls}
+      <div className='universal-background-color'>
+      {searchAndSortControls}
       {lastQuery && (
         <div className="mt-nm ml-sm gap-col-sm">
           <span>
@@ -460,7 +469,7 @@ const StoryList = () => {
           itemsPerRow={2}
           doubling={!bigScreen}
           data-cy="story-items"
-          style={{ margin: '.5em', backgroundColor: '#77c8d4', borderRadius: '12px' }}
+          style={{ margin: '8px'}}
         >
           {libraryFilteredStories.map((story, index) => (
             <StoryListItem
@@ -488,6 +497,7 @@ const StoryList = () => {
           </WindowScroller> */}
         </Card.Group>
       )}
+      </div>
     </div>
   )
 }
