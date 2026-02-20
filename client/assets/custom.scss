@@ -1472,6 +1472,16 @@ $value in $spacing {
       box-shadow: none;
     }
   }
+
+  @media (max-width: 520px) {
+    button {
+      height: 52px;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .library-tab {
