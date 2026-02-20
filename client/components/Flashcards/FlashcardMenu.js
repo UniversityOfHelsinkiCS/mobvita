@@ -100,7 +100,6 @@ const FlashcardMenu = () => {
 
   return (
     <div className="flashcard-menu">
-      <TranslateBar/>
       {isPracticePage && (
         <PracticeModeOptions
           handleOptionClick={handleOptionClick}

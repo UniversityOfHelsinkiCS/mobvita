@@ -10,6 +10,7 @@ import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 import LibraryTabs from 'Components/LibraryTabs'
+import SettingButton from 'Components/SettingsButton'
 
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
@@ -138,10 +139,13 @@ const Flashcards = () => {
             </div>
           </div>
         )}
+
         {width < 840 ? <FloatMenu /> : <FlashcardMenu />}
+
         <div className="flashcard-main">
           {content()}
         </div>
+        <SettingButton />
       </div>
     </div>
   )
