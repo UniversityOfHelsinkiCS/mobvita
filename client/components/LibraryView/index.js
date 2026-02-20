@@ -456,7 +456,7 @@ const StoryList = () => {
               value={savedGroupSelection}
               options={groupDropdownOptions}
               onChange={handleGroupChange}
-              style={{ color: '#777', marginTop: '1em', width: '100%' }}
+              style={{ color: '#777', width: '100%' }}
               />
           </div>
         )}
