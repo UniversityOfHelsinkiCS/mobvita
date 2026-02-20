@@ -1778,7 +1778,8 @@ label.file-upload-btn {
     display: flex;
     align-items: stretch;
     min-height: 100%;
-    padding: 8px;
+    padding: 24px 8px 8px 8px;
+    margin-top: 8px;
   }
 
   &-main {
@@ -1942,7 +1943,12 @@ label.file-upload-btn {
   &-arrow-button {
     display: flex;
     align-items: center;
+
+    margin-left: 0;
+    padding: 0;
     border: none;
+
+    background: transparent;
     color: $btn-color-primary;
 
     &:focus {

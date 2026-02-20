@@ -219,7 +219,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
           type="button"
           disabled
           className="flashcard-arrow-button"
-          style={{ marginLeft: 0 }}
         >
           <Icon name="angle double right" size="huge" />
         </button>
