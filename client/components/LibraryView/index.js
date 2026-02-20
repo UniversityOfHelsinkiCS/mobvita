@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { 
-  Placeholder, 
-  Card, 
-  Select, 
-  Icon, 
+import {
+  Placeholder,
+  Card,
+  Select,
+  Icon,
   Dropdown,
-  Accordion, 
+  Accordion,
   AccordionTitle,
-  AccordionContent
- } from 'semantic-ui-react'
+  AccordionContent,
+} from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -224,34 +224,34 @@ const StoryList = () => {
     <div data-cy="library-controls" className="library-control">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
 
-        <Button
-          className="tour-add-new-stories"
-          onClick={() => setAddStoryModalOpen(true)}
-          data-cy="add-story-button"
-          size="big"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            margin: '0 auto 2em auto',
-            padding: '1rem 0',
-            width: '50%',
-            border: '2px solid #000',
-            fontSize: '1.3em',
-            fontWeight: 500,
-          }}
-        >
-          {intl.formatMessage({ id: 'add-your-stories' })}
-        </Button>
+      <Button
+        className="tour-add-new-stories"
+        onClick={() => setAddStoryModalOpen(true)}
+        data-cy="add-story-button"
+        size="big"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          margin: '0 auto 2em auto',
+          padding: '1rem 0',
+          width: '50%',
+          border: '2px solid #000',
+          fontSize: '1.3em',
+          fontWeight: 500,
+        }}
+      >
+        {intl.formatMessage({ id: 'add-your-stories' })}
+      </Button>
 
-        <LibraryTabs
-          values={libraries}
-          onClick={handleLibraryChange}
-          reverse
-          savedGroupSelection={savedGroupSelection}
-          groupDropdownOptions={groupDropdownOptions}
-          groupDropdownDisabled={!libraries.group}
-          handleGroupChange={handleGroupChange}
-        />
+      <LibraryTabs
+        values={libraries}
+        onClick={handleLibraryChange}
+        reverse
+        savedGroupSelection={savedGroupSelection}
+        groupDropdownOptions={groupDropdownOptions}
+        groupDropdownDisabled={!libraries.group}
+        handleGroupChange={handleGroupChange}
+      />
     </div>
   )
 
@@ -323,7 +323,7 @@ const StoryList = () => {
     }
 
     if (story.groups) {
-      const group =  story.groups.find(g => g.group_id == savedGroupSelection)
+      const group = story.groups.find(g => g.group_id == savedGroupSelection)
       if (group && (group.hidden === undefined || !group.hidden || currentGroup?.is_teaching)) {
         showLibraries.push('Group')
       }
@@ -394,21 +394,23 @@ const StoryList = () => {
       acc[story._id] = index
       return acc
     }, {})
-    const libraryGroup = libraryFilteredStories && libraryFilteredStories.reduce((x, y) => {
-      (x[y.difficulty] = x[y.difficulty] || []).push(y);
-      return x;
-    }, {}) || {}
+    const libraryGroup =
+      (libraryFilteredStories &&
+        libraryFilteredStories.reduce((x, y) => {
+          ;(x[y.difficulty] = x[y.difficulty] || []).push(y)
+          return x
+        }, {})) ||
+      {}
     const handleClick = (e, props) => {
       const { index } = props
       const newIndex = accordionState === index ? -1 : index
       setAccordionState(newIndex)
     }
     return (
-      <Accordion fluid styled style={{background: '#fffaf0'}}>
-        {
-          Object.keys(libraryGroup).sort(
-            (a, b) => stringToDifficulty(a) - stringToDifficulty(b)).map(
-              (group, index) => (
+      <Accordion fluid styled style={{ background: '#fffaf0' }}>
+        {Object.keys(libraryGroup)
+          .sort((a, b) => stringToDifficulty(a) - stringToDifficulty(b))
+          .map((group, index) => (
             <>
               <AccordionTitle
                 key={`story-group-title-${group}`}
@@ -417,12 +419,12 @@ const StoryList = () => {
                 onClick={handleClick}
               >
                 <h4>
-                  <Icon name='dropdown' />
-                  <FormattedMessage id={`level-${group}`}/>
+                  <Icon name="dropdown" />
+                  <FormattedMessage id={`level-${group}`} />
                   {/* <FormattedMessage id='story-group' values={{group}}/> */}
                 </h4>
               </AccordionTitle>
-              <AccordionContent 
+              <AccordionContent
                 key={`story-group-content-${group}`}
                 active={accordionState === index}
               >
@@ -438,49 +440,58 @@ const StoryList = () => {
                   ))}
                 </Card.Group>
               </AccordionContent>
-            </>))
-        }     
-        </Accordion>
+            </>
+          ))}
+      </Accordion>
     )
-
   }
 
   return (
     <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
-      <div className='universal-background-color'>
-      {searchAndSortControls}
-      {lastQuery && (
-        <div className="mt-nm ml-sm gap-col-sm">
-          <span>
-            <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-          </span>
-        </div>
-      )}
+      <div className="universal-background-color">
+        {libraries.group && (
+          <div className="library-group-dropdown-container">
+            <Select
+              value={savedGroupSelection}
+              options={groupDropdownOptions}
+              onChange={handleGroupChange}
+              style={{ color: '#777', marginTop: '1em', width: '100%' }}
+              />
+          </div>
+        )}
+        {searchAndSortControls}
+        {lastQuery && (
+          <div className="mt-nm ml-sm gap-col-sm">
+            <span>
+              <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+            </span>
+          </div>
+        )}
 
-      {noResults && (
-        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-stories-found" />
-        </div>
-      )}
-      {!noResults && libraries.public && accordionView()}
-      {!noResults && !libraries.public && (
-        <Card.Group
-          itemsPerRow={2}
-          doubling={!bigScreen}
-          data-cy="story-items"
-          style={{ margin: '8px'}}
-        >
-          {libraryFilteredStories.map((story, index) => (
-            <StoryListItem
-              key={story._id}
-              libraryShown={libraries}
-              story={libraryFilteredStories[index]}
-              selectedGroup={savedGroupSelection}
-              savedLibrarySelection={savedLibrarySelection}
-            />
-          ))}
-          {/* <WindowScroller>
+        {noResults && (
+          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+            <FormattedMessage id="no-stories-found" />
+          </div>
+        )}
+        {!noResults && libraries.public && accordionView()}
+        {!noResults && !libraries.public && (
+          <Card.Group
+            itemsPerRow={2}
+            doubling={!bigScreen}
+            data-cy="story-items"
+            style={{ margin: '6px' }}
+          >
+            {libraryFilteredStories.map((story, index) => (
+              <StoryListItem
+                key={story._id}
+                libraryShown={libraries}
+                story={libraryFilteredStories[index]}
+                selectedGroup={savedGroupSelection}
+                savedLibrarySelection={savedLibrarySelection}
+              />
+            ))}
+            {/* <WindowScroller>
             {({ height, isScrolling, onChildScroll, scrollTop }) => (
               <List
                 autoHeight
@@ -495,8 +506,8 @@ const StoryList = () => {
               />
             )}
           </WindowScroller> */}
-        </Card.Group>
-      )}
+          </Card.Group>
+        )}
       </div>
     </div>
   )

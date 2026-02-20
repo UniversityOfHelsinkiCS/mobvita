@@ -19,10 +19,6 @@ const LibraryTabs = ({
   additionalClass = '',
   dataCy,
   reverse = false,
-  groupDropdownOptions,
-  savedGroupSelection,
-  handleGroupChange,
-  groupDropdownDisabled,
   ...props
 }) => {
   // .sort() keeps the button order on Safari
@@ -39,14 +35,6 @@ const LibraryTabs = ({
         >
           <FormattedMessage id={capitalize(key)} />
         </ToggleButton>
-        {key === 'group' && !groupDropdownDisabled && (
-          <Select
-            value={savedGroupSelection}
-            options={groupDropdownOptions}
-            onChange={handleGroupChange}
-            style={{ color: '#777', marginTop: '1em', width: '100%' }}
-          />
-        )}
       </div>
     ))
   // for having library buttons in right order

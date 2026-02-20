@@ -1499,6 +1499,22 @@ $value in $spacing {
   }
 }
 
+.library-group-dropdown-container {
+  display: flex;
+  max-width: 225px;
+  justify-content: flex-end;
+
+  margin: 0 12px 16px auto;
+  background: #77c8d4;
+
+  @media (max-width: 520px) {
+    justify-content: flex-start;
+
+    margin-left: 0;
+    margin-right: 0; 
+  }
+}
+
 .practice-now-overlay-icon {
   position: absolute;
   top: -10%;
