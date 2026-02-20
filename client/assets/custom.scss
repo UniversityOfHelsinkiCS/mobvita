@@ -2032,21 +2032,6 @@ label.file-upload-btn {
     box-shadow: 0.5em 0.5em 0.6em grey;
   }
 
-  &-lang-select {
-    background-color: rgb(189, 202, 212);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-width: 14em;
-    padding: 1em 1em;
-    justify-content: space-between;
-    border-bottom: none;
-    border-radius: 1em;
-    box-shadow: 0.2em 0.2em 0.3em grey;
-    gap: 0.5em;
-  }
-
   &-mobile-template {
     height: auto;
     width: 90%;

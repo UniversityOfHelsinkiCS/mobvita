@@ -20,19 +20,6 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
   />
 )
 
-const TranslateBar = () => {
-  return (
-    <div className="flex-col pb-nm">
-      <div className="flashcard-lang-select">
-        <span className="pr-sm">
-          <FormattedMessage id="translation-target-language" />
-        </span>
-        <SelectLanguage />
-      </div>
-    </div>
-  )
-}
-
 const PracticeModeOptions = ({ handleOptionClick }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
