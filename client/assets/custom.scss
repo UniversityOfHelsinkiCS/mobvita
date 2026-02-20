@@ -1810,6 +1810,7 @@ label.file-upload-btn {
   }
 
   &-body {
+    position: relative;
     display: flex;
     align-items: stretch;
     min-height: 100%;
@@ -2139,25 +2140,41 @@ label.file-upload-btn {
   }
 }
 
-.flashcard-settings-dropdown {
-  background: var(--universal-bg-color);
-}
-
 .flashcard-settings-menu {
   min-width: 200px;
-}
-
-.flashcard-settings-menu__row {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
 .flashcard-settings-menu__label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
   font-weight: 600;
+}
+
+.flashcard-settings-trigger.ui.button {
+  padding: 0 !important;
+  background: transparent !important;
+  min-width: 0;
+  min-height: 0;
+  line-height: 1;
+  margin: 12px 12px 0 0;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  box-shadow: none !important;
+
+  @media (max-width: 839px) {
+    display: none !important;
+  }
+}
+
+.flashcard-settings-trigger.ui.button:hover,
+.flashcard-settings-trigger.ui.button:focus {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .test {

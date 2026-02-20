@@ -145,6 +145,7 @@ const Flashcards = () => {
         <div className="flashcard-main">
           {content()}
         </div>
+        
         <SettingButton />
       </div>
     </div>
