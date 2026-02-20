@@ -34,6 +34,12 @@ $tooltip-blue: rgba(30, 120, 225, 1);
 // was: green
 $tooltip-green:  #0b869a; //  #0890a6; //   #098fa5; // was: #17a2b8;
 
+// universal background color
+$universal-bg-color: #77c8d4;
+
+:root {
+  --universal-bg-color: #{$universal-bg-color};
+}
 
 // button-related colors
 $btn-color-primary: rgb(50, 170, 248);
@@ -134,8 +140,8 @@ $value in $spacing {
   }
 }
 
-.universal-background-color {
-  background: #77c8d4;
+.universal-background {
+  background: var(--universal-bg-color);
   border-radius: 0 0 12px 12px;
   padding: 12px;
   margin: 0 7px 0 7px;
@@ -1505,7 +1511,7 @@ $value in $spacing {
   justify-content: flex-end;
 
   margin: 0 12px 16px auto;
-  background: #77c8d4;
+  background: var(--universal-bg-color);
 
   @media (max-width: 520px) {
     justify-content: flex-start;

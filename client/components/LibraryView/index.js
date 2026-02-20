@@ -449,7 +449,7 @@ const StoryList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
-      <div className="universal-background-color">
+      <div className="universal-background">
         {libraries.group && (
           <div className="library-group-dropdown-container">
             <Select
