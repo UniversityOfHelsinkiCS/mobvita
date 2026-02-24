@@ -160,9 +160,14 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     let markQuestionDone = questionDone
 
     if (!choice.is_correct && in_experimental_grp) {
+      const constructs = currentReadingTestQuestion.constructs || []
+
+      // Only require elicitation for questions with 2+ constructs
+      // (0 constructs = no elicitation needed, 1 construct = auto-selected)
       if (
-        questionConceptFeedbacks === undefined ||
-        currentReadingTestQuestion.eliciated_construct === undefined
+        constructs.length > 1 &&
+        (questionConceptFeedbacks === undefined ||
+         currentReadingTestQuestion.eliciated_construct === undefined)
       ) {
         setShowElicitDialog(true)
       } else {
@@ -411,8 +416,20 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     if (!readingTestSessionId) return
     if (!currentReadingTestQuestion) {
       dispatch(finishReadingTest())
+      return
     }
-    setCurrentElicatedConstruct(currentReadingTestQuestion ? currentReadingTestQuestion.eliciated_construct : null)
+
+    const elicited = currentReadingTestQuestion.eliciated_construct
+    const constructs = currentReadingTestQuestion.constructs || []
+
+    // Auto-select construct if only 1 exists and not already elicited
+    if (!elicited && constructs.length === 1) {
+      const singleConstruct = constructs[0]
+      setCurrentElicatedConstruct(singleConstruct)
+      dispatch(updateReadingTestElicitation(singleConstruct))
+    } else {
+      setCurrentElicatedConstruct(elicited || null)
+    }
   }, [currentReadingTestQuestion])
 
   useEffect(() => {
