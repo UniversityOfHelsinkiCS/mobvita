@@ -186,7 +186,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
               .map(([, value]) => value)
           : []
 
-        if (countNotSelectedChoices >= 2) {
+        if (countNotSelectedChoices > 2) {
           const remainItemFeedbacks = itemFeedbacks.filter(
             feedback => !feedbacks.includes(feedback)
           )
