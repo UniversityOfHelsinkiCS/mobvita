@@ -213,7 +213,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     return (
       <div className="grow flex space-evenly">
         <div className="flashcard">
-          <Spinner variant="secondary" />
+          <Spinner variant='secondary' size={48}/>
         </div>
         <button
           type="button"
