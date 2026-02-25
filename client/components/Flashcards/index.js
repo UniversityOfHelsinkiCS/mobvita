@@ -140,7 +140,7 @@ const Flashcards = () => {
           </div>
         )}
 
-        {width < 840 ? <FloatMenu /> : <FlashcardMenu />}
+        {width < 840 ? <FloatMenu /> : mode !== 'list' && mode !== 'new' ? <FlashcardMenu /> : null}
 
         <div className="flashcard-main">
           {content()}
