@@ -4,6 +4,7 @@ import 'Assets/custom.scss'
 const Spinner = ({
   fullHeight = false,
   variant = 'primary',
+  spinnerColor,
   inline = false,
   size = 24,
   text = '',
@@ -27,6 +28,7 @@ const Spinner = ({
       style={{
         height: inline ? 'auto' : fullHeight ? '90vh' : '100%',
         width: inline ? 'auto' : '100%',
+        ...(spinnerColor ? { '--spinner-color': spinnerColor } : {}),
       }}
       role="status"
       aria-live="polite"

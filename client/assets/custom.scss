@@ -3433,6 +3433,11 @@ label.file-upload-btn {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  --spinner-color: currentColor; 
+}
+
+.spinner-container .lds-roller div:after {
+  background: var(--spinner-color) !important;
 }
 
 .spinner-container--inline {
