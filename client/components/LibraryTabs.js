@@ -1,7 +1,7 @@
 import React from 'react'
 import { capitalize } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Select } from 'semantic-ui-react'
+
 
 const ToggleButton = ({ toggled, children, ...props }) => {
   const className = toggled ? 'library-toggle-button-chosen' : 'library-toggle-button'

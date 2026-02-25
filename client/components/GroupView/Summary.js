@@ -192,7 +192,7 @@ const Summary = ({
   return (
     <>
       {pending ? (
-        <Spinner fullHeight size={60} text="Loading…" textSize={20} />
+        <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })}  textSize={20} />
       ) : (
         <>
           {summary?.length > 0 ? (

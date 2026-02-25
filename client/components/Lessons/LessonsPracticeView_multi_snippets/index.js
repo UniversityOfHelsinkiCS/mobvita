@@ -18,12 +18,13 @@ import ProgressBar from '../../PracticeView/CurrentSnippet/ProgressBar'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import LessonExercise from './LessonExercise'
 
-
 const LessonsPracticeView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, lesson_instance } = useSelector(({ lessonInstance }) => lessonInstance)
-  const { previous_snippets, lesson_exercises } = useSelector(({ lessonExercises }) => lessonExercises)
+  const { previous_snippets, lesson_exercises } = useSelector(
+    ({ lessonExercises }) => lessonExercises
+  )
   const { currentAnswers, previousAnswers, attempt } = useSelector(({ practice }) => practice)
 
   const { lesson_syllabus_id } = useParams()
@@ -80,7 +81,9 @@ const LessonsPracticeView = () => {
             <Segment>
               <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
                 <ProgressBar
-                  snippetProgress={currentSnippetNum > snippetsTotalNum ? snippetsTotalNum : currentSnippetNum}
+                  snippetProgress={
+                    currentSnippetNum > snippetsTotalNum ? snippetsTotalNum : currentSnippetNum
+                  }
                   snippetsTotal={snippetsTotalNum}
                   progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
                 />
@@ -99,11 +102,20 @@ const LessonsPracticeView = () => {
               <Divider />
               {previous_snippets?.map((snippet, index) => (
                 <div className="pt-nm" style={getTextStyle(learningLanguage)}>
-                  <TextWithFeedback key={index} snippet={snippet.sent} answers={previousAnswers} mode="practice" style={' display: block'} />
+                  <TextWithFeedback
+                    key={index}
+                    snippet={snippet.sent}
+                    answers={previousAnswers}
+                    mode="practice"
+                    style={' display: block'}
+                  />
                   <Divider />
                 </div>
               ))}
-              <LessonExercise lesson_instance={lesson_instance} handleInputChange={handleAnswerChange} />
+              <LessonExercise
+                lesson_instance={lesson_instance}
+                handleInputChange={handleAnswerChange}
+              />
             </Segment>
           </div>
           <div className="dictionary-and-annotations-cont">
@@ -116,9 +128,7 @@ const LessonsPracticeView = () => {
     )
   } else {
     return (
-      <div className="cont-tall cont flex-col auto gap-row-sm" style={{ textAlign: 'center' }}>
-        {'... Loading...'}
-      </div>
+      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
     )
   }
 }

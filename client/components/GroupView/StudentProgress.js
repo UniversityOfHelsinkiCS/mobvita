@@ -40,7 +40,7 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
       <Spinner
         fullHeight
         size={60}
-        text="Loading…"
+        text={intl.formatMessage({ id: 'loading' })}
         textSize={20}
       />
     )

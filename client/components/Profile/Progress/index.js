@@ -51,20 +51,22 @@ const Progress = () => {
   const { irtExerciseHistory: irtExerciseHistory } = useSelector(
     ({ practiceHistory }) => practiceHistory
   )
-  const { flashcardHistory, xpHistory, practiceTimeHistory, pending } = useSelector(({ practiceHistory }) => {
-    const { flashcardHistory } = practiceHistory
-    const { eloExerciseHistory } = practiceHistory
-    const { xpHistory } = practiceHistory
-    const { practiceTimeHistory } = practiceHistory
-    const { pending } = practiceHistory
-    return {
-      flashcardHistory,
-      eloExerciseHistory,
-      xpHistory,
-      practiceTimeHistory,
-      pending,
+  const { flashcardHistory, xpHistory, practiceTimeHistory, pending } = useSelector(
+    ({ practiceHistory }) => {
+      const { flashcardHistory } = practiceHistory
+      const { eloExerciseHistory } = practiceHistory
+      const { xpHistory } = practiceHistory
+      const { practiceTimeHistory } = practiceHistory
+      const { pending } = practiceHistory
+      return {
+        flashcardHistory,
+        eloExerciseHistory,
+        xpHistory,
+        practiceTimeHistory,
+        pending,
+      }
     }
-  })
+  )
 
   useEffect(() => {
     const date_now = moment().toDate()
@@ -126,8 +128,8 @@ const Progress = () => {
   const originalEndPoint =
     irtExerciseHistory?.length > 0
       ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
-        .add(1, 'days')
-        .toDate()
+          .add(1, 'days')
+          .toDate()
       : moment().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
@@ -408,11 +410,15 @@ const Progress = () => {
               />
             </div>
             <br />
-            <div className='progress-page-graph-cont'>
-              <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
+            <div className="progress-page-graph-cont">
+              <HoursProgressChart
+                practiceTimeHistory={practiceTimeHistory}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </div>
             <br />
-            <div className='progress-page-graph-cont'>
+            <div className="progress-page-graph-cont">
               <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />
             </div>
           </div>
@@ -454,7 +460,12 @@ const Progress = () => {
                     />
                   </div>
                 ) : (
-                  <div>loading...</div>
+                  <Spinner
+                    fullHeight
+                    size={60}
+                    text={intl.formatMessage({ id: 'loading' })}
+                    textSize={20}
+                  />
                 )}
               </div>
             </div>

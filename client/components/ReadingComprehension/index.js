@@ -343,7 +343,7 @@ const ReadingComprehensionView = ({ match }) => {
         fullHeight
         size={60}
         variant="secondary"
-        text="Loading story…"
+        text={intl.formatMessage({ id: 'loading-story' })}
         textSize={20}
         textVariant="secondary"
       />

@@ -17,10 +17,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import {
-  getLessonInstance,
-  clearLessonInstanceState,
-} from 'Utilities/redux/lessonInstanceReducer'
+import { getLessonInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'react-compound-timer'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -47,20 +44,20 @@ const LessonPracticeView = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const intl = useIntl()
-  
+
   const { width } = useWindowDimensions()
 
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
-  
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { pending: lesson_instance_pending, lesson:lesson_instance } = useSelector(
+  const { pending: lesson_instance_pending, lesson: lesson_instance } = useSelector(
     ({ lessonInstance }) => lessonInstance
   )
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
-  
+
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
     useState(false)
@@ -87,8 +84,7 @@ const LessonPracticeView = () => {
     setCurrentSnippetNum(0)
     if (isGroupLesson) {
       dispatch(getLessonInstance(groupId))
-    }
-    else dispatch(getLessonInstance())
+    } else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
 
@@ -144,8 +140,7 @@ const LessonPracticeView = () => {
     dispatch(resetSnippets())
     if (isGroupLesson) {
       dispatch(getLessonInstance(groupId))
-    }
-    else dispatch(getLessonInstance())
+    } else dispatch(getLessonInstance())
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
   }
@@ -191,8 +186,7 @@ const LessonPracticeView = () => {
   const showFooter = width > 640
 
   const getTimerContent = () => {
-    if (snippets.pending || !timer.getTime())
-      return <Spinner variant="info" />
+    if (snippets.pending || !timer.getTime()) return <Spinner variant="info" />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)
@@ -234,13 +228,15 @@ const LessonPracticeView = () => {
                 >
                   {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
                 </div> */}
-                {hiddenFeatures && <Checkbox
-                  toggle
-                  label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                  checked={showDifficulty}
-                  onChange={updateUserReviewDiff}
-                  style={{ paddingTop: '.5em', marginLeft: '.5em' }}
-                />}
+                {hiddenFeatures && (
+                  <Checkbox
+                    toggle
+                    label={intl.formatMessage({ id: 'show-difficulty-level' })}
+                    checked={showDifficulty}
+                    onChange={updateUserReviewDiff}
+                    style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+                  />
+                )}
                 <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
                 <hr />
                 <CurrentSnippet
@@ -317,9 +313,7 @@ const LessonPracticeView = () => {
     )
   } else {
     return (
-      <div className="cont-tall cont flex-col auto gap-row-sm" style={{ textAlign: 'center' }}>
-        {'... Loading...'}
-      </div>
+      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
     )
   }
 }

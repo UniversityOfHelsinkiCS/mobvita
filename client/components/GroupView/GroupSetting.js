@@ -66,7 +66,7 @@ const GroupSetting = () => {
   }, [isTeaching])
 
   if (pending || !group) {
-    return <Spinner fullHeight size={60} text="Loading…" textSize={20} />
+    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
   }
 
   const handleTestConceptToggle = async () => {
