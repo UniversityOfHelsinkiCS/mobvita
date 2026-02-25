@@ -217,6 +217,7 @@ const StoryDetailsModal = ({
                 </>
               )}
               <CustomButton
+                className="story-detail-modal-manage-button"
                 condition={showShareButton}
                 onClick={() => setShareModalOpen(true)}
                 variant="secondary"
@@ -224,7 +225,7 @@ const StoryDetailsModal = ({
               />
               {story.user === user.oid && (
                 <Link to={`/stories/${story._id}/edit`}>
-                  <Button variant="secondary">
+                  <Button className="story-detail-modal-manage-button" variant="secondary">
                     <Icon name="edit" /> <FormattedMessage id="edit-story" />
                   </Button>
                 </Link>
@@ -239,6 +240,7 @@ const StoryDetailsModal = ({
             </div>
             <div>
               <CustomButton
+                className="story-detail-modal-manage-button"
                 condition={showDeleteButton}
                 onClick={handleDelete}
                 variant="outline-danger"
