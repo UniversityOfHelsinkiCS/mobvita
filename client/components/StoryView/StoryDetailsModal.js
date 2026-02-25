@@ -62,20 +62,6 @@ const StoryDetailsModal = ({
       <Modal.Header>
         <div className="pr-lg">{title}</div>
       </Modal.Header>
-      <Modal.Content>
-        <DetailsTable
-          author={author}
-          difficulty={difficulty}
-          elo={elo}
-          sharingInfo={inGroupLibrary ? storyGroupSharingInfo : sharingInfo}
-          percentCovered={percentCovered}
-          percentCorrect={percentCorrect}
-          URL={URL}
-          category={category}
-          publicStory={publicStory}
-          date={date}
-        />
-      </Modal.Content>
       <Modal.Actions>
         <div>
           <div className="flex wrap" style={{ gap: '10px' }}>
