@@ -1788,5 +1788,7 @@
     "generate": "Generate",
     "size": "Size",
     "mc-generating": "Generating Multiple choices reading questions for the story",
-    "regenerating": "Regenerating the questions"
+    "regenerating": "Regenerating the questions",
+    "loading": "Ladataan...",
+    "loading-story": "Tekstiä ladataan..."
 }
