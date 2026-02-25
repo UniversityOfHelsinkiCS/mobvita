@@ -127,9 +127,6 @@ const StoryDetailsModal = ({
           </div>
           {!isTeacher && (
             <div style={{ textAlign: 'left', marginTop: '15px' }}>
-              <span style={{ marginRight: '10px' }}>
-                <FormattedMessage id="story-dialog-games" />:
-              </span>
               {!isTeacher && (
                 <Link to={`/stories/${story._id}/compete`}>
                   <Button
