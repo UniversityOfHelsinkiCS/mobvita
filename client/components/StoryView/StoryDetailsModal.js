@@ -229,7 +229,7 @@ const StoryDetailsModal = ({
                   </Button>
                 </Link>
               )}
-              {inGroupLibrary && (
+              {inGroupLibrary && isTeacher && (
                 <CustomButton
                   onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
                   variant="secondary"
