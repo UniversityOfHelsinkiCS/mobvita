@@ -69,7 +69,6 @@ const StoryDetailsModal = ({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: '15px',
               gap: '10px',
             }}
           >
