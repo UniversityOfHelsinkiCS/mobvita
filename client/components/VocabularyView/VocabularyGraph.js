@@ -19,7 +19,10 @@ const VocabularyGraph = ({
   element,
 }) => {
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-  if (vocabularyPending || newerVocabularyPending) return <div className="mt-xl">Loading...</div>
+  if (vocabularyPending || newerVocabularyPending)
+    return (
+      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+    )
 
   if (
     !vocabularyData ||
@@ -71,225 +74,81 @@ const VocabularyGraph = ({
   const numMastered = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.mastered, 0)
   const numNotMastered = notMastered?.reduce((prev, curr) => prev + curr, 0)
 
-  const [series, setSeries] = useState(hiddenFeatures ? [
-    {
-      name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Not Mastered (before)',
-      data: getNotMasteredData(previousPerc?.vocab_bins),
-      linkedTo: 'Mastered',
-      visible: false,
-      stack: 'before',
-      color: '#FAA0A0',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Mastered (before rewardable)',
-      data: previousPerc?.vocab_bins?.map(v => v.rewardable),
-      linkedTo: 'Mastered',
-      visible: false,
-      color: '#5FBDC2',
-      stack: 'before',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'mastered-words' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Mastered (before)',
-      data: previousPerc?.vocab_bins?.map(v => v.mastered),
-      linkedTo: 'Mastered',
-      visible: false,
-      color: '#90EE90',
-      stack: 'before',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'not-mastered' })}`,
-      id: 'Overview (not mastered)',
-      data: notMastered,
-      linkedTo: 'Mastered',
-      color: '#DC143C',
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
-      id: 'Overview (rewardable)',
-      data: currentPerc?.vocab_bins?.map(v => v.rewardable),
-      linkedTo: 'Mastered',
-      color: '#4169e1',
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'mastered-words' })}`,
-      id: 'Overview',
-      data: currentPerc?.vocab_bins?.map(v => v.mastered),
-      color: '#228B22',
-      stack: 'present',
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-total' }),
-      id: 'Total',
-      data: newTotal,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Total (before)',
-      data: total,
-      linkedTo: 'Total',
-      visible: false,
-    },
-    /* 
-    {
-      name: intl.formatMessage({ id: 'vocabulary-seen' }),
-      id: 'Seen',
-      data: newSeen,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Seen (before)',
-      data: seen,
-      linkedTo: 'Seen',
-      visible: false,
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-visit' }),
-      id: 'Visit',
-      data: newVisit,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Visit (before)',
-      data: visit,
-      linkedTo: 'Visit',
-      visible: false,
-    },
-    */
-    {
-      name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
-      id: 'Flashcard',
-      data: newFlashcard,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Flashcard (before)',
-      data: flashcard,
-      linkedTo: 'Flashcard',
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
-      id: 'Percentage (before)',
-      linkedTo: 'Percentage',
-      color: '#90EE90',
-      visible: false,
-      stack: 'before',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'percent-graph' })}`,
-      id: 'Curr Percentage',
-      data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
-      color: '#228B22',
-      visible: false,
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'target-curve' })}`,
-      id: 'Curr Percentage target',
-      data: getTargetCurve(),
-      linkedTo: 'Percentage',
-      type: 'spline',
-      visible: false,
-    },
-  ] : [
-    {
-      name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Not Mastered (before)',
-      data: getNotMasteredData(previousPerc?.vocab_bins),
-      linkedTo: 'Mastered',
-      visible: false,
-      stack: 'before',
-      color: '#FAA0A0',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Mastered (before rewardable)',
-      data: previousPerc?.vocab_bins?.map(v => v.rewardable),
-      linkedTo: 'Mastered',
-      visible: false,
-      color: '#5FBDC2',
-      stack: 'before',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'mastered-words' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Mastered (before)',
-      data: previousPerc?.vocab_bins?.map(v => v.mastered),
-      linkedTo: 'Mastered',
-      visible: false,
-      color: '#90EE90',
-      stack: 'before',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'not-mastered' })}`,
-      id: 'Overview (not mastered)',
-      data: notMastered,
-      linkedTo: 'Mastered',
-      color: '#DC143C',
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
-      id: 'Overview (rewardable)',
-      data: currentPerc?.vocab_bins?.map(v => v.rewardable),
-      linkedTo: 'Mastered',
-      color: '#4169e1',
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'mastered-words' })}`,
-      id: 'Overview',
-      data: currentPerc?.vocab_bins?.map(v => v.mastered),
-      color: '#228B22',
-      stack: 'present',
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-total' }),
-      id: 'Total',
-      data: newTotal,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Total (before)',
-      data: total,
-      linkedTo: 'Total',
-      visible: false,
-    },
-    /* 
+  const [series, setSeries] = useState(
+    hiddenFeatures
+      ? [
+          {
+            name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Not Mastered (before)',
+            data: getNotMasteredData(previousPerc?.vocab_bins),
+            linkedTo: 'Mastered',
+            visible: false,
+            stack: 'before',
+            color: '#FAA0A0',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Mastered (before rewardable)',
+            data: previousPerc?.vocab_bins?.map(v => v.rewardable),
+            linkedTo: 'Mastered',
+            visible: false,
+            color: '#5FBDC2',
+            stack: 'before',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'mastered-words' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Mastered (before)',
+            data: previousPerc?.vocab_bins?.map(v => v.mastered),
+            linkedTo: 'Mastered',
+            visible: false,
+            color: '#90EE90',
+            stack: 'before',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'not-mastered' })}`,
+            id: 'Overview (not mastered)',
+            data: notMastered,
+            linkedTo: 'Mastered',
+            color: '#DC143C',
+            stack: 'present',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
+            id: 'Overview (rewardable)',
+            data: currentPerc?.vocab_bins?.map(v => v.rewardable),
+            linkedTo: 'Mastered',
+            color: '#4169e1',
+            stack: 'present',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'mastered-words' })}`,
+            id: 'Overview',
+            data: currentPerc?.vocab_bins?.map(v => v.mastered),
+            color: '#228B22',
+            stack: 'present',
+          },
+          {
+            name: intl.formatMessage({ id: 'vocabulary-total' }),
+            id: 'Total',
+            data: newTotal,
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Total (before)',
+            data: total,
+            linkedTo: 'Total',
+            visible: false,
+          },
+          /* 
     {
       name: intl.formatMessage({ id: 'vocabulary-seen' }),
       id: 'Seen',
@@ -321,33 +180,180 @@ const VocabularyGraph = ({
       visible: false,
     },
     */
+          {
+            name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
+            id: 'Flashcard',
+            data: newFlashcard,
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Flashcard (before)',
+            data: flashcard,
+            linkedTo: 'Flashcard',
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
+            id: 'Percentage (before)',
+            linkedTo: 'Percentage',
+            color: '#90EE90',
+            visible: false,
+            stack: 'before',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'percent-graph' })}`,
+            id: 'Curr Percentage',
+            data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
+            color: '#228B22',
+            visible: false,
+            stack: 'present',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'target-curve' })}`,
+            id: 'Curr Percentage target',
+            data: getTargetCurve(),
+            linkedTo: 'Percentage',
+            type: 'spline',
+            visible: false,
+          },
+        ]
+      : [
+          {
+            name: `${intl.formatMessage({ id: 'not-mastered' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Not Mastered (before)',
+            data: getNotMasteredData(previousPerc?.vocab_bins),
+            linkedTo: 'Mastered',
+            visible: false,
+            stack: 'before',
+            color: '#FAA0A0',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Mastered (before rewardable)',
+            data: previousPerc?.vocab_bins?.map(v => v.rewardable),
+            linkedTo: 'Mastered',
+            visible: false,
+            color: '#5FBDC2',
+            stack: 'before',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'mastered-words' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Mastered (before)',
+            data: previousPerc?.vocab_bins?.map(v => v.mastered),
+            linkedTo: 'Mastered',
+            visible: false,
+            color: '#90EE90',
+            stack: 'before',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'not-mastered' })}`,
+            id: 'Overview (not mastered)',
+            data: notMastered,
+            linkedTo: 'Mastered',
+            color: '#DC143C',
+            stack: 'present',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'rewardable-words' })}`,
+            id: 'Overview (rewardable)',
+            data: currentPerc?.vocab_bins?.map(v => v.rewardable),
+            linkedTo: 'Mastered',
+            color: '#4169e1',
+            stack: 'present',
+          },
+          {
+            name: `${intl.formatMessage({ id: 'mastered-words' })}`,
+            id: 'Overview',
+            data: currentPerc?.vocab_bins?.map(v => v.mastered),
+            color: '#228B22',
+            stack: 'present',
+          },
+          {
+            name: intl.formatMessage({ id: 'vocabulary-total' }),
+            id: 'Total',
+            data: newTotal,
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'vocabulary-total' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Total (before)',
+            data: total,
+            linkedTo: 'Total',
+            visible: false,
+          },
+          /* 
     {
-      name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
-      id: 'Flashcard',
-      data: newFlashcard,
+      name: intl.formatMessage({ id: 'vocabulary-seen' }),
+      id: 'Seen',
+      data: newSeen,
       visible: false,
     },
     {
-      name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
+      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
-      id: 'Flashcard (before)',
-      data: flashcard,
-      linkedTo: 'Flashcard',
+      id: 'Seen (before)',
+      data: seen,
+      linkedTo: 'Seen',
       visible: false,
     },
     {
-      name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
+      name: intl.formatMessage({ id: 'vocabulary-visit' }),
+      id: 'Visit',
+      data: newVisit,
+      visible: false,
+    },
+    {
+      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
         id: 'vocabulary-follow-statistic-before',
       })}`,
-      data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
-      id: 'Percentage (before)',
-      linkedTo: 'Percentage',
-      color: '#90EE90',
+      id: 'Visit (before)',
+      data: visit,
+      linkedTo: 'Visit',
       visible: false,
-      stack: 'before',
     },
-    /*
+    */
+          {
+            name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
+            id: 'Flashcard',
+            data: newFlashcard,
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'vocabulary-flashcard' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            id: 'Flashcard (before)',
+            data: flashcard,
+            linkedTo: 'Flashcard',
+            visible: false,
+          },
+          {
+            name: `${intl.formatMessage({ id: 'percent-graph' })} ${intl.formatMessage({
+              id: 'vocabulary-follow-statistic-before',
+            })}`,
+            data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
+            id: 'Percentage (before)',
+            linkedTo: 'Percentage',
+            color: '#90EE90',
+            visible: false,
+            stack: 'before',
+          },
+          /*
     hiddenFeatures && {
       name: `${intl.formatMessage({ id: 'percent-graph' })}`,
       id: 'Curr Percentage',
@@ -365,7 +371,8 @@ const VocabularyGraph = ({
       visible: false,
     },
     */
-  ])
+        ]
+  )
 
   const handleHide = (s, index) => {
     s.visible = false
@@ -416,9 +423,10 @@ const VocabularyGraph = ({
     tooltip: {
       formatter() {
         return (
-          `<b>${this.series.userOptions.id.includes('Percentage')
-            ? `${parseFloat((this.y * 100).toFixed(1))}%`
-            : this.y
+          `<b>${
+            this.series.userOptions.id.includes('Percentage')
+              ? `${parseFloat((this.y * 100).toFixed(1))}%`
+              : this.y
           } ${this.series.userOptions.name}</b>` +
           '<br /> ' +
           `${intl.formatMessage({ id: 'word-group-tooltip' }, { binNum: this.key })}`
