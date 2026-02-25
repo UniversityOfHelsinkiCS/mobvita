@@ -64,54 +64,77 @@ const StoryDetailsModal = ({
       </Modal.Header>
       <Modal.Actions>
         <div>
-          <div className="flex wrap" style={{ gap: '10px' }}>
-            {!isTeacher && !story.flashcardsOnly && (<LinkButton
-              variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
-              to={`/stories/${story._id}/preview`}
-              translationId="practice"
-            />)}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '15px',
+              gap: '10px',
+            }}
+          >
+            {!isTeacher && !story.flashcardsOnly && (
+              <Link to={`/stories/${story._id}/preview`}>
+                <Button
+                  className="story-detail-modal-action-button"
+                  variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
+                >
+                  <FormattedMessage id="practice" />
+                </Button>
+              </Link>
+            )}
             {!enableOnlyPractice && (
               <>
-                {!isTeacher && (<Popup
-                  content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
-                  trigger={ 
-                    <Link to={`/flashcards/fillin/story/${story._id}/`}>
-                      <Button
-                        variant='primary'
-                        disabled={enableOnlyPractice || story.flashcard_count === 0}
-                      >
-                        <FormattedMessage id="Flashcards" />
-                      </Button>
-                    </Link>
-                  }
-                  disabled={story.flashcard_count > 0}
-                  position="top center"
-                />)}
+                {!isTeacher && (
+                  <Popup
+                    content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+                    trigger={
+                      <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                        <Button
+                          className="story-detail-modal-action-button"
+                          variant="primary"
+                          disabled={enableOnlyPractice || story.flashcard_count === 0}
+                        >
+                          <FormattedMessage id="Flashcards" />
+                        </Button>
+                      </Link>
+                    }
+                    disabled={story.flashcard_count > 0}
+                    position="top center"
+                  />
+                )}
                 {!story.flashcardsOnly && (
                   <>
                     {isTeacher && inGroupLibrary && (
-                      <LinkButton
-                        variant="primary"
-                        to={`/stories/${story._id}/group/preview`}
-                        translationId="preview"
-                      />
+                      <Link to={`/stories/${story._id}/group/preview`}>
+                        <Button
+                          className="story-detail-modal-action-button"
+                          variant="primary"
+                        >
+                          <FormattedMessage id="preview" />
+                        </Button>
+                      </Link>
                     )}
                     {isTeacher && !inGroupLibrary && (
-                      <LinkButton
+                      <Link to={`/stories/${story._id}/preview`}>
+                        <Button
+                        className="story-detail-modal-action-button"
                         variant="secondary"
-                        to={`/stories/${story._id}/preview`}
-                        translationId="preview"
-                      />
+                        >
+                          <FormattedMessage id="preview" />
+                        </Button>
+                      </Link>
                     )}
                     {isTeacher && inGroupLibrary ? (
                       <Link to={`/stories/${story._id}/group/review`}>
-                        <Button variant="primary">
+                        <Button className="story-detail-modal-action-button" variant="primary">
                           <FormattedMessage id="review" />
                         </Button>
                       </Link>
                     ) : (
                       <Link to={`/stories/${story._id}/review`}>
                         <Button
+                          className="story-detail-modal-action-button"
                           variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
                           disabled={story.percent_cov === 0}
                         >
@@ -119,20 +142,27 @@ const StoryDetailsModal = ({
                         </Button>
                       </Link>
                     )}
-                    
                   </>
                 )}
               </>
             )}
           </div>
           {!isTeacher && (
-            <div style={{ textAlign: 'left', marginTop: '15px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '15px',
+                gap: '10px',
+              }}
+            >
               {!isTeacher && (
                 <Link to={`/stories/${story._id}/compete`}>
                   <Button
+                    className="story-detail-modal-action-button"
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
-                    style={{ marginRight: '10px' }}
                   >
                     <FormattedMessage id="compete" />
                   </Button>
@@ -141,6 +171,7 @@ const StoryDetailsModal = ({
               {!isTeacher && (
                 <Link to={`/crossword/${story._id}`}>
                   <Button
+                    className="story-detail-modal-action-button"
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
@@ -199,11 +230,13 @@ const StoryDetailsModal = ({
                   </Button>
                 </Link>
               )}
-              { inGroupLibrary && (<CustomButton
-                onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
-                variant="secondary"
-                translationId={hidden && "release-story" || "hide-story"}
-              />)}
+              {inGroupLibrary && (
+                <CustomButton
+                  onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
+                  variant="secondary"
+                  translationId={(hidden && 'release-story') || 'hide-story'}
+                />
+              )}
             </div>
             <div>
               <CustomButton
