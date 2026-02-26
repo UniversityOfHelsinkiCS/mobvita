@@ -5,13 +5,14 @@ import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
-import { 
-  postAnswers, 
-  resetCurrentSnippet, 
+import {
+  postAnswers,
+  resetCurrentSnippet,
   getNextSnippetFromCache,
   dropCachedSnippet,
-  resetCachedSnippets, 
-  postLessonSnippetAnswers } from 'Utilities/redux/snippetsReducer'
+  resetCachedSnippets,
+  postLessonSnippetAnswers,
+} from 'Utilities/redux/snippetsReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import {
   finishSnippet,
@@ -22,7 +23,6 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import { setIrtDummyScore } from 'Utilities/redux/userReducer'
 import Spinner from 'Components/Spinner'
-
 
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
@@ -63,44 +63,60 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   }, [attempt, isNewSnippet])
 
   return (
-    <button
-      data-cy="check-answer"
-      type="button"
-      onClick={() => handleClick()}
-      className="check-answers-button"
-      disabled={
-        answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
-      }
-    >
-      <div
-        className="attempt-bar"
-        style={{
-          width: `${attemptRatioPercentage}%`,
-          borderRadius: '13px',
-        }}
-      />
-      <span style={{ ...getFontStyle() }}>
-      {
-        answersPending && <Spinner inline variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
-        <FormattedMessage id="check-answer" />
-      }
-      </span>
-    </button>
+    <>
+      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {answersPending && <Spinner inline size={60} />}
+      </div>
+      <button
+        data-cy="check-answer"
+        type="button"
+        onClick={() => handleClick()}
+        className="check-answers-button"
+        disabled={
+          answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
+        }
+      >
+        <div
+          className="attempt-bar"
+          style={{
+            width: `${attemptRatioPercentage}%`,
+            borderRadius: '13px',
+          }}
+        />
+        <span style={{ ...getFontStyle() }}>{<FormattedMessage id="check-answer" />}</span>
+      </button>
+    </>
   )
 }
 
-const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMode, timerValue, numSnippets, lessonId, groupId, lessonStartOver }) => {
+const SnippetActions = ({
+  storyId,
+  exerciseCount,
+  isControlledStory,
+  exerciseMode,
+  timerValue,
+  numSnippets,
+  lessonId,
+  groupId,
+  lessonStartOver,
+}) => {
   const [checkAnswersButtonTempDisable, setcheckAnswersButtonTempDisable] = useState(false)
 
   const dispatch = useDispatch()
   const { id } = useParams()
 
   const { snippets } = useSelector(({ snippets }) => ({ snippets }))
-  const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
-    ({ practice }) => practice
-  )
+  const {
+    currentAnswers,
+    correctAnswerIDs,
+    touchedIds,
+    attempt,
+    options,
+    audio,
+    audio_wids,
+    voice,
+  } = useSelector(({ practice }) => practice)
   const { irt_dummy_score } = useSelector(({ user }) => user)
-
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -113,14 +129,20 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
   )
 
   useEffect(() => {
-    const testedAndCorrectIDs = snippets?.focused?.practice_snippet?.filter(w => w.tested && !w.isWrong).map(w => `${w.ID}`)
+    const testedAndCorrectIDs = snippets?.focused?.practice_snippet
+      ?.filter(w => w.tested && !w.isWrong)
+      .map(w => `${w.ID}`)
     dispatch(addToCorrectAnswerIDs(testedAndCorrectIDs))
 
-    let practice_snippet = snippets?.focused?.practice_snippet ? snippets?.focused?.practice_snippet : []
+    let practice_snippet = snippets?.focused?.practice_snippet
+      ? snippets?.focused?.practice_snippet
+      : []
     let update_answers = {}
     for (const [key, answerObject] of Object.entries(currentAnswers)) {
-      let word_ID = key.split("-")[0]
-      answerObject['requestedHintsList'] = practice_snippet.find(w => w.ID == word_ID)?.requested_hints
+      let word_ID = key.split('-')[0]
+      answerObject['requestedHintsList'] = practice_snippet.find(
+        w => w.ID == word_ID
+      )?.requested_hints
       update_answers[key] = answerObject
     }
     dispatch(setAnswers(update_answers))
@@ -159,7 +181,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     }
 
     dispatch(clearTouchedIds())
-    if (lessonId){
+    if (lessonId) {
       dispatch(postLessonSnippetAnswers(lessonId, answersObj, false))
     } else {
       dispatch(postAnswers(storyId, answersObj, false))
@@ -173,7 +195,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
 
     let update_answers = {}
     for (const [key, answerObject] of Object.entries(filteredCurrentAnswers)) {
-      if (wrongAnswers.includes(key)){
+      if (wrongAnswers.includes(key)) {
         answerObject['cue'] = answerObject['users_answer']
         update_answers[key] = answerObject
       }
@@ -182,9 +204,9 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
 
     const num_wrong_exercises = wrongAnswers ? wrongAnswers.length : 0
     const num_correct_exercises = Object.keys(filteredCurrentAnswers).length - num_wrong_exercises
-    if (irt_dummy_score){
+    if (irt_dummy_score) {
       const dummy_delta = num_correct_exercises - num_wrong_exercises
-      let dummy_score = irt_dummy_score + 0.06*dummy_delta
+      let dummy_score = irt_dummy_score + 0.06 * dummy_delta
       dummy_score = dummy_score < 0 ? 0 : dummy_score
       dummy_score = dummy_score > 100 ? 100 : dummy_score
       dispatch(setIrtDummyScore(dummy_score))
@@ -210,7 +232,7 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
     dispatch(clearPractice())
     dispatch(resetCachedSnippets())
     setcheckAnswersButtonTempDisable(true)
-    if (lessonId){
+    if (lessonId) {
       lessonStartOver()
     } else {
       dispatch(resetAnnotations())
@@ -237,7 +259,12 @@ const SnippetActions = ({ storyId, exerciseCount, isControlledStory, exerciseMod
           <Button
             variant="secondary"
             size="sm"
-            disabled={snippets.answersPending || snippets.pending || !snippets.focused || snippets.cacheSize === 0}
+            disabled={
+              snippets.answersPending ||
+              snippets.pending ||
+              !snippets.focused ||
+              snippets.cacheSize === 0
+            }
             onClick={submitAnswers}
             style={{ marginBottom: '0.5em' }}
           >

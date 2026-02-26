@@ -42,29 +42,33 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   }, [attempt, isNewSnippet])
 
   return (
-    <button
-      data-cy="check-answer"
-      type="button"
-      onClick={() => handleClick()}
-      className="check-answers-button"
-      disabled={
-        pending || !lesson_exercises || checkAnswersButtonTempDisable
-      }
-    >
-      <div
-        className="attempt-bar"
-        style={{
-          width: `${attemptRatioPercentage}%`,
-          borderRadius: '13px',
-        }}
-      />
-      <span style={{ ...getFontStyle(attemptRatioPercentage) }}>
-      {
-        answersPending && <Spinner variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
-        <FormattedMessage id="check-answer" />
-      }
-      </span>
-    </button>
+    <>
+      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {answersPending && <Spinner inline size={60} />}
+      </div>
+      <button
+        data-cy="check-answer"
+        type="button"
+        onClick={() => handleClick()}
+        className="check-answers-button"
+        disabled={
+          pending || !lesson_exercises || checkAnswersButtonTempDisable
+        }
+      >
+        <div
+          className="attempt-bar"
+          style={{
+            width: `${attemptRatioPercentage}%`,
+            borderRadius: '13px',
+          }}
+        />
+        <span style={{ ...getFontStyle(attemptRatioPercentage) }}>
+        {
+          <FormattedMessage id="check-answer" />
+        }
+        </span>
+      </button>
+    </>
   )
 }
 
@@ -191,7 +195,7 @@ const LessonExerciseActions = ({ lessonId, exerciseCount }) => {
       } else {
         return (
           <div className="spinner-container" style={{ minHeight: 0 }}>
-            <Spinner />
+            <Spinner inline size={60} />
           </div>
         )
       }

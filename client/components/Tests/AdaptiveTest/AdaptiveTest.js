@@ -219,7 +219,7 @@ const AdaptiveTest = ({ showingInfo }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container">
-                  <Spinner inline />
+                  <Spinner inline size={60} />
                 </div>
               )}
             </div>

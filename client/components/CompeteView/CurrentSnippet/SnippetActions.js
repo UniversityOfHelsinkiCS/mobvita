@@ -74,34 +74,38 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable, player
   }
 
   return (
-    <button
-      data-cy="check-answer"
-      type="button"
-      onClick={handleSubmitAnswers}
-      className="check-answers-button"
-      disabled={
-        answersPending ||
-        snippetPending ||
-        !focusedSnippet ||
-        checkAnswersButtonTempDisable ||
-        playerFinished !== null ||
-        noSnippetToFetchFromCache()
-      }
-    >
-      <div
-        className="attempt-bar"
-        style={{
-          width: `${attemptRatioPercentage}%`,
-          borderRadius: '13px',
-        }}
-      />
-      <span style={{ ...getFontStyle() }}>
-      {
-        answersPending && <Spinner variant={attemptRatioPercentage > 60 && "white" || "dark"} /> ||
-        <FormattedMessage id="check-answer" />
-      }
-      </span>
-    </button>
+    <>
+      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {answersPending && <Spinner inline size={60} />}
+      </div>
+      <button
+        data-cy="check-answer"
+        type="button"
+        onClick={handleSubmitAnswers}
+        className="check-answers-button"
+        disabled={
+          answersPending ||
+          snippetPending ||
+          !focusedSnippet ||
+          checkAnswersButtonTempDisable ||
+          playerFinished !== null ||
+          noSnippetToFetchFromCache()
+        }
+        >
+        <div
+          className="attempt-bar"
+          style={{
+            width: `${attemptRatioPercentage}%`,
+            borderRadius: '13px',
+          }}
+          />
+        <span style={{ ...getFontStyle() }}>
+        {
+          <FormattedMessage id="check-answer" />
+        }
+        </span>
+      </button>
+    </>
   )
 }
 

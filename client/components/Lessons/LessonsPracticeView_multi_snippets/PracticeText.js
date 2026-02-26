@@ -10,7 +10,7 @@ const PracticeText = props => {
   if (!focusing_snippets || pending) {
     return (
       <div className="spinner-container" style={{ minHeight: 0 }}>
-        <Spinner />
+        <Spinner inline size={60} />
       </div>
     )
   }

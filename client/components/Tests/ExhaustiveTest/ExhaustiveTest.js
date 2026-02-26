@@ -241,7 +241,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
-                  <Spinner />
+                  <Spinner inline size={60}/>
                 </div>
               )}
             </div>

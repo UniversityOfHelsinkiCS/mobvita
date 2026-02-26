@@ -211,7 +211,7 @@ const PracticeView = () => {
 
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime())
-      return <Spinner inline />
+      return <Spinner inline size={60} />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)
