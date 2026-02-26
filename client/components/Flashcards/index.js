@@ -119,7 +119,7 @@ const Flashcards = () => {
         </h5>
       )) ||
         (title && (
-          <h5 className="flex pb-nm" style={{ marginBottom: '2em' }}>
+          <h5 className="flex pb-nm universal-background-sides">
             <FormattedHTMLMessage
               id="story-flashcards"
               values={{
