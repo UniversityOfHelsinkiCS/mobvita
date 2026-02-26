@@ -2,7 +2,7 @@
 import React, { useState, useEffect, shallowEqual, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import {
   getSelf,
   getPreviousVocabularyData,
@@ -45,6 +45,7 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 const Progress = () => {
   const dispatch = useDispatch()
   const element = useRef()
+  const intl = useIntl()
   const [graphType, setGraphType] = useState('column mastered')
   const [initComplete, setInitComplete] = useState(false)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)

@@ -108,7 +108,7 @@ const Flashcards = () => {
        </div>
 
       {(title && type === 'test' && (
-        <h5 className="blue-flashcard-intro flex pb-nm" style={{ marginBottom: '2em' }}>
+        <h5 className="flex pb-nm universal-background-sides">
           <FormattedHTMLMessage
             id="story-blue-cards"
             values={{
