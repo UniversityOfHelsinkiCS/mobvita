@@ -3,13 +3,13 @@ import 'Assets/custom.scss'
 
 const Spinner = ({
   fullHeight = false,
-  variant = 'universal',
+  variant = 'primary',
   spinnerColor,
   inline = false,
   size = 24,
   text = '',
   textSize = 16,
-  textVariant = 'universal',
+  textVariant = 'primary',
   textColor,
 }) => {
   const variantClass = `spinner--${variant}`
