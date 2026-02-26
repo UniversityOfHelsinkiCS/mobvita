@@ -73,7 +73,7 @@ const StoryDetailsModal = ({
             }}
           >
             {!isTeacher && !story.flashcardsOnly && (
-              <Link to={`/stories/${story._id}/${story.percent_cov > 0 ? 'preview' : 'review'}`}>
+              <Link to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}>
                 <Button
                   className="story-detail-modal-action-button"
                   variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
