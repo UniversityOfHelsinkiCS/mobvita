@@ -1604,7 +1604,7 @@
     "no-available-exercise-OLD": "Tälle tunnille ei juuri nyt ole enempää harjoituksia. Revita luo pian lisää harjoituksia – palaa takaisin hetken kuluttua!",
     "chatbot-response-error": "Tapahtui yhteysongelma, yritä uudelleen 30 sekunnin kuluttua!",
     "story-blue-cards": "Tarinassa:\n<ul><li><i>{story}</i></li></ul>\noli {nWords} uutta sanaa.  Tarkistetaanpa, että osaat ne varmasti!\n<br/>\nSaat <a href=\"/profile/progress/flashcards\">pisteet</a> kaikistä näistä sanoista tarkistamalla vain viisi!",
-    "story-flashcards": "Nämä sanat tulevat: <ul><li><i>{story}</i></li></ul>",
+    "story-flashcards": "Nämä kortit tulevat tekstistä: <ul><li><i>{story}</i></li></ul>",
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "Seuraavat harjoitustehtävät auttavat sinua kehittämään englannin taitojasi.  Ensimmäisessa osassa voit harjoitella luetun ymmärtämistä (20 lyhyttä tehtävää).  Auta meitä kehittämään tehtäviä edelleen ja kerro meille, mitä mieltä olet tehtävistä sekä niistä saamastasi palautteesta.\n\nSinun ei tarvitse tehdä kaikkia tehtäviä kerralla, vaan voit halutessasi poistua ohjelmasta ja jatkaa vastaamista myöhemmin siitä, mihin jäit. \n\nKun olet suorittanut luetun ymmärtämistehtävät, pääset tekemään erilaisia englannin kielen rakenteisiin sekä sanastoon liittyviä harjoituksia.  Saat tarkemmat ohjeet harjoitustehtävien suorittamisesta harjoitusten alussa.  Jos haluat, voit jatkossa tehdä lisää luetun ymmärtämistehtäviä; saat ilmoituksen, kun uudet tehtävät ovat saatavilla.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Klikkaa niitä tarinan sanoja, joita et tunne — saat niihin käännökset. Nämä sanat lisätään kortteihisi!",
@@ -1790,5 +1790,6 @@
     "mc-generating": "Generating Multiple choices reading questions for the story",
     "regenerating": "Regenerating the questions",
     "loading": "Ladataan...",
-    "loading-story": "Tekstiä ladataan..."
+    "loading-story": "Tarinaa ladataan...",
+    "practice-reading-comprehension": "Practice Reading Comprehension"
 }

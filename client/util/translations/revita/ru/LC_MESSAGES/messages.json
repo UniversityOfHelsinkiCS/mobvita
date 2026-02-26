@@ -1606,7 +1606,7 @@
     "no-available-exercise-OLD": "На данный момент больше нет упражнений для этого урока. В ближайшее время Revita создаст дополнительные упражнения — пожалуйста, вернись чуть позже!",
     "chatbot-response-error": "Проблема с подключением, повтори попытку через 30 секунд!",
     "story-blue-cards": "В тексте:\n<ul><li><i>{story}</i></li></ul>\nвстретилось {nWords} новых слов!\nТы наверное знаешь эти слова.\n<br/>\nТы можешь получить <a href=\"/profile/progress/flashcards\">баллы</a> за <b>все</b> эти слова, если мы проверим всего 5 из них!",
-    "story-flashcards": "These cards are from:\n<ul><li><i>{story}</i></li></ul>",
+    "story-flashcards": "Карточки из текста:\n<ul><li><i>{story}</i></li></ul>",
     "word-nest-EXPLANATION": "Click here to see the Word Nest — <i>related</i> words.",
     "DDLANG-onboarding-message": "THIS IS AN OLD VERSION OF THE ABOVE INTRO TEXT (DONT USE THIS): The following exercises will help you improve your English skills. The first stage is reading comprehension — 20 short tasks. We will also ask you what you think about the tasks and the feedback that you receive about them, so that we can improve the tasks. You don't have to complete all the tasks in one session; you can exit and return to them, and continue from the point where you left off. After completing the reading exercises, you can continue with various tasks that focus on structures and vocabulary. You will get detailed instructions about these tasks when you are ready to start working on them. Later, you will be able to continue practicing reading comprehension with new exercises; we will let you know when they are available.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Кликни на незнакомое слово, чтобы получить его перевод  ⇒  слово сохранится в набор флеш-карт!",
@@ -1792,5 +1792,6 @@
     "mc-generating": "Generating Multiple choices reading questions for the story",
     "regenerating": "Regenerating the questions",
     "loading": "Loading...",
-    "loading-story": "Loading story..."
+    "loading-story": "Loading story...",
+    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä"
 }

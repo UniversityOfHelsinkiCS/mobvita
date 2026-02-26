@@ -1167,5 +1167,6 @@
     "mc-generating": "Generating Multiple choices reading questions for the story",
     "regenerating": "Regenerating the questions",
     "loading": "Loading...",
-    "loading-story": "Loading story..."
+    "loading-story": "Loading story...",
+    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä"
 }
