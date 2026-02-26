@@ -464,6 +464,10 @@ $value in $spacing {
 }
 
 // SEMANTIC UI OVERRIDES:
+.ui.dimmer {
+  background-color: rgb(253,253,253, 0.8) !important;
+}
+
 .ui.input>input {
   font-family: $default-font
 }

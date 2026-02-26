@@ -104,31 +104,34 @@ const StoryDetailsModal = ({
                 )}
                 {!story.flashcardsOnly && isTeacher && (
                   <>
-                    {story.percent_cov === 0 ? (
-                      inGroupLibrary ? (
-                        <Link to={`/stories/${story._id}/group/review`}>
-                          <Button className="story-detail-modal-action-button" variant="primary">
-                            <FormattedMessage id="review" />
-                          </Button>
-                        </Link>
-                      ) : (
-                        <Link to={`/stories/${story._id}/review`}>
-                          <Button className="story-detail-modal-action-button" variant="secondary">
-                            <FormattedMessage id="review" />
-                          </Button>
-                        </Link>
-                      )
-                    ) :
-                    inGroupLibrary ? (
+                    {inGroupLibrary && (
                       <Link to={`/stories/${story._id}/group/preview`}>
                         <Button className="story-detail-modal-action-button" variant="primary">
                           <FormattedMessage id="preview" />
                         </Button>
                       </Link>
-                    ) : (
+                    )}
+                    {!inGroupLibrary && (
                       <Link to={`/stories/${story._id}/preview`}>
                         <Button className="story-detail-modal-action-button" variant="secondary">
                           <FormattedMessage id="preview" />
+                        </Button>
+                      </Link>
+                    )}
+                    {inGroupLibrary ? (
+                      <Link to={`/stories/${story._id}/group/review`}>
+                        <Button className="story-detail-modal-action-button" variant="primary">
+                          <FormattedMessage id="review" />
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link to={`/stories/${story._id}/review`}>
+                        <Button
+                          className="story-detail-modal-action-button"
+                          variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
+                          disabled={story.percent_cov === 0}
+                        >
+                          <FormattedMessage id="review" />
                         </Button>
                       </Link>
                     )}
