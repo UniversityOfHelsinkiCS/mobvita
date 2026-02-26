@@ -119,7 +119,7 @@ const initialState = {
   focusedSpan: null,
   annotationCandidates: [],
   pending: false,
-  showAnnotations: true,
+  showAnnotations: false,
   showAnnotationForm: false,
   mobileDisplayAnnotations: false,
   allAnnotations: [],
