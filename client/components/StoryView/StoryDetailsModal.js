@@ -69,7 +69,7 @@ const StoryDetailsModal = ({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              gap: '10px',
+              gap: '12px',
             }}
           >
             {!isTeacher && !story.flashcardsOnly && (
@@ -106,20 +106,14 @@ const StoryDetailsModal = ({
                   <>
                     {isTeacher && inGroupLibrary && (
                       <Link to={`/stories/${story._id}/group/preview`}>
-                        <Button
-                          className="story-detail-modal-action-button"
-                          variant="primary"
-                        >
+                        <Button className="story-detail-modal-action-button" variant="primary">
                           <FormattedMessage id="preview" />
                         </Button>
                       </Link>
                     )}
                     {isTeacher && !inGroupLibrary && (
                       <Link to={`/stories/${story._id}/preview`}>
-                        <Button
-                        className="story-detail-modal-action-button"
-                        variant="secondary"
-                        >
+                        <Button className="story-detail-modal-action-button" variant="secondary">
                           <FormattedMessage id="preview" />
                         </Button>
                       </Link>
@@ -152,8 +146,8 @@ const StoryDetailsModal = ({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: '15px',
-                gap: '10px',
+                marginTop: '12px',
+                gap: '12px',
               }}
             >
               {!isTeacher && (
@@ -186,10 +180,18 @@ const StoryDetailsModal = ({
             </div>
           )}
 
-          <div className="flex space-between" style={{ marginTop: '5px' }}>
-            <div className="flex wrap" style={{ gap: '10px' }}>
+          <div className="flex flex-col space-between">
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
               {showCreateControlStoryButton && (
                 <LinkButton
+                  className="story-detail-modal-manage-button-long"
                   to={`/stories/${story._id}/controlled-story-editor`}
                   translationId="create-controlled-story"
                   variant="secondary"
@@ -198,6 +200,7 @@ const StoryDetailsModal = ({
 
               {isTeacher && savedLibrarySelection == 'private' && (
                 <LinkButton
+                  className="story-detail-modal-manage-button-long"
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   translationId="reading-comprehension"
                   variant="secondary"
@@ -216,36 +219,47 @@ const StoryDetailsModal = ({
                   </Button>
                 </>
               )}
-              <CustomButton
-                className="story-detail-modal-manage-button"
-                condition={showShareButton}
-                onClick={() => setShareModalOpen(true)}
-                variant="secondary"
-                translationId="Share"
-              />
-              {story.user === user.oid && (
-                <Link to={`/stories/${story._id}/edit`}>
-                  <Button className="story-detail-modal-manage-button" variant="secondary">
-                    <Icon name="edit" /> <FormattedMessage id="edit-story" />
-                  </Button>
-                </Link>
-              )}
-              {inGroupLibrary && isTeacher && (
-                <CustomButton
-                  onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
-                  variant="secondary"
-                  translationId={(hidden && 'release-story') || 'hide-story'}
-                />
-              )}
             </div>
-            <div>
-              <CustomButton
-                className="story-detail-modal-manage-button"
-                condition={showDeleteButton}
-                onClick={handleDelete}
-                variant="outline-danger"
-                translationId="Delete"
-              />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <CustomButton
+                  className="story-detail-modal-manage-button"
+                  condition={showShareButton}
+                  onClick={() => setShareModalOpen(true)}
+                  variant="secondary"
+                  translationId="Share"
+                />
+                {story.user === user.oid && (
+                  <Link to={`/stories/${story._id}/edit`}>
+                    <Button className="story-detail-modal-manage-button" variant="secondary">
+                      <Icon name="edit" /> <FormattedMessage id="edit-story" />
+                    </Button>
+                  </Link>
+                )}
+                {inGroupLibrary && isTeacher && (
+                  <CustomButton
+                    onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
+                    variant="secondary"
+                    translationId={(hidden && 'release-story') || 'hide-story'}
+                  />
+                )}
+              </div>
+              <div>
+                <CustomButton
+                  className="story-detail-modal-manage-button"
+                  condition={showDeleteButton}
+                  onClick={handleDelete}
+                  variant="outline-danger"
+                  translationId="Delete"
+                />
+              </div>
             </div>
           </div>
         </div>
