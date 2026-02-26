@@ -3562,6 +3562,10 @@ label.file-upload-btn {
   100% { transform: rotate(360deg); }
 }
 
+:root {
+  --story-detail-modal-button-bg: #f9f9f9;
+}
+
 .story-detail-modal-action-button {
   width: 140px;
   padding: 4px 0;
@@ -3572,6 +3576,17 @@ label.file-upload-btn {
   width: 110px;
   padding: 4px 0;
   text-align: center;
+  background: var(--story-detail-modal-button-bg);
+}
+
+.story-detail-modal-manage-button-delete {
+  width: 110px;
+  padding: 4px 0;
+  text-align: center;
+}
+
+.story-detail-modal-manage-button-release-hide {
+  background: var(--story-detail-modal-button-bg);
 }
 
 .story-detail-modal-manage-button-long {
@@ -3579,4 +3594,5 @@ label.file-upload-btn {
   padding: 4px 0;
   text-align: center;
   margin-bottom: 12px !important;
+  background: var(--story-detail-modal-button-bg);
 }

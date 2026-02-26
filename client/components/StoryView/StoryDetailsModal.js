@@ -245,6 +245,7 @@ const StoryDetailsModal = ({
                 )}
                 {inGroupLibrary && isTeacher && (
                   <CustomButton
+                    className="story-detail-modal-manage-button-release-hide"
                     onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
                     variant="secondary"
                     translationId={(hidden && 'release-story') || 'hide-story'}
@@ -253,7 +254,7 @@ const StoryDetailsModal = ({
               </div>
               <div>
                 <CustomButton
-                  className="story-detail-modal-manage-button"
+                  className="story-detail-modal-manage-button-delete"
                   condition={showDeleteButton}
                   onClick={handleDelete}
                   variant="outline-danger"
