@@ -82,7 +82,7 @@ const HexagonTest = props => {
   const hexagonSize = { x: 15, y: 15 }
   const generator = GridGenerator.getGenerator('rectangle')
   const hexagons = generator.apply(generator, [35, 35])
-  if (props.conceptsPending || !props.concepts || props.pending) return <Spinner fullHeight />
+  if (props.conceptsPending || !props.concepts || props.pending) return <Spinner />
 
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
     return <div>Not available</div>

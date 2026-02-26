@@ -14,14 +14,16 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
   // const { exerciseHistory, flashcardHistory, pending } = practiceHistory
 
   //exerciseHistory still uses old statics from user object
-  const { pending, exerciseHistory, xpHistory, practiceTimeHistory } = useSelector(({ studentProgress }) => {
-    const { progress, pending } = studentProgress
+  const { pending, exerciseHistory, xpHistory, practiceTimeHistory } = useSelector(
+    ({ studentProgress }) => {
+      const { progress, pending } = studentProgress
 
-    const { exercise_history: exerciseHistory } = progress
-    const { xp_history: xpHistory } = progress
-    const { practice_time_history: practiceTimeHistory } = progress
-    return { pending, xpHistory, exerciseHistory, practiceTimeHistory }
-  })
+      const { exercise_history: exerciseHistory } = progress
+      const { xp_history: xpHistory } = progress
+      const { practice_time_history: practiceTimeHistory } = progress
+      return { pending, xpHistory, exerciseHistory, practiceTimeHistory }
+    }
+  )
   const flashcardHistory = []
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
@@ -36,14 +38,7 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
   }, [])
 
   if (pending) {
-    return (
-      <Spinner
-        fullHeight
-        size={60}
-        text={intl.formatMessage({ id: 'loading' })}
-        textSize={20}
-      />
-    )
+    return <Spinner fullHeight size={60} />
   }
 
   return (
@@ -59,7 +54,11 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
             />
           </div>
           <br />
-          <HoursProgressChart practiceTimeHistory={practiceTimeHistory} startDate={startDate} endDate={endDate} />
+          <HoursProgressChart
+            practiceTimeHistory={practiceTimeHistory}
+            startDate={startDate}
+            endDate={endDate}
+          />
           <br />
           <div>
             <XpProgressGraph xpHistory={xpHistory} startDate={startDate} endDate={endDate} />

@@ -70,7 +70,7 @@ const ReadingPracticeView = () => {
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
 
-  if (pending) return <Spinner fullHeight />
+  if (pending) return <Spinner fullHeight size={60} />
   if (!story) return null
 
   return (

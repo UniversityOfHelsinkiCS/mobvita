@@ -41,7 +41,7 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
-  const [summaryTab, setSummaryTab] = useState('group-exercise-summary');
+  const [summaryTab, setSummaryTab] = useState('group-exercise-summary')
 
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
@@ -179,12 +179,7 @@ const GroupAnalytics = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  if (pending || (totalGroups.length > 0 && !currentGroup))
-    return (
-      <div style={{ height: '80vh' }}>
-        <Spinner />
-      </div>
-    )
+  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight size={60} />
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
 
@@ -421,78 +416,101 @@ const GroupAnalytics = ({ role }) => {
           id="group-analytics-tabs"
           className="mb-3"
           style={tabsStyle}
-          onSelect={(key) => setSummaryTab(key)}
+          onSelect={key => setSummaryTab(key)}
         >
           <Tab
             eventKey="group-exercise-summary"
-            title={<span style={tabStyle(summaryTab === 'group-exercise-summary')}>{intl.formatMessage({ id: 'group-exercise-summary' })}</span>}
+            title={
+              <span style={tabStyle(summaryTab === 'group-exercise-summary')}>
+                {intl.formatMessage({ id: 'group-exercise-summary' })}
+              </span>
+            }
           >
-            {summaryTab == "group-exercise-summary" && <Summary
-              setStudent={setCurrentStudent}
-              startDate={startDate}
-              endDate={endDate}
-              group={currentGroup}
-              isTeaching={currentGroup.is_teaching}
-              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-              setContent={setContent}
-              firstFetch={firstFetch}
-              setCefrHistory={setCefrHistory}
-              setFirstFetch={setFirstFetch}
-              summaryType="exercise"
-            />}
+            {summaryTab == 'group-exercise-summary' && (
+              <Summary
+                setStudent={setCurrentStudent}
+                startDate={startDate}
+                endDate={endDate}
+                group={currentGroup}
+                isTeaching={currentGroup.is_teaching}
+                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+                setContent={setContent}
+                firstFetch={firstFetch}
+                setCefrHistory={setCefrHistory}
+                setFirstFetch={setFirstFetch}
+                summaryType="exercise"
+              />
+            )}
           </Tab>
           <Tab
             eventKey="group-vocab-summary"
-            title={<span style={tabStyle(summaryTab === 'group-vocab-summary')}>{intl.formatMessage({ id: 'group-vocab-summary' })}</span>}
+            title={
+              <span style={tabStyle(summaryTab === 'group-vocab-summary')}>
+                {intl.formatMessage({ id: 'group-vocab-summary' })}
+              </span>
+            }
           >
-            {summaryTab == "group-vocab-summary" && <Summary
-              setStudent={setCurrentStudent}
-              startDate={startDate}
-              endDate={endDate}
-              group={currentGroup}
-              isTeaching={currentGroup.is_teaching}
-              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-              setContent={setContent}
-              firstFetch={firstFetch}
-              setCefrHistory={setCefrHistory}
-              setFirstFetch={setFirstFetch}
-              summaryType="vocab"
-            />}
+            {summaryTab == 'group-vocab-summary' && (
+              <Summary
+                setStudent={setCurrentStudent}
+                startDate={startDate}
+                endDate={endDate}
+                group={currentGroup}
+                isTeaching={currentGroup.is_teaching}
+                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+                setContent={setContent}
+                firstFetch={firstFetch}
+                setCefrHistory={setCefrHistory}
+                setFirstFetch={setFirstFetch}
+                summaryType="vocab"
+              />
+            )}
           </Tab>
           <Tab
             eventKey="group-test-summary"
-            title={<span style={tabStyle(summaryTab === 'group-test-summary')}>{intl.formatMessage({ id: 'group-test-summary' })}</span>}
+            title={
+              <span style={tabStyle(summaryTab === 'group-test-summary')}>
+                {intl.formatMessage({ id: 'group-test-summary' })}
+              </span>
+            }
           >
-            {summaryTab == "group-test-summary" && <Summary
-              setStudent={setCurrentStudent}
-              startDate={startDate}
-              endDate={endDate}
-              group={currentGroup}
-              isTeaching={currentGroup.is_teaching}
-              getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-              getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-              setContent={setContent}
-              firstFetch={firstFetch}
-              setCefrHistory={setCefrHistory}
-              setFirstFetch={setFirstFetch}
-              summaryType="test"
-            />}
+            {summaryTab == 'group-test-summary' && (
+              <Summary
+                setStudent={setCurrentStudent}
+                startDate={startDate}
+                endDate={endDate}
+                group={currentGroup}
+                isTeaching={currentGroup.is_teaching}
+                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
+                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
+                setContent={setContent}
+                firstFetch={firstFetch}
+                setCefrHistory={setCefrHistory}
+                setFirstFetch={setFirstFetch}
+                summaryType="test"
+              />
+            )}
           </Tab>
           <Tab
             eventKey="group-grammar-progress"
-            title={<span style={tabStyle(summaryTab === 'group-grammar-progress')}>{intl.formatMessage({ id: 'group-grammar-progress' })}</span>}
+            title={
+              <span style={tabStyle(summaryTab === 'group-grammar-progress')}>
+                {intl.formatMessage({ id: 'group-grammar-progress' })}
+              </span>
+            }
           >
-            {summaryTab == "group-grammar-progress" && <StudentGrammarProgress
-              summaryView
-              startDate={startDate}
-              endDate={endDate}
-              group={currentGroup}
-            />}
+            {summaryTab == 'group-grammar-progress' && (
+              <StudentGrammarProgress
+                summaryView
+                startDate={startDate}
+                endDate={endDate}
+                group={currentGroup}
+              />
+            )}
           </Tab>
         </Tabs>
-      
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
         <div>
           <div className="row-flex align center">

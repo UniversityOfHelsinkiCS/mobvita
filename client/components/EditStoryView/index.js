@@ -107,14 +107,7 @@ const EditStoryView = ({ match }) => {
   const submitDisabled = !content || textTooLong || charactersLeft > 49950 || titleMissing
 
   if (!story || pending) {
-    return (
-      <Spinner
-        fullHeight
-        size={60}
-        text={intl.formatMessage({ id: 'loading' })}
-        textSize={20}
-      />
-    )
+    return <Spinner fullHeight size={60} />
   }
   console.log('text too long ', textTooLong, ' missin title ', titleMissing)
 

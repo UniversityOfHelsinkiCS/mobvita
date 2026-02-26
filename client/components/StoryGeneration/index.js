@@ -356,7 +356,7 @@ const StoryGeneration = () => {
         <div style={{width: "100%", maxWidth: "800px", margin: "auto"}}>
           {generationPending ? (
             <div className='row justify-center align-center'>
-              <Spinner variant="info" />
+              <Spinner />
               <span style={{
                 textAlign: 'center',
                 fontWeight: 500,

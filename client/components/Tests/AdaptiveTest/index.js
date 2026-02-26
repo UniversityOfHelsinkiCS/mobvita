@@ -43,7 +43,7 @@ const AdaptiveTestView = () => {
   }, [learningLanguage])
 
   if (pending) {
-    return <Spinner fullHeight />
+    return <Spinner fullHeight size={60}/>
   }
 
   return (

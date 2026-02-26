@@ -46,7 +46,7 @@ const TemplateTranslations = ({
       <div className="auto-overflow mb-sm">
         <div className="auto-overflow">
           {pending ? (
-            <Spinner spinnerColor={'#77c8d4'} size={40}/>
+            <Spinner size={60} />
           ) : (
             <ul>
               <TemplateListItems

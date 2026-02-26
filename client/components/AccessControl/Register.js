@@ -188,7 +188,7 @@ const Register = () => {
             disabled={registerPending || !accepted}
           >
             {registerPending ? (
-              <Spinner inline variant='info' />
+              <Spinner inline />
             ) : (
               <span>{intl.formatMessage({ id: 'Register' })}</span>
             )}

@@ -87,7 +87,7 @@ const UploadPastedText = ({ closeModal }) => {
         <div className="row-flex">
           <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
             {pending || storyId ? (
-              <Spinner inline variant="dark" />
+              <Spinner inline />
             ) : (
               <span>
                 <FormattedMessage id="Confirm" />

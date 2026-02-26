@@ -21,7 +21,7 @@ const VocabularyGraph = ({
   //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
   if (vocabularyPending || newerVocabularyPending)
     return (
-      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+      <Spinner fullHeight size={60} />
     )
 
   if (

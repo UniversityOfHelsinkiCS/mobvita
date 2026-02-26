@@ -6,13 +6,8 @@ import { Link } from 'react-router-dom'
 import Spinner from 'Components/Spinner'
 
 const GenerateStories = ({ closeModal }) => {
-
   const intl = useIntl()
-  
-
   const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
-
-
 
   return (
     <div>
@@ -24,7 +19,7 @@ const GenerateStories = ({ closeModal }) => {
         <Link  to={'/story-generation'} disabled={pending}  className="space-evenly pt-lg">
         <Button style={{ marginTop: '1em' }}>
             {pending || storyId ? (
-                <Spinner inline variant='dark' />
+                <Spinner inline />
             ) : (
                 <span>
                 <FormattedMessage id="go-generating" />

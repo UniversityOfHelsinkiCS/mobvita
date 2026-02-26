@@ -65,7 +65,7 @@ const FlashcardList = () => {
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
   const nextPagePending = cardsInCurrentPage.length !== 0 && pending
 
-  if (!isSomePageLoaded && pending) return <Spinner fullHeight size={48} />
+  if (!isSomePageLoaded && pending) return <Spinner fullHeight size={60} variant='primary' />
 
   if (editableCard) {
     return (
@@ -104,7 +104,7 @@ const FlashcardList = () => {
         {pagination}
       </div>
       {nextPagePending ? (
-        <Spinner fullHeight size={48} />
+        <Spinner fullHeight size={60} variant='primary'/>
       ) : (
         <div>
           <Accordion className="pt-sm">

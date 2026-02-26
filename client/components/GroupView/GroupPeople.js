@@ -51,9 +51,7 @@ const GroupPeople = ({ role }) => {
 
   if (pending || (totalGroups.length > 0 && !currentGroup))
     return (
-      <div style={{ height: '80vh' }}>
-        <Spinner />
-      </div>
+      <Spinner fullHeight size={60}/>
     )
 
   if (totalGroups.length === 0) {

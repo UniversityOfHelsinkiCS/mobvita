@@ -300,7 +300,7 @@ const StoryList = () => {
   )
 
   if (pending || !refreshed) {
-    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+    return <Spinner fullHeight size={60} />
   }
 
   const librariesToShow = Object.entries(libraries)

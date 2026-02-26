@@ -7,7 +7,6 @@ import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
 
-
 const DebugTestView = () => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -22,14 +21,7 @@ const DebugTestView = () => {
   }
 
   if (pending) {
-    return (
-      <Spinner
-        fullHeight
-        size={60}
-        text={intl.formatMessage({ id: 'loading' })}
-        textSize={20}
-      />
-    )
+    return <Spinner fullHeight size={60} />
   }
 
   return (
@@ -61,57 +53,60 @@ const DebugTestView = () => {
           </Form>
           {feedback && (
             <div>
-                <br/>
-                <h4>
-                    Feedback:
-                    <FormattedHTMLMessage
-                        id={"<ul> <li />" +
-                            feedback.message.replace(/---/g, "<li />") +
-                            "</ul>"
-                           } />
-                    
-                </h4>
-            <Table celled fixed unstackable>
-              <Table.Header>
-                <Table.Row textAlign="center">
-                  <Table.HeaderCell style={{ width: '250px' }}>Features</Table.HeaderCell>
-                  <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
-                  <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
-                </Table.Row>
-                {Array.from(
-                  new Set(
-                    Object.keys(feedback.user_features).concat(Object.keys(feedback.true_features))
+              <br />
+              <h4>
+                Feedback:
+                <FormattedHTMLMessage
+                  id={'<ul> <li />' + feedback.message.replace(/---/g, '<li />') + '</ul>'}
+                />
+              </h4>
+              <Table celled fixed unstackable>
+                <Table.Header>
+                  <Table.Row textAlign="center">
+                    <Table.HeaderCell style={{ width: '250px' }}>Features</Table.HeaderCell>
+                    <Table.HeaderCell style={{ width: '250px ' }}>Correct answer</Table.HeaderCell>
+                    <Table.HeaderCell style={{ width: '250px ' }}>User answer</Table.HeaderCell>
+                  </Table.Row>
+                  {Array.from(
+                    new Set(
+                      Object.keys(feedback.user_features).concat(
+                        Object.keys(feedback.true_features)
+                      )
+                    )
                   )
-                )
-                  .sort(function (a, b) {
-                    const textA = a.toUpperCase()
-                    const textB = b.toUpperCase()
-                    return textA < textB ? -1 : textA > textB ? 1 : 0
-                  })
-                  .map(key => (
-                    <Table.Row textAlign="center">
-                      {feedback.user_features[key]?.toString() ===
-                      feedback.true_features[key]?.toString() ? (
-                        <>
-                          <Table.Cell className="correct">{key}</Table.Cell>
-                          <Table.Cell className="correct">
-                            {(feedback.true_features[key] || '').toString()}
-                          </Table.Cell>
-                          <Table.Cell className="correct">
-                            {(feedback.user_features[key] || '').toString()}
-                          </Table.Cell>
-                        </>
-                      ) : (
-                        <>
-                          <Table.Cell>{key}</Table.Cell>
-                          <Table.Cell>{(feedback.true_features[key] || '').toString()}</Table.Cell>
-                          <Table.Cell>{(feedback.user_features[key] || '').toString()}</Table.Cell>
-                        </>
-                      )}
-                    </Table.Row>
-                  ))}
-              </Table.Header>
-            </Table>
+                    .sort(function (a, b) {
+                      const textA = a.toUpperCase()
+                      const textB = b.toUpperCase()
+                      return textA < textB ? -1 : textA > textB ? 1 : 0
+                    })
+                    .map(key => (
+                      <Table.Row textAlign="center">
+                        {feedback.user_features[key]?.toString() ===
+                        feedback.true_features[key]?.toString() ? (
+                          <>
+                            <Table.Cell className="correct">{key}</Table.Cell>
+                            <Table.Cell className="correct">
+                              {(feedback.true_features[key] || '').toString()}
+                            </Table.Cell>
+                            <Table.Cell className="correct">
+                              {(feedback.user_features[key] || '').toString()}
+                            </Table.Cell>
+                          </>
+                        ) : (
+                          <>
+                            <Table.Cell>{key}</Table.Cell>
+                            <Table.Cell>
+                              {(feedback.true_features[key] || '').toString()}
+                            </Table.Cell>
+                            <Table.Cell>
+                              {(feedback.user_features[key] || '').toString()}
+                            </Table.Cell>
+                          </>
+                        )}
+                      </Table.Row>
+                    ))}
+                </Table.Header>
+              </Table>
             </div>
           )}
         </div>

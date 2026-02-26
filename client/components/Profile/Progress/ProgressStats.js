@@ -27,7 +27,7 @@ const ProgressStats = ({ startDate, endDate }) => {
     }
   }, [startDate, endDate, learningLanguage])
 
-  if (!summary || pending) return <Spinner />
+  if (!summary || pending) return <Spinner fullHeight size={60} />
 
   const getLearningLanguageFlag = () => {
     if (learningLanguage) {

@@ -26,7 +26,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
   }, [student, startDate, endDate])
 
   if (pending) {
-    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+    return <Spinner fullHeight size={60} />
   }
 
   if (!history) {

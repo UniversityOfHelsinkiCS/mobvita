@@ -266,7 +266,7 @@ const GroupView = () => {
         )}
         <PeopleAddResultModal lastAddInfo={lastAddInfo} />
         {pending ? (
-          <Spinner fullHeight />
+          <Spinner fullHeight size={60} />
         ) : (
           <>
             <div className="ps-nm" data-cy="group-list">

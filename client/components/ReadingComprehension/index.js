@@ -342,10 +342,8 @@ const ReadingComprehensionView = ({ match }) => {
       <Spinner
         fullHeight
         size={60}
-        variant="secondary"
         text={intl.formatMessage({ id: 'loading-story' })}
         textSize={20}
-        textVariant="secondary"
       />
     )
 
@@ -663,11 +661,9 @@ const ReadingComprehensionView = ({ match }) => {
         <div className="rc-loading-overlay">
           <Spinner
             fullHeight
-            size={72}
-            variant="secondary"
+            size={60}
             text="Generating questions…"
-            textSize={24}
-            textVariant="secondary"
+            textSize={20}
           />
         </div>
       ) : null}

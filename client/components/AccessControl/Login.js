@@ -68,7 +68,7 @@ const Login = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <button data-cy="login" type="submit" className="landing-page-button" disabled={pending}>
             {pending ? (
-              <Spinner inline variant='info' />
+              <Spinner inline />
             ) : (
               <span>{intl.formatMessage({ id: 'Login' })}</span>
             )}

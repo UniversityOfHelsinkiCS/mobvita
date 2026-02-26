@@ -62,7 +62,7 @@ const UploadFromWeb = ({ closeModal }) => {
           style={{ marginTop: '1em' }}
         >
           {storyUploading ? (
-            <Spinner inline variant="white" />
+            <Spinner inline />
           ) : (
             <FormattedMessage id="Confirm" />
           )}

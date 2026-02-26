@@ -33,7 +33,7 @@ const StudentVocabularyProgress = ({
 
   if (vocabularyPending || previousPending) {
     return (
-      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+      <Spinner fullHeight size={60} />
     )
   }
 
@@ -49,7 +49,7 @@ const StudentVocabularyProgress = ({
       element={element}
     />
   ) : (
-    <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+    <Spinner fullHeight size={60} />
   )
 }
 

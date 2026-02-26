@@ -528,7 +528,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
               )}
               {displaySpinner && (
                 <div className="test-question-spinner-container" style={{ overflow: 'hidden' }}>
-                  <Spinner variant="info" />
+                  <Spinner />
                 </div>
               )}
             </div>

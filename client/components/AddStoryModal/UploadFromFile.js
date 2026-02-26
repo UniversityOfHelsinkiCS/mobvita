@@ -101,7 +101,7 @@ const UploadFromFile = ({ closeModal }) => {
         </label>
         <Button disabled={submitStoryDisabled} onClick={handleStorySubmit} style={{ minWidth: '10em' }}>
           {storyUploading ? (
-            <Spinner inline variant="white" />
+            <Spinner inline />
           ) : (
             <FormattedMessage id="Submit" />
           )}
@@ -141,7 +141,7 @@ const UploadFromFile = ({ closeModal }) => {
         </label>
         <Button disabled={submitFlashcardDisabled} onClick={handleFlashcardSubmit} style={{ minWidth: '10em' }}>
           {storyUploading ? (
-            <Spinner inline variant="white" />
+            <Spinner inline />
           ) : (
             <FormattedMessage id="Submit" />
           )}

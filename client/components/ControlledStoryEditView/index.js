@@ -104,7 +104,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight />
+  if (!story || pending || !user) return <Spinner fullHeight size={60} />
 
   const showFooter = width > 640
   const url = history.location.pathname

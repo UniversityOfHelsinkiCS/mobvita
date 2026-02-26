@@ -248,7 +248,7 @@ const Progress = () => {
     setGraphType('column mastered')
   }
 
-  if (pending || pending === undefined || testPending) return <Spinner />
+  if (pending || pending === undefined || testPending) return <Spinner fullHeight size={60} />
 
   // console.log('num of words at end ', endWords)
   return (
@@ -461,12 +461,7 @@ const Progress = () => {
                     />
                   </div>
                 ) : (
-                  <Spinner
-                    fullHeight
-                    size={60}
-                    text={intl.formatMessage({ id: 'loading' })}
-                    textSize={20}
-                  />
+                  <Spinner fullHeight size={60} />
                 )}
               </div>
             </div>

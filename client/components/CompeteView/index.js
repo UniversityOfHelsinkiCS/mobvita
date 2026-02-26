@@ -120,7 +120,7 @@ const CompeteView = ({ match }) => {
           <div className="cont">
             <Segment>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Spinner inline variant="info" />
+                <Spinner inline />
               </div>
             </Segment>
           </div>
@@ -157,7 +157,7 @@ const CompeteView = ({ match }) => {
             <Divider />
             {!startTime ? (
               <div>
-                <Spinner inline variant="info" />
+                <Spinner inline />
               </div>
             ) : (
               <CompetitionProgress

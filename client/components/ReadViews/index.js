@@ -157,7 +157,7 @@ const ReadViews = ({ match }) => {
     if (progress === 1) setShowRefreshButton(true)
   }, [progress])
 
-  if (pending || !user || groupsPending) return <Spinner fullHeight />
+  if (pending || !user || groupsPending) return <Spinner fullHeight size={60}/>
   if (!story) return null
 
   const showFooter = width > 640
