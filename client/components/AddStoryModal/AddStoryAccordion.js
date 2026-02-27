@@ -72,8 +72,8 @@ const AddStoryAccordion = ({ closeModal }) => {
               <span className={getAccordionItemTitleClass(accordionState, 1)}>
                 <FormattedMessage id="upload-stories" />
                 <Popup
-                 content={<FormattedHTMLMessage id="file-upload-instructions" />}
-                 trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+                  content={<FormattedHTMLMessage id="file-upload-instructions" />}
+                  trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
                 />
               </span>
             }
@@ -119,7 +119,7 @@ const AddStoryAccordion = ({ closeModal }) => {
                 <FormattedMessage id="generate-a-story" />
                 <Popup
                   content={<FormattedHTMLMessage id="generate-story-instruction" />}
-                  trigger={<Icon name="info circle" style={{ marginLeft: '4px'}} />}
+                  trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
                 />
               </span>
             }
@@ -142,6 +142,10 @@ const AddStoryAccordion = ({ closeModal }) => {
               <i>
                 <FormattedMessage id="recommended-sites" />
               </i>
+              <Popup
+                content={<FormattedHTMLMessage id="explain-recommended-sites" />}
+                trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+              />
             </span>
           }
           index={4}

@@ -59,7 +59,7 @@ const UploadFromWeb = ({ closeModal }) => {
           data-cy="submit-story"
         >
           {storyUploading ? (
-            <Spinner inline />
+            <Spinner inline size={28}/>
           ) : (
             <FormattedMessage id="Confirm" />
           )}
