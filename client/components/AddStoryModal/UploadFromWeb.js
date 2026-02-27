@@ -39,27 +39,24 @@ const UploadFromWeb = ({ closeModal }) => {
 
   return (
     <div>
-      <br />
-      <span className="pb-sm upload-instructions">
-        <FormattedHTMLMessage id="upload-from-web-instructions" />
-      </span>
-      <Form id="url-upload">
-        <Input
-          fluid
-          placeholder={intl.formatMessage({ id: 'enter-web-address' })}
-          value={storyUrl}
-          onChange={event => setStoryUrl(event.target.value)}
-          data-cy="new-story-input"
-          style={{ marginTop: '1.5em' }}
-        />
-      </Form>
-      <div className="flex pb-sm">
+      <div style={{ marginTop: '20px' }}>
+        <Form id="url-upload">
+          <Input
+            fluid
+            placeholder={intl.formatMessage({ id: 'enter-web-address' })}
+            value={storyUrl}
+            onChange={event => setStoryUrl(event.target.value)}
+            data-cy="new-story-input"
+          />
+        </Form>
+      </div>
+  
+      <div style={{ display: 'flex', marginTop: '24px' }}>
         <Button
           form="url-upload"
           type="submit"
           onClick={handleStorySubmit}
           data-cy="submit-story"
-          style={{ marginTop: '1em' }}
         >
           {storyUploading ? (
             <Spinner inline />

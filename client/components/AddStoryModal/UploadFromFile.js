@@ -91,9 +91,6 @@ const UploadFromFile = ({ closeModal }) => {
   return (
     <div>
       <br />
-      <span className="upload-instructions">
-        <FormattedHTMLMessage id="file-upload-instructions" />
-      </span>
       <div className="space-evenly pt-lg">
         <input id="story" name="story" type="file" accept=".docx, .txt" onChange={onStoryChange} />
         <label className="file-upload-btn" htmlFor="story">

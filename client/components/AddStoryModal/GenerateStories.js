@@ -10,24 +10,25 @@ const GenerateStories = ({ closeModal }) => {
   const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
 
   return (
-    <div>
-        <br />
-        <span className="pb-sm upload-instructions">
-        <FormattedHTMLMessage id="generate-story-instruction" />
-        </span>
-        <br />
-        <Link  to={'/story-generation'} disabled={pending}  className="space-evenly pt-lg">
-        <Button style={{ marginTop: '1em' }}>
-            {pending || storyId ? (
-                <Spinner inline />
-            ) : (
-                <span>
-                <FormattedMessage id="go-generating" />
-                </span>
-
-            )}
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        marginTop: '16px',
+      }}
+    >
+      <Link to={'/story-generation'} disabled={pending}>
+        <Button>
+          {pending || storyId ? (
+            <Spinner inline />
+          ) : (
+            <span>
+              <FormattedMessage id="go-generating" />
+            </span>
+          )}
         </Button>
-        </Link>
+      </Link>
     </div>
   )
 }

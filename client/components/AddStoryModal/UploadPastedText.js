@@ -60,10 +60,6 @@ const UploadPastedText = ({ closeModal }) => {
 
   return (
     <div>
-      <br />
-      <span className="pb-sm upload-instructions">
-        <FormattedHTMLMessage id="paste-text-upload-instructions" />
-      </span>
       <FormControl
         as="input"
         value={title}
