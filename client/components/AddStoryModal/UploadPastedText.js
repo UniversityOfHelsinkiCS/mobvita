@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { Popup } from 'semantic-ui-react'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { FormControl, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -60,6 +61,10 @@ const UploadPastedText = ({ closeModal }) => {
 
   return (
     <div>
+      <Popup
+        content={<FormattedHTMLMessage id="paste-text-upload-instructions" />}
+        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+      />
       <FormControl
         as="input"
         value={title}

@@ -3,9 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Button, Dropdown } from 'react-bootstrap'
-import { Divider } from 'semantic-ui-react'
-import { learningLanguageSelector, dictionaryLanguageSelector, useCurrentUser, translatableLanguages } from 'Utilities/common'
+import { Button } from 'react-bootstrap'
+import { Divider, Popup } from 'semantic-ui-react'
+import {
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  useCurrentUser,
+  translatableLanguages,
+} from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
@@ -90,21 +95,41 @@ const UploadFromFile = ({ closeModal }) => {
 
   return (
     <div>
+      <Popup
+        content={<FormattedHTMLMessage id="file-upload-instructions" />}
+        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+      />
       <br />
+      <input
+        id="flashcard"
+        name="flashcard"
+        type="file"
+        accept=".docx, .txt"
+        onChange={onFlashcardChange}
+        style={{ display: 'none' }}
+      />
+
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {flashcardFilename && (
+          <div style={{ marginBottom: '6px', fontSize: '0.9em' }}>{flashcardFilename}</div>
+        )}
+      </div>
       <div className="space-evenly pt-lg">
-        <input id="story" name="story" type="file" accept=".docx, .txt" onChange={onStoryChange} />
-        <label className="file-upload-btn" htmlFor="story">
-          {storyLabel}
-        </label>
-        <Button disabled={submitStoryDisabled} onClick={handleStorySubmit} style={{ minWidth: '10em' }}>
-          {storyUploading ? (
-            <Spinner inline />
-          ) : (
-            <FormattedMessage id="Submit" />
-          )}
+        <Button as="label" htmlFor="flashcard" style={{ minWidth: '10em', margin: 0 }}>
+          <FormattedMessage id="choose-a-file" />
+        </Button>
+
+        <Button
+          disabled={submitFlashcardDisabled}
+          onClick={handleFlashcardSubmit}
+          style={{ minWidth: '10em' }}
+        >
+          {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
         </Button>
       </div>
+
       <Divider />
+
       <br />
       <span className="upload-instructions">
         <FormattedHTMLMessage id="flashcard-upload-instructions" />
@@ -132,16 +157,22 @@ const UploadFromFile = ({ closeModal }) => {
         </select>
       </div>
       <div className="space-evenly pt-lg">
-        <input id="flashcard" name="flashcard" type="file" accept=".docx, .txt" onChange={onFlashcardChange} />
+        <input
+          id="flashcard"
+          name="flashcard"
+          type="file"
+          accept=".docx, .txt"
+          onChange={onFlashcardChange}
+        />
         <label className="file-upload-btn" htmlFor="flashcard">
           {flashcardLabel}
         </label>
-        <Button disabled={submitFlashcardDisabled} onClick={handleFlashcardSubmit} style={{ minWidth: '10em' }}>
-          {storyUploading ? (
-            <Spinner inline />
-          ) : (
-            <FormattedMessage id="Submit" />
-          )}
+        <Button
+          disabled={submitFlashcardDisabled}
+          onClick={handleFlashcardSubmit}
+          style={{ minWidth: '10em' }}
+        >
+          {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
         </Button>
       </div>
     </div>
