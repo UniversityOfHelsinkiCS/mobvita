@@ -63,22 +63,22 @@ const UploadPastedText = ({ closeModal }) => {
     <div>
       <Popup
         content={<FormattedHTMLMessage id="paste-text-upload-instructions" />}
-        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+        trigger={<Icon name="info circle" />}
       />
       <FormControl
         as="input"
         value={title}
-        style={{ marginTop: '1em', marginBottom: '1em' }}
+        style={{ marginTop: '12px', marginBottom: '12px' }}
         onChange={({ target }) => setTitle(target.value)}
         placeholder={intl.formatMessage({ id: 'story-title' })}
       />
       <FormControl
         as="textarea"
-        rows={8}
+        rows={10}
         className="story-text-input"
         value={text}
         onChange={handleTextChange}
-        style={{ marginTop: '1em', marginBottom: '1em' }}
+        style={{ marginTop: '12px', marginBottom: '12px' }}
       />
       <div>
         <div className="bold">
@@ -86,7 +86,7 @@ const UploadPastedText = ({ closeModal }) => {
           {` ${charactersLeft}`}
         </div>
         <div className="row-flex">
-          <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '1em' }}>
+          <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '12px' }}>
             {pending || storyId ? (
               <Spinner inline />
             ) : (
@@ -96,14 +96,14 @@ const UploadPastedText = ({ closeModal }) => {
             )}
           </Button>
           {titleTaken && (
-            <span style={{ marginLeft: '.5em', marginTop: '.75em', color: '#FF0000' }}>
+            <span style={{ marginLeft: '.5em', marginTop: '12px', color: '#FF0000' }}>
               <FormattedHTMLMessage id="story-title-already-taken" />
             </span>
           )}
         </div>
       </div>
       {textTooLong && (
-        <span className="additional-info" style={{ marginTop: '.5em' }}>
+        <span className="additional-info" style={{ marginTop: '12px' }}>
           <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
         </span>
       )}

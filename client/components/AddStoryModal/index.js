@@ -93,7 +93,7 @@ const AddStoryModal = ({ open, setOpen }) => {
           <div /> {/* spacer to keep title centered */}
         </div>
       </Modal.Header>
-      <Modal.Content>{renderComponent()}</Modal.Content>
+      <Modal.Content style={{ flex: 1, overflow: 'auto', padding: '12px 16px' }}>{renderComponent()}</Modal.Content>
     </Modal>
   )
 }
