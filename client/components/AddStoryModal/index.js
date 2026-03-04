@@ -7,7 +7,6 @@ import StoryInputOptions from './StoryInputOptions'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
-import GenerateStories from './GenerateStories'
 
 const AddStoryModal = ({ open, setOpen }) => {
   const { lesson_topics } = useSelector(({ metadata }) => metadata)
