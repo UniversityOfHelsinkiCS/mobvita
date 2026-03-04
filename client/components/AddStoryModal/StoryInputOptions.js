@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
 const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
@@ -17,6 +17,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
             onClick={() => setActiveComponent('web')}
             primary
           >
+            <Icon name="cloud upload" style={{ marginRight: '8px' }} />
             <FormattedMessage id="upload-from-web" />
           </Button>
           <Button
@@ -24,6 +25,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
             onClick={() => setActiveComponent('file')}
             primary
           >
+            <Icon name="file upload" style={{ marginRight: '8px' }} />
             <FormattedMessage id="upload-stories" />
           </Button>
         </div>
@@ -33,6 +35,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
             onClick={() => setActiveComponent('paste')}
             primary
           >
+            <Icon name="paste" style={{ marginRight: '8px' }} />
             <FormattedMessage id="paste-a-text" />
           </Button>
           {lesson_topics?.length !== 0 && (
@@ -41,6 +44,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
               onClick={() => setActiveComponent('generate')}
               primary
             >
+              <Icon name="magic" style={{ marginRight: '8px' }} />
               <FormattedMessage id="go-generating" />
             </Button>
           )}
