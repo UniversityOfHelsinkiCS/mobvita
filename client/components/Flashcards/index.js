@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import FlashcardMenu from './FlashcardMenu'
@@ -15,8 +15,6 @@ import SettingButton from 'Components/SettingsButton'
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
-
-  const intl = useIntl()
 
   const history = useHistory()
   const { width } = useWindowDimensions()
