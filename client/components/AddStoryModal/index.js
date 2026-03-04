@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Modal, Button, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { useCurrentUser } from 'Utilities/common'
@@ -63,16 +63,37 @@ const AddStoryModal = ({ open, setOpen }) => {
   return (
     <Modal
       open={open}
-      size="small"
+      size={false}
+      style={{ display: 'flex', width: '720px', height: '480px' }}
       closeIcon={{ style: { top: '8px', right: '8px' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
     >
-      <Modal.Header style={{ textAlign: 'center' }}>
-        {headerText}
+      <Modal.Header style={{ padding: '12px 16px' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '40px 1fr 40px',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            basic
+            icon
+            onClick={() => setActiveComponent('main')}
+            disabled={activeComponent === 'main'}
+            style={{ justifySelf: 'start' }}
+          >
+            <Icon name="left chevron" />
+          </Button>
+
+          <div style={{ justifySelf: 'center', textAlign: 'center', fontWeight: 600 }}>
+            {headerText}
+          </div>
+
+          <div /> {/* spacer to keep title centered */}
+        </div>
       </Modal.Header>
-      <Modal.Content>
-        {renderComponent()}
-      </Modal.Content>
+      <Modal.Content>{renderComponent()}</Modal.Content>
     </Modal>
   )
 }
