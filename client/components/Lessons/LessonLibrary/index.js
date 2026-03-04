@@ -37,38 +37,36 @@ import ThemeView from '../ThemeView'
 import SelectGrammarLevel from '../SelectGrammarLevel'
 import LessonStartMenu from '../LessonStartMenu'
 
-import './LessonLibraryStyles.css';
+import './LessonLibraryStyles.css'
 
-
-const StyledMark = (localizedMarkString) => 
-  (props) => {
-    const StyledMarkSpan = styled.span`
-      border-left: 10px solid transparent; 
-      border-right: 10px solid transparent; 
-      border-top: 15px solid #000; 
-      padding: 0;
-      &:hover::before {
-        content: "${localizedMarkString}" ;
-        position: absolute;
-        background-color: #333;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 4px;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0.9;
-        z-index: 1;
-      }
-    `
-    return <StyledMarkSpan {...props} />
-  }
+const StyledMark = localizedMarkString => props => {
+  const StyledMarkSpan = styled.span`
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid #000;
+    padding: 0;
+    &:hover::before {
+      content: '${localizedMarkString}';
+      position: absolute;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.9;
+      z-index: 1;
+    }
+  `
+  return <StyledMarkSpan {...props} />
+}
 
 const LessonList = () => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  
+
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
   const {
@@ -87,7 +85,11 @@ const LessonList = () => {
     lessons,
   } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
-  const { pending: lessonPending, lesson, step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
+  const {
+    pending: lessonPending,
+    lesson,
+    step: goStep,
+  } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -98,14 +100,19 @@ const LessonList = () => {
   const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
   const [showStartMenu, setShowStartMenu] = useState(true)
 
-  const { topic_ids: selectedTopicIds, semantic: selectedSemantics, vocab_diff, num_visited_exercises } = lesson
+  const {
+    topic_ids: selectedTopicIds,
+    semantic: selectedSemantics,
+    vocab_diff,
+    num_visited_exercises,
+  } = lesson
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
 
   const [libraries, setLibraries] = useState({
     private: false,
     group: false,
   })
-  
+
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -128,33 +135,37 @@ const LessonList = () => {
     if (!userPending && teacherView) setLibrary('group')
   }, [teacherView, userPending])
 
-  
-
   useEffect(() => {
     dispatch(getLessonTopics())
     dispatch(getGroups())
     if (teacherView) setLibrary('group')
-    if (has_seen_lesson_tour && (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView) ) {
+    if (
+      has_seen_lesson_tour &&
+      (savedLibrarySelection == 'group' || savedLibrarySelection == 'public' || teacherView)
+    ) {
       setLibrary('group')
       dispatch(getLessonInstance(savedGroupSelection))
-    }
-    else {
+    } else {
       setLibrary('private')
       dispatch(getLessonInstance())
     }
   }, [])
-  
+
   useEffect(() => {
     if (!lessonPending) {
-        setSliderValue(vocab_diff)
-        if (goStep == -1 && selectedTopicIds && selectedSemantics && selectedTopicIds.length && selectedSemantics.length) {
-          dispatch(setLessonStep(2))
-        }
-        else if (goStep == -1 && (libraries.private || teacherView && libraries.group)) {
-          dispatch(setLessonStep(0))
-        }
+      setSliderValue(vocab_diff)
+      if (
+        goStep == -1 &&
+        selectedTopicIds &&
+        selectedSemantics &&
+        selectedTopicIds.length &&
+        selectedSemantics.length
+      ) {
+        dispatch(setLessonStep(2))
+      } else if (goStep == -1 && (libraries.private || (teacherView && libraries.group))) {
+        dispatch(setLessonStep(0))
+      }
     }
-    
   }, [lessonPending])
 
   useEffect(() => {
@@ -164,8 +175,12 @@ const LessonList = () => {
   }, [groupPending])
 
   useEffect(() => {
-    if (userPending && (libraries.group && savedLibrarySelection === 'private' || 
-      libraries.private && savedLibrarySelection === 'group')) setLibrary(savedLibrarySelection)
+    if (
+      userPending &&
+      ((libraries.group && savedLibrarySelection === 'private') ||
+        (libraries.private && savedLibrarySelection === 'group'))
+    )
+      setLibrary(savedLibrarySelection)
   }, [savedLibrarySelection])
 
   useEffect(() => {
@@ -200,7 +215,7 @@ const LessonList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     dispatch(clearLessonInstanceState())
-    dispatch(getLessonInstance(library == 'group' && savedGroupSelection || null))
+    dispatch(getLessonInstance((library == 'group' && savedGroupSelection) || null))
     dispatch(setLessonStep(-1))
   }
 
@@ -210,7 +225,6 @@ const LessonList = () => {
     value: group.group_id,
   }))
 
-
   const handleGroupChange = (_e, option) => {
     dispatch(updateGroupSelect(option.value))
     dispatch(clearLessonInstanceState())
@@ -219,44 +233,47 @@ const LessonList = () => {
   }
 
   function roundToNearestHalfInt(number) {
-    const roundedNumber = Math.round(number);
+    const roundedNumber = Math.round(number)
     if (Math.abs(number - roundedNumber) === 0.5) {
-      return roundedNumber + (number > 0 ? 0.5 : -0.5);
+      return roundedNumber + (number > 0 ? 0.5 : -0.5)
     }
-    return roundedNumber;
+    return roundedNumber
   }
 
   const getSliderThumbColor = () => {
-    if (sliderValue - vocabulary_score > 0 & sliderValue - vocabulary_score <= 0.5) {
-      return 'red0-slider'; 
+    if ((sliderValue - vocabulary_score > 0) & (sliderValue - vocabulary_score <= 0.5)) {
+      return 'red0-slider'
     }
-    if (sliderValue - vocabulary_score > 0.5 & sliderValue - vocabulary_score <= 1.0) {
-      return 'red1-slider'; 
+    if ((sliderValue - vocabulary_score > 0.5) & (sliderValue - vocabulary_score <= 1.0)) {
+      return 'red1-slider'
     }
-    if (sliderValue - vocabulary_score > 1.0 & sliderValue - vocabulary_score <= 1.5) {
-      return 'red2-slider'; 
+    if ((sliderValue - vocabulary_score > 1.0) & (sliderValue - vocabulary_score <= 1.5)) {
+      return 'red2-slider'
     }
     if (sliderValue - vocabulary_score > 1.5) {
-      return 'red3-slider'; 
+      return 'red3-slider'
     }
 
-    if (sliderValue - vocabulary_score >= -0.5 & sliderValue - vocabulary_score < 0) {
-      return 'green0-slider'; 
+    if ((sliderValue - vocabulary_score >= -0.5) & (sliderValue - vocabulary_score < 0)) {
+      return 'green0-slider'
     }
-    if (sliderValue - vocabulary_score >= -1.0 & sliderValue - vocabulary_score < -0.5) {
-      return 'green1-slider'; 
+    if ((sliderValue - vocabulary_score >= -1.0) & (sliderValue - vocabulary_score < -0.5)) {
+      return 'green1-slider'
     }
-    if (sliderValue - vocabulary_score >= -1.5 & sliderValue - vocabulary_score < -1.0) {
-      return 'green2-slider'; 
+    if ((sliderValue - vocabulary_score >= -1.5) & (sliderValue - vocabulary_score < -1.0)) {
+      return 'green2-slider'
     }
     if (sliderValue - vocabulary_score < -1.5) {
-      return 'green3-slider'; 
+      return 'green3-slider'
     }
-    return 'white-slider';
-  };
-  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`;
-  const markComp = StyledMark(intl.formatMessage({
-      id: 'Recommended vocabulary difficulty' }))
+    return 'white-slider'
+  }
+  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
+  const markComp = StyledMark(
+    intl.formatMessage({
+      id: 'Recommended vocabulary difficulty',
+    })
+  )
   const lessonVocabularyControls = bigScreen ? (
     <>
       <div className="lesson-vocab-slider-container" style={{ width: '450px' }}>
@@ -273,11 +290,17 @@ const LessonList = () => {
           max={3.3} // 3.3
           step={0.2}
           value={sliderValue}
-          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+          disabled={
+            lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
+          }
         />
         <div className="space-between exercise-density-slider-label-cont bold">
-          <span><FormattedMessage id='Easy' /></span>
-          <span><FormattedMessage id='Hard' /></span>
+          <span>
+            <FormattedMessage id="Easy" />
+          </span>
+          <span>
+            <FormattedMessage id="Hard" />
+          </span>
         </div>
       </div>
     </>
@@ -297,65 +320,87 @@ const LessonList = () => {
           max={3.3} // 3.3
           step={0.02}
           value={sliderValue}
-          disabled={lessonPending || !(libraries.private || currentGroup && currentGroup.is_teaching)}
+          disabled={
+            lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
+          }
         />
         <div className="space-between exercise-density-slider-label-cont bold">
-          <span><FormattedMessage id='Easy' /></span>
-          <span><FormattedMessage id='Hard' /></span>
+          <span>
+            <FormattedMessage id="Easy" />
+          </span>
+          <span>
+            <FormattedMessage id="Hard" />
+          </span>
         </div>
       </div>
     </>
   )
-  const link = '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
-  const lessonReady = selectedSemantics && selectedSemantics.length > 0 && selectedTopicIds && selectedTopicIds.length > 0
+  const link =
+    '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
+  const lessonReady =
+    selectedSemantics &&
+    selectedSemantics.length > 0 &&
+    selectedTopicIds &&
+    selectedTopicIds.length > 0
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (
     <Container>
-      <div 
-        className='row justify-center align-center'
+      <div
+        className="row justify-center align-center"
         style={{
-             color: `${lessonReadyColor}`, textAlign: 'center',
-             fontWeight: 500,
-             margin: '18px', fontSize: 'large'
-           }}>
-        <div className='col col-12'>
-        {!lessonPending && lessonReady ? <FormattedMessage id="lessons-ready-for-practice" />
-        : <FormattedMessage id="lessons-not-ready-for-practice" />}
+          color: `${lessonReadyColor}`,
+          textAlign: 'center',
+          fontWeight: 500,
+          margin: '18px',
+          fontSize: 'large',
+        }}
+      >
+        <div className="col col-12">
+          {!lessonPending && lessonReady ? (
+            <FormattedMessage id="lessons-ready-for-practice" />
+          ) : (
+            <FormattedMessage id="lessons-not-ready-for-practice" />
+          )}
         </div>
       </div>
-      <div className='row justify-center align-center space-between' style={{ 'display': 'flex' }}>
-        <div className='col col-md-5 offset-md-1' style={{padding: 0}}>
-          <LessonPracticeThemeHelp selectedThemes={selectedSemantics ? selectedSemantics : []} always_show={true} />
+      <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
+        <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
+          <LessonPracticeThemeHelp
+            selectedThemes={selectedSemantics ? selectedSemantics : []}
+            always_show={true}
+          />
         </div>
-        <div className='col col-md-5' style={{padding: 0}}>
+        <div className="col col-md-5" style={{ padding: 0 }}>
           <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
         </div>
       </div>
-      {!teacherView &&
-       (<Link 
-          to={link} className='row justify-center align-center'
-        >
-            <Button
-              size="big"
-              className="lesson-practice"
-              disabled={
-                lessonPending ||
-                  !selectedTopicIds ||
-                  !selectedSemantics ||
-                  selectedTopicIds.length === 0 ||
-                  selectedSemantics.length === 0 ||
-                  noResults
-              }
-              style={{
-                fontSize: '1.3em', fontWeight: 500,
-                margin: '3em 0', padding: '1rem 0',
-                width: '100%', border: '2px solid #000',
-              }}
-            >
-              {lessonPending && <Icon name="spinner" loading />}
-              <FormattedMessage id="start-practice-lesson" />
-            </Button>
-        </Link>)}
+      {!teacherView && (
+        <Link to={link} className="row justify-center align-center">
+          <Button
+            size="big"
+            className="lesson-practice"
+            disabled={
+              lessonPending ||
+              !selectedTopicIds ||
+              !selectedSemantics ||
+              selectedTopicIds.length === 0 ||
+              selectedSemantics.length === 0 ||
+              noResults
+            }
+            style={{
+              fontSize: '1.3em',
+              fontWeight: 500,
+              margin: '3em 0',
+              padding: '1rem 0',
+              width: '100%',
+              border: '2px solid #000',
+            }}
+          >
+            {lessonPending && <Icon name="spinner" loading />}
+            <FormattedMessage id="start-practice-lesson" />
+          </Button>
+        </Link>
+      )}
     </Container>
   )
 
@@ -436,9 +481,7 @@ const LessonList = () => {
           />
         )}
         {metaPending || groupPending ? (
-          <Placeholder>
-            <Placeholder.Line />
-          </Placeholder>
+          <Spinner fullHeight size={60} />
         ) : noResults ? (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-lessons-found" />

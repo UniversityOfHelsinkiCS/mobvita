@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
 import { images } from 'Utilities/common'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import Header from 'Components/Header'
 import Subheader from 'Components/Subheader'
 import LeaderboardList from './LeaderboardList'
 import LastWeeksWinners from './LastWeeksWinners'
+import Spinner from 'Components/Spinner'
 
 const Leaderboard = () => {
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const Leaderboard = () => {
         <Header translationId="Hours practiced" />
         {pending && (
           <div>
-            <Spinner animation="grow" variant="primary" size="sm" />
+            <Spinner fullHeight/>
             <span
               style={{
                 color: '#777',
