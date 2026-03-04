@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Button } from 'react-bootstrap'
-import { Divider, Popup } from 'semantic-ui-react'
+import { Divider, Popup, Icon } from 'semantic-ui-react'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,

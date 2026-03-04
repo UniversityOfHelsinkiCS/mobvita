@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Button, Dropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { Popup } from 'semantic-ui-react'
+import { Popup, Icon } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 
 const GenerateStories = ({ closeModal }) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Icon } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
