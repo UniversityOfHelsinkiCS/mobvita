@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Icon } from 'semantic-ui-react'
+import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
@@ -18,6 +18,7 @@ const UploadFromWeb = ({ closeModal }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const [accordionState, setAccordionState] = useState(-1)
 
   const storyUploading = pending || storyId
 
@@ -39,6 +40,10 @@ const UploadFromWeb = ({ closeModal }) => {
     }
   }
 
+  const handleClick = useCallback((e, { index }) => {
+    setAccordionState(prev => (prev === index ? -1 : index))
+  }, [])
+
   return (
     <div>
       <Popup
@@ -57,12 +62,23 @@ const UploadFromWeb = ({ closeModal }) => {
         </Form>
       </div>
 
-      <div style={{ display: 'flex', marginTop: '24px' }}>
+      <div style={{ display: 'flex', marginTop: '20px' }}>
         <Button form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
           {storyUploading ? <Spinner inline size={28} /> : <FormattedMessage id="Confirm" />}
         </Button>
       </div>
-      <RecommendedSites />
+
+      <div style={{ marginTop: '24px' }}>
+        <Accordion styled fluid>
+          <Accordion.Title active={accordionState === 0} index={0} onClick={handleClick}>
+            <Icon name="dropdown" />
+            <FormattedMessage id="recommended-sites" />
+          </Accordion.Title>
+          <Accordion.Content active={accordionState === 0}>
+            <RecommendedSites />
+          </Accordion.Content>
+        </Accordion>
+      </div>
     </div>
   )
 }

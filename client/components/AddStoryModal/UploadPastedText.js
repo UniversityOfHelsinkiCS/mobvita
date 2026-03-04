@@ -63,7 +63,7 @@ const UploadPastedText = ({ closeModal }) => {
     <div>
       <Popup
         content={<FormattedHTMLMessage id="paste-text-upload-instructions" />}
-        trigger={<Icon name="info circle" />}
+        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }}  />}
       />
       <FormControl
         as="input"
