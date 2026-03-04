@@ -1,0 +1,11 @@
+.add-story-modal {
+  width: 720px;
+  height: 480px;
+  display: flex;
+}
+
+@media (max-width: 800px) {
+  .add-story-modal {
+    width: 90% !important;
+  }
+}

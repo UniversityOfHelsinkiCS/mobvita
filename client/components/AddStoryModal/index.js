@@ -8,6 +8,7 @@ import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
 
+
 const AddStoryModal = ({ open, setOpen }) => {
   const { lesson_topics } = useSelector(({ metadata }) => metadata)
   const user = useCurrentUser()
@@ -58,7 +59,7 @@ const AddStoryModal = ({ open, setOpen }) => {
     <Modal
       open={open}
       size={false}
-      style={{ display: 'flex', width: '720px', height: '480px' }}
+      className='add-story-modal'
       closeIcon={{ style: { top: '8px', right: '8px' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
     >
