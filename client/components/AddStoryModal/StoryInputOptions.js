@@ -1,8 +1,16 @@
 import React from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
+import { useHistory } from 'react-router-dom'
 
 const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
+  const history = useHistory()
+
+  const goToGeneratePage = () => {
+    if (typeof closeModal === 'function') closeModal()
+    history.push('/story-generation')
+  }
+
   return (
     <>
       {userIsAnonymous && (
@@ -41,7 +49,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           {lesson_topics?.length !== 0 && (
             <Button
               className="add-new-story-button"
-              onClick={() => setActiveComponent('generate')}
+              onClick={goToGeneratePage}
               primary
             >
               <Icon name="magic" style={{ marginRight: '8px' }} />

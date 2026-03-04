@@ -29,9 +29,6 @@ const AddStoryModal = ({ open, setOpen }) => {
     case 'paste':
       headerText = <FormattedMessage id="paste-a-text" />
       break
-    case 'generate':
-      headerText = <FormattedMessage id="go-generating" />
-      break
     default:
       headerText = null
   }
@@ -53,8 +50,6 @@ const AddStoryModal = ({ open, setOpen }) => {
         return <UploadFromFile closeModal={() => setActiveComponent('main')} />
       case 'paste':
         return <UploadPastedText closeModal={() => setActiveComponent('main')} />
-      case 'generate':
-        return <GenerateStories closeModal={() => setActiveComponent('main')} />
       default:
         return null
     }
