@@ -75,7 +75,9 @@ const UploadFromWeb = ({ closeModal }) => {
             <FormattedMessage id="recommended-sites" />
           </Accordion.Title>
           <Accordion.Content active={accordionState === 0}>
-            <RecommendedSites />
+            <div style={{ maxHeight: 170, overflowY: 'auto' }}>
+              <RecommendedSites />
+            </div>
           </Accordion.Content>
         </Accordion>
       </div>
