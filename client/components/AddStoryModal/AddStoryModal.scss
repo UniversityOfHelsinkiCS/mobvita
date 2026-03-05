@@ -1,11 +1,71 @@
 .add-story-modal {
-  width: 720px !important;
+  display: flex !important;
+  flex-direction: column !important;
   height: 480px !important;
-  display: flex;
+  width: 720px !important;
+  position: relative !important;
 }
 
 @media (max-width: 800px) {
   .add-story-modal {
     width: 90% !important;
   }
+}
+
+.add-story-modal-body {
+  display: flex !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+
+.add-story-modal .content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: 419px !important;
+}
+
+.add-story-modal-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: auto;
+  padding: 12px 16px;
+  height: 100%;
+}
+
+.story-input-options-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+}
+
+.story-input-options-anon-warning {
+  color: red;
+}
+
+.story-input-options-center {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-input-options-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.story-input-options-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
 }
