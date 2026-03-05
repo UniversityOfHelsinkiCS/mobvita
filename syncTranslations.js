@@ -17,11 +17,15 @@ async function addTranslations(auth) {
   Promise.all([
     sheets.spreadsheets.values.get({
       spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',
-      range: 'C:K',
+      range: "C:K",
     }),
     sheets.spreadsheets.values.get({
       spreadsheetId: '1qUitRG9RYZALDQId0CGM6tWOdmZmqCKEw6iEQcSyBMk',
-      range: 'C:K',
+      range: "'master'!C:K",
+    }),
+    sheets.spreadsheets.values.get({
+      spreadsheetId: '1qUitRG9RYZALDQId0CGM6tWOdmZmqCKEw6iEQcSyBMk',
+      range: "'DDLANG UI'!C:K",
     }),
   ]).then(results => {
     const translations = {}

@@ -1722,7 +1722,7 @@
     "story-generated": "Tulos",
     "generate-a-story": "Revitan luo uuden tarinan",
     "generate-story-instruction": "Revita voi luoda uuden tarinan:\r\n<ul><li>joka keskittyy kaikkiin <b>oppitunnin aiheisiin</b>, joita haluat harjoitella,\r\n</li><li>ja mistä tahansa sinua kiinnostavasta aiheesta!</li></ul>",
-    "go-generating": "Luo uusi tarina!",
+    "go-generating": "Luo uusi tarina",
     "story-generation-error": "Tekstin luomisessa ilmeni ongelma. Yritä uudelleen!",
     "regenerate-story": "Luo uusi teksti",
     "candidate-available": "{candidate_count} käytettävissä olevaa harjoitusta",
@@ -1791,5 +1791,6 @@
     "regenerating": "Regenerating the questions",
     "loading": "Ladataan...",
     "loading-story": "Tarinaa ladataan...",
-    "practice-reading-comprehension": "Practice Reading Comprehension"
+    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä",
+    "explain-recommended-sites": "Tässä on joitakin sivustoja, joita suosittelemme.\nVoit myös lisätä omia sivustoja tähän listaan!\nNäin se tehdään: …"
 }

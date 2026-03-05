@@ -1524,7 +1524,7 @@
     "story-generated": "Result",
     "generate-a-story": "Let Revita generate a new story",
     "generate-story-instruction": "Revita can generate a new story:\n<ul><li>which will focus on <b>any lesson topics</b> you want to practice,</li>\n<li>and about <b>any subject</b> that interests you!</li>\n</ul>",
-    "go-generating": "Generate new story!",
+    "go-generating": "Generate new story",
     "story-generation-error": "A problem occurred in generating the text. Please try again!",
     "regenerate-story": "Generate another text",
     "candidate-available": "{candidate_count} exercises available",
@@ -1645,5 +1645,6 @@
     "regenerating": "Regenerating the questions",
     "loading": "Loading...",
     "loading-story": "Loading story...",
-    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä"
+    "practice-reading-comprehension": "Practice Reading Comprehension",
+    "explain-recommended-sites": "Here are some sites we recommend.\nYou can also add your own sites to this list!\nHere is how: ..."
 }

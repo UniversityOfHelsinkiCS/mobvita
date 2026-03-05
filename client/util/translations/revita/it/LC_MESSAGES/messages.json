@@ -1721,7 +1721,7 @@
     "story-generated": "Risultato",
     "generate-a-story": "Revita genererà una nuova storia",
     "generate-story-instruction": "Revita può generare una nuova storia:\n<ul><li>che si concentrerà su tutti gli <b>argomenti delle lezioni</b> su cui desideri esercitarti,</li>\n<li>e su qualsiasi <b>tema</b> che ti interessa!</li></ul>",
-    "go-generating": "Genera nuova storia!",
+    "go-generating": "Genera nuova storia",
     "story-generation-error": "Si è verificato un problema nella generazione del testo. Riprova!",
     "regenerate-story": "Genera un altro testo",
     "candidate-available": "{candidate_count} esercizi sono disponibili",
@@ -1790,5 +1790,6 @@
     "regenerating": "Regenerating the questions",
     "loading": "Loading...",
     "loading-story": "Loading story...",
-    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä"
+    "practice-reading-comprehension": "Practice Reading Comprehension",
+    "explain-recommended-sites": "Here are some sites we recommend.\nYou can also add your own sites to this list!\nHere is how: ..."
 }

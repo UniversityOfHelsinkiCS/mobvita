@@ -775,7 +775,7 @@
     "story-generated": "Результат",
     "generate-a-story": "Нехай Ревіта генерує нову історію",
     "generate-story-instruction": "Revita може створити нову історію:\n<ul><li>яка буде зосереджена на <b>будь-яких темах уроків</b>, які ви хочете практикувати,</li>\n<li>та про <b>будь-яку тему</b>, яка вас цікавить!</li></ul>",
-    "go-generating": "Створити нову історію!",
+    "go-generating": "Створити нову історію",
     "story-generation-error": "Виникла проблема при генерації тексту. Будь ласка, спробуйте ще раз!",
     "regenerate-story": "Згенерувати інший текст",
     "candidate-available": "{candidate_count} кандидатів доступно",
@@ -900,5 +900,6 @@
     "regenerating": "Regenerating the questions",
     "loading": "Loading...",
     "loading-story": "Loading story...",
-    "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä"
+    "practice-reading-comprehension": "Practice Reading Comprehension",
+    "explain-recommended-sites": "Here are some sites we recommend.\nYou can also add your own sites to this list!\nHere is how: ..."
 }
