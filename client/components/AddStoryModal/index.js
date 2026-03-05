@@ -58,7 +58,6 @@ const AddStoryModal = ({ open, setOpen }) => {
   return (
     <Modal
       open={open}
-      size={false}
       className='add-story-modal'
       closeIcon={{ style: { top: '8px', right: '8px' }, color: 'black', name: 'close' }}
       onClose={() => setOpen(false)}
@@ -88,7 +87,11 @@ const AddStoryModal = ({ open, setOpen }) => {
           <div /> {/* spacer to keep title centered */}
         </div>
       </Modal.Header>
-      <Modal.Content style={{ flex: 1, overflow: 'auto', padding: '12px 16px' }}>{renderComponent()}</Modal.Content>
+      <Modal.Content className="add-story-modal-body">
+        <div className='add-story-modal-content'>
+          {renderComponent()}
+        </div>
+      </Modal.Content>  
     </Modal>
   )
 }

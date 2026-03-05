@@ -105,16 +105,18 @@ const UploadFromFile = ({ closeModal }) => {
       <Popup
         hoverable
         positionFixed
-        content={mode === 'story' ? <FormattedMessage id="file-upload-instructions" /> : <FormattedMessage id="flashcard-upload-instructions" />}
+        content={mode === 'story' ? <FormattedHTMLMessage id="file-upload-instructions" /> : <FormattedHTMLMessage id="flashcard-upload-instructions" />}
         trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
       />
 
       <LibraryTabs
         values={tabValues}
+        reverse
         onClick={key => {
           setMode(key === 'flashcards' ? 'flashcard' : 'story')
         }}
         additionalClass="library-tabs-white-bg"
+        style={{ marginTop: '4px' }}
       />
 
       <br />
@@ -136,7 +138,7 @@ const UploadFromFile = ({ closeModal }) => {
             )}
           </div>
 
-          <div className="space-evenly pt-lg">
+          <div className="upload-from-file-button">
             <Button as="label" htmlFor="story" style={{ minWidth: '10em', margin: 0 }}>
               <FormattedMessage id="choose-a-file" />
             </Button>
@@ -189,7 +191,7 @@ const UploadFromFile = ({ closeModal }) => {
             )}
           </div>
 
-          <div className="space-evenly pt-lg">
+          <div className="upload-from-file-button">
             <Button as="label" htmlFor="flashcard" style={{ minWidth: '10em', margin: 0 }}>
               <FormattedMessage id="choose-a-file" />
             </Button>
