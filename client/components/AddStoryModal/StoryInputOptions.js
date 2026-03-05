@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useHistory } from 'react-router-dom'
 
@@ -23,7 +24,6 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           <Button
             className="add-new-story-button"
             onClick={() => setActiveComponent('web')}
-            primary
           >
             <Icon name="cloud upload" style={{ marginRight: '8px' }} />
             <FormattedMessage id="upload-from-web" />
@@ -31,7 +31,6 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           <Button
             className="add-new-story-button"
             onClick={() => setActiveComponent('file')}
-            primary
           >
             <Icon name="file upload" style={{ marginRight: '8px' }} />
             <FormattedMessage id="upload-stories" />
@@ -41,7 +40,6 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           <Button
             className="add-new-story-button"
             onClick={() => setActiveComponent('paste')}
-            primary
           >
             <Icon name="paste" style={{ marginRight: '8px' }} />
             <FormattedMessage id="paste-a-text" />
@@ -50,7 +48,6 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
             <Button
               className="add-new-story-button"
               onClick={goToGeneratePage}
-              primary
             >
               <Icon name="magic" style={{ marginRight: '8px' }} />
               <FormattedMessage id="go-generating" />
