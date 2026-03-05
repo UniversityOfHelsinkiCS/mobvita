@@ -4,12 +4,11 @@ import { CardGroup, CardContent, Card, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useHistory } from 'react-router-dom'
-
 import { images, cefrNumberToLevel } from 'Utilities/common'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
-import './LessonStartMenuStyles.css'
+import './LessonStartMenuStyles.scss'
 
 const LessonStartMenu = ({ setOpen }) => {
   const dispatch = useDispatch()
@@ -58,7 +57,7 @@ const LessonStartMenu = ({ setOpen }) => {
   }
 
   return (
-    <div className="lesson-start-menu-container">
+    <div className="lesson-start-menu-container universal-background">
       <CardGroup itemsPerRow={bigScreen ? 2 : 1}>
         <Card>
           <CardContent>
