@@ -16,7 +16,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import LibraryTabs from 'Components/LibraryTabs'
 
-const UploadFromFile = ({ closeModal }) => {
+const UploadFromFile = ({ closeModal, setActiveComponent }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const history = useHistory()
@@ -58,6 +58,7 @@ const UploadFromFile = ({ closeModal }) => {
     dispatch(postStory(data))
     dispatch(updateLibrarySelect('private'))
     dispatch(setNotification('processing-story', 'info'))
+    setActiveComponent()
     closeModal()
 
     if (history.location.pathname !== 'stories') history.push('/library')
