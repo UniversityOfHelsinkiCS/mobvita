@@ -38,18 +38,18 @@ const AddStoryModal = ({ open, setOpen }) => {
       case 'main':
         return (
           <StoryInputOptions
-            closeModal={() => setActiveComponent(null)}
+            closeModal={() => setActiveComponent('main')}
             lesson_topics={lesson_topics}
             userIsAnonymous={userIsAnonymous}
             setActiveComponent={setActiveComponent}
           />
         )
       case 'web':
-        return <UploadFromWeb closeModal={() => setActiveComponent('main')} />
+        return <UploadFromWeb closeModal={() => setOpen(false)} setActiveComponent={() => setActiveComponent('main')} />
       case 'file':
-        return <UploadFromFile closeModal={() => setActiveComponent('main')} />
+        return <UploadFromFile closeModal={() => setOpen(false)} setActiveComponent={() => setActiveComponent('main')} />
       case 'paste':
-        return <UploadPastedText closeModal={() => setActiveComponent('main')} />
+        return <UploadPastedText closeModal={() => setOpen(false)} setActiveComponent={() => setActiveComponent('main')} />
       default:
         return null
     }

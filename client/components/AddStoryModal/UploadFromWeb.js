@@ -11,7 +11,7 @@ import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import RecommendedSites from './RecommendedSites'
 import Spinner from 'Components/Spinner'
 
-const UploadFromWeb = ({ closeModal }) => {
+const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
   const history = useHistory()
   const dispatch = useDispatch()
@@ -34,6 +34,7 @@ const UploadFromWeb = ({ closeModal }) => {
       dispatch(postStory(newStory))
       dispatch(updateLibrarySelect('private'))
       setStoryUrl('')
+      setActiveComponent()
       closeModal()
 
       if (history.location.pathname !== 'library') history.push('/library')

@@ -10,7 +10,7 @@ import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 
-const UploadPastedText = ({ closeModal }) => {
+const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
   const history = useHistory()
   const maxCharacters = 50000
@@ -41,6 +41,7 @@ const UploadPastedText = ({ closeModal }) => {
       dispatch(setCustomUpload(true))
       await dispatch(postStory(newStory))
       dispatch(setNotification('processing-story', 'info'))
+      setActiveComponent()
       closeModal()
 
       if (history.location.pathname !== 'library') history.push('/library')
