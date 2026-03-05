@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
+import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
+import RecommendedSites from './RecommendedSites'
 import Spinner from 'Components/Spinner'
 
 const UploadFromWeb = ({ closeModal }) => {
@@ -16,6 +18,7 @@ const UploadFromWeb = ({ closeModal }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const [accordionState, setAccordionState] = useState(-1)
 
   const storyUploading = pending || storyId
 
@@ -37,36 +40,46 @@ const UploadFromWeb = ({ closeModal }) => {
     }
   }
 
+  const handleClick = useCallback((e, { index }) => {
+    setAccordionState(prev => (prev === index ? -1 : index))
+  }, [])
+
   return (
     <div>
-      <br />
-      <span className="pb-sm upload-instructions">
-        <FormattedHTMLMessage id="upload-from-web-instructions" />
-      </span>
-      <Form id="url-upload">
-        <Input
-          fluid
-          placeholder={intl.formatMessage({ id: 'enter-web-address' })}
-          value={storyUrl}
-          onChange={event => setStoryUrl(event.target.value)}
-          data-cy="new-story-input"
-          style={{ marginTop: '1.5em' }}
-        />
-      </Form>
-      <div className="flex pb-sm">
-        <Button
-          form="url-upload"
-          type="submit"
-          onClick={handleStorySubmit}
-          data-cy="submit-story"
-          style={{ marginTop: '1em' }}
-        >
-          {storyUploading ? (
-            <Spinner inline />
-          ) : (
-            <FormattedMessage id="Confirm" />
-          )}
+      <Popup
+        content={<FormattedHTMLMessage id="upload-from-web-instructions" />}
+        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+      />
+      <div style={{ marginTop: '20px' }}>
+        <Form id="url-upload">
+          <Input
+            fluid
+            placeholder={intl.formatMessage({ id: 'enter-web-address' })}
+            value={storyUrl}
+            onChange={event => setStoryUrl(event.target.value)}
+            data-cy="new-story-input"
+          />
+        </Form>
+      </div>
+
+      <div style={{ display: 'flex', marginTop: '20px' }}>
+        <Button form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
+          {storyUploading ? <Spinner inline size={28} /> : <FormattedMessage id="Confirm" />}
         </Button>
+      </div>
+
+      <div style={{ marginTop: '24px' }}>
+        <Accordion styled fluid>
+          <Accordion.Title active={accordionState === 0} index={0} onClick={handleClick}>
+            <Icon name="dropdown" />
+            <FormattedMessage id="recommended-sites" />
+          </Accordion.Title>
+          <Accordion.Content active={accordionState === 0}>
+            <div style={{ maxHeight: 170, overflowY: 'auto' }}>
+              <RecommendedSites />
+            </div>
+          </Accordion.Content>
+        </Accordion>
       </div>
     </div>
   )

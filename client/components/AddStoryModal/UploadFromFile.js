@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Button, Dropdown } from 'react-bootstrap'
-import { Divider } from 'semantic-ui-react'
-import { learningLanguageSelector, dictionaryLanguageSelector, useCurrentUser, translatableLanguages } from 'Utilities/common'
+import { Button } from 'react-bootstrap'
+import { Divider, Popup, Icon } from 'semantic-ui-react'
+import {
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  useCurrentUser,
+  translatableLanguages,
+} from 'Utilities/common'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
+import LibraryTabs from 'Components/LibraryTabs'
 
 const UploadFromFile = ({ closeModal }) => {
   const dispatch = useDispatch()
@@ -16,6 +22,7 @@ const UploadFromFile = ({ closeModal }) => {
   const history = useHistory()
   const user = useCurrentUser()
 
+  const [mode, setMode] = useState('story')
   const [storyFile, setStoryFile] = useState('')
   const [storyLabel, setStoryLabel] = useState(intl.formatMessage({ id: 'choose-a-file' }))
   const [storyFilename, setStoryFilename] = useState('')
@@ -88,65 +95,115 @@ const UploadFromFile = ({ closeModal }) => {
   const submitStoryDisabled = !storyFile || storyUploading
   const submitFlashcardDisabled = !flashcardFile || storyUploading
 
+  const tabValues = {
+    story: mode === 'story',
+    flashcards: mode === 'flashcard',
+  }
+
   return (
     <div>
+      <Popup
+        hoverable
+        positionFixed
+        content={mode === 'story' ? <FormattedMessage id="file-upload-instructions" /> : <FormattedMessage id="flashcard-upload-instructions" />}
+        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
+      />
+
+      <LibraryTabs
+        values={tabValues}
+        onClick={key => {
+          setMode(key === 'flashcards' ? 'flashcard' : 'story')
+        }}
+        additionalClass="library-tabs-white-bg"
+      />
+
       <br />
-      <span className="upload-instructions">
-        <FormattedHTMLMessage id="file-upload-instructions" />
-      </span>
-      <div className="space-evenly pt-lg">
-        <input id="story" name="story" type="file" accept=".docx, .txt" onChange={onStoryChange} />
-        <label className="file-upload-btn" htmlFor="story">
-          {storyLabel}
-        </label>
-        <Button disabled={submitStoryDisabled} onClick={handleStorySubmit} style={{ minWidth: '10em' }}>
-          {storyUploading ? (
-            <Spinner inline />
-          ) : (
-            <FormattedMessage id="Submit" />
-          )}
-        </Button>
-      </div>
-      <Divider />
-      <br />
-      <span className="upload-instructions">
-        <FormattedHTMLMessage id="flashcard-upload-instructions" />
-      </span>
-      <br />
-      <div>
-        <FormattedMessage id="flashcard-translation-target-language" />
-        <select
-          disabled={dictionaryOptions.length <= 1}
-          defaultValue={flashcardLanguage}
-          style={{
-            marginLeft: '0.5em',
-            border: 'none',
-            color: 'darkSlateGrey',
-            backgroundColor: 'white',
-            marginBottom: '1em',
-          }}
-          onChange={e => setFlashcardLanguage(e.target.value)}
-        >
-          {dictionaryOptions.map(option => (
-            <option key={option.key} value={option.value}>
-              {option.text}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="space-evenly pt-lg">
-        <input id="flashcard" name="flashcard" type="file" accept=".docx, .txt" onChange={onFlashcardChange} />
-        <label className="file-upload-btn" htmlFor="flashcard">
-          {flashcardLabel}
-        </label>
-        <Button disabled={submitFlashcardDisabled} onClick={handleFlashcardSubmit} style={{ minWidth: '10em' }}>
-          {storyUploading ? (
-            <Spinner inline />
-          ) : (
-            <FormattedMessage id="Submit" />
-          )}
-        </Button>
-      </div>
+
+      {mode === 'story' ? (
+        <div>
+          <input
+            id="story"
+            name="story"
+            type="file"
+            accept=".docx, .txt"
+            onChange={onStoryChange}
+            style={{ display: 'none' }}
+          />
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {storyFilename && (
+              <div style={{ marginBottom: '6px', fontSize: '0.9em' }}>{storyFilename}</div>
+            )}
+          </div>
+
+          <div className="space-evenly pt-lg">
+            <Button as="label" htmlFor="story" style={{ minWidth: '10em', margin: 0 }}>
+              <FormattedMessage id="choose-a-file" />
+            </Button>
+
+            <Button
+              disabled={submitStoryDisabled}
+              onClick={handleStorySubmit}
+              style={{ minWidth: '10em' }}
+            >
+              {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div>
+            <FormattedMessage id="flashcard-translation-target-language" />
+            <select
+              disabled={dictionaryOptions.length <= 1}
+              value={flashcardLanguage}
+              style={{
+                marginLeft: '0.5em',
+                border: 'none',
+                color: 'darkSlateGrey',
+                backgroundColor: 'white',
+                marginBottom: '1em',
+              }}
+              onChange={e => setFlashcardLanguage(e.target.value)}
+            >
+              {dictionaryOptions.map(option => (
+                <option key={option.key} value={option.value}>
+                  {option.text}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <input
+            id="flashcard"
+            name="flashcard"
+            type="file"
+            accept=".docx, .txt"
+            onChange={onFlashcardChange}
+            style={{ display: 'none', marginTop: '16px' }}
+          />
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {flashcardFilename && (
+              <div style={{ marginBottom: '6px', fontSize: '0.9em' }}>{flashcardFilename}</div>
+            )}
+          </div>
+
+          <div className="space-evenly pt-lg">
+            <Button as="label" htmlFor="flashcard" style={{ minWidth: '10em', margin: 0 }}>
+              <FormattedMessage id="choose-a-file" />
+            </Button>
+
+            <Button
+              disabled={submitFlashcardDisabled}
+              onClick={handleFlashcardSubmit}
+              style={{ minWidth: '10em' }}
+            >
+              {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

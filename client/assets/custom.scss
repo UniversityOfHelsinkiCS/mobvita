@@ -457,6 +457,14 @@ $value in $spacing {
   justify-content: space-between;
 }
 
+.react-datepicker__input-container>input {
+  width: 120px;
+  border: 1px solid rgba(34, 36, 38, .15);
+  border-radius: 0.25em;
+  padding-left: 0.5em;
+}
+
+// SEMANTIC UI OVERRIDES:
 .modal {
   left: unset;
   position: relative !important;
@@ -467,14 +475,6 @@ $value in $spacing {
   font-family: $rubik !important;
 }
 
-.react-datepicker__input-container>input {
-  width: 120px;
-  border: 1px solid rgba(34, 36, 38, .15);
-  border-radius: 0.25em;
-  padding-left: 0.5em;
-}
-
-// SEMANTIC UI OVERRIDES:
 .ui.dimmer {
   background-color: rgb(253,253,253, 0.8) !important;
 }
@@ -1517,6 +1517,15 @@ $value in $spacing {
 
   &:hover {
     cursor: pointer;
+  }
+}
+
+.library-tabs-white-bg {
+  .library-toggle-button {
+    background-color: #ffffff !important;
+  }
+  .library-toggle-button-chosen {
+    background-color: #ffffff !important;
   }
 }
 
@@ -3591,6 +3600,14 @@ label.file-upload-btn {
 }
 
 .story-detail-modal-manage-button-long {
+  width: 200px;
+  padding: 4px 0;
+  text-align: center;
+  margin-bottom: 12px !important;
+  background: var(--story-detail-modal-button-bg);
+}
+
+.add-new-story-button {
   width: 200px;
   padding: 4px 0;
   text-align: center;

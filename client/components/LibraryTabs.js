@@ -16,6 +16,7 @@ const ToggleButton = ({ toggled, children, ...props }) => {
 const LibraryTabs = ({
   values,
   onClick,
+  additionalStyle = {},
   additionalClass = '',
   dataCy,
   reverse = false,
@@ -41,7 +42,7 @@ const LibraryTabs = ({
   if (reverse) buttons = buttons.reverse()
 
   return (
-    <div className={`library-tabs ${additionalClass}`} data-cy={dataCy}>
+    <div className={`library-tabs ${additionalClass}`} style={additionalStyle} data-cy={dataCy}>
       {buttons}
     </div>
   )
