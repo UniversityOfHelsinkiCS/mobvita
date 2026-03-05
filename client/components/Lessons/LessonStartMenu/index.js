@@ -1,15 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CardGroup, CardContent, Card, Icon, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useHistory } from 'react-router-dom'
-
 import { images, cefrNumberToLevel } from 'Utilities/common'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
+import useWindowDimensions from 'Utilities/windowDimensions'
 
-import './LessonStartMenuStyles.css'
+import './LessonStartMenuStyles.scss'
 
 const LessonStartMenu = ({ setOpen }) => {
   const dispatch = useDispatch()
@@ -58,51 +57,42 @@ const LessonStartMenu = ({ setOpen }) => {
   }
 
   return (
-    <div className="lesson-start-menu-container">
-      <CardGroup itemsPerRow={bigScreen ? 2 : 1}>
-        <Card>
-          <CardContent>
-            <div className="card-content">
-              <img src={images.readingBook} alt="open book" />
-              <div className="card-content-header">
-                <span>
-                  <FormattedMessage id="lesson-quick-start-title" />
-                </span>
-                <Popup
-                  trigger={<Icon name="info circle" />}
-                  content={<FormattedMessage id="lesson-quick-start-info" />}
-                  inverted
-                  basic
-                />
-              </div>
-              <Button variant="primary" type="button" onClick={handleStartClick}>
-                <FormattedMessage id="start" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent>
-            <div className="card-content">
-              <img src={images.settingsIcon} alt="open book" />
-              <div className="card-content-header">
-                <span>
-                  <FormattedMessage id="lesson-customize-title" />
-                </span>
-                <Popup
-                  trigger={<Icon name="info circle" />}
-                  content={<FormattedMessage id="lesson-customize-info" />}
-                  inverted
-                  basic
-                />
-              </div>
-              <Button variant="secondary" type="button" onClick={handleLessonSetupClick}>
-                <FormattedMessage id="lesson-setup" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </CardGroup>
+    <div className="lesson-start-menu-container universal-background">
+      <OverlayTrigger
+        placement="top"
+        overlay={
+          <Tooltip id="quick-start-tooltip">
+            <FormattedMessage id="lesson-quick-start-info" />
+          </Tooltip>
+        }
+      >
+        <Button variant="primary" type="button" onClick={handleStartClick}>
+          <img
+            src={images.readingBook}
+            alt="open book"
+            style={{ maxWidth: '50px', maxHeight: '50px' }}
+          />
+          <FormattedMessage id="start" />
+        </Button>
+      </OverlayTrigger>
+
+      <OverlayTrigger
+        placement="top"
+        overlay={
+          <Tooltip id="setup-tooltip">
+            <FormattedMessage id="lesson-customize-info" />
+          </Tooltip>
+        }
+      >
+        <Button variant="secondary" type="button" onClick={handleLessonSetupClick}>
+          <img
+            src={images.settingsIcon}
+            alt="settings"
+            style={{ maxWidth: '50px', maxHeight: '50px' }}
+          />
+          <FormattedMessage id="lesson-setup" />
+        </Button>
+      </OverlayTrigger>
     </div>
   )
 }
