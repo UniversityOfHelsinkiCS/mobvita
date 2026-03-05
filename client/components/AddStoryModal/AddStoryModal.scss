@@ -69,3 +69,10 @@
   gap: 16px;
   justify-content: center;
 }
+
+@media (max-width: 560px) {
+  .story-input-options-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
