@@ -283,7 +283,6 @@ const LessonPracticeView = () => {
             <div className="dictionary-and-annotations-cont">
               <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               <DictionaryHelp />
-              <AnnotationBox />
             </div>
             <PracticeChatbot />
             <FeedbackInfoModal />
