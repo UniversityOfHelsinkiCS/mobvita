@@ -209,25 +209,6 @@ const LessonPracticeView = () => {
                     progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
                   />
                 </div>
-                {/*timedExercise && (
-                  <PracticeTimer
-                    controlledPractice={controlledPractice}
-                    timerContent={getTimerContent()}
-                    showPauseButton={showPauseButton}
-                    handlePauseOrResumeClick={handlePauseOrResumeClick}
-                  />
-                )*/}
-                {/* <div
-                  className="lesson-title"
-                  style={{
-                    ...getTextStyle(learningLanguage, 'title'),
-                    width: `${'100%'}`,
-                    'font-weight': 'bold',
-                    'font-size': 'large',
-                  }}
-                >
-                  {`Lesson ${lesson_instance.syllabus.syllabus_id}`}
-                </div> */}
                 {hiddenFeatures && (
                   <Checkbox
                     toggle
@@ -302,7 +283,6 @@ const LessonPracticeView = () => {
             <div className="dictionary-and-annotations-cont">
               <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               <DictionaryHelp />
-              <AnnotationBox />
             </div>
             <PracticeChatbot />
             <FeedbackInfoModal />
