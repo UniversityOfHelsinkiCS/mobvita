@@ -1,51 +1,102 @@
 /* THUMB styles */
 .white-slider.exercise-density-slider-thumb {
-    background-color: white; 
+  background-color: white;
 }
 
 .red0-slider.exercise-density-slider-thumb {
-    background-color: #ffe6e6; 
+  background-color: #ffe6e6;
 }
 .red1-slider.exercise-density-slider-thumb {
-    background-color: #ffb3b3; 
+  background-color: #ffb3b3;
 }
 .red2-slider.exercise-density-slider-thumb {
-    background-color: #ff8080; 
+  background-color: #ff8080;
 }
 .red3-slider.exercise-density-slider-thumb {
-    background-color: #ff4d4d; 
+  background-color: #ff4d4d;
 }
 
 .green1-slider.exercise-density-slider-thumb {
-    background-color: #e6ffe6; 
+  background-color: #e6ffe6;
 }
 .green1-slider.exercise-density-slider-thumb {
-    background-color: #b3ffb3; 
+  background-color: #b3ffb3;
 }
 .green2-slider.exercise-density-slider-thumb {
-    background-color: #80ff80; 
+  background-color: #80ff80;
 }
 .green3-slider.exercise-density-slider-thumb {
-    background-color: #4dff4d; 
+  background-color: #4dff4d;
 }
 
 .lesson-setup-btn {
-    padding: 10px 5px 15px 5px;
-    border: 2px solid #000;
-    border-radius: 12px;
-    font-size: 1.2em;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
+  padding: 10px 5px 15px 5px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  font-size: 1.2em;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .lesson-setup-btn.inactive {
-    background-color: rgb(50, 170, 248);
+  background-color: rgb(50, 170, 248);
 }
 
 .lesson-setup-btn:hover {
-    background-color: rgb(255, 209, 80);
+  background-color: rgb(255, 209, 80);
 }
 
-.lesson-setup-btn.active, .lesson-setup-btn.active:hover {
-    background-color: rgb(255, 191, 13);
+.lesson-setup-btn.active,
+.lesson-setup-btn.active:hover {
+  background-color: rgb(255, 191, 13);
+}
+
+.lesson-help-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; /* theme left, topics right */
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.lesson-help-col {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.lesson-help-col-theme {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.lesson-help-col-topics {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1100px) {
+  .lesson-help-row {
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lesson-help-col {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .lesson-help-col-theme,
+  .lesson-help-col-topics {
+    justify-content: center;
+  }
+
+  .lesson-topic-box,
+  .lesson-theme-box {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }
