@@ -496,7 +496,7 @@ const LessonList = () => {
         ) : (
           <>
             {libraries.group && !teacherView ? (
-              <div className='universal-background' style={{margin: '0'}}>
+              <div className='lesson-group-container universal-background' style={{margin: '0'}}>
                 {lessonStartControls}
               </div>
             ) : showStartMenu && !teacherView ? (
