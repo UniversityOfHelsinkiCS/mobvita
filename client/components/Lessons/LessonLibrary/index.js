@@ -470,23 +470,6 @@ const LessonList = () => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
-        {!teacherView && !isAnonymousUser && (
-          <LibraryTabs
-            values={Object.fromEntries(
-              Object.entries(libraries).filter(
-                ([key]) =>
-                  (key === 'private' && !teacherView) ||
-                  (key === 'group' && (teacherView || groups.length > 0))
-              )
-            )}
-            onClick={handleLibraryChange}
-            reverse
-            savedGroupSelection={savedGroupSelection}
-            groupDropdownOptions={groupDropdownOptions}
-            groupDropdownDisabled={!libraries.group}
-            handleGroupChange={handleGroupChange}
-          />
-        )}
         {metaPending || groupPending ? (
           <Spinner fullHeight size={60} />
         ) : noResults ? (
@@ -495,6 +478,23 @@ const LessonList = () => {
           </div>
         ) : (
           <>
+          {!teacherView && !isAnonymousUser && (
+            <LibraryTabs
+              values={Object.fromEntries(
+                Object.entries(libraries).filter(
+                  ([key]) =>
+                    (key === 'private' && !teacherView) ||
+                    (key === 'group' && (teacherView || groups.length > 0))
+                )
+              )}
+              onClick={handleLibraryChange}
+              reverse
+              savedGroupSelection={savedGroupSelection}
+              groupDropdownOptions={groupDropdownOptions}
+              groupDropdownDisabled={!libraries.group}
+              handleGroupChange={handleGroupChange}
+            />
+          )}
             {libraries.group && !teacherView ? (
               <div className='lesson-group-container universal-background' style={{margin: '0'}}>
                 {lessonStartControls}
