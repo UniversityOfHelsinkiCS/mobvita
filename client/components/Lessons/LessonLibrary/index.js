@@ -6,7 +6,7 @@ import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Placeholder, Icon, Container, Select } from 'semantic-ui-react'
 import Stepper from '@keyvaluesystems/react-stepper'
-import Spinner from 'Components/Spinner'
+
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
