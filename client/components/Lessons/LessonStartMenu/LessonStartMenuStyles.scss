@@ -33,6 +33,12 @@
   text-align: center;
 }
 
+@media (max-width: 1100px) {
+  .lesson-start-menu-container {
+    height: 524px;
+  }
+}
+
 @media (max-width: 840px) {
   .lesson-start-menu-container {
     flex-direction: column;
