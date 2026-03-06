@@ -6,12 +6,10 @@ import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Placeholder, Icon, Container, Select } from 'semantic-ui-react'
 import Stepper from '@keyvaluesystems/react-stepper'
-
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
-
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
@@ -62,6 +60,7 @@ const StyledMark = localizedMarkString => props => {
   `
   return <StyledMarkSpan {...props} />
 }
+
 
 const LessonList = () => {
   const intl = useIntl()
