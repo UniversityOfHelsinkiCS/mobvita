@@ -358,7 +358,7 @@ const LessonList = () => {
           margin: '18px',
           fontSize: 'large',
         }}
-      >
+        >
         <div className="col col-12">
           {!lessonPending && lessonReady ? (
             <FormattedMessage id="lessons-ready-for-practice" />
@@ -403,7 +403,6 @@ const LessonList = () => {
               border: '2px solid #000',
             }}
           >
-            {lessonPending && <Icon name="spinner" loading />}
             <FormattedMessage id="start-practice-lesson" />
           </Button>
         </Link>
@@ -497,6 +496,7 @@ const LessonList = () => {
           )}
             {libraries.group && !teacherView ? (
               <div className='lesson-group-container universal-background' style={{margin: '0'}}>
+                {lessonPending && <Spinner size={60} />}
                 {lessonStartControls}
               </div>
             ) : showStartMenu && !teacherView ? (
