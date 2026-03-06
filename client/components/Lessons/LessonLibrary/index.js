@@ -346,6 +346,7 @@ const LessonList = () => {
 
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
 
+  // Lesson Group View
   let lessonStartControls = (
     <Container>
       <div
@@ -367,15 +368,15 @@ const LessonList = () => {
         </div>
       </div>
 
-      <div className="lesson-help-row">
-        <div className="lesson-help-col lesson-help-col-theme">
+      <div className="lesson-group-row">
+        <div className="lesson-group-col lesson-group-col-theme">
           <LessonPracticeThemeHelp
             selectedThemes={selectedSemantics ? selectedSemantics : []}
             always_show={true}
           />
         </div>
 
-        <div className="lesson-help-col lesson-help-col-topics">
+        <div className="lesson-group-col lesson-group-col-topics">
           <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
         </div>
       </div>
@@ -495,7 +496,9 @@ const LessonList = () => {
         ) : (
           <>
             {libraries.group && !teacherView ? (
-              <div>{lessonStartControls}</div>
+              <div className='universal-background' style={{margin: '0'}}>
+                {lessonStartControls}
+              </div>
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
