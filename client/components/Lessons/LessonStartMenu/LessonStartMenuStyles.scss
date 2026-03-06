@@ -4,5 +4,31 @@
   justify-content: center;
   align-items: center;
   margin: 0;
+  gap: 20px;
 }
 
+.lesson-menu-button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 50px;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.lesson-menu-button-icon {
+  position: absolute;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.lesson-menu-button-text {
+  margin-left: 20px;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}

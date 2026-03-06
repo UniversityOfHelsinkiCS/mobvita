@@ -67,12 +67,17 @@ const LessonStartMenu = ({ setOpen }) => {
         }
       >
         <Button variant="primary" type="button" onClick={handleStartClick}>
-          <img
-            src={images.readingBook}
-            alt="open book"
-            style={{ maxWidth: '50px', maxHeight: '50px' }}
-          />
-          <FormattedMessage id="start" />
+          <div className="lesson-menu-button">
+            <img
+              className="lesson-menu-button-icon"
+              src={images.readingBook}
+              alt="open book"
+              style={{ maxWidth: '46px', maxHeight: '46px' }}
+            />
+            <span className="lesson-menu-button-text">
+              <FormattedMessage id="start" />
+            </span>
+          </div>
         </Button>
       </OverlayTrigger>
 
@@ -85,12 +90,17 @@ const LessonStartMenu = ({ setOpen }) => {
         }
       >
         <Button variant="secondary" type="button" onClick={handleLessonSetupClick}>
-          <img
-            src={images.settingsIcon}
-            alt="settings"
-            style={{ maxWidth: '50px', maxHeight: '50px' }}
-          />
-          <FormattedMessage id="lesson-setup" />
+          <div className="lesson-menu-button">
+            <img
+              className="lesson-menu-button-icon"
+              src={images.settingsIcon}
+              alt="settings"
+              style={{ maxWidth: '36px', maxHeight: '36px' }}
+            />
+            <span className="lesson-menu-button-text">
+              <FormattedMessage id="lesson-setup" />
+            </span>
+          </div>
         </Button>
       </OverlayTrigger>
     </div>
