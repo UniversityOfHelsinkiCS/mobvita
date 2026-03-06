@@ -61,7 +61,6 @@ const StyledMark = localizedMarkString => props => {
   return <StyledMarkSpan {...props} />
 }
 
-
 const LessonList = () => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
@@ -335,14 +334,19 @@ const LessonList = () => {
       </div>
     </>
   )
+
   const link =
     '/lesson' + (libraries.group ? `/group/${savedGroupSelection}/practice` : '/practice')
+
   const lessonReady =
     selectedSemantics &&
     selectedSemantics.length > 0 &&
     selectedTopicIds &&
     selectedTopicIds.length > 0
+
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
+
+  // Lesson Group View
   let lessonStartControls = (
     <Container>
       <div
@@ -363,17 +367,20 @@ const LessonList = () => {
           )}
         </div>
       </div>
-      <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
-        <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
+
+      <div className="lesson-group-row">
+        <div className="lesson-group-col lesson-group-col-theme">
           <LessonPracticeThemeHelp
             selectedThemes={selectedSemantics ? selectedSemantics : []}
             always_show={true}
           />
         </div>
-        <div className="col col-md-5" style={{ padding: 0 }}>
+
+        <div className="lesson-group-col lesson-group-col-topics">
           <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
         </div>
       </div>
+
       {!teacherView && (
         <Link to={link} className="row justify-center align-center">
           <Button
@@ -392,7 +399,7 @@ const LessonList = () => {
               fontWeight: 500,
               margin: '3em 0',
               padding: '1rem 0',
-              width: '100%',
+              width: '400px',
               border: '2px solid #000',
             }}
           >
@@ -489,7 +496,9 @@ const LessonList = () => {
         ) : (
           <>
             {libraries.group && !teacherView ? (
-              <div>{lessonStartControls}</div>
+              <div className='lesson-group-container universal-background' style={{margin: '0'}}>
+                {lessonStartControls}
+              </div>
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (

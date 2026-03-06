@@ -1,6 +1,6 @@
 .lesson-start-menu-container {
   display: flex;
-  height: 80vh;
+  height: 437px;
   justify-content: center;
   align-items: center;
   margin: 0;
@@ -31,4 +31,16 @@
   display: inline-block;
   width: 100%;
   text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .lesson-start-menu-container {
+    height: 524px;
+  }
+}
+
+@media (max-width: 840px) {
+  .lesson-start-menu-container {
+    flex-direction: column;
+  }
 }
