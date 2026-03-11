@@ -29,6 +29,20 @@
   background-color: #4dff4d;
 }
 
+.lesson-setup-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 100px;
+}
+
+.lesson-setup-title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 40px !important;
+}
+
 .lesson-setup-btn {
   padding: 10px 5px 15px 5px;
   border: 2px solid #000;
@@ -54,7 +68,7 @@
 .lesson-group-row {
   display: flex;
   width: 100%;
-  justify-content: space-between; /* theme left, topics right */
+  justify-content: space-between;
   align-items: flex-start;
   gap: 24px;
 }
@@ -72,6 +86,16 @@
 .lesson-group-col-topics {
   display: flex;
   justify-content: flex-end;
+}
+
+@media (max-width: 1040px) {
+  .lesson-setup-body {
+    gap: 60px;
+  }
+
+  .lesson-setup-title {
+    font-size: 30px !important;
+  }
 }
 
 @media (max-width: 1100px) {

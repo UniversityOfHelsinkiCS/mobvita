@@ -40,6 +40,7 @@ import './LessonLibraryStyles.css'
 
 const StyledMark = localizedMarkString => props => {
   const StyledMarkSpan = styled.span`
+    background: transparent;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-top: 15px solid #000;
@@ -509,19 +510,10 @@ const LessonList = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-start',
                   }}
                 >
-                  <div
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '100px',
-                    }}
-                  >
+                  <div className='lesson-setup-body'>
                     {teacherView && (
                       <div style={{ paddingTop: '50px' }}>
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>Group:</span>
@@ -533,7 +525,7 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 style={{ flex: '0.10', textAlign: 'center', paddingTop: '50px' }}>
+                    <h1 className='lesson-setup-title'>
                       {setupViewTitle()}
                     </h1>
                     <div
