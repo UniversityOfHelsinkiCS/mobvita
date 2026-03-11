@@ -144,11 +144,21 @@ $value in $spacing {
   background: var(--universal-bg-color);
   border-radius: 0 0 12px 12px;
   padding: 12px;
-  margin: 0 7px 0 7px;
   border-left: 2px solid #000;
   border-right: 2px solid #000;
   border-bottom: 2px solid #000;
   border-top: 0;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.universal-background-full {
+  background: var(--universal-bg-color);
+  border-radius: 12px 12px 12px 12px;
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-top: 2px solid #000;
   overflow: hidden;
 }
 
@@ -1813,8 +1823,7 @@ label.file-upload-btn {
     padding: 10px;
     color: darkslategray;
     box-shadow: .5em .5em .6em grey;
-}    
-
+}
 
 .flashcard {
   display: flex;
@@ -1838,6 +1847,7 @@ label.file-upload-btn {
     display: flex;
     align-items: stretch;
     min-height: 100%;
+    margin: 0 7px 0 7px;
     padding: 24px 8px 8px 8px;
   }
 

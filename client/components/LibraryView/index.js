@@ -370,24 +370,6 @@ const StoryList = () => {
     const multiplier = sortDirection === 'asc' ? 1 : -1
     return dir * multiplier
   })
-  /*
-  function rowRenderer({ key, index, style }) {
-    return (
-      <div
-        key={key}
-        style={{ ...style, paddingRight: '0.5em', paddingLeft: '0.5em' }}
-        className={'tour-lmao'}
-      >
-        <StoryListItem
-          key={key}
-          libraryShown={libraries}
-          story={libraryFilteredStories[index]}
-          selectedGroup={savedGroupSelection}
-        />
-      </div>
-    )
-  }
-  */
 
   const accordionView = () => {
     const storyId2Index = libraryFilteredStories.reduce((acc, story, index) => {
@@ -421,7 +403,6 @@ const StoryList = () => {
                 <h4>
                   <Icon name="dropdown" />
                   <FormattedMessage id={`level-${group}`} />
-                  {/* <FormattedMessage id='story-group' values={{group}}/> */}
                 </h4>
               </AccordionTitle>
               <AccordionContent
@@ -449,7 +430,7 @@ const StoryList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
-      <div className="universal-background">
+      <div className="universal-background" style={{margin: '0 7px'}}>
         {libraries.group && (
           <div className="library-group-dropdown-container">
             <Select
@@ -491,21 +472,6 @@ const StoryList = () => {
                 savedLibrarySelection={savedLibrarySelection}
               />
             ))}
-            {/* <WindowScroller>
-            {({ height, isScrolling, onChildScroll, scrollTop }) => (
-              <List
-                autoHeight
-                height={height}
-                isScrolling={isScrolling}
-                onScroll={onChildScroll}
-                rowCount={libraryFilteredStories.length}
-                rowHeight={130}
-                rowRenderer={rowRenderer}
-                scrollTop={scrollTop}
-                width={10000}
-              />
-            )}
-          </WindowScroller> */}
           </Card.Group>
         )}
       </div>

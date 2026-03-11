@@ -287,7 +287,7 @@ const LessonList = () => {
         className="exercise-density-slider lesson-vocab-diff"
         thumbClassName={sliderThumbClassName}
         trackClassName="exercise-density-slider-track"
-        onChange={value => handleSlider(value)}       // reactive while drag
+        onChange={value => handleSlider(value)} // reactive while drag
         onAfterChange={value => handleSlider(value)}
         onSliderClick={value => handleSlider(value)}
         snapDragDisabled={false}
@@ -297,11 +297,17 @@ const LessonList = () => {
         max={3.3}
         step={sliderStep}
         value={sliderValue}
-        disabled={lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))}
+        disabled={
+          lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
+        }
       />
       <div className="space-between exercise-density-slider-label-cont bold">
-        <span><FormattedMessage id="Easy" /></span>
-        <span><FormattedMessage id="Hard" /></span>
+        <span>
+          <FormattedMessage id="Easy" />
+        </span>
+        <span>
+          <FormattedMessage id="Hard" />
+        </span>
       </div>
     </div>
   )
@@ -329,7 +335,7 @@ const LessonList = () => {
           margin: '18px',
           fontSize: 'large',
         }}
-        >
+      >
         <div className="col col-12">
           {!lessonPending && lessonReady ? (
             <FormattedMessage id="lessons-ready-for-practice" />
@@ -448,32 +454,35 @@ const LessonList = () => {
           </div>
         ) : (
           <>
-          {!teacherView && !isAnonymousUser && (
-            <LibraryTabs
-              values={Object.fromEntries(
-                Object.entries(libraries).filter(
-                  ([key]) =>
-                    (key === 'private' && !teacherView) ||
-                    (key === 'group' && (teacherView || groups.length > 0))
-                )
-              )}
-              onClick={handleLibraryChange}
-              reverse
-              savedGroupSelection={savedGroupSelection}
-              groupDropdownOptions={groupDropdownOptions}
-              groupDropdownDisabled={!libraries.group}
-              handleGroupChange={handleGroupChange}
-            />
-          )}
+            {!teacherView && !isAnonymousUser && (
+              <LibraryTabs
+                values={Object.fromEntries(
+                  Object.entries(libraries).filter(
+                    ([key]) =>
+                      (key === 'private' && !teacherView) ||
+                      (key === 'group' && (teacherView || groups.length > 0))
+                  )
+                )}
+                onClick={handleLibraryChange}
+                reverse
+                savedGroupSelection={savedGroupSelection}
+                groupDropdownOptions={groupDropdownOptions}
+                groupDropdownDisabled={!libraries.group}
+                handleGroupChange={handleGroupChange}
+              />
+            )}
             {libraries.group && !teacherView ? (
-              <div className='lesson-group-container universal-background' style={{margin: '0'}}>
+              <div className="lesson-group-container universal-background" style={{ margin: '0' }}>
                 {lessonPending && <Spinner size={60} />}
                 {lessonStartControls}
               </div>
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
-              <div className={ 'universal-background' } style={{ display: 'flex', height: '80vh', margin: '0' }}>
+              <div
+                className={`${teacherView ? 'universal-background-full' : 'universal-background'}`.trim()}
+                style={{ display: 'flex', height: '80vh', margin: '0' }}
+              >
                 <div
                   style={{
                     flex: 1,
@@ -485,10 +494,12 @@ const LessonList = () => {
                     minHeight: 0,
                   }}
                 >
-                  <div className='lesson-setup-body'>
+                  <div className="lesson-setup-body">
                     {teacherView && (
-                      <div style={{ paddingTop: '50px' }}>
-                        <span style={{ marginRight: '10px', fontSize: 'medium' }}>Group:</span>
+                      <div style={{ display: 'flex', marginTop: '12px', justifyContent: 'center', alignItems: 'center' }}>
+                        <span style={{ marginRight: '10px', fontSize: 'medium' }}>
+                          <FormattedMessage id="Group" />:
+                        </span>
                         <Select
                           placeholder="Select group"
                           value={savedGroupSelection}
@@ -497,9 +508,7 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 className='lesson-setup-title'>
-                      {setupViewTitle()}
-                    </h1>
+                    <h1 className="lesson-setup-title">{setupViewTitle()}</h1>
                     <div
                       style={{
                         flex: '1',
