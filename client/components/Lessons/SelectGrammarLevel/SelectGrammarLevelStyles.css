@@ -12,7 +12,7 @@
   gap: 25px;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1330px) {
   .grammar-level-button-group {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);

@@ -560,7 +560,7 @@ const LessonList = () => {
                       {goStep !== 0 && (
                         <Button
                           variant="secondary"
-                          style={{ width: '90px' }}
+                          style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBackClick}
                         >
@@ -569,7 +569,7 @@ const LessonList = () => {
                       )}
                       {goStep === 2 ? (
                         <Button
-                          style={{ width: '90px' }}
+                          style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBeginClick}
                           disabled={
@@ -586,7 +586,7 @@ const LessonList = () => {
                       ) : (
                         <Button
                           variant="primary"
-                          style={{ width: '90px' }}
+                          style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleContinueClick}
                         >
