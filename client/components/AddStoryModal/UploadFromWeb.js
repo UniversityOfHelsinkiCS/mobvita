@@ -7,7 +7,7 @@ import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect, updateFavouriteSites } from 'Utilities/redux/userReducer'
 import RecommendedSites from './RecommendedSites'
 import Spinner from 'Components/Spinner'
 
@@ -18,6 +18,7 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const favouriteSites = useSelector(({ user }) => user?.data?.user?.favourite_sites || [])
   const [accordionState, setAccordionState] = useState(-1)
 
   const storyUploading = pending || storyId
@@ -44,6 +45,34 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const handleClick = useCallback((e, { index }) => {
     setAccordionState(prev => (prev === index ? -1 : index))
   }, [])
+
+const AddToRecommendedSites = useCallback(
+  event => {
+    event.preventDefault()
+
+    const raw = storyUrl.trim()
+    let parsed
+
+    try {
+      parsed = new URL(raw)
+    } catch {
+      return
+    }
+
+    if (parsed.protocol !== 'https:') return
+    if (!parsed.hostname) return
+    if (!parsed.origin) return
+
+    const normalizedUrl = parsed.origin.toLowerCase()
+
+    if (favouriteSites.some(site => site.url.toLowerCase() === normalizedUrl)) return
+
+    const nextSites = [...favouriteSites, { url: normalizedUrl, difficulty: 0 }]
+    dispatch(updateFavouriteSites(nextSites))
+    setStoryUrl('')
+  },
+  [storyUrl, favouriteSites, dispatch]
+)
 
   return (
     <div>
@@ -81,8 +110,9 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
           }
         >
           <Button
+            type="button"
             form="url-upload"
-            onClick={() => setStoryUrl('')}
+            onClick={AddToRecommendedSites}
             tooltip={intl.formatMessage({ id: 'explain-recommended-sites' })}
             data-cy="add-to-recommended-sites-button"
           >
