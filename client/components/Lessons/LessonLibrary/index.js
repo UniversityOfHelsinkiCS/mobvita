@@ -502,7 +502,7 @@ const LessonList = () => {
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
-              <div style={{ display: 'flex', height: '80vh' }}>
+              <div className={ 'universal-background' } style={{ display: 'flex', height: '80vh', margin: '0' }}>
                 <div
                   style={{
                     flex: 1,
@@ -610,7 +610,7 @@ const LessonList = () => {
                   </div>
                 </div>
                 {bigScreen && (
-                  <div style={{ flex: 0.3, marginTop: '100px', marginLeft: '100px' }}>
+                  <div style={{ flex: 0.3, marginTop: '100px' }}>
                     <Stepper
                       steps={[
                         {
