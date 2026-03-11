@@ -19,7 +19,7 @@ describe("dictionary", function () {
 
   it("dictionary info opens", function () {
     cy.get("[data-cy=dictionary-info]").click()
-    cy.contains("Klikkaa niitä tarinan sanoja, joita et tunne")
+    cy.contains("Klikkaa niitä tekstin sanoja, joita et tunne")
   })
 
   it("translate-to language can be changed", function () {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -71,15 +71,24 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
             <FormattedMessage id="upload-from-web-button" />
           )}
         </Button>
-  
-        <Button
-          form="url-upload"
-          onClick={() => setStoryUrl('')}
-          tooltip={intl.formatMessage({ id: 'explain-recommended-sites' })}
-          data-cy="add-to-recommended-sites-button"
+
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip id="recommended-sites-tooltip" className="white-tooltip">
+              <FormattedMessage id="explain-recommended-sites" />
+            </Tooltip>
+          }
         >
-          <FormattedMessage id="add-recommended-sites-button" />
-        </Button>
+          <Button
+            form="url-upload"
+            onClick={() => setStoryUrl('')}
+            tooltip={intl.formatMessage({ id: 'explain-recommended-sites' })}
+            data-cy="add-to-recommended-sites-button"
+          >
+            <FormattedMessage id="add-recommended-sites-button" />
+          </Button>
+        </OverlayTrigger>
       </div>
 
       <div style={{ marginTop: '24px' }}>
