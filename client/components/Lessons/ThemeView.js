@@ -18,8 +18,8 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
         gridTemplateColumns: 'repeat(2, 1fr)',
         gridTemplateRows: 'repeat(2, 1fr)',
         gap: '30px',
-        height: '100%',
-        maxWidth: '500px',
+        height: '300px',
+        maxWidth: '300px',
       }}
       data-cy="practice-categories"
     >

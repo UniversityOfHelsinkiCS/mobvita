@@ -508,9 +508,11 @@ const LessonList = () => {
                   style={{
                     flex: 1,
                     display: 'flex',
+                    height: '100%',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
+                    minHeight: 0,
                   }}
                 >
                   <div className='lesson-setup-body'>
@@ -554,14 +556,7 @@ const LessonList = () => {
                         showListeningSettings
                       />
                     </div>
-                    <div
-                      style={{
-                        flex: '0.10',
-                        display: 'flex',
-                        gap: '20px',
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <div className="lesson-setup-btn-container">
                       {goStep !== 0 && (
                         <Button
                           variant="secondary"
