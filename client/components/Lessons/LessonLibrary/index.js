@@ -274,66 +274,36 @@ const LessonList = () => {
       id: 'Recommended vocabulary difficulty',
     })
   )
-  const lessonVocabularyControls = bigScreen ? (
-    <>
-      <div className="lesson-vocab-slider-container" style={{ width: '450px' }}>
-        <ReactSlider
-          className="exercise-density-slider lesson-vocab-diff"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.2}
-          value={sliderValue}
-          disabled={
-            lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
-          }
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
+  const sliderContainerWidth = bigScreen ? '450px' : '90%'
+  // If you want value updates while dragging, use onChange too.
+  const sliderStep = bigScreen ? 0.2 : 0.02
+
+  const lessonVocabularyControls = (
+    <div
+      className="lesson-vocab-slider-container"
+      style={{ width: sliderContainerWidth, maxWidth: '450px' }}
+    >
+      <ReactSlider
+        className="exercise-density-slider lesson-vocab-diff"
+        thumbClassName={sliderThumbClassName}
+        trackClassName="exercise-density-slider-track"
+        onChange={value => handleSlider(value)}       // reactive while drag
+        onAfterChange={value => handleSlider(value)}
+        onSliderClick={value => handleSlider(value)}
+        snapDragDisabled={false}
+        renderMark={markComp}
+        marks={[roundToNearestHalfInt(vocabulary_score)]}
+        min={0.8}
+        max={3.3}
+        step={sliderStep}
+        value={sliderValue}
+        disabled={lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))}
+      />
+      <div className="space-between exercise-density-slider-label-cont bold">
+        <span><FormattedMessage id="Easy" /></span>
+        <span><FormattedMessage id="Hard" /></span>
       </div>
-    </>
-  ) : (
-    <>
-      <div className="lesson-vocab-slider-container" style={{ width: '200px' }}>
-        <ReactSlider
-          className="exercise-density-slider lesson-vocab-diff"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.02}
-          value={sliderValue}
-          disabled={
-            lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
-          }
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
-      </div>
-    </>
+    </div>
   )
 
   const link =
