@@ -63,9 +63,22 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
         </Form>
       </div>
 
-      <div style={{ display: 'flex', marginTop: '20px' }}>
+      <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'space-between' }}>
         <Button form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
-          {storyUploading ? <Spinner inline size={28} /> : <FormattedMessage id="Confirm" />}
+          {storyUploading ? (
+            <Spinner inline size={28} />
+          ) : (
+            <FormattedMessage id="upload-from-web-button" />
+          )}
+        </Button>
+  
+        <Button
+          form="url-upload"
+          onClick={() => setStoryUrl('')}
+          tooltip={intl.formatMessage({ id: 'explain-recommended-sites' })}
+          data-cy="add-to-recommended-sites-button"
+        >
+          <FormattedMessage id="add-recommended-sites-button" />
         </Button>
       </div>
 
