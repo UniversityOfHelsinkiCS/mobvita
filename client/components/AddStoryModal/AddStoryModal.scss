@@ -64,16 +64,34 @@
   gap: 16px;
 }
 
-.story-input-options-row {
+.add-new-story-button {
+  position: relative;
   display: flex;
-  gap: 16px;
+  align-items: center;
   justify-content: center;
+  width: 300px;
+  height: 60px;
+  padding: 4px 12px 4px 48px;
+  border: 1px solid #000;
+  text-align: center;
+  margin-bottom: 12px !important;
+}
+
+.story-option-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
 }
 
 @media (max-width: 560px) {
-  .story-input-options-row {
-    flex-direction: column;
-    align-items: center;
+.add-new-story-button {
+  width: 200px;
+  height: 46px;
   }
 }
 

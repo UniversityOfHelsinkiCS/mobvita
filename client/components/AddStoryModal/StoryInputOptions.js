@@ -3,6 +3,10 @@ import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useHistory } from 'react-router-dom'
+import uploadFileIcon from '../../assets/images/upload-file.png'
+import uploadWebIcon from '../../assets/images/upload-cloud.png'
+import uploadPasteIcon from '../../assets/images/paste.png'
+import generateAI from '../../assets/images/generate_ai.png'
 
 const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
   const history = useHistory()
@@ -22,29 +26,25 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
 
       <div className="story-input-options-center">
         <div className="story-input-options-stack">
-          <div className="story-input-options-row">
             <Button className="add-new-story-button" onClick={() => setActiveComponent('web')}>
-              <Icon name="cloud upload" style={{ marginRight: '8px' }} />
+              <img src={uploadWebIcon} alt="web upload" className='story-option-icon' />
               <FormattedMessage id="upload-from-web" />
             </Button>
             <Button className="add-new-story-button" onClick={() => setActiveComponent('file')}>
-              <Icon name="file upload" style={{ marginRight: '8px' }} />
+              <img src={uploadFileIcon} alt="file upload" className='story-option-icon' />
               <FormattedMessage id="upload-stories" />
             </Button>
-          </div>
 
-          <div className="story-input-options-row">
             <Button className="add-new-story-button" onClick={() => setActiveComponent('paste')}>
-              <Icon name="paste" style={{ marginRight: '8px' }} />
+              <img src={uploadPasteIcon} alt="paste" className='story-option-icon' />
               <FormattedMessage id="paste-a-text" />
             </Button>
             {lesson_topics?.length !== 0 && (
               <Button className="add-new-story-button" onClick={goToGeneratePage}>
-                <Icon name="magic" style={{ marginRight: '8px' }} />
+                <img src={generateAI} alt="generate AI" className='story-option-icon' />
                 <FormattedMessage id="go-generating" />
               </Button>
             )}
-          </div>
         </div>
       </div>
     </div>
