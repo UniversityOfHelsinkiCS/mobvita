@@ -42,11 +42,26 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
 
   const topic_rows = []
   const lesson_topics = lesson.topics
+
+  const splitAtFirstDash = (text = '') => {
+    const match = text.match(/^(.*?)\s*—\s*(.*)$/)
+    if (!match) return { title: text.trim(), example: '' }
+
+    return {
+      title: match[1].trim(),
+      example: match[2].trim(),
+    }
+  }
+
   for (let k = 0; k < lesson_topics.length; k++) {
     const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
     const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
     const color = {color: get_lesson_performance_style(correct, total)}
-    const name = topicId2Name[lesson_topics[k]].charAt(0).toUpperCase() + topicId2Name[lesson_topics[k]].slice(1)
+    const rawName =
+      topicId2Name[lesson_topics[k]].charAt(0).toUpperCase() + topicId2Name[lesson_topics[k]].slice(1)
+
+    const { title: topicTitle, example: topicExample } = splitAtFirstDash(rawName)
+
     topic_rows.push(
       <h6
         key={k}
@@ -123,11 +138,10 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
             }
           />
         )}
-        <div 
-          className="lesson-content"
-          style={{ width: '80%', marginLeft: '15px' }} 
-          dangerouslySetInnerHTML={{ __html: name }}
-        />
+        <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
+          <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
+          {topicExample ? <div dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }} /> : null}
+        </div>
       </h6>
     )
   }
