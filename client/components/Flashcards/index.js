@@ -9,6 +9,7 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
+import FlashcardStoryInfo from './FlashcardStoryInfo'
 import LibraryTabs from 'Components/LibraryTabs'
 import SettingButton from 'Components/SettingsButton'
 
@@ -62,7 +63,7 @@ const Flashcards = () => {
     }
   }
 
-  const pushWithOptionalContext = (nextMode) => {
+  const pushWithOptionalContext = nextMode => {
     if (type && storyId) {
       history.push(`/flashcards/${nextMode}/${type}/${storyId}`)
     } else {
@@ -90,44 +91,29 @@ const Flashcards = () => {
 
   const tabValues = Object.fromEntries(tabs.map(tab => [tab.key, tab.selected]))
 
-  const handleTabChange = (tabKey) => {
+  const handleTabChange = tabKey => {
     const tab = tabs.find(t => t.key === tabKey)
     if (tab) tab.onSelect()
   }
 
   return (
     <div className="cont-tall cont pb-nm flex-col auto pt-xl">
-       <div data-cy="library-controls" className="library-control">
-        <LibraryTabs
-          values={tabValues}
-          onClick={handleTabChange}
-          reverse
-        />
-       </div>
-
-      {(title && type === 'test' && (
-        <h5 className="flex pb-nm universal-background-sides">
-          <FormattedHTMLMessage
-            id="story-blue-cards"
-            values={{
-              nWords: numOfRewardableWords,
-              story: title,
-            }}
-          />
-        </h5>
-      )) ||
-        (title && (
-          <h5 className="flex pb-nm universal-background-sides">
-            <FormattedHTMLMessage
-              id="story-flashcards"
-              values={{
-                story: title,
-              }}
-            />
-          </h5>
-        ))}
+      <div data-cy="library-controls" className="library-control">
+        <LibraryTabs values={tabValues} onClick={handleTabChange} reverse />
+      </div>
 
       <div className="flashcard-body universal-background">
+        {mode !== 'list' && mode !== 'new' && width >= 840 ? (
+          <div className="flashcard-side-column">
+            <FlashcardStoryInfo
+              title={title}
+              type={type}
+              numOfRewardableWords={numOfRewardableWords}
+            />
+            <FlashcardMenu />
+          </div>
+        ) : null}
+
         {showBlueCardsTestEncouragement && (
           <div
             className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
@@ -138,12 +124,10 @@ const Flashcards = () => {
           </div>
         )}
 
-        {width < 840 ? <FloatMenu /> : mode !== 'list' && mode !== 'new' ? <FlashcardMenu /> : null}
+        {width < 840 ? <FloatMenu /> : null}
 
-        <div className="flashcard-main">
-          {content()}
-        </div>
-        
+        <div className="flashcard-main">{content()}</div>
+
         <SettingButton />
       </div>
     </div>

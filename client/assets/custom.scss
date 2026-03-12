@@ -1825,6 +1825,31 @@ label.file-upload-btn {
     box-shadow: .5em .5em .6em grey;
 }
 
+.flashcard-story-info-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 250px;
+  max-height: 300px;
+  border: 2px solid lightgrey;
+  border-radius: 12px;
+  padding: 20px;
+  background: #FFF;
+  color: #000000;
+  margin-top: 12px;
+}
+
+.flashcard-side-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  min-height: 100%;
+  margin-left: 12px;
+}
+
+
 .flashcard {
   display: flex;
   flex-direction: column;
@@ -1847,6 +1872,8 @@ label.file-upload-btn {
     display: flex;
     align-items: stretch;
     min-height: 100%;
+    flex: 1 1 auto;   // add
+    min-height: 0;    // add
     margin: 0 7px 0 7px;
     padding: 24px 8px 8px 8px;
   }
@@ -2052,20 +2079,27 @@ label.file-upload-btn {
   &-menu {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: stretch;
+    justify-content: center;
+    align-items: center;
     flex-shrink: 0;
     padding: 0 4px 42px 0;
+    margin-top: 0;
     margin-left: 4px;
-    min-width: 14em;
+    width: 220px;
+    max-height: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &-menu-item {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    width: 200px;
+    align-self: stretch;
+    box-sizing: border-box;
     padding: 1em;
 
     &:focus {
