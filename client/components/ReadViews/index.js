@@ -442,12 +442,6 @@ const ReadViews = ({ match }) => {
         <Modal.Content>
           <div className="flex-col gap-row-nm">
             <SettingToggle
-              translationId="practice-reading-comprehension"
-              checked={!!user?.user?.reading_comprehension}
-              onChange={() => dispatch(updateReadingComprehension(!user?.user?.reading_comprehension))}
-              disabled={userPending}
-            />
-            <SettingToggle
               translationId="practice-grammar-cloze-exercises"
               checked={user?.user.blank_filling}
               onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}

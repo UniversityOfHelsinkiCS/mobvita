@@ -417,14 +417,6 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         </div>
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
-        {/* <StoryActions
-          story={story}
-          currentGroup={currentGroup}
-          enableOnlyPractice={enableOnlyPractice}
-          isControlled={isControlledStory}
-          inGroupLibrary={inGroupLibrary}
-          isTeacher={isTeacher}
-        /> */}
         <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }} >
           {story.flashcardsOnly && (<Icon size="small" name="clone outline" bordered style={{marginRight: '15px'}}/>)}
 

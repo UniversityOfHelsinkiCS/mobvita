@@ -8,7 +8,7 @@ import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/stories
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedHTML } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 import StreakToast from 'Components/Streak/StreakToast'

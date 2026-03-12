@@ -85,22 +85,30 @@ const StoryDetailsModal = ({
             {!enableOnlyPractice && (
               <>
                 {!isTeacher && (
-                  <Popup
-                    content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
-                    trigger={
-                      <Link to={`/flashcards/fillin/story/${story._id}/`}>
-                        <Button
-                          className="story-detail-modal-action-button"
-                          variant="primary"
-                          disabled={enableOnlyPractice || story.flashcard_count === 0}
-                        >
-                          <FormattedMessage id="Flashcards" />
-                        </Button>
-                      </Link>
-                    }
-                    disabled={story.flashcard_count > 0}
-                    position="top center"
-                  />
+                  <>
+                    <Popup
+                      content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+                      trigger={
+                        <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                          <Button
+                            className="story-detail-modal-action-button"
+                            variant="primary"
+                            disabled={enableOnlyPractice || story.flashcard_count === 0}
+                          >
+                            <FormattedMessage id="Flashcards" />
+                          </Button>
+                        </Link>
+                      }
+                      disabled={story.flashcard_count > 0}
+                      position="top center"
+                    />
+                    <LinkButton
+                      className="story-detail-modal-action-button"
+                      to={`/stories/${story._id}/reading-comprehension-options`}
+                      translationId="reading-comprehension"
+                      variant="primary"
+                    />
+                  </>
                 )}
                 {!story.flashcardsOnly && isTeacher && (
                   <>
