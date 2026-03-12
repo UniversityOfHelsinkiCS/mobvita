@@ -1832,8 +1832,8 @@ label.file-upload-btn {
   align-items: flex-start;
   max-width: 250px;
   max-height: 300px;
-  border: 2px solid lightgrey;
   border-radius: 12px;
+  box-shadow: 0.5em 0.5em 0.6em grey;
   padding: 20px;
   background: #FFF;
   color: #000000;
@@ -2082,13 +2082,9 @@ label.file-upload-btn {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    padding: 0 4px 42px 0;
-    margin-top: 0;
-    margin-left: 4px;
     width: 220px;
-    max-height: none;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 0 4px 42px 0;
+    margin: 0 auto 32px auto;
   }
 
   &-menu-item {
