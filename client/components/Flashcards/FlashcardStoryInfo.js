@@ -4,6 +4,8 @@ import { FormattedHTMLMessage } from 'react-intl'
 const FlashcardStoryInfo = ({ title, type, numOfRewardableWords }) => {
   if (!title) return <div></div>
 
+	const truncatedTitle = title.length > 50 ? `${title.slice(0, 50)}...` : title
+
   return (
     <div className="flashcard-story-info-body">
       {type === 'test' ? (
@@ -12,7 +14,7 @@ const FlashcardStoryInfo = ({ title, type, numOfRewardableWords }) => {
             id="story-blue-cards"
             values={{
               nWords: numOfRewardableWords,
-              story: title,
+              story: truncatedTitle,
             }}
           />
         </h5>
@@ -21,7 +23,7 @@ const FlashcardStoryInfo = ({ title, type, numOfRewardableWords }) => {
           <FormattedHTMLMessage
             id="story-flashcards"
             values={{
-              story: title,
+              story: truncatedTitle,
             }}
           />
         </h5>
