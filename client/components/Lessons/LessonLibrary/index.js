@@ -38,6 +38,7 @@ import Spinner from 'Components/Spinner'
 
 import './LessonLibraryStyles.css'
 
+// Slider marker
 const StyledMark = localizedMarkString => props => {
   const StyledMarkSpan = styled.span`
     background: transparent;
@@ -276,8 +277,11 @@ const LessonList = () => {
   )
   const sliderContainerWidth = bigScreen ? '450px' : '90%'
   // If you want value updates while dragging, use onChange too.
-  const sliderStep = bigScreen ? 0.2 : 0.02
+  const minSlider = 0.8
+  const maxSlider = 3.3
+  const sliderStep = (maxSlider - minSlider) / 13
 
+  // Lesson difficulty of vocabulary view
   const lessonVocabularyControls = (
     <div
       className="lesson-vocab-slider-container"
@@ -293,8 +297,8 @@ const LessonList = () => {
         snapDragDisabled={false}
         renderMark={markComp}
         marks={[roundToNearestHalfInt(vocabulary_score)]}
-        min={0.8}
-        max={3.3}
+        min={minSlider}
+        max={maxSlider}
         step={sliderStep}
         value={sliderValue}
         disabled={
@@ -480,7 +484,9 @@ const LessonList = () => {
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
               <div
-                className={`${teacherView ? 'universal-background-full' : 'universal-background'}`.trim()}
+                className={`${
+                  teacherView ? 'universal-background-full' : 'universal-background'
+                }`.trim()}
                 style={{ display: 'flex', height: '80vh', margin: '0' }}
               >
                 <div
@@ -496,7 +502,14 @@ const LessonList = () => {
                 >
                   <div className="lesson-setup-body">
                     {teacherView && (
-                      <div style={{ display: 'flex', marginTop: '12px', justifyContent: 'center', alignItems: 'center' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          marginTop: '12px',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>
                           <FormattedMessage id="Group" />:
                         </span>
