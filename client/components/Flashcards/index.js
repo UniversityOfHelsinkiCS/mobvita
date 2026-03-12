@@ -9,7 +9,7 @@ import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
-import FlashcardStoryInfo from './FlashcardStoryInfo'
+import { FlashcardStoryInfo, FlashcardStoryInfoIcon } from './FlashcardStoryInfo'
 import LibraryTabs from 'Components/LibraryTabs'
 import SettingButton from 'Components/SettingsButton'
 
@@ -103,15 +103,25 @@ const Flashcards = () => {
       </div>
 
       <div className="flashcard-body universal-background">
-        {mode !== 'list' && mode !== 'new' && width >= 840 ? (
-          <div className="flashcard-side-column">
-            <FlashcardStoryInfo
-              title={title}
-              type={type}
-              numOfRewardableWords={numOfRewardableWords}
-            />
-            <FlashcardMenu />
-          </div>
+        {mode !== 'list' && mode !== 'new' ? (
+          width >= 840 ? (
+            <div className="flashcard-side-column">
+              <FlashcardStoryInfo
+                title={title}
+                type={type}
+                numOfRewardableWords={numOfRewardableWords}
+              />
+              <FlashcardMenu />
+            </div>
+          ) : (
+            <div className="flashcard-story-info-icon-slot">
+              <FlashcardStoryInfoIcon
+                title={title}
+                type={type}
+                numOfRewardableWords={numOfRewardableWords}
+              />
+            </div>
+          )
         ) : null}
 
         {showBlueCardsTestEncouragement && (

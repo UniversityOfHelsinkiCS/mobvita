@@ -2216,6 +2216,15 @@ label.file-upload-btn {
   }
 }
 
+.flashcard-story-info-icon-slot {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+}
+
 .flashcard-settings-menu {
   min-width: 200px;
   display: flex;
