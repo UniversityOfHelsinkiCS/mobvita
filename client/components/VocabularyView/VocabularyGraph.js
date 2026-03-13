@@ -7,6 +7,7 @@ import { Checkbox } from 'semantic-ui-react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
+import Spinner from 'Components/Spinner'
 
 const VocabularyGraph = ({
   vocabularyData,

@@ -354,7 +354,7 @@ export default function NavBar() {
               <Popup
                 content={<FormattedMessage id="click-here-to-see-progress-explanation" />}
                 trigger={
-                  <Link className="navbar-basic-icon" to="/profile/main" style={{ textDecoration: 'none' }}>
+                  <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
                     <div className="navbar-level">{user.user.level}</div>
                   </Link>
                 }
