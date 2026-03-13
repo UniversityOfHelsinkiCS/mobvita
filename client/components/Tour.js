@@ -48,12 +48,18 @@ const Tour = () => {
       dispatch(stopTour())
     } else if (action === ACTIONS.START && homeTour) {
       dispatch(sidebarSetOpen(false))
-    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
-      // Skip lesson step if there are no lessons for selected language
+    } else if (type === EVENTS.TARGET_NOT_FOUND) {
+      if (tourState.steps === libraryTourSteps) {
+        return
+      }
+      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+      return
+    } else if (type === EVENTS.STEP_AFTER) {
       if (homeTour && !lesson_topics?.length && index === 3) {
         dispatch(handleNextTourStep(index + 2))
         return
       }
+      
       // desktop
       if (bigScreen) {
         if (homeTour && !history.location.pathname.includes('/home')) {
