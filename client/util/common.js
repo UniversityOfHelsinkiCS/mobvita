@@ -1966,7 +1966,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.StepperContainer-0-2-1',
+    target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
     content: (
       <div>
@@ -1976,7 +1976,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-practice',
+    target: '.lesson-setup-btn-container',
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>
@@ -2071,7 +2071,7 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.StepperContainer-0-2-1',
+    target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
     content: (
       <div>
@@ -2081,7 +2081,7 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-practice',
+    target: '.lesson-setup-btn-container',
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>

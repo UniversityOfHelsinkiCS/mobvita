@@ -500,7 +500,7 @@ const LessonList = () => {
                     minHeight: 0,
                   }}
                 >
-                  <div className="lesson-setup-body">
+                  <div className="lesson-setup-body lesson-story-topic">
                     {teacherView && (
                       <div
                         style={{
@@ -589,7 +589,7 @@ const LessonList = () => {
                   </div>
                 </div>
                 {bigScreen && (
-                  <div style={{ flex: 0.3, marginTop: '100px' }}>
+                  <div className="lesson-tour-stepper" style={{ flex: 0.3, marginTop: '100px' }}>
                     <Stepper
                       steps={[
                         {

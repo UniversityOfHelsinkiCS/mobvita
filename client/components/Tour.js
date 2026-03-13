@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
@@ -38,6 +38,27 @@ const Tour = () => {
   const homeTour =
     tourState.steps === studentHomeTourSteps || tourState.steps === teacherHomeTourSteps
 
+  const getSafeTarget = target => {
+    if (typeof target !== 'string') {
+      return target
+    }
+
+    if (target === 'body') {
+      return target
+    }
+
+    const element = document.querySelector(target)
+    return element instanceof HTMLElement ? target : 'body'
+  }
+
+  const safeTourState = {
+    ...tourState,
+    steps: (tourState.steps || []).map(step => ({
+      ...step,
+      target: getSafeTarget(step.target),
+    })),
+  }
+
   const callback = data => {
     const { action, index, type, status } = data
     if (
@@ -49,7 +70,7 @@ const Tour = () => {
     } else if (action === ACTIONS.START && homeTour) {
       dispatch(sidebarSetOpen(false))
     } else if (type === EVENTS.TARGET_NOT_FOUND) {
-      if (tourState.steps === libraryTourSteps) {
+      if (tourState.steps === libraryTourSteps || tourState.steps === lessonsTourSteps) {
         return
       }
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -153,10 +174,10 @@ const Tour = () => {
               }
               dispatch(setLessonStep(0))
               break
-            case 2:
+            case 1:
               dispatch(setLessonStep(1))
               break
-            case 5:
+            case 2:
               dispatch(setLessonStep(2))
               break
             // case 8:
@@ -293,8 +314,11 @@ const Tour = () => {
               }
               dispatch(setLessonStep(0))
               break
-            case 2:
+            case 1:
               dispatch(setLessonStep(1))
+              break
+            case 1:
+              dispatch(setLessonStep(2))
               break
             case 5:
               dispatch(setLessonStep(2))
@@ -324,7 +348,7 @@ const Tour = () => {
 
   return (
     <JoyRide
-      {...tourState}
+      {...safeTourState}
       callback={callback}
       disableScrolling={true}
       hideBackButton={true}
