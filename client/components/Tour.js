@@ -11,7 +11,7 @@ import {
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   studentHomeTourSteps,
@@ -53,10 +53,29 @@ const Tour = () => {
 
   const safeTourState = {
     ...tourState,
-    steps: (tourState.steps || []).map(step => ({
-      ...step,
-      target: getSafeTarget(step.target),
-    })),
+    steps: (tourState.steps || []).map((step, idx) => {
+      if (tourState.steps === libraryTourSteps && idx === 3) {
+        const target = '.story-detail-modal-action-button'
+        const isTeacherStep = !!teacherView
+        return {
+          ...step,
+          target: getSafeTarget(target),
+          title: <FormattedMessage id={isTeacherStep ? 'preview' : 'practice'} />,
+          content: (
+            <div>
+              <FormattedHTMLMessage
+                id={isTeacherStep ? 'library-tour-preview-text' : 'library-tour-practice-message'}
+              />
+            </div>
+          ),
+        }
+      }
+
+      return {
+        ...step,
+        target: getSafeTarget(step.target),
+      }
+    }),
   }
 
   const callback = data => {

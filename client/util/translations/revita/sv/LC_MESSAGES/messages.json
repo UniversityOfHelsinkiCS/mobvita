@@ -1637,16 +1637,17 @@
     "reading-questions-saved": "Question saved!",
     "edit-saved-questions": "Edit saved questions",
     "generate-new-questions": "Generate new questions",
-    "no-draft-questions": "No drafting questions",
+    "no-draft-questions": "No draft questions",
     "add-questions-to-story": "Save questions",
     "generate": "Generate",
-    "size": "Size",
+    "size": "Number of questions",
     "mc-generating": "Generating Multiple choices reading questions for the story",
-    "regenerating": "Regenerating the questions",
+    "regenerating": "Regenerating questions",
     "loading": "Loading...",
     "loading-story": "Loading story...",
     "practice-reading-comprehension": "Practice Reading Comprehension",
-    "explain-recommended-sites": "Here are some sites we recommend.\nYou can also add your own sites to this list!\nHere is how: enter the URL, click 'Add to Recommended Sites'",
+    "explain-recommended-sites": "Here are some recommend sites.\nYou can add your own sites to this list: enter the URL, and click 'Add to Recommended Sites'",
     "upload-from-web-button": "Upload to Private Library",
-    "add-recommended-sites-button": "Add to Recommended Sites"
+    "add-recommended-sites-button": "Add to Recommended Sites",
+    "library-tour-preview-text": "Here you can preview a story.\nAfter previewing, the student can move to doing Practice exercises with the story."
 }
