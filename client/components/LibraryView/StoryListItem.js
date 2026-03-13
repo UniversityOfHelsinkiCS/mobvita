@@ -158,16 +158,6 @@ const StoryFunctionsDropdown = ({
               icon="pencil alternate"
             />
           )}
-          {/* <Dropdown.Item
-            text={<FormattedMessage id="preview" />}
-            as={Link}
-            to={
-              inGroupLibrary
-                ? `/stories/${story._id}/group/preview`
-                : `/stories/${story._id}/preview`
-            }
-            icon="book"
-          /> */}
           {story.percent_cov > 0 && !teacherInGroupView && (
             <Dropdown.Item
               text={<FormattedMessage id="review" />}

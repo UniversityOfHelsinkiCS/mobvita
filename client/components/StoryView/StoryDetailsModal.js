@@ -104,7 +104,7 @@ const StoryDetailsModal = ({
                     />
                     <LinkButton
                       className="story-detail-modal-action-button"
-                      to={`/stories/${story._id}/reading-comprehension-options`}
+                      to={`/stories/${story._id}/reading_practice`}
                       translationId="reading-comprehension"
                       variant="primary"
                     />
