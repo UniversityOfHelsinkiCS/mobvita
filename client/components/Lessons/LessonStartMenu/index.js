@@ -89,7 +89,12 @@ const LessonStartMenu = ({ setOpen }) => {
           </Tooltip>
         }
       >
-        <Button variant="secondary" type="button" onClick={handleLessonSetupClick}>
+        <Button
+          className="lesson-tour-setup-button"
+          variant="secondary"
+          type="button"
+          onClick={handleLessonSetupClick}
+        >
           <div className="lesson-menu-button">
             <img
               className="lesson-menu-button-icon"

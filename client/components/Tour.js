@@ -94,6 +94,18 @@ const Tour = () => {
           return
         }
       }
+      if (tourState.steps === lessonsTourSteps && index === 0 && action !== ACTIONS.PREV) {
+        const setupButton = document.querySelector('.lesson-tour-setup-button')
+
+        if (setupButton instanceof HTMLElement) {
+          setupButton.click()
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 300)
+          return
+        }
+      }
 
       // desktop
       if (bigScreen) {

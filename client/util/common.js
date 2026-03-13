@@ -1976,7 +1976,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-setup-btn-container',
+    target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>
@@ -2081,7 +2081,7 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-setup-btn-container',
+    target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>
@@ -2090,16 +2090,6 @@ const mobileLessonsTourSteps = [
     ),
     disableBeacon: true,
   },
-  // {
-  //   target: '.practice-container',
-  //   title: <FormattedMessage id="Lesson exercise" />,
-  //   content: (
-  //     <div>
-  //       <FormattedHTMLMessage id="lesson-exercise-message" />
-  //     </div>
-  //   ),
-  //   disableBeacon: true,
-  // },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,

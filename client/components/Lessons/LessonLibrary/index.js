@@ -561,6 +561,7 @@ const LessonList = () => {
                       )}
                       {goStep === 2 ? (
                         <Button
+                          className="lesson-setup-start-btn"
                           style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBeginClick}
