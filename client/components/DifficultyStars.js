@@ -28,6 +28,10 @@ export default ({ difficulty, size, ...props }) => {
         </div>
       )
     default:
-      return <div />
+      return (
+        <div {...props}>
+          <Icon name="star outline" size={size} style={{ color: '#999' }} />
+        </div>
+      )
   }
 }

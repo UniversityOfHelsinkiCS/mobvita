@@ -4,11 +4,11 @@ import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { 
-  removeStory, 
-  getAllStories, 
-  unshareStory as unshare, 
-  storyVisibilityChange
+import {
+  removeStory,
+  getAllStories,
+  unshareStory as unshare,
+  storyVisibilityChange,
 } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -31,10 +31,10 @@ const StoryTitle = ({
   savedLibrarySelection,
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const {user, teacherView} = useSelector(({ user }) => user.data)
+  const { user, teacherView } = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
   const isControlledStory = !!story?.control_story
-  const showDeleteButton = libraryShown.private || !libraryShown.public && teacherView
+  const showDeleteButton = libraryShown.private || (!libraryShown.public && teacherView)
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     teacherView && !isControlledStory && story.user === user?.oid && !story.flashcardsOnly
@@ -55,13 +55,15 @@ const StoryTitle = ({
             {story.title}
           </h5>
           {inGroupLibrary && storyGroupShareInfo && (
-            <span style={{
-              whiteSpace: 'nowrap', 
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              '-o-text-overflow': 'ellipsis',
-              width: '30%',
-            }}>
+            <span
+              style={{
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                '-o-text-overflow': 'ellipsis',
+                width: '30%',
+              }}
+            >
               {storyGroupShareInfo.message}
             </span>
           )}
@@ -78,7 +80,7 @@ const StoryTitle = ({
       isTeacher={teacherView}
       currentGroup={currentGroup}
       handleControlledStoryCancel={handleControlledStoryCancel}
-      hidden={storyGroupShareInfo && storyGroupShareInfo.hidden || false}
+      hidden={(storyGroupShareInfo && storyGroupShareInfo.hidden) || false}
       setSharedStoryVisibility={setSharedStoryVisibility}
       user={user}
       savedLibrarySelection={savedLibrarySelection}
@@ -109,19 +111,20 @@ const StoryFunctionsDropdown = ({
   isTeacher,
   inGroupLibrary,
   enableOnlyPractice,
-  }) => {
-  if (story.flashcardsOnly) return (
-    <SemanticButton
-      as={Link}
-      to={`/flashcards/fillin/story/${story._id}/`}
-      style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-    >
-      <FormattedMessage id="Flashcard" />
-    </SemanticButton>
-  )
-  
+}) => {
+  if (story.flashcardsOnly)
+    return (
+      <SemanticButton
+        as={Link}
+        to={`/flashcards/fillin/story/${story._id}/`}
+        style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+      >
+        <FormattedMessage id="Flashcard" />
+      </SemanticButton>
+    )
+
   return (
-    <SemanticButton.Group className='library-tour-mobile-practice-button'>
+    <SemanticButton.Group className="library-tour-mobile-practice-button">
       {teacherInGroupView ? (
         <SemanticButton
           as={Link}
@@ -164,21 +167,25 @@ const StoryFunctionsDropdown = ({
               as={Link}
               to={`/stories/${story._id}/review`}
               icon="book"
-              className='library-tour-mobile-review-button'
+              className="library-tour-mobile-review-button"
             />
           )}
-          {!isTeacher && story.flashcard_count && (<Dropdown.Item
-            text={<FormattedMessage id="Flashcards" />}
-            as={Link}
-            to={`/flashcards/fillin/story/${story._id}/`}
-            icon="lightning"
-          />)}
-          {!isTeacher && (<Dropdown.Item
-            text={<FormattedMessage id="compete" />}
-            as={Link}
-            to={`/stories/${story._id}/compete`}
-            icon="clock"
-          />)}
+          {!isTeacher && story.flashcard_count && (
+            <Dropdown.Item
+              text={<FormattedMessage id="Flashcards" />}
+              as={Link}
+              to={`/flashcards/fillin/story/${story._id}/`}
+              icon="lightning"
+            />
+          )}
+          {!isTeacher && (
+            <Dropdown.Item
+              text={<FormattedMessage id="compete" />}
+              as={Link}
+              to={`/stories/${story._id}/compete`}
+              icon="clock"
+            />
+          )}
         </Dropdown.Menu>
       </Dropdown>
     </SemanticButton.Group>
@@ -192,7 +199,7 @@ const StoryActions = ({
   isControlled,
   inGroupLibrary,
   isTeacher,
-  }) => {
+}) => {
   const { width } = useWindowDimensions()
 
   const showCrosswordsButton = width > 1023
@@ -204,102 +211,112 @@ const StoryActions = ({
 
   const practiceLink = isControlled
     ? `/stories/${story._id}/controlled-practice`
-    // : `/stories/${story._id}/practice-preview`
-    : `/stories/${story._id}/preview`
+    : // : `/stories/${story._id}/practice-preview`
+      `/stories/${story._id}/preview`
 
   if (width >= 700) {
     return (
       <div className="story-actions">
         {!isTeacher && !story.flashcardsOnly && (
           <Link to={practiceLink}>
-            <Button className='library-tour-practice-button' variant='primary'>
+            <Button className="library-tour-practice-button" variant="primary">
               <FormattedMessage id="practice" />
             </Button>
           </Link>
         )}
 
-        {!isTeacher && story.flashcard_count > 0 && (<Popup
-          content={<FormattedMessage id="flashcard-btn-explanation" />}
-          trigger={
-            <Link to={`/flashcards/fillin/story/${story._id}/`}>
-              <Button
-                variant='primary'
-                disabled={enableOnlyPractice}
-              >
-                <FormattedMessage id="Flashcards" />
-              </Button>
-            </Link>
-          }
-          position="top center"
-        />)}
-        {!isTeacher && story.flashcard_count === 0 && (<Popup
-          content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
-          trigger={
-            <Link to={`/flashcards/fillin/story/${story._id}/`}>
-              <Button
-                variant='primary'
-                disabled={true}
-              >
-                <FormattedMessage id="Flashcards" />
-              </Button>
-            </Link>
-          }
-          position="top center"
-        />)}
-        { !story.flashcardsOnly && (<>
-        {isTeacher && (inGroupLibrary ? (
-          <Link to={`/stories/${story._id}/group/preview`}>
-            <Button
-              variant={teacherInGroupView ? 'primary' : buttonVariant}
-              disabled={enableOnlyPractice}
-            >
-              <FormattedMessage id="preview" />
-            </Button>
-          </Link>
-        ) : (
-          <Link to={`/stories/${story._id}/preview`}>
-            <Button variant={buttonVariant} disabled={enableOnlyPractice}>
-              <FormattedMessage id="preview" />
-            </Button>
-          </Link>
-        ))}
-        {inGroupLibrary ? (
-          <Link to={`/stories/${story._id}/group/review`}>
-            <Button className='library-tour-review-button' variant={teacherInGroupView ? 'primary' : reviewButtonVariant}>
-              <FormattedMessage id="review" />{' '}
-            </Button>
-          </Link>
-        ) : (
-          <Link to={`/stories/${story._id}/review`}>
-            <Button
-              className='library-tour-review-button'
-              variant={reviewButtonVariant}
-              disabled={story.percent_cov === 0 || enableOnlyPractice}
-            >
-              <FormattedMessage id="review" />{' '}
-            </Button>
-          </Link>
+        {!isTeacher && story.flashcard_count > 0 && (
+          <Popup
+            content={<FormattedMessage id="flashcard-btn-explanation" />}
+            trigger={
+              <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                <Button variant="primary" disabled={enableOnlyPractice}>
+                  <FormattedMessage id="Flashcards" />
+                </Button>
+              </Link>
+            }
+            position="top center"
+          />
         )}
-        
-        {!isTeacher && (<Link to={`/stories/${story._id}/compete`}>
-          <Button
-            variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
-            disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
-          >
-            <FormattedMessage id="compete" />{' '}
-          </Button>
-        </Link>)}
+        {!isTeacher && story.flashcard_count === 0 && (
+          <Popup
+            content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+            trigger={
+              <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                <Button variant="primary" disabled={true}>
+                  <FormattedMessage id="Flashcards" />
+                </Button>
+              </Link>
+            }
+            position="top center"
+          />
+        )}
+        {!story.flashcardsOnly && (
+          <>
+            {isTeacher &&
+              (inGroupLibrary ? (
+                <Link to={`/stories/${story._id}/group/preview`}>
+                  <Button
+                    variant={teacherInGroupView ? 'primary' : buttonVariant}
+                    disabled={enableOnlyPractice}
+                  >
+                    <FormattedMessage id="preview" />
+                  </Button>
+                </Link>
+              ) : (
+                <Link to={`/stories/${story._id}/preview`}>
+                  <Button variant={buttonVariant} disabled={enableOnlyPractice}>
+                    <FormattedMessage id="preview" />
+                  </Button>
+                </Link>
+              ))}
+            {inGroupLibrary ? (
+              <Link to={`/stories/${story._id}/group/review`}>
+                <Button
+                  className="library-tour-review-button"
+                  variant={teacherInGroupView ? 'primary' : reviewButtonVariant}
+                >
+                  <FormattedMessage id="review" />{' '}
+                </Button>
+              </Link>
+            ) : (
+              <Link to={`/stories/${story._id}/review`}>
+                <Button
+                  className="library-tour-review-button"
+                  variant={reviewButtonVariant}
+                  disabled={story.percent_cov === 0 || enableOnlyPractice}
+                >
+                  <FormattedMessage id="review" />{' '}
+                </Button>
+              </Link>
+            )}
 
-        {showCrosswordsButton && !isTeacher && (
-          <Link to={`/crossword/${story._id}/`}>
-            <Button
-              variant={uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant}
-              disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
-            >
-              <FormattedMessage id="Crossword" />
-            </Button>
-          </Link>
-        )}</>
+            {!isTeacher && (
+              <Link to={`/stories/${story._id}/compete`}>
+                <Button
+                  variant={
+                    uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant
+                  }
+                  disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
+                >
+                  <FormattedMessage id="compete" />{' '}
+                </Button>
+              </Link>
+            )}
+
+            {showCrosswordsButton && !isTeacher && (
+              <Link to={`/crossword/${story._id}/`}>
+                <Button
+                  variant={
+                    uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant
+                  }
+                  disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
+                >
+                  <FormattedMessage id="Crossword" />
+                </Button>
+              </Link>
+            )}
+          </>
         )}
       </div>
     )
@@ -332,7 +349,9 @@ const GroupsSharedTo = ({ groups }) => {
             </ul>
           </div>
         }
-        trigger={<Icon size="large" color="darkcyan" name="users" style={{marginRight: '15px'}} />}
+        trigger={
+          <Icon size="large" color="darkcyan" name="users" style={{ marginRight: '15px' }} />
+        }
       />
     </div>
   )
@@ -382,7 +401,11 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
     : null
 
   return (
-    <Card fluid key={story._id} className={`${isControlledStory ? 'card-controlled-story' : ''} tour-story-card`}>
+    <Card
+      fluid
+      key={story._id}
+      className={`${isControlledStory ? 'card-controlled-story' : ''} tour-story-card`}
+    >
       <Card.Content extra className="story-card-title-cont">
         <StoryTitle
           story={story}
@@ -407,8 +430,10 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         </div>
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }} >
-          {story.flashcardsOnly && (<Icon size="small" name="clone outline" bordered style={{marginRight: '15px'}}/>)}
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
+          {story.flashcardsOnly && (
+            <Icon size="small" name="clone outline" bordered style={{ marginRight: '15px' }} />
+          )}
 
           {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
@@ -419,7 +444,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
                 content={<FormattedMessage id="story-not-yet-processed" />}
                 trigger={
                   <div>
-                    <Icon name="hourglass half" color="orange" style={{marginRight: '15px'}}/>
+                    <Icon name="hourglass half" color="orange" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
@@ -433,7 +458,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
                 content={<FormattedMessage id="group-hidden-story" />}
                 trigger={
                   <div>
-                    <Icon color="red" name="low vision" style={{marginRight: '15px'}}/>
+                    <Icon color="red" name="low vision" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
@@ -446,7 +471,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
               content={<FormattedMessage id="timed-practice-explanation" />}
               trigger={
                 <div>
-                  <Icon color="red" name="clock outline" style={{marginRight: '15px'}}/>
+                  <Icon color="red" name="clock outline" style={{ marginRight: '15px' }} />
                 </div>
               }
             />
@@ -457,7 +482,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
               content={<FormattedMessage id="comments-on-story-explanation" />}
               trigger={
                 <div>
-                  <Icon color="black" name="comments" style={{marginRight: '15px'}}/>
+                  <Icon color="black" name="comments" style={{ marginRight: '15px' }} />
                 </div>
               }
             />
@@ -470,7 +495,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
                 content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
                 trigger={
                   <div>
-                    <Icon color="black" name="envelope outline" style={{marginRight: '15px'}}/>
+                    <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
@@ -483,16 +508,14 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
               content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
               trigger={
                 <div>
-                  <Icon color="black" name="envelope outline" style={{marginRight: '15px'}}/>
+                  <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
                 </div>
               }
             />
           )}
-          <DifficultyStars
-            className='library-tour-difficulty-stars'
-            difficulty={story.difficulty}
-            style={{ whiteSpace: 'nowrap' }}
-          />
+          <div className="library-tour-difficulty-stars" style={{ whiteSpace: 'nowrap' }}>
+            <DifficultyStars difficulty={story.difficulty} />
+          </div>
         </div>
       </Card.Content>
 
