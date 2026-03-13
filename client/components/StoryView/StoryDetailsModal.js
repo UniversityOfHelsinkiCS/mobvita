@@ -4,8 +4,7 @@ import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
-import DetailsTable from './DetailsTable'
-import { hiddenFeatures } from 'Utilities/common'
+
 
 const StoryDetailsModal = ({
   trigger,
@@ -52,6 +51,8 @@ const StoryDetailsModal = ({
   const storyGroupSharingInfo = inGroupLibrary
     ? groupsSharedWith.find(g => g?.group_id === currentGroup?.group_id)
     : null
+
+  const hadQuestions = Boolean(story?.has_questions)
 
   return (
     <Modal
@@ -101,7 +102,7 @@ const StoryDetailsModal = ({
             )}
             </div>
 
-            {!enableOnlyPractice && !isTeacher && (
+            {!enableOnlyPractice && !isTeacher && hadQuestions && (
               <div
                 style={{
                   display: 'flex',
