@@ -124,17 +124,17 @@ const ReadingPracticeView = () => {
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
-                <FormattedMessage id="reading-practice" defaultMessage="reading-practice" />
+                <FormattedMessage id="reading-test"/>
               </div>
 
               {total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
-                  <FormattedMessage id="no-questions" defaultMessage="No questions." />
+                  <FormattedMessage id="no-questions"/>
                 </div>
               ) : (
                 <>
                   <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.75 }}>
-                    <FormattedMessage id="question" defaultMessage="Question" /> {idx + 1} / {total}
+                    <FormattedMessage id="question"/> {idx + 1} / {total}
                   </div>
 
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
@@ -172,7 +172,6 @@ const ReadingPracticeView = () => {
                         <SemanticButton
                           key={i}
                           fluid
-                          disabled={checked}
                           onClick={() => {
                             if (checked) return
                             setSelectedChoice(c)
@@ -202,24 +201,24 @@ const ReadingPracticeView = () => {
                       onClick={() => setChecked(true)}
                       disabled={selectedChoice == null || checked}
                     >
-                      <FormattedMessage id="check-answer" defaultMessage="Check Answers" />
+                      <FormattedMessage id="check-answer"/>
                     </Button>
 
                     {/* LAST QUESTION → show Restart */}
                     {idx === total - 1 && checked ? (
                       <Button
-                        variant="success"
+                        variant="primary"
                         onClick={() => {
                           setIdx(0)
                           setSelectedChoice(null)
                           setChecked(false)
                         }}
                       >
-                        <FormattedMessage id="start-over" defaultMessage="Start over" />
+                        <FormattedMessage id="start-over"/>
                       </Button>
                     ) : (
                       <Button onClick={goNext} disabled={!checked || idx >= total - 1}>
-                        <FormattedMessage id="next" defaultMessage="Next" />
+                        <FormattedMessage id="next"/>
                       </Button>
                     )}
                   </div>
