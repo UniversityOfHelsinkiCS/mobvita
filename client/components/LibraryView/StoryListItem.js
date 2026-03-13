@@ -46,7 +46,7 @@ const StoryTitle = ({
   return (
     <StoryDetailsModal
       trigger={
-        <span className="flex" style={{ overflow: 'hidden', width: '100%' }}>
+        <span className="flex library-tour-open-story-modal" style={{ overflow: 'hidden', width: '100%' }}>
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
           <h5
             className="story-item-title"
@@ -216,10 +216,10 @@ const StoryActions = ({
 
   if (width >= 700) {
     return (
-      <div className="story-actions">
+      <div className="story-actions library-tour-practice-button">
         {!isTeacher && !story.flashcardsOnly && (
           <Link to={practiceLink}>
-            <Button className="library-tour-practice-button" variant="primary">
+            <Button variant="primary">
               <FormattedMessage id="practice" />
             </Button>
           </Link>

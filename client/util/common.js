@@ -128,7 +128,7 @@ export const images = {
   flagEnglish,
   tests,
   addStory,
-  addStoriesIcon,  
+  addStoriesIcon,
   logo,
   navbarLogo,
   flashcardIcon,
@@ -226,12 +226,11 @@ export const skillLevels = [
 
 export const cefrNum2Cefr = num => {
   if (num == null || num === undefined) return ''
-  if (num < 1) return 'pre-A1';
-  if (num > 13) return 'C2+';
+  if (num < 1) return 'pre-A1'
+  if (num > 13) return 'C2+'
 
-
-  return skillLevels[Math.round(num)];
-};
+  return skillLevels[Math.round(num)]
+}
 
 export const cefrNumberToLevel = num => {
   if (num == null || num === undefined) return null
@@ -241,11 +240,11 @@ export const cefrNumberToLevel = num => {
 
 export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
   function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.random() * (max - min) + min
   }
 
   if (angle === null) {
-    angle = randomInRange(55, 125);
+    angle = randomInRange(55, 125)
   }
 
   confetti({
@@ -253,10 +252,8 @@ export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
     spread: randomInRange(50, 70),
     particleCount: randomInRange(50, 100),
     origin: { x, y },
-  });
-};
-
-
+  })
+}
 
 export const finalConfettiRain = (colors, endDate) => {
   ;(function frame() {
@@ -311,12 +308,10 @@ export const capitalize = word => {
 // the above capitalize function capitalizes every component separated by -
 // here we capitalize ONLY THE FIRST CHARACTER
 export const capitalize_first_char_only = word => {
-    const p1 = word.slice(0, 1)
-    const p2 = word.slice(1, word.length)
-    return p1.toUpperCase() + p2
+  const p1 = word.slice(0, 1)
+  const p2 = word.slice(1, word.length)
+  return p1.toUpperCase() + p2
 }
-
-
 
 // coloring difficulty
 function getRgb(color) {
@@ -349,10 +344,15 @@ function ConvertRGBtoHex(red, green, blue) {
 }
 
 export const composeExerciseContext = (snippet, word) => {
-  return snippet.filter(curr=>curr.id).reduce((acc, curr) => ({
-    ...acc,
-    [curr.ID]: curr.base
-  }), {})
+  return snippet
+    .filter(curr => curr.id)
+    .reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.ID]: curr.base,
+      }),
+      {}
+    )
 }
 
 export function getWordColor(
@@ -370,7 +370,8 @@ export function getWordColor(
     ((mode === 'review' || mode === 'practice' || mode === 'controlled-practice') &&
       !show_review_diff) ||
     (mode === 'preview' && !show_preview_exer) ||
-    user_grade >= word_level || !hiddenFeatures
+    user_grade >= word_level ||
+    !hiddenFeatures
   ) {
     return '#FFFFFF' // white background
   }
@@ -409,7 +410,8 @@ export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_tran
 
 export const useLearningLanguage = () => useSelector(learningLanguageSelector)
 export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelector)
-export const useMTAvailableLanguage = () => useSelector(({ contextTranslation }) => contextTranslation.avail)
+export const useMTAvailableLanguage = () =>
+  useSelector(({ contextTranslation }) => contextTranslation.avail)
 export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
 export const supportedLearningLanguages = {
@@ -541,11 +543,13 @@ export const checkRevitaStatus = async () => {
 
 export const downloadReadingReport = async (groupId, startDate, endDate) => {
   //TODO: generalize downloading from BE properly
-  const result = await callApi(`/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`)
-  const blob = new Blob([result.data], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a")
-  link.download = "report.tsv"
+  const result = await callApi(
+    `/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`
+  )
+  const blob = new Blob([result.data], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.download = 'report.tsv'
   link.href = url
   link.click()
 }
@@ -562,7 +566,11 @@ export const downloadReadingHistory = async (groupId, groupName, startDate, endD
   link.click()
 }
 
-export const getMode = () => useHistory().location.pathname.split('/').filter(x=>x.length).pop()
+export const getMode = () =>
+  useHistory()
+    .location.pathname.split('/')
+    .filter(x => x.length)
+    .pop()
 
 const defaultAllowed = [
   'b',
@@ -613,7 +621,9 @@ export const tooltipFontSizes = { Syriac: '1rem' }
 export const getTextStyle = (language, type) => {
   let style = {}
 
-  if (type !== 'title') {style = { fontSize: '1.15rem' }}
+  if (type !== 'title') {
+    style = { fontSize: '1.15rem' }
+  }
 
   if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
   if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
@@ -633,7 +643,7 @@ export const getBackgroundColor = () => {
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 
-export const getTextWidth = (text, fontFamily='Arial') => {
+export const getTextWidth = (text, fontFamily = 'Arial') => {
   const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = myCanvas.getContext('2d')
   context.font = '1em ' + fontFamily // This should match with the defaultFont defined in custom.scss
@@ -659,7 +669,13 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
       Howler.codecs('opus') &&
       (resource_usage.tts.Yandex?.access ?? true)
     )
-      yandexSpeak(surfaceWord, lang_code, tone, voice_type, String(1.1 - nRepeat % 3 * 0.2).slice(0,3))
+      yandexSpeak(
+        surfaceWord,
+        lang_code,
+        tone,
+        voice_type,
+        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3)
+      )
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
@@ -1004,10 +1020,9 @@ const tourSign = () => {
   )
 }
 
-
 export const getHelpLink = (locale, isTeacher, learningLanguage) => {
   const interface_language = localeCodeToName(locale)
-  if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish') 
+  if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish')
     return 'https://docs.google.com/presentation/d/1MKh8e15yEziO4iJtG2-rovP4nRMciUS8cCSpy4KnsUg/edit?usp=drive_link'
   else if (isTeacher && interface_language == 'English' && learningLanguage == 'Finnish')
     return 'https://docs.google.com/presentation/d/16wRAQjgfRIqkXig9JAxkC3Ll1Zoi35P0chjG3KO_cgI/edit?usp=drive_link'
@@ -1386,7 +1401,6 @@ const homeTourSteps = {
   },
 ] */
 
-
 /////////////////////////////////////////////////////////
 const desktopProgressTourSteps = [
   {
@@ -1448,7 +1462,6 @@ const desktopProgressTourSteps = [
   },
 ]
 
-
 /////////////////////////////////////////////////////////
 const mobileProgressTourSteps = [
   {
@@ -1498,7 +1511,6 @@ const mobileProgressTourSteps = [
   },
 ]
 
-
 /////////////////////////////////////////////////////////
 const anonymousDesktopProgressTourSteps = [
   {
@@ -1527,7 +1539,6 @@ const anonymousMobileProgressTourSteps = [
     placement: 'right',
   },
 ]
-
 
 /////////////////////////////////////////////////////////
 const desktopLibraryTourSteps = [
@@ -1566,7 +1577,7 @@ const desktopLibraryTourSteps = [
     placementBeacon: 'left',
   },
   {
-    target: '.library-tour-practice-button',
+    target: '.library-tour-modal-practice-button',
     title: <FormattedMessage id="practice" />,
     content: (
       <div>
@@ -1578,7 +1589,7 @@ const desktopLibraryTourSteps = [
     placementBeacon: 'left',
   },
   {
-    target: '.library-tour-review-button',
+    target: '.library-tour-modal-review-button',
     title: <FormattedMessage id="review" />,
     content: (
       <div>
@@ -1600,7 +1611,6 @@ const desktopLibraryTourSteps = [
     disableBeacon: true,
   },
 ]
-
 
 /////////////////////////////////////////////////////////
 const mobileLibraryTourSteps = [
@@ -1682,7 +1692,6 @@ const mobileLibraryTourSteps = [
     },
   },
 ]
-
 
 /////////////////////////////////////////////////////////
 const desktopPracticeTourSteps = [

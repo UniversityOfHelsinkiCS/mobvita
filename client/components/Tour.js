@@ -4,11 +4,11 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
-import { 
-  getLessonInstance, 
-  setLessonInstance, 
-  setLessonStep, 
-  clearLessonInstanceState 
+import {
+  getLessonInstance,
+  setLessonInstance,
+  setLessonStep,
+  clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
 import { FormattedMessage } from 'react-intl'
@@ -21,7 +21,7 @@ import {
   confettiRain,
   practiceTourSteps,
   practiceTourStepsAlternative,
-  lessonsTourSteps
+  lessonsTourSteps,
 } from 'Utilities/common'
 
 const Tour = () => {
@@ -33,7 +33,7 @@ const Tour = () => {
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
-  const { pending: lessonPending, lesson  } = useSelector(({ lessonInstance }) => lessonInstance)
+  const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const homeTour =
     tourState.steps === studentHomeTourSteps || tourState.steps === teacherHomeTourSteps
@@ -59,7 +59,21 @@ const Tour = () => {
         dispatch(handleNextTourStep(index + 2))
         return
       }
-      
+      if (tourState.steps === libraryTourSteps && index === 2 && action !== ACTIONS.PREV) {
+        const modalTrigger = document.querySelector(
+          '.library-tour-open-story-modal, .story-item-dots'
+        )
+
+        if (modalTrigger) {
+          modalTrigger.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 350)
+          return
+        }
+      }
+
       // desktop
       if (bigScreen) {
         if (homeTour && !history.location.pathname.includes('/home')) {
@@ -107,14 +121,14 @@ const Tour = () => {
         // practice tour steps
         if (tourState.steps === practiceTourSteps) {
           if (index === 0) {
-            dispatch({ type: 'SHOW_TOPICS_BOX'})
+            dispatch({ type: 'SHOW_TOPICS_BOX' })
           }
           if (index === 2) {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            dispatch({ type: 'CLOSE_TOPICS_BOX'})
+            dispatch({ type: 'CLOSE_TOPICS_BOX' })
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
@@ -126,8 +140,8 @@ const Tour = () => {
         // lessons tour steps
         if (tourState.steps === lessonsTourSteps) {
           if (!metaPending && !lessonPending && lesson.topic_ids.length === 0) {
-            const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
-            dispatch(setLessonInstance({ topic_ids:  newTopics}))
+            const newTopics = [lesson_topics.filter(topic => topic.target?.length > 0)[0].topic_id]
+            dispatch(setLessonInstance({ topic_ids: newTopics }))
           }
           switch (index) {
             case 0:
@@ -221,7 +235,6 @@ const Tour = () => {
         // library tour control
         if (tourState.steps === libraryTourSteps) {
           if (index === 3) {
-
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))
@@ -249,7 +262,6 @@ const Tour = () => {
             history.push(`${newPath}practice/`)
           }
           if (index === 7) {
-
             setTimeout(() => {
               dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
               window.dispatchEvent(new Event('resize'))
@@ -268,8 +280,8 @@ const Tour = () => {
         // lessons tour control
         if (tourState.steps === lessonsTourSteps) {
           if (!metaPending && !lessonPending && lesson.topic_ids.length === 0) {
-            const newTopics = [lesson_topics.filter(topic=>topic.target?.length>0)[0].topic_id]
-            dispatch(setLessonInstance({ topic_ids:  newTopics}))
+            const newTopics = [lesson_topics.filter(topic => topic.target?.length > 0)[0].topic_id]
+            dispatch(setLessonInstance({ topic_ids: newTopics }))
           }
           switch (index) {
             case 0:
