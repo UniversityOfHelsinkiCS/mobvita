@@ -103,13 +103,26 @@ const Tour = () => {
         const modalTrigger = document.querySelector(
           '.library-tour-open-story-modal, .story-item-dots'
         )
-
         if (modalTrigger) {
           modalTrigger.dispatchEvent(new MouseEvent('click', { bubbles: true }))
           setTimeout(() => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
           }, 350)
+          return
+        }
+      }
+      if (tourState.steps === libraryTourSteps && index === 4 && action !== ACTIONS.PREV) {
+        const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
+          el => el instanceof HTMLElement && el.offsetParent !== null
+        )
+
+        if (closeButton instanceof HTMLElement) {
+          closeButton.click()
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 250)
           return
         }
       }
