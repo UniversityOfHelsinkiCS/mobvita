@@ -167,21 +167,6 @@ export const updatePublishProgress = value => saveSelf({ publish_progress: value
 export const updateSortCriterion = value => saveSelf({ library_sort_criterion: value })
 
 export const updatePracticeSettings = changes => saveSelf(changes)
-export const updateReadingComprehension = value => {
-  if (value) {
-    return saveSelf({
-      reading_comprehension: true,
-      blank_filling: false,
-      multi_choice: false,
-      task_audio: false,
-      task_speech: false,
-    })
-  }
-
-  return saveSelf({
-    reading_comprehension: false,
-  })
-}
 
 export const homeTourViewed = () => saveSelf({ has_seen_home_tour: true })
 export const libraryTourViewed = () => saveSelf({ has_seen_library_tour: true })
