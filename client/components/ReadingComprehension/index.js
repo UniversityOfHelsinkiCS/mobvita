@@ -47,14 +47,13 @@ const normalizeQuestion = q => {
   if (!q) return null
   if (q.question && (q.choices || q.answer)) {
     return {
-      question: q.question,
-      answer: q.answer,
+      ...q,
       choices: Array.isArray(q.choices) ? q.choices : [],
-      level: q.level,
     }
   }
   if (q.q) {
     return {
+      ...q,
       question: q.q,
       answer: q.a,
       choices: Array.isArray(q.choices) ? q.choices : [],
