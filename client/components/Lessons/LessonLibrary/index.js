@@ -199,8 +199,7 @@ const LessonList = () => {
   }
 
   const finnishSelectingSemanticsAndVocabDiff = () => {
-    const payload = { semantic: selectedSemantics, vocab_diff: Math.round(sliderValue) }
-    console.log('selected semantics and vocab diff: ', payload)
+    const payload = { semantic: selectedSemantics, vocab_diff: sliderValue }
     if (libraries.group) payload.group_id = savedGroupSelection
     dispatch(setLessonInstance(payload))
   }
@@ -280,7 +279,6 @@ const LessonList = () => {
         className="exercise-density-slider lesson-vocab-diff"
         thumbClassName={sliderThumbClassName}
         trackClassName="exercise-density-slider-track"
-        onChange={value => handleSlider(value)} // reactive while drag
         onAfterChange={value => handleSlider(value)}
         onSliderClick={value => handleSlider(value)}
         snapDragDisabled={false}
