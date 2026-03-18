@@ -6,7 +6,7 @@ import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import ControlledStoryWord from 'Components/ControlledStoryEditView/ControlledStoryWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcept }) => {
+const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback, focusedConcept }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const history = useHistory()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -22,6 +22,18 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, focusedConcep
       setShouldBeHidden(false)
     }
   }, [hiddenWordIds])
+
+  if (hideFeedback) {
+    return (
+      <PlainWord
+        word={word}
+        snippet={snippet}
+        annotatingAllowed
+        hideDifficulty={hideDifficulty ?? true}
+        focusedConcept={focusedConcept}
+      />
+    )
+  }
 
   // "Display feedback" toggle is off
   if (!show_preview_exer && isPreviewMode) {

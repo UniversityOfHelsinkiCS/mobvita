@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -30,6 +30,32 @@ const normalizeQuestion = q => {
   return q
 }
 
+const paragraphToText = paragraph => {
+  if (!Array.isArray(paragraph)) return ''
+  return paragraph.map(token => token?.surface || '').join('')
+}
+
+const findAnswerParagraphIndex = (story, question) => {
+  const paragraphs = Array.isArray(story?.paragraph) ? story.paragraph : []
+  if (!paragraphs.length || !question) return -1
+
+  const directParagraphIndex =
+    question?.paragraph_index ??
+    question?.paragraphIndex ??
+    question?.answer_paragraph_index ??
+    question?.answerParagraphIndex
+
+  if (Number.isInteger(directParagraphIndex) && directParagraphIndex >= 0) {
+    return Math.min(directParagraphIndex, paragraphs.length - 1)
+  }
+
+  const answer = String(question?.answer || '').trim().toLowerCase()
+  if (!answer) return -1
+
+  const paragraphTexts = paragraphs.map(paragraph => paragraphToText(paragraph).toLowerCase())
+  return paragraphTexts.findIndex(text => text.includes(answer))
+}
+
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
@@ -47,8 +73,11 @@ const ReadingPracticeView = () => {
 
   const [idx, setIdx] = useState(0)
   const current = questions[idx] || null
-  const [selectedChoice, setSelectedChoice] = useState(null)
-  const [checked, setChecked] = useState(false)
+  const [attemptedWrongChoices, setAttemptedWrongChoices] = useState(new Set())
+  const [isCorrectAnswered, setIsCorrectAnswered] = useState(false)
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
+  const [highlightedParagraphIndex, setHighlightedParagraphIndex] = useState(-1)
+  const paragraphRefs = useRef([])
 
   useEffect(() => {
     if (!storyId) return
@@ -57,16 +86,58 @@ const ReadingPracticeView = () => {
 
   useEffect(() => {
     setIdx(0)
-    setSelectedChoice(null)
-    setChecked(false)
+    setAttemptedWrongChoices(new Set())
+    setIsCorrectAnswered(false)
+    setShowCorrectAnswer(false)
+    setHighlightedParagraphIndex(-1)
   }, [storyId, questions.length])
 
   const total = questions.length
 
+  const wrongAttemptLimit = Math.max((current?.choices || []).length - 1, 1)
+
+  const handleChoiceClick = choice => {
+    if (!current || showCorrectAnswer) return
+
+    const normalizedChoice = String(choice)
+    const normalizedAnswer = String(current.answer)
+
+    if (normalizedChoice === normalizedAnswer) {
+      setIsCorrectAnswered(true)
+      setShowCorrectAnswer(true)
+      return
+    }
+
+    setAttemptedWrongChoices(prev => {
+      const next = new Set(prev)
+      next.add(normalizedChoice)
+
+      if (next.size >= wrongAttemptLimit) {
+        setShowCorrectAnswer(true)
+      }
+
+      return next
+    })
+  }
+
+  const handleShowAnswerLocation = () => {
+    const paragraphIndex = findAnswerParagraphIndex(story, current)
+    setHighlightedParagraphIndex(paragraphIndex)
+
+    if (paragraphIndex >= 0) {
+      const paragraphElement = paragraphRefs.current[paragraphIndex]
+      if (paragraphElement instanceof HTMLElement) {
+        paragraphElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }
+
   const goNext = () => {
-    if (!checked) return
-    setChecked(false)
-    setSelectedChoice(null)
+    if (!showCorrectAnswer) return
+    setAttemptedWrongChoices(new Set())
+    setIsCorrectAnswered(false)
+    setShowCorrectAnswer(false)
+    setHighlightedParagraphIndex(-1)
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
 
@@ -95,21 +166,36 @@ const ReadingPracticeView = () => {
       >
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
 
-        {(story.paragraph || []).map((paragraph, i) => (
-          <React.Fragment key={i}>
-            <TextWithFeedback
-              hideFeedback
-              showDifficulty={false}
-              mode="preview"
-              snippet={paragraph}
-              answers={null}
-              focusedConcept={null}
-              show_preview_exer={false}
-            />
-            <br />
-            <br />
-          </React.Fragment>
-        ))}
+        {(story.paragraph || []).map((paragraph, i) => {
+          const isHighlighted = highlightedParagraphIndex === i
+          return (
+            <div
+              key={i}
+              ref={el => {
+                paragraphRefs.current[i] = el
+              }}
+              style={{
+                backgroundColor: isHighlighted ? 'rgba(255, 243, 179, 0.7)' : 'transparent',
+                border: isHighlighted ? '1px solid rgba(224, 170, 0, 0.85)' : '1px solid transparent',
+                borderRadius: 8,
+                padding: isHighlighted ? '8px' : 0,
+                transition: 'all 200ms ease',
+              }}
+            >
+              <TextWithFeedback
+                hideFeedback
+                hideDifficulty
+                mode="preview"
+                snippet={paragraph}
+                answers={null}
+                focusedConcept={null}
+                show_preview_exer={false}
+              />
+              <br />
+              <br />
+            </div>
+          )
+        })}
       </Segment>
 
       <section
@@ -139,22 +225,22 @@ const ReadingPracticeView = () => {
 
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
 
+                  {!showCorrectAnswer && (
+                    <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.8 }}>
+                      <FormattedMessage id="incorrect-attempts" defaultMessage="Incorrect attempts" />:{' '}
+                      {attemptedWrongChoices.size} / {wrongAttemptLimit}
+                    </div>
+                  )}
+
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {(current?.choices || []).map((c, i) => {
-                      const isSelected = selectedChoice === c
                       const isAnswer = c === current?.answer
-                      const isWrongSelected = checked && isSelected && !isAnswer
-                      const isCorrect = checked && isAnswer
+                      const isWrongTried = attemptedWrongChoices.has(String(c))
+                      const isCorrect = showCorrectAnswer && isAnswer
 
                       let border = '1px solid rgba(0,0,0,0.18)'
                       let bg = '#fff'
                       let color = 'rgba(0,0,0,0.82)'
-
-                      if (!checked && isSelected) {
-                        border = '1px solid rgba(33, 133, 208, 0.9)'
-                        bg = 'rgba(33, 133, 208, 0.08)'
-                        color = 'rgba(0,0,0,0.95)'
-                      }
 
                       if (isCorrect) {
                         border = '1px solid rgba(33, 186, 69, 0.9)'
@@ -162,7 +248,7 @@ const ReadingPracticeView = () => {
                         color = 'rgba(0,0,0,0.95)'
                       }
 
-                      if (isWrongSelected) {
+                      if (isWrongTried) {
                         border = '1px solid rgba(219, 40, 40, 0.9)'
                         bg = 'rgba(219, 40, 40, 0.10)'
                         color = 'rgba(0,0,0,0.95)'
@@ -172,10 +258,8 @@ const ReadingPracticeView = () => {
                         <SemanticButton
                           key={i}
                           fluid
-                          onClick={() => {
-                            if (checked) return
-                            setSelectedChoice(c)
-                          }}
+                          onClick={() => handleChoiceClick(c)}
+                          disabled={showCorrectAnswer}
                           style={{
                             textAlign: 'left',
                             justifyContent: 'flex-start',
@@ -196,32 +280,50 @@ const ReadingPracticeView = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-                    <Button
-                      className="btn-secondary"
-                      onClick={() => setChecked(true)}
-                      disabled={selectedChoice == null || checked}
-                    >
-                      <FormattedMessage id="check-answer"/>
-                    </Button>
+                    {showCorrectAnswer && (
+                      <Button className="btn-secondary" onClick={handleShowAnswerLocation}>
+                        <FormattedMessage
+                          id="show-where-answer-is-in-text"
+                          defaultMessage="Show where answer is in the text"
+                        />
+                      </Button>
+                    )}
 
                     {/* LAST QUESTION → show Restart */}
-                    {idx === total - 1 && checked ? (
+                    {idx === total - 1 && showCorrectAnswer ? (
                       <Button
                         variant="primary"
                         onClick={() => {
                           setIdx(0)
-                          setSelectedChoice(null)
-                          setChecked(false)
+                          setAttemptedWrongChoices(new Set())
+                          setIsCorrectAnswered(false)
+                          setShowCorrectAnswer(false)
+                          setHighlightedParagraphIndex(-1)
                         }}
                       >
                         <FormattedMessage id="start-over"/>
                       </Button>
                     ) : (
-                      <Button onClick={goNext} disabled={!checked || idx >= total - 1}>
+                      <Button onClick={goNext} disabled={!showCorrectAnswer || idx >= total - 1}>
                         <FormattedMessage id="next"/>
                       </Button>
                     )}
                   </div>
+
+                  {showCorrectAnswer && (
+                    <div
+                      style={{ marginTop: 10, fontSize: 12, color: isCorrectAnswered ? '#127a37' : '#9f3a38' }}
+                    >
+                      {isCorrectAnswered ? (
+                        <FormattedMessage id="correct-answer" defaultMessage="Correct answer" />
+                      ) : (
+                        <FormattedMessage
+                          id="showing-correct-after-incorrect-attempts"
+                          defaultMessage="Showing correct answer after incorrect attempts"
+                        />
+                      )}
+                    </div>
+                  )}
                 </>
               )}
             </div>
