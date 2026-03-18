@@ -307,7 +307,7 @@ export default (state = initialState, action) => {
         readingTestSessionId,
         currentReadingQuestionIndex,
         currentQuestionIdxinSet,
-        feedbacks: [],
+        feedbacks: previousStatus?.post_attempt_feedbacks || [],
         attempt_and_feedbacks: [],
         readingSetLength,
         pending: false,

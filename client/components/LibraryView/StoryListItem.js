@@ -211,8 +211,7 @@ const StoryActions = ({
 
   const practiceLink = isControlled
     ? `/stories/${story._id}/controlled-practice`
-    : // : `/stories/${story._id}/practice-preview`
-      `/stories/${story._id}/preview`
+    : `/stories/${story._id}/preview`
 
   if (width >= 700) {
     return (

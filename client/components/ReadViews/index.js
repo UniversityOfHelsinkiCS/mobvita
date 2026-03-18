@@ -34,7 +34,6 @@ import {
   updateAudioTask,
   updateSpeechTask,
   updateMultiChoice,
-  updateReadingComprehension,
 } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'

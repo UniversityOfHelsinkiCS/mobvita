@@ -134,6 +134,9 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
     setCurrentAnswer(choice)
 
+    // Track the NEW feedback that will be added in this execution
+    let newFeedback = null
+
     const countNotSelectedChoices = currentReadingTestQuestion.choices.filter(
       choice => choice.isSelected !== true
     ).length
@@ -145,9 +148,11 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
         confettiRain(0, 0.45, 60)
         confettiRain(1, 0.45, 120)
         if (countNotSelectedChoices >= currentReadingTestQuestion.choices.length) {
-          dispatch(updateTestFeedbacks(choice.option, 'correct-answer-to-question'))
+          newFeedback = 'correct-answer-to-question'
+          dispatch(updateTestFeedbacks(choice.option, newFeedback))
         } else if (questionConceptFeedbacks && questionConceptFeedbacks?.synthesis) {
-          dispatch(updateTestFeedbacks(choice.option, questionConceptFeedbacks?.synthesis))
+          newFeedback = questionConceptFeedbacks?.synthesis
+          dispatch(updateTestFeedbacks(choice.option, newFeedback))
         }
       }
 
@@ -194,20 +199,24 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             feedback => !feedbacks.includes(feedback)
           )
           if (remainMediationFeedbacks.length > 0) {
-            dispatch(updateTestFeedbacks(choice.option, remainMediationFeedbacks[0]))
+            newFeedback = remainMediationFeedbacks[0]
+            dispatch(updateTestFeedbacks(choice.option, newFeedback))
             setReceivedFeedback(receivedFeedback + 1)
           } else if (remainItemFeedbacks.length > 0) {
-            dispatch(updateTestFeedbacks(choice.option, remainItemFeedbacks[0]))
+            newFeedback = remainItemFeedbacks[0]
+            dispatch(updateTestFeedbacks(choice.option, newFeedback))
             setReceivedFeedback(receivedFeedback + 1)
           } else if (!feedbacks.includes(synthesisFeedback)) {
-            dispatch(updateTestFeedbacks(choice.option, synthesisFeedback))
+            newFeedback = synthesisFeedback
+            dispatch(updateTestFeedbacks(choice.option, newFeedback))
             setShowCorrect(true)
             setQuestionDone(true)
             timer.stop()
             markQuestionDone = true
           }
         } else {
-          dispatch(updateTestFeedbacks(choice.option, synthesisFeedback))
+          newFeedback = synthesisFeedback
+          dispatch(updateTestFeedbacks(choice.option, newFeedback))
           setShowCorrect(true)
           setQuestionDone(true)
           setCurrentAnswer(null)
@@ -224,12 +233,16 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
       : false
 
     if (!isSelectedChoice) {
+      // Calculate post-attempt feedbacks (cumulative including new feedback)
+      const postAttemptFeedbacks = newFeedback ? [...feedbacks, newFeedback] : feedbacks
+
       dispatch(
         sendReadingTestAnswer(learningLanguage, readingTestSessionId, {
           type: currentReadingTestQuestion.type,
           question_id: currentReadingTestQuestion.question_id,
           answer: choice.option,
-          seenFeedbacks: feedbacks,
+          seenFeedbacks: feedbacks, // Legacy: feedbacks before answer
+          postAttemptFeedbacks: postAttemptFeedbacks, // New: cumulative feedbacks after attempt
           questionDone: choice.is_correct ? true : markQuestionDone,
           duration: timer.getTime() / 1000,
         })
