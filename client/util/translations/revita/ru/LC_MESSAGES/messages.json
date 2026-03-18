@@ -1789,13 +1789,16 @@
     "add-questions-to-story": "Save questions",
     "generate": "Generate",
     "size": "Количество вопросов",
-    "mc-generating": "Generating Multiple choices reading questions for the story",
-    "regenerating": "Regenerating questions",
+    "mc-generating": "Generating multiple-choice questions for the story",
+    "regenerating": "Генерация вопросов",
     "loading": "Загрузка...",
     "loading-story": "Загрузка истории...",
     "practice-reading-comprehension": "Практика понимания прочитанного",
     "explain-recommended-sites": "Список рекомендуемых сайтов.\nМожно добавить новые сайты в этот список: введи URL-адрес и нажми «Добавить в рекомендуемые сайты»",
     "upload-from-web-button": "Загрузить в личную библиотеку",
     "add-recommended-sites-button": "Добавить в список рекомендуемых сайтов",
-    "library-tour-preview-text": "Здесь можно предварительно просмотреть текст.\nПосле предварительного просмотра ученик может перейти к выполнению практических упражнений с текстом."
+    "library-tour-preview-text": "Здесь можно предварительно просмотреть текст.\nПосле предварительного просмотра ученик может перейти к выполнению практических упражнений с текстом.",
+    "no-saved-questions": "This story does not have any question attached",
+    "error": "Error",
+    "saved": "Saved"
 }

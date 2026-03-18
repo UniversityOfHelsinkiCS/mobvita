@@ -1786,13 +1786,16 @@
     "add-questions-to-story": "Save questions",
     "generate": "Generate",
     "size": "Numero di domande",
-    "mc-generating": "Generating Multiple choices reading questions for the story",
-    "regenerating": "Regenerating questions",
+    "mc-generating": "Generating multiple-choice questions for the story",
+    "regenerating": "Generazione di domande...",
     "loading": "Caricamento...",
     "loading-story": "Caricamento della storia...",
     "practice-reading-comprehension": "Esercizi di comprensione della lettura",
     "explain-recommended-sites": "Ecco alcuni siti consigliati.\nPuoi aggiungere i tuoi siti a questo elenco: inserisci l'URL e fai clic su 'Aggiungi ai siti consigliati'.",
     "upload-from-web-button": "Carica nella libreria privata",
     "add-recommended-sites-button": "Aggiungi ai siti consigliati.",
-    "library-tour-preview-text": "Qui puoi visualizzare un'anteprima del testo.\nDopo l'anteprima, lo studente può passare a svolgere gli esercizi pratici con il testo."
+    "library-tour-preview-text": "Qui puoi visualizzare un'anteprima del testo.\nDopo l'anteprima, lo studente può passare a svolgere gli esercizi pratici con il testo.",
+    "no-saved-questions": "This story does not have any question attached",
+    "error": "Error",
+    "saved": "Saved"
 }
