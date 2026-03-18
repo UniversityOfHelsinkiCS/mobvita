@@ -22,8 +22,9 @@ import {
   clearMcSavedAction,
   deleteMcQuestionsAction,
   clearMcDeletedAction,
+  clearMcStateAction,
 } from 'Utilities/redux/readingComprehensionReducer'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getAllStories, getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle, skillLevels, cefrNum2Cefr } from 'Utilities/common'
 import './ReadingComprehension.css'
 
@@ -69,8 +70,10 @@ const ReadingComprehensionView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { storyId } = match.params
 
-  const { story } = useSelector(({ stories }) => ({
+  const { story, lastQuery, focusedPending } = useSelector(({ stories }) => ({
     story: stories.focused,
+    lastQuery: stories.lastQuery,
+    focusedPending: stories.focusedPending,
   }))
 
   const {
@@ -117,8 +120,20 @@ const ReadingComprehensionView = ({ match }) => {
   const [prevSignatures, setPrevSignatures] = useState({})
 
   useEffect(() => {
+    dispatch(clearMcStateAction())
+    setDraftQuestions([])
+    setSelectedDraft(new Set())
+    setEditing(null)
+    setEditValue('')
+    setRegenLocalByIndex({})
+    setPrevSignatures({})
+
     dispatch(getStoryAction(storyId, 'preview'))
     hasInitializedStoryQuestionsRef.current = false
+
+    return () => {
+      dispatch(clearMcStateAction())
+    }
   }, [dispatch, storyId])
 
   useEffect(() => {
@@ -133,9 +148,19 @@ const ReadingComprehensionView = ({ match }) => {
 
   useEffect(() => {
     if (!saved) return
+
+    hasInitializedStoryQuestionsRef.current = false
+    dispatch(getStoryAction(storyId, 'preview'))
+    dispatch(
+      getAllStories(learningLanguage, lastQuery || {
+        sort_by: 'date',
+        order: -1,
+      })
+    )
+
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
-  }, [saved, dispatch])
+  }, [saved, dispatch, storyId, learningLanguage, lastQuery])
 
   useEffect(() => {
     if (!deleted) return
@@ -336,7 +361,7 @@ const ReadingComprehensionView = ({ match }) => {
     e.stopPropagation()
   }
 
-  if (!story)
+  if (focusedPending || !story)
     return (
       <Spinner
         fullHeight

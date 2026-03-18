@@ -42,6 +42,7 @@ export const deleteMcQuestionsAction = ({ storyId, questions }) => {
 
 export const clearMcSavedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_SAVED' })
 export const clearMcDeletedAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_DELETED' })
+export const clearMcStateAction = () => ({ type: 'READING_COMPREHENSION_CLEAR_STATE' })
 
 const initialState = {
   generated: [],
@@ -208,6 +209,9 @@ export default (state = initialState, action) => {
 
     case 'READING_COMPREHENSION_CLEAR_DELETED':
       return { ...state, deleted: false }
+
+    case 'READING_COMPREHENSION_CLEAR_STATE':
+      return initialState
 
     default:
       return state
