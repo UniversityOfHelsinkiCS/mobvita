@@ -259,7 +259,6 @@ const ReadingPracticeView = () => {
                           key={i}
                           fluid
                           onClick={() => handleChoiceClick(c)}
-                          disabled={showCorrectAnswer}
                           style={{
                             textAlign: 'left',
                             justifyContent: 'flex-start',
