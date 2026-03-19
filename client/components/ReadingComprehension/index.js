@@ -64,6 +64,11 @@ const normalizeQuestion = q => {
   return null
 }
 
+const getStoryIdValue = story => {
+  if (!story) return ''
+  return String(story._id || story.id || story.story_id || story.storyid || '')
+}
+
 const ReadingComprehensionView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -107,6 +112,7 @@ const ReadingComprehensionView = ({ match }) => {
   const [size, setSize] = useState(4)
 
   const hasInitializedStoryQuestionsRef = useRef(false)
+  const hasSeenPendingCycleRef = useRef(false)
 
   const [storyQuestions, setStoryQuestions] = useState([])
   const [draftQuestions, setDraftQuestions] = useState([])
@@ -121,6 +127,8 @@ const ReadingComprehensionView = ({ match }) => {
 
   useEffect(() => {
     dispatch(clearMcStateAction())
+    setStoryQuestions([])
+    hasSeenPendingCycleRef.current = false
     setDraftQuestions([])
     setSelectedDraft(new Set())
     setEditing(null)
@@ -137,14 +145,27 @@ const ReadingComprehensionView = ({ match }) => {
   }, [dispatch, storyId])
 
   useEffect(() => {
+    if (focusedPending) {
+      hasSeenPendingCycleRef.current = true
+    }
+  }, [focusedPending])
+
+  useEffect(() => {
+    if (focusedPending) return
     if (!story) return
     if (hasInitializedStoryQuestionsRef.current) return
+
+    // Avoid initializing from stale focused story right after route change.
+    if (!hasSeenPendingCycleRef.current) return
+
+    const focusedStoryId = getStoryIdValue(story)
+    if (focusedStoryId && focusedStoryId !== String(storyId)) return
 
     const qs = pickStoryQuestions(story).map(normalizeQuestion).filter(Boolean)
 
     setStoryQuestions(qs)
     hasInitializedStoryQuestionsRef.current = true
-  }, [story])
+  }, [story, focusedPending, storyId])
 
   useEffect(() => {
     if (!saved) return
