@@ -138,11 +138,8 @@ const ReadingPracticeView = () => {
     const normalizedAnswer = String(current.answer)
 
     if (normalizedChoice === normalizedAnswer) {
-      const sentenceIds = getQuestionSentenceIds(story, current)
       setIsCorrectAnswered(true)
       setShowCorrectAnswer(true)
-      setShowAnswerLocation(true)
-      setHighlightedSentenceIds(sentenceIds)
       return
     }
 
@@ -294,11 +291,9 @@ const ReadingPracticeView = () => {
                       <Button
                         className="btn-secondary"
                         onClick={handleShowAnswerLocation}
-                        disabled={showAnswerLocation}
                       >
                         <FormattedMessage
                           id="show-where-answer-is"
-                          defaultMessage="Show where answer is in the text"
                         />
                       </Button>
                     )}
