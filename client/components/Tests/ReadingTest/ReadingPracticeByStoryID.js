@@ -265,6 +265,7 @@ const ReadingPracticeView = () => {
                       return (
                         <SemanticButton
                           key={i}
+                          data-cy={`rp-choice-btn-${i}`}
                           fluid
                           onClick={() => handleChoiceClick(c)}
                           style={{
@@ -289,6 +290,7 @@ const ReadingPracticeView = () => {
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
                     {showCorrectAnswer && (
                       <Button
+                        data-cy="rp-show-answer-location-btn"
                         className="btn-secondary"
                         onClick={handleShowAnswerLocation}
                       >
@@ -300,6 +302,7 @@ const ReadingPracticeView = () => {
 
                     {idx === total - 1 && showCorrectAnswer ? (
                       <Button
+                        data-cy="rp-start-over-btn"
                         variant="primary"
                         onClick={() => {
                           setIdx(0)
@@ -313,7 +316,11 @@ const ReadingPracticeView = () => {
                         <FormattedMessage id="start-over" />
                       </Button>
                     ) : (
-                      <Button onClick={goNext} disabled={!showCorrectAnswer || idx >= total - 1}>
+                      <Button
+                        data-cy="rp-next-btn"
+                        onClick={goNext}
+                        disabled={!showCorrectAnswer || idx >= total - 1}
+                      >
                         <FormattedMessage id="next" />
                       </Button>
                     )}

@@ -65,7 +65,8 @@ const WrongAnswer = ({ word, snippet }) => {
         })
       )
       if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
-        const sentence = snippet.filter(
+        const safeSnippet = Array.isArray(snippet) ? snippet : []
+        const sentence = safeSnippet.filter(
           s => sentence_id - 1 <= s.sentence_id && s.sentence_id <= sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
         dispatch(
           getContextTranslation(sentence,

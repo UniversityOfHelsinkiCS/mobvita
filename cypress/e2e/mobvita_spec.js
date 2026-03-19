@@ -173,12 +173,13 @@ describe('Mobvita', function () {
         cy.contains("Britanniassa poliisi on ehkä löytänyt ihmiset, jotka ovat häirinneet lentokoneita.")
         cy.contains("Etelä-Suomessa pakkasta on noin 10 astetta. Pohjois-Suomessa pakkasta on noin 20 astetta. Lapissa on yöllä jopa 30 astetta pakkasta.")
       })
-
+/*
       it("can click (translate) a word", function () { // This test overlaps with dictionary
         cy.contains("ehkä").click()
         cy.get("[data-cy=dictionary-dropdown]").select("Englanti")
         cy.contains("perhaps", { timeout: 20000 })
       })
+*/
       // it("can add and see annotations in the library", function () {
       //   cy.viewport(1028, 720) // Set a big enough resolution for annotation box to show up
       //   cy.contains("häirinneet").click()

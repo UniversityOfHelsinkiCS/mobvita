@@ -69,6 +69,11 @@ const getStoryIdValue = story => {
   return String(story._id || story.id || story.story_id || story.storyid || '')
 }
 
+const normalizeStoryParagraphs = paragraph => {
+  if (!Array.isArray(paragraph) || paragraph.length === 0) return []
+  return Array.isArray(paragraph[0]) ? paragraph : [paragraph]
+}
+
 const ReadingComprehensionView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -231,6 +236,8 @@ const ReadingComprehensionView = ({ match }) => {
     const redux = regenPendingByIndex || {}
     return Object.keys(local).some(k => !!local[k]) || Object.keys(redux).some(k => !!redux[k])
   }, [regenLocalByIndex, regenPendingByIndex])
+
+  const storyParagraphs = useMemo(() => normalizeStoryParagraphs(story?.paragraph), [story])
 
   const disableTopActions = mcPending || anyRegenerating
   const disableSaveButton = disableTopActions || savePending
@@ -473,6 +480,7 @@ const ReadingComprehensionView = ({ match }) => {
                   <Button
                     icon
                     size="mini"
+                    data-cy={`rc-choice-save-${list}-${qIdx}-${cIdx}`}
                     disabled={regenLoading || (editValue || '').trim().length === 0}
                     onClick={e => {
                       stopAll(e)
@@ -484,6 +492,7 @@ const ReadingComprehensionView = ({ match }) => {
                   <Button
                     icon
                     size="mini"
+                    data-cy={`rc-choice-cancel-${list}-${qIdx}-${cIdx}`}
                     disabled={regenLoading}
                     onClick={e => {
                       stopAll(e)
@@ -497,6 +506,7 @@ const ReadingComprehensionView = ({ match }) => {
                 <Button
                   icon
                   size="mini"
+                  data-cy={`rc-choice-edit-${list}-${qIdx}-${cIdx}`}
                   disabled={regenLoading}
                   onClick={e => {
                     stopAll(e)
@@ -563,7 +573,12 @@ const ReadingComprehensionView = ({ match }) => {
               }}
             >
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Button primary onClick={handleGenerate} disabled={disableSaveButton}>
+                <Button
+                  primary
+                  data-cy="rc-generate-btn"
+                  onClick={handleGenerate}
+                  disabled={disableSaveButton}
+                >
                   {intl.formatMessage({ id: 'generate' })}
                 </Button>
 
@@ -575,6 +590,7 @@ const ReadingComprehensionView = ({ match }) => {
                     <div style={{ display: 'inline-block' }}>
                       <Button
                         primary
+                        data-cy="rc-add-questions-to-story-btn"
                         onClick={saveSelectedDraftToStory}
                         disabled={disableSaveButton || selectedCount === 0}
                       >
@@ -589,6 +605,7 @@ const ReadingComprehensionView = ({ match }) => {
                   <Button
                     basic
                     size="small"
+                    data-cy="rc-select-unselect-all-btn"
                     disabled={disableSaveButton}
                     onClick={() => {
                       if (selectedDraft.size === totalDraft) clearDraftSelection()
@@ -628,6 +645,7 @@ const ReadingComprehensionView = ({ match }) => {
                       icon
                       basic
                       size="mini"
+                      data-cy={`rc-regenerate-question-btn-${qIdx}`}
                       disabled={disableThisQuestionActions}
                       onClick={e => {
                         stopAll(e)
@@ -679,6 +697,7 @@ const ReadingComprehensionView = ({ match }) => {
                     icon
                     basic
                     size="mini"
+                    data-cy={`rc-delete-saved-question-btn-${qIdx}`}
                     style={{ padding: '9px' }}
                     disabled={deletePending}
                     onClick={e => {
@@ -741,7 +760,7 @@ const ReadingComprehensionView = ({ match }) => {
 
           <Divider />
 
-          {story.paragraph.map((paragraph, index) => (
+          {storyParagraphs.map((paragraph, index) => (
             <React.Fragment key={index}>
               <TextWithFeedback
                 hideFeedback

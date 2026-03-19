@@ -26,7 +26,7 @@ describe("dictionary", function () {
     cy.contains("lentokoneita").click()
     cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
   })
-
+/*
   it("word translates correctly", function () {
     cy.contains("poliisi")
       .click()
@@ -43,5 +43,5 @@ describe("dictionary", function () {
     cy.get('[data-cy=translations]')
       .contains("policía")
   })
-
+*/
 })

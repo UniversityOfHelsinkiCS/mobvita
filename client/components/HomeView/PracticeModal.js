@@ -94,18 +94,22 @@ const PracticeModal = ({ open, setOpen }) => {
   useEffect(() => {
     const librariesToShow = extractFilters(libraries)
     const categoriesToShow = extractFilters(categories)
+    const safeStories = Array.isArray(stories) ? stories : []
+    const userOid = user?.user?.oid
 
-    const filtered = stories
+    const filtered = safeStories
       .filter(story => {
+        if (!story) return false
+
         if (story.public) {
           return librariesToShow.includes('Public')
         }
 
-        if (story.sharedwith && story.sharedwith.includes(user.user.oid)) {
+        if (userOid && story.sharedwith && story.sharedwith.includes(userOid)) {
           return librariesToShow.includes('Private')
         }
 
-        if (story.user !== user.user.oid) {
+        if (userOid && story.user !== userOid) {
           return librariesToShow.includes('Group')
         }
 
