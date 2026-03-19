@@ -8,6 +8,7 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 
 const pickQuestionsFromStory = story => {
   if (!story) return []
@@ -101,25 +102,10 @@ const ReadingPracticeView = () => {
       >
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
 
-        {(story.paragraph || []).map((paragraph, i) => (
-          <p key={i} style={{ marginBottom: 16, lineHeight: 1.7 }}>
-            {paragraph.map((token, j) => (
-              <span
-                key={j}
-                style={{
-                  color: highlightedSentenceIds.includes(Number(token.sentence_id))
-                    ? '#21ba45'
-                    : undefined,
-                  fontWeight: highlightedSentenceIds.includes(Number(token.sentence_id))
-                    ? 700
-                    : 400,
-                }}
-              >
-                {token.surface}
-              </span>
-            ))}
-          </p>
-        ))}
+        <HighlightedStoryText
+          paragraphs={story.paragraph || []}
+          highlightedSentenceIds={highlightedSentenceIds}
+        />
       </Segment>
       <section
         style={{
