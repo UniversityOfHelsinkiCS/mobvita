@@ -8,6 +8,7 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 
 const pickQuestionsFromStory = story => {
   if (!story) return []
@@ -73,11 +74,16 @@ const ReadingPracticeView = () => {
 
   const [idx, setIdx] = useState(0)
   const current = questions[idx] || null
+
   const [attemptedWrongChoices, setAttemptedWrongChoices] = useState(new Set())
   const [isCorrectAnswered, setIsCorrectAnswered] = useState(false)
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
-  const [highlightedParagraphIndex, setHighlightedParagraphIndex] = useState(-1)
   const paragraphRefs = useRef([])
+
+  const [selectedChoice, setSelectedChoice] = useState(null)
+  const [checked, setChecked] = useState(false)
+  const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
+
 
   useEffect(() => {
     if (!storyId) return
@@ -141,6 +147,11 @@ const ReadingPracticeView = () => {
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
 
+  useEffect(() => {
+    if (!checked || !current) return
+    setHighlightedSentenceIds(current.sentence_ids.map(Number))
+  }, [checked, current])
+
   if (pending) return <Spinner fullHeight size={60} />
   if (!story) return null
 
@@ -165,39 +176,11 @@ const ReadingPracticeView = () => {
         }}
       >
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
-
-        {(story.paragraph || []).map((paragraph, i) => {
-          const isHighlighted = highlightedParagraphIndex === i
-          return (
-            <div
-              key={i}
-              ref={el => {
-                paragraphRefs.current[i] = el
-              }}
-              style={{
-                backgroundColor: isHighlighted ? 'rgba(255, 243, 179, 0.7)' : 'transparent',
-                border: isHighlighted ? '1px solid rgba(224, 170, 0, 0.85)' : '1px solid transparent',
-                borderRadius: 8,
-                padding: isHighlighted ? '8px' : 0,
-                transition: 'all 200ms ease',
-              }}
-            >
-              <TextWithFeedback
-                hideFeedback
-                hideDifficulty
-                mode="preview"
-                snippet={paragraph}
-                answers={null}
-                focusedConcept={null}
-                show_preview_exer={false}
-              />
-              <br />
-              <br />
-            </div>
-          )
-        })}
+        <HighlightedStoryText
+          paragraphs={story.paragraph || []}
+          highlightedSentenceIds={highlightedSentenceIds}
+        />
       </Segment>
-
       <section
         style={{
           flex: '2 1 360px',
@@ -210,17 +193,17 @@ const ReadingPracticeView = () => {
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
-                <FormattedMessage id="reading-test"/>
+                <FormattedMessage id="reading-test" />
               </div>
 
               {total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
-                  <FormattedMessage id="no-questions"/>
+                  <FormattedMessage id="no-questions" />
                 </div>
               ) : (
                 <>
                   <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.75 }}>
-                    <FormattedMessage id="question"/> {idx + 1} / {total}
+                    <FormattedMessage id="question" /> {idx + 1} / {total}
                   </div>
 
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
@@ -279,14 +262,23 @@ const ReadingPracticeView = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-                    {showCorrectAnswer && (
-                      <Button className="btn-secondary" onClick={handleShowAnswerLocation}>
-                        <FormattedMessage
-                          id="show-where-answer-is-in-text"
-                          defaultMessage="Show where answer is in the text"
-                        />
-                      </Button>
-                    )}
+                    <Button
+                      className="btn-secondary"
+                      onClick={() => {
+                        setChecked(true)
+
+                        // If you want only when answer is correct:
+                        if (selectedChoice === current?.answer) {
+                          setHighlightedSentenceIds(current.sentence_ids.map(Number))
+                        }
+
+                        // If you want always on button press, use this instead:
+                        // setHighlightedSentenceIds(current.sentence_ids.map(Number))
+                      }}
+                      disabled={selectedChoice == null || checked}
+                    >
+                      <FormattedMessage id="check-answer" />
+                    </Button>
 
                     {/* LAST QUESTION → show Restart */}
                     {idx === total - 1 && showCorrectAnswer ? (
@@ -297,10 +289,10 @@ const ReadingPracticeView = () => {
                           setAttemptedWrongChoices(new Set())
                           setIsCorrectAnswered(false)
                           setShowCorrectAnswer(false)
-                          setHighlightedParagraphIndex(-1)
+                          setHighlightedSentenceIds([])
                         }}
                       >
-                        <FormattedMessage id="start-over"/>
+                        <FormattedMessage id="start-over" />
                       </Button>
                     ) : (
                       <Button onClick={goNext} disabled={!showCorrectAnswer || idx >= total - 1}>

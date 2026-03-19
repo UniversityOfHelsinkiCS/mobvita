@@ -242,33 +242,22 @@ const LessonList = () => {
   }
 
   const getSliderThumbColor = () => {
-    if ((sliderValue - vocabulary_score > 0) & (sliderValue - vocabulary_score <= 0.5)) {
-      return 'red0-slider'
-    }
-    if ((sliderValue - vocabulary_score > 0.5) & (sliderValue - vocabulary_score <= 1.0)) {
-      return 'red1-slider'
-    }
-    if ((sliderValue - vocabulary_score > 1.0) & (sliderValue - vocabulary_score <= 1.5)) {
-      return 'red2-slider'
-    }
-    if (sliderValue - vocabulary_score > 1.5) {
-      return 'red3-slider'
-    }
+    // Absolute 0-100 scale: 0 = greenest, 100 = reddest, 48-53 = neutral white.
+    if (sliderValue >= 48 && sliderValue <= 53) return 'white-slider'
 
-    if ((sliderValue - vocabulary_score >= -0.5) & (sliderValue - vocabulary_score < 0)) {
+    if (sliderValue < 48) {
+      if (sliderValue <= 15) return 'green3-slider'
+      if (sliderValue <= 30) return 'green2-slider'
+      if (sliderValue <= 40) return 'green1-slider'
       return 'green0-slider'
     }
-    if ((sliderValue - vocabulary_score >= -1.0) & (sliderValue - vocabulary_score < -0.5)) {
-      return 'green1-slider'
-    }
-    if ((sliderValue - vocabulary_score >= -1.5) & (sliderValue - vocabulary_score < -1.0)) {
-      return 'green2-slider'
-    }
-    if (sliderValue - vocabulary_score < -1.5) {
-      return 'green3-slider'
-    }
-    return 'white-slider'
+
+    if (sliderValue <= 65) return 'red0-slider'
+    if (sliderValue <= 78) return 'red1-slider'
+    if (sliderValue <= 90) return 'red2-slider'
+    return 'red3-slider'
   }
+  
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
   const markComp = StyledMark(
     intl.formatMessage({
@@ -276,10 +265,9 @@ const LessonList = () => {
     })
   )
   const sliderContainerWidth = bigScreen ? '450px' : '90%'
-  // If you want value updates while dragging, use onChange too.
-  const minSlider = 0.8
-  const maxSlider = 3.3
-  const sliderStep = (maxSlider - minSlider) / 13
+  const minSlider = 0
+  const maxSlider = 100
+  const sliderStep = 1
 
   // Lesson difficulty of vocabulary view
   const lessonVocabularyControls = (
@@ -291,7 +279,6 @@ const LessonList = () => {
         className="exercise-density-slider lesson-vocab-diff"
         thumbClassName={sliderThumbClassName}
         trackClassName="exercise-density-slider-track"
-        onChange={value => handleSlider(value)} // reactive while drag
         onAfterChange={value => handleSlider(value)}
         onSliderClick={value => handleSlider(value)}
         snapDragDisabled={false}
