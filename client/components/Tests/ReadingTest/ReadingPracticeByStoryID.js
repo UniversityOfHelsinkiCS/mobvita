@@ -49,6 +49,7 @@ const ReadingPracticeView = () => {
   const current = questions[idx] || null
   const [selectedChoice, setSelectedChoice] = useState(null)
   const [checked, setChecked] = useState(false)
+  const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
 
   useEffect(() => {
     if (!storyId) return
@@ -69,6 +70,11 @@ const ReadingPracticeView = () => {
     setSelectedChoice(null)
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
+
+  useEffect(() => {
+    if (!checked || !current) return
+    setHighlightedSentenceIds(current.sentence_ids.map(Number))
+  }, [checked, current])
 
   if (pending) return <Spinner fullHeight size={60} />
   if (!story) return null
@@ -96,22 +102,25 @@ const ReadingPracticeView = () => {
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
 
         {(story.paragraph || []).map((paragraph, i) => (
-          <React.Fragment key={i}>
-            <TextWithFeedback
-              hideFeedback
-              showDifficulty={false}
-              mode="preview"
-              snippet={paragraph}
-              answers={null}
-              focusedConcept={null}
-              show_preview_exer={false}
-            />
-            <br />
-            <br />
-          </React.Fragment>
+          <p key={i} style={{ marginBottom: 16, lineHeight: 1.7 }}>
+            {paragraph.map((token, j) => (
+              <span
+                key={j}
+                style={{
+                  color: highlightedSentenceIds.includes(Number(token.sentence_id))
+                    ? '#21ba45'
+                    : undefined,
+                  fontWeight: highlightedSentenceIds.includes(Number(token.sentence_id))
+                    ? 700
+                    : 400,
+                }}
+              >
+                {token.surface}
+              </span>
+            ))}
+          </p>
         ))}
       </Segment>
-
       <section
         style={{
           flex: '2 1 360px',
@@ -124,17 +133,17 @@ const ReadingPracticeView = () => {
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
-                <FormattedMessage id="reading-test"/>
+                <FormattedMessage id="reading-test" />
               </div>
 
               {total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
-                  <FormattedMessage id="no-questions"/>
+                  <FormattedMessage id="no-questions" />
                 </div>
               ) : (
                 <>
                   <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.75 }}>
-                    <FormattedMessage id="question"/> {idx + 1} / {total}
+                    <FormattedMessage id="question" /> {idx + 1} / {total}
                   </div>
 
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
@@ -198,10 +207,20 @@ const ReadingPracticeView = () => {
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
                     <Button
                       className="btn-secondary"
-                      onClick={() => setChecked(true)}
+                      onClick={() => {
+                        setChecked(true)
+
+                        // If you want only when answer is correct:
+                        if (selectedChoice === current?.answer) {
+                          setHighlightedSentenceIds(current.sentence_ids.map(Number))
+                        }
+
+                        // If you want always on button press, use this instead:
+                        // setHighlightedSentenceIds(current.sentence_ids.map(Number))
+                      }}
                       disabled={selectedChoice == null || checked}
                     >
-                      <FormattedMessage id="check-answer"/>
+                      <FormattedMessage id="check-answer" />
                     </Button>
 
                     {/* LAST QUESTION → show Restart */}
@@ -212,13 +231,14 @@ const ReadingPracticeView = () => {
                           setIdx(0)
                           setSelectedChoice(null)
                           setChecked(false)
+                          setHighlightedSentenceIds([])
                         }}
                       >
-                        <FormattedMessage id="start-over"/>
+                        <FormattedMessage id="start-over" />
                       </Button>
                     ) : (
                       <Button onClick={goNext} disabled={!checked || idx >= total - 1}>
-                        <FormattedMessage id="next"/>
+                        <FormattedMessage id="next" />
                       </Button>
                     )}
                   </div>
