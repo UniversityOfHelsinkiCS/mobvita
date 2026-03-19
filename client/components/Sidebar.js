@@ -281,12 +281,12 @@ export default function Sidebar({ history }) {
                       <Button 
                         variant="secondary"
                         style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold'
-                  }}
+                          marginTop: marginTopButton, 
+                          color: 'darkslateblue', 
+                          borderColor: 'slateblue', 
+                          fontSize: 'larger', 
+                          fontWeight: 'bold'
+                        }}
                         block
                       >
                         Grammar check
@@ -296,15 +296,30 @@ export default function Sidebar({ history }) {
                       <Button 
                         variant="secondary"
                         style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold'
-                  }}
+                          marginTop: marginTopButton, 
+                          color: 'darkslateblue', 
+                          borderColor: 'slateblue', 
+                          fontSize: 'larger', 
+                          fontWeight: 'bold'
+                        }}
                         block
                       >
                         Feedback check
+                      </Button>
+                    </Link>
+                    <Link to="/correction-debug">
+                      <Button
+                        variant="secondary"
+                        style={{
+                          marginTop: marginTopButton,
+                          color: 'darkslateblue',
+                          borderColor: 'slateblue',
+                          fontSize: 'larger',
+                          fontWeight: 'bold'
+                        }}
+                        block
+                      >
+                        Correction check
                       </Button>
                     </Link>
                   </>

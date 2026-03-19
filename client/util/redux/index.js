@@ -36,6 +36,7 @@ import news from './newsReducer'
 import wordNest from './wordNestReducer'
 import controlledPractice from './controlledPracticeReducer'
 import constructionTest from './constructionTestReducer'
+import correctionTest from './correctionTestReducer'
 import incomplete from './incompleteStoriesReducer'
 import newVocabulary from './newVocabularyReducer'
 import debugFeedback from './feedbackDebuggerReducer'
@@ -93,6 +94,7 @@ const rootReducer = combineReducers({
   wordNest,
   controlledPractice,
   constructionTest,
+  correctionTest,
   incomplete,
   newVocabulary,
   studentVocabulary,

@@ -44,6 +44,7 @@ import Leaderboard from './LeaderboardView'
 import NavBar from './NavBar'
 import RegisterView from './RegisterView'
 import DebugTestView from './DebugTestView'
+import DebugCorrectionView from './DebugCorrectionView'
 import AnnotationsLibrary from './AnnotationsLibrary'
 import ReferenceView from './ReferenceView'
 import EditStoryView from './EditStoryView'
@@ -213,6 +214,7 @@ export default () => {
             <ProtectedRoute exact path="/notes-library" component={AnnotationsLibrary} />
             <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
             <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
+            <ProtectedRoute exact path="/correction-debug" component={DebugCorrectionView} />
             <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
             <ProtectedRoute exact path="/gec" component={GecView} />
             <ProtectedRoute exact path="/reference" component={ReferenceView} />
