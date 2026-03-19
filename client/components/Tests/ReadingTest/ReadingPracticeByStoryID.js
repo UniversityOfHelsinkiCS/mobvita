@@ -5,9 +5,9 @@ import { FormattedMessage } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
-import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 
 const pickQuestionsFromStory = story => {
   if (!story) return []
@@ -20,14 +20,73 @@ const pickQuestionsFromStory = story => {
 const normalizeQuestion = q => {
   if (!q) return null
   if (q.question && (q.choices || q.answer)) return q
+
   if (q.q) {
+    const rawSentenceIds =
+      q.sentence_ids ?? q.sentence_id ?? q.answer_sentence_ids ?? q.answer_sentence_id
+
     return {
+      ...q,
       question: q.q,
-      answer: q.a,
+      answer: q.a ?? q.answer,
       choices: Array.isArray(q.choices) ? q.choices : [],
+      sentence_ids: Array.isArray(rawSentenceIds)
+        ? rawSentenceIds
+        : rawSentenceIds != null
+          ? [rawSentenceIds]
+          : [],
     }
   }
+
   return q
+}
+
+const paragraphToText = paragraph => {
+  if (!Array.isArray(paragraph)) return ''
+  return paragraph.map(token => token?.surface || '').join('')
+}
+
+const findAnswerParagraphIndex = (story, question) => {
+  const paragraphs = Array.isArray(story?.paragraph) ? story.paragraph : []
+  if (!paragraphs.length || !question) return -1
+
+  const directParagraphIndex =
+    question?.paragraph_index ??
+    question?.paragraphIndex ??
+    question?.answer_paragraph_index ??
+    question?.answerParagraphIndex
+
+  if (Number.isInteger(directParagraphIndex) && directParagraphIndex >= 0) {
+    return Math.min(directParagraphIndex, paragraphs.length - 1)
+  }
+
+  const answer = String(question?.answer || '')
+    .trim()
+    .toLowerCase()
+  if (!answer) return -1
+
+  const paragraphTexts = paragraphs.map(paragraph => paragraphToText(paragraph).toLowerCase())
+  return paragraphTexts.findIndex(text => text.includes(answer))
+}
+
+const getQuestionSentenceIds = (story, question) => {
+  const rawSentenceIds =
+    question?.sentence_ids ??
+    question?.sentence_id ??
+    question?.answer_sentence_ids ??
+    question?.answer_sentence_id
+
+  const directIds = (Array.isArray(rawSentenceIds) ? rawSentenceIds : [rawSentenceIds])
+    .map(Number)
+    .filter(Number.isFinite)
+
+  if (directIds.length) return directIds
+
+  const paragraphIdx = findAnswerParagraphIndex(story, question)
+  if (paragraphIdx < 0) return []
+
+  const tokens = story?.paragraph?.[paragraphIdx] || []
+  return Array.from(new Set(tokens.map(token => Number(token.sentence_id)).filter(Number.isFinite)))
 }
 
 const ReadingPracticeView = () => {
@@ -47,8 +106,12 @@ const ReadingPracticeView = () => {
 
   const [idx, setIdx] = useState(0)
   const current = questions[idx] || null
-  const [selectedChoice, setSelectedChoice] = useState(null)
-  const [checked, setChecked] = useState(false)
+
+  const [attemptedWrongChoices, setAttemptedWrongChoices] = useState(new Set())
+  const [isCorrectAnswered, setIsCorrectAnswered] = useState(false)
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
+  const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
+  const [showAnswerLocation, setShowAnswerLocation] = useState(false)
 
   useEffect(() => {
     if (!storyId) return
@@ -57,17 +120,58 @@ const ReadingPracticeView = () => {
 
   useEffect(() => {
     setIdx(0)
-    setSelectedChoice(null)
-    setChecked(false)
+    setAttemptedWrongChoices(new Set())
+    setIsCorrectAnswered(false)
+    setShowCorrectAnswer(false)
+    setShowAnswerLocation(false)
+    setHighlightedSentenceIds([])
   }, [storyId, questions.length])
 
   const total = questions.length
 
+  const wrongAttemptLimit = Math.max((current?.choices || []).length - 1, 1)
+
+  const handleChoiceClick = choice => {
+    if (!current || showCorrectAnswer) return
+
+    const normalizedChoice = String(choice)
+    const normalizedAnswer = String(current.answer)
+
+    if (normalizedChoice === normalizedAnswer) {
+      setIsCorrectAnswered(true)
+      setShowCorrectAnswer(true)
+      return
+    }
+
+    setAttemptedWrongChoices(prev => {
+      const next = new Set(prev)
+      next.add(normalizedChoice)
+
+      if (next.size >= wrongAttemptLimit) {
+        setShowCorrectAnswer(true)
+      }
+
+      return next
+    })
+  }
+
   const goNext = () => {
-    if (!checked) return
-    setChecked(false)
-    setSelectedChoice(null)
+    if (!showCorrectAnswer) return
+    setAttemptedWrongChoices(new Set())
+    setIsCorrectAnswered(false)
+    setShowCorrectAnswer(false)
+    setShowAnswerLocation(false)
+    setHighlightedSentenceIds([])
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
+  }
+
+  const handleShowAnswerLocation = () => {
+    if (!current) return
+
+    const sentenceIds = getQuestionSentenceIds(story, current)
+
+    setShowAnswerLocation(true)
+    setHighlightedSentenceIds(sentenceIds)
   }
 
   if (pending) return <Spinner fullHeight size={60} />
@@ -94,24 +198,11 @@ const ReadingPracticeView = () => {
         }}
       >
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
-
-        {(story.paragraph || []).map((paragraph, i) => (
-          <React.Fragment key={i}>
-            <TextWithFeedback
-              hideFeedback
-              showDifficulty={false}
-              mode="preview"
-              snippet={paragraph}
-              answers={null}
-              focusedConcept={null}
-              show_preview_exer={false}
-            />
-            <br />
-            <br />
-          </React.Fragment>
-        ))}
+        <HighlightedStoryText
+          paragraphs={story.paragraph || []}
+          highlightedSentenceIds={highlightedSentenceIds}
+        />
       </Segment>
-
       <section
         style={{
           flex: '2 1 360px',
@@ -124,37 +215,40 @@ const ReadingPracticeView = () => {
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
-                <FormattedMessage id="reading-test"/>
+                <FormattedMessage id="reading-test" />
               </div>
 
               {total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
-                  <FormattedMessage id="no-questions"/>
+                  <FormattedMessage id="no-questions" />
                 </div>
               ) : (
                 <>
                   <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.75 }}>
-                    <FormattedMessage id="question"/> {idx + 1} / {total}
+                    <FormattedMessage id="question" /> {idx + 1} / {total}
                   </div>
 
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
 
+                  {!showCorrectAnswer && (
+                    <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.8 }}>
+                      <FormattedMessage
+                        id="incorrect-attempts"
+                        defaultMessage="Incorrect attempts"
+                      />
+                      : {attemptedWrongChoices.size} / {wrongAttemptLimit}
+                    </div>
+                  )}
+
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {(current?.choices || []).map((c, i) => {
-                      const isSelected = selectedChoice === c
                       const isAnswer = c === current?.answer
-                      const isWrongSelected = checked && isSelected && !isAnswer
-                      const isCorrect = checked && isAnswer
+                      const isWrongTried = attemptedWrongChoices.has(String(c))
+                      const isCorrect = showCorrectAnswer && isAnswer
 
                       let border = '1px solid rgba(0,0,0,0.18)'
                       let bg = '#fff'
                       let color = 'rgba(0,0,0,0.82)'
-
-                      if (!checked && isSelected) {
-                        border = '1px solid rgba(33, 133, 208, 0.9)'
-                        bg = 'rgba(33, 133, 208, 0.08)'
-                        color = 'rgba(0,0,0,0.95)'
-                      }
 
                       if (isCorrect) {
                         border = '1px solid rgba(33, 186, 69, 0.9)'
@@ -162,7 +256,7 @@ const ReadingPracticeView = () => {
                         color = 'rgba(0,0,0,0.95)'
                       }
 
-                      if (isWrongSelected) {
+                      if (isWrongTried) {
                         border = '1px solid rgba(219, 40, 40, 0.9)'
                         bg = 'rgba(219, 40, 40, 0.10)'
                         color = 'rgba(0,0,0,0.95)'
@@ -172,10 +266,7 @@ const ReadingPracticeView = () => {
                         <SemanticButton
                           key={i}
                           fluid
-                          onClick={() => {
-                            if (checked) return
-                            setSelectedChoice(c)
-                          }}
+                          onClick={() => handleChoiceClick(c)}
                           style={{
                             textAlign: 'left',
                             justifyContent: 'flex-start',
@@ -196,29 +287,34 @@ const ReadingPracticeView = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-                    <Button
-                      className="btn-secondary"
-                      onClick={() => setChecked(true)}
-                      disabled={selectedChoice == null || checked}
-                    >
-                      <FormattedMessage id="check-answer"/>
-                    </Button>
+                    {showCorrectAnswer && (
+                      <Button
+                        className="btn-secondary"
+                        onClick={handleShowAnswerLocation}
+                      >
+                        <FormattedMessage
+                          id="show-where-answer-is"
+                        />
+                      </Button>
+                    )}
 
-                    {/* LAST QUESTION → show Restart */}
-                    {idx === total - 1 && checked ? (
+                    {idx === total - 1 && showCorrectAnswer ? (
                       <Button
                         variant="primary"
                         onClick={() => {
                           setIdx(0)
-                          setSelectedChoice(null)
-                          setChecked(false)
+                          setAttemptedWrongChoices(new Set())
+                          setIsCorrectAnswered(false)
+                          setShowCorrectAnswer(false)
+                          setShowAnswerLocation(false)
+                          setHighlightedSentenceIds([])
                         }}
                       >
-                        <FormattedMessage id="start-over"/>
+                        <FormattedMessage id="start-over" />
                       </Button>
                     ) : (
-                      <Button onClick={goNext} disabled={!checked || idx >= total - 1}>
-                        <FormattedMessage id="next"/>
+                      <Button onClick={goNext} disabled={!showCorrectAnswer || idx >= total - 1}>
+                        <FormattedMessage id="next" />
                       </Button>
                     )}
                   </div>

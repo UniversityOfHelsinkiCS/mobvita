@@ -178,16 +178,18 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
     }
   }
 
-  const wordColorStyle = {
-    backgroundColor: getWordColor(
-      word.level,
-      grade,
-      skillLevels,
-      show_review_diff,
-      show_preview_exer,
-      mode
-    ),
-  }
+  const wordColorStyle = hideDifficulty
+    ? {}
+    : {
+        backgroundColor: getWordColor(
+          word.level,
+          grade,
+          skillLevels,
+          show_review_diff,
+          show_preview_exer,
+          mode
+        ),
+      }
 
   return (
     <>

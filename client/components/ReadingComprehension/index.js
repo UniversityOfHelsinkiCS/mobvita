@@ -724,7 +724,7 @@ const ReadingComprehensionView = ({ match }) => {
             <React.Fragment key={index}>
               <TextWithFeedback
                 hideFeedback
-                showDifficulty={false}
+                hideDifficulty
                 mode="preview"
                 snippet={paragraph}
                 answers={null}

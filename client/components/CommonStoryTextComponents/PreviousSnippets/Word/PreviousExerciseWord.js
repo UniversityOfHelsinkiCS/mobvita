@@ -30,7 +30,7 @@ import {
 } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
-const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet }) => {
+const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet, hideDifficulty }) => {
   const {
     surface,
     isWrong,
@@ -147,16 +147,18 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const youAnsweredTooltip = answer || tiedAnswer
 
-  const wordColorStyle = {
-    backgroundColor: getWordColor(
-      word.level,
-      grade,
-      skillLevels,
-      show_review_diff,
-      show_preview_exer,
-      mode
-    ),
-  }
+  const wordColorStyle = hideDifficulty
+    ? {}
+    : {
+        backgroundColor: getWordColor(
+          word.level,
+          grade,
+          skillLevels,
+          show_review_diff,
+          show_preview_exer,
+          mode
+        ),
+      }
   // console.log('one of these? ', word)
 
   const tooltip = (
