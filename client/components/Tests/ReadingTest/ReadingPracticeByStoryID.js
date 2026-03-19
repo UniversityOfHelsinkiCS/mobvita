@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
-import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
@@ -21,13 +20,24 @@ const pickQuestionsFromStory = story => {
 const normalizeQuestion = q => {
   if (!q) return null
   if (q.question && (q.choices || q.answer)) return q
+
   if (q.q) {
+    const rawSentenceIds =
+      q.sentence_ids ?? q.sentence_id ?? q.answer_sentence_ids ?? q.answer_sentence_id
+
     return {
+      ...q,
       question: q.q,
-      answer: q.a,
+      answer: q.a ?? q.answer,
       choices: Array.isArray(q.choices) ? q.choices : [],
+      sentence_ids: Array.isArray(rawSentenceIds)
+        ? rawSentenceIds
+        : rawSentenceIds != null
+          ? [rawSentenceIds]
+          : [],
     }
   }
+
   return q
 }
 
@@ -50,11 +60,33 @@ const findAnswerParagraphIndex = (story, question) => {
     return Math.min(directParagraphIndex, paragraphs.length - 1)
   }
 
-  const answer = String(question?.answer || '').trim().toLowerCase()
+  const answer = String(question?.answer || '')
+    .trim()
+    .toLowerCase()
   if (!answer) return -1
 
   const paragraphTexts = paragraphs.map(paragraph => paragraphToText(paragraph).toLowerCase())
   return paragraphTexts.findIndex(text => text.includes(answer))
+}
+
+const getQuestionSentenceIds = (story, question) => {
+  const rawSentenceIds =
+    question?.sentence_ids ??
+    question?.sentence_id ??
+    question?.answer_sentence_ids ??
+    question?.answer_sentence_id
+
+  const directIds = (Array.isArray(rawSentenceIds) ? rawSentenceIds : [rawSentenceIds])
+    .map(Number)
+    .filter(Number.isFinite)
+
+  if (directIds.length) return directIds
+
+  const paragraphIdx = findAnswerParagraphIndex(story, question)
+  if (paragraphIdx < 0) return []
+
+  const tokens = story?.paragraph?.[paragraphIdx] || []
+  return Array.from(new Set(tokens.map(token => Number(token.sentence_id)).filter(Number.isFinite)))
 }
 
 const ReadingPracticeView = () => {
@@ -78,12 +110,8 @@ const ReadingPracticeView = () => {
   const [attemptedWrongChoices, setAttemptedWrongChoices] = useState(new Set())
   const [isCorrectAnswered, setIsCorrectAnswered] = useState(false)
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
-  const paragraphRefs = useRef([])
-
-  const [selectedChoice, setSelectedChoice] = useState(null)
-  const [checked, setChecked] = useState(false)
   const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
-
+  const [showAnswerLocation, setShowAnswerLocation] = useState(false)
 
   useEffect(() => {
     if (!storyId) return
@@ -95,7 +123,8 @@ const ReadingPracticeView = () => {
     setAttemptedWrongChoices(new Set())
     setIsCorrectAnswered(false)
     setShowCorrectAnswer(false)
-    setHighlightedParagraphIndex(-1)
+    setShowAnswerLocation(false)
+    setHighlightedSentenceIds([])
   }, [storyId, questions.length])
 
   const total = questions.length
@@ -109,8 +138,11 @@ const ReadingPracticeView = () => {
     const normalizedAnswer = String(current.answer)
 
     if (normalizedChoice === normalizedAnswer) {
+      const sentenceIds = getQuestionSentenceIds(story, current)
       setIsCorrectAnswered(true)
       setShowCorrectAnswer(true)
+      setShowAnswerLocation(true)
+      setHighlightedSentenceIds(sentenceIds)
       return
     }
 
@@ -126,31 +158,24 @@ const ReadingPracticeView = () => {
     })
   }
 
-  const handleShowAnswerLocation = () => {
-    const paragraphIndex = findAnswerParagraphIndex(story, current)
-    setHighlightedParagraphIndex(paragraphIndex)
-
-    if (paragraphIndex >= 0) {
-      const paragraphElement = paragraphRefs.current[paragraphIndex]
-      if (paragraphElement instanceof HTMLElement) {
-        paragraphElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }
-    }
-  }
-
   const goNext = () => {
     if (!showCorrectAnswer) return
     setAttemptedWrongChoices(new Set())
     setIsCorrectAnswered(false)
     setShowCorrectAnswer(false)
-    setHighlightedParagraphIndex(-1)
+    setShowAnswerLocation(false)
+    setHighlightedSentenceIds([])
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
 
-  useEffect(() => {
-    if (!checked || !current) return
-    setHighlightedSentenceIds(current.sentence_ids.map(Number))
-  }, [checked, current])
+  const handleShowAnswerLocation = () => {
+    if (!current) return
+
+    const sentenceIds = getQuestionSentenceIds(story, current)
+
+    setShowAnswerLocation(true)
+    setHighlightedSentenceIds(sentenceIds)
+  }
 
   if (pending) return <Spinner fullHeight size={60} />
   if (!story) return null
@@ -210,8 +235,11 @@ const ReadingPracticeView = () => {
 
                   {!showCorrectAnswer && (
                     <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.8 }}>
-                      <FormattedMessage id="incorrect-attempts" defaultMessage="Incorrect attempts" />:{' '}
-                      {attemptedWrongChoices.size} / {wrongAttemptLimit}
+                      <FormattedMessage
+                        id="incorrect-attempts"
+                        defaultMessage="Incorrect attempts"
+                      />
+                      : {attemptedWrongChoices.size} / {wrongAttemptLimit}
                     </div>
                   )}
 
@@ -262,25 +290,19 @@ const ReadingPracticeView = () => {
                   </div>
 
                   <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-                    <Button
-                      className="btn-secondary"
-                      onClick={() => {
-                        setChecked(true)
+                    {showCorrectAnswer && (
+                      <Button
+                        className="btn-secondary"
+                        onClick={handleShowAnswerLocation}
+                        disabled={showAnswerLocation}
+                      >
+                        <FormattedMessage
+                          id="show-where-answer-is"
+                          defaultMessage="Show where answer is in the text"
+                        />
+                      </Button>
+                    )}
 
-                        // If you want only when answer is correct:
-                        if (selectedChoice === current?.answer) {
-                          setHighlightedSentenceIds(current.sentence_ids.map(Number))
-                        }
-
-                        // If you want always on button press, use this instead:
-                        // setHighlightedSentenceIds(current.sentence_ids.map(Number))
-                      }}
-                      disabled={selectedChoice == null || checked}
-                    >
-                      <FormattedMessage id="check-answer" />
-                    </Button>
-
-                    {/* LAST QUESTION → show Restart */}
                     {idx === total - 1 && showCorrectAnswer ? (
                       <Button
                         variant="primary"
@@ -289,6 +311,7 @@ const ReadingPracticeView = () => {
                           setAttemptedWrongChoices(new Set())
                           setIsCorrectAnswered(false)
                           setShowCorrectAnswer(false)
+                          setShowAnswerLocation(false)
                           setHighlightedSentenceIds([])
                         }}
                       >
@@ -296,25 +319,10 @@ const ReadingPracticeView = () => {
                       </Button>
                     ) : (
                       <Button onClick={goNext} disabled={!showCorrectAnswer || idx >= total - 1}>
-                        <FormattedMessage id="next"/>
+                        <FormattedMessage id="next" />
                       </Button>
                     )}
                   </div>
-
-                  {showCorrectAnswer && (
-                    <div
-                      style={{ marginTop: 10, fontSize: 12, color: isCorrectAnswered ? '#127a37' : '#9f3a38' }}
-                    >
-                      {isCorrectAnswered ? (
-                        <FormattedMessage id="correct-answer" defaultMessage="Correct answer" />
-                      ) : (
-                        <FormattedMessage
-                          id="showing-correct-after-incorrect-attempts"
-                          defaultMessage="Showing correct answer after incorrect attempts"
-                        />
-                      )}
-                    </div>
-                  )}
                 </>
               )}
             </div>
