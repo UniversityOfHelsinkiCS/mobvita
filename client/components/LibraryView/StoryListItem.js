@@ -46,7 +46,10 @@ const StoryTitle = ({
   return (
     <StoryDetailsModal
       trigger={
-        <span className="flex library-tour-open-story-modal" style={{ overflow: 'hidden', width: '100%' }}>
+        <span
+          className="flex library-tour-open-story-modal"
+          style={{ overflow: 'hidden', width: '100%' }}
+        >
           <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
           <h5
             className="story-item-title"
@@ -429,91 +432,117 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         </div>
       </Card.Content>
       <Card.Content extra className="story-card-actions-cont">
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'right' }}>
-          {story.flashcardsOnly && (
-            <Icon size="small" name="clone outline" bordered style={{ marginRight: '15px' }} />
-          )}
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div>
+            {story?.has_questions ? (
+              <span
+                style={{
+                  width: 30,
+                  height: 30,
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                RC
+              </span>
+            ) : null}
+          </div>
 
-          {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+          <div className="flex" style={{ display: 'flex', justifyContent: 'right' }}>
+            {story.flashcardsOnly && (
+              <Icon size="small" name="clone outline" bordered style={{ marginRight: '15px' }} />
+            )}
 
-          {uploadUnfinished && (
-            <div>
+            {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+
+            {uploadUnfinished && (
+              <div>
+                <Popup
+                  position="top center"
+                  content={<FormattedMessage id="story-not-yet-processed" />}
+                  trigger={
+                    <div>
+                      <Icon name="hourglass half" color="orange" style={{ marginRight: '15px' }} />
+                    </div>
+                  }
+                />
+              </div>
+            )}
+
+            {libraryShown.group && storyGroupShareInfo?.hidden && (
+              <>
+                <Popup
+                  basic
+                  content={<FormattedMessage id="group-hidden-story" />}
+                  trigger={
+                    <div>
+                      <Icon color="red" name="low vision" style={{ marginRight: '15px' }} />
+                    </div>
+                  }
+                />
+              </>
+            )}
+
+            {timedExercise && (
               <Popup
-                position="top center"
-                content={<FormattedMessage id="story-not-yet-processed" />}
+                basic
+                content={<FormattedMessage id="timed-practice-explanation" />}
                 trigger={
                   <div>
-                    <Icon name="hourglass half" color="orange" style={{ marginRight: '15px' }} />
+                    <Icon color="red" name="clock outline" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
-            </div>
-          )}
-
-          {libraryShown.group && storyGroupShareInfo?.hidden && (
-            <>
+            )}
+            {commentsOnStory && (
               <Popup
                 basic
-                content={<FormattedMessage id="group-hidden-story" />}
+                content={<FormattedMessage id="comments-on-story-explanation" />}
                 trigger={
                   <div>
-                    <Icon color="red" name="low vision" style={{ marginRight: '15px' }} />
+                    <Icon color="black" name="comments" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
-            </>
-          )}
+            )}
 
-          {timedExercise && (
-            <Popup
-              basic
-              content={<FormattedMessage id="timed-practice-explanation" />}
-              trigger={
-                <div>
-                  <Icon color="red" name="clock outline" style={{ marginRight: '15px' }} />
-                </div>
-              }
-            />
-          )}
-          {commentsOnStory && (
-            <Popup
-              basic
-              content={<FormattedMessage id="comments-on-story-explanation" />}
-              trigger={
-                <div>
-                  <Icon color="black" name="comments" style={{ marginRight: '15px' }} />
-                </div>
-              }
-            />
-          )}
+            {libraryShown.group && (
+              <>
+                <Popup
+                  basic
+                  content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
+                  trigger={
+                    <div>
+                      <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
+                    </div>
+                  }
+                />
+              </>
+            )}
 
-          {libraryShown.group && (
-            <>
+            {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
               <Popup
                 basic
-                content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
+                content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
                 trigger={
                   <div>
                     <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
                   </div>
                 }
               />
-            </>
-          )}
-
-          {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
-            <Popup
-              basic
-              content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
-              trigger={
-                <div>
-                  <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
-                </div>
-              }
-            />
-          )}
-          <div className="library-tour-difficulty-stars" style={{ whiteSpace: 'nowrap' }}>
-            <DifficultyStars difficulty={story.difficulty} />
+            )}
+            <div className="library-tour-difficulty-stars" style={{ whiteSpace: 'nowrap' }}>
+              <DifficultyStars difficulty={story.difficulty} />
+            </div>
           </div>
         </div>
       </Card.Content>
