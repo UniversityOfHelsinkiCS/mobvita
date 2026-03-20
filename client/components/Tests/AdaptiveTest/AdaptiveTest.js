@@ -126,8 +126,15 @@ const AdaptiveTest = ({ showingInfo }) => {
   }
 
   const totalQuestions = 80
-  const progress = currentAdaptiveQuestionIndex + 1 >= 64 ? 'green' : currentAdaptiveQuestionIndex + 1 >= 40 ? 'yellow' : 'red'
+  const step = currentAdaptiveQuestionIndex + 1
+  const pct = (step / totalQuestions) * 100
 
+  const progress =
+    currentAdaptiveQuestionIndex + 1 >= 64
+      ? 'green'
+      : currentAdaptiveQuestionIndex + 1 >= 40
+      ? 'yellow'
+      : 'red'
 
   return (
     <div className="cont mt-nm">
@@ -172,13 +179,13 @@ const AdaptiveTest = ({ showingInfo }) => {
                 <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
               </div>
             </div>
-            
+
             <div className={`ui progress ${progress}`}>
               <div
                 className="bar"
                 style={{
-                  width: `${(currentAdaptiveQuestionIndex / totalQuestions) * 100}%`,
-                  minWidth: 0,
+                  width: `${pct}%`,
+                  minWidth: 8,
                   transition: 'width 200ms ease',
                 }}
               />
