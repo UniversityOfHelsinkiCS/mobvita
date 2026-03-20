@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
-import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
 import {
   generateMcQuestionsAction,
@@ -72,6 +72,53 @@ const getStoryIdValue = story => {
 const normalizeStoryParagraphs = paragraph => {
   if (!Array.isArray(paragraph) || paragraph.length === 0) return []
   return Array.isArray(paragraph[0]) ? paragraph : [paragraph]
+}
+
+const paragraphToText = paragraph => {
+  if (!Array.isArray(paragraph)) return ''
+  return paragraph.map(token => token?.surface || '').join('')
+}
+
+const findAnswerParagraphIndex = (paragraphs, question) => {
+  if (!Array.isArray(paragraphs) || paragraphs.length === 0 || !question) return -1
+
+  const directParagraphIndex =
+    question?.paragraph_index ??
+    question?.paragraphIndex ??
+    question?.answer_paragraph_index ??
+    question?.answerParagraphIndex
+
+  if (Number.isInteger(directParagraphIndex) && directParagraphIndex >= 0) {
+    return Math.min(directParagraphIndex, paragraphs.length - 1)
+  }
+
+  const answer = String(question?.answer || '')
+    .trim()
+    .toLowerCase()
+  if (!answer) return -1
+
+  const paragraphTexts = paragraphs.map(paragraph => paragraphToText(paragraph).toLowerCase())
+  return paragraphTexts.findIndex(text => text.includes(answer))
+}
+
+const getQuestionSentenceIds = (paragraphs, question) => {
+  const rawSentenceIds =
+    question?.sentence_ids ??
+    question?.sentence_id ??
+    question?.answer_sentence_ids ??
+    question?.answer_sentence_id
+
+  const directIds = (Array.isArray(rawSentenceIds) ? rawSentenceIds : [rawSentenceIds])
+    .map(Number)
+    .filter(Number.isFinite)
+
+  if (directIds.length) return directIds
+
+  const paragraphIdx = findAnswerParagraphIndex(paragraphs, question)
+  if (paragraphIdx < 0) return []
+
+  const tokens = Array.isArray(paragraphs[paragraphIdx]) ? paragraphs[paragraphIdx] : []
+  return Array.from(new Set(tokens.map(token => Number(token?.sentence_id)).filter(Number.isFinite)))
 }
 
 const ReadingComprehensionView = ({ match }) => {
@@ -238,6 +285,25 @@ const ReadingComprehensionView = ({ match }) => {
   }, [regenLocalByIndex, regenPendingByIndex])
 
   const storyParagraphs = useMemo(() => normalizeStoryParagraphs(story?.paragraph), [story])
+
+  const highlightedSentenceIds = useMemo(() => {
+    const ids = new Set()
+
+    if (activeTabIndex === 0) {
+      selectedDraft.forEach(idx => {
+        const q = draftQuestions?.[idx]
+        getQuestionSentenceIds(storyParagraphs, q).forEach(id => ids.add(id))
+      })
+    }
+
+    if (activeTabIndex === 1) {
+      ;(storyQuestions || []).forEach(q => {
+        getQuestionSentenceIds(storyParagraphs, q).forEach(id => ids.add(id))
+      })
+    }
+
+    return Array.from(ids)
+  }, [activeTabIndex, draftQuestions, selectedDraft, storyQuestions, storyParagraphs])
 
   const disableTopActions = mcPending || anyRegenerating
   const disableSaveButton = disableTopActions || savePending
@@ -760,21 +826,10 @@ const ReadingComprehensionView = ({ match }) => {
 
           <Divider />
 
-          {storyParagraphs.map((paragraph, index) => (
-            <React.Fragment key={index}>
-              <TextWithFeedback
-                hideFeedback
-                hideDifficulty
-                mode="preview"
-                snippet={paragraph}
-                answers={null}
-                focusedConcept={null}
-                show_preview_exer={false}
-              />
-              <br />
-              <br />
-            </React.Fragment>
-          ))}
+          <HighlightedStoryText
+            paragraphs={storyParagraphs}
+            highlightedSentenceIds={highlightedSentenceIds}
+          />
         </Segment>
 
         <section
