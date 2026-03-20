@@ -11,10 +11,10 @@ const CorrectedWord = ({word, highlightedWords, setHighLightedWords}) => {
   const handleClick = () => {
     setHighLightedWords(error_span?.length > 0 ? error_span : [ID])
   }
-
   
-  const textDecoration = ((original && corrected && corrected != '-') ? 'wavy underline red' :
-    (original && corrected && corrected == '-') ? 'line-through' : 'none')
+  const textDecoration = ((original && corrected && original !== '-' && corrected !== '-') ? 'wavy underline red' :
+    (original && corrected && original !== '-' && corrected === '-') ? 'line-through' :
+      (original && corrected && original === '-' && corrected !== '-') ? 'underline' : 'none')
 
 
   return (
@@ -28,7 +28,7 @@ const CorrectedWord = ({word, highlightedWords, setHighLightedWords}) => {
       }}
       title={feedbackText}
     >
-      {corrected != '-' && corrected || original}
+      {corrected !== '-' && corrected || original}
     </span>
   )
 }
