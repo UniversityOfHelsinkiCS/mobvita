@@ -83,6 +83,17 @@ jobs:
           spec: cypress/e2e/practice_spec.js
           context: practice
   
+  test_reading_comprehension:
+    name: "Test reading comprehension"
+    runs-on: ubuntu-latest  
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Run tests'
+        uses: ./.github/actions/run_test
+        with:
+          spec: cypress/e2e/reading_comprehension_spec.js
+          context: reading_comprehension
+  
   test_tests:
     name: "Test tests"
     runs-on: ubuntu-latest  
