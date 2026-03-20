@@ -174,12 +174,6 @@ const AdaptiveTest = ({ showingInfo }) => {
             </div>
           )}
           <div className="test-container">
-            <div className="test-top-info space-between">
-              <div>
-                <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
-              </div>
-            </div>
-
             <div className={`ui progress ${progress}`}>
               <div
                 className="bar"
@@ -190,6 +184,13 @@ const AdaptiveTest = ({ showingInfo }) => {
                 }}
               />
             </div>
+            
+            <div className="test-top-info space-between">
+              <div>
+                <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
+              </div>
+            </div>
+
 
             <div className="test-question-container">
               {willPause && !willStop && (
