@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
-import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { getStoryAction, answerStoryQuestionAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 
@@ -89,6 +89,11 @@ const getQuestionSentenceIds = (story, question) => {
   return Array.from(new Set(tokens.map(token => Number(token.sentence_id)).filter(Number.isFinite)))
 }
 
+const getQuestionId = question => {
+  if (!question) return ''
+  return String(question.question_id || '')
+}
+
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
@@ -112,6 +117,7 @@ const ReadingPracticeView = () => {
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
   const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
   const [showAnswerLocation, setShowAnswerLocation] = useState(false)
+  const [lastAttemptAnswer, setLastAttemptAnswer] = useState('')
 
   useEffect(() => {
     if (!storyId) return
@@ -125,6 +131,7 @@ const ReadingPracticeView = () => {
     setShowCorrectAnswer(false)
     setShowAnswerLocation(false)
     setHighlightedSentenceIds([])
+    setLastAttemptAnswer('')
   }, [storyId, questions.length])
 
   const total = questions.length
@@ -136,6 +143,19 @@ const ReadingPracticeView = () => {
 
     const normalizedChoice = String(choice)
     const normalizedAnswer = String(current.answer)
+
+    const questionId = getQuestionId(current)
+    if (storyId && questionId) {
+      dispatch(
+        answerStoryQuestionAction({
+          storyId,
+          questionId,
+          answer: normalizedChoice,
+          showRef: false,
+        })
+      )
+    }
+    setLastAttemptAnswer(normalizedChoice)
 
     if (normalizedChoice === normalizedAnswer) {
       setIsCorrectAnswered(true)
@@ -162,13 +182,29 @@ const ReadingPracticeView = () => {
     setShowCorrectAnswer(false)
     setShowAnswerLocation(false)
     setHighlightedSentenceIds([])
+    setLastAttemptAnswer('')
     setIdx(prev => Math.min(prev + 1, Math.max(total - 1, 0)))
   }
 
   const handleShowAnswerLocation = () => {
     if (!current) return
+    if (showAnswerLocation) return
 
     const sentenceIds = getQuestionSentenceIds(story, current)
+    const questionId = getQuestionId(current)
+    const answerForReference =
+      lastAttemptAnswer || (isCorrectAnswered ? String(current.answer || '') : '')
+
+    if (storyId && questionId && answerForReference) {
+      dispatch(
+        answerStoryQuestionAction({
+          storyId,
+          questionId,
+          answer: answerForReference,
+          showRef: true,
+        })
+      )
+    }
 
     setShowAnswerLocation(true)
     setHighlightedSentenceIds(sentenceIds)
@@ -311,6 +347,7 @@ const ReadingPracticeView = () => {
                           setShowCorrectAnswer(false)
                           setShowAnswerLocation(false)
                           setHighlightedSentenceIds([])
+                          setLastAttemptAnswer('')
                         }}
                       >
                         <FormattedMessage id="start-over" />
