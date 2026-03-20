@@ -1652,5 +1652,6 @@
     "library-tour-preview-text": "Here you can preview a story.\nAfter previewing, the student can move to doing Practice exercises with the story.",
     "no-saved-questions": "This story does not have any question attached",
     "error": "Error",
-    "saved": "Saved"
+    "saved": "Saved",
+    "show-where-answer-is": "Show where answer is in the text"
 }

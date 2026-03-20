@@ -1797,5 +1797,6 @@
     "library-tour-preview-text": "Qui puoi visualizzare un'anteprima del testo.\nDopo l'anteprima, lo studente può passare a svolgere gli esercizi pratici con il testo.",
     "no-saved-questions": "This story does not have any question attached",
     "error": "Error",
-    "saved": "Saved"
+    "saved": "Saved",
+    "show-where-answer-is": "Show where answer is in the text"
 }

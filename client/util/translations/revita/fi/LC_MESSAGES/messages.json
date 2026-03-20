@@ -1798,5 +1798,6 @@
     "library-tour-preview-text": "Täällä voit esikatsella tarinaa.\nEsikatselun jälkeen opiskelija voi siirtyä tekemään tekstiin liittyviä harjoituksia.",
     "no-saved-questions": "This story does not have any question attached",
     "error": "Virhe",
-    "saved": "Tallennettu"
+    "saved": "Tallennettu",
+    "show-where-answer-is": "Näytä vastaus tekstissä"
 }

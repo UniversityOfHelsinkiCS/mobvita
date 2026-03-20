@@ -1800,5 +1800,6 @@
     "library-tour-preview-text": "Здесь можно предварительно просмотреть текст.\nПосле предварительного просмотра ученик может перейти к выполнению практических упражнений с текстом.",
     "no-saved-questions": "This story does not have any question attached",
     "error": "Error",
-    "saved": "Saved"
+    "saved": "Saved",
+    "show-where-answer-is": "Show where answer is in the text"
 }
