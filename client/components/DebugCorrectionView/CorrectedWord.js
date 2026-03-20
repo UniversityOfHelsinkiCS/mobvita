@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react'
 
 const CorrectedWord = ({word, highlightedWords, setHighLightedWords}) => { 
   const { ID, original, corrected, error_span, feedback } = word
-  const feedbackText = feedback ? feedback.hints.map(hint => hint.easy).join('\n') : ''
+  const feedbackText = feedback ? [
+    ...(feedback.requested_hints || []),
+    ...(feedback.hints || [])
+  ].map(hint => hint.easy).join('\n') : ''
   const handleClick = () => {
     setHighLightedWords(error_span?.length > 0 ? error_span : [ID])
   }
@@ -25,7 +28,7 @@ const CorrectedWord = ({word, highlightedWords, setHighLightedWords}) => {
       }}
       title={feedbackText}
     >
-      {corrected || original}
+      {corrected != '-' && corrected || original}
     </span>
   )
 }
