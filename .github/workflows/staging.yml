@@ -126,6 +126,7 @@ jobs:
       - test_groups
       - test_mobvita
       - test_practice
+      - test_reading_comprehension
       - test_tests
       - test_wordnest
     runs-on: ubuntu-latest
