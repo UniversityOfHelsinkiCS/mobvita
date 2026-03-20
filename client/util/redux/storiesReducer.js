@@ -10,6 +10,17 @@ export const getStoryAction = (storyId, mode) => {
   return callBuilder(route, prefix)
 }
 
+export const answerStoryQuestionAction = ({ storyId, questionId, answer, showRef }) => {
+  const route = `/stories/${storyId}/answer_question`
+  const prefix = 'ANSWER_STORY_QUESTION'
+  const payload = {
+    question_id: String(questionId),
+    answer: String(answer ?? ''),
+    show_ref: !!showRef,
+  }
+  return callBuilder(route, prefix, 'post', payload)
+}
+
 export const getStudentStoryAction = (storyId, groupId, studentId) => {
   const route = `/groups/${groupId}/review?story_id=${storyId}&student_id=${studentId}`
   const prefix = 'GET_STUDENT_STORY'
