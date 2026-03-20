@@ -158,6 +158,8 @@ const ReadingPracticeView = () => {
     setLastAttemptAnswer(normalizedChoice)
 
     if (normalizedChoice === normalizedAnswer) {
+      const sentenceIds = getQuestionSentenceIds(story, current)
+      setHighlightedSentenceIds(sentenceIds)
       setIsCorrectAnswered(true)
       setShowCorrectAnswer(true)
       return
