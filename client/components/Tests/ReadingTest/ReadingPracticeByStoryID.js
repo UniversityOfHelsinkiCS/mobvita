@@ -33,8 +33,8 @@ const normalizeQuestion = q => {
       sentence_ids: Array.isArray(rawSentenceIds)
         ? rawSentenceIds
         : rawSentenceIds != null
-          ? [rawSentenceIds]
-          : [],
+        ? [rawSentenceIds]
+        : [],
     }
   }
 
@@ -250,7 +250,7 @@ const ReadingPracticeView = () => {
         <div style={{ position: 'sticky', top: 16 }}>
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
-              <div style={{ fontWeight: 800, fontSize: 18, marginBottom: 6 }}>
+              <div style={{ fontWeight: 800, fontSize: 18, marginBottom: '12px' }}>
                 <FormattedMessage id="reading-test" />
               </div>
 
@@ -260,21 +260,7 @@ const ReadingPracticeView = () => {
                 </div>
               ) : (
                 <>
-                  <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.75 }}>
-                    <FormattedMessage id="question" /> {idx + 1} / {total}
-                  </div>
-
                   <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
-
-                  {!showCorrectAnswer && (
-                    <div style={{ marginBottom: 10, fontSize: 12, opacity: 0.8 }}>
-                      <FormattedMessage
-                        id="incorrect-attempts"
-                        defaultMessage="Incorrect attempts"
-                      />
-                      : {attemptedWrongChoices.size} / {wrongAttemptLimit}
-                    </div>
-                  )}
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {(current?.choices || []).map((c, i) => {
@@ -323,44 +309,55 @@ const ReadingPracticeView = () => {
                     })}
                   </div>
 
-                  <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-                    {showCorrectAnswer && (
-                      <Button
-                        data-cy="rp-show-answer-location-btn"
-                        className="btn-secondary"
-                        onClick={handleShowAnswerLocation}
-                      >
-                        <FormattedMessage
-                          id="show-where-answer-is"
-                        />
-                      </Button>
-                    )}
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginTop: 14,
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <div>
+                      {showCorrectAnswer && (
+                        <Button
+                          data-cy="rp-show-answer-location-btn"
+                          className="btn-secondary"
+                          onClick={handleShowAnswerLocation}
+                        >
+                          <FormattedMessage id="show-where-answer-is" />
+                        </Button>
+                      )}
+                    </div>
 
-                    {idx === total - 1 && showCorrectAnswer ? (
-                      <Button
-                        data-cy="rp-start-over-btn"
-                        variant="primary"
-                        onClick={() => {
-                          setIdx(0)
-                          setAttemptedWrongChoices(new Set())
-                          setIsCorrectAnswered(false)
-                          setShowCorrectAnswer(false)
-                          setShowAnswerLocation(false)
-                          setHighlightedSentenceIds([])
-                          setLastAttemptAnswer('')
-                        }}
-                      >
-                        <FormattedMessage id="start-over" />
-                      </Button>
-                    ) : (
-                      <Button
-                        data-cy="rp-next-btn"
-                        onClick={goNext}
-                        disabled={!showCorrectAnswer || idx >= total - 1}
-                      >
-                        <FormattedMessage id="next" />
-                      </Button>
-                    )}
+                    <div style={{ display: 'flex' }}>
+                      {idx === total - 1 && showCorrectAnswer ? (
+                        <Button
+                          style={{ minWidth: 100 }}
+                          data-cy="rp-start-over-btn"
+                          variant="primary"
+                          onClick={() => {
+                            setIdx(0)
+                            setAttemptedWrongChoices(new Set())
+                            setIsCorrectAnswered(false)
+                            setShowCorrectAnswer(false)
+                            setShowAnswerLocation(false)
+                            setHighlightedSentenceIds([])
+                            setLastAttemptAnswer('')
+                          }}
+                        >
+                          <FormattedMessage id="start-over" />
+                        </Button>
+                      ) : (
+                        <Button
+                          style={{ minWidth: 100 }}
+                          data-cy="rp-next-btn"
+                          onClick={goNext}
+                          disabled={!showCorrectAnswer || idx >= total - 1}
+                        >
+                          <FormattedMessage id="next" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
