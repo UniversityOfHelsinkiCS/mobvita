@@ -17,6 +17,7 @@ import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
+import rcIcon from 'Assets/images/RC-icon.png'
 
 const StoryTitle = ({
   story,
@@ -442,18 +443,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         >
           <div>
             {story?.has_questions ? (
-              <span
-                style={{
-                  width: 30,
-                  height: 30,
-                  fontWeight: 700,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                RC
-              </span>
+              <img src={rcIcon} alt="RC Icon" style={{height: '24px', width: '24px'}} />
             ) : null}
           </div>
 
