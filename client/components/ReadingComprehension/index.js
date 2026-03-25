@@ -170,7 +170,8 @@ const ReadingComprehensionView = ({ match }) => {
   const [storyQuestions, setStoryQuestions] = useState([])
   const [draftQuestions, setDraftQuestions] = useState([])
 
-  const [selectedDraft, setSelectedDraft] = useState(() => new Set())
+  // Only one draft question can be selected at a time
+  const [selectedDraftIdx, setSelectedDraftIdx] = useState(null)
 
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
@@ -187,7 +188,7 @@ const ReadingComprehensionView = ({ match }) => {
     setStoryQuestions([])
     hasSeenPendingCycleRef.current = false
     setDraftQuestions([])
-    setSelectedDraft(new Set())
+    setSelectedDraftIdx(null)
     setEditing(null)
     setEditValue('')
     setRegenLocalByIndex({})
@@ -293,13 +294,11 @@ const ReadingComprehensionView = ({ match }) => {
 
   const highlightedSentenceIds = useMemo(() => {
     if (activeTabIndex === 0) {
-      // Generated questions: highlight all selected
-      const ids = new Set()
-      selectedDraft.forEach(idx => {
-        const q = draftQuestions?.[idx]
-        getQuestionSentenceIds(storyParagraphs, q).forEach(id => ids.add(id))
-      })
-      return Array.from(ids)
+      // Generated questions: highlight only the selected one
+      if (selectedDraftIdx !== null && draftQuestions[selectedDraftIdx]) {
+        return getQuestionSentenceIds(storyParagraphs, draftQuestions[selectedDraftIdx])
+      }
+      return []
     }
     if (activeTabIndex === 1) {
       // Saved questions: highlight only selected
@@ -315,7 +314,7 @@ const ReadingComprehensionView = ({ match }) => {
       return []
     }
     return []
-  }, [activeTabIndex, draftQuestions, selectedDraft, storyQuestions, storyParagraphs, selectedStoryQuestionIdx])
+  }, [activeTabIndex, draftQuestions, selectedDraftIdx, storyQuestions, storyParagraphs, selectedStoryQuestionIdx])
 
   const disableTopActions = mcPending || anyRegenerating
   const disableSaveButton = disableTopActions || savePending
@@ -326,38 +325,28 @@ const ReadingComprehensionView = ({ match }) => {
     setActiveTabIndex(0)
   }
 
-  const toggleSelectedDraft = idx => {
-    setSelectedDraft(prev => {
-      const next = new Set(prev)
-      if (next.has(idx)) next.delete(idx)
-      else next.add(idx)
-      return next
-    })
+  const selectDraft = idx => {
+    setSelectedDraftIdx(prev => (prev === idx ? null : idx))
   }
 
-  const selectedDraftQuestions = useMemo(() => {
-    if (!Array.isArray(draftQuestions) || selectedDraft.size === 0) return []
-    return draftQuestions.filter((_, idx) => selectedDraft.has(idx))
-  }, [draftQuestions, selectedDraft])
+  // For saving: save all non-deleted draft questions
+  const saveAllDraftToStory = async () => {
+    if (disableSaveButton || draftQuestions.length === 0) return
 
-  const totalDraft = draftQuestions.length
-  const selectedCount = selectedDraftQuestions.length
-
-  const selectAllDraft = () =>
-    setSelectedDraft(new Set((draftQuestions || []).map((_, idx) => idx)))
-  const clearDraftSelection = () => setSelectedDraft(new Set())
-
-  const saveSelectedDraftToStory = async () => {
-    if (disableSaveButton || selectedCount === 0) return
-
-    const merged = [...storyQuestions, ...selectedDraftQuestions].map(q => ({ ...q, level: q.level }))
+    const merged = [...storyQuestions, ...draftQuestions].map(q => ({ ...q, level: q.level }))
 
     dispatch(saveMcQuestionsAction({ storyId, questions: merged }))
     setStoryQuestions(merged)
     setDraftQuestions([])
-    setSelectedDraft(new Set())
+    setSelectedDraftIdx(null)
     setEditing(null)
     setEditValue('')
+  }
+  // Remove a draft question by index
+  const removeDraftQuestion = idx => {
+    setDraftQuestions(prev => prev.filter((_, i) => i !== idx))
+    if (selectedDraftIdx === idx) setSelectedDraftIdx(null)
+    else if (selectedDraftIdx > idx) setSelectedDraftIdx(selectedDraftIdx - 1)
   }
 
   const startEditChoice = (list, qIdx, cIdx, value) => {
@@ -412,7 +401,7 @@ const ReadingComprehensionView = ({ match }) => {
     const gen = (Array.isArray(generated) ? generated : []).map(normalizeQuestion).filter(Boolean)
 
     setDraftQuestions(gen)
-    setSelectedDraft(new Set())
+    setSelectedDraftIdx(null)
     setEditing(null)
     setEditValue('')
     setRegenLocalByIndex({})
@@ -669,30 +658,15 @@ const ReadingComprehensionView = ({ match }) => {
                       <Button
                         primary
                         data-cy="rc-add-questions-to-story-btn"
-                        onClick={saveSelectedDraftToStory}
-                        disabled={disableSaveButton || selectedCount === 0}
+                        onClick={saveAllDraftToStory}
+                        disabled={disableSaveButton || draftQuestions.length === 0}
                       >
                         {intl.formatMessage({ id: 'add-questions-to-story' })}
-                        {selectedCount > 0 ? ` (${selectedCount})` : ''}
+                        {draftQuestions.length > 0 ? ` (${draftQuestions.length})` : ''}
                       </Button>
                     </div>
                   }
                 />
-
-                {totalDraft > 0 && (
-                  <Button
-                    basic
-                    size="small"
-                    data-cy="rc-select-unselect-all-btn"
-                    disabled={disableSaveButton}
-                    onClick={() => {
-                      if (selectedDraft.size === totalDraft) clearDraftSelection()
-                      else selectAllDraft()
-                    }}
-                  >
-                    {intl.formatMessage({ id: 'select-unselect-all' })}
-                  </Button>
-                )}
 
                 {saved ? (
                   <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
@@ -714,28 +688,45 @@ const ReadingComprehensionView = ({ match }) => {
                 <ReadingComprehensionQuestion
                   key={`draft-${qIdx}-${q.question}`}
                   title={q.question}
-                  selected={selectedDraft.has(qIdx)}
-                  onToggleSelect={() => toggleSelectedDraft(qIdx)}
+                  selected={selectedDraftIdx === qIdx}
+                  onToggleSelect={() => selectDraft(qIdx)}
                   cefr={q.level}
                   actions={
-                    <Button
-                      icon
-                      basic
-                      size="mini"
-                      data-cy={`rc-regenerate-question-btn-${qIdx}`}
-                      disabled={disableThisQuestionActions}
-                      onClick={e => {
-                        stopAll(e)
-                        handleRegenerateDraftOne(qIdx, q.question)
-                      }}
-                      onMouseDown={stopAll}
-                    >
-                      {regenLoading ? (
-                        <Spinner inline size={24} variant="secondary" />
-                      ) : (
-                        <Icon name="refresh" />
-                      )}
-                    </Button>
+                    <>
+                      <Button
+                        icon
+                        basic
+                        size="mini"
+                        data-cy={`rc-regenerate-question-btn-${qIdx}`}
+                        disabled={disableThisQuestionActions}
+                        onClick={e => {
+                          stopAll(e)
+                          handleRegenerateDraftOne(qIdx, q.question)
+                        }}
+                        onMouseDown={stopAll}
+                      >
+                        {regenLoading ? (
+                          <Spinner inline size={24} variant="secondary" />
+                        ) : (
+                          <Icon name="refresh" />
+                        )}
+                      </Button>
+                      <Button
+                        icon
+                        basic
+                        size="mini"
+                        data-cy={`rc-delete-draft-question-btn-${qIdx}`}
+                        style={{ padding: '9px' }}
+                        disabled={disableThisQuestionActions}
+                        onClick={e => {
+                          stopAll(e)
+                          removeDraftQuestion(qIdx)
+                        }}
+                        onMouseDown={stopAll}
+                      >
+                        <Icon name="trash" />
+                      </Button>
+                    </>
                   }
                 >
                   {renderChoices('draft', q, qIdx, regenLoading)}
