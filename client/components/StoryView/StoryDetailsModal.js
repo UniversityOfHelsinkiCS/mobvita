@@ -78,7 +78,7 @@ const StoryDetailsModal = ({
             {!isTeacher && !story.flashcardsOnly && (
               <Link to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}>
                 <Button
-                  className="story-detail-modal-action-button library-tour-modal-practice-button library-tour-modal-review-button"
+                  className="story-detail-modal-action-button library-tour-modal-practice-button"
                   variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
                 >
                   <FormattedMessage id="practice" />

@@ -1540,6 +1540,7 @@ const anonymousMobileProgressTourSteps = [
   },
 ]
 
+// LIBRARY PAGE TOUR
 /////////////////////////////////////////////////////////
 const desktopLibraryTourSteps = [
   {

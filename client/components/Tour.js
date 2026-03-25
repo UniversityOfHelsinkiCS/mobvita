@@ -37,6 +37,7 @@ const Tour = () => {
 
   const homeTour =
     tourState.steps === studentHomeTourSteps || tourState.steps === teacherHomeTourSteps
+  const libraryModalLastStepIndex = teacherView ? 4 : 3
 
   const getSafeTarget = target => {
     if (typeof target !== 'string') {
@@ -53,7 +54,16 @@ const Tour = () => {
 
   const safeTourState = {
     ...tourState,
-    steps: (tourState.steps || []).map((step, idx) => {
+    steps: (tourState.steps || [])
+      .filter(step => {
+        if (tourState.steps !== libraryTourSteps) {
+          return true
+        }
+
+        // Show the review tour step only for teachers.
+        return teacherView || step.target !== '.library-tour-modal-review-button'
+      })
+      .map((step, idx) => {
       if (tourState.steps === libraryTourSteps && idx === 3) {
         const target = '.story-detail-modal-action-button'
         const isTeacherStep = !!teacherView
@@ -68,6 +78,13 @@ const Tour = () => {
               />
             </div>
           ),
+        }
+      }
+
+      if (tourState.steps === libraryTourSteps && step.target === '.library-tour-modal-review-button') {
+        return {
+          ...step,
+          target: getSafeTarget('.library-tour-modal-review-button'),
         }
       }
 
@@ -112,7 +129,11 @@ const Tour = () => {
           return
         }
       }
-      if (tourState.steps === libraryTourSteps && index === 4 && action !== ACTIONS.PREV) {
+      if (
+        tourState.steps === libraryTourSteps &&
+        index === libraryModalLastStepIndex &&
+        action !== ACTIONS.PREV
+      ) {
         const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
           el => el instanceof HTMLElement && el.offsetParent !== null
         )
