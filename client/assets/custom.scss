@@ -210,6 +210,16 @@ $value in $spacing {
   }
 }
 
+.custom-confirm-modal.ui.modal {
+  width: 300px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  background: #fff !important;
+}
+
 .flex {
   display: flex;
 }

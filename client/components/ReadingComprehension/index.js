@@ -10,6 +10,7 @@ import {
   Icon,
   Input,
   Tab,
+  Modal,
 } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
@@ -174,6 +175,10 @@ const ReadingComprehensionView = ({ match }) => {
   const [editing, setEditing] = useState(null)
   const [editValue, setEditValue] = useState('')
 
+  const [selectedStoryQuestionIdx, setSelectedStoryQuestionIdx] = useState(null)
+
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, idx: null }) // For confirm dialog when deleting saved question
+
   const [regenLocalByIndex, setRegenLocalByIndex] = useState({})
   const [prevSignatures, setPrevSignatures] = useState({})
 
@@ -287,23 +292,30 @@ const ReadingComprehensionView = ({ match }) => {
   const storyParagraphs = useMemo(() => normalizeStoryParagraphs(story?.paragraph), [story])
 
   const highlightedSentenceIds = useMemo(() => {
-    const ids = new Set()
-
     if (activeTabIndex === 0) {
+      // Generated questions: highlight all selected
+      const ids = new Set()
       selectedDraft.forEach(idx => {
         const q = draftQuestions?.[idx]
         getQuestionSentenceIds(storyParagraphs, q).forEach(id => ids.add(id))
       })
+      return Array.from(ids)
     }
-
     if (activeTabIndex === 1) {
-      ;(storyQuestions || []).forEach(q => {
-        getQuestionSentenceIds(storyParagraphs, q).forEach(id => ids.add(id))
-      })
+      // Saved questions: highlight only selected
+      if (
+        selectedStoryQuestionIdx !== null &&
+        storyQuestions[selectedStoryQuestionIdx]
+      ) {
+        return getQuestionSentenceIds(
+          storyParagraphs,
+          storyQuestions[selectedStoryQuestionIdx]
+        )
+      }
+      return []
     }
-
-    return Array.from(ids)
-  }, [activeTabIndex, draftQuestions, selectedDraft, storyQuestions, storyParagraphs])
+    return []
+  }, [activeTabIndex, draftQuestions, selectedDraft, storyQuestions, storyParagraphs, selectedStoryQuestionIdx])
 
   const disableTopActions = mcPending || anyRegenerating
   const disableSaveButton = disableTopActions || savePending
@@ -698,7 +710,6 @@ const ReadingComprehensionView = ({ match }) => {
             draftQuestions.map((q, qIdx) => {
               const regenLoading = !!regenLocalByIndex?.[qIdx] || !!regenPendingByIndex?.[qIdx]
               const disableThisQuestionActions = mcPending || regenLoading
-
               return (
                 <ReadingComprehensionQuestion
                   key={`draft-${qIdx}-${q.question}`}
@@ -755,8 +766,8 @@ const ReadingComprehensionView = ({ match }) => {
               <ReadingComprehensionQuestion
                 key={`story-${qIdx}-${q.question}`}
                 title={q.question}
-                selected={false}
-                onToggleSelect={() => {}}
+                selected={selectedStoryQuestionIdx === qIdx}
+                onToggleSelect={() => setSelectedStoryQuestionIdx(qIdx === selectedStoryQuestionIdx ? null : qIdx)}
                 cefr={q.level}
                 actions={
                   <Button
@@ -768,7 +779,7 @@ const ReadingComprehensionView = ({ match }) => {
                     disabled={deletePending}
                     onClick={e => {
                       stopAll(e)
-                      removeStoryQuestion(qIdx)
+                      setConfirmDelete({ open: true, idx: qIdx })
                     }}
                     onMouseDown={stopAll}
                   >
@@ -787,6 +798,41 @@ const ReadingComprehensionView = ({ match }) => {
 
   return (
     <>
+      <Modal
+        open={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, idx: null })}
+        size="mini"
+        className="custom-confirm-modal"
+        closeOnDimmerClick={false}
+        closeOnEscape={true}
+      >
+        <Modal.Content style={{ textAlign: 'center' }}>
+          {intl.formatMessage({ id: 'confirm-delete-question' })}
+        </Modal.Content>
+        <Modal.Actions style={{ display: 'flex', justifyContent: 'center', gap: 16, background: 'transparent' }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setConfirmDelete({ open: false, idx: null })}
+            style={{ minWidth: 90 }}
+          >
+            {intl.formatMessage({ id: 'Cancel' })}
+          </button>
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={() => {
+              if (typeof confirmDelete.idx === 'number') {
+                removeStoryQuestion(confirmDelete.idx)
+              }
+              setConfirmDelete({ open: false, idx: null })
+            }}
+            style={{ minWidth: 90 }}
+          >
+            {intl.formatMessage({ id: 'Delete' })}
+          </button>
+        </Modal.Actions>
+      </Modal>
       {mcPending ? (
         <div className="rc-loading-overlay">
           <Spinner
@@ -847,6 +893,7 @@ const ReadingComprehensionView = ({ match }) => {
               activeIndex={activeTabIndex}
               onTabChange={(_e, data) => {
                 setActiveTabIndex(data.activeIndex)
+                setSelectedStoryQuestionIdx(null)
                 dispatch(clearMcSavedAction())
               }}
             />
