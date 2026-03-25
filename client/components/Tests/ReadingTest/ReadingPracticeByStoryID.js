@@ -275,14 +275,14 @@ const ReadingPracticeView = () => {
                       let color = 'rgba(0,0,0,0.82)'
 
                       if (isCorrect) {
-                        border = '1px solid rgba(33, 186, 69, 0.9)'
-                        bg = 'rgba(33, 186, 69, 0.12)'
+                        border = '1px solid rgba(1, 203, 48, 0.63)'
+                        bg = 'rgba(10, 248, 66, 0.35)'
                         color = 'rgba(0,0,0,0.95)'
                       }
 
                       if (isWrongTried) {
-                        border = '1px solid rgba(219, 40, 40, 0.9)'
-                        bg = 'rgba(219, 40, 40, 0.10)'
+                        border = '1px solid rgba(12, 159, 250, 0.63)'
+                        bg = 'rgba(12, 159, 250, 0.39)'
                         color = 'rgba(0,0,0,0.95)'
                       }
 
