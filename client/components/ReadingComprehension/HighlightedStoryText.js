@@ -3,9 +3,7 @@ import React, { useMemo } from 'react'
 const HighlightedStoryText = ({
   paragraphs = [],
   highlightedSentenceIds = [],
-  highlightColor = '#21ba45',
-  normalWeight = 400,
-  highlightWeight = 700,
+  highlightBgColor = 'rgba(10, 248, 66, 0.74)', // light yellowish-beige
   paragraphStyle = { marginBottom: 16, lineHeight: 1.7 },
 }) => {
   const highlightedSet = useMemo(
@@ -22,10 +20,14 @@ const HighlightedStoryText = ({
             return (
               <span
                 key={j}
-                style={{
-                  color: isHighlighted ? highlightColor : undefined,
-                  fontWeight: isHighlighted ? highlightWeight : normalWeight,
-                }}
+                style={
+                  isHighlighted
+                    ? {
+                        background: highlightBgColor,
+                        transition: 'background 0.2s',
+                      }
+                    : undefined
+                }
               >
                 {token.surface}
               </span>
