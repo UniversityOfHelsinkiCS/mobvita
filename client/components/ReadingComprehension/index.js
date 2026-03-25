@@ -170,7 +170,6 @@ const ReadingComprehensionView = ({ match }) => {
   const [storyQuestions, setStoryQuestions] = useState([])
   const [draftQuestions, setDraftQuestions] = useState([])
 
-  // Only one draft question can be selected at a time
   const [selectedDraftIdx, setSelectedDraftIdx] = useState(null)
 
   const [editing, setEditing] = useState(null)
@@ -178,7 +177,8 @@ const ReadingComprehensionView = ({ match }) => {
 
   const [selectedStoryQuestionIdx, setSelectedStoryQuestionIdx] = useState(null)
 
-  const [confirmDelete, setConfirmDelete] = useState({ open: false, idx: null }) // For confirm dialog when deleting saved question
+  // confirmDelete: { open: boolean, idx: number|null, type: 'draft'|'saved'|null }
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, idx: null, type: null })
 
   const [regenLocalByIndex, setRegenLocalByIndex] = useState({})
   const [prevSignatures, setPrevSignatures] = useState({})
@@ -212,8 +212,6 @@ const ReadingComprehensionView = ({ match }) => {
     if (focusedPending) return
     if (!story) return
     if (hasInitializedStoryQuestionsRef.current) return
-
-    // Avoid initializing from stale focused story right after route change.
     if (!hasSeenPendingCycleRef.current) return
 
     const focusedStoryId = getStoryIdValue(story)
@@ -294,14 +292,12 @@ const ReadingComprehensionView = ({ match }) => {
 
   const highlightedSentenceIds = useMemo(() => {
     if (activeTabIndex === 0) {
-      // Generated questions: highlight only the selected one
       if (selectedDraftIdx !== null && draftQuestions[selectedDraftIdx]) {
         return getQuestionSentenceIds(storyParagraphs, draftQuestions[selectedDraftIdx])
       }
       return []
     }
     if (activeTabIndex === 1) {
-      // Saved questions: highlight only selected
       if (
         selectedStoryQuestionIdx !== null &&
         storyQuestions[selectedStoryQuestionIdx]
@@ -329,7 +325,6 @@ const ReadingComprehensionView = ({ match }) => {
     setSelectedDraftIdx(prev => (prev === idx ? null : idx))
   }
 
-  // For saving: save all non-deleted draft questions
   const saveAllDraftToStory = async () => {
     if (disableSaveButton || draftQuestions.length === 0) return
 
@@ -342,7 +337,7 @@ const ReadingComprehensionView = ({ match }) => {
     setEditing(null)
     setEditValue('')
   }
-  // Remove a draft question by index
+
   const removeDraftQuestion = idx => {
     setDraftQuestions(prev => prev.filter((_, i) => i !== idx))
     if (selectedDraftIdx === idx) setSelectedDraftIdx(null)
@@ -720,7 +715,7 @@ const ReadingComprehensionView = ({ match }) => {
                         disabled={disableThisQuestionActions}
                         onClick={e => {
                           stopAll(e)
-                          removeDraftQuestion(qIdx)
+                          setConfirmDelete({ open: true, idx: qIdx, type: 'draft' })
                         }}
                         onMouseDown={stopAll}
                       >
@@ -770,7 +765,7 @@ const ReadingComprehensionView = ({ match }) => {
                     disabled={deletePending}
                     onClick={e => {
                       stopAll(e)
-                      setConfirmDelete({ open: true, idx: qIdx })
+                      setConfirmDelete({ open: true, idx: qIdx, type: 'saved' })
                     }}
                     onMouseDown={stopAll}
                   >
@@ -791,7 +786,7 @@ const ReadingComprehensionView = ({ match }) => {
     <>
       <Modal
         open={confirmDelete.open}
-        onClose={() => setConfirmDelete({ open: false, idx: null })}
+        onClose={() => setConfirmDelete({ open: false, idx: null, type: null })}
         size="mini"
         className="custom-confirm-modal"
         closeOnDimmerClick={false}
@@ -804,7 +799,7 @@ const ReadingComprehensionView = ({ match }) => {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => setConfirmDelete({ open: false, idx: null })}
+            onClick={() => setConfirmDelete({ open: false, idx: null, type: null })}
             style={{ minWidth: 90 }}
           >
             {intl.formatMessage({ id: 'Cancel' })}
@@ -814,9 +809,10 @@ const ReadingComprehensionView = ({ match }) => {
             className="btn btn-outline-danger"
             onClick={() => {
               if (typeof confirmDelete.idx === 'number') {
-                removeStoryQuestion(confirmDelete.idx)
+                if (confirmDelete.type === 'draft') removeDraftQuestion(confirmDelete.idx)
+                else if (confirmDelete.type === 'saved') removeStoryQuestion(confirmDelete.idx)
               }
-              setConfirmDelete({ open: false, idx: null })
+              setConfirmDelete({ open: false, idx: null, type: null })
             }}
             style={{ minWidth: 90 }}
           >
