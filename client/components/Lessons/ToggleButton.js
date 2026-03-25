@@ -12,13 +12,14 @@ const ToggleButton = ({
   height = '100%',
   active,
   level,
+  className,
 }) => {
   const imgSrc = extraImgSrc ?? `${name}1`
 
   return (
     <>
       <Button
-        className="toggle-button"
+        className={`toggle-button ${className || ''}`}
         variant={active ? 'primary' : 'outline-primary'}
         onClick={handleClick}
         style={{ width, height }}

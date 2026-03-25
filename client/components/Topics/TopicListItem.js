@@ -161,7 +161,6 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
           <Card.Content extra className="lesson-card-actions-cont">
             <div className="lesson-actions">
               <Button
-                className="choose-topic"
                 variant={selected ? 'primary' : 'outline-primary'}
                 onClick={() => {
                   if (selected) {
@@ -209,7 +208,6 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
         <Card.Content extra className="lesson-card-actions-cont">
           <div className="lesson-actions">
             <Button
-              className="choose-topic"
               variant={selected ? 'primary' : 'outline-primary'}
               onClick={() => {
                 if (selected) {

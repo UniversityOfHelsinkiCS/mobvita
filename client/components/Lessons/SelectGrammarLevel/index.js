@@ -159,7 +159,7 @@ const SelectGrammarLevel = ({
         )}
       </Modal>
       <div className="grammar-buttons-container">
-        <div className="grammar-level-button-group">
+        <div className="grammar-level-button-group choose-topic">
           {[1, 2, 3, 4].map(level => (
             <div className="button-with-marker" key={level}>
               {recommendedLevel === level && (
@@ -183,6 +183,7 @@ const SelectGrammarLevel = ({
         </div>
         <hr style={{ color: '#333', width: '320px' }} />
         <ToggleButton
+          className="lesson-tour-custom-grammar-button"
           handleClick={() => setModal(true)}
           name="custom"
           width="130px"

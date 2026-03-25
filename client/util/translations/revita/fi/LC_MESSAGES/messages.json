@@ -1799,5 +1799,7 @@
     "no-saved-questions": "This story does not have any question attached",
     "error": "Virhe",
     "saved": "Tallennettu",
-    "show-where-answer-is": "Näytä vastaus tekstissä"
+    "show-where-answer-is": "Näytä vastaus tekstissä",
+    "lesson-tour-custom-grammar-button-topic": "Custom Button",
+    "lesson-tour-custom-grammar-button-text": "..."
 }

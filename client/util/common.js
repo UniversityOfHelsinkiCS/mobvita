@@ -1947,6 +1947,16 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.lesson-tour-custom-grammar-button',
+    title: <FormattedMessage id="lesson-tour-custom-grammar-button-topic" />,
+    content: (
+      <div>
+        <FormattedMessage id="lesson-tour-custom-grammar-button-text" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
     content: (
@@ -2047,6 +2057,16 @@ const mobileLessonsTourSteps = [
     content: (
       <div>
         <FormattedHTMLMessage id="lesson-topic-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.lesson-tour-custom-grammar-button',
+    title: <FormattedMessage id="open-custom-grammar-topics-modal" />,
+    content: (
+      <div>
+        <FormattedMessage id="open-custom-grammar-topics-modal" />
       </div>
     ),
     disableBeacon: true,

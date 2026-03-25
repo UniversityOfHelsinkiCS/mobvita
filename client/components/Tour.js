@@ -159,6 +159,18 @@ const Tour = () => {
           return
         }
       }
+      if (tourState.steps === lessonsTourSteps && index === 4 && action !== ACTIONS.PREV) {
+        const customGrammarButton = document.querySelector('.lesson-tour-custom-grammar-button')
+
+        if (customGrammarButton instanceof HTMLElement) {
+          customGrammarButton.click()
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 300)
+          return
+        }
+      }
 
       // desktop
       if (bigScreen) {
