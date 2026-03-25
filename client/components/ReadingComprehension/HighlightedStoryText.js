@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 const HighlightedStoryText = ({
   paragraphs = [],
   highlightedSentenceIds = [],
-  highlightBgColor = 'rgba(10, 248, 66, 0.74)', // light yellowish-beige
+  highlightBgColor = '#fdea3b',
   paragraphStyle = { marginBottom: 16, lineHeight: 1.7 },
 }) => {
   const highlightedSet = useMemo(
