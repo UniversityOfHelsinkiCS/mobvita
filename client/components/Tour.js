@@ -167,7 +167,33 @@ const Tour = () => {
           setTimeout(() => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
-          }, 300)
+          }, 250)
+          return
+        }
+      }
+      if (tourState.steps === lessonsTourSteps && index === 5 && action !== ACTIONS.PREV) {
+        const firstTopic = document.querySelector('.lesson-topic-item')
+
+        if (firstTopic instanceof HTMLElement) {
+          firstTopic.click()
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 250)
+          return
+        }
+      }
+      if (tourState.steps === lessonsTourSteps && index === 6 && action !== ACTIONS.PREV) {
+        const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
+          el => el instanceof HTMLElement && el.offsetParent !== null
+        )
+
+        if (closeButton instanceof HTMLElement) {
+          closeButton.click()
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 250)
           return
         }
       }

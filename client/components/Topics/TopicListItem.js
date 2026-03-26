@@ -138,7 +138,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
             }
           />
         )}
-        <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
+        <div style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
           {topicExample ? <div style={{fontWeight: '400'}} dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }} /> : null}
         </div>
