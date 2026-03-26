@@ -565,6 +565,7 @@ const LessonList = () => {
                         </Button>
                       ) : (
                         <Button
+                          className="lesson-setup-next-btn"
                           variant="primary"
                           style={{ width: '120px', height: '40px' }}
                           type="button"
