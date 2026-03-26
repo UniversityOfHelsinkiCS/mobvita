@@ -227,7 +227,7 @@ const StoryGeneration = () => {
         }}
       >
         <ReactSlider
-          className="exercise-density-slider lesson-vocab-diff"
+          className="exercise-density-slider"
           thumbClassName={sliderThumbClassName}
           trackClassName="exercise-density-slider-track"
           onAfterChange={value => handleSlider(value)}
@@ -266,7 +266,7 @@ const StoryGeneration = () => {
         }}
       >
         <ReactSlider
-          className="exercise-density-slider lesson-vocab-diff"
+          className="exercise-density-slider"
           thumbClassName={sliderThumbClassName}
           trackClassName="exercise-density-slider-track"
           onAfterChange={value => handleSlider(value)}

@@ -184,12 +184,13 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
           Object.keys(lessonGroups).sort().map((group, index) => (
             <>
               <AccordionTitle
+                className='lesson-content'
                 key={`lesson-group-title-${group}`}
                 active={accordionState === index}
                 index={index}
                 onClick={handleClick}
               >
-                <h4>
+                <h4 className='lesson-topic-item'>
                   <Icon name='dropdown' />
                   <FormattedMessage id='lesson-group' values={{group}}/>
                 </h4>

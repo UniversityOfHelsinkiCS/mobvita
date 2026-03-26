@@ -138,7 +138,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
             }
           />
         )}
-        <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
+        <div style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
           {topicExample ? <div style={{fontWeight: '400'}} dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }} /> : null}
         </div>
@@ -161,7 +161,6 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
           <Card.Content extra className="lesson-card-actions-cont">
             <div className="lesson-actions">
               <Button
-                className="choose-topic"
                 variant={selected ? 'primary' : 'outline-primary'}
                 onClick={() => {
                   if (selected) {
@@ -209,7 +208,6 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
         <Card.Content extra className="lesson-card-actions-cont">
           <div className="lesson-actions">
             <Button
-              className="choose-topic"
               variant={selected ? 'primary' : 'outline-primary'}
               onClick={() => {
                 if (selected) {
