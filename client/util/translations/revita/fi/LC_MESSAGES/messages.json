@@ -1801,5 +1801,6 @@
     "saved": "Tallennettu",
     "show-where-answer-is": "Näytä vastaus tekstissä",
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
-    "lesson-tour-custom-grammar-button-text": "..."
+    "lesson-tour-custom-grammar-button-text": "...",
+    "confirm-delete-question": "Poista tämä kysymys?"
 }

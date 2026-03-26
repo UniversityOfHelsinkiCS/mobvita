@@ -1803,5 +1803,6 @@
     "saved": "Saved",
     "show-where-answer-is": "Show where answer is in the text",
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
-    "lesson-tour-custom-grammar-button-text": "..."
+    "lesson-tour-custom-grammar-button-text": "...",
+    "confirm-delete-question": "Delete this question?"
 }
