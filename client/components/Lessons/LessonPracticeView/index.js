@@ -293,7 +293,7 @@ const LessonPracticeView = () => {
     )
   } else {
     return (
-      <Spinner fullHeight size={60} />
+      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
     )
   }
 }
