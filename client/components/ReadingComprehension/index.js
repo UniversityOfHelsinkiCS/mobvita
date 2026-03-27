@@ -674,7 +674,7 @@ const ReadingComprehensionView = ({ match }) => {
           </div>
 
           {draftQuestions.length === 0 ? (
-            <div style={{ opacity: 0.7 }}>{intl.formatMessage({ id: 'no-draft-questions' })}</div>
+            <div></div>
           ) : (
             draftQuestions.map((q, qIdx) => {
               const regenLoading = !!regenLocalByIndex?.[qIdx] || !!regenPendingByIndex?.[qIdx]

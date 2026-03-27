@@ -251,17 +251,13 @@ const ReadingPracticeView = () => {
         <div style={{ position: 'sticky', top: 16 }}>
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
-              <div style={{ fontWeight: 800, fontSize: 18, marginBottom: '12px' }}>
-                <FormattedMessage id="reading-test" />
-              </div>
-
               {total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
                   <FormattedMessage id="no-questions" />
                 </div>
               ) : (
                 <>
-                  <div style={{ fontWeight: 700, marginBottom: 12 }}>{current?.question}</div>
+                  <div style={{ fontSize: 18, marginBottom: 12 }}>{current?.question}</div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {(current?.choices || []).map((c, i) => {
