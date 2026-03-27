@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -9,6 +9,7 @@ import {
   getAllStories,
   unshareStory as unshare,
   storyVisibilityChange,
+  getStoryLoadingProgress,
 } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -379,6 +380,8 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
 
+
+
   const handleControlledStoryCancel = async () => {
     await dispatch(cancelControlledStory(story._id))
     dispatch(
@@ -425,7 +428,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
       </Card.Content>
       <Card.Content extra>
         <div className="story-description">
-          {story.description === 'Under processing' ? (
+          {uploadUnfinished ? (
             <FormattedMessage id="processing-story" />
           ) : (
             story.description
@@ -443,7 +446,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         >
           <div>
             {story?.has_questions ? (
-              <img src={rcIcon} alt="RC Icon" style={{height: '24px', width: '24px'}} />
+              <img src={rcIcon} alt="RC Icon" style={{ height: '24px', width: '24px' }} />
             ) : null}
           </div>
 
