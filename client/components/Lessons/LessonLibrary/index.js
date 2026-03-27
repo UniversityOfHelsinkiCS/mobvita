@@ -438,7 +438,7 @@ const LessonList = () => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
         {metaPending || groupPending ? (
-          <Spinner fullHeight size={60} />
+          <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
         ) : noResults ? (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-lessons-found" />

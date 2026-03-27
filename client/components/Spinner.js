@@ -8,7 +8,7 @@ const Spinner = ({
   inline = false,
   size = 24,
   text = '',
-  textSize = 16,
+  textSize = 20,
   textVariant = 'primary',
   textColor,
 }) => {
