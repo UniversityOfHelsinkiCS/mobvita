@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
@@ -98,6 +98,7 @@ const ReadingPracticeView = () => {
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const intl = useIntl()
 
   const { story, pending } = useSelector(({ stories }) => ({
     story: stories.focused,
@@ -210,7 +211,7 @@ const ReadingPracticeView = () => {
     setHighlightedSentenceIds(sentenceIds)
   }
 
-  if (pending) return <Spinner fullHeight size={60} />
+  if (pending) return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
   if (!story) return null
 
   return (

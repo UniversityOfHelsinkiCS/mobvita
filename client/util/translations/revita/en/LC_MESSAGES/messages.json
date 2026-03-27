@@ -1788,7 +1788,7 @@
     "generate": "Generate",
     "size": "Number of questions",
     "mc-generating": "Generating multiple-choice questions for the story",
-    "regenerating": "Generating questions",
+    "regenerating": "Generating questions...",
     "loading": "Loading...",
     "loading-story": "Loading story...",
     "practice-reading-comprehension": "Practice Reading Comprehension",

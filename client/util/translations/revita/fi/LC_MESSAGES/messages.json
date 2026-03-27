@@ -1788,7 +1788,7 @@
     "generate": "Generate",
     "size": "Kysymysten määrä",
     "mc-generating": "Generating multiple-choice questions for the story",
-    "regenerating": "Generating questions",
+    "regenerating": "Kysymyksiä luodaan…",
     "loading": "Ladataan...",
     "loading-story": "Tekstiä ladataan...",
     "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä",

@@ -456,7 +456,7 @@ const ReadingComprehensionView = ({ match }) => {
       <Spinner
         fullHeight
         size={60}
-        text={intl.formatMessage({ id: 'loading-story' })}
+        text={intl.formatMessage({ id: 'loading' })}
         textSize={20}
       />
     )
@@ -825,7 +825,7 @@ const ReadingComprehensionView = ({ match }) => {
           <Spinner
             fullHeight
             size={60}
-            text="Generating questions…"
+            text={intl.formatMessage({ id: 'regenerating' })}
             textSize={20}
           />
         </div>
