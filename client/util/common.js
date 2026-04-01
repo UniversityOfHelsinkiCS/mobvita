@@ -1927,7 +1927,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-vocab-diff',
+    target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
     content: (
       <div>
@@ -1937,7 +1937,7 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.choose-topic',
+    target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
     content: (
       <div>
@@ -2052,7 +2052,7 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.lesson-vocab-diff',
+    target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
     content: (
       <div>
@@ -2062,7 +2062,7 @@ const mobileLessonsTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.choose-topic',
+    target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
     content: (
       <div>

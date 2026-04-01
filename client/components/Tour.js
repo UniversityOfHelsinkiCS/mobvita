@@ -39,7 +39,7 @@ const Tour = () => {
     tourState.steps === studentHomeTourSteps || tourState.steps === teacherHomeTourSteps
   const libraryModalLastStepIndex = teacherView ? 4 : 3
 
-  const getSafeTarget = target => {
+  const getSafeTarget = (target, fallbackTarget = 'body') => {
     if (typeof target !== 'string') {
       return target
     }
@@ -49,7 +49,12 @@ const Tour = () => {
     }
 
     const element = document.querySelector(target)
-    return element instanceof HTMLElement ? target : 'body'
+    if (element instanceof HTMLElement) {
+      return target
+    }
+
+    const fallbackElement = document.querySelector(fallbackTarget)
+    return fallbackElement instanceof HTMLElement ? fallbackTarget : 'body'
   }
 
   const safeTourState = {
@@ -85,6 +90,15 @@ const Tour = () => {
         return {
           ...step,
           target: getSafeTarget('.library-tour-modal-review-button'),
+        }
+      }
+
+      if (tourState.steps === lessonsTourSteps) {
+        // Lesson targets can temporarily unmount between goStep transitions.
+        // Always resolve to a real lesson container to avoid Joyride crashes.
+        return {
+          ...step,
+          target: getSafeTarget(step.target, '.lesson-story-topic'),
         }
       }
 
@@ -156,6 +170,27 @@ const Tour = () => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
           }, 300)
+          return
+        }
+      }
+
+      if (tourState.steps === lessonsTourSteps && action !== ACTIONS.PREV) {
+        // Ensure lesson UI for next tour step is mounted before Joyride advances.
+        if (index === 1) {
+          dispatch(setLessonStep(1))
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 120)
+          return
+        }
+
+        if (index === 2) {
+          dispatch(setLessonStep(2))
+          setTimeout(() => {
+            dispatch(handleNextTourStep(index + 1))
+            window.dispatchEvent(new Event('resize'))
+          }, 120)
           return
         }
       }

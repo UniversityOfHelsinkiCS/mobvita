@@ -276,7 +276,7 @@ const LessonList = () => {
       style={{ width: sliderContainerWidth, maxWidth: '450px' }}
     >
       <ReactSlider
-        className="exercise-density-slider lesson-vocab-diff"
+        className="exercise-density-slider"
         thumbClassName={sliderThumbClassName}
         trackClassName="exercise-density-slider-track"
         onAfterChange={value => handleSlider(value)}

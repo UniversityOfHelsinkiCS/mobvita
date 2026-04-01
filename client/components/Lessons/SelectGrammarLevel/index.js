@@ -159,7 +159,7 @@ const SelectGrammarLevel = ({
         )}
       </Modal>
       <div className="grammar-buttons-container">
-        <div className="grammar-level-button-group choose-topic">
+        <div className="grammar-level-button-group">
           {[1, 2, 3, 4].map(level => (
             <div className="button-with-marker" key={level}>
               {recommendedLevel === level && (
