@@ -153,8 +153,16 @@ const ReadViews = ({ match }) => {
   }, [story])
 
   useEffect(() => {
-    if (progress === 1) setShowRefreshButton(true)
-  }, [progress])
+    const processingCurrentStory = String(id) === String(storyId)
+
+    if (progress === 1 && processingCurrentStory) {
+      setShowRefreshButton(true)
+    }
+
+    if (!processingCurrentStory) {
+      setShowRefreshButton(false)
+    }
+  }, [id, progress, storyId])
 
   if (pending || !user || groupsPending) return <Spinner fullHeight size={60}/>
   if (!story) return null

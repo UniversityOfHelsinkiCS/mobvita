@@ -2,7 +2,6 @@
 export const getStoryLoadingProgress = storyId => {
   const route = `/stories/${storyId}/loading`
   const prefix = 'GET_STORY_LOADING_PROGRESS'
-  console.log('[storiesReducer] getStoryLoadingProgress called', { storyId, route, prefix })
   return callBuilder(route, prefix)
 }
 import produce from 'immer'
@@ -192,35 +191,28 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  if (action.type && action.type.startsWith('GET_STORY_LOADING_PROGRESS')) {
-    console.log('[storiesReducer] Action received:', action.type, action)
-  }
   switch (action.type) {
     case 'GET_STORY_LOADING_PROGRESS_ATTEMPT':
-      console.log('[storiesReducer] GET_STORY_LOADING_PROGRESS_ATTEMPT', action)
       return {
         ...state,
-        // Optionally, set a loading flag if needed
       }
     case 'GET_STORY_LOADING_PROGRESS_FAILURE':
-      console.log('[storiesReducer] GET_STORY_LOADING_PROGRESS_FAILURE', action)
       return {
         ...state,
-        // Optionally, set an error flag if needed
       }
     case 'GET_STORY_LOADING_PROGRESS_SUCCESS': {
-      // Handle possible wrapping of response
-      const response = action.response.response || action.response
-      const { story_id } = response
-      if (!story_id) {
-        console.error('No story_id found in loading progress response!', action)
+      const response = action.response?.response || action.response || {}
+      const storyId = response.story_id || response.story?._id
+
+      if (!storyId) {
         return state
       }
+
       return {
         ...state,
         loadingProgress: {
           ...state.loadingProgress,
-          [story_id]: response,
+          [storyId]: response,
         },
       }
     }
