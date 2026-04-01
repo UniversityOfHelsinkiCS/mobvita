@@ -279,7 +279,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     }
   }
   return (
-    <div className="cont grow flex space-evenly">
+    <div>
       {showPracticeCompletedEncouragement && (
         <div className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
           <div className="col-flex">

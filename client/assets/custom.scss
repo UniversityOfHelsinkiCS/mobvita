@@ -1880,10 +1880,11 @@ label.file-upload-btn {
   &-body {
     position: relative;
     display: flex;
+    justify-content: space-between;
     align-items: stretch;
     min-height: 100%;
-    flex: 1 1 auto;   // add
-    min-height: 0;    // add
+    flex: 1 1 auto;
+    min-height: 0;
     margin: 0 7px 0 7px;
     padding: 24px 8px 8px 8px;
   }
@@ -2063,6 +2064,7 @@ label.file-upload-btn {
     align-items: center;
 
     margin-left: 0;
+    margin-right: 36px;
     padding: 0;
     border: none;
 
@@ -2079,6 +2081,14 @@ label.file-upload-btn {
 
     &:disabled {
       color: grey
+    }
+
+    @media (max-width: 900px) {
+      margin-right: 24px;
+    }
+
+    @media (max-width: 590px) {
+      margin-right: 0;
     }
 
     @media (max-width: 430px) {
