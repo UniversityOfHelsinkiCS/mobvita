@@ -8,7 +8,7 @@ import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/stories
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
-import { useIntl, FormattedHTML } from 'react-intl'
+import { useIntl, FormattedHTMLMessage } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 import StreakToast from 'Components/Streak/StreakToast'
@@ -254,12 +254,12 @@ export default function Toaster() {
       // Used for messages that require translations.
 
       if (contextVariables) {
-        toast(intl.formatMessage({ id: translationId }, { users: contextVariables.users }), {
+        toast(<FormattedHTMLMessage id={translationId} values={{ users: contextVariables.users }} />, {
           type,
           ...options,
         })
       } else {
-        toast(intl.formatMessage({ id: translationId }), { type, ...options })
+        toast(<FormattedHTMLMessage id={translationId} />, { type, ...options })
       }
 
       dispatch({ type: 'RESET_NOTIFICATION' })
