@@ -4,7 +4,6 @@ import { virtualize, bindKeyboard } from 'react-swipeable-views-utils'
 import flowRight from 'lodash/flowRight'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
-import { Icon } from 'semantic-ui-react'
 import {
   getFlashcards,
   getBlueFlashcards,
@@ -21,6 +20,7 @@ import Spinner from 'Components/Spinner'
 import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
+import ArrowButton from './ArrowButton'
 
 import Fillin from './Fillin'
 import Article from './Article'
@@ -215,13 +215,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         <div className="flashcard">
           <Spinner size={60} />
         </div>
-        <button
-          type="button"
-          disabled
-          className="flashcard-arrow-button"
-        >
-          <Icon name="angle double right" size="huge" />
-        </button>
+        <ArrowButton disabled />
       </div>
     )
 
@@ -305,17 +299,11 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         enableMouseEvents={!bigScreen}
         disabled={editing}
       />
-      {!editing && swipeIndex !== cards.length && cards[0].format !== 'no-cards' && (
-        <button
-          type="button"
-          onClick={() => handleIndexChange(swipeIndex + 1)}
-          disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
-          className="flashcard-arrow-button"
-          style={{ marginLeft: 0 }}
-        >
-          <Icon name="angle double right" size="huge" />
-        </button>
-      )}
+      <ArrowButton
+        hidden={editing || swipeIndex === cards.length || cards[0].format === 'no-cards'}
+        onClick={() => handleIndexChange(swipeIndex + 1)}
+        disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
+      />
     </div>
   )
 }
