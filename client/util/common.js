@@ -649,7 +649,7 @@ export const getTextWidth = (text, fontFamily = 'Arial') => {
   context.font = '1em ' + fontFamily // This should match with the defaultFont defined in custom.scss
 
   const metrics = context.measureText(text)
-  return 65 + metrics.width // add just random number, lets hope its fine.
+  return 85 + metrics.width // add just random number, lets hope its fine.
 }
 
 export const consistsOfOnlyWhitespace = text => {

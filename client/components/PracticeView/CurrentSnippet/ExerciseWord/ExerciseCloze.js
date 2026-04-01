@@ -261,7 +261,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         onFocus={handleFocus}
         className={className}
         style={{
-          width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) + 20 : getTextWidth(word.base),
+          width: word.surface?.length > word.base?.length ? getTextWidth(word.surface) : getTextWidth(word.base),
           backgroundColor: isInFocusedAnalyticChunk
           ? 'rgba(255, 255, 36, 0.7)'
           : getWordColor(
