@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { virtualize, bindKeyboard } from 'react-swipeable-views-utils'
 import flowRight from 'lodash/flowRight'
@@ -71,6 +72,13 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const bigScreen = width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
+  const arrowSlot =
+    typeof document !== 'undefined' ? document.getElementById('flashcard-arrow-slot') : null
+
+  const renderArrowButton = ({ hidden, disabled, onClick }) => {
+    if (!arrowSlot) return null
+    return createPortal(<ArrowButton hidden={hidden} disabled={disabled} onClick={onClick} />, arrowSlot)
+  }
 
   useEffect(() => {
     if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
@@ -94,16 +102,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     }
   }, [])
-
-  /* useEffect(() => {
-    const filteredBlueCards = storyBlueCards?.find(
-      story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
-    )
-
-    if (filteredBlueCards) {
-      setPrevBlueCards(filteredBlueCards)
-    }
-  }, [storyBlueCards]) */
 
   useEffect(() => {
     if (incomplete.length > 0) {
@@ -215,12 +213,17 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         <div className="flashcard">
           <Spinner size={60} />
         </div>
-        <ArrowButton disabled />
+        {renderArrowButton({ hidden: false, disabled: true, onClick: undefined })}
       </div>
     )
 
   if (!cards[0] || cards[0].format === 'no-cards') {
-    return <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+    return (
+      <>
+        {renderArrowButton({ hidden: true, disabled: true, onClick: undefined })}
+        <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+      </>
+    )
   }
 
   const slideRenderer = ({ key, index }) => {
@@ -299,11 +302,11 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         enableMouseEvents={!bigScreen}
         disabled={editing}
       />
-      <ArrowButton
-        hidden={editing || swipeIndex === cards.length || cards[0].format === 'no-cards'}
-        onClick={() => handleIndexChange(swipeIndex + 1)}
-        disabled={swipeIndex === cards.length || cards[0].format === 'no-cards'}
-      />
+      {renderArrowButton({
+        hidden: editing || swipeIndex === cards.length || cards[0].format === 'no-cards',
+        onClick: () => handleIndexChange(swipeIndex + 1),
+        disabled: swipeIndex === cards.length || cards[0].format === 'no-cards',
+      })}
     </div>
   )
 }

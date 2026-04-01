@@ -138,6 +138,8 @@ const Flashcards = () => {
 
         <div className="flashcard-main">{content()}</div>
 
+        <div className="flashcard-arrow-button" id="flashcard-arrow-slot" />
+
         <SettingButton />
       </div>
     </div>
