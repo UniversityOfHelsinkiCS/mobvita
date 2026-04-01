@@ -21,6 +21,8 @@ import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import rcIcon from 'Assets/images/RC-icon.png'
 
+const liveDescriptionCache = {}
+
 const StoryTitle = ({
   story,
   setShareModalOpen,
@@ -366,7 +368,9 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
-  const [processingDescription, setProcessingDescription] = useState(null)
+  const [processingDescription, setProcessingDescription] = useState(
+    () => liveDescriptionCache[story._id] || null
+  )
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
   const isTeacher = useSelector(({ user }) => user.data.teacherView)
@@ -388,8 +392,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
 
   useEffect(() => {
-    // Keep live description for the current card until a full list refresh/remount.
-    setProcessingDescription(null)
+    setProcessingDescription(liveDescriptionCache[story._id] || null)
   }, [story._id])
 
   useEffect(() => {
@@ -408,6 +411,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         const generatedDescription = data.story?.description
 
         if (isReady && generatedDescription) {
+          liveDescriptionCache[story._id] = generatedDescription
           setProcessingDescription(generatedDescription)
           dispatch(setStoryUploadUnfinished(false, story._id))
         }
