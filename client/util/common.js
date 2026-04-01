@@ -1957,6 +1957,16 @@ const desktopLessonsTourSteps = [
     disableBeacon: true,
   },
   {
+    target: '.level-content',
+    title: <FormattedMessage id="Level title" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="level-title-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
     content: (

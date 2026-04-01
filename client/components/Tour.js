@@ -195,7 +195,7 @@ const Tour = () => {
           return
         }
       }
-      if (tourState.steps === lessonsTourSteps && index === 6 && action !== ACTIONS.PREV) {
+      if (tourState.steps === lessonsTourSteps && index === 7 && action !== ACTIONS.PREV) {
         const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
           el => el instanceof HTMLElement && el.offsetParent !== null
         )
