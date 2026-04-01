@@ -1176,8 +1176,10 @@
     "no-saved-questions": "This story does not have any question attached",
     "error": "Error",
     "saved": "Saved",
-    "show-where-answer-is": "Show where answer is in the text",
+    "show-where-answer-is": "Show answer in text",
     "confirm-delete-question": "Delete this question?",
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
-    "lesson-tour-custom-grammar-button-text": "..."
+    "lesson-tour-custom-grammar-button-text": "...",
+    "Level title": "Levels",
+    "level-title-message": "These are the levels"
 }

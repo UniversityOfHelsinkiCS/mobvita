@@ -1802,5 +1802,7 @@
     "show-where-answer-is": "Näytä vastaus tekstissä",
     "confirm-delete-question": "Poista tämä kysymys?",
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
-    "lesson-tour-custom-grammar-button-text": "..."
+    "lesson-tour-custom-grammar-button-text": "...",
+    "Level title": "Levels",
+    "level-title-message": "These are the levels"
 }

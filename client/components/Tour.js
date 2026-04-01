@@ -295,19 +295,6 @@ const Tour = () => {
             case 2:
               dispatch(setLessonStep(2))
               break
-            // case 8:
-            //   const currentPath = history.location.pathname
-            //   const newPath = currentPath.substring(0, currentPath.length - 9)
-            //   history.push(`${newPath}/practice`)
-            //   dispatch(stopTour())
-            //   setTimeout(() => {
-            //     dispatch(startTour())
-            //     dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-            //   }, 1000)
-            //   break
-            // case 9:
-            //   history.push('/lessons/library')
-            //   break
 
             default:
               break

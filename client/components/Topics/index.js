@@ -184,7 +184,7 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
           Object.keys(lessonGroups).sort().map((group, index) => (
             <>
               <AccordionTitle
-                className='lesson-content'
+                className='level-content'
                 key={`lesson-group-title-${group}`}
                 active={accordionState === index}
                 index={index}
