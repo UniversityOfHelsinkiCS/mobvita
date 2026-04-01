@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -9,7 +9,9 @@ import {
   getAllStories,
   unshareStory as unshare,
   storyVisibilityChange,
+  setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
+import { callApi } from 'Utilities/apiConnection'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -18,6 +20,8 @@ import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import rcIcon from 'Assets/images/RC-icon.png'
+
+const liveDescriptionCache = {}
 
 const StoryTitle = ({
   story,
@@ -364,6 +368,9 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
+  const [processingDescription, setProcessingDescription] = useState(
+    () => liveDescriptionCache[story._id] || null
+  )
   const { groups } = useSelector(({ groups }) => groups)
   const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
   const isTeacher = useSelector(({ user }) => user.data.teacherView)
@@ -374,10 +381,55 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const showGroupNames = story.groups && libraryShown.private
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
   const uploadUnfinished = story?.uploadUnfinished
+  const isUnderProcessingDescription =
+    typeof story?.description === 'string' &&
+    story.description.trim().toLowerCase().includes('under processing')
+  const shouldPollForLiveDescription =
+    uploadUnfinished || (isUnderProcessingDescription && !processingDescription)
   const timedExercise = story?.timed_exercise
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
+
+  useEffect(() => {
+    setProcessingDescription(liveDescriptionCache[story._id] || null)
+  }, [story._id])
+
+  useEffect(() => {
+    if (!shouldPollForLiveDescription) return
+
+    let cancelled = false
+
+    const pollLoadingDescription = async () => {
+      try {
+        const response = await callApi(`/stories/${story._id}/loading`)
+        const data = response?.data || {}
+        if (cancelled) return
+
+        const progress = Number(data.progress)
+        const isReady = data.exercise_ready || progress === 1
+        const generatedDescription = data.story?.description
+
+        if (isReady && generatedDescription) {
+          liveDescriptionCache[story._id] = generatedDescription
+          setProcessingDescription(generatedDescription)
+          dispatch(setStoryUploadUnfinished(false, story._id))
+        }
+      } catch (error) {
+        // Keep polling; intermittent loading endpoint failures should not break the card UI.
+      }
+    }
+
+    pollLoadingDescription()
+    const interval = setInterval(pollLoadingDescription, 5000)
+
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+    }
+  }, [dispatch, shouldPollForLiveDescription, story._id])
+
+
 
   const handleControlledStoryCancel = async () => {
     await dispatch(cancelControlledStory(story._id))
@@ -425,10 +477,10 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
       </Card.Content>
       <Card.Content extra>
         <div className="story-description">
-          {story.description === 'Under processing' ? (
+          {shouldPollForLiveDescription && !processingDescription ? (
             <FormattedMessage id="processing-story" />
           ) : (
-            story.description
+            processingDescription || story.description
           )}
         </div>
       </Card.Content>
@@ -443,7 +495,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
         >
           <div>
             {story?.has_questions ? (
-              <img src={rcIcon} alt="RC Icon" style={{height: '24px', width: '24px'}} />
+              <img src={rcIcon} alt="RC Icon" style={{ height: '24px', width: '24px' }} />
             ) : null}
           </div>
 

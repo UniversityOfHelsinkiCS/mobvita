@@ -1,3 +1,9 @@
+// Action to fetch story loading progress
+export const getStoryLoadingProgress = storyId => {
+  const route = `/stories/${storyId}/loading`
+  const prefix = 'GET_STORY_LOADING_PROGRESS'
+  return callBuilder(route, prefix)
+}
 import produce from 'immer'
 import callBuilder from '../apiConnection'
 /**
@@ -27,13 +33,13 @@ export const getStudentStoryAction = (storyId, groupId, studentId) => {
   return callBuilder(route, prefix)
 }
 
-export const getAllStories = (language, query) => {
+export const getAllStories = (language, query, meta) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&')
   const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
-  return callBuilder(route, prefix)
+  return callBuilder(route, prefix, undefined, undefined, meta)
 }
 
 export const setLastQuery = query => ({
@@ -78,9 +84,10 @@ export const updateExerciseSettings = (settings, storyId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateTempExerciseSettings = (conceptSetting) => (
-  {type: 'SAVE_STORY_INTERMEDIATE', conceptSetting}
-)
+export const updateTempExerciseSettings = conceptSetting => ({
+  type: 'SAVE_STORY_INTERMEDIATE',
+  conceptSetting,
+})
 
 export const updateExerciseTopics = (topics, storyId) => {
   const route = `/stories/${storyId}`
@@ -89,9 +96,7 @@ export const updateExerciseTopics = (topics, storyId) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
-export const updateTempExerciseTopics = (topics) => (
-  {type: 'SAVE_STORY_INTERMEDIATE', topics}
-)
+export const updateTempExerciseTopics = topics => ({ type: 'SAVE_STORY_INTERMEDIATE', topics })
 
 export const removeStory = storyId => {
   const route = `/stories/${storyId}/remove`
@@ -114,7 +119,7 @@ export const unshareStory = (groupId, storyId) => {
 export const storyVisibilityChange = (groupId, storyId, visibility) => {
   const route = `/groups/${groupId}/visibility`
   const prefix = 'SET_STORY_VISIBILITY'
-  return callBuilder(route, prefix, 'post', {visibility, storyId})
+  return callBuilder(route, prefix, 'post', { visibility, storyId })
 }
 
 export const addEditStoryAnnotation = (
@@ -127,7 +132,7 @@ export const addEditStoryAnnotation = (
   mode,
   category,
   annotationName,
-  thread_id,
+  thread_id
 ) => {
   console.log('in payload ', publicStory)
   const route = `/stories/${storyId}/annotate`
@@ -146,14 +151,7 @@ export const addEditStoryAnnotation = (
   })
 }
 
-export const answerAnnotation = (
-  storyId,
-  startId,
-  endId,
-  annotation,
-  mode,
-  thread_id,
-) => {
+export const answerAnnotation = (storyId, startId, endId, annotation, mode, thread_id) => {
   const route = `/stories/${storyId}/annotate`
   const prefix = 'ADD_OR_EDIT_STORY_ANNOTATION'
 
@@ -189,16 +187,49 @@ const initialState = {
   focusedPending: false,
   error: false,
   currentQuery: '',
+  loadingProgress: {}, // { [storyId]: progressData }
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_STORIES_ATTEMPT':
+    case 'GET_STORY_LOADING_PROGRESS_ATTEMPT':
+      return {
+        ...state,
+      }
+    case 'GET_STORY_LOADING_PROGRESS_FAILURE':
+      return {
+        ...state,
+      }
+    case 'GET_STORY_LOADING_PROGRESS_SUCCESS': {
+      const response = action.response?.response || action.response || {}
+      const storyId = response.story_id || response.story?._id
+
+      if (!storyId) {
+        return state
+      }
+
+      return {
+        ...state,
+        loadingProgress: {
+          ...state.loadingProgress,
+          [storyId]: response,
+        },
+      }
+    }
+    case 'GET_STORIES_ATTEMPT': {
+      // If background polling, do not set pending to true
+      if (action.meta && action.meta.background) {
+        return {
+          ...state,
+          error: false,
+        }
+      }
       return {
         ...state,
         pending: true,
         error: false,
       }
+    }
     case 'GET_STORIES_FAILURE':
       return {
         ...state,
@@ -345,14 +376,14 @@ export default (state = initialState, action) => {
     case 'SAVE_STORY_INTERMEDIATE':
       return {
         ...state,
-        focused: { 
-          ...state.focused, 
-          topics: action.topics
+        focused: {
+          ...state.focused,
+          topics: action.topics,
         },
         pending: false,
         error: false,
       }
-    
+
     case 'SAVE_STORY_ATTEMPT':
       return {
         ...state,
@@ -456,13 +487,15 @@ export default (state = initialState, action) => {
         const story = draft.data.find(story => story._id === action.response.story_id)
         const changedGroup = story.groups.find(group => group.group_id === action.response.group_id)
         story.groups = story.groups.map(
-          group => group.group_id !== action.response.group_id && group || {...changedGroup, hidden: action.response.hidden}
+          group =>
+            (group.group_id !== action.response.group_id && group) || {
+              ...changedGroup,
+              hidden: action.response.hidden,
+            }
         )
         draft.pending = false
         draft.error = false
       })
-
-
 
     default:
       return state
