@@ -1857,15 +1857,16 @@ label.file-upload-btn {
   align-self: stretch;
   min-height: 100%;
   margin-left: 12px;
+  width: 262px;
+  flex: 0 0 262px;
 }
-
 
 .flashcard {
   display: flex;
   flex-direction: column;
   width: 21em;
   height: 35em;
-  margin: 0 auto 40px auto;
+  margin: 0 200px 40px auto;
   padding: 1em 1.5em 1.5em 1em;
   border: 0.1em solid grey;
   border-radius: 0.8em;
@@ -1877,24 +1878,31 @@ label.file-upload-btn {
     outline: none;
   }
 
+  @media (max-width: 840px) {
+    margin: 0 auto 40px auto;
+  }
+
   &-body {
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: stretch;
     min-height: 100%;
     flex: 1 1 auto;
     min-height: 0;
     margin: 0 7px 0 7px;
     padding: 24px 8px 8px 8px;
+    gap: 12px;
   }
 
   &-main {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     min-width: 0;
+    width: fit-content;
+    margin: 0 auto;
   }
 
   &-content {
@@ -2062,8 +2070,6 @@ label.file-upload-btn {
   &-arrow-button {
     display: flex;
     align-items: center;
-
-    margin-left: 0;
     margin-right: 36px;
     padding: 0;
     border: none;

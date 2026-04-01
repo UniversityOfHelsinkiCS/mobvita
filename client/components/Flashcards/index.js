@@ -111,6 +111,7 @@ const Flashcards = () => {
                 type={type}
                 numOfRewardableWords={numOfRewardableWords}
               />
+              <div></div>
               <FlashcardMenu />
             </div>
           ) : (
