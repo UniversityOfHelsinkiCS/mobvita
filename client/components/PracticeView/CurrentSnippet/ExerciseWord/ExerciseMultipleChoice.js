@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Dropdown, Icon } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Dropdown } from 'semantic-ui-react'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, getMode, skillLevels } from 'Utilities/common'
 import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
-// import { decreaseEloHearts } from 'Utilities/redux/snippetsReducer'
-import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 import { composeExerciseContext } from 'Utilities/common'
 
@@ -21,7 +18,6 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const [keepOpen, setKeepOpen] = useState(false)
   const { answersPending } = useSelector(({ snippets }) => snippets)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
-  // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   const { 
     tested, 
@@ -97,9 +93,6 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     handleChange(e, word, data)
   }
 
-
-
-
   const handleBlur = () => {
     if (!keepOpen) {
       setShow(false)
@@ -116,15 +109,9 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   }
 
   const getInputWidth = () => {
-    const width = getTextWidth(longestWord)
-    if (width >= 150) {
-      return width + 20
-    }
-
-    return width
+    const width = getTextWidth(longestWord, '400 1.15rem Rubik')
+    return width > 150 ? width * 1.2 : width + 34
   }
-
-  
 
   const tooltip = (
     <div onBlur={handleTooltipBlur}>
@@ -168,8 +155,9 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
         selection
         floating
         style={{
+          font: '400 1.15rem Rubik',
           width: getInputWidth(),
-          minWidth: getInputWidth(),
+          minWidth: 80,
           backgroundColor: getWordColor(
             word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode),
         }}
