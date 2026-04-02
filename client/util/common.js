@@ -643,13 +643,15 @@ export const getBackgroundColor = () => {
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 
-export const getTextWidth = (text, fontFamily = 'Arial') => {
-  const myCanvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
-  const context = myCanvas.getContext('2d')
-  context.font = '1em ' + fontFamily // This should match with the defaultFont defined in custom.scss
+const letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
 
-  const metrics = context.measureText(text)
-  return 85 + metrics.width // add just random number, lets hope its fine.
+export const getTextWidth = (text, font = '400 1.15rem monospace') => {
+  const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
+  const context = canvas.getContext('2d')
+
+  context.font = font
+
+  return context.measureText(text).width
 }
 
 export const consistsOfOnlyWhitespace = text => {
