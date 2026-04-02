@@ -171,8 +171,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
           className={className}
           disabled={answersPending}
           style={{
-            width: getTextWidth(word.surface) + 10,
-            minWidth: getTextWidth(word.surface) + 10,
+            width: getTextWidth(word.surface, '400 1.15rem monospace') + 30,
+            minWidth: 120,
             backgroundColor: !listeningHighlighting && getWordColor(
               word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode) || 'rgba(255, 152, 0, 0.71)',
             marginRight: '2px',
