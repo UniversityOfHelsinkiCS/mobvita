@@ -9,14 +9,13 @@ import {
   formatGreenFeedbackText,
   getWordColor,
   skillLevels,
-  getMode
+  getMode,
 } from 'Utilities/common'
 import { useAudioRecorder } from 'react-audio-voice-recorder'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
-
 
 const ExerciseSpeaking = ({ word, handleChange }) => {
   const [recorded, setRecorded] = useState(false)
@@ -30,11 +29,17 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const inputRef = createRef(null)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const { answersPending } = useSelector(({ snippets }) => snippets)
-  const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
+  const currentAnswer = useSelector(
+    ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
+  )
   const learningLanguage = useSelector(learningLanguageSelector)
   const mode = getMode()
-  const { resource_usage, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
-  const listeningHighlighting = focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end || word.ID === focusedWord.ID
+  const { resource_usage, show_review_diff, show_preview_exer, grade } = useSelector(
+    state => state.user.data.user
+  )
+  const listeningHighlighting =
+    (focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end) ||
+    word.ID === focusedWord.ID
   const {
     startRecording,
     stopRecording,
@@ -43,13 +48,13 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     isRecording,
     isPaused,
     recordingTime,
-    mediaRecorder
+    mediaRecorder,
   } = useAudioRecorder({
     noiseSuppression: true,
     echoCancellation: true,
-  });
+  })
 
-  const encoder = new FileReader();
+  const encoder = new FileReader()
   encoder.onloadend = () => {
     console.log('Recorded')
     handleChange(encoder.result, word)
@@ -72,7 +77,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
 
   useEffect(() => {
     const val = currentAnswer ? currentAnswer.users_answer : null
-    if (val && val.length > 100)  setRecorded(true)
+    if (val && val.length > 100) setRecorded(true)
   }, [currentAnswer])
 
   useEffect(() => {
@@ -88,7 +93,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   }, [voiceSampleOnCooldown])
 
   useEffect(() => {
-    if(!recordingBlob) return
+    if (!recordingBlob) return
     console.log(recordingTime, mediaRecorder, recordingBlob.size)
     encoder.readAsDataURL(recordingBlob)
     // if (recordingTime > word.audio_wids.length * 1.5 + 1) dispatch(setNotification('Audio is too long', 'error', { autoClose: 10000 }))
@@ -98,10 +103,9 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   }, [recordingBlob])
 
   const speakerClickHandler = word => {
-    if (isRecording){
+    if (isRecording) {
       stopRecording()
-    }
-    else{
+    } else {
       startRecording()
     }
   }
@@ -119,12 +123,11 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     }
     dispatch(setFocusedWord(word))
     if (!focusTimeout && !voiceSampleOnCooldown) {
-      if (lastWord === ''){
+      if (lastWord === '') {
         setCount(count + 1)
         setLastWord(word)
-      }
-      else if (word === lastWord) setCount(count + 1)
-      else{
+      } else if (word === lastWord) setCount(count + 1)
+      else {
         setCount(0)
         setLastWord(word)
       }
@@ -156,7 +159,6 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     setShow(false)
   }
 
-
   const focusNextClozeOrHearing = element => {
     const { form } = element
     const nextElement = form.elements[Array.prototype.indexOf.call(form, element) + 1]
@@ -183,6 +185,16 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     </div>
   )
 
+  const textInputWidth = getTextWidth(word.surface, '400 1.15rem Rubik') * 1.25
+  const textWidth =
+    textInputWidth < 70
+      ? textInputWidth + 30
+      : textInputWidth < 150
+      ? textInputWidth + 20
+      : textInputWidth < 230
+      ? textInputWidth + 10
+      : textInputWidth
+
   return (
     <Tooltip
       placement="top"
@@ -196,8 +208,8 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
       <span>
         <input
           onKeyDown={handleKeyDown}
-          data-cy={!answersPending && 'exercise-speaking' || 'exercise-speaking-pending'}
-          readOnly={tested && !isWrong || answersPending}
+          data-cy={(!answersPending && 'exercise-speaking') || 'exercise-speaking-pending'}
+          readOnly={(tested && !isWrong) || answersPending}
           ref={inputRef}
           key={word.ID}
           onChange={handle}
@@ -207,11 +219,20 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
           onMouseDown={handleMouseDown}
           className={className}
           style={{
-            fontFamily: '300 1.15rem monospace',
-            width: getTextWidth(word.surface, '300 1.15rem monospace') + 40,
-            backgroundColor: recorded && 'rgba(152, 255, 0, 0.71)' || 
-              !listeningHighlighting && getWordColor(
-                word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode) || 'rgba(255, 152, 0, 0.71)',
+            fontFamily: '400 1.15rem Rubik',
+            width: textWidth,
+            backgroundColor:
+              (recorded && 'rgba(152, 255, 0, 0.71)') ||
+              (!listeningHighlighting &&
+                getWordColor(
+                  word.level,
+                  grade,
+                  skillLevels,
+                  show_review_diff,
+                  show_preview_exer,
+                  mode
+                )) ||
+              'rgba(255, 152, 0, 0.71)',
             marginRight: '2px',
             height: '1.5em',
             lineHeight: 'normal',

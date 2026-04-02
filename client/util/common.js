@@ -643,9 +643,7 @@ export const getBackgroundColor = () => {
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 
-const letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
-
-export const getTextWidth = (text, font = '400 1.15rem monospace') => {
+export const getTextWidth = (text, font = '400 1.15rem Rubik') => {
   const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = canvas.getContext('2d')
 
