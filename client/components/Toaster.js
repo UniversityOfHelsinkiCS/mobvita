@@ -7,7 +7,7 @@ import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
-import { updateFavouriteSites } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { useIntl, FormattedHTMLMessage } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
@@ -22,6 +22,7 @@ export default function Toaster() {
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
   const [canExercise, setCanExercise] = useState(false)
+  const [navigatedToPreviewStoryId, setNavigatedToPreviewStoryId] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { pending: storiesPending } = useSelector(({ stories }) => stories)
   const { message, type, options, translationId, contextVariables } = useSelector(
@@ -37,31 +38,20 @@ export default function Toaster() {
     pending,
     processingErrorMsgId,
     custom,
-    url,
     exerciseReady,
-    edited,
   } = useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const favouriteSites = useSelector(({ user }) => user.data?.user?.favourite_sites)
-  const { uploaded } = useSelector(({ stories }) => stories)
 
   const handleError = errorMessage => {
     clearInterval(interval)
-    toast.done(progressToastId)
 
+    history.push('/library')
+    dispatch(updateLibrarySelect('private'))
     dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
     dispatch(setNotification(errorMessage, 'error', { autoClose: 10000 }))
     saveInterval(null)
+    setNavigatedToPreviewStoryId(null)
     setProgressToastId(null)
-  }
-
-  const isNewSite = useMemo(
-    () => typeof url !== 'undefined' && !favouriteSites?.some(site => url?.includes(site.url)),
-    [url, favouriteSites]
-  )
-
-  const handleNewFavouriteSite = () => {
-    dispatch(updateFavouriteSites(favouriteSites.concat({ url })))
   }
 
   const { streak } = useSelector((state) => state.streak);
@@ -107,18 +97,12 @@ export default function Toaster() {
   }, [controlledPractice?.finished])
 
   useEffect(() => {
-    if (uploaded) {
-      setProgressToastId(
-        toast(intl.formatMessage({ id: 'story-uploaded-successfully' }), {
-          autoClose: 8000,
-          type: 'success',
-        })
-      )
-    }
-  }, [uploaded])
-
-  useEffect(() => {
     if (storyId !== null && progress !== 1) {
+      if (storyId !== navigatedToPreviewStoryId) {
+        history.push(`/stories/${storyId}/preview/`)
+        setNavigatedToPreviewStoryId(storyId)
+      }
+
       const progressCheckInterval = setInterval(() => {
         dispatch(getProgress(storyId))
       }, 5000)
@@ -135,14 +119,6 @@ export default function Toaster() {
   }, [storyId])
 
   useEffect(() => {
-    if (pending && !storyId && !custom) {
-      setProgressToastId(
-        toast(intl.formatMessage({ id: 'validating-url' }), { autoClose: true, type: 'info' })
-      )
-    }
-  }, [pending, storyId])
-
-  useEffect(() => {
     if (storyId && progress !== 1) {
       dispatch(setStoryUploadUnfinished(true, storyId))
     }
@@ -151,14 +127,7 @@ export default function Toaster() {
   useEffect(() => {
     if (storyId !== null) {
       if (progress !== 1 && progress > 0 && !exerciseReady && !pending) {
-        setProgressToastId(
-          toast(
-            `${intl.formatMessage({ id: 'processing-story' })} ${Math.floor(
-              progress * 100
-            )}% ${intl.formatMessage({ id: 'done' })}`,
-            { autoClose: 5000, type: 'info' }
-          )
-        )
+        // Intentionally silent during processing; preview view should be shown instead.
       }
 
       if (exerciseReady && !canExercise) {
@@ -170,28 +139,6 @@ export default function Toaster() {
               order: -1,
             })
           )
-          toast(
-            <div>
-              <span>
-                {intl.formatMessage({
-                  id: edited ? 'story-updated-toaster' : 'story-uploaded-successfully',
-                })}
-              </span>
-              {isNewSite && (
-                <div>
-                  <b>{intl.formatMessage({ id: 'click-to-add-site-to-favourites' })}</b>
-                </div>
-              )}
-            </div>,
-            {
-              type: 'success',
-              autoClose: 15000,
-              onClick: isNewSite ? () => handleNewFavouriteSite() : () => {},
-            }
-          )
-          if (edited) {
-            history.push('/library')
-          }
         }
       }
 
@@ -199,13 +146,13 @@ export default function Toaster() {
         clearInterval(interval)
         setCanExercise(false)
         saveInterval(null)
+        setNavigatedToPreviewStoryId(null)
         setProgressToastId(null)
-        toast.done(progressToastId)
         dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
         dispatch(setStoryUploadUnfinished(false, storyId))
       }
     }
-  }, [exerciseReady, pending])
+  }, [exerciseReady, pending, progress, storyId, history, dispatch, learningLanguage, navigatedToPreviewStoryId])
 
   useEffect(() => {
     if (processingErrorMsgId === 'no_error' && !error) return

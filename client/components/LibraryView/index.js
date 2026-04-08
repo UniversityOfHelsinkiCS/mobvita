@@ -17,14 +17,13 @@ import LibraryTabs from 'Components/LibraryTabs'
 import { backgroundColors, capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useHistory } from 'react-router'
-import { List, WindowScroller } from 'react-virtualized'
 import {
   updateLibrarySelect,
   updateGroupSelect,
   updateSortCriterion,
   libraryTourViewed,
 } from 'Utilities/redux/userReducer'
-import { getAllStories, setLastQuery } from 'Utilities/redux/storiesReducer'
+import { getAllStories, setLastQuery, clearFocusedStory } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
@@ -116,6 +115,7 @@ const StoryList = () => {
   }, [sharedToGroupSinceLastFetch, deleteSuccessful])
 
   useEffect(() => {
+    dispatch(clearFocusedStory())
     dispatch(getGroups())
     dispatch(setLastQuery(null))
     setDisplayedStories(stories)

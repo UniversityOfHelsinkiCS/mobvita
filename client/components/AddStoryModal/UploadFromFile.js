@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Button } from 'react-bootstrap'
@@ -11,15 +10,12 @@ import {
   useCurrentUser,
   translatableLanguages,
 } from 'Utilities/common'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import LibraryTabs from 'Components/LibraryTabs'
 
 const UploadFromFile = ({ closeModal, setActiveComponent }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const history = useHistory()
   const user = useCurrentUser()
 
   const [mode, setMode] = useState('story')
@@ -56,12 +52,8 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
     data.append('language', learningLanguage)
     dispatch(setCustomUpload(true))
     dispatch(postStory(data))
-    dispatch(updateLibrarySelect('private'))
-    dispatch(setNotification('processing-story', 'info'))
     setActiveComponent()
     closeModal()
-
-    if (history.location.pathname !== 'stories') history.push('/library')
   }
 
   const onFlashcardChange = e => {
@@ -79,11 +71,7 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
     data.append('lan_out', flashcardLanguage)
     dispatch(setCustomUpload(true))
     dispatch(postFlashcard(data))
-    dispatch(updateLibrarySelect('private'))
-    dispatch(setNotification('processing-story', 'info'))
     closeModal()
-
-    if (history.location.pathname !== 'stories') history.push('/library')
   }
 
   useEffect(() => {

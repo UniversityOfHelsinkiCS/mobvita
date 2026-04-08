@@ -6,8 +6,9 @@ import { skillLevels, hiddenFeatures } from 'Utilities/common'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
+import Spinner from 'Components/Spinner'
 
-const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false }) => {
+const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false, loadingReady = true }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const [topTopics, setTopTopics] = useState([])
@@ -98,6 +99,12 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                                />}
                   />{' '}
                   <FormattedMessage id="topics-header" />
+                  {console.log('loading ready in storytopics? ', loadingReady)}
+                  {!loadingReady && (
+                    <span style={{ marginLeft: '0.5em' }}>
+                      <Spinner inline size={28} />
+                    </span>
+                  )}
               </div>
             </div>
             <div

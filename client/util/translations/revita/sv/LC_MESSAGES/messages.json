@@ -1228,7 +1228,7 @@
     "story-remove-success": "Berättelsen var raderad!",
     "sort-by-title-option": "Titel",
     "story-difficulty": "Svårighetsgrad",
-    "story-not-yet-processed": "You can practice with this story, though it is still being processed (it will be completed soon...)",
+    "story-not-yet-processed": "Practice available\\nProcessing, ready soon",
     "shared-with-following-groups": "Shared with groups:",
     "explain-library-search": "Here you can search for text contained in the story",
     "showing-results-for": "Showing search results for",
@@ -1658,5 +1658,6 @@
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
-    "level-title-message": "These are the levels"
+    "level-title-message": "These are the levels",
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
 }

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
-
+import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 
 const StoryDetailsModal = ({
   trigger,
@@ -24,20 +25,12 @@ const StoryDetailsModal = ({
   user,
   savedLibrarySelection,
 }) => {
-  const {
-    title,
-    percent_cov: percentCovered,
-    percent_perf: percentCorrect,
-    URL,
-    sharing_info: sharingInfo,
-    groups: groupsSharedWith,
-    author,
-    difficulty,
-    elo_score: elo,
-    category,
-    public: publicStory,
-    date,
-  } = story
+  const dispatch = useDispatch()
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const storyLoadingProgress = useSelector(
+    ({ stories }) => stories.loadingProgress?.[story?._id] || {}
+  )
+  const { title } = story
 
   const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && story?.control_story
 
@@ -48,15 +41,57 @@ const StoryDetailsModal = ({
     showDeleteButton ||
     inGroupLibrary
 
-  const storyGroupSharingInfo = inGroupLibrary
-    ? groupsSharedWith.find(g => g?.group_id === currentGroup?.group_id)
-    : null
-
   const hadQuestions = Boolean(story?.has_questions)
+  const rawLoadingProgress = Number(storyLoadingProgress.progress)
+  const loadingProgressValue = Number.isFinite(rawLoadingProgress) ? rawLoadingProgress : 0
+  const hasProcessingSignal =
+    storyLoadingProgress.progress !== undefined || storyLoadingProgress.exercise_ready !== undefined
+  const loadingReady =
+    storyLoadingProgress.exercise_ready === true ||
+    (Number.isFinite(loadingProgressValue) && loadingProgressValue >= 1)
+  const disableDeleteButton =
+    Boolean(story?.uploadUnfinished) || (hasProcessingSignal && !loadingReady)
+
+  useEffect(() => {
+    if (!isModalOpen || !showDeleteButton || !story?._id) return
+
+    const shouldPoll = Boolean(story?.uploadUnfinished) || hasProcessingSignal
+    if (!shouldPoll) return
+
+    dispatch(getStoryLoadingProgress(story._id))
+    if (loadingReady) return
+
+    const interval = setInterval(() => {
+      dispatch(getStoryLoadingProgress(story._id))
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [
+    dispatch,
+    hasProcessingSignal,
+    isModalOpen,
+    loadingReady,
+    showDeleteButton,
+    story?._id,
+    story?.uploadUnfinished,
+  ])
+
+  const deleteButton = (
+    <CustomButton
+      className="story-detail-modal-manage-button-delete"
+      condition={showDeleteButton}
+      onClick={handleDelete}
+      disabled={disableDeleteButton}
+      variant="outline-danger"
+      translationId="Delete"
+    />
+  )
 
   return (
     <Modal
       trigger={trigger}
+      onOpen={() => setIsModalOpen(true)}
+      onClose={() => setIsModalOpen(false)}
       closeIcon={{ style: { top: '0.75em', right: '1rem' }, color: 'black', name: 'close' }}
       size="tiny"
     >
@@ -73,54 +108,56 @@ const StoryDetailsModal = ({
               gap: '12px',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
-              <div style={{display: 'flex', gap: '12px'}}>
-            {!isTeacher && !story.flashcardsOnly && (
-              <Link to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}>
-                <Button
-                  className="story-detail-modal-action-button library-tour-modal-practice-button"
-                  variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
-                >
-                  <FormattedMessage id="practice" />
-                </Button>
-              </Link>
-            )}
-            {!enableOnlyPractice && !isTeacher && (
-              <Popup
-                content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
-                trigger={
-                  <Link to={`/flashcards/fillin/story/${story._id}/`}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                {!isTeacher && !story.flashcardsOnly && (
+                  <Link
+                    to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}
+                  >
                     <Button
-                      className="story-detail-modal-action-button"
-                      variant="primary"
-                      disabled={story.flashcard_count === 0}
+                      className="story-detail-modal-action-button library-tour-modal-practice-button"
+                      variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
                     >
-                      <FormattedMessage id="Flashcards" />
+                      <FormattedMessage id="practice" />
                     </Button>
                   </Link>
-                }
-                disabled={story.flashcard_count > 0}
-                position="top center"
-              />
-            )}
-            </div>
-
-            {!enableOnlyPractice && !isTeacher && hadQuestions && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: '12px',
-                }}
-              >
-                <LinkButton
-                  className="story-detail-modal-action-button-long"
-                  to={`/stories/${story._id}/reading_practice`}
-                  translationId="reading-comprehension"
-                  variant="primary"
-                />
+                )}
+                {!enableOnlyPractice && !isTeacher && (
+                  <Popup
+                    content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
+                    trigger={
+                      <Link to={`/flashcards/fillin/story/${story._id}/`}>
+                        <Button
+                          className="story-detail-modal-action-button"
+                          variant="primary"
+                          disabled={story.flashcard_count === 0}
+                        >
+                          <FormattedMessage id="Flashcards" />
+                        </Button>
+                      </Link>
+                    }
+                    disabled={story.flashcard_count > 0}
+                    position="top center"
+                  />
+                )}
               </div>
-            )}
+
+              {!enableOnlyPractice && !isTeacher && hadQuestions && (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '12px',
+                  }}
+                >
+                  <LinkButton
+                    className="story-detail-modal-action-button-long"
+                    to={`/stories/${story._id}/reading_practice`}
+                    translationId="reading-comprehension"
+                    variant="primary"
+                  />
+                </div>
+              )}
             </div>
             {!enableOnlyPractice && !story.flashcardsOnly && isTeacher && (
               <>
@@ -285,13 +322,15 @@ const StoryDetailsModal = ({
                 )}
               </div>
               <div>
-                <CustomButton
-                  className="story-detail-modal-manage-button-delete"
-                  condition={showDeleteButton}
-                  onClick={handleDelete}
-                  variant="outline-danger"
-                  translationId="Delete"
-                />
+                {disableDeleteButton ? (
+                  <Popup
+                    content={<FormattedMessage id="story-detail-modal-disabled-delete-btn" />}
+                    position="top center"
+                    trigger={<span style={{ display: 'inline-block' }}>{deleteButton}</span>}
+                  />
+                ) : (
+                  deleteButton
+                )}
               </div>
             </div>
           </div>

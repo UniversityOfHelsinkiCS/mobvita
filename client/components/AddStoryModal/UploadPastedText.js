@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Popup, Icon } from 'semantic-ui-react'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { FormControl, Button } from 'react-bootstrap'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { updateLibrarySelect } from 'Utilities/redux/userReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 
 const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
-  const history = useHistory()
   const maxCharacters = 50000
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
@@ -37,14 +33,10 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
         text: combineTitleAndText,
       }
 
-      dispatch(updateLibrarySelect('private'))
       dispatch(setCustomUpload(true))
       await dispatch(postStory(newStory))
-      dispatch(setNotification('processing-story', 'info'))
       setActiveComponent()
       closeModal()
-
-      if (history.location.pathname !== 'library') history.push('/library')
     } else {
       setTitleTaken(true)
     }

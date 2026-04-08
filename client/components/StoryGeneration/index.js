@@ -42,7 +42,7 @@ import Spinner from 'Components/Spinner'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
 import './LessonLibraryStyles.css'
-import { set } from 'lodash'
+
 
 const StyledMark = localizedMarkString => props => {
   const StyledMarkSpan = styled.span`
@@ -366,9 +366,12 @@ const StoryGeneration = () => {
 
     dispatch(updateLibrarySelect('private'))
     dispatch(setCustomUpload(true))
-    await dispatch(postStory(newStory))
-    dispatch(setNotification('processing-story', 'info'))
-    history.push('/library')
+    const action = await dispatch(postStory(newStory))
+    const createdStoryId = action?.response?.story_ids?.[action.response.story_ids.length - 1]
+
+    if (createdStoryId) {
+      history.push(`/stories/${createdStoryId}/preview`)
+    }
   }
 
   const generatedStoryControl = (

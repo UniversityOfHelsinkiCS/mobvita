@@ -1,3 +1,10 @@
 .ui.attached.tabular.menu {
   max-width: 100% !important;
 }
+
+.story-not-processed-text {
+  font-weight: 550;
+  color: black;
+  background-color: #fdea3b;
+  white-space: pre-line;
+}

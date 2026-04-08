@@ -913,5 +913,6 @@
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
-    "level-title-message": "These are the levels"
+    "level-title-message": "These are the levels",
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
 }

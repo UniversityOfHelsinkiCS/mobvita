@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import {
@@ -14,11 +14,11 @@ import {
   Tab,
   TabPane,
 } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   getStoryAction,
+  getStoryLoadingProgress,
   getStudentStoryAction,
   updateExerciseTopics,
   updateTempExerciseTopics,
@@ -35,6 +35,7 @@ import {
   updateSpeechTask,
   updateMultiChoice,
 } from 'Utilities/redux/userReducer'
+import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
@@ -46,14 +47,15 @@ import { compose } from 'redux'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
-import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
 
 import './ReadViewsStyles.css'
 
 const SettingToggle = ({ translationId, ...props }) => {
-  return <Checkbox toggle label={{ children: <FormattedHTMLMessage id={translationId} /> }} {...props} />
+  return (
+    <Checkbox toggle label={{ children: <FormattedHTMLMessage id={translationId} /> }} {...props} />
+  )
 }
 
 const ReadViews = ({ match }) => {
@@ -62,14 +64,15 @@ const ReadViews = ({ match }) => {
   const { width } = useWindowDimensions()
   const mode = getMode()
   const history = useHistory()
-  const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [currentStudent, setCurrentStudent] = useState(null)
   const isGroupReview = history.location.pathname.includes('group/review')
   const isGroupPreview = history.location.pathname.includes('group/preview')
   const { show_review_diff, show_preview_exer, oid } = useSelector(({ user }) => user.data.user)
-  const { story, pending } = useSelector(({ stories, locale }) => ({
+  const { story, pending, error, focusedRequestId } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
+    error: stories.error,
+    focusedRequestId: stories.focusedRequestId,
     locale,
   }))
   const showPracticeDropdown = useSelector(state => state.dropdown.showPracticeDropdown)
@@ -84,9 +87,12 @@ const ReadViews = ({ match }) => {
 
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
+  const [hasShownStoryContent, setHasShownStoryContent] = useState(false)
+  const initialPreviewStoryFetchedRef = useRef(false)
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
-  const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
+  const loadingProgressByStory = useSelector(({ stories }) => stories.loadingProgress || {})
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
@@ -101,7 +107,6 @@ const ReadViews = ({ match }) => {
     return studentName
   }
 
-  const ownedStory = oid === story?.owner
   const teacherView = useSelector(({ user }) => user.data.teacherView)
 
   const studentOptions = currentGroup?.students
@@ -120,6 +125,34 @@ const ReadViews = ({ match }) => {
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
+  const routeStory =
+    story &&
+    (String(story?._id) === String(id) || (!story?._id && String(focusedRequestId) === String(id)))
+      ? story
+      : null
+  const storyLoadingProgress = loadingProgressByStory[id] || {}
+  const storyProgress = Number(routeStory?.progress ?? 0)
+  const processingCurrentStory = String(id) === String(storyId)
+  const preProcessingReadyFromEndpoint = Number(storyLoadingProgress.progress) >= 0.4
+  const loadingReadyFromEndpoint =
+    storyLoadingProgress.exercise_ready === true || Number(storyLoadingProgress.progress) === 1
+  const preProcessingReadyFromUploadState = processingCurrentStory && Number(progress) >= 0.4
+  const loadingReadyFromUploadState =
+    processingCurrentStory && (exerciseReady === true || Number(progress) === 1)
+  const preProcessingReady =
+    preProcessingReadyFromEndpoint || preProcessingReadyFromUploadState || storyProgress >= 0.4
+  const loadingReady =
+    loadingReadyFromEndpoint || loadingReadyFromUploadState || storyProgress === 1
+  const isStudentPreview = mode === 'preview' && !teacherView
+  const shouldFetchStoryDirectly =
+    !isStudentPreview || !processingCurrentStory || preProcessingReady
+  const hasRenderableStoryContent =
+    !!routeStory?.title || (Array.isArray(routeStory?.paragraph) && routeStory.paragraph.length > 0)
+  const isStudentPreviewProcessing =
+    isStudentPreview && !preProcessingReady && !hasShownStoryContent && !hasRenderableStoryContent
+  
+  const processingFinished = storyProgress === 1
+  const ownedRouteStory = oid === routeStory?.owner
 
   const readingOn = !!user?.user?.reading_comprehension
   const disableOtherPracticeToggles = userPending || readingOn
@@ -138,43 +171,75 @@ const ReadViews = ({ match }) => {
   }, [])
 
   useEffect(() => {
+    initialPreviewStoryFetchedRef.current = false
+  }, [id, mode, isStudentPreview])
+
+  useEffect(() => {
     if (teacherView) setHideFeedback(false)
-    dispatch(getStoryAction(id, mode))
+    if (isStudentPreview) {
+      dispatch(getStoryLoadingProgress(id))
+      if (shouldFetchStoryDirectly && !initialPreviewStoryFetchedRef.current) {
+        initialPreviewStoryFetchedRef.current = true
+        dispatch(getStoryAction(id, mode))
+      }
+    } else {
+      dispatch(getStoryAction(id, mode))
+    }
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
     dispatch(resetAnnotations())
-  }, [])
+  }, [dispatch, id, isStudentPreview, mode, shouldFetchStoryDirectly, teacherView])
 
   useEffect(() => {
-    if (story) {
-      const storyWords = story.paragraph.flat(1)
+    if (routeStory) {
+      const storyWords = routeStory.paragraph.flat(1)
       dispatch(setAnnotations(storyWords))
     }
-  }, [story])
+  }, [dispatch, routeStory])
 
   useEffect(() => {
-    const processingCurrentStory = String(id) === String(storyId)
+    setHasShownStoryContent(false)
+  }, [id])
 
-    if (progress === 1 && processingCurrentStory) {
-      setShowRefreshButton(true)
+  useEffect(() => {
+    if (hasRenderableStoryContent) {
+      setHasShownStoryContent(true)
     }
+  }, [hasRenderableStoryContent])
 
-    if (!processingCurrentStory) {
-      setShowRefreshButton(false)
-    }
-  }, [id, progress, storyId])
+  useEffect(() => {
+    if (pending || routeStory || !error) return
+    history.replace('/library')
+  }, [error, history, pending, routeStory])
 
-  if (pending || !user || groupsPending) return <Spinner fullHeight size={60}/>
-  if (!story) return null
+  useEffect(() => {
+    if (!id || !isStudentPreview || loadingReady) return
+
+    const pollingInterval = setInterval(() => {
+      dispatch(getStoryLoadingProgress(id))
+    }, 10000)
+
+    return () => clearInterval(pollingInterval)
+  }, [dispatch, id, isStudentPreview, loadingReady])
+
+  useEffect(() => {
+    if (!id || !isStudentPreview || !preProcessingReady) return
+    if (storyProgress === 1) return
+
+    const pollingInterval = setInterval(() => {
+      dispatch(getStoryAction(id, mode))
+    }, 10000)
+
+    return () => clearInterval(pollingInterval)
+  }, [dispatch, id, isStudentPreview, mode, preProcessingReady, storyProgress])
+
+  if (!user || groupsPending) return <Spinner fullHeight size={60} />
+  if (!routeStory && !isStudentPreview) return <Spinner fullHeight size={60} />
 
   const showFooter = width > 640
-  const processingCurrentStory = id === storyId
-  const underProcessing = (progress !== 0 && processingCurrentStory) || story.progress !== 1
-
-  const refreshPage = () => {
-    dispatch(getStoryAction(id, mode))
-    setShowRefreshButton(false)
-  }
+  const underProcessing = isStudentPreview
+    ? !loadingReady || storyProgress !== 1
+    : (progress !== 0 && processingCurrentStory) || storyProgress !== 1
 
   const updateUserReviewDiff = () => {
     dispatch(updateShowReviewDiff(!showDifficulty))
@@ -204,7 +269,7 @@ const ReadViews = ({ match }) => {
 
     return (
       <>
-        {story.control_story ? (
+        {routeStory?.control_story ? (
           <SemanticButton
             as={Link}
             to={`/stories/${id}/controlled-practice`}
@@ -213,33 +278,35 @@ const ReadViews = ({ match }) => {
             <FormattedMessage id="tailored-practice-mode" />
           </SemanticButton>
         ) : (
-          <>
-            <Popup
-              content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
-              trigger={
-                <Icon
-                  name="cog"
-                  size="large"
-                  style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }}
-                  onClick={handle_cog_click}
-                />
-              }
-              inverted
-            />
-            <SemanticButton
-              as={Link}
-              to={
-                user?.user?.reading_comprehension
-                  ? `/stories/${id}/reading_practice`
-                  : `/stories/${id}/practice/`
-              }
-              className="practice-tour-start-practice-story"
-              style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-              disabled={story.topics.length === 0 && ownedStory}
-            >
-              <FormattedMessage id="start-practice-story" />
-            </SemanticButton>
-          </>
+          preProcessingReady && (
+            <>
+              <Popup
+                content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+                trigger={
+                  <Icon
+                    name="cog"
+                    size="large"
+                    style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }}
+                    onClick={handle_cog_click}
+                  />
+                }
+                inverted
+              />
+              <SemanticButton
+                as={Link}
+                to={
+                  user?.user?.reading_comprehension
+                    ? `/stories/${id}/reading_practice`
+                    : `/stories/${id}/practice/`
+                }
+                className="practice-tour-start-practice-story"
+                style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+                disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
+              >
+                <FormattedMessage id="start-practice-story" />
+              </SemanticButton>
+            </>
+          )
         )}
       </>
     )
@@ -268,12 +335,12 @@ const ReadViews = ({ match }) => {
           </h1>
           <SelectGrammarLevel
             topicInstance={{
-              topic_ids: story?.topics || [],
-              instancePending: pending || !story,
+              topic_ids: routeStory?.topics || [],
+              instancePending: pending || !routeStory,
             }}
             editable
             setSelectedTopics={setSelectedTopics}
-            selectedTopicIds={story?.topics || []}
+            selectedTopicIds={routeStory?.topics || []}
             showPerf
             setShowPerf={setShowDifficulty}
             lessons={lessons}
@@ -304,17 +371,24 @@ const ReadViews = ({ match }) => {
       <div className="flex mb-nm">
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
-            <div style={{ marginBottom: '30px' }}>
+            <div style={{ marginBottom: '24px' }}>
               <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
-                  <span className="pr-sm practice-tour-start">{story.title}</span>
+                  {(!isStudentPreviewProcessing || !!routeStory?.title) && (
+                    <span className="pr-sm practice-tour-start">{routeStory?.title || ''}</span>
+                  )}
                 </div>
               </Header>
             </div>
+            {underProcessing && preProcessingReady && (
+                <span className="story-not-processed-text">
+                  {intl.formatMessage({ id: 'story-not-yet-processed' }).replace(/\\n/g, '\n')}
+                </span>
+            )}
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
                 {mode === 'practice-preview' && <div />}
-                {mode === 'preview' && (
+                {preProcessingReady && mode === 'preview' && (
                   <Checkbox
                     className="highlight-exercises"
                     toggle
@@ -376,42 +450,28 @@ const ReadViews = ({ match }) => {
                 </div>
               )}
             </div>
-            {underProcessing && (
-              <div className="bold" style={{ marginTop: '.5rem' }}>
-                <span style={{ color: 'red' }}>
-                  <FormattedMessage id="story-not-yet-processed" />
-                </span>
-              </div>
-            )}
-            {showRefreshButton && (
-              <div className="flex gap-col-sm align-center">
-                <div className="bold">
-                  <span style={{ color: 'red' }}>
-                    <FormattedMessage id="story-processing-now-finished" />
-                  </span>
-                </div>
-                <Button onClick={refreshPage}>
-                  <FormattedMessage id="refresh" />
-                </Button>
-              </div>
-            )}
             <Divider />
-            {story.paragraph.map((paragraph, index) => (
-              <>
-                <TextWithFeedback
-                  key={index}
-                  hideFeedback={!show_preview_exer}
-                  showDifficulty={showDifficulty}
-                  mode={mode}
-                  snippet={paragraph}
-                  answers={null}
-                  focusedConcept={focusedConcept}
-                  show_preview_exer
-                />
-                <br />
-                <br />
-              </>
-            ))}
+            {isStudentPreviewProcessing ? (
+              <div className="justify-center" style={{ minHeight: '16rem' }}>
+                <Spinner size={60} text={intl.formatMessage({ id: 'loading-story' })} />
+              </div>
+            ) : (
+              (routeStory?.paragraph || []).map((paragraph, index) => (
+                <React.Fragment key={index}>
+                  <TextWithFeedback
+                    hideFeedback={!show_preview_exer}
+                    showDifficulty={showDifficulty}
+                    mode={mode}
+                    snippet={paragraph}
+                    answers={null}
+                    focusedConcept={focusedConcept}
+                    show_preview_exer
+                  />
+                  <br />
+                  <br />
+                </React.Fragment>
+              ))
+            )}
             <ScrollArrow />
           </Segment>
           {width >= 500 ? (
@@ -425,10 +485,12 @@ const ReadViews = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
+          {console.log('loading ready in read view? ', loadingReadyFromEndpoint)}
           <StoryTopics
-            conceptCount={story.concept_count}
+            conceptCount={routeStory?.concept_count || 0}
             focusedConcept={focusedConcept}
             setFocusedConcept={setFocusedConcept}
+            loadingReady={processingFinished}
           />
           <DictionaryHelp />
           <AnnotationBox />

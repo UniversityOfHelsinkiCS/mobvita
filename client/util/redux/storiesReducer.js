@@ -47,6 +47,10 @@ export const setLastQuery = query => ({
   query,
 })
 
+export const clearFocusedStory = () => ({
+  type: 'CLEAR_FOCUSED_STORY',
+})
+
 export const setStoryUploadUnfinished = (value, storyId) => ({
   type: 'SET_STORY_UPLOAD_UNFINISHED',
   value,
@@ -185,6 +189,7 @@ const initialState = {
   searchResults: null,
   pending: false,
   focusedPending: false,
+  focusedRequestId: null,
   error: false,
   currentQuery: '',
   loadingProgress: {}, // { [storyId]: progressData }
@@ -297,27 +302,62 @@ export default (state = initialState, action) => {
       }
     case 'CLEAR_STORY_LIST':
       return initialState
-    case 'GET_STORY_ATTEMPT':
+    case 'CLEAR_FOCUSED_STORY':
       return {
         ...state,
-        pending: true,
-        focusedPending: true,
-        error: false,
+        focused: null,
+        focusedPending: false,
+        focusedRequestId: null,
+      }
+    case 'GET_STORY_ATTEMPT':
+      {
+        const route = action.requestSettings?.route || ''
+        const match = route.match(/^\/stories\/([^/?]+)/)
+        const requestedId = match ? match[1] : null
+        return {
+          ...state,
+          pending: true,
+          focusedPending: true,
+          focusedRequestId: requestedId,
+          error: false,
+        }
       }
     case 'GET_STORY_FAILURE':
       return {
         ...state,
-        pending: false,
         focusedPending: false,
+        focusedRequestId: null,
+        pending: false,
         error: true,
       }
     case 'GET_STORY_SUCCESS':
-      return {
-        ...state,
-        focused: action.response,
-        pending: false,
-        focusedPending: false,
-        error: false,
+    {
+        const normalizedResponse =
+          action.response && !action.response._id && state.focusedRequestId
+            ? { ...action.response, _id: state.focusedRequestId }
+            : action.response
+
+        if (
+          state.focusedRequestId &&
+          normalizedResponse?._id &&
+          String(state.focusedRequestId) !== String(normalizedResponse._id)
+        ) {
+          return {
+            ...state,
+            pending: false,
+            focusedPending: false,
+            focusedRequestId: null,
+            error: false,
+          }
+        }
+        return {
+          ...state,
+          focused: normalizedResponse,
+          pending: false,
+          focusedPending: false,
+          focusedRequestId: null,
+          error: false,
+        }
       }
     case 'GET_STUDENT_STORY_ATTEMPT':
       return {
@@ -419,6 +459,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         data: state.data.filter(story => story._id !== action.response.story_id),
+        focused:
+          String(state.focused?._id) === String(action.response.story_id) ? null : state.focused,
+        focusedPending:
+          String(state.focused?._id) === String(action.response.story_id)
+            ? false
+            : state.focusedPending,
         pending: false,
         error: false,
       }

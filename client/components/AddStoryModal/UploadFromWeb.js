@@ -1,19 +1,17 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { updateLibrarySelect, updateFavouriteSites } from 'Utilities/redux/userReducer'
+import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import RecommendedSites from './RecommendedSites'
 import Spinner from 'Components/Spinner'
 
 const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
-  const history = useHistory()
   const dispatch = useDispatch()
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -33,12 +31,9 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
 
     if (storyUrl) {
       dispatch(postStory(newStory))
-      dispatch(updateLibrarySelect('private'))
       setStoryUrl('')
       setActiveComponent()
       closeModal()
-
-      if (history.location.pathname !== 'library') history.push('/library')
     }
   }
 
