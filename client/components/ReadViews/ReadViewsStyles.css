@@ -8,3 +8,18 @@
   background-color: #fdea3b;
   white-space: pre-line;
 }
+
+.header-text {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.cefr-level {
+  color: #00000080;
+  font-size: large;
+  font-weight: 500;
+  margin: 0;
+  padding: 0 10px 0 0;
+  white-space: nowrap;
+}

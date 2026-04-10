@@ -24,7 +24,6 @@ const EditStoryView = ({ match }) => {
     pending: stories.focusedPending,
     locale,
   }))
-  const { edited } = useSelector(({ uploadProgress }) => uploadProgress)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [titleMissing, setTitleMissing] = useState(false)
@@ -82,13 +81,6 @@ const EditStoryView = ({ match }) => {
     setCharactersLeft(maxCharacters - content.length)
   }, [content])
 
-  /*
-  useEffect(() => {
-    if (edited) {
-      history.push('/library')
-    }
-  }, [edited])
-*/
   useEffect(() => {
     if (content !== initContent || title !== initTitle) {
       setModified(true)
@@ -104,12 +96,12 @@ const EditStoryView = ({ match }) => {
   }, [story])
 
   const textTooLong = charactersLeft < 0
-  const submitDisabled = !content || textTooLong || charactersLeft > 49950 || titleMissing
+  const submitDisabled =
+    !content || textTooLong || charactersLeft > 49950 || titleMissing || !modified
 
   if (!story || pending) {
     return <Spinner fullHeight size={60} />
   }
-  console.log('text too long ', textTooLong, ' missin title ', titleMissing)
 
   return (
     <div className="cont-tall pt-sm flex-col space-between">
@@ -119,20 +111,20 @@ const EditStoryView = ({ match }) => {
             <Button variant="primary" onClick={() => history.push('/library')}>
               <FormattedMessage id="return-to-library" />
             </Button>
-            {modified && (
-              <div>
-                <Button variant="primary" onClick={updateStory} disabled={submitDisabled}>
-                  <FormattedMessage id="save-story" />
-                </Button>
-                <Button
-                  variant="secondary"
-                  style={{ marginLeft: '.5rem' }}
-                  onClick={initialSettings}
-                >
-                  <FormattedMessage id="undo-changes" />
-                </Button>
-              </div>
-            )}
+
+            <div>
+              <Button variant="primary" onClick={updateStory} disabled={submitDisabled}>
+                <FormattedMessage id="save-story" />
+              </Button>
+              <Button
+                variant="secondary"
+                style={{ marginLeft: '.5rem' }}
+                onClick={initialSettings}
+                disabled={!modified}
+              >
+                <FormattedMessage id="undo-changes" />
+              </Button>
+            </div>
           </div>
           <Divider />
           <div className="flex align-center">

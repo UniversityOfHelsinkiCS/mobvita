@@ -696,7 +696,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "Käännös tilapäisesti poissa käytöstä, yrittäkää myöhemmin uudestaan...",
     "not-accessible": "Pääsy evätty",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Tällä tekstillä ei vielä ole sanakortteja.<br/>Kun teet harjoitusta ja klikkaat vierasta sanaa, saat sanalle käännösvastineen. Samalla sana siirtyy automaattisesti sanakortteihin ! Voit myös lisätä uuden sanakortin mille tahansa sanalle klikkaamalla \"<i>Lisää sanakortti</i>\" -nappia vasemmalla.",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Tällä tekstillä ei vielä ole sanakortteja.<br/>Kun teet harjoitusta ja klikkaat vierasta sanaa, saat sanalle käännösvastineen. Samalla sana siirtyy automaattisesti sanakortteihin ! Voit myös lisätä uuden sanakortin mille tahansa sanalle klikkaamalla \"<i>Lisää sanakortti</i>\" -nappia.",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Ei flash-kortteja vielä.  Kun luet kertomuksen, klikkaa tuntemattomia sanoja lisätäksesi ne flash-kortteihin!",
     "Previous": "<",
     "Next": ">",
@@ -1176,7 +1176,7 @@
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
-    "story-not-yet-processed": "Harjoittelu saatavilla\nKäsitellään, valmis pian",
+    "story-not-yet-processed": "Harjoittelu saatavilla\\nKäsitellään, kohta valmista",
     "groups-for-only-registered-users": "Ryhmien luominen ja niihin liittyminen on mahdollista ainoastaan rekisteröityneille käyttäjille",
     "show-exercise-preview": "Näytä tehtävien esikatselu",
     "warning-for-anonymous-users": "Huomioithan, että tekstien tallentaminen myöhempään käyttöön on mahdollista vain rekisteröityneille käyttäjille",
@@ -1352,8 +1352,8 @@
     "practice-listening-mode": "Harjoittele kuuntelua",
     "practice-grammar-mode": "Harjoittele kielioppia",
     "LABEL-sort-by": "Lajittele:",
-    "sort-by-concept-freq-short": "frekvenssi",
-    "sort-by-concept-cefr-short": "vaikeustaso",
+    "sort-by-concept-freq-short": "Frekvenssi",
+    "sort-by-concept-cefr-short": "Vaikeustaso",
     "submit-student-cefr": "Hyväksy muutokset",
     "undo-student-cefr-edit": "Peruuta muutokset",
     "add-cefr-estimate": "Lisää tämänhetkinen CEFR-arvio",
@@ -1805,5 +1805,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Poistaminen on mahdollista, kun prosessointi on valmis"
+    "story-detail-modal-disabled-delete-btn": "Poistaminen on mahdollista, kun prosessointi on valmis",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }

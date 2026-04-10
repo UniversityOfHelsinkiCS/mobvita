@@ -701,7 +701,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "Перевод временно недоступен, пожалуйста, попробуй позже...",
     "not-accessible": "Недоступно",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Нет флеш-карт для этой истории. В режиме \"Практика\" кликни на незнакомое слово, оно будет добавлено в набор флеш-карт!",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Еще нет карточек для этой истории.<br/>\nТы можешь добавить карточки двумя способами:\n<ul><li>Когда ты тренируешься с текстом и нажимаешь на любое незнакомое слово, чтобы увидеть его перевод, оно будет <i>автоматически</i> добавлено в твой набор флеш-карт!</li>\n<li>Ты можешь добавить карточку для любого слова, нажав кнопку «<i>Добавить новую карточку</i>» слева</li>\n</ul>",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Еще нет карточек для этой истории.<br/>\nТы можешь добавить карточки двумя способами:\n<ul><li>Когда ты тренируешься с текстом и нажимаешь на любое незнакомое слово, чтобы увидеть его перевод, оно будет <i>автоматически</i> добавлено в твой набор флеш-карт!</li>\n<li>Ты можешь добавить карточку для любого слова, нажав «<i>Добавить новую карточку</i>»</li>\n</ul>",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Нет флеш-карт для данного упражнения. В режиме \"Практика\" кликни на незнакомое слово, оно будет добавлено в набор флеш-карт!",
     "Previous": "<",
     "Next": ">",
@@ -1807,5 +1807,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }
