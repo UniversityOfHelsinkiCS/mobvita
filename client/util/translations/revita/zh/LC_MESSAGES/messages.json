@@ -1182,5 +1182,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }

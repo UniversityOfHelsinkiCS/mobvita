@@ -29,7 +29,7 @@
     "Translations": "Переклади",
     "all-flashcards": "Практикуйся з <b>усіма</b> картками",
     "flashcard-translation-target-language": "Мова перекладу:",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Ще немає карток для цієї історії.<br/>\nВи можете створити картки двома способами:\n<ul><li>Коли ви практикуєтесь з історією та натискаєте на будь-яке незнайоме слово, щоб побачити його переклад, воно буде <i>автоматично</i> додано до ваших карток!</li>\n<li>Ви можете додати картку для будь-якого слова, натиснувши кнопку \"<i>Додати нову картку</i>\" зліва</li>\n</ul>",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Ще немає карток для цієї історії.<br/>\nВи можете створити картки двома способами:\n<ul><li>Коли ви практикуєтесь з історією та натискаєте на будь-яке незнайоме слово, щоб побачити його переклад, воно буде <i>автоматично</i> додано до ваших карток!</li>\n<li>Ви можете додати картку для будь-якого слова, натиснувши \"<i>Додати нову картку</i>\"</li>\n</ul>",
     "ask-for-a-hint": "Покажи мені підказку!",
     "fill-in": "Перекладіть картки",
     "Quick cards": "Швидкі картки",
@@ -914,5 +914,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }

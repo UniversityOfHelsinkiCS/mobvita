@@ -694,7 +694,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "",
     "not-accessible": "",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "No flashcards yet for this story.<br/>\nYou can create flashcards in two ways:\n<ul><li>When you practice with a story and click on any unfamiliar word to see its translation, it will be <i>automatically</i> added to your flashcards!</li>\n<li>You can add a flashcard for any words by clicking \"<i>Add new flashcard</i>\" button on the left</li>\n</ul>",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "No flashcards yet for this story.<br/>\nYou can create flashcards in two ways:\n<ul><li>When you practice with a story and click on any unfamiliar word to see its translation, it will be <i>automatically</i> added to your flashcards!</li>\n<li>You can add a flashcard for any words by clicking \"<i>Add new flashcard</i>\"</li>\n</ul>",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "",
     "Previous": "<",
     "Next": ">",
@@ -1259,8 +1259,8 @@
     "sort-by-concept-freq": "Sort by frequency",
     "sort-by-concept-cefr": "Sort by difficulty",
     "LABEL-sort-by": "Sort by:",
-    "sort-by-concept-freq-short": "frequency",
-    "sort-by-concept-cefr-short": "difficulty",
+    "sort-by-concept-freq-short": "Frequency",
+    "sort-by-concept-cefr-short": "Difficulty",
     "edit-story": "Edit story",
     "group-review-dropdown-placeholder": "Select student to review",
     "delete-account-confirmation": "Are you sure you want to delete your account?",
@@ -1659,5 +1659,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }

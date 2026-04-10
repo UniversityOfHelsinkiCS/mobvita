@@ -2,9 +2,44 @@
   max-width: 100% !important;
 }
 
+.story-not-processed {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .story-not-processed-text {
+  background: #fdea3b;
+  padding: 8px 12px;
+  width: 40%;
+  max-width: 60%;
+  text-align: center;
+  margin: 0 auto;
   font-weight: 550;
   color: black;
-  background-color: #fdea3b;
+  line-height: 1.35;
   white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.header-text {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.cefr-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #000000a8;
+  font-size: large;
+  font-weight: 500;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0 6px;
+  height: 30px;
 }

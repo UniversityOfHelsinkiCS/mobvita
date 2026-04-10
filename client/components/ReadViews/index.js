@@ -20,6 +20,7 @@ import {
   getStoryAction,
   getStoryLoadingProgress,
   getStudentStoryAction,
+  removeStory,
   updateExerciseTopics,
   updateTempExerciseTopics,
 } from 'Utilities/redux/storiesReducer'
@@ -36,14 +37,20 @@ import {
   updateMultiChoice,
 } from 'Utilities/redux/userReducer'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
-import { learningLanguageSelector, getTextStyle, getMode, hiddenFeatures } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  getTextStyle,
+  getMode,
+  hiddenFeatures,
+  cefrNum2Cefr,
+} from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
-import { compose } from 'redux'
+import ConfirmationWarning from 'Components/ConfirmationWarning'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
@@ -88,7 +95,10 @@ const ReadViews = ({ match }) => {
   const [hideFeedback, setHideFeedback] = useState(defineFeedback())
   const [focusedConcept, setFocusedConcept] = useState(null)
   const [hasShownStoryContent, setHasShownStoryContent] = useState(false)
+  const [confirmationOpen, setConfirmationOpen] = useState(false)
   const initialPreviewStoryFetchedRef = useRef(false)
+  const loadingPollRef = useRef(null)
+  const storyPollRef = useRef(null)
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
@@ -131,27 +141,55 @@ const ReadViews = ({ match }) => {
       ? story
       : null
   const storyLoadingProgress = loadingProgressByStory[id] || {}
-  const storyProgress = Number(routeStory?.progress ?? 0)
-  const processingCurrentStory = String(id) === String(storyId)
-  const preProcessingReadyFromEndpoint = Number(storyLoadingProgress.progress) >= 0.4
-  const loadingReadyFromEndpoint =
-    storyLoadingProgress.exercise_ready === true || Number(storyLoadingProgress.progress) === 1
-  const preProcessingReadyFromUploadState = processingCurrentStory && Number(progress) >= 0.4
-  const loadingReadyFromUploadState =
-    processingCurrentStory && (exerciseReady === true || Number(progress) === 1)
-  const preProcessingReady =
-    preProcessingReadyFromEndpoint || preProcessingReadyFromUploadState || storyProgress >= 0.4
-  const loadingReady =
-    loadingReadyFromEndpoint || loadingReadyFromUploadState || storyProgress === 1
-  const isStudentPreview = mode === 'preview' && !teacherView
-  const shouldFetchStoryDirectly =
-    !isStudentPreview || !processingCurrentStory || preProcessingReady
   const hasRenderableStoryContent =
     !!routeStory?.title || (Array.isArray(routeStory?.paragraph) && routeStory.paragraph.length > 0)
+  const storyProgress = Number(routeStory?.progress ?? 0)
+  const polledProgress = Number(storyLoadingProgress.progress)
+  const processingProgress = Number.isFinite(polledProgress) ? polledProgress : storyProgress
+  const processingCurrentStory = String(id) === String(storyId)
+  const processingComplete =
+    processingProgress >= 1 || (processingCurrentStory && Number(progress) >= 1)
+  const preProcessingReadyFromEndpoint = Number(storyLoadingProgress.progress) >= 0.4
+  const loadingReadyFromEndpoint =
+    storyLoadingProgress.exercise_ready === true || Number(storyLoadingProgress.progress) >= 1
+  const preProcessingReadyFromUploadState = processingCurrentStory && Number(progress) >= 0.4
+  const loadingReadyFromUploadState =
+    processingCurrentStory && (exerciseReady === true || Number(progress) >= 1)
+  const preProcessingReady =
+    preProcessingReadyFromEndpoint || preProcessingReadyFromUploadState || storyProgress >= 0.4
+  const loadingReady = loadingReadyFromEndpoint || loadingReadyFromUploadState || storyProgress >= 1
+  const processingFinished = storyProgress >= 1
+  const isPreviewMode = mode === 'preview'
+  const isStudentPreview = mode === 'preview' && !teacherView
+  const teacherLoadingProgress = Number(storyLoadingProgress.progress)
+  const teacherProcessingComplete = Number.isFinite(teacherLoadingProgress)
+    ? teacherLoadingProgress === 1
+    : false
+  const shouldFetchStoryDirectly =
+    !isPreviewMode ||
+    hasRenderableStoryContent ||
+    (isStudentPreview ? preProcessingReady : teacherProcessingComplete)
   const isStudentPreviewProcessing =
     isStudentPreview && !preProcessingReady && !hasShownStoryContent && !hasRenderableStoryContent
-  
-  const processingFinished = storyProgress === 1
+
+  const isTeacherPreviewProcessing = isPreviewMode && teacherView && !teacherProcessingComplete
+  const rawProcessingProgress = Number.isFinite(teacherLoadingProgress) ? teacherLoadingProgress : 0
+  const processingPercent = Math.round(
+    Math.max(
+      0,
+      Math.min(
+        100,
+        rawProcessingProgress <= 1 ? rawProcessingProgress * 100 : rawProcessingProgress
+      )
+    )
+  )
+  const difficultyValueDisplay =
+    routeStory?.difficulty_value === null ||
+    routeStory?.difficulty_value === undefined ||
+    routeStory?.difficulty_value === ''
+      ? ''
+      : cefrNum2Cefr(routeStory?.difficulty_value)
+
   const ownedRouteStory = oid === routeStory?.owner
 
   const readingOn = !!user?.user?.reading_comprehension
@@ -172,12 +210,19 @@ const ReadViews = ({ match }) => {
 
   useEffect(() => {
     initialPreviewStoryFetchedRef.current = false
-  }, [id, mode, isStudentPreview])
+    if (loadingPollRef.current) {
+      clearInterval(loadingPollRef.current)
+      loadingPollRef.current = null
+    }
+    if (storyPollRef.current) {
+      clearInterval(storyPollRef.current)
+      storyPollRef.current = null
+    }
+  }, [id, mode])
 
   useEffect(() => {
     if (teacherView) setHideFeedback(false)
-    if (isStudentPreview) {
-      dispatch(getStoryLoadingProgress(id))
+    if (isPreviewMode) {
       if (shouldFetchStoryDirectly && !initialPreviewStoryFetchedRef.current) {
         initialPreviewStoryFetchedRef.current = true
         dispatch(getStoryAction(id, mode))
@@ -188,7 +233,7 @@ const ReadViews = ({ match }) => {
     dispatch(clearTranslationAction())
     dispatch(clearContextTranslation())
     dispatch(resetAnnotations())
-  }, [dispatch, id, isStudentPreview, mode, shouldFetchStoryDirectly, teacherView])
+  }, [dispatch, id, isPreviewMode, mode, shouldFetchStoryDirectly, teacherView])
 
   useEffect(() => {
     if (routeStory) {
@@ -213,27 +258,88 @@ const ReadViews = ({ match }) => {
   }, [error, history, pending, routeStory])
 
   useEffect(() => {
-    if (!id || !isStudentPreview || loadingReady) return
+    if (loadingPollRef.current) {
+      clearInterval(loadingPollRef.current)
+      loadingPollRef.current = null
+    }
 
-    const pollingInterval = setInterval(() => {
+    if (!id || !isPreviewMode) return
+
+    dispatch(getStoryLoadingProgress(id))
+
+    if (isStudentPreview ? processingComplete : teacherProcessingComplete) return
+
+    loadingPollRef.current = setInterval(() => {
       dispatch(getStoryLoadingProgress(id))
     }, 10000)
 
-    return () => clearInterval(pollingInterval)
-  }, [dispatch, id, isStudentPreview, loadingReady])
+    return () => {
+      if (loadingPollRef.current) {
+        clearInterval(loadingPollRef.current)
+        loadingPollRef.current = null
+      }
+    }
+  }, [dispatch, id, isPreviewMode, isStudentPreview, processingComplete, teacherProcessingComplete])
 
   useEffect(() => {
-    if (!id || !isStudentPreview || !preProcessingReady) return
-    if (storyProgress === 1) return
+    if (storyPollRef.current) {
+      clearInterval(storyPollRef.current)
+      storyPollRef.current = null
+    }
 
-    const pollingInterval = setInterval(() => {
+    if (!id || !isPreviewMode) return
+
+    if (isStudentPreview) {
+      if (!preProcessingReady || processingFinished) return
+
+      storyPollRef.current = setInterval(() => {
+        dispatch(getStoryAction(id, mode))
+      }, 10000)
+
+      return () => {
+        if (storyPollRef.current) {
+          clearInterval(storyPollRef.current)
+          storyPollRef.current = null
+        }
+      }
+    }
+
+    if (!teacherProcessingComplete || hasRenderableStoryContent) return
+
+    storyPollRef.current = setInterval(() => {
       dispatch(getStoryAction(id, mode))
     }, 10000)
 
-    return () => clearInterval(pollingInterval)
-  }, [dispatch, id, isStudentPreview, mode, preProcessingReady, storyProgress])
+    return () => {
+      if (storyPollRef.current) {
+        clearInterval(storyPollRef.current)
+        storyPollRef.current = null
+      }
+    }
+  }, [
+    dispatch,
+    hasRenderableStoryContent,
+    id,
+    isPreviewMode,
+    isStudentPreview,
+    mode,
+    preProcessingReady,
+    processingFinished,
+    teacherProcessingComplete,
+  ])
 
   if (!user || groupsPending) return <Spinner fullHeight size={60} />
+  if (isTeacherPreviewProcessing)
+    return (
+      <Spinner
+        fullHeight
+        size={60}
+        text={intl.formatMessage(
+          { id: 'processing-story-with-percent' },
+          { progress: processingPercent }
+        )}
+      />
+    )
   if (!routeStory && !isStudentPreview) return <Spinner fullHeight size={60} />
 
   const showFooter = width > 640
@@ -259,6 +365,11 @@ const ReadViews = ({ match }) => {
 
   const handle_cog_click = () => {
     setOpen(true)
+  }
+
+  const handleDeleteStory = () => {
+    dispatch(removeStory(id))
+    history.replace('/library')
   }
 
   const StoryFunctionsDropdown = () => {
@@ -292,19 +403,31 @@ const ReadViews = ({ match }) => {
                 }
                 inverted
               />
-              <SemanticButton
-                as={Link}
-                to={
-                  user?.user?.reading_comprehension
-                    ? `/stories/${id}/reading_practice`
-                    : `/stories/${id}/practice/`
-                }
-                className="practice-tour-start-practice-story"
-                style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-                disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
-              >
-                <FormattedMessage id="start-practice-story" />
-              </SemanticButton>
+              {!teacherView && (
+                <SemanticButton
+                  as={Link}
+                  to={
+                    user?.user?.reading_comprehension
+                      ? `/stories/${id}/reading_practice`
+                      : `/stories/${id}/practice/`
+                  }
+                  className="practice-tour-start-practice-story"
+                  style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
+                  disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
+                >
+                  <FormattedMessage id="start-practice-story" />
+                </SemanticButton>
+              )}
+              {teacherView && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <SemanticButton color="yellow" as={Link} to={`/stories/${id}/edit/`}>
+                    <FormattedMessage id="edit" />
+                  </SemanticButton>
+                  <SemanticButton color="red" onClick={() => setConfirmationOpen(true)}>
+                    <FormattedMessage id="Delete" />
+                  </SemanticButton>
+                </div>
+              )}
             </>
           )
         )}
@@ -371,19 +494,34 @@ const ReadViews = ({ match }) => {
       <div className="flex mb-nm">
         <div>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
-                  {(!isStudentPreviewProcessing || !!routeStory?.title) && (
-                    <span className="pr-sm practice-tour-start">{routeStory?.title || ''}</span>
+                  {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
+                    <span className="header-text practice-tour-start">
+                      {routeStory?.title || ''}
+                    </span>
                   )}
                 </div>
               </Header>
+              {(preProcessingReady || processingFinished) && (
+                <div
+                  className="cefr-level"
+                  style={{
+                    background:
+                      String(difficultyValueDisplay).trim() === '' ? '#ffffff' : '#b7fcff',
+                  }}
+                >
+                  {difficultyValueDisplay}
+                </div>
+              )}
             </div>
-            {underProcessing && preProcessingReady && (
-                <span className="story-not-processed-text">
+            {underProcessing && preProcessingReady && !processingComplete && (
+              <div className="story-not-processed">
+                <div className="story-not-processed-text">
                   {intl.formatMessage({ id: 'story-not-yet-processed' }).replace(/\\n/g, '\n')}
-                </span>
+                </div>
+              </div>
             )}
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
@@ -485,7 +623,6 @@ const ReadViews = ({ match }) => {
           )}
         </div>
         <div className="dictionary-and-annotations-cont">
-          {console.log('loading ready in read view? ', loadingReadyFromEndpoint)}
           <StoryTopics
             conceptCount={routeStory?.concept_count || 0}
             focusedConcept={focusedConcept}
@@ -550,6 +687,13 @@ const ReadViews = ({ match }) => {
         </Modal.Header>
         <Tab panes={panes} />
       </Modal>
+      <ConfirmationWarning
+        open={confirmationOpen}
+        setOpen={setConfirmationOpen}
+        action={handleDeleteStory}
+      >
+        <FormattedMessage id="story-remove-confirm" />
+      </ConfirmationWarning>
     </div>
   )
 }
