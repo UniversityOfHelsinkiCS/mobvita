@@ -52,7 +52,7 @@ import LessonPracticeView from './Lessons/LessonPracticeView'
 import LessonLibrary from './Lessons/LessonLibrary'
 import GecView from './GecView'
 import StoryGeneration from './StoryGeneration'
-import Estimator from './Estimator'
+// import Estimator from './Estimator'
 import ReadingComprehensionView from './ReadingComprehension'
 import ReadingPracticeView from 'Components/Tests/ReadingTest/ReadingPracticeByStoryID'
 
@@ -90,7 +90,7 @@ export default () => {
 
   return (
     <Switch>
-      <Route exact path="/selkomitta" component={Estimator} />
+      {/* <Route exact path="/selkomitta" component={Estimator} /> */}
       <Route exact path="/">
         {userData ? <Redirect to="/welcome" /> : <LandingPage />}
       </Route>
