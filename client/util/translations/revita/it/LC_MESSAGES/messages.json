@@ -696,7 +696,7 @@
     "translation-temporarily-unavailable-please-try-again-later": "La traduzione è temporaneamente non accessibile, prova più tardi",
     "not-accessible": "Non accessibile",
     "no-flashcards-yet-for-this-story-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-b": "Non ci sono flashcard per questa storia. In \"Pratica\" clicca sulle parole sconosciute, verrano salvate tra le flashcard!",
-    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Non esistono ancora flashcard per questa storia.<br/>\nPuoi creare flashcard in due modi:\n<ul><li>Quando ti eserciti con una storia e fai clic su una parola sconosciuta per vederne la traduzione, la parola verrà <i>automaticamente</i> aggiunta alle tue flashcard!</li>\n<li>Puoi aggiungere una flashcard per qualsiasi parola facendo clic sul pulsante \"<i>Aggiungi nuova flashcard</i>\" a sinistra</li>\n</ul>",
+    "no-flashcards-yet-when-you-practice-a-story-and-click-on-unfamiliar-words-they-will-be-added-to-your": "Non esistono ancora flashcard per questa storia.<br/>\nPuoi creare flashcard in due modi:\n<ul><li>Quando ti eserciti con una storia e fai clic su una parola sconosciuta per vederne la traduzione, la parola verrà <i>automaticamente</i> aggiunta alle tue flashcard!</li>\n<li>Puoi aggiungere una flashcard per qualsiasi parola facendo clic su \"<i>Aggiungi nuova flashcard</i>\"</li>\n</ul>",
     "no-flashcards-found-for-this-exercise-when-you-practice-a-story-and-click-on-unfamiliar-words-they-w": "Non ci sono flashcard per questo esercizio. In \"Pratica\" clicca sulle parole sconosciute, verranno salvate tra le flashcard!",
     "Previous": "<",
     "Next": ">",
@@ -1353,8 +1353,8 @@
     "practice-listening-mode": "Esercizio di ascolto",
     "practice-grammar-mode": "Esercizio di grammatica",
     "LABEL-sort-by": "Ordina per:",
-    "sort-by-concept-freq-short": "frequenza",
-    "sort-by-concept-cefr-short": "difficoltà",
+    "sort-by-concept-freq-short": "Frequenza",
+    "sort-by-concept-cefr-short": "Difficoltà",
     "submit-student-cefr": "Submit changes",
     "undo-student-cefr-edit": "Undo changes",
     "add-cefr-estimate": "Aggiungere il QCER corrente",
@@ -1804,5 +1804,6 @@
     "lesson-tour-custom-grammar-button-text": "...",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
-    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished"
+    "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
+    "processing-story-with-percent": "Processing... {progress}% done"
 }

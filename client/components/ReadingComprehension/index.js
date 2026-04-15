@@ -119,7 +119,9 @@ const getQuestionSentenceIds = (paragraphs, question) => {
   if (paragraphIdx < 0) return []
 
   const tokens = Array.isArray(paragraphs[paragraphIdx]) ? paragraphs[paragraphIdx] : []
-  return Array.from(new Set(tokens.map(token => Number(token?.sentence_id)).filter(Number.isFinite)))
+  return Array.from(
+    new Set(tokens.map(token => Number(token?.sentence_id)).filter(Number.isFinite))
+  )
 }
 
 const ReadingComprehensionView = ({ match }) => {
@@ -229,10 +231,13 @@ const ReadingComprehensionView = ({ match }) => {
     hasInitializedStoryQuestionsRef.current = false
     dispatch(getStoryAction(storyId, 'preview'))
     dispatch(
-      getAllStories(learningLanguage, lastQuery || {
-        sort_by: 'date',
-        order: -1,
-      })
+      getAllStories(
+        learningLanguage,
+        lastQuery || {
+          sort_by: 'date',
+          order: -1,
+        }
+      )
     )
 
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
@@ -298,19 +303,20 @@ const ReadingComprehensionView = ({ match }) => {
       return []
     }
     if (activeTabIndex === 1) {
-      if (
-        selectedStoryQuestionIdx !== null &&
-        storyQuestions[selectedStoryQuestionIdx]
-      ) {
-        return getQuestionSentenceIds(
-          storyParagraphs,
-          storyQuestions[selectedStoryQuestionIdx]
-        )
+      if (selectedStoryQuestionIdx !== null && storyQuestions[selectedStoryQuestionIdx]) {
+        return getQuestionSentenceIds(storyParagraphs, storyQuestions[selectedStoryQuestionIdx])
       }
       return []
     }
     return []
-  }, [activeTabIndex, draftQuestions, selectedDraftIdx, storyQuestions, storyParagraphs, selectedStoryQuestionIdx])
+  }, [
+    activeTabIndex,
+    draftQuestions,
+    selectedDraftIdx,
+    storyQuestions,
+    storyParagraphs,
+    selectedStoryQuestionIdx,
+  ])
 
   const disableTopActions = mcPending || anyRegenerating
   const disableSaveButton = disableTopActions || savePending
@@ -453,12 +459,7 @@ const ReadingComprehensionView = ({ match }) => {
 
   if (focusedPending || !story)
     return (
-      <Spinner
-        fullHeight
-        size={60}
-        text={intl.formatMessage({ id: 'loading' })}
-        textSize={20}
-      />
+      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
     )
 
   const saveTooltip = mcPending
@@ -753,7 +754,9 @@ const ReadingComprehensionView = ({ match }) => {
                 key={`story-${qIdx}-${q.question}`}
                 title={q.question}
                 selected={selectedStoryQuestionIdx === qIdx}
-                onToggleSelect={() => setSelectedStoryQuestionIdx(qIdx === selectedStoryQuestionIdx ? null : qIdx)}
+                onToggleSelect={() =>
+                  setSelectedStoryQuestionIdx(qIdx === selectedStoryQuestionIdx ? null : qIdx)
+                }
                 cefr={q.level}
                 actions={
                   <Button
@@ -795,7 +798,9 @@ const ReadingComprehensionView = ({ match }) => {
         <Modal.Content style={{ textAlign: 'center' }}>
           {intl.formatMessage({ id: 'confirm-delete-question' })}
         </Modal.Content>
-        <Modal.Actions style={{ display: 'flex', justifyContent: 'center', gap: 16, background: 'transparent' }}>
+        <Modal.Actions
+          style={{ display: 'flex', justifyContent: 'center', gap: 16, background: 'transparent' }}
+        >
           <button
             type="button"
             className="btn btn-secondary"
