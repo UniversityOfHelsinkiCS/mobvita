@@ -419,7 +419,10 @@ const ReadViews = ({ match }) => {
                 </SemanticButton>
               )}
               {teacherView && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div
+                  className="practice-tour-edit-delete-story"
+                  style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+                >
                   <SemanticButton color="yellow" as={Link} to={`/stories/${id}/edit/`}>
                     <FormattedMessage id="edit" />
                   </SemanticButton>

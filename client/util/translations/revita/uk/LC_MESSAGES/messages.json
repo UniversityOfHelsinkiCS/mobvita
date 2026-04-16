@@ -916,5 +916,7 @@
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
-    "story-not-yet-processed-yellow-box": "Цю історію можна використовувати, але вона ще обробляється... (буде завершено незабаром)"
+    "story-not-yet-processed-yellow-box": "Цю історію можна використовувати, але вона ще обробляється... (буде завершено незабаром)",
+    "practice-tour-edit-delete-title": "Edit and delete story",
+    "practice-tour-edit-delete-message": "Here you can edit or delete the story. <br/> Next we will go to the Practice Page!"
 }

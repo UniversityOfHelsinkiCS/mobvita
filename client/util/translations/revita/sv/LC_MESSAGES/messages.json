@@ -1472,7 +1472,7 @@
     "Start Practicing": "Start Practice",
     "practice-tour-start-practice-message": "You can practice grammar, or listening, or both at the same time.\n<br/>\nNext we will go to the Practice Page!",
     "Exercises": "Exercises",
-    "practice-tour-exercise-box-message": "During practice you will see multiple-choice questions, or fill-in-blank questions, or listening questions.",
+    "practice-tour-exercise-box-message": "During practice, you will see multiple-choice, fill-in-the-blank, or listening questions.",
     "practice-tour-exercise-message": "When you click on any exercise, you can ask for hints about that exercise.",
     "practice-tour-check-answers-message": "When you have done all the exercises in this paragraph, click here to check your answers.",
     "Progress bar": "Progress bar",
@@ -1661,5 +1661,7 @@
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
-    "story-not-yet-processed-yellow-box": "Story is still processing, will be completed soon.\n\nYou may begin practice right away."
+    "story-not-yet-processed-yellow-box": "Story is still processing, will be completed soon.\n\nYou may begin practice right away.",
+    "practice-tour-edit-delete-title": "Edit and delete story",
+    "practice-tour-edit-delete-message": "Here you can edit or delete the story. <br/> Next we will go to the Practice Page!"
 }

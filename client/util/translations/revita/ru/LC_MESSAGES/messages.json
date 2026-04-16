@@ -1809,5 +1809,7 @@
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
-    "story-not-yet-processed-yellow-box": "Текст еще обрабатывается.\n\nМожно уже начинать упражнения."
+    "story-not-yet-processed-yellow-box": "Текст еще обрабатывается.\n\nМожно уже начинать упражнения.",
+    "practice-tour-edit-delete-title": "Edit and delete story",
+    "practice-tour-edit-delete-message": "Here you can edit or delete the story. <br/> Next we will go to the Practice Page!"
 }

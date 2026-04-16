@@ -1730,11 +1730,21 @@ const desktopPracticeTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.practice-tour-start-practice',
+    target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
     content: (
       <div>
         <FormattedHTMLMessage id="practice-tour-start-practice-message" />
+      </div>
+    ),
+    disableBeacon: true,
+  },
+  {
+    target: '.practice-tour-edit-delete-story',
+    title: <FormattedMessage id="practice-tour-edit-delete-title" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="practice-tour-edit-delete-message" />
       </div>
     ),
     disableBeacon: true,
@@ -1825,7 +1835,7 @@ const mobilePracticeTourSteps = [
     disableBeacon: true,
   },
   {
-    target: '.practice-tour-start-practice',
+    target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
     content: (
       <div>
@@ -2153,7 +2163,7 @@ const mobileLessonsTourSteps = [
 // Slice the tour steps to only include practice view
 // steps and not preview view steps
 export const practiceTourStepsAlternative =
-  window.innerWidth >= 700 ? desktopPracticeTourSteps.slice(4) : mobilePracticeTourSteps.slice(3)
+  window.innerWidth >= 700 ? desktopPracticeTourSteps.slice(5) : mobilePracticeTourSteps.slice(3)
 export const practiceTourSteps =
   window.innerWidth >= 700 ? desktopPracticeTourSteps : mobilePracticeTourSteps
 export const progressTourSteps =

@@ -1453,7 +1453,7 @@
     "Start Practicing": "Aloita harjoittelu",
     "practice-tour-start-practice-message": "Voit harjoitella kielioppia, kuuntelua tai molempia samaan aikaan.\n<br/>\nSeuraavaksi menemme harjoittelu-sivulle!",
     "Exercises": "Harjoitukset",
-    "practice-tour-exercise-box-message": "Harjoitukset sisältävät monivalintatehtäviä, aukkotehtäviä tai kuullunymmärtämistehtäviä.",
+    "practice-tour-exercise-box-message": "Harjoitukset sisältävät monivalinta-, aukko- ja kuullunymmärtämistehtäviä.",
     "practice-tour-exercise-message": "Klikkaamalla yksittäistä harjoitusta saat nähdä siihen liittyvän vinkin.",
     "practice-tour-check-answers-message": "Kun kappaleen tehtävät on tehty, tarkista vastaukset klikkaamalla tästä.",
     "Progress bar": "Edistymismittari",
@@ -1806,6 +1806,8 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Poistaminen on mahdollista, kun prosessointi on valmis",
-    "processing-story-with-percent": "Processing... {progress}% done",
-    "story-not-yet-processed-yellow-box": "Tekstiä käsitellään, kohta valmista.\n\nVoit heti aloittaa harjoittelun."
+    "processing-story-with-percent": "Käsitellään… {progress} % valmis",
+    "story-not-yet-processed-yellow-box": "Tekstiä käsitellään, kohta valmista.\n\nVoit heti aloittaa harjoittelun.",
+    "practice-tour-edit-delete-title": "Muokkaa ja poista teksti",
+    "practice-tour-edit-delete-message": "Tässä voit muokata tai poistaa tarinan. <br/> Seuraavaksi menemme harjoittelu-sivulle!"
 }

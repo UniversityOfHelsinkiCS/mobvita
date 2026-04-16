@@ -61,6 +61,20 @@ const Tour = () => {
     ...tourState,
     steps: (tourState.steps || [])
       .filter(step => {
+        if (tourState.steps === practiceTourSteps && teacherView) {
+          // Teacher flow reuses the start-practice step as edit/delete, so drop duplicate step.
+          if (step.target === '.practice-tour-edit-delete-story') {
+            return false
+          }
+        }
+
+        if (tourState.steps === practiceTourSteps && !teacherView) {
+          // Student flow should never show edit/delete step.
+          if (step.target === '.practice-tour-edit-delete-story') {
+            return false
+          }
+        }
+
         if (tourState.steps === lessonsTourSteps && teacherView) {
           // Teachers do not use the lesson performance tour step.
           return step.target !== '.lesson-performance'
@@ -95,6 +109,26 @@ const Tour = () => {
         return {
           ...step,
           target: getSafeTarget('.library-tour-modal-review-button'),
+        }
+      }
+
+      if (tourState.steps === practiceTourSteps && step.target === '.practice-tour-start-practice-story') {
+        if (teacherView) {
+          return {
+            ...step,
+            target: getSafeTarget('.practice-tour-edit-delete-story'),
+            title: <FormattedMessage id="practice-tour-edit-delete-title" />,
+            content: (
+              <div>
+                <FormattedHTMLMessage id="practice-tour-edit-delete-message" />
+              </div>
+            ),
+          }
+        }
+
+        return {
+          ...step,
+          target: getSafeTarget('.practice-tour-start-practice-story'),
         }
       }
 
@@ -291,12 +325,14 @@ const Tour = () => {
           if (index === 0) {
             dispatch({ type: 'SHOW_TOPICS_BOX' })
           }
+          if (index === 1 && action !== ACTIONS.PREV) {
+            dispatch({ type: 'CLOSE_TOPICS_BOX' })
+          }
           if (index === 2) {
             dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            dispatch({ type: 'CLOSE_TOPICS_BOX' })
             const currentPath = history.location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
             history.push(`${newPath}practice/`)
