@@ -61,6 +61,11 @@ const Tour = () => {
     ...tourState,
     steps: (tourState.steps || [])
       .filter(step => {
+        if (tourState.steps === lessonsTourSteps && teacherView) {
+          // Teachers do not use the lesson performance tour step.
+          return step.target !== '.lesson-performance'
+        }
+
         if (tourState.steps !== libraryTourSteps) {
           return true
         }
@@ -194,18 +199,6 @@ const Tour = () => {
           return
         }
       }
-      // if (tourState.steps === lessonsTourSteps && (index === 2 || index === 3) && action !== ACTIONS.PREV) {
-      //   const lessonNextButton = document.querySelector('.lesson-setup-next-button')
-
-      //   if (lessonNextButton instanceof HTMLElement) {
-      //     lessonNextButton.click()
-      //     setTimeout(() => {
-      //       dispatch(handleNextTourStep(index + 1))
-      //       window.dispatchEvent(new Event('resize'))
-      //     }, 250)
-      //     return
-      //   }
-      // }
       if (tourState.steps === lessonsTourSteps && index === 4 && action !== ACTIONS.PREV) {
         const customGrammarButton = document.querySelector('.lesson-tour-custom-grammar-button')
 
@@ -230,7 +223,11 @@ const Tour = () => {
           return
         }
       }
-      if (tourState.steps === lessonsTourSteps && index === 7 && action !== ACTIONS.PREV) {
+      const currentLessonStepTarget = safeTourState.steps?.[index]?.target
+      const shouldCloseLessonModal =
+        currentLessonStepTarget === '.lesson-performance' ||
+        (teacherView && currentLessonStepTarget === '.lesson-content')
+      if (tourState.steps === lessonsTourSteps && shouldCloseLessonModal && action !== ACTIONS.PREV) {
         const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
           el => el instanceof HTMLElement && el.offsetParent !== null
         )

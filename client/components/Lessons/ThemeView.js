@@ -13,6 +13,7 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
 
   return (
     <div
+      className='lesson-story-topic'
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',

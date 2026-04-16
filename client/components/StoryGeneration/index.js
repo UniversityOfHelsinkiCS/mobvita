@@ -149,7 +149,7 @@ const StoryGeneration = () => {
       <h5>
         <FormattedMessage id="input-story-generation-comment" />:
       </h5>
-      <div className="group-buttons sm lesson-story-topic">
+      <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '500px', margin: 'auto' }}>
           <textarea
             style={{
@@ -376,7 +376,7 @@ const StoryGeneration = () => {
 
   const generatedStoryControl = (
     <div className="align-center">
-      <div className="group-buttons sm lesson-story-topic">
+      <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
           {generationPending ? (
             <div className="row justify-center align-center">

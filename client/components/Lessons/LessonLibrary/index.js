@@ -487,7 +487,7 @@ const LessonList = () => {
                     minHeight: 0,
                   }}
                 >
-                  <div className="lesson-setup-body lesson-story-topic">
+                  <div className="lesson-setup-body">
                     {teacherView && (
                       <div
                         style={{
