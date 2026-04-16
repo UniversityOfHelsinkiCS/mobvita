@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sendEmail } from 'Utilities/redux/emailReducer'
 
 
-export default function ContactUs({ trigger }) {
+export default function ContactUs({ trigger, open: controlledOpen, setOpen: setControlledOpen }) {
   const dispatch = useDispatch()
 
   const error = useSelector(({ email }) => email.errorMessage)
@@ -19,7 +19,10 @@ export default function ContactUs({ trigger }) {
   }
 
   const [formState, setFormState] = useState(initialFormState)
-  const [open, setOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const isControlled = typeof controlledOpen === 'boolean' && typeof setControlledOpen === 'function'
+  const modalOpen = isControlled ? controlledOpen : internalOpen
+  const setModalOpen = isControlled ? setControlledOpen : setInternalOpen
 
   const handleFormChange = (e) => {
     const { name, value } = e.target
@@ -31,7 +34,7 @@ export default function ContactUs({ trigger }) {
   }
 
   const handleFormSubmit = () => {
-    setOpen(false)
+    setModalOpen(false)
     dispatch(sendEmail(formState))
     setFormState(initialFormState)
   }
@@ -41,9 +44,9 @@ export default function ContactUs({ trigger }) {
     <Modal
       dimmer="inverted"
       closeIcon
-      open={open}
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+      onOpen={() => setModalOpen(true)}
       trigger={trigger}
     >
       <Modal.Header>Contact us</Modal.Header>

@@ -45,6 +45,7 @@ export default function Sidebar({ history }) {
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
+  const [contactUsOpen, setContactUsOpen] = useState(false)
   const intl = useIntl()
   const isTeacher = user?.user.is_teacher
   const teacherView = user?.teacherView
@@ -140,6 +141,7 @@ export default function Sidebar({ history }) {
       style={{ width: smallWindow ? '80%' : '350px', zIndex: 1001 }}
     >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
+      <ContactUs open={contactUsOpen} setOpen={setContactUsOpen} />
       <div className="sidebar-content" ref={sidebar}>
         <div className="revitaLogo"
              style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
@@ -415,12 +417,13 @@ export default function Sidebar({ history }) {
                 icon='info circle'
               />
               
-              <ContactUs trigger={
-                <DropdownItem
-                  text={intl.formatMessage({id: 'contact-us'})}
-                  icon='envelope outline'
-                />
-              } />
+              <DropdownItem
+                text={intl.formatMessage({ id: 'contact-us' })}
+                icon="envelope outline"
+                onClick={() => {
+                  setContactUsOpen(true)
+                }}
+              />
               
               <DropdownItem 
                 data-cy="logout-button" 
