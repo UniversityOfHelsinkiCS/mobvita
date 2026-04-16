@@ -14,11 +14,8 @@ import {
   translatableLanguages,
   getTextStyle,
   flashcardColors,
-  hiddenFeatures,
 } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
-import { Spinner } from 'react-bootstrap'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
