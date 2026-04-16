@@ -4,8 +4,9 @@ import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import Spinner from 'Components/Spinner'
 import { useParams, useHistory } from 'react-router-dom'
-import { Divider, Placeholder, PlaceholderHeader, PlaceholderLine } from 'semantic-ui-react'
+import { Divider } from 'semantic-ui-react'
 
 const PreviousSnippets = (props) => {
   const isLesson = props.isLesson
@@ -59,23 +60,7 @@ const PreviousSnippets = (props) => {
   }
 
   if (!isLesson && (pending || (focusedSnippet?.snippetid[0] !== 0 && previous?.length === 0))) {
-    return (
-      <div className="pt-nm" style={{ marginBottom: '2rem' }}>
-        <Placeholder fluid>
-          <PlaceholderHeader>
-            <PlaceholderLine length="very long" />
-          </PlaceholderHeader>
-          <PlaceholderHeader>
-            <PlaceholderLine length="full" />
-            <PlaceholderLine length="long" />
-          </PlaceholderHeader>
-          <PlaceholderHeader>
-            <PlaceholderLine length="full" />
-            <PlaceholderLine length="medium" />
-          </PlaceholderHeader>
-        </Placeholder>
-      </div>
-    )
+    return null
   }
 
   if (isLesson === true){
