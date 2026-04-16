@@ -1177,7 +1177,7 @@
     "previous": "Precedente",
     "competition-mode": "Competizione",
     "competition-mode-info-text": "In modalità competizione, gareggerai contro un <b>bot</b> che ha le tue stesse abilità. La competizione finirà quando uno di voi raggiungerà la fine della storia: il vincitore è colui che ha più risposte <b>corrette</b> in quel momento!",
-    "story-not-yet-processed": "Questo testo è ancora in fase di elaborazione...",
+    "story-not-yet-processed": "La competizione e i cruciverba saranno abilitati presto — quando la storia sarà completamente elaborata",
     "groups-for-only-registered-users": "Creare e unirsi al gruppo possono solo utenti registrati. Per favore registrati e log in!",
     "show-exercise-preview": "Mostra l'anteprima dei esercizi",
     "warning-for-anonymous-users": "E necessario registrarsi per salvare le storie per uso successivo",
@@ -1805,5 +1805,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Testo ancora in fase di elaborazione. Sarà completata a breve.\n\nPuoi iniziare subito ad allenarti."
 }

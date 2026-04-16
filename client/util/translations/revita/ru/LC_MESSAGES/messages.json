@@ -1179,7 +1179,7 @@
     "previous": "Предыдущая",
     "competition-mode": "Соревнование",
     "competition-mode-info-text": "Соревнование против <b>БОТА</b>, который примерно на твоем уровне. Соревнование закончится, когда один из вас дойдет до конца истории — победит тот, у кого больше <b>правильных</b> ответов!",
-    "story-not-yet-processed": "С текстом можно работать, хотя он еще обрабатывается...",
+    "story-not-yet-processed": "Соревнование и кроссворды для этого текста скоро будут доступны — когда закончится анализ текста",
     "groups-for-only-registered-users": "Пожалуйста, войди в систему с зарегистрированным аккаунтом, чтобы создать группу или вступить в группу.",
     "show-exercise-preview": "Показать темы",
     "warning-for-anonymous-users": "Пожалуйста, войди в систему с зарегистрированным аккаунтом, чтобы сохранить историю на будущее.",
@@ -1808,5 +1808,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Текст еще обрабатывается.\n\nМожно уже начинать упражнения."
 }

@@ -1176,7 +1176,7 @@
     "previous": "Edellinen",
     "competition-mode": "Kilpailu",
     "competition-mode-info-text": "Kilpailutilassa vastassasi on <b>botti</b>, joka on taidoiltaan samaa tasoa kuin sinä itse. Kisa päättyy, kun jompi kumpi pääsee tekstin loppuun, ja voittaja on se, jolla on sinä hetkenä eniten tehtäviä oikein!",
-    "story-not-yet-processed": "Harjoittelu saatavilla\\nKäsitellään, kohta valmista",
+    "story-not-yet-processed": "Kaikki harjoitusmuodot avautuvat hetken päästä – kun teksti on prosessoitu",
     "groups-for-only-registered-users": "Ryhmien luominen ja niihin liittyminen on mahdollista ainoastaan rekisteröityneille käyttäjille",
     "show-exercise-preview": "Näytä tehtävien esikatselu",
     "warning-for-anonymous-users": "Huomioithan, että tekstien tallentaminen myöhempään käyttöön on mahdollista vain rekisteröityneille käyttäjille",
@@ -1806,5 +1806,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Poistaminen on mahdollista, kun prosessointi on valmis",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Tekstiä käsitellään, kohta valmista.\n\nVoit heti aloittaa harjoittelun."
 }

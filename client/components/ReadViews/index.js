@@ -520,7 +520,7 @@ const ReadViews = ({ match }) => {
             {underProcessing && preProcessingReady && !processingComplete && (
               <div className="story-not-processed">
                 <div className="story-not-processed-text">
-                  {intl.formatMessage({ id: 'story-not-yet-processed' }).replace(/\\n/g, '\n')}
+                  {intl.formatMessage({ id: 'story-not-yet-processed-yellow-box' }).replace(/\\n/g, '\n')}
                 </div>
               </div>
             )}

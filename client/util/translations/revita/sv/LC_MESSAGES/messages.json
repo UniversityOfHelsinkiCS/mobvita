@@ -1228,7 +1228,7 @@
     "story-remove-success": "Berättelsen var raderad!",
     "sort-by-title-option": "Titel",
     "story-difficulty": "Svårighetsgrad",
-    "story-not-yet-processed": "Practice available\\nProcessing, ready soon",
+    "story-not-yet-processed": "Competition and crosswords will be enabled very shortly — as soon as the story is fully processed",
     "shared-with-following-groups": "Shared with groups:",
     "explain-library-search": "Here you can search for text contained in the story",
     "showing-results-for": "Showing search results for",
@@ -1660,5 +1660,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Story is still processing, will be completed soon.\n\nYou may begin practice right away."
 }

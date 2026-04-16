@@ -1179,7 +1179,7 @@
     "previous": "Previous",
     "competition-mode": "Competition",
     "competition-mode-info-text": "In competition mode, you will compete against a <b>bot</b> that has about the same skills as you. The competition will end when one of you reaches the end of the story — the winner is the one who has more <b>correct</b> answers at that time!",
-    "story-not-yet-processed": "Practice available\\nProcessing, ready soon",
+    "story-not-yet-processed": "Competition and crosswords will be enabled very shortly — as soon as the story is fully processed",
     "groups-for-only-registered-users": "Creating a group and joining a group is possible for registered users only. Please register and log in!",
     "show-exercise-preview": "Show exercise preview",
     "warning-for-anonymous-users": "Please note that saving stories for later use is possible only for registered users",
@@ -1806,5 +1806,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Story is still processing, will be completed soon.\n\nYou may begin practice right away."
 }

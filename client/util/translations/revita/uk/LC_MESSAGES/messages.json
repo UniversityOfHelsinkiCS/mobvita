@@ -250,7 +250,7 @@
     "click-to-add-site-to-favourites": "Натисніть тут, щоб додати веб-сайт до ваших улюблених!",
     "creation-date": "Дата створення",
     "back-to-library": "Повернутися до бібліотеки",
-    "story-not-yet-processed": "Цю історію можна використовувати, але вона ще обробляється... (буде завершено незабаром)",
+    "story-not-yet-processed": "Змагання та кросворди будуть доступні дуже скоро - як тільки історія буде повністю оброблена.",
     "shared-with-following-groups": "Поділено з групами",
     "explain-library-search": "Тут ви можете шукати текст, що міститься в історії",
     "Read": "Читання",
@@ -915,5 +915,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "Цю історію можна використовувати, але вона ще обробляється... (буде завершено незабаром)"
 }

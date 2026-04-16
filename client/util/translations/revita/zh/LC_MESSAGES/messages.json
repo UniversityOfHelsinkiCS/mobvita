@@ -241,7 +241,7 @@
     "Back to library": "返回图书馆",
     "back-to-library": "返回图书馆",
     "click-to-add-site-to-favourites": "将该网站添加到收藏夹！",
-    "story-not-yet-processed": "文章尚未处理结束",
+    "story-not-yet-processed": "分析完成后该文章的竞赛和填字游戏将很快可用",
     "creation-date": "创建日期",
     "date-added": "日期",
     "empty_content": "空白文件！",
@@ -1183,5 +1183,6 @@
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
-    "processing-story-with-percent": "Processing... {progress}% done"
+    "processing-story-with-percent": "Processing... {progress}% done",
+    "story-not-yet-processed-yellow-box": "文章尚未处理结束"
 }
