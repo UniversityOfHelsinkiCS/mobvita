@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Modal, Container, Form, Button } from 'semantic-ui-react'
+import { Modal, Container, Form } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendEmail } from 'Utilities/redux/emailReducer'
 

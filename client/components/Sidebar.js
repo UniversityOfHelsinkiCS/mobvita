@@ -421,6 +421,7 @@ export default function Sidebar({ history }) {
                 text={intl.formatMessage({ id: 'contact-us' })}
                 icon="envelope outline"
                 onClick={() => {
+                  dispatch(sidebarSetOpen(false))
                   setContactUsOpen(true)
                 }}
               />
