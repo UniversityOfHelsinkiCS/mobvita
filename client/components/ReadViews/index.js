@@ -497,19 +497,32 @@ const ReadViews = ({ match }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
-                  {(!isStudentPreviewProcessing || !!routeStory?.title) && (
+
+                  {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
                     <span className="header-text practice-tour-start">
                       {routeStory?.title || ''}
                     </span>
                   )}
                 </div>
               </Header>
-              <span className="cefr-level">{difficultyValueDisplay}</span>
+              {(preProcessingReady || processingFinished) && (
+                <div
+                  className="cefr-level"
+                  style={{
+                    background:
+                      String(difficultyValueDisplay).trim() === '' ? '#ffffff' : '#b7fcff',
+                  }}
+                >
+                  {difficultyValueDisplay}
+                </div>
+              )}
             </div>
-            {underProcessing && preProcessingReady && (
-              <span className="story-not-processed-text">
-                {intl.formatMessage({ id: 'story-not-yet-processed' }).replace(/\\n/g, '\n')}
-              </span>
+            {underProcessing && preProcessingReady && !processingComplete && (
+              <div className="story-not-processed">
+                <div className="story-not-processed-text">
+                  {intl.formatMessage({ id: 'story-not-yet-processed' }).replace(/\\n/g, '\n')}
+                </div>
+              </div>
             )}
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
