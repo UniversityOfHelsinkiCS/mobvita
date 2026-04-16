@@ -168,43 +168,32 @@ const StoryDetailsModal = ({
                     </Button>
                   </Link>
                 )}
-                {!story.flashcardsOnly && isTeacher && (
-                  <>
-                    {inGroupLibrary && (
-                      <Link to={`/stories/${story._id}/group/preview`}>
-                        <Button className="story-detail-modal-action-button" variant="primary">
-                          <FormattedMessage id="preview" />
-                        </Button>
-                      </Link>
-                    )}
-                    {!inGroupLibrary && (
-                      <Link to={`/stories/${story._id}/preview`}>
-                        <Button className="story-detail-modal-action-button" variant="secondary">
-                          <FormattedMessage id="preview" />
-                        </Button>
-                      </Link>
-                    )}
-                    {inGroupLibrary ? (
-                      <Link to={`/stories/${story._id}/group/review`}>
-                        <Button
-                          className="story-detail-modal-action-button library-tour-modal-review-button"
-                          variant="primary"
-                        >
-                          <FormattedMessage id="review" />
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link to={`/stories/${story._id}/review`}>
-                        <Button
-                          className="story-detail-modal-action-button library-tour-modal-review-button"
-                          variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
-                          disabled={story.percent_cov === 0}
-                        >
-                          <FormattedMessage id="review" />
-                        </Button>
-                      </Link>
-                    )}
-                  </>
+                {!inGroupLibrary && (
+                  <Link to={`/stories/${story._id}/preview`}>
+                    <Button className="story-detail-modal-action-button" variant="secondary">
+                      <FormattedMessage id="preview" />
+                    </Button>
+                  </Link>
+                )}
+                {inGroupLibrary ? (
+                  <Link to={`/stories/${story._id}/group/review`}>
+                    <Button
+                      className="story-detail-modal-action-button library-tour-modal-review-button"
+                      variant="primary"
+                    >
+                      <FormattedMessage id="review" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link to={`/stories/${story._id}/review`}>
+                    <Button
+                      className="story-detail-modal-action-button library-tour-modal-review-button"
+                      variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
+                      disabled={story.percent_cov === 0}
+                    >
+                      <FormattedMessage id="review" />
+                    </Button>
+                  </Link>
                 )}
               </>
             )}
