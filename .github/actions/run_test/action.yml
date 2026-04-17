@@ -14,7 +14,7 @@ runs:
   steps:
     - name: npm ci
       shell: bash
-      run: npm ci
+      run: npm ci --legacy-peer-deps
 
     - name: docker compose up -d
       shell: bash
