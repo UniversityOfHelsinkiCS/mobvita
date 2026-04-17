@@ -163,7 +163,7 @@ jobs:
       - name: Pull image and create a container
         run: docker create --name mobvita toska/mobvita:staging
       - name: Copy assets from the container
-        run: docker cp mobvita:usr/src/app/dist ./app
+        run: docker cp mobvita:/usr/src/app/dist ./app
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:

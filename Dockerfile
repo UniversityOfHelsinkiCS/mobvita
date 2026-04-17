@@ -13,8 +13,9 @@ COPY package.json package-lock.json ./
 # install deps into the IMAGE (this is fine, but will be overwritten by volumes unless you mount a volume)
 RUN npm ci --legacy-peer-deps --include=dev
 
-# copy source (optional for dev; compose bind-mount will override)
+# copy source and build frontend assets so dist exists in pushed images
 COPY . .
+RUN npm run build
 
 EXPOSE 8000
 
