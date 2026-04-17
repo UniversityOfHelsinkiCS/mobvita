@@ -83,6 +83,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: true,
+      cssCodeSplit: false,
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {

@@ -17,19 +17,21 @@ export const getLessonSnippet = (lessonId, groupId) => {
 }
 
 export const cacheLessonSnippet = (lessonId, groupId, candidateIds, topics) => {
+  const safeCandidateIds = Array.isArray(candidateIds) ? candidateIds : []
+  const safeTopics = Array.isArray(topics) ? topics : []
   let route = `/lesson/exercise`
-  if (candidateIds.length === 0 && groupId) {
+  if (safeCandidateIds.length === 0 && groupId) {
     route += `?group_id=${groupId}`
   } else if (groupId) {
-    route += `?group_id=${groupId}&exclude_candidates=${candidateIds.join(',')}`
+    route += `?group_id=${groupId}&exclude_candidates=${safeCandidateIds.join(',')}`
   } else {
-    route += `?exclude_candidates=${candidateIds.join(',')}`
+    route += `?exclude_candidates=${safeCandidateIds.join(',')}`
   }
 
-  if (topics.length && route.includes('?')) {
-    route += `&topics=${encodeURIComponent(topics.join('#'))}`
-  } else if (topics.length) {
-    route += `?topics=${encodeURIComponent(topics.join('#'))}`
+  if (safeTopics.length && route.includes('?')) {
+    route += `&topics=${encodeURIComponent(safeTopics.join('#'))}`
+  } else if (safeTopics.length) {
+    route += `?topics=${encodeURIComponent(safeTopics.join('#'))}`
   }
 
   const prefix = 'CACHE_NEXT_SNIPPET'
@@ -197,7 +199,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         previous: [],
-        focused: undefined,
+        focused: null,
       }
 
     case 'GET_LESSON_SNIPPET_ATTEMPT':
@@ -351,14 +353,14 @@ export default (state = initialState, action) => {
     case 'CLEAR_FOCUSED_SNIPPET':
       return {
         ...state,
-        focused: undefined,
+        focused: null,
         eloHearts: {},
       }
 
     case 'RESET_SESSION_ID':
       return {
         ...state,
-        sessionId: undefined,
+        sessionId: null,
       }
 
     case 'GET_NEXT_FROM_CACHE':
@@ -367,7 +369,7 @@ export default (state = initialState, action) => {
         previous: !action.resetStory && state.previous || [],
         focused: action.nextSnippet,
         nextSnippetKeyFromCache: action.nextSnippetKey,
-        pending: action.nextSnippet === undefined,
+        pending: action.nextSnippet == null,
         error: false,
       }
     case 'SET_INITIAL_ELO_HEARTS':
@@ -441,7 +443,7 @@ export default (state = initialState, action) => {
       }
 
     case 'DROP_CACHED_SNIPPET':
-      const { [action.snippetKey]: undefined, ...newSnippets } = state.cachedSnippets
+      const { [action.snippetKey]: _removedSnippet, ...newSnippets } = state.cachedSnippets
       return {
         ...state,
         cachedSnippets: newSnippets,

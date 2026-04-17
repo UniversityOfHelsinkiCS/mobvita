@@ -1,5 +1,4 @@
 import React from 'react'
-import 'Assets/custom.scss'
 
 const Spinner = ({
   fullHeight = false,
