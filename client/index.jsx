@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import * as Sentry from '@sentry/react'
@@ -63,8 +63,10 @@ if (window.responsiveVoice) {
   }
 }
 
+const root = createRoot(document.getElementById('root'))
+
 const refresh = () =>
-  render(
+  root.render(
     <Provider store={store}>
       <ConnectedIntlProvider>
         <BrowserRouter basename={basePath}>
@@ -73,8 +75,7 @@ const refresh = () =>
           </ErrorBoundary>
         </BrowserRouter>
       </ConnectedIntlProvider>
-    </Provider>,
-    document.getElementById('root')
+    </Provider>
   )
 
 refresh()
