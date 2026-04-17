@@ -314,6 +314,8 @@ const LessonList = () => {
     selectedTopicIds &&
     selectedTopicIds.length > 0
 
+  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
+
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
 
   // Lesson Group View
@@ -379,8 +381,6 @@ const LessonList = () => {
       )}
     </Container>
   )
-
-  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
   topics.sort((a, b) => {
     let dir = 0
