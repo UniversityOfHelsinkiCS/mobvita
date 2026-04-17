@@ -1,7 +1,7 @@
 /**
  * Insert common items here
  */
-import sanitize from 'sanitize-html'
+import DOMPurify from 'dompurify'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import React from 'react'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
@@ -92,13 +92,17 @@ import network from 'Assets/images/network.svg'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { hiddenFeatures } from 'Utilities/common'
 
 import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
 import { callApi, yandexSpeak, RVSpeak, tacotronSpeak, coquiSpeak } from './apiConnection'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import Sparkle from 'react-sparkle'
+
+export const inProduction = process.env.NODE_ENV === 'production'
+export const basePath = process.env.BASE_PATH || '/'
+export const isStaging = process.env.ENVIRONMENT === 'staging'
+export const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'development'
 
 export const images = {
   revitaLogoTransparent,
@@ -592,8 +596,11 @@ const defaultAllowed = [
 ]
 
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
-  const defaultOptions = { allowedTags }
-  return { __html: sanitize(dirty, defaultOptions) }
+  return {
+    __html: DOMPurify.sanitize(dirty || '', {
+      ALLOWED_TAGS: allowedTags,
+    }),
+  }
 }
 
 export const formatGreenFeedbackText = text =>
@@ -609,8 +616,6 @@ export const formatEmailList = emailListAsString => {
     .map(p => p.trim())
     .filter(p => p.length > 0)
 }
-
-export * from '@root/config/common'
 
 export const rightAlignedLanguages = ['Syriac']
 

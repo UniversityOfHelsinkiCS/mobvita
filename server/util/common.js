@@ -7,12 +7,10 @@ const Axios = require('axios')
 const https = require('https')
 
 const revitaUrl = process.env.REVITA_URL // Please set ENV instead of changing here !!!!
-// https://revita-test.cs.helsinki.fi/api
-// 'http://127.0.0.1:5000/api/'
-console.log('revitaUrl', revitaUrl)
-
 if (!revitaUrl) {
-  console.error('REVITA_URL missing') // eslint-disable-line no-console
+  console.error('Missing required environment variable REVITA_URL.') // eslint-disable-line no-console
+  console.error('Copy .env.example to .env and set REVITA_URL before starting the app.') // eslint-disable-line no-console
+  console.error('Example: REVITA_URL=https://revita-test.cs.helsinki.fi/api') // eslint-disable-line no-console
   process.exit(1)
 }
 

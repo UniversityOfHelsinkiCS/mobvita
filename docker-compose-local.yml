@@ -6,18 +6,21 @@ services:
     container_name: mobvita_local
     ports:
       - "8000:8000"
+      - "24678:24678"
     environment:
       NODE_OPTIONS: "--openssl-legacy-provider"
       REVITA_URL: "https://revita-test.cs.helsinki.fi/api"
       ENVIRONMENT: "development"
       NODE_ENV: "development"
       CHOKIDAR_USEPOLLING: "true"
+      VITE_HMR_HOST: "localhost"
+      VITE_HMR_PORT: "24678"
       TZ: "Europe/Helsinki"
     volumes:
       - ./:/usr/src/app
       # IMPORTANT: use a named volume for node_modules so you don't use host node_modules
       - mobvita_node_modules:/usr/src/app/node_modules
-    command: ["npm", "run", "start:dev"]
+    command: ["sh", "-lc", "npm ci --legacy-peer-deps --include=dev && npm run start:dev"]
 
 volumes:
   mobvita_node_modules: {}

@@ -8,9 +8,32 @@ Install node and docker and docker-compose
 
 Run `npm ci`
 
+Copy `.env.example` to `.env` and set at least `REVITA_URL`.
+
 Run `npm run dev` or `docker-compose up` whichever you prefer (with newer version of Docker `docker compose up`)
 
 Open localhost:8000 on your web browser
+
+## Frontend bundler modes
+
+Development mode now uses Vite through the Express server:
+
+- `npm run start:dev`
+
+Build commands:
+
+- `npm run build`
+
+The production build uses Vite manual chunk splitting to keep the main bundle smaller.
+
+## Docker local notes
+
+If you hit missing-module errors after dependency changes (for example `Cannot find module 'vite'`), recreate local volumes:
+
+- `docker compose -f docker-compose-local.yml down -v`
+- `docker compose -f docker-compose-local.yml up --build --force-recreate`
+
+If the browser logs show Vite websocket errors on port `24678`, ensure the local compose file is used so port `24678` is published.
 
 # Testing
 

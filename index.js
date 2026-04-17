@@ -2,6 +2,7 @@ require('dotenv').config()
 require('module-alias/register')
 const chokidar = require('chokidar')
 const express = require('express')
+const fs = require('fs')
 const path = require('path')
 require('express-async-errors')
 
@@ -26,33 +27,45 @@ watcher.on('ready', () => {
   })
 })
 
-/**
- * For frontend use hot loading when in development, else serve the static content
- */
-if (!inProduction) {
-  /* eslint-disable */
-  const webpack = require('webpack')
-  const middleware = require('webpack-dev-middleware')
-  const hotMiddleWare = require('webpack-hot-middleware')
-  const webpackConf = require('@root/webpack.config')
-  /* eslint-enable */
-  const compiler = webpack(webpackConf('development', { mode: 'development' }))
+const setupFrontend = async () => {
+  /**
+   * For frontend use Vite middleware when in development, else serve static content.
+   */
+  if (!inProduction) {
+    const { createServer: createViteServer } = require('vite')
+    const hmrPort = Number(process.env.VITE_HMR_PORT || 24678)
+    const hmrHost = process.env.VITE_HMR_HOST || 'localhost'
 
-  const devMiddleware = middleware(compiler)
-  app.use(devMiddleware)
-  app.use(hotMiddleWare(compiler))
-  app.use('*', (req, res, next) => {
-    const filename = path.join(compiler.outputPath, 'index.html')
-    devMiddleware.waitUntilValid(() => {
-      compiler.outputFileSystem.readFile(filename, (err, result) => {
-        if (err) return next(err)
-        res.set('content-type', 'text/html')
-        res.send(result)
-        return res.end()
-      })
+    const vite = await createViteServer({
+      server: {
+        middlewareMode: true,
+        hmr: {
+          host: hmrHost,
+          port: hmrPort,
+          clientPort: hmrPort,
+        },
+      },
+      appType: 'custom',
     })
-  })
-} else {
+
+    app.use(vite.middlewares)
+    app.use('*', async (req, res, next) => {
+      try {
+        const url = req.originalUrl
+        const templatePath = path.resolve(__dirname, 'index.html')
+        const template = await fs.promises.readFile(templatePath, 'utf-8')
+        const html = await vite.transformIndexHtml(url, template)
+
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+      } catch (error) {
+        vite.ssrFixStacktrace(error)
+        next(error)
+      }
+    })
+
+    return
+  }
+
   const DIST_PATH = path.resolve(__dirname, './dist')
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
@@ -60,4 +73,12 @@ if (!inProduction) {
   app.get('*', (req, res) => res.sendFile(INDEX_PATH))
 }
 
-app.listen(PORT, () => { logger.info(`Started on port ${PORT}`) })
+const start = async () => {
+  await setupFrontend()
+  app.listen(PORT, () => { logger.info(`Started on port ${PORT}`) })
+}
+
+start().catch(error => {
+  logger.error('Failed to start server', error)
+  process.exit(1)
+})
