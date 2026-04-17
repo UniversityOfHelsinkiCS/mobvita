@@ -33,7 +33,10 @@ If you hit missing-module errors after dependency changes (for example `Cannot f
 - `docker compose -f docker-compose-local.yml down -v`
 - `docker compose -f docker-compose-local.yml up --build --force-recreate`
 
-If the browser logs show Vite websocket errors on port `24678`, ensure the local compose file is used so port `24678` is published.
+If HMR websocket reconnects keep failing in Docker, restart the local stack so the latest Vite server config is applied:
+
+- `docker compose -f docker-compose-local.yml down -v`
+- `docker compose -f docker-compose-local.yml up --build --force-recreate`
 
 # Testing
 

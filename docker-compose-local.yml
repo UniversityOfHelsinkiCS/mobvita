@@ -6,7 +6,6 @@ services:
     container_name: mobvita_local
     ports:
       - "8000:8000"
-      - "24678:24678"
     environment:
       NODE_OPTIONS: "--openssl-legacy-provider"
       REVITA_URL: "https://revita-test.cs.helsinki.fi/api"
@@ -14,7 +13,7 @@ services:
       NODE_ENV: "development"
       CHOKIDAR_USEPOLLING: "true"
       VITE_HMR_HOST: "localhost"
-      VITE_HMR_PORT: "24678"
+      VITE_HMR_CLIENT_PORT: "8000"
       TZ: "Europe/Helsinki"
     volumes:
       - ./:/usr/src/app

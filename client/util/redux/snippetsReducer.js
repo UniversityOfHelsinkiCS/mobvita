@@ -293,7 +293,7 @@ export default (state = initialState, action) => {
     case 'GET_STORY_ATTEMPT':
       return {
         ...state,
-        focused: undefined,
+        focused: null,
         previous: [],
       }
     case 'GET_NEXT_SNIPPET_ATTEMPT':

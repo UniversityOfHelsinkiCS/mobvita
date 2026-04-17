@@ -2,6 +2,7 @@ require('dotenv').config()
 require('module-alias/register')
 const chokidar = require('chokidar')
 const express = require('express')
+const http = require('http')
 const fs = require('fs')
 const path = require('path')
 require('express-async-errors')
@@ -27,22 +28,23 @@ watcher.on('ready', () => {
   })
 })
 
-const setupFrontend = async () => {
+const setupFrontend = async (httpServer) => {
   /**
    * For frontend use Vite middleware when in development, else serve static content.
    */
   if (!inProduction) {
     const { createServer: createViteServer } = require('vite')
-    const hmrPort = Number(process.env.VITE_HMR_PORT || 24678)
     const hmrHost = process.env.VITE_HMR_HOST || 'localhost'
+    const hmrClientPort = Number(process.env.VITE_HMR_CLIENT_PORT || PORT)
 
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
+        host: true,
         hmr: {
+          server: httpServer,
           host: hmrHost,
-          port: hmrPort,
-          clientPort: hmrPort,
+          clientPort: hmrClientPort,
         },
       },
       appType: 'custom',
@@ -74,8 +76,9 @@ const setupFrontend = async () => {
 }
 
 const start = async () => {
-  await setupFrontend()
-  app.listen(PORT, () => { logger.info(`Started on port ${PORT}`) })
+  const httpServer = http.createServer(app)
+  await setupFrontend(httpServer)
+  httpServer.listen(PORT, () => { logger.info(`Started on port ${PORT}`) })
 }
 
 start().catch(error => {

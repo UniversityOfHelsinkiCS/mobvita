@@ -69,7 +69,9 @@ const LessonList = () => {
   const bigScreen = width >= 700
 
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
-  const { teacherView, user } = userData
+  const safeUserData = userData || {}
+  const teacherView = Boolean(safeUserData.teacherView)
+  const user = safeUserData.user || {}
   const {
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
