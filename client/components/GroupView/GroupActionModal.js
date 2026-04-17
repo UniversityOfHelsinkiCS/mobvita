@@ -46,7 +46,7 @@ const GroupActionModal = ({ trigger, role }) => {
             <span className="sm-label">
               <FormattedMessage id="enter-token" />
             </span>
-            <FormControl as="input" onChange={e => setToken(e.target.value)} />
+            <FormControl as="input" data-cy="group-token" onChange={e => setToken(e.target.value)} />
             <Button type="submit">
               <FormattedMessage id="join-group" />
             </Button>
@@ -62,6 +62,7 @@ const GroupActionModal = ({ trigger, role }) => {
             </span>
             <FormControl
               as="textarea"
+              data-cy="group-description"
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
@@ -72,6 +73,7 @@ const GroupActionModal = ({ trigger, role }) => {
               as="textarea"
               value={teachers}
               onChange={e => setTeachers(e.target.value)}
+              data-cy="teacher-emails"
             />
             <span className="sm-label">
               <FormattedMessage id="student-emails" />

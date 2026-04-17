@@ -1,20 +1,23 @@
 services:
   app:
-    image: toska/mobvita:staging
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mobvita_local
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_OPTIONS: "--openssl-legacy-provider"
+      REVITA_URL: "https://revita-test.cs.helsinki.fi/api"
+      ENVIRONMENT: "development"
+      NODE_ENV: "development"
+      CHOKIDAR_USEPOLLING: "true"
+      TZ: "Europe/Helsinki"
     volumes:
       - ./:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
-    ports:
-      - 8000:8000
-    container_name: mobvita_local
-    environment:
-      - REVITA_URL=https://revita-test.cs.helsinki.fi/api
-      - ENVIRONMENT=development
-      - LANG=C.UTF-8
-      - LANGUAGE=C.UTF-8
-      - LC_ALL=C.UTF-8
-      - CHOKIDAR_USEPOLLING=true
+      # IMPORTANT: use a named volume for node_modules so you don't use host node_modules
+      - mobvita_node_modules:/usr/src/app/node_modules
     command: ["npm", "run", "start:dev"]
 
 volumes:
-  node_modules: {}
+  mobvita_node_modules: {}
