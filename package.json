@@ -19,7 +19,7 @@
     "add-translation": "node addTranslation.js"
   },
   "engines": {
-    "node": ">=10.15"
+    "node": ">=22"
   },
   "author": "Jami Kousa",
   "license": "ISC",
