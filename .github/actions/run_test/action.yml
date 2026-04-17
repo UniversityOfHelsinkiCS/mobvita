@@ -22,9 +22,14 @@ runs:
       shell: bash
       run: npm ci --legacy-peer-deps
 
-    - name: docker compose up -d
+    - name: Start app for CI
       shell: bash
-      run: docker compose up -d
+      env:
+        ENVIRONMENT: staging
+        REVITA_URL: https://revita-test.cs.helsinki.fi/api
+      run: |
+        nohup npm run start:ci > /tmp/mobvita-app.log 2>&1 &
+        echo $! > /tmp/mobvita-app.pid
 
     - name: Wait for app to be ready
       shell: bash
@@ -49,9 +54,26 @@ runs:
         name: cypress-videos-${{inputs.context}}
         path: /home/runner/work/mobvita/mobvita/cypress/videos/
 
-    - name: Docker diagnostics on failure
+    - name: App diagnostics on failure
       if: failure()
       shell: bash
       run: |
-        docker compose ps
-        docker compose logs --no-color --tail=200
+        if [ -s /tmp/mobvita-app.pid ]; then
+          APP_PID="$(cat /tmp/mobvita-app.pid)"
+          ps -p "$APP_PID" -o pid,ppid,stat,etime,command || true
+          pgrep -P "$APP_PID" -a || true
+        fi
+        tail -n 300 /tmp/mobvita-app.log || true
+
+    - name: Stop app
+      if: always()
+      shell: bash
+      run: |
+        if [ -s /tmp/mobvita-app.pid ]; then
+          APP_PID="$(cat /tmp/mobvita-app.pid)"
+          pkill -TERM -P "$APP_PID" || true
+          kill -TERM "$APP_PID" || true
+          sleep 1
+          pkill -KILL -P "$APP_PID" || true
+          kill -KILL "$APP_PID" || true
+        fi
