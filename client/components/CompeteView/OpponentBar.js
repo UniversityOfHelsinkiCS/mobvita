@@ -4,7 +4,7 @@ import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useTimer } from 'react-compound-timer'
+import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { initializeTimer } from 'Utilities/redux/competitionReducer'
 
 const OpponentBar = ({

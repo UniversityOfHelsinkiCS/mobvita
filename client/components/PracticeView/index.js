@@ -22,7 +22,7 @@ import {
 } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { useTimer } from 'react-compound-timer'
+import { useTimer } from 'Utilities/reactTimerHookCompat'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   getTextStyle,

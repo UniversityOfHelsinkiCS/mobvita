@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useTimer } from 'react-compound-timer'
+import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { Segment } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
