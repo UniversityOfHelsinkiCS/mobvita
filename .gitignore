@@ -81,3 +81,15 @@ creds.json
 
 # sqlite
 *.db
+
+# vite cache (only needed if cacheDir is project root)
+.vite/
+
+# vite temporary bundled config artifacts
+vite.config.mjs.timestamp-*.mjs
+
+# vite SSR output (only if using SSR)
+dist-ssr/
+
+# local env overrides
+*.local

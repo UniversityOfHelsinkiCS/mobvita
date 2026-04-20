@@ -13,7 +13,6 @@ import {
 } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl' 
-import { Swipeable } from 'react-swipeable'
 import { FormattedMessage } from 'react-intl'
 import { localeOptions, capitalize, localeNameToCode, images, timerExpired } from 'Utilities/common'
 import { setLocale } from 'Utilities/redux/localeReducer'
