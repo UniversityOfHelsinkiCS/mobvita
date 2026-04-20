@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import SwipeableViews from 'react-swipeable-views'
-import { virtualize, bindKeyboard } from 'react-swipeable-views-utils'
-import flowRight from 'lodash/flowRight'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import {
@@ -26,8 +24,6 @@ import ArrowButton from './ArrowButton'
 import Fillin from './Fillin'
 import Article from './Article'
 import Quick from './Quick'
-
-const VirtualizeSwipeableViews = flowRight(bindKeyboard, virtualize)(SwipeableViews)
 
 const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
@@ -226,7 +222,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     )
   }
 
-  const slideRenderer = ({ key, index }) => {
+  const renderSlideAtIndex = index => {
     if (index >= cards.length) {
       return inBlueCardsTest ? (
         <FlashcardEndView
@@ -237,7 +233,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
           blueCardsAnswered={blueCardsAnswered}
         />
       ) : (
-        <></>
+        <div key="end-placeholder" />
       )
     }
 
@@ -245,7 +241,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       case 'article':
         return (
           <Article
-            key={key}
+            key={`slide-${index}`}
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}
             answerCard={answerCard}
@@ -254,7 +250,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       case 'quick':
         return (
           <Quick
-            key={key}
+            key={`slide-${index}`}
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}
             answerCard={answerCard}
@@ -263,7 +259,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       default:
         return (
           <Fillin
-            key={key}
+            key={`slide-${index}`}
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}
             swipeIndex={swipeIndex}
@@ -291,17 +287,15 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
           </div>
         </div>
       )}
-      <VirtualizeSwipeableViews
+      <SwipeableViews
         index={swipeIndex}
         onChangeIndex={handleIndexChange}
         containerStyle={{ maxWidth: '40em' }}
-        slideRenderer={slideRenderer}
-        slideCount={cards.length + 1}
-        overscanSlideAfter={1}
-        overscanSlideBefore={1}
         enableMouseEvents={!bigScreen}
         disabled={editing}
-      />
+      >
+        {Array.from({ length: cards.length + 1 }, (_, index) => renderSlideAtIndex(index))}
+      </SwipeableViews>
       {renderArrowButton({
         hidden: editing || swipeIndex === cards.length || cards[0].format === 'no-cards',
         onClick: () => handleIndexChange(swipeIndex + 1),
