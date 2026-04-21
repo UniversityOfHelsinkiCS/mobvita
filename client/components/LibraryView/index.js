@@ -8,21 +8,19 @@ import {
   Dropdown,
   Accordion,
   AccordionTitle,
-  AccordionContent,
-} from 'semantic-ui-react'
+  AccordionContent } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
 import { backgroundColors, capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import {
   updateLibrarySelect,
   updateGroupSelect,
   updateSortCriterion,
-  libraryTourViewed,
-} from 'Utilities/redux/userReducer'
+  libraryTourViewed } from 'Utilities/redux/userReducer'
 import { getAllStories, setLastQuery, clearFocusedStory } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
@@ -32,13 +30,12 @@ import Spinner from 'Components/Spinner'
 
 const StoryList = () => {
   const intl = useIntl()
-  const history = useHistory()
+  const location = useLocation()
   const {
     library_sort_criterion: savedSortCriterion,
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
-    oid: userId,
-  } = useSelector(({ user }) => user.data.user)
+    oid: userId } = useSelector(({ user }) => user.data.user)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
@@ -61,13 +58,12 @@ const StoryList = () => {
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [accordionState, setAccordionState] = useState(-1)
-  const groupsLibrary = history.location.pathname.includes('group')
-  const privateLibrary = history.location.pathname.includes('private')
+  const groupsLibrary = location.pathname.includes('group')
+  const privateLibrary = location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
-    group: false,
-  })
+    group: false })
   const dispatch = useDispatch()
 
   const setLibrary = library => {
@@ -88,8 +84,7 @@ const StoryList = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
     }
   }
@@ -108,8 +103,7 @@ const StoryList = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
     }
   }, [sharedToGroupSinceLastFetch, deleteSuccessful])
@@ -178,20 +172,17 @@ const StoryList = () => {
     sortDropdownOptions.push({
       key: 'difficulty',
       text: intl.formatMessage({ id: 'story-difficulty' }),
-      value: 'difficulty',
-    })
+      value: 'difficulty' })
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
-      value: 'date',
-    })
+      value: 'date' })
   }
 
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
     text: group.groupName,
-    value: group.group_id,
-  }))
+    value: group.group_id }))
 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
@@ -200,9 +191,7 @@ const StoryList = () => {
         ...savedSortCriterion,
         [savedLibrarySelection]: {
           sort_by: option.value,
-          direction: sortDirection,
-        },
-      })
+          direction: sortDirection } })
     )
   }
 
@@ -214,9 +203,7 @@ const StoryList = () => {
         ...savedSortCriterion,
         [savedLibrarySelection]: {
           sort_by: sorter,
-          direction: newDirection,
-        },
-      })
+          direction: newDirection } })
     )
   }
 
@@ -237,8 +224,7 @@ const StoryList = () => {
           width: '50%',
           border: '2px solid #000',
           fontSize: '1.3em',
-          fontWeight: 500,
-        }}
+          fontWeight: 500 }}
       >
         {intl.formatMessage({ id: 'add-your-stories' })}
       </Button>

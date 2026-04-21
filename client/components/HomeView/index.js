@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
@@ -73,10 +73,10 @@ const HomeviewButtons = ({
   setPracticeModalOpen,
   setAddStoryModalOpen,
   aTestIsEnabled,
-  aReadingComprehensionEnabled,
-}) => {
+  aReadingComprehensionEnabled }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const {lastActivity} = useSelector(({activity}) => activity)
@@ -141,7 +141,7 @@ const HomeviewButtons = ({
               imgSrc={images.group1}
               altText="two books in a pile"
               translationKey="Groups"
-              handleClick={() => history.push('/groups/teacher')}
+              handleClick={() => navigate('/groups/teacher')}
               dataCy="groups-button"
             />
           </div>
@@ -150,7 +150,7 @@ const HomeviewButtons = ({
               imgSrc={images.library}
               altText="two books in a pile"
               translationKey="Library"
-              handleClick={() => history.push('/library')}
+              handleClick={() => navigate('/library')}
               dataCy="library-button"
               content="Home-Library-EXPLANATION"
             />
@@ -161,7 +161,7 @@ const HomeviewButtons = ({
                 imgSrc={images.readingBook}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
-                handleClick={() => history.push('/lessons/library')}
+                handleClick={() => navigate('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
             </div>
@@ -177,7 +177,7 @@ const HomeviewButtons = ({
                 imgSrc={images.notesIcon}
                 altText="Continue"
                 translationKey="continue-activity"
-                handleClick={() => history.push(activityLink)}
+                handleClick={() => navigate(activityLink)}
                 dataCy="continue-activity-button"
                 content="Home-Continue-Activity-EXPLANATION"
               />
@@ -201,7 +201,7 @@ const HomeviewButtons = ({
                 imgSrc={images.readingBook}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
-                handleClick={() => history.push('/lessons/library')}
+                handleClick={() => navigate('/lessons/library')}
                 content="Home-Lessons-EXPLANATION"
               />
             </div>
@@ -211,7 +211,7 @@ const HomeviewButtons = ({
               imgSrc={images.library}
               altText="two books in a pile"
               translationKey="Library"
-              handleClick={() => history.push('/library')}
+              handleClick={() => navigate('/library')}
               dataCy="library-button"
               content="Home-Library-EXPLANATION"
             />
@@ -221,7 +221,7 @@ const HomeviewButtons = ({
               imgSrc={images.flashcards}
               altText="three playing cards"
               translationKey="Flashcards"
-              handleClick={() => history.push('/flashcards/fillin')}
+              handleClick={() => navigate('/flashcards/fillin')}
               content="Home-Flashcards-EXPLANATION"
             />
           </div>
@@ -231,7 +231,7 @@ const HomeviewButtons = ({
                 imgSrc={images.exhaustiveTest}
                 altText="a test form with a clock on it"
                 translationKey="Tests"
-                handleClick={() => history.push('/tests')}
+                handleClick={() => navigate('/tests')}
                 dataCy="tests-button"
               />
             </div>
@@ -254,7 +254,7 @@ const HomeviewButtons = ({
                 imgSrc={images.readingBook}
                 altText="reading test"
                 translationKey="reading-test"
-                handleClick={() => history.push('/reading-test')}
+                handleClick={() => navigate('/reading-test')}
                 dataCy="reading-test-button"
               />
             </div>
@@ -273,7 +273,8 @@ const HomeView = () => {
   const { groups } = useSelector(({ groups }) => groups)
   const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
   const aReadingComprehensionEnabled = groups.some(e => e.reading_comprehension)
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const userData = useSelector(state => state.user.data.user)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const { username } = userData
@@ -284,8 +285,7 @@ const HomeView = () => {
   const learningLanguage = userData ? userData.last_used_language : null
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
-    loading: incomplete.pending,
-  }))
+    loading: incomplete.pending }))
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )
@@ -294,8 +294,8 @@ const HomeView = () => {
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const userIsAnonymous = userData?.email === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
-  const welcomeView = history.location.pathname.endsWith('/welcome')
-  const homeView = history.location.pathname.endsWith('/home')
+  const welcomeView = location.pathname.endsWith('/welcome')
+  const homeView = location.pathname.endsWith('/home')
   const showDAModal = open && homeView && !userIsAnonymous
   const showWelcomeModal = open && welcomeView && !userIsAnonymous && !userData.is_new_user
 
@@ -308,8 +308,7 @@ const HomeView = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
     }
   }, [])
@@ -413,8 +412,7 @@ const HomeView = () => {
                   className="flex-col"
                   style={{
                     width: '350px',
-                    gap: '1.9em',
-                  }}
+                    gap: '1.9em' }}
                 >
                   <EloChart width="100%" />
                   <LeaderboardSummary />

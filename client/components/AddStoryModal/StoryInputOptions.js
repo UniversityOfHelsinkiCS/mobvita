@@ -2,18 +2,18 @@ import React from 'react'
 import { Icon } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import uploadFileIcon from '../../assets/images/upload-file.png'
 import uploadWebIcon from '../../assets/images/upload-cloud.png'
 import uploadPasteIcon from '../../assets/images/paste.png'
 import generateAI from '../../assets/images/generate_ai.png'
 
 const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const goToGeneratePage = () => {
     if (typeof closeModal === 'function') closeModal()
-    history.push('/story-generation')
+    navigate('/story-generation')
   }
 
   return (

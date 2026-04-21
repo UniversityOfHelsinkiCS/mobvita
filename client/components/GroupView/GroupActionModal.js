@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
 import { createGroup, joinGroup } from 'Utilities/redux/groupsReducer'
@@ -14,12 +14,12 @@ const GroupActionModal = ({ trigger, role }) => {
   const [token, setToken] = useState('')
 
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const join = event => {
     event.preventDefault()
     dispatch(joinGroup(token))
-    history.push(`/groups/${role}`)
+    navigate(`/groups/${role}`)
   }
 
   const addGroup = event => {
@@ -28,7 +28,7 @@ const GroupActionModal = ({ trigger, role }) => {
     const teachersToAdd = teachers.split(',').map(p => p.trim())
 
     dispatch(createGroup(groupName, description, studentsToAdd, teachersToAdd))
-    history.push(`/groups/${role}`)
+    navigate(`/groups/${role}`)
   }
 
   return (

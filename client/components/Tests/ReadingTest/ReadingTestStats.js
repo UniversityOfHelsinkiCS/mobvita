@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Segment } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
 
 const ReadingTestStats = ({ restartTest }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const {
     readingHistory: {
@@ -17,7 +17,7 @@ const ReadingTestStats = ({ restartTest }) => {
   } = useSelector(({ tests }) => tests)
 
   const goToHomePage = () => {
-    history.push('/home')
+    navigate('/home')
   }
 
   return (

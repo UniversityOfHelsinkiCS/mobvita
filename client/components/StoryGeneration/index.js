@@ -11,8 +11,7 @@ import {
   Container,
   Accordion,
   AccordionTitle,
-  AccordionContent,
-} from 'semantic-ui-react'
+  AccordionContent } from 'semantic-ui-react'
 import ScrollArrow from 'Components/ScrollArrow'
 import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
@@ -21,7 +20,7 @@ import Topics from 'Components/Topics'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
 import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
@@ -30,8 +29,7 @@ import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import {
   lessonsTourViewed,
   updateGroupSelect,
-  updateLibrarySelect,
-} from 'Utilities/redux/userReducer'
+  updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -72,7 +70,7 @@ const StoryGeneration = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
   const { teacherView, user } = userData
   const { oid: userId, has_seen_lesson_tour, vocabulary_score } = user
@@ -80,14 +78,12 @@ const StoryGeneration = () => {
     pending: metaPending,
     lesson_semantics,
     lesson_topics,
-    lessons,
-  } = useSelector(({ metadata }) => metadata)
+    lessons } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const {
     pending: generationPending,
     text,
-    error,
-  } = useSelector(({ storyGeneration }) => storyGeneration)
+    error } = useSelector(({ storyGeneration }) => storyGeneration)
 
   const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
   // const smallWindow = useWindowDimensions().width < 520
@@ -100,8 +96,7 @@ const StoryGeneration = () => {
     topic_ids: [],
     vocab_diff: vocabulary_score,
     learner_ideas: '',
-    instancePending: false,
-  })
+    instancePending: false })
   const [generatedStory, setGeneratedStory] = useState('')
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
   const [filteredLessons, setFilteredLessons] = useState(lessons)
@@ -140,8 +135,7 @@ const StoryGeneration = () => {
     setSliderValue(value)
     setLessonInstance({
       ...lessonInstance,
-      vocab_diff: value,
-    })
+      vocab_diff: value })
   }
 
   const generationComment = (
@@ -159,8 +153,7 @@ const StoryGeneration = () => {
               borderRadius: '5px',
               border: '1px solid #ccc',
               outline: 'none',
-              fontSize: '16px',
-            }}
+              fontSize: '16px' }}
             value={lessonInstance.learner_ideas}
             onChange={e => setLessonInstance({ ...lessonInstance, learner_ideas: e.target.value })}
           />
@@ -208,8 +201,7 @@ const StoryGeneration = () => {
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
   const markComp = StyledMark(
     intl.formatMessage({
-      id: 'Recommended vocabulary difficulty',
-    })
+      id: 'Recommended vocabulary difficulty' })
   )
   const lessonVocabularyControls = bigScreen ? (
     <div className="align-center">
@@ -223,8 +215,7 @@ const StoryGeneration = () => {
           width: '80%',
           marginTop: '30px',
           marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
+          marginRight: 'auto' }}
       >
         <ReactSlider
           className="exercise-density-slider"
@@ -262,8 +253,7 @@ const StoryGeneration = () => {
           width: '80%',
           marginTop: '30px',
           marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
+          marginRight: 'auto' }}
       >
         <ReactSlider
           className="exercise-density-slider"
@@ -314,8 +304,7 @@ const StoryGeneration = () => {
           textAlign: 'center',
           fontWeight: 500,
           margin: '18px',
-          fontSize: 'large',
-        }}
+          fontSize: 'large' }}
       >
         <div className="col col-12">
           <FormattedMessage id="story-ready-for-generation" />
@@ -341,8 +330,7 @@ const StoryGeneration = () => {
                     width: `${'100%'}`,
                     fontWeight: 'bold',
                     fontSize: 'large',
-                    marginBottom: '15px',
-                  }}
+                    marginBottom: '15px' }}
                 >
                   <FormattedMessage id={'additional-comment'} />
                 </div>
@@ -361,8 +349,7 @@ const StoryGeneration = () => {
     const newStory = {
       language: capitalize(learningLanguage),
       text: generatedStory,
-      topics: lessonInstance.topic_ids,
-    }
+      topics: lessonInstance.topic_ids }
 
     dispatch(updateLibrarySelect('private'))
     dispatch(setCustomUpload(true))
@@ -370,7 +357,7 @@ const StoryGeneration = () => {
     const createdStoryId = action?.response?.story_ids?.[action.response.story_ids.length - 1]
 
     if (createdStoryId) {
-      history.push(`/stories/${createdStoryId}/preview`)
+      navigate(`/stories/${createdStoryId}/preview`)
     }
   }
 
@@ -386,8 +373,7 @@ const StoryGeneration = () => {
                   textAlign: 'center',
                   fontWeight: 500,
                   margin: '18px',
-                  fontSize: 'large',
-                }}
+                  fontSize: 'large' }}
               >
                 <FormattedMessage id="story-generating" />
               </span>
@@ -404,8 +390,7 @@ const StoryGeneration = () => {
                       borderRadius: '5px',
                       border: '1px solid #ccc',
                       outline: 'none',
-                      fontSize: '16px',
-                    }}
+                      fontSize: '16px' }}
                     value={generatedStory}
                     onChange={e => setGeneratedStory(e.target.value)}
                   />
@@ -424,8 +409,7 @@ const StoryGeneration = () => {
                         margin: '0.5em 0',
                         padding: '1rem 0',
                         width: '100%',
-                        border: '2px solid #000',
-                      }}
+                        border: '2px solid #000' }}
                       onClick={() => uploadStory()}
                     >
                       <FormattedMessage id="upload-generated-story" />
@@ -441,8 +425,7 @@ const StoryGeneration = () => {
                       textAlign: 'center',
                       fontWeight: 500,
                       margin: '18px',
-                      fontSize: 'large',
-                    }}
+                      fontSize: 'large' }}
                   >
                     <FormattedMessage id="story-generation-error" />
                   </span>
@@ -456,8 +439,7 @@ const StoryGeneration = () => {
                     margin: '0.5em 0',
                     padding: '1rem 0',
                     width: '100%',
-                    border: '2px solid #000',
-                  }}
+                    border: '2px solid #000' }}
                   onClick={() => dispatch(generateStory(lessonInstance))}
                 >
                   <FormattedMessage id="regenerate-story" />
@@ -491,8 +473,7 @@ const StoryGeneration = () => {
   const setSelectedTopics = topic_ids => {
     setLessonInstance({
       ...lessonInstance,
-      topic_ids: topic_ids,
-    })
+      topic_ids: topic_ids })
   }
 
   return (
@@ -511,15 +492,13 @@ const StoryGeneration = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                alignSelf: 'center',
-              }}
+                alignSelf: 'center' }}
             >
               <Stepper
                 styleConfig={{
                   completedBgColor: '#c6e2ff',
                   activeBgColor: '#003366',
-                  inactiveBgColor: '#d2d3d6',
-                }}
+                  inactiveBgColor: '#d2d3d6' }}
               >
                 <Step
                   label={<FormattedMessage id="select-story-themes-and-vocabulary" />}
@@ -559,8 +538,7 @@ const StoryGeneration = () => {
                 style={{
                   float: 'right',
                   marginBottom: '8%',
-                  cursor: 'pointer',
-                }}
+                  cursor: 'pointer' }}
                 disabled={
                   goStep >= 3 ||
                   (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1)

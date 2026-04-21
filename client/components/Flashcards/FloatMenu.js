@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Icon, Popup } from 'semantic-ui-react'
 import { backgroundColors, images } from 'Utilities/common'
@@ -90,8 +90,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         iconStyle={{
           paddingBottom: '0.4em',
           paddingRight: '0.05em',
-          backgroundColor: 'rgb(199, 206, 234)',
-        }}
+          backgroundColor: 'rgb(199, 206, 234)' }}
         translationId="fill-in"
         tooltip='flashcards-translate-cards-EXPLANATION'
       >
@@ -117,8 +116,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         iconStyle={{
           paddingBottom: '0.4em',
           paddingTop: '0.2em',
-          backgroundColor: 'rgb(253, 253, 150)',
-        }}
+          backgroundColor: 'rgb(253, 253, 150)' }}
         translationId="Quick cards"
         tooltip='flashcards-quick-cards-EXPLANATION'
       >
@@ -131,7 +129,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const { storyId } = useParams()
 
   const handleFabClick = () => {
@@ -143,7 +141,7 @@ const FloatMenu = () => {
       ? `/flashcards/${mode}/story/${storyId}`
       : `/flashcards/${mode}`
 
-    history.push(path)
+    navigate(path)
     setOpen(false)
   }
 

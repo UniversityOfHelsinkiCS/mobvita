@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { Segment, Divider } from 'semantic-ui-react'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -66,9 +66,7 @@ const LessonsPracticeView = () => {
         concept,
         hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
-      },
-    }
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties } }
 
     dispatch(setAnswers(newAnswer))
   }
@@ -94,8 +92,7 @@ const LessonsPracticeView = () => {
                   ...getTextStyle(learningLanguage, 'title'),
                   width: `${'100%'}`,
                   'font-weight': 'bold',
-                  'font-size': 'large',
-                }}
+                  'font-size': 'large' }}
               >
                 {!pending && `Lesson ${lesson_instance.syllabus.syllabus_id}`}
               </div>

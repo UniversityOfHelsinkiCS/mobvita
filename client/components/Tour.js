@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,8 +8,7 @@ import {
   getLessonInstance,
   setLessonInstance,
   setLessonStep,
-  clearLessonInstanceState,
-} from 'Utilities/redux/lessonInstanceReducer'
+  clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -21,13 +20,13 @@ import {
   confettiRain,
   practiceTourSteps,
   practiceTourStepsAlternative,
-  lessonsTourSteps,
-} from 'Utilities/common'
+  lessonsTourSteps } from 'Utilities/common'
 
 const Tour = () => {
   const dispatch = useDispatch()
   const tourState = useSelector(({ tour }) => tour)
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const bigScreen = useWindowDimensions().width >= 700
   const { pending: userPending, data: userData } = useSelector(({ user }) => user)
@@ -101,15 +100,13 @@ const Tour = () => {
                 id={isTeacherStep ? 'library-tour-preview-text' : 'library-tour-practice-message'}
               />
             </div>
-          ),
-        }
+          ) }
       }
 
       if (tourState.steps === libraryTourSteps && step.target === '.library-tour-modal-review-button') {
         return {
           ...step,
-          target: getSafeTarget('.library-tour-modal-review-button'),
-        }
+          target: getSafeTarget('.library-tour-modal-review-button') }
       }
 
       if (tourState.steps === practiceTourSteps && step.target === '.practice-tour-start-practice-story') {
@@ -122,14 +119,12 @@ const Tour = () => {
               <div>
                 <FormattedHTMLMessage id="practice-tour-edit-delete-message" />
               </div>
-            ),
-          }
+            ) }
         }
 
         return {
           ...step,
-          target: getSafeTarget('.practice-tour-start-practice-story'),
-        }
+          target: getSafeTarget('.practice-tour-start-practice-story') }
       }
 
       if (tourState.steps === lessonsTourSteps) {
@@ -137,16 +132,13 @@ const Tour = () => {
         // Always resolve to a real lesson container to avoid Joyride crashes.
         return {
           ...step,
-          target: getSafeTarget(step.target, '.lesson-story-topic'),
-        }
+          target: getSafeTarget(step.target, '.lesson-story-topic') }
       }
 
       return {
         ...step,
-        target: getSafeTarget(step.target),
-      }
-    }),
-  }
+        target: getSafeTarget(step.target) }
+    }) }
 
   const callback = data => {
     const { action, index, type, status } = data
@@ -278,8 +270,8 @@ const Tour = () => {
 
       // desktop
       if (bigScreen) {
-        if (homeTour && !history.location.pathname.includes('/home')) {
-          history.push('/home') // This statement pushes the use to home page if tour is started
+        if (homeTour && !location.pathname.includes('/home')) {
+          navigate('/home') // This statement pushes the use to home page if tour is started
           // on a page that doesnt have a tour
         }
 
@@ -333,9 +325,9 @@ const Tour = () => {
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            const currentPath = history.location.pathname
+            const currentPath = location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
-            history.push(`${newPath}practice/`)
+            navigate(`${newPath}practice/`)
             setTimeout(() => {
               window.dispatchEvent(new Event('resize'))
             }, 4000)
@@ -377,8 +369,8 @@ const Tour = () => {
         if (homeTour) {
           switch (index) {
             case 0:
-              if (!history.location.pathname.includes('/home')) {
-                history.push('/home')
+              if (!location.pathname.includes('/home')) {
+                navigate('/home')
               }
               dispatch(sidebarSetOpen(true))
               break
@@ -448,9 +440,9 @@ const Tour = () => {
           }
           if (index === 2) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            const currentPath = history.location.pathname
+            const currentPath = location.pathname
             const newPath = currentPath.substring(0, currentPath.length - 7)
-            history.push(`${newPath}practice/`)
+            navigate(`${newPath}practice/`)
           }
           if (index === 7) {
             setTimeout(() => {
@@ -494,9 +486,9 @@ const Tour = () => {
               dispatch(setLessonStep(2))
               break
             // case 8:
-            //   const currentPath = history.location.pathname
+            //   const currentPath = location.pathname
             //   const newPath = currentPath.substring(0, currentPath.length - 9)
-            //   history.push(`${newPath}/practice`)
+            //   navigate(`${newPath}/practice`)
             //   dispatch(stopTour())
             //   setTimeout(() => {
             //     dispatch(startTour())
@@ -504,7 +496,7 @@ const Tour = () => {
             //   }, 1000)
             //   break
             // case 9:
-            //   history.push('/lessons/library')
+            //   navigate('/lessons/library')
             //   break
 
             default:
@@ -525,24 +517,19 @@ const Tour = () => {
       showProgress={true}
       styles={{
         tooltipContainer: {
-          textAlign: 'left',
-        },
+          textAlign: 'left' },
         options: {
           arrowColor: 'rgb(50, 170, 248)',
           primaryColor: 'rgb(50, 170, 248)',
           backgroundColor: 'white',
           zIndex: 1000,
-          textColor: '#004a14',
-        },
+          textColor: '#004a14' },
         buttonNext: {
           backgroundColor: 'rgb(50, 170, 248)',
-          borderRadius: 8,
-        },
-      }}
+          borderRadius: 8 } }}
       locale={{
         last: <FormattedMessage id="end-tour" />,
-        next: <FormattedMessage id="next" />,
-      }}
+        next: <FormattedMessage id="next" /> }}
     />
   )
 }

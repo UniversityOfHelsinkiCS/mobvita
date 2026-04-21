@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl'
 import { getPersonalSummary, getPersonalOverallSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 
 const ProgressStats = ({ startDate, endDate }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -12,15 +12,15 @@ const ProgressStats = ({ startDate, endDate }) => {
 
   const dispatch = useDispatch()
   const intl = useIntl()
-  const history = useHistory()
+  const location = useLocation()
   var summary = progress_summary
 
-  if (history.location.pathname.includes('main')) {
+  if (location.pathname.includes('main')) {
     summary = profile_summary
   }
 
   useEffect(() => {
-    if (history.location.pathname.includes('main')) {
+    if (location.pathname.includes('main')) {
       dispatch(getPersonalOverallSummary(learningLanguage))
     } else {
       dispatch(getPersonalSummary(learningLanguage, startDate, endDate))

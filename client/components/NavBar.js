@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup, Checkbox } from 'semantic-ui-react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { 
   logout, 
   getLatestIRTScore,
@@ -22,15 +22,13 @@ import {
   openFCEncouragement,
   showIcon,
   closeEncouragement,
-  closeFCEncouragement,
-} from 'Utilities/redux/encouragementsReducer'
+  closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import {
   startAnonymousProgressTour,
   startLessonsTour,
   startLibraryTour,
   startProgressTour,
-  startPracticeTour,
-} from 'Utilities/redux/tourReducer'
+  startPracticeTour } from 'Utilities/redux/tourReducer'
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -69,8 +67,7 @@ export default function NavBar() {
   const {
     irtCalculationPending,
     pending: userPending,
-    irt_dummy_score,
-  } = useSelector(({ user }) => user)
+    irt_dummy_score } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId, answersPending } = useSelector(({ snippets }) => snippets)
   const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
@@ -81,24 +78,25 @@ export default function NavBar() {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { locale } = useSelector(({ locale }) => locale)
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
   const handleEloClick = () => {
-    history.push('/profile/progress')
+    navigate('/profile/progress')
   }
   const isTeacher = user?.user.is_teacher
   const teacherView = user?.teacherView
-  const check = history.location.pathname
+  const check = location.pathname
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
     learningLanguage?.toLowerCase()
   )
 
   const irt_support_languages = ['Russian', 'Finnish']
 
-  const showStoryElo = history.location.pathname.includes('practice')
-  const showFlashcardElo = hiddenFeatures && history.location.pathname.includes('flashcards')
-  const showTeacherViewSwitch = !history.location.pathname.includes('groups/teacher') // && !history.location.pathname.includes('profile')
+  const showStoryElo = location.pathname.includes('practice')
+  const showFlashcardElo = hiddenFeatures && location.pathname.includes('flashcards')
+  const showTeacherViewSwitch = !location.pathname.includes('groups/teacher') // && !location.pathname.includes('profile')
   const hasChosenLearningLanguage = user?.user?.last_used_language !== null
 
   const practiceHistory = useSelector(state => state.practiceHistory)
@@ -107,7 +105,7 @@ export default function NavBar() {
 
   const signOut = () => {
     dispatch(logout())
-    history.push('/')
+    navigate('/')
   }
   const tourOngoing = useSelector(state => state.tour.run)
   const showProfileDropdown = useSelector(state => state.dropdown.showProfileDropdown)
@@ -121,9 +119,9 @@ export default function NavBar() {
     }
   }
   const handleTourStart = () => {
-    if (history.location.pathname.includes('profile')) {
-      if (!history.location.pathname.includes('progress')) {
-        history.push('/profile/progress')
+    if (location.pathname.includes('profile')) {
+      if (!location.pathname.includes('progress')) {
+        navigate('/profile/progress')
       }
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
       if (user.user.email === 'anonymous_email') {
@@ -131,13 +129,13 @@ export default function NavBar() {
       } else {
         dispatch(startProgressTour())
       }
-    } else if (history.location.pathname.includes('lessons')) {
+    } else if (location.pathname.includes('lessons')) {
       dispatch(startLessonsTour())
-    } else if (history.location.pathname.includes('library')) {
+    } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (history.location.pathname.includes('preview')) {
+    } else if (location.pathname.includes('preview')) {
       dispatch(startPracticeTour())
-    } else if (history.location.pathname.includes('/practice')) {
+    } else if (location.pathname.includes('/practice')) {
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
       dispatch({ type: 'TOUR_RESTART' })
@@ -291,8 +289,7 @@ export default function NavBar() {
                     alt="revita logo"
                     width="70"
                     style={{
-                      filter: 'brightness(0%) sepia(100) saturate(100) hue-rotate(0deg)',
-                    }}
+                      filter: 'brightness(0%) sepia(100) saturate(100) hue-rotate(0deg)' }}
                   />
                   {hiddenFeatures && <sup> &beta;</sup>}
                 </Navbar.Brand>
@@ -467,7 +464,7 @@ export default function NavBar() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span style={{position: 'relative', cursor: 'pointer',}}>
+                    <span style={{position: 'relative', cursor: 'pointer' }}>
                       <Icon name="help circle" size="large" style={{ color: 'black' }} />
                     </span>
                   </a>

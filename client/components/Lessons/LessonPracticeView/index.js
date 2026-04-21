@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import {
   clearFocusedSnippet,
   resetSnippets,
-  resetCachedSnippets,
-} from 'Utilities/redux/snippetsReducer'
+  resetCachedSnippets } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import {
   setTouchedIds,
   setAnswers,
   setWillPause,
-  setIsPaused,
-} from 'Utilities/redux/practiceReducer'
+  setIsPaused } from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { getLessonInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
@@ -42,7 +40,8 @@ import Spinner from 'Components/Spinner'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const intl = useIntl()
 
   const { width } = useWindowDimensions()
@@ -70,15 +69,14 @@ const LessonPracticeView = () => {
   const smallScreen = width < 700
   const timedExercise = snippets?.focused?.timed_exercise
   const controlledPractice = mode === 'controlled-practice'
-  const isGroupLesson = history.location.pathname.includes('/group')
+  const isGroupLesson = location.pathname.includes('/group')
   const { id: groupId } = useParams()
 
   const { controls: timer } = useTimer({
     initialTime: null,
     direction: 'backward',
     startImmediately: false,
-    timeToUpdate: 100,
-  })
+    timeToUpdate: 100 })
 
   useEffect(() => {
     setCurrentSnippetNum(0)
@@ -162,9 +160,7 @@ const LessonPracticeView = () => {
         concept,
         hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
-      },
-    }
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties } }
 
     dispatch(setAnswers(newAnswer))
   }
@@ -263,7 +259,7 @@ const LessonPracticeView = () => {
               open={startModalOpen}
               setOpen={setStartModalOpen}
               activity="control-story"
-              onBackClick={() => history.push('/library')}
+              onBackClick={() => navigate('/library')}
             />
             {showPracticeCompletedEncouragement && (
               <div

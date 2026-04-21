@@ -1,27 +1,27 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { blockStorySender } from 'Utilities/redux/userReducer'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 const BlockStorySender = ({ queryParams }) => {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user.data)
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const userId = queryParams.replace(/^.*?friend_id=(.*)&token=.*$/g, '$1')
   const token = queryParams.replace(/^.*?&token=(.*)\?.*$/g, '$1')
 
   useEffect(() => {
     if (user) {
-      history.replace('/home')
+      navigate('/home', { replace: true })
     } else {
-      history.replace('/')
+      navigate('/', { replace: true })
     }
-  }, [user])
+  }, [navigate, user])
 
   useEffect(() => {
     dispatch(blockStorySender(userId, token))
-  }, [])
+  }, [dispatch, token, userId])
 
   return null
 }

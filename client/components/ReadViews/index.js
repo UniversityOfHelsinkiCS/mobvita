@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   Divider,
   Segment,
@@ -12,8 +12,7 @@ import {
   Button as SemanticButton,
   Modal,
   Tab,
-  TabPane,
-} from 'semantic-ui-react'
+  TabPane } from 'semantic-ui-react'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -22,8 +21,7 @@ import {
   getStudentStoryAction,
   removeStory,
   updateExerciseTopics,
-  updateTempExerciseTopics,
-} from 'Utilities/redux/storiesReducer'
+  updateTempExerciseTopics } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -34,16 +32,14 @@ import {
   updateBlankFilling,
   updateAudioTask,
   updateSpeechTask,
-  updateMultiChoice,
-} from 'Utilities/redux/userReducer'
+  updateMultiChoice } from 'Utilities/redux/userReducer'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import {
   learningLanguageSelector,
   getTextStyle,
   getMode,
   hiddenFeatures,
-  cefrNum2Cefr,
-} from 'Utilities/common'
+  cefrNum2Cefr } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
@@ -70,18 +66,18 @@ const ReadViews = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const mode = getMode()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const [currentStudent, setCurrentStudent] = useState(null)
-  const isGroupReview = history.location.pathname.includes('group/review')
-  const isGroupPreview = history.location.pathname.includes('group/preview')
+  const isGroupReview = location.pathname.includes('group/review')
+  const isGroupPreview = location.pathname.includes('group/preview')
   const { show_review_diff, show_preview_exer, oid } = useSelector(({ user }) => user.data.user)
   const { story, pending, error, focusedRequestId } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
     error: stories.error,
     focusedRequestId: stories.focusedRequestId,
-    locale,
-  }))
+    locale }))
   const showPracticeDropdown = useSelector(state => state.dropdown.showPracticeDropdown)
 
   const bigScreen = width > 700
@@ -123,8 +119,7 @@ const ReadViews = ({ match }) => {
     .map(student => ({
       key: student._id,
       text: truncateStudentName(`${student?.userName} (${student?.email})`),
-      value: JSON.stringify(student),
-    }))
+      value: JSON.stringify(student) }))
     .sort(function (a, b) {
       const textA = a.text.toUpperCase()
       const textB = b.text.toUpperCase()
@@ -254,8 +249,8 @@ const ReadViews = ({ match }) => {
 
   useEffect(() => {
     if (pending || routeStory || !error) return
-    history.replace('/library')
-  }, [error, history, pending, routeStory])
+    navigate('/library', { replace: true })
+  }, [error, navigate, pending, routeStory])
 
   useEffect(() => {
     if (loadingPollRef.current) {
@@ -369,7 +364,7 @@ const ReadViews = ({ match }) => {
 
   const handleDeleteStory = () => {
     dispatch(removeStory(id))
-    history.replace('/library')
+    navigate('/library', { replace: true })
   }
 
   const StoryFunctionsDropdown = () => {
@@ -453,8 +448,7 @@ const ReadViews = ({ match }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '500px',
-          }}
+            height: '500px' }}
         >
           <h1 style={{ marginBottom: '100px' }}>
             <FormattedMessage id="select-lesson-grammar" />
@@ -462,8 +456,7 @@ const ReadViews = ({ match }) => {
           <SelectGrammarLevel
             topicInstance={{
               topic_ids: routeStory?.topics || [],
-              instancePending: pending || !routeStory,
-            }}
+              instancePending: pending || !routeStory }}
             editable
             setSelectedTopics={setSelectedTopics}
             selectedTopicIds={routeStory?.topics || []}
@@ -473,8 +466,7 @@ const ReadViews = ({ match }) => {
             currentStepIndex={2}
           />
         </TabPane>
-      ),
-    },
+      ) },
     {
       menuItem: intl.formatMessage({ id: 'listening-exercises' }),
       render: () => (
@@ -483,13 +475,11 @@ const ReadViews = ({ match }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '500px',
-          }}
+            height: '500px' }}
         >
           <ListeningExerciseSettings />
         </TabPane>
-      ),
-    },
+      ) },
   ]
 
   return (
@@ -513,8 +503,7 @@ const ReadViews = ({ match }) => {
                   className="cefr-level"
                   style={{
                     background:
-                      String(difficultyValueDisplay).trim() === '' ? '#ffffff' : '#b7fcff',
-                  }}
+                      String(difficultyValueDisplay).trim() === '' ? '#ffffff' : '#b7fcff' }}
                 >
                   {difficultyValueDisplay}
                 </div>

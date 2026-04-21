@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Container, Segment, Loader, Dimmer } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,13 +10,11 @@ import {
   dictionaryLanguageSelector,
   hiddenFeatures,
   translatableLanguages,
-  betaLanguages,
-} from 'Utilities/common'
+  betaLanguages } from 'Utilities/common'
 import {
   updateLearningLanguage,
   updateDictionaryLanguage,
-  resetLearningLanguageChanged,
-} from 'Utilities/redux/userReducer'
+  resetLearningLanguageChanged } from 'Utilities/redux/userReducer'
 import InterfaceLanguageView from './InterfaceLanguageView'
 
 const LanguageGroup = ({ languages, handleLearningLanguageChange }) => (
@@ -55,7 +53,7 @@ const LanguageGroup = ({ languages, handleLearningLanguageChange }) => (
 
 const LearningLanguageSelectView = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const user = useSelector(({ user }) => user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -73,7 +71,7 @@ const LearningLanguageSelectView = () => {
 
   useEffect(() => {
     if (learningLanguageChanged) {
-      history.push('/home') 
+      navigate('/home') 
       dispatch(resetLearningLanguageChanged())
     }
   }, [learningLanguageChanged])

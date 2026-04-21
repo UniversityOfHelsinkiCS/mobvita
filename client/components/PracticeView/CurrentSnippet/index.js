@@ -11,15 +11,14 @@ import {
   setPrevious,
   resetSessionId,
   resetCurrentSnippet,
-  getLessonSnippet,
-} from 'Utilities/redux/snippetsReducer'
+  getLessonSnippet } from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import {
   setAnswers,
@@ -33,13 +32,11 @@ import {
   startSnippet,
   incrementAttempts,
   setIsPaused,
-  setPracticeFinished,
-} from 'Utilities/redux/practiceReducer'
+  setPracticeFinished } from 'Utilities/redux/practiceReducer'
 
 import {
   updateSeveralSpanAnnotationStore,
-  resetAnnotations,
-} from 'Utilities/redux/annotationsReducer'
+  resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -53,8 +50,7 @@ const CurrentSnippet = ({
   lessonStartOver,
   currentSnippetNum,
   setShowMessageDialog,
-  setShowPracticeCompletedEncouragement,
-}) => {
+  setShowPracticeCompletedEncouragement }) => {
   const SNIPPET_FETCH_INTERVAL = 5000
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
@@ -69,8 +65,7 @@ const CurrentSnippet = ({
     cachedSnippetIds,
     cacheSize,
     cacheRequesting,
-    focused,
-  } = snippets
+    focused } = snippets
   const {
     practiceFinished,
     snippetFinished,
@@ -78,17 +73,16 @@ const CurrentSnippet = ({
     attempt,
     willPause,
     isPaused,
-    currentAnswers,
-  } = useSelector(({ practice }) => practice)
+    currentAnswers } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const history = useHistory()
-  const isControlledStory = history.location.pathname.includes('controlled-practice')
-  const exerciseMode = history.location.pathname.includes('listening')
+  const location = useLocation()
+  const isControlledStory = location.pathname.includes('controlled-practice')
+  const exerciseMode = location.pathname.includes('listening')
     ? 'listening'
-    : history.location.pathname.includes('grammar')
+    : location.pathname.includes('grammar')
     ? 'grammar'
-    : history.location.pathname.includes('speech')
+    : location.pathname.includes('speech')
     ? 'speech'
     : 'all'
   const sessionId = snippets?.sessionId ?? null
@@ -131,8 +125,7 @@ const CurrentSnippet = ({
           sentence_id,
           snippet_id,
           requested_hints,
-          audio_wids,
-        } = currentWord
+          audio_wids } = currentWord
 
         let usersAnswer
         if (listen || choices || speak) {
@@ -153,9 +146,7 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints,
-              },
-            })
+                requestedHintsList: requested_hints } })
           )
         }
 
@@ -171,9 +162,7 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints,
-              },
-            })
+                requestedHintsList: requested_hints } })
           )
         }
 
@@ -189,9 +178,7 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints,
-              },
-            })
+                requestedHintsList: requested_hints } })
           )
         }
 
@@ -208,9 +195,7 @@ const CurrentSnippet = ({
             story_id: storyId,
             word_id: ID,
             cue: word_cue,
-            requestedHintsList: requested_hints,
-          },
-        }
+            requestedHintsList: requested_hints } }
       }, {})
       if (initialAnswers && Object.keys(initialAnswers).length > 0)
         dispatch(setAnswers({ ...initialAnswers }))
@@ -402,9 +387,7 @@ const CurrentSnippet = ({
         sentence_id,
         hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
-      },
-    }
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties } }
     dispatch(setAnswers(newAnswer))
   }
 

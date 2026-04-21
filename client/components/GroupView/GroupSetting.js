@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Dropdown, Checkbox } from 'semantic-ui-react'
 import {
@@ -8,8 +8,7 @@ import {
   getGroup,
   getGroups,
   updateExerciseTopics,
-  updateTempExerciseTopics,
-} from 'Utilities/redux/groupsReducer'
+  updateTempExerciseTopics } from 'Utilities/redux/groupsReducer'
 
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -22,7 +21,8 @@ import Topics from 'Components/Topics'
 
 const GroupSetting = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const intl = useIntl()
   const { id } = useParams()
   const bigScreen = useWindowDimension().width >= 650
@@ -32,38 +32,34 @@ const GroupSetting = () => {
   const {
     isTeaching,
     group,
-    pending: testConceptsPending,
-  } = useSelector(({ groups }) => ({
+    pending: testConceptsPending } = useSelector(({ groups }) => ({
     isTeaching:
       groups.testConcepts && groups.testConcepts.group && groups.testConcepts.group.is_teaching,
     pending: groups.testConceptsPending,
-    group: groups.group,
-  }))
+    group: groups.group }))
   const groupOptions = useSelector(({ groups }) =>
     groups.groups.map(group => ({
       key: group.group_id,
       text: group.groupName,
-      value: group.group_id,
-    }))
+      value: group.group_id }))
   )
   const [showTestConcepts, setShowTestConcepts] = useState(
-    history.location.pathname.endsWith('/settings')
+    location.pathname.endsWith('/settings')
   )
   const [showLevels, setShowLevels] = useState(true)
   const lessonInstance = {
     topic_ids: group?.group.topics || [],
-    instancePending: pending || !group,
-  }
+    instancePending: pending || !group }
 
   useEffect(() => {
     dispatch(getTestConcepts(id, learningLanguage))
     dispatch(getGroup(id))
     dispatch(getGroups())
-  }, [id])
+  }, [dispatch, id, learningLanguage])
 
   useEffect(() => {
-    if (!isTeaching && isTeaching !== undefined) history.replace('/groups')
-  }, [isTeaching])
+    if (!isTeaching && isTeaching !== undefined) navigate('/groups', { replace: true })
+  }, [isTeaching, navigate])
 
   if (pending || !group) {
     return <Spinner fullHeight size={60} />
@@ -89,7 +85,7 @@ const GroupSetting = () => {
             inline
             options={groupOptions}
             value={id}
-            onChange={(_, { value }) => history.push(`/groups/teacher/${value}/settings`)}
+            onChange={(_, { value }) => navigate(`/groups/teacher/${value}/settings`)}
           />
         </h2>
         <br />

@@ -2,13 +2,13 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { useCurrentUser } from 'Utilities/common'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
 
 const NoGroupsView = ({ role }) => {
   const user = useCurrentUser()
   const isAnonymousUser = user.email === 'anonymous_email'
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <div className="group-container nogroups" data-cy="no-groups-view">
@@ -25,7 +25,7 @@ const NoGroupsView = ({ role }) => {
               variant="primary"
               size="lg"
               style={{float: 'right'}}
-              onClick={() => history.push('/register')}
+              onClick={() => navigate('/register')}
             >
               <FormattedMessage id="Register" />
             </Button>

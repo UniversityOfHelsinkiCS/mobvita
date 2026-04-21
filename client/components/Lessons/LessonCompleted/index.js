@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
@@ -8,7 +8,7 @@ import { images } from 'Utilities/common'
 import './LessonCompletedStyles.css'
 
 const LessonCompleted = ({ startOvertLessonSnippets, setShowLessonCompleted }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const handleContinueClick = () => {
     startOvertLessonSnippets()
@@ -21,7 +21,7 @@ const LessonCompleted = ({ startOvertLessonSnippets, setShowLessonCompleted }) =
       <h2>Lesson completed!</h2>
       <h5>Do you want to continue practicing with another set of 10 snippets?</h5>
       <div className="lesson-completed-button-group">
-        <Button variant="secondary" type="button" onClick={() => history.push('/lessons/library')}>
+        <Button variant="secondary" type="button" onClick={() => navigate('/lessons/library')}>
           <FormattedMessage id="lesson-story-topic" />
         </Button>
         <Button

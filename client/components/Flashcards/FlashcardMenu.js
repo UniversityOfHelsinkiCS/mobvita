@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
 import SelectLanguage from './SelectLanguage'
 
@@ -33,8 +33,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         style={{
           backgroundColor: 'rgb(142, 187, 249)',
           border: 'none',
-          borderRadius: '1em 1em 0 0',
-        }}
+          borderRadius: '1em 1em 0 0' }}
         tooltip='flashcards-translate-cards-EXPLANATION'
       >
         <Icon name="keyboard outline" size="big" />
@@ -45,8 +44,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
           className="flashcard-menu-item"
           style={{
             backgroundColor: '#FFDAC1',
-            border: 'none',
-          }}
+            border: 'none' }}
           onClick={() => handleOptionClick('article')}
         >
           <Icon name="font" size="big" />
@@ -59,8 +57,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         style={{
           backgroundColor: 'rgb(255, 217, 112)',
           border: 'none',
-          borderRadius: '0 0 1em 1em',
-        }}
+          borderRadius: '0 0 1em 1em' }}
         tooltip='flashcards-quick-cards-EXPLANATION'
       >
         <Icon name="lightning" size="big" />
@@ -70,7 +67,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
 }
 
 const FlashcardMenu = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { mode, storyId } = useParams()
 
   const storyUrl = storyId ? `/${storyId}` : ''
@@ -80,7 +77,7 @@ const FlashcardMenu = () => {
       ? `/flashcards/${mode}/story${storyUrl}`
       : `/flashcards/${mode}`
 
-    history.push(path)
+    navigate(path)
   }
 
   const isPracticePage = ['fillin', 'quick', 'article'].includes(mode)

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useSelector, shallowEqual, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import moment from 'moment-timezone'
 import { useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
@@ -24,7 +24,7 @@ const EloChart = ({ width }) => {
   const scoreHistory = practiceHistory.irtExerciseHistory.map(exercise => exercise.score)
   const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
   const intl = useIntl()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   // if (eloHistory.length === 0) return null
 
@@ -67,8 +67,7 @@ const EloChart = ({ width }) => {
     type: 'column',
     yAxis: 1,
     xAxis: 1,
-    data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
-  }
+    data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse() }
 
   const series = [practicetimes, { data: scoreResults }]
   if (hiddenFeatures) series.push({ data: flashcardEloResults, color: '#dc3545' })
@@ -83,8 +82,7 @@ const EloChart = ({ width }) => {
       formatter() {
         // eslint-disable-next-line react/no-this-in-sfc
         return this.y
-      },
-    },
+      } },
     yAxis: [
       {
         title: { enabled: false },
@@ -92,8 +90,7 @@ const EloChart = ({ width }) => {
         tickPositioner: function () {
           // eslint-disable-next-line
           return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
-        },
-      },
+        } },
       {
         title: {
           text: intl.formatMessage({ id: 'Practiced hours' }),
@@ -104,11 +101,8 @@ const EloChart = ({ width }) => {
           reserveSpace: false,
           style: {
             direction: 'rtl',
-            whiteSpace: 'nowrap',
-          },
-        },
-        opposite: true,
-      },
+            whiteSpace: 'nowrap' } },
+        opposite: true },
     ],
     xAxis: [
       { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
@@ -118,20 +112,15 @@ const EloChart = ({ width }) => {
           text: intl.formatMessage({ id: 'Week' }),
           align: 'low',
           offset: 8,
-          x: -24,
-        },
-        tickInterval: 1,
-      },
+          x: -24 },
+        tickInterval: 1 },
     ],
     plotOptions: {
       series: {
         groupPadding: 0,
         pointPadding: 0,
-        borderWidth: 0,
-      },
-      line: { marker: { enabled: false } },
-    },
-  }
+        borderWidth: 0 },
+      line: { marker: { enabled: false } } } }
 
   const showStoryScore = irtExerciseHistory && irtExerciseHistory.length > 0
   const showFlashcardScore = hiddenFeatures && flashcardHistory?.length > 0
@@ -144,9 +133,8 @@ const EloChart = ({ width }) => {
         textAlign: 'center',
         cursor: 'pointer',
         alignSelf: 'flex-start',
-        padding: '1em .5em 0em .5em',
-      }}
-      onClick={() => history.push('/profile/progress')}
+        padding: '1em .5em 0em .5em' }}
+      onClick={() => navigate('/profile/progress')}
     >
       <div className="space-evenly pb-sm">
         <span>

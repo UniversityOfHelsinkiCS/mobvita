@@ -6,12 +6,11 @@ import { Icon } from 'semantic-ui-react'
 import { closeEncouragement, closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { useHistory, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import {
   getStoriesBlueFlashcards,
   getFlashcards,
-  getBlueFlashcards,
-} from 'Utilities/redux/flashcardReducer'
+  getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { dictionaryLanguageSelector, showAllEncouragements } from 'Utilities/common'
 import FlashcardsHeaderChooser from 'Components/NewEncouragements/SubComponents/FlashcardView/FlashcardsHeaderChooser'
 import ListOfRecentStoriesFlashcardsEncouragement from 'Components/NewEncouragements/SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
@@ -51,23 +50,22 @@ const Recommender = ({ continueAction }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { loading, incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
     loading: incomplete.pending,
-    incomplete: incomplete.data,
-  }))
+    incomplete: incomplete.data }))
   const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
   const stories = useSelector(({ stories }) => stories.data)
   const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
   const bigScreen = useWindowDimensions().width > 700
   const dispatch = useDispatch()
-  const history = useHistory()
-  const isInProgressView = history.location.pathname.includes('profile/progress')
-  const isInHomeView = history.location.pathname.includes('/home')
-  const isInWelcomeView = history.location.pathname.includes('/welcome')
-  const isInPracticeView = history.location.pathname.includes('practice')
-  const isInFlashcardsView = history.location.pathname.includes('flashcards')
-  const inBlueCardsTest = history.location.pathname.includes('test')
-  const inReviewView = history.location.pathname.includes('review')
-  const inLessonPracticeView = history.location.pathname.includes('lesson/practice')
+  const location = useLocation()
+  const isInProgressView = location.pathname.includes('profile/progress')
+  const isInHomeView = location.pathname.includes('/home')
+  const isInWelcomeView = location.pathname.includes('/welcome')
+  const isInPracticeView = location.pathname.includes('practice')
+  const isInFlashcardsView = location.pathname.includes('flashcards')
+  const inBlueCardsTest = location.pathname.includes('test')
+  const inReviewView = location.pathname.includes('review')
+  const inLessonPracticeView = location.pathname.includes('lesson/practice')
 
   const { storyId } = useParams()
 
@@ -77,8 +75,7 @@ const Recommender = ({ continueAction }) => {
   useEffect(() => {
     dispatch(
       getIncompleteStories(learningLanguage, {
-        sort_by: 'access',
-      })
+        sort_by: 'access' })
     )
     dispatch(getLeaderboards())
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
@@ -110,7 +107,7 @@ const Recommender = ({ continueAction }) => {
     dispatch(closeFCEncouragement())
   }
 
-  const welcomeback_encourage = history.location.pathname.includes('/welcome') ? <WelcomeBackEncouragement /> : undefined;
+  const welcomeback_encourage = location.pathname.includes('/welcome') ? <WelcomeBackEncouragement /> : undefined;
 
   const leader_board_encourage = user_rank && user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
 
@@ -167,8 +164,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -246,8 +242,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -293,8 +288,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -327,8 +321,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -361,8 +354,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -400,8 +392,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}
@@ -431,8 +422,7 @@ const Recommender = ({ continueAction }) => {
                     className="interactable"
                     style={{
                       cursor: 'pointer',
-                      marginBottom: '.25em',
-                    }}
+                      marginBottom: '.25em' }}
                     size="large"
                     name="close"
                     onClick={handleCloseClick}

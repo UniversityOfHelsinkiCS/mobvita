@@ -91,7 +91,7 @@ import uhLogo from 'Assets/images/uh_logo.png'
 import network from 'Assets/images/network.svg'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
@@ -186,8 +186,7 @@ export const images = {
   greenArrow,
   heartbeat,
   uhLogo,
-  network,
-}
+  network }
 
 export const backgroundColors = [
   'lavender',
@@ -255,8 +254,7 @@ export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
     angle: angle,
     spread: randomInRange(50, 70),
     particleCount: randomInRange(50, 100),
-    origin: { x, y },
-  })
+    origin: { x, y } })
 }
 
 export const finalConfettiRain = (colors, endDate) => {
@@ -266,15 +264,13 @@ export const finalConfettiRain = (colors, endDate) => {
       angle: 60,
       spread: 55,
       origin: { x: 0 },
-      colors,
-    })
+      colors })
     confetti({
       particleCount: 2,
       angle: 120,
       spread: 55,
       origin: { x: 1 },
-      colors,
-    })
+      colors })
 
     if (Date.now() < endDate) {
       requestAnimationFrame(frame)
@@ -334,8 +330,7 @@ function colorInterpolate(colorA, colorB, intval) {
   return {
     r: colorVal('r'),
     g: colorVal('g'),
-    b: colorVal('b'),
-  }
+    b: colorVal('b') }
 }
 
 function ColorToHex(color) {
@@ -353,8 +348,7 @@ export const composeExerciseContext = (snippet, word) => {
     .reduce(
       (acc, curr) => ({
         ...acc,
-        [curr.ID]: curr.base,
-      }),
+        [curr.ID]: curr.base }),
       {}
     )
 }
@@ -445,8 +439,7 @@ export const supportedLearningLanguages = {
     'udmurt-arch',
     'livvi',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac'],
-}
+  experimental: ['syriac'] }
 
 export const learningLanguageLocaleCodes = {
   Finnish: 'fi',
@@ -472,8 +465,7 @@ export const learningLanguageLocaleCodes = {
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
   livvi: 'olo',
-  English: 'en',
-}
+  English: 'en' }
 
 export const betaLanguages = [
   'catalan',
@@ -506,8 +498,7 @@ export const colors = {}
 
 export const flashcardColors = {
   background: ['#F3826A', '#FEA75C', '#F9E79F', '#84C3A3', '#50A278'],
-  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
-}
+  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'] }
 
 const stagingOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
@@ -571,8 +562,8 @@ export const downloadReadingHistory = async (groupId, groupName, startDate, endD
 }
 
 export const getMode = () =>
-  useHistory()
-    .location.pathname.split('/')
+  useLocation()
+    .pathname.split('/')
     .filter(x => x.length)
     .pop()
 
@@ -598,13 +589,11 @@ const defaultAllowed = [
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   return {
     __html: DOMPurify.sanitize(dirty || '', {
-      ALLOWED_TAGS: allowedTags,
-    }),
-  }
+      ALLOWED_TAGS: allowedTags }) }
 }
 
 export const formatGreenFeedbackText = text =>
-  sanitizeHtml(text?.replace(/[.]{2,}/g, '.')?.replace(/([^0-9])([\.。])[\s]*/g, '$1$2<br />'))
+  sanitizeHtml(text?.replace(/[.]{2 }/g, '.')?.replace(/([^0-9])([\.。])[\s]*/g, '$1$2<br />'))
 
 export const formatEmailList = emailListAsString => {
   const separators = [' ', ',', ';']
@@ -642,9 +631,9 @@ export const getTextStyle = (language, type) => {
 }
 
 export const getBackgroundColor = () => {
-  const history = useHistory()
+  const location = useLocation()
   const mainView =
-    history.location.pathname.includes('/home') || history.location.pathname.includes('/welcome')
+    location.pathname.includes('/home') || location.pathname.includes('/welcome')
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 
@@ -748,7 +737,7 @@ export const voiceLanguages = {
   Swedish: ['responsive_voice', 'Swedish', 'Female'],
   Turkish: ['responsive_voice', 'Turkish', 'Female'],
   Chinese: ['responsive_voice', 'Chinese', 'Female'],
-  English: ['responsive_voice', 'US English', 'Female'], //['coqui_ai', 'eng', 'none'],
+  English: ['responsive_voice', 'US English', 'Female'], //['coqui_ai', 'eng', 'none']
 }
 
 const speakFallbackConfig = {
@@ -1012,8 +1001,7 @@ export const translatableLanguages = {
     'Portuguese',
     'Japanese',
     'Hindi',
-  ],
-}
+  ] }
 
 const tourSign = () => {
   return (
@@ -1091,8 +1079,7 @@ const homeTourSteps = {
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   sideBar: {
     target: '.tour-sidebar',
     title: <FormattedMessage id="sidebar" />,
@@ -1106,10 +1093,7 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
   learningLanguage: {
     target: '.tour-navbar-learning-language',
     title: <FormattedMessage id="Learning-language" />,
@@ -1123,10 +1107,7 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
   addNewStories: {
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
@@ -1140,22 +1121,17 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       tooltipContainer: {
-        textAlign: 'left',
-      },
+        textAlign: 'left' },
       options: {
         arrowColor: 'rgb(50, 170, 248)',
         primaryColor: 'rgb(50, 170, 248)',
         backgroundColor: 'rgb(50, 170, 248',
         zIndex: 1000,
-        textColor: 'white',
-      },
+        textColor: 'white' },
       buttonNext: {
         backgroundColor: 'white',
         borderRadius: 8,
-        color: 'black',
-      },
-    },
-  },
+        color: 'black' } } },
   library: {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
@@ -1166,8 +1142,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   lesson: {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
@@ -1178,8 +1153,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   practiceNow: {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
@@ -1190,8 +1164,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   flashcards: {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
@@ -1202,8 +1175,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   progress: {
     target: '.tour-progress',
     title: <FormattedMessage id="Progress" />,
@@ -1212,8 +1184,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-progress-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   chatbot: {
     target: '.chatbot',
     title: <FormattedMessage id="tour-chatbot-message-title" />,
@@ -1222,8 +1193,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-chatbot-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   help: {
     target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
@@ -1235,8 +1205,7 @@ const homeTourSteps = {
     ),
     placement: 'top',
     opacity: 0,
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   beginPracticing: {
     target: '.tour-button',
     title: <FormattedMessage id="begin-practicing" />,
@@ -1248,9 +1217,7 @@ const homeTourSteps = {
     ),
     placement: 'top',
     opacity: 0,
-    disableBeacon: true,
-  },
-}
+    disableBeacon: true } }
 
 /////////////////////////////////////////////////////////
 /* const mobileHomeTourSteps = [
@@ -1263,8 +1230,7 @@ const homeTourSteps = {
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-learning-language',
     title: <FormattedMessage id="Learning-language" />,
@@ -1278,10 +1244,7 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
   {
     target: '.tour-sidebar',
     title: <FormattedMessage id="sidebar" />,
@@ -1295,10 +1258,7 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
   {
     target: '.tour-add-new-stories',
     title: <FormattedMessage id="add-content" />,
@@ -1312,22 +1272,17 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       tooltipContainer: {
-        textAlign: 'left',
-      },
+        textAlign: 'left' },
       options: {
         arrowColor: 'rgb(50, 170, 248)',
         primaryColor: 'rgb(50, 170, 248)',
         backgroundColor: 'rgb(50, 170, 248',
         zIndex: 1000,
-        textColor: 'white',
-      },
+        textColor: 'white' },
       buttonNext: {
         backgroundColor: 'white',
         borderRadius: 8,
-        color: 'black',
-      },
-    },
-  },
+        color: 'black' } } },
   {
     target: '.tour-library',
     title: <FormattedMessage id="Library" />,
@@ -1338,8 +1293,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
@@ -1350,8 +1304,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
@@ -1362,8 +1315,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
@@ -1374,8 +1326,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-progress',
     title: <FormattedMessage id="Progress" />,
@@ -1384,8 +1335,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-progress-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="begin-practicing" />,
@@ -1400,10 +1350,7 @@ const homeTourSteps = {
     disableBeacon: true,
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
 ] */
 
 /////////////////////////////////////////////////////////
@@ -1417,13 +1364,11 @@ const desktopProgressTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.progress-tour-timeline-button',
     title: <FormattedMessage id="progress-timeline" />,
-    content: <FormattedHTMLMessage id="timeline-explanation" />,
-  },
+    content: <FormattedHTMLMessage id="timeline-explanation" /> },
   {
     target: '.date-pickers-container',
     title: <FormattedMessage id="Dates" />,
@@ -1432,28 +1377,23 @@ const desktopProgressTourSteps = [
         <FormattedHTMLMessage id="progress-tour-dates-message" />
       </div>
     ),
-    placement: 'left',
-  },
+    placement: 'left' },
   {
     target: '.progress-tour-vocabulary-button',
     title: <FormattedMessage id="vocabulary-view" />,
-    content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
-  },
+    content: <FormattedHTMLMessage id="vocabulary-view-explanation" /> },
   {
     target: '.progress-tour-grammar-button',
     title: <FormattedMessage id="hex-map" />,
-    content: <FormattedMessage id="hex-map-explanation" />,
-  },
+    content: <FormattedMessage id="hex-map-explanation" /> },
   {
     target: '.progress-tour-exercise-history-button',
     title: <FormattedMessage id="exercise-history" />,
-    content: <FormattedMessage id="exercise-history-explanation" />,
-  },
+    content: <FormattedMessage id="exercise-history-explanation" /> },
   {
     target: '.progress-tour-test-history-button',
     title: <FormattedMessage id="Test History" />,
-    content: <FormattedMessage id="test-history-explanation" />,
-  },
+    content: <FormattedMessage id="test-history-explanation" /> },
   {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1463,8 +1403,7 @@ const desktopProgressTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1479,13 +1418,11 @@ const mobileProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right',
-  },
+    placement: 'right' },
   {
     target: '.progress-page-graph-cont',
     title: <FormattedMessage id="Timeline" />,
-    content: <FormattedHTMLMessage id="timeline-explanation" />,
-  },
+    content: <FormattedHTMLMessage id="timeline-explanation" /> },
   {
     target: '.date-pickers-container',
     title: <FormattedMessage id="Dates" />,
@@ -1494,8 +1431,7 @@ const mobileProgressTourSteps = [
         <FormattedHTMLMessage id="progress-tour-dates-message" />
       </div>
     ),
-    placement: 'left',
-  },
+    placement: 'left' },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1512,8 +1448,7 @@ const mobileProgressTourSteps = [
       </div>
     ),
     placement: 'top-end',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1527,8 +1462,7 @@ const anonymousDesktopProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right',
-  },
+    placement: 'right' },
 ]
 
 const anonymousMobileProgressTourSteps = [
@@ -1541,8 +1475,7 @@ const anonymousMobileProgressTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'right',
-  },
+    placement: 'right' },
 ]
 
 // LIBRARY PAGE TOUR
@@ -1557,8 +1490,7 @@ const desktopLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
@@ -1568,8 +1500,7 @@ const desktopLibraryTourSteps = [
       </div>
     ),
     placement: 'top',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.library-tour-difficulty-stars',
     title: <FormattedMessage id="Difficulty stars" />,
@@ -1580,8 +1511,7 @@ const desktopLibraryTourSteps = [
     ),
     disableBeacon: true,
     placement: 'top',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
   {
     target: '.library-tour-modal-practice-button',
     title: <FormattedMessage id="practice" />,
@@ -1592,8 +1522,7 @@ const desktopLibraryTourSteps = [
     ),
     disableBeacon: true,
     placement: 'top',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
   {
     target: '.library-tour-modal-review-button',
     title: <FormattedMessage id="review" />,
@@ -1603,8 +1532,7 @@ const desktopLibraryTourSteps = [
       </div>
     ),
     placement: 'top',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
   {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1614,8 +1542,7 @@ const desktopLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1629,8 +1556,7 @@ const mobileLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
@@ -1640,8 +1566,7 @@ const mobileLibraryTourSteps = [
       </div>
     ),
     placement: 'top',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.library-tour-difficulty-stars',
     title: <FormattedMessage id="Difficulty stars" />,
@@ -1652,8 +1577,7 @@ const mobileLibraryTourSteps = [
     ),
     disableBeacon: true,
     placement: 'top',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
   {
     target: '.library-tour-mobile-practice-button',
     title: <FormattedMessage id="practice" />,
@@ -1664,8 +1588,7 @@ const mobileLibraryTourSteps = [
     ),
     disableBeacon: true,
     placement: 'top',
-    placementBeacon: 'left',
-  },
+    placementBeacon: 'left' },
   /*
   {
     target: '.library-tour-mobile-review-button',
@@ -1693,10 +1616,7 @@ const mobileLibraryTourSteps = [
     placementBeacon: 'left',
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1711,8 +1631,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.story-topics-box',
     title: <FormattedMessage id="Story Topics Box" />,
@@ -1722,8 +1641,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     disableBeacon: true,
-    placement: 'left',
-  },
+    placement: 'left' },
   {
     target: '.dictionary-help',
     title: <FormattedMessage id="Translations" />,
@@ -1732,8 +1650,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-translations-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
@@ -1742,8 +1659,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-start-practice-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.practice-tour-edit-delete-story',
     title: <FormattedMessage id="practice-tour-edit-delete-title" />,
@@ -1752,8 +1668,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-edit-delete-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.practice-container',
     title: <FormattedMessage id="Exercises" />,
@@ -1762,8 +1677,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.exercise',
     title: <FormattedMessage id="Exercise" />,
@@ -1772,8 +1686,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.attempt-bar',
     title: <FormattedMessage id="check-answer" />,
@@ -1782,8 +1695,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-check-answers-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.progress-bar-cont',
     title: <FormattedMessage id="Progress bar" />,
@@ -1792,8 +1704,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-progress-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.navbar-basic-item',
     title: <FormattedMessage id="ELO score" />,
@@ -1801,8 +1712,7 @@ const desktopPracticeTourSteps = [
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
       </div>
-    ),
-  },
+    ) },
   {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1812,8 +1722,7 @@ const desktopPracticeTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
 ]
 
 const mobilePracticeTourSteps = [
@@ -1827,8 +1736,7 @@ const mobilePracticeTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.mobile-practice-tour-word',
     title: <FormattedMessage id="Translations" />,
@@ -1837,8 +1745,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-mobile-translations-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
@@ -1847,8 +1754,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-start-practice-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.practice-container',
     title: <FormattedMessage id="Exercises" />,
@@ -1857,8 +1763,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.exercise',
     title: <FormattedMessage id="Exercise" />,
@@ -1867,8 +1772,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.attempt-bar',
     title: <FormattedMessage id="check-answer" />,
@@ -1877,8 +1781,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-check-answers-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.progress-bar-cont',
     title: <FormattedMessage id="Progress bar" />,
@@ -1887,8 +1790,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-progress-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.navbar-basic-item',
     title: <FormattedMessage id="ELO score" />,
@@ -1896,8 +1798,7 @@ const mobilePracticeTourSteps = [
       <div>
         <FormattedHTMLMessage id="explanations-popup-story-elo" />
       </div>
-    ),
-  },
+    ) },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
@@ -1911,10 +1812,7 @@ const mobilePracticeTourSteps = [
     placementBeacon: 'left',
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1929,8 +1827,7 @@ const desktopLessonsTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
@@ -1939,8 +1836,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-story-topic-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
@@ -1949,8 +1845,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-vocab-diff-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
@@ -1959,8 +1854,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-topic-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-tour-custom-grammar-button',
     title: <FormattedMessage id="lesson-tour-custom-grammar-button-topic" />,
@@ -1969,8 +1863,7 @@ const desktopLessonsTourSteps = [
         <FormattedMessage id="lesson-tour-custom-grammar-button-text" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.level-content',
     title: <FormattedMessage id="Level title" />,
@@ -1979,8 +1872,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="level-title-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
@@ -1989,8 +1881,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-topics-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-performance',
     title: <FormattedMessage id="Grammar performance" />,
@@ -1999,8 +1890,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-performance-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
@@ -2009,8 +1899,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
@@ -2019,8 +1908,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="practice-lesson-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   // {
   //   target: '.practice-container',
   //   title: <FormattedMessage id="Lesson exercise" />,
@@ -2040,8 +1928,7 @@ const desktopLessonsTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
 ]
 const mobileLessonsTourSteps = [
   {
@@ -2054,8 +1941,7 @@ const mobileLessonsTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
@@ -2064,8 +1950,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-story-topic-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
@@ -2074,8 +1959,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-vocab-diff-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
@@ -2084,8 +1968,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-topic-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-tour-custom-grammar-button',
     title: <FormattedMessage id="open-custom-grammar-topics-modal" />,
@@ -2094,8 +1977,7 @@ const mobileLessonsTourSteps = [
         <FormattedMessage id="open-custom-grammar-topics-modal" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.level-content',
     title: <FormattedMessage id="Level title" />,
@@ -2104,8 +1986,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="level-title-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
@@ -2114,8 +1995,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-topics-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-performance',
     title: <FormattedMessage id="Grammar performance" />,
@@ -2124,8 +2004,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-performance-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
@@ -2134,8 +2013,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
@@ -2144,8 +2022,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="practice-lesson-message" />
       </div>
     ),
-    disableBeacon: true,
-  },
+    disableBeacon: true },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,
@@ -2159,10 +2036,7 @@ const mobileLessonsTourSteps = [
     placementBeacon: 'left',
     styles: {
       options: {
-        zIndex: 10000,
-      },
-    },
-  },
+        zIndex: 10000 } } },
 ]
 
 // Slice the tour steps to only include practice view

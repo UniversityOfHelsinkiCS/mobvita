@@ -1,11 +1,12 @@
 import React from 'react'
 import { Modal, Icon, Divider } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const getHeaderText = () => {
     if (playerScore !== botScore)
@@ -41,7 +42,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
     if (playerScore < botScore) return { color: 'green' }
   }
 
-  const handleBackToLibrary = () => history.push('/library')
+  const handleBackToLibrary = () => navigate('/library')
   const handleRestart = () => window.location.reload()
 
   return (
@@ -52,8 +53,7 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
       closeIcon={{
         style: { top: '1.0535rem', right: '1rem' },
         color: 'black',
-        name: 'close',
-      }}
+        name: 'close' }}
       data-cy="competition-end-modal"
     >
       <Modal.Header>{getHeaderText()}</Modal.Header>

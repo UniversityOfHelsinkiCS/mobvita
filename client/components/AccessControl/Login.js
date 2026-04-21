@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken } from 'Utilities/redux/userReducer'
 import { Form } from 'semantic-ui-react'
-import { useHistory, useLocation } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
@@ -22,7 +22,7 @@ const Login = () => {
   const { locale, updated } = useSelector(({ locale }) => locale)
 
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const intl = useIntl()
 
   const dispatch = useDispatch()
@@ -37,12 +37,12 @@ const Login = () => {
       if (!user.user.interfaceLanguage) {
         setShowLangModal(true)
       } else if (!user.user.last_used_language) {
-        history.replace('/learningLanguage')
+        navigate('/learningLanguage', { replace: true })
       } else {
-        history.replace(from)
+        navigate(from, { replace: true })
       }
     }
-  }, [user])
+  }, [navigate, location.state, user])
 
   return (
     <div className="login-form">

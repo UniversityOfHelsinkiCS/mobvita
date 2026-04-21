@@ -1,23 +1,24 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { confirmUser } from 'Utilities/redux/userReducer'
-import { useHistory } from 'react-router'
+import { useParams } from 'react-router-dom'
 
-const EmailConfirm = ({ match }) => {
+const EmailConfirm = () => {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user.data)
-  const history = useHistory()
+  const navigate = useNavigate()
+  const { token } = useParams()
 
   useEffect(() => {
     if (user) {
-      history.replace('/home')
+      navigate('/home', { replace: true })
     }
-  }, [user])
+  }, [navigate, user])
 
 
   useEffect(() => {
-    dispatch(confirmUser(match.params.token))
-  }, [])
+    dispatch(confirmUser(token))
+  }, [dispatch, token])
 
   return null
 }

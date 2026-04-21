@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { followStorySender } from 'Utilities/redux/userReducer'
 import { acceptSharedStory } from 'Utilities/redux/storiesReducer'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 const AcceptStoryFollowUser = ({ queryParams }) => {
   const dispatch = useDispatch()
   const user = useSelector(({ user }) => user.data)
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const userId = queryParams.replace(/^.*?friend_id=(.*)&story_id=.*$/g, '$1')
   const storyId = queryParams.replace(/^.*?story_id=(.*)&token=.*$/g, '$1')
@@ -15,16 +15,16 @@ const AcceptStoryFollowUser = ({ queryParams }) => {
 
   useEffect(() => {
     if (user) {
-      history.replace('/home')
+      navigate('/home', { replace: true })
     } else {
-      history.replace('/')
+      navigate('/', { replace: true })
     }
-  }, [user])
+  }, [navigate, user])
 
   useEffect(() => {
     dispatch(acceptSharedStory(storyId, token))
     dispatch(followStorySender(userId, token))
-  }, [])
+  }, [dispatch, storyId, token, userId])
 
   return null
 }

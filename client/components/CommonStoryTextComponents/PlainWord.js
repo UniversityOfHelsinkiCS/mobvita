@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   learningLanguageSelector,
@@ -22,11 +22,10 @@ import {
   setAnnotationvisibilityMobile,
   addAnnotationCandidates,
   resetAnnotationCandidates,
-  setAnnotationFormVisibility,
-} from 'Utilities/redux/annotationsReducer'
+  setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
 
 const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {
-  const history = useHistory()
+  const location = useLocation()
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
   const { id: storyId } = useParams()
@@ -53,7 +52,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
     sentence_id,
     snippet_id
   } = word
-  const isCompeteMode = history.location.pathname.includes('compete')
+  const isCompeteMode = location.pathname.includes('compete')
   const bigScreen = width >= 1024
   const voice = voiceLanguages[learningLanguage]
   const conceptHighlighting = word.concepts?.map(x=>x.concept).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
@@ -158,8 +157,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             storyId,
             wordId,
             inflectionRef,
-            prefLemma,
-          })
+            prefLemma })
         )
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
@@ -189,8 +187,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
           show_review_diff,
           show_preview_exer,
           mode
-        ),
-      }
+        ) }
 
   return (
     <>

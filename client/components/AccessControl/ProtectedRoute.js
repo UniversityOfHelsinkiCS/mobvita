@@ -1,10 +1,25 @@
-import React, { useCallback } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import React, { useMemo } from 'react'
+import { Navigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const ProtectedRoute = ({ component: Component, languageRequired = true, ...rest }) => {
+const ProtectedRoute = ({ component: Component, languageRequired = true }) => {
   const { data: user } = useSelector(({ user }) => user)
   const learningLanguage = user ? user.user.last_used_language : null
+  const location = useLocation()
+  const navigate = useNavigate()
+  const params = useParams()
+
+  const history = useMemo(
+    () => ({
+      push: (to, state) => navigate(to, { state }),
+      replace: (to, state) => navigate(to, { replace: true, state }),
+      goBack: () => navigate(-1),
+      goForward: () => navigate(1),
+      go: delta => navigate(delta),
+      location,
+      listen: () => () => {} }),
+    [location, navigate]
+  )
 
   let redirectPath = '/'
   let isRedirected = !user
@@ -14,26 +29,17 @@ const ProtectedRoute = ({ component: Component, languageRequired = true, ...rest
     isRedirected = !user || !learningLanguage
   }
 
-  const componentRender = useCallback(routerProps => <Component {...routerProps} />, [Component])
-  const redirectRender = useCallback(
-    ({ location }) => (
-      <Redirect
-        to={{
-          pathname: redirectPath,
-          state: { from: location },
-        }}
+  if (isRedirected) {
+    return (
+      <Navigate
+        to={redirectPath}
+        replace
+        state={{ from: location }}
       />
-    ),
-    [redirectPath]
-  )
+    )
+  }
 
-  const renderer = isRedirected ? redirectRender : componentRender
-
-  // if (pending) {
-  //   return null
-  // }
-
-  return <Route {...rest} render={renderer} />
+  return <Component history={history} location={location} match={{ params }} />
 }
 
 export default ProtectedRoute

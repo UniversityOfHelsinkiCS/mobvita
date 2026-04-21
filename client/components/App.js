@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
-import { Router as ReactRouter } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import { basePath, checkRevitaStatus } from 'Utilities/common'
+import { BrowserRouter, useLocation } from 'react-router-dom'
+import { checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
 import { getMTAvailableLanguage } from 'Utilities/redux/contextTranslationReducer'  
@@ -14,34 +13,31 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { hiddenFeatures } from 'Utilities/common'
 
+const RouteEffects = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    if (window.gtag) {
+      gtag('config', 'UA-157268430-1', {
+        // eslint-disable-line no-undef
+        page_title: location.pathname,
+        page_path: location.pathname })
+    }
+
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  return null
+}
+
 const App = () => {
-  const history = createBrowserHistory({ basename: basePath })
   const dispatch = useDispatch()
   const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {
     checkRevitaStatus().then(res => setRevitaStatus(res.data))
     dispatch(getMTAvailableLanguage())
-  }, [])
-
-  if (window.gtag) {
-    history.listen((location, action) => {
-      // Sends notifications to google analytics whenever location changes
-      gtag('config', 'UA-157268430-1', {
-        // eslint-disable-line no-undef
-        page_title: location.pathname,
-        page_path: location.pathname,
-      })
-    })
-  }
-
-  history.listen((location, action) => {
-    // Scroll to top when page changes.
-    window.scrollTo(0, 0)
-  })
-
-  // Use push, replace, and go to navigate around.
-  history.push(history.location)
+  }, [dispatch])
 
   if (revitaStatus !== 'OK') {
     dispatch(setServerError())
@@ -49,15 +45,16 @@ const App = () => {
 
   return (
     <>
-      <ReactRouter history={history}>
+      <BrowserRouter>
+        <RouteEffects />
         <StoryFetcher />
-        <Sidebar history={history} />
+        <Sidebar />
         <Router />
-        {/* {hiddenFeatures && history.location.pathname.includes('practice') && (
+        {/* {hiddenFeatures && location.pathname.includes('practice') && (
           <Chatbot />
         )} */}
         <Toaster />
-      </ReactRouter>
+      </BrowserRouter>
     </>
   )
 }

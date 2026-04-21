@@ -2,12 +2,12 @@ import React from 'react'
 import { Modal, Table } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { resetTests } from 'Utilities/redux/testReducer'
 
 const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const { A1, A2, B1, B2, C1, C2, overall } = adaptiveTestResults
 
@@ -28,7 +28,7 @@ const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {
 
   const handleClose = () => {
     dispatch(resetTests())
-    history.push('/home')
+    navigate('/home')
   }
 
   return (

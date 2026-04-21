@@ -1,6 +1,6 @@
 import React from 'react'
 import { images } from 'Utilities/common'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
@@ -10,9 +10,8 @@ const PracticeCompletedEncouragement = ({
   continueAction,
   practiceType,
   setMessageIndex,
-  setShow,
-}) => {
-  const history = useHistory()
+  setShow }) => {
+  const navigate = useNavigate()
 
   const handlePrimaryButtonClick = () => {
     continueAction()
@@ -21,7 +20,7 @@ const PracticeCompletedEncouragement = ({
 
   const handleHomeClick = () => {
     setShow(false)
-    history.push('/home')
+    navigate('/home')
   }
 
   return (

@@ -1,34 +1,31 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { images, capitalize } from 'Utilities/common'
 
 const StreakToast = () => {
   const intl = useIntl()
-  const history = useHistory()
+  const location = useLocation()
 
   let practiceText = ''
-  const practiceView = history.location.pathname.includes('practice')
-  const flashcardView = history.location.pathname.includes('flashcard')
+  const practiceView = location.pathname.includes('practice')
+  const flashcardView = location.pathname.includes('flashcard')
 
   if (practiceView) {
     practiceText = `${capitalize(
       intl.formatMessage({
-        id: 'snippets-done',
-      })
+        id: 'snippets-done' })
     )}`
   }
   if (flashcardView) {
     practiceText = `${capitalize(
       intl.formatMessage({
-        id: 'flashcards-done',
-      })
+        id: 'flashcards-done' })
     )}`
   }
 
   const streakDoneText = `${intl.formatMessage({
-    id: 'streak-just-done',
-  })}`
+    id: 'streak-just-done' })}`
 
   return (
     <div className="flex">

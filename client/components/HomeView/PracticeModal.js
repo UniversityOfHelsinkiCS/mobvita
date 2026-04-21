@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
@@ -27,32 +27,28 @@ const PracticeModalButton = ({ handleClick, name, extraImgSrc, storyNum }) => {
 }
 
 const PracticeModal = ({ open, setOpen }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [libraries, setLibraries] = useState({
     public: true,
     private: true,
-    group: true,
-  })
+    group: true })
   const [categories, setCategories] = useState({
     culture: true,
     politics: true,
     science: true,
     sport: true,
-    uncategorized: true,
-  })
+    uncategorized: true })
   const [filteredStories, setFilteredStories] = useState([])
 
   const [randomStoryIndex, setRandom] = useState(0)
 
   const { stories, pending } = useSelector(({ stories }) => ({
     stories: stories.data,
-    pending: stories.pending,
-  }))
+    pending: stories.pending }))
 
   const { user, refreshed } = useSelector(({ user }) => ({
     user: user.data,
-    refreshed: user.refreshed,
-  }))
+    refreshed: user.refreshed }))
 
   const [waiting, setWaiting] = useState(true)
   const [temp, setTemp] = useState(null)
@@ -142,7 +138,7 @@ const PracticeModal = ({ open, setOpen }) => {
     if (jump && filteredStories.length > 0) {
       // console.log(jump)
       // console.log(`/stories/${filteredStories[randomStoryIndex]._id}/practice`)
-      history.push(`/stories/${filteredStories[randomStoryIndex]._id}/preview`) //practice-preview
+      navigate(`/stories/${filteredStories[randomStoryIndex]._id}/preview`) //practice-preview
     }
   }, [filteredStories, randomStoryIndex])
 
@@ -156,15 +152,13 @@ const PracticeModal = ({ open, setOpen }) => {
     const initLibraries = {
       public: false,
       private: false,
-      group: false,
-    }
+      group: false }
     const initCategories = {
       culture: true,
       politics: true,
       science: true,
       sport: true,
-      uncategorized: true,
-    }
+      uncategorized: true }
     setLibraries({ ...initLibraries, [library]: true })
     setCategories(initCategories)
   }
@@ -173,15 +167,13 @@ const PracticeModal = ({ open, setOpen }) => {
     setLibraries({
       public: true,
       private: true,
-      group: true,
-    })
+      group: true })
     setCategories({
       culture: true,
       politics: true,
       science: true,
       sport: true,
-      uncategorized: true,
-    })
+      uncategorized: true })
     setOpen(false)
   }
 
@@ -191,18 +183,15 @@ const PracticeModal = ({ open, setOpen }) => {
       politics: false,
       science: false,
       sport: false,
-      uncategorized: false,
-    }
+      uncategorized: false }
     const initLibraries = {
       public: true,
       private: true,
-      group: true,
-    }
+      group: true }
     setLibraries(initLibraries)
     setCategories({
       ...initCategories,
-      [category]: true,
-    })
+      [category]: true })
   }
 
   return (
@@ -228,7 +217,7 @@ const PracticeModal = ({ open, setOpen }) => {
                 </button>
               ) : (
                 <PracticeModalButton
-                  handleClick={() => history.push(filteredLink)}
+                  handleClick={() => navigate(filteredLink)}
                   name="All-Stories"
                   extraImgSrc="dices"
                   storyNum={filteredStories.length}
@@ -268,7 +257,7 @@ const PracticeModal = ({ open, setOpen }) => {
             </div>
             <div className="practice-now-modal-group-cont" data-cy="practice-library">
               <PracticeModalButton
-                handleClick={() => history.push('/library')}
+                handleClick={() => navigate('/library')}
                 name="Library"
                 extraImgSrc="library"
                 dataCy="check-library-button"

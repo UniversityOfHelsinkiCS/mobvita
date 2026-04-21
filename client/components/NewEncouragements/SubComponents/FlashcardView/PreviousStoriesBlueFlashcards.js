@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useHistory } from "react-router"
+import { useLocation } from "react-router-dom"
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
 
 const PreviousStoriesBlueFlashcards = () => {
   const flashcards = useSelector(({ flashcards }) => flashcards)
   const { storyId } = useParams()
   const [prevStoriesBlueCards, setPrevStoriesBlueCards] = useState(null)
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const PreviousStoriesBlueFlashcards = () => {
   const handleClick = () =>{
     dispatch(closeFCEncouragement())
     dispatch(closeEncouragement())
-    history.push(`/flashcards/fillin/test/${prevStoriesBlueCards.story_id}`)
+    navigate(`/flashcards/fillin/test/${prevStoriesBlueCards.story_id}`)
   }
 
   return (
@@ -38,8 +38,7 @@ const PreviousStoriesBlueFlashcards = () => {
             className="flex enc-message-body"
             style={{
               alignItems: 'center',
-              backgroundColor: backgroundColors[2],
-            }}
+              backgroundColor: backgroundColors[2] }}
           >
             <img
               src={images.flashcards}
@@ -51,8 +50,7 @@ const PreviousStoriesBlueFlashcards = () => {
                 id="previous-stories-blue-cards"
                 values={{
                   nWords: prevStoriesBlueCards?.num_of_rewardable_words,
-                  story: prevStoriesBlueCards?.title,
-                }}
+                  story: prevStoriesBlueCards?.title }}
               />
               &nbsp;
               <Button

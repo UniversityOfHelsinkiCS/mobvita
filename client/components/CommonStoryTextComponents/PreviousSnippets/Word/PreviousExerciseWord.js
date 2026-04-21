@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
 import {
@@ -26,8 +26,7 @@ import {
   setFocusedSpan,
   setHighlightRange,
   addAnnotationCandidates,
-  resetAnnotationCandidates,
-} from 'Utilities/redux/annotationsReducer'
+  resetAnnotationCandidates } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet, hideDifficulty }) => {
@@ -42,8 +41,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     ID: wordId,
     inflection_ref: inflectionRef,
     snippet_id,
-    sentence_id,
-  } = word
+    sentence_id } = word
   const ref = word.hints && word.hints.filter(
     hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const explanation = word.hints && word.hints.filter(
@@ -51,8 +49,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
       ...obj, 
       [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...(v.explanation || [])]}), {})
   const [show, setShow] = useState(false)
-  const history = useHistory()
-  const isPreviewMode = history.location.pathname.includes('preview')
+  const location = useLocation()
+  const isPreviewMode = location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { resource_usage, autoSpeak, show_review_diff, show_preview_exer, grade } = useSelector(
     state => state.user.data.user
@@ -98,8 +96,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
             storyId,
             wordId,
             inflectionRef,
-            prefLemma,
-          })
+            prefLemma })
         )
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
@@ -158,8 +155,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           show_review_diff,
           show_preview_exer,
           mode
-        ),
-      }
+        ) }
   // console.log('one of these? ', word)
 
   const tooltip = (

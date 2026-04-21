@@ -5,14 +5,14 @@ import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import Spinner from 'Components/Spinner'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Divider } from 'semantic-ui-react'
 
 const PreviousSnippets = (props) => {
   const isLesson = props.isLesson
-  const history = useHistory()
+  const location = useLocation()
   const dispatch = useDispatch()
-  const isControlledStory = history.location.pathname.includes('controlled-practice')
+  const isControlledStory = location.pathname.includes('controlled-practice')
 
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
 

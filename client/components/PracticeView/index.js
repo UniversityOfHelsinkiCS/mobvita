@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useParams, useHistory } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
@@ -10,16 +10,14 @@ import {
   dropCachedSnippet,
   getNextSnippetFromCache,
   resetCurrentSnippet,
-  resetSnippets,
-} from 'Utilities/redux/snippetsReducer'
+  resetSnippets } from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import {
   setTouchedIds,
   setAnswers,
   setWillPause,
   setIsPaused,
-  clearPractice,
-} from 'Utilities/redux/practiceReducer'
+  clearPractice } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
@@ -29,8 +27,7 @@ import {
   learningLanguageSelector,
   getMode,
   hiddenFeatures,
-  dictionaryLanguageSelector,
-} from 'Utilities/common'
+  dictionaryLanguageSelector } from 'Utilities/common'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -50,7 +47,8 @@ import Spinner from 'Components/Spinner'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const location = useLocation()
+  const navigate = useNavigate()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { id } = useParams()
@@ -68,7 +66,7 @@ const PracticeView = () => {
   const mode = getMode()
   const snippetsTotalNum = snippets?.focused?.total_num
   const controlledPractice = mode === 'controlled-practice'
-  const isLesson = history.location.pathname.includes('lesson')
+  const isLesson = location.pathname.includes('lesson')
   const timedExercise = snippets?.focused?.timed_exercise
 
   const TIMER_START_DELAY = 2000
@@ -90,8 +88,7 @@ const PracticeView = () => {
     initialTime: null,
     direction: 'backward',
     startImmediately: false,
-    timeToUpdate: 100,
-  })
+    timeToUpdate: 100 })
 
   useEffect(() => {
     if (!snippets.testTime || !snippets.focused) return
@@ -169,9 +166,7 @@ const PracticeView = () => {
         concept,
         hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
-      },
-    }
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties } }
     dispatch(setAnswers(newAnswer))
   }
 
@@ -189,9 +184,9 @@ const PracticeView = () => {
   }
 
   const getExerciseMode = () => {
-    if (history.location.pathname.includes('listening')) return 'listening'
-    if (history.location.pathname.includes('grammar')) return 'grammar'
-    if (history.location.pathname.includes('speech')) return 'speech'
+    if (location.pathname.includes('listening')) return 'listening'
+    if (location.pathname.includes('grammar')) return 'grammar'
+    if (location.pathname.includes('speech')) return 'speech'
     return 'all'
   }
 
@@ -242,8 +237,7 @@ const PracticeView = () => {
               className="story-title"
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
-                width: `${controlledPractice ? '75%' : '100%'}`,
-              }}
+                width: `${controlledPractice ? '75%' : '100%'}` }}
             >
               {!pending && `${story.title}`}
             </div>
@@ -303,7 +297,7 @@ const PracticeView = () => {
           open={startModalOpen}
           setOpen={setStartModalOpen}
           activity="control-story"
-          onBackClick={() => history.push('/library')}
+          onBackClick={() => navigate('/library')}
         />
         <div className="dictionary-and-annotations-cont">
           <DictionaryHelp />

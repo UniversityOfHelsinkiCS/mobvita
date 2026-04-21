@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -10,8 +10,7 @@ import {
   freezeControlledStory,
   initControlledExerciseSnippets,
   getFrozenTokens,
-  resetControlledStory,
-} from 'Utilities/redux/controlledPracticeReducer'
+  resetControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -32,15 +31,14 @@ const ControlledStoryEditView = ({ match }) => {
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
   const mode = getMode()
-  const history = useHistory()
+  const location = useLocation()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
-    locale,
-  }))
+    locale }))
   const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || true)
   const user = useSelector(state => state.user.data)
 
@@ -84,8 +82,7 @@ const ControlledStoryEditView = ({ match }) => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
     }
   }, [controlledPractice?.finished])
@@ -107,7 +104,7 @@ const ControlledStoryEditView = ({ match }) => {
   if (!story || pending || !user) return <Spinner fullHeight size={60} text='' />
 
   const showFooter = width > 640
-  const url = history.location.pathname
+  const url = location.pathname
   const processingCurrentStory = id === storyId
 
   const checkboxLabel = () => {

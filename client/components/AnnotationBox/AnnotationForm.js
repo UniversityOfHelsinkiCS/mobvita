@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -16,11 +16,10 @@ const AnnotationForm = ({
   category,
   setCategory,
   sharedStory,
-  publicStory,
-}) => {
-  const history = useHistory()
+  publicStory }) => {
+  const location = useLocation()
   const intl = useIntl()
-  const inGroupStory = history.location.pathname.includes('group')
+  const inGroupStory = location.pathname.includes('group')
   const { is_teacher } = useSelector(({ user }) => user.data.user)
   const dispatch = useDispatch()
   const handleTextChange = e => {
@@ -41,23 +40,19 @@ const AnnotationForm = ({
     {
       key: '0',
       text: <FormattedMessage id="notes-None" />,
-      value: 'None',
-    },
+      value: 'None' },
     {
       key: '1',
       text: <FormattedMessage id="notes-Grammar" />,
-      value: 'Grammar',
-    },
+      value: 'Grammar' },
     {
       key: '2',
       text: <FormattedMessage id="notes-Phrases" />,
-      value: 'Phrases',
-    },
+      value: 'Phrases' },
     {
       key: '3',
       text: <FormattedMessage id="notes-Vocabulary" />,
-      value: 'Vocabulary',
-    },
+      value: 'Vocabulary' },
   ]
 
   return (

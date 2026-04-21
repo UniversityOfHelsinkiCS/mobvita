@@ -1,17 +1,17 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 
 export default ({ translationId, id, updateLibrarySelect, updateGroupSelect, children }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleButtonClick = async () => {
     await dispatch(updateGroupSelect(id))
     await dispatch(updateLibrarySelect('group'))
-    history.push('/library')
+    navigate('/library')
   }
 
   return (

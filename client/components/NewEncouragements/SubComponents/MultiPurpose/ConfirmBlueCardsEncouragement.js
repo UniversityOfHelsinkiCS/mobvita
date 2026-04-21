@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
-import { useHistory } from "react-router"
+import { useLocation } from "react-router-dom"
 
 const ConfirmBlueCardsEncouragement = () => {
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
@@ -19,7 +19,7 @@ const ConfirmBlueCardsEncouragement = () => {
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
@@ -33,7 +33,7 @@ const ConfirmBlueCardsEncouragement = () => {
   const handleClick = () =>{
     dispatch(closeFCEncouragement())
     dispatch(closeEncouragement())
-    history.push(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
+    navigate(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
   }
 
   if (!prevBlueCards && !showAllEncouragements) {
@@ -58,8 +58,7 @@ const ConfirmBlueCardsEncouragement = () => {
                 id="previous-stories-blue-cards"
                 values={{
                   nWords: prevBlueCards?.num_of_rewardable_words,
-                  story: prevBlueCards?.title,
-                }}
+                  story: prevBlueCards?.title }}
               />
               &nbsp;
               <Button

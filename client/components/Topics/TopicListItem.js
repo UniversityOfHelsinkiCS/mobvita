@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -49,8 +49,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
 
     return {
       title: match[1].trim(),
-      example: match[2].trim(),
-    }
+      example: match[2].trim() }
   }
 
   for (let k = 0; k < lesson_topics.length; k++) {
@@ -70,8 +69,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
           marginBottom: '.5rem',
           display: 'inline-flex',
           width: '100%',
-          ...getTextStyle(learningLanguage),
-        }}
+          ...getTextStyle(learningLanguage) }}
       >
         <span
             display="inline"
@@ -99,8 +97,7 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
               <div className="lesson-performance" 
               style={{
                 minWidth: '50px',
-                maxWidth: '50px',
-              }}
+                maxWidth: '50px' }}
             >
               <span
                 float="left"

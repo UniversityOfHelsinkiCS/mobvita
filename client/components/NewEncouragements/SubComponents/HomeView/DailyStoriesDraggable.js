@@ -7,11 +7,11 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Icon } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { uploaded } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
 
@@ -33,10 +33,9 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
-      history.push('/library/private')
+      navigate('/library/private')
     }
   }, [uploaded])
 
@@ -55,8 +54,7 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
               className="interactable"
               style={{
                 cursor: 'pointer',
-                marginBottom: '.25em',
-              }}
+                marginBottom: '.25em' }}
               size="large"
               name="close"
               onClick={() => setOpen(false)}

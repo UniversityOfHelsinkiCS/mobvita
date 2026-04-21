@@ -2,15 +2,15 @@ import { images } from 'Utilities/common'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const WelcomeBackEncouragement = () => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width > 700
-  const history = useHistory()
-  const isInWelcome = history.location.pathname.includes('/welcome')
+  const location = useLocation()
+  const isInWelcome = location.pathname.includes('/welcome')
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData
   const storiesCovered = userData.stories_covered
@@ -25,8 +25,7 @@ const WelcomeBackEncouragement = () => {
           style={{
             fontWeight: 500,
             fontSize: '1.4rem',
-            marginBottom: bigScreen ? '1em' : '.5em',
-          }}
+            marginBottom: bigScreen ? '1em' : '.5em' }}
         >
           {intl.formatMessage({ id: 'welcome-back-encouragement' }, { username })}
         </div>

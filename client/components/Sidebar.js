@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { 
   Sidebar as SemanticSidebar, 
   Menu, 
@@ -9,8 +9,7 @@ import {
   DropdownItem,
   DropdownMenu,
   Popup,
-  Checkbox,
-} from 'semantic-ui-react'
+  Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl' 
 import { FormattedMessage } from 'react-intl'
@@ -23,8 +22,7 @@ import {
   startLessonsTour,
   startLibraryTour,
   startProgressTour,
-  startPracticeTour,
-} from 'Utilities/redux/tourReducer'
+  startPracticeTour } from 'Utilities/redux/tourReducer'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -33,9 +31,11 @@ import LearningSettingsModal from './LearningSettingsModal'
 import PracticeModal from './HomeView/PracticeModal'
 import { hiddenFeatures, getHelpLink, cefrNum2Cefr } from 'Utilities/common'
 
-export default function Sidebar({ history }) {
+export default function Sidebar() {
   const dispatch = useDispatch()
   const sidebar = useRef()
+  const navigate = useNavigate()
+  const location = useLocation()
   const user = useSelector(({ user }) => user.data)
   // const irtScore = useSelector(({ user }) => user.irt_dummy_score)
   const open = useSelector(({ sidebar }) => sidebar.open)
@@ -67,8 +67,7 @@ export default function Sidebar({ history }) {
     const temp = localeOptions.map(option => ({
       value: option.code,
       text: option.displayName,
-      key: option.code,
-    }))
+      key: option.code }))
     setLocaleDropdownOptions(temp)
   }, [])
 
@@ -83,27 +82,27 @@ export default function Sidebar({ history }) {
 
   const signOut = () => {
     dispatch(logout())
-    history.push('/')
+    navigate('/')
   }
 
   const handleTourStart = () => {
-    if (history.location.pathname.includes('profile')) {
-      if (!history.location.pathname.includes('progress')) {
-        history.push('/profile/progress')
+    if (location.pathname.includes('profile')) {
+      if (!location.pathname.includes('progress')) {
+        navigate('/profile/progress')
       }
       if (user.user.email === 'anonymous_email') {
         dispatch(startAnonymousProgressTour())
       } else {
         dispatch(startProgressTour())
       }
-    } else if (history.location.pathname.includes('lessons') && hiddenFeatures) {
+    } else if (location.pathname.includes('lessons') && hiddenFeatures) {
       dispatch(startLessonsTour())
-    } else if (history.location.pathname.includes('library')) {
+    } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (history.location.pathname.includes('preview') && hiddenFeatures) {
+    } else if (location.pathname.includes('preview') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())
-    } else if (history.location.pathname.includes('/practice') && hiddenFeatures) {
+    } else if (location.pathname.includes('/practice') && hiddenFeatures) {
       dispatch(sidebarSetOpen(false))
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
     } else {
@@ -157,8 +156,7 @@ export default function Sidebar({ history }) {
               display: 'flex',
               flexDirection: 'column',
               marginRight: 'auto',
-              marginLeft: 'auto',
-            }}
+              marginLeft: 'auto' }}
           >
             <Link to="/home">
               <img
@@ -351,8 +349,7 @@ export default function Sidebar({ history }) {
         <div
           style={{
             marginTop: 'auto',
-            color: 'slateGrey',
-          }}
+            color: 'slateGrey' }}
         >
           <Menu.Item style={{ paddingBottom: '0px' }}>
           <Link to="/profile/settings">
@@ -402,7 +399,7 @@ export default function Sidebar({ history }) {
                   className='tour-mobile-start-button'
                   onClick={() => handleTourStart()}
                   text={intl.formatMessage({id: 'start-tour'})} icon='map signs'
-                  disabled={history.location.pathname.includes('lessons/library')}
+                  disabled={location.pathname.includes('lessons/library')}
                 />
               )}
               {/* <DropdownItem as={Link} to={helpLink} text={intl.formatMessage({id: 'help'})} icon='help circle' /> */}

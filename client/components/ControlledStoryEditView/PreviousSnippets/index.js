@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -15,11 +15,10 @@ const PreviousSnippets = () => {
     const previous = controlledPractice.previous.filter(Boolean)
     return { previous, focusedSnippet, pending }
   }, shallowEqual)
-
-  const history = useHistory()
+  const location = useLocation()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
-  const isEditor = history.location.pathname.includes('controlled-story-editor')
+  const isEditor = location.pathname.includes('controlled-story-editor')
 
   useEffect(() => {
     if (isEditor && previous.length > 0 && !annotationsInitialized) {

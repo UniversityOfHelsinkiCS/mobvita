@@ -1,14 +1,14 @@
 import React from 'react'
 import { getBackgroundColor, images } from 'Utilities/common'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 
 const Footer = () => {
-  const history = useHistory()
+  const location = useLocation()
 
-  const showResonsiveVoiceMention = history.location.pathname.includes('stories')
+  const showResonsiveVoiceMention = location.pathname.includes('stories')
   const showTermsAndConditionsAndBuildVersion =
-    history.location.pathname.includes('home') || history.location.pathname.includes('welcome')
+    location.pathname.includes('home') || location.pathname.includes('welcome')
 
   return (
     <footer className="footer-wrapper">

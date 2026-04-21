@@ -12,23 +12,21 @@ import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopics
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
   setLessonInstance,
   clearLessonInstanceState,
-  setLessonStep,
-} from 'Utilities/redux/lessonInstanceReducer'
+  setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
 
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import {
   lessonsTourViewed,
   updateGroupSelect,
-  updateLibrarySelect,
-} from 'Utilities/redux/userReducer'
+  updateLibrarySelect } from 'Utilities/redux/userReducer'
 import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ThemeView from '../ThemeView'
@@ -78,21 +76,18 @@ const LessonList = () => {
     oid: userId,
     has_seen_lesson_tour,
     vocabulary_score,
-    email,
-  } = user
+    email } = user
   const isAnonymousUser = email === 'anonymous_email'
   const {
     pending: metaPending,
     lesson_semantics,
     lesson_topics,
-    lessons,
-  } = useSelector(({ metadata }) => metadata)
+    lessons } = useSelector(({ metadata }) => metadata)
   const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
   const {
     pending: lessonPending,
     lesson,
-    step: goStep,
-  } = useSelector(({ lessonInstance }) => lessonInstance)
+    step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
 
   const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -107,17 +102,15 @@ const LessonList = () => {
     topic_ids: selectedTopicIds,
     semantic: selectedSemantics,
     vocab_diff,
-    num_visited_exercises,
-  } = lesson
+    num_visited_exercises } = lesson
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
 
   const [libraries, setLibraries] = useState({
     private: false,
-    group: false,
-  })
+    group: false })
 
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const setLibrary = library => {
     const librariesCopy = {}
@@ -225,8 +218,7 @@ const LessonList = () => {
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
     text: group.groupName,
-    value: group.group_id,
-  }))
+    value: group.group_id }))
 
   const handleGroupChange = (_e, option) => {
     dispatch(updateGroupSelect(option.value))
@@ -263,8 +255,7 @@ const LessonList = () => {
   const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
   const markComp = StyledMark(
     intl.formatMessage({
-      id: 'Recommended vocabulary difficulty',
-    })
+      id: 'Recommended vocabulary difficulty' })
   )
   const sliderContainerWidth = bigScreen ? '450px' : '90%'
   const minSlider = 0
@@ -328,8 +319,7 @@ const LessonList = () => {
           textAlign: 'center',
           fontWeight: 500,
           margin: '18px',
-          fontSize: 'large',
-        }}
+          fontSize: 'large' }}
       >
         <div className="col col-12">
           {!lessonPending && lessonReady ? (
@@ -372,8 +362,7 @@ const LessonList = () => {
               margin: '3em 0',
               padding: '1rem 0',
               width: '400px',
-              border: '2px solid #000',
-            }}
+              border: '2px solid #000' }}
           >
             <FormattedMessage id="start-practice-lesson" />
           </Button>
@@ -433,7 +422,7 @@ const LessonList = () => {
 
   const handleBeginClick = () => {
     finnishSelectingTopics()
-    history.push(link)
+    navigate(link)
   }
 
   return (
@@ -486,8 +475,7 @@ const LessonList = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    minHeight: 0,
-                  }}
+                    minHeight: 0 }}
                 >
                   <div className="lesson-setup-body">
                     {teacherView && (
@@ -496,8 +484,7 @@ const LessonList = () => {
                           display: 'flex',
                           marginTop: '12px',
                           justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
+                          alignItems: 'center' }}
                       >
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>
                           <FormattedMessage id="Group" />:
@@ -516,8 +503,7 @@ const LessonList = () => {
                         flex: '1',
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
+                        alignItems: 'center' }}
                     >
                       <ThemeView
                         currentStepIndex={goStep}
@@ -586,18 +572,15 @@ const LessonList = () => {
                         {
                           stepLabel: <FormattedMessage id="selected-lesson-themes" />,
                           stepDescription: '',
-                          completed: goStep > 0,
-                        },
+                          completed: goStep > 0 },
                         {
                           stepLabel: <FormattedMessage id="Lesson vocab" />,
                           stepDescription: '',
-                          completed: goStep > 1,
-                        },
+                          completed: goStep > 1 },
                         {
                           stepLabel: <FormattedMessage id="Grammar topics" />,
                           stepDescription: '',
-                          completed: false,
-                        },
+                          completed: false },
                       ]}
                       currentStepIndex={goStep}
                     />

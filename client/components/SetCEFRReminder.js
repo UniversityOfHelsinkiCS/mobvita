@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'semantic-ui-react';
 import { Button } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useLearningLanguage } from 'Utilities/common'
 import { InitAdaptiveTest } from 'Utilities/redux/testReducer'
@@ -11,7 +11,7 @@ import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/
 import CERFLevelSlider from './CEFRLevelSlider';
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
-  const history = useHistory();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const learningLanguage = useLearningLanguage()
   const [sliderValue, setSliderValue] = useState(121);
@@ -36,7 +36,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
     dispatch(updateIsTeacher(false));
     dispatch(InitAdaptiveTest(learningLanguage))
     closeModal();
-    history.push('/adaptive-test');
+    navigate('/adaptive-test');
   };
 
   const handleStudentClick = () => {
@@ -84,8 +84,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                   display: 'flex',
                   justifyContent: 'center',
                   gap: '20px',
-                  marginTop: '30px',
-                }}
+                  marginTop: '30px' }}
               >
                 <Button variant="primary" size="lg" onClick={() => setStep(3)}>
                   <FormattedMessage id="set-cefr-manually" />
@@ -111,8 +110,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                 justifyContent: 'space-between',
                 marginTop: '1rem',
                 borderTop: '1px solid #ddd',
-                paddingTop: '1rem',
-              }}
+                paddingTop: '1rem' }}
             >
               {step > 1 && (
                 <Button variant="secondary" onClick={() => setStep(step - 1)}>

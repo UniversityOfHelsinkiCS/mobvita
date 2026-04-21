@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { hiddenFeatures } from 'Utilities/common'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
@@ -8,12 +8,12 @@ import PreviousExerciseWord from './PreviousExerciseWord'
 
 const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback, focusedConcept }) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
-  const history = useHistory()
+  const location = useLocation()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const { show_review_diff, show_preview_exer } = useSelector(({ user }) => user.data.user)
   const { hiddenWordIds } = useSelector(({ controlledPractice }) => controlledPractice)
-  const controlledStory = history.location.pathname.includes('controlled-story')
-  const isPreviewMode = history.location.pathname.includes('preview')
+  const controlledStory = location.pathname.includes('controlled-story')
+  const isPreviewMode = location.pathname.includes('preview')
 
   useEffect(() => {
     if (controlledStory && hiddenWordIds?.find(hidden => hidden === word.ID)) {
@@ -66,8 +66,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback,
       correct: word.surface,
       concept: word.concept,
       users_answer: word.wrong || word.surface,
-      id: word.ID,
-    }
+      id: word.ID }
     return (
       <PreviousExerciseWord
         word={word}

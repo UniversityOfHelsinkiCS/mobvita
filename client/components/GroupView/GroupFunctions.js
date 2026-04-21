@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,15 +19,14 @@ const GroupFunctions = ({
   showTestEnableMenuGroupId,
   setShowTestEnableMenuGroupId,
   currTestDeadline,
-  setCurrTestDeadline,
-}) => {
+  setCurrTestDeadline }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const {
     is_teaching: isTeaching,
     group_id: groupId,
-    language,
-  } = group
+    language } = group
   const teacherView = useSelector(({ user }) => user.data.user.is_teacher)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const [importStoryModalOpen, setImportStoryModalOpen] = useState(false)
@@ -35,14 +34,14 @@ const GroupFunctions = ({
   const testEnabled = currTestDeadline - Date.now() > 0
   const testButtonVariant = testEnabled ? 'danger' : 'primary'
   const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
-  const peopleView = history.location.pathname.includes('people')
-  const analyticsView = history.location.pathname.includes('analytics')
-  const conceptsView = history.location.pathname.includes('concepts')
+  const peopleView = location.pathname.includes('people')
+  const analyticsView = location.pathname.includes('analytics')
+  const conceptsView = location.pathname.includes('concepts')
   const role = isTeaching ? 'teacher' : 'student'
 
   const handleAnalyticsClick = async () => {
     await dispatch(updateGroupSelect(groupId))
-    history.push(`/groups/${role}/analytics`)
+    navigate(`/groups/${role}/analytics`)
   }
 
   const handleShowTokenClick = () => {
@@ -65,12 +64,12 @@ const GroupFunctions = ({
   const handleStoriesClick = async () => {
     await dispatch(updateGroupSelect(groupId))
     await dispatch(updateLibrarySelect('group'))
-    history.push('/library')
+    navigate('/library')
   }
 
   const handlePeopleClick = async () => {
     await dispatch(updateGroupSelect(groupId))
-    history.push(`/groups/${role}/people`)
+    navigate(`/groups/${role}/people`)
   }
 
   const handleTestEnableDisableButtonClick = () => {
@@ -87,7 +86,7 @@ const GroupFunctions = ({
   }
 
   const handleTestStartClick = async () => {
-    await history.push('/tests')
+    await navigate('/tests')
     dispatch(getTestQuestions(language, groupId, true))
   }
 
@@ -194,8 +193,7 @@ const GroupFunctions = ({
               style={{
                 backgroundColor: 'rgb(50, 170, 248)',
                 color: 'white',
-                borderLeft: '2px solid rgb(81, 138, 248)',
-              }}
+                borderLeft: '2px solid rgb(81, 138, 248)' }}
               floating
               trigger={<React.Fragment />}
             >

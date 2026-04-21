@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
@@ -14,7 +14,8 @@ import Spinner from 'Components/Spinner'
 
 const Register = () => {
   const intl = useIntl()
-  const history = useHistory()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [formState, setFormState] = useState({
     email: '',
     username: '',
@@ -52,8 +53,7 @@ const Register = () => {
     error,
     message: errorMessage,
     pending: registerPending,
-    accountCreated,
-  } = useSelector(({ register }) => register)
+    accountCreated } = useSelector(({ register }) => register)
   const userEmail = useSelector(({ user }) => user.data?.user?.email)
   const { locale } = useSelector(({ locale }) => locale)
 
@@ -66,15 +66,16 @@ const Register = () => {
   }, [error])
 
   useEffect(() => {
-    if (!registerPending && accountCreated && history.location.pathname.includes('register')) {
+    if (!registerPending && accountCreated && location.pathname.includes('register')) {
       dispatch(getSelf())
     }
-  }, [registerPending])
+  }, [accountCreated, dispatch, location.pathname, registerPending])
 
   useEffect(() => {
-    if (history.location.pathname.includes('register') && userEmail !== 'anonymous_email')
-      history.push('/home')
-  }, [userEmail])
+    if (location.pathname.includes('register') && userEmail !== 'anonymous_email') {
+      navigate('/home')
+    }
+  }, [location.pathname, navigate, userEmail])
 
   const handleSubmit = () => {
     const { email, username, password, passwordAgain, registrationCode, years, obligatoryCourses, optionalCourses, grade } = formState
@@ -109,15 +110,13 @@ const Register = () => {
 
     setFormState({
       ...formState,
-      [name]: value,
-    })
+      [name]: value })
   }
 
   const handleDDLangChange = (name, value) => {
     setFormState({
       ...formState,
-      [name]: value,
-    })
+      [name]: value })
   }
 
   return (

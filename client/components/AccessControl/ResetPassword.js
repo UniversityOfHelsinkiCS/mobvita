@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { Form } from 'semantic-ui-react'
 import { resetPassword } from 'Utilities/redux/passwordResetReducer'
 
-const ResetPassword = ({ match }) => {
+const ResetPassword = () => {
   const [password, setPassword] = useState('')
   const [repeat, setRepeat] = useState('')
   const [error, setError] = useState(false)
 
   const dispatch = useDispatch()
   const intl = useIntl()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const { token } = useParams()
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -22,8 +23,8 @@ const ResetPassword = ({ match }) => {
       return
     }
 
-    dispatch(resetPassword(password, match.params.token))
-    history.replace('/home')
+    dispatch(resetPassword(password, token))
+    navigate('/home', { replace: true })
   }
 
   return (

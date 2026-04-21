@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -17,7 +17,8 @@ const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
 
-  const history = useHistory()
+  const location = useLocation()
+  const navigate = useNavigate()
   const { width } = useWindowDimensions()
   const { mode, type, storyId } = useParams()
 
@@ -31,7 +32,7 @@ const Flashcards = () => {
     {}
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
 
-  const inBlueCardsTest = history.location.pathname.includes('test')
+  const inBlueCardsTest = location.pathname.includes('test')
 
   useEffect(() => {
     if (
@@ -65,9 +66,9 @@ const Flashcards = () => {
 
   const pushWithOptionalContext = nextMode => {
     if (type && storyId) {
-      history.push(`/flashcards/${nextMode}/${type}/${storyId}`)
+      navigate(`/flashcards/${nextMode}/${type}/${storyId}`)
     } else {
-      history.push(`/flashcards/${nextMode}`)
+      navigate(`/flashcards/${nextMode}`)
     }
   }
 
@@ -75,18 +76,15 @@ const Flashcards = () => {
     {
       key: 'Practice flashcards',
       selected: mode !== 'new' && mode !== 'list',
-      onSelect: () => pushWithOptionalContext('fillin'),
-    },
+      onSelect: () => pushWithOptionalContext('fillin') },
     {
       key: 'Add flashcard',
       selected: mode === 'new',
-      onSelect: () => history.push('/flashcards/new'),
-    },
+      onSelect: () => navigate('/flashcards/new') },
     {
       key: 'Flashcard list',
       selected: mode === 'list',
-      onSelect: () => pushWithOptionalContext('list'),
-    },
+      onSelect: () => pushWithOptionalContext('list') },
   ]
 
   const tabValues = Object.fromEntries(tabs.map(tab => [tab.key, tab.selected]))

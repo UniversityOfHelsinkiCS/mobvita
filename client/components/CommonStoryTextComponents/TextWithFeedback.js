@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
@@ -19,8 +19,8 @@ const TextWithFeedback = ({
   const reservedLinePositions = {}
   let inChunk = false
   let chunkIsOneVerb = false
-  const history = useHistory()
-  const inControlStoryEditor = history.location.pathname.includes('controlled-story')
+  const location = useLocation()
+  const inControlStoryEditor = location.pathname.includes('controlled-story')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
   const { grade } = useSelector(state => state.user.data.user)
@@ -96,8 +96,7 @@ const TextWithFeedback = ({
         : `1px solid ${lineColors[position - 1]}`,
       paddingBottom: `${position * 2}px`,
       display: 'inline-block',
-      whiteSpace: 'pre',
-    }
+      whiteSpace: 'pre' }
 
     if (counter > 0) {
       const newElement = (
@@ -140,8 +139,7 @@ const TextWithFeedback = ({
       paddingTop: getPaddingTop(exercise),
       paddingBottom: getPaddingBottom(exercise),
       paddingLeft: chunkStart ? sidePadding : 'none',
-      paddingRight: chunkEnd ? sidePadding : 'none',
-    }
+      paddingRight: chunkEnd ? sidePadding : 'none' }
     if (chunkStart) {
       chunkStyle.borderRadius = '4px 0 0 4px'
       chunkStyle.marginLeft = '1px'
@@ -212,8 +210,7 @@ const TextWithFeedback = ({
                 if (snippet[index - 1].level & snippet[index + 1].level) {
                   word = {
                     ...word,
-                    level: snippet[index - 1].level,
-                  }
+                    level: snippet[index - 1].level }
                 }
               }
             }
@@ -261,8 +258,7 @@ const TextWithFeedback = ({
               ) {
                 word = {
                   ...word,
-                  level: (snippet[index - 1].level + snippet[index + 1].level) / 2,
-                }
+                  level: (snippet[index - 1].level + snippet[index + 1].level) / 2 }
               }
             }
           }

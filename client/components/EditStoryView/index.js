@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
@@ -15,15 +15,14 @@ import Spinner from 'Components/Spinner'
 const EditStoryView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { width } = useWindowDimensions()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
-    locale,
-  }))
+    locale }))
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [titleMissing, setTitleMissing] = useState(false)
@@ -65,8 +64,7 @@ const EditStoryView = ({ match }) => {
     const newStory = {
       language: capitalize(learningLanguage),
       text: combineTitleAndText,
-      original_id: id,
-    }
+      original_id: id }
 
     dispatch(editStory(newStory))
     dispatch(setCustomUpload(true))
@@ -108,7 +106,7 @@ const EditStoryView = ({ match }) => {
       <div className="justify-center">
         <div className="cont borders-light-grey">
           <div className="flex space-between">
-            <Button variant="primary" onClick={() => history.push('/library')}>
+            <Button variant="primary" onClick={() => navigate('/library')}>
               <FormattedMessage id="return-to-library" />
             </Button>
 

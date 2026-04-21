@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Switch, Redirect, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBackgroundColor } from 'Utilities/common'
 import HomeView from 'Components/HomeView'
@@ -27,8 +27,7 @@ import GroupView from 'Components/GroupView'
 import {
   closeEncouragement,
   closeFCEncouragement,
-  openEncouragement,
-} from 'Utilities/redux/encouragementsReducer'
+  openEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupAnalytics from './GroupView/GroupAnalytics'
@@ -89,139 +88,140 @@ export default () => {
   }, [location.pathname])
 
   return (
-    <Switch>
-      <Route exact path="/selkomitta" component={Estimator} />
-      <Route exact path="/">
-        {userData ? <Redirect to="/welcome" /> : <LandingPage />}
-      </Route>
-      <Route>
-        <NavBar />
-        <main className={`application-content ${getBackgroundColor()}`}>
-          <Switch>
-            <Route exact path="/email-confirm/:token" component={EmailConfirm} />
-            <Route exact path="/reset-password/:token" component={ResetPassword} />
-            <Route exact path="/group-confirmation/:token" component={InvitationConfirm} />
-            <Route exact path="/register" component={RegisterView} />
-            <Route exact path="/help" component={Help} />
-            <Route
-              exact
-              path="/accept_story"
-              render={() => <AcceptSharedStory queryParams={location.search} />}
-            />
+    <Routes>
+      <Route path="/selkomitta" element={<Estimator />} />
+      <Route path="/" element={userData ? <Navigate to="/welcome" replace /> : <LandingPage />} />
+      <Route
+        path="*"
+        element={(
+          <>
+            <NavBar />
+            <main className={`application-content ${getBackgroundColor()}`}>
+              <Routes>
+                <Route path="/email-confirm/:token" element={<EmailConfirm />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/group-confirmation/:token" element={<InvitationConfirm />} />
+                <Route path="/register" element={<RegisterView />} />
+                <Route path="/help" element={<Help />} />
+                <Route path="/accept_story" element={<AcceptSharedStory queryParams={location.search} />} />
+                <Route path="/block_user" element={<BlockStorySender queryParams={location.search} />} />
+                <Route
+                  path="/remove_friend_email"
+                  element={<UnfollowStorySender queryParams={location.search} />}
+                />
+                <Route
+                  path="/accept_and_add"
+                  element={<AcceptStoryFollowUser queryParams={location.search} />}
+                />
 
-            <Route
-              exact
-              path="/block_user"
-              render={() => <BlockStorySender queryParams={location.search} />}
-            />
+                {/* <ProtectedRoute
+                  languageRequired={false}
+                  exact
+                  path="/interfaceLearningLanguage"
+                  component={InterfaceLanguageView}
+                /> */}
 
-            <Route
-              exact
-              path="/remove_friend_email"
-              render={() => <UnfollowStorySender queryParams={location.search} />}
-            />
+                <Route
+                  path="/learningLanguage"
+                  element={<ProtectedRoute languageRequired={false} component={LanguageSelectView} />}
+                />
 
-            <Route
-              exact
-              path="/accept_and_add"
-              render={() => <AcceptStoryFollowUser queryParams={location.search} />}
-            />
+                <Route path="/login" element={<ProtectedRoute component={HomeView} />} />
+                <Route path="/home" element={<ProtectedRoute component={HomeView} />} />
+                <Route path="/welcome" element={<ProtectedRoute component={HomeView} />} />
 
-            {/* <ProtectedRoute
-              languageRequired={false}
-              exact
-              path="/interfaceLearningLanguage"
-              component={InterfaceLanguageView}
-            /> */}
+                <Route path="/lessons/library" element={<ProtectedRoute component={LessonLibrary} />} />
+                <Route path="/lesson/practice" element={<ProtectedRoute component={LessonPracticeView} />} />
+                <Route
+                  path="/lesson/group/:id/practice"
+                  element={<ProtectedRoute component={LessonPracticeView} />}
+                />
 
-            <ProtectedRoute
-              languageRequired={false}
-              exact
-              path="/learningLanguage"
-              component={LanguageSelectView}
-            />
+                <Route path="/library" element={<ProtectedRoute component={LibraryView} />} />
+                <Route path="/library/private" element={<ProtectedRoute component={LibraryView} />} />
+                <Route path="/library/group" element={<ProtectedRoute component={LibraryView} />} />
+                <Route path="/flashcards" element={<ProtectedRoute component={Flashcards} />} />
+                <Route path="/flashcards/:mode" element={<ProtectedRoute component={Flashcards} />} />
+                <Route
+                  path="/flashcards/:mode/:type/:storyId"
+                  element={<ProtectedRoute component={Flashcards} />}
+                />
+                <Route path="/stories/:id/practice/" element={<ProtectedRoute component={PracticeView} />} />
+                <Route
+                  path="/stories/:id/grammar/practice/"
+                  element={<ProtectedRoute component={PracticeView} />}
+                />
+                <Route
+                  path="/stories/:id/listening/practice"
+                  element={<ProtectedRoute component={PracticeView} />}
+                />
+                <Route path="/stories/:id/speech/practice" element={<ProtectedRoute component={PracticeView} />} />
+                <Route
+                  path="/stories/:id/controlled-practice/"
+                  element={<ProtectedRoute component={PracticeView} />}
+                />
+                <Route
+                  path="/stories/:id/practice-preview/"
+                  element={<ProtectedRoute component={ReadViews} />}
+                />
+                <Route path="/stories/:id/review/" element={<ProtectedRoute component={ReadViews} />} />
+                <Route path="/stories/:id/preview/" element={<ProtectedRoute component={ReadViews} />} />
+                <Route path="/stories/:id/edit" element={<ProtectedRoute component={EditStoryView} />} />
+                <Route path="/stories/:id/group/review" element={<ProtectedRoute component={ReadViews} />} />
+                <Route path="/stories/:id/group/preview" element={<ProtectedRoute component={ReadViews} />} />
+                <Route path="/stories/:id/compete/" element={<ProtectedRoute component={CompeteView} />} />
+                <Route
+                  path="/stories/:id/controlled-story-editor/"
+                  element={<ProtectedRoute component={ControlledStoryEditView} />}
+                />
+                <Route
+                  path="/stories/:storyId/reading-comprehension-options"
+                  element={<ProtectedRoute component={ReadingComprehensionView} />}
+                />
+                <Route
+                  path="/stories/:id/reading_practice"
+                  element={<ProtectedRoute component={ReadingPracticeView} />}
+                />
 
-            <ProtectedRoute exact path="/login" component={HomeView} />
-            <ProtectedRoute exact path="/home" component={HomeView} />
-            <ProtectedRoute exact path="/welcome" component={HomeView} />
+                <Route path="/crossword/:storyId" element={<ProtectedRoute component={CrosswordView} />} />
 
-            <ProtectedRoute exact path="/lessons/library" component={LessonLibrary} />
-            <ProtectedRoute exact path="/lesson/practice" component={LessonPracticeView} />
-            <ProtectedRoute exact path="/lesson/group/:id/practice" component={LessonPracticeView} />
-
-            <ProtectedRoute exact path="/library" component={LibraryView} />
-            <ProtectedRoute exact path="/library/private" component={LibraryView} />
-            <ProtectedRoute exact path="/library/group" component={LibraryView} />
-            <ProtectedRoute exact path="/flashcards" component={Flashcards} />
-            <ProtectedRoute exact path="/flashcards/:mode" component={Flashcards} />
-            <ProtectedRoute exact path="/flashcards/:mode/:type/:storyId" component={Flashcards} />
-            <ProtectedRoute exact path="/stories/:id/practice/" component={PracticeView} />
-            <ProtectedRoute exact path="/stories/:id/grammar/practice/" component={PracticeView} />
-            <ProtectedRoute exact path="/stories/:id/listening/practice" component={PracticeView} />
-            <ProtectedRoute exact path="/stories/:id/speech/practice" component={PracticeView} />
-            <ProtectedRoute
-              exact
-              path="/stories/:id/controlled-practice/"
-              component={PracticeView}
-            />
-            <ProtectedRoute exact path="/stories/:id/practice-preview/" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/review/" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/preview/" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/edit" component={EditStoryView} />
-            <ProtectedRoute exact path="/stories/:id/group/review" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/group/preview" component={ReadViews} />
-            <ProtectedRoute exact path="/stories/:id/compete/" component={CompeteView} />
-            <ProtectedRoute
-              exact
-              path="/stories/:id/controlled-story-editor/"
-              component={ControlledStoryEditView}
-            />
-            <ProtectedRoute
-              exact
-              path="/stories/:storyId/reading-comprehension-options"
-              component={ReadingComprehensionView}
-            />
-            <ProtectedRoute
-              exact
-              path="/stories/:id/reading_practice"
-              component={ReadingPracticeView}
-            />
-
-            <ProtectedRoute exact path="/crossword/:storyId" component={CrosswordView} />
-
-            <ProtectedRoute exact path="/groups/:role" component={GroupView} />
-            <ProtectedRoute exact path="/groups/teacher/analytics" component={GroupAnalytics} />
-            <ProtectedRoute exact path="/groups/:role/people" component={GroupPeople} />
-            <ProtectedRoute exact path="/groups/:role/:id/topics" component={GroupSetting} />
-            <ProtectedRoute
-              exact
-              path="/groups/:role/:id/settings"
-              component={GroupSetting}
-            />
-            {/* <ProtectedRoute exact path="/concepts" component={Concepts} /> */}
-            <ProtectedRoute exact path="/profile/main" component={Profile} />
-            <ProtectedRoute exact path="/profile/account" component={Profile} />
-            <ProtectedRoute exact path="/profile/progress" component={Profile} />
-            <ProtectedRoute exact path="/profile/progress/flashcards" component={Profile} />
-            <ProtectedRoute exact path="/profile/progress/grammar" component={Profile} />
-            <ProtectedRoute exact path="/profile/settings" component={Profile} />
-            <ProtectedRoute exact path="/profile/following" component={Profile} />
-            <ProtectedRoute exact path="/tests" component={ExhaustiveTestView} />
-            <ProtectedRoute exact path="/reading-test" component={ReadingTestView} />
-            <ProtectedRoute exact path="/adaptive-test" component={AdaptiveTestView} />
-            <ProtectedRoute exact path="/achievements" component={Achievements} />
-            <ProtectedRoute exact path="/leaderboard" component={Leaderboard} />
-            <ProtectedRoute exact path="/notes-library" component={AnnotationsLibrary} />
-            <ProtectedRoute exact path="/test-construction" component={ConstructTestView} />
-            <ProtectedRoute exact path="/test-debug" component={DebugTestView} />
-            <ProtectedRoute exact path="/correction-debug" component={DebugCorrectionView} />
-            <ProtectedRoute exact path="/vocabulary-view" component={VocabularyView} />
-            <ProtectedRoute exact path="/gec" component={GecView} />
-            <ProtectedRoute exact path="/reference" component={ReferenceView} />
-            <ProtectedRoute exact path="/story-generation" component={StoryGeneration} />
-          </Switch>
-        </main>
-      </Route>
-    </Switch>
+                <Route path="/groups/:role" element={<ProtectedRoute component={GroupView} />} />
+                <Route
+                  path="/groups/teacher/analytics"
+                  element={<ProtectedRoute component={GroupAnalytics} />}
+                />
+                <Route path="/groups/:role/people" element={<ProtectedRoute component={GroupPeople} />} />
+                <Route path="/groups/:role/:id/topics" element={<ProtectedRoute component={GroupSetting} />} />
+                <Route path="/groups/:role/:id/settings" element={<ProtectedRoute component={GroupSetting} />} />
+                {/* <ProtectedRoute exact path="/concepts" component={Concepts} /> */}
+                <Route path="/profile/main" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/profile/account" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/profile/progress" element={<ProtectedRoute component={Profile} />} />
+                <Route
+                  path="/profile/progress/flashcards"
+                  element={<ProtectedRoute component={Profile} />}
+                />
+                <Route path="/profile/progress/grammar" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/profile/settings" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/profile/following" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/tests" element={<ProtectedRoute component={ExhaustiveTestView} />} />
+                <Route path="/reading-test" element={<ProtectedRoute component={ReadingTestView} />} />
+                <Route path="/adaptive-test" element={<ProtectedRoute component={AdaptiveTestView} />} />
+                <Route path="/achievements" element={<ProtectedRoute component={Achievements} />} />
+                <Route path="/leaderboard" element={<ProtectedRoute component={Leaderboard} />} />
+                <Route path="/notes-library" element={<ProtectedRoute component={AnnotationsLibrary} />} />
+                <Route path="/test-construction" element={<ProtectedRoute component={ConstructTestView} />} />
+                <Route path="/test-debug" element={<ProtectedRoute component={DebugTestView} />} />
+                <Route path="/correction-debug" element={<ProtectedRoute component={DebugCorrectionView} />} />
+                <Route path="/vocabulary-view" element={<ProtectedRoute component={VocabularyView} />} />
+                <Route path="/gec" element={<ProtectedRoute component={GecView} />} />
+                <Route path="/reference" element={<ProtectedRoute component={ReferenceView} />} />
+                <Route path="/story-generation" element={<ProtectedRoute component={StoryGeneration} />} />
+              </Routes>
+            </main>
+          </>
+        )}
+      />
+    </Routes>
   )
 }

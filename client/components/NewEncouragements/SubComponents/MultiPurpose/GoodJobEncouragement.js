@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { images, backgroundColors } from 'Utilities/common'
-import { useHistory, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 
 const GoodJobEncouragement = () => {
-  const history = useHistory()
+  const location = useLocation()
   const messageKeys = [
     'encouragements-excellent',
     'encouragements-default-1',
@@ -16,7 +16,7 @@ const GoodJobEncouragement = () => {
   useEffect(() => {
     const id = Math.floor(Math.random() * messageKeys.length)
     setMessageKey(messageKeys[id])
-  }, [history.location.pathname])
+  }, [location.pathname])
 
 
   return (

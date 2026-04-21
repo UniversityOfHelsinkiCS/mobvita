@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Divider, Segment } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
@@ -10,8 +10,7 @@ import {
   getOpponent,
   competitionStartNow,
   setWillPause,
-  setIsPaused,
-} from 'Utilities/redux/competitionReducer'
+  setIsPaused } from 'Utilities/redux/competitionReducer'
 import { resetCurrentSnippet, resetCachedSnippets } from 'Utilities/redux/snippetsReducer'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
@@ -34,7 +33,7 @@ import CompetitionPause from './CompetitionPause'
 
 const CompeteView = ({ match }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
   const { width } = useWindowDimensions()
@@ -46,8 +45,7 @@ const CompeteView = ({ match }) => {
     story: stories.focused,
     startTime: compete.startTime,
     snippetCompleteTime: compete.snippetCompleteTime,
-    botCorrectPercent: compete.botCorrectPercent,
-  }))
+    botCorrectPercent: compete.botCorrectPercent }))
 
   const [startModalOpen, setStartModalOpen] = useState(true)
   const [playerFinished, setPlayerFinished] = useState(null)
@@ -98,9 +96,7 @@ const CompeteView = ({ match }) => {
         sentence_id,
         hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
-      },
-    }
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties } }
     dispatch(setAnswers(newAnswer))
   }
 
@@ -141,8 +137,7 @@ const CompeteView = ({ match }) => {
                   className="story-title"
                   style={{
                     ...getTextStyle(learningLanguage, 'title'),
-                    width: '100%',
-                  }}
+                    width: '100%' }}
                 >
                   {!pending && story && `${story.title}`}
                 </div>
@@ -205,7 +200,7 @@ const CompeteView = ({ match }) => {
           open={startModalOpen}
           setOpen={setStartModalOpen}
           activity="competition-mode"
-          onBackClick={() => history.push('/library')}
+          onBackClick={() => navigate('/library')}
         />
         <DictionaryHelp />
         <FeedbackInfoModal />

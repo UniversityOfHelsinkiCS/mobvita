@@ -1,7 +1,7 @@
 import { ToastContainer, toast, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
@@ -17,7 +17,7 @@ import LevelUpToast from './LevelUpToast'
 export default function Toaster() {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [interval, saveInterval] = useState(null)
   const [progressToastId, setProgressToastId] = useState(null)
   const [serverErrorToastId, setServerErrorToastId] = useState(null)
@@ -38,14 +38,13 @@ export default function Toaster() {
     pending,
     processingErrorMsgId,
     custom,
-    exerciseReady,
-  } = useSelector(({ uploadProgress }) => uploadProgress)
+    exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const handleError = errorMessage => {
     clearInterval(interval)
 
-    history.push('/library')
+    navigate('/library')
     dispatch(updateLibrarySelect('private'))
     dispatch({ type: 'CLEAR_UPLOADPROGRESS' })
     dispatch(setNotification(errorMessage, 'error', { autoClose: 10000 }))
@@ -65,8 +64,7 @@ export default function Toaster() {
         type: 'warning',
         className: 'streak-toast',
         position: 'top-center',
-        closeButton: false,
-      });
+        closeButton: false });
     }
     prevStreakRef.current = streak;
   }, [streak]);
@@ -80,8 +78,7 @@ export default function Toaster() {
         type: 'warning',
         className: 'level-up-toast',
         position: 'top-center',
-        closeButton: false,
-      })
+        closeButton: false })
     }
   }, [levelUp])
 
@@ -90,8 +87,7 @@ export default function Toaster() {
       setProgressToastId(
         toast(intl.formatMessage({ id: 'controlled-story-saved' }), {
           autoClose: 8000,
-          type: 'success',
-        })
+          type: 'success' })
       )
     }
   }, [controlledPractice?.finished])
@@ -99,7 +95,7 @@ export default function Toaster() {
   useEffect(() => {
     if (storyId !== null && progress !== 1) {
       if (storyId !== navigatedToPreviewStoryId) {
-        history.push(`/stories/${storyId}/preview/`)
+        navigate(`/stories/${storyId}/preview/`)
         setNavigatedToPreviewStoryId(storyId)
       }
 
@@ -112,8 +108,7 @@ export default function Toaster() {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1,
-        })
+          order: -1 })
       )
     }
   }, [storyId])
@@ -136,8 +131,7 @@ export default function Toaster() {
           dispatch(
             getAllStories(learningLanguage, {
               sort_by: 'date',
-              order: -1,
-            })
+              order: -1 })
           )
         }
       }
@@ -174,8 +168,7 @@ export default function Toaster() {
           onClose: () => {
             dispatch(clearServerError())
             setServerErrorToastId(null)
-          },
-        })
+          } })
       )
     }
   }, [serverError])
@@ -189,8 +182,7 @@ export default function Toaster() {
           type: 'warning',
           className: 'achievement-toast',
           position: 'top-center',
-          closeButton: false,
-        })
+          closeButton: false })
       )
     }
   }, [newAchievements])
@@ -203,8 +195,7 @@ export default function Toaster() {
       if (contextVariables) {
         toast(<FormattedHTMLMessage id={translationId} values={{ users: contextVariables.users }} />, {
           type,
-          ...options,
-        })
+          ...options })
       } else {
         toast(<FormattedHTMLMessage id={translationId} />, { type, ...options })
       }

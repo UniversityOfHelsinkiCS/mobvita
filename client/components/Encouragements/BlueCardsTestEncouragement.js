@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { useHistory } from 'react-router'
+import { useLocation } from 'react-router-dom'
 
 import './Encouragements.css'
 
@@ -16,9 +16,10 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const inStoryPractice = history.location.pathname.includes('stories')
+  const inStoryPractice = location.pathname.includes('stories')
   const learningLanguage = userData ? userData.last_used_language : null
 
   useEffect(() => {
@@ -29,20 +30,20 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
     if (storyBlueCards.length > 0) {
       setPrevBlueCards(storyBlueCards[0])
     } else {
-      history.push('/home')
+      navigate('/home')
     }
   }, [storyBlueCards])
 
   const startTest = () => {
     setShow(false)
-    history.push(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
+    navigate(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
   }
 
   const handleSecondaryButtonClick = () => {
     setShow(false)
 
     if (inStoryPractice) {
-      history.push('/home')
+      navigate('/home')
     }
   }
 

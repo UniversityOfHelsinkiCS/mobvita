@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { confirmGroupInvitation } from 'Utilities/redux/groupsReducer'
-import { useHistory } from 'react-router'
+import { useParams } from 'react-router-dom'
 
-const InvitationConfirm = ({ match }) => {
+const InvitationConfirm = () => {
   const dispatch = useDispatch()
   const groups = useSelector(({ groups }) => groups)
-  const history = useHistory()
+  const navigate = useNavigate()
+  const { token } = useParams()
   
   useEffect(() => {
-    dispatch(confirmGroupInvitation(match.params.token))
-    history.replace('/')
-  }, [])
+    dispatch(confirmGroupInvitation(token))
+    navigate('/', { replace: true })
+  }, [dispatch, navigate, token])
 
   return null
 }

@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import {
   getFlashcards,
   getBlueFlashcards,
   recordFlashcardAnswer,
   addToTotal,
   answerBluecards,
-  getStoriesBlueFlashcards,
-} from 'Utilities/redux/flashcardReducer'
+  getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
@@ -31,7 +30,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [amountAnswered, setAmountAnswered] = useState(0)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
     useState(false)
-  const history = useHistory()
+  const location = useLocation()
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -42,8 +41,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const { totalAnswers, storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
     incomplete: incomplete.data,
-    loading: incomplete.pending,
-  }))
+    loading: incomplete.pending }))
   const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
     const { pending, deletePending, sessionId } = flashcards
 
@@ -63,7 +61,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     return { cards, pending, deletePending, sessionId }
   }, shallowEqual)
 
-  const inBlueCardsTest = history.location.pathname.includes('test')
+  const inBlueCardsTest = location.pathname.includes('test')
   const { width } = useWindowDimensions()
   const bigScreen = width >= 415
   const { storyId } = useParams()
@@ -90,8 +88,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   useEffect(() => {
     dispatch(
       getIncompleteStories(learningLanguage, {
-        sort_by: 'access',
-      })
+        sort_by: 'access' })
     )
 
     if (!inBlueCardsTest) {
@@ -120,8 +117,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   useEffect(() => {
     if (blueCardsAnswered.length === cards.length && blueCardsAnswered.length > 0) {
       const answerObj = {
-        flashcard_answers: blueCardsAnswered,
-      }
+        flashcard_answers: blueCardsAnswered }
       setBlueCardsAnswered([])
       dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
       setHasAnsweredBlueCards(true)
@@ -158,8 +154,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         mode: 'trans',
         exercise: 'fillin',
         lemma: cards[oldIndex].lemma,
-        answer: '',
-      }
+        answer: '' }
       setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
     }
     dispatch(addToTotal())
@@ -190,8 +185,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       mode: 'trans',
       story,
       lemma,
-      session_id: sessionId,
-    }
+      session_id: sessionId }
     if (!inBlueCardsTest) {
       dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
     } else {
@@ -299,8 +293,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       {renderArrowButton({
         hidden: editing || swipeIndex === cards.length || cards[0].format === 'no-cards',
         onClick: () => handleIndexChange(swipeIndex + 1),
-        disabled: swipeIndex === cards.length || cards[0].format === 'no-cards',
-      })}
+        disabled: swipeIndex === cards.length || cards[0].format === 'no-cards' })}
     </div>
   )
 }
