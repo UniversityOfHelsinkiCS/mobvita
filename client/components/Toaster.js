@@ -220,11 +220,7 @@ export default function Toaster() {
 
   return (
     <ToastContainer
-      position={
-        serverError && !serverErrorToastId
-          ? toast.POSITION.TOP_CENTER
-          : toast.POSITION.BOTTOM_CENTER
-      }
+      position={serverError && !serverErrorToastId ? 'top-center' : 'bottom-center'}
     />
   )
 }
