@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => {
     base: BASE_PATH,
     plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ })],
     optimizeDeps: {
+      include: ['react-router-dom'],
       esbuildOptions: {
         plugins: [optimizeDepsJsxPlugin],
       },

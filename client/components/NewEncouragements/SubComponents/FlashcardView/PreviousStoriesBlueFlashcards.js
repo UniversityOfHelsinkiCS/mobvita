@@ -1,11 +1,10 @@
-import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
-import { useParams } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useParams, useNavigate  } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
+import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 
 const PreviousStoriesBlueFlashcards = () => {
   const flashcards = useSelector(({ flashcards }) => flashcards)

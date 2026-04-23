@@ -73,7 +73,13 @@ const refresh = () =>
   root.render(
     <Provider store={store}>
       <ConnectedIntlProvider>
-        <BrowserRouter basename={basePath}>
+        <BrowserRouter
+          basename={basePath}
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
           <ErrorBoundary>
             <App />
           </ErrorBoundary>
