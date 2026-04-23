@@ -58,13 +58,18 @@ export default defineConfig(({ mode }) => {
     base: BASE_PATH,
     plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ })],
     optimizeDeps: {
-      include: ['react-router-dom'],
+      include: [
+        'react-router-dom',
+        'react-swipeable-views',
+        '@babel/runtime/helpers/createSuper',
+      ],
       esbuildOptions: {
         plugins: [optimizeDepsJsxPlugin],
       },
     },
     resolve: {
       alias: {
+        '@babel/runtime/helpers/createSuper': path.resolve(rootDir, 'node_modules/@babel/runtime/helpers/esm/createSuper.js'),
         Utilities: path.resolve(rootDir, 'client/util/'),
         Components: path.resolve(rootDir, 'client/components/'),
         Assets: path.resolve(rootDir, 'client/assets/'),
