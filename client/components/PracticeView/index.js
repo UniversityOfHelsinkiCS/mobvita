@@ -48,6 +48,7 @@ import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import Spinner from 'Components/Spinner'
 import HelperSidebar from './HelperSidebar'
+import CombinedChatbot from './CombinedChatbot'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
@@ -308,7 +309,7 @@ const PracticeView = () => {
           onBackClick={() => history.push('/library')}
         />        
         <HelperSidebar>
-          
+          <CombinedChatbot />
         </HelperSidebar>
         <FeedbackInfoModal />
       </div>
