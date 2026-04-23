@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Segment } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'

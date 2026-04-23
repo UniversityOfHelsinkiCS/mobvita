@@ -10,6 +10,7 @@ const FlashcardsHeaderChooser = ({ handleNewDeck }) => {
   const flashcards = useSelector(({ flashcards }) => flashcards)
   const someCorrectAnswers = flashcards.correctAnswers > 0
   const location = useLocation()
+
   const inBlueCardsTest = location.pathname.includes('test')
 
   return (

@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import './Encouragements.css'
 
@@ -18,6 +18,7 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
 
   const inStoryPractice = location.pathname.includes('stories')
   const learningLanguage = userData ? userData.last_used_language : null

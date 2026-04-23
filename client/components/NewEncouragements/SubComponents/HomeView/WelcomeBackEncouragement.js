@@ -7,9 +7,10 @@ import { useSelector } from 'react-redux'
 
 const WelcomeBackEncouragement = () => {
   const intl = useIntl()
+  const location = useLocation()
+
   const { width } = useWindowDimensions()
   const bigScreen = width > 700
-  const location = useLocation()
   const isInWelcome = location.pathname.includes('/welcome')
   const userData = useSelector(state => state.user.data.user)
   const { username } = userData

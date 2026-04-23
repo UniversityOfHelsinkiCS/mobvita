@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
@@ -77,6 +77,7 @@ const HomeviewButtons = ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const {lastActivity} = useSelector(({activity}) => activity)
@@ -275,6 +276,7 @@ const HomeView = () => {
   const aReadingComprehensionEnabled = groups.some(e => e.reading_comprehension)
   const navigate = useNavigate()
   const location = useLocation()
+
   const userData = useSelector(state => state.user.data.user)
   const { user } = useSelector(({ user }) => ({ user: user.data }))
   const { username } = userData

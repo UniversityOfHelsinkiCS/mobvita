@@ -1,13 +1,12 @@
 import React from 'react'
 import { Modal, Icon, Divider } from 'semantic-ui-react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
   const navigate = useNavigate()
-  const location = useLocation()
-
+  
   const getHeaderText = () => {
     if (playerScore !== botScore)
       return (

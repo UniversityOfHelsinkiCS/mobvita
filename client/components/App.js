@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
-import { BrowserRouter, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { checkRevitaStatus } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
@@ -15,6 +15,7 @@ import { hiddenFeatures } from 'Utilities/common'
 
 const RouteEffects = () => {
   const location = useLocation()
+
 
   useEffect(() => {
     if (window.gtag) {
@@ -45,16 +46,14 @@ const App = () => {
 
   return (
     <>
-      <BrowserRouter>
-        <RouteEffects />
-        <StoryFetcher />
-        <Sidebar />
-        <Router />
-        {/* {hiddenFeatures && location.pathname.includes('practice') && (
-          <Chatbot />
-        )} */}
-        <Toaster />
-      </BrowserRouter>
+      <RouteEffects />
+      <StoryFetcher />
+      <Sidebar />
+      <Router />
+      {/* {hiddenFeatures && location.pathname.includes('practice') && (
+        <Chatbot />
+      )} */}
+      <Toaster />
     </>
   )
 }

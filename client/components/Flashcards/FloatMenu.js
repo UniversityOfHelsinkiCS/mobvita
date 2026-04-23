@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import { Icon, Popup } from 'semantic-ui-react'
 import { backgroundColors, images } from 'Utilities/common'

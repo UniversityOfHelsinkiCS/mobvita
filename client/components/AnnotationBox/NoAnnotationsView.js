@@ -1,10 +1,9 @@
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
 import { useLocation } from 'react-router-dom'
-import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
 
 const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
-  const intl = useIntl()
   const location = useLocation()
 
   const isPracticeMode = location.pathname.includes('practice')

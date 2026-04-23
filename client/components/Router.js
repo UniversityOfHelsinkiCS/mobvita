@@ -62,6 +62,7 @@ export default () => {
     enableRecmd = userData.enable_recmd
   }
   const location = useLocation()
+
   const dispatch = useDispatch()
 
   const smallWindow = useWindowDimensions().width < 640

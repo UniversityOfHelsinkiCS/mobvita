@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import {
   clearFocusedSnippet,
@@ -42,6 +42,7 @@ const LessonPracticeView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
   const intl = useIntl()
 
   const { width } = useWindowDimensions()

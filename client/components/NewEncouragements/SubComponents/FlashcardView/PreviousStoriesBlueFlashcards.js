@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
 
 const PreviousStoriesBlueFlashcards = () => {

@@ -58,6 +58,7 @@ const Recommender = ({ continueAction }) => {
   const bigScreen = useWindowDimensions().width > 700
   const dispatch = useDispatch()
   const location = useLocation()
+
   const isInProgressView = location.pathname.includes('profile/progress')
   const isInHomeView = location.pathname.includes('/home')
   const isInWelcomeView = location.pathname.includes('/welcome')

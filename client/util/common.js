@@ -91,7 +91,6 @@ import uhLogo from 'Assets/images/uh_logo.png'
 import network from 'Assets/images/network.svg'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 
 import { Howler } from 'howler'
 import confetti from 'canvas-confetti'
@@ -562,8 +561,8 @@ export const downloadReadingHistory = async (groupId, groupName, startDate, endD
 }
 
 export const getMode = () =>
-  useLocation()
-    .pathname.split('/')
+  window.location.pathname
+    .split('/')
     .filter(x => x.length)
     .pop()
 
@@ -631,9 +630,8 @@ export const getTextStyle = (language, type) => {
 }
 
 export const getBackgroundColor = () => {
-  const location = useLocation()
-  const mainView =
-    location.pathname.includes('/home') || location.pathname.includes('/welcome')
+  const pathname = window.location.pathname
+  const mainView = pathname.includes('/home') || pathname.includes('/welcome')
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 

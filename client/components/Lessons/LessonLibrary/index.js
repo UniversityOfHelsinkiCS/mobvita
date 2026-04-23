@@ -12,7 +12,7 @@ import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopics
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { 
   Sidebar as SemanticSidebar, 
   Menu, 
@@ -36,6 +36,7 @@ export default function Sidebar() {
   const sidebar = useRef()
   const navigate = useNavigate()
   const location = useLocation()
+
   const user = useSelector(({ user }) => user.data)
   // const irtScore = useSelector(({ user }) => user.irt_dummy_score)
   const open = useSelector(({ sidebar }) => sidebar.open)

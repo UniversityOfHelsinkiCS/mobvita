@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
-import { Navigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, Navigate, useParams, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const ProtectedRoute = ({ component: Component, languageRequired = true }) => {
   const { data: user } = useSelector(({ user }) => user)
   const learningLanguage = user ? user.user.last_used_language : null
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
   const params = useParams()
 
   const history = useMemo(

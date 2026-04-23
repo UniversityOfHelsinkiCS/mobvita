@@ -1,6 +1,6 @@
 import React from 'react'
 import { images } from 'Utilities/common'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 

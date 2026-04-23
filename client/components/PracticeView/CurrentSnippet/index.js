@@ -77,6 +77,7 @@ const CurrentSnippet = ({
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const location = useLocation()
+
   const isControlledStory = location.pathname.includes('controlled-practice')
   const exerciseMode = location.pathname.includes('listening')
     ? 'listening'

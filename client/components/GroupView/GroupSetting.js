@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { Dropdown, Checkbox } from 'semantic-ui-react'
 import {
@@ -23,6 +23,7 @@ const GroupSetting = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
   const intl = useIntl()
   const { id } = useParams()
   const bigScreen = useWindowDimension().width >= 650

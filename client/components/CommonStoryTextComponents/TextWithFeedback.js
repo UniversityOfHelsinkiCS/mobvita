@@ -20,6 +20,7 @@ const TextWithFeedback = ({
   let inChunk = false
   let chunkIsOneVerb = false
   const location = useLocation()
+
   const inControlStoryEditor = location.pathname.includes('controlled-story')
 
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']

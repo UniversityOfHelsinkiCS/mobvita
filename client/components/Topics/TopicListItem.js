@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Card, Dropdown, Button as SemanticButton, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 

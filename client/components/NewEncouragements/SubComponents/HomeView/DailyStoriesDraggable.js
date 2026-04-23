@@ -7,7 +7,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { Icon } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
   const dispatch = useDispatch()

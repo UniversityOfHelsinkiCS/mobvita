@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Divider, Segment } from 'semantic-ui-react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken } from 'Utilities/redux/userReducer'
 import { Form } from 'semantic-ui-react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import ForgotPassword from './ForgotPassword'
@@ -21,8 +21,9 @@ const Login = () => {
   const { user, pending } = useSelector(({ user }) => user)
   const { locale, updated } = useSelector(({ locale }) => locale)
 
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const intl = useIntl()
 
   const dispatch = useDispatch()

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar, Nav, NavDropdown, NavItem, Button } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
 import { Icon, Label, Popup, Checkbox } from 'semantic-ui-react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useNavigate, useLocation} from 'react-router-dom'
 import { 
   logout, 
   getLatestIRTScore,
@@ -15,14 +15,6 @@ import {
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
-import {
-  hideIcon,
-  openEncouragement,
-  hideFCIcon,
-  openFCEncouragement,
-  showIcon,
-  closeEncouragement,
-  closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import {
   startAnonymousProgressTour,
   startLessonsTour,
@@ -43,9 +35,6 @@ import {
 import { Offline } from 'react-detect-offline'
 import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
-
-import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import ContactUs from './StaticContent/ContactUs'
 import Tour from './Tour'
 
 const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
@@ -80,6 +69,7 @@ export default function NavBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
   const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
   const handleEloClick = () => {

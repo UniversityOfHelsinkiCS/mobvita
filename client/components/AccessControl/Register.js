@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { registerUser } from 'Utilities/redux/registerReducer'
 import { getSelf } from 'Utilities//redux/userReducer'
 import { Form, Checkbox } from 'semantic-ui-react'
@@ -14,8 +14,9 @@ import Spinner from 'Components/Spinner'
 
 const Register = () => {
   const intl = useIntl()
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const [formState, setFormState] = useState({
     email: '',
     username: '',

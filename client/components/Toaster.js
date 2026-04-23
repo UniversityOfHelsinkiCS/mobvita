@@ -1,7 +1,7 @@
 import { ToastContainer, toast, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProgress } from 'Utilities/redux/uploadProgressReducer'
 import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'

@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Table } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { resetTests } from 'Utilities/redux/testReducer'
 
 const ResultModal = ({ cefrLevel, adaptiveTestResults }) => {

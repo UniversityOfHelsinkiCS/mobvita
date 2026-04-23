@@ -14,7 +14,7 @@ import {
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { learningLanguageSelector, getTextStyle, getMode } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
@@ -30,7 +30,6 @@ const ControlledStoryEditView = ({ match }) => {
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const [hideFeedback, setHideFeedback] = useState(false)
-  const mode = getMode()
   const location = useLocation()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)

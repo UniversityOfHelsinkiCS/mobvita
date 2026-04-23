@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'

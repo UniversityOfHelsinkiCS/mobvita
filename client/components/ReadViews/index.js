@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   Divider,
   Segment,
@@ -68,6 +68,7 @@ const ReadViews = ({ match }) => {
   const mode = getMode()
   const navigate = useNavigate()
   const location = useLocation()
+
   const [currentStudent, setCurrentStudent] = useState(null)
   const isGroupReview = location.pathname.includes('group/review')
   const isGroupPreview = location.pathname.includes('group/preview')

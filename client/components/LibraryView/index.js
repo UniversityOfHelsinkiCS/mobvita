@@ -31,6 +31,7 @@ import Spinner from 'Components/Spinner'
 const StoryList = () => {
   const intl = useIntl()
   const location = useLocation()
+
   const {
     library_sort_criterion: savedSortCriterion,
     last_selected_library: savedLibrarySelection,

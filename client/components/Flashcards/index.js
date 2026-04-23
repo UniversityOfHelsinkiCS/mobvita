@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { FormattedHTMLMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -17,8 +17,9 @@ const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
 
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const { width } = useWindowDimensions()
   const { mode, type, storyId } = useParams()
 

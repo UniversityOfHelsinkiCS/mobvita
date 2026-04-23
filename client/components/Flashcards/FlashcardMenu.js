@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
 import SelectLanguage from './SelectLanguage'
 

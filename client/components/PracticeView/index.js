@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { Segment, Icon, Checkbox } from 'semantic-ui-react'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
@@ -47,8 +47,9 @@ import Spinner from 'Components/Spinner'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
+
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { id } = useParams()

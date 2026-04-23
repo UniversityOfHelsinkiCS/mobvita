@@ -20,7 +20,7 @@ import Topics from 'Components/Topics'
 
 import ReactSlider from 'react-slider'
 import { Button } from 'react-bootstrap'
-import { Link, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
 import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'

@@ -26,6 +26,7 @@ import {
 
 const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {
   const location = useLocation()
+
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
   const { id: storyId } = useParams()

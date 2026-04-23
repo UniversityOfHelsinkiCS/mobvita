@@ -1,5 +1,4 @@
-import {
-  backgroundColors,
+import { backgroundColors,
   dictionaryLanguageSelector,
   images,
   showAllEncouragements
@@ -10,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
-import { useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const ConfirmBlueCardsEncouragement = () => {
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'

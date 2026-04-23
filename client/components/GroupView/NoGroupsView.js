@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { useCurrentUser } from 'Utilities/common'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
 
 const NoGroupsView = ({ role }) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Modal } from 'semantic-ui-react'
 import { createGroup, joinGroup } from 'Utilities/redux/groupsReducer'

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +23,8 @@ const GroupFunctions = ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+
+
   const {
     is_teaching: isTeaching,
     group_id: groupId,

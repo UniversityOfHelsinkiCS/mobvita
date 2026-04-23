@@ -13,6 +13,7 @@ const ProgressStats = ({ startDate, endDate }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const location = useLocation()
+
   var summary = progress_summary
 
   if (location.pathname.includes('main')) {

@@ -19,6 +19,7 @@ const AnnotationForm = ({
   publicStory }) => {
   const location = useLocation()
   const intl = useIntl()
+
   const inGroupStory = location.pathname.includes('group')
   const { is_teacher } = useSelector(({ user }) => user.data.user)
   const dispatch = useDispatch()
