@@ -22,6 +22,10 @@ runs:
       shell: bash
       run: npm ci --legacy-peer-deps
 
+    - name: Build app
+      shell: bash
+      run: npm run build
+
     - name: Start app for CI
       shell: bash
       env:
