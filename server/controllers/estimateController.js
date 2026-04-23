@@ -1,4 +1,3 @@
-const sqlite3 = require('sqlite3').verbose()
 const { axios } = require('@util/common')
 const { open } = require('sqlite')
 
@@ -16,6 +15,7 @@ const estimate = async (req, res) => {
   const wordCount = text.trim().split(/\s+/).length
 
   try {
+    const sqlite3 = require('sqlite3').verbose()
     const db = await open({ filename: 'estimate.db', driver: sqlite3.Database })
     await db.exec(
       'CREATE TABLE IF NOT EXISTS users (ip TEXT, word_count INTEGER, last_reset INTEGER)'

@@ -36,13 +36,22 @@ const App = () => {
   const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {
-    checkRevitaStatus().then(res => setRevitaStatus(res.data))
-    dispatch(getMTAvailableLanguage())
+    checkRevitaStatus()
+      .then(res => setRevitaStatus(res.data))
+      .catch(() => {
+        setRevitaStatus('NOT OK')
+      })
+
+    Promise.resolve(dispatch(getMTAvailableLanguage())).catch(() => {
+      // Request middleware already dispatches failure actions; this prevents uncaught promise noise.
+    })
   }, [dispatch])
 
-  if (revitaStatus !== 'OK') {
-    dispatch(setServerError())
-  }
+  useEffect(() => {
+    if (revitaStatus !== 'OK') {
+      dispatch(setServerError())
+    }
+  }, [dispatch, revitaStatus])
 
   return (
     <>

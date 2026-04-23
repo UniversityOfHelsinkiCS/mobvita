@@ -19,6 +19,7 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
   const height = smallScreen ? '75%' : '35%'
 
   const options = {
+    accessibility: { enabled: false },
     title: { text: intl.formatMessage({ id: 'xp-timeline-chart' }) },
     series,
     chart: { height },

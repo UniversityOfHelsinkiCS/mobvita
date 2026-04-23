@@ -37,7 +37,7 @@ const proxyFilePost = async (req, res) => {
 }
 
 const mtProxyPost = async (req, res) => {
-  url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/translate'
+  const url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/translate'
   const response = await axios.post(url, req.body, { headers: req.headers, timeout: TIMEOUT })
   res.send({
     ...response.data,
@@ -46,7 +46,7 @@ const mtProxyPost = async (req, res) => {
 }
 
 const mtStatus = async (req, res) => {
-  url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/languages'
+  const url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/languages'
   const response = await axios.get(url, { headers: req.headers, timeout: TIMEOUT })
   res.send(response.data)    
 }

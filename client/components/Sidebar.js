@@ -204,7 +204,7 @@ export default function Sidebar() {
                   onClick={() => setPracticeModalOpen(true)}
                   block
                 >
-                  <Icon name="flag checkered" OLD="user" />
+                  <Icon name="flag checkered" />
                   <FormattedMessage id="practice-now" />
                 </Button>
                 <Link to="/library">
@@ -237,8 +237,7 @@ export default function Sidebar() {
                     
                     block
                   >
-                    <Icon oldsize="small" old="calendar check outline / bordered"
-                          name="file alternate"/>
+                      <Icon size="small" name="calendar check outline" />
                       {' '}
                     <FormattedMessage id="Lessons" />
                   </Button>
@@ -255,7 +254,7 @@ export default function Sidebar() {
                   }}
                     block
                   >
-                    <Icon oldsize="small / bordered" name="clone outline" OLD="question" />{' '}
+                    <Icon size="small" name="clone outline" />{' '}
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
@@ -271,7 +270,7 @@ export default function Sidebar() {
                   }}
                     block
                   >
-                    <Icon OLDsize="small / bordered" name="trophy" />{' '}
+                    <Icon size="small" name="trophy" />{' '}
                     <FormattedMessage id="adaptive-test" />
                   </Button>
                 </Link>)}
@@ -366,7 +365,7 @@ export default function Sidebar() {
               block
               data-cy="navbar-settings-button"
             >
-              <Icon OLDsize="small / bordered" name="settings" />{' '}
+              <Icon size="small" name="settings" />{' '}
               <FormattedMessage id="Settings" />
             </Button>
           </Link>

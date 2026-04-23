@@ -73,6 +73,7 @@ const EloChart = ({ width }) => {
   if (hiddenFeatures) series.push({ data: flashcardEloResults, color: '#dc3545' })
 
   const options = {
+    accessibility: { enabled: false },
     title: { text: '' },
     series,
     chart: { height: '45%', marginTop: 20 },

@@ -59,6 +59,7 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
 
   // console.log('exerciseHistory', exerciseHistory)
   const options = {
+    accessibility: { enabled: false },
     title: { text: intl.formatMessage({ id: 'language-level-timeline-chart' }) },
     series,
     chart: { height },
