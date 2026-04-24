@@ -1,0 +1,117 @@
+.helper-sidebar {
+  position: fixed;
+  right: 0;
+  top: 3em;
+  bottom: 0;
+  width: 380px;
+  background: #f9f9f9;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  &.collapsed {
+    transform: translateX(calc(100% - 10px));
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 60px;
+    background: white;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+
+  .sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    // Override dictionary-help
+    .dictionary-help {
+      width: 100%;
+      margin-left: 0;
+      height: auto;
+      
+
+      .ui.segment {
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .dictionary-help-overlay {      
+      position: relative;
+      width: 100%;
+      top: auto;
+      right: auto;
+      bottom: auto;
+    }
+
+    // Override annotation box
+    .annotations-box {
+      width: 100%;
+      margin-left: 0;
+
+      .ui.segment {
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    // Override chatbot
+    .practice-chatbot {
+      position: relative;
+      width: 100%;
+      right: auto;
+      bottom: auto;
+      max-width: none;
+    }
+  }
+}
+
+.practice-main-content {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: margin-right 0.3s ease;
+
+  &.sidebar-open {
+    width: calc(100% - 380px);
+  }
+
+  @media (max-width: 768px) {
+    margin-right: 30px;
+    &.sidebar-open {
+      margin-right: 0; 
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .helper-sidebar {
+    width: 100%;
+    max-width: 380px;
+    z-index: 1000;
+    box-shadow: -4px 0 12px rgba(0,0,0,0.2);
+  }
+}

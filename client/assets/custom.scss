@@ -3708,3 +3708,17 @@ label.file-upload-btn {
   margin-bottom: 12px !important;
   background: var(--story-detail-modal-button-bg);
 }
+
+.cont.sidebar-pushed {
+  margin-right: 380px;
+  transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .cont.sidebar-pushed {
+    margin-right: 0 !important;
+    transition: none;
+  }
+}
