@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
+import { thunk } from 'redux-thunk'
 import * as Sentry from '@sentry/react'
 
 import { handleRequest } from 'Utilities/apiConnection'
