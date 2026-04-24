@@ -9,7 +9,6 @@ import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
 // import Chatbot from './ChatBot'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { hiddenFeatures } from 'Utilities/common'
 
