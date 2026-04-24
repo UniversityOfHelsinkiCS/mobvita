@@ -1,5 +1,5 @@
 import callBuilder from 'Utilities/apiConnection'
-import produce from 'immer'
+import { produce } from 'immer'
 
 export const getCrossword = (storyId, options = {}) => {
   const { density, size, width, height } = options

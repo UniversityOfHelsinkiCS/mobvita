@@ -23,10 +23,10 @@ router.post('/estimate', estimate)
 
 router.get('/', (_req, res) => res.send('welcome to root'))
 
-router.post('/file/*', upload.single('file'), proxyController.proxyFilePost)
+router.post('/file/*path', upload.single('file'), proxyController.proxyFilePost)
 
-router.get('/*', proxyController.proxyGet)
-router.post('/*', proxyController.proxyPost)
+router.get('/*path', proxyController.proxyGet)
+router.post('/*path', proxyController.proxyPost)
 
 
 module.exports = router

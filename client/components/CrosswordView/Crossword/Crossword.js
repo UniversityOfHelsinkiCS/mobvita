@@ -8,7 +8,7 @@ import React, {
   useMemo,
 } from 'react'
 
-import produce from 'immer'
+import { produce } from 'immer'
 import styled, { ThemeContext, ThemeProvider } from 'styled-components'
 import { confettiRain } from 'Utilities/common'
 

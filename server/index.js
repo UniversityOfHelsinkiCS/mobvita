@@ -22,7 +22,7 @@ app.use('/swag', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.static(distPath))
 app.use(routes)
 
-app.get('*', (req, res) => {
+app.get('/{*path}', (req, res) => {
   return res.sendFile(path.join(distPath, 'index.html'))
 })
 

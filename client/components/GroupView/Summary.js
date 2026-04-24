@@ -6,7 +6,7 @@ import { CSVLink } from 'react-csv'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize, skillLevels } from 'Utilities/common'
-import produce from 'immer'
+import { produce } from 'immer'
 
 const Summary = ({
   setStudent,
