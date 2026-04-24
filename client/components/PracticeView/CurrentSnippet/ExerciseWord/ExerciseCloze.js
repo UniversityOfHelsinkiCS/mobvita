@@ -30,9 +30,8 @@ import {
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { Icon, Popup} from 'semantic-ui-react'
+import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 import { Button } from 'react-bootstrap'
-import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [value, setValue] = useState('')
@@ -208,6 +207,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     }
     setShow(!show)
     dispatch(setFocusedWord(word))
+    dispatch(setHelperSidebarTab('exercise'))
     changeElementFont(e.target)
     dispatch(setCurrentContext(composeExerciseContext(snippet, word)))
   }

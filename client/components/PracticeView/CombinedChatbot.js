@@ -35,7 +35,7 @@ import {
 import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
-import { setHelperSidebarOpen, toggleHelperSidebar } from 'Utilities/redux/helperSidebarReducer'
+import { setHelperSidebarOpen, toggleHelperSidebar, setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
@@ -86,7 +86,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const latestMessageRef = useRef(null)
   const { listen, speak } = currentWord || {}
   const isValidExercise = currentWord && Object.keys(currentWord).length > 0 && !listen && !speak
-  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
+  const { activeTab: helperActiveTab } = helperSidebarState || {}
 
   useEffect(() => {
     const hasExerciseWord = currentWord?.ID && Object.keys(currentWord).length > 0
@@ -162,12 +163,6 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       setFilteredHintsList([])
     }
   }, [currentWord, attempt])
-
-  useEffect(() => {
-    if (contextTranslationState.data && !contextTranslationState.pending && !isValidExercise) {
-      setActiveTab('dictionary')
-    }
-  }, [contextTranslationState.data, contextTranslationState.pending, isValidExercise])
 
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
@@ -269,8 +264,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     )
     setCurrentMessage("")
   }
-
-  const [activeType, setActiveType] = useState(null);
+ 
   const hasHints = currentWord?.hints?.length > 0 && validToChat
   const showAllHintsUsed = eloScoreHearts.length === 0 && spentHints.length > 0
 
@@ -296,42 +290,23 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '');
 
   useEffect(() => {
-    const hasExercise = !!(currentWord?.ID && currentWord?.base?.trim());
-    const hasTranslation = !!(translationState?.surfaceWord?.trim() || translationState?.lemmas?.trim());
-
-    const idChanged = currentWord?.ID !== prevId.current;
-    const transChanged = (translationState?.surfaceWord || translationState?.lemmas || '') !== prevTransKey.current;
-
-    const isTranslationForCurrentExerciseWord = 
-      currentWord?.surface?.trim() && 
-      (translationState?.surfaceWord || translationState?.surface)?.trim() === currentWord.surface.trim();
-
-    if (idChanged && hasExercise) {
-      setActiveType('exercise');
-    } 
-    else if (transChanged && hasTranslation && !isTranslationForCurrentExerciseWord) {
-      setActiveType('translation');
-    } 
-    else if (transChanged && hasTranslation && isTranslationForCurrentExerciseWord) {
-      setActiveType('exercise');
+    if (typeof helperActiveTab !== 'undefined') {
+      console.log('HelperSidebar activeTab changed:', helperActiveTab)
     }
-    else if (!hasExercise && !hasTranslation) {
-      setActiveType(null);
-    }
+  }, [helperActiveTab])
 
-    prevId.current = currentWord?.ID;
-    prevTransKey.current = translationState?.surfaceWord || translationState?.lemmas || '';
-    
-  }, [
-    currentWord?.ID, 
-    currentWord?.base, 
-    currentWord?.surface, 
-    translationState?.surfaceWord, 
-    translationState?.lemmas, 
-    translationState?.pending, 
-    translationState?.data,
-    translationState?.surface
-  ]);
+  useEffect(() => {
+    const currentId = currentWord?.ID
+    const transKey = translationState?.surfaceWord || translationState?.lemmas || ''
+    const idChanged = typeof prevId.current !== 'undefined' && currentId !== prevId.current
+    const transChanged = typeof prevTransKey.current !== 'undefined' && transKey !== prevTransKey.current
+    if (idChanged || transChanged) {
+      dispatch({ type: 'CLEAR_CONTEXT_TRANSLATION' })
+      setShowContextTranslation(false)
+    }
+    prevId.current = currentId
+    prevTransKey.current = transKey
+  }, [currentWord?.ID, translationState.surfaceWord, translationState.lemmas, dispatch])
 
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
@@ -391,7 +366,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         </div>          
       )}
       {/* Exercise block */}
-      { activeType === 'exercise' && (            
+      { helperActiveTab === 'exercise' && (            
         <div className="chatbot-content">
           <div className="chatbot-header">                 
             <Popup
@@ -509,6 +484,18 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           />
                         </div>
                       )}
+
+                      { showContexTranslation && (
+                        <div className="context-translation-box">                          
+                          {contextTranslationState.pending ? <Spinner inline /> : (
+                            <div
+                                className="context-translation-content"
+                                dangerouslySetInnerHTML={{ __html: contextTranslationState.data || contextTranslationState.lastTrans || "" }}
+                            />
+                          )}
+                          
+                        </div>
+                    )}
                       
                       {hintMessageIdx === 0 && (spentHints.length > 0 || emptyHintsList) && (
                         <>                              
@@ -668,7 +655,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         </div>                 
       )}
             
-      { activeType === 'translation' &&  (          
+      { helperActiveTab ===  'translation' &&  (          
         <div className="dictionary-content">                    
           {translationState.pending ? (
             <div style={{ padding: '1em' }}>
@@ -732,7 +719,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
             {/* Translation Results */}               
 
-        {activeType === 'translation' && translationState.data && translationState.data.length > 0 ? (
+                {translationState.data && translationState.data.length > 0 ? (
             translationState.data.map((translated, idx) => (
                 <div
                     key={translated.URL || translated.lemma || idx}
@@ -770,45 +757,26 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                             ))}
                         </ul>
                     )}                                    
-                </div>
-            
+                </div>            
             ))
         ) : (
             <p className="no-translation-text">No translation found.</p>
         )}
             </div>
-            </>
-                      )}              
-              </div>
-            )}            
             { showContexTranslation && (
-              <div className="context-translation-box">                            
-                <h5 className="context-translation-title">
-                    {contextTranslationState.pending ? (
-                        <Spinner inline />
-                    ) : contextTranslationState.data ? (
-                        <FormattedMessage id="sentence-translation-header" defaultMessage="Sentence Translation" />
-                    ) : (
-                        <FormattedMessage id="sentence-not-translated" defaultMessage="ops!" values={{ language: dictionaryLanguage }} />
-                    )}
-                </h5>
-                {contextTranslationState.pending ? null : (
-                    <div
-                        className="context-translation-content"
-                        dangerouslySetInnerHTML={{ __html: contextTranslationState.data || contextTranslationState.lastTrans || "" }}
-                    />
-                )}
-                <button
-                  className="close-context-btn"
-                  onClick={() => {
-                      dispatch({ type: 'CLEAR_CONTEXT_TRANSLATION' })
-                      setShowContextTranslation(false)
-                  }}
-                >
-                  <Icon name="close" />
-                </button>
-              </div>
+              <div className="context-translation-box">                          
+                {contextTranslationState.pending ? <Spinner inline /> : (
+                  <div
+                    className="context-translation-content"
+                    dangerouslySetInnerHTML={{ __html: contextTranslationState.data || contextTranslationState.lastTrans || "" }}
+                  />
+                )}                
+          </div>
           )}
+        </>
+        )}              
+        </div>
+        )}            
     </div>
   )
 }
