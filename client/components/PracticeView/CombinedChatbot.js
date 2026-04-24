@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash'
 import { Icon, Popup, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
 import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
 import ReactMarkdown from 'react-markdown'
+import { lemmatizer } from 'lemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTranslationAction, setWords, changeTranslationStageAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { incrementHintRequests, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
@@ -332,12 +333,124 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         )
       }))
       
-      setPredefinedChatbotRequests(requests)
+            setPredefinedChatbotRequests(requests)
     } else {
       setPredefinedChatbotRequests([])
     }
   }, [currentWord, currentAnswers, session_id, storyid, intl])
 
+  const glossCheckLanguage = ['English']
+
+  const highlightTarget = (translation) => {
+    if (!translation || !translation['source-segments'] || !translation['target-segments'] || !translation['alignment']) return ''
+    const surface = translationState.surfaceWord || currentWord?.surface || ''
+
+    const translated_glosses = (translationState.data || []).map(t => t.glosses || []).flat().map(g => g.toLowerCase())
+    const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
+      ...translated_glosses,
+      ...translated_glosses.map(gloss => gloss.includes(' ') && [gloss, ...gloss.split(' '), ...gloss.split(' ').map(g => lemmatizer(g))] || [lemmatizer(gloss)]).flat(),
+    ] : [
+      ...translated_glosses,
+      ...translated_glosses.filter(gloss => gloss.includes(' ')).map(gloss => gloss.split(' ')).flat(),
+    ]
+
+    const glossCheck = (p) => (
+      !glossCheckLanguage.includes(dictionaryLanguage) ||
+      glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase()))
+    )
+
+    const targetSents = []
+    const targetSentIds = new Set()
+
+    for (let sentId in translation['source-segments']) {
+      const sourceIds = []
+      let target = ''
+      let p = ''
+      let q = []
+
+      const srcSegments = translation['source-segments'][sentId]
+      for (let s in srcSegments) {
+        const segment = srcSegments[s]
+        if (!segment) continue
+        const first = segment[0]
+        if (first === '▁' || (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())) {
+          if (p.length && p === surface) sourceIds.push(...q)
+          p = segment.replace('▁', '')
+          q = [s]
+        } else {
+          p += segment
+          q.push(s)
+        }
+      }
+      if (p.length && p === surface) sourceIds.push(...q)
+
+      // get target ids
+      let targetIds = []
+      try {
+        targetIds = sourceIds.map(s => translation['alignment'][sentId] && translation['alignment'][sentId][s]).flat().filter(x => typeof x !== 'undefined')
+      } catch (e) {
+        targetIds = []
+      }
+
+      // build target string
+      p = ''
+      q = []
+      const tgtSegments = translation['target-segments'][sentId]
+      for (let s in tgtSegments) {
+        const segment = tgtSegments[s]
+        if (!segment) continue
+        const first = segment[0]
+        if (first === '▁' || (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())) {
+          if (p.trim().length && targetIds.filter(x => q.includes(x)).length && glossCheck(p)) {
+            target += '<b>' + p + '</b>'
+            targetSentIds.add(sentId)
+          } else
+            target += p
+          p = segment.replace('▁', ' ')
+          q = [s]
+        } else {
+          p += segment
+          q.push(s)
+        }
+      }
+
+      if (p.length && targetIds.filter(x => q.includes(x)).length && glossCheck(p)) {
+        target += '<b>' + p + '</b>'
+        targetSentIds.add(sentId)
+      } else target += p
+
+      targetSents.push(target.trim())
+    }
+
+    if (targetSentIds.size) {
+      return [...targetSentIds].sort().map(sentId => targetSents[sentId]).join(' ')
+    }
+    return targetSents.join(' ')
+  }
+
+  const renderContextTranslationContent = () => {
+    const d = contextTranslationState.data
+    if (!d) return null
+    if (typeof d === 'string') return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d }} />
+    // Prefer alignment-based highlight when available
+    if (d['alignment'] && d['source-segments'] && d['target-segments']) {
+      const html = highlightTarget(d)
+      return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: html }} />
+    }
+    if (d.translation) return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d.translation }} />
+    if (d['target-sentences']) return (
+      <div className="context-translation-content">
+        {d['target-sentences'].map((s, i) => (
+          <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
+        ))}
+      </div>
+    )
+    return (
+      <div className="context-translation-content">
+        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(d, null, 2)}</pre>
+      </div>
+    )
+  }
 
   return (
     <div className="combined-chatbot">          
@@ -488,11 +601,12 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       { showContexTranslation && (
                         <div className="context-translation-box">                          
                           {contextTranslationState.pending ? <Spinner inline /> : (
-                            <div
-                                className="context-translation-content"
-                                dangerouslySetInnerHTML={{ __html: contextTranslationState.data || contextTranslationState.lastTrans || "" }}
-                            />
-                          )}
+                                                      (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
+                                                        <div className="context-translation-content">
+                                                          <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
+                                                        </div>
+                                                      ) : null)
+                                                    )}
                           
                         </div>
                     )}
@@ -766,11 +880,12 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             { showContexTranslation && (
               <div className="context-translation-box">                          
                 {contextTranslationState.pending ? <Spinner inline /> : (
-                  <div
-                    className="context-translation-content"
-                    dangerouslySetInnerHTML={{ __html: contextTranslationState.data || contextTranslationState.lastTrans || "" }}
-                  />
-                )}                
+                                            (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
+                                              <div className="context-translation-content">
+                                                <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
+                                              </div>
+                                            ) : null)
+                                          )}                
           </div>
           )}
         </>

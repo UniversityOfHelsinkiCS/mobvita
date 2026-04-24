@@ -86,8 +86,7 @@ const ChatActionMenu = ({
   const handleSentenceTranslation = () => {
         setShowContextTranslation(true)
         let sentence = ''
-        const safeSnippet = focused?.practice_snippet ? focused.practice_snippet : []
-        console.log(focused)
+        const safeSnippet = focused?.practice_snippet ? focused.practice_snippet : []       
         if (currentWord && currentWord.sentence_id) {
           sentence = safeSnippet
             .filter(s => currentWord.sentence_id - 1 <= s.sentence_id && s.sentence_id <= currentWord.sentence_id + 1)
