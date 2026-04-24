@@ -1,44 +1,39 @@
 import React from 'react'
-import TooltipTrigger from 'react-popper-tooltip'
+import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 
 // Usage:
 // additionalClassnames defines the varians of the Tooptip
 
-const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', ...props }) => (
-  <TooltipTrigger
-    {...props}
-    tooltip={({ arrowRef, tooltipRef, getArrowProps, getTooltipProps, placement }) => (
-      <div
-        {...getTooltipProps({
-          ref: tooltipRef,
-          className: `tooltip-container ${additionalClassnames}`,
-        })}
-      >
-        {!hideArrow && (
-          <div
-            {...getArrowProps({
-              ref: arrowRef,
-              className: 'tooltip-arrow',
-              'data-placement': placement,
-            })}
-          />
-        )}
-        {tooltip}
-      </div>
-    )}
-  >
-    {({ getTriggerProps, triggerRef }) => (
-      <span
-        {...getTriggerProps({
-          ref: triggerRef,
-          className: 'trigger',
-        })}
-      >
+const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', ...props }) => {
+  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip(props)
+
+  return (
+    <>
+      <span ref={setTriggerRef} className="trigger">
         {children}
       </span>
-    )}
-  </TooltipTrigger>
-)
+
+      {visible && (
+        <div
+          {...getTooltipProps({
+            ref: setTooltipRef,
+            className: `tooltip-container ${additionalClassnames}`,
+          })}
+        >
+          {!hideArrow && (
+            <div
+              {...getArrowProps({
+                className: 'tooltip-arrow',
+              })}
+            />
+          )}
+          {tooltip}
+        </div>
+      )}
+    </>
+  )
+}
 
 export default Tooltip
