@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { images } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 

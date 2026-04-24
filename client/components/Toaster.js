@@ -1,3 +1,4 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import { ToastContainer, toast, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
@@ -8,7 +9,7 @@ import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/stories
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
-import { useIntl, FormattedHTMLMessage } from 'react-intl'
+import { useIntl } from 'react-intl';
 import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 import StreakToast from 'Components/Streak/StreakToast'

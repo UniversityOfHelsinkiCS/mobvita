@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Dropdown, Divider, Radio, Popup, Icon } from 'semantic-ui-react'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { Link } from 'react-router-dom'

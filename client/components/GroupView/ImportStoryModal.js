@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Dropdown, Input } from 'semantic-ui-react'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from 'react-bootstrap'
 import { importStoriesFromGroup } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'

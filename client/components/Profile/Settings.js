@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Checkbox, Radio, Dropdown, Menu, Accordion, Divider } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
 import { Button } from 'react-bootstrap'

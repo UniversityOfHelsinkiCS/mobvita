@@ -1,8 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 /**
  * Insert common items here
  */
 import DOMPurify from 'dompurify'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import React from 'react'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'

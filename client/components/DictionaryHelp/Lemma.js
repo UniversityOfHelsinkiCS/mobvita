@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
-import {  FormattedHTMLMessage } from 'react-intl'
+
 import {
   useLearningLanguage,
   getTextStyle,

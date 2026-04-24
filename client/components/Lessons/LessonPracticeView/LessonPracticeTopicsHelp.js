@@ -1,8 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Segment, Icon, Popup } from 'semantic-ui-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 

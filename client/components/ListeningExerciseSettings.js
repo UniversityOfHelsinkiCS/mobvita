@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedHTMLMessage } from 'react-intl'
+
 
 import {
   updateWordAudio,

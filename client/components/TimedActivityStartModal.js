@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 
 const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick }) => {
   const handleBackClick = () => {

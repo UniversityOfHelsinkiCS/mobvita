@@ -1,3 +1,4 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { Modal, Popup, Icon, Divider, Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,7 +8,7 @@ import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
 import { dictionaryLanguageSelector, learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import ReportButton from 'Components/ReportButton'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 

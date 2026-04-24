@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ButtonGroup, ToggleButton, Button, Tabs, Tab } from 'react-bootstrap'
-import { FormattedMessage, useIntl, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
   learningLanguageSelector,

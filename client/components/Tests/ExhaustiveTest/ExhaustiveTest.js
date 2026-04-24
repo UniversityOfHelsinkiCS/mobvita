@@ -1,3 +1,4 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
@@ -10,7 +11,7 @@ import {
   markAnsweredChoice
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import MultipleChoice from '../MultipleChoice'
 import Spinner from 'Components/Spinner'
 

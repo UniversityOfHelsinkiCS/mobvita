@@ -1,9 +1,10 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 

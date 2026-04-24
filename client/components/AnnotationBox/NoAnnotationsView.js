@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
 import { useLocation } from 'react-router-dom'
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 
 const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
   const location = useLocation()

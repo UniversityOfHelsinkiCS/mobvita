@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Icon, Popup } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
-import { FormattedHTMLMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl';
 
 const VocabularyTooltips = ({ graphType }) => {
   const { interfaceLanguage } = useSelector(({ user }) => user.data.user)

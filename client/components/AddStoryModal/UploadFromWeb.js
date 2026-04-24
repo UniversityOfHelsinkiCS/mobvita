@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
-import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'

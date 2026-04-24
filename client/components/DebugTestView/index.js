@@ -1,10 +1,11 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState } from 'react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
 import { Table, Form } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import Spinner from 'Components/Spinner'
 
 const DebugTestView = () => {

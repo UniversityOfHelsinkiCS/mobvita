@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { images } from 'Utilities/common'
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 import { Icon, Popup } from 'semantic-ui-react'

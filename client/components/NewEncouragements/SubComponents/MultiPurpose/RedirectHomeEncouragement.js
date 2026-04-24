@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { images, backgroundColors } from 'Utilities/common'
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 
 const RedirectHomeEncouragement = () => {
 

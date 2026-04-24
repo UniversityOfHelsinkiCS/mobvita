@@ -1,3 +1,4 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
@@ -33,7 +34,7 @@ import {
   getHelpLink
 } from 'Utilities/common'
 import { Offline } from 'react-detect-offline'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import Tour from './Tour'
 
