@@ -30,9 +30,8 @@ import {
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { Icon, Popup} from 'semantic-ui-react'
+import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 import { Button } from 'react-bootstrap'
-import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [value, setValue] = useState('')
@@ -208,6 +207,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     }
     setShow(!show)
     dispatch(setFocusedWord(word))
+    dispatch(setHelperSidebarTab('exercise'))
     changeElementFont(e.target)
     dispatch(setCurrentContext(composeExerciseContext(snippet, word)))
   }
@@ -235,52 +235,41 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
   return (
-    <Tooltip
-      placement="top"
-      trigger="none"
-      onVisibilityChange={setShow}
-      tooltipShown={show}
-      closeOnOutOfBoundaries
-      tooltip={tooltip}
-      additionalClassnames="clickable"
-    >
-      <input
-        onKeyDown={handleKeyDown}
-        ref={target}
-        data-cy={!answersPending && "exercise-cloze" || "exercise-cloze-pending"}
-        autoCapitalize="off"
-        readOnly={tested && !isWrong || answersPending}
-        key={word.ID}
-        name={word.ID}
-        placeholder={`${word.base || word.bases}`}
-        value={value}
-        onChange={changeValue}
-        onBlur={handleBlur}
-        onMouseDown={handleMouseDown}
-        onClick={() => dispatch(mcExerciseTouched(null))}
-        onFocus={handleFocus}
-        className={className}
-        style={{
-          width: getTextWidth(word.surface, '400 1.15rem monospace') + 40,
-          backgroundColor: isInFocusedAnalyticChunk
-          ? 'rgba(255, 255, 36, 0.7)'
-          : getWordColor(
-            word.level,
-            grade,
-            skillLevels,
-            show_review_diff,
-            show_preview_exer,
-            mode
-          ),
-          marginRight: '2px',
-          height: '1.5em',
-          lineHeight: 'normal',
-          unicodeBidi: direction,
-          border: isCurrentWord ? '2px solid green' : '1px solid rgb(211, 211, 211)',
-        }}
-      />
-      {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
-    </Tooltip>
+    <input
+      onKeyDown={handleKeyDown}
+      ref={target}
+      data-cy={!answersPending && "exercise-cloze" || "exercise-cloze-pending"}
+      autoCapitalize="off"
+      readOnly={tested && !isWrong || answersPending}
+      key={word.ID}
+      name={word.ID}
+      placeholder={`${word.base || word.bases}`}
+      value={value}
+      onChange={changeValue}
+      onBlur={handleBlur}
+      onMouseDown={handleMouseDown}
+      onClick={() => dispatch(mcExerciseTouched(null))}
+      onFocus={handleFocus}
+      className={className}
+      style={{
+        width: getTextWidth(word.surface, '400 1.15rem monospace') + 40,
+        backgroundColor: isInFocusedAnalyticChunk
+        ? 'rgba(255, 255, 36, 0.7)'
+        : getWordColor(
+          word.level,
+          grade,
+          skillLevels,
+          show_review_diff,
+          show_preview_exer,
+          mode
+        ),
+        marginRight: '2px',
+        height: '1.5em',
+        lineHeight: 'normal',
+        unicodeBidi: direction,
+        border: isCurrentWord ? '2px solid green' : '1px solid rgb(211, 211, 211)',
+      }}
+    />      
   )
 }
 

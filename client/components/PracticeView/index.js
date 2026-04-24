@@ -44,6 +44,8 @@ import PracticeTimer from './PracticeTimer'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import Spinner from 'Components/Spinner'
+import HelperSidebar from './HelperSidebar'
+import CombinedChatbot from './CombinedChatbot'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
@@ -52,6 +54,7 @@ const PracticeView = () => {
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { id } = useParams()
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
@@ -216,7 +219,7 @@ const PracticeView = () => {
   return (
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
-        <div className="cont">
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
           <Segment>
             <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
@@ -298,13 +301,11 @@ const PracticeView = () => {
           open={startModalOpen}
           setOpen={setStartModalOpen}
           activity="control-story"
-          onBackClick={() => navigate('/library')}
-        />
-        <div className="dictionary-and-annotations-cont">
-          <DictionaryHelp />
-          <AnnotationBox />
-        </div>
-        <PracticeChatbot />
+          onBackClick={() => history.push('/library')}
+        />        
+        <HelperSidebar>
+          <CombinedChatbot />
+        </HelperSidebar>
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
