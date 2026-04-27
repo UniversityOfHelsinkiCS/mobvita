@@ -13,7 +13,7 @@ export const setHelperSidebarTab = tab => ({
 })
 
 const initialState = {
-  isOpen: false,
+  isOpen: true,
   activeTab: undefined,
 }
 

@@ -93,7 +93,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   useEffect(() => {
     const hasExerciseWord = currentWord?.ID && Object.keys(currentWord).length > 0
     const hasTranslationData = translationState?.data?.length > 0 || translationState?.surfaceWord?.trim()    
-    dispatch(setHelperSidebarOpen(hasExerciseWord || hasTranslationData))
+    dispatch(setHelperSidebarOpen(hasExerciseWord || hasTranslationData || true))
   }, [dispatch, currentWord, translationState.data, translationState.surfaceWord])
 
   useEffect(() => {
@@ -590,7 +590,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         <div className="message message-bot">
                           <FormattedMessage 
                             id="click-to-action-menu" 
-                            defaultMessage="Click the {icon} menu for more options"
+                            defaultMessage="{icon} Click the menu for more options"
                             values={{
                               icon: <Icon name="ellipsis vertical" style={{ verticalAlign: 'middle' }} />
                             }}
