@@ -9,7 +9,7 @@
   .ai-assistant-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     padding: 1.2rem;
     background: #f1f1f1;
     color: rgb(0, 0, 0);
@@ -27,6 +27,22 @@
       font-weight: 600;
       letter-spacing: 0.5px;
     }
+
+    .settings-icon {      
+          color: #666;
+          cursor: pointer;
+          transition: color 0.15s ease, transform 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          transform-origin: center;
+          margin-left: auto;
+
+          &:hover {
+            color: #333;
+            transform: scale(1.18);
+          }
+        }
   }
 
   .first-message {
