@@ -42,6 +42,7 @@ import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
+import AssistentSettings from './AssistentSettings'
 
 const CombinedChatbot = ({inWordNestModal, clue}) => {
 
@@ -463,12 +464,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           storyWord={translationState.surfaceWord || currentWord?.surface}
         />
       )}
-
+  
       <div className="ai-assistant-header">
         <RobotIcon className="ai-header-icon" size={24} />
         <h3 className="ai-header-title">
             <FormattedMessage id="chatbot-toggle-label" />
         </h3>
+        <AssistentSettings className="settings-icon" />
       </div>
 
       { currentWord && isEmpty(currentWord) && translationState && isEmpty(translationState.data) && isEmpty(translationState.surfaceWord) && (
