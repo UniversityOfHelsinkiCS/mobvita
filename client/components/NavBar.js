@@ -59,7 +59,7 @@ export default function NavBar() {
     irt_dummy_score } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId, answersPending } = useSelector(({ snippets }) => snippets)
-  const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
+  // const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
   const { focused: story, pending: storyPending } = useSelector(({ stories }) => stories)
 
   const open = useSelector(({ sidebar }) => sidebar.open)
