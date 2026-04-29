@@ -253,11 +253,11 @@
         margin: 8px 0;
         color: #555;
         font-size: 0.9rem;
-        font-style: italic;
+        /* font-style removed */
       }
       
       .no-translation-text, .loading-text {
-        font-style: italic;
+        /* font-style removed */
         color: #666;
         font-size: 0.9rem;
         display: block;
@@ -428,37 +428,7 @@
             }
           }
         }
-      }
-
-      // Lemma Cards
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          padding: 8px 0;          
-          font-size: 0.95rem;
-          line-height: 1.4;
-          color: #333;
-
-          &:last-child {
-            border-bottom: none;
-          }
-
-          strong {
-            color: #000;
-            margin-right: 5px;
-          }
-        }
-      }
-
-      p {
-        color: #888;
-        font-style: italic;
-        margin: 20px 0;
-        text-align: center;
-      }
+      }      
     }
 
     // Context/Sentence Translation Box
@@ -499,5 +469,40 @@
           color: #333;
         }
       }
+    }
+  }
+
+  .translation-glosses,
+  .dictionary-content .translation-glosses {   
+    font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;     
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;    
+    box-sizing: border-box;
+    list-style-type: disc;
+    margin: 1em 0;
+    padding: 0;
+    font-size: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-left: 1.25rem;
+    color: slategrey;
+    font-style: italic;
+    margin-top: 0.5rem;
+    li {
+      font-weight: 400;
+      text-align: left;      
+      font-size: 1em;
+      color: slategrey;
+      font-style: italic;
+      box-sizing: border-box;
+      display: list-item;
+      table-layout: fixed;      
+      list-style-position: outside;
+      padding: .21428571em 0;
+      line-height: 1.5em;
+      padding-top: 0;
+      position: relative;
+      margin-top: 0.5rem;
     }
   }

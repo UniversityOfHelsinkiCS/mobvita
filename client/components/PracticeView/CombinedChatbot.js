@@ -797,7 +797,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                     {/* Empty container to maintain alignment */}
                 </div>
                 <h4 className="current-word">
-                    {translationState.maskSymbol || translationState.surfaceWord}
+                    {translationState.surfaceWord &&
+            translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <Popup
+                        content={<FormattedHTMLMessage id="explain-speaker-surface" />}
+                        trigger={<Speaker word={translationState.surfaceWord} />}
+                    />} {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
                 <ChatActionMenu mode="dictionary" 
                   handleShowWordNest={() => {                
@@ -818,20 +822,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 />
               </div>
             )}
-            <div className="inline-translation">
-            {/* Surface Word with Speaker (existing) */}
-            {translationState.surfaceWord &&
-            translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && (
-                <div style={{ paddingBottom: '0.5em', ...getTextStyle(learningLanguage) }}>
-                    <Popup
-                        content={<FormattedHTMLMessage id="explain-speaker-surface" />}
-                        trigger={<Speaker word={translationState.surfaceWord} />}
-                    />
-                    <span style={{ color: '#2185D0' }}>
-                        {translationState.maskSymbol || translationState.surfaceWord}
-                    </span>
-                </div>
-            )}
+            <div className="inline-translation">            
 
             {/* Translation Results */}               
 
@@ -861,13 +852,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
                     {/* 2. Render the Glosses (Translations) below the Lemma */}
                     {translated.glosses && translated.glosses.length > 0 && (
-                        <ul style={{
-                            listStyle: 'disc',
-                            paddingLeft: '1.5em',
-                            color: 'slateGrey',
-                            fontStyle: 'italic',
-                            marginTop: '0.5rem'
-                        }}>
+                        <ul className="translation-glosses">
                             {translated.glosses.map((gloss, i) => (
                                 <li key={i}>{gloss}</li>
                             ))}
@@ -876,7 +861,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 </div>            
             ))
         ) : (
-            <p className="no-translation-text">No translation found.</p>
+            <p className="no-translation-text"><FormattedMessage id="dictionaryhelp-no-translation-available" /></p>
         )}
             </div>
             { showContexTranslation && (
