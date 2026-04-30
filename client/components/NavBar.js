@@ -248,6 +248,15 @@ export default function NavBar() {
   }
 
   const navBarStyle = smallWindow ? {} : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
+  const shouldUseHeadroom =
+    !location.pathname.includes('/practice') &&
+    !location.pathname.includes('/lesson/practice') &&
+    !location.pathname.includes('/controlled-practice') &&
+    !location.pathname.includes('/compete')
+  const NavWrapper = shouldUseHeadroom ? Headroom : 'div'
+  const navWrapperProps = shouldUseHeadroom
+    ? { disableInlineStyles: !smallWindow, style: navBarStyle }
+    : { style: navBarStyle }
 
   const blackToWhiteFilter =
     'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)'
@@ -255,7 +264,7 @@ export default function NavBar() {
   if (!user) return null
 
   return (
-    <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
+    <NavWrapper {...navWrapperProps}>
       <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
         <Tour />
         <Icon
@@ -494,6 +503,6 @@ export default function NavBar() {
           {/******************************* END *******************************/}
         </Navbar.Collapse>
       </Navbar>
-    </Headroom>
+    </NavWrapper>
   )
 }
