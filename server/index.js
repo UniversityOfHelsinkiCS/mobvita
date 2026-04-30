@@ -1,13 +1,15 @@
 const path = require('path')
+const fs = require('fs')
 const express = require('express')
 const routes = require('@util/routes')
 const errorMiddleware = require('@middleware/errorMiddleware')
 const headers = require('@middleware/headerMiddleware')
 const swaggerUi = require('swagger-ui-express')
-const YAML = require('yamljs')
+const YAML = require('yaml')
 const fileCheck = require('@middleware/fileCheckMiddleware')
 
-const swaggerDocument = YAML.load('./swagger.yaml')
+const swaggerPath = path.join(__dirname, '..', 'swagger.yaml')
+const swaggerDocument = YAML.parse(fs.readFileSync(swaggerPath, 'utf8'))
 const app = express()
 
 const distPath = path.join(__dirname, '..', 'dist')
@@ -20,7 +22,7 @@ app.use('/swag', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.static(distPath))
 app.use(routes)
 
-app.get('*', (req, res) => {
+app.get('/{*path}', (req, res) => {
   return res.sendFile(path.join(distPath, 'index.html'))
 })
 

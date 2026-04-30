@@ -177,9 +177,9 @@ export default function Sidebar() {
                 <div style={{ padding: '0.5em 0em' }}>
                   <Link  to="/register">
                     <Button 
-                      block 
                       variant="primary"
                       className="sidebar-register-button"
+                      style={{ width: '100%' }}
                     >
                       <FormattedMessage id="register-to-save-your-progress" />
                     </Button>
@@ -199,12 +199,12 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
                   onClick={() => setPracticeModalOpen(true)}
-                  block
                 >
-                  <Icon name="flag checkered" OLD="user" />
+                  <Icon name="flag checkered" />
                   <FormattedMessage id="practice-now" />
                 </Button>
                 <Link to="/library">
@@ -216,10 +216,9 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    
-                    block
                   >
                     <Icon name="book" /> <FormattedMessage id="Library" />
                   </Button>
@@ -232,13 +231,11 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    
-                    block
                   >
-                    <Icon oldsize="small" old="calendar check outline / bordered"
-                          name="file alternate"/>
+                      <Icon size="small" name="calendar check outline" />
                       {' '}
                     <FormattedMessage id="Lessons" />
                   </Button>
@@ -251,11 +248,11 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    block
                   >
-                    <Icon oldsize="small / bordered" name="clone outline" OLD="question" />{' '}
+                    <Icon size="small" name="clone outline" />{' '}
                     <FormattedMessage id="Flashcards" />
                   </Button>
                 </Link>
@@ -267,11 +264,11 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    block
                   >
-                    <Icon OLDsize="small / bordered" name="trophy" />{' '}
+                    <Icon size="small" name="trophy" />{' '}
                     <FormattedMessage id="adaptive-test" />
                   </Button>
                 </Link>)}
@@ -285,9 +282,9 @@ export default function Sidebar() {
                           color: 'darkslateblue', 
                           borderColor: 'slateblue', 
                           fontSize: 'larger', 
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Grammar check
                       </Button>
@@ -300,9 +297,9 @@ export default function Sidebar() {
                           color: 'darkslateblue', 
                           borderColor: 'slateblue', 
                           fontSize: 'larger', 
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Feedback check
                       </Button>
@@ -315,9 +312,9 @@ export default function Sidebar() {
                           color: 'darkslateblue',
                           borderColor: 'slateblue',
                           fontSize: 'larger',
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Correction check
                       </Button>
@@ -361,12 +358,12 @@ export default function Sidebar() {
                 color: 'darkslateblue', 
                 borderColor: 'slateblue',
                 fontSize: 'larger',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                width: '100%'
               }}
-              block
               data-cy="navbar-settings-button"
             >
-              <Icon OLDsize="small / bordered" name="settings" />{' '}
+              <Icon size="small" name="settings" />{' '}
               <FormattedMessage id="Settings" />
             </Button>
           </Link>

@@ -1,8 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, shallowEqual, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
-import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl';
 import {
   getSelf,
   getPreviousVocabularyData,
@@ -75,7 +76,7 @@ const Progress = () => {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const { vocabularyData, vocabularyPending, newerVocabularyData, newerVocabularyPending } =
     useSelector(({ user }) => {
       const { vocabularyData } = user

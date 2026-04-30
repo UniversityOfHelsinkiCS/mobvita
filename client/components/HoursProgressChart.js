@@ -37,6 +37,7 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
   const series = [practicetimes]
 
   const options = {
+    accessibility: { enabled: false },
     title: { text: intl.formatMessage({ id: 'practiced-time-chart' }) },
     series,
     chart: { height },

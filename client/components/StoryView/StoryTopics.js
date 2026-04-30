@@ -1,8 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Icon, Popup, Segment } from 'semantic-ui-react'
 import { Form } from 'react-bootstrap'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux'
 import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
 import Spinner from 'Components/Spinner'

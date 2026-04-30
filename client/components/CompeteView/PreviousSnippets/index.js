@@ -7,13 +7,12 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 
 const PreviousSnippets = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { snippetsInPrevious, previousAnswers } = useSelector(({ practice }) => practice)
+  const { snippetsInPrevious, previousAnswers } = useSelector(({ practice }) => practice, shallowEqual)
   const focusedStory = useSelector(({ stories }) => stories.focused)
-  const { previous, focusedSnippet, pending } = useSelector(({ snippets }) => {
-    const { focused: focusedSnippet, pending } = snippets
-    const previous = snippets.previous.filter(Boolean)
-    return { previous, focusedSnippet, pending }
-  }, shallowEqual)
+  const rawPrevious = useSelector(({ snippets }) => snippets.previous)
+  const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
+  const pending = useSelector(({ snippets }) => snippets.pending)
+  const previous = useMemo(() => (rawPrevious || []).filter(Boolean), [rawPrevious])
 
   const dispatch = useDispatch()
 

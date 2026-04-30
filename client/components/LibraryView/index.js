@@ -37,7 +37,7 @@ const StoryList = () => {
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
     oid: userId } = useSelector(({ user }) => user.data.user)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)

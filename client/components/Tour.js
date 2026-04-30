@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import JoyRide, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
+import { Joyride as JoyRide, ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
@@ -10,7 +11,7 @@ import {
   setLessonStep,
   clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   studentHomeTourSteps,

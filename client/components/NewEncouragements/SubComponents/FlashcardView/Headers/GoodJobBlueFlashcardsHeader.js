@@ -1,4 +1,5 @@
-import { FormattedHTMLMessage } from 'react-intl'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+
 import { images } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import React from 'react'

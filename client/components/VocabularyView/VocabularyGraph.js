@@ -419,6 +419,7 @@ const VocabularyGraph = ({
   }
 
   const [options, setOptions] = useState({
+    accessibility: { enabled: false },
     title: '',
     series,
     tooltip: {

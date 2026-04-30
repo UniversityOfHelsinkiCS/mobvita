@@ -1,5 +1,6 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
-import { FormattedHTMLMessage } from 'react-intl'
+
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Icon } from 'semantic-ui-react'
 

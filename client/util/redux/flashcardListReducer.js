@@ -1,4 +1,4 @@
-import produce from 'immer'
+import { produce } from 'immer'
 import callBuilder from '../apiConnection'
 
 export const getFlashcardListPage = (inputLanguage, outputLanguage, page, storyId = '') => {

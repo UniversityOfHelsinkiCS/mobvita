@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
@@ -103,7 +103,7 @@ const ReadingPracticeView = () => {
   const { story, pending } = useSelector(({ stories }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
-  }))
+  }), shallowEqual)
 
   const questions = useMemo(() => {
     const raw = pickQuestionsFromStory(story)

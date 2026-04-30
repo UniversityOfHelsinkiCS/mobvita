@@ -1,4 +1,4 @@
-FROM node:22-bullseye
+FROM node:22-bookworm
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends tzdata python3 make g++ \
@@ -23,7 +23,8 @@ ENV ENVIRONMENT=$ENVIRONMENT
 COPY package.json package-lock.json ./
 
 # install deps into the IMAGE (this is fine, but will be overwritten by volumes unless you mount a volume)
-RUN npm ci --legacy-peer-deps --include=dev
+RUN npm ci --include=dev
+RUN npm rebuild sqlite3 --build-from-source
 
 # copy source and build frontend assets so dist exists in pushed images
 COPY . .

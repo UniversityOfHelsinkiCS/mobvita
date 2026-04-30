@@ -372,7 +372,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
     () => liveDescriptionCache[story._id] || null
   )
   const { groups } = useSelector(({ groups }) => groups)
-  const { user: userId } = useSelector(({ user }) => ({ user: user.data.user.oid }))
+  const userId = useSelector(({ user }) => user.data.user.oid)
   const isTeacher = useSelector(({ user }) => user.data.teacherView)
   const learningLanguage = useSelector(learningLanguageSelector)
   const isControlledStory = !!story?.control_story

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Radio } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { Button, FormControl, Form } from 'react-bootstrap'
 import { Checkbox } from 'semantic-ui-react'
 import { shareStory } from 'Utilities/redux/shareReducer'
@@ -23,8 +23,9 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
   const EMAIL_MIN_LENGTH = 6
   const ownEmail = useSelector(({ user }) => user.data.user.email)
 
-  const groupsUserCanShareWith = useSelector(({ groups }) =>
-    groups.groups.filter(group => group.is_teaching)
+  const groupsUserCanShareWith = useSelector(
+    ({ groups }) => groups.groups.filter(group => group.is_teaching),
+    shallowEqual
   )
 
   useEffect(() => {

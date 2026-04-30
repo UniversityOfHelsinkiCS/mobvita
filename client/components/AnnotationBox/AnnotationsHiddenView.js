@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
-import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
 const AnnotationsHiddenView = () => {

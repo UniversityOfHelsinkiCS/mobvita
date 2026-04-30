@@ -1,5 +1,6 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { images, backgroundColors } from 'Utilities/common'
 import { Button } from 'react-bootstrap'
 

@@ -9,8 +9,9 @@ const UserConcept = ({ concept, children, ...props }) => {
   const dispatch = useDispatch()
   const conceptSetting = useSelector(({ user }) => user.data.user.exercise_setting)
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
-  const { conceptTurnedOn } = useSelector(({ user }) => (
-    { conceptTurnedOn: user && user.data.user.exercise_setting[conceptId] }))
+  const conceptTurnedOn = useSelector(({ user }) =>
+    user && user.data.user.exercise_setting[conceptId]
+  )
 
   const handleCheckboxChange = () => {
     const updatedConceptSetting = conceptToggle(concept, concepts, conceptSetting, conceptTurnedOn === 1 ? 0 : 1)

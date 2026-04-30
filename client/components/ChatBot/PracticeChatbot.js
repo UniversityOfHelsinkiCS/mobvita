@@ -41,12 +41,9 @@ const PracticeChatbot = () => {
   const [currentMessage, setCurrentMessage] = useState("")
   const [currentAnswer, setCurrentAnswer] = useState("")
 
-  const { session_id, storyid, chat_history } = useSelector(({ snippets }) => ({
-      session_id: snippets.focused?.session_id,
-      storyid: snippets.focused?.storyid,
-      // chat_history: snippets.focused?.chat_history
-      chat_history: snippets.focused_snippet_chat_history
-  }));
+  const session_id = useSelector(({ snippets }) => snippets.focused?.session_id)
+  const storyid = useSelector(({ snippets }) => snippets.focused?.storyid)
+  const chat_history = useSelector(({ snippets }) => snippets.focused_snippet_chat_history)
   const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
   const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
   const { 

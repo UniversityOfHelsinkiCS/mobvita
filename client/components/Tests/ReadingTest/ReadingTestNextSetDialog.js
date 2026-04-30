@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react';
 import Draggable from 'react-draggable';
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 

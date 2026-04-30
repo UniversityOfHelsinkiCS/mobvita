@@ -1,9 +1,10 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import { backgroundColors,
   dictionaryLanguageSelector,
   images,
   showAllEncouragements
 } from "Utilities/common"
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

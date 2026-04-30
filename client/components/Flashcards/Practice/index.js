@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
@@ -39,27 +39,31 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   // const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const { totalAnswers, storyBlueCards } = useSelector(({ flashcards }) => flashcards)
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending }))
-  const { cards, pending, deletePending, sessionId } = useSelector(({ flashcards }) => {
-    const { pending, deletePending, sessionId } = flashcards
-
-    let cards
-    if (mode === 'article') {
-      cards =
-        flashcards.nounCards &&
-        flashcards.nounCards.filter(card =>
-          ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
-            card.gender
+  const incomplete = useSelector(({ incomplete }) => incomplete.data)
+  const loading = useSelector(({ incomplete }) => incomplete.pending)
+  const { pending, deletePending, sessionId } = useSelector(
+    ({ flashcards }) => ({
+      pending: flashcards.pending,
+      deletePending: flashcards.deletePending,
+      sessionId: flashcards.sessionId,
+    }),
+    shallowEqual
+  )
+  const rawCards = useSelector(({ flashcards }) =>
+    mode === 'article' ? flashcards.nounCards : flashcards.cards
+  )
+  const cards = useMemo(() => {
+    if (!rawCards) return []
+    const filtered =
+      mode === 'article'
+        ? rawCards.filter(card =>
+            ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
+              card.gender
+            )
           )
-        )
-    } else {
-      ;({ cards } = flashcards)
-    }
-    cards = cards.map(card => ({...card, correct: false }))
-    return { cards, pending, deletePending, sessionId }
-  }, shallowEqual)
+        : rawCards
+    return filtered.map(card => ({ ...card, correct: false }))
+  }, [rawCards, mode])
 
   const inBlueCardsTest = location.pathname.includes('test')
   const { width } = useWindowDimensions()
@@ -79,7 +83,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       setShowPracticeCompletedEncouragement(true)
       setAmountAnswered(0)
     }
-  }, [totalAnswers, cards.length, amountAnswered])
+  }, [swipeIndex, pending, cards.length])
 
   useEffect(() => {
     setSwipeIndex(0)

@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { FormattedHTMLMessage } from 'react-intl'
+
 import useWindowDimensions from 'Utilities/windowDimensions'
 import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import FlashcardMenu from './FlashcardMenu'

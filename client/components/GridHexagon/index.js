@@ -8,32 +8,72 @@ import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { Popup } from 'semantic-ui-react'
 import './App.css'
-import { GridGenerator, HexGrid, Layout, Hexagon, Text } from 'react-hexgrid'
 import GridText from './GridText'
+
+// --- Flat-top hexagon math ---
+
+const HEX_SIZE = 15
+
+// Axial (q, r) → SVG pixel center for flat-top orientation
+const hexToPixel = (q, r, size = HEX_SIZE) => ({
+  x: size * 1.5 * q,
+  y: size * (Math.sqrt(3) / 2 * q + Math.sqrt(3) * r),
+})
+
+// SVG polygon points string for a flat-top hexagon centered at (0, 0)
+const flatHexPoints = size =>
+  Array.from({ length: 6 }, (_, i) => {
+    const angle = (Math.PI / 3) * i
+    return `${size * Math.cos(angle)},${size * Math.sin(angle)}`
+  }).join(' ')
+
+// Generate a rectangle grid of axial hex coordinates (flat-top)
+// qOffset shifts the column start so negative-x territory is covered
+const generateRectangle = (width, height, qOffset = 0) => {
+  const hexs = []
+  for (let qi = 0; qi < width; qi++) {
+    const q = qi + qOffset
+    const offset = -Math.floor(q / 2)
+    for (let r = offset; r < height + offset; r++) {
+      hexs.push({ q, r, s: -q - r })
+    }
+  }
+  return hexs
+}
+
+const OUTER_HEX_POINTS = flatHexPoints(HEX_SIZE)
+
+// --- Components ---
 
 const ConstructionHexagon = ({ name, position, statistics, overallTotal, general }) => {
   const intl = useIntl()
-  const { q, r, s } = position
+  const { q, r } = position
+  const { x, y } = hexToPixel(q, r)
+
   if (general) {
     return (
-      <Hexagon className="hexagon-general" q={q} r={r} s={s}>
+      <g className="hexagon-general" transform={`translate(${x},${y})`}>
+        <g className="hexagon">
+          <polygon points={OUTER_HEX_POINTS} />
+        </g>
         <GridText className="hexagon-text">{name}</GridText>
-      </Hexagon>
+      </g>
     )
   }
 
-  let stat_total = statistics != undefined ? statistics.total : 0
-  let stat_correct = statistics != undefined ? statistics.correct : 0
+  const stat_total = statistics != undefined ? statistics.total : 0
+  const stat_correct = statistics != undefined ? statistics.correct : 0
 
   let size_stat_total = stat_total
-  if (size_stat_total > overallTotal){
+  if (size_stat_total > overallTotal) {
     size_stat_total = overallTotal
   }
-  const size = Math.floor((size_stat_total / overallTotal) * 10) + 5
+  const innerSize = Math.floor((size_stat_total / overallTotal) * 10) + 5
+  const innerPoints = flatHexPoints(innerSize)
 
-  let colorClass = `scoreNone`
+  let colorClass = 'scoreNone'
   let percentageCorrect = 0.0
-  if (stat_total > 0){
+  if (stat_total > 0) {
     percentageCorrect = Math.round((stat_correct / stat_total) * 100)
     colorClass = `score${parseInt(percentageCorrect)}`
   }
@@ -43,9 +83,9 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
       <div>{name}</div>
       {stat_total > 0 && (
         <div>
-            <br/>{intl.formatMessage({ id: 'correct-performance' })}:{' '}
-            {percentageCorrect}%
-            <br/>{stat_correct}/{stat_total}
+          <br />{intl.formatMessage({ id: 'correct-performance' })}:{' '}
+          {percentageCorrect}%
+          <br />{stat_correct}/{stat_total}
         </div>
       )}
     </span>
@@ -56,32 +96,27 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
       position="top center"
       content={hexagonTooltip}
       trigger={
-        <Hexagon className="hexagon" q={q} r={r} s={s} fill="none">
-          <Layout
-            size={{ x: size, y: size }}
-            flat
-            spacing={1}
-            className={colorClass}
-            origin={{ x: 0, y: 0 }}
-          >
-            <Hexagon q={0} r={0} s={0} />
-          </Layout>
+        <g className="hexagon" transform={`translate(${x},${y})`}>
+          <g className="hexagon">
+            <polygon points={OUTER_HEX_POINTS} />
+          </g>
+          <g className={colorClass}>
+            <g className="hexagon">
+              <polygon points={innerPoints} />
+            </g>
+          </g>
           <GridText className="hexagon-text">{name}</GridText>
-        </Hexagon>
+        </g>
       }
     />
   )
 }
 
-const positionOffset = coords => {
-  return { q: coords.q - 4, r: coords.r, s: coords.s - 4 }
-}
-
 const HexagonTest = props => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const hexagonSize = { x: 15, y: 15 }
-  const generator = GridGenerator.getGenerator('rectangle')
-  const hexagons = generator.apply(generator, [35, 35])
+
+  const hexagons = generateRectangle(45, 45, -6)
+
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner />
 
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
@@ -108,10 +143,7 @@ const HexagonTest = props => {
   // console.log("accumulatedTopics", accumulatedTopics)
 
   const getBiggestHistoryTotal = () => {
-    let biggestValue = 0
-    if(typeof no_outliner_max == 'number'){
-      biggestValue = no_outliner_max
-    } 
+    if (typeof no_outliner_max === 'number') return no_outliner_max
     // Object.keys(accumulatedConcepts).map(key => {
     //   const concept = props.concepts.find(c => String(c.concept_id) === key)
     //   if (
@@ -122,11 +154,13 @@ const HexagonTest = props => {
     //     biggestValue = accumulatedConcepts[key].total
     //   }
     // })
-    return biggestValue
+    return 0
   }
 
+  const { q: rq, r: rr } = props.root_hex_coord
+  const rootPixel = hexToPixel(rq, rr)
+
   return (
-    // <div style={{ background: 'white' }}>
     <div className="cont-tall pt-sm justify-center">
       <UncontrolledReactSVGPanZoom
         width={1000}
@@ -135,36 +169,43 @@ const HexagonTest = props => {
         defaultTool="auto"
       >
         <svg width={1000} height={800}>
-          {/* # bigger->moves left, bigger->moves up, width, height  */}
-          <HexGrid width={1000} height={800} viewBox="-40 280 500 540">
-            <Layout size={hexagonSize} flat spacing={1} origin={{ x: 0, y: 0 }}>
-              {hexagons.map(hex => (
-                <Hexagon q={hex.q} r={hex.r} s={hex.s} />
-              ))}
+          {/* bigger->moves left, bigger->moves up, width, height */}
+          <svg width={1000} height={800} viewBox="-40 280 500 540">
+            <g>
+              {hexagons.map((hex, i) => {
+                const { x, y } = hexToPixel(hex.q, hex.r)
+                return (
+                  <g key={i} transform={`translate(${x},${y})`}>
+                    <g className="hexagon">
+                      <polygon points={OUTER_HEX_POINTS} />
+                    </g>
+                  </g>
+                )
+              })}
 
-              <Hexagon
-                className="hexagon-root"
-                q={props.root_hex_coord.q}
-                r={props.root_hex_coord.r}
-                s={props.root_hex_coord.s}
-              >
-                <Text className="hexagon-root"><FormattedMessage id={learningLanguage} /></Text>
-              </Hexagon>
+              <g className="hexagon-root" transform={`translate(${rootPixel.x},${rootPixel.y})`}>
+                <g className="hexagon">
+                  <polygon points={OUTER_HEX_POINTS} />
+                </g>
+                <text className="hexagon-root" textAnchor="middle" y="0.3em">
+                  <FormattedMessage id={learningLanguage} />
+                </text>
+              </g>
 
               {props.concepts
                 .filter(concept => concept.hex_coords)
-                .map(hex => (
+                .map((hex, i) => (
                   <ConstructionHexagon
-                    name={hex.name.replace(/<\/?[^>]+(>|$)/g, "")}
+                    key={i}
+                    name={hex.name.replace(/<\/?[^>]+(>|$)/g, '')}
                     position={hex.hex_coords}
                     statistics={accumulatedConcepts[hex.concept_id]}
                     overallTotal={getBiggestHistoryTotal()}
                     general={hex.hexmap_general}
-                    // position={positionOffset(hex.coords)}
                   />
                 ))}
-            </Layout>
-          </HexGrid>
+            </g>
+          </svg>
         </svg>
       </UncontrolledReactSVGPanZoom>
     </div>

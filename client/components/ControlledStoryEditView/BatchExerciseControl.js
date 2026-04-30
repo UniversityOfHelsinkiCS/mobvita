@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 const BatchExerciseControl = () => {
@@ -14,7 +14,7 @@ const BatchExerciseControl = () => {
     story: stories.focused,
     pending: stories.focusedPending,
     locale,
-  }))
+  }), shallowEqual)
   const { id: storyId } = useParams()
 
   

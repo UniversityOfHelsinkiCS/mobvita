@@ -7,6 +7,8 @@ import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 
+const EMPTY_LOADING_PROGRESS = {}
+
 const StoryDetailsModal = ({
   trigger,
   story,
@@ -28,7 +30,7 @@ const StoryDetailsModal = ({
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const storyLoadingProgress = useSelector(
-    ({ stories }) => stories.loadingProgress?.[story?._id] || {}
+    ({ stories }) => stories.loadingProgress?.[story?._id] || EMPTY_LOADING_PROGRESS
   )
   const { title } = story
 

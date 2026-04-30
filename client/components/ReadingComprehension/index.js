@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import {
   Button,
   Divider,
@@ -134,7 +134,7 @@ const ReadingComprehensionView = ({ match }) => {
     story: stories.focused,
     lastQuery: stories.lastQuery,
     focusedPending: stories.focusedPending,
-  }))
+  }), shallowEqual)
 
   const {
     generated,

@@ -1,8 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
-import { FormattedHTMLMessage, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
 
 const ListView = ({ handleAnnotationBoxCollapse }) => {

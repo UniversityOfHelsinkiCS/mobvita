@@ -2,7 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'node:fs/promises'
 import moment from 'moment-timezone'
-import { defineConfig, transformWithEsbuild } from 'vite'
+import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
@@ -14,9 +14,9 @@ const jsxInJsPlugin = {
   async transform(code, id) {
     if (!/\/client\/.*\.js$/.test(id)) return null
 
-    return transformWithEsbuild(code, id, {
-      loader: 'jsx',
-      jsx: 'transform',
+    return transformWithOxc(code, id, {
+      lang: 'jsx',
+      jsx: { runtime: 'classic' },
     })
   },
 }
@@ -89,6 +89,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: true,
+      cssMinify: false,
       cssCodeSplit: false,
       chunkSizeWarningLimit: 2000,
       rollupOptions: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
@@ -44,11 +44,11 @@ const PracticeModal = ({ open, setOpen }) => {
 
   const { stories, pending } = useSelector(({ stories }) => ({
     stories: stories.data,
-    pending: stories.pending }))
+    pending: stories.pending }), shallowEqual)
 
   const { user, refreshed } = useSelector(({ user }) => ({
     user: user.data,
-    refreshed: user.refreshed }))
+    refreshed: user.refreshed }), shallowEqual)
 
   const [waiting, setWaiting] = useState(true)
   const [temp, setTemp] = useState(null)

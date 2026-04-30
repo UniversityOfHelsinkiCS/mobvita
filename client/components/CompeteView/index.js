@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { Divider, Segment } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -45,7 +45,7 @@ const CompeteView = ({ match }) => {
     story: stories.focused,
     startTime: compete.startTime,
     snippetCompleteTime: compete.snippetCompleteTime,
-    botCorrectPercent: compete.botCorrectPercent }))
+    botCorrectPercent: compete.botCorrectPercent }), shallowEqual)
 
   const [startModalOpen, setStartModalOpen] = useState(true)
   const [playerFinished, setPlayerFinished] = useState(null)

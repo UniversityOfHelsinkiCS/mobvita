@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -79,7 +80,7 @@ const HomeviewButtons = ({
   const location = useLocation()
 
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const {lastActivity} = useSelector(({activity}) => activity)
   const {data: stories} = useSelector(({stories}) => stories)
   const userData = useSelector(state => state.user.data.user)
@@ -278,16 +279,15 @@ const HomeView = () => {
   const location = useLocation()
 
   const userData = useSelector(state => state.user.data.user)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const { selected } = useSelector(({ user }) => user)
   const { open } = useSelector(({ encouragement }) => encouragement)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending }))
+  const incomplete = useSelector(({ incomplete }) => incomplete.data)
+  const loading = useSelector(({ incomplete }) => incomplete.pending)
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )

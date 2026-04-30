@@ -1,6 +1,9 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+
+const EMPTY_LOADING_PROGRESS = {}
 import {
   Divider,
   Segment,
@@ -13,7 +16,7 @@ import {
   Modal,
   Tab,
   TabPane } from 'semantic-ui-react'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   getStoryAction,
@@ -99,7 +102,7 @@ const ReadViews = ({ match }) => {
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
-  const loadingProgressByStory = useSelector(({ stories }) => stories.loadingProgress || {})
+  const loadingProgressByStory = useSelector(({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)

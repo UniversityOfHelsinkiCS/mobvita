@@ -5,7 +5,6 @@ const express = require('express')
 const http = require('http')
 const fs = require('fs')
 const path = require('path')
-require('express-async-errors')
 
 const { PORT, inProduction } = require('@util/common')
 const logger = require('@util/logger')
@@ -51,7 +50,7 @@ const setupFrontend = async (httpServer) => {
     })
 
     app.use(vite.middlewares)
-    app.use('*', async (req, res, next) => {
+    app.use('/{*path}', async (req, res, next) => {
       try {
         const url = req.originalUrl
         const templatePath = path.resolve(__dirname, 'index.html')
@@ -72,7 +71,7 @@ const setupFrontend = async (httpServer) => {
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
   app.use(express.static(DIST_PATH))
-  app.get('*', (req, res) => res.sendFile(INDEX_PATH))
+  app.get('/{*path}', (req, res) => res.sendFile(INDEX_PATH))
 }
 
 const start = async () => {

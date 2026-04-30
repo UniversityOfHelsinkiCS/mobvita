@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
@@ -22,7 +22,7 @@ const EditStoryView = ({ match }) => {
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
-    locale }))
+    locale }), shallowEqual)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [titleMissing, setTitleMissing] = useState(false)

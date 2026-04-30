@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState, useRef } from 'react'
 import { isEmpty } from 'lodash'
 import { Icon, Popup, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
-import { useIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
 import { useSelector, useDispatch } from 'react-redux'

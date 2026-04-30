@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, Segment, Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
   getTranslationAction,

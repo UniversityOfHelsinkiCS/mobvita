@@ -9,7 +9,6 @@ import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
 // import Chatbot from './ChatBot'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { hiddenFeatures } from 'Utilities/common'
 
@@ -36,13 +35,22 @@ const App = () => {
   const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {
-    checkRevitaStatus().then(res => setRevitaStatus(res.data))
-    dispatch(getMTAvailableLanguage())
+    checkRevitaStatus()
+      .then(res => setRevitaStatus(res.data))
+      .catch(() => {
+        setRevitaStatus('NOT OK')
+      })
+
+    Promise.resolve(dispatch(getMTAvailableLanguage())).catch(() => {
+      // Request middleware already dispatches failure actions; this prevents uncaught promise noise.
+    })
   }, [dispatch])
 
-  if (revitaStatus !== 'OK') {
-    dispatch(setServerError())
-  }
+  useEffect(() => {
+    if (revitaStatus !== 'OK') {
+      dispatch(setServerError())
+    }
+  }, [dispatch, revitaStatus])
 
   return (
     <>

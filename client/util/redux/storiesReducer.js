@@ -4,7 +4,7 @@ export const getStoryLoadingProgress = storyId => {
   const prefix = 'GET_STORY_LOADING_PROGRESS'
   return callBuilder(route, prefix, 'get', undefined, { storyId })
 }
-import produce from 'immer'
+import { produce } from 'immer'
 import callBuilder from '../apiConnection'
 /**
  * Actions and reducers are in the same file for readability

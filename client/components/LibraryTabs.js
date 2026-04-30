@@ -26,9 +26,8 @@ const LibraryTabs = ({
   let buttons = Object.entries(values)
     .sort()
     .map(([key, val], index) => (
-      <div className="library-tab">
+      <div key={key} className="library-tab">
         <ToggleButton
-          key={key}
           onClick={() => onClick(key)}
           toggled={val}
           {...props}

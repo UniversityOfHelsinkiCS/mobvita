@@ -1,7 +1,8 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { FormattedMessage, FormattedHTMLMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Dropdown, Checkbox } from 'semantic-ui-react'
 import {
   getTestConcepts,

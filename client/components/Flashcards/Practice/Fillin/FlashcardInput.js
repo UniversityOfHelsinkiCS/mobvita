@@ -40,7 +40,7 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
           onChange={event => setAnswer(event.target.value)}
           placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
         />
-        <Button className="flashcard-button" block variant="outline-primary" type="submit">
+        <Button className="flashcard-button" style={{ width: '100%' }} variant="outline-primary" type="submit">
           {intl.formatMessage({ id: 'check-answer' })}
         </Button>
       </form>

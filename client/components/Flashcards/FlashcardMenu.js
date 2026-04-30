@@ -1,6 +1,7 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { useParams, useNavigate } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
 import SelectLanguage from './SelectLanguage'

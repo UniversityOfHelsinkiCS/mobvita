@@ -1,12 +1,28 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useMemo, useCallback, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { ListGroup, Card, Accordion } from 'react-bootstrap'
+import { ListGroup, Card, Accordion, useAccordionButton } from 'react-bootstrap'
 import { Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
+
+const AccordionToggle = ({ eventKey, onClick, style, children }) => {
+  const handleClick = useAccordionButton(eventKey, onClick)
+  return (
+    <div
+      onClick={handleClick}
+      style={style}
+      role="button"
+      tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && handleClick(e)}
+    >
+      {children}
+    </div>
+  )
+}
 
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
@@ -122,8 +138,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           />
         </div>
 
-        <Accordion.Toggle
-          as="div"
+        <AccordionToggle
           eventKey={_id}
           onClick={scrollToCardTopIfOpenedAndOffscreen}
           style={{
@@ -137,11 +152,9 @@ const FlashcardListItem = ({ card, handleEdit }) => {
             paddingLeft: '0.5rem',
             minWidth: 0,
           }}
-          role="button"
-          tabIndex={0}
         >
           {lemma}
-        </Accordion.Toggle>
+        </AccordionToggle>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Icon

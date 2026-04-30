@@ -51,12 +51,10 @@ const FocusedView = ({ focusedSpan }) => {
   const [threadId, setThreadId] = useState(null)
   const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [openWarning, setOpenWarning] = useState(false)
-  const { user } = useSelector(({ user }) => ({ user: user.data.user }))
+  const user = useSelector(({ user }) => user.data.user)
   const { annotationCandidates, showAnnotationForm } = useSelector(({ annotations }) => annotations)
   const { id: storyId } = useParams()
-  const { story } = useSelector(({ stories }) => ({
-    story: stories.focused,
-  }))
+  const story = useSelector(({ stories }) => stories.focused)
   const userHasLoggedIn = user.userName !== 'Anonymous User'
   const mode = getMode()
   const storyWords = story ? story.paragraph.flat(1) : []

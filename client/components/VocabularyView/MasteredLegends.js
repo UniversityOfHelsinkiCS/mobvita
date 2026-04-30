@@ -1,5 +1,6 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl';
 import { Popup } from 'semantic-ui-react'
 
 const MasteredLegends = ({ numEncountered, numRewardable, numMastered, numNotMastered }) => {
