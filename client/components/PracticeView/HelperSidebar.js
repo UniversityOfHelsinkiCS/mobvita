@@ -7,7 +7,7 @@ import './HelperSidebar.scss'
 const HelperSidebar = ({ children }) => {
   const dispatch = useDispatch()
   
-  const isOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const isOpen = useSelector(state => state.helperSidebar?.isOpen ?? true)
 
   const handleToggle = () => {
     dispatch(toggleHelperSidebar())

@@ -3722,3 +3722,10 @@ label.file-upload-btn {
     transition: none;
   }
 }
+
+@media (min-width: 1856px) {
+  .cont.sidebar-pushed {
+    margin-right: 0px;
+    max-width: 1024px;    
+  }
+}
