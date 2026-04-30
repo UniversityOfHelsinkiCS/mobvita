@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import DOMPurify from 'dompurify'
-import { FormattedMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 
 // Add rel=noopener noreferrer to all target=_blank links after sanitization
 DOMPurify.addHook('afterSanitizeAttributes', node => {
@@ -25,34 +24,18 @@ const buildConfig = options => {
   }
 }
 
-const FormattedHTMLMessage = ({ tagName: Tag, sanitizeOptions, ...props }) => (
-  <FormattedMessage {...props}>
-    {message => {
-      if (Array.isArray(message) || React.isValidElement(message)) {
-        return <Tag>{message}</Tag>
-      }
+// ignoreTag: true tells react-intl not to parse HTML tags as ICU rich-text elements,
+// so translation strings with <ul>, <li>, <b> etc. are returned as raw HTML.
+const FormattedHTMLMessage = ({ tagName: Tag = 'span', sanitizeOptions, id, values, ...rest }) => {
+  const intl = useIntl()
+  const content = intl.formatMessage({ id }, values ?? {}, { ignoreTag: true })
 
-      const content = String(message ?? '')
+  if (!content.includes('<')) {
+    return <Tag {...rest}>{content}</Tag>
+  }
 
-      if (!content.includes('<')) {
-        return <Tag>{content}</Tag>
-      }
-
-      const sanitizedMessage = DOMPurify.sanitize(content, buildConfig(sanitizeOptions))
-
-      return <Tag dangerouslySetInnerHTML={{ __html: sanitizedMessage }} />
-    }}
-  </FormattedMessage>
-)
-
-FormattedHTMLMessage.propTypes = {
-  tagName: PropTypes.elementType,
-  sanitizeOptions: PropTypes.object,
-}
-
-FormattedHTMLMessage.defaultProps = {
-  tagName: 'span',
-  sanitizeOptions: undefined,
+  const sanitizedMessage = DOMPurify.sanitize(content, buildConfig(sanitizeOptions))
+  return <Tag {...rest} dangerouslySetInnerHTML={{ __html: sanitizedMessage }} />
 }
 
 export default FormattedHTMLMessage

@@ -79,7 +79,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       setShowPracticeCompletedEncouragement(true)
       setAmountAnswered(0)
     }
-  }, [totalAnswers, cards.length, amountAnswered])
+  }, [swipeIndex, pending, cards.length])
 
   useEffect(() => {
     setSwipeIndex(0)
