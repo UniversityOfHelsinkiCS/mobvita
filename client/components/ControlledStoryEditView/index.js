@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
@@ -37,7 +37,7 @@ const ControlledStoryEditView = ({ match }) => {
   const { story, pending } = useSelector(({ stories, locale }) => ({
     story: stories.focused,
     pending: stories.focusedPending,
-    locale }))
+    locale }), shallowEqual)
   const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || true)
   const user = useSelector(state => state.user.data)
 

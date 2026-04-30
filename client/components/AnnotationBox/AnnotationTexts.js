@@ -15,7 +15,7 @@ const AnnotationTexts = ({
   setThreadId,
 }) => {
   const intl = useIntl()
-  const { user } = useSelector(({ user }) => ({ user: user.data.user }))
+  const user = useSelector(({ user }) => user.data.user)
   const { focusedSpan, spanAnnotations } = useSelector(({ annotations }) => annotations)
   const [showAnswerForm, setShowAnswerForm] = useState(false)
   const { width } = useWindowDimensions()

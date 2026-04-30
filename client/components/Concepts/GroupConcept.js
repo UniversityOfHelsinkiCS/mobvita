@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { 
   updateTestConcepts, 
@@ -21,7 +21,7 @@ const GroupConcept = ({ concept, children, ...props }) => {
   const { testConceptQuestionAmount, conceptTurnedOn } = useSelector(({ groups }) => ({
     testConceptQuestionAmount: groups.testConcepts && groups.testConcepts.test_template[conceptId],
     conceptTurnedOn: groups.group && groups.group.exercise_setting[conceptId],
-  }))
+  }), shallowEqual)
 
   const handleTestQuestionAmountChange = e => {
     if (e.target.value) {

@@ -105,7 +105,7 @@ const SnippetActions = ({
   const dispatch = useDispatch()
   const { id } = useParams()
 
-  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
+  const snippets = useSelector(({ snippets }) => snippets)
   const {
     currentAnswers,
     correctAnswerIDs,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -8,13 +8,11 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 const PreviousSnippets = () => {
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
 
-  const { previousAnswers } = useSelector(({ practice }) => practice)
-  const { focused: focusedStory } = useSelector(({ stories }) => stories)
-  const { previous } = useSelector(({ controlledPractice }) => {
-    const { focused: focusedSnippet, pending } = controlledPractice
-    const previous = controlledPractice.previous.filter(Boolean)
-    return { previous, focusedSnippet, pending }
-  }, shallowEqual)
+  const { previousAnswers } = useSelector(({ practice }) => practice, shallowEqual)
+  const focusedStory = useSelector(({ stories }) => stories.focused)
+  const rawPrevious = useSelector(({ controlledPractice }) => controlledPractice.previous)
+  const focusedSnippet = useSelector(({ controlledPractice }) => controlledPractice.focused)
+  const previous = useMemo(() => (rawPrevious || []).filter(Boolean), [rawPrevious])
   const location = useLocation()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
@@ -16,14 +16,13 @@ const PreviousSnippets = (props) => {
 
   const [annotationsInitialized, setAnnotationsInitialized] = useState(false)
 
-  const { learningLanguage } = useSelector(learningLanguageSelector)
-  const { previousAnswers } = useSelector(({ practice }) => practice)
-  const { focused: focusedStory } = useSelector(({ stories }) => stories)
-  const { previous, focusedSnippet, pending } = useSelector(({ snippets }) => {
-    const { focused: focusedSnippet, pending } = snippets
-    const previous = snippets.previous.filter(Boolean)
-    return { previous, focusedSnippet, pending }
-  }, shallowEqual)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { previousAnswers } = useSelector(({ practice }) => practice, shallowEqual)
+  const focusedStory = useSelector(({ stories }) => stories.focused)
+  const rawPrevious = useSelector(({ snippets }) => snippets.previous)
+  const focusedSnippet = useSelector(({ snippets }) => snippets.focused)
+  const pending = useSelector(({ snippets }) => snippets.pending)
+  const previous = useMemo(() => (rawPrevious || []).filter(Boolean), [rawPrevious])
 
   const { id: storyId } = useParams()
 

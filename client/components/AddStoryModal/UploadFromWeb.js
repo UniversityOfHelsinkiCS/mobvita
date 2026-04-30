@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
+
+const EMPTY_SITES = []
 import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -17,7 +19,7 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
-  const favouriteSites = useSelector(({ user }) => user?.data?.user?.favourite_sites || [])
+  const favouriteSites = useSelector(({ user }) => user?.data?.user?.favourite_sites ?? EMPTY_SITES)
   const [accordionState, setAccordionState] = useState(-1)
 
   const storyUploading = pending || storyId

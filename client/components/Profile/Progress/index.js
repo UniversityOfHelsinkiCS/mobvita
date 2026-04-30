@@ -76,7 +76,7 @@ const Progress = () => {
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const { vocabularyData, vocabularyPending, newerVocabularyData, newerVocabularyPending } =
     useSelector(({ user }) => {
       const { vocabularyData } = user

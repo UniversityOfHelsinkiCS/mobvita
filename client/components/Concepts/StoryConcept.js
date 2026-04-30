@@ -13,8 +13,9 @@ const StoryConcept = ({ concept, children, ...props }) => {
   const conceptSetting = useSelector(({ stories }) => stories.focused.exercise_setting)
   const { concepts, pending: conceptsPending } = useSelector(({ metadata }) => metadata)
 
-  const { conceptTurnedOn } = useSelector(({ stories }) => (
-    { conceptTurnedOn: stories.focused && stories.focused.exercise_setting[conceptId] }))
+  const conceptTurnedOn = useSelector(({ stories }) =>
+    stories.focused && stories.focused.exercise_setting[conceptId]
+  )
 
   const handleCheckboxChange = () => {
     const updatedConceptSetting = conceptToggle(concept, concepts, conceptSetting, conceptTurnedOn === 1 ? 0 : 1)

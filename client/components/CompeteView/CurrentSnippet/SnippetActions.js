@@ -116,7 +116,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
   const { currentAnswers, correctAnswerIDs, touchedIds, attempt, options, audio, audio_wids, voice } = useSelector(
     ({ practice }) => practice
   )
-  const { snippets } = useSelector(({ snippets }) => ({ snippets }))
+  const snippets = useSelector(({ snippets }) => snippets)
   const { competition_id, botCorrectPercent, startTime } = useSelector(({ compete }) => compete)
   const dispatch = useDispatch()
 
