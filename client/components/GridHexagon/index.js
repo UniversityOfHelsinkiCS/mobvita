@@ -28,9 +28,11 @@ const flatHexPoints = size =>
   }).join(' ')
 
 // Generate a rectangle grid of axial hex coordinates (flat-top)
-const generateRectangle = (width, height) => {
+// qOffset shifts the column start so negative-x territory is covered
+const generateRectangle = (width, height, qOffset = 0) => {
   const hexs = []
-  for (let q = 0; q < width; q++) {
+  for (let qi = 0; qi < width; qi++) {
+    const q = qi + qOffset
     const offset = -Math.floor(q / 2)
     for (let r = offset; r < height + offset; r++) {
       hexs.push({ q, r, s: -q - r })
@@ -112,7 +114,8 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
 
 const HexagonTest = props => {
   const learningLanguage = useSelector(learningLanguageSelector)
-  const hexagons = generateRectangle(35, 35)
+
+  const hexagons = generateRectangle(45, 45, -6)
 
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner />
 
