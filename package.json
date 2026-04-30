@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.29.2",
     "@babel/preset-react": "^7.28.5",
     "@babel/runtime": "^7.29.2",
+    "@cypress/code-coverage": "^4.0.3",
     "@keyvaluesystems/react-stepper": "^1.1.0",
     "@sentry/cli": "^3.4.0",
     "@sentry/react": "^10.50.0",
