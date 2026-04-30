@@ -14,6 +14,7 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
           height: '1.5em',
           textAlign: 'center',
           borderRadius: '1rem',
+          position: 'relative',
         }}
         className="progress"
       >
@@ -23,10 +24,12 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
               data-cy="snippet-progress"
               style={{
                 ...getFontStyle(),
-                marginTop: '0.75em',
                 position: 'absolute',
+                top: '50%',
+                transform: 'translateY(-50%)',
                 right: 0,
                 left: 0,
+                lineHeight: 1,
               }}
             >
               {`${snippetProgress} / ${snippetsTotal}`}
