@@ -11,8 +11,6 @@ import {
 import ChatbotSuggestions from './ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
 
-console.log("ReactMarkdown:", ReactMarkdown);
-
 const GeneralReadingChatBot = () => {
     const intl = useIntl();
     const dispatch = useDispatch();

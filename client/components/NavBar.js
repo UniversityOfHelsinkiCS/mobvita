@@ -53,7 +53,7 @@ const NewsWebSite = "https://revitaai.github.io/faq-LEARNER-TOC.html"
 
 
 export default function NavBar() {
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const {
     irtCalculationPending,
     pending: userPending,

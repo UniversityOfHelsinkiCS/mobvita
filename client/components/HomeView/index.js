@@ -80,7 +80,7 @@ const HomeviewButtons = ({
   const location = useLocation()
 
   const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const {lastActivity} = useSelector(({activity}) => activity)
   const {data: stories} = useSelector(({stories}) => stories)
   const userData = useSelector(state => state.user.data.user)
@@ -279,16 +279,15 @@ const HomeView = () => {
   const location = useLocation()
 
   const userData = useSelector(state => state.user.data.user)
-  const { user } = useSelector(({ user }) => ({ user: user.data }))
+  const user = useSelector(({ user }) => user.data)
   const { username } = userData
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const { selected } = useSelector(({ user }) => user)
   const { open } = useSelector(({ encouragement }) => encouragement)
   const storiesCovered = userData.stories_covered
   const learningLanguage = userData ? userData.last_used_language : null
-  const { incomplete, loading } = useSelector(({ incomplete }) => ({
-    incomplete: incomplete.data,
-    loading: incomplete.pending }))
+  const incomplete = useSelector(({ incomplete }) => incomplete.data)
+  const loading = useSelector(({ incomplete }) => incomplete.pending)
   const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
     ({ user }) => user.data.user
   )

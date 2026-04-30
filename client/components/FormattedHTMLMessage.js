@@ -1,25 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import sanitizeHtml from 'sanitize-html'
+import DOMPurify from 'dompurify'
 import { FormattedMessage } from 'react-intl'
 
-const DEFAULT_SANITIZE_OPTIONS = {
-  allowedTags: ['b', 'strong', 'i', 'em', 'u', 'br', 'p', 'ul', 'ol', 'li', 'a', 'div', 'span'],
-  allowedAttributes: {
-    a: ['href', 'target', 'rel'],
-  },
-  allowedSchemes: ['http', 'https', 'mailto'],
-  transformTags: {
-    a: (tagName, attribs) => {
-      const safeAttrs = { ...attribs }
+// Add rel=noopener noreferrer to all target=_blank links after sanitization
+DOMPurify.addHook('afterSanitizeAttributes', node => {
+  if (node.tagName === 'A' && node.getAttribute('target') === '_blank') {
+    node.setAttribute('rel', 'noopener noreferrer')
+  }
+})
 
-      if (safeAttrs.target === '_blank') {
-        safeAttrs.rel = 'noopener noreferrer'
-      }
+const DEFAULT_CONFIG = {
+  ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'u', 'br', 'p', 'ul', 'ol', 'li', 'a', 'div', 'span'],
+  ALLOWED_ATTR: ['href', 'target', 'rel'],
+}
 
-      return { tagName, attribs: safeAttrs }
-    },
-  },
+const buildConfig = options => {
+  if (!options) return DEFAULT_CONFIG
+  return {
+    ALLOWED_TAGS: options.allowedTags || DEFAULT_CONFIG.ALLOWED_TAGS,
+    ALLOWED_ATTR: options.allowedAttributes
+      ? Object.values(options.allowedAttributes).flat()
+      : DEFAULT_CONFIG.ALLOWED_ATTR,
+  }
 }
 
 const FormattedHTMLMessage = ({ tagName: Tag, sanitizeOptions, ...props }) => (
@@ -35,7 +38,7 @@ const FormattedHTMLMessage = ({ tagName: Tag, sanitizeOptions, ...props }) => (
         return <Tag>{content}</Tag>
       }
 
-      const sanitizedMessage = sanitizeHtml(content, sanitizeOptions || DEFAULT_SANITIZE_OPTIONS)
+      const sanitizedMessage = DOMPurify.sanitize(content, buildConfig(sanitizeOptions))
 
       return <Tag dangerouslySetInnerHTML={{ __html: sanitizedMessage }} />
     }}

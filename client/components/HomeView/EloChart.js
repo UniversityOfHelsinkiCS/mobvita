@@ -11,8 +11,8 @@ import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
 
 const EloChart = ({ width }) => {
   const dispatch = useDispatch()
-  const { flashcardHistory, daysStreaked } = useSelector(state => state.practiceHistory)
-  const { practiceHistory } = useSelector(practiceHistory => practiceHistory)
+  const { flashcardHistory, daysStreaked } = useSelector(({ practiceHistory }) => practiceHistory)
+  const practiceHistory = useSelector(({ practiceHistory }) => practiceHistory)
 
   useEffect(() => {
     const date_now = moment().toDate()

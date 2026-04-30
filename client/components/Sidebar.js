@@ -177,9 +177,9 @@ export default function Sidebar() {
                 <div style={{ padding: '0.5em 0em' }}>
                   <Link  to="/register">
                     <Button 
-                      block 
                       variant="primary"
                       className="sidebar-register-button"
+                      style={{ width: '100%' }}
                     >
                       <FormattedMessage id="register-to-save-your-progress" />
                     </Button>
@@ -199,10 +199,10 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
                   onClick={() => setPracticeModalOpen(true)}
-                  block
                 >
                   <Icon name="flag checkered" />
                   <FormattedMessage id="practice-now" />
@@ -216,10 +216,9 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    
-                    block
                   >
                     <Icon name="book" /> <FormattedMessage id="Library" />
                   </Button>
@@ -232,10 +231,9 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    
-                    block
                   >
                       <Icon size="small" name="calendar check outline" />
                       {' '}
@@ -250,9 +248,9 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    block
                   >
                     <Icon size="small" name="clone outline" />{' '}
                     <FormattedMessage id="Flashcards" />
@@ -266,9 +264,9 @@ export default function Sidebar() {
                     color: 'darkslateblue', 
                     borderColor: 'slateblue', 
                     fontSize: 'larger', 
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    width: '100%'
                   }}
-                    block
                   >
                     <Icon size="small" name="trophy" />{' '}
                     <FormattedMessage id="adaptive-test" />
@@ -284,9 +282,9 @@ export default function Sidebar() {
                           color: 'darkslateblue', 
                           borderColor: 'slateblue', 
                           fontSize: 'larger', 
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Grammar check
                       </Button>
@@ -299,9 +297,9 @@ export default function Sidebar() {
                           color: 'darkslateblue', 
                           borderColor: 'slateblue', 
                           fontSize: 'larger', 
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Feedback check
                       </Button>
@@ -314,9 +312,9 @@ export default function Sidebar() {
                           color: 'darkslateblue',
                           borderColor: 'slateblue',
                           fontSize: 'larger',
-                          fontWeight: 'bold'
+                          fontWeight: 'bold',
+                          width: '100%'
                         }}
-                        block
                       >
                         Correction check
                       </Button>
@@ -360,9 +358,9 @@ export default function Sidebar() {
                 color: 'darkslateblue', 
                 borderColor: 'slateblue',
                 fontSize: 'larger',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                width: '100%'
               }}
-              block
               data-cy="navbar-settings-button"
             >
               <Icon size="small" name="settings" />{' '}
