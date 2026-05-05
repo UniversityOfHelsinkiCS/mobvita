@@ -25,7 +25,6 @@
   "author": "Olli-Pekka Turtio",
   "license": "ISC",
   "dependencies": {
-    "@cypress/code-coverage": "^4.0.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@keyvaluesystems/react-stepper": "^1.1.0",
@@ -101,6 +100,7 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^4.0.3",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.2.4",
     "@vitejs/plugin-react": "^6.0.1",
