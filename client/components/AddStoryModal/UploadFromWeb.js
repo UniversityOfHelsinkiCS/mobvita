@@ -1,12 +1,19 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Icon, Accordion } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
 const EMPTY_SITES = []
-import { Popup } from 'semantic-ui-react'
 import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
@@ -40,8 +47,8 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
     }
   }
 
-  const handleClick = useCallback((e, { index }) => {
-    setAccordionState(prev => (prev === index ? -1 : index))
+  const handleAccordionChange = useCallback((_, expanded) => {
+    setAccordionState(expanded ? 0 : -1)
   }, [])
 
 const AddToRecommendedSites = useCallback(
@@ -74,20 +81,22 @@ const AddToRecommendedSites = useCallback(
 
   return (
     <div>
-      <Popup
-        content={<FormattedHTMLMessage id="upload-from-web-instructions" />}
-        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
-      />
+      <Tooltip title={<FormattedHTMLMessage id="upload-from-web-instructions" />}>
+        <IconButton size="small">
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
       <div style={{ marginTop: '20px' }}>
-        <Form id="url-upload">
-          <Input
-            fluid
+        <Box component="form" id="url-upload" onSubmit={handleStorySubmit}>
+          <TextField
+            fullWidth
+            size="small"
             placeholder={intl.formatMessage({ id: 'enter-web-address' })}
             value={storyUrl}
             onChange={event => setStoryUrl(event.target.value)}
             data-cy="new-story-input"
           />
-        </Form>
+        </Box>
       </div>
 
       <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'space-between' }}>
@@ -99,40 +108,28 @@ const AddToRecommendedSites = useCallback(
           )}
         </Button>
 
-        <OverlayTrigger
-          placement="top"
-          overlay={
-            <Tooltip id="recommended-sites-tooltip" className="white-tooltip">
-              <FormattedMessage id="explain-recommended-sites" />
-            </Tooltip>
-          }
-        >
+        <Tooltip title={<FormattedMessage id="explain-recommended-sites" />}>
           <Button
             type="button"
             form="url-upload"
             onClick={AddToRecommendedSites}
-            tooltip={intl.formatMessage({ id: 'explain-recommended-sites' })}
             data-cy="add-to-recommended-sites-button"
           >
             <FormattedMessage id="add-recommended-sites-button" />
           </Button>
-        </OverlayTrigger>
+        </Tooltip>
       </div>
 
       <div style={{ marginTop: '24px' }}>
-        <Accordion styled fluid>
-          <Accordion.Title active={accordionState === 0} index={0} onClick={handleClick}>
-            <Icon name="dropdown" />
+        <Accordion expanded={accordionState === 0} onChange={handleAccordionChange}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <FormattedMessage id="recommended-sites" />
-          </Accordion.Title>
-
-          {accordionState === 0 && (
-            <div style={{ padding: '.5em 1em 1.5em' }}>
-              <div style={{ maxHeight: 170, overflowY: 'auto' }}>
-                <RecommendedSites />
-              </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div style={{ maxHeight: 170, overflowY: 'auto' }}>
+              <RecommendedSites />
             </div>
-          )}
+          </AccordionDetails>
         </Accordion>
       </div>
     </div>

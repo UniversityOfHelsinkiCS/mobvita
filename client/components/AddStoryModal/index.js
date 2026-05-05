@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
-import { Modal, Button, Icon } from 'semantic-ui-react'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import CloseIcon from '@mui/icons-material/Close'
 import { FormattedMessage } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { useCurrentUser } from 'Utilities/common'
@@ -56,28 +62,37 @@ const AddStoryModal = ({ open, setOpen }) => {
   }
 
   return (
-    <Modal
+    <Dialog
       open={open}
-      className='add-story-modal'
-      closeIcon={{ style: { top: '8px', right: '8px' }, color: 'black', name: 'close' }}
+      maxWidth={false}
+      slotProps={{
+        paper: {
+          className: 'add-story-modal',
+          sx: {
+            width: '700px',
+            maxWidth: '700px',
+            height: '800px',
+            maxHeight: '800px',
+            margin: 0,
+          },
+        },
+      }}
       onClose={() => setOpen(false)}
     >
-      <Modal.Header style={{ padding: '12px 16px' }}>
+      <DialogTitle style={{ padding: '12px 16px', borderBottom: '1px solid rgba(34, 36, 38, 0.15)' }}>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '40px 1fr 40px',
+            gridTemplateColumns: '40px 1fr 40px 40px',
             alignItems: 'center',
           }}
         >
           <Button
-            basic
-            icon
             onClick={() => setActiveComponent('main')}
             disabled={activeComponent === 'main'}
-            style={{ justifySelf: 'start' }}
+            style={{ justifySelf: 'start', minWidth: 0, padding: 0 }}
           >
-            <Icon name="left chevron" />
+            <ChevronLeftIcon />
           </Button>
 
           <div style={{ justifySelf: 'center', textAlign: 'center', fontWeight: 600 }}>
@@ -85,14 +100,22 @@ const AddStoryModal = ({ open, setOpen }) => {
           </div>
 
           <div /> {/* spacer to keep title centered */}
+
+          <IconButton
+            aria-label="close"
+            onClick={() => setOpen(false)}
+            style={{ justifySelf: 'end', padding: 4 }}
+          >
+            <CloseIcon />
+          </IconButton>
         </div>
-      </Modal.Header>
-      <Modal.Content className="add-story-modal-body">
+      </DialogTitle>
+      <DialogContent className="add-story-modal-body">
         <div className='add-story-modal-content'>
           {renderComponent()}
         </div>
-      </Modal.Content>  
-    </Modal>
+      </DialogContent>
+    </Dialog>
   )
 }
 

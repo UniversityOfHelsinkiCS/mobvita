@@ -2,9 +2,12 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Popup, Icon } from 'semantic-ui-react'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { FormControl, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import TextField from '@mui/material/TextField'
+import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
@@ -55,26 +58,28 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
 
   return (
     <div>
-      <Popup
-        content={<FormattedHTMLMessage id="paste-text-upload-instructions" />}
-        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }}  />}
-      />
-      <FormControl
-        as="input"
+      <Tooltip title={<FormattedHTMLMessage id="paste-text-upload-instructions" />}>
+        <IconButton size="small">
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+      <TextField
+        fullWidth
+        size="small"
         value={title}
-        style={{ marginTop: '12px', marginBottom: '12px' }}
+        sx={{ mt: 1.5, mb: 1.5 }}
         onChange={({ target }) => setTitle(target.value)}
         placeholder={intl.formatMessage({ id: 'story-title' })}
       />
-      <FormControl
-        as="textarea"
+      <TextField
+        fullWidth
+        multiline
         rows={10}
-        className="story-text-input"
         value={text}
         onChange={handleTextChange}
-        style={{ marginTop: '12px', marginBottom: '12px' }}
+        sx={{ mt: 1.5, mb: 1.5 }}
       />
-      <div>
+      <div style={{ marginTop: '4px' }}>
         <div className="bold">
           <FormattedMessage id="characters-left" />
           {` ${charactersLeft}`}

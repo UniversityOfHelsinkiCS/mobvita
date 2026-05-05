@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Button } from 'react-bootstrap'
-import { Divider, Popup, Icon } from 'semantic-ui-react'
+import Tooltip from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
-  useCurrentUser,
   translatableLanguages,
 } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -17,7 +18,6 @@ import LibraryTabs from 'Components/LibraryTabs'
 const UploadFromFile = ({ closeModal, setActiveComponent }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const user = useCurrentUser()
 
   const [mode, setMode] = useState('story')
   const [storyFile, setStoryFile] = useState('')
@@ -92,12 +92,13 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
 
   return (
     <div>
-      <Popup
-        hoverable
-        positionFixed
-        content={mode === 'story' ? <FormattedHTMLMessage id="file-upload-instructions" /> : <FormattedHTMLMessage id="flashcard-upload-instructions" />}
-        trigger={<Icon name="info circle" style={{ marginLeft: '4px' }} />}
-      />
+      <Tooltip
+        title={mode === 'story' ? <FormattedHTMLMessage id="file-upload-instructions" /> : <FormattedHTMLMessage id="flashcard-upload-instructions" />}
+      >
+        <IconButton size="small">
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
 
       <LibraryTabs
         values={tabValues}
