@@ -2,10 +2,12 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import * as Sentry from '@sentry/react'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import 'Assets/custom.scss'
+import 'Assets/tailwind.css'
 import store from 'Utilities/store'
 import { basePath, inProduction, isStaging } from 'Utilities/common'
 import App from 'Components/App'
@@ -65,24 +67,27 @@ if (window.responsiveVoice) {
 }
 
 const root = createRoot(document.getElementById('root'))
+const muiTheme = createTheme({})
 
 const refresh = () =>
   root.render(
-    <Provider store={store}>
-      <ConnectedIntlProvider>
-        <BrowserRouter
-          basename={basePath}
-          future={{
-            v7_relativeSplatPath: true,
-            v7_startTransition: true,
-          }}
-        >
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </BrowserRouter>
-      </ConnectedIntlProvider>
-    </Provider>
+    <ThemeProvider theme={muiTheme}>
+      <Provider store={store}>
+        <ConnectedIntlProvider>
+          <BrowserRouter
+            basename={basePath}
+            future={{
+              v7_relativeSplatPath: true,
+              v7_startTransition: true,
+            }}
+          >
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </BrowserRouter>
+        </ConnectedIntlProvider>
+      </Provider>
+    </ThemeProvider>
   )
 
 refresh()
