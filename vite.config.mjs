@@ -60,8 +60,7 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: [
         'react-router-dom',
-        'react-swipeable-views',
-        '@babel/runtime/helpers/createSuper',
+        'swiper',
       ],
       esbuildOptions: {
         plugins: [optimizeDepsJsxPlugin],
@@ -69,7 +68,6 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        '@babel/runtime/helpers/createSuper': path.resolve(rootDir, 'node_modules/@babel/runtime/helpers/esm/createSuper.js'),
         Utilities: path.resolve(rootDir, 'client/util/'),
         Components: path.resolve(rootDir, 'client/components/'),
         Assets: path.resolve(rootDir, 'client/assets/'),

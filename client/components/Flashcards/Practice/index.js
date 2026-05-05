@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import SwipeableViews from 'react-swipeable-views'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import {
@@ -70,6 +71,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const bigScreen = width >= 415
   const { storyId } = useParams()
   const dispatch = useDispatch()
+  const swiperRef = useRef(null)
+  const swipeIndexRef = useRef(0)
   const arrowSlot =
     typeof document !== 'undefined' ? document.getElementById('flashcard-arrow-slot') : null
 
@@ -77,6 +80,17 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     if (!arrowSlot) return null
     return createPortal(<ArrowButton hidden={hidden} disabled={disabled} onClick={onClick} />, arrowSlot)
   }
+
+  useEffect(() => {
+    swipeIndexRef.current = swipeIndex
+  }, [swipeIndex])
+
+  useEffect(() => {
+    if (!swiperRef.current) return
+    if (swiperRef.current.activeIndex !== swipeIndex) {
+      swiperRef.current.slideTo(swipeIndex)
+    }
+  }, [swipeIndex])
 
   useEffect(() => {
     if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
@@ -143,9 +157,17 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   }, [storyId, dictionaryLanguage, mode])
 
   // Limits so that you cant swipe back more than once.
-  // React-swipeable-views has some weird behaviour with its index. This tries to fix it.
+  // Keep navigation one-directional for flashcards while still allowing the forward swipe.
   const handleIndexChange = index => {
-    const oldIndex = swipeIndex
+    const oldIndex = swipeIndexRef.current
+
+    if (index < oldIndex) {
+      if (swiperRef.current) {
+        swiperRef.current.slideTo(oldIndex)
+      }
+      return
+    }
+
     setSwipeIndex(index)
 
     if (inBlueCardsTest && index > blueCardsAnswered.length) {
@@ -162,9 +184,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
     }
     dispatch(addToTotal())
-    setTimeout(() => {
-      if (index < oldIndex) setSwipeIndex(oldIndex)
-    }, 1)
   }
 
   const handleNewDeck = () => {
@@ -285,15 +304,20 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
           </div>
         </div>
       )}
-      <SwipeableViews
-        index={swipeIndex}
-        onChangeIndex={handleIndexChange}
-        containerStyle={{ maxWidth: '40em' }}
-        enableMouseEvents={!bigScreen}
-        disabled={editing}
+      <Swiper
+        onSwiper={instance => {
+          swiperRef.current = instance
+        }}
+        onSlideChange={instance => handleIndexChange(instance.activeIndex)}
+        allowTouchMove={!editing}
+        simulateTouch={!bigScreen}
+        slidesPerView={1}
+        style={{ maxWidth: '40em' }}
       >
-        {Array.from({ length: cards.length + 1 }, (_, index) => renderSlideAtIndex(index))}
-      </SwipeableViews>
+        {Array.from({ length: cards.length + 1 }, (_, index) => (
+          <SwiperSlide key={`swiper-slide-${index}`}>{renderSlideAtIndex(index)}</SwiperSlide>
+        ))}
+      </Swiper>
       {renderArrowButton({
         hidden: editing || swipeIndex === cards.length || cards[0].format === 'no-cards',
         onClick: () => handleIndexChange(swipeIndex + 1),
