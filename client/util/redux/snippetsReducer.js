@@ -16,7 +16,7 @@ export const getLessonSnippet = (lessonId, groupId) => {
   return callBuilder(route, prefix)
 }
 
-export const cacheLessonSnippet = (lessonId, groupId, candidateIds, topics) => {
+export const cacheLessonSnippet = (lessonId, groupId, candidateIds, sessionId, topics) => {
   const safeCandidateIds = Array.isArray(candidateIds) ? candidateIds : []
   const safeTopics = Array.isArray(topics) ? topics : []
   let route = `/lesson/exercise`

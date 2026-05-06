@@ -304,7 +304,7 @@ const CurrentSnippet = ({
       const currentCandidates = snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []
       const exclude_candidates = [...candidatesInCache, ...currentCandidates]
       await dispatch(
-        cacheLessonSnippet(lessonId, groupId, exclude_candidates, focused.topics)
+        cacheLessonSnippet(lessonId, groupId, exclude_candidates, sessionId, focused.topics)
       )
     }
   }
