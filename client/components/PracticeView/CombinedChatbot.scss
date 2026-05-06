@@ -52,11 +52,25 @@
         }
     }
 
-  .chatbot-content {
+  .chatbot-content,
+  .dictionary-content {
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow: hidden;
+    overflow-y: auto;
+    position: relative;
+
+  .chatbot-header,
+  .inline-translation,
+  .context-translation-box {
+    flex-shrink: 0;
+  }
+
+  .inline-translation {
+    width: 80%;
+    margin-left: 15px;
+  }
 
     .chatbot-header {
       display: flex;
@@ -83,6 +97,7 @@
 
         .lightbulb {
           color: #f2c03b;
+          margin: 0;
         }
 
         .outline.lightbulb {
@@ -192,13 +207,12 @@
 
     // Chat Messages Container (Handles all scrolling)
     .chatbot-messages-container {
-      flex: 1;
-      overflow-y: auto;
+      flex: 1;      
       padding: 10px 15px;
       background: white;
       display: flex;
       flex-direction: column;
-      gap: 12px; // Spacing between messages
+      gap: 12px; 
     }
 
     // Chat Input Area (Fixed at bottom)
@@ -215,6 +229,7 @@
         grid-template-rows: auto auto;
         gap: 0.5em;
         background-color: white;
+        padding: 0;
 
         input {
           height: 40px;
@@ -226,6 +241,7 @@
 
         button {
           height: 40px;
+          margin: 0;
         }
       }
 
@@ -303,141 +319,15 @@
         .hint-info-icon { color: #17a2b8; cursor: pointer; flex-shrink: 0; margin-left: 4px; }
       }
     }
-  }
-  // --- Dictionary Content ---
-  .dictionary-content {
-    flex: 1 !important;
-    overflow-y: auto;
-    background: #fdfdfd;
-    padding: 15px;
-
-      .chatbot-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 12px 15px;
-        margin-bottom: 1rem;
-        position: relative;
-
-        .bulbs-container {
-          position: absolute;
-          left: 15px;
-          top: 50%;
-          transform: translateY(-50%);
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-
-        .current-word {
-          margin: 0;
-          text-align: center;
-          width: 100%;
-          font-size: 1.2rem;
-          color: #333;
-          font-weight: 600;
-          padding: 0 60px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .chat-action-menu {
-          position: absolute;
-          right: 12px;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10;
-
-          .chat-action-trigger {
-            background: none;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.2s ease;
-            border: none;
-
-            &:hover {
-              i.icon {
-                  font-size: 1.4em;
-              }
-            }
-
-            .ui.icon {
-              margin: 0;
-              font-size: 1.2rem;
-            }
-          }
-
-          .chat-action-options {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            padding: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 140px;
-
-            .chat-action-item {
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              padding: 10px 12px;
-              border: none;
-              background: transparent;
-              border-radius: 8px;
-              cursor: pointer;
-              transition: background 0.15s;
-
-              &:hover {
-                background: #f0f7ff;
-              }
-
-              .chat-action-icon {
-                width: 32px;
-                height: 32px;
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                i.icon {
-                  margin: 0;
-                  padding: 0;
-                  display: flex;
-                  height: auto;
-                }
-              }
-
-              .chat-action-text {
-                font-size: 0.9rem;
-                font-weight: 500;
-                color: #333;
-                white-space: nowrap;
-              }
-            }
-          }
-        }
-      }      
-    }
+  }  
 
     // Context/Sentence Translation Box
     .context-translation-box {
       position: relative;
       background: rgba(126, 222, 249, 0.3);
-      border-radius: 15px;
+      border-radius: 8px;
       padding: 1em;
-      margin-bottom: 1em;
+      margin: 1em;
 
       .context-translation-title {
         margin: 0 0 0.5em 0;
@@ -506,3 +396,4 @@
       margin-top: 0.5rem;
     }
   }
+  

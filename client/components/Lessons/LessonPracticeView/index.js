@@ -37,6 +37,8 @@ import ScrollArrow from 'Components/ScrollArrow'
 import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
 import Spinner from 'Components/Spinner'
+import CombinedChatbot from 'Components/PracticeView/CombinedChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
@@ -57,6 +59,8 @@ const LessonPracticeView = () => {
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
+
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
@@ -192,9 +196,9 @@ const LessonPracticeView = () => {
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
       <div>
-        <div className="cont-tall pt-sm flex-col space-between">
+        <div className="cont-tall flex-col space-between">
           <div className="justify-center">
-            <div className="cont">
+            <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
               <Segment>
                 <div
                   className="progress-bar-cont"
@@ -277,11 +281,16 @@ const LessonPracticeView = () => {
                 </div>
               </div>
             )}
-            <div className="dictionary-and-annotations-cont">
-              <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
+            {/* <div className="dictionary-and-annotations-cont">
+              
               <DictionaryHelp />
-            </div>
-            <PracticeChatbot />
+            </div> */}
+            {/* <PracticeChatbot /> */}
+            <HelperSidebar>
+              <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
+              <CombinedChatbot />
+            </HelperSidebar>
+            
             <FeedbackInfoModal />
           </div>
           {showFooter && <Footer />}

@@ -55,6 +55,8 @@ import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
+import CombinedChatbot from 'Components/PracticeView/CombinedChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 import './ReadViewsStyles.css'
 
@@ -104,6 +106,7 @@ const ReadViews = ({ match }) => {
   const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
   const loadingProgressByStory = useSelector(({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const [open, setOpen] = useState(false)
@@ -487,9 +490,9 @@ const ReadViews = ({ match }) => {
   ]
 
   return (
-    <div className="cont-tall flex-col space-between align-center pt-sm">
+    <div className="cont-tall flex-col space-between align-center"> 
       <div className="flex mb-nm">
-        <div>
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
           <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
@@ -618,17 +621,17 @@ const ReadViews = ({ match }) => {
               <ReportButton />
             </div>
           )}
-        </div>
-        <div className="dictionary-and-annotations-cont">
-          <StoryTopics
+        </div>         
+          <HelperSidebar>
+            <StoryTopics
             conceptCount={routeStory?.concept_count || 0}
             focusedConcept={focusedConcept}
             setFocusedConcept={setFocusedConcept}
             loadingReady={processingFinished}
           />
-          <DictionaryHelp />
-          <AnnotationBox />
-        </div>
+            <CombinedChatbot />
+          </HelperSidebar>
+        
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}

@@ -217,7 +217,7 @@ const PracticeView = () => {
   }
 
   return (
-    <div className="cont-tall pt-sm flex-col space-between">
+    <div className="cont-tall flex-col space-between">
       <div className="justify-center">
         <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
           <Segment>

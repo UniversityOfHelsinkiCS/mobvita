@@ -132,7 +132,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                     onChange={() => setSortBy('name')}
                     checked={sortBy=='name'}
                   />
-                  <FormattedMessage id="Name" />
+                  <FormattedMessage id="sort-by-concept-name-short" />
                 </span>
                 <span style={{ marginRight: '.5em' }}>
                   <input
