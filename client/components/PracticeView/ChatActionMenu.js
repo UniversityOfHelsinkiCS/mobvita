@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -36,6 +36,7 @@ const ChatActionMenu = ({
   const dispatch = useDispatch()
   const intl = useIntl()
   const [open, setOpen] = useState(false)
+  const rootRef = useRef(null)
   const [currentAnswer, setCurrentAnswer] = useState("")
   const { currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
   const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
@@ -132,9 +133,28 @@ const ChatActionMenu = ({
     setOpen(false)
   }
 
-  const handleFabClick = () => {
+    const handleFabClick = () => {
     setOpen(!open)
   }
+
+  // Close the menu when clicking outside
+  useEffect(() => {
+    if (!open) return
+    const handleOutside = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', handleOutside)
+    document.addEventListener('keydown', handleEsc)
+    return () => {
+      document.removeEventListener('mousedown', handleOutside)
+      document.removeEventListener('keydown', handleEsc)
+    }
+  }, [open])
 
   const handleWordNestClick = () => {
     if (lemma && typeof setWordNestChosenWord === 'function') {
@@ -152,8 +172,8 @@ const ChatActionMenu = ({
 
   if (!currentWord) return null
 
-  return (
-    <div className="chat-action-menu">
+    return (
+    <div className="chat-action-menu" ref={rootRef}>
       {/* Trigger Button */}
       <button type="button" className="chat-action-trigger" onClick={handleFabClick}>
         <Icon name={open ? "close" : "ellipsis vertical"} />

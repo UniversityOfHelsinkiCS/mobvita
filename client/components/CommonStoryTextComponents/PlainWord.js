@@ -30,9 +30,11 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
   const location = useLocation()
 
   const dispatch = useDispatch()
-  const { width } = useWindowDimensions()
+    const { width } = useWindowDimensions()
   const { id: storyId } = useParams()
+  const session_id = useSelector(({ snippets }) => snippets.focused?.session_id || snippets.session_id || snippets.sessionId)
   const [allowTranslating, setAllowTranslating] = useState(true)
+
   const mode = getMode()
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -53,7 +55,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
     inflection_ref: inflectionRef, 
     name_token: isName,
     sentence_id,
-    snippet_id
+    snippet_id,
   } = word
   const isCompeteMode = location.pathname.includes('compete')
   const bigScreen = width >= 1024
@@ -134,8 +136,9 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
-      dispatch(setWords({ surface, lemmas }))
-      if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
+    dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
+    if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
+
         const spanThatIncludesWord = getSpanthatIncludesWord(word)
         if (spanThatIncludesWord) {
           dispatch(setFocusedSpan(spanThatIncludesWord))

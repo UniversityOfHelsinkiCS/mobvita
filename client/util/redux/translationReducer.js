@@ -63,13 +63,18 @@ export const changeTranslationStageAction = (lemma, lang_learn, lang_target, sta
 
 export const clearTranslationAction = () => ({ type: 'CLEAR_TRANSLATION' })
 
-export const setWords = ({ surface, lemmas, clue, maskSymbol }) => {
+export const setWords = ({ surface, lemmas, clue, maskSymbol, snippet_id, sentence_id, word_id, session_id, storyid }) => {
   const words = { surface, lemmas }
   return {
     type: 'SET_WORDS',
     words,
     clue,
     maskSymbol,
+    snippet_id,
+    sentence_id,
+    word_id,
+    session_id,
+    storyid 
   }
 }
 
@@ -130,6 +135,11 @@ export default (state = { data: [], showDictionaryBox: true }, action) => {
         lemmas: action.words.lemmas,
         clue: action.clue,
         maskSymbol: action.maskSymbol,
+        snippet_id: action.snippet_id,
+        sentence_id: action.sentence_id,
+        word_id: action.word_id,
+        session_id: action.session_id,
+        storyid: action.storyid,  
       }
     case 'CLEAR_TRANSLATION': {
       return {
@@ -139,7 +149,12 @@ export default (state = { data: [], showDictionaryBox: true }, action) => {
         lemmas: '',
         clue: undefined,
         maskSymbol: false,
-        type: null
+        type: null,
+        snippet_id: null,
+        sentence_id: null,
+        word_id: null,
+        session_id: null,
+        storyid: null,
       }
     }
     case 'SET_TRANSLATION_STAGE': {
