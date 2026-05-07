@@ -137,7 +137,7 @@ export default function Sidebar() {
         padding: 0,
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'auto',
+        overflow: 'hidden',
         backgroundColor: '#fff',
         borderRight: '1px solid rgba(34, 36, 38, 0.15)',
         transform: open ? 'translateX(0)' : `translateX(-${drawerWidth}px)`,
@@ -151,7 +151,7 @@ export default function Sidebar() {
           className="revitaLogo"
           sx={{ display: 'flex', flexDirection: 'column', width: '100%', padding: 0 }}
         >
-          <Box sx={{ padding: '6px 14px 8px 8px' }}>
+          <Box sx={{ padding: '6px 14px 0 8px' }}>
             <MenuIcon
               className="sidebar-hamburger tour-sidebar"
               onClick={closeSidebar}
@@ -161,7 +161,7 @@ export default function Sidebar() {
           </Box>
           <Box
             sx={{
-              padding: '0.75em 1.5em 1em 1.5em',
+              padding: '0.5em 1.5em 1em 1.5em',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',

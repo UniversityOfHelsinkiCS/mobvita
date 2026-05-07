@@ -276,7 +276,6 @@ export default function NavBar() {
                 <Navbar.Brand
                   data-cy="revita-logo"
                   className="navbar-revita-logo tour-start-finish"
-                  style={{ paddingLeft: '8px' }}
                 >
                   <img
                     src={images.navbarLogo}
