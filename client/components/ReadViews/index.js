@@ -78,12 +78,12 @@ const ReadViews = ({ match }) => {
   const isGroupReview = location.pathname.includes('group/review')
   const isGroupPreview = location.pathname.includes('group/preview')
   const { show_review_diff, show_preview_exer, oid } = useSelector(({ user }) => user.data.user)
-  const { story, pending, error, focusedRequestId } = useSelector(({ stories, locale }) => ({
-    story: stories.focused,
-    pending: stories.focusedPending,
-    error: stories.error,
-    focusedRequestId: stories.focusedRequestId,
-    locale }))
+  
+  const story = useSelector(state => state.stories.focused)
+  const pending = useSelector(state => state.stories.focusedPending)
+  const error = useSelector(state => state.stories.error)
+  const focusedRequestId = useSelector(state => state.stories.focusedRequestId)
+  const locale = useSelector(state => state.locale)
   const showPracticeDropdown = useSelector(state => state.dropdown.showPracticeDropdown)
 
   const bigScreen = width > 700

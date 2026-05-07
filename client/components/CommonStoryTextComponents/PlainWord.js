@@ -131,8 +131,9 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
       </>
     )
 
-  const handleWordClick = () => {
-    dispatch(setFocusedSpan(null))
+  const handleWordClick = () => {    
+    dispatch(setFocusedSpan(null))    
+    
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
@@ -165,7 +166,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             inflectionRef,
             prefLemma })
         )
-        dispatch(setHelperSidebarTab('translation'))
+        dispatch(setHelperSidebarTab('translation'))        
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(

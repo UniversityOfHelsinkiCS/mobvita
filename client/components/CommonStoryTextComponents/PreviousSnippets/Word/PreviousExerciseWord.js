@@ -28,6 +28,7 @@ import {
   addAnnotationCandidates,
   resetAnnotationCandidates } from 'Utilities/redux/annotationsReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
+import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet, hideDifficulty }) => {
   const {
@@ -80,6 +81,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   }
 
   const handleClick = () => {
+    dispatch(setHelperSidebarTab('translation'))
     if (!isPreviewMode && (word.isWrong || word.mc_correct)) setShow(true)
     if (isPreviewMode && word.concepts?.length > 0) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)

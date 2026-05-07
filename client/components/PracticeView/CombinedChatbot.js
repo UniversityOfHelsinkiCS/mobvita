@@ -490,7 +490,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   }
 
   return (
-    <div className="combined-chatbot">       
+    <div className="combined-chatbot">      
       {(learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
         <WordNestModal
           wordToCheck={wordNestChosenWord}
