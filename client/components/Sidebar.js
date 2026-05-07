@@ -119,31 +119,51 @@ export default function Sidebar() {
     width: '100%',
   }
 
+  const moreMenuItemSx = {
+    '&:hover': {
+      backgroundColor: '#ddf2ff',
+    },
+  }
+
   return (
-    <Box
-      component="aside"
-      role="complementary"
-      aria-hidden={!open}
-      sx={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        width: `${drawerWidth}px`,
-        minWidth: `${drawerWidth}px`,
-        maxWidth: `${drawerWidth}px`,
-        boxSizing: 'border-box',
-        zIndex: 1001,
-        padding: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        backgroundColor: '#fff',
-        borderRight: '1px solid rgba(34, 36, 38, 0.15)',
-        transform: open ? 'translateX(0)' : `translateX(-${drawerWidth}px)`,
-        transition: 'transform 0.2s ease-in-out',
-      }}
-    >
+    <>
+      {open && (
+        <Box
+          onClick={closeSidebar}
+          aria-hidden
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: 'transparent',
+          }}
+        />
+      )}
+      <Box
+        className="sidebar-panel"
+        component="aside"
+        role="complementary"
+        aria-hidden={!open}
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          width: `${drawerWidth}px`,
+          minWidth: `${drawerWidth}px`,
+          maxWidth: `${drawerWidth}px`,
+          boxSizing: 'border-box',
+          zIndex: 1001,
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+          borderRight: '1px solid rgba(34, 36, 38, 0.15)',
+          transform: open ? 'translateX(0)' : `translateX(-${drawerWidth}px)`,
+          transition: 'transform 0.2s ease-in-out',
+        }}
+      >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <ContactUs open={contactUsOpen} setOpen={setContactUsOpen} />
       <Box className="sidebar-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -194,9 +214,9 @@ export default function Sidebar() {
               </Box>
             )}
 
-            <Box sx={{ padding: '16px 12px' }}>
+            <Box className="sidebar-actions-wrap" sx={{ padding: '16px 12px' }}>
                 <BootstrapButton
-                  className="sidebar-profile-button"
+              className="sidebar-profile-button sidebar-action-button"
                   variant="secondary"
                   style={actionButtonSx}
                   onClick={() => setPracticeModalOpen(true)}
@@ -206,7 +226,7 @@ export default function Sidebar() {
                 </BootstrapButton>
                 <Link to="/library" onClick={closeSidebar}>
                   <BootstrapButton
-                    className="sidebar-library-button"
+                    className="sidebar-library-button sidebar-action-button"
                     variant="secondary"
                     style={actionButtonSx}
                   >
@@ -216,6 +236,7 @@ export default function Sidebar() {
                 </Link>
                 <Link to="/lessons/library" onClick={closeSidebar}>
                   <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
                     style={actionButtonSx}
                   >
@@ -225,6 +246,7 @@ export default function Sidebar() {
                 </Link>
                 <Link to="/flashcards/fillin" onClick={closeSidebar}>
                   <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
                     style={actionButtonSx}
                   >
@@ -234,6 +256,7 @@ export default function Sidebar() {
                 </Link>
                 {hasAdaptiveTests && (<Link to="/adaptive-test" onClick={closeSidebar}>
                   <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
                     style={actionButtonSx}
                   >
@@ -244,17 +267,17 @@ export default function Sidebar() {
                 {hiddenFeatures && (
                   <>
                     <Link to="/test-construction" onClick={closeSidebar}>
-                      <BootstrapButton variant="secondary" style={actionButtonSx}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Grammar check
                       </BootstrapButton>
                     </Link>
                     <Link to="/test-debug" onClick={closeSidebar}>
-                      <BootstrapButton variant="secondary" style={actionButtonSx}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Feedback check
                       </BootstrapButton>
                     </Link>
                     <Link to="/correction-debug" onClick={closeSidebar}>
-                      <BootstrapButton variant="secondary" style={actionButtonSx}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Correction check
                       </BootstrapButton>
                     </Link>
@@ -265,7 +288,7 @@ export default function Sidebar() {
           </>
         )}
         {user && (
-          <Link to="/profile/progress" onClick={closeSidebar} style={{ textDecoration: 'none', marginTop: '40px' }}>
+          <Link to="/profile/progress" onClick={closeSidebar} className="sidebar-profile-summary-link">
             <Tooltip title={intl.formatMessage({ id: 'Sidebar-user-score-EXPLANATION' })}>
               <Box>
                 <Typography align="center" sx={{ fontSize: '18px', fontFamily: sidebarFontFamily, color: '#777' }}>{`${user.user.username}`}</Typography>
@@ -275,9 +298,10 @@ export default function Sidebar() {
           </Link>
         )}
         <Box sx={{ marginTop: 'auto', color: 'slateGrey' }}>
-          <Box sx={{ padding: '16px' }}>
+          <Box className="sidebar-footer-inner" sx={{ padding: '16px' }}>
           <Link to="/profile/settings" onClick={closeSidebar}>
             <BootstrapButton
+              className="sidebar-action-button"
               variant="secondary"
               style={{ ...actionButtonSx, marginBottom: marginTopButton }}
               data-cy="navbar-settings-button"
@@ -296,6 +320,7 @@ export default function Sidebar() {
               </Tooltip>
             )}
             <Box
+              className="sidebar-more-section"
               sx={{
                 position: 'relative',
                 marginTop: '0.5em',
@@ -304,6 +329,7 @@ export default function Sidebar() {
               }}
             >
               <Box
+                className="sidebar-more-trigger"
                 component="button"
                 type="button"
                 onClick={event => setMoreAnchorEl(event.currentTarget)}
@@ -328,6 +354,9 @@ export default function Sidebar() {
                   padding: '0.375rem 0.75rem',
                   lineHeight: 1.5,
                   cursor: 'pointer',
+                  '&:hover': {
+                    backgroundColor: '#ddf2ff',
+                  },
                   '&:focus': {
                     outline: 'none',
                     boxShadow: 'none',
@@ -350,10 +379,15 @@ export default function Sidebar() {
                 transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                 slotProps={{
                   paper: { style: { minHeight: '16em', fontFamily: sidebarFontFamily } },
-                  list: { sx: { fontFamily: sidebarFontFamily } },
+                  list: {
+                    sx: {
+                      fontFamily: sidebarFontFamily,
+                    },
+                  },
                 }}
               >
                 <MenuItem
+                  sx={moreMenuItemSx}
                   component={Link}
                   to={isTeacher ? '/groups/teacher' : '/groups/student'}
                   onClick={() => {
@@ -365,6 +399,7 @@ export default function Sidebar() {
                   {intl.formatMessage({ id: 'groups' })}
                 </MenuItem>
                 <MenuItem
+                  sx={moreMenuItemSx}
                   component={Link}
                   to="/profile/main"
                   onClick={() => {
@@ -377,6 +412,7 @@ export default function Sidebar() {
                 </MenuItem>
                 {learningLanguage && (
                   <MenuItem
+                    sx={moreMenuItemSx}
                     className="tour-mobile-start-button"
                     disabled={location.pathname.includes('lessons/library')}
                     onClick={() => {
@@ -389,6 +425,7 @@ export default function Sidebar() {
                   </MenuItem>
                 )}
                 <MenuItem
+                  sx={moreMenuItemSx}
                   component="a"
                   href="https://revitaai.github.io/"
                   target="_blank"
@@ -400,6 +437,7 @@ export default function Sidebar() {
                   {intl.formatMessage({ id: 'about' })}
                 </MenuItem>
                 <MenuItem
+                  sx={moreMenuItemSx}
                   onClick={() => {
                     setMoreAnchorEl(null)
                     closeSidebar()
@@ -410,6 +448,7 @@ export default function Sidebar() {
                   {intl.formatMessage({ id: 'contact-us' })}
                 </MenuItem>
                 <MenuItem
+                  sx={moreMenuItemSx}
                   data-cy="logout-button"
                   onClick={() => {
                     setMoreAnchorEl(null)
@@ -428,6 +467,7 @@ export default function Sidebar() {
           <Box component="div">{`${__COMMIT__}`}</Box>
         </Box>
       </Box>
-    </Box>
+      </Box>
+    </>
   )
 }

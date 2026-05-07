@@ -1284,6 +1284,86 @@ $value in $spacing {
   }
 }
 
+.sidebar-action-button {
+  min-height: 44px;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.sidebar-profile-summary-link {
+  text-decoration: none;
+  margin-top: 16px;
+}
+
+/* Sidebar compact mode for small mobile widths/heights */
+@media (max-width: 480px), (max-height: 760px) {
+  .sidebar-panel {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+  }
+
+  .sidebar-panel .sidebar-content {
+    overflow-y: auto;
+  }
+
+  .sidebar-panel .sidebar-actions-wrap {
+    padding: 12px 10px !important;
+  }
+
+  .sidebar-panel .sidebar-footer-inner {
+    padding: 12px !important;
+  }
+
+  .sidebar-panel .sidebar-action-button {
+    margin-top: 6px !important;
+    padding: 0.28rem 0.55rem !important;
+    min-height: 36px !important;
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .sidebar-panel .sidebar-action-button svg {
+    margin-right: 0.3em !important;
+    font-size: 1rem !important;
+  }
+
+  .sidebar-panel .sidebar-register-button {
+    padding: 0.3rem 0.55rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .sidebar-panel .sidebar-more-section {
+    margin-top: 0.35em !important;
+  }
+
+  .sidebar-panel .sidebar-more-trigger {
+    margin-top: 6px !important;
+    padding: 0.28rem 0.55rem !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+  }
+}
+
+@media (max-height: 680px) {
+  .sidebar-panel .sidebar-action-button {
+    margin-top: 4px !important;
+    padding: 0.22rem 0.5rem !important;
+    min-height: 32px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .sidebar-panel .sidebar-more-trigger {
+    margin-top: 4px !important;
+    padding: 0.22rem 0.5rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  .sidebar-panel .sidebar-footer-inner {
+    padding: 10px !important;
+  }
+}
+
 .practice-container {
   margin-bottom: 2em;
   word-spacing: 1px;
