@@ -511,7 +511,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
       { currentWord && isEmpty(currentWord) && translationState && isEmpty(translationState.data) && isEmpty(translationState.surfaceWord) && (
         <div className="first-message">
-          <div className="message message-bot">
+          <div className="message message-bot" data-cy="dictionary-info">
             <FormattedMessage id="chatbox-initial-instruction" />
           </div>
         </div>          

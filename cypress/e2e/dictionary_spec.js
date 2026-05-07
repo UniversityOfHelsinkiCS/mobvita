@@ -19,12 +19,13 @@ describe("dictionary", function () {
 
   it("dictionary info opens", function () {
     cy.get("[data-cy=dictionary-info]").click()
-    cy.contains("Klikkaa niitä tekstin sanoja, joita et tunne")
+    cy.contains("Napsauta harjoitusta — jos siitä herää kysymyksiä, kysy täällä.")
   })
 
-  it("translate-to language can be changed", function () {
+    it("translate-to language can be changed", function () {
     cy.contains("lentokoneita").click()
-    cy.get("[data-cy=dictionary-dropdown]").select("Suomi")
+    cy.get("[data-cy=ai-assistant-settings-popup]").click()
+    cy.get("[data-cy=dictionary-dropdown]").select("Suomi", { force: true })
   })
 /*
   it("word translates correctly", function () {

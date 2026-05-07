@@ -82,9 +82,10 @@ const AssistentSettings = ({ className = '' }) => {
       open={open}
       on="click" 
       onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
+      onClose={() => setOpen(false)}      
       trigger={
-        <span 
+                <span 
+          data-cy="ai-assistant-settings-popup"
           style={{ display: 'inline-block', cursor: 'pointer' }}
           role="button"
           tabIndex={0}
@@ -97,6 +98,7 @@ const AssistentSettings = ({ className = '' }) => {
         >
           <SettingsIcon className={className} />
         </span>
+
       }
       content={popupContent}
       position="bottom right"
