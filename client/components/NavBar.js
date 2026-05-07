@@ -4,7 +4,12 @@ import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Icon, Label, Popup, Checkbox } from 'semantic-ui-react'
+import { Tooltip, Badge, FormControlLabel, Switch, Box } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import LinkOffIcon from '@mui/icons-material/LinkOff'
+import SignpostIcon from '@mui/icons-material/Signpost'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 import { Link, useNavigate, useLocation} from 'react-router-dom'
 import { 
   logout, 
@@ -234,16 +239,15 @@ export default function NavBar() {
       grammar_score_type = 'irt'
     }
     return (
-      <Popup
-        position="top center"
-        content={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
-        trigger={
-          <div className="navbar-basic-item">
-            <Icon name="star outline" style={{ margin: 0, width: '16px' }} />
-            {ability_score}
-          </div>
-        }
-      />
+      <Tooltip
+        placement="top"
+        title={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
+      >
+        <div className="navbar-basic-item">
+          <StarBorderIcon style={{ margin: 0, width: '16px', height: '16px' }} />
+          {ability_score}
+        </div>
+      </Tooltip>
     )
   }
 
@@ -256,14 +260,12 @@ export default function NavBar() {
 
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
-      <Navbar className={getBackgroundColor()} style={{ paddingLeft: '0.5em' }}>
+      <Navbar className={getBackgroundColor()} style={{ padding: '8px 14px 8px 8px' }}>
         <Tour />
-        <Icon
-          name="bars"
-          size="big"
+        <MenuIcon
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger tour-sidebar"
-          style={{ color: 'black' }}
+          style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
           data-cy="hamburger"
         />
         <Navbar.Collapse>
@@ -296,22 +298,20 @@ export default function NavBar() {
               >
                 { showStoryElo && get_student_ability_score_component() }
                 {showFlashcardElo && (
-                  <Popup
-                    position="top center"
-                    // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
-                    content={
+                  <Tooltip
+                    placement="top"
+                    title={
                       <FormattedHTMLMessage
                         id="explanations-popup-flashcard-elo"
                         value={{ score_type: 'ELO' }}
                       />
                     }
-                    trigger={
-                      <div className="navbar-basic-item">
-                        <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
-                        {flashcardElo}
-                      </div>
-                    }
-                  />
+                  >
+                    <div className="navbar-basic-item">
+                      <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
+                      {flashcardElo}
+                    </div>
+                  </Tooltip>
                 )}
               </Navbar.Text>
             </div>
@@ -319,53 +319,39 @@ export default function NavBar() {
           {/******************************* STUDENT VIEW *******************************/}
           {isTeacher && showTeacherViewSwitch && !smallWindow && (
             <Nav>
-              <Popup
-                content={<FormattedMessage id="teacher-view-explanation" />}
-                trigger={
-                  <div className='flex space-between'>
-                  <Checkbox
-                    style={{ marginTop: '0.5em', marginRight: '0.5em' }}
-                    toggle
+              <Tooltip title={<FormattedMessage id="teacher-view-explanation" />} placement="bottom">
+                <div className='flex space-between'>
+                  <FormControlLabel
+                    sx={{ mt: 0.5, mr: 0.5 }}
+                    control={<Switch checked={!teacherView} onChange={handleStudentViewSwitch} />}
                     label={intl.formatMessage({ id: 'student-view' })}
-                    checked={!teacherView}
-                    onChange={handleStudentViewSwitch}
                   />
-                  </div>
-                }
-                position="bottom center"
-              />
+                </div>
+              </Tooltip>
             </Nav>
           )}
           {/******************************* PROGRESS *******************************/}
           {(!isTeacher || (isTeacher && !teacherView)) && (
             <Nav>
-              <Popup
-                content={<FormattedMessage id="click-here-to-see-progress-explanation" />}
-                trigger={
-                  <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
-                    <div className="navbar-level">{user.user.level}</div>
-                  </Link>
-                }
-                position="top center"
-              />
+              <Tooltip title={<FormattedMessage id="click-here-to-see-progress-explanation" />} placement="top">
+                <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
+                  <div className="navbar-level">{user.user.level}</div>
+                </Link>
+              </Tooltip>
             </Nav>
           )}
           {/******************************* TOUR BUTTON *******************************/}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
-                <Icon name="broken chain" size="large" style={{ color: '#ff944d' }} />
+                <LinkOffIcon style={{ color: '#ff944d' }} />
               </Offline>
               {!smallWindow && (
-                <Popup
-                  position="top center"
-                  content={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })}
-                  trigger={
-                    <Button className="tour-button" onClick={handleTourStart}>
-                      <Icon name="map signs" size="large" style={{ color: 'black' }} />
-                    </Button>
-                  }
-                />
+                <Tooltip title={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })} placement="top">
+                  <Button className="tour-button" onClick={handleTourStart}>
+                    <SignpostIcon style={{ color: 'black' }} />
+                  </Button>
+                </Tooltip>
               )}
             </div>
           </Nav>
@@ -373,32 +359,45 @@ export default function NavBar() {
           {!smallWindow &&  user && user.user.last_used_language && (
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
-                  <Popup
-                    position="bottom right"
-                    content={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
-                    trigger={
-                      <Link to="/learningLanguage">
-                        <img
-                          className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                          src={getLearningLanguageFlag()}
-                          alt="learningLanguageFlag"
-                        />
-                      </Link>
-                    }
-                  />
+                  <Tooltip
+                    placement="bottom-end"
+                    title={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
+                  >
+                    <Link to="/learningLanguage">
+                      <img
+                        className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
+                        src={getLearningLanguageFlag()}
+                        alt="learningLanguageFlag"
+                      />
+                    </Link>
+                  </Tooltip>
                   {!isMajorLanguage && (
-                    <Popup
-                      position="bottom right"
-                      content={
+                    <Tooltip
+                      placement="bottom-end"
+                      title={
                         <FormattedMessage
                           id="beta-language-warning"
                           values={{ language: user.user.last_used_language }}
                         />
                       }
-                      trigger={
-                          <Label color="red" size="mini"> <span>&beta;</span> </Label>
-                      }
-                    />
+                    >
+                      <Box
+                        component="span"
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#db2828',
+                          color: '#fff',
+                          fontSize: '0.7rem',
+                          borderRadius: '10px',
+                          px: 0.75,
+                          py: 0.1,
+                        }}
+                      >
+                        <span>&beta;</span>
+                      </Box>
+                    </Tooltip>
                   )}
             </div>
           </Nav>
@@ -407,89 +406,66 @@ export default function NavBar() {
           {!smallWindow && (
             <Nav>
               <div className="navbar-container" style={{ width: '90%' }}>
-                <Popup
-                  trigger={
-                    <a
-                      className="navbar-basic-icon"
-                      style={{ display: 'table-cell' }}
-                      href={NewsWebSite}
-                      onClick={event => {
-                        confirmNewsClick(event, NewsWebSite)
-                      }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span style={{ position: 'relative', cursor: 'pointer' }}>
+                <Tooltip
+                  placement="bottom-end"
+                  title={<FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />}
+                >
+                  <a
+                    className="navbar-basic-icon"
+                    style={{ display: 'table-cell' }}
+                    href={NewsWebSite}
+                    onClick={event => {
+                      confirmNewsClick(event, NewsWebSite)
+                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span style={{ position: 'relative', cursor: 'pointer' }}>
+                      {numUnreadNews > 0 ? (
+                        <Badge badgeContent={numUnreadNews} color="error" onClick={handleNewsClick}>
+                          <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
+                        </Badge>
+                      ) : (
                         <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                        {numUnreadNews > 0 ? (
-                          <Label
-                            onClick={handleNewsClick}
-                            className="navbar-news-label"
-                            color="red"
-                            size="mini"
-                            floating
-                          >
-                            <span>{numUnreadNews}</span>
-                          </Label>
-                        ) : null}
-                      </span>
-                    </a>
-                  }
-                  content={
-                    <FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />
-                  }
-                  on="hover"
-                  position="bottom right"
-                />
+                      )}
+                    </span>
+                  </a>
+                </Tooltip>
               </div>
             </Nav>
           )}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
-              <Popup
-                trigger={
-                  <a
-                    className="navbar-basic-icon tour-help"
-                    style={{ display: 'table-cell' }}
-                    href={helpLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span style={{position: 'relative', cursor: 'pointer' }}>
-                      <Icon name="help circle" size="large" style={{ color: 'black' }} />
-                    </span>
-                  </a>
-                }
-                content={
-                  <FormattedMessage id="help" />
-                }
-                on="hover"
-                position="bottom right"
-              />
-            </div>
-          </Nav>
-          <Nav>
-            <Popup
-              trigger={
+              <Tooltip title={<FormattedMessage id="help" />} placement="bottom-end">
                 <a
-                  className="navbar-basic-icon"
-                  href="https://revitaai.github.io/SERVER-STATUS.html"
+                  className="navbar-basic-icon tour-help"
+                  style={{ display: 'table-cell' }}
+                  href={helpLink}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
-                      src={images.heartbeat}
-                      alt="heartbeat icon"
-                      style={{ height: '20px' }}
-                    />
+                  <span style={{position: 'relative', cursor: 'pointer' }}>
+                    <HelpOutlineIcon style={{ color: 'black' }} />
+                  </span>
                 </a>
-              }
-              content={
-                <FormattedMessage id="server-status" />
-              }
-              on="hover"
-              position="bottom right"
-            />
+              </Tooltip>
+            </div>
+          </Nav>
+          <Nav>
+            <Tooltip title={<FormattedMessage id="server-status" />} placement="bottom-end">
+              <a
+                className="navbar-basic-icon"
+                href="https://revitaai.github.io/SERVER-STATUS.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                    src={images.heartbeat}
+                    alt="heartbeat icon"
+                    style={{ height: '20px' }}
+                  />
+              </a>
+            </Tooltip>
           </Nav>
           {/******************************* END *******************************/}
         </Navbar.Collapse>
