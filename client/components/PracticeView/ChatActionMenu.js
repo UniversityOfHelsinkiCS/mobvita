@@ -40,13 +40,12 @@ const ChatActionMenu = ({
   const [currentAnswer, setCurrentAnswer] = useState("")
   const { currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
   const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
-  const { focused } = useSelector(({ snippets }) => snippets)
-  const { session_id, storyid, chat_history } = useSelector(({ snippets }) => ({
-        session_id: snippets.focused?.session_id,
-        storyid: snippets.focused?.storyid,
-        // chat_history: snippets.focused?.chat_history
-        chat_history: snippets.focused_snippet_chat_history
-    }));
+    
+  const focused = useSelector(state => state.snippets.focused)
+  const session_id = useSelector(state => state.snippets.focused?.session_id)
+  const storyid = useSelector(state => state.snippets.focused?.storyid)
+  const chat_history = useSelector(state => state.snippets.focused_snippet_chat_history)
+
   const translationState = useSelector(({ translation }) => translation)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
