@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useParams } from 'react-router-dom'
 import {
   getTextWidth,
   dictionaryLanguageSelector,
@@ -79,6 +78,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
 
   const isInFocusedAnalyticChunk =
     Array.isArray(focusedChunkIds) && focusedChunkIds.includes(word.ID)
+  const isActiveExercise = focusedWord?.ID === word.ID
 
   const target = useRef()
   const dispatch = useDispatch()
@@ -253,16 +253,17 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       className={className}
       style={{
         width: getTextWidth(word.surface, '400 1.15rem monospace') + 40,
-        backgroundColor: isInFocusedAnalyticChunk
-        ? 'rgba(255, 255, 36, 0.7)'
-        : getWordColor(
-          word.level,
-          grade,
-          skillLevels,
-          show_review_diff,
-          show_preview_exer,
-          mode
-        ),
+        backgroundColor:
+          isActiveExercise || isInFocusedAnalyticChunk
+            ? 'rgba(255, 255, 36, 0.7)'
+            : getWordColor(
+                word.level,
+                grade,
+                skillLevels,
+                show_review_diff,
+                show_preview_exer,
+                mode
+              ),
         marginRight: '2px',
         height: '1.5em',
         lineHeight: 'normal',

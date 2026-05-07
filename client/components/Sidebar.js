@@ -1,89 +1,75 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { 
-  Sidebar as SemanticSidebar, 
-  Menu, 
-  Icon, 
-  Dropdown, 
-  Segment,
-  DropdownItem,
-  DropdownMenu,
-  Popup,
-  Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useIntl } from 'react-intl' 
+import { useIntl } from 'react-intl'
 import { FormattedMessage } from 'react-intl'
-import { localeOptions, capitalize, localeNameToCode, images, timerExpired } from 'Utilities/common'
-import { setLocale } from 'Utilities/redux/localeReducer'
+import { images } from 'Utilities/common'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { logout, updateLocale, teacherSwitchView } from 'Utilities/redux/userReducer'
+import { logout, teacherSwitchView } from 'Utilities/redux/userReducer'
 import {
   startAnonymousProgressTour,
   startLessonsTour,
   startLibraryTour,
   startProgressTour,
-  startPracticeTour } from 'Utilities/redux/tourReducer'
-import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
-import { Button } from 'react-bootstrap'
+  startPracticeTour,
+} from 'Utilities/redux/tourReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
-import LearningSettingsModal from './LearningSettingsModal'
 import PracticeModal from './HomeView/PracticeModal'
-import { hiddenFeatures, getHelpLink, cefrNum2Cefr } from 'Utilities/common'
+import { hiddenFeatures, cefrNum2Cefr } from 'Utilities/common'
+import {
+  Box,
+  FormControlLabel,
+  Menu,
+  MenuItem,
+  Switch,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import FlagIcon from '@mui/icons-material/Flag'
+import BookIcon from '@mui/icons-material/Book'
+import EventAvailableIcon from '@mui/icons-material/EventAvailable'
+import StyleIcon from '@mui/icons-material/Style'
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
+import SettingsIcon from '@mui/icons-material/Settings'
+import GroupIcon from '@mui/icons-material/Group'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutlined'
+import MapIcon from '@mui/icons-material/Map'
+import InfoIcon from '@mui/icons-material/Info'
+import MailOutlineIcon from '@mui/icons-material/MailOutlined'
+import LogoutIcon from '@mui/icons-material/Logout'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import { Button as BootstrapButton } from 'react-bootstrap'
 
 export default function Sidebar() {
   const dispatch = useDispatch()
-  const sidebar = useRef()
   const navigate = useNavigate()
   const location = useLocation()
 
   const user = useSelector(({ user }) => user.data)
-  // const irtScore = useSelector(({ user }) => user.irt_dummy_score)
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
-  const { locale } = useSelector(({ locale }) => locale)
-  const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
-  const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
+  const { hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [contactUsOpen, setContactUsOpen] = useState(false)
+  const [moreAnchorEl, setMoreAnchorEl] = useState(null)
   const intl = useIntl()
   const isTeacher = user?.user.is_teacher
   const teacherView = user?.teacherView
-  const [helpLink, setHelpLink] = useState(null)
-
-  const handleLocaleChange = newLocale => {
-    dispatch(setLocale(newLocale)) // Sets locale in root reducer...
-    if (user) dispatch(updateLocale(newLocale)) // Updates user-object
-  }
+  const smallWindow = useWindowDimensions().width < 640
+  const showMoreMenu = Boolean(moreAnchorEl)
 
   const marginTopButton = '8px'
 
-  useEffect(() => {
-    if (user) {
-      setHelpLink(getHelpLink(locale, isTeacher, learningLanguage))
-    }
-  }, [user, learningLanguage])
-
-  useEffect(() => {
-    const temp = localeOptions.map(option => ({
-      value: option.code,
-      text: option.displayName,
-      key: option.code }))
-    setLocaleDropdownOptions(temp)
-  }, [])
-
-  const handleOutSideClick = useCallback(event => {
-    if (sidebar.current && !sidebar.current.contains(event.target)) dispatch(sidebarSetOpen(false))
-  }, [])
-
-  useEffect(() => {
-    if (open) document.addEventListener('mousedown', handleOutSideClick, false)
-    else document.removeEventListener('mousedown', handleOutSideClick, false)
-  }, [open])
+  const closeSidebar = () => {
+    dispatch(sidebarSetOpen(false))
+  }
 
   const signOut = () => {
     dispatch(logout())
     navigate('/')
+    closeSidebar()
   }
 
   const handleTourStart = () => {
@@ -120,332 +106,368 @@ export default function Sidebar() {
     }
   }
 
-  let actualLocale = locale
-  if (user && user.user.interfaceLanguage) {
-    // If user has logged in, use locale from user object, else use value from localeReducer
-    actualLocale = localeNameToCode(user.user.interfaceLanguage)
+  const drawerWidth = 350
+  const sidebarFontFamily = 'Lato, "Helvetica Neue", Arial, Helvetica, sans-serif'
+
+  const actionButtonSx = {
+    marginTop: marginTopButton,
+    color: 'darkslateblue',
+    borderColor: 'slateblue',
+    fontSize: 'larger',
+    fontWeight: 'bold',
+    fontFamily: sidebarFontFamily,
+    width: '100%',
   }
 
-  const smallWindow = useWindowDimensions().width < 640
-
-  
+  const moreMenuItemSx = {
+    '&:hover': {
+      backgroundColor: '#ddf2ff',
+    },
+  }
 
   return (
-    <SemanticSidebar
-      as={Menu}
-      animation="push"
-      icon="labeled"
-      vertical
-      visible={open}
-      style={{ width: smallWindow ? '80%' : '350px', zIndex: 1001 }}
-    >
+    <>
+      {open && (
+        <Box
+          onClick={closeSidebar}
+          aria-hidden
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: 'transparent',
+          }}
+        />
+      )}
+      <Box
+        className="sidebar-panel"
+        component="aside"
+        role="complementary"
+        aria-hidden={!open}
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          width: `${drawerWidth}px`,
+          minWidth: `${drawerWidth}px`,
+          maxWidth: `${drawerWidth}px`,
+          boxSizing: 'border-box',
+          zIndex: 1001,
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+          borderRight: '1px solid rgba(34, 36, 38, 0.15)',
+          transform: open ? 'translateX(0)' : `translateX(-${drawerWidth}px)`,
+          transition: 'transform 0.2s ease-in-out',
+        }}
+      >
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <ContactUs open={contactUsOpen} setOpen={setContactUsOpen} />
-      <div className="sidebar-content" ref={sidebar}>
-        <div className="revitaLogo"
-             style={{ padding: '0.5em 1em 0em 0.5em', display: 'flex' }}>
-          <Icon
-            name="bars"
-            size="big"
-            className="sidebar-hamburger"
-            onClick={() => dispatch(sidebarSetOpen(!open))}
-            style={{ position: 'fixed', paddingTop: 0 }}
-          />
-          <div
-            style={{
-              padding: '2.5em 1.5em 1em 1.5em',
+      <Box className="sidebar-content" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Box
+          className="revitaLogo"
+          sx={{ display: 'flex', flexDirection: 'column', width: '100%', padding: 0 }}
+        >
+          <Box sx={{ padding: '6px 14px 0 8px' }}>
+            <MenuIcon
+              className="sidebar-hamburger tour-sidebar"
+              onClick={closeSidebar}
+              style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
+              data-cy="hamburger"
+            />
+          </Box>
+          <Box
+            sx={{
+              padding: '0.5em 1.5em 1em 1.5em',
               display: 'flex',
               flexDirection: 'column',
-              marginRight: 'auto',
-              marginLeft: 'auto' }}
+              alignItems: 'center',
+            }}
           >
-            <Link to="/home">
+            <Link to="/home" onClick={closeSidebar}>
               <img
-                style={{ width: '100%', margin: '6px auto' }}
+                style={{ width: '100%', maxWidth: '220px', margin: '6px auto' }}
                 src={images.logo}
                 alt="revitaLogo"
               />
             </Link>
-          </div>
-        </div>
-        {!smallWindow && <a className="padding-bottom-1" />}
+          </Box>
+        </Box>
+        <Box sx={{ borderBottom: '1px solid rgba(34, 36, 38, 0.15)', mx: '16px', mb: '8px' }} />
 
         {user && (
           <>
             {user.user.email === 'anonymous_email' && (
-              <Menu.Item>
-                <div style={{ padding: '0.5em 0em' }}>
-                  <Link  to="/register">
-                    <Button 
+              <Box sx={{ padding: '0.5em 0em' }}>
+                  <Link to="/register" onClick={closeSidebar}>
+                    <BootstrapButton
                       variant="primary"
                       className="sidebar-register-button"
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', fontFamily: sidebarFontFamily }}
                     >
                       <FormattedMessage id="register-to-save-your-progress" />
-                    </Button>
+                    </BootstrapButton>
                   </Link>
-                </div>
-              </Menu.Item>
+              </Box>
             )}
 
-            <Menu.Item>
-              <>
-                <Button
-                  className='sidebar-profile-button'
-                  // data-cy="practice-now"
+            <Box className="sidebar-actions-wrap" sx={{ padding: '16px 12px' }}>
+                <BootstrapButton
+              className="sidebar-profile-button sidebar-action-button"
                   variant="secondary"
-                  style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold',
-                    width: '100%'
-                  }}
+                  style={actionButtonSx}
                   onClick={() => setPracticeModalOpen(true)}
                 >
-                  <Icon name="flag checkered" />
+                  <FlagIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                   <FormattedMessage id="practice-now" />
-                </Button>
-                <Link to="/library">
-                  <Button
-                    className="sidebar-library-button"
+                </BootstrapButton>
+                <Link to="/library" onClick={closeSidebar}>
+                  <BootstrapButton
+                    className="sidebar-library-button sidebar-action-button"
                     variant="secondary"
-                    style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold',
-                    width: '100%'
-                  }}
+                    style={actionButtonSx}
                   >
-                    <Icon name="book" /> <FormattedMessage id="Library" />
-                  </Button>
+                    <BookIcon fontSize="small" style={{ marginRight: '0.4em' }} />
+                    <FormattedMessage id="Library" />
+                  </BootstrapButton>
                 </Link>
-                <Link to="/lessons/library">
-                  <Button
+                <Link to="/lessons/library" onClick={closeSidebar}>
+                  <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
-                    style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold',
-                    width: '100%'
-                  }}
+                    style={actionButtonSx}
                   >
-                      <Icon size="small" name="calendar check outline" />
-                      {' '}
+                    <EventAvailableIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                     <FormattedMessage id="Lessons" />
-                  </Button>
+                  </BootstrapButton>
                 </Link>
-                <Link to="/flashcards/fillin">
-                  <Button
+                <Link to="/flashcards/fillin" onClick={closeSidebar}>
+                  <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
-                    style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold',
-                    width: '100%'
-                  }}
+                    style={actionButtonSx}
                   >
-                    <Icon size="small" name="clone outline" />{' '}
+                    <StyleIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                     <FormattedMessage id="Flashcards" />
-                  </Button>
+                  </BootstrapButton>
                 </Link>
-                {hasAdaptiveTests && (<Link to="/adaptive-test">
-                  <Button
+                {hasAdaptiveTests && (<Link to="/adaptive-test" onClick={closeSidebar}>
+                  <BootstrapButton
+                    className="sidebar-action-button"
                     variant="secondary"
-                    style={{ 
-                    marginTop: marginTopButton, 
-                    color: 'darkslateblue', 
-                    borderColor: 'slateblue', 
-                    fontSize: 'larger', 
-                    fontWeight: 'bold',
-                    width: '100%'
-                  }}
+                    style={actionButtonSx}
                   >
-                    <Icon size="small" name="trophy" />{' '}
+                    <EmojiEventsIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                     <FormattedMessage id="adaptive-test" />
-                  </Button>
+                  </BootstrapButton>
                 </Link>)}
                 {hiddenFeatures && (
                   <>
-                    <Link to="/test-construction">
-                      <Button 
-                        variant="secondary"
-                        style={{ 
-                          marginTop: marginTopButton, 
-                          color: 'darkslateblue', 
-                          borderColor: 'slateblue', 
-                          fontSize: 'larger', 
-                          fontWeight: 'bold',
-                          width: '100%'
-                        }}
-                      >
+                    <Link to="/test-construction" onClick={closeSidebar}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Grammar check
-                      </Button>
+                      </BootstrapButton>
                     </Link>
-                    <Link to="/test-debug">
-                      <Button 
-                        variant="secondary"
-                        style={{ 
-                          marginTop: marginTopButton, 
-                          color: 'darkslateblue', 
-                          borderColor: 'slateblue', 
-                          fontSize: 'larger', 
-                          fontWeight: 'bold',
-                          width: '100%'
-                        }}
-                      >
+                    <Link to="/test-debug" onClick={closeSidebar}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Feedback check
-                      </Button>
+                      </BootstrapButton>
                     </Link>
-                    <Link to="/correction-debug">
-                      <Button
-                        variant="secondary"
-                        style={{
-                          marginTop: marginTopButton,
-                          color: 'darkslateblue',
-                          borderColor: 'slateblue',
-                          fontSize: 'larger',
-                          fontWeight: 'bold',
-                          width: '100%'
-                        }}
-                      >
+                    <Link to="/correction-debug" onClick={closeSidebar}>
+                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
                         Correction check
-                      </Button>
+                      </BootstrapButton>
                     </Link>
                   </>
                 )}
 
-
-              </>
-
-              
-            </Menu.Item>
+            </Box>
           </>
         )}
         {user && (
-          <Popup
-            content={<FormattedMessage id="Sidebar-user-score-EXPLANATION" />}
-            trigger={
-              <Link 
-                to="/profile/progress" 
-                style={{ fontSize: '18px', color: '#777', textDecoration: 'none', marginTop: '50px' }}
-              > 
-                <div style={{ width: '100%', textAlign: 'center' }}>{`${user.user.username}`}</div>
-                <div style={{ width: '100%', textAlign: 'center', color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cefr)}`}</div>
-              </Link>
-            }
-          />
-          
+          <Link to="/profile/progress" onClick={closeSidebar} className="sidebar-profile-summary-link">
+            <Tooltip title={intl.formatMessage({ id: 'Sidebar-user-score-EXPLANATION' })}>
+              <Box>
+                <Typography align="center" sx={{ fontSize: '18px', fontFamily: sidebarFontFamily, color: '#777' }}>{`${user.user.username}`}</Typography>
+                <Typography align="center" sx={{ fontSize: '18px', fontFamily: sidebarFontFamily, color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cefr)}`}</Typography>
+              </Box>
+            </Tooltip>
+          </Link>
         )}
-        <div
-          style={{
-            marginTop: 'auto',
-            color: 'slateGrey' }}
-        >
-          <Menu.Item style={{ paddingBottom: '0px' }}>
-          <Link to="/profile/settings">
-            <Button
+        <Box sx={{ marginTop: 'auto', color: 'slateGrey' }}>
+          <Box className="sidebar-footer-inner" sx={{ padding: '16px' }}>
+          <Link to="/profile/settings" onClick={closeSidebar}>
+            <BootstrapButton
+              className="sidebar-action-button"
               variant="secondary"
-              style={{ 
-                marginBottom: marginTopButton, 
-                color: 'darkslateblue', 
-                borderColor: 'slateblue',
-                fontSize: 'larger',
-                fontWeight: 'bold',
-                width: '100%'
-              }}
+              style={{ ...actionButtonSx, marginBottom: marginTopButton }}
               data-cy="navbar-settings-button"
             >
-              <Icon size="small" name="settings" />{' '}
+              <SettingsIcon fontSize="small" style={{ marginRight: '0.4em' }} />
               <FormattedMessage id="Settings" />
-            </Button>
+            </BootstrapButton>
           </Link>
             {isTeacher && smallWindow && (
-              <Popup
-                content={<FormattedMessage id="teacher-view-explanation" />}
-                trigger={
-                  <div>
-                    <Checkbox
-                      style={{ marginTop: '0.5em', marginRight: '0.5em' }}
-                      toggle
-                      label={intl.formatMessage({ id: 'student-view' })}
-                      checked={!teacherView}
-                      onChange={handleStudentViewSwitch}
-                    />
-                  </div>
-                }
-                position="bottom center"
-              />
-            )}
-          <Dropdown item direction={smallWindow ? "left" : "right"} style={{color: 'darkslateblue', 
-                                 borderColor: 'slateblue',
-                                 fontSize: 'larger',
-                                 fontWeight: 'bold'}}
-                    text={intl.formatMessage({id: 'Menu-more'})} >
-            <DropdownMenu style={{minHeight: '16em'}}>
-              <DropdownItem text={intl.formatMessage({id: 'groups'})} icon='group' as={Link} to={isTeacher ? '/groups/teacher' : '/groups/student'}/>
-              <DropdownItem as={Link} to="/profile/main" text={intl.formatMessage({id: 'Profile'})} icon="user outline" />
-              {learningLanguage && (
-                <DropdownItem
-                  className='tour-mobile-start-button'
-                  onClick={() => handleTourStart()}
-                  text={intl.formatMessage({id: 'start-tour'})} icon='map signs'
-                  disabled={location.pathname.includes('lessons/library')}
+              <Tooltip title={intl.formatMessage({ id: 'teacher-view-explanation' })}>
+                <FormControlLabel
+                  sx={{ mt: 0.5 }}
+                  control={<Switch checked={!teacherView} onChange={handleStudentViewSwitch} />}
+                  label={intl.formatMessage({ id: 'student-view' })}
                 />
-              )}
-              {/* <DropdownItem as={Link} to={helpLink} text={intl.formatMessage({id: 'help'})} icon='help circle' /> */}
-              <DropdownItem
-                data-cy="about-button"
-                as={Link}
-                to={{pathname: "https://revitaai.github.io/"}}
-                target="_blank"
-                rel="noopener noreferrer"
-                text={intl.formatMessage({id: 'about'})}
-                icon='info circle'
-              />
-              
-              <DropdownItem
-                text={intl.formatMessage({ id: 'contact-us' })}
-                icon="envelope outline"
-                onClick={() => {
-                  dispatch(sidebarSetOpen(false))
-                  setContactUsOpen(true)
+              </Tooltip>
+            )}
+            <Box
+              className="sidebar-more-section"
+              sx={{
+                position: 'relative',
+                marginTop: '0.5em',
+                borderTop: '1px solid rgba(34, 36, 38, 0.1)',
+
+              }}
+            >
+              <Box
+                className="sidebar-more-trigger"
+                component="button"
+                type="button"
+                onClick={event => setMoreAnchorEl(event.currentTarget)}
+                aria-haspopup="listbox"
+                aria-expanded={showMoreMenu}
+                sx={{
+                  marginTop: marginTopButton,
+                  color: 'darkslateblue',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  fontSize: 'larger',
+                  fontWeight: 'bold',
+                  fontFamily: sidebarFontFamily,
+                  width: '100%',
+                  backgroundColor: '#fff',
+                  borderRadius: '0.375rem',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.375rem 0.75rem',
+                  lineHeight: 1.5,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    backgroundColor: '#ddf2ff',
+                  },
+                  '&:focus': {
+                    outline: 'none',
+                    boxShadow: 'none',
+                  },
+                  '&:focus-visible': {
+                    outline: 'none',
+                    boxShadow: 'none',
+                  },
                 }}
-              />
-              
-              <DropdownItem 
-                data-cy="logout-button" 
-                onClick={signOut} 
-                icon='sign out alternate' 
-                text={intl.formatMessage({id: 'sign-out'})}
-              />
-            </DropdownMenu>
-          </Dropdown>
-           
-            
-          </Menu.Item>
-        </div>
-        <div style={{ color: 'slateGrey' }}>
-          {/* <TermsAndConditions
-            trigger={
-              <Button data-cy="tc-button"  variant="link">
-                {' '}
-                Terms and Conditions, Privacy Policy{' '}
-              </Button>
-            }
-          /> */}
-          {/* eslint-disable no-undef */}
-          <div>{`Built: ${__VERSION__}`}</div>
-          <div>{`${__COMMIT__}`}</div>
-        </div>
-      </div>
-    </SemanticSidebar>
+              >
+                <span>{intl.formatMessage({ id: 'Menu-more' })}</span>
+                <ArrowRightIcon fontSize="small" sx={{ position: 'absolute', right: '0.5rem' }} />
+              </Box>
+              <Menu
+                anchorEl={moreAnchorEl}
+                open={showMoreMenu}
+                onClose={() => setMoreAnchorEl(null)}
+                keepMounted
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                slotProps={{
+                  paper: { style: { minHeight: '16em', fontFamily: sidebarFontFamily } },
+                  list: {
+                    sx: {
+                      fontFamily: sidebarFontFamily,
+                    },
+                  },
+                }}
+              >
+                <MenuItem
+                  sx={moreMenuItemSx}
+                  component={Link}
+                  to={isTeacher ? '/groups/teacher' : '/groups/student'}
+                  onClick={() => {
+                    setMoreAnchorEl(null)
+                    closeSidebar()
+                  }}
+                >
+                  <GroupIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                  {intl.formatMessage({ id: 'groups' })}
+                </MenuItem>
+                <MenuItem
+                  sx={moreMenuItemSx}
+                  component={Link}
+                  to="/profile/main"
+                  onClick={() => {
+                    setMoreAnchorEl(null)
+                    closeSidebar()
+                  }}
+                >
+                  <PersonOutlineIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                  {intl.formatMessage({ id: 'Profile' })}
+                </MenuItem>
+                {learningLanguage && (
+                  <MenuItem
+                    sx={moreMenuItemSx}
+                    className="tour-mobile-start-button"
+                    disabled={location.pathname.includes('lessons/library')}
+                    onClick={() => {
+                      handleTourStart()
+                      setMoreAnchorEl(null)
+                    }}
+                  >
+                    <MapIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                    {intl.formatMessage({ id: 'start-tour' })}
+                  </MenuItem>
+                )}
+                <MenuItem
+                  sx={moreMenuItemSx}
+                  component="a"
+                  href="https://revitaai.github.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cy="about-button"
+                  onClick={() => setMoreAnchorEl(null)}
+                >
+                  <InfoIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                  {intl.formatMessage({ id: 'about' })}
+                </MenuItem>
+                <MenuItem
+                  sx={moreMenuItemSx}
+                  onClick={() => {
+                    setMoreAnchorEl(null)
+                    closeSidebar()
+                    setContactUsOpen(true)
+                  }}
+                >
+                  <MailOutlineIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                  {intl.formatMessage({ id: 'contact-us' })}
+                </MenuItem>
+                <MenuItem
+                  sx={moreMenuItemSx}
+                  data-cy="logout-button"
+                  onClick={() => {
+                    setMoreAnchorEl(null)
+                    signOut()
+                  }}
+                >
+                  <LogoutIcon fontSize="small" sx={{ marginRight: '0.6em' }} />
+                  {intl.formatMessage({ id: 'sign-out' })}
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ color: 'slategrey', mt: 1, textAlign: 'center', fontFamily: sidebarFontFamily }}>
+          <Box component="div">{`Built: ${__VERSION__}`}</Box>
+          <Box component="div">{`${__COMMIT__}`}</Box>
+        </Box>
+      </Box>
+      </Box>
+    </>
   )
 }
