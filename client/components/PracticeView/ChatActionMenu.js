@@ -175,7 +175,7 @@ const ChatActionMenu = ({
     return (
     <div className="chat-action-menu" ref={rootRef}>
       {/* Trigger Button */}
-      <button type="button" className="chat-action-trigger" onClick={handleFabClick}>
+      <button type="button" className="chat-action-trigger" onClick={handleFabClick} data-cy="chat-action-menu-popup">
         <Icon name={open ? "close" : "ellipsis vertical"} />
       </button>
 
@@ -211,6 +211,7 @@ const ChatActionMenu = ({
             <button
               type="button"
               className="chat-action-item"
+              data-cy="nest-button"
               onClick={handleWordNestClick}>
               <div className="chat-action-icon">
                 <img src={images.network} alt="network icon" width="32" />

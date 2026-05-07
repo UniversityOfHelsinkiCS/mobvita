@@ -818,7 +818,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 />
               </div>
             )}
-            <div className="inline-translation">            
+            <div className="inline-translation" data-cy="translations">            
 
             {/* Translation Results */}               
 

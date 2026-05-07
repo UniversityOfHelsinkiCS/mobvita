@@ -23,7 +23,7 @@ describe('wordnest modal', function () {
   it('fetches, displays and translates word nest modal correctly', function () {
     cy.contains('спортсменка', { timeout: 10000 }).click()
     cy.contains('sportswoman', { timeout: 10000 })
-
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
     cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
 
     cy.get('[data-cy=wordnest-modal]', { timeout: 10000 })
@@ -53,7 +53,7 @@ describe('wordnest modal', function () {
   it('close wordnest modal when clicking outside', function () {
     cy.contains('спортсменка', { timeout: 10000 }).click()
     cy.contains('sportswoman', { timeout: 10000 })
-    
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
     cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
     
     cy.get('[data-cy=wordnest-modal]', { timeout: 10000 }).should('be.visible')
@@ -70,6 +70,7 @@ describe('wordnest modal', function () {
     cy.contains('спортсменка', { timeout: 10000 }).click()
     cy.contains('sportswoman', { timeout: 10000 })
     
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
     cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
 
     cy.get('[data-cy=wordnest-modal]', { timeout: 10000 })
