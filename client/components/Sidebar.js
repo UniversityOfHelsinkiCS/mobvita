@@ -313,6 +313,8 @@ export default function Sidebar() {
                   marginTop: marginTopButton,
                   color: 'darkslateblue',
                   border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
                   fontSize: 'larger',
                   fontWeight: 'bold',
                   fontFamily: sidebarFontFamily,
@@ -326,6 +328,14 @@ export default function Sidebar() {
                   padding: '0.375rem 0.75rem',
                   lineHeight: 1.5,
                   cursor: 'pointer',
+                  '&:focus': {
+                    outline: 'none',
+                    boxShadow: 'none',
+                  },
+                  '&:focus-visible': {
+                    outline: 'none',
+                    boxShadow: 'none',
+                  },
                 }}
               >
                 <span>{intl.formatMessage({ id: 'Menu-more' })}</span>
