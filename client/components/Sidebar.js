@@ -20,7 +20,6 @@ import { hiddenFeatures, cefrNum2Cefr } from 'Utilities/common'
 import {
   Box,
   FormControlLabel,
-  IconButton,
   Menu,
   MenuItem,
   Switch,
@@ -152,13 +151,14 @@ export default function Sidebar() {
           className="revitaLogo"
           sx={{ display: 'flex', flexDirection: 'column', width: '100%', padding: 0 }}
         >
-          <IconButton
-            className="sidebar-hamburger"
-            onClick={closeSidebar}
-            sx={{ alignSelf: 'flex-start' }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Box sx={{ padding: '6px 14px 8px 8px' }}>
+            <MenuIcon
+              className="sidebar-hamburger tour-sidebar"
+              onClick={closeSidebar}
+              style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
+              data-cy="hamburger"
+            />
+          </Box>
           <Box
             sx={{
               padding: '0.75em 1.5em 1em 1.5em',
@@ -338,8 +338,10 @@ export default function Sidebar() {
                 keepMounted
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                PaperProps={{ style: { minHeight: '16em', fontFamily: sidebarFontFamily } }}
-                MenuListProps={{ sx: { fontFamily: sidebarFontFamily } }}
+                slotProps={{
+                  paper: { style: { minHeight: '16em', fontFamily: sidebarFontFamily } },
+                  list: { sx: { fontFamily: sidebarFontFamily } },
+                }}
               >
                 <MenuItem
                   component={Link}
