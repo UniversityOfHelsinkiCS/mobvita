@@ -1620,6 +1620,7 @@ const mobileLibraryTourSteps = [
         zIndex: 10000 } } },
 ]
 
+// Practice page tour
 /////////////////////////////////////////////////////////
 const desktopPracticeTourSteps = [
   {
@@ -1644,14 +1645,15 @@ const desktopPracticeTourSteps = [
     skipBeacon: true,
     placement: 'left' },
   {
-    target: '.dictionary-help',
+    target: '.combined-chatbot',
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
         <FormattedHTMLMessage id="practice-tour-translations-message" />
       </div>
     ),
-    skipBeacon: true },
+    skipBeacon: true,
+    placement: 'left'},
   {
     target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,

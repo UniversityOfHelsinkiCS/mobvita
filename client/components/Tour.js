@@ -152,7 +152,11 @@ const Tour = () => {
     } else if (action === ACTIONS.START && homeTour) {
       dispatch(sidebarSetOpen(false))
     } else if (type === EVENTS.TARGET_NOT_FOUND) {
-      if (tourState.steps === libraryTourSteps || tourState.steps === lessonsTourSteps) {
+      if (
+        tourState.steps === libraryTourSteps ||
+        tourState.steps === lessonsTourSteps ||
+        tourState.steps === practiceTourSteps
+      ) {
         return
       }
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -326,8 +330,7 @@ const Tour = () => {
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            const currentPath = location.pathname
-            const newPath = currentPath.substring(0, currentPath.length - 7)
+            const newPath = location.pathname.replace(/\/(preview|review)\/?$/, '/')
             navigate(`${newPath}practice/`)
             setTimeout(() => {
               window.dispatchEvent(new Event('resize'))
@@ -517,6 +520,7 @@ const Tour = () => {
         buttons: ['close', 'primary'],
         showProgress: true,
         skipScroll: true,
+        zIndex: 10000,
       }}
       styles={{
         tooltipContainer: {
@@ -525,7 +529,6 @@ const Tour = () => {
           arrowColor: 'rgb(50, 170, 248)',
           primaryColor: 'rgb(50, 170, 248)',
           backgroundColor: 'white',
-          zIndex: 1000,
           textColor: '#004a14' },
         buttonNext: {
           backgroundColor: 'rgb(50, 170, 248)',
