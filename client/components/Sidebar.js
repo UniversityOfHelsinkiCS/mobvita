@@ -86,7 +86,10 @@ export default function Sidebar() {
       dispatch(startLessonsTour())
     } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (location.pathname.includes('preview') && hiddenFeatures) {
+    } else if (
+      (location.pathname.includes('preview') || location.pathname.includes('review')) &&
+      hiddenFeatures
+    ) {
       dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())
     } else if (location.pathname.includes('/practice') && hiddenFeatures) {

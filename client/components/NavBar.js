@@ -129,7 +129,7 @@ export default function NavBar() {
       dispatch(startLessonsTour())
     } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (location.pathname.includes('preview')) {
+    } else if (location.pathname.includes('preview') || location.pathname.includes('review')) {
       dispatch(startPracticeTour())
     } else if (location.pathname.includes('/practice')) {
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })

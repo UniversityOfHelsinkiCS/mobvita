@@ -60,10 +60,15 @@ const Tour = () => {
   const safeTourState = {
     ...tourState,
     steps: (tourState.steps || [])
-      .filter(step => {
+      .filter((step, idx) => {
         if (tourState.steps === practiceTourSteps && teacherView) {
           // Teacher flow reuses the start-practice step as edit/delete, so drop duplicate step.
           if (step.target === '.practice-tour-edit-delete-story') {
+            return false
+          }
+          // Teacher flow ends after the edit/delete step; keep only welcome..edit/delete and final.
+          const isFinal = idx === (tourState.steps?.length || 0) - 1
+          if (idx > 3 && !isFinal) {
             return false
           }
         }
@@ -198,24 +203,36 @@ const Tour = () => {
         }
       }
       if (tourState.steps === lessonsTourSteps && index === 0 && action !== ACTIONS.PREV) {
-        const setupButton = document.querySelector('.lesson-tour-setup-button')
+        // For students viewing a group library, the LessonStartMenu (and its setup button)
+        // are not rendered. Switch to the private library first so the setup view mounts.
+        if (!teacherView && user.last_selected_library !== 'private') {
+          dispatch(updateLibrarySelect('private'))
+          dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+          dispatch(clearLessonInstanceState())
+          dispatch(getLessonInstance(null))
+        }
 
-        if (setupButton instanceof HTMLElement) {
-          setupButton.click()
+        setTimeout(() => {
+          const setupButton = document.querySelector('.lesson-tour-setup-button')
+
+          if (setupButton instanceof HTMLElement) {
+            setupButton.click()
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + 1))
+              window.dispatchEvent(new Event('resize'))
+            }, 300)
+            return
+          }
+
+          // Teacher view (or fallback): force lesson step 0 so .lesson-story-topic mounts.
+          dispatch(setLessonStep(0))
           setTimeout(() => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
-          }, 1000)
-          return
-        }
-        // Teacher view: LessonStartMenu (and its setup button) are not rendered.
-        // Force lesson step 0 so .lesson-story-topic mounts, then wait for render.
-        dispatch(setLessonStep(0))
-        setTimeout(() => {
-          dispatch(handleNextTourStep(index + 1))
-          window.dispatchEvent(new Event('resize'))
+          }, 300)
         }, 300)
-        return      }
+        return
+      }
 
       if (tourState.steps === lessonsTourSteps && action !== ACTIONS.PREV) {
         // Ensure lesson UI for next tour step is mounted before Joyride advances.
@@ -345,11 +362,15 @@ const Tour = () => {
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            const newPath = location.pathname.replace(/\/(preview|review)\/?$/, '/')
-            navigate(`${newPath}practice/`)
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'))
-            }, 4000)
+            if (!teacherView) {
+              const newPath = location.pathname.replace(/\/(preview|review)\/?$/, '/')
+              navigate(`${newPath}practice/`)
+              setTimeout(() => {
+                window.dispatchEvent(new Event('resize'))
+              }, 4000)
+            }
+            // Teacher flow: tour ends after edit/delete; the default advance below will land
+            // on the final "Tour end" step (displayed as 5/5 in the trimmed teacher tour).
           }
         }
         // lessons tour steps
