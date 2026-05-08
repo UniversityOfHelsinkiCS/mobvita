@@ -1,13 +1,12 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FormattedMessage, useIntl } from 'react-intl';
-import { images, hiddenFeatures, supportedLearningLanguages } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl';
+import { images, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
-import { openEncouragement } from 'Utilities/redux/encouragementsReducer'
-import { Popup } from 'semantic-ui-react'
+import { Tooltip } from '@mui/material'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
@@ -19,7 +18,6 @@ import {
   ddlangIntroductoryViewed, 
   ddlangBackgroundQuestionsAnswered 
 } from 'Utilities/redux/userReducer'
-import Recommender from 'Components/NewEncouragements/Recommender'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
 import EloChart from './EloChart'
@@ -34,7 +32,6 @@ const HomeviewButton = ({imgSrc, altText,
                          dataCy, wide, beta_feature, content=null
                         }) =>
       {
-        const intl = useIntl()
         const button = (
           <button
             className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
@@ -56,17 +53,14 @@ const HomeviewButton = ({imgSrc, altText,
             </div>
           </button>
         )
+        if (!content) {
+          return button
+        }
+
         return (
-          <>
-            {content &&  <Popup
-                           position="top center"
-                           trigger={button}
-                           content={<FormattedHTMLMessage id={content} />}
-                           // was: content={intl.formatMessage({id: content})}
-                           basic
-                         /> || button
-            }
-          </>
+          <Tooltip placement="top" title={<FormattedHTMLMessage id={content} />} arrow>
+            <span>{button}</span>
+          </Tooltip>
         )}
 
 
@@ -75,19 +69,18 @@ const HomeviewButtons = ({
   setAddStoryModalOpen,
   aTestIsEnabled,
   aReadingComprehensionEnabled }) => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
 
-  const { hasTests, hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
-  const user = useSelector(({ user }) => user.data)
-  const {lastActivity} = useSelector(({activity}) => activity)
-  const {data: stories} = useSelector(({stories}) => stories)
-  const userData = useSelector(state => state.user.data.user)
-  const lessons = useSelector(({ metadata }) => metadata.lessons)
-  const learningLanguage = userData ? userData.last_used_language : null
+  const hasTests = useSelector(state => state.metadata.hasTests)
+  const lessons = useSelector(state => state.metadata.lessons)
+  const teacherAccess = useSelector(state => state.user.data.user?.is_teacher)
+  const isTeacherView = useSelector(state => state.user.data.teacherView)
+  const lastActivity = useSelector(state => state.activity.lastActivity)
+  const stories = useSelector(state => state.stories.data)
+  const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
+  const hasTeacherRole = Boolean(teacherAccess)
 
-  const homeViewButtonsGridClassName = user?.user.is_teacher && user?.teacherView ? "teacher" : "student"
+  const homeViewButtonsGridClassName = hasTeacherRole && isTeacherView ? "teacher" : "student"
   
   const assembleActivityLink = (lastActivity) => {
     switch (lastActivity && lastActivity.type) {
@@ -117,7 +110,7 @@ const HomeviewButtons = ({
         return `/crossword/${lastActivity.story_id}`
 
       case 'reading-test':
-        if (learningLanguage == lastActivity.language && aReadingComprehensionEnabled) return `/reading-test`
+        if (learningLanguage === lastActivity.language && aReadingComprehensionEnabled) return `/reading-test`
         else return null
       default:
         return null
@@ -126,7 +119,7 @@ const HomeviewButtons = ({
   const activityLink = assembleActivityLink(lastActivity)
   return (
     <div className="" style={{width: '100%'}}>
-      {(user?.user.is_teacher && user?.teacherView) && (
+      {(hasTeacherRole && isTeacherView) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           <div className="add-new-stories-btn-cont tour-add-new-stories">
             <HomeviewButton
@@ -171,7 +164,7 @@ const HomeviewButtons = ({
         </div>
       )}
 
-      {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+      {(!hasTeacherRole || !isTeacherView) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           {activityLink && (
             <div className="continue-activity-btn-cont">
@@ -238,19 +231,7 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          {/* {user.user.email !== 'anonymous_email' && (
-            <div>
-              <HomeviewButton
-                imgSrc={images.lightbulbIcon}
-                altText="light bulb"
-                translationKey="Recommendations"
-                handleClick={() => dispatch(openEncouragement())}
-              />
-            </div>
-          )} */}
-
-
-          {learningLanguage != undefined && learningLanguage == "English" && aReadingComprehensionEnabled && (
+          {learningLanguage != undefined && learningLanguage === "English" && aReadingComprehensionEnabled && (
             <div  className="reading-test-btn-cont">
               <HomeviewButton
                 imgSrc={images.readingBook}
@@ -272,34 +253,40 @@ const HomeView = () => {
   const bigScreen = width >= 700
   const showFooter = width > 800
   const dispatch = useDispatch()
-  const { groups } = useSelector(({ groups }) => groups)
-  const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
-  const aReadingComprehensionEnabled = groups.some(e => e.reading_comprehension)
-  const navigate = useNavigate()
   const location = useLocation()
 
-  const userData = useSelector(state => state.user.data.user)
-  const user = useSelector(({ user }) => user.data)
-  const { username } = userData
-  const { enable_recmd } = useSelector(({ user }) => user.data.user)
-  const { selected } = useSelector(({ user }) => user)
-  const { open } = useSelector(({ encouragement }) => encouragement)
-  const storiesCovered = userData.stories_covered
-  const learningLanguage = userData ? userData.last_used_language : null
-  const incomplete = useSelector(({ incomplete }) => incomplete.data)
-  const loading = useSelector(({ incomplete }) => incomplete.pending)
-  const { exercise_setting_template: exerciseSettingTemplate } = useSelector(
-    ({ user }) => user.data.user
+  const groups = useSelector(state => state.groups.groups)
+  const aTestIsEnabled = groups.some(e => e.test_deadline - Date.now() > 0)
+  const aReadingComprehensionEnabled = groups.some(e => e.reading_comprehension)
+
+  const selected = useSelector(state => state.user.selected)
+  const open = useSelector(state => state.encouragement.open)
+  const teacherView = useSelector(state => state.user.data.teacherView)
+  const teacherAccess = useSelector(state => state.user.data.user?.is_teacher)
+  const userEmail = useSelector(state => state.user.data.user?.email)
+  const isNewUser = useSelector(state => state.user.data.user?.is_new_user)
+  const userGrade = useSelector(state => state.user.data.user?.grade)
+  const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
+  const hasSeenHomeTour = useSelector(state => state.user.data.user?.has_seen_home_tour)
+  const hasSeenDDLangIntroductory = useSelector(
+    state => state.user.data.user?.has_seen_ddlang_introductory
   )
+  const ddlangDeveloperScope = useSelector(state => state.user.data.user?.developer_of_language)
+  const inAnyDDLangGroups = useSelector(state => state.user.data.user?.in_any_ddlang_groups)
+  const ddlangYears = useSelector(state => state.user.data.user?.ddlang_years)
+  const ddlangObligatoryCourses = useSelector(state => state.user.data.user?.ddlang_obligatoryCourses)
+  const ddlangOptionalCourses = useSelector(state => state.user.data.user?.ddlang_optionalCourses)
+  const ddlangGrade = useSelector(state => state.user.data.user?.ddlang_grade)
+
   const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const userIsAnonymous = userData?.email === 'anonymous_email'
+  const userIsAnonymous = userEmail === 'anonymous_email'
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = location.pathname.endsWith('/welcome')
   const homeView = location.pathname.endsWith('/home')
   const showDAModal = open && homeView && !userIsAnonymous
-  const showWelcomeModal = open && welcomeView && !userIsAnonymous && !userData.is_new_user
+  const showWelcomeModal = open && welcomeView && !userIsAnonymous && !isNewUser
 
   const [showDDLangIntroductory, setShowDDLangIntroductory] = useState(false)
   const [showDDLangBackGroundQuestions, setShowDDLangBackGroundQuestions] = useState(false)
@@ -327,24 +314,24 @@ const HomeView = () => {
   }, [learningLanguage])
 
   useEffect(() => {
-    if (user.teacherView) {
+    if (teacherView) {
       dispatch({ type: 'SET_TEACHER_HOME_TOUR_STEPS' })
     } else {
       dispatch({ type: 'SET_STUDENT_HOME_TOUR_STEPS' })
     }
-    if (!user.user.has_seen_home_tour && !userData.is_new_user && !showDDLangIntroductory) {
+    if (!hasSeenHomeTour && !isNewUser && !showDDLangIntroductory) {
       dispatch(homeTourViewed())
       dispatch(startTour())
     }
-  }, [userData.is_new_user, showDDLangIntroductory])
+  }, [isNewUser, showDDLangIntroductory])
 
   useEffect(() => {
     if (
-        !user.user.has_seen_ddlang_introductory && 
-        user.user.last_used_language == "English" &&
+        !hasSeenDDLangIntroductory && 
+        learningLanguage === "English" &&
         (
-          user.user.developer_of_language == "all" ||
-          user.user.in_any_ddlang_groups == true
+          ddlangDeveloperScope === "all" ||
+          inAnyDDLangGroups == true
         )
       ) {
       dispatch(ddlangIntroductoryViewed())
@@ -356,15 +343,15 @@ const HomeView = () => {
     if (
       // !user.user.has_answer_ddlang_background_questions && 
       (
-        !user.user.ddlang_years || 
-        !user.user.ddlang_obligatoryCourses || 
-        !user.user.ddlang_optionalCourses || 
-        !user.user.ddlang_grade
+        !ddlangYears || 
+        !ddlangObligatoryCourses || 
+        !ddlangOptionalCourses || 
+        !ddlangGrade
       ) &&
-      user.user.last_used_language == "English" &&
+      learningLanguage === "English" &&
       (
-        user.user.developer_of_language == "all" ||
-        user.user.in_any_ddlang_groups == true
+        ddlangDeveloperScope === "all" ||
+        inAnyDDLangGroups == true
       )
     ) {
       dispatch(ddlangBackgroundQuestionsAnswered())
@@ -372,7 +359,7 @@ const HomeView = () => {
     }
   }, [])
 
-  const homeviewButtonsContainerClassName = user?.user.is_teacher && user?.teacherView ? "pn-nm" : "flex pb-nm"
+  const homeviewButtonsContainerClassName = teacherAccess && teacherView ? "pn-nm" : "flex pb-nm"
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
@@ -389,14 +376,14 @@ const HomeView = () => {
       {/* (!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
         <Recommender />
       ) */}
-      {(!userData.is_teacher || !userData.is_teacher[learningLanguage]) &&
-        !userData.grade &&
+      {(!teacherAccess || !teacherAccess[learningLanguage]) &&
+        !userGrade &&
         !userIsAnonymous &&
-        userData.is_new_user && (
+        isNewUser && (
           <SetCEFRReminder
             open={openReminder}
             setOpen={setOpenReminder}
-            newUser={userData.is_new_user}
+            newUser={isNewUser}
           />
       )}
       <div className="grow flex-col">
@@ -409,7 +396,7 @@ const HomeView = () => {
                 aTestIsEnabled={aTestIsEnabled}
                 aReadingComprehensionEnabled={aReadingComprehensionEnabled}
               />
-              {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+              {(!teacherAccess || (teacherAccess && !teacherView)) && (
                 <div
                   className="flex-col"
                   style={{
@@ -430,7 +417,7 @@ const HomeView = () => {
               aTestIsEnabled={aTestIsEnabled}
               aReadingComprehensionEnabled={aReadingComprehensionEnabled}
             />
-            {(!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
+            {(!teacherAccess || (teacherAccess && !teacherView)) && (
               <>
                 <EloChart width="100%" />
                 <LeaderboardSummary />
