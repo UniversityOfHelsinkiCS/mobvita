@@ -328,7 +328,7 @@
     "sort-by-concept-freq": "Сортувати за частотою",
     "sort-by-concept-cefr": "Сортувати за складністю",
     "LABEL-sort-by": "Сортувати за",
-    "sort-by-concept-freq-short": "частота",
+    "sort-by-concept-freq-short": "частоте",
     "sort-by-concept-cefr-short": "труднощі",
     "edit-story": "Редагувати історію",
     "group-review-dropdown-placeholder": "Вибрати студента для перевірки успішності",
@@ -911,12 +911,17 @@
     "show-where-answer-is": "Show answer in text",
     "confirm-delete-question": "Delete this question?",
     "lesson-tour-custom-grammar-button-topic": "Custom Button",
-    "lesson-tour-custom-grammar-button-text": "...",
+    "lesson-tour-custom-grammar-button-text": "Use this button to customize your story",
     "Level title": "Levels",
     "level-title-message": "These are the levels",
     "story-detail-modal-disabled-delete-btn": "Deletion is available after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
     "story-not-yet-processed-yellow-box": "Цю історію можна використовувати, але вона ще обробляється... (буде завершено незабаром)",
     "practice-tour-edit-delete-title": "Edit and delete story",
-    "practice-tour-edit-delete-message": "Here you can edit or delete the story. <br/> Next we will go to the Practice Page!"
+    "practice-tour-edit-delete-message": "Here you can edit or delete the story. <br/> Next we will go to the Practice Page!",
+    "Lesson setup": "Тема історії",
+    "sort-by-concept-name": "Сортувати за складністю",
+    "sort-by-concept-name-short": "Name",
+    "click-to-action-menu": "{icon} Click the menu for more options",
+    "display-word-nest": "Display word nest"
 }
