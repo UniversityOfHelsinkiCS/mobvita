@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Joyride as JoyRide, ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
+import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import {
   getLessonInstance,
   setLessonInstance,
@@ -60,10 +60,15 @@ const Tour = () => {
   const safeTourState = {
     ...tourState,
     steps: (tourState.steps || [])
-      .filter(step => {
+      .filter((step, idx) => {
         if (tourState.steps === practiceTourSteps && teacherView) {
           // Teacher flow reuses the start-practice step as edit/delete, so drop duplicate step.
           if (step.target === '.practice-tour-edit-delete-story') {
+            return false
+          }
+          // Teacher flow ends after the edit/delete step; keep only welcome..edit/delete and final.
+          const isFinal = idx === (tourState.steps?.length || 0) - 1
+          if (idx > 3 && !isFinal) {
             return false
           }
         }
@@ -141,7 +146,7 @@ const Tour = () => {
         target: getSafeTarget(step.target) }
     }) }
 
-  const callback = data => {
+  const callback = (data, _controls) => {
     const { action, index, type, status } = data
     if (
       action === ACTIONS.CLOSE ||
@@ -152,12 +157,16 @@ const Tour = () => {
     } else if (action === ACTIONS.START && homeTour) {
       dispatch(sidebarSetOpen(false))
     } else if (type === EVENTS.TARGET_NOT_FOUND) {
-      if (tourState.steps === libraryTourSteps || tourState.steps === lessonsTourSteps) {
+      if (
+        tourState.steps === libraryTourSteps ||
+        tourState.steps === lessonsTourSteps ||
+        tourState.steps === practiceTourSteps
+      ) {
         return
       }
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
       return
-    } else if (type === EVENTS.STEP_AFTER) {
+    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.STEP_AFTER_HOOK) {
       if (homeTour && !lesson_topics?.length && index === 3) {
         dispatch(handleNextTourStep(index + 2))
         return
@@ -194,16 +203,35 @@ const Tour = () => {
         }
       }
       if (tourState.steps === lessonsTourSteps && index === 0 && action !== ACTIONS.PREV) {
-        const setupButton = document.querySelector('.lesson-tour-setup-button')
+        // For students viewing a group library, the LessonStartMenu (and its setup button)
+        // are not rendered. Switch to the private library first so the setup view mounts.
+        if (!teacherView && user.last_selected_library !== 'private') {
+          dispatch(updateLibrarySelect('private'))
+          dispatch(saveSelfIntermediate({ last_selected_library: 'private' }))
+          dispatch(clearLessonInstanceState())
+          dispatch(getLessonInstance(null))
+        }
 
-        if (setupButton instanceof HTMLElement) {
-          setupButton.click()
+        setTimeout(() => {
+          const setupButton = document.querySelector('.lesson-tour-setup-button')
+
+          if (setupButton instanceof HTMLElement) {
+            setupButton.click()
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + 1))
+              window.dispatchEvent(new Event('resize'))
+            }, 300)
+            return
+          }
+
+          // Teacher view (or fallback): force lesson step 0 so .lesson-story-topic mounts.
+          dispatch(setLessonStep(0))
           setTimeout(() => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
           }, 300)
-          return
-        }
+        }, 300)
+        return
       }
 
       if (tourState.steps === lessonsTourSteps && action !== ACTIONS.PREV) {
@@ -279,6 +307,14 @@ const Tour = () => {
         if (homeTour) {
           if (index === 0) {
             dispatch(sidebarSetOpen(true))
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              window.dispatchEvent(new Event('resize'))
+              setTimeout(() => window.dispatchEvent(new Event('resize')), 50)
+            }, 400)
+            return
+          } else if (index === 1) {
+            dispatch(sidebarSetOpen(false))
           } else if (index === 5 && teacherView) {
             dispatch({ type: 'TOGGLE_CHATBOT' })
           } else if (index === 6 && teacherView) {
@@ -326,12 +362,15 @@ const Tour = () => {
           }
           if (index === 3) {
             dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
-            const currentPath = location.pathname
-            const newPath = currentPath.substring(0, currentPath.length - 7)
-            navigate(`${newPath}practice/`)
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'))
-            }, 4000)
+            if (!teacherView) {
+              const newPath = location.pathname.replace(/\/(preview|review)\/?$/, '/')
+              navigate(`${newPath}practice/`)
+              setTimeout(() => {
+                window.dispatchEvent(new Event('resize'))
+              }, 4000)
+            }
+            // Teacher flow: tour ends after edit/delete; the default advance below will land
+            // on the final "Tour end" step (displayed as 5/5 in the trimmed teacher tour).
           }
         }
         // lessons tour steps
@@ -512,10 +551,13 @@ const Tour = () => {
   return (
     <JoyRide
       {...safeTourState}
-      callback={callback}
-      disableScrolling={true}
-      hideBackButton={true}
-      showProgress={true}
+      onEvent={callback}
+      options={{
+        buttons: ['close', 'primary'],
+        showProgress: true,
+        skipScroll: true,
+        zIndex: 10000,
+      }}
       styles={{
         tooltipContainer: {
           textAlign: 'left' },
@@ -523,7 +565,6 @@ const Tour = () => {
           arrowColor: 'rgb(50, 170, 248)',
           primaryColor: 'rgb(50, 170, 248)',
           backgroundColor: 'white',
-          zIndex: 1000,
           textColor: '#004a14' },
         buttonNext: {
           backgroundColor: 'rgb(50, 170, 248)',
