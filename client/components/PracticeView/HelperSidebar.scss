@@ -40,6 +40,7 @@
   /* Very small screens */
   @media (max-width: 450px) {
     .sidebar-toggle {
+      outline: none;
       left: -6px;
       border: none;
       background: none;
@@ -152,7 +153,7 @@
 @media (max-width: 400px) {
   .helper-sidebar {
     width: 100%;
-    max-width: 100%;
+    max-width: calc(100% - 20px);
     z-index: 1000;    
   }
 }

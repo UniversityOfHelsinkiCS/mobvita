@@ -12,8 +12,8 @@ export const setHelperSidebarTab = tab => ({
   tab,
 })
 
-const initialState = {
-  isOpen: true,
+const initialState = {  
+  isOpen: (typeof window !== 'undefined') && window.innerWidth >= 450 ? true : false,
   activeTab: undefined,
 }
 

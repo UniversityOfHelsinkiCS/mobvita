@@ -92,11 +92,27 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
   const { activeTab: helperActiveTab } = helperSidebarState || {}
 
+  const helperSidebarInitRef = useRef(false)
   useEffect(() => {
     const hasExerciseWord = currentWord?.ID && Object.keys(currentWord).length > 0
-    const hasTranslationData = translationState?.data?.length > 0 || translationState?.surfaceWord?.trim()    
-    dispatch(setHelperSidebarOpen(hasExerciseWord || hasTranslationData || true))
+    const hasTranslationData = (translationState?.data && translationState.data.length > 0) || (translationState?.surfaceWord && translationState.surfaceWord.trim())
+
+    if (!helperSidebarInitRef.current) {
+      const defaultOpen = Boolean(
+        hasExerciseWord ||
+        hasTranslationData ||
+        (typeof window !== 'undefined' && window.innerWidth >= 450)
+      )
+      dispatch(setHelperSidebarOpen(defaultOpen))
+      helperSidebarInitRef.current = true
+    } else {
+      if (hasExerciseWord || hasTranslationData) dispatch(setHelperSidebarOpen(true))
+    }
   }, [dispatch, currentWord, translationState.data, translationState.surfaceWord])
+
+    useEffect(() => {    
+    dispatch(setHelperSidebarTab(null))
+  }, [dispatch, snippets.focused])
 
   useEffect(() => {
     if (focusedWord && focusedWord.lemmas && learningLanguage) {      

@@ -78,6 +78,7 @@ const ChatActionMenu = ({
         storyId: currentWord.story_id,
         wordId: currentWord.ID,
         inflectionRef: currentWord.inflection_ref,
+        prefLemma: currentWord.pref_lemma,
       }))
     }
     setOpen(false)
@@ -136,7 +137,6 @@ const ChatActionMenu = ({
     setOpen(!open)
   }
 
-  // Close the menu when clicking outside
   useEffect(() => {
     if (!open) return
     const handleOutside = (e) => {
