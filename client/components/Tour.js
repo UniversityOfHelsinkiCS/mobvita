@@ -205,10 +205,17 @@ const Tour = () => {
           setTimeout(() => {
             dispatch(handleNextTourStep(index + 1))
             window.dispatchEvent(new Event('resize'))
-          }, 300)
+          }, 1000)
           return
         }
-      }
+        // Teacher view: LessonStartMenu (and its setup button) are not rendered.
+        // Force lesson step 0 so .lesson-story-topic mounts, then wait for render.
+        dispatch(setLessonStep(0))
+        setTimeout(() => {
+          dispatch(handleNextTourStep(index + 1))
+          window.dispatchEvent(new Event('resize'))
+        }, 300)
+        return      }
 
       if (tourState.steps === lessonsTourSteps && action !== ACTIONS.PREV) {
         // Ensure lesson UI for next tour step is mounted before Joyride advances.
@@ -283,6 +290,14 @@ const Tour = () => {
         if (homeTour) {
           if (index === 0) {
             dispatch(sidebarSetOpen(true))
+            setTimeout(() => {
+              dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+              window.dispatchEvent(new Event('resize'))
+              setTimeout(() => window.dispatchEvent(new Event('resize')), 50)
+            }, 400)
+            return
+          } else if (index === 1) {
+            dispatch(sidebarSetOpen(false))
           } else if (index === 5 && teacherView) {
             dispatch({ type: 'TOGGLE_CHATBOT' })
           } else if (index === 6 && teacherView) {

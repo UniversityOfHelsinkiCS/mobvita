@@ -264,7 +264,7 @@ export default function NavBar() {
         <Tour />
         <MenuIcon
           onClick={() => dispatch(sidebarSetOpen(!open))}
-          className="sidebar-hamburger tour-sidebar"
+          className="sidebar-hamburger"
           style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
           data-cy="hamburger"
         />

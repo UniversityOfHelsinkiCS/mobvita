@@ -1088,7 +1088,9 @@ const homeTourSteps = {
       </div>
     ),
     textAlign: 'center',
-    placement: 'bottom',
+    placement: 'right-start',
+    disableScrolling: true,
+    floatingOptions: { flipOptions: false },
     skipBeacon: true,
     styles: {
       options: {
