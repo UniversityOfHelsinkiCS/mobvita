@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Joyride as JoyRide, ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { handleNextTourStep, startTour, stopTour } from 'Utilities/redux/tourReducer'
+import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import {
   getLessonInstance,
   setLessonInstance,
@@ -141,7 +141,7 @@ const Tour = () => {
         target: getSafeTarget(step.target) }
     }) }
 
-  const callback = data => {
+  const callback = (data, _controls) => {
     const { action, index, type, status } = data
     if (
       action === ACTIONS.CLOSE ||
@@ -157,7 +157,7 @@ const Tour = () => {
       }
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
       return
-    } else if (type === EVENTS.STEP_AFTER) {
+    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.STEP_AFTER_HOOK) {
       if (homeTour && !lesson_topics?.length && index === 3) {
         dispatch(handleNextTourStep(index + 2))
         return
@@ -512,10 +512,12 @@ const Tour = () => {
   return (
     <JoyRide
       {...safeTourState}
-      callback={callback}
-      disableScrolling={true}
-      hideBackButton={true}
-      showProgress={true}
+      onEvent={callback}
+      options={{
+        buttons: ['close', 'primary'],
+        showProgress: true,
+        skipScroll: true,
+      }}
       styles={{
         tooltipContainer: {
           textAlign: 'left' },

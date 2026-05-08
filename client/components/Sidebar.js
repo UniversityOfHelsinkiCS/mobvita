@@ -175,7 +175,7 @@ export default function Sidebar() {
         >
           <Box sx={{ padding: '6px 14px 0 8px' }}>
             <MenuIcon
-              className="sidebar-hamburger tour-sidebar"
+              className="sidebar-hamburger"
               onClick={closeSidebar}
               style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
               data-cy="sidebar-close-hamburger"
