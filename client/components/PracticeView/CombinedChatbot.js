@@ -288,13 +288,6 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     const snippet_id = source.snippet_id ?? null;
     const choices = source.choices || [];
     const wordHints = source.hints || [];
-
-    console.log("chatbot request from translation", 
-      session_id, storyid, snippet_id, sentence_id, wordId, 
-      currentMessage.trim(), 
-      snippets.focused?.practice_snippet || [], 
-      source
-    )
     
     if ((!wordId || !snippet_id || !sentence_id) && currentMessage.trim() === '') {
       return
@@ -342,12 +335,6 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   const prevId = useRef(currentWord?.ID);
   const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '');
-
-  useEffect(() => {
-    if (typeof helperActiveTab !== 'undefined') {
-      console.log('HelperSidebar activeTab changed:', helperActiveTab)
-    }
-  }, [helperActiveTab])
 
   useEffect(() => {
     const currentId = currentWord?.ID
