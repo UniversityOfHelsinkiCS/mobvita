@@ -105,6 +105,7 @@ describe('Mobvita', function () {
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           cy.reload()
+          closeSidebarIfOpen()
         })
     })
 
@@ -114,12 +115,14 @@ describe('Mobvita', function () {
     // })
 
     it('can start random practice', function () {
+      closeSidebarIfOpen()
       cy.get('[data-cy=practice-now]').click()
       cy.get('[data-cy=All-Stories]', { timeout: 20000 }).click()
       // cy.get('[data-cy=practice-view]')
     })
 
     it("can start filtered practice", function () {
+      closeSidebarIfOpen()
       cy.get('[data-cy=practice-now]').click()
 
       cy.get('[data-cy=practice-categories]').children()
@@ -218,6 +221,17 @@ function randomCredentials() {
   return { email, username, password, interface_language }
 }
 
+function closeSidebarIfOpen() {
+  cy.get('[data-cy=sidebar-panel]').then($panel => {
+    if ($panel.attr('aria-hidden') === 'false') {
+      cy.get('[data-cy=sidebar-panel] [data-cy=sidebar-close-hamburger]').click({ force: true })
+    }
+  })
+
+  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).should('have.attr', 'aria-hidden', 'true')
+  cy.get('[data-cy=sidebar-overlay]', { timeout: 10000 }).should('not.exist')
+}
+
 function createRandomUser() {
   const user = randomCredentials()
   cy.request('POST', 'localhost:8000/api/register/test', { ...user })
@@ -230,4 +244,3 @@ function createRandomUser() {
   users.push(user)
   return user
 }
-

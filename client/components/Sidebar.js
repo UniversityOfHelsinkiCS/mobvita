@@ -129,6 +129,7 @@ export default function Sidebar() {
     <>
       {open && (
         <Box
+          data-cy="sidebar-overlay"
           onClick={closeSidebar}
           aria-hidden
           sx={{
@@ -140,6 +141,7 @@ export default function Sidebar() {
         />
       )}
       <Box
+        data-cy="sidebar-panel"
         className="sidebar-panel"
         component="aside"
         role="complementary"
@@ -176,7 +178,7 @@ export default function Sidebar() {
               className="sidebar-hamburger tour-sidebar"
               onClick={closeSidebar}
               style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
-              data-cy="hamburger"
+              data-cy="sidebar-close-hamburger"
             />
           </Box>
           <Box
