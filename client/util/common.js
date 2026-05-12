@@ -636,7 +636,7 @@ export const getBackgroundColor = () => {
   return mainView ? 'blue-bg' : 'grey-bg'
 }
 
-export const getTextWidth = (text, font = '400 1.15rem Rubik') => {
+export const getTextWidth = (text, font = '400 18px Rubik') => {
   const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = canvas.getContext('2d')
 

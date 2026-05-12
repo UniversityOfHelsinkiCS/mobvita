@@ -19,21 +19,29 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
     setShowRemoveTooltip(true)
   }
 
+    const getLongestChoice = () => {
+    if (!choices || !choices.length) return ''
+    return choices.reduce((longest, c) => (c && c.length > (longest.length || 0) ? c : longest), '')
+  }
+
   const getInputWidth = () => {
-    const width = getTextWidth(choices[0])
+    const longest = getLongestChoice()
+    const width = getTextWidth(longest, '400 18px Rubik') || 0
     if (width >= 150) {
       return width + 20
     }
 
-    return width
+    return width + 20 || 80
   }
+
+  const longestChoice = getLongestChoice()
 
   return (
     <Dropdown
       key={word.ID}
       options={options}
-      placeholder={choices[0]}
-      value={choices[0]}
+      placeholder={longestChoice || (choices && choices[0])}
+      value={choices && choices[0]}
       onClick={handle}
       selection
       floating

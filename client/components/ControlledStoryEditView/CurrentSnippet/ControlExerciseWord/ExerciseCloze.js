@@ -51,7 +51,7 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
         placeholder={`${word.surface}`}
         className={`exercise control-mode ${bgColorClassName}`}
         style={{
-          width: word.surface > word.base ? getTextWidth(word.surface) : getTextWidth(word.base),
+          width: word.surface > word.base ? getTextWidth(word.surface) + 10 : getTextWidth(word.base) + 10,
           marginRight: '4px',
           height: '1.5em',
           lineHeight: 'normal',

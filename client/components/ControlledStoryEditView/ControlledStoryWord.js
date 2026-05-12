@@ -253,12 +253,12 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     setShowEditorTooltip(false)
   }
 
-  const handleActionClick = () => {
+  const handleActionClick = () => {    
     handleClick()
-    setShowEditorTooltip(true)
+    setShowEditorTooltip(true)    
   }
 
-  const handleTooltipClick = () => {
+  const handleTooltipClick = () => {    
     if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
     if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
   }
@@ -326,6 +326,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
         tooltip={removalTooltip}
         trigger="none"
         tooltipShown={showRemoveTooltip}
+        isControlledStoryWord={true}
       >
         <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
           <ControlExerciseWord
@@ -358,7 +359,9 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
             tooltipShown={showEditorTooltip}
             trigger="none"
             tooltip={editorTooltip}
+            isControlledStoryWord={true}
           >
+
             <span
               className={`${wordClass}${
                 wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word'  || ''
@@ -393,14 +396,16 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
           tooltipShown={showEditorTooltip}
           trigger="none"
           tooltip={editorTooltip}
+          isControlledStoryWord={true}
         >
+
           <span
             role="button"
             onClick={handleActionClick}
             onKeyDown={handleActionClick}
             tabIndex={-1}
           >
-            <PlainWord word={word} annotatingAllowed snippet={snippet}/>
+            <PlainWord word={word} annotatingAllowed snippet={snippet} />
           </span>
         </Tooltip>
       </span>

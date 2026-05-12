@@ -31,6 +31,7 @@ import { getTranslationAction, setWords } from 'Utilities/redux/translationReduc
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 import { Button } from 'react-bootstrap'
+import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [value, setValue] = useState('')
@@ -235,6 +236,15 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
   return (
+    <Tooltip
+      placement="top"
+      trigger="none"
+      onVisibilityChange={setShow}
+      tooltipShown={show}
+      closeOnOutOfBoundaries
+      tooltip={tooltip}
+      additionalClassnames="clickable"
+    >
     <input
       onKeyDown={handleKeyDown}
       ref={target}
@@ -270,7 +280,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         unicodeBidi: direction,
         border: isCurrentWord ? '2px solid green' : '1px solid rgb(211, 211, 211)',
       }}
-    />      
+    />
+    {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
+    </Tooltip>      
   )
 }
 
