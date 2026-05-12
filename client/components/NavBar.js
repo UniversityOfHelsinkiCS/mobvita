@@ -129,7 +129,7 @@ export default function NavBar() {
       dispatch(startLessonsTour())
     } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (location.pathname.includes('preview')) {
+    } else if (location.pathname.includes('preview') || location.pathname.includes('review')) {
       dispatch(startPracticeTour())
     } else if (location.pathname.includes('/practice')) {
       dispatch({ type: 'PRACTICE_TOUR_ALTERNATIVE' })
@@ -264,7 +264,7 @@ export default function NavBar() {
         <Tour />
         <MenuIcon
           onClick={() => dispatch(sidebarSetOpen(!open))}
-          className="sidebar-hamburger tour-sidebar"
+          className="sidebar-hamburger"
           style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
           data-cy="hamburger"
         />

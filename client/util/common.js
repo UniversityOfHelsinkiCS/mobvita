@@ -1047,7 +1047,7 @@ export const getHelpLink = (locale, isTeacher, learningLanguage) => {
 //-       </div>
 //-     ),
 //-     placement: 'top',
-//-     disableBeacon: true,
+//-     skipBeacon: true,
 //-     styles: {
 //-       tooltipContainer: {
 //-         textAlign: 'left',
@@ -1078,7 +1078,7 @@ const homeTourSteps = {
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   sideBar: {
     target: '.tour-sidebar',
     title: <FormattedMessage id="sidebar" />,
@@ -1088,8 +1088,10 @@ const homeTourSteps = {
       </div>
     ),
     textAlign: 'center',
-    placement: 'bottom',
-    disableBeacon: true,
+    placement: 'right-start',
+    disableScrolling: true,
+    floatingOptions: { flipOptions: false },
+    skipBeacon: true,
     styles: {
       options: {
         zIndex: 10000 } } },
@@ -1103,7 +1105,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       options: {
         zIndex: 10000 } } },
@@ -1117,7 +1119,7 @@ const homeTourSteps = {
       </div>
     ),
     placement: 'top',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       tooltipContainer: {
         textAlign: 'left' },
@@ -1141,7 +1143,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   lesson: {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
@@ -1152,7 +1154,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   practiceNow: {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
@@ -1163,7 +1165,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   flashcards: {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
@@ -1174,7 +1176,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   progress: {
     target: '.tour-progress',
     title: <FormattedMessage id="Progress" />,
@@ -1183,7 +1185,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-progress-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   chatbot: {
     target: '.chatbot',
     title: <FormattedMessage id="tour-chatbot-message-title" />,
@@ -1192,7 +1194,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-chatbot-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   help: {
     target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
@@ -1204,7 +1206,7 @@ const homeTourSteps = {
     ),
     placement: 'top',
     opacity: 0,
-    disableBeacon: true },
+    skipBeacon: true },
   beginPracticing: {
     target: '.tour-button',
     title: <FormattedMessage id="begin-practicing" />,
@@ -1216,7 +1218,7 @@ const homeTourSteps = {
     ),
     placement: 'top',
     opacity: 0,
-    disableBeacon: true } }
+    skipBeacon: true } }
 
 /////////////////////////////////////////////////////////
 /* const mobileHomeTourSteps = [
@@ -1229,7 +1231,7 @@ const homeTourSteps = {
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-learning-language',
     title: <FormattedMessage id="Learning-language" />,
@@ -1240,7 +1242,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       options: {
         zIndex: 10000 } } },
@@ -1254,7 +1256,7 @@ const homeTourSteps = {
     ),
     textAlign: 'center',
     placement: 'bottom',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       options: {
         zIndex: 10000 } } },
@@ -1268,7 +1270,7 @@ const homeTourSteps = {
       </div>
     ),
     placement: 'top',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       tooltipContainer: {
         textAlign: 'left' },
@@ -1292,7 +1294,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-lesson',
     title: <FormattedMessage id="Lessons" />,
@@ -1303,7 +1305,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-practice-now',
     title: <FormattedMessage id="practice-now" />,
@@ -1314,7 +1316,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-flashcards',
     title: <FormattedMessage id="Flashcards" />,
@@ -1325,7 +1327,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-progress',
     title: <FormattedMessage id="Progress" />,
@@ -1334,7 +1336,7 @@ const homeTourSteps = {
         <FormattedHTMLMessage id="tour-progress-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="begin-practicing" />,
@@ -1346,7 +1348,7 @@ const homeTourSteps = {
     ),
     placement: 'right',
     placementBeacon: 'left',
-    disableBeacon: true,
+    skipBeacon: true,
     styles: {
       options: {
         zIndex: 10000 } } },
@@ -1363,7 +1365,7 @@ const desktopProgressTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.progress-tour-timeline-button',
     title: <FormattedMessage id="progress-timeline" />,
@@ -1402,7 +1404,7 @@ const desktopProgressTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1416,7 +1418,7 @@ const mobileProgressTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'right' },
   {
     target: '.progress-page-graph-cont',
@@ -1460,7 +1462,7 @@ const anonymousDesktopProgressTourSteps = [
         <FormattedHTMLMessage id="anonymous-progress-tour-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'right' },
 ]
 
@@ -1473,7 +1475,7 @@ const anonymousMobileProgressTourSteps = [
         <FormattedHTMLMessage id="anonymous-progress-tour-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'right' },
 ]
 
@@ -1489,7 +1491,8 @@ const desktopLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    placement: 'center',
+    skipBeacon: true },
   {
     target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
@@ -1499,7 +1502,7 @@ const desktopLibraryTourSteps = [
       </div>
     ),
     placement: 'top',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.library-tour-difficulty-stars',
     title: <FormattedMessage id="Difficulty stars" />,
@@ -1508,7 +1511,7 @@ const desktopLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-stars-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'top',
     placementBeacon: 'left' },
   {
@@ -1519,7 +1522,7 @@ const desktopLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-practice-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'top',
     placementBeacon: 'left' },
   {
@@ -1541,7 +1544,7 @@ const desktopLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
 ]
 
 /////////////////////////////////////////////////////////
@@ -1555,7 +1558,8 @@ const mobileLibraryTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    placement: 'center',
+    skipBeacon: true },
   {
     target: '.tour-story-card',
     title: <FormattedMessage id="Story" />,
@@ -1565,7 +1569,7 @@ const mobileLibraryTourSteps = [
       </div>
     ),
     placement: 'top',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.library-tour-difficulty-stars',
     title: <FormattedMessage id="Difficulty stars" />,
@@ -1574,7 +1578,7 @@ const mobileLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-stars-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'top',
     placementBeacon: 'left' },
   {
@@ -1585,7 +1589,7 @@ const mobileLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-practice-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'top',
     placementBeacon: 'left' },
   /*
@@ -1597,7 +1601,7 @@ const mobileLibraryTourSteps = [
         <FormattedHTMLMessage id="library-tour-review-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'top',
     placementBeacon: 'left'
   },
@@ -1618,6 +1622,7 @@ const mobileLibraryTourSteps = [
         zIndex: 10000 } } },
 ]
 
+// Practice page tour
 /////////////////////////////////////////////////////////
 const desktopPracticeTourSteps = [
   {
@@ -1630,7 +1635,7 @@ const desktopPracticeTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.story-topics-box',
     title: <FormattedMessage id="Story Topics Box" />,
@@ -1639,17 +1644,18 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-topics-message" />
       </div>
     ),
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'left' },
   {
-    target: '.dictionary-help',
+    target: '.combined-chatbot',
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
         <FormattedHTMLMessage id="practice-tour-translations-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true,
+    placement: 'left'},
   {
     target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
@@ -1658,7 +1664,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-start-practice-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.practice-tour-edit-delete-story',
     title: <FormattedMessage id="practice-tour-edit-delete-title" />,
@@ -1667,7 +1673,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-edit-delete-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.practice-container',
     title: <FormattedMessage id="Exercises" />,
@@ -1676,7 +1682,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.exercise',
     title: <FormattedMessage id="Exercise" />,
@@ -1685,7 +1691,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.attempt-bar',
     title: <FormattedMessage id="check-answer" />,
@@ -1694,7 +1700,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-check-answers-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.progress-bar-cont',
     title: <FormattedMessage id="Progress bar" />,
@@ -1703,7 +1709,7 @@ const desktopPracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-progress-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.navbar-basic-item',
     title: <FormattedMessage id="ELO score" />,
@@ -1721,7 +1727,7 @@ const desktopPracticeTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
 ]
 
 const mobilePracticeTourSteps = [
@@ -1735,7 +1741,7 @@ const mobilePracticeTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.mobile-practice-tour-word',
     title: <FormattedMessage id="Translations" />,
@@ -1744,7 +1750,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-mobile-translations-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.practice-tour-start-practice-story',
     title: <FormattedMessage id="Start Practicing" />,
@@ -1753,7 +1759,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-start-practice-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.practice-container',
     title: <FormattedMessage id="Exercises" />,
@@ -1762,7 +1768,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-box-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.exercise',
     title: <FormattedMessage id="Exercise" />,
@@ -1771,7 +1777,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-exercise-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.attempt-bar',
     title: <FormattedMessage id="check-answer" />,
@@ -1780,7 +1786,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-check-answers-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.progress-bar-cont',
     title: <FormattedMessage id="Progress bar" />,
@@ -1789,7 +1795,7 @@ const mobilePracticeTourSteps = [
         <FormattedHTMLMessage id="practice-tour-progress-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.navbar-basic-item',
     title: <FormattedMessage id="ELO score" />,
@@ -1826,7 +1832,7 @@ const desktopLessonsTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
@@ -1835,7 +1841,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-story-topic-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
@@ -1844,7 +1850,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-vocab-diff-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
@@ -1853,7 +1859,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-topic-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-tour-custom-grammar-button',
     title: <FormattedMessage id="lesson-tour-custom-grammar-button-topic" />,
@@ -1862,7 +1868,7 @@ const desktopLessonsTourSteps = [
         <FormattedMessage id="lesson-tour-custom-grammar-button-text" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.level-content',
     title: <FormattedMessage id="Level title" />,
@@ -1871,7 +1877,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="level-title-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
@@ -1880,7 +1886,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-topics-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-performance',
     title: <FormattedMessage id="Grammar performance" />,
@@ -1889,7 +1895,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-performance-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
@@ -1898,7 +1904,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
@@ -1907,7 +1913,7 @@ const desktopLessonsTourSteps = [
         <FormattedHTMLMessage id="practice-lesson-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   // {
   //   target: '.practice-container',
   //   title: <FormattedMessage id="Lesson exercise" />,
@@ -1916,7 +1922,7 @@ const desktopLessonsTourSteps = [
   //       <FormattedHTMLMessage id="grammar-practice-message" />
   //     </div>
   //   ),
-  //   disableBeacon: true,
+  //   skipBeacon: true,
   // },
   {
     target: '.tour-button',
@@ -1927,7 +1933,7 @@ const desktopLessonsTourSteps = [
         <div>{tourSign()}</div>
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
 ]
 const mobileLessonsTourSteps = [
   {
@@ -1940,7 +1946,7 @@ const mobileLessonsTourSteps = [
       </div>
     ),
     placement: 'center',
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
@@ -1949,7 +1955,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-story-topic-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-vocab-slider-container',
     title: <FormattedMessage id="Lesson vocab" />,
@@ -1958,7 +1964,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-vocab-diff-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.grammar-buttons-container',
     title: <FormattedMessage id="Lesson topic" />,
@@ -1967,7 +1973,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="lesson-topic-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-tour-custom-grammar-button',
     title: <FormattedMessage id="open-custom-grammar-topics-modal" />,
@@ -1976,7 +1982,7 @@ const mobileLessonsTourSteps = [
         <FormattedMessage id="open-custom-grammar-topics-modal" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.level-content',
     title: <FormattedMessage id="Level title" />,
@@ -1985,7 +1991,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="level-title-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-content',
     title: <FormattedMessage id="Grammar topics" />,
@@ -1994,7 +2000,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-topics-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-performance',
     title: <FormattedMessage id="Grammar performance" />,
@@ -2003,7 +2009,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="grammar-performance-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-tour-stepper',
     title: <FormattedMessage id="Reset Lesson" />,
@@ -2012,7 +2018,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="reset-lesson-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.lesson-setup-start-btn',
     title: <FormattedMessage id="Practice lesson" />,
@@ -2021,7 +2027,7 @@ const mobileLessonsTourSteps = [
         <FormattedHTMLMessage id="practice-lesson-message" />
       </div>
     ),
-    disableBeacon: true },
+    skipBeacon: true },
   {
     target: '.tour-mobile-start-button',
     title: <FormattedMessage id="Tour end" />,

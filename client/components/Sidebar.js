@@ -86,7 +86,10 @@ export default function Sidebar() {
       dispatch(startLessonsTour())
     } else if (location.pathname.includes('library')) {
       dispatch(startLibraryTour())
-    } else if (location.pathname.includes('preview') && hiddenFeatures) {
+    } else if (
+      (location.pathname.includes('preview') || location.pathname.includes('review')) &&
+      hiddenFeatures
+    ) {
       dispatch(sidebarSetOpen(false))
       dispatch(startPracticeTour())
     } else if (location.pathname.includes('/practice') && hiddenFeatures) {
@@ -174,12 +177,14 @@ export default function Sidebar() {
           sx={{ display: 'flex', flexDirection: 'column', width: '100%', padding: 0 }}
         >
           <Box sx={{ padding: '6px 14px 0 8px' }}>
-            <MenuIcon
-              className="sidebar-hamburger tour-sidebar"
-              onClick={closeSidebar}
-              style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
-              data-cy="sidebar-close-hamburger"
-            />
+            <span className="tour-sidebar" style={{ display: 'inline-flex' }}>
+              <MenuIcon
+                className="sidebar-hamburger"
+                onClick={closeSidebar}
+                style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
+                data-cy="sidebar-close-hamburger"
+              />
+            </span>
           </Box>
           <Box
             sx={{
