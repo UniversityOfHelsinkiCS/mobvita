@@ -123,10 +123,11 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(freezeControlledStory(id, controlledPractice.snippets, timedExercise))
   }
 
-  const handleEditorReset = () => {
-    const emptySnippets = true
+  const handleEditorReset = () => {    
+    const emptySnippets = false
     dispatch(resetControlledStory(initAcceptedTokens(emptySnippets)))
   }
+
 
   const emptySnippets = () => {
     const snippets = Object.entries(controlledPractice.snippets)
