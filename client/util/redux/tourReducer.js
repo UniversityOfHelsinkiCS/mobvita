@@ -1,54 +1,32 @@
-import {
-  studentHomeTourSteps,
-  teacherHomeTourSteps,
-  libraryTourSteps,
-  progressTourSteps,
-  anonymousProgressTourSteps,
-  practiceTourSteps,
-  practiceTourStepsAlternative,
-  lessonsTourSteps,
-} from 'Utilities/common'
-
 const initialState = {
-  key: new Date(), // This field makes the tour to re-render it is restarted
+  key: new Date(), // Forces Joyride to re-mount when restarted.
   run: false,
   continuous: true,
   loading: false,
   stepIndex: 0,
-  steps: studentHomeTourSteps,
+  name: 'home',
 }
 
-export const startTour = () => ({
-  type: 'TOUR_START',
-})
-
-export const startLibraryTour = () => ({
-  type: 'LIBRARY_TOUR_RESTART',
-})
-
-export const startProgressTour = () => ({
-  type: 'PROGRESS_TOUR_RESTART',
-})
-
-export const startAnonymousProgressTour = () => ({
-  type: 'ANONYMOUS_PROGRESS_TOUR_RESTART',
-})
-
-export const startPracticeTour = () => ({
-  type: 'PRACTICE_TOUR_RESTART',
-})
-
-export const startLessonsTour = () => ({
-  type: 'LESSONS_TOUR_RESTART'
-})
+export const startTour = () => ({ type: 'TOUR_START' })
+export const startLibraryTour = () => ({ type: 'LIBRARY_TOUR_RESTART' })
+export const startProgressTour = () => ({ type: 'PROGRESS_TOUR_RESTART' })
+export const startAnonymousProgressTour = () => ({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+export const startPracticeTour = () => ({ type: 'PRACTICE_TOUR_RESTART' })
+export const startLessonsTour = () => ({ type: 'LESSONS_TOUR_RESTART' })
 
 export const handleNextTourStep = stepIndex => ({
   type: 'TOUR_NEXT_OR_PREV',
   payload: { stepIndex },
 })
 
-export const stopTour = () => ({
-  type: 'TOUR_STOP',
+export const stopTour = () => ({ type: 'TOUR_STOP' })
+
+const restart = name => ({
+  name,
+  stepIndex: 0,
+  run: true,
+  loading: false,
+  key: new Date(),
 })
 
 export default (state = initialState, action) => {
@@ -62,80 +40,22 @@ export default (state = initialState, action) => {
     case 'TOUR_NEXT_OR_PREV':
       return { ...state, ...action.payload }
     case 'TOUR_RESTART':
-      return {
-        ...state,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart(state.name) }
     case 'SET_STUDENT_HOME_TOUR_STEPS':
-      return {
-        ...state,
-        steps: studentHomeTourSteps,
-      }
     case 'SET_TEACHER_HOME_TOUR_STEPS':
-      return {
-        ...state,
-        steps: teacherHomeTourSteps,
-      }
+      return { ...state, name: 'home' }
     case 'LIBRARY_TOUR_RESTART':
-      return {
-        ...state,
-        steps: libraryTourSteps,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart('library') }
     case 'PROGRESS_TOUR_RESTART':
-      return {
-        ...state,
-        steps: progressTourSteps,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart('progress') }
     case 'ANONYMOUS_PROGRESS_TOUR_RESTART':
-      return {
-        ...state,
-        steps: anonymousProgressTourSteps,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart('progress-anonymous') }
     case 'PRACTICE_TOUR_RESTART':
-      return {
-        ...state,
-        steps: practiceTourSteps,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
-    // This alternative is used when practice tour is started
-    // in practice view instead of preview view, so that
-    // the progress shown in the tour starts at eg. 1/6 and not 5/10
+      return { ...state, ...restart('practice') }
     case 'PRACTICE_TOUR_ALTERNATIVE':
-      return {
-        ...state,
-        steps: practiceTourStepsAlternative,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart('practice-alt') }
     case 'LESSONS_TOUR_RESTART':
-      return {
-        ...state,
-        steps: lessonsTourSteps,
-        stepIndex: 0,
-        run: true,
-        loading: false,
-        key: new Date(),
-      }
+      return { ...state, ...restart('lessons') }
     default:
       return state
   }
