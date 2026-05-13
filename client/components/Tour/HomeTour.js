@@ -217,13 +217,16 @@ const STEP_ORDER = {
   mobileTeacher: ['welcome', 'sideBar', 'library', 'lesson', 'chatbot', 'help'],
 }
 
+// Tour for the Home view. Steps are assembled from `stepBlueprints` in the
+// order defined by `STEP_ORDER[role+screen]`, keeping role and screen
+// differences declarative.
 const HomeTour = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, bigScreen } =
     useTourRuntime('home')
-  const { lesson_topics } = useSelector(({ metadata }) => metadata)
+  const lesson_topics = useSelector(state => state.metadata.lesson_topics)
 
   if (!isActive) return null
 
@@ -236,6 +239,10 @@ const HomeTour = () => {
   // Index of `chatbot` step varies per role; toggling it is a single rule.
   const chatbotIndex = STEP_ORDER[orderKey].indexOf('chatbot')
 
+  // Coordinates side effects between steps: opens/closes the sidebar around
+  // the sidebar step, navigates back to /home, skips the teacher add-stories
+  // step when no topics exist, toggles the chatbot around its step, and
+  // plays a confetti burst on the mobile library step.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||

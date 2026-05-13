@@ -18,6 +18,8 @@ const CHART_ACTION_BY_INDEX = {
   7: 'SET_TIMELINE_CHART',
 }
 
+// Tour for the Progress view (authenticated users). Each step switches the
+// visible chart via `CHART_ACTION_BY_INDEX`. Mobile uses a shorter step list.
 const ProgressTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, bigScreen } = useTourRuntime('progress')
@@ -129,6 +131,8 @@ const ProgressTour = () => {
   const baseSteps = bigScreen ? desktopSteps : mobileSteps
   const steps = baseSteps.map(step => ({ ...step, target: getSafeTarget(step.target) }))
 
+  // Closes the profile dropdown, swaps the chart from `CHART_ACTION_BY_INDEX`,
+  // and on mobile delays around the date-pickers step for layout stability.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||

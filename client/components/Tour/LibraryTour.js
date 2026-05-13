@@ -9,6 +9,9 @@ import { tourSign, getSafeTarget, closeVisibleModal, triggerResize } from './uti
 import JoyrideShared from './JoyrideShared'
 import useTourRuntime from './useTourRuntime'
 
+// Tour for the Library view. Opens the story modal when leaving the
+// difficulty-stars step and closes it before the final "tour end" step.
+// Teachers get an extra review step.
 const LibraryTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, bigScreen } =
@@ -122,6 +125,8 @@ const LibraryTour = () => {
 
   const modalLastStepIndex = showReview ? 4 : 3
 
+  // Drives modal opening/closing around the in-modal steps; adds a small
+  // delay on mobile so the layout settles before the next tooltip positions.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||

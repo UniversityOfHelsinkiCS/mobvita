@@ -16,12 +16,17 @@ import { tourSign, getSafeTarget, closeVisibleModal, triggerResize } from './uti
 import JoyrideShared from './JoyrideShared'
 import useTourRuntime from './useTourRuntime'
 
+// Tour for the Lessons view. Walks the lesson setup flow (topic, vocab,
+// grammar, detail modal, start). Targets unmount between transitions, so
+// `getSafeTarget` falls back to the lesson container while they remount.
 const LessonsTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, user, bigScreen } =
     useTourRuntime('lessons')
-  const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
-  const { pending: lessonPending, lesson } = useSelector(({ lessonInstance }) => lessonInstance)
+  const metaPending = useSelector(state => state.metadata.pending)
+  const lesson_topics = useSelector(state => state.metadata.lesson_topics)
+  const lessonPending = useSelector(state => state.lessonInstance.pending)
+  const lesson = useSelector(state => state.lessonInstance.lesson)
 
   if (!isActive) return null
 
@@ -178,6 +183,9 @@ const LessonsTour = () => {
     target: getSafeTarget(step.target, '.lesson-story-topic'),
   }))
 
+  // Advance (or rewind) the tour, optionally after a delay so DOM mutations
+  // from the previous step settle; always fires a resize so Joyride
+  // re-measures the new target.
   const advance = (index, action, delay = 0) => {
     const next = () => {
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
@@ -187,6 +195,10 @@ const LessonsTour = () => {
     else next()
   }
 
+  // Each step drives the click that produces the DOM the next step needs:
+  // open the setup, advance the lesson stepper, open the custom-grammar
+  // modal, select the first topic, then close the detail modal before the
+  // final outside step. Also seeds `topic_ids` when empty.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||

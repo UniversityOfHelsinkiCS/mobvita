@@ -7,8 +7,9 @@ import AnonymousProgressTour from './AnonymousProgressTour'
 import PracticeTour from './PracticeTour'
 import LessonsTour from './LessonsTour'
 
-// Each tour is self-contained and renders nothing when its name is not active,
-// so we mount them all and let the redux discriminator decide.
+// Root tour dispatcher mounted once near the app root. Each per-tour
+// component renders null when not active, so the active tour is chosen
+// entirely through `state.tour.name`.
 const Tour = () => (
   <>
     <HomeTour />

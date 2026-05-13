@@ -8,6 +8,8 @@ import { stopTour } from 'Utilities/redux/tourReducer'
 import JoyrideShared from './JoyrideShared'
 import useTourRuntime from './useTourRuntime'
 
+// One-step tour on the Progress page for logged-out users; points to the
+// Register button (navbar on desktop, sidebar on mobile).
 const AnonymousProgressTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, bigScreen } =
@@ -29,6 +31,7 @@ const AnonymousProgressTour = () => {
     },
   ]
 
+  // Single step; just stop the tour on close/skip/finish.
   const handleEvent = ({ action, status }) => {
     if (action === ACTIONS.CLOSE || status === STATUS.SKIPPED || status === STATUS.FINISHED) {
       dispatch(stopTour())

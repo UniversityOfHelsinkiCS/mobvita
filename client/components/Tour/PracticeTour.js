@@ -11,6 +11,9 @@ import { tourSign, getSafeTarget, triggerResize } from './utils'
 import JoyrideShared from './JoyrideShared'
 import useTourRuntime from './useTourRuntime'
 
+// Tour for the Practice / Preview / Review views. Two Redux names share this
+// component: 'practice' runs the full tour, 'practice-alt' starts at the
+// in-practice-view portion (used after the user enters practice mode).
 const PracticeTour = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -253,6 +256,9 @@ const PracticeTour = () => {
   const slicedSteps = isAlt ? baseSteps.slice(bigScreen ? 5 : 3) : baseSteps
   const steps = slicedSteps.map(step => ({ ...step, target: getSafeTarget(step.target) }))
 
+  // Opens the helper sidebar + topics box before step 1, toggles the practice
+  // dropdown around the start-practice step, and for students navigates from
+  // /preview or /review into /practice when they choose to start practising.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||

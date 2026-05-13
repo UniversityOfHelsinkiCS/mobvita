@@ -26,6 +26,10 @@ const locale = {
   next: <FormattedMessage id="next" />,
 }
 
+// Thin wrapper around <JoyRide> that applies the project-wide tour styling,
+// options and locale so each per-tour component only supplies its own steps
+// and event handler. `tourKey` is used as React key to force a remount on
+// restart.
 const JoyrideShared = ({ steps, stepIndex, run, tourKey, continuous, onEvent }) => (
   <JoyRide
     key={tourKey}
