@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import HomeTour from './HomeTour'
-import LibraryTour from './LibraryTour'
-import ProgressTour from './ProgressTour'
-import AnonymousProgressTour from './AnonymousProgressTour'
-import PracticeTour from './PracticeTour'
-import LessonsTour from './LessonsTour'
+import HomeTour from './tours/HomeTour'
+import LibraryTour from './tours/LibraryTour'
+import ProgressTour from './tours/ProgressTour'
+import AnonymousProgressTour from './tours/AnonymousProgressTour'
+import PracticeTour from './tours/PracticeTour'
+import LessonsTour from './tours/LessonsTour'
 
 // Root tour dispatcher mounted once near the app root. Each per-tour
 // component renders null when not active, so the active tour is chosen

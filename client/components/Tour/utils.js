@@ -35,3 +35,18 @@ export const closeVisibleModal = () => {
 
 // Fires a synthetic window resize so Joyride re-measures after DOM mutations.
 export const triggerResize = () => window.dispatchEvent(new Event('resize'))
+
+// Resolves the role/screen key used to look up a STEP_ORDER list.
+export const resolveOrderKey = ({ bigScreen, teacherView }) =>
+  `${bigScreen ? 'desktop' : 'mobile'}${teacherView ? 'Teacher' : 'Student'}`
+
+// Builds the concrete step list for a tour. Blueprints may be plain objects
+// or functions that receive `ctx` (bigScreen, teacherView, ...). Each step's
+// target is resolved through `getSafeTarget` to avoid Joyride crashes when
+// the targeted element is temporarily not mounted.
+export const buildSteps = (stepBlueprints, order, ctx = {}, fallbackTarget = 'body') =>
+  order.map(id => {
+    const bp = stepBlueprints[id]
+    const step = typeof bp === 'function' ? bp(ctx) : bp
+    return { ...step, target: getSafeTarget(step.target, fallbackTarget) }
+  })
