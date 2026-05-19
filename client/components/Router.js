@@ -90,7 +90,7 @@ export default () => {
 
   return (
     <Routes>
-      <Route path="/selkomitta" element={<Estimator />} />
+      {/* <Route path="/selkomitta" element={<Estimator />} /> */}
       <Route path="/" element={userData ? <Navigate to="/welcome" replace /> : <LandingPage />} />
       <Route
         path="*"
