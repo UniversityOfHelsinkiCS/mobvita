@@ -10,11 +10,13 @@ import Spinner from 'Components/Spinner'
 
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false, loadingReady = true }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const [topTopics, setTopTopics] = useState([])
   const { width } = useWindowDimensions()
   const showTopicsBox = useSelector((state) => state.topicsBox.showTopicsBox)
   const [sortBy, setSortBy] = useState('cefr')
   const {addExerciseByItem, removeExerciseByItem, exerciseCount} = BatchExerciseControl()
+
 
   const toggleExerciseTopic = (item, freq) => {
     if (exerciseCount[item] && exerciseCount[item] === freq) {
@@ -113,39 +115,22 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
             </div>
           </div>
           {showTopicsBox && (
-            <>
-              <FormattedMessage id="LABEL-sort-by" />
-              <div className="space-evenly" style={{ marginTop: '.5em' }}>
-                <span style={{ marginRight: '.5em' }}>
-                  <input
-                    type="radio"
-                    style={{ marginRight: '.75em' }}
-                    onChange={() => setSortBy('cefr')}
-                    checked={sortBy=='cefr'}
-                  />
-                  <FormattedMessage id="sort-by-concept-cefr-short" />
-                </span>
-                <span style={{ marginRight: '.5em' }}>
-                  <input
-                    type="radio"
-                    style={{ marginRight: '.75em' }}
-                    onChange={() => setSortBy('name')}
-                    checked={sortBy=='name'}
-                  />
-                  <FormattedMessage id="sort-by-concept-name-short" />
-                </span>
-                <span style={{ marginRight: '.5em' }}>
-                  <input
-                    type="radio"
-                    style={{ marginRight: '.75em' }}
-                    onChange={() => setSortBy('freq')}
-                    checked={sortBy=='freq'}
-                  />
-                  <FormattedMessage id="sort-by-concept-freq-short" />
-                </span>
+            <>              
+              <div className="space-between" style={{ alignItems: 'center' }}>
+                <FormattedMessage id="LABEL-sort-by" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label={intl.formatMessage({ id: 'LABEL-sort-by' })}
+                  style={{ flexGrow: 1, marginLeft: '0.5em' }}
+                >
+                  <option value="cefr">{intl.formatMessage({ id: 'sort-by-concept-cefr-short' })}</option>
+                  <option value="name">{intl.formatMessage({ id: 'sort-by-concept-name-short' })}</option>
+                  <option value="freq">{intl.formatMessage({ id: 'sort-by-concept-freq-short' })}</option>
+                </select>
               </div>
               <hr />
-              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0 }}>
+              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0, marginBottom: 0 }}>
                 {topTopics.map(topic => (
                   <li className="flex space-between" key={topic[0]}>
                     <span
