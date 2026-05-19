@@ -42,6 +42,16 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     snippet_id,
     sentence_id,
   } = word
+
+  if (surface === '\n\n') {
+    return (
+      <div style={{ lineHeight: '50%' }}>
+        <br />
+      </div>
+    )
+  }
+
+
   const ref = word.hints && word.hints.filter(
     hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
   const explanation = word.hints && word.hints.filter(
