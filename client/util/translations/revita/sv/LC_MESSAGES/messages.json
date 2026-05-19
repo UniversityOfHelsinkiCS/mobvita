@@ -1404,12 +1404,12 @@
     "click-on-words-near-the-exercises-to-explore-their-meaning-OLD": "Klicka på ord nära övningarna för att utforska deras betydelse.",
     "click-on-words-near-the-exercises-to-explore-their-meaning-SHORT": "Klicka på ord nära övningarna för att utforska deras betydelse.",
     "dictionaryhelp-show-context-translation": "Translate surrounding context",
-    "choose-exercise-type": "Select the type of the exercise",
+    "choose-exercise-type": "Select type of exercise",
     "choose-cloze-exercise": "Fill-in-the-blank (\"cloze\")",
     "choose-listening-exercise": "Listening",
     "choose-multichoice-exercise": "Multiple-choice",
-    "empty-snippets-warning": "Warning: some of the snippets have no exercises",
-    "multiple-choice-tooltip": "The options are always shown to the student in alphabetical order",
+    "empty-snippets-warning": "Warning: some snippets have no exercises",
+    "multiple-choice-tooltip": "Options are always shown to student in alphabetical order",
     "pick-choices": "Enter the choices for the exercise",
     "save-controlled-story": "Save tailored story",
     "controlled-story-saved": "Tailored story saved!",
@@ -1668,5 +1668,7 @@
     "sort-by-concept-name": "Sort by difficulty",
     "sort-by-concept-name-short": "Name",
     "click-to-action-menu": "{icon} Click the menu for more options",
-    "display-word-nest": "Display word nest"
+    "display-word-nest": "Display word nest",
+    "ru-йцуке": "Keyboard: ЙЦУКЕ",
+    "ru-яверт": "Keyboard: ЯВЕРТ"
 }
