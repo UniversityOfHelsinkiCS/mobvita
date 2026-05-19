@@ -198,7 +198,15 @@ const makeWordNest = (parents, wordsWithIDs) =>
     return cleanConcept
   })
 
-const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props }) => {
+const WordNestModal = ({
+  open,
+  setOpen,
+  wordToCheck,
+  setWordToCheck,
+  restoreTranslationOnClose = true,
+  ...props
+}) => {
+
   const intl = useIntl()
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -225,10 +233,12 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props })
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
-  const handleModalclose = () => {
+    const handleModalclose = () => {
     const restoreWord = props.storyWord || ''
-  
-    if (restoreWord) {
+
+    // In some contexts (e.g. assistant sidebar) we want closing the modal to NOT touch
+    // the current dictionary/translation cards.
+    if (restoreTranslationOnClose && restoreWord) {
       dispatch(
         getTranslationAction({
           learningLanguage,
@@ -237,9 +247,14 @@ const WordNestModal = ({ open, setOpen, wordToCheck, setWordToCheck, ...props })
         })
       )
     }
-    setWordToCheck(restoreWord)
+
+    if (restoreTranslationOnClose) {
+      setWordToCheck(restoreWord)
+    }
+
     setOpen(false)
   }
+
 
   useEffect(() => {
     setShowMoreInfo(false)

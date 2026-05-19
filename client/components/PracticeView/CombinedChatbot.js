@@ -15,10 +15,12 @@ import {
   useDictionaryLanguage,
   getTextStyle,
   flashcardColors,
-  formatGreenFeedbackText,
+    formatGreenFeedbackText,
   composeExerciseContext,
-  hiddenFeatures
+  hiddenFeatures,
+  images
 } from 'Utilities/common'
+
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestModal from 'Components/WordNestModal'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
@@ -79,9 +81,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const [hintMessageIdx, setHintMessageIdx] = useState(0)
   const [predefinedChatbotRequests, setPredefinedChatbotRequests] = useState([])
 
-  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
+    const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
+  // When opening WordNestModal, capture the current translation lemmas so we can restore
+  // all translation cards (important for compound words).
+  const [wordNestRestoreWord, setWordNestRestoreWord] = useState('')
   const [showContexTranslation, setShowContextTranslation] = useState(false)
+
 
   const wordNest = useSelector(({ wordNest }) => wordNest)
   const { data: words } = wordNest
@@ -89,8 +95,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const latestMessageRef = useRef(null)
   const { listen, speak } = currentWord || {}
   const isValidExercise = currentWord && Object.keys(currentWord).length > 0 && !listen && !speak
-  const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
-  const { activeTab: helperActiveTab } = helperSidebarState || {}
+    const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
+  const { activeTab: helperActiveTab, isOpen: helperIsOpen } = helperSidebarState || {}
+  const modalOpen = useSelector(({ practice }) => Boolean(practice.references || practice.explanation))
 
   const helperSidebarInitRef = useRef(false)
   useEffect(() => {
@@ -103,38 +110,58 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         hasTranslationData ||
         (typeof window !== 'undefined' && window.innerWidth >= 450)
       )
-      dispatch(setHelperSidebarOpen(defaultOpen))
+      // Avoid changing sidebar while feedback modal is open to prevent flicker
+      if (!modalOpen && defaultOpen !== helperIsOpen) dispatch(setHelperSidebarOpen(defaultOpen))
       helperSidebarInitRef.current = true
     } else {
-      if (hasExerciseWord || hasTranslationData) dispatch(setHelperSidebarOpen(true))
+      const desiredOpen = Boolean(hasExerciseWord || hasTranslationData)
+      // Only dispatch when desired state differs and no modal is open
+      if (!modalOpen && desiredOpen !== helperIsOpen) dispatch(setHelperSidebarOpen(desiredOpen))
     }
-  }, [dispatch, currentWord, translationState.data, translationState.surfaceWord])
+  }, [dispatch, currentWord, translationState.data, translationState.surfaceWord, modalOpen])
 
-    useEffect(() => {    
+  useEffect(() => {    
     dispatch(setHelperSidebarTab(null))
   }, [dispatch, snippets.focused])
 
-  useEffect(() => {
-    if (focusedWord && focusedWord.lemmas && learningLanguage) {      
-      dispatch(
-        getWordNestAction({
-        words: focusedWord.lemmas,
-        language: learningLanguage,
-        })
-      )
-    }
-  }, [focusedWord, dispatch, learningLanguage])
 
-  useEffect(() => {
-    if (translation && translation.lemma && learningLanguage) {      
-      dispatch(
-        getWordNestAction({
-        words: translation.lemma,
-        language: learningLanguage,
-        })
-      )
-    }
-  }, [translation, dispatch, learningLanguage])
+    useEffect(() => {
+      // Don't let background prefetching overwrite the word nest data while WordNestModal is open.
+      // The modal should keep showing the same nest list while you click around for translations.
+      if (inWordNestModal || wordNestModalOpen) return
+
+      if (focusedWord && focusedWord.lemmas && learningLanguage) {
+        dispatch(
+          getWordNestAction({
+            words: focusedWord.lemmas,
+            language: learningLanguage,
+          })
+        )
+      }
+    }, [focusedWord, dispatch, learningLanguage, inWordNestModal, wordNestModalOpen])
+
+        useEffect(() => {
+      // When translation changes (including changes triggered from inside WordNestModal),
+      // do NOT refetch nests while the modal is open; otherwise the modal's word list can disappear.
+      if (inWordNestModal || wordNestModalOpen) return
+
+      // Fetch nests for *all* translation lemmas (compound words can yield multiple cards).
+      const lemmasForNest = Array.isArray(translationState?.data)
+        ? translationState.data.map(t => t?.lemma).filter(Boolean).join('+')
+        : translation?.lemma
+
+      if (lemmasForNest && learningLanguage) {
+        dispatch(
+          getWordNestAction({
+            words: lemmasForNest,
+            language: learningLanguage,
+          })
+        )
+      }
+    }, [translationState?.data, translation, dispatch, learningLanguage, inWordNestModal, wordNestModalOpen])
+
+
+
 
   useEffect(() => {
     const surface = translationState.surface || translationState.surfaceWord;
@@ -321,17 +348,99 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       !translationState.pending &&
       translationState.data?.some(item => currentLemmas.includes(item.lemma));
 
-  const isWordNestAvailableForLemma = lemma =>
-    !!lemma &&
-    !!words?.[lemma]?.length &&
-    !inWordNestModal &&
-    !clue &&
-    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
+    const getLemmaCandidates = (lemmaOrLemmas) => {
+      if (!lemmaOrLemmas || typeof lemmaOrLemmas !== 'string') return []
 
-  const showWordNestOption = isWordNestAvailableForLemma(currentWord?.lemmas)
-  const showWordNestOptionDictionary = isWordNestAvailableForLemma(
-    translationState.surfaceWord || translationState.data?.[0]?.lemma
+      const raw = lemmaOrLemmas.trim()
+      const split = raw
+        .split('|')
+        .map(l => l.trim())
+        .filter(Boolean)
+
+      // Some backends may key the response by the full string (e.g. "a|b"),
+      // others by each lemma. Check both.
+      return [...new Set([raw, ...split])]
+    }
+
+
+  const getNestListForLemma = (lemma) => {
+    if (!lemma) return []
+    // Expected shape: wordNest.data = { [lemma]: WordNestEntry[] }
+    // (be defensive in case API returns an array)
+    if (Array.isArray(words)) return words
+    return words?.[lemma] || []
+  }
+
+  const isWordNestAvailableForLemma = lemmaOrLemmas => {
+    if (inWordNestModal || clue) return false
+    if (!(learningLanguage === 'Russian' || learningLanguage === 'Finnish')) return false
+
+    const candidates = getLemmaCandidates(lemmaOrLemmas)
+    if (!candidates.length) return false
+
+    return candidates.some(lemma => getNestListForLemma(lemma).length > 0)
+  }
+
+  const bestWordNestLemma = (lemmaOrLemmas) => {
+    const candidates = getLemmaCandidates(lemmaOrLemmas)
+    if (!candidates.length) return ''
+
+    // Prefer one that we already have nest data for (so the action menu appears reliably)
+    const withData = candidates.find(lemma => getNestListForLemma(lemma).length > 0)
+    return withData || candidates[0]
+  }
+
+  const exerciseWordNestLemma = bestWordNestLemma(currentWord?.translation_lemmas || currentWord?.lemmas)
+  const dictionaryWordNestLemma = bestWordNestLemma(
+    translation?.lemma || translationState.data?.[0]?.lemma || translationState.surfaceWord
   )
+
+    const showWordNestOption = isWordNestAvailableForLemma(exerciseWordNestLemma)
+  const showWordNestOptionDictionary = isWordNestAvailableForLemma(dictionaryWordNestLemma)
+
+    const computeWordNestRestoreWord = () => {
+      // Prefer restoring from the currently displayed translation cards.
+      const data = translationState?.data
+      if (Array.isArray(data) && data.length > 0) {
+        const joined = data.map(t => t?.lemma).filter(Boolean).join('+')
+        if (joined) return joined
+      }
+
+      // Fall back to lemma strings stored in translation state / current word.
+      return (
+        translationState?.lemmas ||
+        currentWord?.translation_lemmas ||
+        currentWord?.lemmas ||
+        translationState?.surfaceWord ||
+        ''
+      )
+    }
+
+    const renderWordNestIconButton = (lemma) => {
+      if (!isWordNestAvailableForLemma(lemma)) return null
+
+      return (
+        <Popup
+          position="top center"
+          content={<FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />}
+          trigger={
+            <button
+              type="button"
+              className="wordnest-icon-button"
+              onClick={() => {
+                setWordNestRestoreWord(computeWordNestRestoreWord())
+                setWordNestChosenWord(lemma)
+                setWordNestModalOpen(true)
+              }}
+              aria-label="Word Nest"
+            >
+              <img src={images.network} alt="word nest" width="28" />
+            </button>
+          }
+        />
+      )
+    }
+
 
   const prevId = useRef(currentWord?.ID);
   const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '');
@@ -500,8 +609,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           setWordToCheck={setWordNestChosenWord}
           open={wordNestModalOpen}
           setOpen={setWordNestModalOpen}
-          storyWord={translationState.surfaceWord || currentWord?.surface}
+          storyWord={wordNestRestoreWord || translationState.lemmas || translationState.surfaceWord || currentWord?.lemmas || currentWord?.surface}
         />
+
+
       )}
   
       <div className="ai-assistant-header">
@@ -559,16 +670,19 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <h4 className="current-word">
                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
             </h4>
-            <ChatActionMenu 
+                        <ChatActionMenu 
               handleShowHint={handleShowHint} 
               hasHints={hasHints} 
               showAllHintsUsed={showAllHintsUsed}
-              handleShowWordNest={() => {
-                  setWordNestChosenWord(currentWord?.lemmas);
+                            handleShowWordNest={() => {
+                  setWordNestRestoreWord(computeWordNestRestoreWord())
+                  setWordNestChosenWord(exerciseWordNestLemma);
                   setWordNestModalOpen(true);
               }}
+
               showWordNestOption={showWordNestOption}
-              lemma={currentWord?.lemmas}
+              lemma={exerciseWordNestLemma}
+
               wordNestChosenWord={wordNestChosenWord}
               setWordNestChosenWord={setWordNestChosenWord}
               wordNestModalOpen={wordNestModalOpen}
@@ -607,16 +721,16 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                             <span className="loading-text">Loading translation...</span>
                           </div>
                           ) : (
-                              translationState.data?.map((translated, idx) => (                                                
+                                                            translationState.data?.map((translated, idx) => (                                                
                                 <div  
                                   key={translated.URL || translated.lemma || idx} 
                                   className="translation-lemma-card" style={{
-                                  padding: '0.5em',
+                                  padding: '0.5em 2.5em 2.5em 0.5em',
                                   borderRadius: '8px',
                                   backgroundColor: translated.stage !== undefined
                                       ? `${flashcardColors.background[translated.stage]}4D`
                                       : '#f9f9f9',
-                                }}>
+                                  }}>
                                   <Lemma
                                     lemma={translated.lemma}
                                     handleKnowningClick={() => handleKnowningClick(translated.lemma)}
@@ -631,9 +745,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                         <li key={i}>{gloss}</li>
                                       ))}
                                     </ul>
-                                  )}                                                       
+                                  )}
+                                  {renderWordNestIconButton(translated.lemma)}
                                 </div>                                      
                               ))
+
                           )}
                         </>
                       )} 
@@ -802,14 +918,16 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         trigger={<Speaker word={translationState.surfaceWord} />}
                     />} {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
-                <ChatActionMenu mode="dictionary" 
-                  handleShowWordNest={() => {                
-                      const lemmaToCheck = translationState.surfaceWord || translationState.data?.[0]?.lemma;
-                      setWordNestChosenWord(lemmaToCheck);
+                                <ChatActionMenu mode="dictionary" 
+                                    handleShowWordNest={() => {                
+                      setWordNestRestoreWord(computeWordNestRestoreWord())
+                      setWordNestChosenWord(dictionaryWordNestLemma);
                       setWordNestModalOpen(true);
                   }}
+
                   showWordNestOption={showWordNestOptionDictionary}
-                  lemma={translationState.surfaceWord || translationState.data?.[0]?.lemma}
+                  lemma={dictionaryWordNestLemma}
+
                   wordNestChosenWord={wordNestChosenWord}
                   setWordNestChosenWord={setWordNestChosenWord}
                   wordNestModalOpen={wordNestModalOpen}
@@ -826,12 +944,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             {/* Translation Results */}               
 
                 {translationState.data && translationState.data.length > 0 ? (
-                translationState.data.map((translated, idx) => (
+                                translationState.data.map((translated, idx) => (
                 <div
                     key={translated.URL || translated.lemma || idx}
+                    className="translation-lemma-card"
                     style={{
                         marginBottom: '1em',
-                        padding: '0.5em',
+                        padding: '0.5em 2.5em 2.5em 0.5em',
                         borderRadius: '8px',
                         // Dynamic background color based on flashcard stage
                         backgroundColor: translated.stage !== undefined
@@ -856,8 +975,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                 <li key={i}>{gloss}</li>
                             ))}
                         </ul>
-                    )}                                    
+                    )}
+
+                    {renderWordNestIconButton(translated.lemma)}
                 </div>            
+            
             ))
         ) : (
             <p className="no-translation-text"></p>
