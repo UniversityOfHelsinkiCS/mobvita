@@ -24,6 +24,7 @@ const HelperSidebar = ({ children }) => {
         aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
         aria-expanded={isOpen}
         type="button"
+        data-cy="helper-sidebar-toggle"
       >
         <Icon name={isOpen ? 'angle right' : 'angle left'} />
       </button>

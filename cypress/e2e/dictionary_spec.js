@@ -18,7 +18,8 @@ describe("dictionary", function () {
   })
 
   it("dictionary info opens", function () {
-    cy.get("[data-cy=dictionary-info]").click()
+    cy.get("[data-cy=helper-sidebar-toggle]").click()
+    cy.get("[data-cy=dictionary-info]")
     cy.contains("Napsauta harjoitusta — jos siitä herää kysymyksiä, voit kysyä täällä.")
   })
 
