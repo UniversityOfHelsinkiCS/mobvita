@@ -20,7 +20,7 @@ runs:
 
     - name: npm ci
       shell: bash
-      run: npm ci --legacy-peer-deps
+      run: npm ci
 
     - name: Build app
       shell: bash
