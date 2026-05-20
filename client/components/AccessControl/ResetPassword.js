@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { Form } from 'semantic-ui-react'
