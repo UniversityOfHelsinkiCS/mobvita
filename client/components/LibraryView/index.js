@@ -380,7 +380,7 @@ const StoryList = () => {
         {Object.keys(libraryGroup)
           .sort((a, b) => stringToDifficulty(a) - stringToDifficulty(b))
           .map((group, index) => (
-            <>
+            <div key={`story-group-block-${group}`}>
               <AccordionTitle
                 key={`story-group-title-${group}`}
                 active={accordionState === index}
@@ -408,7 +408,7 @@ const StoryList = () => {
                   ))}
                 </Card.Group>
               </AccordionContent>
-            </>
+            </div>
           ))}
       </Accordion>
     )
