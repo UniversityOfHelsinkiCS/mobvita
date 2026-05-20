@@ -41,12 +41,13 @@ export const resolveOrderKey = ({ bigScreen, teacherView }) =>
   `${bigScreen ? 'desktop' : 'mobile'}${teacherView ? 'Teacher' : 'Student'}`
 
 // Builds the concrete step list for a tour. Blueprints may be plain objects
-// or functions that receive `ctx` (bigScreen, teacherView, ...). Each step's
-// target is resolved through `getSafeTarget` to avoid Joyride crashes when
-// the targeted element is temporarily not mounted.
-export const buildSteps = (stepBlueprints, order, ctx = {}, fallbackTarget = 'body') =>
+// or functions that receive `ctx` (bigScreen, teacherView, ...). Targets are
+// passed through unchanged so Joyride can resolve them lazily when each
+// step is shown — pre-resolving against the current DOM would freeze
+// late-mounting targets (e.g. async-loaded story buttons) to `'body'`.
+// `fallbackTarget` is accepted but ignored; kept for call-site compatibility.
+export const buildSteps = (stepBlueprints, order, ctx = {}) =>
   order.map(id => {
     const bp = stepBlueprints[id]
-    const step = typeof bp === 'function' ? bp(ctx) : bp
-    return { ...step, target: getSafeTarget(step.target, fallbackTarget) }
+    return typeof bp === 'function' ? bp(ctx) : bp
   })

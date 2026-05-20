@@ -56,7 +56,6 @@ const LibraryTour = () => {
       }
     }
 
-    // Close the modal before the final step (lives outside the modal).
     if (currentId === lastInModalId && action !== ACTIONS.PREV) {
       if (closeVisibleModal()) {
         advance(250)

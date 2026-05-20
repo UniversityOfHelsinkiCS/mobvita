@@ -38,7 +38,10 @@ const PracticeTour = () => {
       dispatch(stopTour())
       return
     }
-    if (type === EVENTS.TARGET_NOT_FOUND) return
+    if (type === EVENTS.TARGET_NOT_FOUND) {
+      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+      return
+    }
     if (type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
 
     // Advance (or rewind) the tour, optionally after a delay; always resizes.
@@ -55,7 +58,6 @@ const PracticeTour = () => {
 
     if (!isAlt && bigScreen) {
       if (currentId === 'welcomeDesktop') {
-        // Open helper sidebar (hosts topics-box + chatbot) before topics step.
         dispatch(setHelperSidebarOpen(true))
         dispatch({ type: 'SHOW_TOPICS_BOX' })
         advance(300)
@@ -64,7 +66,11 @@ const PracticeTour = () => {
       if (currentId === 'topics' && action !== ACTIONS.PREV) {
         dispatch({ type: 'CLOSE_TOPICS_BOX' })
       }
-      if (currentId === 'translations') dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+      if (currentId === 'translations') {
+        dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+        advance(400)
+        return
+      }
       if (currentId === 'storyAction') {
         dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
         if (!teacherView) {
@@ -74,7 +80,11 @@ const PracticeTour = () => {
         }
       }
     } else if (!isAlt && !bigScreen) {
-      if (currentId === 'translationsMobile') dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+      if (currentId === 'translationsMobile') {
+        dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })
+        advance(400)
+        return
+      }
       if (currentId === 'startPracticeMobile') {
         dispatch({ type: 'CLOSE_PRACTICE_DROPDOWN' })
         const newPath = location.pathname.substring(0, location.pathname.length - 7)
