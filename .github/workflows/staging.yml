@@ -104,6 +104,17 @@ jobs:
         with:
           spec: cypress/e2e/tests_spec.js
           context: tests
+  
+  test_tour:
+    name: "Test tour"
+    runs-on: ubuntu-latest  
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Run tests'
+        uses: ./.github/actions/run_test
+        with:
+          spec: cypress/e2e/tour_spec.js
+          context: tour
 
   test_wordnest:
     name: "Test wordnest"
