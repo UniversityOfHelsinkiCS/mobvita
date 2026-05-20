@@ -28,6 +28,7 @@ import {
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
+import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
   updateShowReviewDiff,
   updatePreviewExer,
@@ -209,6 +210,13 @@ const ReadViews = ({ match }) => {
       dispatch(startPracticeTour())
     }
   }, [])
+
+  // Fetches students for group review/preview if not already fetched
+  useEffect(() => {
+    if ((isGroupReview || isGroupPreview) && totalGroups.length === 0 && !groupsPending) {
+      dispatch(getGroups())
+    }
+  }, [dispatch, isGroupReview, isGroupPreview, totalGroups.length, groupsPending])
 
   useEffect(() => {
     initialPreviewStoryFetchedRef.current = false

@@ -94,7 +94,6 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                                />}
                   />{' '}
                   <FormattedMessage id="topics-header" />
-                  {console.log('loading ready in storytopics? ', loadingReady)}
                   {!loadingReady && (
                     <span style={{ marginLeft: '0.5em' }}>
                       <Spinner inline size={28} />
