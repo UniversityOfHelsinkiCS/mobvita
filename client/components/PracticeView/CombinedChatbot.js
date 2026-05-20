@@ -297,12 +297,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     }
   }
 
+        
   const handleTooltipClick = (hint) => {
-    if (hint.ref?.length) dispatch(setReferences({[hint.keyword || hint.easy]: hint.ref}))
-    if (hint.explanation?.length || hint.meta !== hint.easy) dispatch(setExplanation({
-      [hint.keyword || hint.easy]: hint.easy === hint.meta && hint.explanation || [hint.meta, ...(hint.explanation || [])]
-    }))
-  }
+
+    if (!hint) return
+
+    if (hint.ref?.length) {
+      dispatch(setReferences({ [hint.keyword || hint.easy]: hint.ref }))
+    }
+
+    if (hint.explanation?.length || hint.meta !== hint.easy) {
+      dispatch(
+        setExplanation({
+          [hint.keyword || hint.easy]:
+            (hint.easy === hint.meta && hint.explanation) || [hint.meta, ...(hint.explanation || [])],
+        })
+      )
+    }
+    }
 
   const handleMessageSubmit = (event) => {
     event.preventDefault()    
@@ -776,7 +788,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                   <Icon
                                       name="info circle"
                                       className="hint-info-icon"
-                                      onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
+                                      onClick={(e) => { e.stopPropagation(); handleTooltipClick(currentWord.hint2penalty) }}
                                   />
                                 )}
                               </div>
@@ -792,7 +804,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                     <Icon
                                       name="info circle"
                                       className="hint-info-icon"
-                                      onMouseDown={() => handleTooltipClick(hint)}
+                                      onClick={(e) => { e.stopPropagation(); handleTooltipClick(hint) }}
                                     />
                                   )}
                                 </div>
@@ -829,7 +841,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                               <Icon
                                                   name="info circle"
                                                   className="hint-info-icon"
-                                                  onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
+                                                  onClick={(e) => { e.stopPropagation(); handleTooltipClick(currentWord.hint2penalty) }}
                                               />
                                           )}
                                       </div>
@@ -844,7 +856,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                         <Icon
                                           name="info circle"
                                           className="hint-info-icon"
-                                          onMouseDown={() => handleTooltipClick(hint)}
+                                          onClick={(e) => { e.stopPropagation(); handleTooltipClick(hint) }}
                                         />
                                     )}
                                   </div>
