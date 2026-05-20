@@ -54,7 +54,7 @@ const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
       if (k === 0) {
         topic_rows.push(
           <h6
-            key={k}
+            key={`${i}-${k}`}
             className="lesson-item-topics"
             style={{
               marginBottom: '.5rem',
@@ -96,7 +96,7 @@ const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
       } else {
         topic_rows.push(
           <h6
-            key={k}
+            key={`${i}-${k}`}
             className="lesson-item-topics"
             style={{
               marginBottom: '.5rem',

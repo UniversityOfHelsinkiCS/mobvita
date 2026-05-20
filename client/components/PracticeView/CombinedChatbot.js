@@ -81,7 +81,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const [hintMessageIdx, setHintMessageIdx] = useState(0)
   const [predefinedChatbotRequests, setPredefinedChatbotRequests] = useState([])
 
-    const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
+
+  const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
   // When opening WordNestModal, capture the current translation lemmas so we can restore
   // all translation cards (important for compound words).
@@ -95,7 +96,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const latestMessageRef = useRef(null)
   const { listen, speak } = currentWord || {}
   const isValidExercise = currentWord && Object.keys(currentWord).length > 0 && !listen && !speak
-    const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
+  const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
   const { activeTab: helperActiveTab, isOpen: helperIsOpen } = helperSidebarState || {}
   const modalOpen = useSelector(({ practice }) => Boolean(practice.references || practice.explanation))
 
@@ -212,6 +213,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
+
       const { ID: wordId } = currentWord
       let word_chat_history = []
       if (chat_history && typeof wordId !== 'undefined' && chat_history.hasOwnProperty(wordId.toString())) {
@@ -295,11 +297,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       setPreHints(newHintList)
       handleHintRequest(newHintList)
     }
-  }
-
-        
+  }        
+  
   const handleTooltipClick = (hint) => {
-
     if (!hint) return
 
     if (hint.ref?.length) {
@@ -314,7 +314,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         })
       )
     }
-    }
+  }
 
   const handleMessageSubmit = (event) => {
     event.preventDefault()    
@@ -778,6 +778,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       )}
                       
                       {hintMessageIdx === 0 && (spentHints.length > 0 || emptyHintsList) && (
+
                         <>                              
                           {currentWord.hint2penalty && attempt === 0 && (
                             <div className="message message-bot message-hint">
@@ -788,7 +789,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                   <Icon
                                       name="info circle"
                                       className="hint-info-icon"
-                                      onClick={(e) => { e.stopPropagation(); handleTooltipClick(currentWord.hint2penalty) }}
+                                      onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
                                   />
                                 )}
                               </div>
@@ -804,7 +805,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                     <Icon
                                       name="info circle"
                                       className="hint-info-icon"
-                                      onClick={(e) => { e.stopPropagation(); handleTooltipClick(hint) }}
+                                      onMouseDown={() => handleTooltipClick(hint)}
                                     />
                                   )}
                                 </div>
@@ -830,7 +831,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       ))}
 
                       {/* Hint Messages (after first attempt) */}
-                      {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                        {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
                           <>
                               {currentWord.hint2penalty && attempt === 0 && (
                                   <div className="message message-bot message-hint">
@@ -841,7 +842,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                               <Icon
                                                   name="info circle"
                                                   className="hint-info-icon"
-                                                  onClick={(e) => { e.stopPropagation(); handleTooltipClick(currentWord.hint2penalty) }}
+                                                  onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
                                               />
                                           )}
                                       </div>
@@ -856,7 +857,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                         <Icon
                                           name="info circle"
                                           className="hint-info-icon"
-                                          onClick={(e) => { e.stopPropagation(); handleTooltipClick(hint) }}
+                                          onMouseDown={() => handleTooltipClick(hint)}
                                         />
                                     )}
                                   </div>
