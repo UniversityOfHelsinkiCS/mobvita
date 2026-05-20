@@ -40,14 +40,14 @@ export const triggerResize = () => window.dispatchEvent(new Event('resize'))
 export const resolveOrderKey = ({ bigScreen, teacherView }) =>
   `${bigScreen ? 'desktop' : 'mobile'}${teacherView ? 'Teacher' : 'Student'}`
 
-// Builds the concrete step list for a tour. Blueprints may be plain objects
-// or functions that receive `ctx` (bigScreen, teacherView, ...). Targets are
-// passed through unchanged so Joyride can resolve them lazily when each
-// step is shown — pre-resolving against the current DOM would freeze
-// late-mounting targets (e.g. async-loaded story buttons) to `'body'`.
-// `fallbackTarget` is accepted but ignored; kept for call-site compatibility.
-export const buildSteps = (stepBlueprints, order, ctx = {}) =>
+// Builds a tour's step list from id-keyed blueprints (objects or ctx-taking
+// functions). Targets pass through untouched so Joyride resolves them lazily.
+// Pass `fallbackTarget` to opt into `getSafeTarget` rewriting for tours that
+// walk through transient UI where targets vanish between steps.
+export const buildSteps = (stepBlueprints, order, ctx = {}, fallbackTarget) =>
   order.map(id => {
     const bp = stepBlueprints[id]
-    return typeof bp === 'function' ? bp(ctx) : bp
+    const step = typeof bp === 'function' ? bp(ctx) : bp
+    if (fallbackTarget === undefined) return step
+    return { ...step, target: getSafeTarget(step.target, fallbackTarget) }
   })

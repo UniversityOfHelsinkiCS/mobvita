@@ -31,7 +31,11 @@ const LibraryTour = () => {
       dispatch(stopTour())
       return
     }
-    if (type === EVENTS.TARGET_NOT_FOUND) return
+    if (type === EVENTS.TARGET_NOT_FOUND) {
+      // Skip the missing step instead of stalling the tour.
+      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+      return
+    }
     if (type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
 
     const advance = (delay = 0) => {
