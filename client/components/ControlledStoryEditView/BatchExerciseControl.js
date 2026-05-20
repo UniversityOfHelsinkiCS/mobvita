@@ -102,7 +102,7 @@ const BatchExerciseControl = () => {
         const word = story?.paragraph[i][j]
         if (word.concepts && exerciseTokens.includes(word.ID) && !candidate_id.has(word.candidate_id) || 
             hiddenTokens.includes(word.ID)) {
-          candidate_id.add(word.candidate_id || word.id || `custom_${storyId}_${word.ID}`)
+          candidate_id.add(`${word.candidate_id}_${word.ID}` || `${word.id}_${word.ID}` || `custom_${storyId}_${word.ID}`)
           for (let k = 0; k < word.concepts?.length; k++) {
             const item = word.concepts[k].concept
             if (exerciseItems[item]) {
