@@ -1815,5 +1815,7 @@
     "sort-by-concept-name": "Сортировать по сложности",
     "sort-by-concept-name-short": "названию",
     "click-to-action-menu": "{icon} Click the menu for more options",
-    "display-word-nest": "Display word nest"
+    "display-word-nest": "Display word nest",
+    "ru-йцуке": "Клавиатура: ЙЦУКЕ",
+    "ru-яверт": "Клавиатура: ЯВЕРТ"
 }

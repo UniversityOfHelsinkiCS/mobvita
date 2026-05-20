@@ -1449,7 +1449,7 @@
     "Story Topics Box": "Kertomuksen aiheet",
     "practice-tour-topics-message": "Tätä laatikkoa klikkaamalla näet pää-aiheet, joihin tämä teksti keskittyy.",
     "practice-tour-translations-message": "Kun klikkaat mitä vain kertomuksen sanaa, ilmestyy sen käännös tänne.",
-    "practice-tour-mobile-translations-message": "Kun klikkaa sanaa kertomuksessa, sen käännös tulee ruudun alanurkkaan.",
+    "practice-tour-mobile-translations-message": "Kun klikkaat sanaa kertomuksessa, näet käännöksen ruudun alanurkassa.",
     "Start Practicing": "Aloita harjoittelu",
     "practice-tour-start-practice-message": "Voit harjoitella kielioppia, kuuntelua tai molempia samaan aikaan.\n<br/>\nSeuraavaksi menemme harjoittelu-sivulle!",
     "Exercises": "Harjoitukset",
@@ -1813,5 +1813,7 @@
     "sort-by-concept-name": "Lajittele vaikeustason mukaan",
     "sort-by-concept-name-short": "Nimi",
     "click-to-action-menu": "{icon} Click the menu for more options",
-    "display-word-nest": "Display word nest"
+    "display-word-nest": "Display word nest",
+    "ru-йцуке": "Näppäimistö: ЙЦУКЕ",
+    "ru-яверт": "Näppäimistö: ЯВЕРТ"
 }
