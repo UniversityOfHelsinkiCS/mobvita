@@ -1,6 +1,5 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import fs from 'node:fs/promises'
 import moment from 'moment-timezone'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -37,22 +36,6 @@ export default defineConfig(({ mode }) => {
   const BASE_PATH = process.env.BASE_PATH || '/'
   const ENVIRONMENT = process.env.ENVIRONMENT || ''
   const COMMIT_HASH = process.env.COMMIT_HASH || ''
-  const clientDir = path.resolve(rootDir, 'client')
-
-  const optimizeDepsJsxPlugin = {
-    name: 'mobvita-optimize-deps-jsx-in-js',
-    setup(build) {
-      build.onLoad({ filter: /\.js$/ }, async (args) => {
-        if (!args.path.startsWith(clientDir)) return null
-
-        const source = await fs.readFile(args.path, 'utf8')
-        return {
-          contents: source,
-          loader: 'jsx',
-        }
-      })
-    },
-  }
 
   return {
     base: BASE_PATH,
@@ -62,8 +45,23 @@ export default defineConfig(({ mode }) => {
         'react-router-dom',
         'swiper',
       ],
-      esbuildOptions: {
-        plugins: [optimizeDepsJsxPlugin],
+      // Vite's Rolldown-based dep scanner does not run main `transform`
+      // pipeline, so JSX inside `client/**/*.js` confuses it. Provide the
+      // scanner with its own JSX transform plugin so it can parse those
+      // files when walking the import graph from index.html.
+      rolldownOptions: {
+        plugins: [
+          {
+            name: 'mobvita-scan-jsx-in-js',
+            async transform(code, id) {
+              if (!/\/client\/.*\.js$/.test(id)) return null
+              return transformWithOxc(code, id, {
+                lang: 'jsx',
+                jsx: { runtime: 'classic' },
+              })
+            },
+          },
+        ],
       },
     },
     resolve: {
