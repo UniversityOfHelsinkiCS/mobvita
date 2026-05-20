@@ -19,7 +19,7 @@ services:
       - ./:/usr/src/app
       # IMPORTANT: use a named volume for node_modules so you don't use host node_modules
       - mobvita_node_modules:/usr/src/app/node_modules
-    command: ["sh", "-lc", "npm ci --legacy-peer-deps --include=dev && npm rebuild sqlite3 --build-from-source && npm run start:dev"]
+    command: ["sh", "-lc", "npm ci --include=dev && npm rebuild sqlite3 --build-from-source && npm run start:dev"]
 
 volumes:
   mobvita_node_modules: {}
