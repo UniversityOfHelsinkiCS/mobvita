@@ -15,7 +15,7 @@ import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
-const dsn = basePath.includes('localhost') ? 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10' : null
+const dsn = (inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10' : null
 
 const filterReduxStateForSentry = event => {
   const url = event.request?.url ?? ''
