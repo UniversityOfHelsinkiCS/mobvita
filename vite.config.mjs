@@ -34,7 +34,7 @@ const getPackageChunkName = (id) => {
 }
 
 const getCommitHash = () => {
-  if (process.env.COMMIT_HASH) return process.env.COMMIT_HASH
+  if (process.env.COMMIT_HASH) return process.env.COMMIT_HASH.substring(0, 7)
 
   try {
     return execSync('git rev-parse --short HEAD', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim()
@@ -48,7 +48,6 @@ export default defineConfig(({ mode }) => {
   const BASE_PATH = process.env.BASE_PATH || '/'
   const ENVIRONMENT = process.env.ENVIRONMENT || ''
   const COMMIT_HASH = getCommitHash()
-  console.log(`Vite config: mode=${mode}, BASE_PATH=${BASE_PATH}, ENVIRONMENT=${ENVIRONMENT}, COMMIT_HASH=${COMMIT_HASH}`)
 
   return {
     base: BASE_PATH,
