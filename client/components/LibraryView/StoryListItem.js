@@ -68,7 +68,6 @@ const StoryTitle = ({
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                '-o-text-overflow': 'ellipsis',
                 width: '30%',
               }}
             >
