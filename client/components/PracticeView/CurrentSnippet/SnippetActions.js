@@ -250,7 +250,7 @@ const SnippetActions = ({
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="snippet-actions">
         <CheckAnswersButton
           handleClick={checkAnswers}
           checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
