@@ -136,7 +136,7 @@ export const addEditStoryAnnotation = (
   mode,
   category,
   annotationName,
-  thread_id
+  thread_id,
 ) => {
   console.log('in payload ', publicStory)
   const route = `/stories/${storyId}/annotate`
@@ -256,7 +256,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         data: state.data.map(story =>
-          story._id === action.storyId ? { ...story, uploadUnfinished: action.value } : story
+          story._id === action.storyId ? { ...story, uploadUnfinished: action.value } : story,
         ),
       }
 
@@ -309,19 +309,18 @@ export default (state = initialState, action) => {
         focusedPending: false,
         focusedRequestId: null,
       }
-    case 'GET_STORY_ATTEMPT':
-      {
-        const route = action.requestSettings?.route || ''
-        const match = route.match(/^\/stories\/([^/?]+)/)
-        const requestedId = match ? match[1] : null
-        return {
-          ...state,
-          pending: true,
-          focusedPending: true,
-          focusedRequestId: requestedId,
-          error: false,
-        }
+    case 'GET_STORY_ATTEMPT': {
+      const route = action.requestSettings?.route || ''
+      const match = route.match(/^\/stories\/([^/?]+)/)
+      const requestedId = match ? match[1] : null
+      return {
+        ...state,
+        pending: true,
+        focusedPending: true,
+        focusedRequestId: requestedId,
+        error: false,
       }
+    }
     case 'GET_STORY_FAILURE':
       return {
         ...state,
@@ -330,57 +329,87 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
       }
-    case 'GET_STORY_SUCCESS':
-    {
-        const normalizedResponse =
-          action.response && !action.response._id && state.focusedRequestId
-            ? { ...action.response, _id: state.focusedRequestId }
-            : action.response
+    case 'GET_STORY_SUCCESS': {
+      const normalizedResponse =
+        action.response && !action.response._id && state.focusedRequestId
+          ? { ...action.response, _id: state.focusedRequestId }
+          : action.response
 
-        if (
-          state.focusedRequestId &&
-          normalizedResponse?._id &&
-          String(state.focusedRequestId) !== String(normalizedResponse._id)
-        ) {
-          return {
-            ...state,
-            pending: false,
-            focusedPending: false,
-            focusedRequestId: null,
-            error: false,
-          }
-        }
+      if (
+        state.focusedRequestId &&
+        normalizedResponse?._id &&
+        String(state.focusedRequestId) !== String(normalizedResponse._id)
+      ) {
         return {
           ...state,
-          focused: normalizedResponse,
           pending: false,
           focusedPending: false,
           focusedRequestId: null,
           error: false,
         }
       }
-    case 'GET_STUDENT_STORY_ATTEMPT':
+      return {
+        ...state,
+        focused: normalizedResponse,
+        pending: false,
+        focusedPending: false,
+        focusedRequestId: null,
+        error: false,
+      }
+    }
+    case 'GET_STUDENT_STORY_ATTEMPT': {
+      const route = action.requestSettings?.route || ''
+      const storyMatch = route.match(/[?&]story_id=([^&]+)/)
+      const studentMatch = route.match(/[?&]student_id=([^&]+)/)
       return {
         ...state,
         pending: true,
         focusedPending: true,
+        focusedRequestId: storyMatch ? storyMatch[1] : null,
+        focusedStudentId: studentMatch ? studentMatch[1] : null,
         error: false,
       }
+    }
     case 'GET_STUDENT_STORY_FAILURE':
       return {
         ...state,
         pending: false,
         focusedPending: false,
+        focusedRequestId: null,
+        focusedStudentId: null,
         error: true,
       }
-    case 'GET_STUDENT_STORY_SUCCESS':
+    case 'GET_STUDENT_STORY_SUCCESS': {
+      // Stale-response guard: if the response carries a story _id that doesn't
+      // match the currently-tracked request, drop it.
+      if (
+        state.focusedRequestId &&
+        action.response?._id &&
+        String(state.focusedRequestId) !== String(action.response._id)
+      ) {
+        return {
+          ...state,
+          pending: false,
+          focusedPending: false,
+          focusedRequestId: null,
+          focusedStudentId: null,
+          error: false,
+        }
+      }
+      const normalizedResponse =
+        action.response && !action.response._id && state.focusedRequestId
+          ? { ...action.response, _id: state.focusedRequestId }
+          : action.response
       return {
         ...state,
-        focused: action.response,
+        focused: normalizedResponse,
         pending: false,
         focusedPending: false,
+        focusedRequestId: null,
+        focusedStudentId: null,
         error: false,
       }
+    }
     case 'ADD_OR_EDIT_STORY_ANNOTATION_ATTEMPT':
       return {
         ...state,
@@ -510,7 +539,7 @@ export default (state = initialState, action) => {
       return produce(state, draft => {
         const story = draft.data.find(story => story._id === action.response.removed)
         story.groups = story.groups.filter(
-          group => group.group_id !== action.response.group.group_id
+          group => group.group_id !== action.response.group.group_id,
         )
         draft.pending = false
         draft.error = false
@@ -537,7 +566,7 @@ export default (state = initialState, action) => {
             (group.group_id !== action.response.group_id && group) || {
               ...changedGroup,
               hidden: action.response.hidden,
-            }
+            },
         )
         draft.pending = false
         draft.error = false
