@@ -69,8 +69,8 @@ const TemplateTranslations = ({
       />
       <Button
         variant="primary"
-        block
         className="flashcard-template-button mt-sm mb-lg"
+        style={{ width: '100%' }}
         onClick={handleTranslationSave}
       >
         <FormattedMessage id="save-the-translation" />

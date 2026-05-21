@@ -57,7 +57,7 @@ const LessonPracticeList = ({ lessonsPractices, removePractice, swapPracticeOrde
     <div style={{ marginBottom: '.5rem' }}>
       {lessonsPractices.length < 1 && <FormattedMessage id="no-practices-yet" />}
       {lessonsPractices.map((practice, index) => (
-        <div className="flex space-between" style={{ marginTop: '.5rem' }}>
+        <div key={`${practice}-${index}`} className="flex space-between" style={{ marginTop: '.5rem' }}>
           <div className="flex">
             <b style={{ marginRight: '1rem' }}>{index + 1}.</b>
             <FormattedMessage id={practice} />
