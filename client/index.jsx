@@ -15,7 +15,7 @@ import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
 const sentryDsn = 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10'
-const dsn = (process.env.ENVIRONMENT === 'development' || inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? sentryDsn : null
+const dsn = (inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? sentryDsn : null
 
 
 const filterReduxStateForSentry = event => {
