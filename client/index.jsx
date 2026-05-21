@@ -14,33 +14,38 @@ import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
 
-const dsn = (inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10' : null
+const sentryDsn = 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10'
+const dsn = (inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? sentryDsn : null
+
 
 const filterReduxStateForSentry = event => {
   const url = event.request?.url ?? ''
+  const reduxState = event.contexts?.state || event.contexts?.['redux.state']
+
+  if (!reduxState) return event
 
   if (!url.includes('practice')) {
-    delete event.contexts['redux.state'].practice
-    delete event.contexts['redux.state'].focusedSnippet
-    delete event.contexts['redux.state'].translation
+    delete reduxState.practice
+    delete reduxState.focusedSnippet
+    delete reduxState.translation
   }
 
   if (!url.includes('flashcards')) {
-    delete event.contexts['redux.state'].flashcards
-    delete event.contexts['redux.state'].flashcardList
+    delete reduxState.flashcards
+    delete reduxState.flashcardList
   }
 
   if (!url.includes('crossword')) {
-    delete event.contexts['redux.state'].crossword
+    delete reduxState.crossword
   }
 
   if (!url.includes('tests')) {
-    delete event.contexts['redux.state'].tests
+    delete reduxState.tests
   }
 
   if (!url.includes('concepts')) {
-    delete event.contexts['redux.state'].metadata
-    delete event.contexts['redux.state'].groups
+    delete reduxState.metadata
+    delete reduxState.groups
   }
 
   return event
@@ -48,12 +53,13 @@ const filterReduxStateForSentry = event => {
 
 Sentry.init({
   dsn,
-  environment: isStaging ? 'staging' : 'production',
+  environment: process.env.ENVIRONMENT,
   release: `revita@${__COMMIT__}`, // eslint-disable-line no-undef
-  normalizeDepth: 10,
-  maxValueLength: 1000,
+  maxBreadcrumbs: 30,
+  normalizeDepth: 4,
+  maxValueLength: 500,
   beforeSend(event, hint) {
-    return event.contexts ? filterReduxStateForSentry(event) : event
+    return filterReduxStateForSentry(event)
   },
 })
 

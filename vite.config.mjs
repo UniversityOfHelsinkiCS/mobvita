@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import moment from 'moment-timezone'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
+import { execSync } from 'child_process'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm')
@@ -32,10 +33,21 @@ const getPackageChunkName = (id) => {
   return `vendor-${packageName.replace('@', '').replace(/[^a-zA-Z0-9_-]/g, '-')}`
 }
 
+const getCommitHash = () => {
+  if (process.env.COMMIT_HASH) return process.env.COMMIT_HASH.substring(0, 7)
+
+  try {
+    return execSync('git rev-parse --short HEAD', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim()
+  } catch (error) {
+    console.warn('Could not read git commit hash; using "unknown" for __COMMIT__.', error.message)
+    return 'unknown'
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const BASE_PATH = process.env.BASE_PATH || '/'
   const ENVIRONMENT = process.env.ENVIRONMENT || ''
-  const COMMIT_HASH = process.env.COMMIT_HASH || ''
+  const COMMIT_HASH = getCommitHash()
 
   return {
     base: BASE_PATH,
