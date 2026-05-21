@@ -148,7 +148,7 @@ export default function Sidebar() {
         className="sidebar-panel"
         component="aside"
         role="complementary"
-        aria-hidden={!open}
+        inert={!open ? '' : undefined}
         sx={{
           position: 'fixed',
           top: 0,
