@@ -10,7 +10,8 @@ import {
   recordFlashcardAnswer,
   addToTotal,
   answerBluecards,
-  getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
+  getStoriesBlueFlashcards,
+} from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
@@ -48,19 +49,28 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       deletePending: flashcards.deletePending,
       sessionId: flashcards.sessionId,
     }),
-    shallowEqual
+    shallowEqual,
   )
   const rawCards = useSelector(({ flashcards }) =>
-    mode === 'article' ? flashcards.nounCards : flashcards.cards
+    mode === 'article' ? flashcards.nounCards : flashcards.cards,
   )
   const cards = useMemo(() => {
     if (!rawCards) return []
     const filtered =
       mode === 'article'
         ? rawCards.filter(card =>
-            ['Feminine', 'Masculine', 'Neuter', 'ut', 'm', 'f', 'nt', 'Fem', 'Neut', 'Masc'].includes(
-              card.gender
-            )
+            [
+              'Feminine',
+              'Masculine',
+              'Neuter',
+              'ut',
+              'm',
+              'f',
+              'nt',
+              'Fem',
+              'Neut',
+              'Masc',
+            ].includes(card.gender),
           )
         : rawCards
     return filtered.map(card => ({ ...card, correct: false }))
@@ -78,7 +88,10 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
   const renderArrowButton = ({ hidden, disabled, onClick }) => {
     if (!arrowSlot) return null
-    return createPortal(<ArrowButton hidden={hidden} disabled={disabled} onClick={onClick} />, arrowSlot)
+    return createPortal(
+      <ArrowButton hidden={hidden} disabled={disabled} onClick={onClick} />,
+      arrowSlot,
+    )
   }
 
   useEffect(() => {
@@ -106,7 +119,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   useEffect(() => {
     dispatch(
       getIncompleteStories(learningLanguage, {
-        sort_by: 'access' })
+        sort_by: 'access',
+      }),
     )
 
     if (!inBlueCardsTest) {
@@ -117,7 +131,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   useEffect(() => {
     if (incomplete.length > 0) {
       const latestIncompleteStories = incomplete.filter(
-        story => story.last_snippet_id !== story.num_snippets - 1
+        story => story.last_snippet_id !== story.num_snippets - 1,
       )
       const previousStories = []
       for (
@@ -135,7 +149,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   useEffect(() => {
     if (blueCardsAnswered.length === cards.length && blueCardsAnswered.length > 0) {
       const answerObj = {
-        flashcard_answers: blueCardsAnswered }
+        flashcard_answers: blueCardsAnswered,
+      }
       setBlueCardsAnswered([])
       dispatch(answerBluecards(learningLanguage, dictionaryLanguage, answerObj))
       setHasAnsweredBlueCards(true)
@@ -161,12 +176,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const handleIndexChange = index => {
     const oldIndex = swipeIndexRef.current
 
-    if (index < oldIndex) {
-      if (swiperRef.current) {
-        swiperRef.current.slideTo(oldIndex)
-      }
-      return
-    }
+    if (!cards[oldIndex]) return
 
     setSwipeIndex(index)
 
@@ -180,10 +190,14 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         mode: 'trans',
         exercise: 'fillin',
         lemma: cards[oldIndex].lemma,
-        answer: '' }
+        answer: '',
+      }
       setBlueCardsAnswered(blueCardsAnswered.concat(wrongAnswerObj))
     }
     dispatch(addToTotal())
+    setTimeout(() => {
+      if (index < oldIndex) setSwipeIndex(oldIndex)
+    }, 1)
   }
 
   const handleNewDeck = () => {
@@ -208,7 +222,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       mode: 'trans',
       story,
       lemma,
-      session_id: sessionId }
+      session_id: sessionId,
+    }
     if (!inBlueCardsTest) {
       dispatch(recordFlashcardAnswer(lan_in, lan_out, answerDetails))
     } else {
@@ -321,7 +336,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       {renderArrowButton({
         hidden: editing || swipeIndex === cards.length || cards[0].format === 'no-cards',
         onClick: () => handleIndexChange(swipeIndex + 1),
-        disabled: swipeIndex === cards.length || cards[0].format === 'no-cards' })}
+        disabled: swipeIndex === cards.length || cards[0].format === 'no-cards',
+      })}
     </div>
   )
 }
