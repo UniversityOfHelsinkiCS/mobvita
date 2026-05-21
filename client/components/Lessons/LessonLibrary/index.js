@@ -570,15 +570,15 @@ const LessonList = () => {
                     <Stepper
                       steps={[
                         {
-                          stepLabel: <FormattedMessage id="selected-lesson-themes" />,
+                          stepLabel: intl.formatMessage({ id: 'selected-lesson-themes' }),
                           stepDescription: '',
                           completed: goStep > 0 },
                         {
-                          stepLabel: <FormattedMessage id="Lesson vocab" />,
+                          stepLabel: intl.formatMessage({ id: 'Lesson vocab' }),
                           stepDescription: '',
                           completed: goStep > 1 },
                         {
-                          stepLabel: <FormattedMessage id="Grammar topics" />,
+                          stepLabel: intl.formatMessage({ id: 'Grammar topics' }),
                           stepDescription: '',
                           completed: false },
                       ]}
