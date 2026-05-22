@@ -11,8 +11,8 @@ import {
   Select,
   Typography,
 } from '@mui/material'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
+import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import SearchIcon from '@mui/icons-material/Search'
@@ -190,6 +190,26 @@ const StoryList = () => {
     value: group.group_id,
   }))
 
+  const dropdownMenuProps = {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
+    transformOrigin: {
+      vertical: 'top',
+      horizontal: 'left',
+    },
+    PaperProps: {
+      className: 'library-dropdown-menu',
+      sx: {
+        backgroundColor: '#ffffff',
+      },
+    },
+    MenuListProps: {
+      className: 'library-dropdown-menu-list',
+    },
+  }
+
   const handleSortChange = event => {
     const newSorter = event.target.value
     setSorter(newSorter)
@@ -268,16 +288,25 @@ const StoryList = () => {
       >
         <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <FormControl size="small" sx={{ minWidth: 180 }}>
-            <Select value={sorter} onChange={handleSortChange}>
+            <Select
+              value={sorter}
+              onChange={handleSortChange}
+              className="library-semantic-select"
+              MenuProps={dropdownMenuProps}
+            >
               {sortDropdownOptions.map(option => (
-                <MenuItem key={option.key} value={option.value}>
+                <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
                   {option.text}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
           <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-            {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+            {sortDirection === 'asc' ? (
+              <ArrowDropUpSharpIcon fontSize="large" />
+            ) : (
+              <ArrowDropDownSharpIcon fontSize="large" />
+            )}
           </IconButton>
         </Box>
 
@@ -433,10 +462,12 @@ const StoryList = () => {
               <Select
                 value={savedGroupSelection}
                 onChange={handleGroupChange}
+                className="library-semantic-select"
+                MenuProps={dropdownMenuProps}
                 sx={{ color: '#777', width: '100%' }}
               >
                 {groupDropdownOptions.map(option => (
-                  <MenuItem key={option.key} value={option.value}>
+                  <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
                     {option.text}
                   </MenuItem>
                 ))}

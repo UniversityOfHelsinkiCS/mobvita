@@ -50,25 +50,24 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
       <Tooltip title={intl.formatMessage({ id: 'explain-library-search' })}>
         <InfoOutlinedIcon color="action" fontSize="small" />
       </Tooltip>
-      <TextField
-        placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-        onChange={event => setCurrentQuery(event.target.value)}
-        onKeyDown={handleSearchFieldKeyDown}
-        value={currentQuery}
-        fullWidth={fluid}
-        size="small"
-        InputProps={{
-          endAdornment: (
-            <IconButton
-              aria-label={intl.formatMessage({ id: 'search-input-placeholder' })}
-              onClick={handleLibrarySearch}
-              edge="end"
-            >
-              <SearchIcon />
-            </IconButton>
-          ),
-        }}
-      />
+      <Box className="library-search-control" sx={{ width: fluid ? '100%' : 'auto' }}>
+        <TextField
+          className="library-search-field"
+          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
+          onChange={event => setCurrentQuery(event.target.value)}
+          onKeyDown={handleSearchFieldKeyDown}
+          value={currentQuery}
+          fullWidth
+          size="small"
+        />
+        <IconButton
+          aria-label={intl.formatMessage({ id: 'search-input-placeholder' })}
+          className="library-search-button"
+          onClick={handleLibrarySearch}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Box>
       {lastQuery && (
         <IconButton
           className="library-search-cancel"
