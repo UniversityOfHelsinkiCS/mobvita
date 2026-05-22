@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
@@ -603,7 +603,7 @@ const ReadViews = ({ match }) => {
               </div>
             ) : (
               (routeStory?.paragraph || []).map((paragraph, index) => (
-                <React.Fragment key={index}>
+                <Fragment key={index}>
                   <TextWithFeedback
                     hideFeedback={!show_preview_exer}
                     showDifficulty={showDifficulty}
@@ -615,7 +615,7 @@ const ReadViews = ({ match }) => {
                   />
                   <br />
                   <br />
-                </React.Fragment>
+                </Fragment>
               ))
             )}
             <ScrollArrow />
