@@ -41,4 +41,4 @@ const FolderCard = ({ name, onClick }) => {
   )
 }
 
-export default FolderCard
+export default React.memo(FolderCard)

@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Input, Icon, Popup } from 'semantic-ui-react'
+import { Box, IconButton, TextField, Tooltip } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import SearchIcon from '@mui/icons-material/Search'
 import { useLearningLanguage } from 'Utilities/common'
 import { searchStories, setLastQuery } from 'Utilities/redux/storiesReducer'
 import { useIntl } from 'react-intl'
@@ -11,7 +14,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
   const learningLanguage = useLearningLanguage()
   const { data: stories, lastQuery } = useSelector(({ stories }) => stories)
 
-  const [currentQuery, setCurrentQuery] = useState('')
+  const [currentQuery, setCurrentQuery] = React.useState('')
 
   const cancelSearch = () => {
     setCurrentQuery('')
@@ -31,43 +34,53 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
           sort_by: 'date',
           order: -1,
           text: currentQuery,
-        })
+        }),
       )
     }
   }
 
-  const handleSearchFieldKeyPress = e => {
-    if (e.key === 'Enter') {
+  const handleSearchFieldKeyDown = event => {
+    if (event.key === 'Enter') {
       handleLibrarySearch()
     }
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      <Popup
-          content={intl.formatMessage({ id: 'explain-library-search' })}
-          trigger={<Icon style={{ paddingRight: '0.5em' }}
-                         name="info circle"
-                         color="grey" />}
-      />
-      <Input
-        action={{ icon: 'search', onClick: handleLibrarySearch, color: 'grey' }}
+    <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Tooltip title={intl.formatMessage({ id: 'explain-library-search' })}>
+        <InfoOutlinedIcon color="action" fontSize="small" />
+      </Tooltip>
+      <TextField
         placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-        onChange={e => setCurrentQuery(e.target.value)}
-        onKeyPress={handleSearchFieldKeyPress}
+        onChange={event => setCurrentQuery(event.target.value)}
+        onKeyDown={handleSearchFieldKeyDown}
         value={currentQuery}
-        fluid={fluid}
+        fullWidth={fluid}
+        size="small"
+        InputProps={{
+          endAdornment: (
+            <IconButton
+              aria-label={intl.formatMessage({ id: 'search-input-placeholder' })}
+              onClick={handleLibrarySearch}
+              edge="end"
+            >
+              <SearchIcon />
+            </IconButton>
+          ),
+        }}
       />
       {lastQuery && (
-        <Icon
+        <IconButton
           className="library-search-cancel"
+          aria-label="Clear search"
           onClick={cancelSearch}
-          size="large"
-          color="grey"
-          name="times"
-        />
+          size="small"
+          sx={{ position: 'absolute', right: 42 }}
+        >
+          <CloseIcon />
+        </IconButton>
       )}
-    </div>
+    </Box>
   )
 }
 

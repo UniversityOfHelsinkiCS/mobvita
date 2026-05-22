@@ -1,11 +1,107 @@
+.library-story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2em;
+  row-gap: 1.75em;
+  margin: 0.875em 1em;
+  align-items: stretch;
+
+  @media (max-width: 699px) {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.mui-story-card {
+  max-width: 100%;
+  width: 100%;
+  min-height: 0;
+  height: 95%;
+  padding: 0;
+  border: none !important;
+  border-radius: 12px !important;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+  font-size: 1em;
+  overflow: visible;
+
+  .MuiCardContent-root {
+    max-width: 100%;
+    min-height: 0 !important;
+    flex-grow: 0;
+    position: static;
+    width: auto;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    transition: color 0.1s ease;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+
+    &:first-of-type {
+      border-top: none !important;
+      border-radius: 0.28571429rem 0.28571429rem 0 0 !important;
+    }
+
+    &:last-child {
+      border-radius: 0 0 0.28571429rem 0.28571429rem !important;
+    }
+  }
+
+  .story-card-title-cont {
+    padding: 15px 15px 5px 15px !important;
+  }
+
+  .story-card-description-cont {
+    padding: 0.75em 1em !important;
+  }
+
+  .story-card-actions-cont {
+    padding: 10px 15px !important;
+
+    &:last-child {
+      padding-bottom: 0 !important;
+    }
+  }
+
+  .library-tour-open-story-modal {
+    min-width: 0;
+  }
+
+  .story-item-dots {
+    flex: 0 0 auto;
+    width: 1.18em;
+    height: 1.18em;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .story-item-title {
+    margin: 0 0 0 8px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-family: "Rubik", sans-serif;
+    line-height: 1.2;
+  }
+
+  .story-description {
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+    line-height: 1.4285em;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
 .library-folder-card {
   position: relative;
-  min-height: 130px;
+  box-sizing: border-box;
+  min-height: 0;
+  height: 100%;
   width: 100%;
-  border: 1px solid #6aa6df;
-  border-radius: 8px;
+  border: none;
+  border-radius: 0.28571429rem;
   background: linear-gradient(180deg, #f7fbff 0%, #eaf5ff 100%);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #6aa6df;
   cursor: pointer;
   text-align: left;
   padding: 28px 24px 20px;

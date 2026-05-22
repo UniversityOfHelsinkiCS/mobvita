@@ -1,20 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Placeholder,
-  Card,
-  Select,
-  Icon,
-  Dropdown,
   Accordion,
-  AccordionTitle,
-  AccordionContent,
-} from 'semantic-ui-react'
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import CloseIcon from '@mui/icons-material/Close'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import SearchIcon from '@mui/icons-material/Search'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
-import { backgroundColors, capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation } from 'react-router-dom'
 import {
@@ -51,21 +57,18 @@ const StoryList = () => {
 
   const smallWindow = useWindowDimensions().width < 520
 
-  const smallScreenSearchbar = useRef()
-  const bigScreen = useWindowDimensions().width >= 700
-
-  const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
-  const [sortDirection, setSortDirection] = useState(
+  const [sorter, setSorter] = React.useState(savedSortCriterion[savedLibrarySelection].sort_by)
+  const [sortDirection, setSortDirection] = React.useState(
     savedSortCriterion[savedLibrarySelection].direction,
   )
-  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
-  const [displayedStories, setDisplayedStories] = useState(stories)
-  const [displaySearchResults, setDisplaySearchResults] = useState(false)
-  const [accordionState, setAccordionState] = useState(-1)
+  const [addStoryModalOpen, setAddStoryModalOpen] = React.useState(false)
+  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = React.useState(false)
+  const [displayedStories, setDisplayedStories] = React.useState(stories)
+  const [displaySearchResults, setDisplaySearchResults] = React.useState(false)
+  const [accordionState, setAccordionState] = React.useState(-1)
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
-  const [libraries, setLibraries] = useState({
+  const [libraries, setLibraries] = React.useState({
     public: false,
     private: false,
     group: false,
@@ -96,7 +99,7 @@ const StoryList = () => {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (groupsLibrary) {
       setLibrary('group')
     }
@@ -105,7 +108,7 @@ const StoryList = () => {
     }
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (sharedToGroupSinceLastFetch || deleteSuccessful) {
       dispatch(
         getAllStories(learningLanguage, {
@@ -116,20 +119,20 @@ const StoryList = () => {
     }
   }, [sharedToGroupSinceLastFetch, deleteSuccessful])
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(clearFocusedStory())
     dispatch(getGroups())
     dispatch(setLastQuery(null))
     setDisplayedStories(stories)
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
       dispatch(updateGroupSelect(groups[0].group_id))
     }
   }, [groups])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!groupsLibrary && !privateLibrary) {
       setLibrary(savedLibrarySelection)
       if (savedLibrarySelection === 'public' && sorter === 'date') {
@@ -138,25 +141,21 @@ const StoryList = () => {
     }
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (stories && !displaySearchResults) setDisplayedStories(stories)
   }, [stories])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (displaySearchResults) {
       setDisplayedStories(searchResults)
     }
   }, [searchResults])
 
-  useEffect(() => {
-    if (smallScreenSearchbar.current && smallScreenSearchOpen) smallScreenSearchbar.current.focus()
-  }, [smallScreenSearchOpen])
-
-  const handleGroupChange = (_e, option) => {
-    dispatch(updateGroupSelect(option.value))
+  const handleGroupChange = event => {
+    dispatch(updateGroupSelect(event.target.value))
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!user.user.has_seen_library_tour) {
       dispatch(libraryTourViewed())
       dispatch(startLibraryTour())
@@ -164,11 +163,7 @@ const StoryList = () => {
   }, [])
 
   const handleSearchIconClick = () => {
-    if (smallScreenSearchOpen) {
-      setSmallScreenSearchOpen(false)
-    } else {
-      setSmallScreenSearchOpen(true)
-    }
+    setSmallScreenSearchOpen(!smallScreenSearchOpen)
   }
 
   const sortDropdownOptions = [
@@ -195,13 +190,14 @@ const StoryList = () => {
     value: group.group_id,
   }))
 
-  const handleSortChange = (_e, option) => {
-    setSorter(option.value)
+  const handleSortChange = event => {
+    const newSorter = event.target.value
+    setSorter(newSorter)
     dispatch(
       updateSortCriterion({
         ...savedSortCriterion,
         [savedLibrarySelection]: {
-          sort_by: option.value,
+          sort_by: newSorter,
           direction: sortDirection,
         },
       }),
@@ -223,14 +219,15 @@ const StoryList = () => {
   }
 
   const libraryControls = (
-    <div data-cy="library-controls" className="library-control">
+    <Box data-cy="library-controls" className="library-control">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
 
       <Button
         className="tour-add-new-stories"
         onClick={() => setAddStoryModalOpen(true)}
         data-cy="add-story-button"
-        size="big"
+        variant="primary"
+        size="large"
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -254,42 +251,47 @@ const StoryList = () => {
         groupDropdownDisabled={!libraries.group}
         handleGroupChange={handleGroupChange}
       />
-    </div>
+    </Box>
   )
 
   const searchAndSortControls = (
     <>
-      <div className="search-and-sort">
-        <div className="flex align-center">
-          <Dropdown
-            value={sorter}
-            options={sortDropdownOptions}
-            onChange={handleSortChange}
-            selection
-          />
-          <Icon
-            style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-            name={sortDirection === 'asc' ? 'caret up' : 'caret down'}
-            size="large"
-            color="grey"
-            onClick={handleDirectionChange}
-          />
-        </div>
+      <Box
+        className="search-and-sort"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          flexWrap: 'wrap',
+        }}
+      >
+        <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <FormControl size="small" sx={{ minWidth: 180 }}>
+            <Select value={sorter} onChange={handleSortChange}>
+              {sortDropdownOptions.map(option => (
+                <MenuItem key={option.key} value={option.value}>
+                  {option.text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
+            {sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+          </IconButton>
+        </Box>
 
         {smallWindow ? (
-          <Icon
-            name={smallScreenSearchOpen ? 'close' : 'search'}
-            circular
-            color="grey"
-            onClick={handleSearchIconClick}
-          />
+          <IconButton aria-label="Search library" onClick={handleSearchIconClick}>
+            {smallScreenSearchOpen ? <CloseIcon /> : <SearchIcon />}
+          </IconButton>
         ) : (
           <LibrarySearch
             setDisplayedStories={setDisplayedStories}
             setDisplaySearchResults={setDisplaySearchResults}
           />
         )}
-      </div>
+      </Box>
 
       {smallScreenSearchOpen && (
         <LibrarySearch
@@ -373,113 +375,93 @@ const StoryList = () => {
     return dir * multiplier
   })
 
+  const renderStoryGrid = storiesToRender => (
+    <Box data-cy="story-items" className="library-story-grid">
+      {!libraries.public && <FolderCard name="Example folder" onClick={() => {}} />}
+      {storiesToRender.map(story => (
+        <StoryListItem
+          key={story._id}
+          libraryShown={libraries}
+          story={story}
+          selectedGroup={savedGroupSelection}
+          savedLibrarySelection={savedLibrarySelection}
+        />
+      ))}
+    </Box>
+  )
+
   const accordionView = () => {
-    const storyId2Index = libraryFilteredStories.reduce((acc, story, index) => {
-      acc[story._id] = index
-      return acc
-    }, {})
     const libraryGroup =
       (libraryFilteredStories &&
-        libraryFilteredStories.reduce((x, y) => {
-          ;(x[y.difficulty] = x[y.difficulty] || []).push(y)
-          return x
+        libraryFilteredStories.reduce((groupsByDifficulty, story) => {
+          const difficultyGroup = groupsByDifficulty[story.difficulty] || []
+          difficultyGroup.push(story)
+          groupsByDifficulty[story.difficulty] = difficultyGroup
+          return groupsByDifficulty
         }, {})) ||
       {}
-    const handleClick = (e, props) => {
-      const { index } = props
-      const newIndex = accordionState === index ? -1 : index
-      setAccordionState(newIndex)
-    }
+
     return (
-      <Accordion fluid styled style={{ background: '#fffaf0' }}>
+      <Box sx={{ background: '#fffaf0' }}>
         {Object.keys(libraryGroup)
           .sort((a, b) => stringToDifficulty(a) - stringToDifficulty(b))
           .map((group, index) => (
-            <div key={`story-group-block-${group}`}>
-              <AccordionTitle
-                key={`story-group-title-${group}`}
-                active={accordionState === index}
-                index={index}
-                onClick={handleClick}
-              >
-                <h4>
-                  <Icon name="dropdown" />
+            <Accordion
+              key={`story-group-block-${group}`}
+              expanded={accordionState === index}
+              onChange={() => setAccordionState(accordionState === index ? -1 : index)}
+            >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography component="h4" sx={{ fontWeight: 700 }}>
                   <FormattedMessage id={`level-${group}`} />
-                </h4>
-              </AccordionTitle>
-              <AccordionContent
-                key={`story-group-content-${group}`}
-                active={accordionState === index}
-              >
-                <Card.Group itemsPerRow={2} doubling={!bigScreen}>
-                  {libraryGroup[group].map((story, storyIdx) => (
-                    <StoryListItem
-                      key={`story-${story._id}`}
-                      libraryShown={libraries}
-                      story={libraryGroup[group][storyIdx]}
-                      selectedGroup={savedGroupSelection}
-                      style={{ padding: '0' }}
-                    />
-                  ))}
-                </Card.Group>
-              </AccordionContent>
-            </div>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>{renderStoryGrid(libraryGroup[group])}</AccordionDetails>
+            </Accordion>
           ))}
-      </Accordion>
+      </Box>
     )
   }
 
   return (
-    <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
+    <Box className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
-      <div className="universal-background" style={{ margin: '0 7px' }}>
+      <Box className="universal-background" sx={{ margin: '0 7px' }}>
         {libraries.group && (
-          <div className="library-group-dropdown-container">
-            <Select
-              value={savedGroupSelection}
-              options={groupDropdownOptions}
-              onChange={handleGroupChange}
-              style={{ color: '#777', width: '100%' }}
-            />
-          </div>
+          <Box className="library-group-dropdown-container">
+            <FormControl size="small" fullWidth>
+              <Select
+                value={savedGroupSelection}
+                onChange={handleGroupChange}
+                sx={{ color: '#777', width: '100%' }}
+              >
+                {groupDropdownOptions.map(option => (
+                  <MenuItem key={option.key} value={option.value}>
+                    {option.text}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         )}
         {searchAndSortControls}
         {lastQuery && (
-          <div className="mt-nm ml-sm gap-col-sm">
-            <span>
+          <Box className="mt-nm ml-sm gap-col-sm">
+            <Typography component="span">
               <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-            </span>
-          </div>
+            </Typography>
+          </Box>
         )}
-
-        <FolderCard name="Example folder" onClick={() => {}} />
 
         {noResults && (
-          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-stories-found" />
-          </div>
+          </Box>
         )}
         {!noResults && libraries.public && accordionView()}
-        {!noResults && !libraries.public && (
-          <Card.Group
-            itemsPerRow={2}
-            doubling={!bigScreen}
-            data-cy="story-items"
-            style={{ margin: '6px' }}
-          >
-            {libraryFilteredStories.map((story, index) => (
-              <StoryListItem
-                key={story._id}
-                libraryShown={libraries}
-                story={libraryFilteredStories[index]}
-                selectedGroup={savedGroupSelection}
-                savedLibrarySelection={savedLibrarySelection}
-              />
-            ))}
-          </Card.Group>
-        )}
-      </div>
-    </div>
+        {!libraries.public && renderStoryGrid(libraryFilteredStories)}
+      </Box>
+    </Box>
   )
 }
 
