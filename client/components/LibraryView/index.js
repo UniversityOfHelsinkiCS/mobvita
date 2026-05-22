@@ -8,7 +8,8 @@ import {
   Dropdown,
   Accordion,
   AccordionTitle,
-  AccordionContent } from 'semantic-ui-react'
+  AccordionContent,
+} from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -20,13 +21,15 @@ import {
   updateLibrarySelect,
   updateGroupSelect,
   updateSortCriterion,
-  libraryTourViewed } from 'Utilities/redux/userReducer'
+  libraryTourViewed,
+} from 'Utilities/redux/userReducer'
 import { getAllStories, setLastQuery, clearFocusedStory } from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
+import FolderCard from './FolderCard'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -36,7 +39,8 @@ const StoryList = () => {
     library_sort_criterion: savedSortCriterion,
     last_selected_library: savedLibrarySelection,
     last_selected_group: savedGroupSelection,
-    oid: userId } = useSelector(({ user }) => user.data.user)
+    oid: userId,
+  } = useSelector(({ user }) => user.data.user)
   const user = useSelector(({ user }) => user.data)
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
@@ -52,7 +56,7 @@ const StoryList = () => {
 
   const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
   const [sortDirection, setSortDirection] = useState(
-    savedSortCriterion[savedLibrarySelection].direction
+    savedSortCriterion[savedLibrarySelection].direction,
   )
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
@@ -64,7 +68,8 @@ const StoryList = () => {
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
-    group: false })
+    group: false,
+  })
   const dispatch = useDispatch()
 
   const setLibrary = library => {
@@ -85,7 +90,8 @@ const StoryList = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1 })
+          order: -1,
+        }),
       )
     }
   }
@@ -104,7 +110,8 @@ const StoryList = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1 })
+          order: -1,
+        }),
       )
     }
   }, [sharedToGroupSinceLastFetch, deleteSuccessful])
@@ -173,17 +180,20 @@ const StoryList = () => {
     sortDropdownOptions.push({
       key: 'difficulty',
       text: intl.formatMessage({ id: 'story-difficulty' }),
-      value: 'difficulty' })
+      value: 'difficulty',
+    })
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
-      value: 'date' })
+      value: 'date',
+    })
   }
 
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
     text: group.groupName,
-    value: group.group_id }))
+    value: group.group_id,
+  }))
 
   const handleSortChange = (_e, option) => {
     setSorter(option.value)
@@ -192,7 +202,9 @@ const StoryList = () => {
         ...savedSortCriterion,
         [savedLibrarySelection]: {
           sort_by: option.value,
-          direction: sortDirection } })
+          direction: sortDirection,
+        },
+      }),
     )
   }
 
@@ -204,7 +216,9 @@ const StoryList = () => {
         ...savedSortCriterion,
         [savedLibrarySelection]: {
           sort_by: sorter,
-          direction: newDirection } })
+          direction: newDirection,
+        },
+      }),
     )
   }
 
@@ -225,7 +239,8 @@ const StoryList = () => {
           width: '50%',
           border: '2px solid #000',
           fontSize: '1.3em',
-          fontWeight: 500 }}
+          fontWeight: 500,
+        }}
       >
         {intl.formatMessage({ id: 'add-your-stories' })}
       </Button>
@@ -417,7 +432,7 @@ const StoryList = () => {
   return (
     <div className="cont-tall pt-lg cont flex-col auto library-tour-start">
       {libraryControls}
-      <div className="universal-background" style={{margin: '0 7px'}}>
+      <div className="universal-background" style={{ margin: '0 7px' }}>
         {libraries.group && (
           <div className="library-group-dropdown-container">
             <Select
@@ -425,7 +440,7 @@ const StoryList = () => {
               options={groupDropdownOptions}
               onChange={handleGroupChange}
               style={{ color: '#777', width: '100%' }}
-              />
+            />
           </div>
         )}
         {searchAndSortControls}
@@ -436,6 +451,8 @@ const StoryList = () => {
             </span>
           </div>
         )}
+
+        <FolderCard name="Example folder" onClick={() => {}} />
 
         {noResults && (
           <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>

@@ -222,13 +222,13 @@ function randomCredentials() {
 }
 
 function closeSidebarIfOpen() {
-  cy.get('[data-cy=sidebar-panel]').then($panel => {
-    if ($panel.attr('aria-hidden') === 'false') {
+  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).then($panel => {
+    if (!$panel[0].hasAttribute('inert')) {
       cy.get('[data-cy=sidebar-panel] [data-cy=sidebar-close-hamburger]').click({ force: true })
     }
   })
 
-  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).should('have.attr', 'aria-hidden', 'true')
+  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).should('have.attr', 'inert')
   cy.get('[data-cy=sidebar-overlay]', { timeout: 10000 }).should('not.exist')
 }
 

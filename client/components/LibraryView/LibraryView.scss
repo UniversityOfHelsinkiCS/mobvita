@@ -1,0 +1,47 @@
+.library-folder-card {
+  position: relative;
+  min-height: 130px;
+  width: 100%;
+  border: 1px solid #6aa6df;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f7fbff 0%, #eaf5ff 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  text-align: left;
+  padding: 28px 24px 20px;
+}
+
+.library-folder-card::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: -1px;
+  width: 120px;
+  height: 28px;
+  border: 1px solid #6aa6df;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, #f7fbff 0%, #eaf5ff 100%);
+}
+
+.library-folder-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.library-folder-icon {
+  color: #6aaaf2;
+  font-size: 88px;
+}
+
+.library-folder-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.library-folder-menu {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+}
