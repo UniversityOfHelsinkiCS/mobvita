@@ -137,6 +137,7 @@
         transform: translateY(calc(100% - 30px));
     &.open {
       transform: translateY(0);
+      bottom: 0;
     }
     &.collapsed {
       transform: translateY(calc(100% - 30px));
@@ -148,20 +149,21 @@
       transform: translateX(-50%);
       width: 60px;
       height: 30px;
-      border-radius: none;
+      border-radius: 8px 8px 0 0;
       border: none;
       outline: none;
-      background: white;
+      background: #f1f1f1;
       border-bottom: none;
       z-index: 1100;
 
-            i.icon {
+      i.icon {
         font-size: 1.4rem;
         transition: transform 0.2s ease, font-size 0.15s ease;
+        margin-left: 10px;
       }
 
       &:hover {
-        background: #f0f0f0;
+        background: #f1f1f1;
         i.icon {
           font-size: 1.6rem;
         }
