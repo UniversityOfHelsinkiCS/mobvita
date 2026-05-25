@@ -13,8 +13,23 @@
 }
 
 .library-folder-breadcrumbs {
-  margin: 0.875em 1em 0;
+  margin: 0;
   padding: 0.35rem 0;
+}
+
+.library-folder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.875em 1em 0;
+}
+
+.library-add-folder-button {
+  color: #1f78c8 !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  border-radius: 0.28571429rem !important;
 }
 
 .library-folder-breadcrumb {

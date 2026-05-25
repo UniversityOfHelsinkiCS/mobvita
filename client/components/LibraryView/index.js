@@ -33,6 +33,7 @@ import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import FolderCard from './FolderCard'
+import AddFolder from './AddFolder'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -63,6 +64,7 @@ const StoryList = () => {
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
+  const [localFolders, setLocalFolders] = useState([])
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
@@ -337,6 +339,7 @@ const StoryList = () => {
   const librariesToShow = Object.entries(libraries)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
+  const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
 
   const libraryFilteredStories = displayedStories.filter(story => {
     if (story.public) {
@@ -377,8 +380,6 @@ const StoryList = () => {
     }
   }
 
-  const noResults = !pending && libraryFilteredStories.length === 0
-
   const normalizeLibraryPath = path =>
     (path || '')
       .split('/')
@@ -386,7 +387,7 @@ const StoryList = () => {
       .filter(Boolean)
       .join('/')
 
-  const getFoldersForPath = (storiesForLibrary, currentPath) => {
+  const getFoldersForPath = (storiesForLibrary, currentPath, folderPaths = []) => {
     const folderNames = new Set()
     const currentParts = currentPath ? currentPath.split('/') : []
 
@@ -404,6 +405,20 @@ const StoryList = () => {
       }
     })
 
+    folderPaths.forEach(folderPath => {
+      const path = normalizeLibraryPath(folderPath)
+      if (!path) return
+
+      const pathParts = path.split('/')
+      const folderIsInsideCurrentPath = currentParts.every(
+        (part, index) => pathParts[index] === part,
+      )
+
+      if (folderIsInsideCurrentPath && pathParts.length > currentParts.length) {
+        folderNames.add(pathParts[currentParts.length])
+      }
+    })
+
     return Array.from(folderNames).sort((a, b) => a.localeCompare(b))
   }
 
@@ -411,6 +426,9 @@ const StoryList = () => {
     storiesForLibrary.filter(story => normalizeLibraryPath(story.path) === currentPath)
 
   const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
+  const localFolderPathsForLibrary = localFolders
+    .filter(folder => folder.library === activeLibrary)
+    .map(folder => folder.path)
 
   libraryFilteredStories.sort((a, b) => {
     let dir = 0
@@ -472,14 +490,35 @@ const StoryList = () => {
     </Box>
   )
 
+  const handleAddFolder = folderName => {
+    const newFolderPath = currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName
+
+    setLocalFolders([
+      ...localFolders,
+      {
+        library: activeLibrary,
+        path: newFolderPath,
+      },
+    ])
+  }
+
   const renderFolderBrowser = () => {
-    const foldersInCurrentPath = getFoldersForPath(libraryFilteredStories, currentLibraryPath)
+    const foldersInCurrentPath = getFoldersForPath(
+      libraryFilteredStories,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
     const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
     const folderIsEmpty = foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0
 
     return (
       <>
-        {renderLibraryPathBreadcrumbs()}
+        <Box className="library-folder-header">
+          {renderLibraryPathBreadcrumbs()}
+          {(libraries.group || libraries.private) && (
+            <AddFolder existingFolderNames={foldersInCurrentPath} onAddFolder={handleAddFolder} />
+          )}
+        </Box>
         {folderIsEmpty ? (
           <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
             <FormattedMessage id="no-stories-found" />
@@ -546,12 +585,7 @@ const StoryList = () => {
           </Box>
         )}
 
-        {noResults && (
-          <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-            <FormattedMessage id="no-stories-found" />
-          </Box>
-        )}
-        {!noResults && renderFolderBrowser()}
+        {renderFolderBrowser()}
       </Box>
     </Box>
   )

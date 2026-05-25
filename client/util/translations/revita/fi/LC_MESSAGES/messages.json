@@ -1815,5 +1815,8 @@
     "click-to-action-menu": "{icon} Click the menu for more options",
     "display-word-nest": "Display word nest",
     "ru-йцуке": "Näppäimistö: ЙЦУКЕ",
-    "ru-яверт": "Näppäimistö: ЯВЕРТ"
+    "ru-яверт": "Näppäimistö: ЯВЕРТ",
+    "add-folder": "Lisää kansio",
+    "folder-name": "Kansion nimi",
+    "Add": "Lisää"
 }
