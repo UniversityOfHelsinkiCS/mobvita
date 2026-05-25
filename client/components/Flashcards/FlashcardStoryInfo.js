@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Tooltip } from '@mui/material'
 import { Icon } from 'semantic-ui-react'
 
 const content = ({ type, numOfRewardableWords, truncatedTitle }) => (
@@ -47,13 +47,9 @@ export const FlashcardStoryInfoIcon = ({ type, numOfRewardableWords, title }) =>
   const truncatedTitle = title.length > 50 ? `${title.slice(0, 50)}...` : title
 
   return (
-    <OverlayTrigger
+    <Tooltip
+      title={content({ type, numOfRewardableWords, truncatedTitle })}
       placement="bottom"
-      overlay={
-        <Tooltip id="flashcard-story-info-tooltip" className="white-tooltip">
-          {content({ type, numOfRewardableWords, truncatedTitle })}
-        </Tooltip>
-      }
     >
       <div
         style={{
@@ -66,6 +62,6 @@ export const FlashcardStoryInfoIcon = ({ type, numOfRewardableWords, title }) =>
       >
         <Icon name="info circle" style={{ width: '24px', height: '24px', display: 'block' }} />
       </div>
-    </OverlayTrigger>
+    </Tooltip>
   )
 }
