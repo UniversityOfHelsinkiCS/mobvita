@@ -6,14 +6,6 @@ import { createTheme } from '@mui/material/styles'
 
 const muiTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          outline: 'none !important',
-        },
-      },
-    },
-
     MuiTooltip: {
       defaultProps: {
         arrow: true,

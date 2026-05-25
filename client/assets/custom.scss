@@ -73,6 +73,10 @@ body {
   background-color: var(--app-bg-color);
 }
 
+button:focus {
+  outline: none;
+}
+
 html,
 body,
 #root {
