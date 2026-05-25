@@ -88,6 +88,10 @@ const LessonList = () => {
     pending: lessonPending,
     lesson,
     step: goStep } = useSelector(({ lessonInstance }) => lessonInstance)
+  const {
+    key: tourKey,
+    name: tourName,
+    run: tourRun } = useSelector(({ tour }) => tour)
 
   const { groups, pending: groupPending } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
@@ -163,6 +167,27 @@ const LessonList = () => {
       }
     }
   }, [lessonPending])
+
+  // Put the lesson page in the start state whenever the tour restarts.
+  useEffect(() => {
+    if (tourName !== 'lessons' || !tourRun) return
+
+    if (teacherView) {
+      setShowStartMenu(false)
+      setLibrary('group')
+      dispatch(clearLessonInstanceState())
+      dispatch(getLessonInstance(savedGroupSelection))
+      dispatch(setLessonStep(0))
+      return
+    }
+
+    setShowStartMenu(true)
+    setLibrary('private')
+    dispatch(updateLibrarySelect('private'))
+    dispatch(clearLessonInstanceState())
+    dispatch(getLessonInstance())
+    dispatch(setLessonStep(-1))
+  }, [tourKey])
 
   useEffect(() => {
     if (!groupPending && groups.length === 0 && libraries.group) {
