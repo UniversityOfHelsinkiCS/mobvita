@@ -406,7 +406,9 @@ const StoryList = () => {
 
   const renderStoryGrid = storiesToRender => (
     <Box data-cy="story-items" className="library-story-grid">
-      {!libraries.public && <FolderCard name="Example folder" onClick={() => {}} />}
+      {!libraries.public && <FolderCard name="Easy" onClick={() => {}} />}
+        {!libraries.public && <FolderCard name="Intermediate" onClick={() => {}} />}
+          {!libraries.public && <FolderCard name="Advanced" onClick={() => {}} />}
       {storiesToRender.map(story => (
         <StoryListItem
           key={story._id}

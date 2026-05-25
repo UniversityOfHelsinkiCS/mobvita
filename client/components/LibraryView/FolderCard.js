@@ -2,6 +2,7 @@ import React from 'react'
 import FolderIcon from '@mui/icons-material/Folder'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton } from '@mui/material'
+import Folder from '../../assets/images/folder.png'
 import './LibraryView.scss'
 
 const FolderCard = ({ name, onClick }) => {
@@ -23,7 +24,7 @@ const FolderCard = ({ name, onClick }) => {
       <span className="library-folder-tab" />
 
       <span className="library-folder-content">
-        <FolderIcon className="library-folder-icon" />
+        <img src={Folder} alt="Folder" className="library-folder-icon" />
         <span className="library-folder-name">{name}</span>
       </span>
 
