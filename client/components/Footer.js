@@ -6,6 +6,8 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 const Footer = () => {
   const location = useLocation()
 
+  const currentYear = new Date().getFullYear()
+
   const showResonsiveVoiceMention = location.pathname.includes('stories')
   const showTermsAndConditionsAndBuildVersion =
     location.pathname.includes('home') || location.pathname.includes('welcome')
@@ -26,7 +28,7 @@ const Footer = () => {
         )}
         <div className="footer-item">
           <img src={images.uhLogo} alt="logo" width={20} height={20} /> © University of Helsinki
-          2020–2025
+          2020–{currentYear}
         </div>
         {showResonsiveVoiceMention && (
           <div className="footer-item">
