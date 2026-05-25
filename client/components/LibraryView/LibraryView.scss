@@ -106,8 +106,7 @@
   line-height: 1em !important;
   pointer-events: all;
 
-  &:hover,
-  &.Mui-focusVisible {
+  &:hover {
     background-color: rgba(0, 0, 0, 0.03) !important;
   }
 
@@ -158,8 +157,7 @@
   border-left: none !important;
 }
 
-.library-search-button:hover,
-.library-search-button.Mui-focusVisible {
+.library-search-button:hover {
   background: linear-gradient(#55565d, #393a41) !important;
 }
 
