@@ -17,6 +17,7 @@ const muiTheme = createTheme({
     MuiTooltip: {
       defaultProps: {
         arrow: true,
+        placement: 'top-start',
       },
       styleOverrides: {
         tooltip: {
