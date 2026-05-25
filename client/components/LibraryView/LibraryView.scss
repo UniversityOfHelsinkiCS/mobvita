@@ -12,6 +12,29 @@
   }
 }
 
+.library-folder-breadcrumbs {
+  margin: 0.875em 1em 0;
+  padding: 0.35rem 0;
+}
+
+.library-folder-breadcrumb {
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  font-family: "Rubik", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0;
+}
+
+.library-folder-breadcrumb-current {
+  color: rgba(0, 0, 0, 0.55);
+  font-family: "Rubik", sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
 .library-semantic-select {
   min-width: 14em;
   min-height: 2.71428571em;

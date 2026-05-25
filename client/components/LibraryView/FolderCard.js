@@ -1,5 +1,4 @@
-import React from 'react'
-import FolderIcon from '@mui/icons-material/Folder'
+import React, { memo } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { IconButton } from '@mui/material'
 import Folder from '../../assets/images/folder.png'
@@ -42,4 +41,4 @@ const FolderCard = ({ name, onClick }) => {
   )
 }
 
-export default React.memo(FolderCard)
+export default memo(FolderCard)

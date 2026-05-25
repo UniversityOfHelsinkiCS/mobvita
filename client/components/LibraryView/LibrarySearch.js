@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, IconButton, TextField, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -12,7 +12,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
   const intl = useIntl()
   const { data: stories, lastQuery } = useSelector(({ stories }) => stories)
 
-  const [currentQuery, setCurrentQuery] = React.useState('')
+  const [currentQuery, setCurrentQuery] = useState('')
 
   const filterStories = query => {
     const normalizedQuery = query.trim().toLowerCase()

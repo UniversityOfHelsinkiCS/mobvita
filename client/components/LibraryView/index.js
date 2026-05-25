@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
+  Breadcrumbs,
   FormControl,
   IconButton,
   MenuItem,
@@ -14,7 +12,6 @@ import {
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import CloseIcon from '@mui/icons-material/Close'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import SearchIcon from '@mui/icons-material/Search'
 import { Button } from 'react-bootstrap'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
@@ -57,18 +54,18 @@ const StoryList = () => {
 
   const smallWindow = useWindowDimensions().width < 520
 
-  const [sorter, setSorter] = React.useState(savedSortCriterion[savedLibrarySelection].sort_by)
-  const [sortDirection, setSortDirection] = React.useState(
+  const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
+  const [sortDirection, setSortDirection] = useState(
     savedSortCriterion[savedLibrarySelection].direction,
   )
-  const [addStoryModalOpen, setAddStoryModalOpen] = React.useState(false)
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = React.useState(false)
-  const [displayedStories, setDisplayedStories] = React.useState(stories)
-  const [displaySearchResults, setDisplaySearchResults] = React.useState(false)
-  const [accordionState, setAccordionState] = React.useState(-1)
+  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
+  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
+  const [displayedStories, setDisplayedStories] = useState(stories)
+  const [displaySearchResults, setDisplaySearchResults] = useState(false)
+  const [currentLibraryPath, setCurrentLibraryPath] = useState('')
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
-  const [libraries, setLibraries] = React.useState({
+  const [libraries, setLibraries] = useState({
     public: false,
     private: false,
     group: false,
@@ -87,6 +84,7 @@ const StoryList = () => {
   const handleLibraryChange = library => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
+    setCurrentLibraryPath('')
     setSorter(savedSortCriterion[library].sort_by)
     setSortDirection(savedSortCriterion[library].direction)
     if (library === 'group' && sharedToGroupSinceLastFetch) {
@@ -99,7 +97,7 @@ const StoryList = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (groupsLibrary) {
       setLibrary('group')
     }
@@ -108,7 +106,7 @@ const StoryList = () => {
     }
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (sharedToGroupSinceLastFetch || deleteSuccessful) {
       dispatch(
         getAllStories(learningLanguage, {
@@ -119,20 +117,20 @@ const StoryList = () => {
     }
   }, [sharedToGroupSinceLastFetch, deleteSuccessful])
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(clearFocusedStory())
     dispatch(getGroups())
     dispatch(setLastQuery(null))
     setDisplayedStories(stories)
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!groups.find(g => g.group_id === savedGroupSelection) && groups[0]) {
       dispatch(updateGroupSelect(groups[0].group_id))
     }
   }, [groups])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!groupsLibrary && !privateLibrary) {
       setLibrary(savedLibrarySelection)
       if (savedLibrarySelection === 'public' && sorter === 'date') {
@@ -141,11 +139,11 @@ const StoryList = () => {
     }
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (stories && !displaySearchResults) setDisplayedStories(stories)
   }, [stories])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (displaySearchResults) {
       setDisplayedStories(searchResults)
     }
@@ -155,7 +153,7 @@ const StoryList = () => {
     dispatch(updateGroupSelect(event.target.value))
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user.user.has_seen_library_tour) {
       dispatch(libraryTourViewed())
       dispatch(startLibraryTour())
@@ -381,6 +379,39 @@ const StoryList = () => {
 
   const noResults = !pending && libraryFilteredStories.length === 0
 
+  const normalizeLibraryPath = path =>
+    (path || '')
+      .split('/')
+      .map(part => part.trim())
+      .filter(Boolean)
+      .join('/')
+
+  const getFoldersForPath = (storiesForLibrary, currentPath) => {
+    const folderNames = new Set()
+    const currentParts = currentPath ? currentPath.split('/') : []
+
+    storiesForLibrary.forEach(story => {
+      const path = normalizeLibraryPath(story.path)
+      if (!path) return
+
+      const pathParts = path.split('/')
+      const storyIsInsideCurrentPath = currentParts.every(
+        (part, index) => pathParts[index] === part,
+      )
+
+      if (storyIsInsideCurrentPath && pathParts.length > currentParts.length) {
+        folderNames.add(pathParts[currentParts.length])
+      }
+    })
+
+    return Array.from(folderNames).sort((a, b) => a.localeCompare(b))
+  }
+
+  const getStoriesForPath = (storiesForLibrary, currentPath) =>
+    storiesForLibrary.filter(story => normalizeLibraryPath(story.path) === currentPath)
+
+  const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
+
   libraryFilteredStories.sort((a, b) => {
     let dir = 0
     switch (sorter) {
@@ -404,53 +435,82 @@ const StoryList = () => {
     return dir * multiplier
   })
 
-  const renderStoryGrid = storiesToRender => (
-    <Box data-cy="story-items" className="library-story-grid">
-      {!libraries.public && <FolderCard name="Easy" onClick={() => {}} />}
-        {!libraries.public && <FolderCard name="Intermediate" onClick={() => {}} />}
-          {!libraries.public && <FolderCard name="Advanced" onClick={() => {}} />}
-      {storiesToRender.map(story => (
-        <StoryListItem
-          key={story._id}
-          libraryShown={libraries}
-          story={story}
-          selectedGroup={savedGroupSelection}
-          savedLibrarySelection={savedLibrarySelection}
-        />
-      ))}
+  const renderLibraryPathBreadcrumbs = () => (
+    <Box className="library-folder-breadcrumbs">
+      <Breadcrumbs aria-label="Library folder path">
+        <button
+          type="button"
+          className="library-folder-breadcrumb"
+          onClick={() => setCurrentLibraryPath('')}
+        >
+          Library
+        </button>
+        {libraryPathParts.map((part, index) => {
+          const path = libraryPathParts.slice(0, index + 1).join('/')
+          const isCurrentFolder = path === currentLibraryPath
+
+          if (isCurrentFolder) {
+            return (
+              <Typography key={path} className="library-folder-breadcrumb-current">
+                {part}
+              </Typography>
+            )
+          }
+
+          return (
+            <button
+              type="button"
+              key={path}
+              className="library-folder-breadcrumb"
+              onClick={() => setCurrentLibraryPath(path)}
+            >
+              {part}
+            </button>
+          )
+        })}
+      </Breadcrumbs>
     </Box>
   )
 
-  const accordionView = () => {
-    const libraryGroup =
-      (libraryFilteredStories &&
-        libraryFilteredStories.reduce((groupsByDifficulty, story) => {
-          const difficultyGroup = groupsByDifficulty[story.difficulty] || []
-          difficultyGroup.push(story)
-          groupsByDifficulty[story.difficulty] = difficultyGroup
-          return groupsByDifficulty
-        }, {})) ||
-      {}
+  const renderFolderBrowser = () => {
+    const foldersInCurrentPath = getFoldersForPath(libraryFilteredStories, currentLibraryPath)
+    const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
+    const folderIsEmpty = foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0
 
     return (
-      <Box sx={{ background: '#fffaf0' }}>
-        {Object.keys(libraryGroup)
-          .sort((a, b) => stringToDifficulty(a) - stringToDifficulty(b))
-          .map((group, index) => (
-            <Accordion
-              key={`story-group-block-${group}`}
-              expanded={accordionState === index}
-              onChange={() => setAccordionState(accordionState === index ? -1 : index)}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography component="h4" sx={{ fontWeight: 700 }}>
-                  <FormattedMessage id={`level-${group}`} />
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>{renderStoryGrid(libraryGroup[group])}</AccordionDetails>
-            </Accordion>
-          ))}
-      </Box>
+      <>
+        {renderLibraryPathBreadcrumbs()}
+        {folderIsEmpty ? (
+          <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+            <FormattedMessage id="no-stories-found" />
+          </Box>
+        ) : (
+          <Box data-cy="story-items" className="library-story-grid">
+            {foldersInCurrentPath.map(folderName => {
+              const folderPath = currentLibraryPath
+                ? `${currentLibraryPath}/${folderName}`
+                : folderName
+
+              return (
+                <FolderCard
+                  key={folderPath}
+                  name={folderName}
+                  onClick={() => setCurrentLibraryPath(folderPath)}
+                />
+              )
+            })}
+            {storiesInCurrentPath.map(story => (
+              <StoryListItem
+                key={story._id}
+                libraryShown={libraries}
+                story={story}
+                selectedGroup={savedGroupSelection}
+                savedLibrarySelection={savedLibrarySelection}
+              />
+            ))}
+          </Box>
+        )}
+      </>
     )
   }
 
@@ -491,8 +551,7 @@ const StoryList = () => {
             <FormattedMessage id="no-stories-found" />
           </Box>
         )}
-        {!noResults && libraries.public && accordionView()}
-        {!libraries.public && renderStoryGrid(libraryFilteredStories)}
+        {!noResults && renderFolderBrowser()}
       </Box>
     </Box>
   )
