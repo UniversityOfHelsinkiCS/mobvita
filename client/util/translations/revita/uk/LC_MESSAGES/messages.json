@@ -194,7 +194,7 @@
     "Turkish": "Турецький",
     "Syriac": "Арамейська",
     "select-lesson-semantic-topic": "Обери теми для уроку",
-    "no-available-exercise": "Наразі у нас закінчилися вправи з цих тем. Будь ласка, завантажте додаткові тексти, які містять ці теми - або попросіть викладача завантажити більше текстів. Revita створить нові вправи, як тільки тексти будуть завантажені!",
+    "no-available-exercise": "Наразі у нас закінчилися вправи з цих тем.<br/>\nБудь ласка, завантажте додаткові тексти, які містять ці теми - або попросіть викладача завантажити більше текстів.<br/>\nRevita створить нові вправи, як тільки тексти будуть завантажені!",
     "next-exercise-batch": "Наступна порція вправ!",
     "include-into-lesson": "Включити до уроку",
     "included-in-lesson": "Включено",
@@ -928,5 +928,9 @@
     "ru-яверт": "Keyboard: ЯВЕРТ",
     "add-folder": "Add Folder",
     "folder-name": "Folder name",
-    "Add": "Додати"
+    "Add": "Додати",
+    "lesson-tour-start-button-title": "start title",
+    "lesson-tour-start-button-message": "start msg",
+    "lesson-tour-setup-button-title": "setup title",
+    "lesson-tour-setup-button-message": "setup msg"
 }

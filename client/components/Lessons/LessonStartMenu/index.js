@@ -59,7 +59,12 @@ const LessonStartMenu = ({ setOpen }) => {
       <Tooltip
         title={<FormattedMessage id="lesson-quick-start-info" />}
       >
-        <Button variant="primary" type="button" onClick={handleStartClick}>
+        <Button
+          className="lesson-tour-start-button"
+          variant="primary"
+          type="button"
+          onClick={handleStartClick}
+        >
           <div className="lesson-menu-button">
             <img
               className="lesson-menu-button-icon"

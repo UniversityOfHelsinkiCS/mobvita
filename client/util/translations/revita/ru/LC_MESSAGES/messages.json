@@ -1410,7 +1410,7 @@
     "start-practice-story": "Практика",
     "select-lesson-semantic-topic": "Выбери темы урока",
     "lesson-activities": "Упражнения",
-    "no-available-exercise": "На данный момент у нас закончились упражнения по этим темам. Пожалуйста, загрузи дополнительные тексты, содержащие эти темы—или попроси преподавателя загрузить тексты. Revita создаст новые упражнения, как только тексты будут загружены!",
+    "no-available-exercise": "На данный момент у нас закончились упражнения по этим темам.<br/>\nПожалуйста, загрузи дополнительные тексты, содержащие эти темы—или попроси преподавателя загрузить тексты.<br/>\nRevita создаст новые упражнения, как только тексты будут загружены!",
     "next-exercise-batch": "Следующий набор упражнений!",
     "cefr_grade": "CEFR",
     "Save-CEFR": "Сохранить CEFR",
@@ -1820,5 +1820,9 @@
     "ru-яверт": "Клавиатура: ЯВЕРТ",
     "add-folder": "Add Folder",
     "folder-name": "Folder name",
-    "Add": "Добавить"
+    "Add": "Добавить",
+    "lesson-tour-start-button-title": "start title",
+    "lesson-tour-start-button-message": "start msg",
+    "lesson-tour-setup-button-title": "setup title",
+    "lesson-tour-setup-button-message": "setup msg"
 }

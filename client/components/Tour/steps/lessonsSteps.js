@@ -18,6 +18,26 @@ export const stepBlueprints = {
     placement: 'center',
     skipBeacon: true,
   },
+  lessonStartButton: {
+    target: '.lesson-tour-start-button',
+    title: <FormattedMessage id="lesson-tour-start-button-title" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-tour-start-button-message" />
+      </div>
+    ),
+    skipBeacon: true,
+  },
+  lessonSetupButton: {
+    target: '.lesson-tour-setup-button',
+    title: <FormattedMessage id="lesson-tour-setup-button-title" />,
+    content: (
+      <div>
+        <FormattedHTMLMessage id="lesson-tour-setup-button-message" />
+      </div>
+    ),
+    skipBeacon: true,
+  },
   storyTopic: {
     target: '.lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,

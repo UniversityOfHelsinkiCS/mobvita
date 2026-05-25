@@ -1408,7 +1408,7 @@
     "start-practice-story": "Pratica",
     "select-lesson-semantic-topic": "Scegli gli argomenti",
     "lesson-activities": "Attività",
-    "no-available-exercise": "Al momento abbiamo esaurito gli esercizi su questi argomenti. Per favore carica più testi che contengano questi argomenti—o chiedi al tuo insegnante di caricare più testi. Revita creerà più esercizi non appena i testi saranno caricati!",
+    "no-available-exercise": "Al momento abbiamo esaurito gli esercizi su questi argomenti.<br/>\nPer favore carica più testi che contengano questi argomenti—o chiedi al tuo insegnante di caricare più testi.<br/>\nRevita creerà più esercizi non appena i testi saranno caricati!",
     "next-exercise-batch": "Prossima serie di esercizi!",
     "cefr_grade": "QCER",
     "Save-CEFR": "Salva QCER",
@@ -1817,5 +1817,9 @@
     "ru-яверт": "Tastiera russa: ЯВЕРТ",
     "add-folder": "Add Folder",
     "folder-name": "Folder name",
-    "Add": "Aggiungi"
+    "Add": "Aggiungi",
+    "lesson-tour-start-button-title": "start title",
+    "lesson-tour-start-button-message": "start msg",
+    "lesson-tour-setup-button-title": "setup title",
+    "lesson-tour-setup-button-message": "setup msg"
 }
