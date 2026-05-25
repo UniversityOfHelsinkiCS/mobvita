@@ -82,6 +82,8 @@ const ReadViews = ({ match }) => {
   
   const story = useSelector(state => state.stories.focused)
   const pending = useSelector(state => state.stories.focusedPending)
+  const focusedStudentId = useSelector(state => state.stories.focusedStudentId)
+  const studentPending = useSelector(state => !!(state.stories.focusedPending && state.stories.focusedStudentId))
   const error = useSelector(state => state.stories.error)
   const focusedRequestId = useSelector(state => state.stories.focusedRequestId)
   const locale = useSelector(state => state.locale)
@@ -597,9 +599,13 @@ const ReadViews = ({ match }) => {
               )}
             </div>
             <Divider />
-            {isStudentPreviewProcessing ? (
+                        {isStudentPreviewProcessing ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>
                 <Spinner size={60} text={intl.formatMessage({ id: 'loading-story' })} />
+              </div>
+            ) : studentPending ? (
+              <div className="justify-center" style={{ minHeight: '16rem' }}>
+                <Spinner inline size={60} />
               </div>
             ) : (
               (routeStory?.paragraph || []).map((paragraph, index) => (
