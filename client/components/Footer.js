@@ -25,8 +25,8 @@ const Footer = () => {
           </>
         )}
         <div className="footer-item">
-          <img src={images.uhLogo} alt="logo" width={20} height={20} /> © University of Helsinki
-          2020–2025
+                    <img src={images.uhLogo} alt="logo" width={20} height={20} /> © University of Helsinki
+          {' 2020–' + new Date().getFullYear()}
         </div>
         {showResonsiveVoiceMention && (
           <div className="footer-item">
