@@ -1,0 +1,301 @@
+.library-story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2em;
+  row-gap: 1.75em;
+  margin: 0.875em 1em;
+  align-items: stretch;
+
+  @media (max-width: 699px) {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.library-folder-breadcrumbs {
+  margin: 0;
+  padding: 0.35rem 0;
+}
+
+.library-folder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.875em 1em 0;
+}
+
+.library-add-folder-button {
+  color: #1f78c8 !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  border-radius: 0.28571429rem !important;
+}
+
+.library-folder-breadcrumb {
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+  font-family: "Rubik", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0;
+}
+
+.library-folder-breadcrumb-current {
+  color: rgba(0, 0, 0, 0.55);
+  font-family: "Rubik", sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+.library-semantic-select {
+  min-width: 14em;
+  min-height: 2.71428571em;
+  background-color: #ffffff !important;
+  color: rgba(0, 0, 0, 0.87);
+  border-radius: 0.28571429rem !important;
+  line-height: 1em;
+  white-space: normal;
+  word-wrap: break-word;
+  box-shadow: none;
+  transition: box-shadow 0.1s ease, width 0.1s ease;
+
+  .MuiSelect-select {
+    min-height: 1em !important;
+    padding: 0.78571429em 2.1em 0.78571429em 1em !important;
+    line-height: 1em;
+    background-color: #ffffff !important;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(34, 36, 38, 0.15) !important;
+  }
+
+  &:hover .MuiOutlinedInput-notchedOutline,
+  &.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(34, 36, 38, 0.35) !important;
+    box-shadow: none;
+  }
+
+  .MuiSvgIcon-root {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.library-dropdown-menu {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0 0 0.28571429rem 0.28571429rem !important;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15) !important;
+  margin-top: 0 !important;
+  max-height: 22rem;
+}
+
+.library-dropdown-menu-list {
+  background-color: #ffffff !important;
+  padding: 0 !important;
+}
+
+.library-dropdown-item {
+  background-color: #ffffff !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+  min-height: 0 !important;
+  padding: 0.78571429em 1.14285714em !important;
+  line-height: 1em !important;
+  pointer-events: all;
+
+  &:hover,
+  &.Mui-focusVisible {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+  }
+
+  &.Mui-selected,
+  &.Mui-selected:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    font-weight: 700;
+  }
+}
+
+.library-search-control {
+  display: flex;
+  align-items: stretch;
+  min-width: 260px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 0.28571429rem;
+  overflow: hidden;
+}
+
+.library-search-field {
+  flex: 1 1 auto;
+  background-color: #ffffff;
+
+  .MuiOutlinedInput-root {
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 0.28571429rem 0 0 0.28571429rem;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(34, 36, 38, 0.15) !important;
+  }
+
+  .MuiInputBase-input {
+    background-color: #ffffff;
+  }
+}
+
+.library-search-button {
+  width: 56px;
+  height: 40px;
+  padding: 0 !important;
+  color: #ffffff !important;
+  background: linear-gradient(#5f6068, #3f4048) !important;
+  border-radius: 0 0.28571429rem 0.28571429rem 0 !important;
+  border: 1px solid rgba(34, 36, 38, 0.15) !important;
+  border-left: none !important;
+}
+
+.library-search-button:hover,
+.library-search-button.Mui-focusVisible {
+  background: linear-gradient(#55565d, #393a41) !important;
+}
+
+.mui-story-card {
+  max-width: 100%;
+  width: 100%;
+  min-height: 0;
+  height: 95%;
+  padding: 0;
+  border: none !important;
+  border-radius: 12px !important;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+  font-size: 1em;
+  overflow: visible;
+
+  .MuiCardContent-root {
+    max-width: 100%;
+    min-height: 0 !important;
+    flex-grow: 0;
+    position: static;
+    width: auto;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.4);
+    box-shadow: none;
+    transition: color 0.1s ease;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+
+    &:first-of-type {
+      border-top: none !important;
+      border-radius: 0.28571429rem 0.28571429rem 0 0 !important;
+    }
+
+    &:last-child {
+      border-radius: 0 0 0.28571429rem 0.28571429rem !important;
+    }
+  }
+
+  .story-card-title-cont {
+    padding: 15px 15px 10px 15px !important;
+  }
+
+  .story-card-description-cont {
+    padding: 0.75em 1em !important;
+  }
+
+  .story-card-actions-cont {
+    padding: 10px 15px !important;
+
+    &:last-child {
+      padding-bottom: 0 !important;
+    }
+  }
+
+  .library-tour-open-story-modal {
+    min-width: 0;
+  }
+
+  .story-item-dots {
+    flex: 0 0 auto;
+    width: 1.18em;
+    height: 1.18em;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .story-item-title {
+    margin: 0 12px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-family: "Rubik", sans-serif;
+    line-height: 1.2;
+  }
+
+  .story-description {
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+    line-height: 1.4285em;
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.library-folder-card {
+  position: relative;
+  margin-top: 10px;
+  box-sizing: border-box;
+  min-height: 0;
+  height: 95%;
+  width: 100%;
+  border: none;
+  border-radius: 0 12px 12px 12px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.143);
+  background: linear-gradient(180deg, #d7ecff 0%, #b2d5f6 100%);
+
+  cursor: pointer;
+  text-align: left;
+  padding: 28px 24px 20px;
+}
+
+.library-folder-card::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 120px;
+  height: 8px;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, #e9f0f8 0%, #d7ecff 100%);
+}
+
+.library-folder-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.library-folder-icon {
+  color: #6aaaf2;
+  font-size: 88px;
+  width: 88px;
+  height: 72px;
+}
+
+.library-folder-name {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-top: 8px;
+  padding-left: 8px;
+  color: #3b4a5a;
+}
+
+.library-folder-menu {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+}

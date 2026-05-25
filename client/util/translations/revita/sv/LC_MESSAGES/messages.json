@@ -1670,5 +1670,8 @@
     "click-to-action-menu": "{icon} Click the menu for more options",
     "display-word-nest": "Display word nest",
     "ru-йцуке": "Keyboard: ЙЦУКЕ",
-    "ru-яверт": "Keyboard: ЯВЕРТ"
+    "ru-яверт": "Keyboard: ЯВЕРТ",
+    "add-folder": "Add Folder",
+    "folder-name": "Folder name",
+    "Add": "Add"
 }
