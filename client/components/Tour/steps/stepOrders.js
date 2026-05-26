@@ -113,9 +113,9 @@ const lessonsSetup = [
 ]
 
 export const lessonsOrder = {
-  desktopStudent: ['welcome', ...lessonsSetup, 'performance', 'resetLesson', 'practiceLesson', 'desktopEnd'],
+  desktopStudent: ['welcome', 'lessonStartButton', 'lessonSetupButton', ...lessonsSetup, 'performance', 'resetLesson', 'practiceLesson', 'desktopEnd'],
   desktopTeacher: ['welcome', ...lessonsSetup, 'resetLesson', 'practiceLesson', 'desktopEnd'],
-  mobileStudent: ['welcome', ...lessonsSetup, 'performance', 'resetLesson', 'practiceLesson', 'mobileEnd'],
+  mobileStudent: ['welcome', 'lessonStartButton', 'lessonSetupButton', ...lessonsSetup, 'performance', 'resetLesson', 'practiceLesson', 'mobileEnd'],
   mobileTeacher: ['welcome', ...lessonsSetup, 'resetLesson', 'practiceLesson', 'mobileEnd'],
 }
 

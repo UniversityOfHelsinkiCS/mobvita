@@ -182,10 +182,9 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
         <Accordion fluid styled style={{background: '#fffaf0'}}>
         {
           Object.keys(lessonGroups).sort().map((group, index) => (
-            <>
+            <React.Fragment key={`lesson-group-${group}`}>
               <AccordionTitle
                 className='level-content'
-                key={`lesson-group-title-${group}`}
                 active={accordionState === index}
                 index={index}
                 onClick={handleClick}
@@ -196,7 +195,6 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
                 </h4>
               </AccordionTitle>
               <AccordionContent 
-                key={`lesson-group-content-${group}`}
                 active={accordionState === index}
               >
                 {
@@ -208,7 +206,7 @@ const Topics = ({topicInstance, editable, setSelectedTopics, showPerf}) => {
                     })))
                 }
               </AccordionContent>
-            </>))
+            </React.Fragment>))
         }     
         </Accordion>
       )}

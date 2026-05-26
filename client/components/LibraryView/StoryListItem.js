@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Dropdown, Button as SemanticButton, Icon, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Box, Card, CardContent, Tooltip, Typography } from '@mui/material'
+import CommentsIcon from '@mui/icons-material/ModeComment'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import GroupsIcon from '@mui/icons-material/Groups'
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
+import MailOutlineIcon from '@mui/icons-material/MailOutlined'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { FormattedMessage } from 'react-intl'
 import {
   removeStory,
@@ -12,7 +18,6 @@ import {
   setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
 import { callApi } from 'Utilities/apiConnection'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
@@ -20,6 +25,7 @@ import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import rcIcon from 'Assets/images/RC-icon.png'
+import './LibraryView.scss'
 
 const liveDescriptionCache = {}
 
@@ -51,31 +57,36 @@ const StoryTitle = ({
   return (
     <StoryDetailsModal
       trigger={
-        <span
+        <Box
+          component="span"
           className="flex library-tour-open-story-modal"
-          style={{ overflow: 'hidden', width: '100%' }}
+          sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', width: '100%' }}
         >
-          <Icon color="grey" name="ellipsis vertical" className="story-item-dots" />
-          <h5
+          <MoreVertIcon className="story-item-dots" color="action" fontSize="small" />
+          <Typography
+            component="h5"
             className="story-item-title"
-            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+            sx={{
+              fontSize: '1.15rem',
+              ...getTextStyle(learningLanguage),
+            }}
           >
             {story.title}
-          </h5>
+          </Typography>
           {inGroupLibrary && storyGroupShareInfo && (
-            <span
-              style={{
+            <Typography
+              component="span"
+              sx={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                '-o-text-overflow': 'ellipsis',
                 width: '30%',
               }}
             >
               {storyGroupShareInfo.message}
-            </span>
+            </Typography>
           )}
-        </span>
+        </Box>
       }
       story={story}
       setShareModalOpen={setShareModalOpen}
@@ -98,7 +109,7 @@ const StoryTitle = ({
 
 const ShareInfoPopupContent = ({ infoObj }) => {
   return (
-    <div>
+    <Box>
       <b>
         <FormattedMessage id="shared-by" />:
       </b>{' '}
@@ -108,259 +119,27 @@ const ShareInfoPopupContent = ({ infoObj }) => {
         <FormattedMessage id="message" />:
       </b>{' '}
       {infoObj?.message}
-    </div>
-  )
-}
-
-const StoryFunctionsDropdown = ({
-  story,
-  practiceLink,
-  teacherInGroupView,
-  isTeacher,
-  inGroupLibrary,
-  enableOnlyPractice,
-}) => {
-  if (story.flashcardsOnly)
-    return (
-      <SemanticButton
-        as={Link}
-        to={`/flashcards/fillin/story/${story._id}/`}
-        style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-      >
-        <FormattedMessage id="Flashcard" />
-      </SemanticButton>
-    )
-
-  return (
-    <SemanticButton.Group className="library-tour-mobile-practice-button">
-      {teacherInGroupView ? (
-        <SemanticButton
-          as={Link}
-          to={`/stories/${story._id}/group/review`}
-          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-        >
-          <FormattedMessage id="review" />
-        </SemanticButton>
-      ) : (
-        <SemanticButton
-          as={Link}
-          to={practiceLink}
-          style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-        >
-          <FormattedMessage id="practice" />
-        </SemanticButton>
-      )}
-      <Dropdown
-        className="button icon"
-        style={{
-          backgroundColor: 'rgb(50, 170, 248)',
-          color: 'white',
-          borderLeft: '2px solid rgb(81, 138, 248)',
-        }}
-        floating
-        trigger={<React.Fragment />}
-      >
-        <Dropdown.Menu className="story-item-dropdown">
-          {!isTeacher && !story.flashcardsOnly && (
-            <Dropdown.Item
-              text={<FormattedMessage id="practice" />}
-              as={Link}
-              to={practiceLink}
-              icon="pencil alternate"
-            />
-          )}
-          {story.percent_cov > 0 && !teacherInGroupView && (
-            <Dropdown.Item
-              text={<FormattedMessage id="review" />}
-              as={Link}
-              to={`/stories/${story._id}/review`}
-              icon="book"
-              className="library-tour-mobile-review-button"
-            />
-          )}
-          {!isTeacher && story.flashcard_count && (
-            <Dropdown.Item
-              text={<FormattedMessage id="Flashcards" />}
-              as={Link}
-              to={`/flashcards/fillin/story/${story._id}/`}
-              icon="lightning"
-            />
-          )}
-          {!isTeacher && (
-            <Dropdown.Item
-              text={<FormattedMessage id="compete" />}
-              as={Link}
-              to={`/stories/${story._id}/compete`}
-              icon="clock"
-            />
-          )}
-        </Dropdown.Menu>
-      </Dropdown>
-    </SemanticButton.Group>
-  )
-}
-
-const StoryActions = ({
-  story,
-  currentGroup,
-  enableOnlyPractice,
-  isControlled,
-  inGroupLibrary,
-  isTeacher,
-}) => {
-  const { width } = useWindowDimensions()
-
-  const showCrosswordsButton = width > 1023
-  const buttonVariant = enableOnlyPractice ? 'outline-secondary' : 'secondary'
-  const uploadUnfinished = story?.uploadUnfinished
-  const teacherInGroupView = isTeacher && inGroupLibrary && currentGroup.is_teaching
-  const reviewButtonVariant =
-    story.percent_cov === 0 || enableOnlyPractice ? 'outline-secondary' : 'secondary'
-
-  const practiceLink = isControlled
-    ? `/stories/${story._id}/controlled-practice`
-    : `/stories/${story._id}/preview`
-
-  if (width >= 700) {
-    return (
-      <div className="story-actions library-tour-practice-button">
-        {!isTeacher && !story.flashcardsOnly && (
-          <Link to={practiceLink}>
-            <Button variant="primary">
-              <FormattedMessage id="practice" />
-            </Button>
-          </Link>
-        )}
-
-        {!isTeacher && story.flashcard_count > 0 && (
-          <Popup
-            content={<FormattedMessage id="flashcard-btn-explanation" />}
-            trigger={
-              <Link to={`/flashcards/fillin/story/${story._id}/`}>
-                <Button variant="primary" disabled={enableOnlyPractice}>
-                  <FormattedMessage id="Flashcards" />
-                </Button>
-              </Link>
-            }
-            position="top center"
-          />
-        )}
-        {!isTeacher && story.flashcard_count === 0 && (
-          <Popup
-            content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
-            trigger={
-              <Link to={`/flashcards/fillin/story/${story._id}/`}>
-                <Button variant="primary" disabled={true}>
-                  <FormattedMessage id="Flashcards" />
-                </Button>
-              </Link>
-            }
-            position="top center"
-          />
-        )}
-        {!story.flashcardsOnly && (
-          <>
-            {isTeacher &&
-              (inGroupLibrary ? (
-                <Link to={`/stories/${story._id}/group/preview`}>
-                  <Button
-                    variant={teacherInGroupView ? 'primary' : buttonVariant}
-                    disabled={enableOnlyPractice}
-                  >
-                    <FormattedMessage id="preview" />
-                  </Button>
-                </Link>
-              ) : (
-                <Link to={`/stories/${story._id}/preview`}>
-                  <Button variant={buttonVariant} disabled={enableOnlyPractice}>
-                    <FormattedMessage id="preview" />
-                  </Button>
-                </Link>
-              ))}
-            {inGroupLibrary ? (
-              <Link to={`/stories/${story._id}/group/review`}>
-                <Button
-                  className="library-tour-review-button"
-                  variant={teacherInGroupView ? 'primary' : reviewButtonVariant}
-                >
-                  <FormattedMessage id="review" />{' '}
-                </Button>
-              </Link>
-            ) : (
-              <Link to={`/stories/${story._id}/review`}>
-                <Button
-                  className="library-tour-review-button"
-                  variant={reviewButtonVariant}
-                  disabled={story.percent_cov === 0 || enableOnlyPractice}
-                >
-                  <FormattedMessage id="review" />{' '}
-                </Button>
-              </Link>
-            )}
-
-            {!isTeacher && (
-              <Link to={`/stories/${story._id}/compete`}>
-                <Button
-                  variant={
-                    uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant
-                  }
-                  disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
-                >
-                  <FormattedMessage id="compete" />{' '}
-                </Button>
-              </Link>
-            )}
-
-            {showCrosswordsButton && !isTeacher && (
-              <Link to={`/crossword/${story._id}/`}>
-                <Button
-                  variant={
-                    uploadUnfinished || teacherInGroupView ? 'outline-secondary' : buttonVariant
-                  }
-                  disabled={enableOnlyPractice || uploadUnfinished || teacherInGroupView}
-                >
-                  <FormattedMessage id="Crossword" />
-                </Button>
-              </Link>
-            )}
-          </>
-        )}
-      </div>
-    )
-  }
-
-  return (
-    <StoryFunctionsDropdown
-      story={story}
-      practiceLink={practiceLink}
-      teacherInGroupView={teacherInGroupView}
-      isTeacher={isTeacher}
-      inGroupLibrary={inGroupLibrary}
-      enableOnlyPractice={enableOnlyPractice}
-    />
+    </Box>
   )
 }
 
 const GroupsSharedTo = ({ groups }) => {
   return (
-    <div>
-      <Popup
-        position="top right"
-        content={
-          <div>
-            <FormattedMessage id="shared-with-following-groups" />
-            <ul>
-              {groups.map(({ group_name: groupName, group_id: id }) => (
-                <li key={id}>{groupName}</li>
-              ))}
-            </ul>
-          </div>
-        }
-        trigger={
-          <Icon size="large" color="darkcyan" name="users" style={{ marginRight: '15px' }} />
-        }
-      />
-    </div>
+    <Tooltip
+      placement="top"
+      title={
+        <Box>
+          <FormattedMessage id="shared-with-following-groups" />
+          <ul>
+            {groups.map(({ group_name: groupName, group_id: id }) => (
+              <li key={id}>{groupName}</li>
+            ))}
+          </ul>
+        </Box>
+      }
+    >
+      <GroupsIcon color="primary" sx={{ mr: '15px' }} />
+    </Tooltip>
   )
 }
 
@@ -369,17 +148,15 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
   const [processingDescription, setProcessingDescription] = useState(
-    () => liveDescriptionCache[story._id] || null
+    () => liveDescriptionCache[story._id] || null,
   )
   const { groups } = useSelector(({ groups }) => groups)
   const userId = useSelector(({ user }) => user.data.user.oid)
-  const isTeacher = useSelector(({ user }) => user.data.teacherView)
   const learningLanguage = useSelector(learningLanguageSelector)
   const isControlledStory = !!story?.control_story
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
   const inGroupLibrary = libraryShown.group && !!story.groups
   const showGroupNames = story.groups && libraryShown.private
-  const enableOnlyPractice = inGroupLibrary && !currentGroup?.is_teaching && isControlledStory
   const uploadUnfinished = story?.uploadUnfinished
   const isUnderProcessingDescription =
     typeof story?.description === 'string' &&
@@ -415,7 +192,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
           setProcessingDescription(generatedDescription)
           dispatch(setStoryUploadUnfinished(false, story._id))
         }
-      } catch (error) {
+      } catch {
         // Keep polling; intermittent loading endpoint failures should not break the card UI.
       }
     }
@@ -429,15 +206,13 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
     }
   }, [dispatch, shouldPollForLiveDescription, story._id])
 
-
-
   const handleControlledStoryCancel = async () => {
     await dispatch(cancelControlledStory(story._id))
     dispatch(
       getAllStories(learningLanguage, {
         sort_by: 'date',
         order: -1,
-      })
+      }),
     )
   }
 
@@ -447,7 +222,7 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
       getAllStories(learningLanguage, {
         sort_by: 'date',
         order: -1,
-      })
+      }),
     )
   }
 
@@ -457,11 +232,13 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
 
   return (
     <Card
-      fluid
       key={story._id}
-      className={`${isControlledStory ? 'card-controlled-story' : ''} tour-story-card`}
+      className={`card mui-story-card ${
+        isControlledStory ? 'card-controlled-story' : ''
+      } tour-story-card`}
+      elevation={0}
     >
-      <Card.Content extra className="story-card-title-cont">
+      <CardContent className="extra content story-card-title-cont">
         <StoryTitle
           story={story}
           setConfirmationOpen={setConfirmationOpen}
@@ -474,120 +251,76 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
           setSharedStoryVisibility={setSharedStoryVisibility}
           savedLibrarySelection={savedLibrarySelection}
         />
-      </Card.Content>
-      <Card.Content extra>
-        <div className="story-description">
+      </CardContent>
+      <CardContent className="extra content story-card-description-cont">
+        <Typography className="story-description" component="div">
           {shouldPollForLiveDescription && !processingDescription ? (
             <FormattedMessage id="processing-story" />
           ) : (
             processingDescription || story.description
           )}
-        </div>
-      </Card.Content>
-      <Card.Content extra className="story-card-actions-cont">
-        <div
-          style={{
+        </Typography>
+      </CardContent>
+      <CardContent className="extra content story-card-actions-cont">
+        <Box
+          sx={{
             width: '100%',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
           }}
         >
-          <div>
+          <Box>
             {story?.has_questions ? (
               <img src={rcIcon} alt="RC Icon" style={{ height: '24px', width: '24px' }} />
             ) : null}
-          </div>
+          </Box>
 
-          <div className="flex" style={{ display: 'flex', justifyContent: 'right' }}>
-            {story.flashcardsOnly && (
-              <Icon size="small" name="clone outline" bordered style={{ marginRight: '15px' }} />
-            )}
+          <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+            {story.flashcardsOnly && <ContentCopyIcon fontSize="small" sx={{ mr: '15px' }} />}
 
             {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
             {uploadUnfinished && (
-              <div>
-                <Popup
-                  position="top center"
-                  content={<FormattedMessage id="story-not-yet-processed" />}
-                  trigger={
-                    <div>
-                      <Icon name="hourglass half" color="orange" style={{ marginRight: '15px' }} />
-                    </div>
-                  }
-                />
-              </div>
+              <Tooltip title={<FormattedMessage id="story-not-yet-processed" />}>
+                <HourglassBottomIcon color="warning" sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
 
             {libraryShown.group && storyGroupShareInfo?.hidden && (
-              <>
-                <Popup
-                  basic
-                  content={<FormattedMessage id="group-hidden-story" />}
-                  trigger={
-                    <div>
-                      <Icon color="red" name="low vision" style={{ marginRight: '15px' }} />
-                    </div>
-                  }
-                />
-              </>
+              <Tooltip title={<FormattedMessage id="group-hidden-story" />}>
+                <VisibilityOffIcon color="error" sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
 
             {timedExercise && (
-              <Popup
-                basic
-                content={<FormattedMessage id="timed-practice-explanation" />}
-                trigger={
-                  <div>
-                    <Icon color="red" name="clock outline" style={{ marginRight: '15px' }} />
-                  </div>
-                }
-              />
+              <Tooltip title={<FormattedMessage id="timed-practice-explanation" />}>
+                <TimerOutlinedIcon color="error" sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
             {commentsOnStory && (
-              <Popup
-                basic
-                content={<FormattedMessage id="comments-on-story-explanation" />}
-                trigger={
-                  <div>
-                    <Icon color="black" name="comments" style={{ marginRight: '15px' }} />
-                  </div>
-                }
-              />
+              <Tooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
+                <CommentsIcon sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
 
             {libraryShown.group && (
-              <>
-                <Popup
-                  basic
-                  content={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}
-                  trigger={
-                    <div>
-                      <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
-                    </div>
-                  }
-                />
-              </>
+              <Tooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
+                <MailOutlineIcon sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
 
             {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
-              <Popup
-                basic
-                content={<ShareInfoPopupContent infoObj={story.sharing_info} />}
-                trigger={
-                  <div>
-                    <Icon color="black" name="envelope outline" style={{ marginRight: '15px' }} />
-                  </div>
-                }
-              />
+              <Tooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
+                <MailOutlineIcon sx={{ mr: '15px' }} />
+              </Tooltip>
             )}
-            <div className="library-tour-difficulty-stars" style={{ whiteSpace: 'nowrap' }}>
+            <Box className="library-tour-difficulty-stars" sx={{ whiteSpace: 'nowrap' }}>
               <DifficultyStars difficulty={story.difficulty} />
-            </div>
-          </div>
-        </div>
-      </Card.Content>
+            </Box>
+          </Box>
+        </Box>
+      </CardContent>
 
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
       <ConfirmationWarning

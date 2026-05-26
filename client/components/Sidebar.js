@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
@@ -51,6 +51,7 @@ export default function Sidebar() {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
   const { hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
+  const sidebarRef = useRef(null)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [contactUsOpen, setContactUsOpen] = useState(false)
   const [moreAnchorEl, setMoreAnchorEl] = useState(null)
@@ -65,6 +66,22 @@ export default function Sidebar() {
   const closeSidebar = () => {
     dispatch(sidebarSetOpen(false))
   }
+
+  useEffect(() => {
+    if (!open) return undefined
+
+    const handleOutsideClick = event => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        closeSidebar()
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick)
+    }
+  }, [open])
 
   const signOut = () => {
     dispatch(logout())
@@ -133,22 +150,26 @@ export default function Sidebar() {
       {open && (
         <Box
           data-cy="sidebar-overlay"
-          onClick={closeSidebar}
           aria-hidden
           sx={{
             position: 'fixed',
-            inset: 0,
+            top: 0,
+            left: `${drawerWidth}px`,
+            right: 0,
+            bottom: 0,
             zIndex: 1000,
             backgroundColor: 'transparent',
+            pointerEvents: 'none',
           }}
         />
       )}
       <Box
+        ref={sidebarRef}
         data-cy="sidebar-panel"
         className="sidebar-panel"
         component="aside"
         role="complementary"
-        aria-hidden={!open}
+        inert={!open ? '' : undefined}
         sx={{
           position: 'fixed',
           top: 0,

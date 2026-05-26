@@ -1197,7 +1197,7 @@
     "Home-Dive-In-EXPLANATION": "Here Revita will quickly pick a text for you to practice — based on your preferences",
     "what-language-would-you-like-to-learn": "Which language would you like to learn?",
     "select-lesson-semantic-topic": "Choose themes for lesson",
-    "no-available-exercise": "We have run out of exercises on these topics at the moment.  Please upload more texts, which contain these topics—or ask your teacher to upload more texts.  Revita will create more exercises as soon as the texts are uploaded!",
+    "no-available-exercise": "We have run out of exercises on these topics at the moment.<br/>\nPlease upload more texts, which contain these topics—or ask your teacher to upload more texts.<br/>\nRevita will create more exercises as soon as the texts are uploaded!",
     "next-exercise-batch": "Next batch of exercises!",
     "include-into-lesson": "Include in lesson",
     "included-in-lesson": "Included",
@@ -1670,5 +1670,12 @@
     "click-to-action-menu": "{icon} Click the menu for more options",
     "display-word-nest": "Display word nest",
     "ru-йцуке": "Keyboard: ЙЦУКЕ",
-    "ru-яверт": "Keyboard: ЯВЕРТ"
+    "ru-яверт": "Keyboard: ЯВЕРТ",
+    "add-folder": "Add Folder",
+    "folder-name": "Folder name",
+    "Add": "Add",
+    "lesson-tour-start-button-title": "start title",
+    "lesson-tour-start-button-message": "start msg",
+    "lesson-tour-setup-button-title": "setup title",
+    "lesson-tour-setup-button-message": "setup msg"
 }

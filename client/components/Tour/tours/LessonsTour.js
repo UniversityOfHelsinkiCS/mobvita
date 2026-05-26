@@ -31,6 +31,10 @@ const LessonsTour = () => {
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
   const order = STEP_ORDER[orderKey]
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView }, '.lesson-story-topic')
+  const nextLessonStepByTourStep = {
+    storyTopic: 1,
+    vocab: 2,
+  }
 
   // Advance (or rewind) with optional delay; always resizes for Joyride.
   const advance = (index, action, delay = 0) => {
@@ -72,6 +76,16 @@ const LessonsTour = () => {
         dispatch(getLessonInstance(null))
       }
 
+      if (!teacherView) {
+        advance(index, action, 300)
+        return
+      }
+    }
+
+    if (
+      (currentId === 'lessonSetupButton' || (teacherView && currentId === 'welcome')) &&
+      action !== ACTIONS.PREV
+    ) {
       setTimeout(() => {
         const setupButton = document.querySelector('.lesson-tour-setup-button')
         if (setupButton instanceof HTMLElement) {
@@ -87,7 +101,7 @@ const LessonsTour = () => {
 
     // Step the lesson UI alongside the tour for the early setup steps.
     if (action !== ACTIONS.PREV && (currentId === 'storyTopic' || currentId === 'vocab')) {
-      dispatch(setLessonStep(index))
+      dispatch(setLessonStep(nextLessonStepByTourStep[currentId]))
       advance(index, action, 120)
       return
     }

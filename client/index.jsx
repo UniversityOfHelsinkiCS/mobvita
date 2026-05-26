@@ -2,7 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import * as Sentry from '@sentry/react'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
@@ -13,6 +13,7 @@ import { basePath, inProduction, isStaging } from 'Utilities/common'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
+import muiTheme from 'Assets/mui_theme/muiTheme'
 
 const sentryDsn = 'https://0db09ebcfc15d28247ed8ba70ae6cf98@toska.it.helsinki.fi/10'
 const dsn = (inProduction || isStaging && basePath.includes('mobvita.cs.helsinki.fi')) ? sentryDsn : null
@@ -73,7 +74,6 @@ if (window.responsiveVoice) {
 }
 
 const root = createRoot(document.getElementById('root'))
-const muiTheme = createTheme({})
 
 const refresh = () =>
   root.render(

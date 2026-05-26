@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CardGroup, CardContent, Card, Icon, Popup } from 'semantic-ui-react'
-import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import { Tooltip } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { images, cefrNumberToLevel } from 'Utilities/common'
@@ -56,15 +56,15 @@ const LessonStartMenu = ({ setOpen }) => {
 
   return (
     <div className="lesson-start-menu-container universal-background">
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="quick-start-tooltip">
-            <FormattedMessage id="lesson-quick-start-info" />
-          </Tooltip>
-        }
+      <Tooltip
+        title={<FormattedMessage id="lesson-quick-start-info" />}
       >
-        <Button variant="primary" type="button" onClick={handleStartClick}>
+        <Button
+          className="lesson-tour-start-button"
+          variant="primary"
+          type="button"
+          onClick={handleStartClick}
+        >
           <div className="lesson-menu-button">
             <img
               className="lesson-menu-button-icon"
@@ -77,15 +77,10 @@ const LessonStartMenu = ({ setOpen }) => {
             </span>
           </div>
         </Button>
-      </OverlayTrigger>
+      </Tooltip>
 
-      <OverlayTrigger
-        placement="top"
-        overlay={
-          <Tooltip id="setup-tooltip">
-            <FormattedMessage id="lesson-customize-info" />
-          </Tooltip>
-        }
+      <Tooltip
+        title={<FormattedMessage id="lesson-customize-info" />}
       >
         <Button
           className="lesson-tour-setup-button"
@@ -105,7 +100,7 @@ const LessonStartMenu = ({ setOpen }) => {
             </span>
           </div>
         </Button>
-      </OverlayTrigger>
+      </Tooltip>
     </div>
   )
 }

@@ -1407,7 +1407,7 @@
     "start-practice-story": "Harjoittele",
     "select-lesson-semantic-topic": "Valitse oppitunnin aiheet",
     "lesson-activities": "Aktiviteetit",
-    "no-available-exercise": "Ei enää tähän aiheeseen liittyviä harjoituksia.  Lataa lisää aiheeseen liittyviä tekstejä—tai pyydä niitä opettajaltasi. Revita luo lisää harjoituksia heti kun tekstit ovat latautuneet.",
+    "no-available-exercise": "Ei enää tähän aiheeseen liittyviä harjoituksia.<br/>\nLataa lisää aiheeseen liittyviä tekstejä—tai pyydä niitä opettajaltasi.<br/>\nRevita luo lisää harjoituksia heti kun tekstit ovat latautuneet.",
     "next-exercise-batch": "Seuraava erä harjoituksia!",
     "cefr_grade": "CEFR",
     "Save-CEFR": "Tallenna CEFR",
@@ -1815,5 +1815,12 @@
     "click-to-action-menu": "{icon} Click the menu for more options",
     "display-word-nest": "Display word nest",
     "ru-йцуке": "Näppäimistö: ЙЦУКЕ",
-    "ru-яверт": "Näppäimistö: ЯВЕРТ"
+    "ru-яверт": "Näppäimistö: ЯВЕРТ",
+    "add-folder": "Lisää kansio",
+    "folder-name": "Kansion nimi",
+    "Add": "Lisää",
+    "lesson-tour-start-button-title": "start title",
+    "lesson-tour-start-button-message": "start msg",
+    "lesson-tour-setup-button-title": "setup title",
+    "lesson-tour-setup-button-message": "setup msg"
 }
