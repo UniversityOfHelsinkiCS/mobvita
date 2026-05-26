@@ -4,25 +4,45 @@ import { useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
 
-const MenuItem = ({ active, handleClick, style, translationId, tooltip, children }) => (
+const baseMenuItemStyle = {
+  background: 'linear-gradient(180deg, #b8d6ff 0%, #8ebbf9 100%)',
+  boxShadow:
+    'inset 1px 1px 2px rgba(255, 255, 255, 0.8), inset -1px -1px 2px rgba(0, 0, 0, 0.18)',
+}
+
+const selectedMenuItemStyle = {
+  background: 'linear-gradient(180deg, #6f9eea 0%, #8ebbf9 100%)',
+  borderColor: '#20262f',
+  boxShadow:
+    'inset 2px 2px 5px rgba(0, 0, 0, 0.40), inset -1px -1px 3px rgba(14, 4, 122, 0.72)',
+}
+
+const MenuItemButton = ({ active, handleClick, label, style, translationId, children }) => (
+  <button
+    type="button"
+    aria-pressed={active}
+    className={`flashcard-menu-item${active ? ' flashcard-menu-item-selected' : ''}`}
+    style={{ ...baseMenuItemStyle, ...style, ...(active ? selectedMenuItemStyle : {}) }}
+    onClick={handleClick}
+  >
+    {children}
+    <span style={{ whiteSpace: 'nowrap' }}>
+      {label || <FormattedHTMLMessage id={translationId} />}
+    </span>
+  </button>
+)
+
+const MenuItem = ({ tooltip, ...props }) => {
+  if (!tooltip) return <MenuItemButton {...props} />
+
+  return (
   <Popup
     content={<FormattedHTMLMessage id={tooltip} />}
-    trigger={
-      <button
-        type="button"
-        className="flashcard-menu-item"
-        style={{ ...style, ...(active ? { backgroundColor: '#6592f3' } : {}) }}
-        onClick={handleClick}
-      >
-        {children}
-        <span style={{ whiteSpace: 'nowrap' }}>
-          <FormattedHTMLMessage id={translationId} />
-        </span>
-      </button>
-    }
+    trigger={<MenuItemButton {...props} />}
     position="top center"
   />
-)
+  )
+}
 
 const PracticeModeOptions = ({ handleOptionClick, mode }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
@@ -48,22 +68,19 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
         <Icon name="keyboard outline" size="big" />
       </MenuItem>
       {flashcardArticles && (
-        <button
-          type="button"
-          className="flashcard-menu-item"
+        <MenuItem
+          active={mode === 'article'}
+          handleClick={() => handleOptionClick('article')}
+          label={articleLabel}
           style={{
-            backgroundColor: '#8ebbf9',
             borderTop: '1px solid #323841',
             borderRight: '1px solid #323841',
             borderBottom: '0',
             borderLeft: '1px solid #323841',
-            ...(mode === 'article' ? { backgroundColor: '#6592f3' } : {}),
           }}
-          onClick={() => handleOptionClick('article')}
         >
           <Icon name="font" size="big" />
-          <span>{articleLabel}</span>
-        </button>
+        </MenuItem>
       )}
       <MenuItem
         active={mode === 'quick'}
