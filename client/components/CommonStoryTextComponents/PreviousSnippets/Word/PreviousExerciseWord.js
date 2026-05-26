@@ -69,6 +69,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
+  const session_id = useSelector(({ snippets }) => snippets.focused?.session_id || snippets.session_id || snippets.sessionId)
   const { id: storyId } = useParams()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
   const [allowTranslating, setAllowTranslating] = useState(true)
@@ -96,7 +97,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     if (isPreviewMode && word.concepts?.length > 0) setShow(true)
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
-      dispatch(setWords({ surface, lemmas }))
+      dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
       if (allowTranslating) {
         const prefLemma = word.pref_lemma
         dispatch(
@@ -238,7 +239,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     </div>
   )
   return (
-    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
+    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} isControlledStoryWord = {true}>
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
         className={`${wordClass}${
