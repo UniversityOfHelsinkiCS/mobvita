@@ -16,7 +16,7 @@ const selectedMenuItemStyle = {
   background: 'linear-gradient(180deg, #5f94e8 0%, #83b5f9 100%)',
   borderColor: '#000000',
   boxShadow:
-    'inset 8px 20px 20px rgba(18, 11, 145, 0.2), inset -8px -8px 20px rgba(7, 5, 115, 0.3), inset 0 0 0 2px rgba(70, 21, 229, 0.1)',
+    'inset 8px 20px 20px rgba(18, 11, 145, 0.27), inset -8px -8px 20px rgba(7, 5, 115, 0.3), inset 0 0 0 2px rgba(70, 21, 229, 0.1)',
 }
 
 const MenuItemButton = ({ active, handleClick, label, style, translationId, children }) => (
