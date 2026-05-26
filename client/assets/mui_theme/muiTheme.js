@@ -6,6 +6,16 @@ import { createTheme } from '@mui/material/styles'
 
 const muiTheme = createTheme({
   components: {
+    // Override default props and styles for MUI Backdrop component
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(253, 253, 253, 0.8)',
+        },
+      },
+    },
+
+    // Override default props and styles for MUI Tooltip component
     MuiTooltip: {
       defaultProps: {
         arrow: true,
