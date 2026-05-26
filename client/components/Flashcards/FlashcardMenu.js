@@ -8,13 +8,15 @@ const baseMenuItemStyle = {
   background: 'linear-gradient(180deg, #b8d6ff 0%, #8ebbf9 100%)',
   boxShadow:
     'inset 1px 1px 2px rgba(255, 255, 255, 0.8), inset -1px -1px 2px rgba(0, 0, 0, 0.18)',
+  overflow: 'hidden',
+  position: 'relative',
 }
 
 const selectedMenuItemStyle = {
-  background: 'linear-gradient(180deg, #6f9eea 0%, #8ebbf9 100%)',
-  borderColor: '#20262f',
+  background: 'linear-gradient(180deg, #5f94e8 0%, #83b5f9 100%)',
+  borderColor: '#000000',
   boxShadow:
-    'inset 2px 2px 5px rgba(0, 0, 0, 0.40), inset -1px -1px 3px rgba(14, 4, 122, 0.72)',
+    'inset 8px 20px 20px rgba(18, 11, 145, 0.2), inset -8px -8px 20px rgba(7, 5, 115, 0.3), inset 0 0 0 2px rgba(70, 21, 229, 0.1)',
 }
 
 const MenuItemButton = ({ active, handleClick, label, style, translationId, children }) => (
@@ -25,8 +27,10 @@ const MenuItemButton = ({ active, handleClick, label, style, translationId, chil
     style={{ ...baseMenuItemStyle, ...style, ...(active ? selectedMenuItemStyle : {}) }}
     onClick={handleClick}
   >
-    {children}
-    <span style={{ whiteSpace: 'nowrap' }}>
+    <span style={{ display: 'inline-flex', position: 'relative', zIndex: 1 }}>
+      {children}
+    </span>
+    <span style={{ position: 'relative', whiteSpace: 'nowrap', zIndex: 1 }}>
       {label || <FormattedHTMLMessage id={translationId} />}
     </span>
   </button>
