@@ -37,6 +37,7 @@ $action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
 // was: green
 $tooltip-green:  #0b869a; //  #0890a6; //   #098fa5; // was: #17a2b8;
+$tooltip-blue: #cde3ff;
 
 // universal background color
 $universal-bg-color: #77c8d4;
@@ -2496,8 +2497,10 @@ label.file-upload-btn {
   //Overwrites react-popper-tooltip styles.
 
   &-container {
-    padding: 0em;
+    padding: 0 !important;
     z-index: 102;
+    border: none !important;
+    margin: 0 !important;
 
     &.clickable {
       &:hover {
@@ -2516,8 +2519,13 @@ label.file-upload-btn {
   &-blue {
     text-align: center;
     background-color: $tooltip-blue;
-    color: white;
-    padding: 0.3em;
+    color: rgb(0, 0, 0) !important;
+    padding: 0.1em !important;
+    font-size: 0.8em !important;
+    padding-left: 30px !important;  
+    border:none !important;  
+    border-color: $tooltip-blue !important;
+    margin: 0 !important;
   }
 
   &-green {
@@ -2525,10 +2533,18 @@ label.file-upload-btn {
     background-color: $tooltip-green;
     color: white;
     padding: 0.3em;
+    font-size: 0.9em;    
   }
 
   &-hint {
     background-color: $tooltip-green;
+    color: white;
+    padding: .5em;
+    text-align: 'left';
+    margin: 0;
+  }
+  &-blue {
+    background-color: $tooltip-blue;
     color: white;
     padding: .5em;
     text-align: 'left';

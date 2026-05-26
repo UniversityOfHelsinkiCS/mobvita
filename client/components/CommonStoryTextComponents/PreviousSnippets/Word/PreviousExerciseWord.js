@@ -173,7 +173,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const tooltip = (
     <div
-      className="tooltip-green"
+      className="tooltip-blue"
       style={{ cursor: 'pointer', textAlign: 'left', padding: '15px' }}
       // backgroundColor: getWordColor(word.level, grade, skillLevels)
       onMouseDown={handleTooltipClick}
@@ -213,8 +213,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
         </div>
       )}
       {youAnsweredTooltip && (
-        <div>
-          <br />
+        <div>          
           {`${intl.formatMessage({ id: 'you-used' })}: `}
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(youAnsweredTooltip.users_answer)}  
           style={getTextStyle(learningLanguage, 'tooltip')} />
