@@ -170,7 +170,7 @@ const AdaptiveTest = ({ showingInfo }) => {
                   padding: 0,
                 }}
               >
-                {Math.round(timer.getTime() / 1000)}
+                {Math.max(0, Math.round(timer.getTime() / 1000))}
               </div>
             </div>
           )}
