@@ -1,16 +1,19 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl';
 import { useParams, useNavigate } from 'react-router-dom'
 import { Icon, Popup } from 'semantic-ui-react'
-import SelectLanguage from './SelectLanguage'
 
-const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
+const MenuItem = ({ active, handleClick, style, translationId, tooltip, children }) => (
   <Popup
     content={<FormattedHTMLMessage id={tooltip} />}
     trigger={
-      <button type="button" className="flashcard-menu-item" style={style} onClick={handleClick}>
+      <button
+        type="button"
+        className="flashcard-menu-item"
+        style={{ ...style, ...(active ? { backgroundColor: '#6592f3' } : {}) }}
+        onClick={handleClick}
+      >
         {children}
         <span style={{ whiteSpace: 'nowrap' }}>
           <FormattedHTMLMessage id={translationId} />
@@ -21,7 +24,7 @@ const MenuItem = ({ handleClick, style, translationId, tooltip, children }) => (
   />
 )
 
-const PracticeModeOptions = ({ handleOptionClick }) => {
+const PracticeModeOptions = ({ handleOptionClick, mode }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
@@ -29,13 +32,18 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
   return (
     <div className="flex-col flashcard-menu-items-boxshadow">
       <MenuItem
+        active={mode === 'fillin'}
         handleClick={() => handleOptionClick('fillin')}
         translationId="fill-in"
         style={{
-          backgroundColor: 'rgb(142, 187, 249)',
-          border: 'none',
-          borderRadius: '1em 1em 0 0' }}
-        tooltip='flashcards-translate-cards-EXPLANATION'
+          backgroundColor: '#8ebbf9',
+          borderTop: '1px solid #323841',
+          borderRight: '1px solid #323841',
+          borderBottom: '0',
+          borderLeft: '1px solid #323841',
+          borderRadius: '1em 1em 0 0',
+        }}
+        tooltip="flashcards-translate-cards-EXPLANATION"
       >
         <Icon name="keyboard outline" size="big" />
       </MenuItem>
@@ -44,8 +52,13 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
           type="button"
           className="flashcard-menu-item"
           style={{
-            backgroundColor: '#FFDAC1',
-            border: 'none' }}
+            backgroundColor: '#8ebbf9',
+            borderTop: '1px solid #323841',
+            borderRight: '1px solid #323841',
+            borderBottom: '0',
+            borderLeft: '1px solid #323841',
+            ...(mode === 'article' ? { backgroundColor: '#6592f3' } : {}),
+          }}
           onClick={() => handleOptionClick('article')}
         >
           <Icon name="font" size="big" />
@@ -53,13 +66,15 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         </button>
       )}
       <MenuItem
+        active={mode === 'quick'}
         handleClick={() => handleOptionClick('quick')}
         translationId="Quick cards"
         style={{
-          backgroundColor: 'rgb(255, 217, 112)',
-          border: 'none',
-          borderRadius: '0 0 1em 1em' }}
-        tooltip='flashcards-quick-cards-EXPLANATION'
+          backgroundColor: '#8ebbf9',
+          border: '1px solid #323841',
+          borderRadius: '0 0 1em 1em',
+        }}
+        tooltip="flashcards-quick-cards-EXPLANATION"
       >
         <Icon name="lightning" size="big" />
       </MenuItem>
@@ -74,9 +89,7 @@ const FlashcardMenu = () => {
   const storyUrl = storyId ? `/${storyId}` : ''
 
   const handleOptionClick = mode => {
-    const path = storyUrl
-      ? `/flashcards/${mode}/story${storyUrl}`
-      : `/flashcards/${mode}`
+    const path = storyUrl ? `/flashcards/${mode}/story${storyUrl}` : `/flashcards/${mode}`
 
     navigate(path)
   }
@@ -85,11 +98,7 @@ const FlashcardMenu = () => {
 
   return (
     <div className="flashcard-menu">
-      {isPracticePage && (
-        <PracticeModeOptions
-          handleOptionClick={handleOptionClick}
-        />
-      )}
+      {isPracticePage && <PracticeModeOptions handleOptionClick={handleOptionClick} mode={mode} />}
     </div>
   )
 }
