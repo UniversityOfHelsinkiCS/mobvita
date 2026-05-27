@@ -188,7 +188,7 @@ const SelectGrammarLevel = ({
               <ToggleButton
                 handleClick={() => handleLevelClick(level)}
                 name={`level ${level}`}
-                width="130px"
+                width="80px"
                 height="55px"
                 active={isLevelButtonActive(level) && !isCustomButtonActive()}
                 level={level}

@@ -8,14 +8,15 @@
 
 .grammar-level-button-group {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+    
   gap: 25px;
 }
 
 @media (max-width: 1330px) {
   .grammar-level-button-group {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
   }
 }
 

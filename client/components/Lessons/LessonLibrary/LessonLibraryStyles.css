@@ -75,9 +75,9 @@
 }
 
 @media (max-width: 1040px) {
-  .lesson-setup-body {
-    gap: 60px;
-  }
+  /* .lesson-setup-body {
+    gap: 40px;
+  } */
 
   .lesson-setup-title {
     font-size: 30px !important;
