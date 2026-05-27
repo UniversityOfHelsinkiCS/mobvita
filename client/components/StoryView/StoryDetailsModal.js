@@ -241,17 +241,22 @@ const StoryDetailsModal = ({
           )}
 
           <div className="flex flex-col space-between">
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div
               style={{
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'stretch',
                 gap: '12px',
+                marginBottom: '12px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid rgba(0, 0, 0, .1)',
+                width: 'max-content',
               }}
             >
               {showCreateControlStoryButton && (
-                <LinkButton
-                  className="story-detail-modal-manage-button-long"
+                <LinkButton                  
                   to={`/stories/${story._id}/controlled-story-editor`}
                   translationId="create-controlled-story"
                   variant="secondary"
@@ -260,25 +265,28 @@ const StoryDetailsModal = ({
 
               {isTeacher && savedLibrarySelection == 'private' && (
                 <LinkButton
-                  className="story-detail-modal-manage-button-long"
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   translationId="reading-comprehension"
                   variant="secondary"
                 />
               )}
 
-              {showCancelControlStoryButton && (
-                <>
+              {showCancelControlStoryButton && (                
                   <LinkButton
                     to={`/stories/${story._id}/controlled-story-editor`}
                     translationId="edit-controlled-story"
                     variant="secondary"
-                  />
+                  />                
+              )}
+
+              {showCancelControlStoryButton && (
+                
                   <Button variant="secondary" onClick={handleControlledStoryCancel}>
                     <FormattedMessage id="cancel-controlled-story" />
                   </Button>
-                </>
+                
               )}
+            </div>
             </div>
             <div
               style={{
