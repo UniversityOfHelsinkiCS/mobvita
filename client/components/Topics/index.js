@@ -7,6 +7,9 @@ import TopicListItem from './TopicListItem'
 
 const getLessonTopicKey = (lessonId, topic) => `${lessonId}::${topic}`
 
+// Makes a simple string we can compare when the saved topic list changes.
+const getTopicIdSignature = topicIds => (topicIds || []).join('|||')
+
 const Topics = ({
   topicInstance,
   editable,
@@ -21,10 +24,23 @@ const Topics = ({
   const [filteredLessons, setFilteredLessons] = useState(lessons)
   const [accordionState, setAccordionState] = useState(-1)
   const [searchQuery, setSearchQuery] = useState('')
+  const [internalSelectedTopicKeys, setInternalSelectedTopicKeys] = useState([])
+  const [lastSavedTopicIdSignature, setLastSavedTopicIdSignature] = useState('')
 
   const lesson2info = lessons.reduce((obj, lesson) => ({ ...obj, [lesson.ID]: lesson }), {})
-  const useTopicKeys = Array.isArray(selectedTopicKeys) && setSelectedTopicKeys
-  const selectedTopicKeySet = useMemo(() => new Set(selectedTopicKeys || []), [selectedTopicKeys])
+  // Some parents control topic row keys themselves; otherwise Topics handles them here.
+  const controlledTopicKeys = Array.isArray(selectedTopicKeys) && setSelectedTopicKeys
+  const activeSelectedTopicKeys = controlledTopicKeys
+    ? selectedTopicKeys
+    : internalSelectedTopicKeys
+  const updateSelectedTopicKeys = controlledTopicKeys
+    ? setSelectedTopicKeys
+    : setInternalSelectedTopicKeys
+  const selectedTopicKeySet = useMemo(
+    () => new Set(activeSelectedTopicKeys),
+    [activeSelectedTopicKeys],
+  )
+  // Finds the normal topic id from a checked row key.
   const topicByKey = useMemo(() => {
     return lessons.reduce((obj, lesson) => {
       lesson.topics.forEach(topic => {
@@ -34,6 +50,7 @@ const Topics = ({
     }, {})
   }, [lessons])
 
+  // Turns checked row keys back into the topic id list saved by the app.
   const getTopicIdsFromKeys = topicKeys => {
     const topics = new Set()
 
@@ -45,6 +62,34 @@ const Topics = ({
 
     return Array.from(topics)
   }
+
+  // Checks the matching topic rows when we only have saved topic ids.
+  const getTopicKeysFromTopicIds = topicIds => {
+    const topicIdSet = new Set(topicIds || [])
+
+    return Object.keys(topicByKey).filter(topicKey => topicIdSet.has(topicByKey[topicKey]))
+  }
+
+  // Saves the checked rows locally and sends normal topic ids to the parent.
+  const saveSelectedTopicKeys = topicKeys => {
+    const nextTopicIds = getTopicIdsFromKeys(topicKeys)
+
+    updateSelectedTopicKeys(topicKeys)
+    setLastSavedTopicIdSignature(getTopicIdSignature(nextTopicIds))
+    setSelectedTopics(nextTopicIds, topicKeys)
+  }
+
+  // Keeps the checkboxes in sync when a parent changes topic_ids from outside Topics.
+  useEffect(() => {
+    if (controlledTopicKeys) return
+
+    const topicIdSignature = getTopicIdSignature(topicInstance.topic_ids)
+    if (topicIdSignature === lastSavedTopicIdSignature) return
+    if (topicInstance.topic_ids?.length > 0 && Object.keys(topicByKey).length === 0) return
+
+    setInternalSelectedTopicKeys(getTopicKeysFromTopicIds(topicInstance.topic_ids))
+    setLastSavedTopicIdSignature(topicIdSignature)
+  }, [controlledTopicKeys, lastSavedTopicIdSignature, topicByKey, topicInstance.topic_ids])
 
   useEffect(() => {
     // Filter lessons based on search query
@@ -64,21 +109,17 @@ const Topics = ({
     }
   }, [lessons, searchQuery])
 
+  // The lesson button is on only when every topic row in that lesson is checked.
   const isLessonItemSelected = lesson_id => {
     const lessonTopics = Object.prototype.hasOwnProperty.call(lesson2info, lesson_id)
       ? lesson2info[lesson_id].topics
       : []
     if (lessonTopics.length === 0) return false
 
-    if (useTopicKeys) {
-      return lessonTopics.every(topic =>
-        selectedTopicKeySet.has(getLessonTopicKey(lesson_id, topic)),
-      )
-    }
-
-    return lessonTopics.every(topic => topicInstance.topic_ids?.includes(topic))
+    return lessonTopics.every(topic => selectedTopicKeySet.has(getLessonTopicKey(lesson_id, topic)))
   }
 
+  // Shows the weakest topic score for the whole lesson card.
   const calculateLowestScore = topics => {
     if (topics.length === 0) {
       return { score: 0, correct: 0, total: 0 }
@@ -120,86 +161,52 @@ const Topics = ({
     setSearchQuery(event.target.value)
   }
 
+  // Checks or unchecks just one topic row inside one lesson.
   const toggleTopic = (topicId, lessonId) => {
-    if (useTopicKeys) {
-      const topicKey = getLessonTopicKey(lessonId, topicId)
-      const newTopicKeys = new Set(selectedTopicKeys)
+    const topicKey = getLessonTopicKey(lessonId, topicId)
+    const newTopicKeys = new Set(activeSelectedTopicKeys)
 
-      if (newTopicKeys.has(topicKey)) {
-        newTopicKeys.delete(topicKey)
-      } else {
-        newTopicKeys.add(topicKey)
-      }
-
-      const nextTopicKeys = Array.from(newTopicKeys)
-      setSelectedTopicKeys(nextTopicKeys)
-      setSelectedTopics(getTopicIdsFromKeys(nextTopicKeys), nextTopicKeys)
-      return
-    }
-
-    let newTopics
-    if (topicInstance.topic_ids.includes(topicId)) {
-      newTopics = topicInstance.topic_ids.filter(id => id !== topicId)
+    if (newTopicKeys.has(topicKey)) {
+      newTopicKeys.delete(topicKey)
     } else {
-      newTopics = [...topicInstance.topic_ids, topicId]
+      newTopicKeys.add(topicKey)
     }
 
-    setSelectedTopics(newTopics)
+    saveSelectedTopicKeys(Array.from(newTopicKeys))
   }
 
+  // Checks every topic row inside one lesson card.
   const includeLesson = LessonId => {
     const lessonTopics = Object.prototype.hasOwnProperty.call(lesson2info, LessonId)
       ? lesson2info[LessonId].topics
       : []
 
-    if (useTopicKeys) {
-      const newTopicKeys = new Set(selectedTopicKeys)
-      lessonTopics.forEach(topic => newTopicKeys.add(getLessonTopicKey(LessonId, topic)))
+    const newTopicKeys = new Set(activeSelectedTopicKeys)
+    lessonTopics.forEach(topic => newTopicKeys.add(getLessonTopicKey(LessonId, topic)))
 
-      const nextTopicKeys = Array.from(newTopicKeys)
-      setSelectedTopicKeys(nextTopicKeys)
-      setSelectedTopics(getTopicIdsFromKeys(nextTopicKeys), nextTopicKeys)
-      return
-    }
-
-    let newTopics = topicInstance.topic_ids
-    for (let lesson_topic of lessonTopics) {
-      if (!topicInstance.topic_ids.includes(lesson_topic)) {
-        newTopics = [...newTopics, lesson_topic]
-      }
-    }
-
-    setSelectedTopics(newTopics)
+    saveSelectedTopicKeys(Array.from(newTopicKeys))
   }
 
+  // Unchecks every topic row inside one lesson card.
   const excludeLesson = LessonId => {
     const lessonTopics = Object.prototype.hasOwnProperty.call(lesson2info, LessonId)
       ? lesson2info[LessonId].topics
       : []
 
-    if (useTopicKeys) {
-      const lessonTopicKeys = lessonTopics.map(topic => getLessonTopicKey(LessonId, topic))
-      const nextTopicKeys = selectedTopicKeys.filter(
-        topicKey => !lessonTopicKeys.includes(topicKey),
-      )
+    const lessonTopicKeys = lessonTopics.map(topic => getLessonTopicKey(LessonId, topic))
+    const nextTopicKeys = activeSelectedTopicKeys.filter(
+      topicKey => !lessonTopicKeys.includes(topicKey),
+    )
 
-      setSelectedTopicKeys(nextTopicKeys)
-      setSelectedTopics(getTopicIdsFromKeys(nextTopicKeys), nextTopicKeys)
-      return
-    }
-
-    const newTopics = topicInstance.topic_ids.filter(id => !lessonTopics.includes(id))
-
-    setSelectedTopics(newTopics)
+    saveSelectedTopicKeys(nextTopicKeys)
   }
 
+  // Clears all checked topic rows.
   const excludeAllTopics = () => {
-    if (useTopicKeys) {
-      setSelectedTopicKeys([])
-    }
-    setSelectedTopics([])
+    saveSelectedTopicKeys([])
   }
 
+  // Builds one visible lesson card.
   const rowRenderer = ({ key, lesson_obj, style }) => {
     if (!lesson_obj) return null
 
@@ -217,7 +224,7 @@ const Topics = ({
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
-          selectedTopicKeys={selectedTopicKeys}
+          selectedTopicKeys={activeSelectedTopicKeys}
           disabled={!editable}
           showPerf={showPerf}
         />
