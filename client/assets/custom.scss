@@ -2501,10 +2501,8 @@ label.file-upload-btn {
   //Overwrites react-popper-tooltip styles.
 
   &-container {
-    padding: 0 !important;
-    z-index: 102;
-    border: none !important;
-    margin: 0 !important;
+    padding: 0.3em !important;
+    z-index: 102;    
 
     &.clickable {
       &:hover {
@@ -2523,10 +2521,9 @@ label.file-upload-btn {
   &-blue {
     text-align: center;
     background-color: $tooltip-blue;
-    color: rgb(0, 0, 0) !important;
-    padding: 0.1em !important;
+    color: rgb(0, 0, 0) !important;    
     font-size: 0.8em !important;
-    padding-left: 30px !important;  
+    padding: 0.1em 10px 0.1em 30px !important;  
     border:none !important;  
     margin: 0 !important;
     border-color: $tooltip-blue !important;    
