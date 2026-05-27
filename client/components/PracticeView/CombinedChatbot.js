@@ -46,6 +46,7 @@ import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
 import AssistentSettings from './AssistentSettings'
+import TestSentryTrigger from 'Components/TestSentryTrigger'
 
 const CombinedChatbot = ({inWordNestModal, clue}) => {
 
@@ -634,7 +635,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         </h3>
         <AssistentSettings className="settings-icon" />
       </div>
-
+      
       { currentWord && isEmpty(currentWord) && translationState && isEmpty(translationState.data) && isEmpty(translationState.surfaceWord) && (
         <div className="first-message">
           <div className="message message-bot" data-cy="dictionary-info">
@@ -714,7 +715,16 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                   <Spinner inline />
               </div>
             ) : (
-                  <>                  
+                  <>       
+                    {!isEmpty(currentWord.frozen_messages) && (
+                      <div className="message message-bot message-hint" style={{ backgroundColor: '#ffeece' }}>
+                        <div className="hint-item">
+                          <Icon name="lightbulb" className="hint-bulb" />
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />                                
+                        </div>
+                      </div>
+                      )}
+                            
                     {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
                       <div className="message message-bot">
                         <FormattedMessage 
@@ -779,7 +789,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       
                       {hintMessageIdx === 0 && (spentHints.length > 0 || emptyHintsList) && (
 
-                        <>                              
+                        <>                          
+
                           {currentWord.hint2penalty && attempt === 0 && (
                             <div className="message message-bot message-hint">
                               <div className="hint-item">
