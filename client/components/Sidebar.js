@@ -243,11 +243,11 @@ export default function Sidebar() {
             )}
 
             <Box className="sidebar-actions-wrap" sx={{ padding: '16px 12px' }}>
-                <BootstrapButton
+              <BootstrapButton
               className="sidebar-profile-button sidebar-action-button"
                   variant="secondary"
                   style={actionButtonSx}
-                  onClick={() => setPracticeModalOpen(true)}
+                  onClick={() => { closeSidebar(); navigate('/home', { state: { practiceModalOpen: true } }); }}
                 >
                   <FlagIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                   <FormattedMessage id="practice-now" />
