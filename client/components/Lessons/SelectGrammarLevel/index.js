@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal, Tab, TabPane, Icon, Popup } from 'semantic-ui-react'
@@ -46,54 +47,70 @@ const SelectGrammarLevel = ({
         groups[groupName] = []
       }
       lesson.topics.forEach(topic => {
-        groups[groupName].push(topic)
+        if (!groups[groupName].includes(topic)) {
+          groups[groupName].push(topic)
+        }
       })
       return groups
     }, {})
   }, [lessons])
 
-  const isLevelButtonActive = level => {
-    if (selectedTopics.length === 0) return false
+  const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics])
 
-    const levelTopics = topicsByLevel[level] || []
+  const getActiveLevels = () =>
+    GRAMMAR_LEVELS.filter(level => {
+      const levelTopics = topicsByLevel[level] || []
 
-    return levelTopics.length > 0 && levelTopics.every(topic => selectedTopics.includes(topic))
-  }
-
-  const isCustomButtonActive = () => {
-    if (selectedTopics.length === 0) return false
-
-    let isActive = false
-
-    selectedTopics.forEach(topicId => {
-      let levelOfTopic
-      GRAMMAR_LEVELS.forEach(level => {
-        if ((topicsByLevel[level] || []).includes(topicId)) {
-          levelOfTopic = level
-        }
-      })
-
-      if (levelOfTopic && !isLevelButtonActive(levelOfTopic)) {
-        isActive = true
-      }
+      return levelTopics.length > 0 && levelTopics.every(topic => selectedTopicSet.has(topic))
     })
 
-    return isActive
+  const getTopicSetByLevels = levels => {
+    const topics = new Set()
+
+    levels.forEach(level => {
+      ;(topicsByLevel[level] || []).forEach(topic => topics.add(topic))
+    })
+
+    return topics
   }
 
-  const handleLevelClick = level => {
-    let newTopics
+  const isLevelButtonActive = level => {
+    if (selectedTopicSet.size === 0) return false
+
     const levelTopics = topicsByLevel[level] || []
 
-    if (isLevelButtonActive(level)) {
-      newTopics = selectedTopics.filter(topicId => !levelTopics.includes(topicId))
-    } else if (isCustomButtonActive()) {
-      newTopics = levelTopics
+    return levelTopics.length > 0 && levelTopics.every(topic => selectedTopicSet.has(topic))
+  }
+
+  const isCustomButtonActive = () =>
+    selectedTopicSet.size > 0 &&
+    GRAMMAR_LEVELS.some(level => {
+      const levelTopics = topicsByLevel[level] || []
+      const selectedLevelTopics = levelTopics.filter(topic => selectedTopicSet.has(topic))
+
+      return selectedLevelTopics.length > 0 && selectedLevelTopics.length < levelTopics.length
+    })
+
+  const handleLevelClick = level => {
+    const levelTopics = topicsByLevel[level] || []
+    const activeLevels = getActiveLevels()
+    const newTopics = new Set(selectedTopics)
+
+    if (activeLevels.includes(level)) {
+      const topicsInOtherActiveLevels = getTopicSetByLevels(
+        activeLevels.filter(activeLevel => activeLevel !== level),
+      )
+
+      levelTopics.forEach(topic => {
+        if (!topicsInOtherActiveLevels.has(topic)) {
+          newTopics.delete(topic)
+        }
+      })
     } else {
-      newTopics = selectedTopics.concat(levelTopics)
+      levelTopics.forEach(topic => newTopics.add(topic))
     }
 
-    setSelectedTopics(newTopics)
+    setSelectedTopics(Array.from(newTopics))
   }
 
   if (currentStepIndex !== 2) {
@@ -190,7 +207,7 @@ const SelectGrammarLevel = ({
                 name={`level ${level}`}
                 width="80px"
                 height="55px"
-                active={isLevelButtonActive(level) && !isCustomButtonActive()}
+                active={isLevelButtonActive(level)}
                 level={level}
               />
             </div>
