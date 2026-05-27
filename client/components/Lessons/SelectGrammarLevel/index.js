@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal, Tab, TabPane, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -13,6 +13,10 @@ import './SelectGrammarLevelStyles.css'
 
 const GRAMMAR_LEVELS = [1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4]
 
+// Identifies one topic row inside one lesson, even when another lesson has the same topic.
+const getLessonTopicKey = (lessonId, topic) => `${lessonId}::${topic}`
+
+// Uses one button for all level 4 lessons, but exact groups for the other levels.
 const getLessonLevel = lesson => {
   if (!lesson.group) return null
 
@@ -32,13 +36,15 @@ const SelectGrammarLevel = ({
   showListeningSettings,
 }) => {
   const [modal, setModal] = useState(false)
+  const [selectedTopicKeys, setSelectedTopicKeys] = useState([])
   const intl = useIntl()
   const { grade, current_cefr: currentCefr } = useSelector(state => state.user.data.user)
   const recommendedBaseLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
   const recommendedLevel = recommendedBaseLevel === 4 ? 4 : Number(`${recommendedBaseLevel}.1`)
   const selectedTopics = selectedTopicIds || []
 
-  const topicsByLevel = useMemo(() => {
+  // Lists which topic rows belong to each level button.
+  const topicKeysByLevel = useMemo(() => {
     return (lessons || []).reduce((groups, lesson) => {
       const groupName = getLessonLevel(lesson)
       if (!groupName) return groups
@@ -47,70 +53,118 @@ const SelectGrammarLevel = ({
         groups[groupName] = []
       }
       lesson.topics.forEach(topic => {
-        if (!groups[groupName].includes(topic)) {
-          groups[groupName].push(topic)
+        const topicKey = getLessonTopicKey(lesson.ID, topic)
+        if (!groups[groupName].includes(topicKey)) {
+          groups[groupName].push(topicKey)
         }
       })
       return groups
     }, {})
   }, [lessons])
 
-  const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics])
+  // Looks up the real topic name from a topic row key.
+  const topicByKey = useMemo(() => {
+    return (lessons || []).reduce((topics, lesson) => {
+      lesson.topics.forEach(topic => {
+        topics[getLessonTopicKey(lesson.ID, topic)] = topic
+      })
+      return topics
+    }, {})
+  }, [lessons])
 
-  const getActiveLevels = () =>
-    GRAMMAR_LEVELS.filter(level => {
-      const levelTopics = topicsByLevel[level] || []
+  const selectedTopicKeySet = useMemo(() => new Set(selectedTopicKeys), [selectedTopicKeys])
 
-      return levelTopics.length > 0 && levelTopics.every(topic => selectedTopicSet.has(topic))
-    })
+  // If a saved lesson already has topic ids, check the matching rows in Custom.
+  useEffect(() => {
+    if (selectedTopicKeys.length > 0 || selectedTopics.length === 0) return
 
-  const getTopicSetByLevels = levels => {
-    const topics = new Set()
+    const selectedTopicIdsSet = new Set(selectedTopics)
+    const initialTopicKeys = Object.keys(topicByKey).filter(topicKey =>
+      selectedTopicIdsSet.has(topicByKey[topicKey]),
+    )
+
+    setSelectedTopicKeys(initialTopicKeys)
+  }, [selectedTopicKeys.length, selectedTopics, topicByKey])
+
+  // Returns true when every topic row under this level is checked.
+  const areAllLevelTopicsSelected = (level, topicKeySet = selectedTopicKeySet) => {
+    const levelTopicKeys = topicKeysByLevel[level] || []
+
+    return levelTopicKeys.length > 0 && levelTopicKeys.every(topicKey => topicKeySet.has(topicKey))
+  }
+
+  const activeLevels = useMemo(
+    () => GRAMMAR_LEVELS.filter(level => areAllLevelTopicsSelected(level)),
+    [selectedTopicKeySet, topicKeysByLevel],
+  )
+
+  const activeLevelSet = useMemo(() => new Set(activeLevels), [activeLevels])
+
+  // Gets all checked row keys that come from these level buttons.
+  const getTopicKeySetByLevels = levels => {
+    const topicKeys = new Set()
 
     levels.forEach(level => {
-      ;(topicsByLevel[level] || []).forEach(topic => topics.add(topic))
+      ;(topicKeysByLevel[level] || []).forEach(topicKey => topicKeys.add(topicKey))
     })
 
-    return topics
+    return topicKeys
   }
 
-  const isLevelButtonActive = level => {
-    if (selectedTopicSet.size === 0) return false
+  // Turns checked row keys back into the topic id list saved for practice.
+  const getTopicIdsFromKeys = topicKeys => {
+    const topics = new Set()
 
-    const levelTopics = topicsByLevel[level] || []
-
-    return levelTopics.length > 0 && levelTopics.every(topic => selectedTopicSet.has(topic))
-  }
-
-  const isCustomButtonActive = () =>
-    selectedTopicSet.size > 0 &&
-    GRAMMAR_LEVELS.some(level => {
-      const levelTopics = topicsByLevel[level] || []
-      const selectedLevelTopics = levelTopics.filter(topic => selectedTopicSet.has(topic))
-
-      return selectedLevelTopics.length > 0 && selectedLevelTopics.length < levelTopics.length
+    topicKeys.forEach(topicKey => {
+      if (topicByKey[topicKey]) {
+        topics.add(topicByKey[topicKey])
+      }
     })
 
+    return Array.from(topics)
+  }
+
+  const activeLevelTopicKeySet = useMemo(
+    () => getTopicKeySetByLevels(activeLevels),
+    [activeLevels, topicKeysByLevel],
+  )
+
+  // Custom is active when the checked rows are not exactly full selected levels.
+  const customButtonActive = useMemo(() => {
+    if (selectedTopicKeySet.size === 0) return false
+    if (selectedTopicKeySet.size !== activeLevelTopicKeySet.size) return true
+
+    return selectedTopicKeys.some(topicKey => !activeLevelTopicKeySet.has(topicKey))
+  }, [activeLevelTopicKeySet, selectedTopicKeySet, selectedTopicKeys])
+
+  // Selects or unselects every topic row under one level button.
   const handleLevelClick = level => {
-    const levelTopics = topicsByLevel[level] || []
-    const activeLevels = getActiveLevels()
-    const newTopics = new Set(selectedTopics)
+    const levelTopicKeys = topicKeysByLevel[level] || []
+    const newTopicKeys = new Set(selectedTopicKeys)
 
-    if (activeLevels.includes(level)) {
-      const topicsInOtherActiveLevels = getTopicSetByLevels(
+    if (activeLevelSet.has(level)) {
+      const topicKeysInOtherActiveLevels = getTopicKeySetByLevels(
         activeLevels.filter(activeLevel => activeLevel !== level),
       )
 
-      levelTopics.forEach(topic => {
-        if (!topicsInOtherActiveLevels.has(topic)) {
-          newTopics.delete(topic)
+      levelTopicKeys.forEach(topicKey => {
+        if (!topicKeysInOtherActiveLevels.has(topicKey)) {
+          newTopicKeys.delete(topicKey)
         }
       })
     } else {
-      levelTopics.forEach(topic => newTopics.add(topic))
+      levelTopicKeys.forEach(topicKey => newTopicKeys.add(topicKey))
     }
 
-    setSelectedTopics(Array.from(newTopics))
+    const nextTopicKeys = Array.from(newTopicKeys)
+    setSelectedTopicKeys(nextTopicKeys)
+    setSelectedTopics(getTopicIdsFromKeys(nextTopicKeys))
+  }
+
+  // Receives checkbox changes from Custom and saves both row keys and topic ids.
+  const handleCustomTopicsChange = (topics, topicKeys = selectedTopicKeys) => {
+    setSelectedTopicKeys(topicKeys)
+    setSelectedTopics(topics)
   }
 
   if (currentStepIndex !== 2) {
@@ -125,7 +179,9 @@ const SelectGrammarLevel = ({
           <Topics
             topicInstance={topicInstance}
             editable={editable}
-            setSelectedTopics={setSelectedTopics}
+            setSelectedTopics={handleCustomTopicsChange}
+            selectedTopicKeys={selectedTopicKeys}
+            setSelectedTopicKeys={setSelectedTopicKeys}
             showPerf={showPerf}
           />
         </TabPane>
@@ -183,7 +239,9 @@ const SelectGrammarLevel = ({
               <Topics
                 topicInstance={topicInstance}
                 editable={editable}
-                setSelectedTopics={setSelectedTopics}
+                setSelectedTopics={handleCustomTopicsChange}
+                selectedTopicKeys={selectedTopicKeys}
+                setSelectedTopicKeys={setSelectedTopicKeys}
                 showPerf={showPerf}
               />
             </Modal.Content>
@@ -207,7 +265,7 @@ const SelectGrammarLevel = ({
                 name={`level ${level}`}
                 width="80px"
                 height="55px"
-                active={isLevelButtonActive(level)}
+                active={activeLevelSet.has(level)}
                 level={level}
               />
             </div>
@@ -220,7 +278,7 @@ const SelectGrammarLevel = ({
           name="custom"
           width="130px"
           height="55px"
-          active={isCustomButtonActive()}
+          active={customButtonActive}
         />
       </div>
     </>

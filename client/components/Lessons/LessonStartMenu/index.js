@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
@@ -34,7 +35,7 @@ const LessonStartMenu = ({ setOpen }) => {
     recommendedGrammarBaseLevel === 4 ? 4 : Number(`${recommendedGrammarBaseLevel}.1`)
 
   const getTopicsByLevel = () => {
-    const levelTopics = lessons.reduce((groups, lesson) => {
+    const levelTopics = (lessons || []).reduce((groups, lesson) => {
       const groupName = getLessonLevel(lesson)
       if (!groupName) return groups
 
@@ -42,7 +43,9 @@ const LessonStartMenu = ({ setOpen }) => {
         groups[groupName] = []
       }
       lesson.topics.forEach(topic => {
-        groups[groupName].push(topic)
+        if (!groups[groupName].includes(topic)) {
+          groups[groupName].push(topic)
+        }
       })
       return groups
     }, {})

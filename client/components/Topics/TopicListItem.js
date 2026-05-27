@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Dropdown, Button as SemanticButton, Icon, Popup, Checkbox } from 'semantic-ui-react'
+import { Card, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -10,6 +11,8 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 
 // import ConfirmationWarning from 'Components/ConfirmationWarning'
 // import useWindowDimensions from 'Utilities/windowDimensions'
+
+const getLessonTopicKey = (lessonId, topic) => `${lessonId}::${topic}`
 
 const get_lesson_performance = (correct_count, total_count) => {
   let correct_perc = 0.0
@@ -28,16 +31,30 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
-const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic, includeLesson, excludeLesson, showPerf }) => {
+const LessonTitle = ({
+  lesson,
+  lesson_instance,
+  selected,
+  disabled,
+  toggleTopic,
+  includeLesson,
+  excludeLesson,
+  selectedTopicKeys,
+  showPerf,
+}) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
   const { topics } = useSelector(({ lessons }) => lessons)
-  const { lesson_topics:all_topics } = useSelector(({ metadata }) => metadata)
+  const { lesson_topics: all_topics } = useSelector(({ metadata }) => metadata)
 
   const topic2info = topics.reduce((obj, topic) => ({ ...obj, [topic.topic_id]: topic }), {})
-  const topicId2Name = all_topics.reduce((obj, topic) => ({ ...obj, [topic.topic_id]: topic.topic }), {})
+  const topicId2Name = all_topics.reduce(
+    (obj, topic) => ({ ...obj, [topic.topic_id]: topic.topic }),
+    {},
+  )
+  const selectedTopicKeySet = new Set(selectedTopicKeys || [])
 
   const topic_rows = []
   const lesson_topics = lesson.topics
@@ -48,15 +65,18 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
 
     return {
       title: match[1].trim(),
-      example: match[2].trim() }
+      example: match[2].trim(),
+    }
   }
 
   for (let k = 0; k < lesson_topics.length; k++) {
-    const correct = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
+    const correct =
+      topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].correct : 0
     const total = topic2info[lesson_topics[k]] != undefined ? topic2info[lesson_topics[k]].total : 0
-    const color = {color: get_lesson_performance_style(correct, total)}
+    const color = { color: get_lesson_performance_style(correct, total) }
     const rawName =
-      topicId2Name[lesson_topics[k]].charAt(0).toUpperCase() + topicId2Name[lesson_topics[k]].slice(1)
+      topicId2Name[lesson_topics[k]].charAt(0).toUpperCase() +
+      topicId2Name[lesson_topics[k]].slice(1)
 
     const { title: topicTitle, example: topicExample } = splitAtFirstDash(rawName)
 
@@ -68,139 +88,103 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
           marginBottom: '.5rem',
           display: 'inline-flex',
           width: '100%',
-          ...getTextStyle(learningLanguage) }}
+          ...getTextStyle(learningLanguage),
+        }}
       >
         <span
-            display="inline"
-            float="left"
-            style={{
-              width: '4%',
-              textAlign: 'right',
-              marginRight: '10px',
-              maxWidth: '25px',
-              minWidth: '25px',
-              ...color
+          display="inline"
+          float="left"
+          style={{
+            width: '4%',
+            textAlign: 'right',
+            marginRight: '10px',
+            maxWidth: '25px',
+            minWidth: '25px',
+            ...color,
+          }}
+        >
+          <Checkbox
+            checked={
+              selectedTopicKeys
+                ? selectedTopicKeySet.has(getLessonTopicKey(lesson.ID, lesson_topics[k]))
+                : lesson_instance != undefined &&
+                  lesson_instance?.topic_ids != undefined &&
+                  lesson_instance?.topic_ids?.includes(lesson_topics[k])
+            }
+            onChange={() => {
+              toggleTopic(lesson_topics[k], lesson.ID)
             }}
-          >
-            <Checkbox
-              checked={lesson_instance != undefined && lesson_instance?.topic_ids != undefined && lesson_instance?.topic_ids?.includes(lesson_topics[k])}
-              onChange={() => {toggleTopic(lesson_topics[k])}}
-            />
-          </span>
+          />
+        </span>
         {showPerf && (
           <Popup
             position="top center"
             // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
             content={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
             trigger={
-              <div className="lesson-performance" 
-              style={{
-                minWidth: '50px',
-                maxWidth: '50px' }}
-            >
-              <span
-                float="left"
+              <div
+                className="lesson-performance"
                 style={{
-                  display: 'inline-grid',
-                  justifyContent: 'end',
-                  width: '6%',
-                  textAlign: 'right',
-                  marginRight: '5px',
-                  maxWidth: '25px',
-                  minWidth: '25px',
-                  verticalAlign: 'top',
-                  ...color
+                  minWidth: '50px',
+                  maxWidth: '50px',
                 }}
               >
-                {String(
-                  Math.round(
-                    get_lesson_performance(correct, total) * 100
-                  )
-                ).padEnd(3, ' ')}
-              </span>
-              <span
-                style={{
-                  width: '3%',
-                  textAlign: 'center',
-                  maxWidth: '20px',
-                  minWidth: '18px',
-                  verticalAlign: 'top',
-                  ...color
-                }}
-              >
-                %
-              </span>
-            </div>
+                <span
+                  float="left"
+                  style={{
+                    display: 'inline-grid',
+                    justifyContent: 'end',
+                    width: '6%',
+                    textAlign: 'right',
+                    marginRight: '5px',
+                    maxWidth: '25px',
+                    minWidth: '25px',
+                    verticalAlign: 'top',
+                    ...color,
+                  }}
+                >
+                  {String(Math.round(get_lesson_performance(correct, total) * 100)).padEnd(3, ' ')}
+                </span>
+                <span
+                  style={{
+                    width: '3%',
+                    textAlign: 'center',
+                    maxWidth: '20px',
+                    minWidth: '18px',
+                    verticalAlign: 'top',
+                    ...color,
+                  }}
+                >
+                  %
+                </span>
+              </div>
             }
           />
         )}
-        <div className='lesson-content' style={{ width: '80%', marginLeft: '15px' }}>
+        <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
-          {topicExample ? <div style={{fontWeight: '400'}} dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }} /> : null}
+          {topicExample ? (
+            <div
+              style={{ fontWeight: '400' }}
+              dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }}
+            />
+          ) : null}
         </div>
-      </h6>
+      </h6>,
     )
   }
 
-  return (
-    bigScreen ? (
-      <div>
-        <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-          <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
-          <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
-            <h5
-              className="story-item-title"
-              style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
-              dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
-            />
-          </div>
-          <Card.Content extra className="lesson-card-actions-cont">
-            <div className="lesson-actions">
-              <Button
-                variant={selected ? 'primary' : 'outline-primary'}
-                onClick={() => {
-                  if (selected) {
-                    excludeLesson(lesson.ID)
-                  } else {
-                    includeLesson(lesson.ID)
-                  }
-                }}
-                disabled={disabled}
-                style={{
-                  cursor: !disabled
-                    ? 'pointer'
-                    : 'not-allowed'
-                }}
-              >
-                {selected &&
-                  (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) ||
-                  <FormattedMessage id="include-into-lesson" />}
-              </Button>
-            </div>
-          </Card.Content>
-        </span>
-        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
-      </div>
-    ) : (
-      <div>
-        <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-          <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
-            <h5
-              className="story-item-title"
-              style={{ 
-                'overflow-wrap': 'break-word',
-                'white-space': 'normal',
-                marginBottom: '.5rem', ...getTextStyle(learningLanguage) 
-              }}
-            >
-              <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
-              <span dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }} />
-              {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
-            </h5>
-          </div>
-          
-        </span>
-        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+  return bigScreen ? (
+    <div>
+      <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+        <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
+        <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
+          <h5
+            className="story-item-title"
+            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+            dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
+          />
+        </div>
         <Card.Content extra className="lesson-card-actions-cont">
           <div className="lesson-actions">
             <Button
@@ -214,27 +198,85 @@ const LessonTitle = ({ lesson, lesson_instance, selected, disabled, toggleTopic,
               }}
               disabled={disabled}
               style={{
-                width: '100%',
-                cursor: !disabled
-                  ? 'pointer'
-                  : 'not-allowed'
+                cursor: !disabled ? 'pointer' : 'not-allowed',
               }}
             >
-              {selected &&
-                (<><Icon name="check" /><FormattedMessage id="included-in-lesson" /></>) ||
-                <FormattedMessage id="include-into-lesson" />}
+              {(selected && (
+                <>
+                  <Icon name="check" />
+                  <FormattedMessage id="included-in-lesson" />
+                </>
+              )) || <FormattedMessage id="include-into-lesson" />}
             </Button>
           </div>
         </Card.Content>
-      </div>
-    )
+      </span>
+      <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+    </div>
+  ) : (
+    <div>
+      <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
+        <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
+          <h5
+            className="story-item-title"
+            style={{
+              'overflow-wrap': 'break-word',
+              'white-space': 'normal',
+              marginBottom: '.5rem',
+              ...getTextStyle(learningLanguage),
+            }}
+          >
+            <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
+            <span dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }} />
+            {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
+          </h5>
+        </div>
+      </span>
+      <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+      <Card.Content extra className="lesson-card-actions-cont">
+        <div className="lesson-actions">
+          <Button
+            variant={selected ? 'primary' : 'outline-primary'}
+            onClick={() => {
+              if (selected) {
+                excludeLesson(lesson.ID)
+              } else {
+                includeLesson(lesson.ID)
+              }
+            }}
+            disabled={disabled}
+            style={{
+              width: '100%',
+              cursor: !disabled ? 'pointer' : 'not-allowed',
+            }}
+          >
+            {(selected && (
+              <>
+                <Icon name="check" />
+                <FormattedMessage id="included-in-lesson" />
+              </>
+            )) || <FormattedMessage id="include-into-lesson" />}
+          </Button>
+        </div>
+      </Card.Content>
+    </div>
   )
 }
 
-const TopicListItem = ({ lesson, lesson_instance, selected, toggleTopic, includeLesson, excludeLesson, disabled, showPerf }) => {
+const TopicListItem = ({
+  lesson,
+  lesson_instance,
+  selected,
+  toggleTopic,
+  includeLesson,
+  excludeLesson,
+  selectedTopicKeys,
+  disabled,
+  showPerf,
+}) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   let backgroundColor = '#ffffff'
-  if (correct_perc >= 0.80) backgroundColor = '#E2FFE1'
+  if (correct_perc >= 0.8) backgroundColor = '#E2FFE1'
   return (
     <Card
       fluid
@@ -243,7 +285,7 @@ const TopicListItem = ({ lesson, lesson_instance, selected, toggleTopic, include
       style={{ backgroundColor: backgroundColor }}
     >
       <Card.Content extra className="lesson-card-title-cont">
-        <LessonTitle 
+        <LessonTitle
           lesson={lesson}
           lesson_instance={lesson_instance}
           selected={selected}
@@ -251,6 +293,7 @@ const TopicListItem = ({ lesson, lesson_instance, selected, toggleTopic, include
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
+          selectedTopicKeys={selectedTopicKeys}
           showPerf={showPerf}
         />
       </Card.Content>
