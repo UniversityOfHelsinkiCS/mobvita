@@ -292,13 +292,14 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
   }
 
   const buildSingleConcept = conceptId => {
-    const concept = allConcepts.find(concept => concept.concept_id === conceptId)
-    if (!concept?.children) return { id: conceptId, children: [] }
+    const concept = concepts.find(concept => concept.concept_id === conceptId)
+    if (!concept) return null
+    else if (!concept.children) return { id: conceptId, children: [] }
     return {
       id: conceptId,
       children: concept.children
         .sort((a, b) => a['UI-order'] - b['UI-order'])
-        .map(c => buildSingleConcept(c)),
+        .map(c => buildSingleConcept(c)).filter(c => c !== null),
     }
   }
 
