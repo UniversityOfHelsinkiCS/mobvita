@@ -297,12 +297,12 @@ const PracticeView = () => {
         {showMessageDialog && (
           <MessageDialog continueAction={restartStory} setShow={setShowMessageDialog} />
         )}
-        <StartModal
+        {/* <StartModal
           open={startModalOpen}
           setOpen={setStartModalOpen}
           activity="control-story"
           onBackClick={() => history.push('/library')}
-        />        
+        />         */}
         <HelperSidebar>
           <CombinedChatbot />
         </HelperSidebar>
