@@ -46,7 +46,6 @@ import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
 import AssistentSettings from './AssistentSettings'
-import TestSentryTrigger from 'Components/TestSentryTrigger'
 
 const CombinedChatbot = ({inWordNestModal, clue}) => {
 
