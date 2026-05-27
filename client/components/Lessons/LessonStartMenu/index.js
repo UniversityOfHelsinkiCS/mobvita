@@ -6,9 +6,16 @@ import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { images, cefrNumberToLevel } from 'Utilities/common'
 import { setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 
 import './LessonStartMenuStyles.scss'
+
+const getLessonLevel = lesson => {
+  if (!lesson.group) return null
+
+  const group = String(lesson.group)
+
+  return group.startsWith('4') ? '4' : group
+}
 
 const LessonStartMenu = ({ setOpen }) => {
   const dispatch = useDispatch()
@@ -17,16 +24,20 @@ const LessonStartMenu = ({ setOpen }) => {
   const {
     grade,
     current_cefr: currentCefr,
-    vocabulary_score: vocabularyScore } = useSelector(state => state.user.data.user)
+    vocabulary_score: vocabularyScore,
+  } = useSelector(state => state.user.data.user)
   const { lessons, lesson_semantics: lessonSemantics } = useSelector(({ metadata }) => metadata)
 
-  const bigScreen = useWindowDimensions().width > 1000
-
-  const recommendedGrammarLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
+  const recommendedGrammarBaseLevel =
+    cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
+  const recommendedGrammarLevel =
+    recommendedGrammarBaseLevel === 4 ? 4 : Number(`${recommendedGrammarBaseLevel}.1`)
 
   const getTopicsByLevel = () => {
     const levelTopics = lessons.reduce((groups, lesson) => {
-      const groupName = lesson.group[0]
+      const groupName = getLessonLevel(lesson)
+      if (!groupName) return groups
+
       if (!groups[groupName]) {
         groups[groupName] = []
       }
@@ -43,7 +54,8 @@ const LessonStartMenu = ({ setOpen }) => {
     const payload = {
       semantic: lessonSemantics,
       vocab_diff: vocabularyScore,
-      topic_ids: getTopicsByLevel()[recommendedGrammarLevel] }
+      topic_ids: getTopicsByLevel()[recommendedGrammarLevel],
+    }
     dispatch(setLessonInstance(payload))
     navigate('/lesson/practice')
     setOpen(false)
@@ -56,9 +68,7 @@ const LessonStartMenu = ({ setOpen }) => {
 
   return (
     <div className="lesson-start-menu-container universal-background">
-      <Tooltip
-        title={<FormattedMessage id="lesson-quick-start-info" />}
-      >
+      <Tooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
         <Button
           className="lesson-tour-start-button"
           variant="primary"
@@ -79,9 +89,7 @@ const LessonStartMenu = ({ setOpen }) => {
         </Button>
       </Tooltip>
 
-      <Tooltip
-        title={<FormattedMessage id="lesson-customize-info" />}
-      >
+      <Tooltip title={<FormattedMessage id="lesson-customize-info" />}>
         <Button
           className="lesson-tour-setup-button"
           variant="secondary"

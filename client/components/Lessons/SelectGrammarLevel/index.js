@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Modal, Tab, TabPane, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -9,6 +9,16 @@ import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import ToggleButton from '../ToggleButton'
 
 import './SelectGrammarLevelStyles.css'
+
+const GRAMMAR_LEVELS = [1.1, 1.2, 2.1, 2.2, 3.1, 3.2, 4]
+
+const getLessonLevel = lesson => {
+  if (!lesson.group) return null
+
+  const group = String(lesson.group)
+
+  return group.startsWith('4') ? '4' : group
+}
 
 const SelectGrammarLevel = ({
   currentStepIndex,
@@ -23,11 +33,15 @@ const SelectGrammarLevel = ({
   const [modal, setModal] = useState(false)
   const intl = useIntl()
   const { grade, current_cefr: currentCefr } = useSelector(state => state.user.data.user)
-  const recommendedLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
+  const recommendedBaseLevel = cefrNumberToLevel(currentCefr) || cefrNumberToLevel(grade) || 1
+  const recommendedLevel = recommendedBaseLevel === 4 ? 4 : Number(`${recommendedBaseLevel}.1`)
+  const selectedTopics = selectedTopicIds || []
 
-  const getTopicsByLevel = () => {
-    const levelTopics = lessons.reduce((groups, lesson) => {
-      const groupName = lesson.group[0]
+  const topicsByLevel = useMemo(() => {
+    return (lessons || []).reduce((groups, lesson) => {
+      const groupName = getLessonLevel(lesson)
+      if (!groupName) return groups
+
       if (!groups[groupName]) {
         groups[groupName] = []
       }
@@ -36,25 +50,25 @@ const SelectGrammarLevel = ({
       })
       return groups
     }, {})
-
-    return levelTopics
-  }
+  }, [lessons])
 
   const isLevelButtonActive = level => {
-    if (selectedTopicIds.length === 0) return false
+    if (selectedTopics.length === 0) return false
 
-    return getTopicsByLevel()[level].every(topic => selectedTopicIds.includes(topic))
+    const levelTopics = topicsByLevel[level] || []
+
+    return levelTopics.length > 0 && levelTopics.every(topic => selectedTopics.includes(topic))
   }
 
   const isCustomButtonActive = () => {
-    if (selectedTopicIds.length === 0) return false
+    if (selectedTopics.length === 0) return false
 
     let isActive = false
 
-    selectedTopicIds.forEach(topicId => {
+    selectedTopics.forEach(topicId => {
       let levelOfTopic
-      ;[1, 2, 3, 4].forEach(level => {
-        if (getTopicsByLevel()[level].includes(topicId)) {
+      GRAMMAR_LEVELS.forEach(level => {
+        if ((topicsByLevel[level] || []).includes(topicId)) {
           levelOfTopic = level
         }
       })
@@ -69,13 +83,14 @@ const SelectGrammarLevel = ({
 
   const handleLevelClick = level => {
     let newTopics
+    const levelTopics = topicsByLevel[level] || []
 
     if (isLevelButtonActive(level)) {
-      newTopics = selectedTopicIds.filter(topicId => !getTopicsByLevel()[level].includes(topicId))
+      newTopics = selectedTopics.filter(topicId => !levelTopics.includes(topicId))
     } else if (isCustomButtonActive()) {
-      newTopics = getTopicsByLevel()[level]
+      newTopics = levelTopics
     } else {
-      newTopics = selectedTopicIds.concat(getTopicsByLevel()[level])
+      newTopics = selectedTopics.concat(levelTopics)
     }
 
     setSelectedTopics(newTopics)
@@ -160,7 +175,7 @@ const SelectGrammarLevel = ({
       </Modal>
       <div className="grammar-buttons-container">
         <div className="grammar-level-button-group">
-          {[1, 2, 3, 4].map(level => (
+          {GRAMMAR_LEVELS.map(level => (
             <div className="button-with-marker" key={level}>
               {recommendedLevel === level && (
                 <Popup
