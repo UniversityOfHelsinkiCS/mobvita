@@ -12,8 +12,6 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 // import ConfirmationWarning from 'Components/ConfirmationWarning'
 // import useWindowDimensions from 'Utilities/windowDimensions'
 
-const getLessonTopicKey = (lessonId, topic) => `${lessonId}::${topic}`
-
 const get_lesson_performance = (correct_count, total_count) => {
   let correct_perc = 0.0
   if (total_count && total_count !== 0) {
@@ -39,7 +37,6 @@ const LessonTitle = ({
   toggleTopic,
   includeLesson,
   excludeLesson,
-  selectedTopicKeys,
   showPerf,
 }) => {
   const { width } = useWindowDimensions()
@@ -54,8 +51,6 @@ const LessonTitle = ({
     (obj, topic) => ({ ...obj, [topic.topic_id]: topic.topic }),
     {},
   )
-  const selectedTopicKeySet = new Set(selectedTopicKeys || [])
-
   const topic_rows = []
   const lesson_topics = lesson.topics
 
@@ -105,14 +100,12 @@ const LessonTitle = ({
         >
           <Checkbox
             checked={
-              selectedTopicKeys
-                ? selectedTopicKeySet.has(getLessonTopicKey(lesson.ID, lesson_topics[k]))
-                : lesson_instance != undefined &&
-                  lesson_instance?.topic_ids != undefined &&
-                  lesson_instance?.topic_ids?.includes(lesson_topics[k])
+              lesson_instance != undefined &&
+              lesson_instance?.topic_ids != undefined &&
+              lesson_instance?.topic_ids?.includes(lesson_topics[k])
             }
             onChange={() => {
-              toggleTopic(lesson_topics[k], lesson.ID)
+              toggleTopic(lesson_topics[k])
             }}
           />
         </span>
@@ -270,7 +263,6 @@ const TopicListItem = ({
   toggleTopic,
   includeLesson,
   excludeLesson,
-  selectedTopicKeys,
   disabled,
   showPerf,
 }) => {
@@ -293,7 +285,6 @@ const TopicListItem = ({
           toggleTopic={toggleTopic}
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
-          selectedTopicKeys={selectedTopicKeys}
           showPerf={showPerf}
         />
       </Card.Content>
