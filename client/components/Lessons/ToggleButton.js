@@ -39,7 +39,7 @@ const ToggleButton = ({
           >
             {level ? (
               <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
-                <FormattedMessage id="lesson-group" values={{ group: level }} />
+                {level}
               </span>
             ) : (
               <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
