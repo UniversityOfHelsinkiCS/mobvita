@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { flashcardColors } from 'Utilities/common'
-import { Modal } from 'semantic-ui-react'
+import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 
 const FlashcardHintModal = ({ lemma, open, setOpen, hints, displayedHints, setDisplayedHints }) => {
   const dummyHints = [
@@ -34,17 +36,40 @@ const FlashcardHintModal = ({ lemma, open, setOpen, hints, displayedHints, setDi
   }
 
   return (
-    <Modal
-      dimmer="inverted"
-      centered={false}
-      size="small"
-      closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+    <Dialog
       open={open}
       onClose={() => setOpen(false)}
-      style={{ width: '300px', height: '400px' }}
+      maxWidth={false}
+      slotProps={{
+        paper: {
+          sx: {
+            width: '640px',
+            maxWidth: 'calc(100vw - 32px)',
+          },        },
+      }}
     >
-      <Modal.Header>{lemma}</Modal.Header>
-      <Modal.Content>
+      <DialogTitle
+        sx={{
+          borderBottom: '1px solid rgba(34, 36, 38, 0.15)',
+          padding: '12px 48px 12px 16px',
+          textAlign: 'center',
+        }}
+      >
+        <FormattedHTMLMessage id="flashcard-hint-dialog-header" values={{ lemma }} />
+        <IconButton
+          aria-label="close"
+          onClick={() => setOpen(false)}
+          sx={{
+            color: '#000000',
+            position: 'absolute',
+            right: '8px',
+            top: '8px',
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ padding: '1em 1.5em !important' }}>
         <div className="flex-col space-between" style={{ height: '300px' }}>
           <div dangerouslySetInnerHTML={{ __html: hints[hintIndex] }} />
           {hints.length > 1 && (
@@ -58,8 +83,8 @@ const FlashcardHintModal = ({ lemma, open, setOpen, hints, displayedHints, setDi
             </div>
           )}
         </div>
-      </Modal.Content>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   )
 }
 

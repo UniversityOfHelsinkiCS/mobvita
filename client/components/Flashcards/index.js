@@ -106,11 +106,13 @@ const Flashcards = () => {
         {mode !== 'list' && mode !== 'new' ? (
           width >= 840 ? (
             <div className="flashcard-side-column">
-              <FlashcardStoryInfo
+              {title ? (
+                <FlashcardStoryInfo
                 title={title}
                 type={type}
                 numOfRewardableWords={numOfRewardableWords}
-              />
+                />
+              ) : <div></div>}
               <FlashcardMenu />
             </div>
           ) : (

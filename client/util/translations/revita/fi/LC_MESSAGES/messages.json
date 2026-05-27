@@ -1819,8 +1819,9 @@
     "add-folder": "Lisää kansio",
     "folder-name": "Kansion nimi",
     "Add": "Lisää",
-    "lesson-tour-start-button-title": "start title",
-    "lesson-tour-start-button-message": "start msg",
-    "lesson-tour-setup-button-title": "setup title",
-    "lesson-tour-setup-button-message": "setup msg"
+    "lesson-tour-start-button-title": "",
+    "lesson-tour-start-button-message": "",
+    "lesson-tour-setup-button-title": "",
+    "lesson-tour-setup-button-message": "",
+    "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä"
 }

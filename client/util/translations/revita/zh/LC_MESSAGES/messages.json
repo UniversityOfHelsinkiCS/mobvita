@@ -1196,8 +1196,9 @@
     "add-folder": "Add Folder",
     "folder-name": "Folder name",
     "Add": "添加",
-    "lesson-tour-start-button-title": "start title",
-    "lesson-tour-start-button-message": "start msg",
-    "lesson-tour-setup-button-title": "setup title",
-    "lesson-tour-setup-button-message": "setup msg"
+    "lesson-tour-start-button-title": "",
+    "lesson-tour-start-button-message": "",
+    "lesson-tour-setup-button-title": "",
+    "lesson-tour-setup-button-message": "",
+    "flashcard-hint-dialog-header": "You have previously worked with word <b>{lemma}</b> in these contexts"
 }
