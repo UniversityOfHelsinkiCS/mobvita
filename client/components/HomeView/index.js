@@ -278,10 +278,20 @@ const HomeView = () => {
   const ddlangOptionalCourses = useSelector(state => state.user.data.user?.ddlang_optionalCourses)
   const ddlangGrade = useSelector(state => state.user.data.user?.ddlang_grade)
 
-  const [betaModalOpen, setBetaModalOpen] = useState(false)
+    const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const userIsAnonymous = userEmail === 'anonymous_email'
+
+  // If navigation set state to open practice modal (e.g. from Sidebar), open it and clear history state
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (location?.state?.practiceModalOpen) {
+      setPracticeModalOpen(true)
+      // clear the navigation state so modal doesn't reopen on back/refresh
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location?.state, navigate, location.pathname])
   const [openReminder, setOpenReminder] = useState(true)
   const welcomeView = location.pathname.endsWith('/welcome')
   const homeView = location.pathname.endsWith('/home')
