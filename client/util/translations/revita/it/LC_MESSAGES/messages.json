@@ -69,7 +69,7 @@
     "story-shared-with": "Storia condivisa con",
     "you-are-trying-to-share-a-story-with-yourself": "Non puoi condividere la storia con te stesso",
     "no-registered-user-with-e-mail": "Non è stato trovato un utente registrato con questa mail",
-    "translations-in": "Tradurre in",
+    "translation-to": "Tradurre in",
     "your-group": "Il tuo gruppo",
     "about-revita": "A proposito di Revita",
     "Help": "Aiuto",
@@ -1822,5 +1822,6 @@
     "lesson-tour-start-button-message": "Inizia le lezioni: gli argomenti che la lezione tratterà saranno determinati dalla tua selezione precedente, oppure il sistema deciderà quali argomenti sono più adatti a te in questo momento.",
     "lesson-tour-setup-button-title": "Configura le lezioni",
     "lesson-tour-setup-button-message": "Qui puoi selezionare gli argomenti da approfondire durante le lezioni.",
-    "flashcard-hint-dialog-header": "Hai incontrato la parola <b>{lemma}</b> in questi contesti"
+    "flashcard-hint-dialog-header": "Hai incontrato la parola <b>{lemma}</b> in questi contesti",
+    "select-dictionary-language": "Scegli la lingua in cui tradurre:"
 }

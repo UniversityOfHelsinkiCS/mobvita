@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Popup } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import SettingsIcon from 'Components/PracticeView/SettingsIcon'
@@ -43,7 +44,7 @@ const AssistentSettings = ({ className = '' }) => {
       {dictionaryOptions.length > 0 ? (
         <>
           <div style={{ fontWeight: 'bold', marginBottom: '0.5em', color: '#555' }}>
-            Dictionary Language:
+            <FormattedMessage id="select-dictionary-language"  />
           </div>
           <select
             disabled={dictionaryOptions.length <= 1}
