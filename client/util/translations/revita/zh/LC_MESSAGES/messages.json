@@ -1200,5 +1200,7 @@
     "lesson-tour-start-button-message": "Begin the lessons: the topics that the lesson will cover are determined by your previous selection, or the system will decide which topics are best for you now",
     "lesson-tour-setup-button-title": "Configure the Lessons",
     "lesson-tour-setup-button-message": "Here you can choose which topics to practice during the Lessons",
-    "flashcard-hint-dialog-header": "You have previously seen the word <b>{lemma}</b> in these contexts"
+    "flashcard-hint-dialog-header": "You have previously seen the word <b>{lemma}</b> in these contexts",
+    "select-dictionary-language": "Choose language to translate into:",
+    "translation-to": "Translation to"
 }

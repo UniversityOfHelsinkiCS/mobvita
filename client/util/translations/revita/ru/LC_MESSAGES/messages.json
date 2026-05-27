@@ -69,7 +69,7 @@
     "story-shared-with": "Текст послан",
     "you-are-trying-to-share-a-story-with-yourself": "Нельзя послать текст себе...",
     "no-registered-user-with-e-mail": "Пользователь с таким адресом не зарегистрирован",
-    "translations-in": "Перевод на",
+    "translation-to": "Перевод на",
     "your-group": "Ваша группа",
     "about-revita": "О проекте Ревита",
     "Help": "Помощь",
@@ -1825,5 +1825,6 @@
     "lesson-tour-start-button-message": "Начинаем уроки: темы, которые будут предложены на уроке, определяются твоим предыдущим выбором, или система сама выберет подходящие для тебя темы.",
     "lesson-tour-setup-button-title": "Настройка уроков",
     "lesson-tour-setup-button-message": "Здесь ты можешь выбрать, какие темы ты будешь отрабатывать на уроках.",
-    "flashcard-hint-dialog-header": "Слово <b>{lemma}</b> тебе знакомо из этих контекстов"
+    "flashcard-hint-dialog-header": "Слово <b>{lemma}</b> тебе знакомо из этих контекстов",
+    "select-dictionary-language": "Выбери язык для перевода:"
 }

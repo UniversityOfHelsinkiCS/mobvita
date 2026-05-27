@@ -227,7 +227,7 @@ const ChatActionMenu = ({
                 <Icon name="language" />
               </div>
               <span className="chat-action-text">
-                <FormattedMessage id="translations-in" defaultMessage="Translation to" /> {targetLangName}
+                <FormattedMessage id="translation-to" defaultMessage="Translation to" /> {targetLangName}
               </span>
             </button>
           )}

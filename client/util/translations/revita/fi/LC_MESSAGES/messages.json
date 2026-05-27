@@ -69,7 +69,7 @@
     "story-shared-with": "Tarina jaettu käyttäjälle",
     "you-are-trying-to-share-a-story-with-yourself": "Yritit jakaa tarinan itsesi kanssa...",
     "no-registered-user-with-e-mail": "Ei käyttäjää sähköpostilla",
-    "translations-in": "",
+    "translation-to": "Käännös kielelle:",
     "your-group": "Sinun ryhmäsi",
     "about-revita": "Tietoa Revitasta",
     "Help": "Ohje",
@@ -1801,7 +1801,7 @@
     "saved": "Tallennettu",
     "show-where-answer-is": "Näytä vastaus tekstissä",
     "confirm-delete-question": "Poista tämä kysymys?",
-    "lesson-tour-custom-grammar-button-topic": "Mukauta painike",
+    "lesson-tour-custom-grammar-button-topic": "Räätälöi oppitunti",
     "lesson-tour-custom-grammar-button-text": "Käytä tätä painiketta mukauttaaksesi tekstiäsi.",
     "Level title": "Tasot",
     "level-title-message": "Valitse niiden aiheiden taso, joita haluat harjoitella",
@@ -1812,8 +1812,8 @@
     "practice-tour-edit-delete-message": "Tässä voit muokata tai poistaa tarinan.<br/>\nSeuraavaksi menemme harjoittelu-sivulle!",
     "sort-by-concept-name": "Lajittele vaikeustason mukaan",
     "sort-by-concept-name-short": "Nimi",
-    "click-to-action-menu": "Napsauta valikkoa nähdäksesi lisää vaihtoehtoja {kuvake}",
-    "display-word-nest": "Näytä sanapesä",
+    "click-to-action-menu": "Napsauta valikkoa, niin saat lisää vaihtoehtoja {kuvake}",
+    "display-word-nest": "Näytä sukulaissanat",
     "ru-йцуке": "Näppäimistö: ЙЦУКЕ",
     "ru-яверт": "Näppäimistö: ЯВЕРТ",
     "add-folder": "Lisää kansio",
@@ -1823,5 +1823,6 @@
     "lesson-tour-start-button-message": "Aloita oppitunnit: oppitunnin aiheet määräytyvät aiemman valintasi perusteella, tai järjestelmä päättää, mitkä aiheet sopivat sinulle parhaiten nyt",
     "lesson-tour-setup-button-title": "Oppituntien määrittäminen",
     "lesson-tour-setup-button-message": "Tästä voit valita, mitä aiheita harjoittelet oppitunneilla",
-    "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä"
+    "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä",
+    "select-dictionary-language": "Valitse käännöskieli:"
 }
