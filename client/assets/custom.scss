@@ -3791,15 +3791,15 @@ label.file-upload-btn {
 }
 
 .story-detail-modal-manage-button {
-  width: 110px;
-  padding: 4px 0;
+  min-width: 110px;
+  padding: 4px 10px;
   text-align: center;
   background: var(--story-detail-modal-button-bg);
 }
 
 .story-detail-modal-manage-button-delete {
-  width: 110px;
-  padding: 4px 0;
+  min-width: 110px;
+  padding: 4px 10px;
   text-align: center;
 }
 
@@ -3808,7 +3808,7 @@ label.file-upload-btn {
 }
 
 .story-detail-modal-manage-button-long {
-  width: 200px;
+  min-width: 200px;
   padding: 4px 0;
   text-align: center;
   margin-bottom: 12px !important;
