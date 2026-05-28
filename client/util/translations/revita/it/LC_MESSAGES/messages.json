@@ -1823,5 +1823,6 @@
     "lesson-tour-setup-button-title": "Configura le lezioni",
     "lesson-tour-setup-button-message": "Qui puoi selezionare gli argomenti da approfondire durante le lezioni.",
     "flashcard-hint-dialog-header": "Hai incontrato la parola <b>{lemma}</b> in questi contesti",
-    "select-dictionary-language": "Scegli la lingua in cui tradurre:"
+    "select-dictionary-language": "Scegli la lingua in cui tradurre:",
+    "tailored-practice-mode": "Pratica"
 }

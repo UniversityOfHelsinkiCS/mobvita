@@ -1826,5 +1826,6 @@
     "lesson-tour-setup-button-title": "Настройка уроков",
     "lesson-tour-setup-button-message": "Здесь ты можешь выбрать, какие темы ты будешь отрабатывать на уроках.",
     "flashcard-hint-dialog-header": "Слово <b>{lemma}</b> тебе знакомо из этих контекстов",
-    "select-dictionary-language": "Выбери язык для перевода:"
+    "select-dictionary-language": "Выбери язык для перевода:",
+    "tailored-practice-mode": "Практика"
 }

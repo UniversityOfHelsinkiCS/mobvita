@@ -964,7 +964,7 @@
     "swahili": "Suahili",
     "turkish": "Turkki",
     "translate-into": "Käännä",
-    "nest": "Sanapuu",
+    "nest": "Sanaperhe",
     "show-additional-info": "Näytä enemmän tietoja",
     "people": "Ihmiset",
     "student": "Opiskelija",
@@ -1666,7 +1666,7 @@
     "explain-goto-inflection-table": "Käy katsomassa taivutustaulukko",
     "explain-speaker-lemma": "Kuuntele miltä tämä sana kuulostaa",
     "explain-speaker-surface": "Kuuntele miltä tämä sana kuulostaa",
-    "explain-wordnest-modal": "Sanapesä: katso muut liittyvät sanat",
+    "explain-wordnest-modal": "Sanaperhe: katso muut liittyvät sanat",
     "Menu-more": "Lisää",
     "explain-library-search": "Hae tekstejä sanan tai lauseen perusteella.",
     "lesson-performance-info-tooltip": "Suoritustasosi tässä aiheessa: prosenttiosuus oikeista vastauksista harjoituksissa",
@@ -1824,5 +1824,6 @@
     "lesson-tour-setup-button-title": "Oppituntien määrittäminen",
     "lesson-tour-setup-button-message": "Tästä voit valita, mitä aiheita harjoittelet oppitunneilla",
     "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä",
-    "select-dictionary-language": "Valitse käännöskieli:"
+    "select-dictionary-language": "Valitse käännöskieli:",
+    "tailored-practice-mode": "Harjoittelu"
 }
