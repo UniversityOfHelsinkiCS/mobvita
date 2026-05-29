@@ -1826,5 +1826,5 @@
     "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä",
     "select-dictionary-language": "Valitse käännöskieli:",
     "tailored-practice-mode": "Harjoittelu",
-    "you-have-N-hints-left": "Sinulla on {} vinkkiä jäljellä"
+    "you-have-N-hints-left": "Sinulla on { count } vinkkiä jäljellä"
 }

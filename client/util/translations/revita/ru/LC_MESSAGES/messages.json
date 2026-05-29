@@ -1828,5 +1828,5 @@
     "flashcard-hint-dialog-header": "Слово <b>{lemma}</b> тебе знакомо из этих контекстов",
     "select-dictionary-language": "Выбери язык для перевода:",
     "tailored-practice-mode": "Практика",
-    "you-have-N-hints-left": "У тебя осталось {} подсказок"
+    "you-have-N-hints-left": "{count, plural, one {У тебя осталась # подсказка} few {У тебя осталось # подсказки} many {У тебя осталось # подсказок} other {У тебя осталось # подсказок}}"
 }

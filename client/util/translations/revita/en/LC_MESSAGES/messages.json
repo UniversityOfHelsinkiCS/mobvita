@@ -1825,5 +1825,5 @@
     "lesson-tour-setup-button-message": "Here you can choose which topics to practice during the Lessons",
     "flashcard-hint-dialog-header": "You have previously seen the word <b>{lemma}</b> in these contexts",
     "select-dictionary-language": "Choose language to translate into:",
-    "you-have-N-hints-left": "You have {} hints left"
+    "you-have-N-hints-left": "You have { count } hints left"
 }

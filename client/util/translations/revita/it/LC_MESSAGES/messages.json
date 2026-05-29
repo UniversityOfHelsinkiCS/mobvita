@@ -1825,5 +1825,5 @@
     "flashcard-hint-dialog-header": "Hai incontrato la parola <b>{lemma}</b> in questi contesti",
     "select-dictionary-language": "Scegli la lingua in cui tradurre:",
     "tailored-practice-mode": "Pratica",
-    "you-have-N-hints-left": "Ti restano {} suggerimenti"
+    "you-have-N-hints-left": "Ti restano { count } suggerimenti"
 }

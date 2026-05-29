@@ -1204,5 +1204,5 @@
     "select-dictionary-language": "Choose language to translate into:",
     "translation-to": "Translation to",
     "tailored-practice-mode": "Practice",
-    "you-have-N-hints-left": "You have {} hints left"
+    "you-have-N-hints-left": "You have { count } hints left"
 }

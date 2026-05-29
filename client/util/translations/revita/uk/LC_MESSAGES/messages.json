@@ -938,5 +938,5 @@
     "translation-to": "Translation to",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get extra time for additional attempts.",
     "tailored-practice-mode": "Practice",
-    "you-have-N-hints-left": "You have {} hints left"
+    "you-have-N-hints-left": "You have { count } hints left"
 }
