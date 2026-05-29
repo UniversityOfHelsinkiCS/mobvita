@@ -402,7 +402,7 @@
     "flashcards-done": "Успішно опрацьовано 30 карток",
     "Test History": "Історія тестів",
     "Test": "Тест",
-    "Exercise": "Вправи",
+    "Exercise": "Вправа",
     "total-questions": "всього питань",
     "Showing results for": "Показ результатів для",
     "exercise-history": "Історія вправ",
@@ -937,5 +937,6 @@
     "select-dictionary-language": "Choose language to translate into:",
     "translation-to": "Translation to",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get extra time for additional attempts.",
-    "tailored-practice-mode": "Practice"
+    "tailored-practice-mode": "Practice",
+    "you-have-N-hints-left": "You have {} hints left"
 }

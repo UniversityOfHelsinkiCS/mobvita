@@ -786,7 +786,7 @@
     "medal earned": "ansaittu",
     "Test History": "Testihistoria",
     "Test": "Testit",
-    "Exercise": "Harjoitukset",
+    "Exercise": "Harjoitus",
     "total questions": "kysymystä yhteensä",
     "Showing results for": "Näytetään tuloksia aikavälille:",
     "This will permanently remove these test results, are you sure you want to proceed?": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
@@ -1825,5 +1825,6 @@
     "lesson-tour-setup-button-message": "Tästä voit valita, mitä aiheita harjoittelet oppitunneilla",
     "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä",
     "select-dictionary-language": "Valitse käännöskieli:",
-    "tailored-practice-mode": "Harjoittelu"
+    "tailored-practice-mode": "Harjoittelu",
+    "you-have-N-hints-left": "Sinulla on {} vinkkiä jäljellä"
 }
