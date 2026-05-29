@@ -650,7 +650,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               content={
                 <span style={{ whiteSpace: 'nowrap' }}>
                     <FormattedMessage
-                        id="chatbot-hints-left"
+                        id="you-have-N-hints-left"
                         defaultMessage="You have {count} hints left."
                         values={{ count: eloScoreHearts.length }}
                     />
