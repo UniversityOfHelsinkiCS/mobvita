@@ -1825,5 +1825,11 @@
     "flashcard-hint-dialog-header": "Hai incontrato la parola <b>{lemma}</b> in questi contesti",
     "select-dictionary-language": "Scegli la lingua in cui tradurre:",
     "tailored-practice-mode": "Pratica",
-    "you-have-N-hints-left": "Ti restano { count } suggerimenti"
+    "you-have-N-hints-left": "Ti restano { count } suggerimenti",
+    "select-group": "Select group",
+    "report-error": "Segnala un errore",
+    "an-error-has-occured": "Si è verificato un errore nel sistema. Il team degli sviluppatori è stato avvisato.",
+    "you-can-help-us-fix": "Puoi aiutarci a risolvere il problema più velocemente, inviandoci una breve descrizione dello stesso, nel modulo che si apre con questo pulsante:",
+    "please-write-in-any-language": "(Si prega di scrivere nella lingua che si preferisce.)",
+    "next-please-refresh-page": "Quindi, aggiorna la pagina o fai clic su \"Torna indietro\""
 }

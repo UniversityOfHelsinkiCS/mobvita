@@ -938,5 +938,11 @@
     "translation-to": "Translation to",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get extra time for additional attempts.",
     "tailored-practice-mode": "Practice",
-    "you-have-N-hints-left": "You have { count } hints left"
+    "you-have-N-hints-left": "You have { count } hints left",
+    "select-group": "Select group",
+    "report-error": "Повідомити про помилку",
+    "an-error-has-occured": "В системі сталася помилка. Команда розробників повідомлена.",
+    "you-can-help-us-fix": "Ти можеш допомогти нам швидше усунути помилку, надіславши її короткий опис — у формі, що відкривається при натисканні цієї кнопки:",
+    "please-write-in-any-language": "(Пиши будь-якою зручною для тебе мовою.)",
+    "next-please-refresh-page": "Далі, онови сторінку чи натисніть «Назад»."
 }

@@ -1,4 +1,3 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { Component } from 'react'
 import { Container, Message } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -31,21 +30,21 @@ export default class ErrorBoundary extends Component {
     return (
       <Container style={{ margin: 15 }}>
         <Message color="red" style={{ display: 'block' }}>
-            <Message.Header>
-                <FormattedMessage id="An error has occurred in the system.  The develper team has been notified." />
-            </Message.Header>
-            <p>
-                <FormattedMessage id="You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:" />
-            </p>
+          <Message.Header>
+            <FormattedMessage id="an-error-has-occured" />
+          </Message.Header>
+          <p>
+            <FormattedMessage id="you-can-help-us-fix" />
+          </p>
           <button type="button" onClick={() => Sentry.showReportDialog({ eventId })}>
-            <FormattedMessage id="Report error" />
+            <FormattedMessage id="report-error" />
           </button>
-            <p>
-                <FormattedMessage id="(Please write in any language that is convenient for you.)" />
-            </p>
-            <Message.Header>
-                <FormattedMessage id='Next, please refresh the page, or click "Go back"' />
-            </Message.Header>
+          <p>
+            <FormattedMessage id="please-write-in-any-language" />
+          </p>
+          <Message.Header>
+            <FormattedMessage id="next-please-refresh-page" />
+          </Message.Header>
         </Message>
       </Container>
     )

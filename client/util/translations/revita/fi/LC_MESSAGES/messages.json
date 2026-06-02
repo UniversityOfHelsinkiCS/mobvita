@@ -1812,7 +1812,7 @@
     "practice-tour-edit-delete-message": "Tässä voit muokata tai poistaa tarinan.<br/>\nSeuraavaksi menemme harjoittelu-sivulle!",
     "sort-by-concept-name": "Lajittele vaikeustason mukaan",
     "sort-by-concept-name-short": "Nimi",
-    "click-to-action-menu": "Napsauta valikkoa, niin saat lisää vaihtoehtoja {kuvake}",
+    "click-to-action-menu": "Napsauta valikkoa, niin saat lisää vaihtoehtoja {icon}",
     "display-word-nest": "Näytä sukulaissanat",
     "ru-йцуке": "Näppäimistö: ЙЦУКЕ",
     "ru-яверт": "Näppäimistö: ЯВЕРТ",
@@ -1826,5 +1826,11 @@
     "flashcard-hint-dialog-header": "Olet harjoitellut sanaa <b>{lemma}</b> aiemmin seuraavissa yhteyksissä",
     "select-dictionary-language": "Valitse käännöskieli:",
     "tailored-practice-mode": "Harjoittelu",
-    "you-have-N-hints-left": "Sinulla on { count } vinkkiä jäljellä"
+    "you-have-N-hints-left": "Sinulla on { count } vinkkiä jäljellä",
+    "select-group": "Select group",
+    "report-error": "Ilmoita virheestä",
+    "an-error-has-occured": "Järjestelmässä on tapahtunut virhe. Kehittäjätiimille on ilmoitettu.",
+    "you-can-help-us-fix": "Voit auttaa meitä korjaamaan ongelman nopeammin lähettämällä meille siitä lyhyen kuvauksen — tällä painikkeella avautuvassa muodossa:",
+    "please-write-in-any-language": "(Kirjoita millä tahansa sinulle sopivalla kielellä.)",
+    "next-please-refresh-page": "Seuraavaksi päivitä sivu tai napsauta \"Palaa takaisin\"."
 }

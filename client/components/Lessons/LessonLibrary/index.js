@@ -515,8 +515,8 @@ const LessonList = () => {
                           <FormattedMessage id="Group" />:
                         </span>
                         <Select
-                          placeholder="Select group"
-                          value={savedGroupSelection}
+                          placeholder={intl.formatMessage({ id: 'select-group' })}
+                          value={savedGroupSelection || ''}
                           options={groupDropdownOptions}
                           onChange={handleGroupChange}
                         />
