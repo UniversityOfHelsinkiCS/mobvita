@@ -248,10 +248,10 @@
   min-height: 0;
   height: 95%;
   width: 100%;
-  border: none;
+  border: 1px solid #000000;
   border-radius: 0 12px 12px 12px;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.143);
-  background: linear-gradient(180deg, #d7ecff 0%, #b2d5f6 100%);
+  box-shadow: 0.5em 0.5em 0.6em grey;
+  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
 
   cursor: pointer;
   text-align: left;
@@ -262,12 +262,13 @@
   content: "";
   position: absolute;
   top: -8px;
-  left: 0;
+  left: -1px;
   width: 120px;
   height: 8px;
+  border: 1px solid #000000;
   border-bottom: none;
   border-radius: 8px 8px 0 0;
-  background: linear-gradient(180deg, #e9f0f8 0%, #d7ecff 100%);
+  background: linear-gradient(170deg, #d7ecff 0%, #d7ecff 100%);
 }
 
 .library-folder-content {
