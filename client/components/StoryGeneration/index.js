@@ -533,6 +533,7 @@ const StoryGeneration = () => {
                   }}
                 />
               </Stepper>
+              {console.log('goStep', goStep)}
 
               <Button
                 style={{
@@ -541,7 +542,7 @@ const StoryGeneration = () => {
                   cursor: 'pointer' }}
                 disabled={
                   goStep >= 3 ||
-                  (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1)
+                  (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1 && lessonInstance.learner_ideas === '')
                 }
                 onClick={() => {
                   setGoStep(goStep + 1)
