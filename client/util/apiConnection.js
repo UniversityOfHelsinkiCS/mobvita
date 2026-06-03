@@ -153,21 +153,8 @@ export const handleRequest = store => next => async action => {
     const { requestSettings } = action
     if (requestSettings) {
       const { route, method, data, prefix, query, cache } = requestSettings
-      const isStoryGenerate = route === '/stories/generate'
-      if (isStoryGenerate) {
-        console.group('[GENERATE_STORY] request')
-        console.log('route:', route)
-        console.log('payload:', JSON.stringify(data, null, 2))
-        console.groupEnd()
-      }
       try {
         const res = await callApi(route, method, data, query)
-        if (isStoryGenerate) {
-          console.group('[GENERATE_STORY] success')
-          console.log('status:', res.status)
-          console.log('response:', res.data)
-          console.groupEnd()
-        }
 
         if (prefix === 'GET_CHATBOT_RESPONSE' && !res.data.response) {
           Sentry.captureException(new ChatbotError(`Chatbot response missing: ${res.data.message}`))
@@ -194,14 +181,6 @@ export const handleRequest = store => next => async action => {
 
         store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
       } catch (err) {
-        if (isStoryGenerate) {
-          console.group('[GENERATE_STORY] FAILED')
-          console.log('status:', err?.response?.status)
-          console.log('error message:', err?.message)
-          console.log('response data:', err?.response?.data)
-          console.log('full error:', err)
-          console.groupEnd()
-        }
         handleError(store, err, prefix, query)
       }
     }

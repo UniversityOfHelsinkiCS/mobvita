@@ -239,18 +239,7 @@ const StoryGeneration = () => {
       <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
           {generationPending ? (
-            <div className="row justify-center align-center">
-              <Spinner fullHeight size={60} />
-              <span
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 500,
-                  margin: '18px',
-                  fontSize: 'large' }}
-              >
-                <FormattedMessage id="story-generating" />
-              </span>
-            </div>
+              <Spinner fullHeight size={60} text={<FormattedMessage id="story-generating" />} />
           ) : (
             <>
               {!error && text?.length && (
