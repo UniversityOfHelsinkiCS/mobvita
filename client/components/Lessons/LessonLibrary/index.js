@@ -11,6 +11,7 @@ import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import ReactSlider from 'react-slider'
+import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import { Button } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -36,30 +37,6 @@ import Spinner from 'Components/Spinner'
 
 import './LessonLibraryStyles.css'
 
-// Slider marker
-const StyledMark = localizedMarkString => props => {
-  const StyledMarkSpan = styled.span`
-    background: transparent;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 15px solid #000;
-    padding: 0;
-    &:hover::before {
-      content: '${localizedMarkString}';
-      position: absolute;
-      background-color: #333;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.9;
-      z-index: 1;
-    }
-  `
-  return <StyledMarkSpan {...props} />
-}
 
 const LessonList = () => {
   const intl = useIntl()
@@ -108,6 +85,7 @@ const LessonList = () => {
     vocab_diff,
     num_visited_exercises } = lesson
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
+  console.log('vocab_diff:', vocab_diff, 'vocabulary_score:', vocabulary_score, 'sliderValue:', sliderValue)
 
   const [libraries, setLibraries] = useState({
     private: false,
@@ -221,6 +199,7 @@ const LessonList = () => {
   const finnishSelectingSemanticsAndVocabDiff = () => {
     const payload = { semantic: selectedSemantics, vocab_diff: sliderValue }
     if (libraries.group) payload.group_id = savedGroupSelection
+    console.log('payload for semantics and vocab diff:', payload)
     dispatch(setLessonInstance(payload))
   }
 
@@ -252,73 +231,15 @@ const LessonList = () => {
     dispatch(setLessonStep(-1))
   }
 
-  function roundToNearestHalfInt(number) {
-    const roundedNumber = Math.round(number)
-    if (Math.abs(number - roundedNumber) === 0.5) {
-      return roundedNumber + (number > 0 ? 0.5 : -0.5)
-    }
-    return roundedNumber
-  }
-
-  const getSliderThumbColor = () => {
-    // Absolute 0-100 scale: 0 = greenest, 100 = reddest, 48-53 = neutral white.
-    if (sliderValue >= 48 && sliderValue <= 53) return 'white-slider'
-
-    if (sliderValue < 48) {
-      if (sliderValue <= 15) return 'green3-slider'
-      if (sliderValue <= 30) return 'green2-slider'
-      if (sliderValue <= 40) return 'green1-slider'
-      return 'green0-slider'
-    }
-
-    if (sliderValue <= 65) return 'red0-slider'
-    if (sliderValue <= 78) return 'red1-slider'
-    if (sliderValue <= 90) return 'red2-slider'
-    return 'red3-slider'
-  }
-  
-  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
-  const markComp = StyledMark(
-    intl.formatMessage({
-      id: 'Recommended vocabulary difficulty' })
-  )
-  const sliderContainerWidth = bigScreen ? '450px' : '90%'
-  const minSlider = 0
-  const maxSlider = 100
-  const sliderStep = 1
-
   // Lesson difficulty of vocabulary view
   const lessonVocabularyControls = (
-    <div
-      className="lesson-vocab-slider-container"
-      style={{ width: sliderContainerWidth, maxWidth: '450px' }}
-    >
-      <ReactSlider
-        className="exercise-density-slider"
-        thumbClassName={sliderThumbClassName}
-        trackClassName="exercise-density-slider-track"
-        onAfterChange={value => handleSlider(value)}
-        onSliderClick={value => handleSlider(value)}
-        snapDragDisabled={false}
-        renderMark={markComp}
-        marks={[roundToNearestHalfInt(vocabulary_score)]}
-        min={minSlider}
-        max={maxSlider}
-        step={sliderStep}
-        value={sliderValue}
-        disabled={
-          lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))
-        }
-      />
-      <div className="space-between exercise-density-slider-label-cont bold">
-        <span>
-          <FormattedMessage id="Easy" />
-        </span>
-        <span>
-          <FormattedMessage id="Hard" />
-        </span>
-      </div>
-    </div>
+    <VocabDiffSlider
+      value={sliderValue}
+      onChange={handleSlider}
+      recommendedValue={vocabulary_score}
+      disabled={lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))}
+      style={{ width: bigScreen ? '450px' : '90%', maxWidth: '450px' }}
+    />
   )
 
   const link =
