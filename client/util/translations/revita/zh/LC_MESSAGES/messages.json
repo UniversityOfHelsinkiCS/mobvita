@@ -1210,5 +1210,6 @@
     "an-error-has-occured": "系统出现错误。 开发团队已收到通知。",
     "you-can-help-us-fix": "您可以通过向我们发送问题的简短描述来帮助我们快速解决问题 - 以通过此按钮打开的格式：",
     "please-write-in-any-language": "（请用你习惯的语言说谎。）",
-    "next-please-refresh-page": "接下来，刷新页面，或点击“返回”"
+    "next-please-refresh-page": "接下来，刷新页面，或点击“返回”",
+    "additional-information-modal-examples": "Examples"
 }

@@ -82,7 +82,7 @@ const FeedbackInfoModal = () => {
   const ExampleList = ({ example }) => (
     <>
       <div className="bold header-3 mx-lg">
-        <FormattedMessage id="example"  />
+        <FormattedMessage id="additional-information-modal-examples"  />
       </div>
       {Object.keys(example).map(title => (
         <div className="mb-lg" key={title}>

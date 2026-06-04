@@ -1831,5 +1831,6 @@
     "an-error-has-occured": "An error has occurred in the system. The develper team has been notified.",
     "you-can-help-us-fix": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
     "please-write-in-any-language": "(Please write in any language convenient for you.)",
-    "next-please-refresh-page": "Next, refresh the page, or click \"Go back\""
+    "next-please-refresh-page": "Next, refresh the page, or click \"Go back\"",
+    "additional-information-modal-examples": "Examples"
 }

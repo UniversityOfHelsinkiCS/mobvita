@@ -1832,5 +1832,6 @@
     "an-error-has-occured": "Järjestelmässä on tapahtunut virhe. Kehittäjätiimille on ilmoitettu.",
     "you-can-help-us-fix": "Voit auttaa meitä korjaamaan ongelman nopeammin lähettämällä meille siitä lyhyen kuvauksen — tällä painikkeella avautuvassa muodossa:",
     "please-write-in-any-language": "(Kirjoita millä tahansa sinulle sopivalla kielellä.)",
-    "next-please-refresh-page": "Seuraavaksi päivitä sivu tai napsauta \"Palaa takaisin\"."
+    "next-please-refresh-page": "Seuraavaksi päivitä sivu tai napsauta \"Palaa takaisin\".",
+    "additional-information-modal-examples": "Esimerkkejä"
 }
