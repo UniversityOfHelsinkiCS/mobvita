@@ -62,6 +62,7 @@ const PracticeView = () => {
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
     ({ practice }) => practice
   )
+  const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showMessageDialog, setShowMessageDialog] = useState(false)
@@ -295,7 +296,13 @@ const PracticeView = () => {
           )}
         </div>
         {showMessageDialog && (
-          <MessageDialog continueAction={restartStory} setShow={setShowMessageDialog} />
+          <MessageDialog
+            continueAction={restartStory}
+            setShow={setShowMessageDialog}
+            storyId={id}
+            storyTitle={story?.title}
+            blueCardCount={newVocabulary}
+          />
         )}
         {/* <StartModal
           open={startModalOpen}
