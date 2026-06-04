@@ -8,6 +8,8 @@ import { Howl } from 'howler'
 
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
+const createRequestId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`
+
 export const callApi = async (url, method = 'get', data, query) => {
   const user = localStorage.getItem('user')
   const token = user ? JSON.parse(user).access_token : ''
@@ -24,6 +26,7 @@ export const callApi = async (url, method = 'get', data, query) => {
 
 export default (route, prefix, method = 'get', data, query, cache) => ({
   type: `${prefix}_ATTEMPT`,
+  requestId: createRequestId(),
   requestSettings: {
     route,
     method,
@@ -55,7 +58,7 @@ const sendSentryEvent = (message, fingerprint) => {
   Sentry.captureException(new EndpointError(message), { fingerprint })
 }
 
-const handleError = (store, error, prefix, query) => {
+const handleError = (store, error, prefix, query, requestId) => {
   console.log('handle error')
   if (error?.response?.status === SERVER_INTERNAL_ERROR_STATUS) {
     const sentryMessage = `500 @ ${prefix}`
@@ -68,9 +71,9 @@ const handleError = (store, error, prefix, query) => {
     const sentryFingerprint = ['Type: 502/503/504']
     sendSentryEvent(sentryMessage, sentryFingerprint)
     store.dispatch({ type: 'SET_SERVER_ERROR' })
-    store.dispatch({ type: `${prefix}_FAILURE`, query })
+    store.dispatch({ type: `${prefix}_FAILURE`, query, requestId })
   } else {
-    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response?.data, query })
+    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response?.data, query, requestId })
   }
 
   if (error?.response?.status === 401) {
@@ -150,7 +153,7 @@ export const handleRequest = store => next => async action => {
       }
     }
 
-    const { requestSettings } = action
+    const { requestSettings, requestId } = action
     if (requestSettings) {
       const { route, method, data, prefix, query, cache } = requestSettings
       try {
@@ -179,9 +182,9 @@ export const handleRequest = store => next => async action => {
         const requestSentAt = new Date()
         window.localStorage.setItem('last_request', requestSentAt)
 
-        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query })
+        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query, requestId })
       } catch (err) {
-        handleError(store, err, prefix, query)
+        handleError(store, err, prefix, query, requestId)
       }
     }
   }

@@ -73,6 +73,8 @@ const initialState = {
   creditableWordsNum: 0,
 }
 
+const isCurrentCardsRequest = (state, action) => action.requestId && action.requestId === state.activeCardsRequestId
+
 const deleteCard = (cards, response) => cards?.filter(card => card._id !== response.flashcard_id)
 
 export default (state = initialState, action) => {
@@ -91,8 +93,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: true,
+        activeCardsRequestId: action.requestId,
       }
     case 'GET_FLASHCARDS_SUCCESS':
+      if (!isCurrentCardsRequest(state, action)) return state
       return {
         ...state,
         cards: action.response.flashcards.all,
@@ -104,6 +108,7 @@ export default (state = initialState, action) => {
         creditableWordsNum: 0,
       }
     case 'GET_FLASHCARDS_FAILURE':
+      if (!isCurrentCardsRequest(state, action)) return state
       return {
         ...state,
         pending: false,
@@ -112,8 +117,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: true,
+        activeCardsRequestId: action.requestId,
       }
     case 'GET_BLUE_FLASHCARDS_SUCCESS':
+      if (!isCurrentCardsRequest(state, action)) return state
       return {
         ...state,
         cards: action.response.flashcards.r_all,
@@ -125,6 +132,7 @@ export default (state = initialState, action) => {
         creditableWordsNum: action.response.flashcards.num_rewardable_words,
       }
     case 'GET_BLUE_FLASHCARDS_FAILURE':
+      if (!isCurrentCardsRequest(state, action)) return state
       return {
         ...state,
         pending: false,
