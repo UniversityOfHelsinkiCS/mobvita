@@ -10,8 +10,8 @@ const initialState = {
 export const generateStory = (instance) => {
     const route = `/stories/generate`
     const prefix = 'GENERATE_STORY'
-    
-    return callBuilder(route, prefix, 'post', instance)
+    const { instancePending, ...payload } = instance
+    return callBuilder(route, prefix, 'post', payload)
 }
 
 

@@ -18,7 +18,7 @@ import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/Less
 import LessonPracticeThemeHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeThemeHelp'
 import Topics from 'Components/Topics'
 
-import ReactSlider from 'react-slider'
+import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
@@ -40,30 +40,6 @@ import Spinner from 'Components/Spinner'
 // import LessonLibrarySearch from './LessonLibrarySearch'
 
 import './LessonLibraryStyles.css'
-
-
-const StyledMark = localizedMarkString => props => {
-  const StyledMarkSpan = styled.span`
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 15px solid #000;
-    padding: 0;
-    &:hover::before {
-      content: '${localizedMarkString}';
-      position: absolute;
-      background-color: #333;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.9;
-      z-index: 1;
-    }
-  `
-  return <StyledMarkSpan {...props} />
-}
 
 const StoryGeneration = () => {
   const intl = useIntl()
@@ -138,6 +114,8 @@ const StoryGeneration = () => {
       vocab_diff: value })
   }
 
+  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
+
   const generationComment = (
     <div className="align-center">
       <h5>
@@ -162,122 +140,17 @@ const StoryGeneration = () => {
     </div>
   )
 
-  function roundToNearestHalfInt(number) {
-    const roundedNumber = Math.round(number)
-    if (Math.abs(number - roundedNumber) === 0.5) {
-      return roundedNumber + (number > 0 ? 0.5 : -0.5)
-    }
-    return roundedNumber
-  }
-
-  const getSliderThumbColor = () => {
-    if ((sliderValue - vocabulary_score > 0) & (sliderValue - vocabulary_score <= 0.5)) {
-      return 'red0-slider'
-    }
-    if ((sliderValue - vocabulary_score > 0.5) & (sliderValue - vocabulary_score <= 1.0)) {
-      return 'red1-slider'
-    }
-    if ((sliderValue - vocabulary_score > 1.0) & (sliderValue - vocabulary_score <= 1.5)) {
-      return 'red2-slider'
-    }
-    if (sliderValue - vocabulary_score > 1.5) {
-      return 'red3-slider'
-    }
-
-    if ((sliderValue - vocabulary_score >= -0.5) & (sliderValue - vocabulary_score < 0)) {
-      return 'green0-slider'
-    }
-    if ((sliderValue - vocabulary_score >= -1.0) & (sliderValue - vocabulary_score < -0.5)) {
-      return 'green1-slider'
-    }
-    if ((sliderValue - vocabulary_score >= -1.5) & (sliderValue - vocabulary_score < -1.0)) {
-      return 'green2-slider'
-    }
-    if (sliderValue - vocabulary_score < -1.5) {
-      return 'green3-slider'
-    }
-    return 'white-slider'
-  }
-  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
-  const markComp = StyledMark(
-    intl.formatMessage({
-      id: 'Recommended vocabulary difficulty' })
-  )
-  const lessonVocabularyControls = bigScreen ? (
+  const lessonVocabularyControls = (
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-story-vocab-diff" />:
       </h5>
-
-      <div
-        className="lesson-vocab-slider-container"
-        style={{
-          width: '80%',
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto' }}
-      >
-        <ReactSlider
-          className="exercise-density-slider"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.2}
-          value={sliderValue}
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div className="align-center">
-      <h5>
-        <FormattedMessage id="select-story-vocab-diff" />:
-      </h5>
-
-      <div
-        className="lesson-vocab-slider-container"
-        style={{
-          width: '80%',
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto' }}
-      >
-        <ReactSlider
-          className="exercise-density-slider"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.02}
-          value={sliderValue}
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
-      </div>
+      <VocabDiffSlider
+        value={sliderValue}
+        onChange={handleSlider}
+        recommendedValue={vocabulary_score}
+        style={{ width: bigScreen ? '80%' : '90%', marginTop: '30px', marginLeft: 'auto', marginRight: 'auto' }}
+      />
     </div>
   )
   const lessonGroups =
@@ -366,18 +239,7 @@ const StoryGeneration = () => {
       <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
           {generationPending ? (
-            <div className="row justify-center align-center">
-              <Spinner fullHeight size={60} />
-              <span
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 500,
-                  margin: '18px',
-                  fontSize: 'large' }}
-              >
-                <FormattedMessage id="story-generating" />
-              </span>
-            </div>
+              <Spinner fullHeight size={60} text={<FormattedMessage id="story-generating" />} />
           ) : (
             <>
               {!error && text?.length && (
@@ -452,24 +314,6 @@ const StoryGeneration = () => {
     </div>
   )
 
-  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
-
-  topics.sort((a, b) => {
-    let dir = 0
-    switch (sorter) {
-      case 'index':
-        dir = a.index > b.index ? 1 : -1
-        break
-      case 'topic_id':
-        dir = a.syllabus_id > b.syllabus_id ? 1 : -1
-        break
-      default:
-        break
-    }
-    const multiplier = sortDirection === 'asc' ? 1 : -1
-    return dir * multiplier
-  })
-
   const setSelectedTopics = topic_ids => {
     setLessonInstance({
       ...lessonInstance,
@@ -541,7 +385,7 @@ const StoryGeneration = () => {
                   cursor: 'pointer' }}
                 disabled={
                   goStep >= 3 ||
-                  (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1)
+                  (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1 && lessonInstance.learner_ideas === '')
                 }
                 onClick={() => {
                   setGoStep(goStep + 1)

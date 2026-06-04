@@ -14,7 +14,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { hiddenFeatures, learningLanguageSelector, skillLevels } from 'Utilities/common'
-import CEFRLevelSlider from 'Components/CEFRLevelSlider'
+import CEFRLevelSlider from 'Components/Sliders/CEFRLevelSlider'
 
 const LearningSettingsModal = ({ trigger }) => {
   const dispatch = useDispatch()
