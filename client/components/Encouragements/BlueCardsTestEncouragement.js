@@ -20,7 +20,6 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
   const navigate = useNavigate()
   const location = useLocation()
 
-
   const inStoryPractice = location.pathname.includes('stories')
   const learningLanguage = userData ? userData.last_used_language : null
   const resolvedStoryId = storyId ?? prevBlueCards?.story_id
@@ -48,9 +47,8 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
     }
   }
 
-  const handleSecondaryButtonClick = () => {
+  const secondaryTestButton = () => {
     setShow(false)
-
     if (inStoryPractice) {
       navigate('/home')
     }
@@ -79,7 +77,7 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
         <Button variant="primary" type="button" onClick={startTest}>
           <FormattedMessage id="start-test" />
         </Button>
-        <Button variant="secondary" type="button" onClick={handleSecondaryButtonClick}>
+        <Button variant="secondary" type="button" onClick={secondaryTestButton}>
           <FormattedMessage
             id={inStoryPractice ? 'home' : 'blue-cards-test-encouragement-dismiss-button'}
           />
