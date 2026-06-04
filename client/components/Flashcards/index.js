@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -17,6 +17,8 @@ import SettingButton from 'Components/SettingsButton'
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
+  const [hasHandledBlueCardsPrompt, setHasHandledBlueCardsPrompt] = useState(false)
+  const encouragementTimeoutRef = useRef(null)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -25,29 +27,75 @@ const Flashcards = () => {
   const { mode, type, storyId } = useParams()
 
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
-  const { num_of_rewardable_words: numOfRewardableWords, title } =
-    (type === 'test' &&
-      useSelector(({ flashcards }) =>
-        flashcards.storyBlueCards?.find(story => story.story_id === storyId)
-      )) ||
-    useSelector(({ stories }) => stories.data?.find(story => story._id === storyId)) ||
-    {}
+  const blueCardStory = useSelector(({ flashcards }) =>
+    flashcards.storyBlueCards?.find(story => story.story_id === storyId)
+  )
+  const regularStory = useSelector(({ stories }) =>
+    stories.data?.find(story => story._id === storyId)
+  )
+  const selectedStory = type === 'test' ? blueCardStory : regularStory
+  const { num_of_rewardable_words: numOfRewardableWords, title } = selectedStory || {}
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+  const shouldShowStoryInfo =
+    mode !== 'list' &&
+    mode !== 'new' &&
+    Boolean(storyId) &&
+    (type === 'story' || type === 'test') &&
+    Boolean(title)
 
   const inBlueCardsTest = location.pathname.includes('test')
 
+  // Reset prompt state only when user moves to creation/list views.
   useEffect(() => {
+    if (mode === 'new' || mode === 'list') {
+      setHasHandledBlueCardsPrompt(false)
+      setShowBlueCardsTestEncouragement(false)
+    }
+  }, [mode])
+
+  useEffect(() => {
+    if (inBlueCardsTest || type === 'test' || mode !== 'fillin') {
+      if (encouragementTimeoutRef.current) {
+        clearTimeout(encouragementTimeoutRef.current)
+        encouragementTimeoutRef.current = null
+      }
+      setShowBlueCardsTestEncouragement(false)
+      return
+    }
+
+    if (encouragementTimeoutRef.current) {
+      clearTimeout(encouragementTimeoutRef.current)
+      encouragementTimeoutRef.current = null
+    }
+
     if (
+      !hasHandledBlueCardsPrompt &&
       !hasAnsweredBlueCards &&
       !inBlueCardsTest &&
       type !== 'test' &&
       storyBlueCards?.length > 0
     ) {
-      setTimeout(() => {
+      encouragementTimeoutRef.current = setTimeout(() => {
         setShowBlueCardsTestEncouragement(true)
       }, 2000)
+    } else {
+      setShowBlueCardsTestEncouragement(false)
     }
-  }, [storyBlueCards])
+
+    return () => {
+      if (encouragementTimeoutRef.current) {
+        clearTimeout(encouragementTimeoutRef.current)
+        encouragementTimeoutRef.current = null
+      }
+    }
+  }, [storyBlueCards, hasAnsweredBlueCards, hasHandledBlueCardsPrompt, inBlueCardsTest, type, mode])
+
+  const handleBlueCardsPromptVisibility = show => {
+    setShowBlueCardsTestEncouragement(show)
+    if (!show) {
+      setHasHandledBlueCardsPrompt(true)
+    }
+  }
 
   const content = () => {
     switch (mode) {
@@ -106,7 +154,7 @@ const Flashcards = () => {
         {mode !== 'list' && mode !== 'new' ? (
           width >= 840 ? (
             <div className="flashcard-side-column">
-              {title ? (
+              {shouldShowStoryInfo ? (
                 <FlashcardStoryInfo
                 title={title}
                 type={type}
@@ -117,11 +165,13 @@ const Flashcards = () => {
             </div>
           ) : (
             <div className="flashcard-story-info-icon-slot">
-              <FlashcardStoryInfoIcon
-                title={title}
-                type={type}
-                numOfRewardableWords={numOfRewardableWords}
-              />
+              {shouldShowStoryInfo ? (
+                <FlashcardStoryInfoIcon
+                  title={title}
+                  type={type}
+                  numOfRewardableWords={numOfRewardableWords}
+                />
+              ) : null}
             </div>
           )
         ) : null}
@@ -131,7 +181,7 @@ const Flashcards = () => {
             className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
           >
             <div className="col-flex">
-              <BlueCardsTestEncouragement setShow={setShowBlueCardsTestEncouragement} />
+              <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
             </div>
           </div>
         )}
