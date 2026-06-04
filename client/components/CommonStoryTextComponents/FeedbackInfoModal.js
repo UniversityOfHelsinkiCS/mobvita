@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Divider, Modal } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
-import { clearExplanation, clearReferences } from 'Utilities/redux/practiceReducer'
+import { clearExplanation, clearReferences, clearExample } from 'Utilities/redux/practiceReducer'
 import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/common'
 
 const BookReference = ({ reference }) => (
@@ -40,6 +40,7 @@ const UrlReference = ({ reference }) => (
 const FeedbackInfoModal = () => {
   const references = useSelector(state => state.practice.references)
   const explanation = useSelector(state => state.practice.explanation)
+  const example = useSelector(state => state.practice.example)
   const dispatch = useDispatch()
 
   // Keep modal stable even if parent re-renders frequently (timers, etc.)
@@ -48,15 +49,17 @@ const FeedbackInfoModal = () => {
   // Keep content visible during close transition (avoid empty modal shell).
   const [referencesSnapshot, setReferencesSnapshot] = useState(null)
   const [explanationSnapshot, setExplanationSnapshot] = useState(null)
+  const [exampleSnapshot, setExampleSnapshot] = useState(null)
 
   useEffect(() => {
     if (isOpen) return
-    if (references || explanation) {
+    if (references || explanation || example) {
       setReferencesSnapshot(references)
       setExplanationSnapshot(explanation)
+      setExampleSnapshot(example)
       setIsOpen(true)
     }
-  }, [references, explanation, isOpen])
+  }, [references, explanation, example, isOpen])
 
   const ExplanationList = ({ explanation }) => (
     <>
@@ -68,6 +71,26 @@ const FeedbackInfoModal = () => {
           </div>
           <ul>
             {explanation[title].map((item, index) => (
+              <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
+            ))}
+          </ul>
+        </div>
+      ))}
+    </>
+  )
+
+  const ExampleList = ({ example }) => (
+    <>
+      <div className="bold header-3 mx-lg">
+        <FormattedMessage id="example"  />
+      </div>
+      {Object.keys(example).map(title => (
+        <div className="mb-lg" key={title}>
+          <div className="bold header-3">            
+            <Divider style={{ width: '50%' }} />
+          </div>
+          <ul>
+            {(Array.isArray(example[title]) ? example[title] : [example[title]]).map((item, index) => (
               <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
             ))}
           </ul>
@@ -111,11 +134,13 @@ const FeedbackInfoModal = () => {
     setIsOpen(false)
     dispatch(clearReferences())
     dispatch(clearExplanation())
+    dispatch(clearExample())
   }
 
   const handleModalClosed = () => {
     setReferencesSnapshot(null)
     setExplanationSnapshot(null)
+    setExampleSnapshot(null)
   }
 
   return (
@@ -131,7 +156,13 @@ const FeedbackInfoModal = () => {
     >
       <Modal.Content>
         {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
-        {explanationSnapshot && referencesSnapshot && <Divider />}
+        {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
+          <>
+            {explanationSnapshot && <Divider />}
+            <ExampleList example={exampleSnapshot} />
+          </>
+        )}
+        {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && <Divider />}
         {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
       </Modal.Content>
     </Modal>

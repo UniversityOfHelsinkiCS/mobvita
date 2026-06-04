@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTranslationAction, setWords, changeTranslationStageAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { incrementHintRequests, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
+import { incrementHintRequests, setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -100,6 +100,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   useEffect(() => {
     dispatch(setHelperSidebarOpen(true))
   }, [helperActiveTab, currentWord, translationState ])
+
+  useEffect(() => {    
+    dispatch(setHelperSidebarTab(null))
+  }, [dispatch, snippets.focused])
 
   useEffect(() => {    
     if (inWordNestModal || wordNestModalOpen) return
@@ -277,6 +281,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             (hint.easy === hint.meta && hint.explanation) || [hint.meta, ...(hint.explanation || [])],
         })
       )
+    }
+
+    if (hint.example?.length) {
+      dispatch(setExample({ [hint.keyword || hint.easy]: hint.example }))
     }
   }
 

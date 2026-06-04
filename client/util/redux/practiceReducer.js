@@ -15,6 +15,8 @@ export const setReferences = references => ({ type: 'SET_REFERENCES', references
 export const clearReferences = () => ({ type: 'CLEAR_REFERENCES' })
 export const setExplanation = explanation => ({ type: 'SET_EXPLANATION', explanation })
 export const clearExplanation = () => ({ type: 'CLEAR_EXPLANATION' })
+export const setExample = example => ({ type: 'SET_EXAMPLE', example })
+export const clearExample = () => ({ type: 'CLEAR_EXAMPLE' })
 export const startSnippet = () => ({ type: 'SET_SNIPPET_STARTED' })
 export const addToCorrectAnswerIDs = ids => ({ type: 'ADD_CORRECT_ANSWER_IDS', ids })
 export const setWillPause = state => ({ type: 'SET_WILL_PAUSE', state })
@@ -43,6 +45,7 @@ const initialState = {
   snippetFinished: false,
   references: null,
   explanation: null,
+  example: null,
   refModalOpen: false,
   isNewSnippet: true,
   correctAnswerIDs: [],
@@ -207,6 +210,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         explanation: initialState.explanation,
+      }
+    case 'SET_EXAMPLE':
+      return {
+        ...state,
+        example: action.example,
+      }
+    case 'CLEAR_EXAMPLE':
+      return {
+        ...state,
+        example: initialState.example,
       }
     default:
       return state
