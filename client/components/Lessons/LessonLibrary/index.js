@@ -84,7 +84,6 @@ const LessonList = () => {
     vocab_diff,
     num_visited_exercises } = lesson
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
-  console.log('vocab_diff:', vocab_diff, 'vocabulary_score:', vocabulary_score, 'sliderValue:', sliderValue)
 
   const [libraries, setLibraries] = useState({
     private: false,

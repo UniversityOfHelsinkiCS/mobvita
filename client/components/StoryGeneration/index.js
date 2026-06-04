@@ -70,7 +70,7 @@ const StoryGeneration = () => {
 
   const [lessonInstance, setLessonInstance] = useState({
     topic_ids: [],
-    vocab_diff: vocabulary_score,
+    cefr_diff: vocabulary_score,
     learner_ideas: '',
     instancePending: false })
   const [generatedStory, setGeneratedStory] = useState('')
@@ -111,7 +111,7 @@ const StoryGeneration = () => {
     setSliderValue(value)
     setLessonInstance({
       ...lessonInstance,
-      vocab_diff: value })
+      cefr_diff: value })
   }
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
