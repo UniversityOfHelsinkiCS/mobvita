@@ -20,8 +20,11 @@ describe("dictionary", function () {
   })
 
   it("dictionary info opens", function () {
-    cy.get("[data-cy=helper-sidebar-toggle]", { timeout: 10000 }).click()
-    cy.get("[data-cy=dictionary-info]", { timeout: 10000 })
+    cy.get("[data-cy=helper-sidebar-toggle]", { timeout: 10000 })
+      .scrollIntoView()
+      .should('be.visible')
+      .click()
+    cy.get("[data-cy=dictionary-info]", { timeout: 10000 }).should('be.visible')
     cy.contains("Napsauta harjoitusta — jos siitä herää kysymyksiä, voit kysyä täällä.", { timeout: 10000 })
   })
 

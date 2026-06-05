@@ -6,7 +6,8 @@ describe('wordnest modal', function () {
   })
 
   this.beforeEach(function () {
-    cy.login('Russian')
+    // Reuse the session created in beforeAll — do not call cy.login() again
+    cy.loginExisting()
 
     cy.intercept('GET', '**/api/stories/**').as('getStory')
     cy.intercept({ method: /GET|POST/, url: '**/api/**translation**' }).as('getTranslation')

@@ -179,7 +179,7 @@ Cypress.Commands.add('getUser', function(name) {
 })
 
 Cypress.Commands.add('cleanUsers', function () {
-  for (let user of users) {
+  const requests = users.map(user =>
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/user/remove',
@@ -189,11 +189,13 @@ Cypress.Commands.add('cleanUsers', function () {
       body: {
         password: user.password,
         is_test: true
-      }
+      },
+      failOnStatusCode: false
     })
-  }
+  )
 
-  users = [];
+  users = []
   savedUsers = {}
   currentUser = null
+  return cy.wrap(requests)
 })
