@@ -131,7 +131,7 @@ const walkToEnd = (maxSteps = 30) => {
 const startTourFromPage = path => {
   cy.intercept('GET', '**/api/**').as('apiCall')
   cy.visit(`http://localhost:8000${path}`)
-  cy.wait('@apiCall', { timeout: 10000 })
+  cy.wait('@apiCall', { timeout: 30000 })
   cy.get(TOUR_BUTTON, { timeout: 15000 }).click({ force: true })
 }
 

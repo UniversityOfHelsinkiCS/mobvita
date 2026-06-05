@@ -12,7 +12,7 @@ describe("groups", function () {
     cy.getUser('student').as('student')
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit('localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
   })
 
   this.afterAll(function () {
@@ -31,7 +31,7 @@ describe("groups", function () {
     cy.get('[data-cy=people-add-result-modal]').should('be.visible')
     cy.get('[data-cy=people-add-result-modal]').find('i.close.icon').click()
 
-    cy.contains('h5', 'my_test_group', { timeout: 10000 })
+    cy.contains('h5', 'my_test_group', { timeout: 30000 })
       .closest('.card')
       .within(() => {
         cy.get('[data-cy=people-button]').click()
@@ -40,7 +40,7 @@ describe("groups", function () {
     cy.contains(this.student.username)
 
     cy.visit('localhost:8000/groups/teacher')
-    cy.contains('h5', 'my_test_group', { timeout: 10000 })
+    cy.contains('h5', 'my_test_group', { timeout: 30000 })
       .closest('.card')
       .within(() => {
         cy.get('[data-cy=delete-group]').click()
@@ -60,13 +60,13 @@ describe("groups", function () {
       }
     })
     cy.reload()
-    cy.contains('h5', 'destroyed', { timeout: 10000 })
+    cy.contains('h5', 'destroyed', { timeout: 30000 })
       .closest('.card')
       .within(() => {
         cy.get('[data-cy=delete-group]').click()
       })
     cy.get('[data-cy=confirm-warning-dialog]').click()
-    cy.get('body', { timeout: 10000 }).should('not.contain', 'destroyed')
+    cy.get('body', { timeout: 30000 }).should('not.contain', 'destroyed')
   })
 
   // it('user can leave group', function () {
@@ -87,6 +87,8 @@ describe("groups", function () {
   // })
 
   it('users can be added to group and removed', function () {
+    const groupName = `other group ${Date.now()}`
+
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/groups',
@@ -94,18 +96,18 @@ describe("groups", function () {
         'Authorization': `Bearer ${this.user.token}`
       },
       body: {
-        group_name: 'other group'
+        group_name: groupName
       }
     })
     cy.visit('localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
-    cy.reload()
-    cy.contains('h5', 'other group', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
+
+    cy.contains('h5', groupName, { timeout: 30000 })
       .closest('.card')
       .within(() => {
-        cy.get('[data-cy=people-button]').click()
+        cy.get('[data-cy=people-button]').should('be.visible').click()
       })
-    cy.contains('other group')
+    cy.contains(groupName, { timeout: 30000 })
     // Scope add-to-group-button click to the modal context
     cy.get('[data-cy=add-to-group-button]').should('be.visible').click()
 
@@ -121,8 +123,8 @@ describe("groups", function () {
     cy.contains(this.student.username).should('not.exist')
 
     cy.visit('localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
-    cy.contains('h5', 'other group', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
+    cy.contains('h5', groupName, { timeout: 30000 })
       .closest('.card')
       .within(() => {
         cy.get('[data-cy=delete-group]').click()

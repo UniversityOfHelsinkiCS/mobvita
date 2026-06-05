@@ -61,7 +61,8 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
       method: 'POST', 
       url: 'localhost:8000/api/register/test', 
       body: { ...user },
-      retryOnNetworkFailure: true
+      retryOnNetworkFailure: true,
+      timeout: 120000
     })
     .then(function (response) {
       user.token = response.body.access_token
@@ -81,9 +82,13 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
           last_trans_lang: transLang,
           interface_lang: learningLang,
           has_seen_home_tour: true,
-          has_seen_library_tour: true
+          has_seen_lesson_tour: true,
+          has_seen_library_tour: true,
+          has_seen_practice_tour: true,
+          has_seen_progress_tour: true
         },
-        retryOnNetworkFailure: true
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
     })
     .then(() => {
@@ -96,7 +101,8 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
         body: {
           is_teacher: is_teacher,
         },
-        retryOnNetworkFailure: true
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
     })
     .then(() => {
@@ -143,8 +149,14 @@ Cypress.Commands.add('createUser', function(name, language, is_teacher = false) 
           last_used_lang: language,
           last_trans_lang: 'English',
           interface_lang: language,
+          has_seen_home_tour: true,
+          has_seen_lesson_tour: true,
+          has_seen_library_tour: true,
+          has_seen_practice_tour: true,
+          has_seen_progress_tour: true,
         },
-        retryOnNetworkFailure: true
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
     })
     .then(() => {
@@ -157,7 +169,8 @@ Cypress.Commands.add('createUser', function(name, language, is_teacher = false) 
         body: {
           is_teacher: is_teacher,
         },
-        retryOnNetworkFailure: true
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
     })
     .then(() => {

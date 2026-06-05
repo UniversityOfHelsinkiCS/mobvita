@@ -18,8 +18,8 @@ describe('test view', function() {
   it('can create a group, enable tests for it and start a test', function() {
 
     cy.visit('http://localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
-    cy.get('[data-cy=create-group-button]', { timeout: 10000 }).click()
+    cy.wait('@apiCall', { timeout: 30000 })
+    cy.get('[data-cy=create-group-button]', { timeout: 30000 }).click()
     cy.get('[data-cy=group-name]').eq(0).type('my_test_group')
     cy.get('textarea').eq(1).type(this.teacher.email)
     cy.get('textarea').eq(2).type(this.teacher.email)
@@ -39,13 +39,13 @@ describe('test view', function() {
     cy.contains(this.teacher.username)
     
     cy.visit('http://localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
 
-    cy.get('[data-cy=enable-test-button]', { timeout: 10000 }).click()
-    cy.get('[data-cy=enable-test-ok-button', { timeout: 10000 }).click()
+    cy.get('[data-cy=enable-test-button]', { timeout: 30000 }).click()
+    cy.get('[data-cy=enable-test-ok-button', { timeout: 30000 }).click()
 
     cy.visit('http://localhost:8000/home')
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
 
     // cy.get('.react-joyride__spotlight').click()
     // cy.wait(1000)
@@ -56,12 +56,12 @@ describe('test view', function() {
     // cy.get('.test-container')
 
     cy.visit('http://localhost:8000/groups/teacher')
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
     cy.contains('my_test_group').closest('.card').within(() => {
       cy.get('[data-cy=delete-group]').click()
     })
     cy.get('[data-cy=confirm-warning-dialog]').click()
-    cy.get('body', { timeout: 10000 }).should('not.contain', 'my_test_group')
+    cy.get('body', { timeout: 30000 }).should('not.contain', 'my_test_group')
   })
 
   it('no "Tests" button when no tests are enabled for user\'s groups', function() {

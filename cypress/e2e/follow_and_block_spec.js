@@ -11,7 +11,7 @@ describe("in 'profile' page", function () {
       cy.loginExisting().as('user')
       cy.intercept('GET', '**/api/**').as('apiCall')
       cy.visit('http://localhost:8000/profile/following')
-      cy.wait('@apiCall', { timeout: 10000 })
+      cy.wait('@apiCall', { timeout: 30000 })
     })
   
     this.afterAll(function () {

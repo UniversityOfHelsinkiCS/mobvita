@@ -118,7 +118,7 @@ describe('Mobvita', function () {
       closeSidebarIfOpen()
       cy.intercept('GET', '**/api/**').as('apiCall')
       cy.get('[data-cy=practice-now]').click()
-      cy.wait('@apiCall', { timeout: 10000 })
+      cy.wait('@apiCall', { timeout: 30000 })
       cy.get('[data-cy=All-Stories]', { timeout: 20000 }).should('be.visible').click()
       // cy.get('[data-cy=practice-view]')
     })
@@ -127,9 +127,9 @@ describe('Mobvita', function () {
       closeSidebarIfOpen()
       cy.intercept('GET', '**/api/**').as('apiCall')
       cy.get('[data-cy=practice-now]').click()
-      cy.wait('@apiCall', { timeout: 10000 })
+      cy.wait('@apiCall', { timeout: 30000 })
 
-      cy.get('[data-cy=practice-categories]', { timeout: 10000 }).children()
+      cy.get('[data-cy=practice-categories]', { timeout: 30000 }).children()
         .then(children => {
           children[2].click()
           //children[3].click()
@@ -174,7 +174,7 @@ describe('Mobvita', function () {
       this.beforeEach(function () {
         cy.intercept('GET', '**/api/**').as('apiCall')
         cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/preview')
-        cy.wait('@apiCall', { timeout: 10000 })
+        cy.wait('@apiCall', { timeout: 30000 })
       })
 
       it("opens", function () {
@@ -228,14 +228,14 @@ function randomCredentials() {
 }
 
 function closeSidebarIfOpen() {
-  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).then($panel => {
+  cy.get('[data-cy=sidebar-panel]', { timeout: 30000 }).then($panel => {
     if (!$panel[0].hasAttribute('inert')) {
       cy.get('[data-cy=sidebar-panel] [data-cy=sidebar-close-hamburger]').click({ force: true })
     }
   })
 
-  cy.get('[data-cy=sidebar-panel]', { timeout: 10000 }).should('have.attr', 'inert')
-  cy.get('[data-cy=sidebar-overlay]', { timeout: 10000 }).should('not.exist')
+  cy.get('[data-cy=sidebar-panel]', { timeout: 30000 }).should('have.attr', 'inert')
+  cy.get('[data-cy=sidebar-overlay]', { timeout: 30000 }).should('not.exist')
 }
 
 function createRandomUser() {

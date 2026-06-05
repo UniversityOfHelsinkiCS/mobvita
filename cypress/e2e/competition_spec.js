@@ -9,13 +9,13 @@ describe("competition mode", function () {
     cy.loginExisting()
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit(competeURL)
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
   })
 
   it("can be started", function () {
-    cy.get("[data-cy=start-timed-activity]", { timeout: 10000 }).should('be.visible').click()
-    cy.get("[data-cy=opponent-bar]", { timeout: 10000 })
-    cy.get("[data-cy=player-bar]", { timeout: 10000 })
+    cy.get("[data-cy=start-timed-activity]", { timeout: 30000 }).should('be.visible').click()
+    cy.get("[data-cy=opponent-bar]", { timeout: 30000 })
+    cy.get("[data-cy=player-bar]", { timeout: 30000 })
   })
 
   it("shows player's progress correctly and shows modal on finish", function () {

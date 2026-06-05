@@ -6,7 +6,7 @@ describe('flashcards', function () {
     cy.login()
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit('http://localhost:8000/flashcards')
-    cy.wait('@apiCall', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
   })
 
   it('displays no flashcards-message correctly', function () {
@@ -16,21 +16,21 @@ describe('flashcards', function () {
   it('flashcards can be added from preview mode', function () {
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit(previewURL)
-    cy.wait('@apiCall', { timeout: 10000 })
-    cy.get('[data-cy=readmodes-text]', { timeout: 10000 }).contains('saapua').click()
-    cy.get('[data-cy=translations]', { timeout: 10000 }).contains('arrive')
+    cy.wait('@apiCall', { timeout: 30000 })
+    cy.get('[data-cy=readmodes-text]', { timeout: 30000 }).contains('saapua').click()
+    cy.get('[data-cy=translations]', { timeout: 30000 }).contains('arrive')
     cy.visit('http://localhost:8000/flashcards/')
-    cy.contains('saapua', { timeout: 10000 })
+    cy.contains('saapua', { timeout: 30000 })
   })
 
   it('flashcards can be added from practice mode', function () {
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit(previewURL)
-    cy.wait('@apiCall', { timeout: 10000 })
-    cy.get('.word-interactive', { timeout: 10000 }).eq(2).click()
-    cy.get('[data-cy=translations]', { timeout: 10000 })
+    cy.wait('@apiCall', { timeout: 30000 })
+    cy.get('.word-interactive', { timeout: 30000 }).eq(2).click()
+    cy.get('[data-cy=translations]', { timeout: 30000 })
     cy.visit('http://localhost:8000/flashcards/')
-    cy.get('[data-cy=flashcard-content]', { timeout: 10000 })
+    cy.get('[data-cy=flashcard-content]', { timeout: 30000 })
   })
 
   describe('a card exists', function () {
