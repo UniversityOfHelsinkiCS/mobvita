@@ -7,7 +7,9 @@ describe("practice mode", function () {
 
   this.beforeEach(function () {
     cy.loginExisting()
+    cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit(practiceURL)
+    cy.wait('@apiCall', { timeout: 10000 })
   })
 
   it("can type into cloze fields", function () {

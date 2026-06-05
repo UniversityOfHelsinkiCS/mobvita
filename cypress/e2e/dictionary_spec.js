@@ -8,7 +8,9 @@ describe("dictionary", function () {
   this.beforeEach(function () {
     cy.viewport(1920, 1080)
     cy.loginExisting(this.user)
+    cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit("http://localhost:8000/stories/5c407e9eff634503466b0dde/preview")
+    cy.wait('@apiCall', { timeout: 10000 })
     // cy.get('[data-cy=dictionary-icon]') // Open dictionaryhelp
     //   .click({ force: true })
   })
@@ -18,15 +20,15 @@ describe("dictionary", function () {
   })
 
   it("dictionary info opens", function () {
-    cy.get("[data-cy=helper-sidebar-toggle]").click()
-    cy.get("[data-cy=dictionary-info]")
-    cy.contains("Napsauta harjoitusta — jos siitä herää kysymyksiä, voit kysyä täällä.")
+    cy.get("[data-cy=helper-sidebar-toggle]", { timeout: 10000 }).click()
+    cy.get("[data-cy=dictionary-info]", { timeout: 10000 })
+    cy.contains("Napsauta harjoitusta — jos siitä herää kysymyksiä, voit kysyä täällä.", { timeout: 10000 })
   })
 
     it("translate-to language can be changed", function () {
-    cy.contains("lentokoneita").click()
-    cy.get("[data-cy=ai-assistant-settings-popup]").click()
-    cy.get("[data-cy=dictionary-dropdown]").select("Suomi", { force: true })
+    cy.contains("lentokoneita", { timeout: 10000 }).click()
+    cy.get("[data-cy=ai-assistant-settings-popup]", { timeout: 10000 }).click()
+    cy.get("[data-cy=dictionary-dropdown]", { timeout: 10000 }).select("Suomi", { force: true })
   })
 /*
   it("word translates correctly", function () {

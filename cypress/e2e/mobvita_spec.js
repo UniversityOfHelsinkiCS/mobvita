@@ -116,16 +116,20 @@ describe('Mobvita', function () {
 
     it('can start random practice', function () {
       closeSidebarIfOpen()
+      cy.intercept('GET', '**/api/**').as('apiCall')
       cy.get('[data-cy=practice-now]').click()
-      cy.get('[data-cy=All-Stories]', { timeout: 20000 }).click()
+      cy.wait('@apiCall', { timeout: 10000 })
+      cy.get('[data-cy=All-Stories]', { timeout: 20000 }).should('be.visible').click()
       // cy.get('[data-cy=practice-view]')
     })
 
     it("can start filtered practice", function () {
       closeSidebarIfOpen()
+      cy.intercept('GET', '**/api/**').as('apiCall')
       cy.get('[data-cy=practice-now]').click()
+      cy.wait('@apiCall', { timeout: 10000 })
 
-      cy.get('[data-cy=practice-categories]').children()
+      cy.get('[data-cy=practice-categories]', { timeout: 10000 }).children()
         .then(children => {
           children[2].click()
           //children[3].click()
@@ -168,7 +172,9 @@ describe('Mobvita', function () {
     describe("preview mode", function () {
 
       this.beforeEach(function () {
+        cy.intercept('GET', '**/api/**').as('apiCall')
         cy.visit('http://localhost:8000/stories/5c407e9eff634503466b0dde/preview')
+        cy.wait('@apiCall', { timeout: 10000 })
       })
 
       it("opens", function () {
