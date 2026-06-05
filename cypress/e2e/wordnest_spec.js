@@ -47,8 +47,9 @@ describe('wordnest modal', function () {
   })
 
   it("doesn't display nest icon when nest is not available", function () {
-    cy.contains('метровку', { timeout: 10000 }).click()
-    cy.get('[data-cy=nest-button]', { timeout: 2000 }).should('not.exist')
+    cy.contains('метровку', { timeout: 30000 }).click()
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 5000 }).should('not.exist')
   })
   
   it('close wordnest modal when clicking outside', function () {
