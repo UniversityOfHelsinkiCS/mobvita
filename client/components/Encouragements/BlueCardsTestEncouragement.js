@@ -25,6 +25,7 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
   const resolvedStoryId = storyId ?? prevBlueCards?.story_id
   const resolvedStoryTitle = storyTitle ?? prevBlueCards?.title
   const resolvedBlueCardCount = blueCardCount ?? prevBlueCards?.num_of_rewardable_words
+  console.log(storyBlueCards, 'storyBlueCards')
 
   useEffect(() => {
     if (storyId) return
@@ -34,7 +35,8 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
       return
     }
     if (storyBlueCards.length > 0) {
-      setPrevBlueCards(storyBlueCards[0])
+      // Gives random blue card story from user in scale 0-4
+      setPrevBlueCards(storyBlueCards[Math.floor(Math.random() * Math.min(5, storyBlueCards.length))])
     } else {
       navigate('/home')
     }
