@@ -190,10 +190,10 @@ describe('reading practice', function () {
     cy.cleanUsers()
   })
 
-  it('highlights answer text only after show-location button click', function () {
+  it('highlights correct option after user selects all three wrong answers', function () {
     const readingQuestions = [
       {
-        question: 'Which option is correct?',
+        question: 'Pick the right option after three wrong tries',
         choices: ['Wrong A', 'Correct option', 'Wrong B', 'Wrong C'],
         answer: 'Correct option',
         sentence_ids: [1],
@@ -212,14 +212,80 @@ describe('reading practice', function () {
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
     cy.wait('@getPracticeStory')
 
-    cy.get('[data-cy="story-token-p0-t1"]').should('not.have.css', 'background-color', 'rgb(253, 234, 59)')
+    cy.get('[data-cy="rp-choice-btn-0"]').click()
+    cy.get('[data-cy="rp-choice-btn-2"]').click()
+    cy.get('[data-cy="rp-choice-btn-3"]').click()
 
-    cy.get('[data-cy="rp-choice-btn-1"]').click()
-    cy.get('[data-cy="rp-show-answer-location-btn"]').click()
-
-    cy.get('[data-cy="story-token-p0-t1"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
+    // After 3 wrong answers, correct answer should be highlighted automatically.
+    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', 'rgba(10, 248, 66, 0.35)')
+    cy.get('[data-cy="rp-show-answer-location-btn"]').should('be.visible')
 
     // Critical assertion: no mc_generate requests should be made.
+    cy.get('@mcGenerateGlobal.all').should('have.length', 0)
+  })
+
+  it('supports wrong/correct progression with next, start over, and answer-location flow', function () {
+    const story = {
+      _id: readingPracticeStoryId,
+      title: 'Reading Practice Story',
+      paragraph: [
+        [
+          { ID: 0, sentence_id: 1, surface: 'First ' },
+          { ID: 1, sentence_id: 1, surface: 'target ' },
+          { ID: 2, sentence_id: 1, surface: 'sentence. ' },
+          { ID: 3, sentence_id: 2, surface: 'Second ' },
+          { ID: 4, sentence_id: 2, surface: 'answer ' },
+          { ID: 5, sentence_id: 2, surface: 'sentence.' },
+        ],
+      ],
+      reading_questions: [
+        {
+          question: 'Question 1',
+          choices: ['Wrong 1', 'Correct 1', 'Wrong 2', 'Wrong 3'],
+          answer: 'Correct 1',
+          sentence_ids: [1],
+        },
+        {
+          question: 'Question 2',
+          choices: ['Wrong A', 'Wrong B', 'Correct 2', 'Wrong C'],
+          answer: 'Correct 2',
+          sentence_ids: [2],
+        },
+      ],
+    }
+
+    cy.intercept('GET', `**/api/stories/${readingPracticeStoryId}*`, story).as('getPracticeStory')
+
+    visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
+    cy.wait('@getPracticeStory')
+
+    // Q1: one wrong, then correct, then next.
+    cy.contains('Question 1').should('be.visible')
+    cy.get('[data-cy="rp-choice-btn-0"]').click()
+    cy.get('[data-cy="rp-choice-btn-1"]').click()
+    cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
+
+    // Q2: two wrong, then correct, then start over.
+    cy.contains('Question 2').should('be.visible')
+    cy.get('[data-cy="rp-choice-btn-0"]').click()
+    cy.get('[data-cy="rp-choice-btn-1"]').click()
+    cy.get('[data-cy="rp-choice-btn-2"]').click()
+    cy.get('[data-cy="rp-start-over-btn"]').click()
+
+    // Back to Q1: correct, then next.
+    cy.contains('Question 1').should('be.visible')
+    cy.get('[data-cy="rp-choice-btn-1"]').click()
+    cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
+
+    // Q2 again: correct, show answer location in text, then start over.
+    cy.contains('Question 2').should('be.visible')
+    cy.get('[data-cy="story-token-p0-t4"]').should('not.have.css', 'background-color', 'rgb(253, 234, 59)')
+    cy.get('[data-cy="rp-choice-btn-2"]').click()
+    cy.get('[data-cy="rp-show-answer-location-btn"]').click()
+    cy.get('[data-cy="story-token-p0-t4"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
+    cy.get('[data-cy="rp-start-over-btn"]').click()
+
+    cy.contains('Question 1').should('be.visible')
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
   })
 })
