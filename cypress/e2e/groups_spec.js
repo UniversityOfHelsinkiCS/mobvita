@@ -28,7 +28,6 @@ describe("groups", function () {
       cy.get('[type=submit]').click()
     })
     
-    // Close result modal (more reliable than ESC)
     cy.get('[data-cy=people-add-result-modal]').should('be.visible')
     cy.get('[data-cy=people-add-result-modal]').find('i.close.icon').click()
 

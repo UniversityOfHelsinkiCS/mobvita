@@ -513,6 +513,7 @@ const ReadingComprehensionView = ({ match }) => {
             <div style={{ flex: 1, minWidth: 0 }}>
               {isEditing ? (
                 <Input
+                  data-cy={`rc-choice-input-${list}-${qIdx}-${cIdx}`}
                   value={editValue}
                   onChange={(_e, data) => setEditValue(data.value)}
                   fluid
@@ -589,7 +590,11 @@ const ReadingComprehensionView = ({ match }) => {
 
   const panes = [
     {
-      menuItem: intl.formatMessage({ id: 'generate-new-questions' }),
+      menuItem: {
+        key: 'rc-tab-generate-questions',
+        content: intl.formatMessage({ id: 'generate-new-questions' }),
+        'data-cy': 'rc-tab-generate-questions',
+      },
       render: () => (
         <Tab.Pane
           attached={false}
@@ -606,6 +611,7 @@ const ReadingComprehensionView = ({ match }) => {
               <div style={fieldStyle}>
                 <span style={labelTextStyle}>{intl.formatMessage({ id: 'level' })}:</span>
                 <Select
+                  data-cy="rc-level-select"
                   value={level}
                   options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
                   onChange={(_e, option) => setLevel(option.value)}
@@ -617,6 +623,7 @@ const ReadingComprehensionView = ({ match }) => {
               <div style={fieldStyle}>
                 <span style={labelTextStyle}>{intl.formatMessage({ id: 'size' })}:</span>
                 <Select
+                  data-cy="rc-size-select"
                   value={size}
                   options={[1, 2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
                   onChange={(_e, option) => setSize(option.value)}
@@ -683,6 +690,8 @@ const ReadingComprehensionView = ({ match }) => {
               return (
                 <ReadingComprehensionQuestion
                   key={`draft-${qIdx}-${q.question}`}
+                  dataCy={`rc-question-draft-${qIdx}`}
+                  titleDataCy={`rc-question-title-draft-${qIdx}`}
                   title={q.question}
                   selected={selectedDraftIdx === qIdx}
                   onToggleSelect={() => selectDraft(qIdx)}
@@ -734,7 +743,11 @@ const ReadingComprehensionView = ({ match }) => {
       ),
     },
     {
-      menuItem: intl.formatMessage({ id: 'edit-saved-questions' }),
+      menuItem: {
+        key: 'rc-tab-edit-saved-questions',
+        content: intl.formatMessage({ id: 'edit-saved-questions' }),
+        'data-cy': 'rc-tab-edit-saved-questions',
+      },
       render: () => (
         <Tab.Pane
           attached={false}
@@ -752,6 +765,8 @@ const ReadingComprehensionView = ({ match }) => {
             storyQuestions.map((q, qIdx) => (
               <ReadingComprehensionQuestion
                 key={`story-${qIdx}-${q.question}`}
+                dataCy={`rc-question-story-${qIdx}`}
+                titleDataCy={`rc-question-title-story-${qIdx}`}
                 title={q.question}
                 selected={selectedStoryQuestionIdx === qIdx}
                 onToggleSelect={() =>
@@ -803,6 +818,7 @@ const ReadingComprehensionView = ({ match }) => {
         >
           <button
             type="button"
+            data-cy="rc-delete-modal-cancel"
             className="btn btn-secondary"
             onClick={() => setConfirmDelete({ open: false, idx: null, type: null })}
             style={{ minWidth: 90 }}
@@ -811,6 +827,7 @@ const ReadingComprehensionView = ({ match }) => {
           </button>
           <button
             type="button"
+            data-cy="rc-delete-modal-confirm"
             className="btn btn-outline-danger"
             onClick={() => {
               if (typeof confirmDelete.idx === 'number') {

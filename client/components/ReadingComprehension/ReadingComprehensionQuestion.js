@@ -8,10 +8,13 @@ const ReadingComprehensionQuestion = ({
   children,
   actions,
   cefr,
+  dataCy,
+  titleDataCy,
 }) => {
   return (
     <Segment
       className={`rc-question ${selected ? 'rc-question--selected' : ''}`}
+      data-cy={dataCy}
       role="button"
       tabIndex={0}
       aria-pressed={selected}
@@ -26,7 +29,9 @@ const ReadingComprehensionQuestion = ({
     >
       <header className="rc-question__header">
         <div className="rc-question__title">
-          <span className="header-3 rc-question__titleText">{title}</span>
+          <span className="header-3 rc-question__titleText" data-cy={titleDataCy}>
+            {title}
+          </span>
         </div>
 
         <div

@@ -1,167 +1,225 @@
-// const storyOneId = 'story-one'
-// const storyTwoId = 'story-two'
-// const readingPracticeStoryId = 'story-rp'
+const storyOneId = 'story-one'
+const storyTwoId = 'story-two'
+const readingPracticeStoryId = 'story-rp'
 
-// const makePreviewStory = ({ id, title, questions = [], readingQuestions = null }) => ({
-//   _id: id,
-//   title,
-//   paragraph: [
-//     [
-//       { ID: 0, sentence_id: 0, surface: 'Alpha ' },
-//       { ID: 1, sentence_id: 1, surface: 'Target ' },
-//       { ID: 2, sentence_id: 1, surface: 'sentence.' },
-//     ],
-//   ],
-//   ...(readingQuestions ? { reading_questions: readingQuestions } : {}),
-//   ...(Array.isArray(questions) ? { questions } : {}),
-// })
+const visitAsMockUser = path => {
+  cy.visit(path)
+}
 
-// describe('reading comprehension', function () {
-//   this.beforeAll(function () {
-//     cy.login('English')
-//   })
+// Mock story IDs — these are fake IDs that will never match a real document,
+// so all network calls are intercepted before they reach the backend.
+const makePreviewStory = ({ id, title, questions = [], readingQuestions = null }) => ({
+  _id: id,
+  title,
+  paragraph: [
+    [
+      { ID: 0, sentence_id: 0, surface: 'Alpha ' },
+      { ID: 1, sentence_id: 1, surface: 'Target ' },
+      { ID: 2, sentence_id: 1, surface: 'sentence.' },
+    ],
+  ],
+  ...(readingQuestions ? { reading_questions: readingQuestions } : {}),
+  ...(Array.isArray(questions) ? { questions } : {}),
+})
 
-//   this.beforeEach(function () {
-//     cy.viewport(1920, 1080)
-//     window.localStorage.clear()
-//     cy.loginExisting().as('user')
-//   })
+// Shared helper — intercept every API call that the ReadingComprehension
+// component may fire so no real backend call escapes the test.
+const mockAllStoriesApis = () => {
+  // Stories list (loaded on mount and after saving)
+  cy.intercept('GET', '**/api/stories?*', { body: [] }).as('getStoriesList')
+  // AI question generation — returns static mock; NO real AI call is made
+  cy.intercept('POST', '**/api/stories/*/mc_generate', { body: [] }).as('mcGenerateGlobal')
+  // Save questions — acknowledge without touching the database
+  cy.intercept('POST', '**/api/stories/*/save_questions', { statusCode: 200, body: { ok: true } }).as('saveQuestionsGlobal')
+  // Delete questions — acknowledge without touching the database
+  cy.intercept('POST', '**/api/stories/*/delete_questions', { statusCode: 200, body: { ok: true } }).as('deleteQuestionsGlobal')
+  // Reading-practice answer recording — acknowledge without touching the database
+  cy.intercept('POST', '**/api/stories/*/answer_question', { statusCode: 200, body: { ok: true } }).as('answerQuestionGlobal')
+}
 
-//   this.afterAll(function () {
-//     cy.cleanUsers()
-//   })
+describe('reading comprehension', function () {
+  this.beforeAll(function () {
+    cy.login('English')
+  })
 
-//   it('saved questions are scoped per story', function () {
-//     const storyOne = makePreviewStory({
-//       id: storyOneId,
-//       title: 'Story One',
-//       questions: [
-//         {
-//           question: 'Story one question only',
-//           choices: ['A', 'B', 'C', 'D'],
-//           answer: 'A',
-//           level: 'B1',
-//         },
-//       ],
-//     })
+  this.beforeEach(function () {
+    cy.viewport(1920, 1080)
+    window.localStorage.clear()
+    cy.loginExisting().as('user')
+    mockAllStoriesApis()
+  })
 
-//     const storyTwo = makePreviewStory({
-//       id: storyTwoId,
-//       title: 'Story Two',
-//       questions: [
-//         {
-//           question: 'Story two question only',
-//           choices: ['E', 'F', 'G', 'H'],
-//           answer: 'E',
-//           level: 'B1',
-//         },
-//       ],
-//     })
+  this.afterAll(function () {
+    cy.cleanUsers()
+  })
 
-//     cy.intercept('GET', `**/api/stories/${storyOneId}*`, storyOne).as('getStoryOne')
-//     cy.intercept('GET', `**/api/stories/${storyTwoId}*`, storyTwo).as('getStoryTwo')
+  it('saved questions are scoped per story', function () {
+    const storyOne = makePreviewStory({
+      id: storyOneId,
+      title: 'Story One',
+      questions: [
+        {
+          question: 'Story one question only',
+          choices: ['A', 'B', 'C', 'D'],
+          answer: 'A',
+          level: 'B1',
+        },
+      ],
+    })
 
-//     cy.visit(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
-//     cy.wait('@getStoryOne')
+    const storyTwo = makePreviewStory({
+      id: storyTwoId,
+      title: 'Story Two',
+      questions: [
+        {
+          question: 'Story two question only',
+          choices: ['E', 'F', 'G', 'H'],
+          answer: 'E',
+          level: 'B1',
+        },
+      ],
+    })
 
-//     cy.get('.rc-tabs .item').eq(1).click()
-//     cy.contains('Story one question only')
-//     cy.contains('Story two question only').should('not.exist')
+    cy.intercept('GET', `**/api/stories/${storyOneId}*`, storyOne).as('getStoryOne')
+    cy.intercept('GET', `**/api/stories/${storyTwoId}*`, storyTwo).as('getStoryTwo')
 
-//     cy.visit(`http://localhost:8000/stories/${storyTwoId}/reading-comprehension-options`)
-//     cy.wait('@getStoryTwo')
+    visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
+    cy.wait('@getStoryOne')
 
-//     cy.get('.rc-tabs .item').eq(1).click()
-//     cy.contains('Story two question only')
-//     cy.contains('Story one question only').should('not.exist')
-//   })
+    cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
+    cy.contains('Story one question only')
+    cy.contains('Story two question only').should('not.exist')
 
-//   it('generated question can be selected and saved for current story', function () {
-//     const storyOne = makePreviewStory({
-//       id: storyOneId,
-//       title: 'Story One',
-//       questions: [],
-//     })
+    visitAsMockUser(`http://localhost:8000/stories/${storyTwoId}/reading-comprehension-options`)
+    cy.wait('@getStoryTwo')
 
-//     const generated = [
-//       {
-//         question: 'Generated question for story one?',
-//         choices: ['Right', 'Wrong A', 'Wrong B', 'Wrong C'],
-//         answer: 'Right',
-//         level: 'B1',
-//       },
-//     ]
+    cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
+    cy.contains('Story two question only')
+    cy.contains('Story one question only').should('not.exist')
 
-//     cy.intercept('GET', `**/api/stories/${storyOneId}*`, storyOne).as('getStoryOne')
-//     cy.intercept('GET', '**/api/stories?*', []).as('getStoriesList')
-//     cy.intercept('POST', `**/api/stories/${storyOneId}/mc_generate`, generated).as('mcGenerate')
-//     cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
-//       expect(req.body).to.have.property('questions')
-//       expect(req.body.questions).to.have.length(1)
-//       expect(req.body.questions[0].question).to.eq('Generated question for story one?')
-//       req.reply({ statusCode: 200, body: { ok: true } })
-//     }).as('saveQuestions')
+    // Critical assertion: no mc_generate requests should be made.
+    cy.get('@mcGenerateGlobal.all').should('have.length', 0)
+  })
 
-//     cy.visit(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
-//     cy.wait('@getStoryOne')
-//     cy.contains('Story One').should('be.visible')
+  it('allows choosing level and size, editing saved answers, and deleting saved questions', function () {
+    let storyOne = makePreviewStory({
+      id: storyOneId,
+      title: 'Story One',
+      questions: [
+        {
+          question: 'Saved question for edits',
+          choices: ['Correct A', 'Wrong B', 'Wrong C', 'Wrong D'],
+          answer: 'Correct A',
+          level: 'B1',
+        },
+      ],
+    })
 
-//     cy.get('[data-cy="rc-generate-btn"]').click()
-//     cy.wait('@mcGenerate')
+    cy.intercept('GET', `**/api/stories/${storyOneId}*`, req => {
+      req.reply(storyOne)
+    }).as('getStoryOne')
+    cy.intercept('GET', '**/api/stories?*', []).as('getStoriesList')
 
-//     cy.contains('.rc-question__titleText', 'Generated question for story one?').should('be.visible')
-//     cy.get('[data-cy="rc-add-questions-to-story-btn"]').should('be.disabled')
+    cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
+      expect(req.body).to.have.property('questions')
+      expect(req.body.questions).to.have.length(1)
+      expect(req.body.questions[0].question).to.eq('Saved question for edits')
+      expect(req.body.questions[0].choices[0]).to.eq('Updated correct answer')
+      // Editing the correct option should also update the answer value.
+      expect(req.body.questions[0].answer).to.eq('Updated correct answer')
 
-//     cy.contains('.rc-question', 'Generated question for story one?').click()
+      // Component refetches story after save success; return updated story
+      // on subsequent GETs so UI keeps edited value.
+      storyOne = {
+        ...storyOne,
+        questions: req.body.questions,
+      }
 
-//     cy.get('[data-cy="rc-add-questions-to-story-btn"]').should('not.be.disabled').click()
+      req.reply({ statusCode: 200, body: { ok: true } })
+    }).as('saveQuestions')
 
-//     cy.wait('@saveQuestions')
-//   })
-// })
+    cy.intercept('POST', `**/api/stories/${storyOneId}/delete_questions`, req => {
+      expect(req.body).to.deep.equal({ questions: ['Saved question for edits'] })
+      req.reply({ statusCode: 200, body: { ok: true } })
+    }).as('deleteQuestions')
 
-// describe('reading practice', function () {
-//   this.beforeAll(function () {
-//     cy.login('English')
-//   })
+    visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
+    cy.wait('@getStoryOne')
+    cy.contains('Story One').should('be.visible')
 
-//   this.beforeEach(function () {
-//     cy.viewport(1920, 1080)
-//     window.localStorage.clear()
-//     cy.loginExisting().as('user')
-//   })
+    cy.get('[data-cy="rc-level-select"]').click()
+    cy.contains('.visible.menu .item', 'B2').click()
+    cy.get('[data-cy="rc-level-select"]').should('contain', 'B2')
 
-//   this.afterAll(function () {
-//     cy.cleanUsers()
-//   })
+    cy.get('[data-cy="rc-size-select"]').click()
+    cy.contains('.visible.menu .item', '4').click()
+    cy.get('[data-cy="rc-size-select"]').should('contain', '4')
 
-//   it('highlights answer text only after show-location button click', function () {
-//     const readingQuestions = [
-//       {
-//         question: 'Which option is correct?',
-//         choices: ['Wrong A', 'Correct option', 'Wrong B', 'Wrong C'],
-//         answer: 'Correct option',
-//         sentence_ids: [1],
-//       },
-//     ]
+    // Edit saved question choice and verify save payload.
+    cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
+    cy.get('[data-cy="rc-question-title-story-0"]').should('contain', 'Saved question for edits')
+    cy.get('[data-cy="rc-choice-edit-story-0-0"]').click()
+    cy.get('[data-cy="rc-choice-input-story-0-0"] input').clear().type('Updated correct answer')
+    cy.get('[data-cy="rc-choice-save-story-0-0"]').click()
+    cy.wait('@saveQuestions')
+    cy.get('[data-cy="rc-question-story-0"]').contains('Updated correct answer').should('be.visible')
 
-//     const story = makePreviewStory({
-//       id: readingPracticeStoryId,
-//       title: 'Reading Practice Story',
-//       readingQuestions,
-//       questions: null,
-//     })
+    // Delete saved question and verify delete payload.
+    cy.get('[data-cy="rc-delete-saved-question-btn-0"]').click()
+    cy.get('[data-cy="rc-delete-modal-confirm"]').click()
+    cy.wait('@deleteQuestions')
 
-//     cy.intercept('GET', `**/api/stories/${readingPracticeStoryId}*`, story).as('getPracticeStory')
+    // Critical assertion: no mc_generate requests should be made.
+    cy.get('@mcGenerateGlobal.all').should('have.length', 0)
+  })
+})
 
-//     cy.visit(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
-//     cy.wait('@getPracticeStory')
+describe('reading practice', function () {
+  this.beforeAll(function () {
+    cy.login('English')
+  })
 
-//     cy.contains('span', 'Target').should('not.have.css', 'color', 'rgb(33, 186, 69)')
+  this.beforeEach(function () {
+    cy.viewport(1920, 1080)
+    window.localStorage.clear()
+    cy.loginExisting().as('user')
+    mockAllStoriesApis()
+  })
 
-//     cy.get('[data-cy="rp-choice-btn-1"]').click()
-//     cy.get('[data-cy="rp-show-answer-location-btn"]').click()
+  this.afterAll(function () {
+    cy.cleanUsers()
+  })
 
-//     cy.contains('span', 'Target').should('have.css', 'color', 'rgb(33, 186, 69)')
-//   })
-// })
+  it('highlights answer text only after show-location button click', function () {
+    const readingQuestions = [
+      {
+        question: 'Which option is correct?',
+        choices: ['Wrong A', 'Correct option', 'Wrong B', 'Wrong C'],
+        answer: 'Correct option',
+        sentence_ids: [1],
+      },
+    ]
+
+    const story = makePreviewStory({
+      id: readingPracticeStoryId,
+      title: 'Reading Practice Story',
+      readingQuestions,
+      questions: null,
+    })
+
+    cy.intercept('GET', `**/api/stories/${readingPracticeStoryId}*`, story).as('getPracticeStory')
+
+    visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
+    cy.wait('@getPracticeStory')
+
+    cy.get('[data-cy="story-token-p0-t1"]').should('not.have.css', 'background-color', 'rgb(253, 234, 59)')
+
+    cy.get('[data-cy="rp-choice-btn-1"]').click()
+    cy.get('[data-cy="rp-show-answer-location-btn"]').click()
+
+    cy.get('[data-cy="story-token-p0-t1"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
+
+    // Critical assertion: no mc_generate requests should be made.
+    cy.get('@mcGenerateGlobal.all').should('have.length', 0)
+  })
+})
