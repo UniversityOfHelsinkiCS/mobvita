@@ -178,6 +178,20 @@ Cypress.Commands.add('getUser', function(name) {
   return cy.wrap(savedUsers[name])
 })
 
+Cypress.Commands.add('setDictionaryLanguage', function (transLang = 'English') {
+  return cy.request({
+    method: 'POST',
+    url: 'localhost:8000/api/user',
+    headers: {
+      'Authorization': `Bearer ${currentUser.token}`
+    },
+    body: {
+      last_trans_lang: transLang
+    },
+    retryOnNetworkFailure: true
+  })
+})
+
 Cypress.Commands.add('cleanUsers', function () {
   const requests = users.map(user =>
     cy.request({

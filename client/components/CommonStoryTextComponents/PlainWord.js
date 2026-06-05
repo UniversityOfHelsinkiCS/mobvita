@@ -24,7 +24,7 @@ import {
   resetAnnotationCandidates,
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
-import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { setHelperSidebarTab, setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 
 const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {
   const location = useLocation()
@@ -166,7 +166,8 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             inflectionRef,
             prefLemma })
         )
-        dispatch(setHelperSidebarTab('translation'))        
+        dispatch(setHelperSidebarTab('translation'))
+        dispatch(setHelperSidebarOpen(true))
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(
