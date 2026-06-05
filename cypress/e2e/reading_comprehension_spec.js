@@ -6,8 +6,7 @@ const visitAsMockUser = path => {
   cy.visit(path)
 }
 
-// Mock story IDs — these are fake IDs that will never match a real document,
-// so all network calls are intercepted before they reach the backend.
+// Mock story IDs. Matching API calls are intercepted, so these tests do not depend on real backend data.
 const makePreviewStory = ({ id, title, questions = [], readingQuestions = null }) => ({
   _id: id,
   title,
@@ -171,6 +170,118 @@ describe('reading comprehension', function () {
 
     // Critical assertion: no mc_generate requests should be made.
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
+  })
+
+  it('manages two generated draft questions in generate tab, then saves, edits, and deletes', function () {
+    let storyOne = makePreviewStory({
+      id: storyOneId,
+      title: 'Story One',
+      questions: [],
+    })
+
+    const generatedDraftQuestions = [
+      {
+        question: 'Draft question A',
+        choices: ['A1', 'A2', 'A3', 'A4'],
+        answer: 'A1',
+        level: 'B1',
+        sentence_ids: [1],
+      },
+      {
+        question: 'Draft question B',
+        choices: ['B1', 'B2', 'B3', 'B4'],
+        answer: 'B1',
+        level: 'B1',
+        sentence_ids: [1],
+      },
+    ]
+
+    cy.intercept('GET', `**/api/stories/${storyOneId}*`, req => {
+      req.reply(storyOne)
+    }).as('getStoryOne')
+
+    cy.intercept('POST', `**/api/stories/${storyOneId}/mc_generate`, req => {
+      expect(req.body).to.have.property('level')
+      expect(req.body).to.have.property('size')
+      req.reply({ statusCode: 200, body: generatedDraftQuestions })
+    }).as('mcGenerateSpecific')
+
+    cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
+      expect(req.body).to.have.property('questions')
+      expect(req.body.questions).to.have.length(1)
+
+      storyOne = {
+        ...storyOne,
+        questions: req.body.questions,
+      }
+
+      req.reply({ statusCode: 200, body: { ok: true } })
+    }).as('saveQuestionsSpecific')
+
+    cy.intercept('POST', `**/api/stories/${storyOneId}/delete_questions`, req => {
+      expect(req.body).to.have.property('questions')
+
+      const toDelete = Array.isArray(req.body.questions) ? req.body.questions : []
+      storyOne = {
+        ...storyOne,
+        questions: storyOne.questions.filter(q => !toDelete.includes(q.question)),
+      }
+
+      req.reply({ statusCode: 200, body: { ok: true } })
+    }).as('deleteQuestionsSpecific')
+
+    visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
+    cy.wait('@getStoryOne')
+
+    cy.get('[data-cy="rc-tab-generate-questions"]').click()
+
+    // Seed draft questions via mocked generate endpoint (no real AI backend work).
+    cy.get('[data-cy="rc-generate-btn"]').click()
+    cy.wait('@mcGenerateSpecific')
+
+    cy.get('[data-cy="rc-question-title-draft-0"]').should('contain', 'Draft question A')
+    cy.get('[data-cy="rc-question-title-draft-1"]').should('contain', 'Draft question B')
+
+    // Selecting a draft question should highlight the matching story text.
+    cy.get('[data-cy="story-token-p0-t1"]').should('not.have.css', 'background-color', 'rgb(253, 234, 59)')
+    cy.get('[data-cy="rc-question-draft-0"]').click()
+    cy.get('[data-cy="story-token-p0-t1"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
+
+    // Delete one draft question in Generate tab.
+    cy.get('[data-cy="rc-delete-draft-question-btn-1"]').click()
+    cy.get('[data-cy="rc-delete-modal-confirm"]').click()
+    cy.get('[data-cy="rc-question-title-draft-0"]').should('contain', 'Draft question A')
+    cy.get('[data-cy="rc-question-title-draft-1"]').should('not.exist')
+
+    // Modify remaining draft question answer in Generate tab and save to story.
+    cy.get('[data-cy="rc-choice-edit-draft-0-0"]').click()
+    cy.get('[data-cy="rc-choice-input-draft-0-0"] input').clear().type('A1 Modified Once')
+    cy.get('[data-cy="rc-choice-save-draft-0-0"]').click()
+    cy.get('[data-cy="rc-add-questions-to-story-btn"]').click()
+    cy.wait('@saveQuestionsSpecific')
+
+    // Saved questions are rendered in the Edit Saved Questions tab.
+    cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
+    cy.get('[data-cy="rc-question-story-0"]').contains('A1 Modified Once').should('be.visible')
+
+    // Modify the saved question again.
+    cy.get('[data-cy="rc-choice-edit-story-0-0"]').click()
+    cy.get('[data-cy="rc-choice-input-story-0-0"] input').clear().type('A1 Modified Twice')
+    cy.get('[data-cy="rc-choice-save-story-0-0"]').click()
+    cy.wait('@saveQuestionsSpecific')
+    cy.get('[data-cy="rc-question-story-0"]').contains('A1 Modified Twice').should('be.visible')
+
+    // Delete remaining saved question.
+    cy.get('[data-cy="rc-delete-saved-question-btn-0"]').click()
+    cy.get('[data-cy="rc-delete-modal-confirm"]').click()
+    cy.wait('@deleteQuestionsSpecific')
+
+    cy.get('[data-cy^="rc-question-story-"]').should('have.length', 0)
+
+    // Verify lifecycle call counts.
+    cy.get('@saveQuestionsSpecific.all').should('have.length', 2)
+    cy.get('@deleteQuestionsSpecific.all').should('have.length', 1)
+    cy.get('@mcGenerateSpecific.all').should('have.length', 1)
   })
 })
 
