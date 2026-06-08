@@ -1835,5 +1835,7 @@
     "additional-information-modal-examples": "Esempi",
     "note-no-lessons-topic": "Note: you selected no grammar topics.",
     "note-lessons-topic-count": "You have selected {count} grammar topics.",
-    "note-max-lessons-topic": "You can select up to {count} grammar topics."
+    "note-max-lessons-topic": "You can select up to {count} grammar topics.",
+    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
+    "spinner-text-long-task": "This is a challenging task, it's taking some time."
 }

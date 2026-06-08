@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Spinner = ({
   fullHeight = false,
@@ -7,13 +7,43 @@ const Spinner = ({
   inline = false,
   size = 24,
   text = '',
+  delayedMessage = [],
   textSize = 20,
   textVariant = 'primary',
   textColor,
 }) => {
+  const [messageIndex, setMessageIndex] = useState(0)
+
+  useEffect(() => {
+    const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
+
+    setMessageIndex(0)
+
+    if (messages.length === 0) return undefined
+
+    let intervalId
+
+    const timeoutId = window.setTimeout(() => {
+      setMessageIndex(1)
+
+      if (messages.length > 1) {
+        intervalId = window.setInterval(() => {
+          setMessageIndex(index => (index >= messages.length ? 1 : index + 1))
+        }, 2000)
+      }
+    }, 2000)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      if (intervalId) window.clearInterval(intervalId)
+    }
+  }, [text, delayedMessage?.join('||')])
+
   const variantClass = `spinner--${variant}`
   const resolvedTextVariant = textVariant ?? textColor ?? variant
   const textVariantClass = `spinner--${resolvedTextVariant}`
+  const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
+  const displayText = messageIndex === 0 ? text : messages[messageIndex - 1]
 
   const scale = size / 80
 
@@ -31,9 +61,8 @@ const Spinner = ({
       }}
       role="status"
       aria-live="polite"
-      aria-label={text || 'Loading'}
+      aria-label={typeof displayText === 'string' ? displayText : 'Loading'}
     >
-      {/* This box makes the spinner take exactly `size` px in layout */}
       <div
         className="spinner-roller-box"
         style={{
@@ -65,9 +94,12 @@ const Spinner = ({
         </div>
       </div>
 
-      {text ? (
-        <div className={`spinner-text ${textVariantClass}`} style={{ fontSize: textSize, margin: '8px' }}>
-          {text}
+      {displayText ? (
+        <div
+          className={`spinner-text ${textVariantClass}`}
+          style={{ fontSize: textSize, margin: '8px' }}
+        >
+          {displayText}
         </div>
       ) : null}
     </div>
