@@ -1006,7 +1006,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                   }
                   if (note.kind === 'concept') {
                     return (
-                      <div key={index} className="message message-bot">
+                      <div key={index} className="message message-bot">                        
                         <span dangerouslySetInnerHTML={sanitizeHtml(note.text)} />
                       </div>
                     )
@@ -1019,7 +1019,25 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       </div>
                     )
                   }
-                  // mc, choice, hint
+                  if (note.kind === 'mc') {
+                    return (
+                      <div key={index} className="message message-bot">
+                        <div>
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+                          {note.choices?.length > 0 && (
+                            <ul>
+                              {note.choices.map((choice, i) => (
+                                <li key={i}>
+                                  <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  }
+                  // hint
                   const showInfo =
                     note.kind === 'hint' &&
                     note.info &&

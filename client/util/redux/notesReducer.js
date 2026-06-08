@@ -15,10 +15,8 @@ export const buildWordNotes = (word, { answer, tiedAnswer, isPreviewMode, hidden
   const items = []
 
   if (word.mc_correct && !isPreviewMode) {
-    items.push({ kind: 'mc', text: word.frozen_messages?.[0] })
-    ;(word.choices || []).forEach(choice => {
-      items.push({ kind: 'choice', text: choice })
-    })
+    // The MC feedback message and its choices belong together in one bubble.
+    items.push({ kind: 'mc', text: word.frozen_messages?.[0], choices: word.choices || [] })
   }
 
   if (word.hints?.length && !isPreviewMode) {

@@ -294,6 +294,10 @@
       align-self: flex-start;
       background-color: #f8f9fa;
       border: 1px solid #e0e0e0;
+      ul {
+        margin-bottom: 0;
+        padding-left: 1.2em;
+      }
     }
 
     .message-user {
