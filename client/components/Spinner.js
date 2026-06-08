@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
+// Shared loading spinner component
+// Props:
+// - fullHeight: stretch the container to near full viewport height.
+// - variant: spinner theme class, e.g. primary, secondary.
+// - spinnerColor: optional custom spinner color override.
+// - inline: render without taking full width/height.
+// - size: spinner size in pixels.
+// - text: message shown immediately under the spinner.
+// - delayedMessage: optional messages shown later if loading is slow.
+// - textSize: font size for the spinner text.
+// - textVariant: theme class for the text.
+// - textColor: optional text color/theme override.
 const Spinner = ({
   fullHeight = false,
   variant = 'primary',
@@ -29,9 +41,9 @@ const Spinner = ({
       if (messages.length > 1) {
         intervalId = window.setInterval(() => {
           setMessageIndex(index => (index >= messages.length ? 1 : index + 1))
-        }, 2000)
+        }, 20000)
       }
-    }, 2000)
+    }, 25000)
 
     return () => {
       window.clearTimeout(timeoutId)
