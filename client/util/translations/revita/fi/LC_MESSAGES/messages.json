@@ -1836,7 +1836,7 @@
     "additional-information-modal-examples": "Esimerkkejä",
     "note-no-lessons-topic": "Huomio: Et valinnut yhtään kielioppiaihetta.",
     "note-lessons-topic-count": "Olet valinnut {count} kielioppiaihetta.",
-    "note-max-lessons-topic": "Voit valita enintään {count} kielioppiaihetta.",
+    "note-max-lessons-topic": "Kielioppiaiheiden enimmäismäärä {count} on saavutettu",
     "spinner-text-long-generation": "Tämän sisällön luominen kestää tavallista kauemmin. Olethan kärsivällinen.",
     "spinner-text-long-task": "Tämä on haastava tehtävä, joten sen käsittely vie hieman aikaa."
 }

@@ -1,23 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import React, { useEffect, useState } from 'react'
-import {
-  Placeholder,
-  Segment,
-  Popup,
-  Icon,
-  Select,
-  Container,
-  Accordion,
-  AccordionTitle,
-  AccordionContent,
-} from 'semantic-ui-react'
+import { Segment, Container } from 'semantic-ui-react'
 import ScrollArrow from 'Components/ScrollArrow'
-import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
-import LessonPracticeThemeHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeThemeHelp'
 import Topics from 'Components/Topics'
-
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
@@ -25,51 +12,29 @@ import { Stepper, Step } from 'react-form-stepper'
 import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { startLessonsTour } from 'Utilities/redux/tourReducer'
-import {
-  lessonsTourViewed,
-  updateGroupSelect,
-  updateLibrarySelect,
-} from 'Utilities/redux/userReducer'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
-import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-// import AddStoryModal from 'Components/AddStoryModal'
-// import LessonLibrarySearch from './LessonLibrarySearch'
-
 import './LessonLibraryStyles.css'
 
 const StoryGeneration = () => {
   const MAX_GRAMMAR_TOPICS = 5
-  const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
   const navigate = useNavigate()
-  const { pending: userPending, data: userData } = useSelector(({ user }) => user)
-  const { teacherView, user } = userData
-  const { oid: userId, has_seen_lesson_tour, vocabulary_score } = user
-  const {
-    pending: metaPending,
-    lesson_semantics,
-    lesson_topics,
-    lessons,
-  } = useSelector(({ metadata }) => metadata)
-  const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
+  const { data: userData } = useSelector(({ user }) => user)
+  const { user } = userData
+  const { vocabulary_score } = user
+  const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const {
     pending: generationPending,
     text,
     error,
   } = useSelector(({ storyGeneration }) => storyGeneration)
 
-  const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
-  // const smallWindow = useWindowDimensions().width < 520
-
-  const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
-  const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
   const [goStep, setGoStep] = useState(0)
 
   const [lessonInstance, setLessonInstance] = useState({
@@ -80,8 +45,6 @@ const StoryGeneration = () => {
   })
   const [generatedStory, setGeneratedStory] = useState('')
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
-  const [filteredLessons, setFilteredLessons] = useState(lessons)
-  const [accordionState, setAccordionState] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -170,18 +133,6 @@ const StoryGeneration = () => {
       />
     </div>
   )
-  const lessonGroups =
-    (filteredLessons &&
-      filteredLessons.reduce((x, y) => {
-        ;(x[y.group] = x[y.group] || []).push(y)
-        return x
-      }, {})) ||
-    {} // Object.groupBy(filteredLessons, ({group})=> group)
-  const handleClick = (e, props) => {
-    const { index } = props
-    const newIndex = accordionState === index ? -1 : index
-    setAccordionState(newIndex)
-  }
 
   let lessonStartControls = (
     <Container>
