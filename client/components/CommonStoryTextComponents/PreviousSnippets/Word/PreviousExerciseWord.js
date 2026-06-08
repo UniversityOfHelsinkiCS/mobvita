@@ -2,16 +2,11 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
 import {
-  getTextStyle,
   learningLanguageSelector,
   dictionaryLanguageSelector,
   speak,
   voiceLanguages,
-  formatGreenFeedbackText,
-  sanitizeHtml,
   hiddenFeatures,
   getWordColor,
   skillLevels,
@@ -19,7 +14,6 @@ import {
   useMTAvailableLanguage,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
-import { setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
@@ -27,7 +21,7 @@ import {
   setHighlightRange,
   addAnnotationCandidates,
   resetAnnotationCandidates } from 'Utilities/redux/annotationsReducer'
-import Tooltip from 'Components/PracticeView/Tooltip'
+import { setNotes, buildWordNotes } from 'Utilities/redux/notesReducer'
 import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet, hideDifficulty }) => {
@@ -43,7 +37,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
     inflection_ref: inflectionRef,
     snippet_id,
     sentence_id } = word
-  
+
   if (surface === '\n\n') {
     return (
       <div style={{ lineHeight: '50%' }}>
@@ -51,17 +45,8 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
       </div>
     )
   }
-  
-  
-  const ref = word.hints && word.hints.filter(
-    hint => hint.ref?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.ref}), {}) 
-  const explanation = word.hints && word.hints.filter(
-    hint => hint.explanation?.length || hint.meta !== hint.easy).reduce((obj, v) => ({ 
-      ...obj, 
-      [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...(v.explanation || [])]}), {})
-  const example = word.hints && word.hints.filter(
-    hint => hint.example?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.example}), {})
-  const [show, setShow] = useState(false)
+
+
   const location = useLocation()
   const isPreviewMode = location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -77,7 +62,6 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const [allowTranslating, setAllowTranslating] = useState(true)
   const mode = getMode()
   const conceptHighlighting = word.concepts?.map(x=>x.concept).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept)
-  const intl = useIntl()
   const dispatch = useDispatch()
 
   const voice = voiceLanguages[learningLanguage]
@@ -95,8 +79,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const handleClick = () => {
     dispatch(setHelperSidebarTab('translation'))
-    if (!isPreviewMode && (word.isWrong || word.mc_correct)) setShow(true)
-    if (isPreviewMode && word.concepts?.length > 0) setShow(true)
+    dispatch(setNotes(buildWordNotes(word, { answer, tiedAnswer, isPreviewMode, hiddenFeatures })))
     if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
@@ -145,21 +128,11 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
 
   const getSuperscript = word => spanAnnotations.findIndex(a => a.startId === word.ID) + 1
 
-  const handleTooltipClick = () => {
-    if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
-    if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
-    if (example && Object.keys(example).length) dispatch(setExample(example))
-  }
-
   const wordShouldBeHighlighted = word => {
     return word.ID >= highlightRange?.start && word.ID <= highlightRange?.end
   }
 
-  
-
   const wordStartsSpan = word => !!word?.annotation
-
-  const youAnsweredTooltip = answer || tiedAnswer
 
   const wordColorStyle = hideDifficulty
     ? {}
@@ -172,76 +145,9 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
           show_preview_exer,
           mode
         ) }
-  // console.log('one of these? ', word)
 
-  const tooltip = (
-    <div
-      className="tooltip-blue"
-      style={{ cursor: 'pointer', textAlign: 'left', padding: '15px' }}
-      // backgroundColor: getWordColor(word.level, grade, skillLevels)
-      onMouseDown={handleTooltipClick}
-    >
-      {/* word.message && !isPreviewMode && (
-        <div className="flex">
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message)} />{' '}
-          {ref && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-          )}
-          {explanation && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
-          )}
-        </div>
-          ) */}
-      {word?.mc_correct && !isPreviewMode && (
-        <div>
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(word.frozen_messages[0])} />
-          <ul>
-            {word.choices.map((choice, i) => (
-              <li key={i}>
-                <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {word.hints?.length > 0 && !isPreviewMode && (
-        <div>
-          {word.hints.map((hint, index) => (
-            <span key={index} className="flex">
-              <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
-              {(hint.explanation?.length || hint.meta !== hint.easy || hint.ref?.length) && (
-                <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />)}
-            </span>
-          ))}
-        </div>
-      )}
-      {youAnsweredTooltip && (
-        <div>          
-          {`${intl.formatMessage({ id: 'you-used' })}: `}
-          <span dangerouslySetInnerHTML={formatGreenFeedbackText(youAnsweredTooltip.users_answer)}  
-          style={getTextStyle(learningLanguage, 'tooltip')} />
-        </div>
-      )}
-      {isPreviewMode && word.concepts?.length === 0 && hiddenFeatures && (
-        <div style={{ textAlign: 'left' }}>
-          <FormattedMessage id="no-topics-available" />
-        </div>
-      )}
-
-      {isPreviewMode && word.concepts?.length > 0 && (
-        <div style={{ textAlign: 'left' }}>
-          <FormattedMessage id="topics-header" />:
-          <ul className="mb-0">
-            {word.concepts.map((concept, i) => (
-              <li key={i} dangerouslySetInnerHTML={sanitizeHtml(concept.concept)} />
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  )
   return (
-    <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip} isControlledStoryWord = {true}>
+    <>
       {wordStartsSpan(word) && <sup className="notes-superscript">{getSuperscript(word)}</sup>}
       <span
         className={`${wordClass}${
@@ -252,11 +158,10 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
         onClick={handleClick}
         onKeyDown={handleClick}
         tabIndex={-1}
-        onBlur={() => setShow(false)}
       >
         {surface}
       </span>
-    </Tooltip>
+    </>
   )
 }
 
