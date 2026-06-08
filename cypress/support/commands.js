@@ -42,32 +42,36 @@ function randomCredentials() {
 
 function createRandomUser() {
   const user = randomCredentials()
-  cy.request('POST', 'localhost:8000/api/register/test', { ...user })
+  return cy.request('POST', 'localhost:8000/api/register/test', { ...user })
     .then((response) => {
       user.token = response.body.access_token
       console.log(user)
+      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
     })
-  cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
-
-  users.push(user)
-  return
+    .then(() => {
+      users.push(user)
+      return user
+    })
 }
 
 Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = false, transLang = 'English') {
   const user = randomCredentials()
-  cy.request(
+  return cy.request(
     {
       method: 'POST', 
       url: 'localhost:8000/api/register/test', 
       body: { ...user },
-      retryOnNetworkFailure: true
+      retryOnNetworkFailure: true,
+      timeout: 120000
     })
     .then(function (response) {
       user.token = response.body.access_token
       currentUser = user
-      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
       users.push(user)
-      cy.request({
+      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+    })
+    .then(() => {
+      return cy.request({
         method: 'POST',
         url: 'localhost:8000/api/user',
         headers: {
@@ -78,63 +82,17 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
           last_trans_lang: transLang,
           interface_lang: learningLang,
           has_seen_home_tour: true,
-          has_seen_library_tour: true
+          has_seen_lesson_tour: true,
+          has_seen_library_tour: true,
+          has_seen_practice_tour: true,
+          has_seen_progress_tour: true
         },
-        retryOnNetworkFailure: true
-      }).then(function (response) {
-        cy.request({
-          method: 'POST',
-          url: 'localhost:8000/api/user',
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          },
-          body: {
-            is_teacher: is_teacher,
-          },
-          retryOnNetworkFailure: true
-        })
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
-      cy.request('POST', 'localhost:8000/api/session', { ...user })
-          .as('user')
-          .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))
-
-      cy.reload()
     })
-
-    return cy.wrap(user)
-})
-
-
-Cypress.Commands.add('loginExisting', function () {
-  cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
-    .then(response => window.localStorage.setItem('user', JSON.stringify(response.body)))
-  
-  return cy.wrap(currentUser)
-})
-
-Cypress.Commands.add('createUser', function(name, language, is_teacher = false) {
-  const user = randomCredentials()
-  cy.request('POST', 'localhost:8000/api/register/test', { ...user })
-    .then(function (response) {
-      user.token = response.body.access_token
-
-      cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
-      users.push(user)
-  }).then(function (response) { 
-    cy.request({
-      method: 'POST',
-      url: 'localhost:8000/api/user',
-      headers: {
-        'Authorization': `Bearer ${user.token}`
-      },
-      body: {
-        last_used_lang: language,
-        last_trans_lang: 'English',
-        interface_lang: language,
-      },
-      retryOnNetworkFailure: true
-    }).then(function (response) {
-      cy.request({
+    .then(() => {
+      return cy.request({
         method: 'POST',
         url: 'localhost:8000/api/user',
         headers: {
@@ -143,19 +101,89 @@ Cypress.Commands.add('createUser', function(name, language, is_teacher = false) 
         body: {
           is_teacher: is_teacher,
         },
-        retryOnNetworkFailure: true
+        retryOnNetworkFailure: true,
+        timeout: 120000
       })
     })
-    cy.request('POST', 'localhost:8000/api/session', { ...user })
-          .as(name)
-          .then(response => window.localStorage.setItem(name, JSON.stringify(response.body)))
-    cy.reload()
-  })
-  if (name) {
-    savedUsers[name] = user
-  }
+    .then(() => {
+      return cy.request('POST', 'localhost:8000/api/session', { ...user })
+        .then(response => {
+          window.localStorage.setItem('user', JSON.stringify(response.body))
+          return response.body
+        })
+    })
+    .then(() => {
+      cy.reload()
+      return cy.wrap(user)
+    })
+})
 
-  return cy.wrap(user)
+
+Cypress.Commands.add('loginExisting', function () {
+  return cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
+    .then(response => {
+      window.localStorage.setItem('user', JSON.stringify(response.body))
+      return cy.wrap(currentUser)
+    })
+})
+
+Cypress.Commands.add('createUser', function(name, language, is_teacher = false) {
+  const user = randomCredentials()
+  return cy.request('POST', 'localhost:8000/api/register/test', { ...user })
+    .then(function (response) {
+      user.token = response.body.access_token
+      users.push(user)
+      if (name) {
+        savedUsers[name] = user
+      }
+      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+    })
+    .then(() => {
+      return cy.request({
+        method: 'POST',
+        url: 'localhost:8000/api/user',
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: {
+          last_used_lang: language,
+          last_trans_lang: 'English',
+          interface_lang: language,
+          has_seen_home_tour: true,
+          has_seen_lesson_tour: true,
+          has_seen_library_tour: true,
+          has_seen_practice_tour: true,
+          has_seen_progress_tour: true,
+        },
+        retryOnNetworkFailure: true,
+        timeout: 120000
+      })
+    })
+    .then(() => {
+      return cy.request({
+        method: 'POST',
+        url: 'localhost:8000/api/user',
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        },
+        body: {
+          is_teacher: is_teacher,
+        },
+        retryOnNetworkFailure: true,
+        timeout: 120000
+      })
+    })
+    .then(() => {
+      return cy.request('POST', 'localhost:8000/api/session', { ...user })
+        .then(response => {
+          window.localStorage.setItem(name, JSON.stringify(response.body))
+          return response.body
+        })
+    })
+    .then(() => {
+      cy.reload()
+      return cy.wrap(user)
+    })
 })
 
 Cypress.Commands.add('getUser', function(name) {
@@ -163,8 +191,22 @@ Cypress.Commands.add('getUser', function(name) {
   return cy.wrap(savedUsers[name])
 })
 
+Cypress.Commands.add('setDictionaryLanguage', function (transLang = 'English') {
+  return cy.request({
+    method: 'POST',
+    url: 'localhost:8000/api/user',
+    headers: {
+      'Authorization': `Bearer ${currentUser.token}`
+    },
+    body: {
+      last_trans_lang: transLang
+    },
+    retryOnNetworkFailure: true
+  })
+})
+
 Cypress.Commands.add('cleanUsers', function () {
-  for (let user of users) {
+  const requests = users.map(user =>
     cy.request({
       method: 'POST',
       url: 'localhost:8000/api/user/remove',
@@ -174,11 +216,13 @@ Cypress.Commands.add('cleanUsers', function () {
       body: {
         password: user.password,
         is_test: true
-      }
+      },
+      failOnStatusCode: false
     })
-  }
+  )
 
-  users = [];
+  users = []
   savedUsers = {}
   currentUser = null
+  return cy.wrap(requests)
 })

@@ -129,7 +129,9 @@ const walkToEnd = (maxSteps = 30) => {
 // linger in the DOM (`aria-hidden="true"`) and visually cover the navbar,
 // so the click is forced.
 const startTourFromPage = path => {
+  cy.intercept('GET', '**/api/**').as('apiCall')
   cy.visit(`http://localhost:8000${path}`)
+  cy.wait('@apiCall', { timeout: 30000 })
   cy.get(TOUR_BUTTON, { timeout: 15000 }).click({ force: true })
 }
 

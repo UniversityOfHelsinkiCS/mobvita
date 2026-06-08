@@ -889,7 +889,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       )}
             
       { helperActiveTab ===  'translation' &&  (          
-        <div className="dictionary-content">                    
+        <div className="dictionary-content" data-cy="dictionary-help">                    
           {translationState.pending ? (
             <div style={{ padding: '1em' }}>
               <div className="flex space-between" style={{ marginBottom: '1em' }}>

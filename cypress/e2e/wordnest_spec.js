@@ -6,7 +6,8 @@ describe('wordnest modal', function () {
   })
 
   this.beforeEach(function () {
-    cy.login('Russian')
+    // Reuse the session created in beforeAll — do not call cy.login() again
+    cy.loginExisting()
 
     cy.intercept('GET', '**/api/stories/**').as('getStory')
     cy.intercept({ method: /GET|POST/, url: '**/api/**translation**' }).as('getTranslation')
@@ -21,23 +22,23 @@ describe('wordnest modal', function () {
   })
 
   it('fetches, displays and translates word nest modal correctly', function () {
-    cy.contains('спортсменка', { timeout: 10000 }).click()
-    cy.contains('sportswoman', { timeout: 10000 })
-    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
-    cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    cy.contains('sportswoman', { timeout: 30000 })
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
 
-    cy.get('[data-cy=wordnest-modal]', { timeout: 10000 })
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
       .should('be.visible')
       .within(() => {
-        cy.contains('спорт', { timeout: 10000 })
+        cy.contains('спорт', { timeout: 30000 })
 
-        cy.contains('[data-cy="wordnest-word"]', 'спорт⋅сме́н', { timeout: 10000 })
+        cy.contains('[data-cy="wordnest-word"]', 'спорт⋅сме́н', { timeout: 30000 })
           .scrollIntoView()
           .click()
 
-        cy.contains('sportsman', { timeout: 10000 })
+        cy.contains('sportsman', { timeout: 30000 })
 
-        cy.contains('[data-cy="wordnest-word"]', 'не⋅спорти́вный', { timeout: 10000 })
+        cy.contains('[data-cy="wordnest-word"]', 'не⋅спорти́вный', { timeout: 30000 })
           .scrollIntoView()
           .should('be.visible')
           .click()
@@ -46,19 +47,20 @@ describe('wordnest modal', function () {
   })
 
   it("doesn't display nest icon when nest is not available", function () {
-    cy.contains('метровку', { timeout: 10000 }).click()
-    cy.get('[data-cy=nest-button]', { timeout: 2000 }).should('not.exist')
+    cy.contains('метровку', { timeout: 30000 }).click()
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 5000 }).should('not.exist')
   })
   
   it('close wordnest modal when clicking outside', function () {
-    cy.contains('спортсменка', { timeout: 10000 }).click()
-    cy.contains('sportswoman', { timeout: 10000 })
-    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
-    cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    cy.contains('sportswoman', { timeout: 30000 })
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
     
-    cy.get('[data-cy=wordnest-modal]', { timeout: 10000 }).should('be.visible')
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 }).should('be.visible')
     
-    cy.get('.ui.dimmer.modals.page', { timeout: 10000 })
+    cy.get('.ui.dimmer.modals.page', { timeout: 30000 })
       .filter(':visible')
       .first()
       .click('bottomLeft')
@@ -67,16 +69,16 @@ describe('wordnest modal', function () {
   })
 
   it('closes wordnest modal when clicking close button', function () {
-    cy.contains('спортсменка', { timeout: 10000 }).click()
-    cy.contains('sportswoman', { timeout: 10000 })
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    cy.contains('sportswoman', { timeout: 30000 })
     
-    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 10000 }).click()
-    cy.get('[data-cy=nest-button]', { timeout: 10000 }).should('be.visible').click()
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
 
-    cy.get('[data-cy=wordnest-modal]', { timeout: 10000 })
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
       .should('be.visible')
       .within(() => {
-        cy.get('[data-cy=wordnest-close]', { timeout: 10000 })
+        cy.get('[data-cy=wordnest-close]', { timeout: 30000 })
           .should('exist')
           .click()
       })

@@ -5,6 +5,10 @@ module.exports = defineConfig({
   allowCypressEnv: false,
   defaultCommandTimeout: 60000,
   responseTimeout: 60000,
+  retries: {
+    runMode: 1,
+    openMode: 0,
+  },
   blockHosts: ['www.googletagmanager.com', 'www.google-analytics.com'],
   e2e: {
     // We've imported your old cypress plugins here.

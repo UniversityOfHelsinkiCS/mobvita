@@ -168,7 +168,8 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             inflectionRef,
             prefLemma })
         )
-        dispatch(setHelperSidebarTab('translation'))        
+        dispatch(setHelperSidebarTab('translation'))
+        dispatch(setHelperSidebarOpen(true))
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(
