@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
 const StyledMark = localizedMarkString => props => {
@@ -55,8 +55,15 @@ const roundToNearestInt = number => Math.round(number)
  *   recommendedValue – user's baseline score; shown as a marker
  *   disabled        – (optional) disables the slider
  *   style           – (optional) style for the outer container div
+ *   skillLevels     – array of skill levels to display on the slider
+ *                     IF all levels should not be shown, empty strings can be used for the levels that should be hidden.
+ *                     For example: ["Pre-A1", "A1", "", "A2", "", "B1", "", "B2", "", "C1", "", "C2", "C2+"]
+ *                     The array must contain all 13 items so that the levels remain in their correct positions on the slider.
+ *                     Empty values keep the levels in their correct positions while hiding the labels.
+ *   min             – minimum value for the slider (default 0)
+ *   max             – maximum value for the slider (default 100)
  */
-const VocabDiffSlider = ({ value, onChange, recommendedValue, disabled, style }) => {
+const VocabDiffSlider = ({ value, onChange, recommendedValue, disabled, style, skillLevels, min, max }) => {
   const intl = useIntl()
   const thumbClassName = `${getSliderThumbColor(value)} exercise-density-slider-thumb`
   const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
@@ -72,19 +79,14 @@ const VocabDiffSlider = ({ value, onChange, recommendedValue, disabled, style })
         snapDragDisabled={false}
         renderMark={markComp}
         marks={[roundToNearestInt(recommendedValue)]}
-        min={0}
-        max={100}
+        min={min}
+        max={max}
         step={1}
         value={value}
         disabled={disabled}
       />
       <div className="space-between exercise-density-slider-label-cont bold">
-        <span>
-          <FormattedMessage id="Easy" />
-        </span>
-        <span>
-          <FormattedMessage id="Hard" />
-        </span>
+        {skillLevels.map(level => <span key={level}>{level}</span>)}
       </div>
     </div>
   )

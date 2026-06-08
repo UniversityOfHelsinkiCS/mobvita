@@ -132,6 +132,7 @@ const StoryGeneration = () => {
               border: '1px solid #ccc',
               outline: 'none',
               fontSize: '16px' }}
+            maxLength={240}
             value={lessonInstance.learner_ideas}
             onChange={e => setLessonInstance({ ...lessonInstance, learner_ideas: e.target.value })}
           />
@@ -149,6 +150,9 @@ const StoryGeneration = () => {
         value={sliderValue}
         onChange={handleSlider}
         recommendedValue={vocabulary_score}
+        skillLevels={["A2", "A2/B1", "B1", "B1/B2", "B2", "B2/C1", "C1" ]}
+        min={30}
+        max={79}
         style={{ width: bigScreen ? '80%' : '90%', marginTop: '30px', marginLeft: 'auto', marginRight: 'auto' }}
       />
     </div>

@@ -235,6 +235,9 @@ const LessonList = () => {
       value={sliderValue}
       onChange={handleSlider}
       recommendedValue={vocabulary_score}
+      skillLevels={["pre-A1", "A1", "", "A2", "", "B1", "", "B2", "", "C1", "", "C2", "C2+"]}
+      min={0}
+      max={100}
       disabled={lessonPending || !(libraries.private || (currentGroup && currentGroup.is_teaching))}
       style={{ width: bigScreen ? '450px' : '90%', maxWidth: '450px' }}
     />
