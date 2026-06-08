@@ -1832,5 +1832,8 @@
     "you-can-help-us-fix": "Puoi aiutarci a risolvere il problema più velocemente, inviandoci una breve descrizione dello stesso, nel modulo che si apre con questo pulsante:",
     "please-write-in-any-language": "(Si prega di scrivere nella lingua che si preferisce.)",
     "next-please-refresh-page": "Quindi, aggiorna la pagina o fai clic su \"Torna indietro\"",
-    "additional-information-modal-examples": "Esempi"
+    "additional-information-modal-examples": "Esempi",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "You can select up to {count} grammar topics."
 }

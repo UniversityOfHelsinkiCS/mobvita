@@ -945,5 +945,8 @@
     "you-can-help-us-fix": "Ти можеш допомогти нам швидше усунути помилку, надіславши її короткий опис — у формі, що відкривається при натисканні цієї кнопки:",
     "please-write-in-any-language": "(Пиши будь-якою зручною для тебе мовою.)",
     "next-please-refresh-page": "Далі, онови сторінку чи натисніть «Назад».",
-    "additional-information-modal-examples": "Examples"
+    "additional-information-modal-examples": "Examples",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "You can select up to {count} grammar topics."
 }

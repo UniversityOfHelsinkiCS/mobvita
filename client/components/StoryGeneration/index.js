@@ -42,6 +42,7 @@ import Spinner from 'Components/Spinner'
 import './LessonLibraryStyles.css'
 
 const StoryGeneration = () => {
+  const MAX_GRAMMAR_TOPICS = 5
   const intl = useIntl()
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
@@ -136,6 +137,16 @@ const StoryGeneration = () => {
             value={lessonInstance.learner_ideas}
             onChange={e => setLessonInstance({ ...lessonInstance, learner_ideas: e.target.value })}
           />
+          <div
+            style={{
+              marginTop: '6px',
+              textAlign: 'right',
+              color: '#6c757d',
+              fontSize: '13px',
+            }}
+          >
+            {lessonInstance.learner_ideas.length}/240
+          </div>
         </div>
       </div>
     </div>
@@ -170,14 +181,12 @@ const StoryGeneration = () => {
     setAccordionState(newIndex)
   }
 
-  const lessonReady = lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
-  const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
   let lessonStartControls = (
     <Container>
       <div
         className="row justify-center align-center"
         style={{
-          color: `${lessonReadyColor}`,
+          color: '#0088CB',
           textAlign: 'center',
           fontWeight: 500,
           margin: '18px',
@@ -186,6 +195,11 @@ const StoryGeneration = () => {
         <div className="col col-12">
           <FormattedMessage id="story-ready-for-generation" />
         </div>
+        {lessonInstance.topic_ids.length === 0 && (
+        <div className="col col-12" style={{ color: '#ff0c0c' }}>
+          <FormattedMessage id="note-no-lessons-topic" />
+        </div>
+        )}
       </div>
       <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
         <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
@@ -264,11 +278,7 @@ const StoryGeneration = () => {
                     <Button
                       size="big"
                       className="lesson-practice"
-                      disabled={
-                        !lessonInstance.topic_ids ||
-                        lessonInstance.topic_ids.length === 0 ||
-                        noResults
-                      }
+                      disabled={noResults}
                       style={{
                         fontSize: '1.3em',
                         fontWeight: 500,
@@ -319,9 +329,15 @@ const StoryGeneration = () => {
   )
 
   const setSelectedTopics = topic_ids => {
+    const limitedTopics = topic_ids.slice(0, MAX_GRAMMAR_TOPICS)
+
+    if (topic_ids.length > MAX_GRAMMAR_TOPICS) {
+      dispatch(setNotification('Maximum selected grammar topics: 5', 'warn'))
+    }
+
     setLessonInstance({
       ...lessonInstance,
-      topic_ids: topic_ids })
+      topic_ids: limitedTopics })
   }
 
   return (
@@ -416,6 +432,14 @@ const StoryGeneration = () => {
                   editable={true}
                   setSelectedTopics={setSelectedTopics}
                   showPerf={true}
+                  note={
+                    lessonInstance.topic_ids.length === 0
+                      ? <FormattedMessage id="note-no-lessons-topic" />
+                      : lessonInstance.topic_ids.length === 5
+                      ? <FormattedMessage id="note-max-lessons-topic" values={{ count: lessonInstance.topic_ids.length }} />
+                      : <FormattedMessage id="note-lessons-topic-count" values={{ count: lessonInstance.topic_ids.length }} />
+                      
+                  }
                 />
               </div>
             )}

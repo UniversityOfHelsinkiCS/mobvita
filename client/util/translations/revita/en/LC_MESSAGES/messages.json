@@ -1716,7 +1716,7 @@
     "dictionary-header": "Dictionary",
     "correct-performance": "correct",
     "server-status": "Server status",
-    "input-story-generation-comment": "Describe the subject of the story - what is the story about?",
+    "input-story-generation-comment": "Describe the subject of the story — what is the story about",
     "story-ready-for-generation": "Ready to generate the story based on your request",
     "additional-comment": "Additional comment",
     "upload-generated-story": "Save to my library",
@@ -1832,5 +1832,8 @@
     "you-can-help-us-fix": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
     "please-write-in-any-language": "(Please write in any language convenient for you.)",
     "next-please-refresh-page": "Next, refresh the page, or click \"Go back\"",
-    "additional-information-modal-examples": "Examples"
+    "additional-information-modal-examples": "Examples",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "You can select up to {count} grammar topics."
 }

@@ -1087,7 +1087,7 @@
     "dictionary-header": "词典",
     "correct-performance": "正确",
     "server-status": "Server status",
-    "input-story-generation-comment": "Describe the subject of the story - what is the story about?",
+    "input-story-generation-comment": "Describe the subject of the story — what is the story about",
     "story-ready-for-generation": "Ready to generate the story based on your request",
     "additional-comment": "Additional comment",
     "upload-generated-story": "Save to my library",
@@ -1211,5 +1211,8 @@
     "you-can-help-us-fix": "您可以通过向我们发送问题的简短描述来帮助我们快速解决问题 - 以通过此按钮打开的格式：",
     "please-write-in-any-language": "（请用你习惯的语言说谎。）",
     "next-please-refresh-page": "接下来，刷新页面，或点击“返回”",
-    "additional-information-modal-examples": "Examples"
+    "additional-information-modal-examples": "Examples",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "You can select up to {count} grammar topics."
 }

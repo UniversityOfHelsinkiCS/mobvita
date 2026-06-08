@@ -1833,5 +1833,8 @@
     "you-can-help-us-fix": "Voit auttaa meitä korjaamaan ongelman nopeammin lähettämällä meille siitä lyhyen kuvauksen — tällä painikkeella avautuvassa muodossa:",
     "please-write-in-any-language": "(Kirjoita millä tahansa sinulle sopivalla kielellä.)",
     "next-please-refresh-page": "Seuraavaksi päivitä sivu tai napsauta \"Palaa takaisin\".",
-    "additional-information-modal-examples": "Esimerkkejä"
+    "additional-information-modal-examples": "Esimerkkejä",
+    "note-no-lessons-topic": "Huomio: Et valinnut yhtään kielioppiaihetta.",
+    "note-lessons-topic-count": "Olet valinnut {count} kielioppiaihetta.",
+    "note-max-lessons-topic": "Voit valita enintään {count} kielioppiaihetta."
 }
