@@ -139,8 +139,7 @@ export default function NavBar() {
   }
 
   const handleNewsClick = async () => {
-    await dispatch(getNews())
-    await dispatch(getMetadata(learningLanguage))
+    await Promise.all([dispatch(getNews()), dispatch(getMetadata(learningLanguage))])
   }
 
   const getLearningLanguageFlag = () => {

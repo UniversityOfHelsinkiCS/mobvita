@@ -109,7 +109,7 @@ const StoryList = () => {
   }, [])
 
   useEffect(() => {
-    if (sharedToGroupSinceLastFetch || deleteSuccessful) {
+    if ((sharedToGroupSinceLastFetch || deleteSuccessful) && (groupsLibrary || savedLibrarySelection === 'group')) {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',

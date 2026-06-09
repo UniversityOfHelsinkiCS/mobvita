@@ -96,7 +96,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: true,
+      sourcemap: mode !== 'production',
       cssMinify: false,
       cssCodeSplit: false,
       chunkSizeWarningLimit: 2000,
