@@ -77,18 +77,19 @@ const PracticeView = () => {
   const isLesson = location.pathname.includes('lesson')
   const timedExercise = story?.timed_exercise
 
-  const currentSnippetId = () => {
+  const currentSnippetId = (() => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
-    if (snippetid == undefined || snippetid == null) return -1
-    return snippetid[snippetid?.length - 1]
-  }
+    if (snippetid == null) return -1
+    return snippetid[snippetid.length - 1]
+  })()
 
-  const currentSnippetNum = currentSnippetId() + 1
+  const currentSnippetNum = currentSnippetId + 1
+
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
   const showPauseButton =
-    (snippetsTotalNum - currentSnippetId() > 1 && !practiceFinished) ||
-    (snippetsTotalNum - currentSnippetId() === 1 && isPaused)
+    (snippetsTotalNum - currentSnippetId > 1 && !practiceFinished) ||
+    (snippetsTotalNum - currentSnippetId === 1 && isPaused)
 
   const { controls: timer } = useTimer({
     initialTime: null,
@@ -111,7 +112,7 @@ const PracticeView = () => {
       dispatch(setWillPause(false))
       timer.stop()
     }
-  }, [currentSnippetId()])
+  }, [currentSnippetId])
 
   useEffect(() => {
     if (!story) {
