@@ -104,9 +104,7 @@ const PracticeView = () => {
     if (startModalOpen) return
 
     if (!willPause && !isPaused) {
-      setTimeout(() => {
-        timer.start()
-      }, TIMER_START_DELAY)
+      timer.start()
     } else {
       dispatch(setWillPause(false))
       timer.stop()
@@ -125,11 +123,14 @@ const PracticeView = () => {
   }, [])
 
   useEffect(() => {
-    if (!isPaused) timer.start()
-  }, [isPaused])
+    if (!isPaused && !startModalOpen) timer.start()
+  }, [isPaused, startModalOpen])
 
   useEffect(() => {
-    if (controlledPractice) setStartModalOpen(true)
+    if (controlledPractice) {
+      setStartModalOpen(true)
+      dispatch(setIsPaused(true))
+    }
 
     dispatch(resetAnnotations())
     timer.stop()
@@ -141,8 +142,8 @@ const PracticeView = () => {
   }, [])
 
   useEffect(() => {
-    if (!startModalOpen) timer.start()
-  }, [startModalOpen])
+    if (!startModalOpen && !controlledPractice) timer.start()
+  }, [startModalOpen, controlledPractice])
 
   useEffect(() => {
     if (!isLesson) {
@@ -304,12 +305,13 @@ const PracticeView = () => {
             blueCardCount={newVocabulary}
           />
         )}
-        {/* <StartModal
+        <StartModal
           open={startModalOpen}
           setOpen={setStartModalOpen}
           activity="control-story"
-          onBackClick={() => history.push('/library')}
-        />         */}
+          onBackClick={() => navigate('/library')}
+          onStart={() => dispatch(setIsPaused(false))}
+        />
         <HelperSidebar>
           <CombinedChatbot />
         </HelperSidebar>

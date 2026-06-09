@@ -27,7 +27,7 @@ const PracticeTimer = ({
             />
           </div>
         )}
-        <div className="practice-timer-value">{timerContent}</div>
+        <div className="practice-timer-value">{timerContent > 0 ? timerContent : 0}</div>
       </div>
     </div>
   )
