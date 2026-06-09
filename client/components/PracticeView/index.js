@@ -10,14 +10,16 @@ import {
   dropCachedSnippet,
   getNextSnippetFromCache,
   resetCurrentSnippet,
-  resetSnippets } from 'Utilities/redux/snippetsReducer'
+  resetSnippets,
+} from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import {
   setTouchedIds,
   setAnswers,
   setWillPause,
   setIsPaused,
-  clearPractice } from 'Utilities/redux/practiceReducer'
+  clearPractice,
+} from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
@@ -27,7 +29,8 @@ import {
   learningLanguageSelector,
   getMode,
   hiddenFeatures,
-  dictionaryLanguageSelector } from 'Utilities/common'
+  dictionaryLanguageSelector,
+} from 'Utilities/common'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -51,6 +54,8 @@ const PracticeView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+  const mode = getMode()
+  const intl = useIntl()
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -60,19 +65,17 @@ const PracticeView = () => {
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
   const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
-    ({ practice }) => practice
+    ({ practice }) => practice,
   )
   const newVocabulary = useSelector(state => state.newVocabulary.newVocabulary)
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showMessageDialog, setShowMessageDialog] = useState(false)
-  const intl = useIntl()
   const smallScreen = width < 700
-  const mode = getMode()
   const snippetsTotalNum = snippets?.focused?.total_num
   const controlledPractice = mode === 'controlled-practice'
   const isLesson = location.pathname.includes('lesson')
-  const timedExercise = snippets?.focused?.timed_exercise
+  const timedExercise = story?.timed_exercise
 
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
@@ -91,7 +94,8 @@ const PracticeView = () => {
     initialTime: null,
     direction: 'backward',
     startImmediately: false,
-    timeToUpdate: 100 })
+    timeToUpdate: 100,
+  })
 
   useEffect(() => {
     if (!snippets.testTime || !snippets.focused) return
@@ -170,7 +174,9 @@ const PracticeView = () => {
         concept,
         hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties } }
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
+      },
+    }
     dispatch(setAnswers(newAnswer))
   }
 
@@ -209,8 +215,7 @@ const PracticeView = () => {
   const showFooter = width > 640
 
   const getTimerContent = () => {
-    if (snippets.pending || !timer.getTime())
-      return <Spinner inline size={60} />
+    if (snippets.pending || !timer.getTime()) return <Spinner inline size={60} />
     if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
 
     return Math.round(timer.getTime() / 1000)
@@ -241,7 +246,8 @@ const PracticeView = () => {
               className="story-title"
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
-                width: `${controlledPractice ? '75%' : '100%'}` }}
+                width: `${controlledPractice ? '75%' : '100%'}`,
+              }}
             >
               {!pending && `${story.title}`}
             </div>
@@ -250,13 +256,15 @@ const PracticeView = () => {
                 <FormattedMessage id="Source" />
               </a>
             )}
-            {hiddenFeatures && <Checkbox
-              toggle
-              label={intl.formatMessage({ id: 'show-difficulty-level' })}
-              checked={showDifficulty}
-              onChange={updateUserReviewDiff}
-              style={{ paddingTop: '.5em', marginLeft: '.5em' }}
-            />}
+            {hiddenFeatures && (
+              <Checkbox
+                toggle
+                label={intl.formatMessage({ id: 'show-difficulty-level' })}
+                checked={showDifficulty}
+                onChange={updateUserReviewDiff}
+                style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+              />
+            )}
             <PreviousSnippets showDifficulty={showDifficulty} />
             <hr />
             <CurrentSnippet
@@ -266,6 +274,7 @@ const PracticeView = () => {
               numSnippets={story?.paragraph?.length}
               isLesson={isLesson}
               setShowMessageDialog={setShowMessageDialog}
+              timedExercise={timedExercise}
             />
             <ScrollArrow />
 
@@ -303,13 +312,15 @@ const PracticeView = () => {
             blueCardCount={newVocabulary}
           />
         )}
-        <StartModal
-          open={startModalOpen}
-          setOpen={setStartModalOpen}
-          activity="control-story"
-          onBackClick={() => navigate('/library')}
-          onStart={() => dispatch(setIsPaused(false))}
-        />
+        {timedExercise && (
+          <StartModal
+            open={startModalOpen}
+            setOpen={setStartModalOpen}
+            activity="control-story"
+            onBackClick={() => navigate('/library')}
+            onStart={() => dispatch(setIsPaused(false))}
+          />
+        )}
         <HelperSidebar>
           <CombinedChatbot />
         </HelperSidebar>

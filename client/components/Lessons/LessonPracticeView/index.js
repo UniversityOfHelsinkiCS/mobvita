@@ -2,36 +2,35 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { Segment, Icon, Checkbox } from 'semantic-ui-react'
+import { Segment, Checkbox } from 'semantic-ui-react'
 import {
   clearFocusedSnippet,
   resetSnippets,
-  resetCachedSnippets } from 'Utilities/redux/snippetsReducer'
+  resetCachedSnippets,
+} from 'Utilities/redux/snippetsReducer'
 import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
 import {
   setTouchedIds,
   setAnswers,
   setWillPause,
-  setIsPaused } from 'Utilities/redux/practiceReducer'
+} from 'Utilities/redux/practiceReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { getLessonInstance, clearLessonInstanceState } from 'Utilities/redux/lessonInstanceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { getTextStyle, learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
+import { learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
-import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
 import PreviousSnippets from 'Components/CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
 import ProgressBar from 'Components/PracticeView/CurrentSnippet/ProgressBar'
-import PracticeTimer from 'Components/PracticeView/PracticeTimer'
 import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
 import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
@@ -44,24 +43,21 @@ const LessonPracticeView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+  const mode = getMode()
 
   const intl = useIntl()
 
   const { width } = useWindowDimensions()
-
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
-
   const learningLanguage = useSelector(learningLanguageSelector)
   const snippets = useSelector(({ snippets }) => snippets)
-  const { pending: lesson_instance_pending, lesson: lesson_instance } = useSelector(
-    ({ lessonInstance }) => lessonInstance
-  )
-  const { isPaused, willPause, practiceFinished, currentAnswers } = useSelector(
-    ({ practice }) => practice
-  )
-
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
-
+  const { pending: lesson_instance_pending, lesson: lesson_instance } = useSelector(
+    ({ lessonInstance }) => lessonInstance,
+  )
+  const { isPaused, willPause, currentAnswers } = useSelector(
+    ({ practice }) => practice,
+  )
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
     useState(false)
@@ -69,10 +65,8 @@ const LessonPracticeView = () => {
   const [snippetsTotalNum, setSnippetsTotalNum] = useState(10)
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
 
-  const mode = getMode()
   const TIMER_START_DELAY = 2000
   const smallScreen = width < 700
-  const timedExercise = snippets?.focused?.timed_exercise
   const controlledPractice = mode === 'controlled-practice'
   const isGroupLesson = location.pathname.includes('/group')
   const { id: groupId } = useParams()
@@ -81,7 +75,8 @@ const LessonPracticeView = () => {
     initialTime: null,
     direction: 'backward',
     startImmediately: false,
-    timeToUpdate: 100 })
+    timeToUpdate: 100,
+  })
 
   useEffect(() => {
     setCurrentSnippetNum(0)
@@ -112,7 +107,6 @@ const LessonPracticeView = () => {
 
   useEffect(() => {
     setCurrentSnippetNum(snippets.previous.length + 1)
-    // setSnippetsTotalNum(Math.floor(currentSnippetNum / 10) * 10 + 10)
   }, [snippets.focused])
 
   useEffect(() => {
@@ -138,7 +132,6 @@ const LessonPracticeView = () => {
 
   const startOvertLessonSnippets = () => {
     setCurrentSnippetNum(0)
-    // setSnippetsTotalNum(10)
     dispatch(clearLessonInstanceState())
     dispatch(resetSnippets())
     if (isGroupLesson) {
@@ -165,17 +158,11 @@ const LessonPracticeView = () => {
         concept,
         hintsRequested: currentAnswers[`${ID}-${candidateId}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${candidateId}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties } }
+        penalties: currentAnswers[`${ID}-${candidateId}`]?.penalties,
+      },
+    }
 
     dispatch(setAnswers(newAnswer))
-  }
-
-  const handlePauseOrResumeClick = () => {
-    if (isPaused) {
-      dispatch(setIsPaused(false))
-    } else {
-      dispatch(setWillPause(true))
-    }
   }
 
   const updateUserReviewDiff = () => {
@@ -185,13 +172,6 @@ const LessonPracticeView = () => {
 
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
   const showFooter = width > 640
-
-  const getTimerContent = () => {
-    if (snippets.pending || !timer.getTime()) return <Spinner variant="info" />
-    if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
-
-    return Math.round(timer.getTime() / 1000)
-  }
 
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
@@ -225,7 +205,6 @@ const LessonPracticeView = () => {
                   storyId={null}
                   handleInputChange={handleAnswerChange}
                   timer={timer}
-                  // numSnippets={story?.paragraph?.length}
                   numSnippets={snippetsTotalNum}
                   lessonId={lesson_instance?.lesson_id}
                   groupId={groupId}
@@ -290,7 +269,7 @@ const LessonPracticeView = () => {
               <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               <CombinedChatbot />
             </HelperSidebar>
-            
+
             <FeedbackInfoModal />
           </div>
           {showFooter && <Footer />}
@@ -298,9 +277,7 @@ const LessonPracticeView = () => {
       </div>
     )
   } else {
-    return (
-      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
-    )
+    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
   }
 }
 

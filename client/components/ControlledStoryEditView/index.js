@@ -35,6 +35,8 @@ const ControlledStoryEditView = ({ match }) => {
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
+  const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || false)
+  
   const { story, pending } = useSelector(
     ({ stories, locale }) => ({
       story: stories.focused,
@@ -43,7 +45,6 @@ const ControlledStoryEditView = ({ match }) => {
     }),
     shallowEqual,
   )
-  const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || false)
   const user = useSelector(state => state.user.data)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
@@ -145,7 +146,6 @@ const ControlledStoryEditView = ({ match }) => {
     }
     return false
   }
-  // console.log('contr ', controlledPractice)
 
   return (
     <div className="cont-tall flex-col space-between align-center pt-sm">
