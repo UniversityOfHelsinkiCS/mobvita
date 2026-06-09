@@ -2,6 +2,8 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
+import { getSliderThumbColor } from './sliderThumbColor'
+import './SliderStyles.scss'
 
 const StyledMark = localizedMarkString => props => {
   const StyledMarkSpan = styled.span`
@@ -27,23 +29,6 @@ const StyledMark = localizedMarkString => props => {
   return <StyledMarkSpan {...props} />
 }
 
-// Absolute 0-100 scale: 0 = greenest, 100 = reddest, 48-53 = neutral white.
-const getSliderThumbColor = value => {
-  if (value >= 48 && value <= 53) return 'white-slider'
-
-  if (value < 48) {
-    if (value <= 15) return 'green3-slider'
-    if (value <= 30) return 'green2-slider'
-    if (value <= 40) return 'green1-slider'
-    return 'green0-slider'
-  }
-
-  if (value <= 65) return 'red0-slider'
-  if (value <= 78) return 'red1-slider'
-  if (value <= 90) return 'red2-slider'
-  return 'red3-slider'
-}
-
 const roundToNearestInt = number => Math.round(number)
 
 /**
@@ -63,22 +48,31 @@ const roundToNearestInt = number => Math.round(number)
  *   min             – minimum value for the slider (default 0)
  *   max             – maximum value for the slider (default 100)
  */
-const VocabDiffSlider = ({ value, onChange, recommendedValue, disabled, style, skillLevels, min, max }) => {
+const VocabDiffSlider = ({
+  value,
+  onChange,
+  recommendedValue,
+  disabled,
+  style,
+  skillLevels,
+  min = 0,
+  max = 100,
+}) => {
   const intl = useIntl()
-  const thumbClassName = `${getSliderThumbColor(value)} exercise-density-slider-thumb`
+  const thumbClassName = `${getSliderThumbColor(value, min, max)} exercise-density-slider-thumb`
   const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
 
   return (
-    <div className="lesson-vocab-slider-container" style={style}>
+    <div style={style}>
       <ReactSlider
         className="exercise-density-slider"
         thumbClassName={thumbClassName}
         trackClassName="exercise-density-slider-track"
-        onAfterChange={onChange}
-        onSliderClick={onChange}
-        snapDragDisabled={false}
         renderMark={markComp}
         marks={[roundToNearestInt(recommendedValue)]}
+        snapDragDisabled={false}
+        onAfterChange={onChange}
+        onSliderClick={onChange}
         min={min}
         max={max}
         step={1}
