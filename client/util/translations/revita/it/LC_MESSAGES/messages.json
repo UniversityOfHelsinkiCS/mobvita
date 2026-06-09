@@ -1838,5 +1838,7 @@
     "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
     "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
     "spinner-text-long-task": "This is a challenging task, it's taking some time.",
-    "select-story-length": "Choose the number of sentences for the story"
+    "select-story-length": "Choose the number of sentences for the story",
+    "begin-practice-tailored": "Pratica storia",
+    "tailored-begin-practice": "Pratica storia"
 }

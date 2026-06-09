@@ -10,7 +10,8 @@ import {
   freezeControlledStory,
   initControlledExerciseSnippets,
   getFrozenTokens,
-  resetControlledStory } from 'Utilities/redux/controlledPracticeReducer'
+  resetControlledStory,
+} from 'Utilities/redux/controlledPracticeReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
@@ -34,17 +35,22 @@ const ControlledStoryEditView = ({ match }) => {
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
-  const { story, pending } = useSelector(({ stories, locale }) => ({
-    story: stories.focused,
-    pending: stories.focusedPending,
-    locale }), shallowEqual)
-  const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || true)
+  const { story, pending } = useSelector(
+    ({ stories, locale }) => ({
+      story: stories.focused,
+      pending: stories.focusedPending,
+      locale,
+    }),
+    shallowEqual,
+  )
+  const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || false)
   const user = useSelector(state => state.user.data)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const { id } = match.params
+  const tailoredStoryView = location.pathname.includes('controlled-practice')
 
   const initAcceptedTokens = emptySnippets => {
     const initialAcceptedTokensList = {}
@@ -81,7 +87,8 @@ const ControlledStoryEditView = ({ match }) => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1 })
+          order: -1,
+        }),
       )
     }
   }, [controlledPractice?.finished])
@@ -100,7 +107,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight size={60} text='' />
+  if (!story || pending || !user) return <Spinner fullHeight size={60} text="" />
 
   const showFooter = width > 640
   const url = location.pathname
@@ -123,11 +130,10 @@ const ControlledStoryEditView = ({ match }) => {
     dispatch(freezeControlledStory(id, controlledPractice.snippets, timedExercise))
   }
 
-  const handleEditorReset = () => {    
+  const handleEditorReset = () => {
     const emptySnippets = false
     dispatch(resetControlledStory(initAcceptedTokens(emptySnippets)))
   }
-
 
   const emptySnippets = () => {
     const snippets = Object.entries(controlledPractice.snippets)
@@ -217,7 +223,7 @@ const ControlledStoryEditView = ({ match }) => {
                 <hr />
               </>
             ))}
-            
+
             <ScrollArrow />
           </Segment>
           {width >= 500 ? (
@@ -236,7 +242,9 @@ const ControlledStoryEditView = ({ match }) => {
               <div>
                 {emptySnippets() && (
                   <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
-                    <b><FormattedMessage id="empty-snippets-warning" /></b>
+                    <b>
+                      <FormattedMessage id="empty-snippets-warning" />
+                    </b>
                   </span>
                 )}
                 <Button
@@ -260,12 +268,14 @@ const ControlledStoryEditView = ({ match }) => {
               </Button>
             </Segment>
           </div>
-          <StoryTopics
-            conceptCount={story.concept_count}
-            focusedConcept={focusedConcept}
-            setFocusedConcept={setFocusedConcept}
-            isControlledStoryEditor={true}
-          />
+          {timedExercise && tailoredStoryView && (
+            <StoryTopics
+              conceptCount={story.concept_count}
+              focusedConcept={focusedConcept}
+              setFocusedConcept={setFocusedConcept}
+              isControlledStoryEditor={true}
+            />
+          )}
           <DictionaryHelp />
           <AnnotationBox />
         </div>

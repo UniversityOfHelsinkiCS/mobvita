@@ -74,8 +74,6 @@ const PracticeView = () => {
   const isLesson = location.pathname.includes('lesson')
   const timedExercise = snippets?.focused?.timed_exercise
 
-  const TIMER_START_DELAY = 2000
-
   const currentSnippetId = () => {
     if (!snippets.focused) return -1
     const { snippetid } = snippets.focused
