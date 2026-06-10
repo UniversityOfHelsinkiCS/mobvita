@@ -268,14 +268,12 @@ const ControlledStoryEditView = ({ match }) => {
               </Button>
             </Segment>
           </div>
-          {timedExercise && tailoredStoryView && (
             <StoryTopics
               conceptCount={story.concept_count}
               focusedConcept={focusedConcept}
               setFocusedConcept={setFocusedConcept}
               isControlledStoryEditor={true}
             />
-          )}
           <DictionaryHelp />
           <AnnotationBox />
         </div>
