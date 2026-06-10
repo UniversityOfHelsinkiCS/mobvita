@@ -4,7 +4,12 @@ import { Modal } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl';
 
-const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick }) => {
+const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart }) => {
+  const handleStartClick = () => {
+    if (onStart) onStart()
+    setOpen(false)
+  }
+
   const handleBackClick = () => {
     onBackClick()
     setOpen(false)
@@ -21,7 +26,7 @@ const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick }) => {
         </div>
         <div className="flex-col align-center gap-row-nm">
           <div>
-            <Button data-cy="start-timed-activity" size="lg" onClick={() => setOpen(false)}>
+            <Button data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
               <FormattedMessage id="start" />
             </Button>
           </div>

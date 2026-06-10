@@ -1716,7 +1716,7 @@
     "dictionary-header": "Dictionary",
     "correct-performance": "correct",
     "server-status": "Server status",
-    "input-story-generation-comment": "Describe the subject of the story - what is the story about?",
+    "input-story-generation-comment": "Describe the subject of the story — what is the story about",
     "story-ready-for-generation": "Ready to generate the story based on your request",
     "additional-comment": "Additional comment",
     "upload-generated-story": "Save to my library",
@@ -1770,7 +1770,7 @@
     "reading-test-cycle-popup-title": "Select cycle of questions",
     "word-nest-show-compounds-label": "Show compound words",
     "story-generating": "Story generating...",
-    "select-story-vocab-diff": "Choose difficulty of vocabulary for the story",
+    "select-story-vocab-diff": "Choose overall difficulty for the story",
     "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
     "chatbot-message-suggestion-analyze-context": "Help me understand the context",
@@ -1831,5 +1831,14 @@
     "an-error-has-occured": "An error has occurred in the system. The develper team has been notified.",
     "you-can-help-us-fix": "You can help us fix the problem faster, by sending us a short description of it — in the form that opens with this button:",
     "please-write-in-any-language": "(Please write in any language convenient for you.)",
-    "next-please-refresh-page": "Next, refresh the page, or click \"Go back\""
+    "next-please-refresh-page": "Next, refresh the page, or click \"Go back\"",
+    "additional-information-modal-examples": "Examples",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
+    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
+    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
+    "select-story-length": "Choose the number of sentences for the story",
+    "begin-practice-tailored": "Begin practice",
+    "tailored-begin-practice": "Begin practice"
 }

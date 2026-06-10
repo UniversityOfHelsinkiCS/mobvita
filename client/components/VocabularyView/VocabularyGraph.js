@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useIntl } from 'react-intl'
@@ -18,12 +18,7 @@ const VocabularyGraph = ({
   setGraphType,
   xAxisLength,
   element,
-}) => {
-  //   const { flashcard, seen, total, now, visit } = useSelector(({ user }) => user.vocabularyData)
-  if (vocabularyPending || newerVocabularyPending)
-    return (
-      <Spinner fullHeight size={60} />
-    )
+}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight size={60} />
 
   if (
     !vocabularyData ||
@@ -61,7 +56,7 @@ const VocabularyGraph = ({
 
     for (let i = 0; i < vocabBins?.length; i++) {
       initList = initList.concat(
-        vocabBins[i].encountered - vocabBins[i].mastered - vocabBins[i].rewardable
+        vocabBins[i].encountered - vocabBins[i].mastered - vocabBins[i].rewardable,
       )
     }
 
@@ -70,10 +65,17 @@ const VocabularyGraph = ({
 
   const notMastered = getNotMasteredData(currentPerc.vocab_bins)
 
-  const numEncountered = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.encountered, 0)
-  const numRewardable = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.rewardable, 0)
-  const numMastered = currentPerc?.vocab_bins?.reduce((prev, curr) => prev + curr.mastered, 0)
-  const numNotMastered = notMastered?.reduce((prev, curr) => prev + curr, 0)
+  // Memoize the aggregate reduces so they only recompute when the underlying
+  // bins change, instead of on every render.
+  const { numEncountered, numRewardable, numMastered, numNotMastered } = useMemo(() => {
+    const bins = currentPerc?.vocab_bins
+    return {
+      numEncountered: bins?.reduce((prev, curr) => prev + curr.encountered, 0),
+      numRewardable: bins?.reduce((prev, curr) => prev + curr.rewardable, 0),
+      numMastered: bins?.reduce((prev, curr) => prev + curr.mastered, 0),
+      numNotMastered: notMastered?.reduce((prev, curr) => prev + curr, 0),
+    }
+  }, [currentPerc, notMastered])
 
   const [series, setSeries] = useState(
     hiddenFeatures
@@ -149,38 +151,6 @@ const VocabularyGraph = ({
             linkedTo: 'Total',
             visible: false,
           },
-          /* 
-    {
-      name: intl.formatMessage({ id: 'vocabulary-seen' }),
-      id: 'Seen',
-      data: newSeen,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Seen (before)',
-      data: seen,
-      linkedTo: 'Seen',
-      visible: false,
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-visit' }),
-      id: 'Visit',
-      data: newVisit,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Visit (before)',
-      data: visit,
-      linkedTo: 'Visit',
-      visible: false,
-    },
-    */
           {
             name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
             id: 'Flashcard',
@@ -296,38 +266,6 @@ const VocabularyGraph = ({
             linkedTo: 'Total',
             visible: false,
           },
-          /* 
-    {
-      name: intl.formatMessage({ id: 'vocabulary-seen' }),
-      id: 'Seen',
-      data: newSeen,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-seen' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Seen (before)',
-      data: seen,
-      linkedTo: 'Seen',
-      visible: false,
-    },
-    {
-      name: intl.formatMessage({ id: 'vocabulary-visit' }),
-      id: 'Visit',
-      data: newVisit,
-      visible: false,
-    },
-    {
-      name: `${intl.formatMessage({ id: 'vocabulary-visit' })} ${intl.formatMessage({
-        id: 'vocabulary-follow-statistic-before',
-      })}`,
-      id: 'Visit (before)',
-      data: visit,
-      linkedTo: 'Visit',
-      visible: false,
-    },
-    */
           {
             name: intl.formatMessage({ id: 'vocabulary-flashcard' }),
             id: 'Flashcard',
@@ -354,25 +292,7 @@ const VocabularyGraph = ({
             visible: false,
             stack: 'before',
           },
-          /*
-    hiddenFeatures && {
-      name: `${intl.formatMessage({ id: 'percent-graph' })}`,
-      id: 'Curr Percentage',
-      data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
-      color: '#228B22',
-      visible: false,
-      stack: 'present',
-    },
-    {
-      name: `${intl.formatMessage({ id: 'target-curve' })}`,
-      id: 'Curr Percentage target',
-      data: getTargetCurve(),
-      linkedTo: 'Percentage',
-      type: 'spline',
-      visible: false,
-    },
-    */
-        ]
+        ],
   )
 
   const handleHide = (s, index) => {
@@ -437,28 +357,6 @@ const VocabularyGraph = ({
     },
     chart: {
       type: 'column',
-      /*
-      events: {
-        load: function () {
-          var chart = this,
-            legend = chart.legend;
-
-            for (var i = 0, len = legend.allItems.length; i < len; i++) {
-                (function(i) {
-                    var item = legend.allItems[i].legendItem;
-                    item.on('mouseover', function (e) {
-                        setTestState(true)
-                        console.log("mouseover" + i);
-                    }).on('mouseout', function (e) {
-                        setTestState(false)
-                        console.log("mouseout" + i);
-                    });
-                })(i);
-            }
-
-        },
-      },
-      */
     },
     credits: { enabled: false },
     allowDecimals: false,
@@ -476,16 +374,6 @@ const VocabularyGraph = ({
           if (this.value === 96 || (this.value === 48 && xAxisLength < 100)) {
             return `<b>${intl.formatMessage({ id: 'x-axis-difficult' })}</b>`
           }
-          /*
-          if (this.value % 25 === 0) {
-            if (xAxisLength <= 50 && this.value === 25) {
-              return this.value.toString()
-            }
-            if (xAxisLength > 50 && this.value > 0 && this.value < 100) {
-              return this.value.toString()
-            }
-          }
-          */
           return ''
         },
       },

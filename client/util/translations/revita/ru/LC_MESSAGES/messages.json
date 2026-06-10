@@ -1834,5 +1834,14 @@
     "an-error-has-occured": "Произошла ошибка в системе. Команда разработчиков получила уведомление.",
     "you-can-help-us-fix": "Ты можешь помочь нам быстрее устранить ошибку, послав нам ее краткое описание — в форме, которая открывается при нажатии этой кнопки:",
     "please-write-in-any-language": "(Пожалуйста, пиши на любом удобном для тебя языке.)",
-    "next-please-refresh-page": "Далее, обнови страницу или нажми «Назад»."
+    "next-please-refresh-page": "Далее, обнови страницу или нажми «Назад».",
+    "additional-information-modal-examples": "Примеры",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
+    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
+    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
+    "select-story-length": "Choose the number of sentences for the story",
+    "begin-practice-tailored": "Начать упражнения",
+    "tailored-begin-practice": "Начать упражнения"
 }

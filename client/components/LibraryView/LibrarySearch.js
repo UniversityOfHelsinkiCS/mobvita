@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { debounce } from 'lodash'
 import { Box, IconButton, TextField, Tooltip } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -14,27 +15,46 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
 
   const [currentQuery, setCurrentQuery] = useState('')
 
-  const filterStories = query => {
-    const normalizedQuery = query.trim().toLowerCase()
+  const filterStories = useCallback(
+    query => {
+      const normalizedQuery = query.trim().toLowerCase()
 
-    if (normalizedQuery === '') {
-      dispatch(setLastQuery(null))
-      setDisplaySearchResults(false)
-      setDisplayedStories(stories)
-      return
-    }
+      if (normalizedQuery === '') {
+        dispatch(setLastQuery(null))
+        setDisplaySearchResults(false)
+        setDisplayedStories(stories)
+        return
+      }
 
-    const filteredStories = stories.filter(story => {
-      const searchableFields = [story.title, story.description]
-      return searchableFields.some(field => field?.toLowerCase().includes(normalizedQuery))
-    })
+      const filteredStories = stories.filter(story => {
+        const searchableFields = [story.title, story.description]
+        return searchableFields.some(field => field?.toLowerCase().includes(normalizedQuery))
+      })
 
-    dispatch(setLastQuery(query))
-    setDisplaySearchResults(true)
-    setDisplayedStories(filteredStories)
-  }
+      dispatch(setLastQuery(query))
+      setDisplaySearchResults(true)
+      setDisplayedStories(filteredStories)
+    },
+    [stories, dispatch, setDisplaySearchResults, setDisplayedStories]
+  )
+
+  // Debounce filtering so it only runs after the user pauses typing, instead of
+  // on every keystroke over a potentially large story list. A ref keeps the
+  // debounced wrapper stable while always calling the latest filterStories
+  // (which closes over the current stories list).
+  const filterStoriesRef = useRef(filterStories)
+  useEffect(() => {
+    filterStoriesRef.current = filterStories
+  }, [filterStories])
+
+  const debouncedFilterStories = useRef(
+    debounce(query => filterStoriesRef.current(query), 250)
+  ).current
+
+  useEffect(() => () => debouncedFilterStories.cancel(), [debouncedFilterStories])
 
   const cancelSearch = () => {
+    debouncedFilterStories.cancel()
     setCurrentQuery('')
     dispatch(setLastQuery(null))
     setDisplaySearchResults(false)
@@ -42,13 +62,14 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
   }
 
   const handleLibrarySearch = () => {
+    debouncedFilterStories.cancel()
     filterStories(currentQuery)
   }
 
   const handleSearchFieldChange = event => {
     const nextQuery = event.target.value
     setCurrentQuery(nextQuery)
-    filterStories(nextQuery)
+    debouncedFilterStories(nextQuery)
   }
 
   const handleSearchFieldKeyDown = event => {

@@ -1831,5 +1831,14 @@
     "an-error-has-occured": "Si è verificato un errore nel sistema. Il team degli sviluppatori è stato avvisato.",
     "you-can-help-us-fix": "Puoi aiutarci a risolvere il problema più velocemente, inviandoci una breve descrizione dello stesso, nel modulo che si apre con questo pulsante:",
     "please-write-in-any-language": "(Si prega di scrivere nella lingua che si preferisce.)",
-    "next-please-refresh-page": "Quindi, aggiorna la pagina o fai clic su \"Torna indietro\""
+    "next-please-refresh-page": "Quindi, aggiorna la pagina o fai clic su \"Torna indietro\"",
+    "additional-information-modal-examples": "Esempi",
+    "note-no-lessons-topic": "Note: you selected no grammar topics.",
+    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
+    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
+    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
+    "select-story-length": "Choose the number of sentences for the story",
+    "begin-practice-tailored": "Pratica storia",
+    "tailored-begin-practice": "Pratica storia"
 }

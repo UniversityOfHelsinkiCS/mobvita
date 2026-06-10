@@ -20,9 +20,8 @@ const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children })
         </span>
       </button>
     }
-    position="top center"
+    position="top left"
   />
-  
 )
 
 const CardManagementOptions = ({ handleOptionClick }) => {

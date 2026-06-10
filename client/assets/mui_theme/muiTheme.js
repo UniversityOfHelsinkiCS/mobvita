@@ -6,10 +6,10 @@ import { createTheme } from '@mui/material/styles'
 
 const muiTheme = createTheme({
   components: {
-    // Override default props and styles for MUI Backdrop component
-    MuiBackdrop: {
+    // Override backdrop styling only for MUI Dialog
+    MuiDialog: {
       styleOverrides: {
-        root: {
+        backdrop: {
           backgroundColor: 'rgba(253, 253, 253, 0.8)',
         },
       },

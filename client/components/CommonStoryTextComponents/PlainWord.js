@@ -25,6 +25,7 @@ import {
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
 import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { clearNotes } from 'Utilities/redux/notesReducer'
 
 const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {
   const location = useLocation()
@@ -95,6 +96,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
   const consistsOfOnlyWhitespace = word => !!word.match(/^\s+$/g)
 
   const handleNonRecognizedWordClick = word => {
+    dispatch(clearNotes())
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
     if (!bigScreen) dispatch(setAnnotationvisibilityMobile(false))
     if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
@@ -131,13 +133,13 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
       </>
     )
 
-  const handleWordClick = () => {    
-    dispatch(setFocusedSpan(null))    
-    
+  const handleWordClick = () => {
+    dispatch(clearNotes())
+    dispatch(setFocusedSpan(null))
     if (showAnnotationForm) dispatch(setAnnotationFormVisibility(false))
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
-    if (lemmas) {
-    dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
+    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)      
+    if (lemmas) {      
+      dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
     if (annotatingAllowed && !consistsOfOnlyWhitespace(word.surface)) {
 
         const spanThatIncludesWord = getSpanthatIncludesWord(word)
@@ -166,7 +168,8 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             inflectionRef,
             prefLemma })
         )
-        dispatch(setHelperSidebarTab('translation'))        
+        dispatch(setHelperSidebarTab('translation'))
+        dispatch(setHelperSidebarOpen(true))
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(

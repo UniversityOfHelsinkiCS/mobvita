@@ -36,7 +36,7 @@ export default (state = initialState, action) => {
       for (let lesson of response.lessons) {
         let lessonTopics = [];
         for (let topic of response.lesson_topics) {
-          if (topic.lessons.includes(lesson.ID) & !lessonTopics.includes(topic.topic_id)) {
+          if (topic.lessons.includes(lesson.ID) && !lessonTopics.includes(topic.topic_id)) {
             lessonTopics.push(topic.topic_id);
           }
         }

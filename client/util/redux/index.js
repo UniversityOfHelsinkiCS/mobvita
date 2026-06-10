@@ -58,6 +58,7 @@ import gec from './gecReducer'
 import storyGeneration from './storyGenerationReducer'
 import readingComprehension from './readingComprehensionReducer'
 import helperSidebar from './helperSidebarReducer'
+import notes from './notesReducer'
 
 
 const rootReducer = combineReducers({
@@ -119,6 +120,7 @@ const rootReducer = combineReducers({
   storyGeneration,
   readingComprehension,
   helperSidebar,
+  notes,
 })
 
 export default (state, action) =>

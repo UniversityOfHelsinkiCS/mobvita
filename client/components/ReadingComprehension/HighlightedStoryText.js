@@ -20,6 +20,7 @@ const HighlightedStoryText = ({
             return (
               <span
                 key={j}
+                data-cy={`story-token-p${i}-t${j}`}
                 style={
                   isHighlighted
                     ? {

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import BlueCardsTestEncouragement from '../Encouragements/BlueCardsTestEncouragement'
 import PracticeCompletedEncouragement from '../Encouragements/PracticeCompletedEncouragement'
 
-const MessageDialog = ({ setShow, continueAction }) => {
+const MessageDialog = ({ setShow, continueAction, storyId, storyTitle, blueCardCount }) => {
   const bigScreen = useWindowDimensions().width > 700
   const [messageIndex, setMessageIndex] = useState(0)
 
@@ -19,7 +19,14 @@ const MessageDialog = ({ setShow, continueAction }) => {
             setShow={setShow}
           />
         )}
-        {messageIndex === 1 && <BlueCardsTestEncouragement setShow={setShow} />}
+        {messageIndex === 1 && (
+          <BlueCardsTestEncouragement
+            setShow={setShow}
+            storyId={storyId}
+            storyTitle={storyTitle}
+            blueCardCount={blueCardCount}
+          />
+        )}
       </div>
     </div>
   )

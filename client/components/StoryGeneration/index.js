@@ -1,106 +1,51 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useIntl, FormattedMessage } from 'react-intl'
-import { List, WindowScroller } from 'react-virtualized'
+import { FormattedMessage } from 'react-intl'
 import React, { useEffect, useState } from 'react'
-import {
-  Placeholder,
-  Segment,
-  Popup,
-  Icon,
-  Select,
-  Container,
-  Accordion,
-  AccordionTitle,
-  AccordionContent } from 'semantic-ui-react'
+import { Segment, Container } from 'semantic-ui-react'
 import ScrollArrow from 'Components/ScrollArrow'
-import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
-import LessonPracticeThemeHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeThemeHelp'
 import Topics from 'Components/Topics'
-
-import ReactSlider from 'react-slider'
+import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
+import CountSlider from 'Components/Sliders/CountSlider'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
 import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { startLessonsTour } from 'Utilities/redux/tourReducer'
-import {
-  lessonsTourViewed,
-  updateGroupSelect,
-  updateLibrarySelect } from 'Utilities/redux/userReducer'
+import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { setNotification } from 'Utilities/redux/notificationReducer'
-import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-// import AddStoryModal from 'Components/AddStoryModal'
-// import LessonLibrarySearch from './LessonLibrarySearch'
-
-import './LessonLibraryStyles.css'
-
-
-const StyledMark = localizedMarkString => props => {
-  const StyledMarkSpan = styled.span`
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 15px solid #000;
-    padding: 0;
-    &:hover::before {
-      content: '${localizedMarkString}';
-      position: absolute;
-      background-color: #333;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.9;
-      z-index: 1;
-    }
-  `
-  return <StyledMarkSpan {...props} />
-}
 
 const StoryGeneration = () => {
-  const intl = useIntl()
+  const MAX_GRAMMAR_TOPICS = 5
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
   const navigate = useNavigate()
-  const { pending: userPending, data: userData } = useSelector(({ user }) => user)
-  const { teacherView, user } = userData
-  const { oid: userId, has_seen_lesson_tour, vocabulary_score } = user
-  const {
-    pending: metaPending,
-    lesson_semantics,
-    lesson_topics,
-    lessons } = useSelector(({ metadata }) => metadata)
-  const { pending: topicPending, topics } = useSelector(({ lessons }) => lessons)
+  const { data: userData } = useSelector(({ user }) => user)
+  const { user } = userData
+  const { vocabulary_score } = user
+  const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const {
     pending: generationPending,
     text,
-    error } = useSelector(({ storyGeneration }) => storyGeneration)
+    error,
+  } = useSelector(({ storyGeneration }) => storyGeneration)
 
-  const _lesson_sort_criterion = { direction: 'asc', sort_by: 'index' }
-  // const smallWindow = useWindowDimensions().width < 520
-
-  const [sorter, setSorter] = useState(_lesson_sort_criterion.sort_by)
-  const [sortDirection, setSortDirection] = useState(_lesson_sort_criterion.direction)
   const [goStep, setGoStep] = useState(0)
 
   const [lessonInstance, setLessonInstance] = useState({
     topic_ids: [],
-    vocab_diff: vocabulary_score,
+    cefr_diff: vocabulary_score,
     learner_ideas: '',
-    instancePending: false })
+    instancePending: false,
+  })
   const [generatedStory, setGeneratedStory] = useState('')
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
-  const [filteredLessons, setFilteredLessons] = useState(lessons)
-  const [accordionState, setAccordionState] = useState(0)
+  const [numSentences, setNumSentences] = useState(10)
 
   const dispatch = useDispatch()
 
@@ -122,21 +67,15 @@ const StoryGeneration = () => {
     }
   }, [generationPending])
 
-  // useEffect(() => {
-  //   if (!metaPending && !has_seen_lesson_tour ) {
-  //     dispatch(setLessonStep(0))
-  //     dispatch(lessonsTourViewed())
-  //     dispatch(startLessonsTour())
-  //   }
-
-  // }, [metaPending])
-
   const handleSlider = value => {
     setSliderValue(value)
     setLessonInstance({
       ...lessonInstance,
-      vocab_diff: value })
+      cefr_diff: value,
+    })
   }
+
+  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
   const generationComment = (
     <div className="align-center">
@@ -153,162 +92,93 @@ const StoryGeneration = () => {
               borderRadius: '5px',
               border: '1px solid #ccc',
               outline: 'none',
-              fontSize: '16px' }}
+              fontSize: '16px',
+            }}
+            maxLength={240}
             value={lessonInstance.learner_ideas}
             onChange={e => setLessonInstance({ ...lessonInstance, learner_ideas: e.target.value })}
           />
+          <div
+            style={{
+              marginTop: '6px',
+              textAlign: 'right',
+              color: '#6c757d',
+              fontSize: '13px',
+            }}
+          >
+            {lessonInstance.learner_ideas.length}/240
+          </div>
         </div>
       </div>
     </div>
   )
 
-  function roundToNearestHalfInt(number) {
-    const roundedNumber = Math.round(number)
-    if (Math.abs(number - roundedNumber) === 0.5) {
-      return roundedNumber + (number > 0 ? 0.5 : -0.5)
-    }
-    return roundedNumber
-  }
-
-  const getSliderThumbColor = () => {
-    if ((sliderValue - vocabulary_score > 0) & (sliderValue - vocabulary_score <= 0.5)) {
-      return 'red0-slider'
-    }
-    if ((sliderValue - vocabulary_score > 0.5) & (sliderValue - vocabulary_score <= 1.0)) {
-      return 'red1-slider'
-    }
-    if ((sliderValue - vocabulary_score > 1.0) & (sliderValue - vocabulary_score <= 1.5)) {
-      return 'red2-slider'
-    }
-    if (sliderValue - vocabulary_score > 1.5) {
-      return 'red3-slider'
-    }
-
-    if ((sliderValue - vocabulary_score >= -0.5) & (sliderValue - vocabulary_score < 0)) {
-      return 'green0-slider'
-    }
-    if ((sliderValue - vocabulary_score >= -1.0) & (sliderValue - vocabulary_score < -0.5)) {
-      return 'green1-slider'
-    }
-    if ((sliderValue - vocabulary_score >= -1.5) & (sliderValue - vocabulary_score < -1.0)) {
-      return 'green2-slider'
-    }
-    if (sliderValue - vocabulary_score < -1.5) {
-      return 'green3-slider'
-    }
-    return 'white-slider'
-  }
-  const sliderThumbClassName = `${getSliderThumbColor()} exercise-density-slider-thumb`
-  const markComp = StyledMark(
-    intl.formatMessage({
-      id: 'Recommended vocabulary difficulty' })
-  )
-  const lessonVocabularyControls = bigScreen ? (
+  const lessonVocabularyControls = (
     <div className="align-center">
       <h5>
         <FormattedMessage id="select-story-vocab-diff" />:
       </h5>
-
-      <div
-        className="lesson-vocab-slider-container"
+      <VocabDiffSlider
+        value={sliderValue}
+        onChange={handleSlider}
+        recommendedValue={vocabulary_score}
+        skillLevels={['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']}
+        min={30}
+        max={79}
         style={{
-          width: '80%',
+          width: bigScreen ? '80%' : '90%',
           marginTop: '30px',
           marginLeft: 'auto',
-          marginRight: 'auto' }}
-      >
-        <ReactSlider
-          className="exercise-density-slider"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.2}
-          value={sliderValue}
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <div className="align-center">
-      <h5>
-        <FormattedMessage id="select-story-vocab-diff" />:
-      </h5>
-
-      <div
-        className="lesson-vocab-slider-container"
-        style={{
-          width: '80%',
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto' }}
-      >
-        <ReactSlider
-          className="exercise-density-slider"
-          thumbClassName={sliderThumbClassName}
-          trackClassName="exercise-density-slider-track"
-          onAfterChange={value => handleSlider(value)}
-          onSliderClick={value => handleSlider(value)}
-          snapDragDisabled={false}
-          renderMark={markComp}
-          marks={[roundToNearestHalfInt(vocabulary_score)]}
-          min={0.8} // 0.8
-          max={3.3} // 3.3
-          step={0.02}
-          value={sliderValue}
-        />
-        <div className="space-between exercise-density-slider-label-cont bold">
-          <span>
-            <FormattedMessage id="Easy" />
-          </span>
-          <span>
-            <FormattedMessage id="Hard" />
-          </span>
-        </div>
-      </div>
+          marginRight: 'auto',
+        }}
+      />
     </div>
   )
-  const lessonGroups =
-    (filteredLessons &&
-      filteredLessons.reduce((x, y) => {
-        ;(x[y.group] = x[y.group] || []).push(y)
-        return x
-      }, {})) ||
-    {} // Object.groupBy(filteredLessons, ({group})=> group)
-  const handleClick = (e, props) => {
-    const { index } = props
-    const newIndex = accordionState === index ? -1 : index
-    setAccordionState(newIndex)
-  }
 
-  const lessonReady = lessonInstance.topic_ids && lessonInstance.topic_ids.length > 0
-  const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
+  const lessonCountControls = (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="select-story-length" />:
+      </h5>
+      <CountSlider
+        value={numSentences}
+        onChange={value => {
+          setNumSentences(value)
+        }}
+        minValue={10}
+        maxValue={25}
+        step={1}
+        sliderMarks={['10', '15', '20', '25']}
+        style={{
+          width: bigScreen ? '80%' : '90%',
+          marginTop: '30px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+      />
+    </div>
+  )
+
   let lessonStartControls = (
     <Container>
       <div
         className="row justify-center align-center"
         style={{
-          color: `${lessonReadyColor}`,
+          color: '#0088CB',
           textAlign: 'center',
           fontWeight: 500,
           margin: '18px',
-          fontSize: 'large' }}
+          fontSize: 'large',
+        }}
       >
         <div className="col col-12">
           <FormattedMessage id="story-ready-for-generation" />
         </div>
+        {lessonInstance.topic_ids.length === 0 && (
+          <div className="col col-12" style={{ color: '#ff0c0c' }}>
+            <FormattedMessage id="note-no-lessons-topic" />
+          </div>
+        )}
       </div>
       <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
         <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
@@ -330,7 +200,8 @@ const StoryGeneration = () => {
                     width: `${'100%'}`,
                     fontWeight: 'bold',
                     fontSize: 'large',
-                    marginBottom: '15px' }}
+                    marginBottom: '15px',
+                  }}
                 >
                   <FormattedMessage id={'additional-comment'} />
                 </div>
@@ -349,7 +220,8 @@ const StoryGeneration = () => {
     const newStory = {
       language: capitalize(learningLanguage),
       text: generatedStory,
-      topics: lessonInstance.topic_ids }
+      topics: lessonInstance.topic_ids,
+    }
 
     dispatch(updateLibrarySelect('private'))
     dispatch(setCustomUpload(true))
@@ -366,18 +238,15 @@ const StoryGeneration = () => {
       <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
           {generationPending ? (
-            <div className="row justify-center align-center">
-              <Spinner fullHeight size={60} />
-              <span
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 500,
-                  margin: '18px',
-                  fontSize: 'large' }}
-              >
-                <FormattedMessage id="story-generating" />
-              </span>
-            </div>
+            <Spinner
+              fullHeight
+              size={60}
+              text={<FormattedMessage id="story-generating" />}
+              delayedMessage={[
+                <FormattedMessage id="spinner-text-long-generation" />,
+                <FormattedMessage id="spinner-text-long-task" />,
+              ]}
+            />
           ) : (
             <>
               {!error && text?.length && (
@@ -390,7 +259,8 @@ const StoryGeneration = () => {
                       borderRadius: '5px',
                       border: '1px solid #ccc',
                       outline: 'none',
-                      fontSize: '16px' }}
+                      fontSize: '16px',
+                    }}
                     value={generatedStory}
                     onChange={e => setGeneratedStory(e.target.value)}
                   />
@@ -398,18 +268,15 @@ const StoryGeneration = () => {
                     <Button
                       size="big"
                       className="lesson-practice"
-                      disabled={
-                        !lessonInstance.topic_ids ||
-                        lessonInstance.topic_ids.length === 0 ||
-                        noResults
-                      }
+                      disabled={noResults}
                       style={{
                         fontSize: '1.3em',
                         fontWeight: 500,
                         margin: '0.5em 0',
                         padding: '1rem 0',
                         width: '100%',
-                        border: '2px solid #000' }}
+                        border: '2px solid #000',
+                      }}
                       onClick={() => uploadStory()}
                     >
                       <FormattedMessage id="upload-generated-story" />
@@ -425,7 +292,8 @@ const StoryGeneration = () => {
                       textAlign: 'center',
                       fontWeight: 500,
                       margin: '18px',
-                      fontSize: 'large' }}
+                      fontSize: 'large',
+                    }}
                   >
                     <FormattedMessage id="story-generation-error" />
                   </span>
@@ -439,7 +307,8 @@ const StoryGeneration = () => {
                     margin: '0.5em 0',
                     padding: '1rem 0',
                     width: '100%',
-                    border: '2px solid #000' }}
+                    border: '2px solid #000',
+                  }}
                   onClick={() => dispatch(generateStory(lessonInstance))}
                 >
                   <FormattedMessage id="regenerate-story" />
@@ -452,28 +321,14 @@ const StoryGeneration = () => {
     </div>
   )
 
-  const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
-
-  topics.sort((a, b) => {
-    let dir = 0
-    switch (sorter) {
-      case 'index':
-        dir = a.index > b.index ? 1 : -1
-        break
-      case 'topic_id':
-        dir = a.syllabus_id > b.syllabus_id ? 1 : -1
-        break
-      default:
-        break
-    }
-    const multiplier = sortDirection === 'asc' ? 1 : -1
-    return dir * multiplier
-  })
-
   const setSelectedTopics = topic_ids => {
+    const limitedTopics = topic_ids.slice(0, MAX_GRAMMAR_TOPICS)
+
     setLessonInstance({
       ...lessonInstance,
-      topic_ids: topic_ids })
+      topic_ids: limitedTopics,
+      num_sentences: numSentences,
+    })
   }
 
   return (
@@ -492,13 +347,15 @@ const StoryGeneration = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                alignSelf: 'center' }}
+                alignSelf: 'center',
+              }}
             >
               <Stepper
                 styleConfig={{
                   completedBgColor: '#c6e2ff',
                   activeBgColor: '#003366',
-                  inactiveBgColor: '#d2d3d6' }}
+                  inactiveBgColor: '#d2d3d6',
+                }}
               >
                 <Step
                   label={<FormattedMessage id="select-story-themes-and-vocabulary" />}
@@ -538,10 +395,14 @@ const StoryGeneration = () => {
                 style={{
                   float: 'right',
                   marginBottom: '8%',
-                  cursor: 'pointer' }}
+                  cursor: 'pointer',
+                }}
                 disabled={
                   goStep >= 3 ||
-                  (lessonInstance.topic_ids && lessonInstance.topic_ids.length === 0 && goStep == 1)
+                  (lessonInstance.topic_ids &&
+                    lessonInstance.topic_ids.length === 0 &&
+                    goStep == 1 &&
+                    lessonInstance.learner_ideas === '')
                 }
                 onClick={() => {
                   setGoStep(goStep + 1)
@@ -558,6 +419,8 @@ const StoryGeneration = () => {
               <>
                 <div style={{ marginTop: '40px' }}>{lessonVocabularyControls}</div>
                 <hr />
+                <div style={{ marginTop: '40px' }}>{lessonCountControls}</div>
+                <hr />
                 <div style={{ marginTop: '40px' }}>{generationComment}</div>
               </>
             )}
@@ -568,6 +431,21 @@ const StoryGeneration = () => {
                   editable={true}
                   setSelectedTopics={setSelectedTopics}
                   showPerf={true}
+                  note={
+                    lessonInstance.topic_ids.length === 0 ? (
+                      <FormattedMessage id="note-no-lessons-topic" />
+                    ) : lessonInstance.topic_ids.length === 5 ? (
+                      <FormattedMessage
+                        id="note-max-lessons-topic"
+                        values={{ count: lessonInstance.topic_ids.length }}
+                      />
+                    ) : (
+                      <FormattedMessage
+                        id="note-lessons-topic-count"
+                        values={{ count: lessonInstance.topic_ids.length }}
+                      />
+                    )
+                  }
                 />
               </div>
             )}

@@ -1,7 +1,7 @@
 const { axios } = require('@util/common')
 const FormData = require('form-data')
 
-const TIMEOUT = 90000
+const TIMEOUT = 180000
 
 const proxyGet = async (req, res) => {
   const { url } = req

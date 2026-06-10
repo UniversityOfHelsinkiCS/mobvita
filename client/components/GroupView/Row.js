@@ -9,8 +9,7 @@ export default ({ translationId, id, updateLibrarySelect, updateGroupSelect, chi
   const dispatch = useDispatch()
 
   const handleButtonClick = async () => {
-    await dispatch(updateGroupSelect(id))
-    await dispatch(updateLibrarySelect('group'))
+    await Promise.all([dispatch(updateGroupSelect(id)), dispatch(updateLibrarySelect('group'))])
     navigate('/library')
   }
 

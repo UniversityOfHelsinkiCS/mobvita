@@ -8,7 +8,7 @@ import {
   updateExerciseTemplate,
   updateGroupMaxPracticePercent,
 } from 'Utilities/redux/groupsReducer'
-import CERFLevelSlider from 'Components/CEFRLevelSlider'
+import CERFLevelSlider from 'Components/Sliders/CEFRLevelSlider'
 
 const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
   const dispatch = useDispatch()

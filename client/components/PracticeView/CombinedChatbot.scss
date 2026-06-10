@@ -294,6 +294,10 @@
       align-self: flex-start;
       background-color: #f8f9fa;
       border: 1px solid #e0e0e0;
+      ul {
+        margin-bottom: 0;
+        padding-left: 1.2em;
+      }
     }
 
     .message-user {
@@ -301,6 +305,20 @@
       background-color: #d4eef1;
       border: 1px solid #b8d8e0;
       margin-left: auto;
+    }
+
+    // Word "notes" bubbles (former tooltip content): tooltip-blue background,
+    // teal info-circle to match the tooltips they replaced.
+    .word-notes {
+      margin-left: 15px;
+      .message-bot {
+        background-color: #cde3ff;
+        border-color: #b3d4ff;
+      }
+
+      .hint-info-icon {
+        color: #17a2b8;
+      }
     }
 
     // Hint Message Styling

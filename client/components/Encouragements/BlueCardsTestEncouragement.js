@@ -9,7 +9,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import './Encouragements.css'
 
-const BlueCardsTestEncouragement = ({ setShow }) => {
+const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCount }) => {
   const [prevBlueCards, setPrevBlueCards] = useState(null)
 
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
@@ -20,17 +20,23 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-
   const inStoryPractice = location.pathname.includes('stories')
   const learningLanguage = userData ? userData.last_used_language : null
+  const resolvedStoryId = storyId ?? prevBlueCards?.story_id
+  const resolvedStoryTitle = storyTitle ?? prevBlueCards?.title
+  const resolvedBlueCardCount = blueCardCount ?? prevBlueCards?.num_of_rewardable_words
+  console.log(storyBlueCards, 'storyBlueCards')
 
   useEffect(() => {
+    if (storyId) return
+
     if (!storyBlueCards) {
       dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
       return
     }
     if (storyBlueCards.length > 0) {
-      setPrevBlueCards(storyBlueCards[0])
+      // Gives random blue card story from user in scale 0-4
+      setPrevBlueCards(storyBlueCards[Math.floor(Math.random() * Math.min(5, storyBlueCards.length))])
     } else {
       navigate('/home')
     }
@@ -38,18 +44,19 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
 
   const startTest = () => {
     setShow(false)
-    navigate(`/flashcards/fillin/test/${prevBlueCards.story_id}`)
+    if (resolvedStoryId) {
+      navigate(`/flashcards/fillin/test/${resolvedStoryId}`)
+    }
   }
 
-  const handleSecondaryButtonClick = () => {
+  const secondaryTestButton = () => {
     setShow(false)
-
     if (inStoryPractice) {
       navigate('/home')
     }
   }
 
-  if (!prevBlueCards && !showAllEncouragements) {
+  if (!resolvedStoryId && !prevBlueCards && !showAllEncouragements) {
     return null
   }
 
@@ -60,19 +67,19 @@ const BlueCardsTestEncouragement = ({ setShow }) => {
         <h2>
           <FormattedMessage
             id="blue-cards-test-encouragement-title"
-            values={{ nWords: prevBlueCards?.num_of_rewardable_words }}
+            values={{ nWords: resolvedBlueCardCount }}
           />
         </h2>
         <h5>
           <FormattedHTMLMessage id="blue-cards-test-encouragement-message" />{': '}
-          <span style={{ fontStyle: 'italic' }}>{prevBlueCards?.title}</span>
+          <span style={{ fontStyle: 'italic' }}>{resolvedStoryTitle}</span>
         </h5>
       </div>
       <div className="encouragement-button-group">
         <Button variant="primary" type="button" onClick={startTest}>
           <FormattedMessage id="start-test" />
         </Button>
-        <Button variant="secondary" type="button" onClick={handleSecondaryButtonClick}>
+        <Button variant="secondary" type="button" onClick={secondaryTestButton}>
           <FormattedMessage
             id={inStoryPractice ? 'home' : 'blue-cards-test-encouragement-dismiss-button'}
           />

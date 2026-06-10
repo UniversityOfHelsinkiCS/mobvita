@@ -7,15 +7,15 @@ import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTranslationAction, setWords, changeTranslationStageAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { incrementHintRequests, setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
+import { incrementHintRequests, setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   useLearningLanguage,
   useDictionaryLanguage,
-  getTextStyle,
   flashcardColors,
     formatGreenFeedbackText,
+  sanitizeHtml,
   composeExerciseContext,
   hiddenFeatures,
   images
@@ -40,6 +40,7 @@ import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
 import { setHelperSidebarOpen, toggleHelperSidebar, setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { clearNotes } from 'Utilities/redux/notesReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
@@ -95,11 +96,23 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const isValidExercise = currentWord && Object.keys(currentWord).length > 0 && !listen && !speak
   const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
   const { activeTab: helperActiveTab, isOpen: helperIsOpen } = helperSidebarState || {}
+  const notes = useSelector(({ notes }) => notes.items)
   const modalOpen = useSelector(({ practice }) => Boolean(practice.references || practice.explanation))
 
   useEffect(() => {
     dispatch(setHelperSidebarOpen(true))
   }, [helperActiveTab, currentWord, translationState ])
+
+  useEffect(() => {
+    dispatch(setHelperSidebarTab(null))
+    dispatch(clearNotes())
+  }, [dispatch, snippets.focused])
+
+  // Clear word notes when the focused exercise word changes, so a previous word's
+  // notes don't linger when the user moves to the current exercise word.
+  useEffect(() => {
+    dispatch(clearNotes())
+  }, [dispatch, currentWord?.ID])
 
   useEffect(() => {    
     if (inWordNestModal || wordNestModalOpen) return
@@ -277,6 +290,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             (hint.easy === hint.meta && hint.explanation) || [hint.meta, ...(hint.explanation || [])],
         })
       )
+    }
+
+    if (hint.example?.length) {
+      dispatch(setExample({ [hint.keyword || hint.easy]: hint.example }))
     }
   }
 
@@ -872,7 +889,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       )}
             
       { helperActiveTab ===  'translation' &&  (          
-        <div className="dictionary-content">                    
+        <div className="dictionary-content" data-cy="dictionary-help">                    
           {translationState.pending ? (
             <div style={{ padding: '1em' }}>
               <div className="flex space-between" style={{ marginBottom: '1em' }}>
@@ -970,6 +987,81 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <p className="no-translation-text"></p>
         )}
             </div>
+            {notes.length > 0 && (
+              <div className="word-notes">
+                {notes.map((note, index) => {
+                  if (note.kind === 'no-topics') {
+                    return (
+                      <div key={index} className="message message-bot">
+                        <FormattedMessage id="no-topics-available" />
+                      </div>
+                    )
+                  }
+                  if (note.kind === 'topics-header') {
+                    return (
+                      <div key={index} className="message message-bot">
+                        <FormattedMessage id="topics-header" />:
+                      </div>
+                    )
+                  }
+                  if (note.kind === 'concept') {
+                    return (
+                      <div key={index} className="message message-bot">                        
+                        <span dangerouslySetInnerHTML={sanitizeHtml(note.text)} />
+                      </div>
+                    )
+                  }
+                  if (note.kind === 'your-answer') {
+                    return (
+                      <div key={index} className="message message-bot">
+                        <FormattedMessage id="you-used" />:&nbsp;
+                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+                      </div>
+                    )
+                  }
+                  if (note.kind === 'mc') {
+                    return (
+                      <div key={index} className="message message-bot">
+                        <div>
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+                          {note.choices?.length > 0 && (
+                            <ul>
+                              {note.choices.map((choice, i) => (
+                                <li key={i}>
+                                  <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  }
+                  // hint
+                  const showInfo =
+                    note.kind === 'hint' &&
+                    note.info &&
+                    (note.info.explanation?.length ||
+                      note.info.meta !== note.info.easy ||
+                      note.info.ref?.length)
+                  return (
+                    <div key={index} className="message message-bot">
+                      <span className="flex">
+                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+                        {showInfo && (
+                          <Icon
+                            name="info circle"
+                            className="hint-info-icon"
+                            style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                            onMouseDown={() => handleTooltipClick(note.info)}
+                          />
+                        )}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
             <div className="chatbot-messages-container">
             {isLoadingHistory ? (
               <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>

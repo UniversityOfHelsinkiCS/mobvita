@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLearningLanguage } from 'Utilities/common'
 import { InitAdaptiveTest } from 'Utilities/redux/testReducer'
 import { updateUserGrade, updateIsTeacher, updateToNonNewUser } from 'Utilities/redux/userReducer';
-import CERFLevelSlider from './CEFRLevelSlider';
+import CERFLevelSlider from './Sliders/CEFRLevelSlider';
 
 const SetCEFRReminder = ({ open, setOpen, newUser }) => {
   const navigate = useNavigate()

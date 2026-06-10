@@ -11,7 +11,8 @@ import {
   setPrevious,
   resetSessionId,
   resetCurrentSnippet,
-  getLessonSnippet } from 'Utilities/redux/snippetsReducer'
+  getLessonSnippet,
+} from 'Utilities/redux/snippetsReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import 'react-simple-keyboard/build/css/index.css'
@@ -32,11 +33,13 @@ import {
   startSnippet,
   incrementAttempts,
   setIsPaused,
-  setPracticeFinished } from 'Utilities/redux/practiceReducer'
+  setPracticeFinished,
+} from 'Utilities/redux/practiceReducer'
 
 import {
   updateSeveralSpanAnnotationStore,
-  resetAnnotations } from 'Utilities/redux/annotationsReducer'
+  resetAnnotations,
+} from 'Utilities/redux/annotationsReducer'
 import SnippetActions from './SnippetActions'
 import PracticeText from './PracticeText'
 
@@ -50,22 +53,23 @@ const CurrentSnippet = ({
   lessonStartOver,
   currentSnippetNum,
   setShowMessageDialog,
-  setShowPracticeCompletedEncouragement }) => {
-  const SNIPPET_FETCH_INTERVAL = 5000
+  setShowPracticeCompletedEncouragement,
+  timedExercise,
+}) => {
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
-  const { enable_recmd } = useSelector(({ user }) => user.data.user)
   const snippets = useSelector(({ snippets }) => snippets)
   const {
     answersPending,
-    cachedSnippets, 
-    lastCachedSnippetKey, 
+    cachedSnippets,
+    lastCachedSnippetKey,
     candidatesInCache,
     cachedSnippetIds,
     cacheSize,
     cacheRequesting,
-    focused } = snippets
+    focused,
+  } = snippets
   const {
     practiceFinished,
     snippetFinished,
@@ -73,7 +77,8 @@ const CurrentSnippet = ({
     attempt,
     willPause,
     isPaused,
-    currentAnswers } = useSelector(({ practice }) => practice)
+    currentAnswers,
+  } = useSelector(({ practice }) => practice)
   const userData = useSelector(state => state.user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const location = useLocation()
@@ -82,10 +87,10 @@ const CurrentSnippet = ({
   const exerciseMode = location.pathname.includes('listening')
     ? 'listening'
     : location.pathname.includes('grammar')
-    ? 'grammar'
-    : location.pathname.includes('speech')
-    ? 'speech'
-    : 'all'
+      ? 'grammar'
+      : location.pathname.includes('speech')
+        ? 'speech'
+        : 'all'
   const sessionId = snippets?.sessionId ?? null
   const CACHE_LIMIT = lessonId ? 5 : Math.min(5, snippets?.focused?.total_num)
   if (!userData) {
@@ -126,7 +131,8 @@ const CurrentSnippet = ({
           sentence_id,
           snippet_id,
           requested_hints,
-          audio_wids } = currentWord
+          audio_wids,
+        } = currentWord
 
         let usersAnswer
         if (listen || choices || speak) {
@@ -147,7 +153,9 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints } })
+                requestedHintsList: requested_hints,
+              },
+            }),
           )
         }
 
@@ -163,7 +171,9 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints } })
+                requestedHintsList: requested_hints,
+              },
+            }),
           )
         }
 
@@ -179,10 +189,11 @@ const CurrentSnippet = ({
                 word_id: ID,
                 story_id: storyId,
                 cue: word_cue,
-                requestedHintsList: requested_hints } })
+                requestedHintsList: requested_hints,
+              },
+            }),
           )
         }
-
 
         return {
           ...answerObject,
@@ -196,20 +207,14 @@ const CurrentSnippet = ({
             story_id: storyId,
             word_id: ID,
             cue: word_cue,
-            requestedHintsList: requested_hints } }
+            requestedHintsList: requested_hints,
+          },
+        }
       }, {})
       if (initialAnswers && Object.keys(initialAnswers).length > 0)
         dispatch(setAnswers({ ...initialAnswers }))
-      // dispatch(clearEloHearts())
       setExerciseCount(getExerciseCount())
       dispatch(startSnippet())
-      /*
-      if (snippets?.focused?.practice_snippet) {
-        snippets.focused.practice_snippet.forEach(word => (
-          word.surface !== '\n\n' && word.id && !word.listen && dispatch(initEloHearts(word.ID))
-        ))
-      }
-      */
     }
   }
 
@@ -251,8 +256,10 @@ const CurrentSnippet = ({
       dispatch(setPracticeFinished(true))
       setShowPracticeCompletedEncouragement(true)
     } else if (snippets.focused.total_num !== currentSnippetId() + 1 || practiceFinished) {
-      const nextSnippetKey = (!lessonId && `${storyId}-${currentSnippetId() + 1}` || 
-                              cacheSize && Object.keys(cachedSnippets)[0] || 'anyKey')
+      const nextSnippetKey =
+        (!lessonId && `${storyId}-${currentSnippetId() + 1}`) ||
+        (cacheSize && Object.keys(cachedSnippets)[0]) ||
+        'anyKey'
       const nextSnippet = cachedSnippets[nextSnippetKey]
       dispatch(dropCachedSnippet(nextSnippetKey))
       dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
@@ -266,7 +273,7 @@ const CurrentSnippet = ({
     if (practiceForm.current) {
       const { elements } = practiceForm.current
       const firstCloze = Object.entries(elements).filter(
-        e => e[1].className.includes('cloze') && !e[1].className.includes('correct')
+        e => e[1].className.includes('cloze') && !e[1].className.includes('correct'),
       )[0]
 
       if (firstCloze) firstCloze[1].focus()
@@ -290,21 +297,30 @@ const CurrentSnippet = ({
     if (!lessonId) {
       const nextCachedSnippetId = Math.min(
         ...Array.from({ length: CACHE_LIMIT }, (_, i) => currentSnippetId() + i).filter(
-          e => !cachedSnippetIds?.map(x => x - 1).includes(e) && e <= numSnippets - 1
-        )
+          e => !cachedSnippetIds?.map(x => x - 1).includes(e) && e <= numSnippets - 1,
+        ),
       )
       if (nextCachedSnippetId < numSnippets - 1 && nextCachedSnippetId >= 0) {
         await dispatch(
-          cacheStorySnippet(storyId, nextCachedSnippetId, isControlledStory, sessionId, exerciseMode)
+          cacheStorySnippet(
+            storyId,
+            nextCachedSnippetId,
+            isControlledStory,
+            sessionId,
+            exerciseMode,
+          ),
         )
       } else if (!cachedSnippetIds.includes(0)) {
-        await dispatch(cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true))
+        await dispatch(
+          cacheStorySnippet(storyId, 0, isControlledStory, sessionId, exerciseMode, true),
+        )
       }
     } else if (lastCachedSnippetKey !== 'endKey' && cacheSize < CACHE_LIMIT) {
-      const currentCandidates = snippets.focused.practice_snippet.filter(e=>e.id).map(e => e.id) || []
+      const currentCandidates =
+        snippets.focused.practice_snippet.filter(e => e.id).map(e => e.id) || []
       const exclude_candidates = [...candidatesInCache, ...currentCandidates]
       await dispatch(
-        cacheLessonSnippet(lessonId, groupId, exclude_candidates, sessionId, focused.topics)
+        cacheLessonSnippet(lessonId, groupId, exclude_candidates, sessionId, focused.topics),
       )
     }
   }
@@ -388,11 +404,13 @@ const CurrentSnippet = ({
         sentence_id,
         hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
         requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${id}`]?.penalties } }
+        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
+      },
+    }
     dispatch(setAnswers(newAnswer))
   }
 
-  if (isPaused && !practiceFinished) {
+  if (isPaused && !practiceFinished && timedExercise) {
     return (
       <div
         className="bold justify-center mt-lg mb-nm"
@@ -430,13 +448,7 @@ const CurrentSnippet = ({
               lessonStartOver={lessonStartOver}
             />
           </div>
-        ) /* : (
-          <div>
-            {storyId && <Button variant="primary" block onClick={() => startOver()}>
-              <FormattedMessage id="restart-story" />
-            </Button>}
-          </div>
-        ) */}
+        )}
       </form>
     </div>
   )

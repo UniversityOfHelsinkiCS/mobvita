@@ -9,6 +9,7 @@ import {
     setFocusedWord,
     setReferences,
     setExplanation,
+    setExample,
     incrementHintRequests,
     mcExerciseTouched,
 } from 'Utilities/redux/practiceReducer'
@@ -192,6 +193,7 @@ const PracticeChatbot = () => {
     if (hint.explanation?.length || hint.meta !== hint.easy ) dispatch(setExplanation({
       [hint.keyword || hint.easy]: hint.easy === hint.meta && hint.explanation || [hint.meta, ...(hint.explanation || [])]
     }))
+    if (hint.example?.length) dispatch(setExample({ [hint.keyword || hint.easy]: hint.example }))
   }
 
   const handleHintRequest = newHintList => {

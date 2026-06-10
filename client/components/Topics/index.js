@@ -5,7 +5,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { Icon, Accordion, AccordionTitle, AccordionContent } from 'semantic-ui-react'
 import TopicListItem from './TopicListItem'
 
-const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf }) => {
+const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) => {
   const intl = useIntl()
   const { lessons } = useSelector(({ metadata }) => metadata)
   const { topics } = useSelector(({ lessons }) => lessons)
@@ -191,6 +191,23 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf }) => {
           }}
         />
       </div>
+
+      {note && (
+        <div
+          style={{
+            color: '#664d03',
+            textAlign: 'center',
+            fontWeight: 600,
+            marginBottom: '10px',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            backgroundColor: '#fff3cd',
+            border: '1px solid #ffecb5',
+          }}
+        >
+          {note}
+        </div>
+      )}
 
       {lessonGroups && (
         <Accordion fluid styled style={{ background: '#fffaf0' }}>

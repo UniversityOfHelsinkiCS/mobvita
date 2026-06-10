@@ -13,7 +13,7 @@ import {
   useMTAvailableLanguage,
   sanitizeHtml
 } from 'Utilities/common'
-import { setReferences, setExplanation } from 'Utilities/redux/practiceReducer'
+import { setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
@@ -58,6 +58,8 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     hint => hint.explanation?.length || hint.meta !== hint.easy).reduce((obj, v) => ({ 
       ...obj, 
       [v.keyword || v.easy]: v.easy === v.meta && v.explanation || [v.meta, ...(v.explanation || [])]}), {})
+  const example = word.hints && word.hints.filter(
+    hint => hint.example?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.example}), {})
   const [showValidationMessage, setShowValidationMessage] = useState(false)
   const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
   const [showEditorTooltip, setShowEditorTooltip] = useState(false)
@@ -271,6 +273,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const handleTooltipClick = () => {    
     if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
     if (explanation && Object.keys(explanation).length) dispatch(setExplanation(explanation))
+    if (example && Object.keys(example).length) dispatch(setExample(example))
   }
 
   const wordShouldBeHighlighted = word => {
