@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Dropdown, Popup, Icon, Input } from 'semantic-ui-react'
+import { debounce } from 'lodash'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -9,23 +10,38 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
   const [lastQuery, setLastQuery] = useState(false)
   const bigScreen = useWindowDimensions().width >= 700
 
+  const applyFilter = useCallback(
+    searchValue => {
+      const normalized = searchValue.toLowerCase()
+      const matchesText = annotation => annotation.annotated_text.toLowerCase().includes(normalized)
+
+      if (category === 'All') {
+        setAnnotationsList(activeLibrary.filter(matchesText))
+      } else {
+        setAnnotationsList(
+          activeLibrary.filter(
+            annotation => annotation.category === category && matchesText(annotation)
+          )
+        )
+      }
+    },
+    [category, activeLibrary, setAnnotationsList]
+  )
+
   useEffect(() => {
-    if (category === 'All') {
-      setAnnotationsList(
-        activeLibrary.filter(annotation =>
-          annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
-        )
-      )
-    } else {
-      setAnnotationsList(
-        activeLibrary.filter(
-          annotation =>
-            annotation.category === category &&
-            annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
-        )
-      )
-    }
+    applyFilter(searchString)
   }, [category])
+
+  const applyFilterRef = useRef(applyFilter)
+  useEffect(() => {
+    applyFilterRef.current = applyFilter
+  }, [applyFilter])
+
+  const debouncedFilter = useRef(
+    debounce(searchValue => applyFilterRef.current(searchValue), 250)
+  ).current
+
+  useEffect(() => () => debouncedFilter.cancel(), [debouncedFilter])
 
   const dropDownMenuText = category ? (
     <FormattedMessage id={`notes-${category}`} />
@@ -34,6 +50,7 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
   )
 
   const cancelSearch = () => {
+    debouncedFilter.cancel()
     setLastQuery(false)
     setSearchString('')
 
@@ -45,14 +62,18 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
   }
 
   const handleAnnotationsSearch = () => {
+    debouncedFilter.cancel()
     if (searchString !== '') {
-      setAnnotationsList(
-        activeLibrary.filter(annotation =>
-          annotation.annotated_text.toLowerCase().includes(searchString.toLowerCase())
-        )
-      )
+      applyFilter(searchString)
       setLastQuery(true)
     }
+  }
+
+  const handleSearchFieldChange = e => {
+    const nextValue = e.target.value
+    setSearchString(nextValue)
+    setLastQuery(nextValue !== '')
+    debouncedFilter(nextValue)
   }
 
   const handleSearchFieldKeyPress = e => {
@@ -111,7 +132,7 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
         <Input
           action={{ icon: 'search', onClick: handleAnnotationsSearch, color: 'grey' }}
           placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-          onChange={e => setSearchString(e.target.value)}
+          onChange={handleSearchFieldChange}
           onKeyPress={handleSearchFieldKeyPress}
           value={searchString}
         />

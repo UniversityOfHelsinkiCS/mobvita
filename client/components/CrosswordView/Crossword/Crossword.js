@@ -119,9 +119,22 @@ const Crossword = React.forwardRef(
     const [currentDirection, setCurrentDirection] = useState('across')
     const [currentNumber, setCurrentNumber] = useState('1')
     const [bulkChange, setBulkChange] = useState(null)
+
+    const getDirectionData = useCallback(
+      direction => {
+        const clueMap = data?.[direction]
+        return clueMap && typeof clueMap === 'object' ? clueMap : {}
+      },
+      [data]
+    )
+
+    const getClueInfo = useCallback(
+      (direction, number) => getDirectionData(direction)?.[number],
+      [getDirectionData]
+    )
     const [checkQueue, setCheckQueue] = useState([])
     const [crosswordCorrect, setCrosswordCorrect] = useState(false)
-
+z
     const inputRef = useRef()
     const outerWrapperRef = useRef()
 
@@ -223,7 +236,10 @@ const Crossword = React.forwardRef(
             return
           }
 
-          const info = data[direction][number]
+          const info = getClueInfo(direction, number)
+          if (!info) {
+            return
+          }
 
           // We start by looking at the current cell... if it's not correct, we
           // don't need to check anything else!
@@ -458,7 +474,7 @@ const Crossword = React.forwardRef(
         }
       },
       [
-        data,
+        getClueInfo,
         focusedRow,
         focusedCol,
         currentDirection,
@@ -593,12 +609,14 @@ const Crossword = React.forwardRef(
 
     const handleClueSelected = useCallback(
       (direction, number) => {
-        const info = data[direction][number]
-        // TODO: sanity-check info?
+        const info = getClueInfo(direction, number)
+        if (!info) {
+          return
+        }
         moveTo(info.row, info.col, direction)
         focus()
       },
-      [data, moveTo, focus]
+      [getClueInfo, moveTo, focus]
     )
 
     // expose some imperative methods
@@ -613,7 +631,10 @@ const Crossword = React.forwardRef(
         },
 
         moveTo: (direction, number) => {
-          const info = data[direction][number]
+          const info = getClueInfo(direction, number)
+          if (!info) {
+            return
+          }
           moveTo(info.row, info.col, direction)
           focus()
         },
@@ -680,7 +701,7 @@ const Crossword = React.forwardRef(
           if (onLoadedCorrect) {
             const loadedCorrect = []
             bothDirections.forEach(direction => {
-              Object.entries(data[direction]).forEach(([number, info]) => {
+              Object.entries(getDirectionData(direction)).forEach(([number, info]) => {
                 loadedCorrect.push([direction, number, info.answer])
               })
             })
@@ -696,7 +717,7 @@ const Crossword = React.forwardRef(
          */
         isCrosswordCorrect: () => crosswordCorrect,
       }),
-      [data, onLoadedCorrect, useStorage, focus, crosswordCorrect]
+      [getClueInfo, getDirectionData, onLoadedCorrect, useStorage, focus, crosswordCorrect]
     )
 
     // constants for rendering...
@@ -712,12 +733,20 @@ const Crossword = React.forwardRef(
     const cellHalf = cellSize / 2
     const fontSize = cellInner * 0.7
 
-    const context = {
-      focused,
-      selectedDirection: currentDirection,
-      selectedNumber: currentNumber,
-      onClueSelected: handleClueSelected,
-    }
+    const context = useMemo(
+      () => ({
+        focused,
+        selectedDirection: currentDirection,
+        selectedNumber: currentNumber,
+        onClueSelected: handleClueSelected,
+      }),
+      [focused, currentDirection, currentNumber, handleClueSelected]
+    )
+
+    const sizeContext = useMemo(
+      () => ({ cellSize, cellPadding, cellInner, cellHalf, fontSize, cellWidth, cellHeight }),
+      [cellSize, cellPadding, cellInner, cellHalf, fontSize, cellWidth, cellHeight]
+    )
 
     // The final theme is the merger of three values: the "theme" property
     // passed to the component (which takes precedence), any values from
@@ -750,7 +779,7 @@ const Crossword = React.forwardRef(
     return (
       <CrosswordContext.Provider value={context}>
         <CrosswordSizeContext.Provider
-          value={{ cellSize, cellPadding, cellInner, cellHalf, fontSize, cellWidth, cellHeight }}
+          value={sizeContext}
         >
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect} ref={outerWrapperRef}>
