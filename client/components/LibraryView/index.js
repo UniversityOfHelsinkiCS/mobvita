@@ -26,7 +26,12 @@ import {
   updateSortCriterion,
   libraryTourViewed,
 } from 'Utilities/redux/userReducer'
-import { getAllStories, setLastQuery, clearFocusedStory } from 'Utilities/redux/storiesReducer'
+import {
+  getAllStories,
+  setLastQuery,
+  clearFocusedStory,
+  updateStoryPath,
+} from 'Utilities/redux/storiesReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
@@ -34,6 +39,51 @@ import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
+
+const STORY_DRAG_MIME_TYPE = 'application/x-mobvita-story-ids'
+const LOCAL_FOLDER_STORAGE_PREFIX = 'mobvita-library-folders'
+
+const normalizeLibraryPath = path =>
+  (path || '')
+    .split('/')
+    .map(part => part.trim())
+    .filter(Boolean)
+    .join('/')
+
+const getLocalFolderStorageKey = (userId, learningLanguage) => {
+  if (!userId || !learningLanguage) return null
+
+  return `${LOCAL_FOLDER_STORAGE_PREFIX}:${userId}:${learningLanguage}`
+}
+
+const getStoredLocalFolders = storageKey => {
+  if (!storageKey || typeof window === 'undefined') return []
+
+  try {
+    const folders = JSON.parse(window.localStorage.getItem(storageKey) || '[]')
+
+    if (!Array.isArray(folders)) return []
+
+    return folders
+      .map(folder => ({
+        library: folder.library,
+        path: normalizeLibraryPath(folder.path),
+      }))
+      .filter(folder => folder.library && folder.path)
+  } catch {
+    return []
+  }
+}
+
+const saveStoredLocalFolders = (storageKey, folders) => {
+  if (!storageKey || typeof window === 'undefined') return
+
+  try {
+    window.localStorage.setItem(storageKey, JSON.stringify(folders))
+  } catch {
+    // Empty folders are convenience state; blocked storage should not break the library.
+  }
+}
 
 const StoryList = () => {
   const intl = useIntl()
@@ -52,6 +102,7 @@ const StoryList = () => {
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
+  const localFolderStorageKey = getLocalFolderStorageKey(userId, learningLanguage)
 
   const smallWindow = useWindowDimensions().width < 520
 
@@ -64,7 +115,14 @@ const StoryList = () => {
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
-  const [localFolders, setLocalFolders] = useState([])
+  const [localFolders, setLocalFolders] = useState(() =>
+    getStoredLocalFolders(localFolderStorageKey),
+  )
+  const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] = useState(
+    localFolderStorageKey,
+  )
+  const [draggedStoryIds, setDraggedStoryIds] = useState([])
+  const [dragOverFolderPath, setDragOverFolderPath] = useState(null)
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
@@ -73,6 +131,19 @@ const StoryList = () => {
     group: false,
   })
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (loadedLocalFolderStorageKey === localFolderStorageKey) return
+
+    setLocalFolders(getStoredLocalFolders(localFolderStorageKey))
+    setLoadedLocalFolderStorageKey(localFolderStorageKey)
+  }, [loadedLocalFolderStorageKey, localFolderStorageKey])
+
+  useEffect(() => {
+    if (loadedLocalFolderStorageKey !== localFolderStorageKey) return
+
+    saveStoredLocalFolders(localFolderStorageKey, localFolders)
+  }, [loadedLocalFolderStorageKey, localFolderStorageKey, localFolders])
 
   const setLibrary = library => {
     const librariesCopy = {}
@@ -87,6 +158,8 @@ const StoryList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     setCurrentLibraryPath('')
+    setDraggedStoryIds([])
+    setDragOverFolderPath(null)
     setSorter(savedSortCriterion[library].sort_by)
     setSortDirection(savedSortCriterion[library].direction)
     if (library === 'group' && sharedToGroupSinceLastFetch) {
@@ -109,7 +182,10 @@ const StoryList = () => {
   }, [])
 
   useEffect(() => {
-    if ((sharedToGroupSinceLastFetch || deleteSuccessful) && (groupsLibrary || savedLibrarySelection === 'group')) {
+    if (
+      (sharedToGroupSinceLastFetch || deleteSuccessful) &&
+      (groupsLibrary || savedLibrarySelection === 'group')
+    ) {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
@@ -340,6 +416,7 @@ const StoryList = () => {
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
   const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
+  const libraryIsMutable = activeLibrary !== 'public'
 
   const libraryFilteredStories = displayedStories.filter(story => {
     if (story.public) {
@@ -379,13 +456,6 @@ const StoryList = () => {
         return 4
     }
   }
-
-  const normalizeLibraryPath = path =>
-    (path || '')
-      .split('/')
-      .map(part => part.trim())
-      .filter(Boolean)
-      .join('/')
 
   const getFoldersForPath = (storiesForLibrary, currentPath, folderPaths = []) => {
     const folderNames = new Set()
@@ -427,8 +497,8 @@ const StoryList = () => {
 
   const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
   const localFolderPathsForLibrary = localFolders
-    .filter(folder => folder.library === activeLibrary)
-    .map(folder => folder.path)
+    .filter(folder => libraryIsMutable && folder.library === activeLibrary)
+    .map(folder => normalizeLibraryPath(folder.path))
 
   libraryFilteredStories.sort((a, b) => {
     let dir = 0
@@ -453,13 +523,132 @@ const StoryList = () => {
     return dir * multiplier
   })
 
+  const handleLibraryPathChange = path => {
+    setCurrentLibraryPath(normalizeLibraryPath(path))
+    setDraggedStoryIds([])
+    setDragOverFolderPath(null)
+  }
+
+  const storyDragDataIsAvailable = event => {
+    if (!libraryIsMutable) return false
+
+    const dataTransferTypes = Array.from(event.dataTransfer?.types || [])
+
+    return draggedStoryIds.length > 0 || dataTransferTypes.includes(STORY_DRAG_MIME_TYPE)
+  }
+
+  const getDroppedStoryIds = event => {
+    const storyIdsJson = event.dataTransfer.getData(STORY_DRAG_MIME_TYPE)
+
+    if (storyIdsJson) {
+      try {
+        const storyIds = JSON.parse(storyIdsJson)
+        if (Array.isArray(storyIds)) return storyIds
+      } catch {
+        // Fall back to text/plain below.
+      }
+    }
+
+    const fallbackStoryIds = event.dataTransfer.getData('text/plain')
+    if (fallbackStoryIds) {
+      return fallbackStoryIds
+        .split(',')
+        .map(storyId => storyId.trim())
+        .filter(Boolean)
+    }
+
+    return draggedStoryIds
+  }
+
+  const handleMoveStoriesToPath = (storyIds, targetPath) => {
+    if (!libraryIsMutable) return
+
+    const normalizedTargetPath = normalizeLibraryPath(targetPath)
+    const storyIdSet = new Set(storyIds.map(storyId => String(storyId)))
+    const storiesToMove = libraryFilteredStories.filter(
+      story =>
+        storyIdSet.has(String(story._id)) &&
+        normalizeLibraryPath(story.path) !== normalizedTargetPath,
+    )
+
+    storiesToMove.forEach(story => {
+      dispatch(updateStoryPath(story._id, normalizedTargetPath))
+    })
+
+    setDraggedStoryIds([])
+    setDragOverFolderPath(null)
+  }
+
+  const handleFolderDragOver = (folderPath, event) => {
+    if (!storyDragDataIsAvailable(event)) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    event.dataTransfer.dropEffect = 'move'
+    setDragOverFolderPath(folderPath)
+  }
+
+  const handleFolderDragLeave = (folderPath, event) => {
+    if (event.currentTarget.contains(event.relatedTarget)) return
+
+    setDragOverFolderPath(currentFolderPath =>
+      currentFolderPath === folderPath ? null : currentFolderPath,
+    )
+  }
+
+  const handleFolderDrop = (folderPath, event) => {
+    if (!libraryIsMutable) return
+
+    const storyIds = getDroppedStoryIds(event)
+    if (storyIds.length === 0) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    handleMoveStoriesToPath(storyIds, folderPath)
+  }
+
+  const handleStoryDragStart = (storyId, event) => {
+    if (!libraryIsMutable) {
+      event.preventDefault()
+      return
+    }
+
+    const storyIdsToMove = [storyId]
+
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData(STORY_DRAG_MIME_TYPE, JSON.stringify(storyIdsToMove))
+    event.dataTransfer.setData('text/plain', storyIdsToMove.join(','))
+    setDraggedStoryIds(storyIdsToMove)
+  }
+
+  const handleStoryDragEnd = () => {
+    setDraggedStoryIds([])
+    setDragOverFolderPath(null)
+  }
+
+  const folderContainsStory = folderPath => {
+    const normalizedFolderPath = normalizeLibraryPath(folderPath)
+
+    return libraryFilteredStories.some(story => {
+      const storyPath = normalizeLibraryPath(story.path)
+
+      return storyPath === normalizedFolderPath || storyPath.startsWith(`${normalizedFolderPath}/`)
+    })
+  }
+
+  const folderIsLocalOnly = folderPath =>
+    localFolderPathsForLibrary.includes(normalizeLibraryPath(folderPath))
+
   const renderLibraryPathBreadcrumbs = () => (
     <Box className="library-folder-breadcrumbs">
       <Breadcrumbs aria-label="Library folder path">
         <button
           type="button"
           className="library-folder-breadcrumb"
-          onClick={() => setCurrentLibraryPath('')}
+          onClick={() => handleLibraryPathChange('')}
+          onDragLeave={event => handleFolderDragLeave('', event)}
+          onDragOver={event => handleFolderDragOver('', event)}
+          onDrop={event => handleFolderDrop('', event)}
         >
           Library
         </button>
@@ -480,7 +669,10 @@ const StoryList = () => {
               type="button"
               key={path}
               className="library-folder-breadcrumb"
-              onClick={() => setCurrentLibraryPath(path)}
+              onClick={() => handleLibraryPathChange(path)}
+              onDragLeave={event => handleFolderDragLeave(path, event)}
+              onDragOver={event => handleFolderDragOver(path, event)}
+              onDrop={event => handleFolderDrop(path, event)}
             >
               {part}
             </button>
@@ -491,15 +683,47 @@ const StoryList = () => {
   )
 
   const handleAddFolder = folderName => {
-    const newFolderPath = currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName
+    if (!libraryIsMutable) return
 
-    setLocalFolders([
-      ...localFolders,
-      {
-        library: activeLibrary,
-        path: newFolderPath,
-      },
-    ])
+    const newFolderPath = normalizeLibraryPath(
+      currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName,
+    )
+
+    setLocalFolders(currentLocalFolders => {
+      const folderAlreadyExists = currentLocalFolders.some(
+        folder =>
+          folder.library === activeLibrary &&
+          normalizeLibraryPath(folder.path) === newFolderPath,
+      )
+
+      if (folderAlreadyExists) return currentLocalFolders
+
+      return [
+        ...currentLocalFolders,
+        {
+          library: activeLibrary,
+          path: newFolderPath,
+        },
+      ]
+    })
+  }
+
+  const handleRemoveLocalFolder = folderPath => {
+    if (!libraryIsMutable) return
+
+    const normalizedFolderPath = normalizeLibraryPath(folderPath)
+
+    setLocalFolders(currentLocalFolders =>
+      currentLocalFolders.filter(folder => {
+        if (folder.library !== activeLibrary) return true
+
+        const currentFolderPath = normalizeLibraryPath(folder.path)
+        return (
+          currentFolderPath !== normalizedFolderPath &&
+          !currentFolderPath.startsWith(`${normalizedFolderPath}/`)
+        )
+      }),
+    )
   }
 
   const renderFolderBrowser = () => {
@@ -515,7 +739,7 @@ const StoryList = () => {
       <>
         <Box className="library-folder-header">
           {renderLibraryPathBreadcrumbs()}
-          {(libraries.group || libraries.private) && (
+          {libraryIsMutable && (
             <AddFolder existingFolderNames={foldersInCurrentPath} onAddFolder={handleAddFolder} />
           )}
         </Box>
@@ -529,19 +753,49 @@ const StoryList = () => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
                 : folderName
+              const normalizedFolderPath = normalizeLibraryPath(folderPath)
+              const folderIsEmptyLocal =
+                folderIsLocalOnly(normalizedFolderPath) &&
+                !folderContainsStory(normalizedFolderPath)
 
               return (
                 <FolderCard
-                  key={folderPath}
+                  key={normalizedFolderPath}
+                  isDropTarget={libraryIsMutable && dragOverFolderPath === normalizedFolderPath}
+                  isEmpty={folderIsEmptyLocal}
                   name={folderName}
-                  onClick={() => setCurrentLibraryPath(folderPath)}
+                  onClick={() => handleLibraryPathChange(normalizedFolderPath)}
+                  onDragLeave={
+                    libraryIsMutable
+                      ? event => handleFolderDragLeave(normalizedFolderPath, event)
+                      : undefined
+                  }
+                  onDragOver={
+                    libraryIsMutable
+                      ? event => handleFolderDragOver(normalizedFolderPath, event)
+                      : undefined
+                  }
+                  onDrop={
+                    libraryIsMutable
+                      ? event => handleFolderDrop(normalizedFolderPath, event)
+                      : undefined
+                  }
+                  onRemove={
+                    folderIsEmptyLocal
+                      ? () => handleRemoveLocalFolder(normalizedFolderPath)
+                      : undefined
+                  }
                 />
               )
             })}
             {storiesInCurrentPath.map(story => (
               <StoryListItem
                 key={story._id}
+                draggable={libraryIsMutable}
+                isDragging={draggedStoryIds.includes(story._id)}
                 libraryShown={libraries}
+                onDragEnd={handleStoryDragEnd}
+                onDragStart={handleStoryDragStart}
                 story={story}
                 selectedGroup={savedGroupSelection}
                 savedLibrarySelection={savedLibrarySelection}

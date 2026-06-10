@@ -241,6 +241,10 @@
   }
 }
 
+.mui-story-card.library-story-card-dragging {
+  opacity: 0.55;
+}
+
 .library-folder-card {
   position: relative;
   margin-top: 10px;
@@ -256,6 +260,27 @@
   cursor: pointer;
   text-align: left;
   padding: 28px 24px 20px;
+}
+
+.library-folder-card-drop-target {
+  border-color: #1f78c8;
+  box-shadow: 0 0 0 3px rgba(31, 120, 200, 0.28),
+    0.3em 0.3em 0.4em rgba(128, 128, 128, 0.792);
+  transform: translateY(-2px);
+}
+
+.library-folder-card-empty {
+  background-color: white;
+  background: linear-gradient(170deg, #9c9c9c 0%, #5f5f5f53 100%);
+}
+
+.library-folder-card-empty::before {
+  background: linear-gradient(170deg, #ffe5e2 0%, #ff8a92 100%);
+}
+
+.library-folder-card-empty .library-folder-name {
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
 }
 
 .library-folder-card::before {

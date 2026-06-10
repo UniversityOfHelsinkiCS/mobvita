@@ -83,7 +83,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
             <Button variant="outline-secondary" onClick={closeDialog}>
               {intl.formatMessage({ id: 'Cancel' })}
             </Button>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" disabled={!folderName.trim()}>
               {intl.formatMessage({ id: 'Add' })}
             </Button>
           </DialogActions>

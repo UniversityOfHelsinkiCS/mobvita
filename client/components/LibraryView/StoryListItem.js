@@ -143,7 +143,16 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelection }) => {
+const StoryListItem = ({
+  story,
+  libraryShown,
+  selectedGroup,
+  savedLibrarySelection,
+  draggable = true,
+  isDragging = false,
+  onDragEnd = () => {},
+  onDragStart = () => {},
+}) => {
   const dispatch = useDispatch()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
@@ -235,8 +244,14 @@ const StoryListItem = ({ story, libraryShown, selectedGroup, savedLibrarySelecti
       key={story._id}
       className={`card mui-story-card ${
         isControlledStory ? 'card-controlled-story' : ''
-      } tour-story-card`}
+      } ${isDragging ? 'library-story-card-dragging' : ''} tour-story-card`}
       elevation={0}
+      draggable={draggable}
+      onDragEnd={onDragEnd}
+      onDragStart={event => {
+        if (!draggable) return
+        onDragStart(story._id, event)
+      }}
     >
       <CardContent className="extra content story-card-title-cont">
         <StoryTitle
