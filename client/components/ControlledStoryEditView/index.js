@@ -267,7 +267,7 @@ const ControlledStoryEditView = ({ match }) => {
             isControlledStoryEditor={true}
           />
           <DictionaryHelp />
-          <AnnotationBox />
+          {/* <AnnotationBox /> */}
         </div>
         <FeedbackInfoModal />
       </div>
