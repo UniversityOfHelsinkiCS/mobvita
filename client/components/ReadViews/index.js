@@ -398,7 +398,7 @@ const ReadViews = ({ match }) => {
             to={`/stories/${id}/controlled-practice`}
             style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
           >
-            <FormattedMessage id="tailored-practice-mode" />
+            <FormattedMessage id="tailored-begin-practice" />
           </SemanticButton>
         ) : (
           preProcessingReady && (

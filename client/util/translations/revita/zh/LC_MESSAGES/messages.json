@@ -1216,5 +1216,8 @@
     "note-lessons-topic-count": "You have selected {count} grammar topics.",
     "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
     "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
-    "spinner-text-long-task": "This is a challenging task, it's taking some time."
+    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
+    "select-story-length": "Choose the number of sentences for the story",
+    "begin-practice-tailored": "开始练习",
+    "tailored-begin-practice": "开始练习"
 }

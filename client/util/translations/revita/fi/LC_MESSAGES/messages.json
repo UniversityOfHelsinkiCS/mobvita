@@ -1838,5 +1838,8 @@
     "note-lessons-topic-count": "Olet valinnut {count} kielioppiaihetta.",
     "note-max-lessons-topic": "Kielioppiaiheiden enimmäismäärä {count} on saavutettu",
     "spinner-text-long-generation": "Tämän sisällön luominen kestää tavallista kauemmin. Olethan kärsivällinen.",
-    "spinner-text-long-task": "Tämä on haastava tehtävä, joten sen käsittely vie hieman aikaa."
+    "spinner-text-long-task": "Tämä on haastava tehtävä, joten sen käsittely vie hieman aikaa.",
+    "select-story-length": "Valitse tekstin lauseiden määrä",
+    "begin-practice-tailored": "Aloita harjoittelu",
+    "tailored-begin-practice": "Aloita harjoittelu"
 }

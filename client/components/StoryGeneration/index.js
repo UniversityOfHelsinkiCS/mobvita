@@ -6,6 +6,7 @@ import ScrollArrow from 'Components/ScrollArrow'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
 import Topics from 'Components/Topics'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
+import CountSlider from 'Components/Sliders/CountSlider'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
@@ -17,7 +18,6 @@ import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import './LessonLibraryStyles.css'
 
 const StoryGeneration = () => {
   const MAX_GRAMMAR_TOPICS = 5
@@ -45,6 +45,7 @@ const StoryGeneration = () => {
   })
   const [generatedStory, setGeneratedStory] = useState('')
   const [sliderValue, setSliderValue] = useState(vocabulary_score)
+  const [numSentences, setNumSentences] = useState(10)
 
   const dispatch = useDispatch()
 
@@ -124,6 +125,30 @@ const StoryGeneration = () => {
         skillLevels={['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']}
         min={30}
         max={79}
+        style={{
+          width: bigScreen ? '80%' : '90%',
+          marginTop: '30px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+      />
+    </div>
+  )
+
+  const lessonCountControls = (
+    <div className="align-center">
+      <h5>
+        <FormattedMessage id="select-story-length" />:
+      </h5>
+      <CountSlider
+        value={numSentences}
+        onChange={value => {
+          setNumSentences(value)
+        }}
+        minValue={10}
+        maxValue={25}
+        step={1}
+        sliderMarks={['10', '15', '20', '25']}
         style={{
           width: bigScreen ? '80%' : '90%',
           marginTop: '30px',
@@ -302,6 +327,7 @@ const StoryGeneration = () => {
     setLessonInstance({
       ...lessonInstance,
       topic_ids: limitedTopics,
+      num_sentences: numSentences,
     })
   }
 
@@ -392,6 +418,8 @@ const StoryGeneration = () => {
             {(goStep === 0 || goStep === -1) && (
               <>
                 <div style={{ marginTop: '40px' }}>{lessonVocabularyControls}</div>
+                <hr />
+                <div style={{ marginTop: '40px' }}>{lessonCountControls}</div>
                 <hr />
                 <div style={{ marginTop: '40px' }}>{generationComment}</div>
               </>

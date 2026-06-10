@@ -11,6 +11,14 @@ const directionInfo = {
 
 export const bothDirections = Object.keys(directionInfo)
 
+function getDirectionEntries(data, direction) {
+  const clueMap = data?.[direction]
+  if (!clueMap || typeof clueMap !== 'object') {
+    return []
+  }
+  return Object.entries(clueMap)
+}
+
 export function isAcross(direction) {
   return direction === 'across'
 }
@@ -24,7 +32,7 @@ export function calculateExtents(data, direction) {
   let primaryMax = 0
   let orthogonalMax = 0
 
-  Object.entries(data[direction]).forEach(([i, info]) => {
+  getDirectionEntries(data, direction).forEach(([i, info]) => {
     const primary = info[dir.primary] + info.answer.length - 1
     if (primary > primaryMax) {
       primaryMax = primary
@@ -76,7 +84,7 @@ export function createEmptyGrid(size) {
 export function fillClues(gridData, clues, data, direction) {
   const dir = directionInfo[direction]
 
-  Object.entries(data[direction]).forEach(([number, info]) => {
+  getDirectionEntries(data, direction).forEach(([number, info]) => {
     const { row: rowStart, col: colStart, clue, answer } = info
     for (let i = 0; i < answer.length; i++) {
       const row = rowStart + (dir.primary === 'row' ? i : 0)
@@ -202,7 +210,7 @@ export function findCorrectAnswers(data, gridData) {
 
   bothDirections.forEach(direction => {
     const across = isAcross(direction)
-    Object.entries(data[direction]).forEach(([num, info]) => {
+    getDirectionEntries(data, direction).forEach(([num, info]) => {
       const { row, col } = info
       let correct = true
       for (let i = 0; i < info.answer.length; i++) {
