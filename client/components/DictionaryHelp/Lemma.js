@@ -7,6 +7,7 @@ import { Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react';
 import {
   useLearningLanguage,
   getTextStyle,
+  images,
 } from 'Utilities/common';
 import { Speaker } from './dictComponents';
 
@@ -127,7 +128,7 @@ const Lemma = ({
                   aria-label="Word Nest"
                   onClick={handleWordNestClick}
                 >
-                  <img src="/client/assets/images/network.svg" alt="word nest" width="28" />
+                  <img src={images.network} alt="word nest" width="28" />
                 </button>
               }
             />
