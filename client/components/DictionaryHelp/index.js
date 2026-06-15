@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, Segment, Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react'
+import { List, Segment, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
@@ -22,7 +22,6 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
 import Lemma from './Lemma'
 import ContextTranslation from './ContextTranslation'
-import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 import WordNestModal from 'Components/WordNestModal'
 
 
@@ -155,32 +154,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       .sort((wordA, wordB) => (wordB?.preferred || 0) - (wordA?.preferred || 0))
   }, [translationEntries])
 
-  const translationsList = translated => {
-    const glosses = pending
-      ? []
-      : Array.isArray(translated?.glosses)
-        ? translated.glosses
-        : []
-
-    return pending ? (
-      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
-        {[1, 2, 3, 4, 5].map(line => (
-          <List.Item key={line}>
-            <Placeholder>
-              <PlaceholderLine />
-            </Placeholder>
-          </List.Item>
-        ))}
-      </List>
-    ) : (
-      <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic', marginTop: '.5rem' }}>
-        {glosses.map(word => (
-          <List.Item key={word}>{word}</List.Item>
-        ))}
-      </List>
-    )
-  }
-
   const translations =
     translation !== 'no-clue-translation' &&
     sortedTranslation.map(translated => {
@@ -213,25 +186,21 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                   inflectionRef={translated.ref}
                   userUrl={translated.user_URL}
                   preferred={translated.preferred}
+                  translations={pending ? [] : translated.glosses}
+                  handleWordNestClick={
+                    words &&
+                    words[translated.lemma]?.length > 0 &&
+                    !inWordNestModal &&
+                    (learningLanguage === 'Russian' || learningLanguage === 'Finnish')
+                      ? () => {
+                          setWordNestChosenWord(translated.lemma)
+                          setWordNestModalOpen(true)
+                        }
+                      : undefined
+                  }
                 />
               )}
-              {translationsList(translated)}
             </div>
-            {words &&
-              words[translated.lemma]?.length > 0 &&
-              !inWordNestModal &&
-              !clue &&
-              (learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
-              <WordNestLauncher
-                lemma={translated.lemma}
-                wordNestChosenWord={wordNestChosenWord}
-                setWordNestChosenWord={setWordNestChosenWord}
-                wordNestModalOpen={wordNestModalOpen}
-                setWordNestModalOpen={setWordNestModalOpen}
-                popupMessageId="explain-wordnest-modal"
-                buttonStyle={{ background: 'none' }}
-              />
-            )}
           </div>
         )
       })
