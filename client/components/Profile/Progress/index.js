@@ -25,7 +25,7 @@ import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
-import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures } from 'Utilities/common'
+import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures, ACCESS, useHasAccess } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
@@ -45,6 +45,8 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
 
 const Progress = () => {
   const dispatch = useDispatch()
+  // Hex-map / beehive chart is high-access only (hidden for access <= 1).
+  const canSeeHexmap = useHasAccess(ACCESS.HIGH)
   const element = useRef()
   const intl = useIntl()
   const [graphType, setGraphType] = useState('column mastered')
@@ -331,21 +333,23 @@ const Progress = () => {
                   <FormattedMessage id="vocabulary-view" />
                 </div>
               </button>
-              <button
-                className="progress-tour-grammar-button"
-                type="button"
-                onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
-                    checked={shownChart === 'hex-map'}
-                  />
-                  <FormattedMessage id="hex-map" />
-                </div>
-              </button>
+              {canSeeHexmap && (
+                <button
+                  className="progress-tour-grammar-button"
+                  type="button"
+                  onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
+                  style={{ border: 'none' }}
+                >
+                  <div className="flex align-center" style={{ gap: '.5em' }}>
+                    <input
+                      type="radio"
+                      onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
+                      checked={shownChart === 'hex-map'}
+                    />
+                    <FormattedMessage id="hex-map" />
+                  </div>
+                </button>
+              )}
               <button
                 className="progress-tour-exercise-history-button"
                 type="button"
