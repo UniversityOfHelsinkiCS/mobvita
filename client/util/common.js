@@ -408,6 +408,32 @@ export const useMTAvailableLanguage = () =>
   useSelector(({ contextTranslation }) => contextTranslation.avail)
 export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
+// =========================================================================
+// User access hierarchy
+//   0 ANONYMOUS  – not registered (anonymous session)
+//   1 REGISTERED – a registered user
+//   2 HIGH       – registered + `high_access: true` from the backend
+// Levels are ordered: a higher level passes every lower-level gate.
+// Use `useHasAccess(ACCESS.X)` for feature gates (`>=`), or the named helpers.
+// =========================================================================
+export const ACCESS = { ANONYMOUS: 0, REGISTERED: 1, HIGH: 2 }
+
+export const userAccessLevelSelector = ({ user }) => {
+  const u = user?.data?.user
+  if (!u || u.email === 'anonymous_email') return ACCESS.ANONYMOUS
+  const email = u.email?.toLowerCase()
+  if (u.high_access || email?.endsWith('.helsinki.fi') || email?.endsWith('@helsinki.fi'))
+    return ACCESS.HIGH
+  return ACCESS.REGISTERED
+}
+
+export const useAccessLevel = () => useSelector(userAccessLevelSelector)
+export const useHasAccess = minLevel => useSelector(userAccessLevelSelector) >= minLevel
+
+export const useIsAnonymous = () => useAccessLevel() === ACCESS.ANONYMOUS
+export const useIsRegistered = () => useAccessLevel() >= ACCESS.REGISTERED
+export const useIsHighAccess = () => useAccessLevel() >= ACCESS.HIGH
+
 export const supportedLearningLanguages = {
   major: ['finnish', 'russian'].sort((a, b) => a.localeCompare(b)),
   majorBeta: [
