@@ -43,7 +43,9 @@ import {
   getTextStyle,
   getMode,
   hiddenFeatures,
-  cefrNum2Cefr } from 'Utilities/common'
+  cefrNum2Cefr,
+  ACCESS,
+  useHasAccess } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
@@ -79,7 +81,10 @@ const ReadViews = ({ match }) => {
   const isGroupReview = location.pathname.includes('group/review')
   const isGroupPreview = location.pathname.includes('group/preview')
   const { show_review_diff, show_preview_exer, oid } = useSelector(({ user }) => user.data.user)
-  
+
+  // Topic window is high-access only (hidden for access <= 1).
+  const canSeeTopics = useHasAccess(ACCESS.HIGH)
+
   const story = useSelector(state => state.stories.focused)
   const pending = useSelector(state => state.stories.focusedPending)
   const focusedStudentId = useSelector(state => state.stories.focusedStudentId)
@@ -637,12 +642,14 @@ const ReadViews = ({ match }) => {
           )}
         </div>         
           <HelperSidebar>
-            <StoryTopics
-            conceptCount={routeStory?.concept_count || 0}
-            focusedConcept={focusedConcept}
-            setFocusedConcept={setFocusedConcept}
-            loadingReady={processingFinished}
-          />
+            {canSeeTopics && (
+              <StoryTopics
+                conceptCount={routeStory?.concept_count || 0}
+                focusedConcept={focusedConcept}
+                setFocusedConcept={setFocusedConcept}
+                loadingReady={processingFinished}
+              />
+            )}
             <CombinedChatbot />
           </HelperSidebar>
         
