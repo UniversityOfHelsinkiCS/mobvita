@@ -5,7 +5,7 @@ import { Card, Icon, Popup, Checkbox } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 
 import { useIntl, FormattedMessage } from 'react-intl'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -43,6 +43,8 @@ const LessonTitle = ({
   const bigScreen = width >= 700
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
+  // Topics inside a lesson are high-access only; access <= 1 sees just the lesson name.
+  const canSeeTopics = useHasAccess(ACCESS.HIGH)
   const { topics } = useSelector(({ lessons }) => lessons)
   const { lesson_topics: all_topics } = useSelector(({ metadata }) => metadata)
 
@@ -204,7 +206,9 @@ const LessonTitle = ({
           </div>
         </Card.Content>
       </span>
-      <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+      {canSeeTopics && (
+        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+      )}
     </div>
   ) : (
     <div>
@@ -225,7 +229,9 @@ const LessonTitle = ({
           </h5>
         </div>
       </span>
-      <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+      {canSeeTopics && (
+        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
+      )}
       <Card.Content extra className="lesson-card-actions-cont">
         <div className="lesson-actions">
           <Button
