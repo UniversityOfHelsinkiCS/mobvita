@@ -29,7 +29,7 @@ import {
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { setHelperSidebarTab, setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { Button } from 'react-bootstrap'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
