@@ -17,8 +17,7 @@ import {
     formatGreenFeedbackText,
   sanitizeHtml,
   composeExerciseContext,
-  hiddenFeatures,
-  images
+  hiddenFeatures
 } from 'Utilities/common'
 
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
@@ -47,6 +46,85 @@ import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
 import AssistentSettings from './AssistentSettings'
+
+// Rendered OUTSIDE the translation `pending` ternary so it is not unmounted/remounted
+// while translations load (which was destroying in-progress text selection).
+const WordNotes = ({ notes, handleTooltipClick }) => {
+  if (!notes.length) return null
+  return (
+    <div className="chatbot-messages-container">
+      {notes.map((note, index) => {
+        
+        if (note.kind === 'no-topics') {
+          return (
+            <div key={index} className="message message-notes">
+              <FormattedMessage id="no-topics-available" />
+            </div>
+          )
+        }
+        if (note.kind === 'topics-header') {
+          return (
+            <div key={index} className="message message-notes">
+              <FormattedMessage id="topics-header" />:
+            </div>
+          )
+        }
+        if (note.kind === 'concept') {
+          return (
+            <div key={index} className="message message-notes">
+              <span dangerouslySetInnerHTML={sanitizeHtml(note.text)} />
+            </div>
+          )
+        }
+        if (note.kind === 'your-answer') {
+          return (
+            <div key={index} className="message message-notes">              
+              <FormattedMessage id="you-used" />:&nbsp;
+              <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+            </div>
+          )
+        }
+        if (note.kind === 'mc') {
+          return (
+            <div key={index} className="message message-notes">              
+              <div>
+                <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+                {note.choices?.length > 0 && (
+                  <ul>
+                    {note.choices.map((choice, i) => (
+                      <li key={i}>
+                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          )
+        }
+        const showInfo =
+          note.kind === 'hint' &&
+          note.info &&
+          (note.info.explanation?.length ||
+            note.info.meta !== note.info.easy ||
+            note.info.ref?.length)
+        return (
+          <div key={index} className="message message-notes">            
+              <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+              {showInfo && (
+                <Icon
+                  name="info circle"
+                  className="hint-info-icon"
+                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                  onMouseDown={() => handleTooltipClick(note.info)}
+                />
+              )}            
+          </div>
+        )
+      })}
+    </div>
+  )
+}
 
 const CombinedChatbot = ({inWordNestModal, clue}) => {
 
@@ -276,6 +354,28 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     }
   }        
   
+  const targetLangName = intl.formatMessage({ id: dictionaryLanguage, defaultMessage: dictionaryLanguage })
+
+  const handleGetTranslation = () => {
+    if (currentWord && currentWord.lemmas) {
+      dispatch(setWords({
+        surface: currentWord.surface,
+        lemmas: currentWord.lemmas,
+      }))
+
+      dispatch(getTranslationAction({
+        learningLanguage,
+        wordLemmas: currentWord.translation_lemmas || currentWord.lemmas,
+        bases: currentWord.bases,
+        dictionaryLanguage,
+        storyId: currentWord.story_id,
+        wordId: currentWord.ID,
+        inflectionRef: currentWord.inflection_ref,
+        prefLemma: currentWord.pref_lemma,
+      }))
+    }
+  }
+
   const handleTooltipClick = (hint) => {
     if (!hint) return
 
@@ -405,31 +505,6 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       currentWord?.lemmas ||
       translationState?.surfaceWord ||
       ''
-    )
-  }
-
-  const renderWordNestIconButton = (lemma) => {
-    if (!isWordNestAvailableForLemma(lemma)) return null
-
-    return (
-      <Popup
-        position="top center"
-        content={<FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />}
-        trigger={
-          <button
-            type="button"
-            className="wordnest-icon-button"
-            onClick={() => {
-              setWordNestRestoreWord(computeWordNestRestoreWord())
-              setWordNestChosenWord(lemma)
-              setWordNestModalOpen(true)
-            }}
-            aria-label="Word Nest"
-          >
-            <img src={images.network} alt="word nest" width="28" />
-          </button>
-        }
-      />
     )
   }
 
@@ -625,43 +700,28 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       { helperActiveTab === 'exercise' && (            
         <div className="chatbot-content">
           <div className="chatbot-header">                 
-            <Popup
+            <div><Popup
               content={
                 <span style={{ whiteSpace: 'nowrap' }}>
-                    <FormattedMessage
-                        id="you-have-N-hints-left"
-                        defaultMessage="You have {count} hints left."
-                        values={{ count: eloScoreHearts.length }}
-                    />
+                  <FormattedMessage id="translation-to" defaultMessage="Translation to" /> {targetLangName}
                 </span>
               }
               position="top center"
               trigger={
-                <div className="bulbs-container"
-                  onClick={showAllHintsUsed ? undefined : handleShowHint}
-                  style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                  if ((e.key === 'Enter' || e.key === ' ') && !showAllHintsUsed) {
-                    e.preventDefault();
-                    handleShowHint();
-                  }
-                  }}>
-                  {eloScoreHearts.map(heart => (
-                    <Icon key={`lit-${heart}`} size="small" name="lightbulb" />
-                  ))}
-                  {spentHints.map(hint => (
-                    <Icon key={`spent-${hint}`} size="small" name="lightbulb outline" />
-                  ))}
-                </div>
+                <button type="button" className="translation-button" onClick={handleGetTranslation}>
+                  <div style={{ color: '#1890ff' }}>
+                    <Icon name="language" style={{ padding: 0, border: 'none'}} />
+                  </div>
+                </button>
               }
-            />
-
-            <h4 className="current-word">
+            /></div>
+            <div style={{flex: 1}}>
+               <h4 className="current-word">
                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
-            </h4>
-                        <ChatActionMenu 
+              </h4>
+            </div>
+            <div>
+              <ChatActionMenu 
               handleShowHint={handleShowHint} 
               hasHints={hasHints} 
               showAllHintsUsed={showAllHintsUsed}
@@ -685,6 +745,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               predefinedChatbotRequests={predefinedChatbotRequests}
               validToChat={validToChat}
             />
+            </div>
+            
           </div>
           
           <div className="chatbot-messages-container">
@@ -721,33 +783,34 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                             <span className="loading-text">Loading translation...</span>
                           </div>
                           ) : (
-                                                            translationState.data?.map((translated, idx) => (                                                
-                                <div  
-                                  key={translated.URL || translated.lemma || idx} 
-                                  className="translation-lemma-card" style={{
-                                  padding: '0.5em 2.5em 2.5em 0.5em',
-                                  borderRadius: '8px',
-                                  backgroundColor: translated.stage !== undefined
-                                      ? `${flashcardColors.background[translated.stage]}4D`
-                                      : '#f9f9f9',
-                                  }}>
-                                  <Lemma
-                                    lemma={translated.lemma}
-                                    handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-                                    handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-                                    userUrl={translated.user_URL}
-                                    inflectionRef={translated.ref}
-                                    preferred={translated.preferred}
-                                  />
-                                  {translated.glosses && translated.glosses.length > 0 && (
-                                    <ul className="translation-glosses">
-                                      {translated.glosses.map((gloss, i) => (
-                                        <li key={i}>{gloss}</li>
-                                      ))}
-                                    </ul>
-                                  )}
-                                  {renderWordNestIconButton(translated.lemma)}
-                                </div>                                      
+                                translationState.data?.map((translated, idx) => (
+                                <Lemma
+                                  key={translated.URL || translated.lemma || idx}
+                                  lemma={translated.lemma}
+                                  handleKnowningClick={() => handleKnowningClick(translated.lemma)}
+                                  handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
+                                  userUrl={translated.user_URL}
+                                  inflectionRef={translated.ref}
+                                  preferred={translated.preferred}
+                                  translations={translated.glosses}
+                                  handleWordNestClick={
+                                    isWordNestAvailableForLemma(translated.lemma)
+                                      ? () => {
+                                          setWordNestRestoreWord(computeWordNestRestoreWord())
+                                          setWordNestChosenWord(translated.lemma)
+                                          setWordNestModalOpen(true)
+                                        }
+                                      : undefined
+                                  }                                  
+                                  style={{
+                                    marginBottom: '8px',
+                                    padding: '15px', // Overrides default CSS padding
+                                    borderRadius: '8px',
+                                    backgroundColor: translated.stage !== undefined
+                                        ? `${flashcardColors.background[translated.stage]}4D`
+                                        : '#f9f9f9',
+                                }}
+                                />
                               ))
 
                           )}
@@ -865,7 +928,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               )}
           </div>                    
           <div className="chatbot-input-area">
-            {(showAllHintsUsed || !hasHints) && (
+            {(showAllHintsUsed || !hasHints) ? (
               <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
                 <input
                   type="text"
@@ -883,13 +946,66 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                   disabled={!validToChat || isWaitingForResponse}
                 />
               </form>
+            ) : (<div className="hint-request-container">
+                  <Popup
+                  content={
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                        <FormattedMessage
+                            id="you-have-N-hints-left"
+                            defaultMessage="You have {count} hints left."
+                            values={{ count: eloScoreHearts.length }}
+                        />
+                    </span>
+                  }
+                  position="top center"
+                  trigger={
+                    <div className="bulbs-container"
+                      onClick={showAllHintsUsed ? undefined : handleShowHint}
+                      style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                      if ((e.key === 'Enter' || e.key === ' ') && !showAllHintsUsed) {
+                        e.preventDefault();
+                        handleShowHint();
+                      }
+                      }}>
+                      {eloScoreHearts.map(heart => (
+                        <Icon key={`lit-${heart}`} size="small" name="lightbulb" />
+                      ))}
+                      {spentHints.map(hint => (
+                        <Icon key={`spent-${hint}`} size="small" name="lightbulb outline" />
+                      ))}
+                    </div>
+                  }
+                />
+                  <Popup
+                    content={
+                      <span style={{ whiteSpace: 'nowrap' }}>
+                        <FormattedMessage
+                          id="you-have-N-hints-left"
+                          defaultMessage="You have {count} hints left."
+                          values={{ count: eloScoreHearts.length }}
+                        />
+                      </span>
+                    }
+                    position="top center"
+                    trigger={
+                      <span className="chat-action-text"
+                        onClick={showAllHintsUsed ? undefined : handleShowHint}
+                        style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}>
+                        <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
+                      </span>
+                    }
+                  /></div>
             )}
           </div>                    
         </div>                 
       )}
             
       { helperActiveTab ===  'translation' &&  (          
-        <div className="dictionary-content" data-cy="dictionary-help">                    
+        <div className="dictionary-content" data-cy="dictionary-help">
+          
           {translationState.pending ? (
             <div style={{ padding: '1em' }}>
               <div className="flex space-between" style={{ marginBottom: '1em' }}>
@@ -946,123 +1062,43 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             {/* Translation Results */}               
 
                 {translationState.data && translationState.data.length > 0 ? (
-                                translationState.data.map((translated, idx) => (
-                <div
-                    key={translated.URL || translated.lemma || idx}
-                    className="translation-lemma-card"
-                    style={{
-                        marginBottom: '1em',
-                        padding: '0.5em 2.5em 2.5em 0.5em',
-                        borderRadius: '8px',
-                        // Dynamic background color based on flashcard stage
-                        backgroundColor: translated.stage !== undefined
-                            ? `${flashcardColors.background[translated.stage]}4D`
-                            : '#f9f9f9',
-                    }}
-                >
-                    {/* 1. Use the Lemma Component for the header (Speaker + Word + Icons) */}
-                    <Lemma
-                        lemma={translated.lemma}
-                        handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-                        handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-                        userUrl={translated.user_URL}
-                        inflectionRef={translated.ref}
-                        preferred={translated.preferred}
-                    />
-
-                    {/* 2. Render the Glosses (Translations) below the Lemma */}
-                    {translated.glosses && translated.glosses.length > 0 && (
-                        <ul className="translation-glosses">
-                            {translated.glosses.map((gloss, i) => (
-                                <li key={i}>{gloss}</li>
-                            ))}
-                        </ul>
-                    )}
-
-                    {renderWordNestIconButton(translated.lemma)}
-                </div>            
-            
-            ))
+    translationState.data.map((translated, idx) => (      
+        <Lemma
+            key={translated.URL || translated.lemma || idx}
+            lemma={translated.lemma}
+            handleKnowningClick={() => handleKnowningClick(translated.lemma)}
+            handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
+            handleWordNestClick={
+                isWordNestAvailableForLemma(translated.lemma)
+                    ? () => {
+                          setWordNestRestoreWord(computeWordNestRestoreWord())
+                          setWordNestChosenWord(translated.lemma)
+                          setWordNestModalOpen(true)
+                      }
+                    : undefined
+            }
+            userUrl={translated.user_URL}
+            inflectionRef={translated.ref}
+            preferred={translated.preferred}
+            translations={translated.glosses} // Pass the glosses array to the bottom row
+            showInflactionLink={translationState.data.length > 2 && idx > 0} 
+            // Pass the dynamic styling to the root of the Lemma component
+            style={{
+                marginBottom: '8px',
+                padding: '15px', // Overrides default CSS padding
+                borderRadius: '8px',
+                backgroundColor: translated.stage !== undefined
+                    ? `${flashcardColors.background[translated.stage]}4D`
+                    : '#f9f9f9',
+            }}
+        />
+    ))
         ) : (
             <p className="no-translation-text"></p>
         )}
             </div>
-            {notes.length > 0 && (
-              <div className="word-notes">
-                {notes.map((note, index) => {
-                  if (note.kind === 'no-topics') {
-                    return (
-                      <div key={index} className="message message-bot">
-                        <FormattedMessage id="no-topics-available" />
-                      </div>
-                    )
-                  }
-                  if (note.kind === 'topics-header') {
-                    return (
-                      <div key={index} className="message message-bot">
-                        <FormattedMessage id="topics-header" />:
-                      </div>
-                    )
-                  }
-                  if (note.kind === 'concept') {
-                    return (
-                      <div key={index} className="message message-bot">                        
-                        <span dangerouslySetInnerHTML={sanitizeHtml(note.text)} />
-                      </div>
-                    )
-                  }
-                  if (note.kind === 'your-answer') {
-                    return (
-                      <div key={index} className="message message-bot">
-                        <FormattedMessage id="you-used" />:&nbsp;
-                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-                      </div>
-                    )
-                  }
-                  if (note.kind === 'mc') {
-                    return (
-                      <div key={index} className="message message-bot">
-                        <div>
-                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-                          {note.choices?.length > 0 && (
-                            <ul>
-                              {note.choices.map((choice, i) => (
-                                <li key={i}>
-                                  <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  }
-                  // hint
-                  const showInfo =
-                    note.kind === 'hint' &&
-                    note.info &&
-                    (note.info.explanation?.length ||
-                      note.info.meta !== note.info.easy ||
-                      note.info.ref?.length)
-                  return (
-                    <div key={index} className="message message-bot">
-                      <span className="flex">
-                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-                        {showInfo && (
-                          <Icon
-                            name="info circle"
-                            className="hint-info-icon"
-                            style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                            onMouseDown={() => handleTooltipClick(note.info)}
-                          />
-                        )}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-            <div className="chatbot-messages-container">
+            <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
+          <div className="chatbot-messages-container">
             {isLoadingHistory ? (
               <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
                   <Spinner inline />
@@ -1093,18 +1129,20 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       
                   </>
               )}
-          </div>
-            { showContexTranslation && (
-              <div className="context-translation-box">                          
+              { showContexTranslation && (
+          <div className="context-translation-box">                          
                 {contextTranslationState.pending ? <Spinner inline /> : (
-                                            (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
-                                              <div className="context-translation-content">
-                                                <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
-                                              </div>
-                                            ) : null)
-                                          )}                
+                (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
+                  <div className="context-translation-content">
+                    <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
+                  </div>
+                ) : null)
+              )}                
           </div>
           )}
+
+          </div>
+          
           <div className="chatbot-input-area">
             {(typeof helperActiveTab !== 'undefined') && (
               <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
@@ -1125,7 +1163,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 />
               </form>
             )}
-          </div>
+          </div>          
         </>
         )}              
         </div>

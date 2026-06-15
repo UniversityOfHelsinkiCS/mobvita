@@ -10,7 +10,7 @@ import CountSlider from 'Components/Sliders/CountSlider'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
-import { useLearningLanguage, getTextStyle, capitalize } from 'Utilities/common'
+import { useLearningLanguage, getTextStyle, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -25,6 +25,8 @@ const StoryGeneration = () => {
   const bigScreen = width >= 700
   const learningLanguage = useLearningLanguage()
   const navigate = useNavigate()
+  // Grammar-topics step is high-access only; access <= 1 skips it (step 0 -> step 2).
+  const canSelectGrammar = useHasAccess(ACCESS.HIGH)
   const { data: userData } = useSelector(({ user }) => user)
   const { user } = userData
   const { vocabulary_score } = user
@@ -174,17 +176,19 @@ const StoryGeneration = () => {
         <div className="col col-12">
           <FormattedMessage id="story-ready-for-generation" />
         </div>
-        {lessonInstance.topic_ids.length === 0 && (
+        {canSelectGrammar && lessonInstance.topic_ids.length === 0 && (
           <div className="col col-12" style={{ color: '#ff0c0c' }}>
             <FormattedMessage id="note-no-lessons-topic" />
           </div>
         )}
       </div>
-      <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
-        <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
-          <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
+      {canSelectGrammar && (
+        <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
+          <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
+            <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
+          </div>
         </div>
-      </div>
+      )}
       {lessonInstance.learner_ideas && (
         <div
           className="row justify-center align-center space-between"
@@ -365,14 +369,16 @@ const StoryGeneration = () => {
                     setGoStep(0)
                   }}
                 />
-                <Step
-                  label={<FormattedMessage id="select-lesson-grammar" />}
-                  active={goStep == 1}
-                  completed={goStep > 1}
-                  onClick={() => {
-                    setGoStep(1)
-                  }}
-                />
+                {canSelectGrammar && (
+                  <Step
+                    label={<FormattedMessage id="select-lesson-grammar" />}
+                    active={goStep == 1}
+                    completed={goStep > 1}
+                    onClick={() => {
+                      setGoStep(1)
+                    }}
+                  />
+                )}
                 <Step
                   label={<FormattedMessage id="story-generation-summary" />}
                   active={goStep == 2}
@@ -405,7 +411,9 @@ const StoryGeneration = () => {
                     lessonInstance.learner_ideas === '')
                 }
                 onClick={() => {
-                  setGoStep(goStep + 1)
+                  // Low-access users have no grammar step (1), so jump 0 -> 2.
+                  const nextStep = !canSelectGrammar && goStep === 0 ? 2 : goStep + 1
+                  setGoStep(nextStep)
                   if (goStep === 2 && generatedStory === '') {
                     dispatch(generateStory(lessonInstance))
                   }
@@ -424,7 +432,7 @@ const StoryGeneration = () => {
                 <div style={{ marginTop: '40px' }}>{generationComment}</div>
               </>
             )}
-            {goStep === 1 && (
+            {goStep === 1 && canSelectGrammar && (
               <div>
                 <Topics
                   topicInstance={lessonInstance}
