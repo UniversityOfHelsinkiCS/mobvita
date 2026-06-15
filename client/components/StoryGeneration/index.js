@@ -43,6 +43,7 @@ const StoryGeneration = () => {
     topic_ids: [],
     cefr_diff: vocabulary_score,
     learner_ideas: '',
+    num_sentences: 10,
     instancePending: false,
   })
   const [generatedStory, setGeneratedStory] = useState('')
@@ -71,11 +72,16 @@ const StoryGeneration = () => {
 
   const handleSlider = value => {
     setSliderValue(value)
-    setLessonInstance({
-      ...lessonInstance,
+    setLessonInstance(currentLessonInstance => ({
+      ...currentLessonInstance,
       cefr_diff: value,
-    })
+    }))
   }
+
+  const getStoryGenerationPayload = () => ({
+    ...lessonInstance,
+    num_sentences: numSentences,
+  })
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
@@ -98,7 +104,12 @@ const StoryGeneration = () => {
             }}
             maxLength={240}
             value={lessonInstance.learner_ideas}
-            onChange={e => setLessonInstance({ ...lessonInstance, learner_ideas: e.target.value })}
+            onChange={e =>
+              setLessonInstance(currentLessonInstance => ({
+                ...currentLessonInstance,
+                learner_ideas: e.target.value,
+              }))
+            }
           />
           <div
             style={{
@@ -146,6 +157,10 @@ const StoryGeneration = () => {
         value={numSentences}
         onChange={value => {
           setNumSentences(value)
+          setLessonInstance(currentLessonInstance => ({
+            ...currentLessonInstance,
+            num_sentences: value,
+          }))
         }}
         minValue={10}
         maxValue={25}
@@ -313,7 +328,7 @@ const StoryGeneration = () => {
                     width: '100%',
                     border: '2px solid #000',
                   }}
-                  onClick={() => dispatch(generateStory(lessonInstance))}
+                  onClick={() => dispatch(generateStory(getStoryGenerationPayload()))}
                 >
                   <FormattedMessage id="regenerate-story" />
                 </Button>
@@ -328,11 +343,11 @@ const StoryGeneration = () => {
   const setSelectedTopics = topic_ids => {
     const limitedTopics = topic_ids.slice(0, MAX_GRAMMAR_TOPICS)
 
-    setLessonInstance({
-      ...lessonInstance,
+    setLessonInstance(currentLessonInstance => ({
+      ...currentLessonInstance,
       topic_ids: limitedTopics,
       num_sentences: numSentences,
-    })
+    }))
   }
 
   return (
