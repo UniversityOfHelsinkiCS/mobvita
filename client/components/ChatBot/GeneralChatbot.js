@@ -10,13 +10,15 @@ import {
 } from 'Utilities/redux/chatbotReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
+import RobotIcon from 'Components/PracticeView/RobotIcon'
+import AssistentSettings from 'Components/PracticeView/AssistentSettings'
 
 const GeneralReadingChatBot = () => {
     const intl = useIntl();
     const dispatch = useDispatch();
     const [currentMessage, setCurrentMessage] = useState("");
 
-    const { messages, isWaitingForResponse, isLoadingHistory, isOpen } = useSelector(({ chatbot }) => chatbot);
+    const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
     const latestMessageRef = useRef(null)
     const predefinedChatbotRequests = [
         "chatbot-message-suggestion-next-steps",
@@ -55,70 +57,58 @@ const GeneralReadingChatBot = () => {
 
     return (
         <div className="chatbot">
-            {/* Collapse Button */}
-            <Button 
-                onClick={toggleCollapse} 
-                className="chatbot-toggle" 
-                style={{ background: "mistyrose", margin: 0 }}
-            >
-                <div>
+            <div className="ai-assistant-header">
+                <RobotIcon className="ai-header-icon" size={24} />
+                <h3 className="ai-header-title">
                     <FormattedMessage id="chatbot-toggle-label" />
-                    {!isOpen ? (
-                        <Icon name="angle up" size="large" />
-                    ) : (
-                        <Icon name="angle down" size="large" />
-                    )}
-                </div>
-            </Button>
-
-            {isOpen && (
-                <>
-                    <div className="chatbot-messages">
-                        {isLoadingHistory ? (
-                            <Spinner inline />
-                        ) : (
-                            <>
-                                {/* Display initial static bot message if no messages are present */}
-                                {messages.length === 0 && (
-                                    <div className="message message-bot">
-                                        {initialMessage.text}
-                                    </div>
-                                )}
-
-                                {/* Display other messages */}
-                                {messages.map((message, index) => (
-                                    <div ref={index === messages.length - 1 ? latestMessageRef : null} key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
-                                        {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
-                                    </div>
-                                ))}
-                                {isWaitingForResponse && (
-                                    <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                                        <Spinner inline />
-                                    </div>
-                                )}
-                            </>
+                </h3>                
+            </div>                
+            <div className="chatbot-messages">
+                {isLoadingHistory ? (
+                    <Spinner inline />
+                ) : (
+                    <>
+                        {/* Display initial static bot message if no messages are present */}
+                        {messages.length === 0 && (
+                            <div className="message message-bot">
+                                {initialMessage.text}
+                            </div>
                         )}
-                    </div>
-                    <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                        <input
-                            type="text"
-                            name="userInput"
-                            placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-                            value={currentMessage}
-                            disabled={isWaitingForResponse}
-                            onChange={(e) => setCurrentMessage(e.target.value)}
-                        />
-                        <Button type="submit" primary disabled={isWaitingForResponse}>
-                            <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                        </Button>
-                        <ChatbotSuggestions
-                            predefinedChatbotRequests={predefinedChatbotRequests}
-                            disabled={isWaitingForResponse}
-                        />
-          </form>
-        </>
-      )}
+
+                        {/* Display other messages */}
+                        {messages.map((message, index) => (
+                            <div ref={index === messages.length - 1 ? latestMessageRef : null} key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
+                                {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
+                            </div>
+                        ))}
+                        {isWaitingForResponse && (
+                            <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
+                                <Spinner inline />
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+            <div className="chatbot-input-area">
+            <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
+                <input
+                    type="text"
+                    name="userInput"
+                    placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+                    value={currentMessage}
+                    disabled={isWaitingForResponse}
+                    onChange={(e) => setCurrentMessage(e.target.value)}
+                />
+                <Button type="submit" primary disabled={isWaitingForResponse}>
+                    <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
+                </Button>
+                <ChatbotSuggestions
+                    predefinedChatbotRequests={predefinedChatbotRequests}
+                    disabled={isWaitingForResponse}
+                />
+            </form>      
         </div>
+    </div>
     );
 };
 

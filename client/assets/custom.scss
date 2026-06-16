@@ -670,11 +670,10 @@ $value in $spacing {
   grid-template-rows: 0.6fr;
 
   @media (min-width: 900px) {
-    width: 80%;
-    float: right;
+    width: 100%;
   }
 
-  &-student {  
+  &-student {
     grid-template-areas:
       "continue-activity"
       "exhaustive-test"
@@ -3816,17 +3815,23 @@ label.file-upload-btn {
 }
 
 .cont.sidebar-pushed {
-  margin-right: 380px;
+  margin-right: 380px !important;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-width: 100%;
   box-sizing: border-box;
 }
 
+.cont-tall.cont.sidebar-pushed {
+  width: auto !important;
+}
+
 @media (max-width: 768px) {
   .cont.sidebar-pushed {
     margin-right: 0 !important;
-    transition: none;
-    margin-bottom: 40vh;
+    min-height: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
