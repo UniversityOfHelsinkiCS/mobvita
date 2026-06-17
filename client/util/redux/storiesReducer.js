@@ -102,6 +102,12 @@ export const updateExerciseTopics = (topics, storyId) => {
 
 export const updateTempExerciseTopics = topics => ({ type: 'SAVE_STORY_INTERMEDIATE', topics })
 
+export const updateStoryPath = (storyId, path) => {
+  const route = `/stories/${storyId}`
+  const prefix = 'UPDATE_STORY_PATH'
+  return callBuilder(route, prefix, 'post', { path })
+}
+
 export const removeStory = storyId => {
   const route = `/stories/${storyId}/remove`
   const prefix = 'REMOVE_STORY'
@@ -193,6 +199,16 @@ const initialState = {
   error: false,
   currentQuery: '',
   loadingProgress: {}, // { [storyId]: progressData }
+}
+
+const getStoryIdFromRoute = route => route?.match(/^\/stories\/([^/?]+)/)?.[1]
+
+const updateStoryPathInList = (stories, storyId, path) => {
+  if (!Array.isArray(stories)) return stories
+
+  return stories.map(story =>
+    String(story._id) === String(storyId) ? { ...story, path } : story,
+  )
 }
 
 export default (state = initialState, action) => {
@@ -470,6 +486,31 @@ export default (state = initialState, action) => {
         ...state,
         focused: { ...state.focused, ...action.response },
         pending: false,
+        error: false,
+      }
+    case 'UPDATE_STORY_PATH_ATTEMPT': {
+      const storyId = getStoryIdFromRoute(action.requestSettings?.route)
+      const path = action.requestSettings?.data?.path || ''
+
+      return {
+        ...state,
+        data: updateStoryPathInList(state.data, storyId, path),
+        searchResults: updateStoryPathInList(state.searchResults, storyId, path),
+        focused:
+          String(state.focused?._id) === String(storyId)
+            ? { ...state.focused, path }
+            : state.focused,
+        error: false,
+      }
+    }
+    case 'UPDATE_STORY_PATH_FAILURE':
+      return {
+        ...state,
+        error: true,
+      }
+    case 'UPDATE_STORY_PATH_SUCCESS':
+      return {
+        ...state,
         error: false,
       }
     case 'REMOVE_STORY_ATTEMPT':

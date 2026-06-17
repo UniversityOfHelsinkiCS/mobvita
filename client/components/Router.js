@@ -107,7 +107,7 @@ export default () => {
             <NavBar />
             <main className={`application-content ${getBackgroundColor()}`}>
               <ErrorBoundary>
-                <Suspense fallback={<Spinner fullHeight />}>
+                <Suspense fallback={null}>
                   <Routes>
                     <Route path="/email-confirm/:token" element={<EmailConfirm />} />
                     <Route path="/reset-password/:token" element={<ResetPassword />} />

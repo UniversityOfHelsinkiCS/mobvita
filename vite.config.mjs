@@ -102,6 +102,9 @@ export default defineConfig(({ mode }) => {
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {
+          entryFileNames: 'assets/[hash].js',
+          chunkFileNames: 'assets/[hash].js',
+          assetFileNames: 'assets/[hash][extname]',
           manualChunks(id) {
             if (!id.includes('node_modules')) return undefined
             return getPackageChunkName(id)

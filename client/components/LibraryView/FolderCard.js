@@ -1,42 +1,115 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { IconButton } from '@mui/material'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { FormattedMessage, useIntl } from 'react-intl'
 import Folder from '../../assets/images/folder.png'
+import FolderEmpty from '../../assets/images/folder_empty.png'
 import './LibraryView.scss'
 
-const FolderCard = ({ name, onClick }) => {
-  const handleKeyDown = event => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
+const FolderCard = ({
+  name,
+  onClick,
+  onDragLeave,
+  onDragOver,
+  onDrop,
+  onDelete,
+  onRemove,
+  isDropTarget = false,
+  isEmpty = false,
+}) => {
+  const intl = useIntl()
+  const [menuAnchor, setMenuAnchor] = useState(null)
+  const menuOpen = Boolean(menuAnchor)
+  const hasMenu = Boolean(onDelete)
+  const menuButtonLabel = intl.formatMessage({
+    id: onRemove ? 'remove-empty-folder' : 'folder-options',
+  })
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
       onClick()
     }
   }
 
+  const handleMenuOpen = e => {
+    e.stopPropagation()
+    setMenuAnchor(e.currentTarget)
+  }
+
+  const handleMenuClose = e => {
+    e?.stopPropagation()
+    setMenuAnchor(null)
+  }
+
+  const handleDeleteClick = e => {
+    handleMenuClose(e)
+    onDelete()
+  }
+
+  const cardClassName = [
+    'library-folder-card',
+    isDropTarget ? 'library-folder-card-drop-target' : '',
+    isEmpty ? 'library-folder-card-empty' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <div
-      className="library-folder-card"
+      className={cardClassName}
       role="button"
       tabIndex={0}
       onClick={onClick}
       onKeyDown={handleKeyDown}
+      onDragLeave={onDragLeave}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
     >
       <span className="library-folder-tab" />
 
       <span className="library-folder-content">
-        <img src={Folder} alt="Folder" className="library-folder-icon" />
+        <img
+          src={isEmpty && !isDropTarget ? FolderEmpty : Folder}
+          alt="Folder"
+          className="library-folder-icon"
+        />
         <span className="library-folder-name">{name}</span>
       </span>
 
-      <IconButton
-        className="library-folder-menu"
-        size="small"
-        onClick={event => {
-          event.stopPropagation()
-          console.log('Open folder menu')
-        }}
-      >
-        <MoreVertIcon />
-      </IconButton>
+      {(onRemove || hasMenu) && (
+        <>
+          <IconButton
+            aria-label={menuButtonLabel}
+            className="library-folder-menu"
+            size="small"
+            onClick={e => {
+              e.stopPropagation()
+              if (onRemove) {
+                onRemove()
+                return
+              }
+
+              handleMenuOpen(e)
+            }}
+          >
+            {onRemove ? <DeleteOutlineOutlinedIcon /> : <MoreVertIcon />}
+          </IconButton>
+          {hasMenu && (
+            <Menu
+              anchorEl={menuAnchor}
+              open={menuOpen}
+              onClose={handleMenuClose}
+              onClick={e => e.stopPropagation()}
+            >
+              <MenuItem onClick={handleDeleteClick}>
+                <FormattedMessage id="delete-folder" />
+              </MenuItem>
+            </Menu>
+          )}
+        </>
+      )}
     </div>
   )
 }

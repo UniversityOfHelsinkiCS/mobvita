@@ -1771,7 +1771,7 @@
     "word-nest-show-compounds-label": "Näytä yhdyssanat",
     "story-generating": "Tekstiä luodaan",
     "select-story-vocab-diff": "Valitse tekstin yleinen vaikeusaste",
-    "select-story-themes-and-vocabulary": "Valitse tekstin teemat ja sanaston taso",
+    "select-story-themes-and-vocabulary": "Valitse tekstin teemat ja vaikeuksen taso",
     "chatbot-message-suggestion-answer-wrong-reason": "Miksi vastaukseni on väärin?",
     "chatbot-message-suggestion-analyze-context": "Auta minua ymmärtämään kontekstia",
     "practice-flashcards": "Harjoittele muistikortteja",
@@ -1837,9 +1837,16 @@
     "note-no-lessons-topic": "Huomio: Et valinnut yhtään kielioppiaihetta.",
     "note-lessons-topic-count": "Olet valinnut {count} kielioppiaihetta.",
     "note-max-lessons-topic": "Kielioppiaiheiden enimmäismäärä {count} on saavutettu",
-    "spinner-text-long-generation": "Tämän sisällön luominen kestää tavallista kauemmin. Olethan kärsivällinen.",
-    "spinner-text-long-task": "Tämä on haastava tehtävä, joten sen käsittely vie hieman aikaa.",
+    "spinner-text-long-generation": "Tämä on haastava tehtävä, joten sen käsittely vie hieman aikaa.",
+    "spinner-text-long-task": "Tämän tekstin luominen kestää tavallista kauemmin. Olethan kärsivällinen.",
     "select-story-length": "Valitse tekstin lauseiden määrä",
     "begin-practice-tailored": "Aloita harjoittelu",
-    "tailored-begin-practice": "Aloita harjoittelu"
+    "tailored-begin-practice": "Aloita harjoittelu",
+    "confirm-folder-delete": "Haluatko varmasti poistaa kaikki tämän kansion tekstit?",
+    "folder-name-required": "Kansion nimi on pakollinen",
+    "folder-name-invalid": "Kansion nimi ei voi sisältää merkkiä /",
+    "folder-name-exists": "Tämänniminen kansio on jo olemassa",
+    "delete-folder": "Poista kansio",
+    "remove-empty-folder": "Poista tyhjä kansio",
+    "folder-options": "Kansion asetukset"
 }
