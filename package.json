@@ -42,7 +42,7 @@
     "dotenv": "^17.4.2",
     "eslint": "^10.2.1",
     "express": "^5.2.1",
-    "form-data": "^4.0.5",
+    "form-data": "^4.0.6",
     "highcharts": "^12.6.0",
     "highcharts-react-official": "^3.2.3",
     "howler": "^2.2.4",
