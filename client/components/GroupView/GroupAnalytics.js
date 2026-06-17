@@ -9,6 +9,8 @@ import {
   skillLevels,
   downloadReadingReport,
   downloadReadingHistory,
+  ACCESS,
+  useHasAccess,
 } from 'Utilities/common'
 import {
   getStudentVocabulary,
@@ -56,6 +58,8 @@ const GroupAnalytics = ({ role }) => {
   const [firstFetch, setFirstFetch] = useState(true)
   const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
   const dispatch = useDispatch()
+  // Hex-map / beehive chart is high-access only (hidden for access <= 1).
+  const canSeeHexmap = useHasAccess(ACCESS.HIGH)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { start_date, end_date } = useSelector(({ summary }) => summary)
@@ -368,20 +372,22 @@ const GroupAnalytics = ({ role }) => {
                 <FormattedMessage id="vocabulary-view" />
               </div>
             </button>
-            <button
-              type="button"
-              onClick={() => setShownChart('hex-map')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('hex-map')}
-                  checked={shownChart === 'hex-map'}
-                />
-                <FormattedMessage id="hex-map" />
-              </div>
-            </button>
+            {canSeeHexmap && (
+              <button
+                type="button"
+                onClick={() => setShownChart('hex-map')}
+                style={{ border: 'none' }}
+              >
+                <div className="flex align-center" style={{ gap: '.5em' }}>
+                  <input
+                    type="radio"
+                    onChange={() => setShownChart('hex-map')}
+                    checked={shownChart === 'hex-map'}
+                  />
+                  <FormattedMessage id="hex-map" />
+                </div>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setShownChart('exercise')}

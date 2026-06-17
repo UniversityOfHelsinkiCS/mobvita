@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
+import { ACCESS, useHasAccess } from 'Utilities/common'
 import uploadFileIcon from '../../assets/images/upload-file.png'
 import uploadWebIcon from '../../assets/images/upload-cloud.png'
 import uploadPasteIcon from '../../assets/images/paste.png'
@@ -9,6 +10,8 @@ import generateAI from '../../assets/images/generate_ai.png'
 
 const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
   const navigate = useNavigate()
+  // Generate-story button is for registered+ users (hidden for access <= 0).
+  const canGenerate = useHasAccess(ACCESS.REGISTERED)
 
   const goToGeneratePage = () => {
     if (typeof closeModal === 'function') closeModal()
@@ -38,7 +41,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
               <img src={uploadPasteIcon} alt="paste" className='story-option-icon' />
               <FormattedMessage id="paste-a-text" />
             </Button>
-            {lesson_topics?.length !== 0 && (
+            {lesson_topics?.length !== 0 && canGenerate && (
               <Button className="add-new-story-button" onClick={goToGeneratePage}>
                 <img src={generateAI} alt="generate AI" className='story-option-icon' />
                 <FormattedMessage id="go-generating" />

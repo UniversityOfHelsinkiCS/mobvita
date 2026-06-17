@@ -24,7 +24,7 @@ import {
   resetAnnotationCandidates,
   setAnnotationFormVisibility,
 } from 'Utilities/redux/annotationsReducer'
-import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { setHelperSidebarTab, setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { clearNotes } from 'Utilities/redux/notesReducer'
 
 const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDifficulty, ...props }) => {

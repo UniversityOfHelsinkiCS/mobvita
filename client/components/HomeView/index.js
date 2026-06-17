@@ -25,6 +25,7 @@ import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
 // import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar';
 
 
 const HomeviewButton = ({imgSrc, altText,
@@ -117,7 +118,7 @@ const HomeviewButtons = ({
     }
   }
   const activityLink = assembleActivityLink(lastActivity)
-  return (
+  return (    
     <div className="" style={{width: '100%'}}>
       {(hasTeacherRole && isTeacherView) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
@@ -266,6 +267,7 @@ const HomeView = () => {
   const userEmail = useSelector(state => state.user.data.user?.email)
   const isNewUser = useSelector(state => state.user.data.user?.is_new_user)
   const userGrade = useSelector(state => state.user.data.user?.grade)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
   const hasSeenHomeTour = useSelector(state => state.user.data.user?.has_seen_home_tour)
   const hasSeenDDLangIntroductory = useSelector(
@@ -369,10 +371,13 @@ const HomeView = () => {
     }
   }, [])
 
-  const homeviewButtonsContainerClassName = teacherAccess && teacherView ? "pn-nm" : "flex pb-nm"
+  const homeviewButtonsContainerClassName = teacherAccess && teacherView ? "pb-nm" : "flex pb-nm"
 
   return (
-    <div className="cont-tall cont flex-col auto gap-row-sm pt-lg blue-bg">
+    <div
+      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg blue-bg`}
+      style={{ alignItems: 'center' }}
+    >
       {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
@@ -420,7 +425,7 @@ const HomeView = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-col" style={{ gap: '1.5em', marginBottom: '.5em' }}>
+          <div className="flex-col" style={{ gap: '1.5em', marginBottom: '5.5em' }}>
             <HomeviewButtons
               setPracticeModalOpen={setPracticeModalOpen}
               setAddStoryModalOpen={setAddStoryModalOpen}
@@ -436,7 +441,9 @@ const HomeView = () => {
             )}
           </div>
         )}
-        <GeneralChatbot />
+        <HelperSidebar>
+          <GeneralChatbot />
+        </HelperSidebar>        
         {showFooter && <Footer />}
       </div>
     </div>

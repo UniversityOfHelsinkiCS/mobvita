@@ -100,6 +100,14 @@
       bottom: auto;
       max-width: none;
     }
+
+    .chatbot {
+      position: relative;
+      width: 100%;
+      max-width: none;
+      max-height: none;
+      height: 100%;
+    }
   }
 }
 

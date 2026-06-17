@@ -11,7 +11,8 @@ const ChatbotSuggestions = ({ predefinedChatbotRequests, disabled }) => {
   return (
     <div className="chatbot-suggestions">
       {predefinedChatbotRequests.map(({ msgId, func }, index) => (
-        <Button
+        <a
+          className="chatbot-suggestion-message"
           key={index}
           type="button"
           basic
@@ -19,7 +20,7 @@ const ChatbotSuggestions = ({ predefinedChatbotRequests, disabled }) => {
           onClick={() =>dispatch(func)}
         >
           <FormattedMessage id={msgId} />
-        </Button>
+        </a>
       ))}
     </div>
   )

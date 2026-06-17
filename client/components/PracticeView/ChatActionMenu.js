@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { FormattedMessage } from 'react-intl'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import {
+  addAnnotationCandidates,
+  resetAnnotationCandidates,
+  setAnnotationsVisibility,
+} from 'Utilities/redux/annotationsReducer'
 import { 
   useLearningLanguage, 
   useDictionaryLanguage, 
@@ -34,7 +38,6 @@ const ChatActionMenu = ({
   validToChat
 }) => {
   const dispatch = useDispatch()
-  const intl = useIntl()
   const [open, setOpen] = useState(false)
   const rootRef = useRef(null)
   const [currentAnswer, setCurrentAnswer] = useState("")
@@ -60,29 +63,6 @@ const ChatActionMenu = ({
     snippet_id, 
     surface,
   } = currentWord || {}
-
-  const targetLangName = intl.formatMessage({ id: dictionaryLanguage, defaultMessage: dictionaryLanguage })
-
-  const handleGetTranslation = () => {
-    if (currentWord && currentWord.lemmas) {
-      dispatch(setWords({
-        surface: currentWord.surface,
-        lemmas: currentWord.lemmas
-      }))
-
-      dispatch(getTranslationAction({
-        learningLanguage,
-        wordLemmas: currentWord.translation_lemmas || currentWord.lemmas,
-        bases: currentWord.bases,
-        dictionaryLanguage,
-        storyId: currentWord.story_id,
-        wordId: currentWord.ID,
-        inflectionRef: currentWord.inflection_ref,
-        prefLemma: currentWord.pref_lemma,
-      }))
-    }
-    setOpen(false)
-  }
 
   const handleSentenceTranslation = () => {
         setShowContextTranslation(true)
@@ -130,6 +110,15 @@ const ChatActionMenu = ({
 
   const handleHintClick = () => {
     if (handleShowHint) handleShowHint()
+    setOpen(false)
+  }
+
+  const handleAddAnnotation = () => {
+    if (currentWord) {
+      dispatch(resetAnnotationCandidates())
+      dispatch(addAnnotationCandidates(currentWord))
+      dispatch(setAnnotationsVisibility(true))
+    }
     setOpen(false)
   }
 
@@ -221,16 +210,6 @@ const ChatActionMenu = ({
             </button>              
           )}
                 
-          {mode === 'chatbot' && (
-            <button type="button" className="chat-action-item" onClick={handleGetTranslation}>
-              <div className="chat-action-icon" style={{ color: '#1890ff' }}>
-                <Icon name="language" />
-              </div>
-              <span className="chat-action-text">
-                <FormattedMessage id="translation-to" defaultMessage="Translation to" /> {targetLangName}
-              </span>
-            </button>
-          )}
           {(
             <button type="button" className="chat-action-item" onClick={handleSentenceTranslation}>
               <div className="chat-action-icon" style={{ color: '#17a2b8' }}>
@@ -241,8 +220,16 @@ const ChatActionMenu = ({
               </span>
             </button>
           )}
+          {/* <button type="button" className="chat-action-item" onClick={handleAddAnnotation}>
+            <div className="chat-action-icon" style={{ color: '#f2c03b' }}>
+              <Icon name="sticky note outline" />
+            </div>
+            <span className="chat-action-text">
+              <FormattedMessage id="add-annotation" defaultMessage="Add annotation" />
+            </span>
+          </button> */}
         </div>
-      )}      
+      )}
     </div>
   )
 }

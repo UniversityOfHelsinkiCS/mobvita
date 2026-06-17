@@ -14,7 +14,9 @@ export const buildWordNotes = (word, { answer, tiedAnswer, isPreviewMode, hidden
   if (!word) return []
   const items = []
 
-  if (word.mc_correct && !isPreviewMode) {
+  // Show the multiple-choice bubble for any MC word (right OR wrong answer) — i.e.
+  // whenever there's an MC marker or a set of choices to display.
+  if ((word.mc_correct || word.choices?.length) && !isPreviewMode) {
     // The MC feedback message and its choices belong together in one bubble.
     items.push({ kind: 'mc', text: word.frozen_messages?.[0], choices: word.choices || [] })
   }
@@ -37,7 +39,16 @@ export const buildWordNotes = (word, { answer, tiedAnswer, isPreviewMode, hidden
   }
 
   const usedAnswer = answer || tiedAnswer
-  if (usedAnswer) {
+  // Only show "You answered: …" when the user actually gave an answer.
+  // When a word isn't answered, `users_answer` falls back to the correct surface
+  // (see PreviousSnippets/Word/index.js), so `users_answer === correct` means
+  // "not answered" (or answered correctly) — skip it in that case.
+  const givenAnswer = usedAnswer?.users_answer?.trim()
+  if (
+    givenAnswer &&
+    givenAnswer !== usedAnswer.correct &&
+    !/^_+$/.test(givenAnswer) // skip blank placeholders like "___" (not answered)
+  ) {
     items.push({ kind: 'your-answer', text: usedAnswer.users_answer })
   }
 
