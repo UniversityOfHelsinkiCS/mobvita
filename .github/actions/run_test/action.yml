@@ -18,9 +18,31 @@ runs:
         node-version: 22
         cache: npm
 
+    - name: Cache Cypress binary
+      uses: actions/cache@v5
+      with:
+        path: ~/.cache/Cypress
+        key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          cypress-${{ runner.os }}-
+
     - name: npm ci
       shell: bash
+      env:
+        CYPRESS_INSTALL_BINARY: 0
       run: npm ci
+
+    - name: Install Cypress binary
+      shell: bash
+      run: |
+        for attempt in 1 2 3; do
+          npx cypress install && break
+          if [ "$attempt" = "3" ]; then
+            exit 1
+          fi
+          sleep 10
+        done
+        npx cypress verify
 
     - name: Build app
       shell: bash
