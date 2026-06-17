@@ -1,6 +1,8 @@
 const storyOneId = 'story-one'
 const storyTwoId = 'story-two'
 const readingPracticeStoryId = 'story-rp'
+const storiesListUrl = /\/api\/stories(?:\?.*)?$/
+const storyDetailsUrl = /\/api\/stories\/[^/?]+(?:\?.*)?$/
 
 const visitAsMockUser = path => {
   cy.visit(path)
@@ -21,19 +23,58 @@ const makePreviewStory = ({ id, title, questions = [], readingQuestions = null }
   ...(Array.isArray(questions) ? { questions } : {}),
 })
 
+const getStoryIdFromUrl = url => new URL(url).pathname.split('/').pop()
+
+const getStoryResponse = story => (typeof story === 'function' ? story() : story)
+
+const mockStoryDetailsApi = storiesById => {
+  cy.intercept('GET', storyDetailsUrl, req => {
+    const storyId = getStoryIdFromUrl(req.url)
+    const story = storiesById[storyId]
+
+    if (!story) {
+      req.reply({
+        statusCode: 404,
+        body: { message: `Unexpected story id ${storyId}` },
+      })
+      return
+    }
+
+    req.alias = 'apiCall'
+    req.reply(getStoryResponse(story))
+  })
+}
+
+const waitForApiCallAndText = text => {
+  cy.wait('@apiCall', { timeout: 30000 })
+  cy.contains(text, { timeout: 30000 }).should('be.visible')
+}
+
 // Shared helper — intercept every API call that the ReadingComprehension
 // component may fire so no real backend call escapes the test.
 const mockAllStoriesApis = () => {
   // Stories list (loaded on mount and after saving)
-  cy.intercept('GET', '**/api/stories?*', { body: [] }).as('getStoriesList')
+  cy.intercept('GET', storiesListUrl, { body: [] }).as('getStoriesList')
   // AI question generation — returns static mock; NO real AI call is made
   cy.intercept('POST', '**/api/stories/*/mc_generate', { body: [] }).as('mcGenerateGlobal')
   // Save questions — acknowledge without touching the database
-  cy.intercept('POST', '**/api/stories/*/save_questions', { statusCode: 200, body: { ok: true } }).as('saveQuestionsGlobal')
+  cy.intercept(
+    'POST',
+    '**/api/stories/*/save_questions',
+    { statusCode: 200, body: { ok: true } },
+  ).as('saveQuestionsGlobal')
   // Delete questions — acknowledge without touching the database
-  cy.intercept('POST', '**/api/stories/*/delete_questions', { statusCode: 200, body: { ok: true } }).as('deleteQuestionsGlobal')
+  cy.intercept(
+    'POST',
+    '**/api/stories/*/delete_questions',
+    { statusCode: 200, body: { ok: true } },
+  ).as('deleteQuestionsGlobal')
   // Reading-practice answer recording — acknowledge without touching the database
-  cy.intercept('POST', '**/api/stories/*/answer_question', { statusCode: 200, body: { ok: true } }).as('answerQuestionGlobal')
+  cy.intercept(
+    'POST',
+    '**/api/stories/*/answer_question',
+    { statusCode: 200, body: { ok: true } },
+  ).as('answerQuestionGlobal')
 }
 
 describe('reading comprehension', function () {
@@ -79,18 +120,20 @@ describe('reading comprehension', function () {
       ],
     })
 
-    cy.intercept('GET', `**/api/stories/${storyOneId}*`, storyOne).as('getStoryOne')
-    cy.intercept('GET', `**/api/stories/${storyTwoId}*`, storyTwo).as('getStoryTwo')
+    mockStoryDetailsApi({
+      [storyOneId]: storyOne,
+      [storyTwoId]: storyTwo,
+    })
 
     visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
-    cy.wait('@getStoryOne')
+    waitForApiCallAndText('Story One')
 
     cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
     cy.contains('Story one question only')
     cy.contains('Story two question only').should('not.exist')
 
     visitAsMockUser(`http://localhost:8000/stories/${storyTwoId}/reading-comprehension-options`)
-    cy.wait('@getStoryTwo')
+    waitForApiCallAndText('Story Two')
 
     cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
     cy.contains('Story two question only')
@@ -114,11 +157,7 @@ describe('reading comprehension', function () {
       ],
     })
 
-    cy.intercept('GET', `**/api/stories/${storyOneId}*`, req => {
-      req.reply(storyOne)
-    }).as('getStoryOne')
-    cy.intercept('GET', '**/api/stories?*', []).as('getStoriesList')
-
+    mockStoryDetailsApi({ [storyOneId]: () => storyOne })
     cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
       expect(req.body).to.have.property('questions')
       expect(req.body.questions).to.have.length(1)
@@ -143,8 +182,7 @@ describe('reading comprehension', function () {
     }).as('deleteQuestions')
 
     visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
-    cy.wait('@getStoryOne')
-    cy.contains('Story One').should('be.visible')
+    waitForApiCallAndText('Story One')
 
     cy.get('[data-cy="rc-level-select"]').click()
     cy.contains('.visible.menu .item', 'B2').click()
@@ -196,9 +234,7 @@ describe('reading comprehension', function () {
       },
     ]
 
-    cy.intercept('GET', `**/api/stories/${storyOneId}*`, req => {
-      req.reply(storyOne)
-    }).as('getStoryOne')
+    mockStoryDetailsApi({ [storyOneId]: () => storyOne })
 
     cy.intercept('POST', `**/api/stories/${storyOneId}/mc_generate`, req => {
       expect(req.body).to.have.property('level')
@@ -231,7 +267,7 @@ describe('reading comprehension', function () {
     }).as('deleteQuestionsSpecific')
 
     visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
-    cy.wait('@getStoryOne')
+    waitForApiCallAndText('Story One')
 
     cy.get('[data-cy="rc-tab-generate-questions"]').click()
 
@@ -318,10 +354,10 @@ describe('reading practice', function () {
       questions: null,
     })
 
-    cy.intercept('GET', `**/api/stories/${readingPracticeStoryId}*`, story).as('getPracticeStory')
+    mockStoryDetailsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
-    cy.wait('@getPracticeStory')
+    waitForApiCallAndText('Pick the right option after three wrong tries')
 
     cy.get('[data-cy="rp-choice-btn-0"]').click()
     cy.get('[data-cy="rp-choice-btn-2"]').click()
@@ -365,13 +401,12 @@ describe('reading practice', function () {
       ],
     }
 
-    cy.intercept('GET', `**/api/stories/${readingPracticeStoryId}*`, story).as('getPracticeStory')
+    mockStoryDetailsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
-    cy.wait('@getPracticeStory')
+    waitForApiCallAndText('Question 1')
 
     // Q1: one wrong, then correct, then next.
-    cy.contains('Question 1').should('be.visible')
     cy.get('[data-cy="rp-choice-btn-0"]').click()
     cy.get('[data-cy="rp-choice-btn-1"]').click()
     cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
