@@ -1842,5 +1842,11 @@
     "select-story-length": "Valitse tekstin lauseiden määrä",
     "begin-practice-tailored": "Aloita harjoittelu",
     "tailored-begin-practice": "Aloita harjoittelu",
-    "confirm-folder-delete": "Haluatko varmasti poistaa kaikki tämän kansion tekstit?"
+    "confirm-folder-delete": "Haluatko varmasti poistaa kaikki tämän kansion tekstit?",
+    "folder-name-required": "Kansion nimi on pakollinen",
+    "folder-name-invalid": "Kansion nimi ei voi sisältää merkkiä /",
+    "folder-name-exists": "Tämänniminen kansio on jo olemassa",
+    "delete-folder": "Poista kansio",
+    "remove-empty-folder": "Poista tyhjä kansio",
+    "folder-options": "Kansion asetukset"
 }

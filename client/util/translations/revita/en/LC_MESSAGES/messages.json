@@ -1841,5 +1841,11 @@
     "select-story-length": "Length of the story — number of sentences",
     "begin-practice-tailored": "Begin practice",
     "tailored-begin-practice": "Begin practice",
-    "confirm-folder-delete": "Are you sure you want to delete all stories in this folder?"
+    "confirm-folder-delete": "Are you sure you want to delete all stories in this folder?",
+    "folder-name-required": "Folder name is required",
+    "folder-name-invalid": "Folder name cannot contain /",
+    "folder-name-exists": "A folder with this name already exists here",
+    "delete-folder": "Delete folder",
+    "remove-empty-folder": "Remove empty folder",
+    "folder-options": "Folder options"
 }

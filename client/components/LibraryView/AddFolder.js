@@ -35,18 +35,13 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
 
     const trimmedFolderName = folderName.trim()
 
-    if (!trimmedFolderName) {
-      setError('Folder name is required')
-      return
-    }
-
     if (trimmedFolderName.includes('/')) {
-      setError('Folder name cannot contain /')
+      setError(intl.formatMessage({ id: 'folder-name-invalid' }))
       return
     }
 
     if (existingFolderNames.includes(trimmedFolderName)) {
-      setError('A folder with this name already exists here')
+      setError(intl.formatMessage({ id: 'folder-name-exists' }))
       return
     }
 

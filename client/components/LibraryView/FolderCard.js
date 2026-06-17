@@ -1,7 +1,8 @@
 import React, { memo, useState } from 'react'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { FormattedMessage, useIntl } from 'react-intl'
 import Folder from '../../assets/images/folder.png'
 import FolderEmpty from '../../assets/images/folder_empty.png'
 import './LibraryView.scss'
@@ -17,9 +18,13 @@ const FolderCard = ({
   isDropTarget = false,
   isEmpty = false,
 }) => {
+  const intl = useIntl()
   const [menuAnchor, setMenuAnchor] = useState(null)
   const menuOpen = Boolean(menuAnchor)
   const hasMenu = Boolean(onDelete)
+  const menuButtonLabel = intl.formatMessage({
+    id: onRemove ? 'remove-empty-folder' : 'folder-options',
+  })
 
   const handleKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -75,24 +80,22 @@ const FolderCard = ({
 
       {(onRemove || hasMenu) && (
         <>
-          <Tooltip title={onRemove ? 'Remove empty folder' : 'Folder options'}>
-            <IconButton
-              aria-label={onRemove ? 'Remove empty folder' : 'Folder options'}
-              className="library-folder-menu"
-              size="small"
-              onClick={e => {
-                e.stopPropagation()
-                if (onRemove) {
-                  onRemove()
-                  return
-                }
+          <IconButton
+            aria-label={menuButtonLabel}
+            className="library-folder-menu"
+            size="small"
+            onClick={e => {
+              e.stopPropagation()
+              if (onRemove) {
+                onRemove()
+                return
+              }
 
-                handleMenuOpen(e)
-              }}
-            >
-              {onRemove ? <DeleteOutlineOutlinedIcon /> : <MoreVertIcon />}
-            </IconButton>
-          </Tooltip>
+              handleMenuOpen(e)
+            }}
+          >
+            {onRemove ? <DeleteOutlineOutlinedIcon /> : <MoreVertIcon />}
+          </IconButton>
           {hasMenu && (
             <Menu
               anchorEl={menuAnchor}
@@ -100,7 +103,9 @@ const FolderCard = ({
               onClose={handleMenuClose}
               onClick={e => e.stopPropagation()}
             >
-              <MenuItem onClick={handleDeleteClick}>Delete folder</MenuItem>
+              <MenuItem onClick={handleDeleteClick}>
+                <FormattedMessage id="delete-folder" />
+              </MenuItem>
             </Menu>
           )}
         </>
