@@ -3832,6 +3832,10 @@ label.file-upload-btn {
     max-height: 60vh;
     overflow-y: auto;
     transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    > * {
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -3850,5 +3854,5 @@ label.file-upload-btn {
   width: 100%;
   max-width: 650px;
   margin: 0 auto;
-
 }
+

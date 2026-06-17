@@ -34,6 +34,8 @@ import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
+import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -52,6 +54,7 @@ const StoryList = () => {
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const smallWindow = useWindowDimensions().width < 520
 
@@ -554,7 +557,7 @@ const StoryList = () => {
   }
 
   return (
-    <Box className="cont-tall pt-lg cont flex-col auto library-tour-start">
+    <Box className={`cont-tall pt-lg cont flex-col auto library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
       {libraryControls}
       <Box className="universal-background" sx={{ margin: '0 7px' }}>
         {libraries.group && (
@@ -587,6 +590,10 @@ const StoryList = () => {
 
         {renderFolderBrowser()}
       </Box>
+
+      <HelperSidebar>
+        <GeneralChatbot />
+      </HelperSidebar>
     </Box>
   )
 }
