@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "docker compose -f docker-compose-local.yml up",
-    "build": "docker compose -f docker-compose-local.yml up --build",
+    "build": "vite build",
+    "dev:build": "docker compose -f docker-compose-local.yml up --build",
     "prepare": "husky",
     "start:prod": "cross-env NODE_ENV=production node index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon index.js",
