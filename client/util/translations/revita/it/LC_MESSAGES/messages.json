@@ -1770,7 +1770,7 @@
     "word-nest-show-compounds-label": "Mostra parole composte",
     "story-generating": "La storia è in fase di generazione",
     "select-story-vocab-diff": "Scegli la difficoltà del vocabolario per la storia",
-    "select-story-themes-and-vocabulary": "Seleziona temi e livello di vocabolario per la storia",
+    "select-story-themes-and-vocabulary": "Seleziona temi e livello della storia",
     "chatbot-message-suggestion-answer-wrong-reason": "Perché la mia risposta è sbagliata?",
     "chatbot-message-suggestion-analyze-context": "Aiutami a capire il contesto",
     "practice-flashcards": "Esercitati con le flashcard",
@@ -1835,10 +1835,11 @@
     "additional-information-modal-examples": "Esempi",
     "note-no-lessons-topic": "Note: you selected no grammar topics.",
     "note-lessons-topic-count": "You have selected {count} grammar topics.",
-    "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
-    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
-    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
-    "select-story-length": "Choose the number of sentences for the story",
+    "note-max-lessons-topic": "Maximum number of {count} grammar topics reached",
+    "spinner-text-long-generation": "Story creation in progress, we are working on it...",
+    "spinner-text-long-task": "This story needs a bit more time, please be patient...",
+    "select-story-length": "Length of the story — number of sentences",
     "begin-practice-tailored": "Pratica storia",
-    "tailored-begin-practice": "Pratica storia"
+    "tailored-begin-practice": "Pratica storia",
+    "confirm-folder-delete": "Are you sure you want to delete all stories in this folder?"
 }

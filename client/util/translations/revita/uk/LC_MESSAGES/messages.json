@@ -878,9 +878,9 @@
     "blue-cards-test-encouragement-dismiss-button": "Закрити",
     "reading-test-cycle-popup-title": "Вибери цикл питань",
     "word-nest-show-compounds-label": "Показати складові слова",
-    "story-generating": "Story generating...",
+    "story-generating": "Creating story...",
     "select-story-vocab-diff": "Choose overall difficulty for the story",
-    "select-story-themes-and-vocabulary": "Select themes and level of vocabulary for the story",
+    "select-story-themes-and-vocabulary": "Select themes and level of difficulty for the story",
     "chatbot-message-suggestion-answer-wrong-reason": "Why is my answer wrong?",
     "chatbot-message-suggestion-analyze-context": "Help me understand the context",
     "practice-flashcards": "Практика флешкарток",
@@ -948,10 +948,11 @@
     "additional-information-modal-examples": "Examples",
     "note-no-lessons-topic": "Note: you selected no grammar topics.",
     "note-lessons-topic-count": "You have selected {count} grammar topics.",
-    "note-max-lessons-topic": "Maximum of {count} grammar topics reached",
-    "spinner-text-long-generation": "This generation is taking longer than expected, please be patient.",
-    "spinner-text-long-task": "This is a challenging task, it's taking some time.",
-    "select-story-length": "Choose the number of sentences for the story",
+    "note-max-lessons-topic": "Maximum number of {count} grammar topics reached",
+    "spinner-text-long-generation": "Story creation in progress, we are working on it...",
+    "spinner-text-long-task": "This story needs a bit more time, please be patient...",
+    "select-story-length": "Length of the story — number of sentences",
     "begin-practice-tailored": "Почати практику",
-    "tailored-begin-practice": "Почати практику"
+    "tailored-begin-practice": "Почати практику",
+    "confirm-folder-delete": "Are you sure you want to delete all stories in this folder?"
 }

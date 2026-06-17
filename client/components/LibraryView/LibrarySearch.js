@@ -104,7 +104,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
           aria-label="Clear search"
           onClick={cancelSearch}
           size="small"
-          sx={{ position: 'absolute', right: 42 }}
+          sx={{ position: 'absolute', right: "60px", bottom: "10px" }}
         >
           <CloseIcon />
         </IconButton>

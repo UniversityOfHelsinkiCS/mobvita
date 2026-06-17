@@ -25,8 +25,13 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
     setError('')
   }
 
-  const handleSubmit = event => {
-    event.preventDefault()
+  const openDialog = e => {
+    e.currentTarget.blur()
+    setOpen(true)
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
 
     const trimmedFolderName = folderName.trim()
 
@@ -55,7 +60,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
         <IconButton
           aria-label={intl.formatMessage({ id: 'add-folder' })}
           className="library-add-folder-button"
-          onClick={() => setOpen(true)}
+          onClick={openDialog}
         >
           <CreateNewFolderIcon />
         </IconButton>
@@ -73,8 +78,8 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
               value={folderName}
               error={Boolean(error)}
               helperText={error}
-              onChange={event => {
-                setFolderName(event.target.value)
+              onChange={e => {
+                setFolderName(e.target.value)
                 setError('')
               }}
             />

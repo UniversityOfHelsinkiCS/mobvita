@@ -8,7 +8,9 @@ const errorHandler = (error, req, res, next) => {
   }
 
   if (error) {
-    return res.status(error.response.status).send(error.response.data.message)
+    return res
+      .status(error.response.status)
+      .send(error.response.data?.message || error.response.data || 'Backend request failed')
   }
   return next(error)
 }
