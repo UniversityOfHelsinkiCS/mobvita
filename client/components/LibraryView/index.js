@@ -41,51 +41,19 @@ import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
-
-const STORY_DRAG_MIME_TYPE = 'application/x-mobvita-story-ids'
-const LOCAL_FOLDER_STORAGE_PREFIX = 'mobvita-library-folders'
-
-const normalizeLibraryPath = path =>
-  (path || '')
-    .split('/')
-    .map(part => part.trim())
-    .filter(Boolean)
-    .join('/')
-
-const getLocalFolderStorageKey = (userId, learningLanguage) => {
-  if (!userId || !learningLanguage) return null
-
-  return `${LOCAL_FOLDER_STORAGE_PREFIX}:${userId}:${learningLanguage}`
-}
-
-const getStoredLocalFolders = storageKey => {
-  if (!storageKey || typeof window === 'undefined') return []
-
-  try {
-    const folders = JSON.parse(window.localStorage.getItem(storageKey) || '[]')
-
-    if (!Array.isArray(folders)) return []
-
-    return folders
-      .map(folder => ({
-        library: folder.library,
-        path: normalizeLibraryPath(folder.path),
-      }))
-      .filter(folder => folder.library && folder.path)
-  } catch {
-    return []
-  }
-}
-
-const saveStoredLocalFolders = (storageKey, folders) => {
-  if (!storageKey || typeof window === 'undefined') return
-
-  try {
-    window.localStorage.setItem(storageKey, JSON.stringify(folders))
-  } catch {
-    // Empty folders are convenience state; blocked storage should not break the library.
-  }
-}
+import {
+  addLocalFolder,
+  getFoldersForPath,
+  getLocalFolderPathsForLibrary,
+  getLocalFolderStorageKey,
+  getStoriesForPath,
+  getStoriesInFolder,
+  getStoredLocalFolders,
+  normalizeLibraryPath,
+  removeLocalFolder,
+  saveStoredLocalFolders,
+} from './folderUtils'
+import useLibraryDragAndDrop from './useLibraryDragAndDrop'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -120,11 +88,8 @@ const StoryList = () => {
   const [localFolders, setLocalFolders] = useState(() =>
     getStoredLocalFolders(localFolderStorageKey),
   )
-  const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] = useState(
-    localFolderStorageKey,
-  )
-  const [draggedStoryIds, setDraggedStoryIds] = useState([])
-  const [dragOverFolderPath, setDragOverFolderPath] = useState(null)
+  const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] =
+    useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
@@ -134,6 +99,24 @@ const StoryList = () => {
     group: false,
   })
   const dispatch = useDispatch()
+  const librariesToShow = Object.entries(libraries)
+    .filter(entry => entry[1])
+    .map(([key]) => capitalize(key))
+  const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
+  const libraryIsMutable = activeLibrary !== 'public'
+  const {
+    clearDragState,
+    draggedStoryIds,
+    dragOverFolderPath,
+    handleFolderDragLeave,
+    handleFolderDragOver,
+    handleFolderDrop,
+    handleStoryDragEnd,
+    handleStoryDragStart,
+  } = useLibraryDragAndDrop({
+    libraryIsMutable,
+    onMoveStories: handleMoveStoriesToPath,
+  })
 
   useEffect(() => {
     if (loadedLocalFolderStorageKey === localFolderStorageKey) return
@@ -161,8 +144,7 @@ const StoryList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     setCurrentLibraryPath('')
-    setDraggedStoryIds([])
-    setDragOverFolderPath(null)
+    clearDragState()
     setSorter(savedSortCriterion[library].sort_by)
     setSortDirection(savedSortCriterion[library].direction)
     if (library === 'group' && sharedToGroupSinceLastFetch) {
@@ -415,12 +397,6 @@ const StoryList = () => {
     return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
   }
 
-  const librariesToShow = Object.entries(libraries)
-    .filter(entry => entry[1])
-    .map(([key]) => capitalize(key))
-  const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
-  const libraryIsMutable = activeLibrary !== 'public'
-
   const storyIsInActiveLibrary = story => {
     if (story.public) {
       return librariesToShow.includes('Public')
@@ -463,48 +439,12 @@ const StoryList = () => {
     }
   }
 
-  const getFoldersForPath = (storiesForLibrary, currentPath, folderPaths = []) => {
-    const folderNames = new Set()
-    const currentParts = currentPath ? currentPath.split('/') : []
-
-    storiesForLibrary.forEach(story => {
-      const path = normalizeLibraryPath(story.path)
-      if (!path) return
-
-      const pathParts = path.split('/')
-      const storyIsInsideCurrentPath = currentParts.every(
-        (part, index) => pathParts[index] === part,
-      )
-
-      if (storyIsInsideCurrentPath && pathParts.length > currentParts.length) {
-        folderNames.add(pathParts[currentParts.length])
-      }
-    })
-
-    folderPaths.forEach(folderPath => {
-      const path = normalizeLibraryPath(folderPath)
-      if (!path) return
-
-      const pathParts = path.split('/')
-      const folderIsInsideCurrentPath = currentParts.every(
-        (part, index) => pathParts[index] === part,
-      )
-
-      if (folderIsInsideCurrentPath && pathParts.length > currentParts.length) {
-        folderNames.add(pathParts[currentParts.length])
-      }
-    })
-
-    return Array.from(folderNames).sort((a, b) => a.localeCompare(b))
-  }
-
-  const getStoriesForPath = (storiesForLibrary, currentPath) =>
-    storiesForLibrary.filter(story => normalizeLibraryPath(story.path) === currentPath)
-
   const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
-  const localFolderPathsForLibrary = localFolders
-    .filter(folder => libraryIsMutable && folder.library === activeLibrary)
-    .map(folder => normalizeLibraryPath(folder.path))
+  const localFolderPathsForLibrary = getLocalFolderPathsForLibrary(
+    localFolders,
+    libraryIsMutable,
+    activeLibrary,
+  )
 
   libraryFilteredStories.sort((a, b) => {
     let dir = 0
@@ -531,42 +471,10 @@ const StoryList = () => {
 
   const handleLibraryPathChange = path => {
     setCurrentLibraryPath(normalizeLibraryPath(path))
-    setDraggedStoryIds([])
-    setDragOverFolderPath(null)
+    clearDragState()
   }
 
-  const storyDragDataIsAvailable = e => {
-    if (!libraryIsMutable) return false
-
-    const dataTransferTypes = Array.from(e.dataTransfer?.types || [])
-
-    return draggedStoryIds.length > 0 || dataTransferTypes.includes(STORY_DRAG_MIME_TYPE)
-  }
-
-  const getDroppedStoryIds = e => {
-    const storyIdsJson = e.dataTransfer.getData(STORY_DRAG_MIME_TYPE)
-
-    if (storyIdsJson) {
-      try {
-        const storyIds = JSON.parse(storyIdsJson)
-        if (Array.isArray(storyIds)) return storyIds
-      } catch {
-        // Fall back to text/plain below.
-      }
-    }
-
-    const fallbackStoryIds = e.dataTransfer.getData('text/plain')
-    if (fallbackStoryIds) {
-      return fallbackStoryIds
-        .split(',')
-        .map(storyId => storyId.trim())
-        .filter(Boolean)
-    }
-
-    return draggedStoryIds
-  }
-
-  const handleMoveStoriesToPath = (storyIds, targetPath) => {
+  function handleMoveStoriesToPath(storyIds, targetPath) {
     if (!libraryIsMutable) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
@@ -579,66 +487,6 @@ const StoryList = () => {
 
     storiesToMove.forEach(story => {
       dispatch(updateStoryPath(story._id, normalizedTargetPath))
-    })
-
-    setDraggedStoryIds([])
-    setDragOverFolderPath(null)
-  }
-
-  const handleFolderDragOver = (folderPath, e) => {
-    if (!storyDragDataIsAvailable(e)) return
-
-    e.preventDefault()
-    e.stopPropagation()
-    e.dataTransfer.dropEffect = 'move'
-    setDragOverFolderPath(folderPath)
-  }
-
-  const handleFolderDragLeave = (folderPath, e) => {
-    if (e.currentTarget.contains(e.relatedTarget)) return
-
-    setDragOverFolderPath(currentFolderPath =>
-      currentFolderPath === folderPath ? null : currentFolderPath,
-    )
-  }
-
-  const handleFolderDrop = (folderPath, e) => {
-    if (!libraryIsMutable) return
-
-    const storyIds = getDroppedStoryIds(e)
-    if (storyIds.length === 0) return
-
-    e.preventDefault()
-    e.stopPropagation()
-    handleMoveStoriesToPath(storyIds, folderPath)
-  }
-
-  const handleStoryDragStart = (storyId, e) => {
-    if (!libraryIsMutable) {
-      e.preventDefault()
-      return
-    }
-
-    const storyIdsToMove = [storyId]
-
-    e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData(STORY_DRAG_MIME_TYPE, JSON.stringify(storyIdsToMove))
-    e.dataTransfer.setData('text/plain', storyIdsToMove.join(','))
-    setDraggedStoryIds(storyIdsToMove)
-  }
-
-  const handleStoryDragEnd = () => {
-    setDraggedStoryIds([])
-    setDragOverFolderPath(null)
-  }
-
-  const getStoriesInFolder = folderPath => {
-    const normalizedFolderPath = normalizeLibraryPath(folderPath)
-
-    return allStoriesInActiveLibrary.filter(story => {
-      const storyPath = normalizeLibraryPath(story.path)
-
-      return storyPath === normalizedFolderPath || storyPath.startsWith(`${normalizedFolderPath}/`)
     })
   }
 
@@ -695,23 +543,9 @@ const StoryList = () => {
       currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName,
     )
 
-    setLocalFolders(currentLocalFolders => {
-      const folderAlreadyExists = currentLocalFolders.some(
-        folder =>
-          folder.library === activeLibrary &&
-          normalizeLibraryPath(folder.path) === newFolderPath,
-      )
-
-      if (folderAlreadyExists) return currentLocalFolders
-
-      return [
-        ...currentLocalFolders,
-        {
-          library: activeLibrary,
-          path: newFolderPath,
-        },
-      ]
-    })
+    setLocalFolders(currentLocalFolders =>
+      addLocalFolder(currentLocalFolders, activeLibrary, newFolderPath),
+    )
   }
 
   const handleRemoveLocalFolder = folderPath => {
@@ -720,15 +554,7 @@ const StoryList = () => {
     const normalizedFolderPath = normalizeLibraryPath(folderPath)
 
     setLocalFolders(currentLocalFolders =>
-      currentLocalFolders.filter(folder => {
-        if (folder.library !== activeLibrary) return true
-
-        const currentFolderPath = normalizeLibraryPath(folder.path)
-        return (
-          currentFolderPath !== normalizedFolderPath &&
-          !currentFolderPath.startsWith(`${normalizedFolderPath}/`)
-        )
-      }),
+      removeLocalFolder(currentLocalFolders, activeLibrary, normalizedFolderPath),
     )
   }
 
@@ -736,7 +562,7 @@ const StoryList = () => {
     if (!libraryIsMutable) return
 
     const normalizedFolderPath = normalizeLibraryPath(folderPath)
-    const storiesInFolder = getStoriesInFolder(normalizedFolderPath)
+    const storiesInFolder = getStoriesInFolder(allStoriesInActiveLibrary, normalizedFolderPath)
 
     if (storiesInFolder.length === 0) {
       handleRemoveLocalFolder(normalizedFolderPath)
@@ -788,10 +614,12 @@ const StoryList = () => {
                 ? `${currentLibraryPath}/${folderName}`
                 : folderName
               const normalizedFolderPath = normalizeLibraryPath(folderPath)
-              const storiesInFolder = getStoriesInFolder(normalizedFolderPath)
+              const storiesInFolder = getStoriesInFolder(
+                allStoriesInActiveLibrary,
+                normalizedFolderPath,
+              )
               const folderIsEmptyLocal =
-                folderIsLocalOnly(normalizedFolderPath) &&
-                storiesInFolder.length === 0
+                folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
 
               return (
                 <FolderCard
@@ -811,9 +639,7 @@ const StoryList = () => {
                       : undefined
                   }
                   onDrop={
-                    libraryIsMutable
-                      ? e => handleFolderDrop(normalizedFolderPath, e)
-                      : undefined
+                    libraryIsMutable ? e => handleFolderDrop(normalizedFolderPath, e) : undefined
                   }
                   onDelete={
                     libraryIsMutable && storiesInFolder.length > 0
