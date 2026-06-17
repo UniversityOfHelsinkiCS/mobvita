@@ -38,10 +38,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
     [stories, dispatch, setDisplaySearchResults, setDisplayedStories]
   )
 
-  // Debounce filtering so it only runs after the user pauses typing, instead of
-  // on every keystroke over a potentially large story list. A ref keeps the
-  // debounced wrapper stable while always calling the latest filterStories
-  // (which closes over the current stories list).
+  // Debounce filtering to avoid work on every keystroke while using the latest filterStories implementation
   const filterStoriesRef = useRef(filterStories)
   useEffect(() => {
     filterStoriesRef.current = filterStories
@@ -107,7 +104,7 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
           aria-label="Clear search"
           onClick={cancelSearch}
           size="small"
-          sx={{ position: 'absolute', right: 42 }}
+          sx={{ position: 'absolute', right: "60px", bottom: "10px" }}
         >
           <CloseIcon />
         </IconButton>

@@ -25,23 +25,23 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
     setError('')
   }
 
-  const handleSubmit = event => {
-    event.preventDefault()
+  const openDialog = e => {
+    e.currentTarget.blur()
+    setOpen(true)
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
 
     const trimmedFolderName = folderName.trim()
 
-    if (!trimmedFolderName) {
-      setError('Folder name is required')
-      return
-    }
-
     if (trimmedFolderName.includes('/')) {
-      setError('Folder name cannot contain /')
+      setError(intl.formatMessage({ id: 'folder-name-invalid' }))
       return
     }
 
     if (existingFolderNames.includes(trimmedFolderName)) {
-      setError('A folder with this name already exists here')
+      setError(intl.formatMessage({ id: 'folder-name-exists' }))
       return
     }
 
@@ -55,7 +55,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
         <IconButton
           aria-label={intl.formatMessage({ id: 'add-folder' })}
           className="library-add-folder-button"
-          onClick={() => setOpen(true)}
+          onClick={openDialog}
         >
           <CreateNewFolderIcon />
         </IconButton>
@@ -73,8 +73,8 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
               value={folderName}
               error={Boolean(error)}
               helperText={error}
-              onChange={event => {
-                setFolderName(event.target.value)
+              onChange={e => {
+                setFolderName(e.target.value)
                 setError('')
               }}
             />
@@ -83,7 +83,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
             <Button variant="outline-secondary" onClick={closeDialog}>
               {intl.formatMessage({ id: 'Cancel' })}
             </Button>
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" disabled={!folderName.trim()}>
               {intl.formatMessage({ id: 'Add' })}
             </Button>
           </DialogActions>

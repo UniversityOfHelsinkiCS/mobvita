@@ -241,6 +241,10 @@
   }
 }
 
+.mui-story-card.library-story-card-dragging {
+  opacity: 0.55;
+}
+
 .library-folder-card {
   position: relative;
   margin-top: 10px;
@@ -248,26 +252,54 @@
   min-height: 0;
   height: 95%;
   width: 100%;
-  border: none;
+  border: 1px solid #000000;
   border-radius: 0 12px 12px 12px;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.143);
-  background: linear-gradient(180deg, #d7ecff 0%, #b2d5f6 100%);
+  box-shadow: 0.3em 0.3em 0.4em rgba(128, 128, 128, 0.792);
+  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
 
   cursor: pointer;
   text-align: left;
   padding: 28px 24px 20px;
+  transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
 }
 
 .library-folder-card::before {
   content: "";
   position: absolute;
   top: -8px;
-  left: 0;
+  left: -1px;
   width: 120px;
   height: 8px;
+  border: 1px solid #000000;
   border-bottom: none;
   border-radius: 8px 8px 0 0;
-  background: linear-gradient(180deg, #e9f0f8 0%, #d7ecff 100%);
+  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+}
+
+.library-folder-card-drop-target {
+  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
+  transform: translateY(-2px);
+}
+
+.library-folder-card-drop-target::before {
+  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+}
+
+.library-folder-card-empty {
+  background-color: white;
+  background: linear-gradient(170deg, #f1f0f0  0%, #e8e8e8 100%);
+}
+
+.library-folder-card-empty::before {
+  background: linear-gradient(170deg, #f1f0f0  0%, #f1f1f1 100%);
+}
+
+.library-folder-card-empty.library-folder-card-drop-target {
+  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
+}
+
+.library-folder-card-empty.library-folder-card-drop-target::before {
+  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
 }
 
 .library-folder-content {
@@ -281,6 +313,12 @@
   font-size: 88px;
   width: 88px;
   height: 72px;
+  transition: filter 0.12s ease, transform 0.12s ease;
+}
+
+.library-folder-card-drop-target .library-folder-icon {
+  filter: drop-shadow(0 4px 4px rgba(31, 120, 200, 0.35)) saturate(1.15);
+  transform: translateY(-2px) scale(1.08);
 }
 
 .library-folder-name {
