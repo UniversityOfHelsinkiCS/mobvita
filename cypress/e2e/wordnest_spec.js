@@ -9,12 +9,12 @@ describe('wordnest modal', function () {
     // Reuse the session created in beforeAll — do not call cy.login() again
     cy.loginExisting()
 
-    cy.intercept('GET', '**/api/stories/**').as('getStory')
+    cy.intercept('GET', '**/api/**').as('apiCall')
     cy.intercept({ method: /GET|POST/, url: '**/api/**translation**' }).as('getTranslation')
     cy.visit(previewURL)
-    cy.wait('@getStory')
+    cy.wait('@apiCall', { timeout: 30000 })
 
-    cy.get('body', { timeout: 20000 }).should('be.visible')
+    cy.contains('спортсменка', { timeout: 30000 }).should('be.visible')
   })
 
   this.afterAll(function () {
