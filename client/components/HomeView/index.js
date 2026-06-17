@@ -119,7 +119,7 @@ const HomeviewButtons = ({
   }
   const activityLink = assembleActivityLink(lastActivity)
   return (    
-    <div className="" style={{width: '100%'}}>
+    <div className="service-cards">
       {(hasTeacherRole && isTeacherView) && (
         <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
           <div className="add-new-stories-btn-cont tour-add-new-stories">
@@ -375,8 +375,7 @@ const HomeView = () => {
 
   return (
     <div
-      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg blue-bg`}
-      style={{ alignItems: 'center' }}
+      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg blue-bg`}    
     >
       {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}

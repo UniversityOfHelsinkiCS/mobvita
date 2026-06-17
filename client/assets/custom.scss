@@ -3837,7 +3837,18 @@ label.file-upload-btn {
 
 @media (min-width: 1856px) {
   .cont.sidebar-pushed {
-    margin-right: 0px;
-    max-width: 1024px;    
+    margin-right: 0 !important;
+    max-width: 1024px;
   }
+
+  .cont-tall.cont.sidebar-pushed {
+    margin-right: auto !important;
+  }
+}
+
+.service-cards {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+
 }
