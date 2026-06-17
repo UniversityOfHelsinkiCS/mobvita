@@ -10,7 +10,7 @@ jobs:
     name: "Test competition"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -21,7 +21,7 @@ jobs:
     name: "Test dictionary"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -32,7 +32,7 @@ jobs:
     name: "Test flashcards"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -43,7 +43,7 @@ jobs:
     name: "Test follow and block"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -54,7 +54,7 @@ jobs:
     name: "Test groups"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -65,7 +65,7 @@ jobs:
     name: "Test mobvita"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -76,7 +76,7 @@ jobs:
     name: "Test practice"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -87,7 +87,7 @@ jobs:
     name: "Test reading comprehension"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -98,7 +98,7 @@ jobs:
     name: "Test tests"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -109,7 +109,7 @@ jobs:
     name: "Test tour"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -120,7 +120,7 @@ jobs:
     name: "Test wordnest"
     runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: 'Run tests'
         uses: ./.github/actions/run_test
         with:
@@ -144,7 +144,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
@@ -171,7 +171,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Pull image and create a container
         run: docker create --name mobvita toska/mobvita:staging
       - name: Copy assets from the container
