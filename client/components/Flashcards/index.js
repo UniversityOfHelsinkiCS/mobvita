@@ -13,6 +13,8 @@ import FlashcardList from './FlashcardList'
 import { FlashcardStoryInfo, FlashcardStoryInfoIcon } from './FlashcardStoryInfo'
 import LibraryTabs from 'Components/LibraryTabs'
 import SettingButton from 'Components/SettingsButton'
+import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
@@ -25,6 +27,8 @@ const Flashcards = () => {
 
   const { width } = useWindowDimensions()
   const { mode, type, storyId } = useParams()
+
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
   const blueCardStory = useSelector(({ flashcards }) =>
@@ -145,7 +149,7 @@ const Flashcards = () => {
   }
 
   return (
-    <div className="cont-tall cont pb-nm flex-col auto pt-xl">
+    <div className={`cont-tall cont pb-nm flex-col auto pt-xl ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
       <div data-cy="library-controls" className="library-control">
         <LibraryTabs values={tabValues} onClick={handleTabChange} reverse />
       </div>
@@ -194,6 +198,10 @@ const Flashcards = () => {
 
         <SettingButton />
       </div>
+
+      <HelperSidebar>
+        <GeneralChatbot />
+      </HelperSidebar>
     </div>
   )
 }
