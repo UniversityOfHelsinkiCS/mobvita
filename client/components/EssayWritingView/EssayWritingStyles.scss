@@ -1,0 +1,84 @@
+$essay-navbar-height: 3em;
+$essay-content-top-padding: 0.5rem;
+$essay-content-width: 1024px;
+$essay-content-min-width: 650px;
+$essay-sidebar-offset: 40px;
+
+.essay-writing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 80px);
+  margin: 0 12px;
+
+  @media (max-width: 768px) {
+    margin: 0 8px;
+  }
+}
+
+.essay-writing-main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.essay-writing-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: $essay-content-width;
+
+  @media (min-width: 700px) {
+    min-width: $essay-content-min-width;
+  }
+}
+
+.essay-writing-container-sidebar-pushed {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin-right: $essay-sidebar-offset !important;
+  transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.essay-writing-panel {
+  width: 100%;
+  max-width: $essay-content-width;
+  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
+  padding: 1rem;
+  border-radius: 4px;
+
+  @media (min-width: 700px) {
+    min-width: $essay-content-min-width;
+  }
+}
+
+.essay-writing-title {
+  min-height: 1.5em;
+  height: auto;
+  padding-right: 1em;
+  margin-bottom: 0.75em;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .essay-writing-container-sidebar-pushed {
+    max-height: 60vh;
+    min-height: 0;
+    margin-right: 0 !important;
+    overflow-y: auto;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    > * {
+      flex-shrink: 0;
+    }
+  }
+}
+
+@media (min-width: 1856px) {
+  .essay-writing-container-sidebar-pushed {
+    max-width: $essay-content-width;
+    margin-right: 0 !important;
+  }
+}
