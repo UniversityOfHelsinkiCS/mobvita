@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 import { useIntl, FormattedMessage } from 'react-intl';
 import './Chatbot.scss';
 import {
-    getGeneralAgentConversationHistory,
-    getGeneralChatbotResponse,
-} from 'Utilities/redux/chatbotReducer';
+    sendGeneralDialogue,
+    removeDialogue,
+} from 'Utilities/redux/dialoguesReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
@@ -18,25 +19,29 @@ const GeneralReadingChatBot = () => {
     const dispatch = useDispatch();
     const [currentMessage, setCurrentMessage] = useState("");
 
-    const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
+    // Each URL keeps its own dialogue thread (Profile tabs included). Items live in the
+    // dialogues store across navigation; we filter by scope instead of clearing. Threads are
+    // frontend-only for the session — sends still POST to the backend, but we don't read the
+    // shared backend history back in (it's one global thread and would leak across views).
+    const scope = useLocation().pathname;
+    const items = useSelector(({ dialogues }) => dialogues.items);
+    const isWaitingForResponse = useSelector(({ dialogues }) => !!dialogues.pending[scope]);
+    const messages = items.filter(i => i.scope === scope && i.type === 'chatbot-message');
+
     const latestMessageRef = useRef(null)
     const predefinedChatbotRequests = [
         "chatbot-message-suggestion-next-steps",
         "chatbot-message-suggestion-performance"
     ].map(msgId => ({
         msgId,
-        func: getGeneralChatbotResponse(intl.formatMessage({ id: msgId }))
+        func: sendGeneralDialogue(intl.formatMessage({ id: msgId }), scope)
     }));
-    // Fetch conversation history when chatbot starts
-    useEffect(() => {
-        dispatch(getGeneralAgentConversationHistory());
-    }, []);
 
     const scrollToLatestMessage = () => latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
 
     useEffect(() => {
         scrollToLatestMessage()
-    }, [messages])
+    }, [messages.length])
 
     // Add a static "init" message from the bot if there are no messages yet
     const initialMessage = {
@@ -47,7 +52,7 @@ const GeneralReadingChatBot = () => {
     const handleMessageSubmit = (event) => {
         event.preventDefault();
         if (currentMessage.trim() === '') return;
-        dispatch(getGeneralChatbotResponse(currentMessage));
+        dispatch(sendGeneralDialogue(currentMessage, scope));
         setCurrentMessage("");
     };
 
@@ -64,29 +69,31 @@ const GeneralReadingChatBot = () => {
                 </h3>                
             </div>                
             <div className="chatbot-messages">
-                {isLoadingHistory ? (
-                    <Spinner inline />
-                ) : (
-                    <>
-                        {/* Display initial static bot message if no messages are present */}
-                        {messages.length === 0 && (
-                            <div className="message message-bot">
-                                {initialMessage.text}
-                            </div>
-                        )}
+                {/* Display initial static bot message if no messages are present */}
+                {messages.length === 0 && (
+                    <div className="message message-bot">
+                        {initialMessage.text}
+                    </div>
+                )}
 
-                        {/* Display other messages */}
-                        {messages.map((message, index) => (
-                            <div ref={index === messages.length - 1 ? latestMessageRef : null} key={index} className={`message message-${message.type}`}  style={{display: 'block'}}>
-                                {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
-                            </div>
-                        ))}
-                        {isWaitingForResponse && (
-                            <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                                <Spinner inline />
-                            </div>
+                {/* Display other messages */}
+                {messages.map((message, index) => (
+                    <div ref={index === messages.length - 1 ? latestMessageRef : null} key={message.id} className={`message message-${message.role}`}  style={{display: 'block'}}>
+                        {message.removable && (
+                            <Icon
+                                name="close"
+                                color="grey"
+                                className="dialogue-remove"
+                                onClick={() => dispatch(removeDialogue(message.id))}
+                            />
                         )}
-                    </>
+                        {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
+                    </div>
+                ))}
+                {isWaitingForResponse && (
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
+                        <Spinner inline />
+                    </div>
                 )}
             </div>
             <div className="chatbot-input-area">

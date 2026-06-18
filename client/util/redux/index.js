@@ -59,6 +59,7 @@ import storyGeneration from './storyGenerationReducer'
 import readingComprehension from './readingComprehensionReducer'
 import helperSidebar from './helperSidebarReducer'
 import notes from './notesReducer'
+import dialogues from './dialoguesReducer'
 
 
 const rootReducer = combineReducers({
@@ -121,6 +122,7 @@ const rootReducer = combineReducers({
   readingComprehension,
   helperSidebar,
   notes,
+  dialogues,
 })
 
 export default (state, action) =>

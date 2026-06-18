@@ -93,13 +93,31 @@
 }
 
 .message {
+    position: relative;
     display: flex;
     padding: 10px 14px;
     border-radius: 8px;
-    max-width: 80%; 
+    max-width: 80%;
     margin-bottom: 10px;
     @media (max-width: 900px) {
-        max-width: 90%; 
+        max-width: 90%;
+    }
+}
+
+.dialogue-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    margin: 0 !important;
+    font-size: 0.75em;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.35;
+    text-shadow: none !important;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+        opacity: 0.85;
     }
 }
 
