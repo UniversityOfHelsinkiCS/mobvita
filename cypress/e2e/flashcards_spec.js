@@ -40,6 +40,8 @@ describe('flashcards', function () {
       cy.contains('saapua').click()
       cy.get('[data-cy=translations]').contains('arrive')
       cy.visit('http://localhost:8000/flashcards/')
+      // Close the helper sidebar so it doesn't push/overlay the flashcard practice layout
+      cy.get('[data-cy=helper-sidebar-toggle]').click()
     })
 
     it('story specific flashcards can be accessed', function () {
@@ -101,6 +103,8 @@ describe('flashcards', function () {
       cy.contains('viikolla').click()
       cy.get('[data-cy=translations]').contains('week')
       cy.visit('http://localhost:8000/flashcards/')
+      // Close the helper sidebar so it doesn't push/overlay the flashcard practice layout
+      cy.get('[data-cy=helper-sidebar-toggle]').click()
     })
 
     it('can get to the next card', function () {

@@ -14,8 +14,8 @@ const HelperSidebar = ({ children }) => {
   }
 
   return (
-    <aside 
-      className={`helper-sidebar ${isOpen ? 'open' : 'collapsed'}`}      
+    <aside
+      className={`helper-sidebar ${isOpen ? 'open' : 'collapsed'}`}
       aria-label="Helper Sidebar"
     >
       <button 
