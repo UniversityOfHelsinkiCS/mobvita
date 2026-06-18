@@ -7,6 +7,7 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import Footer from '../Footer'
 import CombinedChatbot from 'Components/PracticeView/CombinedChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import EssayTextInput from './EssayTextInput'
 
 import './EssayWritingStyles.scss'
 
@@ -35,7 +36,7 @@ const EssayWritingView = () => {
               </Typography>
             </Box>
             <Divider sx={{ mt: 2 }} />
-            
+            <EssayTextInput />
           </Paper>
 
           <HelperSidebar>

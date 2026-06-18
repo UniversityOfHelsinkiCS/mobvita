@@ -62,6 +62,51 @@ $essay-sidebar-offset: 40px;
   font-weight: 500;
 }
 
+.essay-writing-input-area {
+  margin-top: 1rem;
+}
+
+.essay-writing-input {
+  background: #fff;
+}
+
+.essay-writing-correction-bubble {
+  z-index: 1300;
+  max-width: min(520px, calc(100vw - 32px));
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.essay-writing-correction-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 220px;
+  min-height: 32px;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.essay-writing-correction-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  min-height: 32px;
+}
+
+.essay-writing-correction-error-tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #d32f2f;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   .essay-writing-container-sidebar-pushed {
     max-height: 60vh;
