@@ -8,11 +8,14 @@ import Main from './Main'
 import Account from './Account'
 import Settings from './Settings'
 import Following from './Following'
+import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 export default function Profile({ location }) {
   const intl = useIntl()
   const dispatch = useDispatch()
   const { teacherView } = useSelector(({ user }) => user.data)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   let panes
   let index
   if (!teacherView){
@@ -151,8 +154,12 @@ export default function Profile({ location }) {
   }
 
   return (
-    <main className="cont pb-nm auto">
+    <main className={`cont-tall cont pb-xl auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
       <Tab panes={panes} activeIndex={index} />
+
+      <HelperSidebar>
+        <GeneralChatbot />
+      </HelperSidebar>
     </main>
   )
 }
