@@ -57,10 +57,8 @@ export const buildWordNotes = (word, { answer, tiedAnswer, isPreviewMode, hidden
   }
 
   if (isPreviewMode && word.concepts?.length > 0) {
-    items.push({ kind: 'topics-header' })
-    word.concepts.forEach(concept => {
-      items.push({ kind: 'concept', text: concept.concept })
-    })
+    // Header + topics belong together in one bubble (like the mc message + choices).
+    items.push({ kind: 'topics', concepts: word.concepts.map(concept => concept.concept) })
   }
 
   return items

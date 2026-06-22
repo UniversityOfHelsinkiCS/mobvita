@@ -62,17 +62,21 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
             </div>
           )
         }
-        if (note.kind === 'topics-header') {
+        if (note.kind === 'topics') {
           return (
             <div key={index} className="message message-notes">
-              <FormattedMessage id="topics-header" />:
-            </div>
-          )
-        }
-        if (note.kind === 'concept') {
-          return (
-            <div key={index} className="message message-notes">
-              <span dangerouslySetInnerHTML={sanitizeHtml(note.text)} />
+              <div>
+                <FormattedMessage id="topics-header" />:
+                {note.concepts?.length > 0 && (
+                  <ul>
+                    {note.concepts.map((concept, i) => (
+                      <li key={i}>
+                        <span dangerouslySetInnerHTML={sanitizeHtml(concept)} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           )
         }
