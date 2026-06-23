@@ -1,0 +1,208 @@
+/* =========================================
+   Translation Lemma Card
+   Co-located with the Lemma component so the styles ship wherever it's rendered
+   (CombinedChatbot, DictionaryHelp / ControlledStoryEditView, ReadViews, etc.)
+   instead of living only in the practice-chunk CombinedChatbot.scss.
+   ========================================= */
+
+/* Main Card Container */
+.translation-lemma-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  /* NOTE: Padding is now controlled via inline style from parent
+     to support dynamic flashcard stages. Default fallback below: */
+  padding: 0.5em 2.5em 2.5em 0.5em;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0; /* Prevents flex items from overflowing */
+}
+
+/* =========================================
+   Column Layout
+   ========================================= */
+
+.translation-lemma-card .card-column {
+  display: flex;
+}
+
+/* Left Column: Takes available space, stacks rows vertically */
+.translation-lemma-card .left-column {
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem; /* Space between top-row (word) and bottom-row (glosses) */
+  min-width: 0; /* Allows text truncation if needed */
+}
+
+/* Right Column: Fixed width for icons, centers content vertically */
+.translation-lemma-card .right-column {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem; /* Even vertical spacing between the 3 icons */
+  padding-left: 1rem; /* Small gap between columns */
+}
+
+/* =========================================
+   Top Row: Speaker + Word + External Icon
+   ========================================= */
+
+.translation-lemma-card .top-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem; /* Space between the three horizontal elements */
+}
+
+/* Main Lemma Word Link */
+.translation-lemma-card .top-row .lemma-word {
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.translation-lemma-card .top-row .lemma-word:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* Speaker Icon (Semantic UI) */
+.translation-lemma-card .top-row .volume.icon {
+  font-size: 1.1rem;
+  color: #000000;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.translation-lemma-card .top-row .volume.icon:hover {
+  color: #2563eb;
+}
+
+/* External Link Icon */
+.translation-lemma-card .top-row .external.icon {
+  font-size: 1rem;
+  color: #000000;
+  transition: color 0.2s ease;
+}
+
+.translation-lemma-card .top-row .external.icon:hover {
+  color: #2563eb;
+}
+
+/* =========================================
+   Bottom Row: Translations List (Glosses)
+   ========================================= */
+
+.translation-lemma-card .translation-glosses {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #000000;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  list-style-type: disc;
+}
+
+.translation-lemma-card .translation-glosses li {
+  margin-bottom: 0.25rem;
+}
+
+.translation-lemma-card .translation-glosses li:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   Right Column: Action Icons (Check, Question, Word Nest)
+   ========================================= */
+
+/* Check & Question Icons (Semantic UI) */
+.translation-lemma-card .right-column i.icon {
+  font-size: 1.25rem;
+  color: #000000;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.translation-lemma-card .right-column i.icon:hover {
+  color: #2563eb;
+  transform: scale(1.1);
+}
+
+/* Word Nest Button */
+.translation-lemma-card .wordnest-icon-button {
+  background: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  border-radius: 4px; /* Subtle hover feedback */
+}
+
+.translation-lemma-card .wordnest-icon-button:hover {
+  transform: scale(1.1);
+}
+
+.translation-lemma-card .wordnest-icon-button:active {
+  transform: scale(0.95);
+}
+
+.translation-lemma-card .wordnest-icon-button img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+
+@media (max-width: 768px) {
+  .translation-lemma-card {
+    flex-direction: column;
+    padding: 1em;
+    gap: 1rem;
+  }
+
+  .translation-lemma-card .right-column {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    padding-left: 0;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .translation-lemma-card .right-column i.icon,
+  .translation-lemma-card .wordnest-icon-button {
+    margin: 0; /* Reset any leftover margins */
+  }
+}
+
+/* =========================================
+   Accessibility & Focus States
+   ========================================= */
+
+.translation-lemma-card a:focus,
+.translation-lemma-card button:focus,
+.translation-lemma-card .icon:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .translation-lemma-card *,
+  .translation-lemma-card *::before,
+  .translation-lemma-card *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

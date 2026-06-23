@@ -10,6 +10,7 @@ import {
   images,
 } from 'Utilities/common';
 import { Speaker } from './dictComponents';
+import './Lemma.scss';
 
 const Lemma = ({
   lemma,
