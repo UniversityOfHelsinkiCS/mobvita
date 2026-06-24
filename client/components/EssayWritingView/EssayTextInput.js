@@ -5,31 +5,13 @@ import { Box, TextField } from '@mui/material'
 import {
   checkWritingCorrection,
   getWritingCorrectionKey,
+  hideWritingCorrectionSuggestion,
+  syncWritingCorrectionSuggestions,
+  useCachedWritingCorrection,
 } from 'Utilities/redux/writingCorrectionReducer'
-import CorrectionSuggestionPopper from './CorrectionSuggestionPopper'
 
 const sentenceMatchRegex = /[^.!?]+[.!?]+/g
 const WRITING_LANGUAGE = 'Finnish'
-const textareaMirrorProperties = [
-  'borderBottomWidth',
-  'borderLeftWidth',
-  'borderRightWidth',
-  'borderTopWidth',
-  'boxSizing',
-  'fontFamily',
-  'fontSize',
-  'fontStyle',
-  'fontWeight',
-  'letterSpacing',
-  'lineHeight',
-  'paddingBottom',
-  'paddingLeft',
-  'paddingRight',
-  'paddingTop',
-  'textTransform',
-  'width',
-  'wordSpacing',
-]
 
 const getCompletedSentenceMatches = text => Array.from(text.matchAll(sentenceMatchRegex))
 
@@ -37,6 +19,7 @@ const getCompletedSentences = text => {
   const matches = getCompletedSentenceMatches(text)
 
   return matches.map((match, index) => ({
+    sentenceId: `sentence-${match.index}`,
     text: match[0].trim(),
     startIndex: match.index,
     endIndex: match.index + match[0].length,
@@ -45,11 +28,6 @@ const getCompletedSentences = text => {
       .map(contextMatch => contextMatch[0].trim())
       .join(' '),
   }))
-}
-
-const getLatestCompletedSentence = text => {
-  const sentences = getCompletedSentences(text)
-  return sentences[sentences.length - 1] || null
 }
 
 const cursorIsInsideSentence = (sentence, cursorIndex) => (
@@ -65,6 +43,33 @@ const getCompletedSentenceNearIndex = (text, cursorIndex) => (
   getCompletedSentenceAtIndex(text, Math.max(cursorIndex - 1, 0))
 )
 
+const getFirstChangedIndex = (previousText, nextText) => {
+  const maxSharedLength = Math.min(previousText.length, nextText.length)
+
+  for (let index = 0; index < maxSharedLength; index += 1) {
+    if (previousText[index] !== nextText[index]) {
+      return index
+    }
+  }
+
+  return maxSharedLength
+}
+
+const getCompletedSentenceFromIndexes = (text, indexes) => {
+  const maxIndex = Math.max(text.length, 0)
+
+  for (const index of indexes) {
+    const sentence = getCompletedSentenceNearIndex(
+      text,
+      Math.max(Math.min(index, maxIndex), 0),
+    )
+
+    if (sentence) return sentence
+  }
+
+  return null
+}
+
 const getUpdatedPendingSentence = (text, pendingSentence) => {
   if (!pendingSentence) return null
 
@@ -72,90 +77,26 @@ const getUpdatedPendingSentence = (text, pendingSentence) => {
     getCompletedSentenceAtIndex(text, Math.max(pendingSentence.endIndex - 1, 0))
 }
 
-const getTextareaIndexRect = (textarea, textIndex) => {
-  const computedStyle = window.getComputedStyle(textarea)
-  const mirror = document.createElement('div')
-  const marker = document.createElement('span')
-
-  textareaMirrorProperties.forEach(property => {
-    mirror.style[property] = computedStyle[property]
-  })
-
-  mirror.style.left = '-9999px'
-  mirror.style.overflow = 'hidden'
-  mirror.style.position = 'absolute'
-  mirror.style.top = '0'
-  mirror.style.visibility = 'hidden'
-  mirror.style.whiteSpace = 'pre-wrap'
-  mirror.style.overflowWrap = 'break-word'
-
-  mirror.textContent = textarea.value.slice(0, textIndex)
-  marker.textContent = '\u200b'
-  mirror.appendChild(marker)
-  document.body.appendChild(mirror)
-
-  const textareaRect = textarea.getBoundingClientRect()
-  const lineHeight = Number.parseFloat(computedStyle.lineHeight) ||
-    Number.parseFloat(computedStyle.fontSize) ||
-    16
-  const rect = new DOMRect(
-    textareaRect.left + marker.offsetLeft - textarea.scrollLeft,
-    textareaRect.top + marker.offsetTop + lineHeight - textarea.scrollTop,
-    0,
-    0,
-  )
-
-  document.body.removeChild(mirror)
-  return rect
-}
-
 const EssayTextInput = () => {
   const dispatch = useDispatch()
   const [text, setText] = useState('')
-  const [bubbleOpen, setBubbleOpen] = useState(false)
-  const [bubbleAnchor, setBubbleAnchor] = useState(null)
-  const [latestCompletedSentence, setLatestCompletedSentence] = useState('')
-  const [correctionKey, setCorrectionKey] = useState('')
-  const [highlightedWords, setHighLightedWords] = useState([])
-  const textareaRef = useRef(null)
-  const correctionSentenceRef = useRef(null)
   const pendingEditedSentenceRef = useRef(null)
   const textRef = useRef('')
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
-  const correctionEntry = correctionsByKey[correctionKey]
 
-  const updateBubblePosition = (textarea, completedSentence) => {
-    const sentenceStartRect = getTextareaIndexRect(textarea, completedSentence.startIndex)
-    const sentenceEndRect = getTextareaIndexRect(textarea, completedSentence.endIndex)
-    const rect = new DOMRect(sentenceStartRect.x, sentenceEndRect.y, 0, 0)
-
-    setBubbleAnchor({
-      contextElement: textarea,
-      getBoundingClientRect: () => rect,
-    })
-  }
-
-  const clearCorrectionState = () => {
-    setLatestCompletedSentence('')
-    setBubbleOpen(false)
-    setBubbleAnchor(null)
-    setCorrectionKey('')
-    setHighLightedWords([])
-    correctionSentenceRef.current = null
-  }
-
-  const openCorrectionForSentence = (sentence, textarea) => {
+  const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
-    correctionSentenceRef.current = sentence
-    setLatestCompletedSentence(sentence.text)
-    setCorrectionKey(nextCorrectionKey)
-    updateBubblePosition(textarea, sentence)
-    setBubbleOpen(true)
-
-    if (!correctionsByKey[nextCorrectionKey]) {
+    if (correctionsByKey[nextCorrectionKey]) {
+      dispatch(useCachedWritingCorrection({
+        key: nextCorrectionKey,
+        sentence: sentence.text,
+        sentenceId: sentence.sentenceId,
+      }))
+    } else {
       dispatch(checkWritingCorrection({
         language: WRITING_LANGUAGE,
+        sentenceId: sentence.sentenceId,
         text: sentence.text,
         context: sentence.context,
       }))
@@ -164,28 +105,22 @@ const EssayTextInput = () => {
 
   const queueEditedSentence = sentence => {
     pendingEditedSentenceRef.current = sentence
-    setLatestCompletedSentence(sentence.text)
-    setBubbleOpen(false)
-    setBubbleAnchor(null)
-    setCorrectionKey('')
-    setHighLightedWords([])
-    correctionSentenceRef.current = null
+    dispatch(hideWritingCorrectionSuggestion(sentence.sentenceId))
   }
 
-  const commitPendingEditedSentence = textarea => {
+  const commitPendingEditedSentence = () => {
     const pendingSentence = pendingEditedSentenceRef.current
 
-    if (!pendingSentence || !textarea) return false
+    if (!pendingSentence) return false
 
     const updatedSentence = getUpdatedPendingSentence(textRef.current, pendingSentence)
     pendingEditedSentenceRef.current = null
 
     if (!updatedSentence) {
-      clearCorrectionState()
       return false
     }
 
-    openCorrectionForSentence(updatedSentence, textarea)
+    openCorrectionForSentence(updatedSentence)
     return true
   }
 
@@ -197,64 +132,73 @@ const EssayTextInput = () => {
 
     setText(nextText)
     textRef.current = nextText
+    dispatch(syncWritingCorrectionSuggestions(
+      getCompletedSentences(nextText).map(sentence => sentence.sentenceId),
+    ))
 
     if (pendingSentence) {
       const updatedPendingSentence = getUpdatedPendingSentence(nextText, pendingSentence)
 
       if (!updatedPendingSentence) {
-        setBubbleOpen(false)
-        setBubbleAnchor(null)
-        setCorrectionKey('')
-        setHighLightedWords([])
+        dispatch(hideWritingCorrectionSuggestion(pendingSentence.sentenceId))
         return
       }
 
-      if (updatedPendingSentence && cursorIsInsideSentence(updatedPendingSentence, cursorIndex)) {
+      if (cursorIsInsideSentence(updatedPendingSentence, cursorIndex)) {
         queueEditedSentence(updatedPendingSentence)
         return
       }
 
       pendingEditedSentenceRef.current = null
-
-      openCorrectionForSentence(updatedPendingSentence, e.target)
+      openCorrectionForSentence(updatedPendingSentence)
       return
     }
 
+    const editIndex = getFirstChangedIndex(previousText, nextText)
+    const previousCompletedSentenceAtEdit = getCompletedSentenceFromIndexes(previousText, [
+      editIndex,
+      editIndex - 1,
+    ])
+    const completedSentenceAtEdit = getCompletedSentenceFromIndexes(nextText, [
+      editIndex,
+      editIndex - 1,
+      cursorIndex,
+      cursorIndex - 1,
+    ])
     const completedSentenceAtCursor = getCompletedSentenceNearIndex(nextText, cursorIndex)
-    const completedSentence = completedSentenceAtCursor || getLatestCompletedSentence(nextText)
-
-    if (!completedSentence) {
-      clearCorrectionState()
-      return
-    }
-
+    const completedSentence = previousCompletedSentenceAtEdit
+      ? completedSentenceAtEdit
+      : completedSentenceAtCursor || completedSentenceAtEdit
     const previousCompletedSentenceAtCursor = getCompletedSentenceNearIndex(
       previousText,
       Math.min(cursorIndex, previousText.length),
     )
+    const previousCompletedSentence = previousCompletedSentenceAtEdit ||
+      previousCompletedSentenceAtCursor
 
-    if (previousCompletedSentenceAtCursor && completedSentenceAtCursor) {
-      queueEditedSentence(completedSentenceAtCursor)
+    if (!completedSentence) {
+      if (previousCompletedSentence) {
+        queueEditedSentence(previousCompletedSentence)
+      }
+
       return
     }
 
-    const nextCorrectionKey = getWritingCorrectionKey(completedSentence)
+    if (previousCompletedSentence && completedSentence) {
+      if (
+        getWritingCorrectionKey(previousCompletedSentence) !==
+        getWritingCorrectionKey(completedSentence)
+      ) {
+        queueEditedSentence(completedSentence)
+        return
+      }
 
-    if (nextCorrectionKey !== correctionKey) {
-      setHighLightedWords([])
+      openCorrectionForSentence(completedSentence)
+      return
     }
 
     pendingEditedSentenceRef.current = null
-    openCorrectionForSentence(completedSentence, e.target)
-  }
-
-  const handleScroll = () => {
-    const textarea = textareaRef.current
-    const completedSentence = correctionSentenceRef.current
-
-    if (!textarea || !completedSentence || !bubbleOpen) return
-
-    updateBubblePosition(textarea, completedSentence)
+    openCorrectionForSentence(completedSentence)
   }
 
   const handleSelect = e => {
@@ -272,11 +216,11 @@ const EssayTextInput = () => {
       return
     }
 
-    commitPendingEditedSentence(e.target)
+    commitPendingEditedSentence()
   }
 
   const handleBlur = () => {
-    commitPendingEditedSentence(textareaRef.current)
+    commitPendingEditedSentence()
   }
 
   return (
@@ -289,20 +233,10 @@ const EssayTextInput = () => {
         onBlur={handleBlur}
         onChange={handleChange}
         onSelect={handleSelect}
-        inputProps={{ onScroll: handleScroll }}
-        inputRef={textareaRef}
         placeholder="Write your Finnish text here..."
         variant="outlined"
         className="essay-writing-input"
         data-cy="essay-writing-input"
-      />
-      <CorrectionSuggestionPopper
-        anchorEl={bubbleAnchor}
-        correctionEntry={correctionEntry}
-        highlightedWords={highlightedWords}
-        open={bubbleOpen}
-        sentence={latestCompletedSentence}
-        setHighLightedWords={setHighLightedWords}
       />
     </Box>
   )

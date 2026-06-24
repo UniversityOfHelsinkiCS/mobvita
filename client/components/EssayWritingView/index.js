@@ -4,7 +4,7 @@ import { Box, Divider, Paper, Typography } from '@mui/material'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
-import CombinedChatbot from 'Components/PracticeView/CombinedChatbot'
+import EssayChatbot from 'Components/ChatBot/EssayChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EssayTextInput from './EssayTextInput'
 
@@ -13,7 +13,7 @@ import './EssayWritingStyles.scss'
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
 
-  const isChatbotOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
 
   return (
@@ -21,7 +21,7 @@ const EssayWritingView = () => {
       <Box className="essay-writing-main">
         <Box
           className={`essay-writing-container ${
-            isChatbotOpen ? 'essay-writing-container-sidebar-pushed' : ''
+            isHelperSidebarOpen ? 'essay-writing-container-sidebar-pushed' : ''
           }`}
         >
           <Paper
@@ -39,7 +39,7 @@ const EssayWritingView = () => {
           </Paper>
 
           <HelperSidebar>
-            <CombinedChatbot />
+            <EssayChatbot />
           </HelperSidebar>
 
           <FeedbackInfoModal />

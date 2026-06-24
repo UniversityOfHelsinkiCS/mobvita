@@ -2,7 +2,7 @@ $essay-navbar-height: 3em;
 $essay-content-top-padding: 0.5rem;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
-$essay-sidebar-offset: 40px;
+$essay-sidebar-offset: 380px;
 
 .essay-writing-page {
   display: flex;
@@ -72,7 +72,10 @@ $essay-sidebar-offset: 40px;
 
 .essay-writing-correction-bubble {
   z-index: 1300;
+  box-sizing: border-box;
+  width: 100%;
   max-width: min(520px, calc(100vw - 32px));
+  margin-bottom: 8px;
   padding: 0.75rem 1rem;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 8px;
@@ -124,6 +127,5 @@ $essay-sidebar-offset: 40px;
 @media (min-width: 1856px) {
   .essay-writing-container-sidebar-pushed {
     max-width: $essay-content-width;
-    margin-right: 0 !important;
   }
 }

@@ -1,21 +1,26 @@
 import React from 'react'
-import { Box, Paper, Popper } from '@mui/material'
+import { Box, Paper } from '@mui/material'
 
 import CorrectedWord from 'Components/DebugCorrectionView/CorrectedWord'
 import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
-import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionReducer'
+import {
+  getWritingCorrectionWords,
+  writingCorrectionHasChanges,
+} from 'Utilities/redux/writingCorrectionReducer'
 
 const CorrectionSuggestionPopper = ({
-  anchorEl,
   correctionEntry,
   highlightedWords,
-  open,
   sentence,
   setHighLightedWords,
 }) => {
+  if (!correctionEntry) {
+    return null
+  }
+
   const renderCorrectionContent = () => {
-    if (!correctionEntry || correctionEntry.pending) {
+    if (correctionEntry.pending) {
       return (
         <Box className="essay-writing-correction-loading">
           <Spinner size={30} />
@@ -37,6 +42,10 @@ const CorrectionSuggestionPopper = ({
 
     const corrections = getWritingCorrectionWords(correctionEntry.corrections)
 
+    if (!writingCorrectionHasChanges(corrections)) {
+      return null
+    }
+
     return (
       <Box className="essay-writing-correction-content">
         {corrections.map((word, index) => (
@@ -51,28 +60,20 @@ const CorrectionSuggestionPopper = ({
     )
   }
 
+  const correctionContent = renderCorrectionContent()
+
+  if (!correctionContent) {
+    return null
+  }
+
   return (
-    <Popper
-      open={open && Boolean(anchorEl)}
-      anchorEl={anchorEl}
-      placement="bottom-start"
-      modifiers={[
-        {
-          name: 'offset',
-          options: {
-            offset: [0, 8],
-          },
-        },
-      ]}
+    <Paper
+      className="essay-writing-correction-bubble"
+      data-sentence={sentence}
+      elevation={3}
     >
-      <Paper
-        className="essay-writing-correction-bubble"
-        data-sentence={sentence}
-        elevation={3}
-      >
-        {renderCorrectionContent()}
-      </Paper>
-    </Popper>
+      {correctionContent}
+    </Paper>
   )
 }
 
