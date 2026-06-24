@@ -5,7 +5,6 @@ import { Box, TextField } from '@mui/material'
 import {
   checkWritingCorrection,
   getWritingCorrectionKey,
-  hideWritingCorrectionSuggestion,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
 } from 'Utilities/redux/writingCorrectionReducer'
@@ -19,7 +18,6 @@ const getCompletedSentences = text => {
   const matches = getCompletedSentenceMatches(text)
 
   return matches.map((match, index) => ({
-    sentenceId: `sentence-${match.index}`,
     text: match[0].trim(),
     startIndex: match.index,
     endIndex: match.index + match[0].length,
@@ -34,13 +32,13 @@ const cursorIsInsideSentence = (sentence, cursorIndex) => (
   cursorIndex >= sentence.startIndex && cursorIndex <= sentence.endIndex
 )
 
-const getCompletedSentenceAtIndex = (text, cursorIndex) => (
-  getCompletedSentences(text).find(sentence => cursorIsInsideSentence(sentence, cursorIndex)) || null
+const getCompletedSentenceAtIndex = (sentences, cursorIndex) => (
+  sentences.find(sentence => cursorIsInsideSentence(sentence, cursorIndex)) || null
 )
 
-const getCompletedSentenceNearIndex = (text, cursorIndex) => (
-  getCompletedSentenceAtIndex(text, cursorIndex) ||
-  getCompletedSentenceAtIndex(text, Math.max(cursorIndex - 1, 0))
+const getCompletedSentenceNearIndex = (sentences, cursorIndex) => (
+  getCompletedSentenceAtIndex(sentences, cursorIndex) ||
+  getCompletedSentenceAtIndex(sentences, Math.max(cursorIndex - 1, 0))
 )
 
 const getFirstChangedIndex = (previousText, nextText) => {
@@ -55,13 +53,11 @@ const getFirstChangedIndex = (previousText, nextText) => {
   return maxSharedLength
 }
 
-const getCompletedSentenceFromIndexes = (text, indexes) => {
-  const maxIndex = Math.max(text.length, 0)
-
+const getCompletedSentenceFromIndexes = (sentences, indexes, textLength) => {
   for (const index of indexes) {
     const sentence = getCompletedSentenceNearIndex(
-      text,
-      Math.max(Math.min(index, maxIndex), 0),
+      sentences,
+      Math.max(Math.min(index, textLength), 0),
     )
 
     if (sentence) return sentence
@@ -70,19 +66,161 @@ const getCompletedSentenceFromIndexes = (text, indexes) => {
   return null
 }
 
-const getUpdatedPendingSentence = (text, pendingSentence) => {
+const getUpdatedPendingSentence = (sentences, pendingSentence) => {
   if (!pendingSentence) return null
 
-  return getCompletedSentenceAtIndex(text, pendingSentence.startIndex) ||
-    getCompletedSentenceAtIndex(text, Math.max(pendingSentence.endIndex - 1, 0))
+  return sentences.find(sentence => sentence.sentenceId === pendingSentence.sentenceId) ||
+    getCompletedSentenceAtIndex(sentences, pendingSentence.startIndex) ||
+    getCompletedSentenceAtIndex(sentences, Math.max(pendingSentence.endIndex - 1, 0))
+}
+
+const getSentenceIndexAtTextIndex = (sentences, cursorIndex) => (
+  sentences.findIndex(sentence => cursorIsInsideSentence(sentence, cursorIndex))
+)
+
+const addStableSentenceIds = ({
+  createSentenceId,
+  editIndex,
+  previousSentences,
+  sentences,
+}) => {
+  if (!previousSentences.length) {
+    return sentences.map(sentence => ({
+      ...sentence,
+      sentenceId: createSentenceId(),
+    }))
+  }
+
+  if (previousSentences.length === sentences.length) {
+    return sentences.map((sentence, index) => ({
+      ...sentence,
+      sentenceId: previousSentences[index].sentenceId,
+    }))
+  }
+
+  const usedSentenceIds = new Set()
+  const sentenceIdsByIndex = {}
+  const previousIndexAtEdit = getSentenceIndexAtTextIndex(previousSentences, editIndex)
+  const currentIndexAtEdit = getSentenceIndexAtTextIndex(sentences, editIndex)
+  const previousTargetIndex = previousIndexAtEdit !== -1
+    ? previousIndexAtEdit
+    : getSentenceIndexAtTextIndex(previousSentences, Math.max(editIndex - 1, 0))
+  const currentTargetIndex = currentIndexAtEdit !== -1
+    ? currentIndexAtEdit
+    : getSentenceIndexAtTextIndex(sentences, Math.max(editIndex - 1, 0))
+
+  const assignReusableSentenceId = (sentenceIndex, previousIndex) => {
+    const previousSentenceId = previousSentences[previousIndex]?.sentenceId
+
+    if (!previousSentenceId || usedSentenceIds.has(previousSentenceId)) {
+      return false
+    }
+
+    usedSentenceIds.add(previousSentenceId)
+    sentenceIdsByIndex[sentenceIndex] = previousSentenceId
+    return true
+  }
+
+  sentences.forEach((sentence, index) => {
+    const reusablePreviousIndex = previousSentences
+      .reduce((bestMatch, previousSentence, previousIndex) => {
+        if (
+          previousSentence.text !== sentence.text ||
+          usedSentenceIds.has(previousSentence.sentenceId)
+        ) {
+          return bestMatch
+        }
+
+        if (
+          bestMatch === -1 ||
+          Math.abs(previousIndex - index) < Math.abs(bestMatch - index)
+        ) {
+          return previousIndex
+        }
+
+        return bestMatch
+      }, -1)
+
+    if (reusablePreviousIndex !== -1) {
+      assignReusableSentenceId(index, reusablePreviousIndex)
+    }
+  })
+
+  return sentences.map((sentence, index) => {
+    if (sentenceIdsByIndex[index]) {
+      return {
+        ...sentence,
+        sentenceId: sentenceIdsByIndex[index],
+      }
+    }
+
+    if (currentTargetIndex === -1 || previousTargetIndex === -1) {
+      assignReusableSentenceId(index, index)
+
+      return {
+        ...sentence,
+        sentenceId: sentenceIdsByIndex[index] || createSentenceId(),
+      }
+    }
+
+    if (index < currentTargetIndex) {
+      assignReusableSentenceId(index, index)
+
+      return {
+        ...sentence,
+        sentenceId: sentenceIdsByIndex[index] || createSentenceId(),
+      }
+    }
+
+    if (index === currentTargetIndex) {
+      assignReusableSentenceId(index, previousTargetIndex)
+
+      return {
+        ...sentence,
+        sentenceId: sentenceIdsByIndex[index] || createSentenceId(),
+      }
+    }
+
+    const previousIndex = previousTargetIndex + (index - currentTargetIndex)
+
+    assignReusableSentenceId(index, previousIndex)
+
+    return {
+      ...sentence,
+      sentenceId: sentenceIdsByIndex[index] || createSentenceId(),
+    }
+  })
 }
 
 const EssayTextInput = () => {
   const dispatch = useDispatch()
   const [text, setText] = useState('')
   const pendingEditedSentenceRef = useRef(null)
+  const completedSentencesRef = useRef([])
+  const sentenceIdCounterRef = useRef(0)
   const textRef = useRef('')
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+
+  const createSentenceId = () => {
+    sentenceIdCounterRef.current += 1
+    return `essay-sentence-${sentenceIdCounterRef.current}`
+  }
+
+  const updateCompletedSentences = (nextText, editIndex) => {
+    const nextCompletedSentences = addStableSentenceIds({
+      createSentenceId,
+      editIndex,
+      previousSentences: completedSentencesRef.current,
+      sentences: getCompletedSentences(nextText),
+    })
+
+    completedSentencesRef.current = nextCompletedSentences
+    dispatch(syncWritingCorrectionSuggestions(
+      nextCompletedSentences.map(sentence => sentence.sentenceId),
+    ))
+
+    return nextCompletedSentences
+  }
 
   const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
@@ -105,7 +243,6 @@ const EssayTextInput = () => {
 
   const queueEditedSentence = sentence => {
     pendingEditedSentenceRef.current = sentence
-    dispatch(hideWritingCorrectionSuggestion(sentence.sentenceId))
   }
 
   const commitPendingEditedSentence = () => {
@@ -113,7 +250,10 @@ const EssayTextInput = () => {
 
     if (!pendingSentence) return false
 
-    const updatedSentence = getUpdatedPendingSentence(textRef.current, pendingSentence)
+    const updatedSentence = getUpdatedPendingSentence(
+      completedSentencesRef.current,
+      pendingSentence,
+    )
     pendingEditedSentenceRef.current = null
 
     if (!updatedSentence) {
@@ -129,18 +269,21 @@ const EssayTextInput = () => {
     const nextText = e.target.value
     const cursorIndex = e.target.selectionStart
     const pendingSentence = pendingEditedSentenceRef.current
+    const editIndex = getFirstChangedIndex(previousText, nextText)
+    const previousCompletedSentences = completedSentencesRef.current
+    const nextCompletedSentences = updateCompletedSentences(nextText, editIndex)
 
     setText(nextText)
     textRef.current = nextText
-    dispatch(syncWritingCorrectionSuggestions(
-      getCompletedSentences(nextText).map(sentence => sentence.sentenceId),
-    ))
 
     if (pendingSentence) {
-      const updatedPendingSentence = getUpdatedPendingSentence(nextText, pendingSentence)
+      const updatedPendingSentence = getUpdatedPendingSentence(
+        nextCompletedSentences,
+        pendingSentence,
+      )
 
       if (!updatedPendingSentence) {
-        dispatch(hideWritingCorrectionSuggestion(pendingSentence.sentenceId))
+        pendingEditedSentenceRef.current = null
         return
       }
 
@@ -154,23 +297,33 @@ const EssayTextInput = () => {
       return
     }
 
-    const editIndex = getFirstChangedIndex(previousText, nextText)
-    const previousCompletedSentenceAtEdit = getCompletedSentenceFromIndexes(previousText, [
-      editIndex,
-      editIndex - 1,
-    ])
-    const completedSentenceAtEdit = getCompletedSentenceFromIndexes(nextText, [
-      editIndex,
-      editIndex - 1,
+    const previousCompletedSentenceAtEdit = getCompletedSentenceFromIndexes(
+      previousCompletedSentences,
+      [
+        editIndex,
+        editIndex - 1,
+      ],
+      previousText.length,
+    )
+    const completedSentenceAtEdit = getCompletedSentenceFromIndexes(
+      nextCompletedSentences,
+      [
+        editIndex,
+        editIndex - 1,
+        cursorIndex,
+        cursorIndex - 1,
+      ],
+      nextText.length,
+    )
+    const completedSentenceAtCursor = getCompletedSentenceNearIndex(
+      nextCompletedSentences,
       cursorIndex,
-      cursorIndex - 1,
-    ])
-    const completedSentenceAtCursor = getCompletedSentenceNearIndex(nextText, cursorIndex)
+    )
     const completedSentence = previousCompletedSentenceAtEdit
       ? completedSentenceAtEdit
       : completedSentenceAtCursor || completedSentenceAtEdit
     const previousCompletedSentenceAtCursor = getCompletedSentenceNearIndex(
-      previousText,
+      previousCompletedSentences,
       Math.min(cursorIndex, previousText.length),
     )
     const previousCompletedSentence = previousCompletedSentenceAtEdit ||
@@ -193,11 +346,19 @@ const EssayTextInput = () => {
         return
       }
 
+      if (cursorIsInsideSentence(completedSentence, cursorIndex)) {
+        return
+      }
+
       openCorrectionForSentence(completedSentence)
       return
     }
 
-    pendingEditedSentenceRef.current = null
+    if (cursorIsInsideSentence(completedSentence, cursorIndex)) {
+      queueEditedSentence(completedSentence)
+      return
+    }
+
     openCorrectionForSentence(completedSentence)
   }
 
@@ -206,7 +367,10 @@ const EssayTextInput = () => {
 
     if (!pendingSentence) return
 
-    const updatedPendingSentence = getUpdatedPendingSentence(textRef.current, pendingSentence)
+    const updatedPendingSentence = getUpdatedPendingSentence(
+      completedSentencesRef.current,
+      pendingSentence,
+    )
 
     if (
       updatedPendingSentence &&

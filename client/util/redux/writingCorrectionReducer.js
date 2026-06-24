@@ -59,11 +59,6 @@ export const syncWritingCorrectionSuggestions = sentenceIds => ({
   sentenceIds,
 })
 
-export const hideWritingCorrectionSuggestion = sentenceId => ({
-  type: 'WRITING_CORRECTION_HIDE_SUGGESTION',
-  sentenceId,
-})
-
 export const useCachedWritingCorrection = ({ key, sentence = '', sentenceId }) => ({
   type: 'WRITING_CORRECTION_USE_CACHED',
   key,
@@ -75,6 +70,7 @@ const initialState = {
   correctionSuggestionSentenceIds: [],
   correctionSuggestionsBySentenceId: {},
   correctionsByKey: {},
+  latestCorrectionKeyBySentenceId: {},
 }
 
 const wordValuesMatch = (original, corrected) => (
@@ -160,8 +156,22 @@ const createFailureEntry = action => {
   }
 }
 
+const getSentenceId = entry => entry.sentenceId || entry.key
+
+const updateLatestCorrectionKey = (state, entry) => ({
+  ...state,
+  latestCorrectionKeyBySentenceId: {
+    ...(state.latestCorrectionKeyBySentenceId || {}),
+    [getSentenceId(entry)]: entry.key,
+  },
+})
+
+const requestIsLatestForSentence = (state, entry) => (
+  state.latestCorrectionKeyBySentenceId?.[getSentenceId(entry)] === entry.key
+)
+
 const upsertCorrectionSuggestion = (state, entry) => {
-  const sentenceId = entry.sentenceId || entry.key
+  const sentenceId = getSentenceId(entry)
 
   return {
     ...state,
@@ -199,19 +209,29 @@ const removeCorrectionSuggestion = (state, sentenceId) => {
 
 const syncCorrectionSuggestions = (state, sentenceIds) => {
   const sentenceIdSet = new Set(sentenceIds)
-  const correctionSuggestionSentenceIds = state.correctionSuggestionSentenceIds
-    .filter(sentenceId => sentenceIdSet.has(sentenceId))
+  const correctionSuggestionSentenceIds = sentenceIds
+    .filter(sentenceId => state.correctionSuggestionsBySentenceId[sentenceId])
 
   const correctionSuggestionsBySentenceId = correctionSuggestionSentenceIds
     .reduce((suggestions, sentenceId) => ({
       ...suggestions,
       [sentenceId]: state.correctionSuggestionsBySentenceId[sentenceId],
     }), {})
+  const latestCorrectionKeyBySentenceId = Object.entries(state.latestCorrectionKeyBySentenceId || {})
+    .reduce((latestKeys, [sentenceId, key]) => (
+      sentenceIdSet.has(sentenceId)
+        ? {
+          ...latestKeys,
+          [sentenceId]: key,
+        }
+        : latestKeys
+    ), {})
 
   return {
     ...state,
     correctionSuggestionSentenceIds,
     correctionSuggestionsBySentenceId,
+    latestCorrectionKeyBySentenceId,
   }
 }
 
@@ -220,13 +240,13 @@ export default (state = initialState, action) => {
     case `${PREFIX}_ATTEMPT`: {
       const entry = createPendingEntry(action)
 
-      return {
+      return upsertCorrectionSuggestion(updateLatestCorrectionKey({
         ...state,
         correctionsByKey: {
           ...state.correctionsByKey,
           [entry.key]: entry,
         },
-      }
+      }, entry), entry)
     }
 
     case `${PREFIX}_SUCCESS`: {
@@ -239,6 +259,10 @@ export default (state = initialState, action) => {
         },
       }
 
+      if (!requestIsLatestForSentence(nextState, entry)) {
+        return nextState
+      }
+
       return writingCorrectionHasChanges(entry.corrections)
         ? upsertCorrectionSuggestion(nextState, entry)
         : removeCorrectionSuggestion(nextState, entry.sentenceId)
@@ -246,14 +270,17 @@ export default (state = initialState, action) => {
 
     case `${PREFIX}_FAILURE`: {
       const entry = createFailureEntry(action)
-
-      return upsertCorrectionSuggestion({
+      const nextState = {
         ...state,
         correctionsByKey: {
           ...state.correctionsByKey,
           [entry.key]: entry,
         },
-      }, entry)
+      }
+
+      return requestIsLatestForSentence(nextState, entry)
+        ? upsertCorrectionSuggestion(nextState, entry)
+        : nextState
     }
 
     case 'WRITING_CORRECTION_CLEAR': {
@@ -276,9 +303,6 @@ export default (state = initialState, action) => {
     case 'WRITING_CORRECTION_SYNC_SUGGESTIONS':
       return syncCorrectionSuggestions(state, action.sentenceIds || [])
 
-    case 'WRITING_CORRECTION_HIDE_SUGGESTION':
-      return removeCorrectionSuggestion(state, action.sentenceId)
-
     case 'WRITING_CORRECTION_USE_CACHED': {
       const entry = state.correctionsByKey[action.key]
 
@@ -289,12 +313,13 @@ export default (state = initialState, action) => {
         sentenceId: action.sentenceId || entry.sentenceId,
         text: action.sentence || entry.text,
       }
+      const nextState = updateLatestCorrectionKey(state, suggestionEntry)
 
-      if (entry.error || writingCorrectionHasChanges(entry.corrections)) {
-        return upsertCorrectionSuggestion(state, suggestionEntry)
+      if (entry.pending || entry.error || writingCorrectionHasChanges(entry.corrections)) {
+        return upsertCorrectionSuggestion(nextState, suggestionEntry)
       }
 
-      return removeCorrectionSuggestion(state, suggestionEntry.sentenceId)
+      return removeCorrectionSuggestion(nextState, suggestionEntry.sentenceId)
     }
 
     default:
