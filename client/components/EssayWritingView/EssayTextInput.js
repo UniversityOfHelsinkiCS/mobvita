@@ -416,7 +416,6 @@ const EssayTextInput = () => {
       <TextField
         fullWidth
         multiline
-        minRows={12}
         value={text}
         onBlur={handleBlur}
         onChange={handleChange}
