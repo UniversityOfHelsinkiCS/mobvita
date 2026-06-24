@@ -10,6 +10,7 @@ import {
 } from 'Utilities/redux/writingCorrectionReducer'
 
 const sentenceMatchRegex = /[^.!?]+[.!?]+/g
+const sentenceEndingRegex = /[.!?]/
 const WRITING_LANGUAGE = 'Finnish'
 
 const getCompletedSentenceMatches = text => Array.from(text.matchAll(sentenceMatchRegex))
@@ -76,6 +77,18 @@ const getUpdatedPendingSentence = (sentences, pendingSentence) => {
 
 const getSentenceIndexAtTextIndex = (sentences, cursorIndex) => (
   sentences.findIndex(sentence => cursorIsInsideSentence(sentence, cursorIndex))
+)
+
+const sentenceWasCompletedByCurrentInput = ({
+  completedSentence,
+  cursorIndex,
+  nextCompletedSentences,
+  nextText,
+  previousCompletedSentences,
+}) => (
+  nextCompletedSentences.length > previousCompletedSentences.length &&
+  completedSentence?.endIndex === cursorIndex &&
+  sentenceEndingRegex.test(nextText[cursorIndex - 1] || '')
 )
 
 const addStableSentenceIds = ({
@@ -334,6 +347,17 @@ const EssayTextInput = () => {
         queueEditedSentence(previousCompletedSentence)
       }
 
+      return
+    }
+
+    if (sentenceWasCompletedByCurrentInput({
+      completedSentence,
+      cursorIndex,
+      nextCompletedSentences,
+      nextText,
+      previousCompletedSentences,
+    })) {
+      openCorrectionForSentence(completedSentence)
       return
     }
 

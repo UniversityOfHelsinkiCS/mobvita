@@ -68,6 +68,7 @@ export const useCachedWritingCorrection = ({ key, sentence = '', sentenceId }) =
 
 const initialState = {
   correctionSuggestionSentenceIds: [],
+  correctionSuggestionSentenceOrder: [],
   correctionSuggestionsBySentenceId: {},
   correctionsByKey: {},
   latestCorrectionKeyBySentenceId: {},
@@ -170,14 +171,47 @@ const requestIsLatestForSentence = (state, entry) => (
   state.latestCorrectionKeyBySentenceId?.[getSentenceId(entry)] === entry.key
 )
 
+const orderCorrectionSuggestionSentenceIds = (state, sentenceIds) => {
+  const sentenceOrder = state.correctionSuggestionSentenceOrder || []
+  const fallbackOrderBySentenceId = sentenceIds
+    .reduce((orderBySentenceId, sentenceId, index) => ({
+      ...orderBySentenceId,
+      [sentenceId]: index,
+    }), {})
+  const essayOrderBySentenceId = sentenceOrder
+    .reduce((orderBySentenceId, sentenceId, index) => ({
+      ...orderBySentenceId,
+      [sentenceId]: index,
+    }), {})
+
+  return sentenceIds.slice().sort((firstSentenceId, secondSentenceId) => {
+    const firstEssayIndex = essayOrderBySentenceId[firstSentenceId]
+    const secondEssayIndex = essayOrderBySentenceId[secondSentenceId]
+
+    if (firstEssayIndex === undefined && secondEssayIndex === undefined) {
+      return fallbackOrderBySentenceId[firstSentenceId] -
+        fallbackOrderBySentenceId[secondSentenceId]
+    }
+
+    if (firstEssayIndex === undefined) return 1
+    if (secondEssayIndex === undefined) return -1
+
+    return firstEssayIndex - secondEssayIndex
+  })
+}
+
 const upsertCorrectionSuggestion = (state, entry) => {
   const sentenceId = getSentenceId(entry)
+  const correctionSuggestionSentenceIds = state.correctionSuggestionSentenceIds.includes(sentenceId)
+    ? state.correctionSuggestionSentenceIds
+    : state.correctionSuggestionSentenceIds.concat(sentenceId)
 
   return {
     ...state,
-    correctionSuggestionSentenceIds: state.correctionSuggestionSentenceIds.includes(sentenceId)
-      ? state.correctionSuggestionSentenceIds
-      : state.correctionSuggestionSentenceIds.concat(sentenceId),
+    correctionSuggestionSentenceIds: orderCorrectionSuggestionSentenceIds(
+      state,
+      correctionSuggestionSentenceIds,
+    ),
     correctionSuggestionsBySentenceId: {
       ...state.correctionSuggestionsBySentenceId,
       [sentenceId]: {
@@ -229,6 +263,7 @@ const syncCorrectionSuggestions = (state, sentenceIds) => {
 
   return {
     ...state,
+    correctionSuggestionSentenceOrder: sentenceIds,
     correctionSuggestionSentenceIds,
     correctionSuggestionsBySentenceId,
     latestCorrectionKeyBySentenceId,
