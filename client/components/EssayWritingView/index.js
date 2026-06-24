@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
-
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
@@ -14,7 +13,7 @@ import './EssayWritingStyles.scss'
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
 
-  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const isChatbotOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
 
   return (
@@ -22,7 +21,7 @@ const EssayWritingView = () => {
       <Box className="essay-writing-main">
         <Box
           className={`essay-writing-container ${
-            isSidebarOpen ? 'essay-writing-container-sidebar-pushed' : ''
+            isChatbotOpen ? 'essay-writing-container-sidebar-pushed' : ''
           }`}
         >
           <Paper
