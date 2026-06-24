@@ -35,7 +35,8 @@ const ChatActionMenu = ({
   showContextTranslation,
   setShowContextTranslation,
   predefinedChatbotRequests,
-  validToChat
+  validToChat,
+  onAddNote
 }) => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
@@ -220,14 +221,21 @@ const ChatActionMenu = ({
               </span>
             </button>
           )}
-          {/* <button type="button" className="chat-action-item" onClick={handleAddAnnotation}>
-            <div className="chat-action-icon" style={{ color: '#f2c03b' }}>
-              <Icon name="sticky note outline" />
-            </div>
-            <span className="chat-action-text">
-              <FormattedMessage id="add-annotation" defaultMessage="Add annotation" />
-            </span>
-          </button> */}
+          {onAddNote && (
+            <button
+              type="button"
+              className="chat-action-item"
+              data-cy="add-note-button"
+              onClick={() => { onAddNote(); setOpen(false) }}
+            >
+              <div className="chat-action-icon" style={{ color: '#f2c03b' }}>
+                <Icon name="sticky note outline" />
+              </div>
+              <span className="chat-action-text">
+                <FormattedMessage id="create-a-note" defaultMessage="Add a note" />
+              </span>
+            </button>
+          )}
         </div>
       )}
     </div>

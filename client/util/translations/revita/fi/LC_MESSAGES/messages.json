@@ -1848,5 +1848,6 @@
     "folder-name-exists": "Tämänniminen kansio on jo olemassa",
     "delete-folder": "Poista kansio",
     "remove-empty-folder": "Poista tyhjä kansio",
-    "folder-options": "Kansion asetukset"
+    "folder-options": "Kansion asetukset",
+    "edit-note": "Muokkaa muistiinpanojasi"
 }

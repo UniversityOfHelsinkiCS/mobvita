@@ -429,33 +429,39 @@ export default (state = initialState, action) => {
     case 'ADD_OR_EDIT_STORY_ANNOTATION_ATTEMPT':
       return {
         ...state,
+        annotationPending: true,
         error: false,
       }
     case 'ADD_OR_EDIT_STORY_ANNOTATION_FAILURE':
       return {
         ...state,
+        annotationPending: false,
         error: true,
       }
     case 'ADD_OR_EDIT_STORY_ANNOTATION_SUCCESS':
       return {
         ...state,
-        focused: action.response,
+        annotationPending: false,
+        focused: { ...state.focused, ...action.response, _id: action.response?._id ?? state.focused?._id },
         error: false,
       }
     case 'REMOVE_STORY_ANNOTATION_ATTEMPT':
       return {
         ...state,
+        annotationPending: true,
         error: false,
       }
     case 'REMOVE_STORY_ANNOTATION_FAILURE':
       return {
         ...state,
+        annotationPending: false,
         error: true,
       }
     case 'REMOVE_STORY_ANNOTATION_SUCCESS':
       return {
         ...state,
-        focused: action.response,
+        annotationPending: false,
+        focused: { ...state.focused, ...action.response, _id: action.response?._id ?? state.focused?._id },
         error: false,
       }
     case 'SAVE_STORY_INTERMEDIATE':

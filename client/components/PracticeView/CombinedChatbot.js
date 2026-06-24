@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { Icon, Popup, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -17,13 +17,18 @@ import {
     formatGreenFeedbackText,
   sanitizeHtml,
   composeExerciseContext,
-  hiddenFeatures
+  hiddenFeatures,
+  getMode
 } from 'Utilities/common'
 
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestModal from 'Components/WordNestModal'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import ChatActionMenu from './ChatActionMenu'
+import NoteFormModal from './NoteFormModal'
+import ConfirmationWarning from 'Components/ConfirmationWarning'
+import { useParams, useLocation } from 'react-router-dom'
+import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import Lemma from 'Components/DictionaryHelp/Lemma'
 import RobotIcon from './RobotIcon'
 import {
@@ -47,14 +52,12 @@ import Spinner from 'Components/Spinner'
 import './CombinedChatbot.scss'
 import AssistentSettings from './AssistentSettings'
 
-// Rendered OUTSIDE the translation `pending` ternary so it is not unmounted/remounted
-// while translations load (which was destroying in-progress text selection).
 const WordNotes = ({ notes, handleTooltipClick }) => {
   if (!notes.length) return null
   return (
-    <div className="chatbot-messages-container">
+    <>
       {notes.map((note, index) => {
-        
+
         if (note.kind === 'no-topics') {
           return (
             <div key={index} className="message message-notes">
@@ -126,7 +129,57 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
           </div>
         )
       })}
-    </div>
+    </>
+  )
+}
+
+const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
+  if (!notes.length && !busy) return null
+  return (
+    <>
+      {notes.map((note, index) => {
+        const showHeader = note.isOwn || (!note.isOwn && !!note.username)
+        return (
+          <div key={note.threadId || index} className="message message-notes message-user-note">            
+            {showHeader && (
+              <div className="note-header">
+                {!note.isOwn && note.username && (
+                  <span className="note-author">{note.username}</span>
+                )}
+                {note.isOwn && (
+                  <span className="note-actions">
+                    <Icon
+                      name="pencil alternate"
+                      className="note-action-icon"
+                      onClick={() => onEdit(note)}
+                    />
+                    <Icon
+                      name="trash alternate"
+                      className="note-action-icon trash"
+                      onClick={() => onDelete(note)}
+                    />
+                  </span>
+                )}
+              </div>
+            )}            
+            <div className="note-body">
+              <span className="user-note-text">{note.text}</span>
+              {note.isPublic && (
+                <Popup
+                  content={<FormattedMessage id="public-note-checkbox" />}
+                  trigger={<Icon name="users" className="note-public-icon" />}
+                />
+              )}
+            </div>
+          </div>
+        )
+      })}
+      {busy && (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '6px' }}>
+          <Spinner inline />
+        </div>
+      )}
+    </>
   )
 }
 
@@ -181,6 +234,107 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const notes = useSelector(({ notes }) => notes.items)
   const modalOpen = useSelector(({ practice }) => Boolean(practice.references || practice.explanation))
 
+  // --- Word notes (reuse the story-annotation API) ---
+  const { id: routeStoryId } = useParams()
+  const noteMode = getMode()
+  const noteUser = useSelector(({ user }) => user.data?.user)
+  const myUid = noteUser?.oid
+  const publicStory = storyFocused?.public ?? false
+
+  const notePathname = useLocation().pathname
+  const isGroupContext = notePathname.includes('group')
+  const isLessonContext = notePathname.includes('lesson')
+  const canMakePublic = isGroupContext && !!noteUser?.is_teacher
+  const annotationPending = useSelector(({ stories }) => Boolean(stories.annotationPending))
+
+  const noteWordId =
+    helperActiveTab === 'exercise'
+      ? (currentWord?.ID ?? null)
+      : (translationState?.word_id ?? translationState?.wordId ?? null)
+  const noteStoryId = storyid || routeStoryId || translationState?.storyid || null
+
+  const wordToken = useMemo(
+    () =>
+      noteWordId != null
+        ? storyFocused?.paragraph?.flat(1)?.find(w => w.ID === noteWordId)
+        : undefined,
+    [storyFocused, noteWordId]
+  )
+  const wordNotesList = useMemo(
+    () =>
+      (wordToken?.annotation || []).map(a => ({
+        text: a.annotation,
+        threadId: a.thread_id,
+        isPublic: a.public,
+        username: a.username,
+        isOwn: a.uid === myUid,
+        startId: wordToken.ID,
+        endId: a.end_token_id,
+      })),
+    [wordToken, myUid]
+  )  
+  const canAddNote = Boolean(noteWordId != null && noteStoryId && !isLessonContext)
+
+  const [noteModalOpen, setNoteModalOpen] = useState(false)
+  const [editingNote, setEditingNote] = useState(null)
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false)
+  const [noteToDelete, setNoteToDelete] = useState(null)
+  const [noteSaving, setNoteSaving] = useState(false)
+
+  useEffect(() => {
+    if (noteSaving && !annotationPending) {
+      setNoteSaving(false)
+      setNoteModalOpen(false)
+      setEditingNote(null)
+    }
+  }, [annotationPending, noteSaving])
+
+  const handleAddNote = () => {
+    setEditingNote(null)
+    setNoteModalOpen(true)
+  }
+  const handleEditNote = note => {
+    setEditingNote(note)
+    setNoteModalOpen(true)
+  }
+  const handleSubmitNote = (text, isPublic) => {
+    if (!canAddNote) return
+    const startId = editingNote ? editingNote.startId : noteWordId
+    const endId = editingNote ? editingNote.endId : noteWordId
+    setNoteSaving(true)
+    dispatch(
+      addEditStoryAnnotation(
+        publicStory,
+        isPublic,
+        noteStoryId,
+        startId,
+        endId,
+        text,
+        noteMode,
+        'None',
+        '',
+        editingNote?.threadId
+      )
+    )    
+  }
+  const requestDeleteNote = note => {
+    setNoteToDelete(note)
+    setConfirmDeleteOpen(true)
+  }
+  const confirmDeleteNote = () => {
+    if (!noteToDelete) return
+    dispatch(
+      removeStoryAnnotation(
+        noteStoryId,
+        noteToDelete.startId,
+        noteToDelete.endId,
+        noteMode,
+        noteToDelete.threadId
+      )
+    )
+    setNoteToDelete(null)
+  }
+
   useEffect(() => {
     dispatch(setHelperSidebarOpen(true))
   }, [helperActiveTab, currentWord, translationState ])
@@ -189,9 +343,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     dispatch(setHelperSidebarTab(null))
     dispatch(clearNotes())
   }, [dispatch, snippets.focused])
-
-  // Clear word notes when the focused exercise word changes, so a previous word's
-  // notes don't linger when the user moves to the current exercise word.
+  
   useEffect(() => {
     dispatch(clearNotes())
   }, [dispatch, currentWord?.ID])
@@ -684,7 +836,25 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
 
       )}
-  
+
+      <NoteFormModal
+        open={noteModalOpen}
+        onClose={() => { setNoteModalOpen(false); setEditingNote(null) }}
+        onSubmit={handleSubmitNote}
+        initialText={editingNote?.text || ''}
+        initialPublic={editingNote?.isPublic || false}
+        isEdit={Boolean(editingNote)}
+        loading={noteSaving}
+        canMakePublic={canMakePublic}
+      />
+      <ConfirmationWarning
+        open={confirmDeleteOpen}
+        setOpen={setConfirmDeleteOpen}
+        action={confirmDeleteNote}
+      >
+        <FormattedMessage id="annotation-remove-confirm" />
+      </ConfirmationWarning>
+
       <div className="ai-assistant-header">
         <RobotIcon className="ai-header-icon" size={24} />
         <h3 className="ai-header-title">
@@ -725,9 +895,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               </h4>
             </div>
             <div>
-              <ChatActionMenu 
-              handleShowHint={handleShowHint} 
-              hasHints={hasHints} 
+              <ChatActionMenu
+              handleShowHint={handleShowHint}
+              onAddNote={canAddNote ? handleAddNote : undefined}
+              hasHints={hasHints}
               showAllHintsUsed={showAllHintsUsed}
                             handleShowWordNest={() => {
                   setWordNestRestoreWord(computeWordNestRestoreWord())
@@ -930,7 +1101,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       
                   </>
               )}
-          </div>                    
+          <UserNotes
+            notes={wordNotesList}
+            onEdit={handleEditNote}
+            onDelete={requestDeleteNote}
+            busy={annotationPending && !noteModalOpen}
+          />
+          </div>
           <div className="chatbot-input-area">
             {(showAllHintsUsed || !hasHints) ? (
               <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
@@ -1040,8 +1217,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         trigger={<Speaker word={translationState.surfaceWord} />}
                     />} {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
-                                <ChatActionMenu mode="dictionary" 
-                                    handleShowWordNest={() => {                
+                                <ChatActionMenu mode="dictionary"
+                                    onAddNote={canAddNote ? handleAddNote : undefined}
+                                    handleShowWordNest={() => {
                       setWordNestRestoreWord(computeWordNestRestoreWord())
                       setWordNestChosenWord(dictionaryWordNestLemma);
                       setWordNestModalOpen(true);
@@ -1101,8 +1279,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <p className="no-translation-text"></p>
         )}
             </div>
-            <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
           <div className="chatbot-messages-container">
+            <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
+            <UserNotes
+              notes={wordNotesList}
+              onEdit={handleEditNote}
+              onDelete={requestDeleteNote}
+              busy={annotationPending && !noteModalOpen}
+            />
             {isLoadingHistory ? (
               <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
                   <Spinner inline />

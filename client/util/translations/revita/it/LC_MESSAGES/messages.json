@@ -1847,5 +1847,6 @@
     "folder-name-exists": "A folder with this name already exists here",
     "delete-folder": "Delete folder",
     "remove-empty-folder": "Remove empty folder",
-    "folder-options": "Folder options"
+    "folder-options": "Folder options",
+    "edit-note": "Modifica i tuoi appunti."
 }

@@ -459,6 +459,77 @@
   }
 }
 
+// User-created word notes (reuse the .message-notes bubble, slightly tinted to distinguish
+// them from read-only feedback notes; relative-positioned for the top-right action icons).
+.message-user-note {
+  position: relative;
+  flex-direction: column; // stack header (author / actions) above the body (text)
+  align-items: stretch;
+  gap: 4px;
+  background-color: #fff6da;
+  border: 1px solid #e3c878;
+
+  // Header row: author on the left (others' notes), edit/delete on the right (own notes).
+  // Kept separate from the text so the action icons never overlap / overflow long notes.
+  .note-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .note-author {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: #6b6b6b;
+  }
+
+  .note-actions {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto; // pin to the right even when there's no author on the left
+
+    .note-action-icon {
+      margin: 0 !important;
+      font-size: 0.95em;
+      cursor: pointer;
+      opacity: 0.5;
+      text-shadow: none !important;
+      transition: opacity 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        opacity: 0.95;
+      }
+
+      &.trash:hover {
+        color: #db2828;
+      }
+    }
+  }
+
+  // Body row: text takes the available width and wraps; the public icon stays to its right.
+  .note-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .user-note-text {
+    flex: 1;
+    min-width: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .note-public-icon {
+    flex-shrink: 0;
+    margin-left: 0.4rem;
+    font-size: 1em;
+    color: #9b9b9b; // not colored (plain look, no teal fill)
+    cursor: default;
+  }
+}
+
 .translation-button {
   cursor: pointer;
   font-size: 1.8rem;

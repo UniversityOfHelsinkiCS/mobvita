@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
@@ -51,6 +51,16 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const { attempt, focusedWord, latestMCTouched } = useSelector(({ practice }) => practice)
   const { currentWordId, currentSnippetId  } = useSelector(({ chatbot }) => chatbot)
   const isCurrentWord = currentWordId === word.ID && currentSnippetId === word.snippet_id;
+
+  const storyParagraph = useSelector(({ stories }) => stories.focused?.paragraph)
+  const annotationNumber = useMemo(() => {
+    const flat = storyParagraph?.flat(1)
+    if (!flat) return 0
+    const token = flat.find(w => w.ID === word.ID)
+    if (!token?.annotation) return 0
+    // 1-based ordinal among annotation-starting words up to and including this one.
+    return flat.filter(w => w.annotation && w.ID <= word.ID).length
+  }, [storyParagraph, word.ID])
   // const { eloHearts } = useSelector(({ snippets }) => snippets)
   const [keepOpen, setKeepOpen] = useState(false)
   const {
@@ -245,6 +255,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       tooltip={tooltip}
       additionalClassnames="clickable"
     >
+    {annotationNumber > 0 && <sup className="notes-superscript">{annotationNumber}</sup>}
     <input
       onKeyDown={handleKeyDown}
       ref={target}
@@ -282,7 +293,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       }}
     />
     {false && word.negation && <sup style={{ color: '#0000FF' }}>(neg)</sup>}
-    </Tooltip>      
+    </Tooltip>
   )
 }
 
