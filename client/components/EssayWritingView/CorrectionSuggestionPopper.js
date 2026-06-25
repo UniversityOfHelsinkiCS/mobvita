@@ -7,6 +7,7 @@ import {
   getWritingCorrectionWords,
   writingCorrectionHasChanges,
 } from 'Utilities/redux/writingCorrectionReducer'
+import { FormattedMessage } from 'react-intl'
 
 const CorrectionSuggestionPopper = ({
   correctionEntry,
@@ -32,7 +33,7 @@ const CorrectionSuggestionPopper = ({
         <Box className="essay-writing-correction-content">
           {hiddenFeatures && (
             <Box component="span" className="essay-writing-correction-error-tag">
-              Error
+              <FormattedMessage id="error" />
             </Box>
           )}
         </Box>
