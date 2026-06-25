@@ -252,7 +252,7 @@ const HomeviewButtons = ({
 const HomeView = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  const showFooter = width > 800
+  const showFooter = width > 700
   const dispatch = useDispatch()
   const location = useLocation()
 

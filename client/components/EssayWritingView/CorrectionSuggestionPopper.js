@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Paper } from '@mui/material'
-import CorrectedWord from 'Components/DebugCorrectionView/CorrectedWord'
+import CorrectedWord from 'Components/EssayWritingView/CorrectedWord'
 import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
 import {
