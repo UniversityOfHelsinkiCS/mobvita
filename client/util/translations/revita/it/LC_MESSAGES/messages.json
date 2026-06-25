@@ -1848,5 +1848,8 @@
     "delete-folder": "Delete folder",
     "remove-empty-folder": "Remove empty folder",
     "folder-options": "Folder options",
-    "edit-note": "Modifica i tuoi appunti."
+    "edit-note": "Modifica i tuoi appunti.",
+    "essay-writing": "Essay writing",
+    "essay-textfield-placeholder": "Write your Finnish text here...",
+    "essay-writing-title": "Essay writing mode"
 }

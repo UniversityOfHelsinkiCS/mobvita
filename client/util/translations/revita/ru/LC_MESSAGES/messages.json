@@ -1851,5 +1851,8 @@
     "delete-folder": "Delete folder",
     "remove-empty-folder": "Remove empty folder",
     "folder-options": "Folder options",
-    "edit-note": "Редактировать заметку"
+    "edit-note": "Редактировать заметку",
+    "essay-writing": "Essay writing",
+    "essay-textfield-placeholder": "Write your Finnish text here...",
+    "essay-writing-title": "Essay writing mode"
 }

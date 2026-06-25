@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, TextField } from '@mui/material'
+import { useIntl } from 'react-intl'
 
 import {
   checkWritingCorrection,
@@ -29,18 +30,15 @@ const getCompletedSentences = text => {
   }))
 }
 
-const cursorIsInsideSentence = (sentence, cursorIndex) => (
+const cursorIsInsideSentence = (sentence, cursorIndex) =>
   cursorIndex >= sentence.startIndex && cursorIndex <= sentence.endIndex
-)
 
-const getCompletedSentenceAtIndex = (sentences, cursorIndex) => (
+const getCompletedSentenceAtIndex = (sentences, cursorIndex) =>
   sentences.find(sentence => cursorIsInsideSentence(sentence, cursorIndex)) || null
-)
 
-const getCompletedSentenceNearIndex = (sentences, cursorIndex) => (
+const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
   getCompletedSentenceAtIndex(sentences, cursorIndex) ||
   getCompletedSentenceAtIndex(sentences, Math.max(cursorIndex - 1, 0))
-)
 
 const getFirstChangedIndex = (previousText, nextText) => {
   const maxSharedLength = Math.min(previousText.length, nextText.length)
@@ -70,14 +68,15 @@ const getCompletedSentenceFromIndexes = (sentences, indexes, textLength) => {
 const getUpdatedPendingSentence = (sentences, pendingSentence) => {
   if (!pendingSentence) return null
 
-  return sentences.find(sentence => sentence.sentenceId === pendingSentence.sentenceId) ||
+  return (
+    sentences.find(sentence => sentence.sentenceId === pendingSentence.sentenceId) ||
     getCompletedSentenceAtIndex(sentences, pendingSentence.startIndex) ||
     getCompletedSentenceAtIndex(sentences, Math.max(pendingSentence.endIndex - 1, 0))
+  )
 }
 
-const getSentenceIndexAtTextIndex = (sentences, cursorIndex) => (
+const getSentenceIndexAtTextIndex = (sentences, cursorIndex) =>
   sentences.findIndex(sentence => cursorIsInsideSentence(sentence, cursorIndex))
-)
 
 const sentenceWasCompletedByCurrentInput = ({
   completedSentence,
@@ -85,18 +84,12 @@ const sentenceWasCompletedByCurrentInput = ({
   nextCompletedSentences,
   nextText,
   previousCompletedSentences,
-}) => (
+}) =>
   nextCompletedSentences.length > previousCompletedSentences.length &&
   completedSentence?.endIndex === cursorIndex &&
   sentenceEndingRegex.test(nextText[cursorIndex - 1] || '')
-)
 
-const addStableSentenceIds = ({
-  createSentenceId,
-  editIndex,
-  previousSentences,
-  sentences,
-}) => {
+const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, sentences }) => {
   if (!previousSentences.length) {
     return sentences.map(sentence => ({
       ...sentence,
@@ -115,12 +108,14 @@ const addStableSentenceIds = ({
   const sentenceIdsByIndex = {}
   const previousIndexAtEdit = getSentenceIndexAtTextIndex(previousSentences, editIndex)
   const currentIndexAtEdit = getSentenceIndexAtTextIndex(sentences, editIndex)
-  const previousTargetIndex = previousIndexAtEdit !== -1
-    ? previousIndexAtEdit
-    : getSentenceIndexAtTextIndex(previousSentences, Math.max(editIndex - 1, 0))
-  const currentTargetIndex = currentIndexAtEdit !== -1
-    ? currentIndexAtEdit
-    : getSentenceIndexAtTextIndex(sentences, Math.max(editIndex - 1, 0))
+  const previousTargetIndex =
+    previousIndexAtEdit !== -1
+      ? previousIndexAtEdit
+      : getSentenceIndexAtTextIndex(previousSentences, Math.max(editIndex - 1, 0))
+  const currentTargetIndex =
+    currentIndexAtEdit !== -1
+      ? currentIndexAtEdit
+      : getSentenceIndexAtTextIndex(sentences, Math.max(editIndex - 1, 0))
 
   const assignReusableSentenceId = (sentenceIndex, previousIndex) => {
     const previousSentenceId = previousSentences[previousIndex]?.sentenceId
@@ -135,8 +130,8 @@ const addStableSentenceIds = ({
   }
 
   sentences.forEach((sentence, index) => {
-    const reusablePreviousIndex = previousSentences
-      .reduce((bestMatch, previousSentence, previousIndex) => {
+    const reusablePreviousIndex = previousSentences.reduce(
+      (bestMatch, previousSentence, previousIndex) => {
         if (
           previousSentence.text !== sentence.text ||
           usedSentenceIds.has(previousSentence.sentenceId)
@@ -144,15 +139,14 @@ const addStableSentenceIds = ({
           return bestMatch
         }
 
-        if (
-          bestMatch === -1 ||
-          Math.abs(previousIndex - index) < Math.abs(bestMatch - index)
-        ) {
+        if (bestMatch === -1 || Math.abs(previousIndex - index) < Math.abs(bestMatch - index)) {
           return previousIndex
         }
 
         return bestMatch
-      }, -1)
+      },
+      -1,
+    )
 
     if (reusablePreviousIndex !== -1) {
       assignReusableSentenceId(index, reusablePreviousIndex)
@@ -206,6 +200,7 @@ const addStableSentenceIds = ({
 }
 
 const EssayTextInput = () => {
+  const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState('')
   const pendingEditedSentenceRef = useRef(null)
@@ -228,9 +223,9 @@ const EssayTextInput = () => {
     })
 
     completedSentencesRef.current = nextCompletedSentences
-    dispatch(syncWritingCorrectionSuggestions(
-      nextCompletedSentences.map(sentence => sentence.sentenceId),
-    ))
+    dispatch(
+      syncWritingCorrectionSuggestions(nextCompletedSentences.map(sentence => sentence.sentenceId)),
+    )
 
     return nextCompletedSentences
   }
@@ -239,18 +234,22 @@ const EssayTextInput = () => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
     if (correctionsByKey[nextCorrectionKey]) {
-      dispatch(useCachedWritingCorrection({
-        key: nextCorrectionKey,
-        sentence: sentence.text,
-        sentenceId: sentence.sentenceId,
-      }))
+      dispatch(
+        useCachedWritingCorrection({
+          key: nextCorrectionKey,
+          sentence: sentence.text,
+          sentenceId: sentence.sentenceId,
+        }),
+      )
     } else {
-      dispatch(checkWritingCorrection({
-        language: WRITING_LANGUAGE,
-        sentenceId: sentence.sentenceId,
-        text: sentence.text,
-        context: sentence.context,
-      }))
+      dispatch(
+        checkWritingCorrection({
+          language: WRITING_LANGUAGE,
+          sentenceId: sentence.sentenceId,
+          text: sentence.text,
+          context: sentence.context,
+        }),
+      )
     }
   }
 
@@ -312,20 +311,12 @@ const EssayTextInput = () => {
 
     const previousCompletedSentenceAtEdit = getCompletedSentenceFromIndexes(
       previousCompletedSentences,
-      [
-        editIndex,
-        editIndex - 1,
-      ],
+      [editIndex, editIndex - 1],
       previousText.length,
     )
     const completedSentenceAtEdit = getCompletedSentenceFromIndexes(
       nextCompletedSentences,
-      [
-        editIndex,
-        editIndex - 1,
-        cursorIndex,
-        cursorIndex - 1,
-      ],
+      [editIndex, editIndex - 1, cursorIndex, cursorIndex - 1],
       nextText.length,
     )
     const completedSentenceAtCursor = getCompletedSentenceNearIndex(
@@ -339,8 +330,8 @@ const EssayTextInput = () => {
       previousCompletedSentences,
       Math.min(cursorIndex, previousText.length),
     )
-    const previousCompletedSentence = previousCompletedSentenceAtEdit ||
-      previousCompletedSentenceAtCursor
+    const previousCompletedSentence =
+      previousCompletedSentenceAtEdit || previousCompletedSentenceAtCursor
 
     if (!completedSentence) {
       if (previousCompletedSentence) {
@@ -350,13 +341,15 @@ const EssayTextInput = () => {
       return
     }
 
-    if (sentenceWasCompletedByCurrentInput({
-      completedSentence,
-      cursorIndex,
-      nextCompletedSentences,
-      nextText,
-      previousCompletedSentences,
-    })) {
+    if (
+      sentenceWasCompletedByCurrentInput({
+        completedSentence,
+        cursorIndex,
+        nextCompletedSentences,
+        nextText,
+        previousCompletedSentences,
+      })
+    ) {
       openCorrectionForSentence(completedSentence)
       return
     }
@@ -420,7 +413,7 @@ const EssayTextInput = () => {
         onBlur={handleBlur}
         onChange={handleChange}
         onSelect={handleSelect}
-        placeholder="Write your Finnish text here..."
+        placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"
         data-cy="essay-writing-input"

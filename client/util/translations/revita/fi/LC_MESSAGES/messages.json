@@ -1849,5 +1849,8 @@
     "delete-folder": "Poista kansio",
     "remove-empty-folder": "Poista tyhjä kansio",
     "folder-options": "Kansion asetukset",
-    "edit-note": "Muokkaa muistiinpanojasi"
+    "edit-note": "Muokkaa muistiinpanojasi",
+    "essay-writing": "Esseen kirjoitus",
+    "essay-textfield-placeholder": "Kirjoita suomenkielinen tekstisi tähän…",
+    "essay-writing-title": "Esseen kirjoitus"
 }
