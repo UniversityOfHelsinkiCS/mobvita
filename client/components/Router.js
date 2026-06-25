@@ -62,6 +62,7 @@ const ReadingComprehensionView = lazy(() => import('./ReadingComprehension'))
 const ReadingPracticeView = lazy(
   () => import('Components/Tests/ReadingTest/ReadingPracticeByStoryID'),
 )
+const EssayWritingView = lazy(() => import('./EssayWritingView'))
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -340,6 +341,10 @@ export default () => {
                     <Route
                       path="/story-generation"
                       element={<ProtectedRoute component={StoryGeneration} />}
+                    />
+                    <Route
+                      path="/essay-writing"
+                      element={<ProtectedRoute component={EssayWritingView} />}
                     />
                   </Routes>
                 </Suspense>

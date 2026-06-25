@@ -653,9 +653,7 @@ export const getTextStyle = (language, type) => {
 }
 
 export const getBackgroundColor = () => {
-  const pathname = window.location.pathname
-  const mainView = pathname.includes('/home') || pathname.includes('/welcome')
-  return mainView ? 'blue-bg' : 'grey-bg'
+  return 'blue-bg'
 }
 
 export const getTextWidth = (text, font = '400 18px Rubik') => {

@@ -57,6 +57,7 @@ import chatbot from './chatbotReducer'
 import gec from './gecReducer'
 import storyGeneration from './storyGenerationReducer'
 import readingComprehension from './readingComprehensionReducer'
+import writingCorrection from './writingCorrectionReducer'
 import helperSidebar from './helperSidebarReducer'
 import notes from './notesReducer'
 import dialogues from './dialoguesReducer'
@@ -120,6 +121,7 @@ const rootReducer = combineReducers({
   gec,
   storyGeneration,
   readingComprehension,
+  writingCorrection,
   helperSidebar,
   notes,
   dialogues,
