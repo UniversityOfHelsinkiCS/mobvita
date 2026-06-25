@@ -40,6 +40,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import MailOutlineIcon from '@mui/icons-material/MailOutlined'
 import LogoutIcon from '@mui/icons-material/Logout'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import EditNote from '@mui/icons-material/EditNote'
 import { Button as BootstrapButton } from 'react-bootstrap'
 
 export default function Sidebar() {
@@ -270,6 +271,16 @@ export default function Sidebar() {
                   >
                     <EventAvailableIcon fontSize="small" style={{ marginRight: '0.4em' }} />
                     <FormattedMessage id="Lessons" />
+                  </BootstrapButton>
+                </Link>
+                <Link to="/essay-writing" onClick={closeSidebar}>
+                  <BootstrapButton
+                    className="sidebar-action-button"
+                    variant='secondary'
+                    style={actionButtonSx}
+                  >
+                    <EditNote fontSize='small' style={{ marginRight: '0.4em' }} />
+                    <FormattedMessage id='essay-writing' />
                   </BootstrapButton>
                 </Link>
                 <Link to="/flashcards/fillin" onClick={closeSidebar}>
