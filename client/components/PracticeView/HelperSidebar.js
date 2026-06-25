@@ -29,7 +29,7 @@ const HelperSidebar = ({ children }) => {
         <Icon name={isOpen ? 'angle right' : 'angle left'} />
       </button>
       
-      <div className="sidebar-content">
+      <div className="helper-sidebar-content">
         {children}
       </div>
     </aside>

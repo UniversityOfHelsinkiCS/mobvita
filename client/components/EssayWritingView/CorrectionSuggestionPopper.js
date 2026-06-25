@@ -1,12 +1,13 @@
 import React from 'react'
 import { Box, Paper } from '@mui/material'
-import CorrectedWord from 'Components/DebugCorrectionView/CorrectedWord'
+import CorrectedWord from 'Components/EssayWritingView/CorrectedWord'
 import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
 import {
   getWritingCorrectionWords,
   writingCorrectionHasChanges,
 } from 'Utilities/redux/writingCorrectionReducer'
+import { FormattedMessage } from 'react-intl'
 
 const CorrectionSuggestionPopper = ({
   correctionEntry,
@@ -32,7 +33,7 @@ const CorrectionSuggestionPopper = ({
         <Box className="essay-writing-correction-content">
           {hiddenFeatures && (
             <Box component="span" className="essay-writing-correction-error-tag">
-              Error
+              <FormattedMessage id="error" />
             </Box>
           )}
         </Box>

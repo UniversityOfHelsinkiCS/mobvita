@@ -5,7 +5,7 @@ import { Segment, Input, Divider, Table, Checkbox } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { testCorrection, resetCorrectionResults } from 'Utilities/redux/correctionTestReducer'
 import Spinner from 'Components/Spinner'
-import CorrectedWord from './CorrectedWord'
+import CorrectedWord from '../CorrectedWord'
 
 
 const DebugCorrectionView = () => {
