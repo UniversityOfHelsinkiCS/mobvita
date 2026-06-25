@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
+import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
@@ -24,14 +25,10 @@ const EssayWritingView = () => {
             isHelperSidebarOpen ? 'essay-writing-container-sidebar-pushed' : ''
           }`}
         >
-          <Paper
-            data-cy="essay-writing-text"
-            className="essay-writing-panel"
-            elevation={1}
-          >
+          <Paper data-cy="essay-writing-text" className="essay-writing-panel" elevation={1}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography component="h1" variant="h5" className="essay-writing-title">
-                Essay writing mode
+                <FormattedMessage id="essay-writing-title" />
               </Typography>
             </Box>
             <Divider sx={{ mt: 2 }} />
