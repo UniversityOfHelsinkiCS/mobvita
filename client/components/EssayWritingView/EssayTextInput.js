@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, TextField } from '@mui/material'
 import { useIntl } from 'react-intl'
@@ -13,6 +13,23 @@ import {
 const sentenceMatchRegex = /[^.!?]+[.!?]+/g
 const sentenceEndingRegex = /[.!?]/
 const WRITING_LANGUAGE = 'Finnish'
+const ESSAY_WRITING_TEXT_STORAGE_KEY = 'essay-writing-text'
+
+const getStoredEssayText = () => {
+  try {
+    return window.localStorage.getItem(ESSAY_WRITING_TEXT_STORAGE_KEY) || ''
+  } catch {
+    return ''
+  }
+}
+
+const saveEssayText = text => {
+  try {
+    window.localStorage.setItem(ESSAY_WRITING_TEXT_STORAGE_KEY, text)
+  } catch {
+    // Ignore storage errors so writing correction still works normally.
+  }
+}
 
 const getCompletedSentenceMatches = text => Array.from(text.matchAll(sentenceMatchRegex))
 
@@ -88,6 +105,20 @@ const sentenceWasCompletedByCurrentInput = ({
   nextCompletedSentences.length > previousCompletedSentences.length &&
   completedSentence?.endIndex === cursorIndex &&
   sentenceEndingRegex.test(nextText[cursorIndex - 1] || '')
+
+const completedSentencesChanged = (previousSentences, nextSentences) => (
+  previousSentences.length !== nextSentences.length ||
+  previousSentences.some((sentence, index) => {
+    const nextSentence = nextSentences[index]
+
+    return (
+      !nextSentence ||
+      sentence.text !== nextSentence.text ||
+      sentence.startIndex !== nextSentence.startIndex ||
+      sentence.endIndex !== nextSentence.endIndex
+    )
+  })
+)
 
 const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, sentences }) => {
   if (!previousSentences.length) {
@@ -199,15 +230,33 @@ const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, 
   })
 }
 
-const EssayTextInput = () => {
+const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
-  const [text, setText] = useState('')
+  const [text, setText] = useState(getStoredEssayText)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
-  const textRef = useRef('')
+  const textRef = useRef(text)
+  const inputRef = useRef(null)
+  const restoredSavedTextRef = useRef(false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+
+  useEffect(() => {
+    const sentenceIdToSelect = sentenceSelectionRequest?.sentenceId
+
+    if (!sentenceIdToSelect) return
+
+    const sentenceToSelect = completedSentencesRef.current.find(
+      sentence => sentence.sentenceId === sentenceIdToSelect,
+    )
+    const input = inputRef.current
+
+    if (!sentenceToSelect || !input?.setSelectionRange) return
+
+    input.focus()
+    input.setSelectionRange(sentenceToSelect.startIndex, sentenceToSelect.endIndex)
+  }, [sentenceSelectionRequest])
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -253,6 +302,18 @@ const EssayTextInput = () => {
     }
   }
 
+  useEffect(() => {
+    if (restoredSavedTextRef.current || !textRef.current) return
+
+    restoredSavedTextRef.current = true
+    const restoredCompletedSentences = updateCompletedSentences(
+      textRef.current,
+      textRef.current.length,
+    )
+
+    restoredCompletedSentences.forEach(openCorrectionForSentence)
+  }, [])
+
   const queueEditedSentence = sentence => {
     pendingEditedSentenceRef.current = sentence
   }
@@ -287,6 +348,10 @@ const EssayTextInput = () => {
 
     setText(nextText)
     textRef.current = nextText
+
+    if (completedSentencesChanged(previousCompletedSentences, nextCompletedSentences)) {
+      saveEssayText(nextText)
+    }
 
     if (pendingSentence) {
       const updatedPendingSentence = getUpdatedPendingSentence(
@@ -410,6 +475,7 @@ const EssayTextInput = () => {
         fullWidth
         multiline
         value={text}
+        inputRef={inputRef}
         onBlur={handleBlur}
         onChange={handleChange}
         onSelect={handleSelect}

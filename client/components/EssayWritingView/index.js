@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
+import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
@@ -13,9 +14,14 @@ import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
+  const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
+
+  const requestSentenceSelection = sentenceId => {
+    setSentenceSelectionRequest({ sentenceId })
+  }
 
   return (
     <Box className="essay-writing-page">
@@ -26,17 +32,25 @@ const EssayWritingView = () => {
           }`}
         >
           <Paper data-cy="essay-writing-text" className="essay-writing-panel" elevation={1}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography component="h1" variant="h5" className="essay-writing-title">
                 <FormattedMessage id="essay-writing-title" />
               </Typography>
+              <Button
+                form="url-upload"
+                type="submit"
+                onClick={() => console.log('story uploaded')}
+                data-cy="submit-essay"
+              >
+                <FormattedMessage id="upload-from-web-button" />
+              </Button>
             </Box>
             <Divider sx={{ mt: 2 }} />
-            <EssayTextInput />
+            <EssayTextInput sentenceSelectionRequest={sentenceSelectionRequest} />
           </Paper>
 
           <HelperSidebar>
-            <EssayChatbot />
+            <EssayChatbot onSentenceSelect={requestSentenceSelection} />
           </HelperSidebar>
 
           <FeedbackInfoModal />

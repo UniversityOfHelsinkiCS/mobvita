@@ -14,9 +14,14 @@ const CorrectionSuggestionPopper = ({
   highlightedWords,
   sentence,
   setHighLightedWords,
+  onSentenceSelect,
 }) => {
   if (!correctionEntry) {
     return null
+  }
+
+  const handleSentenceSelectionRequest = () => {
+    onSentenceSelect?.()
   }
 
   const renderCorrectionContent = () => {
@@ -71,6 +76,9 @@ const CorrectionSuggestionPopper = ({
       className="essay-writing-correction-bubble"
       data-sentence={sentence}
       elevation={3}
+      onClick={onSentenceSelect ? handleSentenceSelectionRequest : undefined}
+      onMouseEnter={onSentenceSelect ? handleSentenceSelectionRequest : undefined}
+      sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
     >
       {correctionContent}
     </Paper>
