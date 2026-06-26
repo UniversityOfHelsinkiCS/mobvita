@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, TextField } from '@mui/material'
 import { useIntl } from 'react-intl'
@@ -199,7 +199,7 @@ const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, 
   })
 }
 
-const EssayTextInput = () => {
+const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState('')
@@ -207,7 +207,24 @@ const EssayTextInput = () => {
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
   const textRef = useRef('')
+  const inputRef = useRef(null)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+
+  useEffect(() => {
+    const sentenceIdToSelect = sentenceSelectionRequest?.sentenceId
+
+    if (!sentenceIdToSelect) return
+
+    const sentenceToSelect = completedSentencesRef.current.find(
+      sentence => sentence.sentenceId === sentenceIdToSelect,
+    )
+    const input = inputRef.current
+
+    if (!sentenceToSelect || !input?.setSelectionRange) return
+
+    input.focus()
+    input.setSelectionRange(sentenceToSelect.startIndex, sentenceToSelect.endIndex)
+  }, [sentenceSelectionRequest])
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -410,6 +427,7 @@ const EssayTextInput = () => {
         fullWidth
         multiline
         value={text}
+        inputRef={inputRef}
         onBlur={handleBlur}
         onChange={handleChange}
         onSelect={handleSelect}

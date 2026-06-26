@@ -3,6 +3,7 @@ $essay-content-top-padding: 0.5rem;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
+$essay-selection-bg-color: #fdea3b;
 
 .essay-writing-page {
   display: flex;
@@ -94,12 +95,23 @@ $essay-sidebar-offset: 380px;
     align-items: stretch;
   }
 
+  textarea,
   .MuiInputBase-inputMultiline {
     flex: 1;
     height: 100% !important;
     box-sizing: border-box;
     overflow: auto !important;
     resize: none;
+
+    &::selection {
+      background-color: $essay-selection-bg-color !important;
+      color: inherit !important;
+    }
+
+    &::-moz-selection {
+      background-color: $essay-selection-bg-color !important;
+      color: inherit !important;
+    }
   }
 }
 

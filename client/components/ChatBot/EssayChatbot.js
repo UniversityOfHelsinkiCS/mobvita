@@ -7,7 +7,7 @@ import RobotIcon from 'Components/PracticeView/RobotIcon'
 
 import './Chatbot.scss'
 
-const EssayChatbot = () => {
+const EssayChatbot = ({ onSentenceSelect }) => {
   const [highlightedWordsBySentenceId, setHighlightedWordsBySentenceId] = useState({})
   const {
     correctionSuggestionSentenceIds,
@@ -42,6 +42,7 @@ const EssayChatbot = () => {
             highlightedWords={highlightedWordsBySentenceId[sentenceId] || []}
             sentence={sentence}
             setHighLightedWords={setHighLightedWordsForSentence(sentenceId)}
+            onSentenceSelect={onSentenceSelect ? () => onSentenceSelect(sentenceId) : undefined}
           />
         ))}
       </div>

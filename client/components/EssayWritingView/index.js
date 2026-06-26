@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
@@ -13,9 +13,14 @@ import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
+  const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
+
+  const requestSentenceSelection = sentenceId => {
+    setSentenceSelectionRequest({ sentenceId })
+  }
 
   return (
     <Box className="essay-writing-page">
@@ -32,11 +37,11 @@ const EssayWritingView = () => {
               </Typography>
             </Box>
             <Divider sx={{ mt: 2 }} />
-            <EssayTextInput />
+            <EssayTextInput sentenceSelectionRequest={sentenceSelectionRequest} />
           </Paper>
 
           <HelperSidebar>
-            <EssayChatbot />
+            <EssayChatbot onSentenceSelect={requestSentenceSelection} />
           </HelperSidebar>
 
           <FeedbackInfoModal />
