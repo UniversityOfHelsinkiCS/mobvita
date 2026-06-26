@@ -1,16 +1,22 @@
 import React from 'react'
-import { Box, Paper } from '@mui/material'
+import { Box, IconButton, Paper, Tooltip } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { FormattedMessage } from 'react-intl'
 
 import CorrectedWord from 'Components/EssayWritingView/CorrectedWord'
+import SanitizedHTML from 'Components/SanitizedHTML'
 import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
 import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionReducer'
-import { getCorrectionGroups } from './utils/correctionTokens'
+import {
+  getCorrectionFeedbackText,
+  getCorrectionGroups,
+} from './utils/correctionTokens'
 
 const CorrectionBubble = ({
   children,
   correctionRange,
+  feedbackText,
   onSentenceSelect,
   sentence,
 }) => (
@@ -23,7 +29,34 @@ const CorrectionBubble = ({
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
+    {feedbackText && (
+      <Tooltip
+        placement="top"
+        title={(
+          <SanitizedHTML
+            html={feedbackText}
+            tagName={Box}
+            sx={{ whiteSpace: 'pre-line' }}
+          />
+        )}
+      >
+        <IconButton
+          aria-label="Correction feedback"
+          className="essay-writing-correction-feedback-button"
+          size="small"
+        >
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    )}
   </Paper>
+)
+
+const getCorrectionGroupFeedbackText = correctionGroup => (
+  correctionGroup.words
+    .map(word => getCorrectionFeedbackText(word.feedback))
+    .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
+    .join('\n')
 )
 
 const CorrectionSuggestionPopper = ({
@@ -71,6 +104,7 @@ const CorrectionSuggestionPopper = ({
       {correctionGroups.map((correctionGroup, groupIndex) => (
         <CorrectionBubble
           correctionRange={correctionGroup.range}
+          feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
           key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
           onSentenceSelect={onSentenceSelect}
           sentence={sentence}

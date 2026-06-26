@@ -5,7 +5,7 @@ import { Segment, Input, Divider, Table, Checkbox } from 'semantic-ui-react'
 import { learningLanguageSelector } from 'Utilities/common'
 import { testCorrection, resetCorrectionResults } from 'Utilities/redux/correctionTestReducer'
 import Spinner from 'Components/Spinner'
-import CorrectedWord from '../CorrectedWord'
+import CorrectedWordDebug from './CorrectedWordDebug'
 
 
 const DebugCorrectionView = () => {
@@ -66,7 +66,7 @@ const DebugCorrectionView = () => {
                 </div>
                 <div className="" style={{ gap: '1em' }}>
                   {corrections.map((word, index) => (
-                    <CorrectedWord
+                    <CorrectedWordDebug
                       key={index}
                       word={word}
                       highlightedWords={highlightedWords}

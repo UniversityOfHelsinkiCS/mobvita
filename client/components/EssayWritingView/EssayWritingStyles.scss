@@ -132,6 +132,9 @@ $essay-selection-bg-color: #fdea3b;
 }
 
 .essay-writing-correction-bubble {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   z-index: 1300;
   box-sizing: border-box;
   width: 100%;
@@ -145,6 +148,7 @@ $essay-selection-bg-color: #fdea3b;
 
 .essay-writing-correction-content {
   display: flex;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
   min-width: 220px;
@@ -154,8 +158,14 @@ $essay-selection-bg-color: #fdea3b;
   line-height: 1.4;
 }
 
+.essay-writing-correction-feedback-button {
+  flex: 0 0 auto;
+  margin-left: auto !important;
+}
+
 .essay-writing-correction-loading {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   min-width: 220px;
