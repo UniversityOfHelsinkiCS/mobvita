@@ -239,6 +239,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const sentenceIdCounterRef = useRef(0)
   const textRef = useRef(text)
   const inputRef = useRef(null)
+  const restoredSavedTextRef = useRef(false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
 
   useEffect(() => {
@@ -278,12 +279,6 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
     return nextCompletedSentences
   }
 
-  useEffect(() => {
-    if (textRef.current) {
-      updateCompletedSentences(textRef.current, textRef.current.length)
-    }
-  }, [])
-
   const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
@@ -306,6 +301,18 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
       )
     }
   }
+
+  useEffect(() => {
+    if (restoredSavedTextRef.current || !textRef.current) return
+
+    restoredSavedTextRef.current = true
+    const restoredCompletedSentences = updateCompletedSentences(
+      textRef.current,
+      textRef.current.length,
+    )
+
+    restoredCompletedSentences.forEach(openCorrectionForSentence)
+  }, [])
 
   const queueEditedSentence = sentence => {
     pendingEditedSentenceRef.current = sentence
