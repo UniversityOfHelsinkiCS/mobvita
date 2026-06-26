@@ -22,20 +22,44 @@ const wordIsInsertion = word => {
     (word.original === null || INSERTION_ORIGINAL_VALUES.has(originalText))
 }
 
+const wordIsDeletion = word => {
+  const originalText = getCorrectionText(word.original).trim()
+  const correctedText = getCorrectionText(word.corrected).trim()
+
+  return Boolean(word.corrected) &&
+    DELETION_CORRECTION_VALUES.has(correctedText) &&
+    !INSERTION_ORIGINAL_VALUES.has(originalText)
+}
+
+const getComparableCorrectionText = value => (
+  getCorrectionText(value).trim().toLocaleLowerCase()
+)
+
 const getWordOriginalText = word => (
   !wordIsInsertion(word) && word.original ? String(word.original) : ''
 )
 
 const getWordPositionsById = (sentence, words) => {
   const positionsById = {}
-  let searchStartIndex = 0
+  let currentOffset = 0
 
   words.forEach(word => {
+    if (wordIsInsertion(word)) {
+      positionsById[word.ID] = {
+        startOffset: currentOffset,
+        endOffset: currentOffset,
+        isInsertion: true,
+      }
+      return
+    }
+
     const originalText = getWordOriginalText(word)
 
     if (!originalText) return
 
-    const startIndex = sentence.indexOf(originalText, searchStartIndex)
+    const startIndex = sentence.startsWith(originalText, currentOffset)
+      ? currentOffset
+      : sentence.indexOf(originalText, currentOffset)
 
     if (startIndex === -1) return
 
@@ -43,7 +67,7 @@ const getWordPositionsById = (sentence, words) => {
       startOffset: startIndex,
       endOffset: startIndex + originalText.length,
     }
-    searchStartIndex = startIndex + originalText.length
+    currentOffset = startIndex + originalText.length
   })
 
   return positionsById
@@ -94,7 +118,7 @@ const getInsertionRange = (word, positionsById) => {
 
 const getCorrectionRange = (word, positionsById) => {
   if (wordIsInsertion(word)) {
-    return getInsertionRange(word, positionsById)
+    return positionsById[word.ID] || getInsertionRange(word, positionsById)
   }
 
   const wordRanges = getCorrectionWordIds(word)
@@ -133,11 +157,57 @@ const mergeRanges = (firstRange, secondRange) => {
   return mergedRange
 }
 
+const getMovedCorrectionGroups = (corrections, positionsById) => {
+  const usedCorrectionIndexes = new Set()
+  const movedWordIds = new Set()
+  const groups = []
+
+  corrections.forEach((word, insertionIndex) => {
+    if (!wordIsInsertion(word) || usedCorrectionIndexes.has(insertionIndex)) return
+
+    const insertedText = getComparableCorrectionText(word.corrected)
+
+    if (!insertedText) return
+
+    const matchingDeletion = corrections
+      .map((candidate, index) => ({ candidate, index }))
+      .filter(({ candidate, index }) => (
+        !usedCorrectionIndexes.has(index) &&
+        wordIsDeletion(candidate) &&
+        getComparableCorrectionText(candidate.original) === insertedText
+      ))
+      .sort((firstMatch, secondMatch) => (
+        Math.abs(firstMatch.index - insertionIndex) -
+        Math.abs(secondMatch.index - insertionIndex)
+      ))[0]
+
+    if (!matchingDeletion) return
+
+    const startIndex = Math.min(insertionIndex, matchingDeletion.index)
+    const endIndex = Math.max(insertionIndex, matchingDeletion.index)
+    const words = corrections.slice(startIndex, endIndex + 1)
+    const range = mergeRanges(
+      positionsById[word.ID],
+      positionsById[matchingDeletion.candidate.ID],
+    )
+
+    usedCorrectionIndexes.add(insertionIndex)
+    usedCorrectionIndexes.add(matchingDeletion.index)
+    words.forEach(groupWord => movedWordIds.add(groupWord.ID))
+    groups.push({ range, words })
+  })
+
+  return { groups, movedWordIds }
+}
+
 const getCorrectionGroups = (sentence, corrections) => {
   const positionsById = getWordPositionsById(sentence, corrections)
-
-  return corrections
-    .filter(wordHasCorrection)
+  const {
+    groups: movedCorrectionGroups,
+    movedWordIds,
+  } = getMovedCorrectionGroups(corrections, positionsById)
+  const adjacentCorrectionGroups = corrections
+    .filter(word => wordHasCorrection(word) && !movedWordIds.has(word.ID))
     .map(word => ({
       range: getCorrectionRange(word, positionsById),
       words: [word],
@@ -153,6 +223,12 @@ const getCorrectionGroups = (sentence, corrections) => {
 
       return groups.concat(correction)
     }, [])
+
+  return movedCorrectionGroups
+    .concat(adjacentCorrectionGroups)
+    .sort((firstGroup, secondGroup) => (
+      (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0)
+    ))
 }
 
 const CorrectionSuggestionPopper = ({

@@ -38,6 +38,14 @@ const CorrectedWord = ({ word }) => {
     ? DELETION_CORRECTION_SYMBOL
     : corrected || original
 
+  if (isInsertion && !correctedText) {
+    return null
+  }
+
+  if (!corrected && !originalText) {
+    return null
+  }
+
   return (
     <span
       style={{

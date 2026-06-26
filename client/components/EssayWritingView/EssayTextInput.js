@@ -315,8 +315,42 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const textRef = useRef(text)
   const inputRef = useRef(null)
   const inputAreaRef = useRef(null)
+  const applyingCorrectionSelectionRef = useRef(false)
   const restoredSavedTextRef = useRef(false)
+  const userSelectionRef = useRef({
+    end: text.length,
+    start: text.length,
+  })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+
+  const setInputSelection = (input, start, end) => {
+    applyingCorrectionSelectionRef.current = true
+    input.setSelectionRange(start, end)
+    const resetApplyingCorrectionSelection = () => {
+      applyingCorrectionSelectionRef.current = false
+    }
+
+    if (window.requestAnimationFrame) {
+      window.requestAnimationFrame(resetApplyingCorrectionSelection)
+    } else {
+      setTimeout(resetApplyingCorrectionSelection, 0)
+    }
+  }
+
+  const saveUserSelection = input => {
+    userSelectionRef.current = {
+      end: input.selectionEnd,
+      start: input.selectionStart,
+    }
+  }
+
+  const restoreUserSelection = input => {
+    const inputLength = input.value.length
+    const selectionStart = Math.min(userSelectionRef.current.start, inputLength)
+    const selectionEnd = Math.min(userSelectionRef.current.end, inputLength)
+
+    setInputSelection(input, selectionStart, selectionEnd)
+  }
 
   useEffect(() => {
     const {
@@ -343,13 +377,14 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
       ? sentenceToSelect.startIndex + endOffset
       : sentenceToSelect.endIndex
 
-    input.focus()
-    input.setSelectionRange(selectionStart, selectionEnd)
-
-    if (selectionStart !== selectionEnd || !isInsertion || !inputAreaRef.current) {
+    if (!isInsertion || selectionStart !== selectionEnd || !inputAreaRef.current) {
       setInsertionHighlight(null)
+      input.focus()
+      setInputSelection(input, selectionStart, selectionEnd)
       return
     }
+
+    restoreUserSelection(input)
 
     const caretCoordinates = getTextareaCaretCoordinates(input, selectionStart)
 
@@ -451,6 +486,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
   const handleChange = e => {
     setInsertionHighlight(null)
+    saveUserSelection(e.target)
 
     const previousText = textRef.current
     const nextText = e.target.value
@@ -559,6 +595,11 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleSelect = e => {
+    if (applyingCorrectionSelectionRef.current) return
+
+    setInsertionHighlight(null)
+    saveUserSelection(e.target)
+
     const pendingSentence = pendingEditedSentenceRef.current
 
     if (!pendingSentence) return
@@ -606,6 +647,8 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
         inputRef={inputRef}
         onBlur={handleBlur}
         onChange={handleChange}
+        onClick={handleSelect}
+        onKeyUp={handleSelect}
         onSelect={handleSelect}
         onScrollCapture={() => setInsertionHighlight(null)}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
