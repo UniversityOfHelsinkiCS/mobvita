@@ -2,6 +2,8 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v1'
+const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 const hashString = value => {
   let hash = 2166136261
@@ -66,11 +68,49 @@ export const useCachedWritingCorrection = ({ key, sentence = '', sentenceId }) =
   sentenceId,
 })
 
+const getStoredWritingCorrectionCache = () => {
+  try {
+    if (typeof window === 'undefined') return {}
+
+    const cache = JSON.parse(
+      window.localStorage.getItem(WRITING_CORRECTION_CACHE_STORAGE_KEY) || '{}',
+    )
+
+    return cache.correctionsByKey || {}
+  } catch {
+    return {}
+  }
+}
+
+const saveStoredWritingCorrectionCache = correctionsByKey => {
+  try {
+    if (typeof window === 'undefined') return
+
+    const cachedCorrectionsByKey = Object.values(correctionsByKey)
+      .filter(entry => entry && !entry.pending && !entry.error)
+      .sort((firstEntry, secondEntry) => (
+        (secondEntry.cachedAt || 0) - (firstEntry.cachedAt || 0)
+      ))
+      .slice(0, WRITING_CORRECTION_CACHE_MAX_ENTRIES)
+      .reduce((cache, entry) => ({
+        ...cache,
+        [entry.key]: entry,
+      }), {})
+
+    window.localStorage.setItem(
+      WRITING_CORRECTION_CACHE_STORAGE_KEY,
+      JSON.stringify({ correctionsByKey: cachedCorrectionsByKey }),
+    )
+  } catch {
+    // Ignore storage errors so writing correction still works normally.
+  }
+}
+
 const initialState = {
   correctionSuggestionSentenceIds: [],
   correctionSuggestionSentenceOrder: [],
   correctionSuggestionsBySentenceId: {},
-  correctionsByKey: {},
+  correctionsByKey: getStoredWritingCorrectionCache(),
   latestCorrectionKeyBySentenceId: {},
 }
 
@@ -132,6 +172,7 @@ const createSuccessEntry = action => {
   const { key, sentenceId, text, context, language } = getActionQuery(action)
 
   return {
+    cachedAt: Date.now(),
     key,
     sentenceId,
     text,
@@ -290,12 +331,16 @@ export default (state = initialState, action) => {
 
     case `${PREFIX}_SUCCESS`: {
       const entry = createSuccessEntry(action)
+      const correctionsByKey = {
+        ...state.correctionsByKey,
+        [entry.key]: entry,
+      }
+
+      saveStoredWritingCorrectionCache(correctionsByKey)
+
       const nextState = {
         ...state,
-        correctionsByKey: {
-          ...state.correctionsByKey,
-          [entry.key]: entry,
-        },
+        correctionsByKey,
       }
 
       if (!requestIsLatestForSentence(nextState, entry)) {
@@ -325,6 +370,7 @@ export default (state = initialState, action) => {
     case 'WRITING_CORRECTION_CLEAR': {
       const nextCorrectionsByKey = { ...state.correctionsByKey }
       delete nextCorrectionsByKey[action.key]
+      saveStoredWritingCorrectionCache(nextCorrectionsByKey)
 
       const nextState = {
         ...state,

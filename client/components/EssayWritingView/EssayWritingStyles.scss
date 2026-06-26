@@ -4,6 +4,7 @@ $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
 $essay-selection-bg-color: #fdea3b;
+$essay-deletion-selection-bg-color: #faa8a2;
 
 .essay-writing-page {
   display: flex;
@@ -76,11 +77,17 @@ $essay-selection-bg-color: #fdea3b;
 }
 
 .essay-writing-input-area {
+  --essay-writing-selection-bg-color: #{$essay-selection-bg-color};
+
   position: relative;
   display: flex;
   flex: 1;
   min-height: 0;
   margin-top: 1rem;
+}
+
+.essay-writing-input-area-deletion {
+  --essay-writing-selection-bg-color: #{$essay-deletion-selection-bg-color};
 }
 
 .essay-writing-insertion-highlight {
@@ -120,12 +127,12 @@ $essay-selection-bg-color: #fdea3b;
     resize: none;
 
     &::selection {
-      background-color: $essay-selection-bg-color !important;
+      background-color: var(--essay-writing-selection-bg-color) !important;
       color: inherit !important;
     }
 
     &::-moz-selection {
-      background-color: $essay-selection-bg-color !important;
+      background-color: var(--essay-writing-selection-bg-color) !important;
       color: inherit !important;
     }
   }
@@ -156,6 +163,33 @@ $essay-selection-bg-color: #fdea3b;
   gap: 0.35rem;
   font-size: 0.95rem;
   line-height: 1.4;
+}
+
+.essay-writing-corrected-word {
+  font-size: large;
+}
+
+.essay-writing-corrected-word-deletion {
+  padding: 0 3px;
+  border-radius: 3px;
+  background-color: #ffd9d6;
+  color: #9f1d17;
+  text-decoration: line-through;
+  text-decoration-color: #9f1d17;
+  text-decoration-thickness: 2px;
+}
+
+.essay-writing-corrected-word-deleted-punctuation {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.essay-writing-corrected-word-replacement {
+  text-decoration: wavy underline red;
+}
+
+.essay-writing-corrected-word-insertion {
+  text-decoration: underline;
 }
 
 .essay-writing-correction-feedback-button {

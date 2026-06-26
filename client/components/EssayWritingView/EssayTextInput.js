@@ -16,6 +16,7 @@ import {
   getCompletedSentenceNearIndex,
   getCompletedSentences,
   getFirstChangedIndex,
+  getSentencesWithNewCorrectionKeys,
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
@@ -29,6 +30,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
   const [insertionHighlight, setInsertionHighlight] = useState(null)
+  const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -36,6 +38,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const inputRef = useRef(null)
   const inputAreaRef = useRef(null)
   const applyingCorrectionSelectionRef = useRef(false)
+  const pastedTextRef = useRef(false)
   const restoredSavedTextRef = useRef(false)
   const userSelectionRef = useRef({
     end: text.length,
@@ -72,9 +75,23 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
     setInputSelection(input, selectionStart, selectionEnd)
   }
 
+  const setDeletionSelectionHighlight = isDeletion => {
+    setIsDeletionSelectionHighlighted(Boolean(isDeletion))
+    inputAreaRef.current?.classList.toggle(
+      'essay-writing-input-area-deletion',
+      Boolean(isDeletion),
+    )
+  }
+
+  const clearCorrectionHighlight = () => {
+    setInsertionHighlight(null)
+    setDeletionSelectionHighlight(false)
+  }
+
   useEffect(() => {
     const {
       endOffset,
+      isDeletion,
       isInsertion,
       sentenceId: sentenceIdToSelect,
       startOffset,
@@ -99,11 +116,13 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     if (!isInsertion || selectionStart !== selectionEnd || !inputAreaRef.current) {
       setInsertionHighlight(null)
+      setDeletionSelectionHighlight(isDeletion)
       input.focus()
       setInputSelection(input, selectionStart, selectionEnd)
       return
     }
 
+    setDeletionSelectionHighlight(false)
     restoreUserSelection(input)
 
     const caretCoordinates = getTextareaCaretCoordinates(input, selectionStart)
@@ -205,8 +224,12 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleChange = e => {
-    setInsertionHighlight(null)
+    clearCorrectionHighlight()
     saveUserSelection(e.target)
+
+    const inputWasPasted =
+      pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
+    pastedTextRef.current = false
 
     const previousText = textRef.current
     const nextText = e.target.value
@@ -221,6 +244,20 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     if (completedSentencesChanged(previousCompletedSentences, nextCompletedSentences)) {
       saveEssayText(nextText)
+    }
+
+    if (inputWasPasted) {
+      const sentencesToCorrect = getSentencesWithNewCorrectionKeys(
+        previousCompletedSentences,
+        nextCompletedSentences,
+        getWritingCorrectionKey,
+      )
+
+      if (sentencesToCorrect.length) {
+        pendingEditedSentenceRef.current = null
+        sentencesToCorrect.forEach(openCorrectionForSentence)
+        return
+      }
     }
 
     if (pendingSentence) {
@@ -317,7 +354,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const handleSelect = e => {
     if (applyingCorrectionSelectionRef.current) return
 
-    setInsertionHighlight(null)
+    clearCorrectionHighlight()
     saveUserSelection(e.target)
 
     const pendingSentence = pendingEditedSentenceRef.current
@@ -341,12 +378,25 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleBlur = () => {
-    setInsertionHighlight(null)
+    clearCorrectionHighlight()
     commitPendingEditedSentence()
   }
 
+  const handlePaste = () => {
+    pastedTextRef.current = true
+
+    setTimeout(() => {
+      pastedTextRef.current = false
+    }, 0)
+  }
+
   return (
-    <Box className="essay-writing-input-area" ref={inputAreaRef}>
+    <Box
+      className={`essay-writing-input-area ${
+        isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : ''
+      }`}
+      ref={inputAreaRef}
+    >
       {insertionHighlight && (
         <Box
           component="span"
@@ -369,8 +419,9 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
         onChange={handleChange}
         onClick={handleSelect}
         onKeyUp={handleSelect}
+        onPaste={handlePaste}
         onSelect={handleSelect}
-        onScrollCapture={() => setInsertionHighlight(null)}
+        onScrollCapture={clearCorrectionHighlight}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"

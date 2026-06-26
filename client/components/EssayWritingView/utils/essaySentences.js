@@ -97,6 +97,26 @@ export const completedSentencesChanged = (previousSentences, nextSentences) => (
   })
 )
 
+export const getSentencesWithNewCorrectionKeys = (
+  previousSentences,
+  nextSentences,
+  getCorrectionKey,
+) => {
+  const previousCorrectionKeys = new Set(previousSentences.map(getCorrectionKey))
+  const queuedCorrectionKeys = new Set()
+
+  return nextSentences.filter(sentence => {
+    const correctionKey = getCorrectionKey(sentence)
+
+    if (previousCorrectionKeys.has(correctionKey) || queuedCorrectionKeys.has(correctionKey)) {
+      return false
+    }
+
+    queuedCorrectionKeys.add(correctionKey)
+    return true
+  })
+}
+
 export const addStableSentenceIds = ({
   createSentenceId,
   editIndex,

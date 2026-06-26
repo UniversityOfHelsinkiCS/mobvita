@@ -5,20 +5,25 @@ import {
   isCorrectionInsertion,
 } from './utils/correctionTokens'
 
+const textHasLettersOrNumbers = text => /[\p{L}\p{N}]/u.test(text)
+
 const CorrectedWord = ({ word }) => {
   const { original, corrected, feedback } = word
   const originalText = getCorrectionText(original).trim()
   const correctedText = getCorrectionText(corrected).trim()
   const isDeletion = isCorrectionDeletion(word)
   const isInsertion = isCorrectionInsertion(word)
+  const isDeletedPunctuation = isDeletion && !textHasLettersOrNumbers(originalText)
 
-  const textDecoration = isDeletion
-    ? 'line-through'
-    : original && corrected && !isInsertion
-      ? 'wavy underline red'
-      : isInsertion
-        ? 'underline'
-        : 'none'
+  const className = [
+    'essay-writing-corrected-word',
+    isDeletion ? 'essay-writing-corrected-word-deletion' : '',
+    isDeletedPunctuation ? 'essay-writing-corrected-word-deleted-punctuation' : '',
+    original && corrected && !isInsertion && !isDeletion
+      ? 'essay-writing-corrected-word-replacement'
+      : '',
+    isInsertion ? 'essay-writing-corrected-word-insertion' : '',
+  ].filter(Boolean).join(' ')
 
   const displayedCorrection = isDeletion ? original : corrected || original
 
@@ -31,12 +36,7 @@ const CorrectedWord = ({ word }) => {
   }
 
   return (
-    <span
-      style={{
-        textDecoration,
-        fontSize: 'large',
-      }}
-    >
+    <span className={className}>
       {displayedCorrection}
     </span>
   )

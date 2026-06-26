@@ -129,6 +129,7 @@ const getWordPositionsById = (sentence, words) => {
     positionsById[word.ID] = {
       startOffset,
       endOffset,
+      isDeletion: isCorrectionDeletion(word),
     }
     currentNormalizedOffset = normalizedEndIndex
   })
@@ -195,6 +196,7 @@ const getCorrectionRange = (word, positionsById) => {
   return {
     startOffset: Math.min(...wordRanges.map(range => range.startOffset)),
     endOffset: Math.max(...wordRanges.map(range => range.endOffset)),
+    isDeletion: isCorrectionDeletion(word),
   }
 }
 
@@ -215,6 +217,7 @@ const mergeRanges = (firstRange, secondRange) => {
     endOffset: Math.max(firstRange.endOffset, secondRange.endOffset),
   }
 
+  mergedRange.isDeletion = firstRange.isDeletion || secondRange.isDeletion
   mergedRange.isInsertion = firstRange.isInsertion || secondRange.isInsertion
 
   return mergedRange
