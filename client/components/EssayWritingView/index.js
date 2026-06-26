@@ -19,8 +19,8 @@ const EssayWritingView = () => {
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
 
-  const requestSentenceSelection = sentenceId => {
-    setSentenceSelectionRequest({ sentenceId })
+  const requestSentenceSelection = selectionRequest => {
+    setSentenceSelectionRequest(selectionRequest)
   }
 
   return (

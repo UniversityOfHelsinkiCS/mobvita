@@ -74,13 +74,17 @@ const initialState = {
   latestCorrectionKeyBySentenceId: {},
 }
 
+const CORRECTION_PLACEHOLDER_VALUES = new Set(['-', '—', '–'])
+
 const wordValuesMatch = (original, corrected) => (
   String(original).trim() === String(corrected).trim()
 )
 
 export const normalizeCorrectionWord = word => (
-  word.original && word.corrected && word.original !== '-' &&
-  word.corrected !== '-' && wordValuesMatch(word.original, word.corrected)
+  word.original && word.corrected &&
+  !CORRECTION_PLACEHOLDER_VALUES.has(String(word.original).trim()) &&
+  !CORRECTION_PLACEHOLDER_VALUES.has(String(word.corrected).trim()) &&
+  wordValuesMatch(word.original, word.corrected)
     ? { ...word, corrected: null }
     : word
 )

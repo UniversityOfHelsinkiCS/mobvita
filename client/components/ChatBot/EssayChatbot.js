@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 
@@ -8,7 +8,6 @@ import RobotIcon from 'Components/PracticeView/RobotIcon'
 import './Chatbot.scss'
 
 const EssayChatbot = ({ onSentenceSelect }) => {
-  const [highlightedWordsBySentenceId, setHighlightedWordsBySentenceId] = useState({})
   const {
     correctionSuggestionSentenceIds,
     correctionSuggestionsBySentenceId,
@@ -17,13 +16,6 @@ const EssayChatbot = ({ onSentenceSelect }) => {
   const correctionSuggestions = correctionSuggestionSentenceIds
     .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
     .filter(Boolean)
-
-  const setHighLightedWordsForSentence = sentenceId => highlightedWords => {
-    setHighlightedWordsBySentenceId(currentHighlightedWords => ({
-      ...currentHighlightedWords,
-      [sentenceId]: highlightedWords,
-    }))
-  }
 
   return (
     <div className="chatbot">
@@ -39,10 +31,12 @@ const EssayChatbot = ({ onSentenceSelect }) => {
           <CorrectionSuggestionPopper
             key={sentenceId}
             correctionEntry={correctionsByKey[key]}
-            highlightedWords={highlightedWordsBySentenceId[sentenceId] || []}
             sentence={sentence}
-            setHighLightedWords={setHighLightedWordsForSentence(sentenceId)}
-            onSentenceSelect={onSentenceSelect ? () => onSentenceSelect(sentenceId) : undefined}
+            onSentenceSelect={
+              onSentenceSelect
+                ? correctionRange => onSentenceSelect({ sentenceId, ...(correctionRange || {}) })
+                : undefined
+            }
           />
         ))}
       </div>

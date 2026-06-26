@@ -14,6 +14,34 @@ const sentenceMatchRegex = /[^.!?]+[.!?]+/g
 const sentenceEndingRegex = /[.!?]/
 const WRITING_LANGUAGE = 'Finnish'
 const ESSAY_WRITING_TEXT_STORAGE_KEY = 'essay-writing-text'
+const TEXTAREA_CARET_STYLE_PROPERTIES = [
+  'boxSizing',
+  'width',
+  'height',
+  'overflowX',
+  'overflowY',
+  'borderTopWidth',
+  'borderRightWidth',
+  'borderBottomWidth',
+  'borderLeftWidth',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'fontStyle',
+  'fontVariant',
+  'fontWeight',
+  'fontStretch',
+  'fontSize',
+  'lineHeight',
+  'fontFamily',
+  'textAlign',
+  'textTransform',
+  'textIndent',
+  'letterSpacing',
+  'wordSpacing',
+  'tabSize',
+]
 
 const getStoredEssayText = () => {
   try {
@@ -31,20 +59,66 @@ const saveEssayText = text => {
   }
 }
 
+const getTextareaCaretCoordinates = (textarea, offset) => {
+  if (!textarea || typeof window === 'undefined' || typeof document === 'undefined') {
+    return null
+  }
+
+  const textareaStyle = window.getComputedStyle(textarea)
+  const mirror = document.createElement('div')
+
+  TEXTAREA_CARET_STYLE_PROPERTIES.forEach(property => {
+    mirror.style[property] = textareaStyle[property]
+  })
+
+  mirror.style.position = 'absolute'
+  mirror.style.visibility = 'hidden'
+  mirror.style.whiteSpace = 'pre-wrap'
+  mirror.style.wordWrap = 'break-word'
+  mirror.style.top = '0'
+  mirror.style.left = '-9999px'
+  mirror.textContent = textarea.value.slice(0, offset)
+
+  const marker = document.createElement('span')
+  marker.textContent = textarea.value.slice(offset, offset + 1) || '.'
+  mirror.appendChild(marker)
+
+  document.body.appendChild(mirror)
+
+  const coordinates = {
+    fontFamily: textareaStyle.fontFamily,
+    fontSize: textareaStyle.fontSize,
+    left: marker.offsetLeft - textarea.scrollLeft,
+    lineHeight: textareaStyle.lineHeight,
+    top: marker.offsetTop - textarea.scrollTop,
+  }
+
+  document.body.removeChild(mirror)
+
+  return coordinates
+}
+
 const getCompletedSentenceMatches = text => Array.from(text.matchAll(sentenceMatchRegex))
 
 const getCompletedSentences = text => {
   const matches = getCompletedSentenceMatches(text)
 
-  return matches.map((match, index) => ({
-    text: match[0].trim(),
-    startIndex: match.index,
-    endIndex: match.index + match[0].length,
-    context: matches
-      .slice(Math.max(index - 3, 0), index)
-      .map(contextMatch => contextMatch[0].trim())
-      .join(' '),
-  }))
+  return matches.map((match, index) => {
+    const rawSentenceText = match[0]
+    const sentenceText = rawSentenceText.trim()
+    const leadingWhitespaceLength = rawSentenceText.length - rawSentenceText.trimStart().length
+    const startIndex = match.index + leadingWhitespaceLength
+
+    return {
+      text: sentenceText,
+      startIndex,
+      endIndex: startIndex + sentenceText.length,
+      context: matches
+        .slice(Math.max(index - 3, 0), index)
+        .map(contextMatch => contextMatch[0].trim())
+        .join(' '),
+    }
+  })
 }
 
 const cursorIsInsideSentence = (sentence, cursorIndex) =>
@@ -234,16 +308,23 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
+  const [insertionHighlight, setInsertionHighlight] = useState(null)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
   const textRef = useRef(text)
   const inputRef = useRef(null)
+  const inputAreaRef = useRef(null)
   const restoredSavedTextRef = useRef(false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
 
   useEffect(() => {
-    const sentenceIdToSelect = sentenceSelectionRequest?.sentenceId
+    const {
+      endOffset,
+      isInsertion,
+      sentenceId: sentenceIdToSelect,
+      startOffset,
+    } = sentenceSelectionRequest || {}
 
     if (!sentenceIdToSelect) return
 
@@ -254,8 +335,39 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     if (!sentenceToSelect || !input?.setSelectionRange) return
 
+    const hasCorrectionRange = Number.isInteger(startOffset) && Number.isInteger(endOffset)
+    const selectionStart = hasCorrectionRange
+      ? sentenceToSelect.startIndex + startOffset
+      : sentenceToSelect.startIndex
+    const selectionEnd = hasCorrectionRange
+      ? sentenceToSelect.startIndex + endOffset
+      : sentenceToSelect.endIndex
+
     input.focus()
-    input.setSelectionRange(sentenceToSelect.startIndex, sentenceToSelect.endIndex)
+    input.setSelectionRange(selectionStart, selectionEnd)
+
+    if (selectionStart !== selectionEnd || !isInsertion || !inputAreaRef.current) {
+      setInsertionHighlight(null)
+      return
+    }
+
+    const caretCoordinates = getTextareaCaretCoordinates(input, selectionStart)
+
+    if (!caretCoordinates) {
+      setInsertionHighlight(null)
+      return
+    }
+
+    const inputRect = input.getBoundingClientRect()
+    const inputAreaRect = inputAreaRef.current.getBoundingClientRect()
+
+    setInsertionHighlight({
+      fontFamily: caretCoordinates.fontFamily,
+      fontSize: caretCoordinates.fontSize,
+      left: inputRect.left - inputAreaRect.left + caretCoordinates.left,
+      lineHeight: caretCoordinates.lineHeight,
+      top: inputRect.top - inputAreaRect.top + caretCoordinates.top,
+    })
   }, [sentenceSelectionRequest])
 
   const createSentenceId = () => {
@@ -338,6 +450,8 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleChange = e => {
+    setInsertionHighlight(null)
+
     const previousText = textRef.current
     const nextText = e.target.value
     const cursorIndex = e.target.selectionStart
@@ -466,11 +580,25 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleBlur = () => {
+    setInsertionHighlight(null)
     commitPendingEditedSentence()
   }
 
   return (
-    <Box className="essay-writing-input-area">
+    <Box className="essay-writing-input-area" ref={inputAreaRef}>
+      {insertionHighlight && (
+        <Box
+          component="span"
+          className="essay-writing-insertion-highlight"
+          style={{
+            fontFamily: insertionHighlight.fontFamily,
+            fontSize: insertionHighlight.fontSize,
+            left: insertionHighlight.left,
+            lineHeight: insertionHighlight.lineHeight,
+            top: insertionHighlight.top,
+          }}
+        />
+      )}
       <TextField
         fullWidth
         multiline
@@ -479,6 +607,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
         onBlur={handleBlur}
         onChange={handleChange}
         onSelect={handleSelect}
+        onScrollCapture={() => setInsertionHighlight(null)}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"
