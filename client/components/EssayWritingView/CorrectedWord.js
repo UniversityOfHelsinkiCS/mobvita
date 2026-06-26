@@ -1,6 +1,5 @@
 import React from 'react'
 
-const DELETION_CORRECTION_SYMBOL = '—'
 const DELETION_CORRECTION_VALUES = new Set(['-', '—', '–'])
 const INSERTION_ORIGINAL_VALUES = new Set(['', '-', '—', '–'])
 
@@ -35,7 +34,7 @@ const CorrectedWord = ({ word }) => {
           : 'none'
 
   const displayedCorrection = isDeletion
-    ? DELETION_CORRECTION_SYMBOL
+    ? original
     : corrected || original
 
   if (isInsertion && !correctedText) {

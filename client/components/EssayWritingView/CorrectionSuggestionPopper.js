@@ -13,9 +13,11 @@ const getCorrectionText = value => (
   value === null || value === undefined ? '' : String(value)
 )
 
+const normalizeSearchText = value => getCorrectionText(value).normalize('NFC')
+
 const wordIsInsertion = word => {
-  const originalText = getCorrectionText(word.original).trim()
-  const correctedText = getCorrectionText(word.corrected).trim()
+  const originalText = normalizeSearchText(word.original).trim()
+  const correctedText = normalizeSearchText(word.corrected).trim()
 
   return Boolean(word.corrected) &&
     !DELETION_CORRECTION_VALUES.has(correctedText) &&
@@ -23,8 +25,8 @@ const wordIsInsertion = word => {
 }
 
 const wordIsDeletion = word => {
-  const originalText = getCorrectionText(word.original).trim()
-  const correctedText = getCorrectionText(word.corrected).trim()
+  const originalText = normalizeSearchText(word.original).trim()
+  const correctedText = normalizeSearchText(word.corrected).trim()
 
   return Boolean(word.corrected) &&
     DELETION_CORRECTION_VALUES.has(correctedText) &&
@@ -32,22 +34,70 @@ const wordIsDeletion = word => {
 }
 
 const getComparableCorrectionText = value => (
-  getCorrectionText(value).trim().toLocaleLowerCase()
+  normalizeSearchText(value).trim().toLocaleLowerCase()
 )
+
+const combiningMarkRegex = /[\u0300-\u036f]/
+
+const getNextTextCluster = (value, startOffset) => {
+  let endOffset = startOffset + 1
+
+  while (endOffset < value.length && combiningMarkRegex.test(value[endOffset])) {
+    endOffset += 1
+  }
+
+  return {
+    endOffset,
+    startOffset,
+    text: value.slice(startOffset, endOffset),
+  }
+}
+
+const createNormalizedSearchIndex = value => {
+  const normalizedOffsetToSourceOffset = [0]
+  let normalizedText = ''
+  let sourceOffset = 0
+
+  while (sourceOffset < value.length) {
+    const cluster = getNextTextCluster(value, sourceOffset)
+    const normalizedClusterStartOffset = normalizedText.length
+    const normalizedClusterText = cluster.text.normalize('NFC')
+
+    normalizedText += normalizedClusterText
+
+    for (let index = 1; index <= normalizedClusterText.length; index += 1) {
+      normalizedOffsetToSourceOffset[normalizedClusterStartOffset + index] = cluster.endOffset
+    }
+
+    normalizedOffsetToSourceOffset[normalizedClusterStartOffset] = cluster.startOffset
+    sourceOffset = cluster.endOffset
+  }
+
+  return {
+    normalizedOffsetToSourceOffset,
+    normalizedText,
+  }
+}
 
 const getWordOriginalText = word => (
   !wordIsInsertion(word) && word.original ? String(word.original) : ''
 )
 
 const getWordPositionsById = (sentence, words) => {
+  const {
+    normalizedOffsetToSourceOffset,
+    normalizedText,
+  } = createNormalizedSearchIndex(sentence)
   const positionsById = {}
-  let currentOffset = 0
+  let currentNormalizedOffset = 0
 
   words.forEach(word => {
     if (wordIsInsertion(word)) {
+      const sourceOffset = normalizedOffsetToSourceOffset[currentNormalizedOffset] ?? sentence.length
+
       positionsById[word.ID] = {
-        startOffset: currentOffset,
-        endOffset: currentOffset,
+        startOffset: sourceOffset,
+        endOffset: sourceOffset,
         isInsertion: true,
       }
       return
@@ -57,17 +107,27 @@ const getWordPositionsById = (sentence, words) => {
 
     if (!originalText) return
 
-    const startIndex = sentence.startsWith(originalText, currentOffset)
-      ? currentOffset
-      : sentence.indexOf(originalText, currentOffset)
+    const normalizedOriginalText = normalizeSearchText(originalText)
+    const normalizedStartIndex = normalizedText.startsWith(
+      normalizedOriginalText,
+      currentNormalizedOffset,
+    )
+      ? currentNormalizedOffset
+      : normalizedText.indexOf(normalizedOriginalText, currentNormalizedOffset)
 
-    if (startIndex === -1) return
+    if (normalizedStartIndex === -1) return
+
+    const normalizedEndIndex = normalizedStartIndex + normalizedOriginalText.length
+    const startOffset = normalizedOffsetToSourceOffset[normalizedStartIndex]
+    const endOffset = normalizedOffsetToSourceOffset[normalizedEndIndex]
+
+    if (!Number.isInteger(startOffset) || !Number.isInteger(endOffset)) return
 
     positionsById[word.ID] = {
-      startOffset: startIndex,
-      endOffset: startIndex + originalText.length,
+      startOffset,
+      endOffset,
     }
-    currentOffset = startIndex + originalText.length
+    currentNormalizedOffset = normalizedEndIndex
   })
 
   return positionsById
@@ -159,7 +219,6 @@ const mergeRanges = (firstRange, secondRange) => {
 
 const getMovedCorrectionGroups = (corrections, positionsById) => {
   const usedCorrectionIndexes = new Set()
-  const movedWordIds = new Set()
   const groups = []
 
   corrections.forEach((word, insertionIndex) => {
@@ -185,7 +244,6 @@ const getMovedCorrectionGroups = (corrections, positionsById) => {
 
     const startIndex = Math.min(insertionIndex, matchingDeletion.index)
     const endIndex = Math.max(insertionIndex, matchingDeletion.index)
-    const words = corrections.slice(startIndex, endIndex + 1)
     const range = mergeRanges(
       positionsById[word.ID],
       positionsById[matchingDeletion.candidate.ID],
@@ -193,11 +251,34 @@ const getMovedCorrectionGroups = (corrections, positionsById) => {
 
     usedCorrectionIndexes.add(insertionIndex)
     usedCorrectionIndexes.add(matchingDeletion.index)
-    words.forEach(groupWord => movedWordIds.add(groupWord.ID))
-    groups.push({ range, words })
+    groups.push({ endIndex, range, startIndex })
   })
 
-  return { groups, movedWordIds }
+  const mergedGroups = groups
+    .sort((firstGroup, secondGroup) => firstGroup.startIndex - secondGroup.startIndex)
+    .reduce((merged, group) => {
+      const previousGroup = merged[merged.length - 1]
+
+      if (!previousGroup || group.startIndex > previousGroup.endIndex) {
+        return merged.concat(group)
+      }
+
+      previousGroup.endIndex = Math.max(previousGroup.endIndex, group.endIndex)
+      previousGroup.range = mergeRanges(previousGroup.range, group.range)
+      return merged
+    }, [])
+    .map(group => ({
+      range: group.range,
+      words: corrections.slice(group.startIndex, group.endIndex + 1),
+    }))
+
+  const movedWordIds = new Set()
+
+  mergedGroups.forEach(group => {
+    group.words.forEach(word => movedWordIds.add(word.ID))
+  })
+
+  return { groups: mergedGroups, movedWordIds }
 }
 
 const getCorrectionGroups = (sentence, corrections) => {

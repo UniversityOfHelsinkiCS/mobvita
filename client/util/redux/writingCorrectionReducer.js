@@ -77,7 +77,7 @@ const initialState = {
 const CORRECTION_PLACEHOLDER_VALUES = new Set(['-', '—', '–'])
 
 const wordValuesMatch = (original, corrected) => (
-  String(original).trim() === String(corrected).trim()
+  String(original).normalize('NFC').trim() === String(corrected).normalize('NFC').trim()
 )
 
 export const normalizeCorrectionWord = word => (
