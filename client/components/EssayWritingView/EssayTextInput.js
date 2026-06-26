@@ -13,6 +13,23 @@ import {
 const sentenceMatchRegex = /[^.!?]+[.!?]+/g
 const sentenceEndingRegex = /[.!?]/
 const WRITING_LANGUAGE = 'Finnish'
+const ESSAY_WRITING_TEXT_STORAGE_KEY = 'essay-writing-text'
+
+const getStoredEssayText = () => {
+  try {
+    return window.localStorage.getItem(ESSAY_WRITING_TEXT_STORAGE_KEY) || ''
+  } catch {
+    return ''
+  }
+}
+
+const saveEssayText = text => {
+  try {
+    window.localStorage.setItem(ESSAY_WRITING_TEXT_STORAGE_KEY, text)
+  } catch {
+    // Ignore storage errors so writing correction still works normally.
+  }
+}
 
 const getCompletedSentenceMatches = text => Array.from(text.matchAll(sentenceMatchRegex))
 
@@ -88,6 +105,20 @@ const sentenceWasCompletedByCurrentInput = ({
   nextCompletedSentences.length > previousCompletedSentences.length &&
   completedSentence?.endIndex === cursorIndex &&
   sentenceEndingRegex.test(nextText[cursorIndex - 1] || '')
+
+const completedSentencesChanged = (previousSentences, nextSentences) => (
+  previousSentences.length !== nextSentences.length ||
+  previousSentences.some((sentence, index) => {
+    const nextSentence = nextSentences[index]
+
+    return (
+      !nextSentence ||
+      sentence.text !== nextSentence.text ||
+      sentence.startIndex !== nextSentence.startIndex ||
+      sentence.endIndex !== nextSentence.endIndex
+    )
+  })
+)
 
 const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, sentences }) => {
   if (!previousSentences.length) {
@@ -202,11 +233,11 @@ const addStableSentenceIds = ({ createSentenceId, editIndex, previousSentences, 
 const EssayTextInput = ({ sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
-  const [text, setText] = useState('')
+  const [text, setText] = useState(getStoredEssayText)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
-  const textRef = useRef('')
+  const textRef = useRef(text)
   const inputRef = useRef(null)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
 
@@ -246,6 +277,12 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     return nextCompletedSentences
   }
+
+  useEffect(() => {
+    if (textRef.current) {
+      updateCompletedSentences(textRef.current, textRef.current.length)
+    }
+  }, [])
 
   const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
@@ -304,6 +341,10 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     setText(nextText)
     textRef.current = nextText
+
+    if (completedSentencesChanged(previousCompletedSentences, nextCompletedSentences)) {
+      saveEssayText(nextText)
+    }
 
     if (pendingSentence) {
       const updatedPendingSentence = getUpdatedPendingSentence(
