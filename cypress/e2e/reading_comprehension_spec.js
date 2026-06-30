@@ -25,6 +25,15 @@ const makePreviewStory = ({ id, title, questions = [], readingQuestions = null }
 
 const getStoryIdFromUrl = url => new URL(url).pathname.split('/').pop()
 
+// Reading-practice questions + chatbot session_id now come from a separate endpoint
+// (GET /api/stories/<id>/get_questions); the story details API only carries num_questions.
+const getQuestionsUrl = /\/api\/stories\/[^/?]+\/get_questions(?:\?.*)?$/
+
+const getStoryIdFromQuestionsUrl = url => {
+  const parts = new URL(url).pathname.split('/')
+  return parts[parts.length - 2]
+}
+
 const getStoryResponse = story => (typeof story === 'function' ? story() : story)
 
 const mockStoryDetailsApi = storiesById => {
@@ -43,6 +52,17 @@ const mockStoryDetailsApi = storiesById => {
     req.alias = 'apiCall'
     req.reply(getStoryResponse(story))
   })
+}
+
+// Mock the reading-practice questions endpoint. Returns the questions the story carries
+// (reading_questions / questions) plus a session_id, matching the /get_questions response shape.
+const mockReadingQuestionsApi = storiesById => {
+  cy.intercept('GET', getQuestionsUrl, req => {
+    const storyId = getStoryIdFromQuestionsUrl(req.url)
+    const story = getStoryResponse(storiesById[storyId])
+    const questions = (story && (story.reading_questions || story.questions)) || []
+    req.reply({ reading_questions: questions, session_id: `rp-session-${storyId}` })
+  }).as('getReadingQuestions')
 }
 
 const waitForApiCallAndText = text => {
@@ -355,6 +375,7 @@ describe('reading practice', function () {
     })
 
     mockStoryDetailsApi({ [readingPracticeStoryId]: story })
+    mockReadingQuestionsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
     waitForApiCallAndText('Pick the right option after three wrong tries')
@@ -402,6 +423,7 @@ describe('reading practice', function () {
     }
 
     mockStoryDetailsApi({ [readingPracticeStoryId]: story })
+    mockReadingQuestionsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
     waitForApiCallAndText('Question 1')
