@@ -323,7 +323,7 @@ const PracticeView = () => {
           />
         )}
         <HelperSidebar>
-          <CombinedChatbot />
+          <CombinedChatbot />          
         </HelperSidebar>
         <FeedbackInfoModal />
       </div>

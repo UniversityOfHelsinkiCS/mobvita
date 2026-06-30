@@ -16,6 +16,14 @@ export const getStoryAction = (storyId, mode) => {
   return callBuilder(route, prefix)
 }
 
+// Reading-comprehension questions were split out of the story API; this endpoint returns the
+// questions plus a session_id (used to scope the reading-practice chatbot conversation).
+export const getStoryReadingQuestionsAction = storyId => {
+  const route = `/stories/${storyId}/get_questions`
+  const prefix = 'GET_STORY_READING_QUESTIONS'
+  return callBuilder(route, prefix)
+}
+
 export const answerStoryQuestionAction = ({ storyId, questionId, answer, showRef }) => {
   const route = `/stories/${storyId}/answer_question`
   const prefix = 'ANSWER_STORY_QUESTION'
@@ -199,6 +207,8 @@ const initialState = {
   error: false,
   currentQuery: '',
   loadingProgress: {}, // { [storyId]: progressData }
+  readingQuestions: null, // response of /get_questions: { questions, session_id, ... }
+  readingQuestionsPending: false,
 }
 
 const getStoryIdFromRoute = route => route?.match(/^\/stories\/([^/?]+)/)?.[1]
@@ -325,6 +335,12 @@ export default (state = initialState, action) => {
         focusedPending: false,
         focusedRequestId: null,
       }
+    case 'GET_STORY_READING_QUESTIONS_ATTEMPT':
+      return { ...state, readingQuestions: null, readingQuestionsPending: true, error: false }
+    case 'GET_STORY_READING_QUESTIONS_FAILURE':
+      return { ...state, readingQuestionsPending: false, error: true }
+    case 'GET_STORY_READING_QUESTIONS_SUCCESS':
+      return { ...state, readingQuestions: action.response, readingQuestionsPending: false, error: false }
     case 'GET_STORY_ATTEMPT': {
       const route = action.requestSettings?.route || ''
       const match = route.match(/^\/stories\/([^/?]+)/)

@@ -5,9 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Segment, Button as SemanticButton } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import Spinner from 'Components/Spinner'
-import { getStoryAction, answerStoryQuestionAction } from 'Utilities/redux/storiesReducer'
+import { getStoryAction, answerStoryQuestionAction, getStoryReadingQuestionsAction } from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 
 const pickQuestionsFromStory = story => {
   if (!story) return []
@@ -105,10 +107,21 @@ const ReadingPracticeView = () => {
     pending: stories.focusedPending,
   }), shallowEqual)
 
+  // Questions + chatbot session_id now come from the separate /get_questions endpoint
+  // (the story API only carries num_questions now).
+  const { readingQuestions, readingQuestionsPending } = useSelector(({ stories }) => ({
+    readingQuestions: stories.readingQuestions,
+    readingQuestionsPending: stories.readingQuestionsPending,
+  }), shallowEqual)
+
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+
   const questions = useMemo(() => {
-    const raw = pickQuestionsFromStory(story)
+    const raw = pickQuestionsFromStory(readingQuestions || {})
     return raw.map(normalizeQuestion).filter(Boolean)
-  }, [story])
+  }, [readingQuestions])
+
+  const readingSessionId = readingQuestions?.session_id
 
   const [idx, setIdx] = useState(0)
   const current = questions[idx] || null
@@ -122,7 +135,8 @@ const ReadingPracticeView = () => {
 
   useEffect(() => {
     if (!storyId) return
-    dispatch(getStoryAction(storyId, 'preview'))
+    dispatch(getStoryAction(storyId, 'preview'))          // story text / paragraph
+    dispatch(getStoryReadingQuestionsAction(storyId))     // questions + session_id
   }, [dispatch, storyId])
 
   useEffect(() => {
@@ -138,6 +152,15 @@ const ReadingPracticeView = () => {
   const total = questions.length
 
   const wrongAttemptLimit = Math.max((current?.choices || []).length - 1, 1)
+
+  // The wrong choices tried (and the correct one once reached), in the { attempt, feedback }
+  // shape the reading-practice chatbot expects (no per-attempt feedback exists in this flow).
+  const attemptsAndFeedbacks = useMemo(() => {
+    const wrong = Array.from(attemptedWrongChoices).map(a => ({ attempt: a, feedback: [] }))
+    return isCorrectAnswered
+      ? [...wrong, { attempt: String(current?.answer ?? ''), feedback: [] }]
+      : wrong
+  }, [attemptedWrongChoices, isCorrectAnswered, current])
 
   const handleChoiceClick = choice => {
     if (!current || showCorrectAnswer) return
@@ -216,9 +239,9 @@ const ReadingPracticeView = () => {
 
   return (
     <main
-      className="reading-comp pt-lg auto gap-row-sm"
+      className={`reading-comp auto gap-row-sm ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
       style={{
-        maxWidth: 1250,
+        maxWidth: 1108,
         margin: '0 auto',
         width: '100%',
         display: 'flex',
@@ -230,8 +253,8 @@ const ReadingPracticeView = () => {
       <Segment
         style={{
           ...getTextStyle(learningLanguage),
-          flex: '3 1 600px',
-          minWidth: 320,
+          flex: '3 1 440px',
+          minWidth: 300,
         }}
       >
         <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
@@ -242,8 +265,8 @@ const ReadingPracticeView = () => {
       </Segment>
       <section
         style={{
-          flex: '2 1 360px',
-          minWidth: 320,
+          flex: '2 1 300px',
+          minWidth: 300,
           width: '100%',
           alignSelf: 'flex-start',
         }}
@@ -251,7 +274,11 @@ const ReadingPracticeView = () => {
         <div style={{ position: 'sticky', top: 16 }}>
           <Segment style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
-              {total === 0 ? (
+              {readingQuestionsPending && total === 0 ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: 20 }}>
+                  <Spinner inline size={40} />
+                </div>
+              ) : total === 0 ? (
                 <div style={{ opacity: 0.85 }}>
                   <FormattedMessage id="no-questions" />
                 </div>
@@ -362,6 +389,15 @@ const ReadingPracticeView = () => {
           </Segment>
         </div>
       </section>
+
+      <HelperSidebar>
+        <ReadingPracticeChatbot
+          questionDone={showCorrectAnswer}
+          sessionId={readingSessionId || storyId}
+          questionId={getQuestionId(current)}
+          attemptsAndFeedbacks={attemptsAndFeedbacks}
+        />
+      </HelperSidebar>
     </main>
   )
 }
