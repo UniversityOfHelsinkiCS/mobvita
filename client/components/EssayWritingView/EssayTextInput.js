@@ -25,7 +25,52 @@ import { getTextareaCaretCoordinates } from './utils/textareaCaret'
 
 const WRITING_LANGUAGE = 'Finnish'
 
-const EssayTextInput = ({ sentenceSelectionRequest }) => {
+const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
+  const startIndex = Math.min(selectionStart, selectionEnd)
+  const endIndex = Math.max(selectionStart, selectionEnd)
+  const focusedSentence = getCompletedSentenceNearIndex(sentences, startIndex)
+
+  if (!focusedSentence) return null
+
+  if (startIndex !== endIndex) {
+    const selectionOverlapsSentence =
+      focusedSentence.startIndex < endIndex && focusedSentence.endIndex > startIndex
+
+    if (!selectionOverlapsSentence) return null
+
+    const startOffset = Math.max(startIndex, focusedSentence.startIndex) -
+      focusedSentence.startIndex
+    const endOffset = Math.min(endIndex, focusedSentence.endIndex) -
+      focusedSentence.startIndex
+    const selectedText = text.slice(
+      focusedSentence.startIndex + startOffset,
+      focusedSentence.startIndex + endOffset,
+    )
+
+    return {
+      correctedText: null,
+      focusedSentence: focusedSentence.text,
+      focusedWord: selectedText.trim() || null,
+      focusedWordId: null,
+      originalText: focusedSentence.text,
+      sentenceId: focusedSentence.sentenceId,
+      selection: {
+        endOffset,
+        sentenceId: focusedSentence.sentenceId,
+        selectedText,
+        startOffset,
+      },
+    }
+  }
+
+  return null
+}
+
+const EssayTextInput = ({
+  onEssayFocusChange,
+  onEssayTextChange,
+  sentenceSelectionRequest,
+}) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
@@ -88,14 +133,47 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
     setDeletionSelectionHighlight(false)
   }
 
+  const clearInputSelection = () => {
+    clearCorrectionHighlight()
+
+    const input = inputRef.current
+
+    if (!input?.setSelectionRange) return
+
+    const caretPosition = input.selectionEnd ?? input.value.length
+
+    userSelectionRef.current = {
+      end: caretPosition,
+      start: caretPosition,
+    }
+    setInputSelection(input, caretPosition, caretPosition)
+  }
+
+  const updateEssayFocus = input => {
+    onEssayFocusChange?.(
+      getEssayFocusFromSelection(
+        completedSentencesRef.current,
+        textRef.current,
+        input.selectionStart,
+        input.selectionEnd,
+      ),
+    )
+  }
+
   useEffect(() => {
     const {
       endOffset,
       isDeletion,
       isInsertion,
+      action,
       sentenceId: sentenceIdToSelect,
       startOffset,
     } = sentenceSelectionRequest || {}
+
+    if (action === 'clear') {
+      clearInputSelection()
+      return
+    }
 
     if (!sentenceIdToSelect) return
 
@@ -143,6 +221,10 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
       top: inputRect.top - inputAreaRect.top + caretCoordinates.top,
     })
   }, [sentenceSelectionRequest])
+
+  useEffect(() => {
+    onEssayTextChange?.(textRef.current)
+  }, [])
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -225,6 +307,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
   const handleChange = e => {
     clearCorrectionHighlight()
+    onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
     const inputWasPasted =
@@ -241,6 +324,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     setText(nextText)
     textRef.current = nextText
+    onEssayTextChange?.(nextText)
 
     if (completedSentencesChanged(previousCompletedSentences, nextCompletedSentences)) {
       saveEssayText(nextText)
@@ -356,6 +440,7 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
 
     clearCorrectionHighlight()
     saveUserSelection(e.target)
+    updateEssayFocus(e.target)
 
     const pendingSentence = pendingEditedSentenceRef.current
 
@@ -378,7 +463,8 @@ const EssayTextInput = ({ sentenceSelectionRequest }) => {
   }
 
   const handleBlur = () => {
-    clearCorrectionHighlight()
+    onEssayFocusChange?.(null)
+    clearInputSelection()
     commitPendingEditedSentence()
   }
 

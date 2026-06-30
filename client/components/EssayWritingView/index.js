@@ -14,17 +14,60 @@ import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
+  const [essayFocus, setEssayFocus] = useState(null)
+  const [essayText, setEssayText] = useState('')
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
 
+  const clearEssaySelection = () => {
+    setEssayFocus(null)
+    setSentenceSelectionRequest({
+      action: 'clear',
+      requestId: Date.now(),
+    })
+  }
+
   const requestSentenceSelection = selectionRequest => {
     setSentenceSelectionRequest(selectionRequest)
+
+    if (selectionRequest?.interactionType !== 'click') return
+
+    setEssayFocus(selectionRequest?.sentence ? {
+      correctedText: selectionRequest.correctedText || null,
+      focusedSentence: selectionRequest.sentence,
+      focusedWord: selectionRequest.focusedWord || null,
+      focusedWordId: selectionRequest.focusedWordId ?? null,
+      focusedWordIds: selectionRequest.focusedWordIds || [],
+      originalText: selectionRequest.originalText || selectionRequest.sentence,
+      sentenceId: selectionRequest.sentenceId,
+      selection: {
+        endOffset: selectionRequest.endOffset,
+        isDeletion: selectionRequest.isDeletion,
+        isInsertion: selectionRequest.isInsertion,
+        sentenceId: selectionRequest.sentenceId,
+        startOffset: selectionRequest.startOffset,
+      },
+    } : null)
+  }
+
+  const handleEssayMouseDownCapture = event => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest('.essay-writing-input-area, .essay-writing-correction-bubble')
+    ) {
+      return
+    }
+
+    clearEssaySelection()
   }
 
   return (
-    <Box className="essay-writing-page">
+    <Box
+      className="essay-writing-page"
+      onMouseDownCapture={handleEssayMouseDownCapture}
+    >
       <Box className="essay-writing-main">
         <Box
           className={`essay-writing-container ${
@@ -46,11 +89,19 @@ const EssayWritingView = () => {
               </Button>
             </Box>
             <Divider sx={{ mt: 2 }} />
-            <EssayTextInput sentenceSelectionRequest={sentenceSelectionRequest} />
+            <EssayTextInput
+              onEssayFocusChange={setEssayFocus}
+              onEssayTextChange={setEssayText}
+              sentenceSelectionRequest={sentenceSelectionRequest}
+            />
           </Paper>
 
           <HelperSidebar>
-            <EssayChatbot onSentenceSelect={requestSentenceSelection} />
+            <EssayChatbot
+              essayFocus={essayFocus}
+              essayText={essayText}
+              onSentenceSelect={requestSentenceSelection}
+            />
           </HelperSidebar>
 
           <FeedbackInfoModal />

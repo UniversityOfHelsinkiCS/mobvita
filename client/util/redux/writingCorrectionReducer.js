@@ -145,6 +145,13 @@ export const getWritingCorrectionWords = res => {
   return corrections.map(normalizeCorrectionWord)
 }
 
+export const getWritingCorrectionCorrectedText = res => (
+  res?.corrections?.[0]?.corrected ||
+  res?.[0]?.corrected ||
+  res?.corrected ||
+  ''
+)
+
 export const writingCorrectionHasChanges = corrections => (
   getWritingCorrectionWords(corrections).some(word => Boolean(word.corrected))
 )
@@ -182,6 +189,7 @@ const createSuccessEntry = action => {
     error: false,
     errorDetails: null,
     corrections: getWritingCorrectionWords(action.response),
+    correctedText: getWritingCorrectionCorrectedText(action.response),
     requestId: action.requestId,
   }
 }
