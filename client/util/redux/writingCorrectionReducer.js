@@ -16,9 +16,8 @@ const hashString = value => {
   return (hash >>> 0).toString(36)
 }
 
-export const getWritingCorrectionKey = ({ text, context = '' }) => (
+export const getWritingCorrectionKey = ({ text, context = '' }) =>
   `writing-correction-${hashString(`${context.trim()}\n${text.trim()}`)}`
-)
 
 export const checkWritingCorrection = ({
   language = DEFAULT_LANGUAGE,
@@ -88,14 +87,15 @@ const saveStoredWritingCorrectionCache = correctionsByKey => {
 
     const cachedCorrectionsByKey = Object.values(correctionsByKey)
       .filter(entry => entry && !entry.pending && !entry.error)
-      .sort((firstEntry, secondEntry) => (
-        (secondEntry.cachedAt || 0) - (firstEntry.cachedAt || 0)
-      ))
+      .sort((firstEntry, secondEntry) => (secondEntry.cachedAt || 0) - (firstEntry.cachedAt || 0))
       .slice(0, WRITING_CORRECTION_CACHE_MAX_ENTRIES)
-      .reduce((cache, entry) => ({
-        ...cache,
-        [entry.key]: entry,
-      }), {})
+      .reduce(
+        (cache, entry) => ({
+          ...cache,
+          [entry.key]: entry,
+        }),
+        {},
+      )
 
     window.localStorage.setItem(
       WRITING_CORRECTION_CACHE_STORAGE_KEY,
@@ -116,18 +116,17 @@ const initialState = {
 
 const CORRECTION_PLACEHOLDER_VALUES = new Set(['-', '—', '–'])
 
-const wordValuesMatch = (original, corrected) => (
+const wordValuesMatch = (original, corrected) =>
   String(original).normalize('NFC').trim() === String(corrected).normalize('NFC').trim()
-)
 
-export const normalizeCorrectionWord = word => (
-  word.original && word.corrected &&
+export const normalizeCorrectionWord = word =>
+  word.original &&
+  word.corrected &&
   !CORRECTION_PLACEHOLDER_VALUES.has(String(word.original).trim()) &&
   !CORRECTION_PLACEHOLDER_VALUES.has(String(word.corrected).trim()) &&
   wordValuesMatch(word.original, word.corrected)
     ? { ...word, corrected: null }
     : word
-)
 
 export const getWritingCorrectionWords = res => {
   const corrections = Array.isArray(res?.[0]?.corrections)
@@ -145,16 +144,10 @@ export const getWritingCorrectionWords = res => {
   return corrections.map(normalizeCorrectionWord)
 }
 
-export const getWritingCorrectionCorrectedText = res => (
-  res?.corrections?.[0]?.corrected ||
-  res?.[0]?.corrected ||
-  res?.corrected ||
-  ''
-)
+export const getWritingCorrectionCorrectedText = res => res?.corrections?.[0]?.corrected || ''
 
-export const writingCorrectionHasChanges = corrections => (
+export const writingCorrectionHasChanges = corrections =>
   getWritingCorrectionWords(corrections).some(word => Boolean(word.corrected))
-)
 
 const getActionQuery = action => action.query || action.requestSettings?.query || {}
 
@@ -220,30 +213,34 @@ const updateLatestCorrectionKey = (state, entry) => ({
   },
 })
 
-const requestIsLatestForSentence = (state, entry) => (
+const requestIsLatestForSentence = (state, entry) =>
   state.latestCorrectionKeyBySentenceId?.[getSentenceId(entry)] === entry.key
-)
 
 const orderCorrectionSuggestionSentenceIds = (state, sentenceIds) => {
   const sentenceOrder = state.correctionSuggestionSentenceOrder || []
-  const fallbackOrderBySentenceId = sentenceIds
-    .reduce((orderBySentenceId, sentenceId, index) => ({
+  const fallbackOrderBySentenceId = sentenceIds.reduce(
+    (orderBySentenceId, sentenceId, index) => ({
       ...orderBySentenceId,
       [sentenceId]: index,
-    }), {})
-  const essayOrderBySentenceId = sentenceOrder
-    .reduce((orderBySentenceId, sentenceId, index) => ({
+    }),
+    {},
+  )
+  const essayOrderBySentenceId = sentenceOrder.reduce(
+    (orderBySentenceId, sentenceId, index) => ({
       ...orderBySentenceId,
       [sentenceId]: index,
-    }), {})
+    }),
+    {},
+  )
 
   return sentenceIds.slice().sort((firstSentenceId, secondSentenceId) => {
     const firstEssayIndex = essayOrderBySentenceId[firstSentenceId]
     const secondEssayIndex = essayOrderBySentenceId[secondSentenceId]
 
     if (firstEssayIndex === undefined && secondEssayIndex === undefined) {
-      return fallbackOrderBySentenceId[firstSentenceId] -
-        fallbackOrderBySentenceId[secondSentenceId]
+      return (
+        fallbackOrderBySentenceId[firstSentenceId] - fallbackOrderBySentenceId[secondSentenceId]
+      )
     }
 
     if (firstEssayIndex === undefined) return 1
@@ -289,30 +286,38 @@ const removeCorrectionSuggestion = (state, sentenceId) => {
 
   return {
     ...state,
-    correctionSuggestionSentenceIds: state.correctionSuggestionSentenceIds.filter(id => id !== sentenceId),
+    correctionSuggestionSentenceIds: state.correctionSuggestionSentenceIds.filter(
+      id => id !== sentenceId,
+    ),
     correctionSuggestionsBySentenceId: nextCorrectionSuggestionsBySentenceId,
   }
 }
 
 const syncCorrectionSuggestions = (state, sentenceIds) => {
   const sentenceIdSet = new Set(sentenceIds)
-  const correctionSuggestionSentenceIds = sentenceIds
-    .filter(sentenceId => state.correctionSuggestionsBySentenceId[sentenceId])
+  const correctionSuggestionSentenceIds = sentenceIds.filter(
+    sentenceId => state.correctionSuggestionsBySentenceId[sentenceId],
+  )
 
-  const correctionSuggestionsBySentenceId = correctionSuggestionSentenceIds
-    .reduce((suggestions, sentenceId) => ({
+  const correctionSuggestionsBySentenceId = correctionSuggestionSentenceIds.reduce(
+    (suggestions, sentenceId) => ({
       ...suggestions,
       [sentenceId]: state.correctionSuggestionsBySentenceId[sentenceId],
-    }), {})
-  const latestCorrectionKeyBySentenceId = Object.entries(state.latestCorrectionKeyBySentenceId || {})
-    .reduce((latestKeys, [sentenceId, key]) => (
+    }),
+    {},
+  )
+  const latestCorrectionKeyBySentenceId = Object.entries(
+    state.latestCorrectionKeyBySentenceId || {},
+  ).reduce(
+    (latestKeys, [sentenceId, key]) =>
       sentenceIdSet.has(sentenceId)
         ? {
-          ...latestKeys,
-          [sentenceId]: key,
-        }
-        : latestKeys
-    ), {})
+            ...latestKeys,
+            [sentenceId]: key,
+          }
+        : latestKeys,
+    {},
+  )
 
   return {
     ...state,
@@ -328,13 +333,19 @@ export default (state = initialState, action) => {
     case `${PREFIX}_ATTEMPT`: {
       const entry = createPendingEntry(action)
 
-      return upsertCorrectionSuggestion(updateLatestCorrectionKey({
-        ...state,
-        correctionsByKey: {
-          ...state.correctionsByKey,
-          [entry.key]: entry,
-        },
-      }, entry), entry)
+      return upsertCorrectionSuggestion(
+        updateLatestCorrectionKey(
+          {
+            ...state,
+            correctionsByKey: {
+              ...state.correctionsByKey,
+              [entry.key]: entry,
+            },
+          },
+          entry,
+        ),
+        entry,
+      )
     }
 
     case `${PREFIX}_SUCCESS`: {
@@ -385,12 +396,11 @@ export default (state = initialState, action) => {
         correctionsByKey: nextCorrectionsByKey,
       }
 
-      const suggestion = Object.values(state.correctionSuggestionsBySentenceId)
-        .find(correctionSuggestion => correctionSuggestion.key === action.key)
+      const suggestion = Object.values(state.correctionSuggestionsBySentenceId).find(
+        correctionSuggestion => correctionSuggestion.key === action.key,
+      )
 
-      return suggestion
-        ? removeCorrectionSuggestion(nextState, suggestion.sentenceId)
-        : nextState
+      return suggestion ? removeCorrectionSuggestion(nextState, suggestion.sentenceId) : nextState
     }
 
     case 'WRITING_CORRECTION_SYNC_SUGGESTIONS':
