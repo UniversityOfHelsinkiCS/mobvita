@@ -16,6 +16,8 @@ import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
 
 import './Chatbot.scss'
 
+const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
+
 const getCorrectedTextFromCorrectionEntry = correctionEntry => {
   if (!correctionEntry) return ''
   if (correctionEntry.correctedText) return correctionEntry.correctedText
@@ -47,6 +49,7 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
   const correctionSuggestions = correctionSuggestionSentenceIds
     .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
     .filter(Boolean)
+  const hasActiveSelection = Boolean(essayFocus?.selection)
 
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -104,6 +107,7 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
           />
         ))}
         {essayMessages.map((message, index) => (
+          message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
           <div
             className={`message message-${message.type}`}
             key={`${message.type}-${index}`}
@@ -121,6 +125,7 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
               <FormattedMessage id="Error rendering message" />
             )}
           </div>
+          )
         ))}
         {isWaitingForEssayResponse && (
           <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>

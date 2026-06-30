@@ -463,8 +463,6 @@ const EssayTextInput = ({
   }
 
   const handleBlur = () => {
-    onEssayFocusChange?.(null)
-    clearInputSelection()
     commitPendingEditedSentence()
   }
 

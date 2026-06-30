@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
@@ -20,6 +20,24 @@ const EssayWritingView = () => {
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
+
+  useEffect(() => {
+    const handleDocumentMouseDown = event => {
+      if (!(event.target instanceof Element)) return
+
+      if (event.target.closest('.essay-writing-input-area, .essay-writing-correction-bubble, .chatbot-input-area .chatbot-input-form')) {
+        return
+      }
+
+      clearEssaySelection()
+    }
+
+    document.addEventListener('mousedown', handleDocumentMouseDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handleDocumentMouseDown)
+    }
+  }, [])
 
   const clearEssaySelection = () => {
     setEssayFocus(null)
@@ -52,21 +70,9 @@ const EssayWritingView = () => {
     } : null)
   }
 
-  const handleEssayMouseDownCapture = event => {
-    if (
-      event.target instanceof Element &&
-      event.target.closest('.essay-writing-input-area, .essay-writing-correction-bubble')
-    ) {
-      return
-    }
-
-    clearEssaySelection()
-  }
-
   return (
     <Box
       className="essay-writing-page"
-      onMouseDownCapture={handleEssayMouseDownCapture}
     >
       <Box className="essay-writing-main">
         <Box

@@ -2,6 +2,7 @@ import callBuilder from '../apiConnection'
 
 const ESSAY_CHATBOT_FOLLOW_UP_MESSAGE =
   'Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion and tell me to "FOLLOW UP".'
+const ESSAY_CHATBOT_FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 
 const getEssayChatbotResponseText = response => {
   if (typeof response === 'string') return response
@@ -173,7 +174,11 @@ export default (state = initialState, action) => {
         ...state,
         isWaitingForEssayResponse: false,
         essayMessages: action.query?.showFollowUpQuestion
-          ? essayResponseMessages.concat({ type: 'bot', text: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE })
+          ? essayResponseMessages.concat({
+            type: 'bot',
+            messageId: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE_ID,
+            text: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE,
+          })
           : essayResponseMessages,
       }
     }
