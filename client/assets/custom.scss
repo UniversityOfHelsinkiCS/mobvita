@@ -3816,13 +3816,13 @@ label.file-upload-btn {
 
 .cont.sidebar-pushed {
   margin-right: 380px !important;
+  // width:auto lets margin-right actually shrink the content (otherwise width:100% + the 380px
+  // margin overflows and the sidebar overlaps the content instead of pushing it). Applies to any
+  // `cont` (e.g. the ReadingTest), not just `cont-tall` views.
+  width: auto !important;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-width: 100%;
   box-sizing: border-box;
-}
-
-.cont-tall.cont.sidebar-pushed {
-  width: auto !important;
 }
 
 @media (max-width: 768px) {
@@ -3842,11 +3842,49 @@ label.file-upload-btn {
 @media (min-width: 1856px) {
   .cont.sidebar-pushed {
     margin-right: 0 !important;
-    max-width: 1024px;
+    max-width: 1108px;
   }
 
   .cont-tall.cont.sidebar-pushed {
     margin-right: auto !important;
+  }
+}
+
+// ReadingPracticeView uses a custom centered <main> (inline margin:0 auto / width:100%) rather
+// than `.cont`, so it needs its own push rules (the inline styles are overridden with !important).
+.reading-comp.sidebar-pushed {
+  margin-left: 0 !important;
+  margin-right: 380px !important;
+  width: auto !important;
+  box-sizing: border-box;
+  transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  // Collapsed chatbot: the bottom-drawer handle sits over the page — pad the content so the last
+  // items aren't hidden behind it.
+  .reading-comp:not(.sidebar-pushed) {
+    padding-bottom: 60px;
+  }
+  // Open chatbot drawer (~40vh): cap the content height so it scrolls above the drawer instead of
+  // being covered by it.
+  .reading-comp.sidebar-pushed {
+    margin-right: 0 !important;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-bottom: 50px;
+  }
+}
+
+@media (min-width: 1856px) {
+  // Extra-big screens: the sidebar floats (doesn't push); cap the centered content at 1024px so
+  // its full width stays left of the 380px sidebar (≥36px gap at 1856px) instead of being
+  // overlapped. Matches the .cont big-screen cap.
+  .reading-comp.sidebar-pushed {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 1108px !important;
   }
 }
 

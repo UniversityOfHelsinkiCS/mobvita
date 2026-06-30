@@ -21,6 +21,7 @@ import {
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { learningLanguageSelector, confettiRain, hiddenFeatures } from 'Utilities/common'
 import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import ReadingTestMC from './ReadingTestMC'
 import ReadingTestFeedbacks from './ReadingTestFeedbacks'
 import ReadingTestSelfReflect from './ReadingTestSelfReflect'
@@ -47,6 +48,8 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   // State for experimental and control groups
   const [in_experimental_grp, setInExperimentalGrp] = useState(false)
   const [in_control_grp, setInControlGrp] = useState(false)
+
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const { controls: timer } = useTimer({
     initialTime: 0,
@@ -457,7 +460,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   }
 
   return (
-    <div className="cont mt-nm">
+    <div className={`cont mt-nm ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
       <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
           <div className="test-container" style={{ width: '90%' }}>
@@ -562,7 +565,9 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
           </div>
         </div>
       </Segment>
-      {questionDone && <ReadingPracticeChatbot />}
+      <HelperSidebar>
+        <ReadingPracticeChatbot questionDone={questionDone} />
+      </HelperSidebar>
     </div>
   )
 }
