@@ -436,6 +436,14 @@ $value in $spacing {
   border: 1px solid rgb(112, 114, 120);
 }
 
+.reading-choice-correct {
+  background-color: lightgreen !important;
+}
+
+.reading-choice-incorrect {
+  background-color: lightcoral !important;
+}
+
 .btn-primary[disabled]:hover {
   color: white;
   cursor: not-allowed;

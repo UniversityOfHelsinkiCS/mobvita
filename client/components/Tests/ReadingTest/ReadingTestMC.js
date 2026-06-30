@@ -14,6 +14,12 @@ const ReadingTestMC = ({
 }) => {
   const { choices, question, prephrase, test_text: text } = exercise
 
+  const getChoiceClass = choice => {
+    if (showCorrect && choice.is_correct) return 'reading-choice-correct'
+    if (choice.isSelected) return choice.is_correct ? 'reading-choice-correct' : 'reading-choice-incorrect'
+    return ''
+  }
+
   const bigScreen = useWindowDimensions().width >= 700
 
   return (
@@ -63,7 +69,7 @@ const ReadingTestMC = ({
             choices.map(choice => (
               <div key={choice?.option}>
                 <Button
-                  className="test-choice-button"
+                  className={`test-choice-button ${getChoiceClass(choice)}`}
                   onClick={!answerPending ? () => onAnswer(choice) : undefined}
                   disabled={
                     answerPending ||
@@ -76,14 +82,6 @@ const ReadingTestMC = ({
                     whiteSpace: 'pre-line',
                     lineHeight: '1.0',
                     padding: '0.6em',
-                    backgroundColor:
-                      showCorrect && choice.is_correct
-                        ? 'lightgreen'
-                        : choice.isSelected
-                          ? choice.is_correct
-                            ? 'lightgreen' 
-                            : 'lightcoral'
-                        : ''
                   }}
                 >
                   <span style={{ fontSize: '0.7em' }}>{choice?.option}</span>
