@@ -11,21 +11,40 @@ import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionRedu
 import {
   getCorrectionFeedbackText,
   getCorrectionGroups,
+  getCorrectionText,
+  isCorrectionDeletion,
+  isCorrectionInsertion,
 } from './utils/correctionTokens'
+
+const getCorrectionSelectionRequest = (correctionRange, correctionFocus) => ({
+  ...(correctionRange || {}),
+  ...(correctionFocus || {}),
+})
 
 const CorrectionBubble = ({
   children,
+  correctionFocus,
   correctionRange,
   feedbackText,
+  isActive,
   onSentenceSelect,
   sentence,
 }) => (
   <Paper
-    className="essay-writing-correction-bubble"
+    className={[
+      'essay-writing-correction-bubble',
+      isActive ? 'essay-writing-correction-bubble-active' : '',
+    ].filter(Boolean).join(' ')}
     data-sentence={sentence}
     elevation={3}
-    onClick={() => onSentenceSelect?.(correctionRange)}
-    onMouseEnter={() => onSentenceSelect?.(correctionRange)}
+    onClick={() => onSentenceSelect?.(
+      getCorrectionSelectionRequest(correctionRange, correctionFocus),
+      'click',
+    )}
+    onMouseEnter={() => onSentenceSelect?.(
+      getCorrectionSelectionRequest(correctionRange, correctionFocus),
+      'hover',
+    )}
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
@@ -59,8 +78,44 @@ const getCorrectionGroupFeedbackText = correctionGroup => (
     .join('\n')
 )
 
+const getCorrectionWordFocusText = word => {
+  const displayedText = isCorrectionDeletion(word)
+    ? getCorrectionText(word.original)
+    : getCorrectionText(word.corrected || word.original)
+
+  return displayedText.trim()
+}
+
+const getCorrectionGroupFocus = correctionGroup => {
+  const focusedWordIds = correctionGroup.words
+    .filter(word => (
+      isCorrectionDeletion(word) ||
+      isCorrectionInsertion(word) ||
+      (word.original && word.corrected)
+    ))
+    .map(word => word.ID)
+    .filter(wordId => wordId !== null && wordId !== undefined)
+
+  return {
+    focusedWord: correctionGroup.words
+      .map(getCorrectionWordFocusText)
+      .filter(Boolean)
+      .join(' '),
+    focusedWordId: focusedWordIds[0] ?? null,
+    focusedWordIds,
+  }
+}
+
+const rangesMatch = (firstRange, secondRange) => (
+  firstRange &&
+  secondRange &&
+  firstRange.startOffset === secondRange.startOffset &&
+  firstRange.endOffset === secondRange.endOffset
+)
+
 const CorrectionSuggestionPopper = ({
   correctionEntry,
+  focusedSelection,
   sentence,
   onSentenceSelect,
 }) => {
@@ -101,24 +156,30 @@ const CorrectionSuggestionPopper = ({
 
   return (
     <>
-      {correctionGroups.map((correctionGroup, groupIndex) => (
-        <CorrectionBubble
-          correctionRange={correctionGroup.range}
-          feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
-          key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
-          onSentenceSelect={onSentenceSelect}
-          sentence={sentence}
-        >
-          <Box className="essay-writing-correction-content">
-            {correctionGroup.words.map((word, index) => (
-              <CorrectedWord
-                key={index}
-                word={word}
-              />
-            ))}
-          </Box>
-        </CorrectionBubble>
-      ))}
+      {correctionGroups.map((correctionGroup, groupIndex) => {
+        const correctionFocus = getCorrectionGroupFocus(correctionGroup)
+
+        return (
+          <CorrectionBubble
+            correctionFocus={correctionFocus}
+            correctionRange={correctionGroup.range}
+            feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
+            isActive={rangesMatch(focusedSelection, correctionGroup.range)}
+            key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
+            onSentenceSelect={onSentenceSelect}
+            sentence={sentence}
+          >
+            <Box className="essay-writing-correction-content">
+              {correctionGroup.words.map((word, index) => (
+                <CorrectedWord
+                  key={index}
+                  word={word}
+                />
+              ))}
+            </Box>
+          </CorrectionBubble>
+        )
+      })}
     </>
   )
 }
