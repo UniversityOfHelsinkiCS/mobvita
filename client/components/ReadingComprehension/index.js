@@ -25,7 +25,11 @@ import {
   clearMcDeletedAction,
   clearMcStateAction,
 } from 'Utilities/redux/readingComprehensionReducer'
-import { getAllStories, getStoryAction } from 'Utilities/redux/storiesReducer'
+import {
+  getAllStories,
+  getStoryAction,
+  getStoryReadingQuestionsAction,
+} from 'Utilities/redux/storiesReducer'
 import { learningLanguageSelector, getTextStyle, skillLevels, cefrNum2Cefr } from 'Utilities/common'
 import './ReadingComprehension.css'
 
@@ -130,16 +134,19 @@ const ReadingComprehensionView = ({ match }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { storyId } = match.params
 
-  const { story, lastQuery, focusedPending } = useSelector(({ stories }) => ({
+  const { story, lastQuery, focusedPending, readingQuestions, readingQuestionsPending } = useSelector(({ stories }) => ({
     story: stories.focused,
     lastQuery: stories.lastQuery,
     focusedPending: stories.focusedPending,
+    readingQuestions: stories.readingQuestions,
+    readingQuestionsPending: stories.readingQuestionsPending,
   }), shallowEqual)
 
   const {
     generated,
     pending: mcPending,
     savePending,
+    savedQuestions,
     saved,
     error,
     regenPendingByIndex,
@@ -152,6 +159,7 @@ const ReadingComprehensionView = ({ match }) => {
         generated: [],
         pending: false,
         savePending: false,
+        savedQuestions: null,
         saved: false,
         error: false,
         regenPendingByIndex: {},
@@ -197,6 +205,7 @@ const ReadingComprehensionView = ({ match }) => {
     setPrevSignatures({})
 
     dispatch(getStoryAction(storyId, 'preview'))
+    dispatch(getStoryReadingQuestionsAction(storyId))
     hasInitializedStoryQuestionsRef.current = false
 
     return () => {
@@ -211,10 +220,20 @@ const ReadingComprehensionView = ({ match }) => {
   }, [focusedPending])
 
   useEffect(() => {
+    if (readingQuestionsPending || !readingQuestions) return
+
+    const qs = pickStoryQuestions(readingQuestions).map(normalizeQuestion).filter(Boolean)
+
+    setStoryQuestions(qs)
+    hasInitializedStoryQuestionsRef.current = true
+  }, [readingQuestions, readingQuestionsPending])
+
+  useEffect(() => {
     if (focusedPending) return
     if (!story) return
     if (hasInitializedStoryQuestionsRef.current) return
     if (!hasSeenPendingCycleRef.current) return
+    if (readingQuestionsPending || readingQuestions) return
 
     const focusedStoryId = getStoryIdValue(story)
     if (focusedStoryId && focusedStoryId !== String(storyId)) return
@@ -223,12 +242,20 @@ const ReadingComprehensionView = ({ match }) => {
 
     setStoryQuestions(qs)
     hasInitializedStoryQuestionsRef.current = true
-  }, [story, focusedPending, storyId])
+  }, [story, focusedPending, storyId, readingQuestions, readingQuestionsPending])
 
   useEffect(() => {
     if (!saved) return
 
-    hasInitializedStoryQuestionsRef.current = false
+    if (Array.isArray(savedQuestions)) {
+      const qs = savedQuestions.map(normalizeQuestion).filter(Boolean)
+      setStoryQuestions(qs)
+      hasInitializedStoryQuestionsRef.current = true
+    } else {
+      hasInitializedStoryQuestionsRef.current = false
+    }
+
+    dispatch(getStoryReadingQuestionsAction(storyId))
     dispatch(getStoryAction(storyId, 'preview'))
     dispatch(
       getAllStories(
@@ -242,7 +269,7 @@ const ReadingComprehensionView = ({ match }) => {
 
     const t = setTimeout(() => dispatch(clearMcSavedAction()), 3000)
     return () => clearTimeout(t)
-  }, [saved, dispatch, storyId, learningLanguage, lastQuery])
+  }, [saved, savedQuestions, dispatch, storyId, learningLanguage, lastQuery])
 
   useEffect(() => {
     if (!deleted) return

@@ -52,11 +52,13 @@ const mockStoryDetailsApi = storiesById => {
     req.alias = 'apiCall'
     req.reply(getStoryResponse(story))
   })
+
+  mockReadingQuestionsApi(storiesById)
 }
 
 // Mock the reading-practice questions endpoint. Returns the questions the story carries
 // (reading_questions / questions) plus a session_id, matching the /get_questions response shape.
-const mockReadingQuestionsApi = storiesById => {
+function mockReadingQuestionsApi(storiesById) {
   cy.intercept('GET', getQuestionsUrl, req => {
     const storyId = getStoryIdFromQuestionsUrl(req.url)
     const story = getStoryResponse(storiesById[storyId])
