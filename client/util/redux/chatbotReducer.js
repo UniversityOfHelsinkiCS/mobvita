@@ -46,7 +46,7 @@ export const setConversationHistory = (chatbot_history = []) => ({
 })
 
 export const getGeneralChatbotResponse = message => {
-  const route = `/general_chatbot`
+  const route = `/chatbot/general`
   const prefix = 'GET_CHATBOT_RESPONSE'
   const payload = { message }
   return callBuilder(route, prefix, 'post', payload)
@@ -63,7 +63,7 @@ export const getPracticeChatbotResponse = (
   context = {},
   hints = [],
 ) => {
-  const route = `/chatbot`
+  const route = `/chatbot/practice`
   const prefix = 'GET_CHATBOT_RESPONSE'
   const payload = {
     session_id,
@@ -85,7 +85,7 @@ export const getReadingPracticeChatbotResponse = (
   user_attempts_and_feedbacks,
   message,
 ) => {
-  const route = `/reading_practice_chatbot`
+  const route = `/chatbot/reading_practice`
   const prefix = 'GET_CHATBOT_RESPONSE'
   const payload = { session_id, reading_question_id, user_attempts_and_feedbacks, message }
   return callBuilder(route, prefix, 'post', payload)
@@ -98,7 +98,7 @@ export const getEssayChatbotResponse = ({
   correctedText = '',
   sentenceId = null,
 }) => {
-  const route = `/essay_chatbot`
+  const route = `/chatbot/essay`
   const prefix = 'GET_ESSAY_CHATBOT_RESPONSE'
   const payload = {
     session_id: sessionId,

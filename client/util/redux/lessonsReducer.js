@@ -3,7 +3,7 @@ import callBuilder from '../apiConnection'
 
 
 export const getLessonTopics = () => {
-  const route = '/lesson_topics'
+  const route = '/lesson/topics'
   const prefix = 'GET_LESSONS'
 
   return callBuilder(route, prefix)

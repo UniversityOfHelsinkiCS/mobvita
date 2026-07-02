@@ -27,10 +27,10 @@ export const clearDialogues = scope => ({
   scope,
 })
 
-// Posts a general chatbot message (same /general_chatbot endpoint) but routes the
+// Posts a general chatbot message (same /chatbot/general endpoint) but routes the
 // user/bot bubbles into this scope's thread in the dialogues store.
 export const sendGeneralDialogue = (message, scope) => {
-  const route = `/general_chatbot`
+  const route = `/chatbot/general`
   const prefix = 'GET_DIALOGUE_RESPONSE'
   const payload = { message }
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
