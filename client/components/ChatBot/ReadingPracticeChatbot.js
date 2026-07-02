@@ -6,12 +6,12 @@ import ReactMarkdown from 'react-markdown'
 import './Chatbot.scss';
 import {
     getReadingPracticeChatbotResponse,
-    getReadingPracticeAgentConversationHistory,
-    getGeneralChatbotResponse
+    getReadingPracticeAgentConversationHistory
 } from 'Utilities/redux/chatbotReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
 import Spinner from 'Components/Spinner'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
+import AssistentSettings from 'Components/PracticeView/AssistentSettings'
 
 const ReadingPracticeChatBot = ({
     questionDone = false,
@@ -19,6 +19,7 @@ const ReadingPracticeChatBot = ({
     questionId: questionIdProp,
     attemptsAndFeedbacks: attemptsAndFeedbacksProp,
     loadHistory = true,
+    translationSlot = null,
 }) => {
     const intl = useIntl();
     const dispatch = useDispatch();
@@ -33,6 +34,12 @@ const ReadingPracticeChatBot = ({
 
     const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot);
 
+    // Word translation is shown inline in the assistant panel (between header and messages) when a
+    // story word has been clicked, so the chat input stays pinned to the bottom.
+    const { surfaceWord: translationSurfaceWord, pending: translationPending } =
+        useSelector(({ translation }) => translation) || {};
+    const showTranslation = Boolean(translationSlot && (translationSurfaceWord || translationPending));
+
     // The assistant only becomes available once the question is done (answered correctly, or
     // after the allowed attempts / feedback). Until then the panel shows but the input is locked.
     const inputDisabled = isWaitingForResponse || !questionDone;
@@ -42,11 +49,16 @@ const ReadingPracticeChatBot = ({
     const scrollToLatestMessage = () => latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
 
     const predefinedChatbotRequests = [
-        "chatbot-message-suggestion-next-steps",
-        "chatbot-message-suggestion-performance"
+        "reading-chatbot-suggestion-explain-answer",
+        "reading-chatbot-suggestion-why-others-wrong"
     ].map(msgId => ({
         msgId,
-        func: getGeneralChatbotResponse(intl.formatMessage({ id: msgId }))
+        func: getReadingPracticeChatbotResponse(
+            session_id,
+            reading_question_id,
+            attempt_and_feedbacks,
+            intl.formatMessage({ id: msgId })
+        )
     }));
 
     useEffect(() => {
@@ -81,15 +93,24 @@ const ReadingPracticeChatBot = ({
                 <h3 className="ai-header-title">
                     <FormattedMessage id="chatbot-toggle-label" />
                 </h3>
+                <AssistentSettings className="settings-icon" />
             </div>
             <div className="chatbot-messages">
-                {!questionDone ? (
-                    <div className="message message-bot">
-                        <FormattedMessage
-                            id="reading-chatbot-answer-first"
-                            defaultMessage="Answer the question to chat with the assistant."
-                        />
+                {showTranslation && (
+                    <div className="rp-translation-slot" style={{ marginBottom: 10 }}>
+                        {translationSlot}
                     </div>
+                )}
+                {!questionDone ? (
+                    // Intro hint — hidden once a translation card is shown or the chatbot unlocks.
+                    !showTranslation && (
+                        <div className="message message-bot">
+                            <FormattedMessage
+                                id="reading-chatbot-answer-first"
+                                defaultMessage="Click on words to see their translations. The chatbot becomes available once you answer correctly or use all your attempts."
+                            />
+                        </div>
+                    )
                 ) : isLoadingHistory ? (
                     <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
                         <Spinner inline />

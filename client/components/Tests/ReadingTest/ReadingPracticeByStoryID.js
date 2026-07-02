@@ -2,14 +2,34 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Segment, Button as SemanticButton } from 'semantic-ui-react'
+import { Segment, Button as SemanticButton, Popup } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
+import Switch from '@mui/material/Switch'
 import Spinner from 'Components/Spinner'
+import SettingsIcon from 'Components/PracticeView/SettingsIcon'
 import { getStoryAction, answerStoryQuestionAction, getStoryReadingQuestionsAction } from 'Utilities/redux/storiesReducer'
-import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
+import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
+import { setHelperSidebarOpen, setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import {
+  setFocusedSpan,
+  setHighlightRange,
+  resetAnnotationCandidates,
+  addAnnotationCandidates,
+  setAnnotationFormVisibility,
+} from 'Utilities/redux/annotationsReducer'
+import { clearNotes } from 'Utilities/redux/notesReducer'
+import {
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  getTextStyle,
+  useMTAvailableLanguage,
+  learningLanguageLocaleCodes,
+} from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
+import WordTranslationPanel from 'Components/DictionaryHelp/WordTranslationPanel'
 
 const pickQuestionsFromStory = story => {
   if (!story) return []
@@ -96,10 +116,71 @@ const getQuestionId = question => {
   return String(question.question_id || '')
 }
 
+const AnswerLocationSettings = ({ checked, onChange }) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Popup
+      open={open}
+      on="click"
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      trigger={
+        <span
+          data-cy="rp-settings-popup"
+          style={{ display: 'inline-block', cursor: 'pointer' }}
+          role="button"
+          tabIndex={0}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              setOpen(prev => !prev)
+            }
+          }}
+        >
+          <SettingsIcon className="settings-icon" />
+        </span>
+      }
+      content={
+        <div
+          style={{
+            padding: '0.4em 0.6em',
+            minWidth: 240,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 8,
+          }}
+        >
+          <span style={{ fontSize: '0.9rem', color: '#333' }}>
+            <FormattedMessage
+              id="rp-show-answer-button-setting"
+              defaultMessage="Show button “Show answer in text”"
+            />
+          </span>
+          <Switch
+            size="small"
+            checked={checked}
+            onChange={e => onChange(e.target.checked)}
+            inputProps={{ 'data-cy': 'rp-show-answer-button-toggle' }}
+          />
+        </div>
+      }
+      position="bottom right"
+      basic
+      flowing
+      hideOnScroll
+      style={{ borderRadius: 10, padding: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.15)' }}
+    />
+  )
+}
+
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
   const { id: storyId } = useParams()
-  const learningLanguage = useSelector(learningLanguageSelector)
+    const learningLanguage = useSelector(learningLanguageSelector)
+  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
+  const mtLanguages = useMTAvailableLanguage()
   const intl = useIntl()
 
   const { story, pending } = useSelector(({ stories }) => ({
@@ -107,8 +188,6 @@ const ReadingPracticeView = () => {
     pending: stories.focusedPending,
   }), shallowEqual)
 
-  // Questions + chatbot session_id now come from the separate /get_questions endpoint
-  // (the story API only carries num_questions now).
   const { readingQuestions, readingQuestionsPending } = useSelector(({ stories }) => ({
     readingQuestions: stories.readingQuestions,
     readingQuestionsPending: stories.readingQuestionsPending,
@@ -132,11 +211,12 @@ const ReadingPracticeView = () => {
   const [highlightedSentenceIds, setHighlightedSentenceIds] = useState([])
   const [showAnswerLocation, setShowAnswerLocation] = useState(false)
   const [lastAttemptAnswer, setLastAttemptAnswer] = useState('')
+  const [showAnswerLocationButtonEnabled, setShowAnswerLocationButtonEnabled] = useState(false)
 
   useEffect(() => {
     if (!storyId) return
-    dispatch(getStoryAction(storyId, 'preview'))          // story text / paragraph
-    dispatch(getStoryReadingQuestionsAction(storyId))     // questions + session_id
+    dispatch(getStoryAction(storyId, 'preview'))          
+    dispatch(getStoryReadingQuestionsAction(storyId))     
   }, [dispatch, storyId])
 
   useEffect(() => {
@@ -153,8 +233,6 @@ const ReadingPracticeView = () => {
 
   const wrongAttemptLimit = Math.max((current?.choices || []).length - 1, 1)
 
-  // The wrong choices tried (and the correct one once reached), in the { attempt, feedback }
-  // shape the reading-practice chatbot expects (no per-attempt feedback exists in this flow).
   const attemptsAndFeedbacks = useMemo(() => {
     const wrong = Array.from(attemptedWrongChoices).map(a => ({ attempt: a, feedback: [] }))
     return isCorrectAnswered
@@ -234,6 +312,77 @@ const ReadingPracticeView = () => {
     setHighlightedSentenceIds(sentenceIds)
   }
 
+  useEffect(() => {
+    if (showCorrectAnswer && !showAnswerLocationButtonEnabled) {
+      handleShowAnswerLocation()
+    }    
+  }, [showCorrectAnswer, showAnswerLocationButtonEnabled])
+
+  const handleWordTranslate = (token, paragraph) => {
+    const {
+      lemmas,
+      translation_lemmas,
+      bases,
+      ID: wordId,
+      surface,
+      inflection_ref: inflectionRef,
+      pref_lemma: prefLemma,
+      sentence_id,
+      snippet_id,
+    } = token || {}
+    if (!lemmas) return
+
+    dispatch(setFocusedSpan(null))
+    dispatch(setHighlightRange(wordId, wordId))
+
+    dispatch(
+      setWords({
+        surface,
+        lemmas,
+        snippet_id,
+        sentence_id,
+        word_id: wordId,
+        session_id: readingSessionId,
+        storyid: storyId,
+      })
+    )
+    dispatch(
+      getTranslationAction({
+        learningLanguage,
+        wordLemmas: translation_lemmas || lemmas,
+        bases,
+        dictionaryLanguage,
+        storyId,
+        wordId,
+        inflectionRef,
+        prefLemma,
+      })
+    )
+    dispatch(setHelperSidebarTab('translation'))
+    dispatch(setHelperSidebarOpen(true))
+
+        // If MT is available for this language pair, request a context translation
+    if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
+      const safeParagraph = Array.isArray(paragraph) ? paragraph : []
+      const sentence = safeParagraph
+        .filter(s => sentence_id - 1 <= s.sentence_id && s.sentence_id <= sentence_id + 1)
+        .map(t => t.surface)
+        .join('')
+        .replaceAll('\n', ' ')
+        .trim()
+
+      if (sentence) {
+        dispatch(
+          getContextTranslation(
+            sentence,
+            learningLanguageLocaleCodes[learningLanguage],
+            learningLanguageLocaleCodes[dictionaryLanguage]
+          )
+        )
+      }
+    }
+  }
+
   if (pending) return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
   if (!story) return null
 
@@ -261,6 +410,7 @@ const ReadingPracticeView = () => {
         <HighlightedStoryText
           paragraphs={story.paragraph || []}
           highlightedSentenceIds={highlightedSentenceIds}
+          onWordClick={handleWordTranslate}
         />
       </Segment>
       <section
@@ -284,7 +434,9 @@ const ReadingPracticeView = () => {
                 </div>
               ) : (
                 <>
-                  <div style={{ fontSize: 18, marginBottom: 12 }}>{current?.question}</div>
+                  <div style={{ fontSize: 18, marginBottom: 12 }}>
+                    {idx + 1}/{total} {current?.question}
+                  </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {(current?.choices || []).map((c, i) => {
@@ -341,8 +493,12 @@ const ReadingPracticeView = () => {
                       flexWrap: 'wrap',
                     }}
                   >
-                    <div>
-                      {showCorrectAnswer && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <AnswerLocationSettings
+                        checked={showAnswerLocationButtonEnabled}
+                        onChange={setShowAnswerLocationButtonEnabled}
+                      />
+                      {showAnswerLocationButtonEnabled && showCorrectAnswer && (
                         <Button
                           data-cy="rp-show-answer-location-btn"
                           className="btn-secondary"
@@ -396,6 +552,7 @@ const ReadingPracticeView = () => {
           sessionId={readingSessionId || storyId}
           questionId={getQuestionId(current)}
           attemptsAndFeedbacks={attemptsAndFeedbacks}
+          translationSlot={<WordTranslationPanel />}
         />
       </HelperSidebar>
     </main>
