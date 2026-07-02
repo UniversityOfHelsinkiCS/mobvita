@@ -51,6 +51,7 @@ const initialState = {
   error: false,
   errorDetails: null,
   saved: false,
+  savedQuestions: null,
 
   deleted: false,
   deletePending: false,
@@ -157,6 +158,7 @@ export default (state = initialState, action) => {
         error: false,
         errorDetails: null,
         saved: false,
+        savedQuestions: null,
       }
 
     case 'MC_SAVE_QUESTIONS_SUCCESS':
@@ -166,6 +168,7 @@ export default (state = initialState, action) => {
         error: false,
         errorDetails: null,
         saved: true,
+        savedQuestions: Array.isArray(action.response?.questions) ? action.response.questions : null,
       }
 
     case 'MC_SAVE_QUESTIONS_FAILURE':
@@ -175,10 +178,11 @@ export default (state = initialState, action) => {
         error: true,
         errorDetails: action.response,
         saved: false,
+        savedQuestions: null,
       }
 
     case 'READING_COMPREHENSION_CLEAR_SAVED':
-      return { ...state, saved: false }
+      return { ...state, saved: false, savedQuestions: null }
 
     case 'MC_DELETE_QUESTIONS_ATTEMPT':
       return {

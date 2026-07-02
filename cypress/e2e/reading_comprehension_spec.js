@@ -1,6 +1,7 @@
 const storyOneId = 'story-one'
 const storyTwoId = 'story-two'
-const readingPracticeStoryId = 'story-rp'
+const backendStoryId = '5c407e9eff634503466b0dde'
+const readingPracticeStoryId = backendStoryId
 const storiesListUrl = /\/api\/stories(?:\?.*)?$/
 const storyDetailsUrl = /\/api\/stories\/[^/?]+(?:\?.*)?$/
 
@@ -52,11 +53,13 @@ const mockStoryDetailsApi = storiesById => {
     req.alias = 'apiCall'
     req.reply(getStoryResponse(story))
   })
+
+  mockReadingQuestionsApi(storiesById)
 }
 
 // Mock the reading-practice questions endpoint. Returns the questions the story carries
 // (reading_questions / questions) plus a session_id, matching the /get_questions response shape.
-const mockReadingQuestionsApi = storiesById => {
+function mockReadingQuestionsApi(storiesById) {
   cy.intercept('GET', getQuestionsUrl, req => {
     const storyId = getStoryIdFromQuestionsUrl(req.url)
     const story = getStoryResponse(storiesById[storyId])
@@ -70,36 +73,18 @@ const waitForApiCallAndText = text => {
   cy.contains(text, { timeout: 30000 }).should('be.visible')
 }
 
-// Shared helper — intercept every API call that the ReadingComprehension
-// component may fire so no real backend call escapes the test.
+// Shared helper — only mock AI question generation so tests do not call the AI backend.
+// Save/delete/answer endpoints are intentionally left to the real backend.
 const mockAllStoriesApis = () => {
   // Stories list (loaded on mount and after saving)
   cy.intercept('GET', storiesListUrl, { body: [] }).as('getStoriesList')
   // AI question generation — returns static mock; NO real AI call is made
   cy.intercept('POST', '**/api/stories/*/mc_generate', { body: [] }).as('mcGenerateGlobal')
-  // Save questions — acknowledge without touching the database
-  cy.intercept(
-    'POST',
-    '**/api/stories/*/save_questions',
-    { statusCode: 200, body: { ok: true } },
-  ).as('saveQuestionsGlobal')
-  // Delete questions — acknowledge without touching the database
-  cy.intercept(
-    'POST',
-    '**/api/stories/*/delete_questions',
-    { statusCode: 200, body: { ok: true } },
-  ).as('deleteQuestionsGlobal')
-  // Reading-practice answer recording — acknowledge without touching the database
-  cy.intercept(
-    'POST',
-    '**/api/stories/*/answer_question',
-    { statusCode: 200, body: { ok: true } },
-  ).as('answerQuestionGlobal')
 }
 
 describe('reading comprehension', function () {
   this.beforeAll(function () {
-    cy.login('English')
+    cy.login('Finnish', true, 'English')
   })
 
   this.beforeEach(function () {
@@ -165,7 +150,7 @@ describe('reading comprehension', function () {
 
   it('allows choosing level and size, editing saved answers, and deleting saved questions', function () {
     let storyOne = makePreviewStory({
-      id: storyOneId,
+      id: backendStoryId,
       title: 'Story One',
       questions: [
         {
@@ -177,8 +162,8 @@ describe('reading comprehension', function () {
       ],
     })
 
-    mockStoryDetailsApi({ [storyOneId]: () => storyOne })
-    cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
+    mockStoryDetailsApi({ [backendStoryId]: () => storyOne })
+    cy.intercept('POST', `**/api/stories/${backendStoryId}/save_questions`, req => {
       expect(req.body).to.have.property('questions')
       expect(req.body.questions).to.have.length(1)
       expect(req.body.questions[0].question).to.eq('Saved question for edits')
@@ -193,15 +178,20 @@ describe('reading comprehension', function () {
         questions: req.body.questions,
       }
 
-      req.reply({ statusCode: 200, body: { ok: true } })
+      req.continue()
     }).as('saveQuestions')
 
-    cy.intercept('POST', `**/api/stories/${storyOneId}/delete_questions`, req => {
+    cy.intercept('POST', `**/api/stories/${backendStoryId}/delete_questions`, req => {
       expect(req.body).to.deep.equal({ questions: ['Saved question for edits'] })
-      req.reply({ statusCode: 200, body: { ok: true } })
+      storyOne = {
+        ...storyOne,
+        questions: [],
+      }
+
+      req.continue()
     }).as('deleteQuestions')
 
-    visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
+    visitAsMockUser(`http://localhost:8000/stories/${backendStoryId}/reading-comprehension-options`)
     waitForApiCallAndText('Story One')
 
     cy.get('[data-cy="rc-level-select"]').click()
@@ -218,13 +208,13 @@ describe('reading comprehension', function () {
     cy.get('[data-cy="rc-choice-edit-story-0-0"]').click()
     cy.get('[data-cy="rc-choice-input-story-0-0"] input').clear().type('Updated correct answer')
     cy.get('[data-cy="rc-choice-save-story-0-0"]').click()
-    cy.wait('@saveQuestions')
+    cy.wait('@saveQuestions').its('response.statusCode').should('be.within', 200, 299)
     cy.get('[data-cy="rc-question-story-0"]').contains('Updated correct answer').should('be.visible')
 
     // Delete saved question and verify delete payload.
     cy.get('[data-cy="rc-delete-saved-question-btn-0"]').click()
     cy.get('[data-cy="rc-delete-modal-confirm"]').click()
-    cy.wait('@deleteQuestions')
+    cy.wait('@deleteQuestions').its('response.statusCode').should('be.within', 200, 299)
 
     // Critical assertion: no mc_generate requests should be made.
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
@@ -232,7 +222,7 @@ describe('reading comprehension', function () {
 
   it('manages two generated draft questions in generate tab, then saves, edits, and deletes', function () {
     let storyOne = makePreviewStory({
-      id: storyOneId,
+      id: backendStoryId,
       title: 'Story One',
       questions: [],
     })
@@ -254,15 +244,15 @@ describe('reading comprehension', function () {
       },
     ]
 
-    mockStoryDetailsApi({ [storyOneId]: () => storyOne })
+    mockStoryDetailsApi({ [backendStoryId]: () => storyOne })
 
-    cy.intercept('POST', `**/api/stories/${storyOneId}/mc_generate`, req => {
+    cy.intercept('POST', `**/api/stories/${backendStoryId}/mc_generate`, req => {
       expect(req.body).to.have.property('level')
       expect(req.body).to.have.property('size')
       req.reply({ statusCode: 200, body: generatedDraftQuestions })
     }).as('mcGenerateSpecific')
 
-    cy.intercept('POST', `**/api/stories/${storyOneId}/save_questions`, req => {
+    cy.intercept('POST', `**/api/stories/${backendStoryId}/save_questions`, req => {
       expect(req.body).to.have.property('questions')
       expect(req.body.questions).to.have.length(1)
 
@@ -271,10 +261,10 @@ describe('reading comprehension', function () {
         questions: req.body.questions,
       }
 
-      req.reply({ statusCode: 200, body: { ok: true } })
+      req.continue()
     }).as('saveQuestionsSpecific')
 
-    cy.intercept('POST', `**/api/stories/${storyOneId}/delete_questions`, req => {
+    cy.intercept('POST', `**/api/stories/${backendStoryId}/delete_questions`, req => {
       expect(req.body).to.have.property('questions')
 
       const toDelete = Array.isArray(req.body.questions) ? req.body.questions : []
@@ -283,10 +273,10 @@ describe('reading comprehension', function () {
         questions: storyOne.questions.filter(q => !toDelete.includes(q.question)),
       }
 
-      req.reply({ statusCode: 200, body: { ok: true } })
+      req.continue()
     }).as('deleteQuestionsSpecific')
 
-    visitAsMockUser(`http://localhost:8000/stories/${storyOneId}/reading-comprehension-options`)
+    visitAsMockUser(`http://localhost:8000/stories/${backendStoryId}/reading-comprehension-options`)
     waitForApiCallAndText('Story One')
 
     cy.get('[data-cy="rc-tab-generate-questions"]').click()
@@ -314,7 +304,7 @@ describe('reading comprehension', function () {
     cy.get('[data-cy="rc-choice-input-draft-0-0"] input').clear().type('A1 Modified Once')
     cy.get('[data-cy="rc-choice-save-draft-0-0"]').click()
     cy.get('[data-cy="rc-add-questions-to-story-btn"]').click()
-    cy.wait('@saveQuestionsSpecific')
+    cy.wait('@saveQuestionsSpecific').its('response.statusCode').should('be.within', 200, 299)
 
     // Saved questions are rendered in the Edit Saved Questions tab.
     cy.get('[data-cy="rc-tab-edit-saved-questions"]').click()
@@ -324,13 +314,13 @@ describe('reading comprehension', function () {
     cy.get('[data-cy="rc-choice-edit-story-0-0"]').click()
     cy.get('[data-cy="rc-choice-input-story-0-0"] input').clear().type('A1 Modified Twice')
     cy.get('[data-cy="rc-choice-save-story-0-0"]').click()
-    cy.wait('@saveQuestionsSpecific')
+    cy.wait('@saveQuestionsSpecific').its('response.statusCode').should('be.within', 200, 299)
     cy.get('[data-cy="rc-question-story-0"]').contains('A1 Modified Twice').should('be.visible')
 
     // Delete remaining saved question.
     cy.get('[data-cy="rc-delete-saved-question-btn-0"]').click()
     cy.get('[data-cy="rc-delete-modal-confirm"]').click()
-    cy.wait('@deleteQuestionsSpecific')
+    cy.wait('@deleteQuestionsSpecific').its('response.statusCode').should('be.within', 200, 299)
 
     cy.get('[data-cy^="rc-question-story-"]').should('have.length', 0)
 
@@ -343,7 +333,7 @@ describe('reading comprehension', function () {
 
 describe('reading practice', function () {
   this.beforeAll(function () {
-    cy.login('English')
+    cy.login('Finnish', false, 'English')
   })
 
   this.beforeEach(function () {
@@ -375,7 +365,6 @@ describe('reading practice', function () {
     })
 
     mockStoryDetailsApi({ [readingPracticeStoryId]: story })
-    mockReadingQuestionsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
     waitForApiCallAndText('Pick the right option after three wrong tries')
@@ -424,7 +413,6 @@ describe('reading practice', function () {
     }
 
     mockStoryDetailsApi({ [readingPracticeStoryId]: story })
-    mockReadingQuestionsApi({ [readingPracticeStoryId]: story })
 
     visitAsMockUser(`http://localhost:8000/stories/${readingPracticeStoryId}/reading_practice`)
     waitForApiCallAndText('Question 1')
