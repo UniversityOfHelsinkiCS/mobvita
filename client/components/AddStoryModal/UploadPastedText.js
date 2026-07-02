@@ -67,6 +67,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
         fullWidth
         size="small"
         value={title}
+        data-cy="paste-story-title-input"
         sx={{ mt: 1.5, mb: 1.5 }}
         onChange={({ target }) => setTitle(target.value)}
         placeholder={intl.formatMessage({ id: 'story-title' })}
@@ -76,6 +77,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
         multiline
         rows={10}
         value={text}
+        data-cy="paste-story-text-input"
         onChange={handleTextChange}
         sx={{ mt: 1.5, mb: 1.5 }}
       />
@@ -85,7 +87,12 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
           {` ${charactersLeft}`}
         </div>
         <div className="row-flex">
-          <Button onClick={addText} disabled={submitDisabled} style={{ marginTop: '12px' }}>
+          <Button
+            onClick={addText}
+            disabled={submitDisabled}
+            data-cy="paste-story-confirm"
+            style={{ marginTop: '12px' }}
+          >
             {pending || storyId ? (
               <Spinner inline />
             ) : (
