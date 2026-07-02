@@ -1,10 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Button } from 'semantic-ui-react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 const ChatbotSuggestions = ({ predefinedChatbotRequests, disabled }) => {
-  const intl = useIntl()
   const dispatch = useDispatch()
 
 
@@ -14,10 +12,17 @@ const ChatbotSuggestions = ({ predefinedChatbotRequests, disabled }) => {
         <a
           className="chatbot-suggestion-message"
           key={index}
-          type="button"
-          basic
-          disabled={disabled}
-          onClick={() =>dispatch(func)}
+          role="button"
+          aria-disabled={disabled}
+          style={{
+            pointerEvents: disabled ? 'none' : undefined,
+            opacity: disabled ? 0.5 : undefined,
+            cursor: disabled ? 'not-allowed' : 'pointer',
+          }}
+          onClick={() => {
+            if (disabled) return
+            dispatch(func)
+          }}
         >
           <FormattedMessage id={msgId} />
         </a>
