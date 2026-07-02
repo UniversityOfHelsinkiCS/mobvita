@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 import {
   checkWritingCorrection,
   getWritingCorrectionKey,
+  getWritingCorrectionWords,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
 } from 'Utilities/redux/writingCorrectionReducer'
@@ -20,6 +21,11 @@ import {
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
+import {
+  findCorrectionGroupAtOffset,
+  getCorrectedTextFromCorrectionEntry,
+  getCorrectionGroupFocus,
+} from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaCaretCoordinates } from './utils/textareaCaret'
 
@@ -38,10 +44,9 @@ const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEn
 
     if (!selectionOverlapsSentence) return null
 
-    const startOffset = Math.max(startIndex, focusedSentence.startIndex) -
-      focusedSentence.startIndex
-    const endOffset = Math.min(endIndex, focusedSentence.endIndex) -
-      focusedSentence.startIndex
+    const startOffset =
+      Math.max(startIndex, focusedSentence.startIndex) - focusedSentence.startIndex
+    const endOffset = Math.min(endIndex, focusedSentence.endIndex) - focusedSentence.startIndex
     const selectedText = text.slice(
       focusedSentence.startIndex + startOffset,
       focusedSentence.startIndex + endOffset,
@@ -66,11 +71,7 @@ const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEn
   return null
 }
 
-const EssayTextInput = ({
-  onEssayFocusChange,
-  onEssayTextChange,
-  sentenceSelectionRequest,
-}) => {
+const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
@@ -122,10 +123,7 @@ const EssayTextInput = ({
 
   const setDeletionSelectionHighlight = isDeletion => {
     setIsDeletionSelectionHighlighted(Boolean(isDeletion))
-    inputAreaRef.current?.classList.toggle(
-      'essay-writing-input-area-deletion',
-      Boolean(isDeletion),
-    )
+    inputAreaRef.current?.classList.toggle('essay-writing-input-area-deletion', Boolean(isDeletion))
   }
 
   const clearCorrectionHighlight = () => {
@@ -149,7 +147,66 @@ const EssayTextInput = ({
     setInputSelection(input, caretPosition, caretPosition)
   }
 
+  // For a plain caret click, resolve the correction the caret lands on (if any) so that clicking a
+  // corrected word focuses it and activates its bubble (the mirror of clicking a bubble).
+  const getCorrectionFocusAtCaret = input => {
+    const caret = input.selectionStart
+
+    if (caret !== input.selectionEnd) return null
+
+    const sentence = getCompletedSentenceNearIndex(completedSentencesRef.current, caret)
+
+    if (!sentence) return null
+
+    const correctionEntry = correctionsByKey[getWritingCorrectionKey(sentence)]
+
+    if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return null
+
+    const corrections = getWritingCorrectionWords(correctionEntry.corrections)
+    const group = findCorrectionGroupAtOffset(
+      sentence.text,
+      corrections,
+      caret - sentence.startIndex,
+    )
+
+    if (!group) return null
+
+    return {
+      sentence,
+      focus: {
+        correctedText: getCorrectedTextFromCorrectionEntry(correctionEntry),
+        focusedSentence: sentence.text,
+        originalText: correctionEntry.text || sentence.text,
+        sentenceId: sentence.sentenceId,
+        ...getCorrectionGroupFocus(group),
+        selection: {
+          startOffset: group.range.startOffset,
+          endOffset: group.range.endOffset,
+          sentenceId: sentence.sentenceId,
+          isDeletion: Boolean(group.range.isDeletion),
+          isInsertion: Boolean(group.range.isInsertion),
+        },
+      },
+    }
+  }
+
   const updateEssayFocus = input => {
+    const correctionFocus = getCorrectionFocusAtCaret(input)
+
+    if (correctionFocus) {
+      const { focus, sentence } = correctionFocus
+
+      // Mirror the bubble -> text-area direction: highlight the correction range in the text area.
+      setDeletionSelectionHighlight(focus.selection.isDeletion)
+      setInputSelection(
+        input,
+        sentence.startIndex + focus.selection.startOffset,
+        sentence.startIndex + focus.selection.endOffset,
+      )
+      onEssayFocusChange?.(focus)
+      return
+    }
+
     onEssayFocusChange?.(
       getEssayFocusFromSelection(
         completedSentencesRef.current,
@@ -310,8 +367,7 @@ const EssayTextInput = ({
     onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
-    const inputWasPasted =
-      pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
+    const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
 
     const previousText = textRef.current

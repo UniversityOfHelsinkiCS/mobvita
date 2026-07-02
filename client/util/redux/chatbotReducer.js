@@ -97,6 +97,7 @@ export const getEssayChatbotResponse = ({
   originalText = '',
   correctedText = '',
   sentenceId = null,
+  focusedWord = '',
 }) => {
   const route = `/chatbot/essay`
   const prefix = 'GET_ESSAY_CHATBOT_RESPONSE'
@@ -106,6 +107,8 @@ export const getEssayChatbotResponse = ({
     original_text: originalText || '',
     corrected_text: correctedText || '',
     sentence_id: sentenceId || '',
+    // No focused sentence means no focused word.
+    focused_word: sentenceId ? focusedWord || '' : '',
   }
 
   return callBuilder(route, prefix, 'post', payload, {
@@ -175,10 +178,10 @@ export default (state = initialState, action) => {
         isWaitingForEssayResponse: false,
         essayMessages: action.query?.showFollowUpQuestion
           ? essayResponseMessages.concat({
-            type: 'bot',
-            messageId: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE_ID,
-            text: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE,
-          })
+              type: 'bot',
+              messageId: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE_ID,
+              text: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE,
+            })
           : essayResponseMessages,
       }
     }
