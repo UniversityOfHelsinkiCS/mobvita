@@ -28,21 +28,21 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
 
       <div className="story-input-options-center">
         <div className="story-input-options-stack">
-            <Button className="add-new-story-button" onClick={() => setActiveComponent('web')}>
+            <Button className="add-new-story-button" data-cy="add-story-web" onClick={() => setActiveComponent('web')}>
               <img src={uploadWebIcon} alt="web upload" className='story-option-icon' />
               <FormattedMessage id="upload-from-web" />
             </Button>
-            <Button className="add-new-story-button" onClick={() => setActiveComponent('file')}>
+            <Button className="add-new-story-button" data-cy="add-story-file" onClick={() => setActiveComponent('file')}>
               <img src={uploadFileIcon} alt="file upload" className='story-option-icon' />
               <FormattedMessage id="upload-stories" />
             </Button>
 
-            <Button className="add-new-story-button" onClick={() => setActiveComponent('paste')}>
+            <Button className="add-new-story-button" data-cy="add-story-paste" onClick={() => setActiveComponent('paste')}>
               <img src={uploadPasteIcon} alt="paste" className='story-option-icon' />
               <FormattedMessage id="paste-a-text" />
             </Button>
             {lesson_topics?.length !== 0 && canGenerate && (
-              <Button className="add-new-story-button" onClick={goToGeneratePage}>
+              <Button className="add-new-story-button" data-cy="add-story-generate" onClick={goToGeneratePage}>
                 <img src={generateAI} alt="generate AI" className='story-option-icon' />
                 <FormattedMessage id="go-generating" />
               </Button>

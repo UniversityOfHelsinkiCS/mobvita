@@ -242,6 +242,7 @@ const StoryListItem = ({
   return (
     <Card
       key={story._id}
+      data-cy={`library-story-card-${story._id}`}
       className={`card mui-story-card ${
         isControlledStory ? 'card-controlled-story' : ''
       } ${isDragging ? 'library-story-card-dragging' : ''} tour-story-card`}
