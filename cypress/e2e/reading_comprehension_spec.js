@@ -386,7 +386,8 @@ describe('reading practice', function () {
 
     // After 3 wrong answers, correct answer should be highlighted automatically.
     cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', 'rgba(10, 248, 66, 0.35)')
-    cy.get('[data-cy="rp-show-answer-location-btn"]').should('be.visible')
+    // With the default setting (manual button off) the answer location is revealed automatically.
+    cy.get('[data-cy="story-token-p0-t1"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
 
     // Critical assertion: no mc_generate requests should be made.
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
@@ -449,7 +450,7 @@ describe('reading practice', function () {
     cy.contains('Question 2').should('be.visible')
     cy.get('[data-cy="story-token-p0-t4"]').should('not.have.css', 'background-color', 'rgb(253, 234, 59)')
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    cy.get('[data-cy="rp-show-answer-location-btn"]').click()
+    // With the default setting the answer location is revealed automatically (no manual button).
     cy.get('[data-cy="story-token-p0-t4"]').should('have.css', 'background-color', 'rgb(253, 234, 59)')
     cy.get('[data-cy="rp-start-over-btn"]').click()
 
