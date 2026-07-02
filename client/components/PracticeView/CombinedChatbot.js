@@ -991,8 +991,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           )}
                         </>
                       )} 
-                      { showContexTranslation && (
-                        <div className="context-translation-box">                          
+                      { (showContexTranslation || contextTranslationState.visible) && (
+                        <div className="context-translation-box">
                           {contextTranslationState.pending ? <Spinner inline /> : (
                             (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
                               <div className="context-translation-content">
@@ -1317,8 +1317,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       
                   </>
               )}
-              { showContexTranslation && (
-          <div className="context-translation-box">                          
+              { (showContexTranslation || contextTranslationState.visible) && (
+          <div className="context-translation-box">
                 {contextTranslationState.pending ? <Spinner inline /> : (
                 (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
                   <div className="context-translation-content">

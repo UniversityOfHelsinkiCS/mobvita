@@ -60,6 +60,7 @@ import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
 import CombinedChatbot from 'Components/PracticeView/CombinedChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import StoryTitleTranslate from 'Components/PracticeView/StoryTitleTranslate'
 
 import './ReadViewsStyles.css'
 
@@ -518,6 +519,7 @@ const ReadViews = ({ match }) => {
                       {routeStory?.title || ''}
                     </span>
                   )}
+                  <StoryTitleTranslate title={routeStory?.title} />
                 </div>
               </Header>
               {(preProcessingReady || processingFinished) && (

@@ -42,8 +42,13 @@ export const getContextTranslation = (
 
 export const clearContextTranslation = () => ({ type: 'CLEAR_CONTEXT_TRANSLATION' })
 
+export const setContextTranslationVisible = visible => ({
+  type: 'SET_CONTEXT_TRANSLATION_VISIBLE',
+  visible,
+})
 
-export default (state = { data: null, avail: [], lastTrans: null }, action) => {
+
+export default (state = { data: null, avail: [], lastTrans: null, visible: false }, action) => {
   switch (action.type) {
     case 'GET_CONTEXT_TRANSLATION_ATTEMPT':
       return {
@@ -72,8 +77,14 @@ export default (state = { data: null, avail: [], lastTrans: null }, action) => {
         ...state,
         data: null,
         lastTrans: null,
+        visible: false,
       }
     }
+    case 'SET_CONTEXT_TRANSLATION_VISIBLE':
+      return {
+        ...state,
+        visible: action.visible,
+      }
     case 'GET_CONTEXT_TRANSLATION_STATUS_ATTEMPT':
       return {
         ...state,

@@ -49,6 +49,7 @@ import ScrollArrow from '../ScrollArrow'
 import Spinner from 'Components/Spinner'
 import HelperSidebar from './HelperSidebar'
 import CombinedChatbot from './CombinedChatbot'
+import StoryTitleTranslate from './StoryTitleTranslate'
 
 const PracticeView = () => {
   const dispatch = useDispatch()
@@ -248,9 +249,12 @@ const PracticeView = () => {
               style={{
                 ...getTextStyle(learningLanguage, 'title'),
                 width: `${controlledPractice ? '75%' : '100%'}`,
+                display: 'flex',
+                alignItems: 'baseline',
               }}
             >
-              {!pending && `${story.title}`}
+              {!pending && <span>{story.title}</span>}
+              {!pending && <StoryTitleTranslate title={story.title} />}
             </div>
             {story.url && !pending && (
               <a href={story.url} target="_blank" rel="noopener noreferrer">
