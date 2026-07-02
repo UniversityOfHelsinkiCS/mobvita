@@ -3,8 +3,20 @@ $essay-content-top-padding: 0.5rem;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
-$essay-selection-bg-color: #fdea3b;
-$essay-deletion-selection-bg-color: #faa8a2;
+// Correction colours. Each correction type has two colours: one for the highlight shown in the
+// essay text area, and one for the corrected word shown in the suggestion bubble.
+$essay-textarea-highlight-replacement-bg-color: #6ac3fe;
+$essay-textarea-highlight-insertion-bg-color: #2fe407;
+$essay-textarea-highlight-deletion-bg-color: #faa8a2;
+
+$essay-bubble-multi-bg-color: #fffffc;
+$essay-bubble-replacement-bg-color: #6ac3fe;
+$essay-bubble-insertion-bg-color: #2fe407;
+$essay-bubble-deletion-bg-color: #f7b9b5;
+
+// Background of a hovered / active correction bubble.
+$essay-bubble-active-bg-color: #fdea3b;
+
 
 .essay-writing-page {
   display: flex;
@@ -77,7 +89,7 @@ $essay-deletion-selection-bg-color: #faa8a2;
 }
 
 .essay-writing-input-area {
-  --essay-writing-selection-bg-color: #{$essay-selection-bg-color};
+  --essay-writing-selection-bg-color: #{$essay-textarea-highlight-replacement-bg-color};
 
   position: relative;
   display: flex;
@@ -87,7 +99,7 @@ $essay-deletion-selection-bg-color: #faa8a2;
 }
 
 .essay-writing-input-area-deletion {
-  --essay-writing-selection-bg-color: #{$essay-deletion-selection-bg-color};
+  --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
 }
 
 .essay-writing-insertion-highlight {
@@ -98,7 +110,7 @@ $essay-deletion-selection-bg-color: #faa8a2;
   min-height: 1em;
   padding: 0;
   border-radius: 2px;
-  background-color: $essay-selection-bg-color;
+  background-color: $essay-textarea-highlight-insertion-bg-color;
   color: inherit;
   pointer-events: none;
   transform: translateX(1px);
@@ -151,11 +163,30 @@ $essay-deletion-selection-bg-color: #faa8a2;
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 8px;
   background: #fff;
+  transition: filter 0.2s;
   
   &:hover,
   &.essay-writing-correction-bubble-active {
-    background-color: $essay-selection-bg-color;
+    transform: scale(1.02);
+    filter: brightness(1.1);
   }
+}
+
+// Bubble background per correction type (mirrors the corrected-word colours).
+.essay-writing-correction-bubble-multi {
+  background: $essay-bubble-multi-bg-color;
+}
+
+.essay-writing-correction-bubble-replacement {
+  background: $essay-bubble-replacement-bg-color;
+}
+
+.essay-writing-correction-bubble-insertion {
+  background: $essay-bubble-insertion-bg-color;
+}
+
+.essay-writing-correction-bubble-deletion {
+  background: $essay-bubble-deletion-bg-color;
 }
 
 .essay-writing-correction-content {
@@ -177,7 +208,7 @@ $essay-deletion-selection-bg-color: #faa8a2;
 .essay-writing-corrected-word-deletion {
   padding: 0 3px;
   border-radius: 3px;
-  background-color: #ffd9d6;
+  background-color: $essay-bubble-deletion-bg-color;
   color: #9f1d17;
   text-decoration: line-through;
   text-decoration-color: #9f1d17;
@@ -190,11 +221,12 @@ $essay-deletion-selection-bg-color: #faa8a2;
 }
 
 .essay-writing-corrected-word-replacement {
-  text-decoration: wavy underline red;
+  background-color: $essay-bubble-replacement-bg-color;
 }
 
 .essay-writing-corrected-word-insertion {
   text-decoration: underline;
+  background-color: $essay-bubble-insertion-bg-color;
 }
 
 .essay-writing-correction-feedback-button {

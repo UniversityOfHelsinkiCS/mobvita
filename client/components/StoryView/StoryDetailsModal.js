@@ -81,6 +81,7 @@ const StoryDetailsModal = ({
   const deleteButton = (
     <CustomButton
       className="story-detail-modal-manage-button-delete"
+      data-cy="story-detail-modal-delete-button"
       condition={showDeleteButton}
       onClick={handleDelete}
       disabled={disableDeleteButton}
