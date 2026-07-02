@@ -11,6 +11,7 @@ import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionRedu
 import {
   getCorrectionFeedbackText,
   getCorrectionGroups,
+  getCorrectionGroupType,
   getCorrectionText,
   isCorrectionDeletion,
   isCorrectionInsertion,
@@ -25,6 +26,7 @@ const CorrectionBubble = ({
   children,
   correctionFocus,
   correctionRange,
+  correctionType,
   feedbackText,
   isActive,
   onSentenceSelect,
@@ -33,6 +35,7 @@ const CorrectionBubble = ({
   <Paper
     className={[
       'essay-writing-correction-bubble',
+      correctionType ? `essay-writing-correction-bubble-${correctionType}` : '',
       isActive ? 'essay-writing-correction-bubble-active' : '',
     ].filter(Boolean).join(' ')}
     data-sentence={sentence}
@@ -163,6 +166,7 @@ const CorrectionSuggestionPopper = ({
           <CorrectionBubble
             correctionFocus={correctionFocus}
             correctionRange={correctionGroup.range}
+            correctionType={getCorrectionGroupType(correctionGroup)}
             feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
             isActive={rangesMatch(focusedSelection, correctionGroup.range)}
             key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}

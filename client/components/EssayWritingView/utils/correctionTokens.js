@@ -25,6 +25,30 @@ export const isCorrectionDeletion = word => {
     !INSERTION_ORIGINAL_VALUES.has(originalText)
 }
 
+const isCorrectionReplacement = word => (
+  Boolean(word.original) &&
+  Boolean(word.corrected) &&
+  !isCorrectionInsertion(word) &&
+  !isCorrectionDeletion(word)
+)
+
+// The overall type of a correction group (a bubble). A group may hold several words, so
+// multi if a mix otherwise replacement, insertion or deletion.
+export const getCorrectionGroupType = correctionGroup => {
+  const words = correctionGroup?.words || []
+  const hasReplacement = words.some(isCorrectionReplacement)
+  const hasInsertion = words.some(isCorrectionInsertion)
+  const hasDeletion = words.some(isCorrectionDeletion)
+
+  if ((hasReplacement && hasInsertion) || (hasReplacement && hasDeletion) || (hasInsertion && hasDeletion)) {
+    return 'multi'
+  }
+  if (hasReplacement) return 'replacement'
+  if (hasInsertion) return 'insertion'
+  if (hasDeletion) return 'deletion'
+  return null
+}
+
 export const getCorrectionFeedbackText = feedback => {
   if (!feedback) return ''
   if (typeof feedback === 'string') return feedback
