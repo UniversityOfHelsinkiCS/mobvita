@@ -131,9 +131,6 @@ const waitForApiCallAndText = text => {
   cy.contains(text, { timeout: 30000 }).should('be.visible')
 }
 
-const waitForAnswerQuestion = () =>
-  cy.wait('@answerQuestion').its('response.statusCode').should('be.within', 200, 299)
-
 // Real story details pass through to the backend (owner has access), aliased so the wait helper
 // keeps working.
 const aliasStoryDetails = () => {
@@ -144,6 +141,8 @@ const aliasStoryDetails = () => {
 }
 
 // answer_question hits the real backend; we only spy to assert the payload and alias the call.
+// It is fire-and-forget in the UI (state updates locally on click and the auto-reveal effect can
+// fire a second answer_question right after), so tests drive off UI state, not this response.
 const spyAnswerQuestion = storyId => {
   cy.intercept('POST', `**/api/stories/${storyId}/answer_question`, req => {
     expect(req.body).to.have.property('question_id')
@@ -453,6 +452,7 @@ describe('reading practice', function () {
 
   it('highlights correct option after user selects all three wrong answers', function () {
     const story = stories[0]
+    const answerSentenceToken = firstWordTokenOfSentence(story.story, 1)
 
     seedStoryQuestions(owner.token, story.id, [
       {
@@ -471,17 +471,17 @@ describe('reading practice', function () {
     waitForApiCallAndText('Mikä eläin nukkuu sohvalla?')
 
     cy.get('[data-cy="rp-choice-btn-0"]').click()
-    waitForAnswerQuestion()
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    waitForAnswerQuestion()
     cy.get('[data-cy="rp-choice-btn-3"]').click()
-    waitForAnswerQuestion()
 
-    // After 3 wrong answers, correct answer should be highlighted automatically.
+    // After 3 wrong answers the correct option is highlighted and, with the default setting, the
+    // answer location is revealed automatically in the text (no manual "show answer" button).
     cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
-    cy.get('[data-cy="rp-show-answer-location-btn"]').should('be.visible')
+    cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get('[data-cy="rp-show-answer-location-btn"]').should('not.exist')
 
-    // Critical assertion: no mc_generate requests should be made.
+    // answer_question hit the real backend, and no mc_generate requests should be made.
+    cy.get('@answerQuestion.all').should('have.length.greaterThan', 0)
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
   })
 
@@ -514,28 +514,26 @@ describe('reading practice', function () {
 
     // Q1: one wrong, then correct, then next.
     cy.get('[data-cy="rp-choice-btn-0"]').click()
-    waitForAnswerQuestion()
     cy.get('[data-cy="rp-choice-btn-1"]').click()
-    waitForAnswerQuestion()
+    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
     cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
 
     // Q2: two wrong, then correct, then start over.
     cy.contains('Missä kissa nukkuu?').should('be.visible')
     cy.get('[data-cy="rp-choice-btn-0"]').click()
-    waitForAnswerQuestion()
     cy.get('[data-cy="rp-choice-btn-1"]').click()
-    waitForAnswerQuestion()
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    waitForAnswerQuestion()
+    cy.get('[data-cy="rp-choice-btn-2"]').should('have.css', 'background-color', CORRECT_BG)
     cy.get('[data-cy="rp-start-over-btn"]').click()
 
     // Back to Q1: correct, then next.
     cy.contains('Mitä koira tekee?').should('be.visible')
     cy.get('[data-cy="rp-choice-btn-1"]').click()
-    waitForAnswerQuestion()
+    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
     cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
 
-    // Q2 again: correct, show answer location in text, then start over.
+    // Q2 again: on the correct answer the location auto-reveals in the text (default setting:
+    // no manual "show answer" button), then start over.
     cy.contains('Missä kissa nukkuu?').should('be.visible')
     cy.get(tokenSelector(answerSentenceToken)).should(
       'not.have.css',
@@ -543,13 +541,12 @@ describe('reading practice', function () {
       HIGHLIGHT_BG,
     )
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    waitForAnswerQuestion()
-    cy.get('[data-cy="rp-show-answer-location-btn"]').click()
-    waitForAnswerQuestion()
     cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get('[data-cy="rp-show-answer-location-btn"]').should('not.exist')
     cy.get('[data-cy="rp-start-over-btn"]').click()
 
     cy.contains('Mitä koira tekee?').should('be.visible')
+    cy.get('@answerQuestion.all').should('have.length.greaterThan', 0)
     cy.get('@mcGenerateGlobal.all').should('have.length', 0)
   })
 })
