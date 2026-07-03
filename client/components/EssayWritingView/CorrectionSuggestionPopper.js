@@ -10,11 +10,9 @@ import { hiddenFeatures } from 'Utilities/common'
 import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionReducer'
 import {
   getCorrectionFeedbackText,
+  getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
-  getCorrectionText,
-  isCorrectionDeletion,
-  isCorrectionInsertion,
 } from './utils/correctionTokens'
 
 const getCorrectionSelectionRequest = (correctionRange, correctionFocus) => ({
@@ -80,34 +78,6 @@ const getCorrectionGroupFeedbackText = correctionGroup => (
     .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
     .join('\n')
 )
-
-const getCorrectionWordFocusText = word => {
-  const displayedText = isCorrectionDeletion(word)
-    ? getCorrectionText(word.original)
-    : getCorrectionText(word.corrected || word.original)
-
-  return displayedText.trim()
-}
-
-const getCorrectionGroupFocus = correctionGroup => {
-  const focusedWordIds = correctionGroup.words
-    .filter(word => (
-      isCorrectionDeletion(word) ||
-      isCorrectionInsertion(word) ||
-      (word.original && word.corrected)
-    ))
-    .map(word => word.ID)
-    .filter(wordId => wordId !== null && wordId !== undefined)
-
-  return {
-    focusedWord: correctionGroup.words
-      .map(getCorrectionWordFocusText)
-      .filter(Boolean)
-      .join(' '),
-    focusedWordId: focusedWordIds[0] ?? null,
-    focusedWordIds,
-  }
-}
 
 const rangesMatch = (firstRange, secondRange) => (
   firstRange &&

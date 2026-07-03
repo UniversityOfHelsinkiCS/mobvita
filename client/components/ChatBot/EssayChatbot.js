@@ -6,10 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
 import { getEssayChatbotSessionId } from 'Components/EssayWritingView/utils/essayDraftStorage'
-import {
-  getCorrectionText,
-  isCorrectionDeletion,
-} from 'Components/EssayWritingView/utils/correctionTokens'
+import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
@@ -18,34 +15,15 @@ import './Chatbot.scss'
 
 const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 
-const getCorrectedTextFromCorrectionEntry = correctionEntry => {
-  if (!correctionEntry) return ''
-  if (correctionEntry.correctedText) return correctionEntry.correctedText
-
-  return (correctionEntry.corrections || [])
-    .map(word => (
-      isCorrectionDeletion(word)
-        ? ''
-        : getCorrectionText(word.corrected ?? word.original)
-    ))
-    .join('')
-}
-
 const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const [essaySessionId] = useState(getEssayChatbotSessionId)
   const [currentMessage, setCurrentMessage] = useState('')
   const latestMessageRef = useRef(null)
-  const {
-    correctionSuggestionSentenceIds,
-    correctionSuggestionsBySentenceId,
-    correctionsByKey,
-  } = useSelector(({ writingCorrection }) => writingCorrection)
-  const {
-    essayMessages,
-    isWaitingForEssayResponse,
-  } = useSelector(({ chatbot }) => chatbot)
+  const { correctionSuggestionSentenceIds, correctionSuggestionsBySentenceId, correctionsByKey } =
+    useSelector(({ writingCorrection }) => writingCorrection)
+  const { essayMessages, isWaitingForEssayResponse } = useSelector(({ chatbot }) => chatbot)
   const correctionSuggestions = correctionSuggestionSentenceIds
     .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
     .filter(Boolean)
@@ -67,6 +45,7 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
         originalText: essayFocus?.originalText || essayFocus?.focusedSentence || essayText,
         correctedText: essayFocus?.correctedText || '',
         sentenceId: essayFocus?.sentenceId || essayFocus?.selection?.sentenceId || null,
+        focusedWord: essayFocus?.focusedWord || '',
       }),
     )
     setCurrentMessage('')
@@ -87,46 +66,45 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
             key={sentenceId}
             correctionEntry={correctionsByKey[key]}
             focusedSelection={
-              essayFocus?.selection?.sentenceId === sentenceId
-                ? essayFocus.selection
-                : null
+              essayFocus?.selection?.sentenceId === sentenceId ? essayFocus.selection : null
             }
             sentence={sentence}
             onSentenceSelect={
               onSentenceSelect
-                ? (correctionRange, interactionType) => onSentenceSelect({
-                  correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
-                  interactionType,
-                  originalText: correctionsByKey[key]?.text || sentence,
-                  sentence,
-                  sentenceId,
-                  ...(correctionRange || {}),
-                })
+                ? (correctionRange, interactionType) =>
+                    onSentenceSelect({
+                      correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
+                      interactionType,
+                      originalText: correctionsByKey[key]?.text || sentence,
+                      sentence,
+                      sentenceId,
+                      ...(correctionRange || {}),
+                    })
                 : undefined
             }
           />
         ))}
-        {essayMessages.map((message, index) => (
+        {essayMessages.map((message, index) =>
           message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
-          <div
-            className={`message message-${message.type}`}
-            key={`${message.type}-${index}`}
-            ref={index === essayMessages.length - 1 ? latestMessageRef : null}
-            style={{ display: 'block' }}
-          >
-            {message.messageId ? (
-              <FormattedMessage
-                id={message.messageId}
-                defaultMessage="Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to &quot;FOLLOW UP&quot;!"
-              />
-            ) : message.text ? (
-              <ReactMarkdown children={message.text} />
-            ) : (
-              <FormattedMessage id="Error rendering message" />
-            )}
-          </div>
-          )
-        ))}
+            <div
+              className={`message message-${message.type}`}
+              key={`${message.type}-${index}`}
+              ref={index === essayMessages.length - 1 ? latestMessageRef : null}
+              style={{ display: 'block' }}
+            >
+              {message.messageId ? (
+                <FormattedMessage
+                  id={message.messageId}
+                  defaultMessage='Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to "FOLLOW UP"!'
+                />
+              ) : message.text ? (
+                <ReactMarkdown children={message.text} />
+              ) : (
+                <FormattedMessage id="Error rendering message" />
+              )}
+            </div>
+          ),
+        )}
         {isWaitingForEssayResponse && (
           <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
             <Spinner inline />

@@ -17,7 +17,6 @@ $essay-bubble-deletion-bg-color: #f7b9b5;
 // Background of a hovered / active correction bubble.
 $essay-bubble-active-bg-color: #fdea3b;
 
-
 .essay-writing-page {
   display: flex;
   flex-direction: column;
@@ -81,11 +80,14 @@ $essay-bubble-active-bg-color: #fdea3b;
 .essay-writing-title {
   display: flex;
   align-items: center;
-
   height: auto;
-  padding-right: 1em;
-  font-size: 22px;
+  font-family: 'Rubik', sans-serif;
+  font-style: normal;
   font-weight: 500;
+  line-height: 27px;
+  color: rgb(33, 37, 41);
+  padding-right: 1em;
+  font-size: 26px;
 }
 
 .essay-writing-input-area {
@@ -138,6 +140,13 @@ $essay-bubble-active-bg-color: #fdea3b;
     overflow: auto !important;
     resize: none;
 
+    font-family: 'Rubik', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    color: rgb(33, 37, 41);
+
     &::selection {
       background-color: var(--essay-writing-selection-bg-color) !important;
       color: inherit !important;
@@ -164,7 +173,7 @@ $essay-bubble-active-bg-color: #fdea3b;
   border-radius: 8px;
   background: #fff;
   transition: filter 0.2s;
-  
+
   &:hover,
   &.essay-writing-correction-bubble-active {
     transform: scale(1.02);
