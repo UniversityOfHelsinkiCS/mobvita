@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Button } from 'react-bootstrap'
-import Tooltip from '@mui/material/Tooltip'
+import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
@@ -92,13 +92,13 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
 
   return (
     <div>
-      <Tooltip
+      <CustomTooltip
         title={mode === 'story' ? <FormattedHTMLMessage id="file-upload-instructions" /> : <FormattedHTMLMessage id="flashcard-upload-instructions" />}
       >
         <IconButton size="small">
           <InfoOutlinedIcon fontSize="small" />
         </IconButton>
-      </Tooltip>
+      </CustomTooltip>
 
       <LibraryTabs
         values={tabValues}

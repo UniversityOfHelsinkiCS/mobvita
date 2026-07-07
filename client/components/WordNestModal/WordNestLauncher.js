@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Popup } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
 import WordNestModal from 'Components/WordNestModal'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const WordNestLauncher = ({
   lemma,
@@ -40,10 +41,8 @@ const WordNestLauncher = ({
   return (
     <>
       <div style={divStyle}>
-        <Popup
-          on="hover"
-          content={intl.formatMessage({ id: popupMessageId })}
-          trigger={
+        <CustomTooltip title={intl.formatMessage({ id: popupMessageId })}>
+          <span style={{ display: 'inline-flex' }}>
             <Button
               className={className}
               style={{ padding: '5px', outline: '1px solid #ccc', ...buttonStyle }}
@@ -54,8 +53,8 @@ const WordNestLauncher = ({
             >
               <img src={images.network} alt="network icon" width="32" />
             </Button>
-          }
-        />
+          </span>
+        </CustomTooltip>
       </div>
       {!isExternallyControlled && (
         <WordNestModal

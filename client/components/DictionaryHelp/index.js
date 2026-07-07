@@ -23,6 +23,7 @@ import { Speaker, DictionaryButton } from './dictComponents'
 import Lemma from './Lemma'
 import ContextTranslation from './ContextTranslation'
 import WordNestModal from 'Components/WordNestModal'
+import CustomTooltip from 'Components/CustomTooltip'
 
 
 const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
@@ -247,10 +248,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         <>
           <div style={{ marginBottom: '1em', width: '100%',
                         ...getTextStyle(learningLanguage) }}>
-              <Popup
-                  content={intl.formatMessage({ id: 'explain-speaker-lemma' })}
-                  trigger={<Speaker word={parsedLemmas()[0]} />
-                          } />
+              <CustomTooltip title={intl.formatMessage({ id: 'explain-speaker-lemma' })}>
+                <span style={{ display: 'inline-flex' }}>
+                  <Speaker word={parsedLemmas()[0]} />
+                </span>
+              </CustomTooltip>
             {maskSymbol || parsedLemmas()[0]}
           </div>
           <div className="additional-info">
@@ -276,10 +278,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         <List.Item style={{ color: '#555555' }}>
           {!clue && !inWordNestModal && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
-                <Popup
-                    content={intl.formatMessage({ id: 'explain-speaker-lemma' })}
-                    trigger={<Speaker word={parsedLemmas()[0]} />}
-                />
+                <CustomTooltip title={intl.formatMessage({ id: 'explain-speaker-lemma' })}>
+                  <span style={{ display: 'inline-flex' }}>
+                    <Speaker word={parsedLemmas()[0]} />
+                  </span>
+                </CustomTooltip>
               {maskSymbol || parsedLemmas()[0]}
             </div>
           )}
@@ -380,10 +383,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                         ...getTextStyle(learningLanguage),
                       }}
                     >
-                        <Popup
-                            content={intl.formatMessage({ id: 'explain-speaker-surface' })}
-                            trigger={<Speaker word={surfaceWord} />}
-                        />
+                        <CustomTooltip title={intl.formatMessage({ id: 'explain-speaker-surface' })}>
+                          <span style={{ display: 'inline-flex' }}>
+                            <Speaker word={surfaceWord} />
+                          </span>
+                        </CustomTooltip>
                       <span style={{ color: '#2185D0' }}>{maskSymbol || surfaceWord}</span>
                     </div>
                   )}

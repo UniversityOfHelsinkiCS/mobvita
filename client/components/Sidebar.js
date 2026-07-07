@@ -23,9 +23,9 @@ import {
   Menu,
   MenuItem,
   Switch,
-  Tooltip,
   Typography,
 } from '@mui/material'
+import CustomTooltip from 'Components/CustomTooltip'
 import MenuIcon from '@mui/icons-material/Menu'
 import FlagIcon from '@mui/icons-material/Flag'
 import BookIcon from '@mui/icons-material/Book'
@@ -328,12 +328,12 @@ export default function Sidebar() {
         )}
         {user && (
           <Link to="/profile/progress" onClick={closeSidebar} className="sidebar-profile-summary-link">
-            <Tooltip title={intl.formatMessage({ id: 'Sidebar-user-score-EXPLANATION' })}>
+            <CustomTooltip title={intl.formatMessage({ id: 'Sidebar-user-score-EXPLANATION' })} permanent>
               <Box>
                 <Typography align="center" sx={{ fontSize: '18px', fontFamily: sidebarFontFamily, color: '#777' }}>{`${user.user.username}`}</Typography>
                 <Typography align="center" sx={{ fontSize: '18px', fontFamily: sidebarFontFamily, color: 'black' }}>{`${cefrNum2Cefr(user.user.current_cefr)}`}</Typography>
               </Box>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
         )}
         <Box sx={{ marginTop: 'auto', color: 'slateGrey' }}>
@@ -350,13 +350,13 @@ export default function Sidebar() {
             </BootstrapButton>
           </Link>
             {isTeacher && smallWindow && (
-              <Tooltip title={intl.formatMessage({ id: 'teacher-view-explanation' })}>
+              <CustomTooltip title={intl.formatMessage({ id: 'teacher-view-explanation' })}>
                 <FormControlLabel
                   sx={{ mt: 0.5 }}
                   control={<Switch checked={!teacherView} onChange={handleStudentViewSwitch} />}
                   label={intl.formatMessage({ id: 'student-view' })}
                 />
-              </Tooltip>
+              </CustomTooltip>
             )}
             <Box
               className="sidebar-more-section"

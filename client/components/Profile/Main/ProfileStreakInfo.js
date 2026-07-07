@@ -5,7 +5,8 @@ import { images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const ProfileStreakInfo = () => {
   const dispatch = useDispatch()
@@ -39,8 +40,8 @@ const ProfileStreakInfo = () => {
             <br />
             <FormattedHTMLMessage id="streak-broken" values={{ daysStreaked }} />
             &nbsp;
-            <Popup
-              content={
+            <CustomTooltip
+              title={
                 <>
                   <FormattedMessage id="start-streak" />
                   :
@@ -51,9 +52,13 @@ const ProfileStreakInfo = () => {
                   <FormattedMessage id="do-flashcards" />
                 </>
               }
-              trigger={<Icon name="info circle" size="small" color="grey" />}
-              position="top center"
-            />
+              placement="top"
+              permanent
+            >
+              <span style={{ display: 'inline-flex' }}>
+                <Icon name="info circle" size="small" color="grey" />
+              </span>
+            </CustomTooltip>
           </div>
         )}
         {streakToday === 'streaked' && (
@@ -65,8 +70,8 @@ const ProfileStreakInfo = () => {
         {!streakBroken && streakToday === 'not_streaked' && (
           <div>
             <FormattedHTMLMessage id="streak-undone" values={{ daysStreaked }} />
-            <Popup
-              content={
+            <CustomTooltip
+              title={
                 <>
                   <FormattedMessage id="continue-streak" />
                   :
@@ -77,9 +82,13 @@ const ProfileStreakInfo = () => {
                   <FormattedMessage id="do-flashcards" />
                 </>
               }
-              trigger={<Icon name="info circle" size="small" color="grey" />}
-              position="top center"
-            />
+              placement="top"
+              permanent
+            >
+              <span style={{ display: 'inline-flex' }}>
+                <Icon name="info circle" size="small" color="grey" />
+              </span>
+            </CustomTooltip>
           </div>
         )}
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Card, CardContent, Tooltip, Typography } from '@mui/material'
+import { Box, Card, CardContent, Typography } from '@mui/material'
 import CommentsIcon from '@mui/icons-material/ModeComment'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import GroupsIcon from '@mui/icons-material/Groups'
@@ -19,6 +19,7 @@ import {
 } from 'Utilities/redux/storiesReducer'
 import { callApi } from 'Utilities/apiConnection'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
@@ -125,7 +126,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
 
 const GroupsSharedTo = ({ groups }) => {
   return (
-    <Tooltip
+    <CustomTooltip
       placement="top"
       title={
         <Box>
@@ -139,7 +140,7 @@ const GroupsSharedTo = ({ groups }) => {
       }
     >
       <GroupsIcon color="primary" sx={{ mr: '15px' }} />
-    </Tooltip>
+    </CustomTooltip>
   )
 }
 
@@ -298,38 +299,38 @@ const StoryListItem = ({
             {showGroupNames && <GroupsSharedTo groups={story.groups} />}
 
             {uploadUnfinished && (
-              <Tooltip title={<FormattedMessage id="story-not-yet-processed" />}>
+              <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
                 <HourglassBottomIcon color="warning" sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
 
             {libraryShown.group && storyGroupShareInfo?.hidden && (
-              <Tooltip title={<FormattedMessage id="group-hidden-story" />}>
+              <CustomTooltip title={<FormattedMessage id="group-hidden-story" />}>
                 <VisibilityOffIcon color="error" sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
 
             {timedExercise && (
-              <Tooltip title={<FormattedMessage id="timed-practice-explanation" />}>
+              <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
                 <TimerOutlinedIcon color="error" sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
             {commentsOnStory && (
-              <Tooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
+              <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
                 <CommentsIcon sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
 
             {libraryShown.group && (
-              <Tooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
+              <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
                 <MailOutlineIcon sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
 
             {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
-              <Tooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
+              <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
                 <MailOutlineIcon sx={{ mr: '15px' }} />
-              </Tooltip>
+              </CustomTooltip>
             )}
             <Box className="library-tour-difficulty-stars" sx={{ whiteSpace: 'nowrap' }}>
               <DifficultyStars difficulty={story.difficulty} />

@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 
-import { Tooltip } from '@mui/material'
+import CustomTooltip from 'Components/CustomTooltip'
 import { Icon } from 'semantic-ui-react'
 
 const content = ({ type, numOfRewardableWords, truncatedTitle }) => (
@@ -47,9 +47,10 @@ export const FlashcardStoryInfoIcon = ({ type, numOfRewardableWords, title }) =>
   const truncatedTitle = title.length > 50 ? `${title.slice(0, 50)}...` : title
 
   return (
-    <Tooltip
+    <CustomTooltip
       title={content({ type, numOfRewardableWords, truncatedTitle })}
       placement="bottom"
+      permanent
     >
       <div
         style={{
@@ -62,6 +63,6 @@ export const FlashcardStoryInfoIcon = ({ type, numOfRewardableWords, title }) =>
       >
         <Icon name="info circle" style={{ width: '24px', height: '24px', display: 'block' }} />
       </div>
-    </Tooltip>
+    </CustomTooltip>
   )
 }

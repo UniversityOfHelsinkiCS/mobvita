@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, IconButton, Paper, Tooltip } from '@mui/material'
+import { Box, IconButton, Paper } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { FormattedMessage } from 'react-intl'
 
+import CustomTooltip from 'Components/CustomTooltip'
 import CorrectedWord from 'Components/EssayWritingView/CorrectedWord'
 import SanitizedHTML from 'Components/SanitizedHTML'
 import Spinner from 'Components/Spinner'
@@ -50,7 +51,7 @@ const CorrectionBubble = ({
   >
     {children}
     {feedbackText && (
-      <Tooltip
+      <CustomTooltip
         placement="top"
         title={(
           <SanitizedHTML
@@ -67,7 +68,7 @@ const CorrectionBubble = ({
         >
           <InfoOutlinedIcon fontSize="small" />
         </IconButton>
-      </Tooltip>
+      </CustomTooltip>
     )}
   </Paper>
 )

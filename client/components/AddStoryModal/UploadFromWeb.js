@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import Tooltip from '@mui/material/Tooltip'
+import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -81,11 +81,11 @@ const AddToRecommendedSites = useCallback(
 
   return (
     <div>
-      <Tooltip title={<FormattedHTMLMessage id="upload-from-web-instructions" />}>
+      <CustomTooltip title={<FormattedHTMLMessage id="upload-from-web-instructions" />}>
         <IconButton size="small">
           <InfoOutlinedIcon fontSize="small" />
         </IconButton>
-      </Tooltip>
+      </CustomTooltip>
       <div style={{ marginTop: '20px' }}>
         <Box component="form" id="url-upload" onSubmit={handleStorySubmit}>
           <TextField
@@ -108,7 +108,7 @@ const AddToRecommendedSites = useCallback(
           )}
         </Button>
 
-        <Tooltip title={<FormattedMessage id="explain-recommended-sites" />}>
+        <CustomTooltip title={<FormattedMessage id="explain-recommended-sites" />}>
           <Button
             type="button"
             form="url-upload"
@@ -117,7 +117,7 @@ const AddToRecommendedSites = useCallback(
           >
             <FormattedMessage id="add-recommended-sites-button" />
           </Button>
-        </Tooltip>
+        </CustomTooltip>
       </div>
 
       <div style={{ marginTop: '24px' }}>

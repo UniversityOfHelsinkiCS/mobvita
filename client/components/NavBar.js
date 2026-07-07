@@ -4,7 +4,8 @@ import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import Headroom from 'react-headroom'
-import { Tooltip, Badge, FormControlLabel, Switch, Box } from '@mui/material'
+import { Badge, FormControlLabel, Switch, Box } from '@mui/material'
+import CustomTooltip from 'Components/CustomTooltip'
 import MenuIcon from '@mui/icons-material/Menu'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import LinkOffIcon from '@mui/icons-material/LinkOff'
@@ -238,7 +239,8 @@ export default function NavBar() {
       grammar_score_type = 'irt'
     }
     return (
-      <Tooltip
+      <CustomTooltip
+        permanent
         placement="top"
         title={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
       >
@@ -246,7 +248,7 @@ export default function NavBar() {
           <StarBorderIcon style={{ margin: 0, width: '16px', height: '16px' }} />
           {ability_score}
         </div>
-      </Tooltip>
+      </CustomTooltip>
     )
   }
 
@@ -297,7 +299,8 @@ export default function NavBar() {
               >
                 { showStoryElo && get_student_ability_score_component() }
                 {showFlashcardElo && (
-                  <Tooltip
+                  <CustomTooltip
+                    permanent
                     placement="top"
                     title={
                       <FormattedHTMLMessage
@@ -310,7 +313,7 @@ export default function NavBar() {
                       <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
                       {flashcardElo}
                     </div>
-                  </Tooltip>
+                  </CustomTooltip>
                 )}
               </Navbar.Text>
             </div>
@@ -318,7 +321,7 @@ export default function NavBar() {
           {/******************************* STUDENT VIEW *******************************/}
           {isTeacher && showTeacherViewSwitch && !smallWindow && (
             <Nav>
-              <Tooltip title={<FormattedMessage id="teacher-view-explanation" />} placement="bottom">
+              <CustomTooltip title={<FormattedMessage id="teacher-view-explanation" />} placement="bottom">
                 <div className='flex space-between'>
                   <FormControlLabel
                     sx={{ mt: 0.5, mr: 0.5 }}
@@ -326,17 +329,17 @@ export default function NavBar() {
                     label={intl.formatMessage({ id: 'student-view' })}
                   />
                 </div>
-              </Tooltip>
+              </CustomTooltip>
             </Nav>
           )}
           {/******************************* PROGRESS *******************************/}
           {(!isTeacher || (isTeacher && !teacherView)) && (
             <Nav>
-              <Tooltip title={<FormattedMessage id="click-here-to-see-progress-explanation" />} placement="top">
+              <CustomTooltip title={<FormattedMessage id="click-here-to-see-progress-explanation" />} placement="top">
                 <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
                   <div className="navbar-level">{user.user.level}</div>
                 </Link>
-              </Tooltip>
+              </CustomTooltip>
             </Nav>
           )}
           {/******************************* TOUR BUTTON *******************************/}
@@ -346,11 +349,11 @@ export default function NavBar() {
                 <LinkOffIcon style={{ color: '#ff944d' }} />
               </Offline>
               {!smallWindow && (
-                <Tooltip title={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })} placement="top">
+                <CustomTooltip title={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })} placement="top">
                   <Button className="tour-button" onClick={handleTourStart}>
                     <SignpostIcon style={{ color: 'black' }} />
                   </Button>
-                </Tooltip>
+                </CustomTooltip>
               )}
             </div>
           </Nav>
@@ -358,7 +361,7 @@ export default function NavBar() {
           {!smallWindow &&  user && user.user.last_used_language && (
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
-                  <Tooltip
+                  <CustomTooltip
                     placement="bottom-end"
                     title={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
                   >
@@ -369,9 +372,10 @@ export default function NavBar() {
                         alt="learningLanguageFlag"
                       />
                     </Link>
-                  </Tooltip>
+                  </CustomTooltip>
                   {!isMajorLanguage && (
-                    <Tooltip
+                    <CustomTooltip
+                      permanent
                       placement="bottom-end"
                       title={
                         <FormattedMessage
@@ -396,7 +400,7 @@ export default function NavBar() {
                       >
                         <span>&beta;</span>
                       </Box>
-                    </Tooltip>
+                    </CustomTooltip>
                   )}
             </div>
           </Nav>
@@ -405,7 +409,8 @@ export default function NavBar() {
           {!smallWindow && (
             <Nav>
               <div className="navbar-container" style={{ width: '90%' }}>
-                <Tooltip
+                <CustomTooltip
+                  permanent
                   placement="bottom-end"
                   title={<FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />}
                 >
@@ -429,13 +434,13 @@ export default function NavBar() {
                       )}
                     </span>
                   </a>
-                </Tooltip>
+                </CustomTooltip>
               </div>
             </Nav>
           )}
           <Nav>
             <div className="navbar-container" style={{ width: '90%' }}>
-              <Tooltip title={<FormattedMessage id="help" />} placement="bottom-end">
+              <CustomTooltip title={<FormattedMessage id="help" />} placement="bottom-end">
                 <a
                   className="navbar-basic-icon tour-help"
                   style={{ display: 'table-cell' }}
@@ -447,11 +452,11 @@ export default function NavBar() {
                     <HelpOutlineIcon style={{ color: 'black' }} />
                   </span>
                 </a>
-              </Tooltip>
+              </CustomTooltip>
             </div>
           </Nav>
           <Nav>
-            <Tooltip title={<FormattedMessage id="server-status" />} placement="bottom-end">
+            <CustomTooltip title={<FormattedMessage id="server-status" />} placement="bottom-end">
               <a
                 className="navbar-basic-icon"
                 href="https://revitaai.github.io/SERVER-STATUS.html"
@@ -464,7 +469,7 @@ export default function NavBar() {
                     style={{ height: '20px' }}
                   />
               </a>
-            </Tooltip>
+            </CustomTooltip>
           </Nav>
           {/******************************* END *******************************/}
         </Navbar.Collapse>

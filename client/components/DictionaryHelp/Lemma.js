@@ -2,7 +2,8 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Icon, Popup, Placeholder, PlaceholderLine } from 'semantic-ui-react';
+import { Icon, Placeholder, PlaceholderLine } from 'semantic-ui-react';
+import CustomTooltip from 'Components/CustomTooltip';
 
 import {
   useLearningLanguage,
@@ -39,14 +40,11 @@ const Lemma = ({
           </Placeholder>
         </div>
       ) : (
-        <Popup
-          content={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}
-          trigger={
-            <a href={userUrl} target="_blank" rel="noopener noreferrer" className="lemma-word">
-              {lemma}
-            </a>
-          }
-        />
+        <CustomTooltip title={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}>
+          <a href={userUrl} target="_blank" rel="noopener noreferrer" className="lemma-word">
+            {lemma}
+          </a>
+        </CustomTooltip>
       )}
     </>
   );
@@ -64,14 +62,11 @@ const Lemma = ({
           <Speaker word={lemma} />
           {maskSymbol || title}
           {showInflactionLink && inflectionRef && (
-            <Popup 
-              content={<FormattedHTMLMessage id="explain-goto-inflection-table" />}
-              trigger={(
-                <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" style={{ display: 'contents' }}>
-                  <Icon name="external" style={{ marginLeft: '1rem' }} />
-                </a>
-              )} 
-            />
+            <CustomTooltip title={<FormattedHTMLMessage id="explain-goto-inflection-table" />}>
+              <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" style={{ display: 'contents' }}>
+                <Icon name="external" style={{ marginLeft: '1rem' }} />
+              </a>
+            </CustomTooltip>
           )}
         </div>
         
@@ -92,47 +87,48 @@ const Lemma = ({
         <div className="card-column right-column">
           {preferred && (
             <>
-              <Popup
-                position="top center"
-                content={<FormattedHTMLMessage id="explain-i-know-word" />}
-                trigger={
+              <CustomTooltip
+                title={<FormattedHTMLMessage id="explain-i-know-word" />}
+                placement="top"
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     name="check"
                     onClick={handleKnowningClick}
                     style={{ cursor: 'pointer' }}
                   />
-                }
-              />
-              <Popup
-                position="top center"
-                content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
-                trigger={
+                </span>
+              </CustomTooltip>
+              <CustomTooltip
+                title={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
+                placement="top"
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     name="question"
                     onClick={handleNotKnowningClick}
                     style={{ cursor: 'pointer' }}
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
             </>
           )}
           
           {/* Word Nest Button */}
           {handleWordNestClick && (
-            <Popup
-              position="top center"
-              content={<FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />}
-              trigger={
-                <button
-                  type="button"
-                  className="wordnest-icon-button"
-                  aria-label="Word Nest"
-                  onClick={handleWordNestClick}
-                >
-                  <img src={images.network} alt="word nest" width="28" />
-                </button>
-              }
-            />
+            <CustomTooltip
+              title={<FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />}
+              placement="top"
+            >
+              <button
+                type="button"
+                className="wordnest-icon-button"
+                aria-label="Word Nest"
+                onClick={handleWordNestClick}
+              >
+                <img src={images.network} alt="word nest" width="28" />
+              </button>
+            </CustomTooltip>
           )}
         </div>
       )}

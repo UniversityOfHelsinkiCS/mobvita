@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import { unfollowUser, unblockUser } from 'Utilities/redux/userReducer'
-import { Icon, Table, Popup } from 'semantic-ui-react'
+import { Icon, Table } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { sanitizeHtml } from 'Utilities/common'
 import FollowUserModal from './FollowUserModal'
@@ -51,10 +52,15 @@ const Following = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <Popup
-            content={<FormattedMessage id="following-users-information" />}
-            trigger={<Icon name="info circle" size="small" color="grey" />}
-          />
+          <CustomTooltip
+            title={<FormattedMessage id="following-users-information" />}
+            placement="top"
+            permanent
+          >
+            <span style={{ display: 'inline-flex' }}>
+              <Icon name="info circle" size="small" color="grey" />
+            </span>
+          </CustomTooltip>
           <FormattedMessage id="followed-users" />{' '}
         </div>
 
@@ -108,10 +114,15 @@ const Following = () => {
 
       <div style={{ margin: '2em 0em' }}>
         <div className="header-2" style={{ marginBottom: '1em' }}>
-          <Popup
-            content={<FormattedMessage id="blocking-users-information" />}
-            trigger={<Icon name="info circle" size="small" color="grey" />}
-          />
+          <CustomTooltip
+            title={<FormattedMessage id="blocking-users-information" />}
+            placement="top"
+            permanent
+          >
+            <span style={{ display: 'inline-flex' }}>
+              <Icon name="info circle" size="small" color="grey" />
+            </span>
+          </CustomTooltip>
           <FormattedMessage id="blocked-users" />{' '}
         </div>
 

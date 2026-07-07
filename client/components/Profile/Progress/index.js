@@ -20,7 +20,8 @@ import {
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { Divider, Icon, Popup } from 'semantic-ui-react'
+import { Divider, Icon } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
@@ -387,20 +388,22 @@ const Progress = () => {
         {shownChart === 'progress' ? (
           <div>
             <div className="row-flex align center">
-              <Popup
-                content={
+              <CustomTooltip
+                title={
                   <div>
                     <FormattedHTMLMessage id="timeline-explanation" />
                   </div>
                 }
-                trigger={
+                permanent
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <div className="progress-page-header">
                 <FormattedMessage id="progress-timeline" />
               </div>
@@ -431,20 +434,22 @@ const Progress = () => {
         ) : shownChart === 'vocabulary' ? (
           <div>
             <div className="row-flex align center">
-              <Popup
-                content={
+              <CustomTooltip
+                title={
                   <div>
                     <FormattedHTMLMessage id="vocabulary-view-explanation" />
                   </div>
                 }
-                trigger={
+                permanent
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <div className="progress-page-header">
                 <FormattedMessage id="vocabulary-view" />
               </div>
@@ -474,20 +479,22 @@ const Progress = () => {
         ) : shownChart === 'exercise-history' ? (
           <div>
             <div className="row-flex align center">
-              <Popup
-                content={
+              <CustomTooltip
+                title={
                   <div>
                     <FormattedMessage id="exercise-history-explanation" />
                   </div>
                 }
-                trigger={
+                permanent
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <div className="progress-page-header">
                 <FormattedMessage id="exercise-history" />
               </div>
@@ -498,20 +505,22 @@ const Progress = () => {
         ) : shownChart === 'test-history' ? (
           <div>
             <div className="row-flex align center">
-              <Popup
-                content={
+              <CustomTooltip
+                title={
                   <div>
                     <FormattedMessage id="test-history-explanation" />
                   </div>
                 }
-                trigger={
+                permanent
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <div className="progress-page-header">
                 <FormattedMessage id="Test History" />
               </div>
@@ -522,20 +531,22 @@ const Progress = () => {
         ) : (
           <div>
             <div className="row-flex align center">
-              <Popup
-                content={
+              <CustomTooltip
+                title={
                   <div>
                     <FormattedMessage id="hex-map-explanation" />
                   </div>
                 }
-                trigger={
+                permanent
+              >
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <div className="progress-page-header">
                 <FormattedMessage id="hex-map" />
               </div>

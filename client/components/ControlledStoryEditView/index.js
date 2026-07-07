@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Icon, Popup } from 'semantic-ui-react'
+import { Divider, Segment, Header, Checkbox, Icon } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import { Button } from 'react-bootstrap'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -170,10 +171,11 @@ const ControlledStoryEditView = ({ match }) => {
                   onChange={() => setHideFeedback(!hideFeedback)}
                   style={{ paddingTop: '.5em' }}
                 />
-                <Popup
-                  content={infoBoxLabel()}
-                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
-                />
+                <CustomTooltip title={infoBoxLabel()}>
+                  <span style={{ display: 'inline-flex' }}>
+                    <Icon className="pl-sm" name="info circle" color="grey" />
+                  </span>
+                </CustomTooltip>
               </div>
               <div>
                 <Checkbox
@@ -183,10 +185,11 @@ const ControlledStoryEditView = ({ match }) => {
                   onChange={() => setTimedExercise(!timedExercise)}
                   style={{ paddingTop: '.5em' }}
                 />
-                <Popup
-                  content={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}
-                  trigger={<Icon className="pl-sm" name="info circle" color="grey" />}
-                />
+                <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
+                  <span style={{ display: 'inline-flex' }}>
+                    <Icon className="pl-sm" name="info circle" color="grey" />
+                  </span>
+                </CustomTooltip>
               </div>
             </div>
             {progress !== 0 && processingCurrentStory && (

@@ -19,6 +19,7 @@ import {
   updateEnableRecmd,
   updateIsTeacher,
   updateMultiChoice,
+  updateShowTooltips,
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
@@ -171,6 +172,15 @@ const Settings = ({teacherView}) => {
                       </span>
                     </span>
                   </div>
+                  <Divider />
+                  <SettingToggle
+                    translationId="enable-tooltips"
+                    checked={user.show_tooltips ?? Boolean(user.is_new_user)}
+                    onChange={() =>
+                      dispatch(updateShowTooltips(!(user.show_tooltips ?? Boolean(user.is_new_user))))
+                    }
+                    disabled={pending}
+                  />
                 </div>
               }
             />

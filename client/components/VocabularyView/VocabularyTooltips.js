@@ -1,8 +1,8 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
-import { Icon, Popup } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
 import { useIntl } from 'react-intl';
+import InfoTooltip from 'Components/InfoTooltip'
 
 const VocabularyTooltips = ({ graphType }) => {
   const { interfaceLanguage } = useSelector(({ user }) => user.data.user)
@@ -10,94 +10,80 @@ const VocabularyTooltips = ({ graphType }) => {
 
   return (
     <div className="flex">
-      <Popup
-        content={
-          <div>
-            <b>{intl.formatMessage({ id: 'mastered-words' })}</b>
-            {': '}
-            <FormattedHTMLMessage id="overview-vocabulary-explanation" />
-          </div>
-        }
-        trigger={
-          <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '12em' }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
-      <Popup
-        content={
-          <div>
-            <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
-            {': '}
-            <FormattedHTMLMessage id="vocabulary-total-explanation" />
-          </div>
-        }
-        trigger={
-          <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '7em' }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
-      {/* 
-      <Popup
-        content={
-          <div>
-            <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
-            {': '}
-            <FormattedHTMLMessage id="vocabulary-seen-explanation" />
-          </div>
-        }
-        trigger={
-          <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
-      <Popup
-        content={
-          <div>
-            <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
-            {': '}
-            <FormattedHTMLMessage id="vocabulary-visit-explanation" />
-          </div>
-        }
-        trigger={
-          <Icon
-            style={{ paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
+      <span
+        style={{ display: 'inline-block', paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '12em' }}
+      >
+        <InfoTooltip
+          title={
+            <div>
+              <b>{intl.formatMessage({ id: 'mastered-words' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="overview-vocabulary-explanation" />
+            </div>
+          }
+        />
+      </span>
+      <span
+        style={{ display: 'inline-block', paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '7em' }}
+      >
+        <InfoTooltip
+          title={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-total-explanation" />
+            </div>
+          }
+        />
+      </span>
+      {/*
+      <span
+        style={{ display: 'inline-block', paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+      >
+        <InfoTooltip
+          title={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-seen-explanation" />
+            </div>
+          }
+        />
+      </span>
+      <span
+        style={{ display: 'inline-block', paddingRight: '0.75em', marginBottom: '0.35em', marginLeft: '8em' }}
+      >
+        <InfoTooltip
+          title={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-visit-explanation" />
+            </div>
+          }
+        />
+      </span>
       */}
-      <Popup
-        content={
-          <div>
-            <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
-            {': '}
-            <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
-          </div>
-        }
-        trigger={
-          <Icon
-            style={{
-              paddingRight: '0.75em',
-              marginBottom: '0.35em',
-              marginLeft: '7em',
-              marginRight:
-                interfaceLanguage === 'Finnish' && graphType === 'column mastered' ? '8em' : '15em',
-            }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
+      <span
+        style={{
+          display: 'inline-block',
+          paddingRight: '0.75em',
+          marginBottom: '0.35em',
+          marginLeft: '7em',
+          marginRight:
+            interfaceLanguage === 'Finnish' && graphType === 'column mastered' ? '8em' : '15em',
+        }}
+      >
+        <InfoTooltip
+          title={
+            <div>
+              <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+              {': '}
+              <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
+            </div>
+          }
+        />
+      </span>
     </div>
   )
 }

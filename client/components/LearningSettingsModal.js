@@ -1,7 +1,8 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Dropdown, Divider, Radio, Popup, Icon } from 'semantic-ui-react'
+import { Modal, Dropdown, Divider, Radio, Icon } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ButtonGroup, Button } from 'react-bootstrap'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
@@ -163,11 +164,15 @@ const LearningSettingsModal = ({ trigger }) => {
       <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
         {/* <div className="space-between" style={{ marginBottom: '0.5em' }}>
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <Popup
-              position="top center"
-              content={<FormattedHTMLMessage id="choose-settings-template-info" />}
-              trigger={<Icon name="info circle" color="grey" />}
-            />{' '}
+            <CustomTooltip
+              permanent
+              placement="top"
+              title={<FormattedHTMLMessage id="choose-settings-template-info" />}
+            >
+              <span style={{ display: 'inline-flex' }}>
+                <Icon name="info circle" color="grey" />
+              </span>
+            </CustomTooltip>{' '}
             <FormattedMessage id="choose-settings-template" />:
           </h2>
           
@@ -227,13 +232,17 @@ const LearningSettingsModal = ({ trigger }) => {
         {/* 
         <Divider />
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-          <Popup
-            position="top center"
-            content={intl.formatMessage({
+          <CustomTooltip
+            permanent
+            placement="top"
+            title={intl.formatMessage({
               id: 'exercise-density-documentation',
             })}
-            trigger={<Icon name="info circle" color="grey" />}
-          />{' '}
+          >
+            <span style={{ display: 'inline-flex' }}>
+              <Icon name="info circle" color="grey" />
+            </span>
+          </CustomTooltip>{' '}
           <FormattedMessage id="exercise-density" />
           {hiddenFeatures && (
             <span style={{ color: 'grey', marginLeft: '.5em' }}>({sliderValue})</span>
@@ -249,13 +258,17 @@ const LearningSettingsModal = ({ trigger }) => {
         <>
           {/* <Divider /> */}
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-            <Popup
-              position="top center"
-              content={intl.formatMessage({
+            <CustomTooltip
+              permanent
+              placement="top"
+              title={intl.formatMessage({
                 id: 'cefr-level-documentation',
               })}
-              trigger={<Icon name="info circle" color="grey" />}
-            />{' '}
+            >
+              <span style={{ display: 'inline-flex' }}>
+                <Icon name="info circle" color="grey" />
+              </span>
+            </CustomTooltip>{' '}
             <FormattedMessage id="select-cefr-level" />
           </h2>
           <CEFRLevelSlider

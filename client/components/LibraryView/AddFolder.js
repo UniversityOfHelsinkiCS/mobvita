@@ -9,9 +9,9 @@ import {
   DialogTitle,
   IconButton,
   TextField,
-  Tooltip,
 } from '@mui/material'
 import { Button } from 'react-bootstrap'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const AddFolder = ({ existingFolderNames, onAddFolder }) => {
   const intl = useIntl()
@@ -51,7 +51,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
 
   return (
     <>
-      <Tooltip title={intl.formatMessage({ id: 'add-folder' })}>
+      <CustomTooltip title={intl.formatMessage({ id: 'add-folder' })}>
         <IconButton
           aria-label={intl.formatMessage({ id: 'add-folder' })}
           className="library-add-folder-button"
@@ -59,7 +59,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
         >
           <CreateNewFolderIcon />
         </IconButton>
-      </Tooltip>
+      </CustomTooltip>
 
       <Dialog open={open} onClose={closeDialog} fullWidth maxWidth="xs">
         <Box component="form" onSubmit={handleSubmit}>

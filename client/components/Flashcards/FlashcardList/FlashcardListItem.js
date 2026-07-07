@@ -2,7 +2,8 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useMemo, useCallback, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { ListGroup, Card, Accordion, useAccordionButton } from 'react-bootstrap'
-import { Icon, Popup } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl';
 import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
@@ -114,28 +115,24 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Popup
-            position="top center"
-            content={<FormattedHTMLMessage id="explain-i-know-word" />}
-            trigger={
+          <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-know-word" />}>
+            <span style={{ display: 'inline-flex' }}>
               <Icon
                 name="check"
                 onClick={handleKnowFlashcard}
                 style={{ cursor: 'pointer' }}
               />
-            }
-          />
-          <Popup
-            position="top center"
-            content={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
-            trigger={
+            </span>
+          </CustomTooltip>
+          <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-dont-know-word" />}>
+            <span style={{ display: 'inline-flex' }}>
               <Icon
                 name="question"
                 onClick={handleNotKnowFlashcard}
                 style={{ cursor: 'pointer' }}
               />
-            }
-          />
+            </span>
+          </CustomTooltip>
         </div>
 
         <AccordionToggle
@@ -166,17 +163,15 @@ const FlashcardListItem = ({ card, handleEdit }) => {
             }}
           />
 
-          <Popup
-            position="top center"
-            content={<FormattedMessage id="remove-card-tooltip" />}
-            trigger={
+          <CustomTooltip placement="top" title={<FormattedMessage id="remove-card-tooltip" />}>
+            <span style={{ display: 'inline-flex' }}>
               <Icon
                 name="trash alternate"
                 onClick={handleDelete}
                 style={{ cursor: 'pointer' }}
               />
-            }
-          />
+            </span>
+          </CustomTooltip>
         </div>
       </ListGroup.Item>
 

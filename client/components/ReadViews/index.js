@@ -7,7 +7,6 @@ const EMPTY_LOADING_PROGRESS = {}
 import {
   Divider,
   Segment,
-  Popup,
   Icon,
   Header,
   Checkbox,
@@ -17,6 +16,7 @@ import {
   Tab,
   TabPane } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl';
+import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   getStoryAction,
@@ -409,18 +409,16 @@ const ReadViews = ({ match }) => {
         ) : (
           preProcessingReady && (
             <>
-              <Popup
-                content={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
-                trigger={
+              <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
+                <span style={{ display: 'inline-flex' }}>
                   <Icon
                     name="cog"
                     size="large"
                     style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }}
                     onClick={handle_cog_click}
                   />
-                }
-                inverted
-              />
+                </span>
+              </CustomTooltip>
               {!teacherView && (
                 <SemanticButton
                   as={Link}

@@ -164,6 +164,7 @@ export const updateParticipleExer = value => saveSelf({ part_exer: value })
 export const updateFavouriteSites = value => saveSelf({ favourite_sites: value })
 export const updateUsername = value => saveSelf({ username: value })
 export const updatePublishProgress = value => saveSelf({ publish_progress: value })
+export const updateShowTooltips = value => saveSelf({ show_tooltips: value })
 export const updateSortCriterion = value => saveSelf({ library_sort_criterion: value })
 
 export const updatePracticeSettings = changes => saveSelf(changes)

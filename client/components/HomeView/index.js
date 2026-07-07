@@ -1,4 +1,3 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
@@ -6,7 +5,7 @@ import { images, supportedLearningLanguages } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
-import { Tooltip } from '@mui/material'
+import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
@@ -30,7 +29,7 @@ import HelperSidebar from 'Components/PracticeView/HelperSidebar';
 
 const HomeviewButton = ({imgSrc, altText,
                          translationKey, handleClick,
-                         dataCy, wide, beta_feature, content=null
+                         dataCy, wide, beta_feature, content=null, permanent=false
                         }) =>
       {
         const button = (
@@ -58,11 +57,8 @@ const HomeviewButton = ({imgSrc, altText,
           return button
         }
 
-        return (
-          <Tooltip placement="top" title={<FormattedHTMLMessage id={content} />} arrow>
-            <span>{button}</span>
-          </Tooltip>
-        )}
+        return <CustomTooltip keyId={content} permanent={permanent}>{button}</CustomTooltip>
+      }
 
 
 const HomeviewButtons = ({
@@ -148,7 +144,7 @@ const HomeviewButtons = ({
               translationKey="Library"
               handleClick={() => navigate('/library')}
               dataCy="library-button"
-              content="Home-Library-EXPLANATION"
+              content="Home-Library-EXPLANATION"              
             />
           </div>
           {lessons && lessons.length > 0 && (
@@ -210,6 +206,7 @@ const HomeviewButtons = ({
               handleClick={() => navigate('/library')}
               dataCy="library-button"
               content="Home-Library-EXPLANATION"
+              permanent
             />
           </div>
           <div className="flashcards-btn-cont tour-flashcards">

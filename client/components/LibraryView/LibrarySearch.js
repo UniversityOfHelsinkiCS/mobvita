@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { debounce } from 'lodash'
-import { Box, IconButton, TextField, Tooltip } from '@mui/material'
+import { Box, IconButton, TextField } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 import { setLastQuery } from 'Utilities/redux/storiesReducer'
 import { useIntl } from 'react-intl'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) => {
   const dispatch = useDispatch()
@@ -77,9 +78,9 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories, fluid }) 
 
   return (
     <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Tooltip title={intl.formatMessage({ id: 'explain-library-search' })}>
+      <CustomTooltip title={intl.formatMessage({ id: 'explain-library-search' })}>
         <InfoOutlinedIcon color="action" fontSize="small" />
-      </Tooltip>
+      </CustomTooltip>
       <Box className="library-search-control" sx={{ width: fluid ? '100%' : 'auto' }}>
         <TextField
           className="library-search-field"

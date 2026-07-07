@@ -1,6 +1,6 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
-import { Modal, Popup, Icon, Divider, Checkbox } from 'semantic-ui-react'
+import { Modal, Icon, Divider, Checkbox } from 'semantic-ui-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import DictionaryHelp from 'Components/DictionaryHelp'
@@ -10,6 +10,7 @@ import { dictionaryLanguageSelector, learningLanguageSelector, speak, voiceLangu
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl';
 import ReportButton from 'Components/ReportButton'
+import CustomTooltip from 'Components/CustomTooltip'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 
 const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, children }) => {
@@ -299,17 +300,18 @@ const WordNestModal = ({
       data-cy="wordnest-modal"
       open={open}
       centered={false}
-      dimmer="blurring"
+      dimmer={{ blurring: false }}
       size="large"
       onClose={handleModalclose
     }>
       <Modal.Header className="bold wordnest-modal-header">
         <div className="wordnest-modal-header-items">
           <span>
-            <Popup
-              content={intl.formatMessage({ id: 'wordnest-info-text' })}
-              trigger={<Icon name="info circle" size="small" />}
-            />
+            <CustomTooltip title={intl.formatMessage({ id: 'wordnest-info-text' })}>
+              <span style={{ display: 'inline-flex' }}>
+                <Icon name="info circle" size="small" />
+              </span>
+            </CustomTooltip>
             <FormattedMessage id="nest" />: {modalTitle}{' '}
           </span>
           {wordNestHasCompounds && (

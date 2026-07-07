@@ -1,7 +1,8 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import CustomTooltip from 'Components/CustomTooltip';
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
-import { Icon, Popup, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
+import { Icon, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
@@ -165,10 +166,11 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
             <div className="note-body">
               <span className="user-note-text">{note.text}</span>
               {note.isPublic && (
-                <Popup
-                  content={<FormattedMessage id="public-note-checkbox" />}
-                  trigger={<Icon name="users" className="note-public-icon" />}
-                />
+                <CustomTooltip title={<FormattedMessage id="public-note-checkbox" />}>
+                  <span style={{ display: 'inline-flex' }}>
+                    <Icon name="users" className="note-public-icon" />
+                  </span>
+                </CustomTooltip>
               )}
             </div>
           </div>
@@ -874,21 +876,21 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       { helperActiveTab === 'exercise' && (            
         <div className="chatbot-content">
           <div className="chatbot-header">                 
-            <div><Popup
-              content={
+            <div><CustomTooltip
+              title={
                 <span style={{ whiteSpace: 'nowrap' }}>
                   <FormattedMessage id="translation-to" defaultMessage="Translation to" /> {targetLangName}
                 </span>
               }
-              position="top center"
-              trigger={
-                <button type="button" className="translation-button" onClick={handleGetTranslation}>
-                  <div style={{ color: '#1890ff' }}>
-                    <Icon name="language" style={{ padding: 0, border: 'none'}} />
-                  </div>
-                </button>
-              }
-            /></div>
+              placement="top"
+              permanent
+            >
+              <button type="button" className="translation-button" onClick={handleGetTranslation}>
+                <div style={{ color: '#1890ff' }}>
+                  <Icon name="language" style={{ padding: 0, border: 'none'}} />
+                </div>
+              </button>
+            </CustomTooltip></div>
             <div style={{flex: 1}}>
                <h4 className="current-word">
                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
@@ -1128,8 +1130,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 />
               </form>
             ) : (<div className="hint-request-container">
-                  <Popup
-                  content={
+                  <CustomTooltip
+                  title={
                     <span style={{ whiteSpace: 'nowrap' }}>
                         <FormattedMessage
                             id="you-have-N-hints-left"
@@ -1138,8 +1140,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         />
                     </span>
                   }
-                  position="top center"
-                  trigger={
+                  placement="top"
+                  permanent
+                >
                     <div className="bulbs-container"
                       onClick={showAllHintsUsed ? undefined : handleShowHint}
                       style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
@@ -1158,10 +1161,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         <Icon key={`spent-${hint}`} size="small" name="lightbulb outline" />
                       ))}
                     </div>
-                  }
-                />
-                  <Popup
-                    content={
+                </CustomTooltip>
+                  <CustomTooltip
+                    title={
                       <span style={{ whiteSpace: 'nowrap' }}>
                         <FormattedMessage
                           id="you-have-N-hints-left"
@@ -1170,15 +1172,15 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         />
                       </span>
                     }
-                    position="top center"
-                    trigger={
+                    placement="top"
+                    permanent
+                  >
                       <span className="chat-action-text"
                         onClick={showAllHintsUsed ? undefined : handleShowHint}
                         style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}>
                         <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
                       </span>
-                    }
-                  /></div>
+                  </CustomTooltip></div>
             )}
           </div>                    
         </div>                 
@@ -1212,10 +1214,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 </div>
                 <h4 className="current-word">
                     {translationState.surfaceWord &&
-                        translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <Popup
-                        content={<FormattedHTMLMessage id="explain-speaker-surface" />}
-                        trigger={<Speaker word={translationState.surfaceWord} />}
-                    />} {translationState.maskSymbol || translationState.surfaceWord}
+                        translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <CustomTooltip
+                        title={<FormattedHTMLMessage id="explain-speaker-surface" />}
+                    >
+                        <span style={{ display: 'inline-flex' }}>
+                          <Speaker word={translationState.surfaceWord} />
+                        </span>
+                    </CustomTooltip>} {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
                                 <ChatActionMenu mode="dictionary"
                                     onAddNote={canAddNote ? handleAddNote : undefined}

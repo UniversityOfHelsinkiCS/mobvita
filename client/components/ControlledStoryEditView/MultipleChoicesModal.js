@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import Draggable from 'react-draggable'
-import { Popup, Icon, Form, Divider } from 'semantic-ui-react'
+import { Icon, Form, Divider } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
 import { Button } from 'react-bootstrap'
@@ -83,14 +84,14 @@ const MultipleChoiceModal = ({
         <div className="draggable-modal">
           <div>
             <div>
-              <Popup
-                className="interactable"
-                content={
+              <CustomTooltip
+                title={
                   <div style={{ padding: '0.75em' }}>
                     <FormattedMessage id="multiple-choice-tooltip" />
                   </div>
                 }
-                trigger={
+              >
+                <span className="interactable" style={{ display: 'inline-flex' }}>
                   <Icon
                     className="interactable"
                     style={{
@@ -102,8 +103,8 @@ const MultipleChoiceModal = ({
                     name="info circle"
                     color="grey"
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
               <span className="pt-sm" style={{ color: '#000000' }}>
                 <FormattedMessage id="pick-choices" />
               </span>

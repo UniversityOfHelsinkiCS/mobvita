@@ -2,7 +2,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { Tooltip } from '@mui/material'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { images, cefrNumberToLevel } from 'Utilities/common'
@@ -71,7 +71,7 @@ const LessonStartMenu = ({ setOpen }) => {
 
   return (
     <div className="lesson-start-menu-container universal-background">
-      <Tooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
+      <CustomTooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
         <Button
           className="lesson-tour-start-button"
           variant="primary"
@@ -90,9 +90,9 @@ const LessonStartMenu = ({ setOpen }) => {
             </span>
           </div>
         </Button>
-      </Tooltip>
+      </CustomTooltip>
 
-      <Tooltip title={<FormattedMessage id="lesson-customize-info" />}>
+      <CustomTooltip title={<FormattedMessage id="lesson-customize-info" />}>
         <Button
           className="lesson-tour-setup-button"
           variant="secondary"
@@ -111,7 +111,7 @@ const LessonStartMenu = ({ setOpen }) => {
             </span>
           </div>
         </Button>
-      </Tooltip>
+      </CustomTooltip>
     </div>
   )
 }

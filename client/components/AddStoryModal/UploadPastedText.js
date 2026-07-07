@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { Button } from 'react-bootstrap'
 import TextField from '@mui/material/TextField'
-import Tooltip from '@mui/material/Tooltip'
+import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
@@ -58,11 +58,11 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
 
   return (
     <div>
-      <Tooltip title={<FormattedHTMLMessage id="paste-text-upload-instructions" />}>
+      <CustomTooltip permanent title={<FormattedHTMLMessage id="paste-text-upload-instructions" />}>
         <IconButton size="small">
           <InfoOutlinedIcon fontSize="small" />
         </IconButton>
-      </Tooltip>
+      </CustomTooltip>
       <TextField
         fullWidth
         size="small"
