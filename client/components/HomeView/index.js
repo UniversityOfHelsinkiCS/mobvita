@@ -205,8 +205,7 @@ const HomeviewButtons = ({
               translationKey="Library"
               handleClick={() => navigate('/library')}
               dataCy="library-button"
-              content="Home-Library-EXPLANATION"
-              permanent
+              content="Home-Library-EXPLANATION"              
             />
           </div>
           <div className="flashcards-btn-cont tour-flashcards">
