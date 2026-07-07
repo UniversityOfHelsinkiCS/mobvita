@@ -1857,5 +1857,6 @@
     "reading-chatbot-answer-first": "Click on words to see their translations. The chatbot becomes available once you answer correctly or use all your attempts.",
     "reading-chatbot-suggestion-explain-answer": "Explain the correct answer",
     "reading-chatbot-suggestion-why-others-wrong": "Why are the other options wrong?",
-    "essay-chatbot-followup-question": "Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to \"FOLLOW UP\"!"
+    "essay-chatbot-followup-question": "Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to \"FOLLOW UP\"!",
+    "enable-tooltips": "Show tooltips"
 }

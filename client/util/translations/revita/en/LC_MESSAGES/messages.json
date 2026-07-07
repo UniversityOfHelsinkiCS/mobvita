@@ -1760,6 +1760,7 @@
     "chatbot-message-suggestion-performance": "How is my progress?",
     "chatbot-message-suggestion-next-steps": "What should I do next?",
     "reading-practice-tap-word-hint": "Tap a word in the text to see its translation",
+    "enable-tooltips": "Show tooltips",
     "reading-chatbot-answer-first": "Click on words to see their translations. The chatbot becomes available once you answer correctly or use all your attempts.",
     "reading-chatbot-suggestion-explain-answer": "Explain the correct answer",
     "reading-chatbot-suggestion-why-others-wrong": "Why are the other options wrong?",
