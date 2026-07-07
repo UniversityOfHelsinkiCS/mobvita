@@ -42,11 +42,11 @@ function randomCredentials() {
 
 function createRandomUser() {
   const user = randomCredentials()
-  return cy.request('POST', 'localhost:8000/api/register/test', { ...user })
+  return cy.request('POST', 'localhost:8000/api/user/register/test', { ...user })
     .then((response) => {
       user.token = response.body.access_token
       console.log(user)
-      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      return cy.request('POST', 'localhost:8000/api/user/confirm/test', { ...user })
     })
     .then(() => {
       users.push(user)
@@ -59,7 +59,7 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
   return cy.request(
     {
       method: 'POST', 
-      url: 'localhost:8000/api/register/test', 
+      url: 'localhost:8000/api/user/register/test', 
       body: { ...user },
       retryOnNetworkFailure: true,
       timeout: 120000
@@ -68,7 +68,7 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
       user.token = response.body.access_token
       currentUser = user
       users.push(user)
-      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      return cy.request('POST', 'localhost:8000/api/user/confirm/test', { ...user })
     })
     .then(() => {
       return cy.request({
@@ -129,14 +129,14 @@ Cypress.Commands.add('loginExisting', function () {
 
 Cypress.Commands.add('createUser', function(name, language, is_teacher = false) {
   const user = randomCredentials()
-  return cy.request('POST', 'localhost:8000/api/register/test', { ...user })
+  return cy.request('POST', 'localhost:8000/api/user/register/test', { ...user })
     .then(function (response) {
       user.token = response.body.access_token
       users.push(user)
       if (name) {
         savedUsers[name] = user
       }
-      return cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+      return cy.request('POST', 'localhost:8000/api/user/confirm/test', { ...user })
     })
     .then(() => {
       return cy.request({

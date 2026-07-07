@@ -16,14 +16,14 @@ export const getLatestIRTScore = (language) => {
 }
 
 export const createRealToken = (email, password, locale) => {
-  const route = '/session/'
+  const route = '/user/session/'
   const prefix = 'LOGIN'
   const payload = { email, password, interface_language: locale }
   return callBuilder(route, prefix, 'post', payload)
 }
 
 export const createAnonToken = locale => {
-  const route = '/session/'
+  const route = '/user/session/'
   const prefix = 'LOGIN_ANON'
   const payload = { is_anonymous: true, interface_language: locale }
   return callBuilder(route, prefix, 'post', payload)
@@ -218,7 +218,7 @@ export const changePassword = (currentPassword, newPassword) => {
 }
 
 export const confirmUser = token => {
-  const route = `/confirm?token=${token}`
+  const route = `/user/confirm?token=${token}`
   const prefix = 'CONFIRM_USER'
   return callBuilder(route, prefix, 'get')
 }

@@ -48,7 +48,7 @@ describe('Mobvita', function () {
     cy.get('[type=submit]').click()
 
     cy.get('[class=Toastify]').contains('A message containing a link to confirm your registration has been sent to your email address.')
-    cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+    cy.request('POST', 'localhost:8000/api/user/confirm/test', { ...user })
       .then(response => {
         user.token = response.body.access_token
       })
@@ -240,12 +240,12 @@ function closeSidebarIfOpen() {
 
 function createRandomUser() {
   const user = randomCredentials()
-  cy.request('POST', 'localhost:8000/api/register/test', { ...user })
+  cy.request('POST', 'localhost:8000/api/user/register/test', { ...user })
     .then((response) => {
       user.token = response.body.access_token
       console.log(user)
     })
-  cy.request('POST', 'localhost:8000/api/confirm/test', { ...user })
+  cy.request('POST', 'localhost:8000/api/user/confirm/test', { ...user })
 
   users.push(user)
   return user

@@ -1,7 +1,7 @@
 import callBuilder from '../apiConnection'
 
 export const getNews = () => {
-  const route = '/news/'
+  const route = '/user/news/'
   const prefix = 'GET_NEWS'
   return callBuilder(route, prefix, 'get')
 }
