@@ -100,7 +100,7 @@ describe('Mobvita', function () {
           has_seen_library_tour: true
         }
       })
-      cy.request('POST', '/api/session', { ...globalUser })
+      cy.request('POST', '/api/user/session', { ...globalUser })
         .as('user')
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))

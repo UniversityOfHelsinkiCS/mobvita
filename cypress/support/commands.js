@@ -106,7 +106,7 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
       })
     })
     .then(() => {
-      return cy.request('POST', 'localhost:8000/api/session', { ...user })
+      return cy.request('POST', 'localhost:8000/api/user/session', { ...user })
         .then(response => {
           window.localStorage.setItem('user', JSON.stringify(response.body))
           return response.body
@@ -120,7 +120,7 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
 
 
 Cypress.Commands.add('loginExisting', function () {
-  return cy.request('POST', 'localhost:8000/api/session', { ...currentUser })
+  return cy.request('POST', 'localhost:8000/api/user/session', { ...currentUser })
     .then(response => {
       window.localStorage.setItem('user', JSON.stringify(response.body))
       return cy.wrap(currentUser)
@@ -174,7 +174,7 @@ Cypress.Commands.add('createUser', function(name, language, is_teacher = false) 
       })
     })
     .then(() => {
-      return cy.request('POST', 'localhost:8000/api/session', { ...user })
+      return cy.request('POST', 'localhost:8000/api/user/session', { ...user })
         .then(response => {
           window.localStorage.setItem(name, JSON.stringify(response.body))
           return response.body
