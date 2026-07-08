@@ -195,14 +195,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const correctionFocus = getCorrectionFocusAtCaret(input)
 
     if (correctionFocus) {
-      const { focus, sentence } = correctionFocus
-      setDeletionSelectionHighlight(focus.selection.isDeletion)
-      setInputSelection(
-        input,
-        sentence.startIndex + focus.selection.startOffset,
-        sentence.startIndex + focus.selection.endOffset,
-      )
-      onEssayFocusChange?.(focus)
+      onEssayFocusChange?.(correctionFocus.focus)
       return
     }
 

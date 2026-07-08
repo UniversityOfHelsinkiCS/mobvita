@@ -47,6 +47,10 @@ const CorrectionBubble = ({
       getCorrectionSelectionRequest(correctionRange, correctionFocus),
       'hover',
     )}
+    onMouseLeave={() => onSentenceSelect?.(
+      getCorrectionSelectionRequest(correctionRange, correctionFocus),
+      'leave',
+    )}
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
