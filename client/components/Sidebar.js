@@ -16,7 +16,7 @@ import {
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ContactUs from './StaticContent/ContactUs'
 import PracticeModal from './HomeView/PracticeModal'
-import { hiddenFeatures, cefrNum2Cefr } from 'Utilities/common'
+import { hiddenFeatures, cefrNum2Cefr, ACCESS, useHasAccess } from 'Utilities/common'
 import {
   Box,
   FormControlLabel,
@@ -52,6 +52,7 @@ export default function Sidebar() {
   const open = useSelector(({ sidebar }) => sidebar.open)
   const learningLanguage = user?.user?.last_used_language
   const { hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
+  const canAccessLessons = useHasAccess(ACCESS.HIGH)
   const sidebarRef = useRef(null)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [contactUsOpen, setContactUsOpen] = useState(false)
@@ -263,16 +264,18 @@ export default function Sidebar() {
                     <FormattedMessage id="Library" />
                   </BootstrapButton>
                 </Link>
-                <Link to="/lessons/library" onClick={closeSidebar}>
-                  <BootstrapButton
-                    className="sidebar-action-button"
-                    variant="secondary"
-                    style={actionButtonSx}
-                  >
-                    <EventAvailableIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                    <FormattedMessage id="Lessons" />
-                  </BootstrapButton>
-                </Link>
+                {canAccessLessons && (
+                  <Link to="/lessons/library" onClick={closeSidebar}>
+                    <BootstrapButton
+                      className="sidebar-action-button"
+                      variant="secondary"
+                      style={actionButtonSx}
+                    >
+                      <EventAvailableIcon fontSize="small" style={{ marginRight: '0.4em' }} />
+                      <FormattedMessage id="Lessons" />
+                    </BootstrapButton>
+                  </Link>
+                )}
                 <Link to="/essay-writing" onClick={closeSidebar}>
                   <BootstrapButton
                     className="sidebar-action-button"

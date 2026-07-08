@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
-import { images, supportedLearningLanguages } from 'Utilities/common'
+import { images, supportedLearningLanguages, ACCESS, useHasAccess } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
@@ -70,6 +70,7 @@ const HomeviewButtons = ({
 
   const hasTests = useSelector(state => state.metadata.hasTests)
   const lessons = useSelector(state => state.metadata.lessons)
+  const canAccessLessons = useHasAccess(ACCESS.HIGH)
   const teacherAccess = useSelector(state => state.user.data.user?.is_teacher)
   const isTeacherView = useSelector(state => state.user.data.teacherView)
   const lastActivity = useSelector(state => state.activity.lastActivity)
@@ -147,7 +148,7 @@ const HomeviewButtons = ({
               content="Home-Library-EXPLANATION"              
             />
           </div>
-          {lessons && lessons.length > 0 && (
+          {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
                 imgSrc={images.readingBook}
@@ -187,7 +188,7 @@ const HomeviewButtons = ({
               content="Home-Dive-In-EXPLANATION"
             />
           </div>
-          {lessons && lessons.length > 0 && (
+          {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
                 imgSrc={images.readingBook}
