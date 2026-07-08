@@ -269,13 +269,14 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     const inputRect = input.getBoundingClientRect()
     const inputAreaRect = inputAreaRef.current.getBoundingClientRect()
+    const fontSizePx = parseFloat(caretCoordinates.fontSize) || 0
 
     setInsertionHighlight({
       fontFamily: caretCoordinates.fontFamily,
       fontSize: caretCoordinates.fontSize,
       left: inputRect.left - inputAreaRect.left + caretCoordinates.left,
       lineHeight: caretCoordinates.lineHeight,
-      top: inputRect.top - inputAreaRect.top + caretCoordinates.top,
+      top: inputRect.top - inputAreaRect.top + caretCoordinates.top + fontSizePx / 2,
     })
   }, [sentenceSelectionRequest])
 

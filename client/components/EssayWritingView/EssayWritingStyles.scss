@@ -5,17 +5,14 @@ $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
 // Correction colours. Each correction type has two colours: one for the highlight shown in the
 // essay text area, and one for the corrected word shown in the suggestion bubble.
-$essay-textarea-highlight-replacement-bg-color: #6ac3fe;
-$essay-textarea-highlight-insertion-bg-color: #2fe407;
-$essay-textarea-highlight-deletion-bg-color: #faa8a2;
+$essay-textarea-highlight-replacement-bg-color: #88cefb;
+$essay-textarea-highlight-insertion-bg-color: #92f294;
+$essay-textarea-highlight-deletion-bg-color: #fccccc;
 
-$essay-bubble-multi-bg-color: #fffffc;
-$essay-bubble-replacement-bg-color: #6ac3fe;
-$essay-bubble-insertion-bg-color: #2fe407;
-$essay-bubble-deletion-bg-color: #f7b9b5;
-
-// Background of a hovered / active correction bubble.
-$essay-bubble-active-bg-color: #fdea3b;
+$essay-bubble-multi-bg-color: #88cefb;
+$essay-bubble-replacement-bg-color: #88cefb;
+$essay-bubble-insertion-bg-color: #92f294;
+$essay-bubble-deletion-bg-color: #fccccc;
 
 .essay-writing-page {
   display: flex;
@@ -98,6 +95,8 @@ $essay-bubble-active-bg-color: #fdea3b;
   flex: 1;
   min-height: 0;
   margin-top: 1rem;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .essay-writing-input-area-deletion {
@@ -106,16 +105,20 @@ $essay-bubble-active-bg-color: #fdea3b;
 
 .essay-writing-insertion-highlight {
   position: absolute;
-  z-index: 2;
+  z-index: 1300;
   display: inline-block;
-  width: 4px;
-  min-height: 1em;
+  width: 24px;
+  // Match the native ::selection height used by the replacement/deletion highlights,
+  // i.e. the text area's line box (see .essay-writing-input line-height).
+  height: 32px;
   padding: 0;
-  border-radius: 2px;
+
   background-color: $essay-textarea-highlight-insertion-bg-color;
+  mix-blend-mode: multiply;
   color: inherit;
   pointer-events: none;
-  transform: translateX(1px);
+  // -12px centres the 24px box on the insertion point; -50% centres it vertically on the text.
+  transform: translate(-12px, -44%);
 }
 
 .essay-writing-input {
