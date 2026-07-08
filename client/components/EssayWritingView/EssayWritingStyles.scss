@@ -105,19 +105,15 @@ $essay-bubble-deletion-bg-color: #fccccc;
 
 .essay-writing-insertion-highlight {
   position: absolute;
-  z-index: 1300;
+  z-index: 2;
   display: inline-block;
   width: 24px;
-  // Match the native ::selection height used by the replacement/deletion highlights,
-  // i.e. the text area's line box (see .essay-writing-input line-height).
   height: 32px;
   padding: 0;
-
   background-color: $essay-textarea-highlight-insertion-bg-color;
   mix-blend-mode: multiply;
   color: inherit;
   pointer-events: none;
-  // -12px centres the 24px box on the insertion point; -50% centres it vertically on the text.
   transform: translate(-12px, -44%);
 }
 
@@ -184,7 +180,6 @@ $essay-bubble-deletion-bg-color: #fccccc;
   }
 }
 
-// Bubble background per correction type (mirrors the corrected-word colours).
 .essay-writing-correction-bubble-multi {
   background: $essay-bubble-multi-bg-color;
 }

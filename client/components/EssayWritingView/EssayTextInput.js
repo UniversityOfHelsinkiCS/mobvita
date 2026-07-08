@@ -28,8 +28,7 @@ import {
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaCaretCoordinates } from './utils/textareaCaret'
-
-const WRITING_LANGUAGE = 'Finnish'
+import { capitalize, useLearningLanguage } from 'Utilities/common'
 
 const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
   const startIndex = Math.min(selectionStart, selectionEnd)
@@ -91,6 +90,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     start: text.length,
   })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const learningLanguage = useLearningLanguage()
 
   const setInputSelection = (input, start, end) => {
     applyingCorrectionSelectionRef.current = true
@@ -195,8 +195,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     if (correctionFocus) {
       const { focus, sentence } = correctionFocus
-
-      // Mirror the bubble -> text-area direction: highlight the correction range in the text area.
       setDeletionSelectionHighlight(focus.selection.isDeletion)
       setInputSelection(
         input,
@@ -319,7 +317,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     } else {
       dispatch(
         checkWritingCorrection({
-          language: WRITING_LANGUAGE,
+          language: capitalize(learningLanguage),
           sentenceId: sentence.sentenceId,
           text: sentence.text,
           context: sentence.context,
@@ -562,7 +560,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         onKeyUp={handleSelect}
         onPaste={handlePaste}
         onSelect={handleSelect}
-        onScrollCapture={clearCorrectionHighlight}
+        onScrollCapture={() => setInsertionHighlight(null)}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"
