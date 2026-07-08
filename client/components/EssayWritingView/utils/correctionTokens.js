@@ -1,5 +1,8 @@
-const INSERTION_ORIGINAL_VALUES = new Set(['', '-', '—', '–'])
-const DELETION_CORRECTION_VALUES = new Set(['-', '—', '–'])
+// The backend marks a deleted/inserted slot with U+25AC (▬), the "black rectangle" placeholder.
+export const CORRECTION_PLACEHOLDER = String.fromCodePoint(0x25ac)
+
+const INSERTION_ORIGINAL_VALUES = new Set(['', CORRECTION_PLACEHOLDER])
+const DELETION_CORRECTION_VALUES = new Set([CORRECTION_PLACEHOLDER])
 
 export const getCorrectionText = value =>
   value === null || value === undefined ? '' : String(value)

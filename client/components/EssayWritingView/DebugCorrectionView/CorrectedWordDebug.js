@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { CORRECTION_PLACEHOLDER } from '../utils/correctionTokens'
 
-
-const CorrectedWordDebug = ({word, highlightedWords, setHighLightedWords}) => { 
+const CorrectedWordDebug = ({word, highlightedWords, setHighLightedWords}) => {
   const { ID, original, corrected, error_span, feedback } = word
   const feedbackText = feedback ? [
     ...(feedback.requested_hints || []),
@@ -11,9 +11,9 @@ const CorrectedWordDebug = ({word, highlightedWords, setHighLightedWords}) => {
     setHighLightedWords(error_span?.length > 0 ? error_span : [ID])
   }
   
-  const textDecoration = ((original && corrected && original !== '-' && corrected !== '-') ? 'wavy underline red' :
-    (original && corrected && original !== '-' && corrected === '-') ? 'line-through' :
-      (original && corrected && original === '-' && corrected !== '-') ? 'underline' : 'none')
+  const textDecoration = ((original && corrected && original !== CORRECTION_PLACEHOLDER && corrected !== CORRECTION_PLACEHOLDER) ? 'wavy underline red' :
+    (original && corrected && original !== CORRECTION_PLACEHOLDER && corrected === CORRECTION_PLACEHOLDER) ? 'line-through' :
+      (original && corrected && original === CORRECTION_PLACEHOLDER && corrected !== CORRECTION_PLACEHOLDER) ? 'underline' : 'none')
 
 
   return (
@@ -27,9 +27,9 @@ const CorrectedWordDebug = ({word, highlightedWords, setHighLightedWords}) => {
       }}
       title={feedbackText}
     >
-      {corrected !== '-' && corrected || original}
+      {corrected !== CORRECTION_PLACEHOLDER && corrected || original}
     </span>
   )
 }
 
-export default CorrectedWord
+export default CorrectedWordDebug
