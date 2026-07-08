@@ -28,6 +28,7 @@ import {
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaCaretCoordinates } from './utils/textareaCaret'
+import { normalizeEssayInput } from './utils/normalizeEssayInput'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 
 const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
@@ -362,6 +363,20 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   }
 
   const handleChange = e => {
+    const input = e.target
+    const rawValue = input.value
+    const rawCaret = input.selectionStart
+
+    // Normalize the input on-site (NFC compose, strip invisibles, fold look-alike hyphens) unless the
+    // user is mid-IME composition. Normalization can change length, so recompute the caret from the
+    // normalized prefix and keep it in place.
+    const normalizedValue = e.nativeEvent?.isComposing ? rawValue : normalizeEssayInput(rawValue)
+    if (normalizedValue !== rawValue) {
+      const normalizedCaret = normalizeEssayInput(rawValue.slice(0, rawCaret)).length
+      input.value = normalizedValue
+      setInputSelection(input, normalizedCaret, normalizedCaret)
+    }
+
     clearCorrectionHighlight()
     onEssayFocusChange?.(null)
     saveUserSelection(e.target)
