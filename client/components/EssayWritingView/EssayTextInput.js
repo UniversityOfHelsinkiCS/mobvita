@@ -23,6 +23,7 @@ import {
 } from './utils/essaySentences'
 import {
   findCorrectionGroupAtOffset,
+  findInsertionGroupNearOffset,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupFocus,
   getCorrectionGroups,
@@ -154,11 +155,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return null
 
     const corrections = getWritingCorrectionWords(correctionEntry.corrections)
-    const group = findCorrectionGroupAtOffset(
-      sentence.text,
-      corrections,
-      caret - sentence.startIndex,
-    )
+    const offset = caret - sentence.startIndex
+    // Prefer a word correction under the caret; otherwise fall back to an insertion point next to
+    // the caret, so clicking the gap where a word should be inserted also selects it.
+    const group =
+      findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
+      findInsertionGroupNearOffset(sentence.text, corrections, offset)
 
     if (!group) return null
 
