@@ -131,6 +131,13 @@ $essay-bubble-deletion-bg-color: #fccccc;
     align-items: stretch;
   }
 
+  // Keep the outlined border constant. MUI turns the notched outline blue and thickens it to 2px on
+  // focus/hover; force a single resting colour + width so the field looks the same at all times.
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.23) !important;
+    border-width: 1px !important;
+  }
+
   textarea,
   .MuiInputBase-inputMultiline {
     flex: 1;
@@ -181,19 +188,19 @@ $essay-bubble-deletion-bg-color: #fccccc;
 }
 
 .essay-writing-correction-bubble-multi {
-  background: $essay-bubble-multi-bg-color;
+  background: $essay-bubble-multi-bg-color !important;
 }
 
 .essay-writing-correction-bubble-replacement {
-  background: $essay-bubble-replacement-bg-color;
+  background: $essay-bubble-replacement-bg-color !important;
 }
 
 .essay-writing-correction-bubble-insertion {
-  background: $essay-bubble-insertion-bg-color;
+  background: $essay-bubble-insertion-bg-color !important;
 }
 
 .essay-writing-correction-bubble-deletion {
-  background: $essay-bubble-deletion-bg-color;
+  background: $essay-bubble-deletion-bg-color !important;
 }
 
 .essay-writing-correction-content {
