@@ -80,11 +80,11 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
-  const [insertionHighlight, setInsertionHighlight] = useState(null)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
   const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
   const [hoveredInsertionHighlight, setHoveredInsertionHighlight] = useState(null)
+  const [selectedInsertionHighlight, setSelectedInsertionHighlight] = useState(null)
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
   const selectedGroupKeyRef = useRef(null)
@@ -135,7 +135,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   }
 
   const clearCorrectionHighlight = () => {
-    setInsertionHighlight(null)
     setDeletionSelectionHighlight(false)
   }
 
@@ -191,12 +190,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
       if (correctionRectsStaleRef.current) computeCorrectionRects()
       selectedGroupKeyRef.current = `${sentence.sentenceId}:${startOffset}:${endOffset}`
-      refreshSelectedWordHighlight()
+      refreshSelectedHighlight()
       onEssayFocusChange?.(focus)
       return
     }
 
-    clearSelectedWordHighlight()
+    clearSelectedHighlight()
     onEssayFocusChange?.(
       getEssayFocusFromSelection(
         completedSentencesRef.current,
@@ -207,84 +206,51 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     )
   }
 
-  // Bubble interactions (click/hover/leave/clear from the sidebar) drive the same word overlay used
-  // when a word is clicked in the text: a click sets the persistent highlight, a hover sets the
-  // transient one, so both entry points look and behave identically.
+  // Bubble interactions (click/hover/leave/clear) drive the same overlays used when a word is
+  // clicked/hovered in the text: click = persistent highlight, hover = transient. Works for both
+  // words (box) and insertions (caret-bar), so the two entry points match.
   useEffect(() => {
     const {
       action,
       endOffset,
       interactionType,
-      isInsertion,
       sentenceId: sentenceIdToSelect,
       startOffset,
     } = sentenceSelectionRequest || {}
 
     if (action === 'clear') {
-      clearSelectedWordHighlight()
+      clearSelectedHighlight()
       setHoveredWordHighlight(null)
       setHoveredInsertionHighlight(null)
-      setInsertionHighlight(null)
       return
     }
 
-    if (!sentenceIdToSelect) return
-
-    const sentenceToSelect = completedSentencesRef.current.find(
-      sentence => sentence.sentenceId === sentenceIdToSelect,
-    )
-    const input = inputRef.current
-
-    if (!sentenceToSelect || !input) return
-
-    const hasCorrectionRange = Number.isInteger(startOffset) && Number.isInteger(endOffset)
-
-    if (!isInsertion || !hasCorrectionRange || startOffset !== endOffset || !inputAreaRef.current) {
-      setInsertionHighlight(null)
-
-      if (!hasCorrectionRange) return
-
-      const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
-
-      if (correctionRectsStaleRef.current) computeCorrectionRects()
-
-      if (interactionType === 'hover') {
-        const group = correctionRectsRef.current.find(candidate => candidate.key === key)
-
-        setHoveredWordHighlight(
-          group ? { key: group.key, type: group.type, rects: group.rects } : null,
-        )
-        return
-      }
-
-      setHoveredWordHighlight(null)
-      selectedGroupKeyRef.current = key
-      refreshSelectedWordHighlight()
+    if (!sentenceIdToSelect || !Number.isInteger(startOffset) || !Number.isInteger(endOffset)) {
       return
     }
 
-    // Insertion point (zero-width): show the caret-bar overlay at the insertion position.
-    const caretCoordinates = getTextareaCaretCoordinates(
-      input,
-      sentenceToSelect.startIndex + startOffset,
-    )
+    if (correctionRectsStaleRef.current) computeCorrectionRects()
 
-    if (!caretCoordinates) {
-      setInsertionHighlight(null)
+    const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
+    const group = correctionRectsRef.current.find(candidate => candidate.key === key)
+
+    if (interactionType === 'hover') {
+      setHoveredWordHighlight(
+        group && !group.isInsertion
+          ? { key: group.key, type: group.type, rects: group.rects }
+          : null,
+      )
+      setHoveredInsertionHighlight(
+        group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
+      )
       return
     }
 
-    const inputRect = input.getBoundingClientRect()
-    const inputAreaRect = inputAreaRef.current.getBoundingClientRect()
-    const fontSizePx = parseFloat(caretCoordinates.fontSize) || 0
-
-    setInsertionHighlight({
-      fontFamily: caretCoordinates.fontFamily,
-      fontSize: caretCoordinates.fontSize,
-      left: inputRect.left - inputAreaRect.left + caretCoordinates.left,
-      lineHeight: caretCoordinates.lineHeight,
-      top: inputRect.top - inputAreaRect.top + caretCoordinates.top + fontSizePx / 2,
-    })
+    // Click (or a re-sent selected click on bubble-leave): persist the highlight.
+    setHoveredWordHighlight(null)
+    setHoveredInsertionHighlight(null)
+    selectedGroupKeyRef.current = key
+    refreshSelectedHighlight()
   }, [sentenceSelectionRequest])
 
   useEffect(() => {
@@ -306,7 +272,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
       if (selectedGroupKeyRef.current) {
         computeCorrectionRects()
-        refreshSelectedWordHighlight()
+        refreshSelectedHighlight()
       }
     })
 
@@ -423,7 +389,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     correctionRectsStaleRef.current = true
     setHoveredWordHighlight(null)
     setHoveredInsertionHighlight(null)
-    clearSelectedWordHighlight()
+    clearSelectedHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
@@ -623,7 +589,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
         const key = `${sentence.sentenceId}:${range.startOffset}:${range.endOffset}`
 
-        // Zero-width ranges are insertions (a point between words); everything else is a real word.
         if (range.endOffset > range.startOffset) {
           wordRanges.push({
             key,
@@ -702,22 +667,24 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         y <= rect.top + rect.height,
     )
 
-  const refreshSelectedWordHighlight = () => {
+  // Re-derive the persistent selected highlight (word box or insertion caret-bar) from the freshly
+  // measured correction rects, based on the selected group key.
+  const refreshSelectedHighlight = () => {
     const key = selectedGroupKeyRef.current
-    const group =
-      key &&
-      correctionRectsRef.current.find(
-        candidate => candidate.key === key && !candidate.isInsertion,
-      )
+    const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
 
     setSelectedWordHighlight(
-      group ? { key: group.key, type: group.type, rects: group.rects } : null,
+      group && !group.isInsertion ? { key: group.key, type: group.type, rects: group.rects } : null,
+    )
+    setSelectedInsertionHighlight(
+      group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
     )
   }
 
-  const clearSelectedWordHighlight = () => {
+  const clearSelectedHighlight = () => {
     selectedGroupKeyRef.current = null
     setSelectedWordHighlight(null)
+    setSelectedInsertionHighlight(null)
   }
 
   const handleTextMouseMove = event => {
@@ -776,6 +743,21 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       />
     ))
 
+  const renderInsertionHighlight = highlight =>
+    highlight ? (
+      <Box
+        component="span"
+        className="essay-writing-insertion-highlight"
+        style={{
+          fontFamily: highlight.fontFamily,
+          fontSize: highlight.fontSize,
+          left: highlight.left,
+          lineHeight: highlight.lineHeight,
+          top: highlight.top,
+        }}
+      />
+    ) : null
+
   return (
     <Box
       className={`essay-writing-input-area ${
@@ -783,32 +765,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       }`}
       ref={inputAreaRef}
     >
-      {insertionHighlight && (
-        <Box
-          component="span"
-          className="essay-writing-insertion-highlight"
-          style={{
-            fontFamily: insertionHighlight.fontFamily,
-            fontSize: insertionHighlight.fontSize,
-            left: insertionHighlight.left,
-            lineHeight: insertionHighlight.lineHeight,
-            top: insertionHighlight.top,
-          }}
-        />
-      )}
-      {hoveredInsertionHighlight && (
-        <Box
-          component="span"
-          className="essay-writing-insertion-highlight"
-          style={{
-            fontFamily: hoveredInsertionHighlight.fontFamily,
-            fontSize: hoveredInsertionHighlight.fontSize,
-            left: hoveredInsertionHighlight.left,
-            lineHeight: hoveredInsertionHighlight.lineHeight,
-            top: hoveredInsertionHighlight.top,
-          }}
-        />
-      )}
+      {renderInsertionHighlight(selectedInsertionHighlight)}
+      {hoveredInsertionHighlight?.key !== selectedInsertionHighlight?.key &&
+        renderInsertionHighlight(hoveredInsertionHighlight)}
       {renderWordHighlights(selectedWordHighlight, 'selected')}
       {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
         renderWordHighlights(hoveredWordHighlight, 'hover')}
@@ -829,14 +788,13 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
           correctionRectsStaleRef.current = true
           setHoveredWordHighlight(null)
           setHoveredInsertionHighlight(null)
-          setInsertionHighlight(null)
 
           if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
 
           scrollFrameRef.current = window.requestAnimationFrame(() => {
             scrollFrameRef.current = null
             computeCorrectionRects()
-            refreshSelectedWordHighlight()
+            refreshSelectedHighlight()
           })
         }}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
