@@ -29,7 +29,7 @@ import {
   getCorrectionGroupType,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
-import { getTextareaCaretCoordinates } from './utils/textareaCaret'
+import { getTextareaCaretCoordinates, getTextareaRangeRects } from './utils/textareaCaret'
 import { normalizeEssayInput } from './utils/normalizeEssayInput'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 
@@ -79,12 +79,13 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const [text, setText] = useState(getStoredEssayText)
   const [insertionHighlight, setInsertionHighlight] = useState(null)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
-  // Overlay box drawn over the corrected word the mouse is hovering. It sits above the (unchanged)
-  // textarea with pointer-events: none, so it highlights without touching the caret/selection —
-  // typing over it is unaffected.
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
+  const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
+  const selectedGroupKeyRef = useRef(null)
+  const scrollFrameRef = useRef(null)
+  const correctionsByKeyRef = useRef(null)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -100,6 +101,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
   const learningLanguage = useLearningLanguage()
+
+  correctionsByKeyRef.current = correctionsByKey
 
   const setInputSelection = (input, start, end) => {
     applyingCorrectionSelectionRef.current = true
@@ -203,10 +206,17 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const correctionFocus = getCorrectionFocusAtCaret(input)
 
     if (correctionFocus) {
-      onEssayFocusChange?.(correctionFocus.focus)
+      const { focus, sentence } = correctionFocus
+      const { startOffset, endOffset } = focus.selection
+
+      if (correctionRectsStaleRef.current) computeCorrectionRects()
+      selectedGroupKeyRef.current = `${sentence.sentenceId}:${startOffset}:${endOffset}`
+      refreshSelectedWordHighlight()
+      onEssayFocusChange?.(focus)
       return
     }
 
+    clearSelectedWordHighlight()
     onEssayFocusChange?.(
       getEssayFocusFromSelection(
         completedSentencesRef.current,
@@ -284,22 +294,36 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     onEssayTextChange?.(textRef.current)
   }, [])
 
-  // Text edits and new corrections move the words around, so the cached hover rects must be
-  // remeasured on the next hover.
   useEffect(() => {
     correctionRectsStaleRef.current = true
   }, [text, correctionsByKey])
 
-  // A resize (or sidebar toggle changing the width) also reflows the text.
   useEffect(() => {
-    const markRectsStale = () => {
+    const input = inputRef.current
+
+    if (!input || !window.ResizeObserver) return undefined
+
+    const observer = new window.ResizeObserver(() => {
       correctionRectsStaleRef.current = true
-    }
+      setHoveredWordHighlight(null)
 
-    window.addEventListener('resize', markRectsStale)
+      if (selectedGroupKeyRef.current) {
+        computeCorrectionRects()
+        refreshSelectedWordHighlight()
+      }
+    })
 
-    return () => window.removeEventListener('resize', markRectsStale)
+    observer.observe(input)
+
+    return () => observer.disconnect()
   }, [])
+
+  useEffect(
+    () => () => {
+      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
+    },
+    [],
+  )
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -398,6 +422,10 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     clearCorrectionHighlight()
     onEssayFocusChange?.(null)
     saveUserSelection(e.target)
+
+    correctionRectsStaleRef.current = true
+    setHoveredWordHighlight(null)
+    clearSelectedWordHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
@@ -576,54 +604,69 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       return
     }
 
-    const inputRect = input.getBoundingClientRect()
-    const inputAreaRect = inputArea.getBoundingClientRect()
-    const originLeft = inputRect.left - inputAreaRect.left
-    const originTop = inputRect.top - inputAreaRect.top
-    const rects = []
+    const corrections = correctionsByKeyRef.current || {}
+    const ranges = []
 
     completedSentencesRef.current.forEach(sentence => {
-      const correctionEntry = correctionsByKey[getWritingCorrectionKey(sentence)]
+      const correctionEntry = corrections[getWritingCorrectionKey(sentence)]
 
       if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return
 
-      const corrections = getWritingCorrectionWords(correctionEntry.corrections)
-
-      getCorrectionGroups(sentence.text, corrections).forEach(group => {
+      getCorrectionGroups(
+        sentence.text,
+        getWritingCorrectionWords(correctionEntry.corrections),
+      ).forEach(group => {
         const range = group.range
 
-        // Skip zero-width (insertion) ranges — there is no word in the text to highlight.
         if (!range || range.endOffset <= range.startOffset) return
 
-        const startCoordinates = getTextareaCaretCoordinates(
-          input,
-          sentence.startIndex + range.startOffset,
-        )
-        const endCoordinates = getTextareaCaretCoordinates(
-          input,
-          sentence.startIndex + range.endOffset,
-        )
-
-        if (!startCoordinates || !endCoordinates) return
-
-        const lineHeight =
-          parseFloat(startCoordinates.lineHeight) || parseFloat(startCoordinates.fontSize) || 0
-        const isSameLine = Math.abs(endCoordinates.top - startCoordinates.top) < 1
-        const width = isSameLine
-          ? Math.max(endCoordinates.left - startCoordinates.left, 0)
-          : Math.max(inputRect.width - startCoordinates.left, 0)
-
-        rects.push({
+        ranges.push({
+          key: `${sentence.sentenceId}:${range.startOffset}:${range.endOffset}`,
           type: getCorrectionGroupType(group) || 'replacement',
-          top: originTop + startCoordinates.top,
-          left: originLeft + startCoordinates.left,
-          width,
-          height: lineHeight,
+          start: sentence.startIndex + range.startOffset,
+          end: sentence.startIndex + range.endOffset,
         })
       })
     })
 
-    correctionRectsRef.current = rects
+    const inputRect = input.getBoundingClientRect()
+    const inputAreaRect = inputArea.getBoundingClientRect()
+    const originLeft = inputRect.left - inputAreaRect.left
+    const originTop = inputRect.top - inputAreaRect.top
+
+    correctionRectsRef.current = getTextareaRangeRects(input, ranges).map(group => ({
+      key: group.key,
+      type: group.type,
+      rects: group.rects.map(rect => ({
+        left: originLeft + rect.left,
+        top: originTop + rect.top,
+        width: rect.width,
+        height: rect.height,
+      })),
+    }))
+  }
+
+  const rectsContainPoint = (rects, x, y) =>
+    rects.some(
+      rect =>
+        x >= rect.left &&
+        x <= rect.left + rect.width &&
+        y >= rect.top &&
+        y <= rect.top + rect.height,
+    )
+
+  const refreshSelectedWordHighlight = () => {
+    const key = selectedGroupKeyRef.current
+    const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
+
+    setSelectedWordHighlight(
+      group ? { key: group.key, type: group.type, rects: group.rects } : null,
+    )
+  }
+
+  const clearSelectedWordHighlight = () => {
+    selectedGroupKeyRef.current = null
+    setSelectedWordHighlight(null)
   }
 
   const handleTextMouseMove = event => {
@@ -638,31 +681,32 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const inputAreaRect = inputArea.getBoundingClientRect()
     const x = event.clientX - inputAreaRect.left
     const y = event.clientY - inputAreaRect.top
-    const hoveredRect = correctionRectsRef.current.find(
-      rect =>
-        x >= rect.left &&
-        x <= rect.left + rect.width &&
-        y >= rect.top &&
-        y <= rect.top + rect.height,
+    const hoveredGroup = correctionRectsRef.current.find(group =>
+      rectsContainPoint(group.rects, x, y),
     )
 
     setHoveredWordHighlight(previous => {
-      if (!hoveredRect) return null
+      if (!hoveredGroup) return previous ? null : previous
+      if (previous && previous.key === hoveredGroup.key) return previous
 
-      if (
-        previous &&
-        previous.left === hoveredRect.left &&
-        previous.top === hoveredRect.top &&
-        previous.width === hoveredRect.width
-      ) {
-        return previous
-      }
-
-      return hoveredRect
+      return { key: hoveredGroup.key, type: hoveredGroup.type, rects: hoveredGroup.rects }
     })
   }
 
   const handleTextMouseLeave = () => setHoveredWordHighlight(null)
+
+  const renderWordHighlights = (highlight, variant) =>
+    highlight?.rects.map((rect, index) => (
+      <Box
+        key={`${variant}-${highlight.key}-${index}`}
+        component="span"
+        className={[
+          'essay-writing-word-highlight',
+          `essay-writing-word-highlight-${highlight.type}`,
+        ].join(' ')}
+        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
+      />
+    ))
 
   return (
     <Box
@@ -684,21 +728,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
           }}
         />
       )}
-      {hoveredWordHighlight && (
-        <Box
-          component="span"
-          className={[
-            'essay-writing-word-highlight',
-            `essay-writing-word-highlight-${hoveredWordHighlight.type}`,
-          ].join(' ')}
-          style={{
-            top: hoveredWordHighlight.top,
-            left: hoveredWordHighlight.left,
-            width: hoveredWordHighlight.width,
-            height: hoveredWordHighlight.height,
-          }}
-        />
-      )}
+      {renderWordHighlights(selectedWordHighlight, 'selected')}
+      {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
+        renderWordHighlights(hoveredWordHighlight, 'hover')}
       <TextField
         fullWidth
         multiline
@@ -716,6 +748,14 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
           correctionRectsStaleRef.current = true
           setHoveredWordHighlight(null)
           setInsertionHighlight(null)
+
+          if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
+
+          scrollFrameRef.current = window.requestAnimationFrame(() => {
+            scrollFrameRef.current = null
+            computeCorrectionRects()
+            refreshSelectedWordHighlight()
+          })
         }}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"

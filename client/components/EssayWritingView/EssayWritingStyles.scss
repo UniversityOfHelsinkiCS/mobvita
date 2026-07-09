@@ -117,15 +117,12 @@ $essay-bubble-deletion-bg-color: #fccccc;
   transform: translate(-12px, -44%);
 }
 
-// Overlay box drawn over a corrected word on hover. It sits above the textarea with
-// pointer-events: none and multiply blending, so the word tints without blocking typing/selection.
 .essay-writing-word-highlight {
   position: absolute;
   z-index: 2;
   border-radius: 2px;
   pointer-events: none;
   mix-blend-mode: multiply;
-  transform: translateY(-6px);
 }
 
 .essay-writing-word-highlight-replacement,
@@ -155,8 +152,6 @@ $essay-bubble-deletion-bg-color: #fccccc;
     align-items: stretch;
   }
 
-  // Keep the outlined border constant. MUI turns the notched outline blue and thickens it to 2px on
-  // focus/hover; force a single resting colour + width so the field looks the same at all times.
   .MuiOutlinedInput-notchedOutline {
     border-color: rgba(0, 0, 0, 0.23) !important;
     border-width: 1px !important;
