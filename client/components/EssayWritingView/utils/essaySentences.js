@@ -25,7 +25,7 @@ export const getCompletedSentences = text => {
 }
 
 export const cursorIsInsideSentence = (sentence, cursorIndex) =>
-  cursorIndex >= sentence.startIndex && cursorIndex <= sentence.endIndex
+  cursorIndex >= sentence.startIndex && cursorIndex < sentence.endIndex
 
 const getCompletedSentenceAtIndex = (sentences, cursorIndex) =>
   sentences.find(sentence => cursorIsInsideSentence(sentence, cursorIndex)) || null
