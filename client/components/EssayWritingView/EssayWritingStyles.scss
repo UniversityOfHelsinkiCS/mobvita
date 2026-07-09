@@ -125,6 +125,7 @@ $essay-bubble-deletion-bg-color: #fccccc;
   border-radius: 2px;
   pointer-events: none;
   mix-blend-mode: multiply;
+  transform: translateY(-6px);
 }
 
 .essay-writing-word-highlight-replacement,
