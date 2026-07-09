@@ -117,6 +117,29 @@ $essay-bubble-deletion-bg-color: #fccccc;
   transform: translate(-12px, -44%);
 }
 
+// Overlay box drawn over a corrected word on hover. It sits above the textarea with
+// pointer-events: none and multiply blending, so the word tints without blocking typing/selection.
+.essay-writing-word-highlight {
+  position: absolute;
+  z-index: 2;
+  border-radius: 2px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.essay-writing-word-highlight-replacement,
+.essay-writing-word-highlight-multi {
+  background-color: $essay-textarea-highlight-replacement-bg-color;
+}
+
+.essay-writing-word-highlight-insertion {
+  background-color: $essay-textarea-highlight-insertion-bg-color;
+}
+
+.essay-writing-word-highlight-deletion {
+  background-color: $essay-textarea-highlight-deletion-bg-color;
+}
+
 .essay-writing-input {
   display: flex;
   flex-direction: column;

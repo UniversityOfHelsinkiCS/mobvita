@@ -25,6 +25,8 @@ import {
   findCorrectionGroupAtOffset,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupFocus,
+  getCorrectionGroups,
+  getCorrectionGroupType,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaCaretCoordinates } from './utils/textareaCaret'
@@ -77,6 +79,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const [text, setText] = useState(getStoredEssayText)
   const [insertionHighlight, setInsertionHighlight] = useState(null)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
+  // Overlay box drawn over the corrected word the mouse is hovering. It sits above the (unchanged)
+  // textarea with pointer-events: none, so it highlights without touching the caret/selection —
+  // typing over it is unaffected.
+  const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
+  const correctionRectsRef = useRef([])
+  const correctionRectsStaleRef = useRef(true)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -274,6 +282,23 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
   useEffect(() => {
     onEssayTextChange?.(textRef.current)
+  }, [])
+
+  // Text edits and new corrections move the words around, so the cached hover rects must be
+  // remeasured on the next hover.
+  useEffect(() => {
+    correctionRectsStaleRef.current = true
+  }, [text, correctionsByKey])
+
+  // A resize (or sidebar toggle changing the width) also reflows the text.
+  useEffect(() => {
+    const markRectsStale = () => {
+      correctionRectsStaleRef.current = true
+    }
+
+    window.addEventListener('resize', markRectsStale)
+
+    return () => window.removeEventListener('resize', markRectsStale)
   }, [])
 
   const createSentenceId = () => {
@@ -537,6 +562,108 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }, 0)
   }
 
+  // Measure a pixel rectangle for every corrected word (offset → pixels via the caret mirror) so
+  // hovering is a cheap geometric hit-test, not the unreliable point → offset APIs. Recomputed
+  // lazily (only when marked stale) to avoid measuring on every mouse move.
+  const computeCorrectionRects = () => {
+    correctionRectsStaleRef.current = false
+
+    const input = inputRef.current
+    const inputArea = inputAreaRef.current
+
+    if (!input || !inputArea) {
+      correctionRectsRef.current = []
+      return
+    }
+
+    const inputRect = input.getBoundingClientRect()
+    const inputAreaRect = inputArea.getBoundingClientRect()
+    const originLeft = inputRect.left - inputAreaRect.left
+    const originTop = inputRect.top - inputAreaRect.top
+    const rects = []
+
+    completedSentencesRef.current.forEach(sentence => {
+      const correctionEntry = correctionsByKey[getWritingCorrectionKey(sentence)]
+
+      if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return
+
+      const corrections = getWritingCorrectionWords(correctionEntry.corrections)
+
+      getCorrectionGroups(sentence.text, corrections).forEach(group => {
+        const range = group.range
+
+        // Skip zero-width (insertion) ranges — there is no word in the text to highlight.
+        if (!range || range.endOffset <= range.startOffset) return
+
+        const startCoordinates = getTextareaCaretCoordinates(
+          input,
+          sentence.startIndex + range.startOffset,
+        )
+        const endCoordinates = getTextareaCaretCoordinates(
+          input,
+          sentence.startIndex + range.endOffset,
+        )
+
+        if (!startCoordinates || !endCoordinates) return
+
+        const lineHeight =
+          parseFloat(startCoordinates.lineHeight) || parseFloat(startCoordinates.fontSize) || 0
+        const isSameLine = Math.abs(endCoordinates.top - startCoordinates.top) < 1
+        const width = isSameLine
+          ? Math.max(endCoordinates.left - startCoordinates.left, 0)
+          : Math.max(inputRect.width - startCoordinates.left, 0)
+
+        rects.push({
+          type: getCorrectionGroupType(group) || 'replacement',
+          top: originTop + startCoordinates.top,
+          left: originLeft + startCoordinates.left,
+          width,
+          height: lineHeight,
+        })
+      })
+    })
+
+    correctionRectsRef.current = rects
+  }
+
+  const handleTextMouseMove = event => {
+    const inputArea = inputAreaRef.current
+
+    if (!inputArea) return
+
+    if (correctionRectsStaleRef.current) {
+      computeCorrectionRects()
+    }
+
+    const inputAreaRect = inputArea.getBoundingClientRect()
+    const x = event.clientX - inputAreaRect.left
+    const y = event.clientY - inputAreaRect.top
+    const hoveredRect = correctionRectsRef.current.find(
+      rect =>
+        x >= rect.left &&
+        x <= rect.left + rect.width &&
+        y >= rect.top &&
+        y <= rect.top + rect.height,
+    )
+
+    setHoveredWordHighlight(previous => {
+      if (!hoveredRect) return null
+
+      if (
+        previous &&
+        previous.left === hoveredRect.left &&
+        previous.top === hoveredRect.top &&
+        previous.width === hoveredRect.width
+      ) {
+        return previous
+      }
+
+      return hoveredRect
+    })
+  }
+
+  const handleTextMouseLeave = () => setHoveredWordHighlight(null)
+
   return (
     <Box
       className={`essay-writing-input-area ${
@@ -557,6 +684,21 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
           }}
         />
       )}
+      {hoveredWordHighlight && (
+        <Box
+          component="span"
+          className={[
+            'essay-writing-word-highlight',
+            `essay-writing-word-highlight-${hoveredWordHighlight.type}`,
+          ].join(' ')}
+          style={{
+            top: hoveredWordHighlight.top,
+            left: hoveredWordHighlight.left,
+            width: hoveredWordHighlight.width,
+            height: hoveredWordHighlight.height,
+          }}
+        />
+      )}
       <TextField
         fullWidth
         multiline
@@ -566,9 +708,15 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         onChange={handleChange}
         onClick={handleSelect}
         onKeyUp={handleSelect}
+        onMouseLeave={handleTextMouseLeave}
+        onMouseMove={handleTextMouseMove}
         onPaste={handlePaste}
         onSelect={handleSelect}
-        onScrollCapture={() => setInsertionHighlight(null)}
+        onScrollCapture={() => {
+          correctionRectsStaleRef.current = true
+          setHoveredWordHighlight(null)
+          setInsertionHighlight(null)
+        }}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"
