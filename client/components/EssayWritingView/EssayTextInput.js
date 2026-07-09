@@ -125,14 +125,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }
   }
 
-  const restoreUserSelection = input => {
-    const inputLength = input.value.length
-    const selectionStart = Math.min(userSelectionRef.current.start, inputLength)
-    const selectionEnd = Math.min(userSelectionRef.current.end, inputLength)
-
-    setInputSelection(input, selectionStart, selectionEnd)
-  }
-
   const setDeletionSelectionHighlight = isDeletion => {
     setIsDeletionSelectionHighlighted(Boolean(isDeletion))
     inputAreaRef.current?.classList.toggle('essay-writing-input-area-deletion', Boolean(isDeletion))
@@ -141,22 +133,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const clearCorrectionHighlight = () => {
     setInsertionHighlight(null)
     setDeletionSelectionHighlight(false)
-  }
-
-  const clearInputSelection = () => {
-    clearCorrectionHighlight()
-
-    const input = inputRef.current
-
-    if (!input?.setSelectionRange) return
-
-    const caretPosition = input.selectionEnd ?? input.value.length
-
-    userSelectionRef.current = {
-      end: caretPosition,
-      start: caretPosition,
-    }
-    setInputSelection(input, caretPosition, caretPosition)
   }
 
   // For a plain caret click, resolve the correction the caret lands on (if any) so that clicking a
@@ -227,18 +203,23 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     )
   }
 
+  // Bubble interactions (click/hover/leave/clear from the sidebar) drive the same word overlay used
+  // when a word is clicked in the text: a click sets the persistent highlight, a hover sets the
+  // transient one, so both entry points look and behave identically.
   useEffect(() => {
     const {
-      endOffset,
-      isDeletion,
-      isInsertion,
       action,
+      endOffset,
+      interactionType,
+      isInsertion,
       sentenceId: sentenceIdToSelect,
       startOffset,
     } = sentenceSelectionRequest || {}
 
     if (action === 'clear') {
-      clearInputSelection()
+      clearSelectedWordHighlight()
+      setHoveredWordHighlight(null)
+      setInsertionHighlight(null)
       return
     }
 
@@ -249,28 +230,40 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     )
     const input = inputRef.current
 
-    if (!sentenceToSelect || !input?.setSelectionRange) return
+    if (!sentenceToSelect || !input) return
 
     const hasCorrectionRange = Number.isInteger(startOffset) && Number.isInteger(endOffset)
-    const selectionStart = hasCorrectionRange
-      ? sentenceToSelect.startIndex + startOffset
-      : sentenceToSelect.startIndex
-    const selectionEnd = hasCorrectionRange
-      ? sentenceToSelect.startIndex + endOffset
-      : sentenceToSelect.endIndex
 
-    if (!isInsertion || selectionStart !== selectionEnd || !inputAreaRef.current) {
+    // Non-insertion correction: draw the word overlay (persistent on click, transient on hover).
+    if (!isInsertion || !hasCorrectionRange || startOffset !== endOffset || !inputAreaRef.current) {
       setInsertionHighlight(null)
-      setDeletionSelectionHighlight(isDeletion)
-      input.focus()
-      setInputSelection(input, selectionStart, selectionEnd)
+
+      if (!hasCorrectionRange) return
+
+      const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
+
+      if (correctionRectsStaleRef.current) computeCorrectionRects()
+
+      if (interactionType === 'hover') {
+        const group = correctionRectsRef.current.find(candidate => candidate.key === key)
+
+        setHoveredWordHighlight(
+          group ? { key: group.key, type: group.type, rects: group.rects } : null,
+        )
+        return
+      }
+
+      setHoveredWordHighlight(null)
+      selectedGroupKeyRef.current = key
+      refreshSelectedWordHighlight()
       return
     }
 
-    setDeletionSelectionHighlight(false)
-    restoreUserSelection(input)
-
-    const caretCoordinates = getTextareaCaretCoordinates(input, selectionStart)
+    // Insertion point (zero-width): show the caret-bar overlay at the insertion position.
+    const caretCoordinates = getTextareaCaretCoordinates(
+      input,
+      sentenceToSelect.startIndex + startOffset,
+    )
 
     if (!caretCoordinates) {
       setInsertionHighlight(null)
@@ -703,6 +696,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         className={[
           'essay-writing-word-highlight',
           `essay-writing-word-highlight-${highlight.type}`,
+          `essay-writing-word-highlight-${variant}`,
         ].join(' ')}
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
       />

@@ -50,6 +50,13 @@ const EssayWritingView = () => {
     })
   }
 
+  const isSameSelection = (first, second) =>
+    first &&
+    second &&
+    first.sentenceId === second.sentenceId &&
+    first.startOffset === second.startOffset &&
+    first.endOffset === second.endOffset
+
   const requestSentenceSelection = selectionRequest => {
     // Leaving a hovered bubble reverts the preview to the currently selected bubble (or clears it).
     if (selectionRequest?.interactionType === 'leave') {
@@ -61,28 +68,37 @@ const EssayWritingView = () => {
       return
     }
 
-    setSentenceSelectionRequest(selectionRequest)
+    if (selectionRequest?.interactionType === 'click') {
+      // Clicking the already-selected bubble toggles it off.
+      if (isSameSelection(selectedSelectionRef.current, selectionRequest)) {
+        clearEssaySelection()
+        return
+      }
 
-    if (selectionRequest?.interactionType !== 'click') return
+      selectedSelectionRef.current = selectionRequest
+      setSentenceSelectionRequest(selectionRequest)
 
-    selectedSelectionRef.current = selectionRequest
-
-    setEssayFocus(selectionRequest?.sentence ? {
-      correctedText: selectionRequest.correctedText || null,
-      focusedSentence: selectionRequest.sentence,
-      focusedWord: selectionRequest.focusedWord || null,
-      focusedWordId: selectionRequest.focusedWordId ?? null,
-      focusedWordIds: selectionRequest.focusedWordIds || [],
-      originalText: selectionRequest.originalText || selectionRequest.sentence,
-      sentenceId: selectionRequest.sentenceId,
-      selection: {
-        endOffset: selectionRequest.endOffset,
-        isDeletion: selectionRequest.isDeletion,
-        isInsertion: selectionRequest.isInsertion,
+      setEssayFocus(selectionRequest?.sentence ? {
+        correctedText: selectionRequest.correctedText || null,
+        focusedSentence: selectionRequest.sentence,
+        focusedWord: selectionRequest.focusedWord || null,
+        focusedWordId: selectionRequest.focusedWordId ?? null,
+        focusedWordIds: selectionRequest.focusedWordIds || [],
+        originalText: selectionRequest.originalText || selectionRequest.sentence,
         sentenceId: selectionRequest.sentenceId,
-        startOffset: selectionRequest.startOffset,
-      },
-    } : null)
+        selection: {
+          endOffset: selectionRequest.endOffset,
+          isDeletion: selectionRequest.isDeletion,
+          isInsertion: selectionRequest.isInsertion,
+          sentenceId: selectionRequest.sentenceId,
+          startOffset: selectionRequest.startOffset,
+        },
+      } : null)
+      return
+    }
+
+    // Hover preview.
+    setSentenceSelectionRequest(selectionRequest)
   }
 
   return (

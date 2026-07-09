@@ -120,19 +120,25 @@ export const getTextareaRangeRects = (textarea, ranges) => {
   const mirrorRect = mirror.getBoundingClientRect()
   const borderLeft = parseFloat(textareaStyle.borderLeftWidth) || 0
   const borderTop = parseFloat(textareaStyle.borderTopWidth) || 0
+  const lineHeight = parseFloat(textareaStyle.lineHeight) || 0
   const { scrollLeft, scrollTop } = textarea
 
   const result = measuredSpans.map(({ range, span }) => ({
     key: range.key,
     type: range.type,
     rects: Array.from(span.getClientRects())
-      .map(rect => ({
-        left: rect.left - mirrorRect.left - borderLeft - scrollLeft,
-        top: rect.top - mirrorRect.top - borderTop - scrollTop,
-        width: rect.width,
-        height: rect.height,
-      }))
-      .filter(rect => rect.width > 0),
+      .filter(rect => rect.width > 0)
+      .map(rect => {
+        const height = lineHeight || rect.height
+        const contentTop = rect.top - mirrorRect.top - borderTop - scrollTop
+
+        return {
+          left: rect.left - mirrorRect.left - borderLeft - scrollLeft,
+          top: contentTop + rect.height / 2 - height / 2,
+          width: rect.width,
+          height,
+        }
+      }),
   }))
 
   document.body.removeChild(mirror)

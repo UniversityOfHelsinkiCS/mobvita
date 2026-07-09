@@ -138,6 +138,10 @@ $essay-bubble-deletion-bg-color: #fccccc;
   background-color: $essay-textarea-highlight-deletion-bg-color;
 }
 
+.essay-writing-word-highlight-selected {
+  filter: brightness(1.1);
+}
+
 .essay-writing-input {
   display: flex;
   flex-direction: column;
@@ -199,9 +203,12 @@ $essay-bubble-deletion-bg-color: #fccccc;
   background: #fff;
   transition: filter 0.2s;
 
-  &:hover,
-  &.essay-writing-correction-bubble-active {
+  &:hover {
     transform: scale(1.02);
+    filter: brightness(1.05);
+  }
+  &.essay-writing-correction-bubble-active {
+    transform: scale(1.03);
     filter: brightness(1.1);
   }
 }
