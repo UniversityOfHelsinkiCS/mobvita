@@ -7,12 +7,12 @@ $essay-sidebar-offset: 380px;
 // essay text area, and one for the corrected word shown in the suggestion bubble.
 $essay-textarea-highlight-replacement-bg-color: #88cefb;
 $essay-textarea-highlight-insertion-bg-color: #92f294;
-$essay-textarea-highlight-deletion-bg-color: #fccccc;
+$essay-textarea-highlight-deletion-bg-color: #f6b3b3;
 
 $essay-bubble-multi-bg-color: #88cefb;
 $essay-bubble-replacement-bg-color: #88cefb;
 $essay-bubble-insertion-bg-color: #92f294;
-$essay-bubble-deletion-bg-color: #fccccc;
+$essay-bubble-deletion-bg-color: #f6b3b3;
 
 .essay-writing-page {
   display: flex;
