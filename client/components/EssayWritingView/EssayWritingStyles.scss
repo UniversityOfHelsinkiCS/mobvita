@@ -269,6 +269,13 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   background-color: $essay-bubble-insertion-bg-color;
 }
 
+// Dev/staging-only "→ correct" reference appended after the incorrect form in a bubble.
+.essay-writing-corrected-word-dev-correction {
+  opacity: 0.6;
+  font-size: 0.85em;
+  font-style: italic;
+}
+
 .essay-writing-correction-feedback-button {
   flex: 0 0 auto;
   margin-left: auto !important;

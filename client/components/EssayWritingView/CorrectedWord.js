@@ -7,8 +7,8 @@ import {
 
 const textHasLettersOrNumbers = text => /[\p{L}\p{N}]/u.test(text)
 
-const CorrectedWord = ({ word }) => {
-  const { original, corrected, feedback } = word
+const CorrectedWord = ({ word, showCorrection }) => {
+  const { original, corrected } = word
   const originalText = getCorrectionText(original).trim()
   const correctedText = getCorrectionText(corrected).trim()
   const isDeletion = isCorrectionDeletion(word)
@@ -23,21 +23,30 @@ const CorrectedWord = ({ word }) => {
       ? 'essay-writing-corrected-word-replacement'
       : '',
     isInsertion ? 'essay-writing-corrected-word-insertion' : '',
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
-  const displayedCorrection = isDeletion ? original : corrected || original
+  const incorrectText = isInsertion ? correctedText : originalText
 
-  if (isInsertion && !correctedText) {
+  if (!incorrectText && !correctedText) {
     return null
   }
 
-  if (!corrected && !originalText) {
-    return null
-  }
+  // Dev/staging reference only: also show the correction as "error → correct" (replacements only).
+  const showDevCorrection =
+    showCorrection &&
+    !isDeletion &&
+    !isInsertion &&
+    Boolean(correctedText) &&
+    correctedText !== incorrectText
 
   return (
     <span className={className}>
-      {displayedCorrection}
+      {incorrectText || correctedText}
+      {showDevCorrection && (
+        <span className="essay-writing-corrected-word-dev-correction"> → {correctedText}</span>
+      )}
     </span>
   )
 }
