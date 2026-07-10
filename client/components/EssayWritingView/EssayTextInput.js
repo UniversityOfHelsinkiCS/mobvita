@@ -24,7 +24,7 @@ import {
 } from './utils/essaySentences'
 import {
   findCorrectionGroupAtOffset,
-  findInsertionGroupNearOffset,
+  findInsertionGroupInRegion,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupFocus,
   getCorrectionGroups,
@@ -144,11 +144,10 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     const corrections = getWritingCorrectionWords(correctionEntry.corrections)
     const offset = caret - sentence.startIndex
-    // Prefer a word correction under the caret; otherwise fall back to an insertion point next to
-    // the caret, so clicking the gap where a word should be inserted also selects it.
+
     const group =
       findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
-      findInsertionGroupNearOffset(sentence.text, corrections, offset)
+      findInsertionGroupInRegion(sentence.text, corrections, offset)
 
     if (!group) return null
 
@@ -228,7 +227,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       return
     }
 
-    // Click (or a re-sent selected click on bubble-leave): persist the highlight.
     setHoveredWordHighlight(null)
     selectedGroupKeyRef.current = key
     refreshSelectedHighlight()
@@ -608,16 +606,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
         if (span.end <= span.start) return null
 
-        // Measure the span on its own so it can't clash with an overlapping corrected word in the
-        // shared getTextareaRangeRects pass.
         const measured = getTextareaRangeRects(input, [
           { key, type: 'insertion', start: span.start, end: span.end },
         ])[0]
 
         if (!measured || !measured.rects.length) return null
 
-        // Underline only the gap (the missing spot), at the glyph baseline rather than under the
-        // whole surrounding-word highlight.
         const gap = getInsertionGapSpan(input.value, offset)
         const gapMeasured =
           gap.end > gap.start

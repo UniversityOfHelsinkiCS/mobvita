@@ -426,29 +426,38 @@ export const findCorrectionGroupAtOffset = (sentence, corrections, offset) => {
   )
 }
 
-// Find the insertion (zero-width) correction group nearest to a sentence-relative offset, within
-// `tolerance` characters. This lets a caret click in the gap where a word should be inserted select
-// that insertion, since insertions have no character span of their own to click on.
-export const findInsertionGroupNearOffset = (sentence, corrections, offset, tolerance = 1) => {
+// Find the insertion (zero-width) group whose region contains the offset. A region is the run of
+// words around an insertion point, bounded by the nearest replacement/deletion on each side (or a
+// sentence edge). So clicking any plain word by a missing-word gap selects that insertion, not just
+// the gap. When a region holds several insertions, the nearest to the offset wins.
+export const findInsertionGroupInRegion = (sentence, corrections, offset) => {
   if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
   if (!Number.isInteger(offset)) return null
 
   const groups = getCorrectionGroups(sentence, corrections)
-  let nearest = null
-  let nearestDistance = tolerance + 1
+  const wordRanges = groups
+    .map(group => group.range)
+    .filter(range => range && range.endOffset > range.startOffset)
+  const insertions = groups.filter(
+    group => group.range && group.range.endOffset === group.range.startOffset,
+  )
 
-  groups.forEach(group => {
-    const range = group?.range
+  if (!insertions.length) return null
 
-    if (!range || range.endOffset !== range.startOffset) return
+  // The correction-free region around the offset, bounded by replacement/deletion words.
+  const leftBound = wordRanges
+    .filter(range => range.endOffset <= offset)
+    .reduce((bound, range) => Math.max(bound, range.endOffset), 0)
+  const rightBound = wordRanges
+    .filter(range => range.startOffset >= offset)
+    .reduce((bound, range) => Math.min(bound, range.startOffset), sentence.length)
 
-    const distance = Math.abs(range.startOffset - offset)
+  const distanceToOffset = group => Math.abs(group.range.startOffset - offset)
 
-    if (distance <= tolerance && distance < nearestDistance) {
-      nearest = group
-      nearestDistance = distance
-    }
-  })
-
-  return nearest
+  return insertions
+    .filter(group => group.range.startOffset >= leftBound && group.range.startOffset <= rightBound)
+    .reduce((nearest, group) => {
+      if (!nearest) return group
+      return distanceToOffset(group) < distanceToOffset(nearest) ? group : nearest
+    }, null)
 }
