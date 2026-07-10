@@ -68,8 +68,6 @@ export const getCorrectionFeedbackText = feedback => {
     .join('\n')
 }
 
-const getComparableCorrectionText = value => normalizeSearchText(value).trim().toLocaleLowerCase()
-
 const combiningMarkRegex = /[\u0300-\u036f]/
 
 const getNextTextCluster = (value, startOffset) => {
@@ -223,92 +221,6 @@ const getCorrectionRange = (word, positionsById) => {
   }
 }
 
-const rangesAreAdjacent = (sentence, firstRange, secondRange) => {
-  if (!firstRange || !secondRange) return false
-
-  const textBetweenRanges = sentence.slice(firstRange.endOffset, secondRange.startOffset)
-
-  return /^\s*$/.test(textBetweenRanges)
-}
-
-const mergeRanges = (firstRange, secondRange) => {
-  if (!firstRange) return secondRange
-  if (!secondRange) return firstRange
-
-  const mergedRange = {
-    startOffset: Math.min(firstRange.startOffset, secondRange.startOffset),
-    endOffset: Math.max(firstRange.endOffset, secondRange.endOffset),
-  }
-
-  mergedRange.isDeletion = firstRange.isDeletion || secondRange.isDeletion
-  mergedRange.isInsertion = firstRange.isInsertion || secondRange.isInsertion
-
-  return mergedRange
-}
-
-const getMovedCorrectionGroups = (corrections, positionsById) => {
-  const usedCorrectionIndexes = new Set()
-  const groups = []
-
-  corrections.forEach((word, insertionIndex) => {
-    if (!isCorrectionInsertion(word) || usedCorrectionIndexes.has(insertionIndex)) return
-
-    const insertedText = getComparableCorrectionText(word.corrected)
-
-    if (!insertedText) return
-
-    const matchingDeletion = corrections
-      .map((candidate, index) => ({ candidate, index }))
-      .filter(
-        ({ candidate, index }) =>
-          !usedCorrectionIndexes.has(index) &&
-          isCorrectionDeletion(candidate) &&
-          getComparableCorrectionText(candidate.original) === insertedText,
-      )
-      .sort(
-        (firstMatch, secondMatch) =>
-          Math.abs(firstMatch.index - insertionIndex) -
-          Math.abs(secondMatch.index - insertionIndex),
-      )[0]
-
-    if (!matchingDeletion) return
-
-    const startIndex = Math.min(insertionIndex, matchingDeletion.index)
-    const endIndex = Math.max(insertionIndex, matchingDeletion.index)
-    const range = mergeRanges(positionsById[word.ID], positionsById[matchingDeletion.candidate.ID])
-
-    usedCorrectionIndexes.add(insertionIndex)
-    usedCorrectionIndexes.add(matchingDeletion.index)
-    groups.push({ endIndex, range, startIndex })
-  })
-
-  const mergedGroups = groups
-    .sort((firstGroup, secondGroup) => firstGroup.startIndex - secondGroup.startIndex)
-    .reduce((merged, group) => {
-      const previousGroup = merged[merged.length - 1]
-
-      if (!previousGroup || group.startIndex > previousGroup.endIndex) {
-        return merged.concat(group)
-      }
-
-      previousGroup.endIndex = Math.max(previousGroup.endIndex, group.endIndex)
-      previousGroup.range = mergeRanges(previousGroup.range, group.range)
-      return merged
-    }, [])
-    .map(group => ({
-      range: group.range,
-      words: corrections.slice(group.startIndex, group.endIndex + 1),
-    }))
-
-  const movedWordIds = new Set()
-
-  mergedGroups.forEach(group => {
-    group.words.forEach(word => movedWordIds.add(word.ID))
-  })
-
-  return { groups: mergedGroups, movedWordIds }
-}
-
 // A chunk marker on a token: the backend sends it as `token.feedback.chunk` = "chunk_start" or
 // "chunk_end".
 const getChunkMarker = word => {
@@ -438,31 +350,11 @@ export const getCorrectionGroups = (sentence, corrections) => {
   }
 
   const positionsById = getWordPositionsById(sentence, corrections)
-  const { groups: movedCorrectionGroups, movedWordIds } = getMovedCorrectionGroups(
-    corrections,
-    positionsById,
-  )
-  const adjacentCorrectionGroups = corrections
-    .filter(word => wordHasCorrection(word) && !movedWordIds.has(word.ID))
-    .map(word => ({
-      range: getCorrectionRange(word, positionsById),
-      words: [word],
-    }))
-    .reduce((groups, correction) => {
-      const previousGroup = groups[groups.length - 1]
-
-      if (previousGroup && rangesAreAdjacent(sentence, previousGroup.range, correction.range)) {
-        previousGroup.words = previousGroup.words.concat(correction.words)
-        previousGroup.range = mergeRanges(previousGroup.range, correction.range)
-        return groups
-      }
-
-      return groups.concat(correction)
-    }, [])
 
   return dedupeIdenticalGroups(
-    movedCorrectionGroups
-      .concat(adjacentCorrectionGroups)
+    corrections
+      .filter(wordHasCorrection)
+      .map(word => ({ range: getCorrectionRange(word, positionsById), words: [word] }))
       .sort(
         (firstGroup, secondGroup) =>
           (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
