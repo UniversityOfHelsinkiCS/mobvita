@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v1'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v2'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 const hashString = value => {
@@ -114,7 +114,8 @@ const initialState = {
   latestCorrectionKeyBySentenceId: {},
 }
 
-const CORRECTION_PLACEHOLDER_VALUES = new Set(['-', '—', '–'])
+// Backend delete/insert placeholder is U+25AC (▬).
+const CORRECTION_PLACEHOLDER_VALUES = new Set([String.fromCodePoint(0x25ac)])
 
 const wordValuesMatch = (original, corrected) =>
   String(original).normalize('NFC').trim() === String(corrected).normalize('NFC').trim()

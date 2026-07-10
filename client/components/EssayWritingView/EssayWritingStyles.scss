@@ -7,12 +7,12 @@ $essay-sidebar-offset: 380px;
 // essay text area, and one for the corrected word shown in the suggestion bubble.
 $essay-textarea-highlight-replacement-bg-color: #88cefb;
 $essay-textarea-highlight-insertion-bg-color: #92f294;
-$essay-textarea-highlight-deletion-bg-color: #fccccc;
+$essay-textarea-highlight-deletion-bg-color: #f6b3b3;
 
 $essay-bubble-multi-bg-color: #88cefb;
 $essay-bubble-replacement-bg-color: #88cefb;
 $essay-bubble-insertion-bg-color: #92f294;
-$essay-bubble-deletion-bg-color: #fccccc;
+$essay-bubble-deletion-bg-color: #f6b3b3;
 
 .essay-writing-page {
   display: flex;
@@ -117,6 +117,31 @@ $essay-bubble-deletion-bg-color: #fccccc;
   transform: translate(-12px, -44%);
 }
 
+.essay-writing-word-highlight {
+  position: absolute;
+  z-index: 2;
+  border-radius: 2px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.essay-writing-word-highlight-replacement,
+.essay-writing-word-highlight-multi {
+  background-color: $essay-textarea-highlight-replacement-bg-color;
+}
+
+.essay-writing-word-highlight-insertion {
+  background-color: $essay-textarea-highlight-insertion-bg-color;
+}
+
+.essay-writing-word-highlight-deletion {
+  background-color: $essay-textarea-highlight-deletion-bg-color;
+}
+
+.essay-writing-word-highlight-selected {
+  filter: brightness(1.1);
+}
+
 .essay-writing-input {
   display: flex;
   flex-direction: column;
@@ -129,6 +154,11 @@ $essay-bubble-deletion-bg-color: #fccccc;
     flex: 1;
     height: 100%;
     align-items: stretch;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.23) !important;
+    border-width: 1px !important;
   }
 
   textarea,
@@ -173,27 +203,30 @@ $essay-bubble-deletion-bg-color: #fccccc;
   background: #fff;
   transition: filter 0.2s;
 
-  &:hover,
-  &.essay-writing-correction-bubble-active {
+  &:hover {
     transform: scale(1.02);
+    filter: brightness(1.05);
+  }
+  &.essay-writing-correction-bubble-active {
+    transform: scale(1.03);
     filter: brightness(1.1);
   }
 }
 
 .essay-writing-correction-bubble-multi {
-  background: $essay-bubble-multi-bg-color;
+  background: $essay-bubble-multi-bg-color !important;
 }
 
 .essay-writing-correction-bubble-replacement {
-  background: $essay-bubble-replacement-bg-color;
+  background: $essay-bubble-replacement-bg-color !important;
 }
 
 .essay-writing-correction-bubble-insertion {
-  background: $essay-bubble-insertion-bg-color;
+  background: $essay-bubble-insertion-bg-color !important;
 }
 
 .essay-writing-correction-bubble-deletion {
-  background: $essay-bubble-deletion-bg-color;
+  background: $essay-bubble-deletion-bg-color !important;
 }
 
 .essay-writing-correction-content {

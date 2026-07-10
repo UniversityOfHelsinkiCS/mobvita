@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
@@ -17,6 +17,8 @@ const EssayWritingView = () => {
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
+  // The bubble the user clicked; hovering another bubble previews it, and leaving reverts to this one.
+  const selectedSelectionRef = useRef(null)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const showFooter = width > 640
@@ -40,6 +42,7 @@ const EssayWritingView = () => {
   }, [])
 
   const clearEssaySelection = () => {
+    selectedSelectionRef.current = null
     setEssayFocus(null)
     setSentenceSelectionRequest({
       action: 'clear',
@@ -47,27 +50,55 @@ const EssayWritingView = () => {
     })
   }
 
+  const isSameSelection = (first, second) =>
+    first &&
+    second &&
+    first.sentenceId === second.sentenceId &&
+    first.startOffset === second.startOffset &&
+    first.endOffset === second.endOffset
+
   const requestSentenceSelection = selectionRequest => {
-    setSentenceSelectionRequest(selectionRequest)
+    // Leaving a hovered bubble reverts the preview to the currently selected bubble (or clears it).
+    if (selectionRequest?.interactionType === 'leave') {
+      setSentenceSelectionRequest(
+        selectedSelectionRef.current
+          ? { ...selectedSelectionRef.current, requestId: Date.now() }
+          : { action: 'clear', requestId: Date.now() },
+      )
+      return
+    }
 
-    if (selectionRequest?.interactionType !== 'click') return
+    if (selectionRequest?.interactionType === 'click') {
+      // Clicking the already-selected bubble toggles it off.
+      if (isSameSelection(selectedSelectionRef.current, selectionRequest)) {
+        clearEssaySelection()
+        return
+      }
 
-    setEssayFocus(selectionRequest?.sentence ? {
-      correctedText: selectionRequest.correctedText || null,
-      focusedSentence: selectionRequest.sentence,
-      focusedWord: selectionRequest.focusedWord || null,
-      focusedWordId: selectionRequest.focusedWordId ?? null,
-      focusedWordIds: selectionRequest.focusedWordIds || [],
-      originalText: selectionRequest.originalText || selectionRequest.sentence,
-      sentenceId: selectionRequest.sentenceId,
-      selection: {
-        endOffset: selectionRequest.endOffset,
-        isDeletion: selectionRequest.isDeletion,
-        isInsertion: selectionRequest.isInsertion,
+      selectedSelectionRef.current = selectionRequest
+      setSentenceSelectionRequest(selectionRequest)
+
+      setEssayFocus(selectionRequest?.sentence ? {
+        correctedText: selectionRequest.correctedText || null,
+        focusedSentence: selectionRequest.sentence,
+        focusedWord: selectionRequest.focusedWord || null,
+        focusedWordId: selectionRequest.focusedWordId ?? null,
+        focusedWordIds: selectionRequest.focusedWordIds || [],
+        originalText: selectionRequest.originalText || selectionRequest.sentence,
         sentenceId: selectionRequest.sentenceId,
-        startOffset: selectionRequest.startOffset,
-      },
-    } : null)
+        selection: {
+          endOffset: selectionRequest.endOffset,
+          isDeletion: selectionRequest.isDeletion,
+          isInsertion: selectionRequest.isInsertion,
+          sentenceId: selectionRequest.sentenceId,
+          startOffset: selectionRequest.startOffset,
+        },
+      } : null)
+      return
+    }
+
+    // Hover preview.
+    setSentenceSelectionRequest(selectionRequest)
   }
 
   return (

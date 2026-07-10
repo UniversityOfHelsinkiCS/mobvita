@@ -93,3 +93,4 @@ dist-ssr/
 
 # local env overrides
 *.local
+.claude/settings.local.json

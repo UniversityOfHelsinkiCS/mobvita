@@ -1,5 +1,8 @@
-const INSERTION_ORIGINAL_VALUES = new Set(['', '-', '—', '–'])
-const DELETION_CORRECTION_VALUES = new Set(['-', '—', '–'])
+// The backend marks a deleted/inserted slot with U+25AC (▬), the "black rectangle" placeholder.
+export const CORRECTION_PLACEHOLDER = String.fromCodePoint(0x25ac)
+
+const INSERTION_ORIGINAL_VALUES = new Set(['', CORRECTION_PLACEHOLDER])
+const DELETION_CORRECTION_VALUES = new Set([CORRECTION_PLACEHOLDER])
 
 export const getCorrectionText = value =>
   value === null || value === undefined ? '' : String(value)
@@ -400,4 +403,31 @@ export const findCorrectionGroupAtOffset = (sentence, corrections, offset) => {
     groups.find(group => groupCoversOffset(group, offset - 1)) ||
     null
   )
+}
+
+// Find the insertion (zero-width) correction group nearest to a sentence-relative offset, within
+// `tolerance` characters. This lets a caret click in the gap where a word should be inserted select
+// that insertion, since insertions have no character span of their own to click on.
+export const findInsertionGroupNearOffset = (sentence, corrections, offset, tolerance = 1) => {
+  if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
+  if (!Number.isInteger(offset)) return null
+
+  const groups = getCorrectionGroups(sentence, corrections)
+  let nearest = null
+  let nearestDistance = tolerance + 1
+
+  groups.forEach(group => {
+    const range = group?.range
+
+    if (!range || range.endOffset !== range.startOffset) return
+
+    const distance = Math.abs(range.startOffset - offset)
+
+    if (distance <= tolerance && distance < nearestDistance) {
+      nearest = group
+      nearestDistance = distance
+    }
+  })
+
+  return nearest
 }

@@ -23,11 +23,15 @@ import {
 } from './utils/essaySentences'
 import {
   findCorrectionGroupAtOffset,
+  findInsertionGroupNearOffset,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupFocus,
+  getCorrectionGroups,
+  getCorrectionGroupType,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
-import { getTextareaCaretCoordinates } from './utils/textareaCaret'
+import { getTextareaCaretCoordinates, getTextareaRangeRects } from './utils/textareaCaret'
+import { normalizeEssayInput } from './utils/normalizeEssayInput'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 
 const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
@@ -70,12 +74,23 @@ const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEn
   return null
 }
 
+const INSERTION_HOVER_HIT_HALF_WIDTH = 12
+const MIN_WORD_HIGHLIGHT_WIDTH = 14
+
 const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
-  const [insertionHighlight, setInsertionHighlight] = useState(null)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
+  const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
+  const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
+  const [hoveredInsertionHighlight, setHoveredInsertionHighlight] = useState(null)
+  const [selectedInsertionHighlight, setSelectedInsertionHighlight] = useState(null)
+  const correctionRectsRef = useRef([])
+  const correctionRectsStaleRef = useRef(true)
+  const selectedGroupKeyRef = useRef(null)
+  const scrollFrameRef = useRef(null)
+  const correctionsByKeyRef = useRef(null)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -91,6 +106,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
   const learningLanguage = useLearningLanguage()
+
+  correctionsByKeyRef.current = correctionsByKey
 
   const setInputSelection = (input, start, end) => {
     applyingCorrectionSelectionRef.current = true
@@ -113,38 +130,13 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }
   }
 
-  const restoreUserSelection = input => {
-    const inputLength = input.value.length
-    const selectionStart = Math.min(userSelectionRef.current.start, inputLength)
-    const selectionEnd = Math.min(userSelectionRef.current.end, inputLength)
-
-    setInputSelection(input, selectionStart, selectionEnd)
-  }
-
   const setDeletionSelectionHighlight = isDeletion => {
     setIsDeletionSelectionHighlighted(Boolean(isDeletion))
     inputAreaRef.current?.classList.toggle('essay-writing-input-area-deletion', Boolean(isDeletion))
   }
 
   const clearCorrectionHighlight = () => {
-    setInsertionHighlight(null)
     setDeletionSelectionHighlight(false)
-  }
-
-  const clearInputSelection = () => {
-    clearCorrectionHighlight()
-
-    const input = inputRef.current
-
-    if (!input?.setSelectionRange) return
-
-    const caretPosition = input.selectionEnd ?? input.value.length
-
-    userSelectionRef.current = {
-      end: caretPosition,
-      start: caretPosition,
-    }
-    setInputSelection(input, caretPosition, caretPosition)
   }
 
   // For a plain caret click, resolve the correction the caret lands on (if any) so that clicking a
@@ -163,11 +155,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return null
 
     const corrections = getWritingCorrectionWords(correctionEntry.corrections)
-    const group = findCorrectionGroupAtOffset(
-      sentence.text,
-      corrections,
-      caret - sentence.startIndex,
-    )
+    const offset = caret - sentence.startIndex
+    // Prefer a word correction under the caret; otherwise fall back to an insertion point next to
+    // the caret, so clicking the gap where a word should be inserted also selects it.
+    const group =
+      findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
+      findInsertionGroupNearOffset(sentence.text, corrections, offset)
 
     if (!group) return null
 
@@ -195,16 +188,16 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     if (correctionFocus) {
       const { focus, sentence } = correctionFocus
-      setDeletionSelectionHighlight(focus.selection.isDeletion)
-      setInputSelection(
-        input,
-        sentence.startIndex + focus.selection.startOffset,
-        sentence.startIndex + focus.selection.endOffset,
-      )
+      const { startOffset, endOffset } = focus.selection
+
+      if (correctionRectsStaleRef.current) computeCorrectionRects()
+      selectedGroupKeyRef.current = `${sentence.sentenceId}:${startOffset}:${endOffset}`
+      refreshSelectedHighlight()
       onEssayFocusChange?.(focus)
       return
     }
 
+    clearSelectedHighlight()
     onEssayFocusChange?.(
       getEssayFocusFromSelection(
         completedSentencesRef.current,
@@ -215,72 +208,87 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     )
   }
 
+  // Bubble interactions (click/hover/leave/clear) drive the same overlays used when a word is
+  // clicked/hovered in the text: click = persistent highlight, hover = transient. Works for both
+  // words (box) and insertions (caret-bar), so the two entry points match.
   useEffect(() => {
     const {
-      endOffset,
-      isDeletion,
-      isInsertion,
       action,
+      endOffset,
+      interactionType,
       sentenceId: sentenceIdToSelect,
       startOffset,
     } = sentenceSelectionRequest || {}
 
     if (action === 'clear') {
-      clearInputSelection()
+      clearSelectedHighlight()
+      setHoveredWordHighlight(null)
+      setHoveredInsertionHighlight(null)
       return
     }
 
-    if (!sentenceIdToSelect) return
-
-    const sentenceToSelect = completedSentencesRef.current.find(
-      sentence => sentence.sentenceId === sentenceIdToSelect,
-    )
-    const input = inputRef.current
-
-    if (!sentenceToSelect || !input?.setSelectionRange) return
-
-    const hasCorrectionRange = Number.isInteger(startOffset) && Number.isInteger(endOffset)
-    const selectionStart = hasCorrectionRange
-      ? sentenceToSelect.startIndex + startOffset
-      : sentenceToSelect.startIndex
-    const selectionEnd = hasCorrectionRange
-      ? sentenceToSelect.startIndex + endOffset
-      : sentenceToSelect.endIndex
-
-    if (!isInsertion || selectionStart !== selectionEnd || !inputAreaRef.current) {
-      setInsertionHighlight(null)
-      setDeletionSelectionHighlight(isDeletion)
-      input.focus()
-      setInputSelection(input, selectionStart, selectionEnd)
+    if (!sentenceIdToSelect || !Number.isInteger(startOffset) || !Number.isInteger(endOffset)) {
       return
     }
 
-    setDeletionSelectionHighlight(false)
-    restoreUserSelection(input)
+    if (correctionRectsStaleRef.current) computeCorrectionRects()
 
-    const caretCoordinates = getTextareaCaretCoordinates(input, selectionStart)
+    const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
+    const group = correctionRectsRef.current.find(candidate => candidate.key === key)
 
-    if (!caretCoordinates) {
-      setInsertionHighlight(null)
+    if (interactionType === 'hover') {
+      setHoveredWordHighlight(
+        group && !group.isInsertion
+          ? { key: group.key, type: group.type, rects: group.rects }
+          : null,
+      )
+      setHoveredInsertionHighlight(
+        group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
+      )
       return
     }
 
-    const inputRect = input.getBoundingClientRect()
-    const inputAreaRect = inputAreaRef.current.getBoundingClientRect()
-    const fontSizePx = parseFloat(caretCoordinates.fontSize) || 0
-
-    setInsertionHighlight({
-      fontFamily: caretCoordinates.fontFamily,
-      fontSize: caretCoordinates.fontSize,
-      left: inputRect.left - inputAreaRect.left + caretCoordinates.left,
-      lineHeight: caretCoordinates.lineHeight,
-      top: inputRect.top - inputAreaRect.top + caretCoordinates.top + fontSizePx / 2,
-    })
+    // Click (or a re-sent selected click on bubble-leave): persist the highlight.
+    setHoveredWordHighlight(null)
+    setHoveredInsertionHighlight(null)
+    selectedGroupKeyRef.current = key
+    refreshSelectedHighlight()
   }, [sentenceSelectionRequest])
 
   useEffect(() => {
     onEssayTextChange?.(textRef.current)
   }, [])
+
+  useEffect(() => {
+    correctionRectsStaleRef.current = true
+  }, [text, correctionsByKey])
+
+  useEffect(() => {
+    const input = inputRef.current
+
+    if (!input || !window.ResizeObserver) return undefined
+
+    const observer = new window.ResizeObserver(() => {
+      correctionRectsStaleRef.current = true
+      setHoveredWordHighlight(null)
+
+      if (selectedGroupKeyRef.current) {
+        computeCorrectionRects()
+        refreshSelectedHighlight()
+      }
+    })
+
+    observer.observe(input)
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(
+    () => () => {
+      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
+    },
+    [],
+  )
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -362,9 +370,28 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   }
 
   const handleChange = e => {
+    const input = e.target
+    const rawValue = input.value
+    const rawCaret = input.selectionStart
+
+    // Normalize the input on-site (NFC compose, strip invisibles, fold look-alike hyphens) unless the
+    // user is mid-IME composition. Normalization can change length, so recompute the caret from the
+    // normalized prefix and keep it in place.
+    const normalizedValue = e.nativeEvent?.isComposing ? rawValue : normalizeEssayInput(rawValue)
+    if (normalizedValue !== rawValue) {
+      const normalizedCaret = normalizeEssayInput(rawValue.slice(0, rawCaret)).length
+      input.value = normalizedValue
+      setInputSelection(input, normalizedCaret, normalizedCaret)
+    }
+
     clearCorrectionHighlight()
     onEssayFocusChange?.(null)
     saveUserSelection(e.target)
+
+    correctionRectsStaleRef.current = true
+    setHoveredWordHighlight(null)
+    setHoveredInsertionHighlight(null)
+    clearSelectedHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
@@ -529,6 +556,210 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }, 0)
   }
 
+  // Measure a pixel rectangle for every corrected word (offset → pixels via the caret mirror) so
+  // hovering is a cheap geometric hit-test, not the unreliable point → offset APIs. Recomputed
+  // lazily (only when marked stale) to avoid measuring on every mouse move.
+  const computeCorrectionRects = () => {
+    correctionRectsStaleRef.current = false
+
+    const input = inputRef.current
+    const inputArea = inputAreaRef.current
+
+    if (!input || !inputArea) {
+      correctionRectsRef.current = []
+      return
+    }
+
+    const corrections = correctionsByKeyRef.current || {}
+    const wordRanges = []
+    const insertionPoints = []
+
+    completedSentencesRef.current.forEach(sentence => {
+      const correctionEntry = corrections[getWritingCorrectionKey(sentence)]
+
+      if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return
+
+      getCorrectionGroups(
+        sentence.text,
+        getWritingCorrectionWords(correctionEntry.corrections),
+      ).forEach(group => {
+        const range = group.range
+
+        if (!range || !Number.isInteger(range.startOffset) || !Number.isInteger(range.endOffset)) {
+          return
+        }
+
+        const key = `${sentence.sentenceId}:${range.startOffset}:${range.endOffset}`
+
+        if (range.endOffset > range.startOffset) {
+          wordRanges.push({
+            key,
+            type: getCorrectionGroupType(group) || 'replacement',
+            start: sentence.startIndex + range.startOffset,
+            end: sentence.startIndex + range.endOffset,
+          })
+        } else {
+          insertionPoints.push({ key, offset: sentence.startIndex + range.startOffset })
+        }
+      })
+    })
+
+    const inputRect = input.getBoundingClientRect()
+    const inputAreaRect = inputArea.getBoundingClientRect()
+    const originLeft = inputRect.left - inputAreaRect.left
+    const originTop = inputRect.top - inputAreaRect.top
+
+    const wordGroups = getTextareaRangeRects(input, wordRanges).map(group => ({
+      key: group.key,
+      type: group.type,
+      isInsertion: false,
+      rects: group.rects.map(rect => {
+        const width = Math.max(rect.width, MIN_WORD_HIGHLIGHT_WIDTH)
+
+        return {
+          left: originLeft + rect.left - (width - rect.width) / 2,
+          top: originTop + rect.top,
+          width,
+          height: rect.height,
+        }
+      }),
+    }))
+
+    const insertionGroups = insertionPoints
+      .map(({ key, offset }) => {
+        const caret = getTextareaCaretCoordinates(input, offset)
+
+        if (!caret) return null
+
+        const lineHeight = parseFloat(caret.lineHeight) || parseFloat(caret.fontSize) || 0
+        const fontSizePx = parseFloat(caret.fontSize) || 0
+        const left = originLeft + caret.left
+        const top = originTop + caret.top
+
+        return {
+          key,
+          type: 'insertion',
+          isInsertion: true,
+          hitRect: {
+            left: left - INSERTION_HOVER_HIT_HALF_WIDTH,
+            top,
+            width: INSERTION_HOVER_HIT_HALF_WIDTH * 2,
+            height: lineHeight,
+          },
+          overlay: {
+            fontFamily: caret.fontFamily,
+            fontSize: caret.fontSize,
+            left,
+            lineHeight: caret.lineHeight,
+            top: top + fontSizePx / 2,
+          },
+        }
+      })
+      .filter(Boolean)
+
+    correctionRectsRef.current = [...wordGroups, ...insertionGroups]
+  }
+
+  const rectsContainPoint = (rects, x, y) =>
+    rects.some(
+      rect =>
+        x >= rect.left &&
+        x <= rect.left + rect.width &&
+        y >= rect.top &&
+        y <= rect.top + rect.height,
+    )
+
+  // Re-derive the persistent selected highlight (word box or insertion caret-bar) from the freshly
+  // measured correction rects, based on the selected group key.
+  const refreshSelectedHighlight = () => {
+    const key = selectedGroupKeyRef.current
+    const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
+
+    setSelectedWordHighlight(
+      group && !group.isInsertion ? { key: group.key, type: group.type, rects: group.rects } : null,
+    )
+    setSelectedInsertionHighlight(
+      group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
+    )
+  }
+
+  const clearSelectedHighlight = () => {
+    selectedGroupKeyRef.current = null
+    setSelectedWordHighlight(null)
+    setSelectedInsertionHighlight(null)
+  }
+
+  const handleTextMouseMove = event => {
+    const inputArea = inputAreaRef.current
+
+    if (!inputArea) return
+
+    if (correctionRectsStaleRef.current) {
+      computeCorrectionRects()
+    }
+
+    const inputAreaRect = inputArea.getBoundingClientRect()
+    const x = event.clientX - inputAreaRect.left
+    const y = event.clientY - inputAreaRect.top
+    const hoveredGroup = correctionRectsRef.current.find(group =>
+      group.isInsertion
+        ? rectsContainPoint([group.hitRect], x, y)
+        : rectsContainPoint(group.rects, x, y),
+    )
+
+    if (hoveredGroup?.isInsertion) {
+      setHoveredWordHighlight(null)
+      setHoveredInsertionHighlight(previous =>
+        previous?.key === hoveredGroup.key
+          ? previous
+          : { key: hoveredGroup.key, ...hoveredGroup.overlay },
+      )
+      return
+    }
+
+    setHoveredInsertionHighlight(null)
+    setHoveredWordHighlight(previous => {
+      if (!hoveredGroup) return previous ? null : previous
+      if (previous && previous.key === hoveredGroup.key) return previous
+
+      return { key: hoveredGroup.key, type: hoveredGroup.type, rects: hoveredGroup.rects }
+    })
+  }
+
+  const handleTextMouseLeave = () => {
+    setHoveredWordHighlight(null)
+    setHoveredInsertionHighlight(null)
+  }
+
+  const renderWordHighlights = (highlight, variant) =>
+    highlight?.rects.map((rect, index) => (
+      <Box
+        key={`${variant}-${highlight.key}-${index}`}
+        component="span"
+        className={[
+          'essay-writing-word-highlight',
+          `essay-writing-word-highlight-${highlight.type}`,
+          `essay-writing-word-highlight-${variant}`,
+        ].join(' ')}
+        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
+      />
+    ))
+
+  const renderInsertionHighlight = highlight =>
+    highlight ? (
+      <Box
+        component="span"
+        className="essay-writing-insertion-highlight"
+        style={{
+          fontFamily: highlight.fontFamily,
+          fontSize: highlight.fontSize,
+          left: highlight.left,
+          lineHeight: highlight.lineHeight,
+          top: highlight.top,
+        }}
+      />
+    ) : null
+
   return (
     <Box
       className={`essay-writing-input-area ${
@@ -536,19 +767,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       }`}
       ref={inputAreaRef}
     >
-      {insertionHighlight && (
-        <Box
-          component="span"
-          className="essay-writing-insertion-highlight"
-          style={{
-            fontFamily: insertionHighlight.fontFamily,
-            fontSize: insertionHighlight.fontSize,
-            left: insertionHighlight.left,
-            lineHeight: insertionHighlight.lineHeight,
-            top: insertionHighlight.top,
-          }}
-        />
-      )}
+      {renderInsertionHighlight(selectedInsertionHighlight)}
+      {hoveredInsertionHighlight?.key !== selectedInsertionHighlight?.key &&
+        renderInsertionHighlight(hoveredInsertionHighlight)}
+      {renderWordHighlights(selectedWordHighlight, 'selected')}
+      {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
+        renderWordHighlights(hoveredWordHighlight, 'hover')}
       <TextField
         fullWidth
         multiline
@@ -558,9 +782,23 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         onChange={handleChange}
         onClick={handleSelect}
         onKeyUp={handleSelect}
+        onMouseLeave={handleTextMouseLeave}
+        onMouseMove={handleTextMouseMove}
         onPaste={handlePaste}
         onSelect={handleSelect}
-        onScrollCapture={() => setInsertionHighlight(null)}
+        onScrollCapture={() => {
+          correctionRectsStaleRef.current = true
+          setHoveredWordHighlight(null)
+          setHoveredInsertionHighlight(null)
+
+          if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
+
+          scrollFrameRef.current = window.requestAnimationFrame(() => {
+            scrollFrameRef.current = null
+            computeCorrectionRects()
+            refreshSelectedHighlight()
+          })
+        }}
         placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
         variant="outlined"
         className="essay-writing-input"
