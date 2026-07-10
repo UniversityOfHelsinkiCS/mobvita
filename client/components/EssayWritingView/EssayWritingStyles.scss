@@ -103,18 +103,20 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
 }
 
+// Insertion highlight: a box over the word before + word after the insertion point (so both are
+// highlighted), with a double underline marking where a word should be added between them.
 .essay-writing-insertion-highlight {
   position: absolute;
   z-index: 2;
-  display: inline-block;
-  width: 24px;
-  height: 32px;
-  padding: 0;
-  background-color: $essay-textarea-highlight-insertion-bg-color;
-  mix-blend-mode: multiply;
-  color: inherit;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-color: rgba($essay-textarea-highlight-insertion-bg-color, 0.3);
+  border-bottom: 3px double #3f9c42;
   pointer-events: none;
-  transform: translate(-12px, -44%);
+}
+
+.essay-writing-insertion-highlight-selected {
+  filter: brightness(1.1);
 }
 
 .essay-writing-word-highlight {
@@ -267,6 +269,13 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
 .essay-writing-corrected-word-insertion {
   text-decoration: underline;
   background-color: $essay-bubble-insertion-bg-color;
+}
+
+// Correct token inside a chunk bubble: white background = nothing wrong with this word.
+.essay-writing-corrected-word-correct {
+  padding: 0 3px;
+  border-radius: 3px;
+  background-color: #fff;
 }
 
 // Dev/staging-only "→ correct" reference appended after the incorrect form in a bubble.

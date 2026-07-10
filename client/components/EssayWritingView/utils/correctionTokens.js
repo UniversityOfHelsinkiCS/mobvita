@@ -309,7 +309,115 @@ const getMovedCorrectionGroups = (corrections, positionsById) => {
   return { groups: mergedGroups, movedWordIds }
 }
 
+// A chunk marker on a token: the backend sends it as `token.feedback.chunk` = "chunk_start" or
+// "chunk_end".
+const getChunkMarker = word => {
+  const marker = word?.feedback?.chunk
+
+  if (marker === 'chunk_start') return 'start'
+  if (marker === 'chunk_end') return 'end'
+  return null
+}
+
+const hasChunkMarkers = corrections => corrections.some(getChunkMarker)
+
+// Token index ranges delimited by chunk-start / chunk-end markers. Missing markers are inferred so
+// partial backend data still yields sensible chunks: a stray end starts its chunk after the
+// previous one, and an unclosed start runs to the last token.
+const getChunkTokenRanges = corrections => {
+  const chunks = []
+  let openStart = null
+  let lastEnd = -1
+
+  corrections.forEach((word, index) => {
+    const marker = getChunkMarker(word)
+
+    if (marker === 'start') {
+      // Keep the earliest start of a nested/repeated run so the chunk isn't truncated.
+      if (openStart === null) openStart = index
+    } else if (marker === 'end') {
+      chunks.push({ startIndex: openStart != null ? openStart : lastEnd + 1, endIndex: index })
+      openStart = null
+      lastEnd = index
+    }
+  })
+
+  if (openStart != null) {
+    chunks.push({ startIndex: openStart, endIndex: corrections.length - 1 })
+  }
+
+  return chunks
+}
+
+// Group tokens by chunk: each chunk becomes one bubble holding all its tokens (correct ones too, so
+// they can be shown with a neutral background). A chunk's textarea range spans its errors. Any
+// corrected token outside every chunk falls back to its own single-error group so nothing is lost.
+const getChunkCorrectionGroups = (sentence, corrections) => {
+  const positionsById = getWordPositionsById(sentence, corrections)
+
+  const buildChunkRange = words => {
+    const errorRanges = words
+      .filter(wordHasCorrection)
+      .map(word => getCorrectionRange(word, positionsById))
+      .filter(Boolean)
+
+    // An all-correct chunk has no error ranges, so fall back to the positions of its tokens so it
+    // still gets a (non-error) range and renders as a bubble.
+    const ranges = errorRanges.length
+      ? errorRanges
+      : words.map(word => positionsById[word.ID]).filter(Boolean)
+
+    if (!ranges.length) return null
+
+    const startOffset = Math.min(...ranges.map(range => range.startOffset))
+    const endOffset = Math.max(...ranges.map(range => range.endOffset))
+
+    return {
+      startOffset,
+      endOffset,
+      isDeletion: errorRanges.some(range => range.isDeletion),
+      // Only a genuinely zero-width range is an insertion point; a multi-error span is not.
+      isInsertion: startOffset === endOffset && errorRanges.every(range => range.isInsertion),
+    }
+  }
+
+  const chunkedIndexes = new Set()
+  const chunkGroups = getChunkTokenRanges(corrections)
+    .map(({ startIndex, endIndex }) => {
+      for (let index = startIndex; index <= endIndex; index += 1) chunkedIndexes.add(index)
+
+      const words = corrections.slice(startIndex, endIndex + 1)
+      const range = buildChunkRange(words)
+
+      return range ? { range, words } : null
+    })
+    .filter(Boolean)
+
+  const leftoverGroups = corrections
+    .map((word, index) => ({ word, index }))
+    .filter(({ word, index }) => wordHasCorrection(word) && !chunkedIndexes.has(index))
+    .map(({ word }) => {
+      const range = getCorrectionRange(word, positionsById)
+
+      return range ? { range, words: [word] } : null
+    })
+    .filter(Boolean)
+
+  return chunkGroups
+    .concat(leftoverGroups)
+    .sort(
+      (firstGroup, secondGroup) =>
+        (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
+    )
+}
+
 export const getCorrectionGroups = (sentence, corrections) => {
+  // When the backend marks chunks, each chunk gets its own bubble instead of the default adjacency
+  // grouping.
+  if (hasChunkMarkers(corrections)) {
+    return getChunkCorrectionGroups(sentence, corrections)
+  }
+
   const positionsById = getWordPositionsById(sentence, corrections)
   const { groups: movedCorrectionGroups, movedWordIds } = getMovedCorrectionGroups(
     corrections,
@@ -366,18 +474,20 @@ const getCorrectionWordFocusText = word => {
 // click and a text-area click on the same correction produce identical focus.
 export const getCorrectionGroupFocus = correctionGroup => {
   const words = correctionGroup?.words || []
-  const focusedWordIds = words
-    .filter(
-      word =>
-        isCorrectionDeletion(word) ||
-        isCorrectionInsertion(word) ||
-        (word.original && word.corrected),
-    )
+  // Only the tokens that actually carry a correction — a chunk group also holds correct tokens that
+  // must not leak into the focused word/ids sent to the chatbot.
+  const correctedWords = words.filter(
+    word =>
+      isCorrectionDeletion(word) ||
+      isCorrectionInsertion(word) ||
+      (word.original && word.corrected),
+  )
+  const focusedWordIds = correctedWords
     .map(word => word.ID)
     .filter(wordId => wordId !== null && wordId !== undefined)
 
   return {
-    focusedWord: words.map(getCorrectionWordFocusText).filter(Boolean).join(' '),
+    focusedWord: correctedWords.map(getCorrectionWordFocusText).filter(Boolean).join(' '),
     focusedWordId: focusedWordIds[0] ?? null,
     focusedWordIds,
   }

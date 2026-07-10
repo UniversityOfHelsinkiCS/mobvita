@@ -14,6 +14,9 @@ const CorrectedWord = ({ word, showCorrection }) => {
   const isDeletion = isCorrectionDeletion(word)
   const isInsertion = isCorrectionInsertion(word)
   const isDeletedPunctuation = isDeletion && !textHasLettersOrNumbers(originalText)
+  // A correct token inside a chunk bubble (no correction): shown with a white background to signal
+  // there is nothing wrong with it.
+  const isCorrect = Boolean(originalText) && !corrected && !isDeletion && !isInsertion
 
   const className = [
     'essay-writing-corrected-word',
@@ -23,6 +26,7 @@ const CorrectedWord = ({ word, showCorrection }) => {
       ? 'essay-writing-corrected-word-replacement'
       : '',
     isInsertion ? 'essay-writing-corrected-word-insertion' : '',
+    isCorrect ? 'essay-writing-corrected-word-correct' : '',
   ]
     .filter(Boolean)
     .join(' ')

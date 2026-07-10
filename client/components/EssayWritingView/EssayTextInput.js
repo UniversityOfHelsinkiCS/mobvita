@@ -16,6 +16,7 @@ import {
   getCompletedSentenceFromIndexes,
   getCompletedSentenceNearIndex,
   getCompletedSentences,
+  getEssayFocusFromSelection,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
   getUpdatedPendingSentence,
@@ -30,52 +31,27 @@ import {
   getCorrectionGroupType,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
-import { getTextareaCaretCoordinates, getTextareaRangeRects } from './utils/textareaCaret'
+import { getTextareaRangeRects } from './utils/textareaCaret'
 import { normalizeEssayInput } from './utils/normalizeEssayInput'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 
-const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
-  const startIndex = Math.min(selectionStart, selectionEnd)
-  const endIndex = Math.max(selectionStart, selectionEnd)
-  const focusedSentence = getCompletedSentenceNearIndex(sentences, startIndex)
-
-  if (!focusedSentence) return null
-
-  if (startIndex !== endIndex) {
-    const selectionOverlapsSentence =
-      focusedSentence.startIndex < endIndex && focusedSentence.endIndex > startIndex
-
-    if (!selectionOverlapsSentence) return null
-
-    const startOffset =
-      Math.max(startIndex, focusedSentence.startIndex) - focusedSentence.startIndex
-    const endOffset = Math.min(endIndex, focusedSentence.endIndex) - focusedSentence.startIndex
-    const selectedText = text.slice(
-      focusedSentence.startIndex + startOffset,
-      focusedSentence.startIndex + endOffset,
-    )
-
-    return {
-      correctedText: null,
-      focusedSentence: focusedSentence.text,
-      focusedWord: selectedText.trim() || null,
-      focusedWordId: null,
-      originalText: focusedSentence.text,
-      sentenceId: focusedSentence.sentenceId,
-      selection: {
-        endOffset,
-        sentenceId: focusedSentence.sentenceId,
-        selectedText,
-        startOffset,
-      },
-    }
-  }
-
-  return null
-}
-
-const INSERTION_HOVER_HIT_HALF_WIDTH = 12
 const MIN_WORD_HIGHLIGHT_WIDTH = 14
+
+// The character span covering the word before + the word after an insertion point (the gap between
+// them included), so the insertion highlight can mark the two words it should be inserted between.
+const getInsertionSurroundingSpan = (text, offset) => {
+  const isSpace = index => index >= 0 && index < text.length && /\s/.test(text[index])
+
+  let start = Math.max(0, Math.min(offset, text.length))
+  while (start > 0 && isSpace(start - 1)) start -= 1
+  while (start > 0 && !isSpace(start - 1)) start -= 1
+
+  let end = Math.max(0, Math.min(offset, text.length))
+  while (end < text.length && isSpace(end)) end += 1
+  while (end < text.length && !isSpace(end)) end += 1
+
+  return { start, end }
+}
 
 const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
   const intl = useIntl()
@@ -243,7 +219,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
           : null,
       )
       setHoveredInsertionHighlight(
-        group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
+        group && group.isInsertion
+          ? { key: group.key, type: group.type, rects: group.rects }
+          : null,
       )
       return
     }
@@ -627,32 +605,28 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     const insertionGroups = insertionPoints
       .map(({ key, offset }) => {
-        const caret = getTextareaCaretCoordinates(input, offset)
+        const span = getInsertionSurroundingSpan(input.value, offset)
 
-        if (!caret) return null
+        if (span.end <= span.start) return null
 
-        const lineHeight = parseFloat(caret.lineHeight) || parseFloat(caret.fontSize) || 0
-        const fontSizePx = parseFloat(caret.fontSize) || 0
-        const left = originLeft + caret.left
-        const top = originTop + caret.top
+        // Measure the span on its own so it can't clash with an overlapping corrected word in the
+        // shared getTextareaRangeRects pass.
+        const measured = getTextareaRangeRects(input, [
+          { key, type: 'insertion', start: span.start, end: span.end },
+        ])[0]
+
+        if (!measured || !measured.rects.length) return null
 
         return {
           key,
           type: 'insertion',
           isInsertion: true,
-          hitRect: {
-            left: left - INSERTION_HOVER_HIT_HALF_WIDTH,
-            top,
-            width: INSERTION_HOVER_HIT_HALF_WIDTH * 2,
-            height: lineHeight,
-          },
-          overlay: {
-            fontFamily: caret.fontFamily,
-            fontSize: caret.fontSize,
-            left,
-            lineHeight: caret.lineHeight,
-            top: top + fontSizePx / 2,
-          },
+          rects: measured.rects.map(rect => ({
+            left: originLeft + rect.left,
+            top: originTop + rect.top,
+            width: rect.width,
+            height: rect.height,
+          })),
         }
       })
       .filter(Boolean)
@@ -679,7 +653,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       group && !group.isInsertion ? { key: group.key, type: group.type, rects: group.rects } : null,
     )
     setSelectedInsertionHighlight(
-      group && group.isInsertion ? { key: group.key, ...group.overlay } : null,
+      group && group.isInsertion
+        ? { key: group.key, type: group.type, rects: group.rects }
+        : null,
     )
   }
 
@@ -702,9 +678,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const x = event.clientX - inputAreaRect.left
     const y = event.clientY - inputAreaRect.top
     const hoveredGroup = correctionRectsRef.current.find(group =>
-      group.isInsertion
-        ? rectsContainPoint([group.hitRect], x, y)
-        : rectsContainPoint(group.rects, x, y),
+      rectsContainPoint(group.rects, x, y),
     )
 
     if (hoveredGroup?.isInsertion) {
@@ -712,7 +686,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       setHoveredInsertionHighlight(previous =>
         previous?.key === hoveredGroup.key
           ? previous
-          : { key: hoveredGroup.key, ...hoveredGroup.overlay },
+          : { key: hoveredGroup.key, type: hoveredGroup.type, rects: hoveredGroup.rects },
       )
       return
     }
@@ -745,20 +719,18 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       />
     ))
 
-  const renderInsertionHighlight = highlight =>
-    highlight ? (
+  const renderInsertionHighlight = (highlight, variant) =>
+    highlight?.rects.map((rect, index) => (
       <Box
+        key={`insertion-${variant}-${highlight.key}-${index}`}
         component="span"
-        className="essay-writing-insertion-highlight"
-        style={{
-          fontFamily: highlight.fontFamily,
-          fontSize: highlight.fontSize,
-          left: highlight.left,
-          lineHeight: highlight.lineHeight,
-          top: highlight.top,
-        }}
+        className={[
+          'essay-writing-insertion-highlight',
+          `essay-writing-insertion-highlight-${variant}`,
+        ].join(' ')}
+        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
       />
-    ) : null
+    ))
 
   return (
     <Box
@@ -767,9 +739,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       }`}
       ref={inputAreaRef}
     >
-      {renderInsertionHighlight(selectedInsertionHighlight)}
+      {renderInsertionHighlight(selectedInsertionHighlight, 'selected')}
       {hoveredInsertionHighlight?.key !== selectedInsertionHighlight?.key &&
-        renderInsertionHighlight(hoveredInsertionHighlight)}
+        renderInsertionHighlight(hoveredInsertionHighlight, 'hover')}
       {renderWordHighlights(selectedWordHighlight, 'selected')}
       {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
         renderWordHighlights(hoveredWordHighlight, 'hover')}
