@@ -63,6 +63,7 @@ const ReadingPracticeView = lazy(
   () => import('Components/Tests/ReadingTest/ReadingPracticeByStoryID'),
 )
 const EssayWritingView = lazy(() => import('./EssayWritingView'))
+const Dashboard = lazy(() => import('./Dashboard'))
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -345,6 +346,11 @@ export default () => {
                     <Route
                       path="/essay-writing"
                       element={<ProtectedRoute component={EssayWritingView} />}
+                    />
+                    {/* Hidden admin page — no link in the app; gated to developer_of_language "all" inside the component. */}
+                    <Route
+                      path="/dashboard"
+                      element={<ProtectedRoute component={Dashboard} languageRequired={false} />}
                     />
                   </Routes>
                 </Suspense>

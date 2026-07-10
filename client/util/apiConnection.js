@@ -40,6 +40,11 @@ export default (route, prefix, method = 'get', data, query, cache) => ({
 const SERVER_UNRESPONSIVE_STATUSES = [502, 503, 504]
 const SERVER_INTERNAL_ERROR_STATUS = 500
 
+// Admin actions operate on OTHER users, so their per-response side effects (streak / xp / level /
+// achievements / last_activity) belong to the *managed* user and must not be applied to the admin's
+// own state.
+const ADMIN_PREFIXES = ['ADMIN_SEARCH_USERS', 'MANAGE_USER']
+
 class EndpointError extends Error {
   constructor(message) {
     super(message)
@@ -166,18 +171,22 @@ export const handleRequest = store => next => async action => {
         if (cache) {
           window.localStorage.setItem(cache, JSON.stringify(res.data))
         }
-        if (res.data?.new_achievements?.length > 0) {
-          handleNewAchievement(store, res.data.new_achievements)
-        }
+        // Skip current-user side effects for admin calls — those response fields describe the
+        // *managed* user, not the admin performing the action.
+        if (!ADMIN_PREFIXES.includes(prefix)) {
+          if (res.data?.new_achievements?.length > 0) {
+            handleNewAchievement(store, res.data.new_achievements)
+          }
 
-        if (res.data?.num_new_vocabulary) {
-          handleNewVocabulary(store, res.data.num_new_vocabulary)
-        }
+          if (res.data?.num_new_vocabulary) {
+            handleNewVocabulary(store, res.data.num_new_vocabulary)
+          }
 
-        handleStreakState(store, res.data.is_today_streaked)
-        handleLastActivity(store, res.data.last_activity)
-        handleXP(store, res.data.xp_today)
-        handleLevel(store, res.data.level, res.data.level_up)
+          handleStreakState(store, res.data.is_today_streaked)
+          handleLastActivity(store, res.data.last_activity)
+          handleXP(store, res.data.xp_today)
+          handleLevel(store, res.data.level, res.data.level_up)
+        }
 
         const requestSentAt = new Date()
         window.localStorage.setItem('last_request', requestSentAt)

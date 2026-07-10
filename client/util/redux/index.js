@@ -61,6 +61,7 @@ import writingCorrection from './writingCorrectionReducer'
 import helperSidebar from './helperSidebarReducer'
 import notes from './notesReducer'
 import dialogues from './dialoguesReducer'
+import admin from './adminReducer'
 
 
 const rootReducer = combineReducers({
@@ -125,6 +126,7 @@ const rootReducer = combineReducers({
   helperSidebar,
   notes,
   dialogues,
+  admin,
 })
 
 export default (state, action) =>
