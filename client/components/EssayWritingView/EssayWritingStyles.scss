@@ -103,22 +103,6 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
 }
 
-// Insertion highlight: a box over the word before + word after the insertion point (so both are
-// highlighted), with a double underline marking where a word should be added between them.
-.essay-writing-insertion-highlight {
-  position: absolute;
-  z-index: 2;
-  box-sizing: border-box;
-  border-radius: 2px;
-  background-color: rgba($essay-textarea-highlight-insertion-bg-color, 0.3);
-  border-bottom: 3px double #3f9c42;
-  pointer-events: none;
-}
-
-.essay-writing-insertion-highlight-selected {
-  filter: brightness(1.1);
-}
-
 .essay-writing-word-highlight {
   position: absolute;
   z-index: 2;
@@ -142,6 +126,16 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
 
 .essay-writing-word-highlight-selected {
   filter: brightness(1.1);
+}
+
+// A double underline marking only the insertion spot (the gap between the two highlighted words),
+// sitting at the normal text-underline level.
+.essay-writing-insertion-underline {
+  position: absolute;
+  z-index: 2;
+  height: 0;
+  pointer-events: none;
+  border-bottom: 3px double #000000;
 }
 
 .essay-writing-input {
@@ -239,6 +233,14 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   min-width: 220px;
   min-height: 32px;
   gap: 0.35rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+// Inline hint shown (instead of the corrected word) inside deletion/insertion bubbles.
+.essay-writing-correction-hint {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 0.95rem;
   line-height: 1.4;
 }

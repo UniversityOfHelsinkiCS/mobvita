@@ -76,6 +76,10 @@ const getCorrectionGroupFeedbackText = correctionGroup =>
     .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
     .join('\n')
 
+// A token with no correction (corrected: null) — the "correct" words a chunk group carries next to
+// its errors, shown as neutral chips.
+const isCorrectWord = word => Boolean(word.original) && !word.corrected
+
 const rangesMatch = (firstRange, secondRange) =>
   firstRange &&
   secondRange &&
@@ -135,22 +139,43 @@ const CorrectionSuggestionPopper = ({
     <>
       {correctionGroups.map((correctionGroup, groupIndex) => {
         const correctionFocus = getCorrectionGroupFocus(correctionGroup)
+        const groupType = getCorrectionGroupType(correctionGroup)
+        const hintText = getCorrectionGroupFeedbackText(correctionGroup)
+        // Deletions/insertions show only the hint (the "why") instead of the corrected word, so the
+        // answer isn't given away. Other types keep showing the incorrect word.
+        const showHintInline = (groupType === 'deletion' || groupType === 'insertion') && hintText
 
         return (
           <CorrectionBubble
             correctionFocus={correctionFocus}
             correctionRange={correctionGroup.range}
-            correctionType={getCorrectionGroupType(correctionGroup)}
-            feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
+            correctionType={groupType}
+            feedbackText={showHintInline ? '' : hintText}
             isActive={rangesMatch(focusedSelection, correctionGroup.range)}
             key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
             onSentenceSelect={onSentenceSelect}
             sentence={sentence}
           >
             <Box className="essay-writing-correction-content">
-              {correctionGroup.words.map((word, index) => (
-                <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
-              ))}
+              {showHintInline ? (
+                <>
+                  {/* Keep any correct tokens (chunk context) visible; the errored word is hidden
+                      behind the hint so the answer isn't given away. */}
+                  {correctionGroup.words.filter(isCorrectWord).map((word, index) => (
+                    <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
+                  ))}
+                  <SanitizedHTML
+                    html={hintText}
+                    tagName={Box}
+                    className="essay-writing-correction-hint"
+                    sx={{ whiteSpace: 'pre-line' }}
+                  />
+                </>
+              ) : (
+                correctionGroup.words.map((word, index) => (
+                  <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
+                ))
+              )}
             </Box>
           </CorrectionBubble>
         )

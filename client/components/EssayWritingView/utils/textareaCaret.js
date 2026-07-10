@@ -137,6 +137,7 @@ export const getTextareaRangeRects = (textarea, ranges) => {
           top: contentTop + rect.height / 2 - height / 2,
           width: rect.width,
           height,
+          glyphBottom: contentTop + rect.height,
         }
       }),
   }))

@@ -322,23 +322,31 @@ const getChunkMarker = word => {
 const hasChunkMarkers = corrections => corrections.some(getChunkMarker)
 
 // Token index ranges delimited by chunk-start / chunk-end markers. Missing markers are inferred so
-// partial backend data still yields sensible chunks: a stray end starts its chunk after the
-// previous one, and an unclosed start runs to the last token.
+// partial backend data still yields ONE chunk per region instead of fragmenting into duplicate
+// bubbles: a proper start…end is one chunk; a stray end with no start since the previous chunk
+// extends that chunk rather than opening a new one; and an unclosed start runs to the last token.
 const getChunkTokenRanges = corrections => {
   const chunks = []
   let openStart = null
-  let lastEnd = -1
+  let sawStartSinceEnd = false
 
   corrections.forEach((word, index) => {
     const marker = getChunkMarker(word)
 
     if (marker === 'start') {
-      // Keep the earliest start of a nested/repeated run so the chunk isn't truncated.
       if (openStart === null) openStart = index
+      sawStartSinceEnd = true
     } else if (marker === 'end') {
-      chunks.push({ startIndex: openStart != null ? openStart : lastEnd + 1, endIndex: index })
+      if (openStart != null) {
+        chunks.push({ startIndex: openStart, endIndex: index })
+      } else if (chunks.length && !sawStartSinceEnd) {
+        chunks[chunks.length - 1].endIndex = index
+      } else {
+        chunks.push({ startIndex: 0, endIndex: index })
+      }
+
       openStart = null
-      lastEnd = index
+      sawStartSinceEnd = false
     }
   })
 
@@ -361,8 +369,6 @@ const getChunkCorrectionGroups = (sentence, corrections) => {
       .map(word => getCorrectionRange(word, positionsById))
       .filter(Boolean)
 
-    // An all-correct chunk has no error ranges, so fall back to the positions of its tokens so it
-    // still gets a (non-error) range and renders as a bubble.
     const ranges = errorRanges.length
       ? errorRanges
       : words.map(word => positionsById[word.ID]).filter(Boolean)
@@ -376,7 +382,6 @@ const getChunkCorrectionGroups = (sentence, corrections) => {
       startOffset,
       endOffset,
       isDeletion: errorRanges.some(range => range.isDeletion),
-      // Only a genuinely zero-width range is an insertion point; a multi-error span is not.
       isInsertion: startOffset === endOffset && errorRanges.every(range => range.isInsertion),
     }
   }
@@ -411,11 +416,25 @@ const getChunkCorrectionGroups = (sentence, corrections) => {
     )
 }
 
+// Drop only exact-duplicate groups — same range AND same tokens — so a region never renders as two
+// identical bubbles, while distinct corrections that merely resolve to the same offset are kept.
+const dedupeIdenticalGroups = groups => {
+  const seen = new Set()
+
+  return groups.filter(group => {
+    const wordIds = (group.words || []).map(word => word.ID).join(',')
+    const key = `${group.range?.startOffset ?? 'x'}:${group.range?.endOffset ?? 'x'}:${wordIds}`
+
+    if (seen.has(key)) return false
+
+    seen.add(key)
+    return true
+  })
+}
+
 export const getCorrectionGroups = (sentence, corrections) => {
-  // When the backend marks chunks, each chunk gets its own bubble instead of the default adjacency
-  // grouping.
   if (hasChunkMarkers(corrections)) {
-    return getChunkCorrectionGroups(sentence, corrections)
+    return dedupeIdenticalGroups(getChunkCorrectionGroups(sentence, corrections))
   }
 
   const positionsById = getWordPositionsById(sentence, corrections)
@@ -441,12 +460,14 @@ export const getCorrectionGroups = (sentence, corrections) => {
       return groups.concat(correction)
     }, [])
 
-  return movedCorrectionGroups
-    .concat(adjacentCorrectionGroups)
-    .sort(
-      (firstGroup, secondGroup) =>
-        (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
-    )
+  return dedupeIdenticalGroups(
+    movedCorrectionGroups
+      .concat(adjacentCorrectionGroups)
+      .sort(
+        (firstGroup, secondGroup) =>
+          (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
+      ),
+  )
 }
 
 // The full corrected sentence text for a correction entry (falls back to rebuilding it from the
@@ -474,8 +495,6 @@ const getCorrectionWordFocusText = word => {
 // click and a text-area click on the same correction produce identical focus.
 export const getCorrectionGroupFocus = correctionGroup => {
   const words = correctionGroup?.words || []
-  // Only the tokens that actually carry a correction — a chunk group also holds correct tokens that
-  // must not leak into the focused word/ids sent to the chatbot.
   const correctedWords = words.filter(
     word =>
       isCorrectionDeletion(word) ||

@@ -36,6 +36,7 @@ import { normalizeEssayInput } from './utils/normalizeEssayInput'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 
 const MIN_WORD_HIGHLIGHT_WIDTH = 14
+const MIN_INSERTION_UNDERLINE_WIDTH = 12
 
 // The character span covering the word before + the word after an insertion point (the gap between
 // them included), so the insertion highlight can mark the two words it should be inserted between.
@@ -53,6 +54,19 @@ const getInsertionSurroundingSpan = (text, offset) => {
   return { start, end }
 }
 
+// The whitespace gap around an insertion point — the actual "missing spot" the underline marks.
+const getInsertionGapSpan = (text, offset) => {
+  const isSpace = index => index >= 0 && index < text.length && /\s/.test(text[index])
+
+  let start = Math.max(0, Math.min(offset, text.length))
+  while (start > 0 && isSpace(start - 1)) start -= 1
+
+  let end = Math.max(0, Math.min(offset, text.length))
+  while (end < text.length && isSpace(end)) end += 1
+
+  return { start, end }
+}
+
 const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -60,8 +74,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
   const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
-  const [hoveredInsertionHighlight, setHoveredInsertionHighlight] = useState(null)
-  const [selectedInsertionHighlight, setSelectedInsertionHighlight] = useState(null)
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
   const selectedGroupKeyRef = useRef(null)
@@ -199,7 +211,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     if (action === 'clear') {
       clearSelectedHighlight()
       setHoveredWordHighlight(null)
-      setHoveredInsertionHighlight(null)
       return
     }
 
@@ -213,22 +224,12 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const group = correctionRectsRef.current.find(candidate => candidate.key === key)
 
     if (interactionType === 'hover') {
-      setHoveredWordHighlight(
-        group && !group.isInsertion
-          ? { key: group.key, type: group.type, rects: group.rects }
-          : null,
-      )
-      setHoveredInsertionHighlight(
-        group && group.isInsertion
-          ? { key: group.key, type: group.type, rects: group.rects }
-          : null,
-      )
+      setHoveredWordHighlight(group || null)
       return
     }
 
     // Click (or a re-sent selected click on bubble-leave): persist the highlight.
     setHoveredWordHighlight(null)
-    setHoveredInsertionHighlight(null)
     selectedGroupKeyRef.current = key
     refreshSelectedHighlight()
   }, [sentenceSelectionRequest])
@@ -352,8 +353,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const rawValue = input.value
     const rawCaret = input.selectionStart
 
-    // Normalize the input on-site (NFC compose, strip invisibles, fold look-alike hyphens) unless the
-    // user is mid-IME composition. Normalization can change length, so recompute the caret from the
+    // Normalize the input on-site (NFC compose, strip invisibles, fold look-alike hyphens) unless
+    // mid-IME composition. Normalization can change length, so recompute the caret from the
     // normalized prefix and keep it in place.
     const normalizedValue = e.nativeEvent?.isComposing ? rawValue : normalizeEssayInput(rawValue)
     if (normalizedValue !== rawValue) {
@@ -368,7 +369,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
     correctionRectsStaleRef.current = true
     setHoveredWordHighlight(null)
-    setHoveredInsertionHighlight(null)
     clearSelectedHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
@@ -590,7 +590,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     const wordGroups = getTextareaRangeRects(input, wordRanges).map(group => ({
       key: group.key,
       type: group.type,
-      isInsertion: false,
       rects: group.rects.map(rect => {
         const width = Math.max(rect.width, MIN_WORD_HIGHLIGHT_WIDTH)
 
@@ -617,16 +616,34 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
 
         if (!measured || !measured.rects.length) return null
 
+        // Underline only the gap (the missing spot), at the glyph baseline rather than under the
+        // whole surrounding-word highlight.
+        const gap = getInsertionGapSpan(input.value, offset)
+        const gapMeasured =
+          gap.end > gap.start
+            ? getTextareaRangeRects(input, [
+                { key, type: 'insertion', start: gap.start, end: gap.end },
+              ])[0]
+            : null
+
         return {
           key,
           type: 'insertion',
-          isInsertion: true,
           rects: measured.rects.map(rect => ({
             left: originLeft + rect.left,
             top: originTop + rect.top,
             width: rect.width,
             height: rect.height,
           })),
+          underlineRects: (gapMeasured?.rects || []).map(rect => {
+            const width = Math.max(rect.width, MIN_INSERTION_UNDERLINE_WIDTH)
+
+            return {
+              left: originLeft + rect.left - (width - rect.width) / 2,
+              top: originTop + rect.glyphBottom - 3,
+              width,
+            }
+          }),
         }
       })
       .filter(Boolean)
@@ -643,26 +660,18 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         y <= rect.top + rect.height,
     )
 
-  // Re-derive the persistent selected highlight (word box or insertion caret-bar) from the freshly
-  // measured correction rects, based on the selected group key.
+  // Re-derive the persistent selected highlight from the freshly measured rects, keyed by the
+  // selected group.
   const refreshSelectedHighlight = () => {
     const key = selectedGroupKeyRef.current
     const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
 
-    setSelectedWordHighlight(
-      group && !group.isInsertion ? { key: group.key, type: group.type, rects: group.rects } : null,
-    )
-    setSelectedInsertionHighlight(
-      group && group.isInsertion
-        ? { key: group.key, type: group.type, rects: group.rects }
-        : null,
-    )
+    setSelectedWordHighlight(group || null)
   }
 
   const clearSelectedHighlight = () => {
     selectedGroupKeyRef.current = null
     setSelectedWordHighlight(null)
-    setSelectedInsertionHighlight(null)
   }
 
   const handleTextMouseMove = event => {
@@ -681,56 +690,46 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       rectsContainPoint(group.rects, x, y),
     )
 
-    if (hoveredGroup?.isInsertion) {
-      setHoveredWordHighlight(null)
-      setHoveredInsertionHighlight(previous =>
-        previous?.key === hoveredGroup.key
-          ? previous
-          : { key: hoveredGroup.key, type: hoveredGroup.type, rects: hoveredGroup.rects },
-      )
-      return
-    }
-
-    setHoveredInsertionHighlight(null)
     setHoveredWordHighlight(previous => {
       if (!hoveredGroup) return previous ? null : previous
       if (previous && previous.key === hoveredGroup.key) return previous
 
-      return { key: hoveredGroup.key, type: hoveredGroup.type, rects: hoveredGroup.rects }
+      return hoveredGroup
     })
   }
 
   const handleTextMouseLeave = () => {
     setHoveredWordHighlight(null)
-    setHoveredInsertionHighlight(null)
   }
 
-  const renderWordHighlights = (highlight, variant) =>
-    highlight?.rects.map((rect, index) => (
-      <Box
-        key={`${variant}-${highlight.key}-${index}`}
-        component="span"
-        className={[
-          'essay-writing-word-highlight',
-          `essay-writing-word-highlight-${highlight.type}`,
-          `essay-writing-word-highlight-${variant}`,
-        ].join(' ')}
-        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
-      />
-    ))
+  const renderWordHighlights = (highlight, variant) => {
+    if (!highlight) return null
 
-  const renderInsertionHighlight = (highlight, variant) =>
-    highlight?.rects.map((rect, index) => (
-      <Box
-        key={`insertion-${variant}-${highlight.key}-${index}`}
-        component="span"
-        className={[
-          'essay-writing-insertion-highlight',
-          `essay-writing-insertion-highlight-${variant}`,
-        ].join(' ')}
-        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
-      />
-    ))
+    return (
+      <>
+        {highlight.rects.map((rect, index) => (
+          <Box
+            key={`${variant}-${highlight.key}-${index}`}
+            component="span"
+            className={[
+              'essay-writing-word-highlight',
+              `essay-writing-word-highlight-${highlight.type}`,
+              `essay-writing-word-highlight-${variant}`,
+            ].join(' ')}
+            style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }}
+          />
+        ))}
+        {highlight.underlineRects?.map((rect, index) => (
+          <Box
+            key={`underline-${variant}-${highlight.key}-${index}`}
+            component="span"
+            className="essay-writing-insertion-underline"
+            style={{ top: rect.top, left: rect.left, width: rect.width }}
+          />
+        ))}
+      </>
+    )
+  }
 
   return (
     <Box
@@ -739,9 +738,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       }`}
       ref={inputAreaRef}
     >
-      {renderInsertionHighlight(selectedInsertionHighlight, 'selected')}
-      {hoveredInsertionHighlight?.key !== selectedInsertionHighlight?.key &&
-        renderInsertionHighlight(hoveredInsertionHighlight, 'hover')}
       {renderWordHighlights(selectedWordHighlight, 'selected')}
       {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
         renderWordHighlights(hoveredWordHighlight, 'hover')}
@@ -761,7 +757,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         onScrollCapture={() => {
           correctionRectsStaleRef.current = true
           setHoveredWordHighlight(null)
-          setHoveredInsertionHighlight(null)
 
           if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
 
