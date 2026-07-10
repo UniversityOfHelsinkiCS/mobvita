@@ -27,7 +27,11 @@ const EssayWritingView = () => {
     const handleDocumentMouseDown = event => {
       if (!(event.target instanceof Element)) return
 
-      if (event.target.closest('.essay-writing-input-area, .essay-writing-correction-bubble, .chatbot-input-area .chatbot-input-form')) {
+      if (
+        event.target.closest(
+          '.essay-writing-input-area, .essay-writing-correction-bubble, .chatbot-input-area .chatbot-input-form',
+        )
+      ) {
         return
       }
 
@@ -78,22 +82,26 @@ const EssayWritingView = () => {
       selectedSelectionRef.current = selectionRequest
       setSentenceSelectionRequest(selectionRequest)
 
-      setEssayFocus(selectionRequest?.sentence ? {
-        correctedText: selectionRequest.correctedText || null,
-        focusedSentence: selectionRequest.sentence,
-        focusedWord: selectionRequest.focusedWord || null,
-        focusedWordId: selectionRequest.focusedWordId ?? null,
-        focusedWordIds: selectionRequest.focusedWordIds || [],
-        originalText: selectionRequest.originalText || selectionRequest.sentence,
-        sentenceId: selectionRequest.sentenceId,
-        selection: {
-          endOffset: selectionRequest.endOffset,
-          isDeletion: selectionRequest.isDeletion,
-          isInsertion: selectionRequest.isInsertion,
-          sentenceId: selectionRequest.sentenceId,
-          startOffset: selectionRequest.startOffset,
-        },
-      } : null)
+      setEssayFocus(
+        selectionRequest?.sentence
+          ? {
+              correctedText: selectionRequest.correctedText || null,
+              focusedSentence: selectionRequest.sentence,
+              focusedWord: selectionRequest.focusedWord || null,
+              focusedWordId: selectionRequest.focusedWordId ?? null,
+              focusedWordIds: selectionRequest.focusedWordIds || [],
+              originalText: selectionRequest.originalText || selectionRequest.sentence,
+              sentenceId: selectionRequest.sentenceId,
+              selection: {
+                endOffset: selectionRequest.endOffset,
+                isDeletion: selectionRequest.isDeletion,
+                isInsertion: selectionRequest.isInsertion,
+                sentenceId: selectionRequest.sentenceId,
+                startOffset: selectionRequest.startOffset,
+              },
+            }
+          : null,
+      )
       return
     }
 
@@ -102,9 +110,7 @@ const EssayWritingView = () => {
   }
 
   return (
-    <Box
-      className="essay-writing-page"
-    >
+    <Box className="essay-writing-page">
       <Box className="essay-writing-main">
         <Box
           className={`essay-writing-container ${
@@ -137,6 +143,7 @@ const EssayWritingView = () => {
             <EssayChatbot
               essayFocus={essayFocus}
               essayText={essayText}
+              onClearFocus={clearEssaySelection}
               onSentenceSelect={requestSentenceSelection}
             />
           </HelperSidebar>

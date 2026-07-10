@@ -103,20 +103,6 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
 }
 
-.essay-writing-insertion-highlight {
-  position: absolute;
-  z-index: 2;
-  display: inline-block;
-  width: 24px;
-  height: 32px;
-  padding: 0;
-  background-color: $essay-textarea-highlight-insertion-bg-color;
-  mix-blend-mode: multiply;
-  color: inherit;
-  pointer-events: none;
-  transform: translate(-12px, -44%);
-}
-
 .essay-writing-word-highlight {
   position: absolute;
   z-index: 2;
@@ -140,6 +126,16 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
 
 .essay-writing-word-highlight-selected {
   filter: brightness(1.1);
+}
+
+// A double underline marking only the insertion spot (the gap between the two highlighted words),
+// sitting at the normal text-underline level.
+.essay-writing-insertion-underline {
+  position: absolute;
+  z-index: 2;
+  height: 0;
+  pointer-events: none;
+  border-bottom: 3px double #000000;
 }
 
 .essay-writing-input {
@@ -241,6 +237,14 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   line-height: 1.4;
 }
 
+// Inline hint shown (instead of the corrected word) inside deletion/insertion bubbles.
+.essay-writing-correction-hint {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
 .essay-writing-corrected-word {
   font-size: large;
 }
@@ -267,6 +271,20 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
 .essay-writing-corrected-word-insertion {
   text-decoration: underline;
   background-color: $essay-bubble-insertion-bg-color;
+}
+
+// Correct token inside a chunk bubble: white background = nothing wrong with this word.
+.essay-writing-corrected-word-correct {
+  padding: 0 3px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+// Dev/staging-only "→ correct" reference appended after the incorrect form in a bubble.
+.essay-writing-corrected-word-dev-correction {
+  opacity: 0.6;
+  font-size: 0.85em;
+  font-style: italic;
 }
 
 .essay-writing-correction-feedback-button {

@@ -3,11 +3,11 @@ import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
-
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
 import { getEssayChatbotSessionId } from 'Components/EssayWritingView/utils/essayDraftStorage'
 import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
+import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
 
@@ -15,7 +15,7 @@ import './Chatbot.scss'
 
 const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 
-const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
+const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const [essaySessionId] = useState(getEssayChatbotSessionId)
@@ -29,9 +29,44 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
     .filter(Boolean)
   const hasActiveSelection = Boolean(essayFocus?.selection)
 
+  // When a suggestion is selected the panel switches from the full list to a focused view: just that
+  // one suggestion pinned on top, with the conversation below it.
+  const focusedSentenceId = essayFocus?.selection?.sentenceId
+  const focusedSuggestion =
+    (focusedSentenceId &&
+      correctionSuggestions.find(suggestion => suggestion.sentenceId === focusedSentenceId)) ||
+    null
+  const isFocused = Boolean(focusedSuggestion)
+
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [essayMessages.length, correctionSuggestions.length])
+
+  const buildSentenceSelectHandler = ({ key, sentence, sentenceId }) =>
+    onSentenceSelect
+      ? (correctionRange, interactionType) =>
+          onSentenceSelect({
+            correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
+            interactionType,
+            originalText: correctionsByKey[key]?.text || sentence,
+            sentence,
+            sentenceId,
+            ...(correctionRange || {}),
+          })
+      : undefined
+
+  const renderSuggestion = (suggestion, renderOnlyFocused = false) => (
+    <CorrectionSuggestionPopper
+      key={suggestion.sentenceId}
+      correctionEntry={correctionsByKey[suggestion.key]}
+      focusedSelection={
+        essayFocus?.selection?.sentenceId === suggestion.sentenceId ? essayFocus.selection : null
+      }
+      renderOnlyFocused={renderOnlyFocused}
+      sentence={suggestion.sentence}
+      onSentenceSelect={buildSentenceSelectHandler(suggestion)}
+    />
+  )
 
   const handleMessageSubmit = event => {
     event.preventDefault()
@@ -54,36 +89,25 @@ const EssayChatbot = ({ essayFocus, essayText, onSentenceSelect }) => {
   return (
     <div className="chatbot">
       <div className="ai-assistant-header">
+        {isFocused && (
+          <button type="button" className="essay-chatbot-back" onClick={() => onClearFocus?.()}>
+            <ArrowCircleLeftOutlinedIcon />
+          </button>
+        )}
         <RobotIcon className="ai-header-icon" size={24} />
         <h3 className="ai-header-title">
           <FormattedMessage id="chatbot-toggle-label" />
         </h3>
       </div>
 
+      {isFocused && (
+        <div className="essay-chatbot-focused-suggestion">
+          {renderSuggestion(focusedSuggestion, true)}
+        </div>
+      )}
+
       <div className="chatbot-messages">
-        {correctionSuggestions.map(({ key, sentence, sentenceId }) => (
-          <CorrectionSuggestionPopper
-            key={sentenceId}
-            correctionEntry={correctionsByKey[key]}
-            focusedSelection={
-              essayFocus?.selection?.sentenceId === sentenceId ? essayFocus.selection : null
-            }
-            sentence={sentence}
-            onSentenceSelect={
-              onSentenceSelect
-                ? (correctionRange, interactionType) =>
-                    onSentenceSelect({
-                      correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
-                      interactionType,
-                      originalText: correctionsByKey[key]?.text || sentence,
-                      sentence,
-                      sentenceId,
-                      ...(correctionRange || {}),
-                    })
-                : undefined
-            }
-          />
-        ))}
+        {!isFocused && correctionSuggestions.map(suggestion => renderSuggestion(suggestion))}
         {essayMessages.map((message, index) =>
           message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
             <div

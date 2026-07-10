@@ -34,6 +34,48 @@ export const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
   getCompletedSentenceAtIndex(sentences, cursorIndex) ||
   getCompletedSentenceAtIndex(sentences, Math.max(cursorIndex - 1, 0))
 
+// Build the essay focus for a text selection: the sentence it lands in and the selected word/range
+// inside it. Null for a collapsed caret or a selection outside a completed sentence.
+export const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
+  const startIndex = Math.min(selectionStart, selectionEnd)
+  const endIndex = Math.max(selectionStart, selectionEnd)
+  const focusedSentence = getCompletedSentenceNearIndex(sentences, startIndex)
+
+  if (!focusedSentence) return null
+
+  if (startIndex !== endIndex) {
+    const selectionOverlapsSentence =
+      focusedSentence.startIndex < endIndex && focusedSentence.endIndex > startIndex
+
+    if (!selectionOverlapsSentence) return null
+
+    const startOffset =
+      Math.max(startIndex, focusedSentence.startIndex) - focusedSentence.startIndex
+    const endOffset = Math.min(endIndex, focusedSentence.endIndex) - focusedSentence.startIndex
+    const selectedText = text.slice(
+      focusedSentence.startIndex + startOffset,
+      focusedSentence.startIndex + endOffset,
+    )
+
+    return {
+      correctedText: null,
+      focusedSentence: focusedSentence.text,
+      focusedWord: selectedText.trim() || null,
+      focusedWordId: null,
+      originalText: focusedSentence.text,
+      sentenceId: focusedSentence.sentenceId,
+      selection: {
+        endOffset,
+        sentenceId: focusedSentence.sentenceId,
+        selectedText,
+        startOffset,
+      },
+    }
+  }
+
+  return null
+}
+
 export const getFirstChangedIndex = (previousText, nextText) => {
   const maxSharedLength = Math.min(previousText.length, nextText.length)
 

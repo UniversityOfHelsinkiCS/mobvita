@@ -68,8 +68,6 @@ export const getCorrectionFeedbackText = feedback => {
     .join('\n')
 }
 
-const getComparableCorrectionText = value => normalizeSearchText(value).trim().toLocaleLowerCase()
-
 const combiningMarkRegex = /[\u0300-\u036f]/
 
 const getNextTextCluster = (value, startOffset) => {
@@ -223,122 +221,145 @@ const getCorrectionRange = (word, positionsById) => {
   }
 }
 
-const rangesAreAdjacent = (sentence, firstRange, secondRange) => {
-  if (!firstRange || !secondRange) return false
+// A chunk marker on a token: the backend sends it as `token.feedback.chunk` = "chunk_start" or
+// "chunk_end".
+const getChunkMarker = word => {
+  const marker = word?.feedback?.chunk
 
-  const textBetweenRanges = sentence.slice(firstRange.endOffset, secondRange.startOffset)
-
-  return /^\s*$/.test(textBetweenRanges)
+  if (marker === 'chunk_start') return 'start'
+  if (marker === 'chunk_end') return 'end'
+  return null
 }
 
-const mergeRanges = (firstRange, secondRange) => {
-  if (!firstRange) return secondRange
-  if (!secondRange) return firstRange
+const hasChunkMarkers = corrections => corrections.some(getChunkMarker)
 
-  const mergedRange = {
-    startOffset: Math.min(firstRange.startOffset, secondRange.startOffset),
-    endOffset: Math.max(firstRange.endOffset, secondRange.endOffset),
+// Token index ranges delimited by chunk-start / chunk-end markers. Missing markers are inferred so
+// partial backend data still yields ONE chunk per region instead of fragmenting into duplicate
+// bubbles: a proper start…end is one chunk; a stray end with no start since the previous chunk
+// extends that chunk rather than opening a new one; and an unclosed start runs to the last token.
+const getChunkTokenRanges = corrections => {
+  const chunks = []
+  let openStart = null
+  let sawStartSinceEnd = false
+
+  corrections.forEach((word, index) => {
+    const marker = getChunkMarker(word)
+
+    if (marker === 'start') {
+      if (openStart === null) openStart = index
+      sawStartSinceEnd = true
+    } else if (marker === 'end') {
+      if (openStart != null) {
+        chunks.push({ startIndex: openStart, endIndex: index })
+      } else if (chunks.length && !sawStartSinceEnd) {
+        chunks[chunks.length - 1].endIndex = index
+      } else {
+        chunks.push({ startIndex: 0, endIndex: index })
+      }
+
+      openStart = null
+      sawStartSinceEnd = false
+    }
+  })
+
+  if (openStart != null) {
+    chunks.push({ startIndex: openStart, endIndex: corrections.length - 1 })
   }
 
-  mergedRange.isDeletion = firstRange.isDeletion || secondRange.isDeletion
-  mergedRange.isInsertion = firstRange.isInsertion || secondRange.isInsertion
-
-  return mergedRange
+  return chunks
 }
 
-const getMovedCorrectionGroups = (corrections, positionsById) => {
-  const usedCorrectionIndexes = new Set()
-  const groups = []
-
-  corrections.forEach((word, insertionIndex) => {
-    if (!isCorrectionInsertion(word) || usedCorrectionIndexes.has(insertionIndex)) return
-
-    const insertedText = getComparableCorrectionText(word.corrected)
-
-    if (!insertedText) return
-
-    const matchingDeletion = corrections
-      .map((candidate, index) => ({ candidate, index }))
-      .filter(
-        ({ candidate, index }) =>
-          !usedCorrectionIndexes.has(index) &&
-          isCorrectionDeletion(candidate) &&
-          getComparableCorrectionText(candidate.original) === insertedText,
-      )
-      .sort(
-        (firstMatch, secondMatch) =>
-          Math.abs(firstMatch.index - insertionIndex) -
-          Math.abs(secondMatch.index - insertionIndex),
-      )[0]
-
-    if (!matchingDeletion) return
-
-    const startIndex = Math.min(insertionIndex, matchingDeletion.index)
-    const endIndex = Math.max(insertionIndex, matchingDeletion.index)
-    const range = mergeRanges(positionsById[word.ID], positionsById[matchingDeletion.candidate.ID])
-
-    usedCorrectionIndexes.add(insertionIndex)
-    usedCorrectionIndexes.add(matchingDeletion.index)
-    groups.push({ endIndex, range, startIndex })
-  })
-
-  const mergedGroups = groups
-    .sort((firstGroup, secondGroup) => firstGroup.startIndex - secondGroup.startIndex)
-    .reduce((merged, group) => {
-      const previousGroup = merged[merged.length - 1]
-
-      if (!previousGroup || group.startIndex > previousGroup.endIndex) {
-        return merged.concat(group)
-      }
-
-      previousGroup.endIndex = Math.max(previousGroup.endIndex, group.endIndex)
-      previousGroup.range = mergeRanges(previousGroup.range, group.range)
-      return merged
-    }, [])
-    .map(group => ({
-      range: group.range,
-      words: corrections.slice(group.startIndex, group.endIndex + 1),
-    }))
-
-  const movedWordIds = new Set()
-
-  mergedGroups.forEach(group => {
-    group.words.forEach(word => movedWordIds.add(word.ID))
-  })
-
-  return { groups: mergedGroups, movedWordIds }
-}
-
-export const getCorrectionGroups = (sentence, corrections) => {
+// Group tokens by chunk: each chunk becomes one bubble holding all its tokens (correct ones too, so
+// they can be shown with a neutral background). A chunk's textarea range spans its errors. Any
+// corrected token outside every chunk falls back to its own single-error group so nothing is lost.
+const getChunkCorrectionGroups = (sentence, corrections) => {
   const positionsById = getWordPositionsById(sentence, corrections)
-  const { groups: movedCorrectionGroups, movedWordIds } = getMovedCorrectionGroups(
-    corrections,
-    positionsById,
-  )
-  const adjacentCorrectionGroups = corrections
-    .filter(word => wordHasCorrection(word) && !movedWordIds.has(word.ID))
-    .map(word => ({
-      range: getCorrectionRange(word, positionsById),
-      words: [word],
-    }))
-    .reduce((groups, correction) => {
-      const previousGroup = groups[groups.length - 1]
 
-      if (previousGroup && rangesAreAdjacent(sentence, previousGroup.range, correction.range)) {
-        previousGroup.words = previousGroup.words.concat(correction.words)
-        previousGroup.range = mergeRanges(previousGroup.range, correction.range)
-        return groups
-      }
+  const buildChunkRange = words => {
+    const errorRanges = words
+      .filter(wordHasCorrection)
+      .map(word => getCorrectionRange(word, positionsById))
+      .filter(Boolean)
 
-      return groups.concat(correction)
-    }, [])
+    const ranges = errorRanges.length
+      ? errorRanges
+      : words.map(word => positionsById[word.ID]).filter(Boolean)
 
-  return movedCorrectionGroups
-    .concat(adjacentCorrectionGroups)
+    if (!ranges.length) return null
+
+    const startOffset = Math.min(...ranges.map(range => range.startOffset))
+    const endOffset = Math.max(...ranges.map(range => range.endOffset))
+
+    return {
+      startOffset,
+      endOffset,
+      isDeletion: errorRanges.some(range => range.isDeletion),
+      isInsertion: startOffset === endOffset && errorRanges.every(range => range.isInsertion),
+    }
+  }
+
+  const chunkedIndexes = new Set()
+  const chunkGroups = getChunkTokenRanges(corrections)
+    .map(({ startIndex, endIndex }) => {
+      for (let index = startIndex; index <= endIndex; index += 1) chunkedIndexes.add(index)
+
+      const words = corrections.slice(startIndex, endIndex + 1)
+      const range = buildChunkRange(words)
+
+      return range ? { range, words } : null
+    })
+    .filter(Boolean)
+
+  const leftoverGroups = corrections
+    .map((word, index) => ({ word, index }))
+    .filter(({ word, index }) => wordHasCorrection(word) && !chunkedIndexes.has(index))
+    .map(({ word }) => {
+      const range = getCorrectionRange(word, positionsById)
+
+      return range ? { range, words: [word] } : null
+    })
+    .filter(Boolean)
+
+  return chunkGroups
+    .concat(leftoverGroups)
     .sort(
       (firstGroup, secondGroup) =>
         (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
     )
+}
+
+// Drop only exact-duplicate groups — same range AND same tokens — so a region never renders as two
+// identical bubbles, while distinct corrections that merely resolve to the same offset are kept.
+const dedupeIdenticalGroups = groups => {
+  const seen = new Set()
+
+  return groups.filter(group => {
+    const wordIds = (group.words || []).map(word => word.ID).join(',')
+    const key = `${group.range?.startOffset ?? 'x'}:${group.range?.endOffset ?? 'x'}:${wordIds}`
+
+    if (seen.has(key)) return false
+
+    seen.add(key)
+    return true
+  })
+}
+
+export const getCorrectionGroups = (sentence, corrections) => {
+  if (hasChunkMarkers(corrections)) {
+    return dedupeIdenticalGroups(getChunkCorrectionGroups(sentence, corrections))
+  }
+
+  const positionsById = getWordPositionsById(sentence, corrections)
+
+  return dedupeIdenticalGroups(
+    corrections
+      .filter(wordHasCorrection)
+      .map(word => ({ range: getCorrectionRange(word, positionsById), words: [word] }))
+      .sort(
+        (firstGroup, secondGroup) =>
+          (firstGroup.range?.startOffset ?? 0) - (secondGroup.range?.startOffset ?? 0),
+      ),
+  )
 }
 
 // The full corrected sentence text for a correction entry (falls back to rebuilding it from the
@@ -366,18 +387,18 @@ const getCorrectionWordFocusText = word => {
 // click and a text-area click on the same correction produce identical focus.
 export const getCorrectionGroupFocus = correctionGroup => {
   const words = correctionGroup?.words || []
-  const focusedWordIds = words
-    .filter(
-      word =>
-        isCorrectionDeletion(word) ||
-        isCorrectionInsertion(word) ||
-        (word.original && word.corrected),
-    )
+  const correctedWords = words.filter(
+    word =>
+      isCorrectionDeletion(word) ||
+      isCorrectionInsertion(word) ||
+      (word.original && word.corrected),
+  )
+  const focusedWordIds = correctedWords
     .map(word => word.ID)
     .filter(wordId => wordId !== null && wordId !== undefined)
 
   return {
-    focusedWord: words.map(getCorrectionWordFocusText).filter(Boolean).join(' '),
+    focusedWord: correctedWords.map(getCorrectionWordFocusText).filter(Boolean).join(' '),
     focusedWordId: focusedWordIds[0] ?? null,
     focusedWordIds,
   }
@@ -405,29 +426,38 @@ export const findCorrectionGroupAtOffset = (sentence, corrections, offset) => {
   )
 }
 
-// Find the insertion (zero-width) correction group nearest to a sentence-relative offset, within
-// `tolerance` characters. This lets a caret click in the gap where a word should be inserted select
-// that insertion, since insertions have no character span of their own to click on.
-export const findInsertionGroupNearOffset = (sentence, corrections, offset, tolerance = 1) => {
+// Find the insertion (zero-width) group whose region contains the offset. A region is the run of
+// words around an insertion point, bounded by the nearest replacement/deletion on each side (or a
+// sentence edge). So clicking any plain word by a missing-word gap selects that insertion, not just
+// the gap. When a region holds several insertions, the nearest to the offset wins.
+export const findInsertionGroupInRegion = (sentence, corrections, offset) => {
   if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
   if (!Number.isInteger(offset)) return null
 
   const groups = getCorrectionGroups(sentence, corrections)
-  let nearest = null
-  let nearestDistance = tolerance + 1
+  const wordRanges = groups
+    .map(group => group.range)
+    .filter(range => range && range.endOffset > range.startOffset)
+  const insertions = groups.filter(
+    group => group.range && group.range.endOffset === group.range.startOffset,
+  )
 
-  groups.forEach(group => {
-    const range = group?.range
+  if (!insertions.length) return null
 
-    if (!range || range.endOffset !== range.startOffset) return
+  // The correction-free region around the offset, bounded by replacement/deletion words.
+  const leftBound = wordRanges
+    .filter(range => range.endOffset <= offset)
+    .reduce((bound, range) => Math.max(bound, range.endOffset), 0)
+  const rightBound = wordRanges
+    .filter(range => range.startOffset >= offset)
+    .reduce((bound, range) => Math.min(bound, range.startOffset), sentence.length)
 
-    const distance = Math.abs(range.startOffset - offset)
+  const distanceToOffset = group => Math.abs(group.range.startOffset - offset)
 
-    if (distance <= tolerance && distance < nearestDistance) {
-      nearest = group
-      nearestDistance = distance
-    }
-  })
-
-  return nearest
+  return insertions
+    .filter(group => group.range.startOffset >= leftBound && group.range.startOffset <= rightBound)
+    .reduce((nearest, group) => {
+      if (!nearest) return group
+      return distanceToOffset(group) < distanceToOffset(nearest) ? group : nearest
+    }, null)
 }

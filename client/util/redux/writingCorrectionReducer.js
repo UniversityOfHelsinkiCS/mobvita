@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v2'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v3'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 const hashString = value => {

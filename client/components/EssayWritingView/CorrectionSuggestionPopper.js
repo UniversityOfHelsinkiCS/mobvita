@@ -14,6 +14,8 @@ import {
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
+  isCorrectionDeletion,
+  isCorrectionInsertion,
 } from './utils/correctionTokens'
 
 const getCorrectionSelectionRequest = (correctionRange, correctionFocus) => ({
@@ -36,34 +38,27 @@ const CorrectionBubble = ({
       'essay-writing-correction-bubble',
       correctionType ? `essay-writing-correction-bubble-${correctionType}` : '',
       isActive ? 'essay-writing-correction-bubble-active' : '',
-    ].filter(Boolean).join(' ')}
+    ]
+      .filter(Boolean)
+      .join(' ')}
     data-sentence={sentence}
     elevation={3}
-    onClick={() => onSentenceSelect?.(
-      getCorrectionSelectionRequest(correctionRange, correctionFocus),
-      'click',
-    )}
-    onMouseEnter={() => onSentenceSelect?.(
-      getCorrectionSelectionRequest(correctionRange, correctionFocus),
-      'hover',
-    )}
-    onMouseLeave={() => onSentenceSelect?.(
-      getCorrectionSelectionRequest(correctionRange, correctionFocus),
-      'leave',
-    )}
+    onClick={() =>
+      onSentenceSelect?.(getCorrectionSelectionRequest(correctionRange, correctionFocus), 'click')
+    }
+    onMouseEnter={() =>
+      onSentenceSelect?.(getCorrectionSelectionRequest(correctionRange, correctionFocus), 'hover')
+    }
+    onMouseLeave={() =>
+      onSentenceSelect?.(getCorrectionSelectionRequest(correctionRange, correctionFocus), 'leave')
+    }
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
     {feedbackText && (
       <CustomTooltip
         placement="top"
-        title={(
-          <SanitizedHTML
-            html={feedbackText}
-            tagName={Box}
-            sx={{ whiteSpace: 'pre-line' }}
-          />
-        )}
+        title={<SanitizedHTML html={feedbackText} tagName={Box} sx={{ whiteSpace: 'pre-line' }} />}
       >
         <IconButton
           aria-label="Correction feedback"
@@ -77,23 +72,22 @@ const CorrectionBubble = ({
   </Paper>
 )
 
-const getCorrectionGroupFeedbackText = correctionGroup => (
+const getCorrectionGroupFeedbackText = correctionGroup =>
   correctionGroup.words
     .map(word => getCorrectionFeedbackText(word.feedback))
     .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
     .join('\n')
-)
 
-const rangesMatch = (firstRange, secondRange) => (
+const rangesMatch = (firstRange, secondRange) =>
   firstRange &&
   secondRange &&
   firstRange.startOffset === secondRange.startOffset &&
   firstRange.endOffset === secondRange.endOffset
-)
 
 const CorrectionSuggestionPopper = ({
   correctionEntry,
   focusedSelection,
+  renderOnlyFocused,
   sentence,
   onSentenceSelect,
 }) => {
@@ -125,8 +119,15 @@ const CorrectionSuggestionPopper = ({
     )
   }
 
+  if (renderOnlyFocused && !focusedSelection) {
+    return null
+  }
+
   const corrections = getWritingCorrectionWords(correctionEntry.corrections)
-  const correctionGroups = getCorrectionGroups(sentence, corrections)
+  const allCorrectionGroups = getCorrectionGroups(sentence, corrections)
+  const correctionGroups = renderOnlyFocused
+    ? allCorrectionGroups.filter(group => rangesMatch(focusedSelection, group.range))
+    : allCorrectionGroups
 
   if (!correctionGroups.length) {
     return null
@@ -136,25 +137,41 @@ const CorrectionSuggestionPopper = ({
     <>
       {correctionGroups.map((correctionGroup, groupIndex) => {
         const correctionFocus = getCorrectionGroupFocus(correctionGroup)
+        const groupType = getCorrectionGroupType(correctionGroup)
+        const hintText = getCorrectionGroupFeedbackText(correctionGroup)
+        const isChunk = correctionGroup.words.length > 1
+        const displayedWords = isChunk
+          ? correctionGroup.words.filter(
+              word => !isCorrectionInsertion(word) && !isCorrectionDeletion(word),
+            )
+          : correctionGroup.words
+        const showHintInline =
+          !isChunk && (groupType === 'deletion' || groupType === 'insertion') && Boolean(hintText)
 
         return (
           <CorrectionBubble
             correctionFocus={correctionFocus}
             correctionRange={correctionGroup.range}
-            correctionType={getCorrectionGroupType(correctionGroup)}
-            feedbackText={getCorrectionGroupFeedbackText(correctionGroup)}
+            correctionType={groupType}
+            feedbackText={showHintInline ? '' : hintText}
             isActive={rangesMatch(focusedSelection, correctionGroup.range)}
             key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
             onSentenceSelect={onSentenceSelect}
             sentence={sentence}
           >
             <Box className="essay-writing-correction-content">
-              {correctionGroup.words.map((word, index) => (
-                <CorrectedWord
-                  key={index}
-                  word={word}
+              {showHintInline ? (
+                <SanitizedHTML
+                  html={hintText}
+                  tagName={Box}
+                  className="essay-writing-correction-hint"
+                  sx={{ whiteSpace: 'pre-line' }}
                 />
-              ))}
+              ) : (
+                displayedWords.map((word, index) => (
+                  <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
+                ))
+              )}
             </Box>
           </CorrectionBubble>
         )
