@@ -1,27 +1,65 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Box, Divider, Paper, Typography } from '@mui/material'
-import { FormattedMessage } from 'react-intl'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import {
+  clearWritingCorrectionData,
+  getWritingCorrectionKey,
+} from 'Utilities/redux/writingCorrectionReducer'
+import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
 import EssayChatbot from 'Components/ChatBot/EssayChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EssayTextInput from './EssayTextInput'
+import { getCompletedSentences } from './utils/essaySentences'
+import { clearStoredEssayText } from './utils/essayDraftStorage'
 
 import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
   const { width } = useWindowDimensions()
+  const intl = useIntl()
+  const dispatch = useDispatch()
+  const learningLanguage = useLearningLanguage()
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
-  // The bubble the user clicked; hovering another bubble previews it, and leaving reverts to this one.
+  const [essayResetKey, setEssayResetKey] = useState(0)
+  const [topicDialogOpen, setTopicDialogOpen] = useState(false)
+  const [topic, setTopic] = useState('')
   const selectedSelectionRef = useRef(null)
+  const uploadInFlightRef = useRef(false)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const { pending: uploadPending, error: uploadError } = useSelector(
+    ({ uploadProgress }) => uploadProgress,
+  )
   const showFooter = width > 640
+
+  // Don't let the user upload while a sentence's correction is still in flight — its payload entry
+  // would be empty.
+  const hasPendingCorrection = useMemo(
+    () =>
+      getCompletedSentences(essayText).some(
+        sentence => correctionsByKey[getWritingCorrectionKey(sentence)]?.pending,
+      ),
+    [essayText, correctionsByKey],
+  )
 
   useEffect(() => {
     const handleDocumentMouseDown = event => {
@@ -53,6 +91,48 @@ const EssayWritingView = () => {
       requestId: Date.now(),
     })
   }
+
+  // Drop the saved draft and remount the editor so it starts empty (after upload / clear cache).
+  const resetEssayDraft = () => {
+    clearStoredEssayText()
+    setEssayText('')
+    setEssayFocus(null)
+    setSentenceSelectionRequest(null)
+    selectedSelectionRef.current = null
+    setEssayResetKey(key => key + 1)
+  }
+
+  // Upload the essay as a story to the private library, titled by the topic the user entered.
+  const handleConfirmUpload = () => {
+    const newStory = {
+      language: capitalize(learningLanguage),
+      text: `${topic.trim()}\n\n${essayText}`,
+    }
+
+    uploadInFlightRef.current = true
+    dispatch(setCustomUpload(true))
+    dispatch(postStory(newStory))
+    setTopicDialogOpen(false)
+    setTopic('')
+  }
+
+  // Dev/staging only: wipe the cached corrections + session and the draft.
+  const handleClearCache = () => {
+    dispatch(clearWritingCorrectionData())
+    resetEssayDraft()
+  }
+
+  // When library upload settles, clear the cache/session + draft on success (keep it on failure).
+  useEffect(() => {
+    if (!uploadInFlightRef.current || uploadPending) return
+
+    uploadInFlightRef.current = false
+
+    if (!uploadError) {
+      dispatch(clearWritingCorrectionData())
+      resetEssayDraft()
+    }
+  }, [uploadPending, uploadError])
 
   const isSameSelection = (first, second) =>
     first &&
@@ -122,17 +202,28 @@ const EssayWritingView = () => {
               <Typography component="h1" variant="h5" className="essay-writing-title">
                 <FormattedMessage id="essay-writing-title" />
               </Typography>
-              <Button
-                form="url-upload"
-                type="submit"
-                onClick={() => console.log('story uploaded')}
-                data-cy="submit-essay"
-              >
-                <FormattedMessage id="upload-from-web-button" />
-              </Button>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {hiddenFeatures && (
+                  <Button
+                    variant="outline-secondary"
+                    onClick={handleClearCache}
+                    data-cy="essay-clear-cache"
+                  >
+                    Clear cache
+                  </Button>
+                )}
+                <Button
+                  onClick={() => setTopicDialogOpen(true)}
+                  disabled={uploadPending || hasPendingCorrection || !essayText.trim()}
+                  data-cy="submit-essay"
+                >
+                  <FormattedMessage id="upload-from-web-button" />
+                </Button>
+              </Box>
             </Box>
             <Divider sx={{ mt: 2 }} />
             <EssayTextInput
+              key={essayResetKey}
               onEssayFocusChange={setEssayFocus}
               onEssayTextChange={setEssayText}
               sentenceSelectionRequest={sentenceSelectionRequest}
@@ -152,6 +243,43 @@ const EssayWritingView = () => {
         </Box>
       </Box>
       {showFooter && <Footer />}
+
+      <Dialog
+        open={topicDialogOpen}
+        onClose={() => setTopicDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          <FormattedMessage id="upload-from-web-button" />
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            value={topic}
+            onChange={event => setTopic(event.target.value)}
+            placeholder={intl.formatMessage({
+              id: 'essay-upload-topic-placeholder',
+              defaultMessage: 'Topic',
+            })}
+            data-cy="essay-topic-input"
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outline-secondary" onClick={() => setTopicDialogOpen(false)}>
+            <FormattedMessage id="cancel" defaultMessage="Cancel" />
+          </Button>
+          <Button
+            onClick={handleConfirmUpload}
+            disabled={!topic.trim() || uploadPending}
+            data-cy="essay-topic-confirm"
+          >
+            <FormattedMessage id="upload-from-web-button" />
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

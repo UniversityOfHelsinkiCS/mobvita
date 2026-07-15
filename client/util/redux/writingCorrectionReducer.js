@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v12'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v14'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 const hashString = value => {
@@ -57,6 +57,10 @@ export const checkWritingCorrection = ({
   )
 }
 
+// Drop the whole writing-correction cache + session (Redux state and localStorage) — used after an
+// upload, and by the dev/staging "clear cache" button.
+export const clearWritingCorrectionData = () => ({ type: 'WRITING_CORRECTION_CLEAR_ALL' })
+
 export const clearWritingCorrection = key => ({
   type: 'WRITING_CORRECTION_CLEAR',
   key,
@@ -110,6 +114,15 @@ const saveStoredWritingCorrectionCache = correctionsByKey => {
     )
   } catch {
     // Ignore storage errors so writing correction still works normally.
+  }
+}
+
+const clearStoredWritingCorrectionCache = () => {
+  try {
+    if (typeof window === 'undefined') return
+    window.localStorage.removeItem(WRITING_CORRECTION_CACHE_STORAGE_KEY)
+  } catch {
+    // Ignore storage errors.
   }
 }
 
@@ -414,6 +427,10 @@ export default (state = initialState, action) => {
         ? upsertCorrectionSuggestion(nextState, entry)
         : nextState
     }
+
+    case 'WRITING_CORRECTION_CLEAR_ALL':
+      clearStoredWritingCorrectionCache()
+      return { ...initialState, correctionsByKey: {} }
 
     case 'WRITING_CORRECTION_CLEAR': {
       const nextCorrectionsByKey = { ...state.correctionsByKey }

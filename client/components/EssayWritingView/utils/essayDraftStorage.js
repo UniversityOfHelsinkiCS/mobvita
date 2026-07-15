@@ -15,3 +15,11 @@ export const saveEssayText = text => {
     // Ignore storage errors so writing correction still works normally.
   }
 }
+
+export const clearStoredEssayText = () => {
+  try {
+    window.localStorage.removeItem(ESSAY_WRITING_TEXT_STORAGE_KEY)
+  } catch {
+    // Ignore storage errors.
+  }
+}
