@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InitAdaptiveTest, resetTests, updateTimed } from 'Utilities/redux/testReducer'
@@ -51,9 +51,9 @@ const AdaptiveTestView = () => {
       <div className="grow ps-nm flex-col gap-row-sm mt-md">
         {!adaptiveTestSessionId && (
           <div className="my-xl pb-xl align-center flex space-between">
-            <Button size="lg" onClick={startTest} data-cy="start-test">
+            <AppButton size="lg" onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
-            </Button>
+            </AppButton>
             <Checkbox
               toggle
               label={intl.formatMessage({ id: 'timed-adaptive-test' })}

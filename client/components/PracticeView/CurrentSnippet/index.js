@@ -20,7 +20,6 @@ import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { useLocation } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
 import {
   setAnswers,
   clearPractice,

@@ -13,7 +13,7 @@ import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
@@ -306,7 +306,7 @@ const StoryList = () => {
     <Box data-cy="library-controls" className="library-control">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
 
-      <Button
+      <AppButton
         className="tour-add-new-stories"
         onClick={() => setAddStoryModalOpen(true)}
         data-cy="add-story-button"
@@ -324,7 +324,7 @@ const StoryList = () => {
         }}
       >
         {intl.formatMessage({ id: 'add-your-stories' })}
-      </Button>
+      </AppButton>
 
       <LibraryTabs
         values={libraries}

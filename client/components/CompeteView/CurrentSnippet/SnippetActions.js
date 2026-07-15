@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Icon } from 'semantic-ui-react'
 import { useLearningLanguage } from 'Utilities/common'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
@@ -234,7 +234,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
             playerFinished={playerFinished}
           />
           <div>
-            <Button
+            <AppButton
               data-cy={!nextSnippetButtonDisabled ? 'next-snippet-ready' : 'next-snippet-waiting'}
               variant="secondary"
               size="sm"
@@ -245,18 +245,18 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
               <span>
                 <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
               </span>
-            </Button>
+            </AppButton>
           </div>
         </div>
       ) : (
-        <Button
+        <AppButton
           block
           variant="primary"
           disabled={snippets.answersPending || snippets.pending}
           onClick={() => handleRetry()}
         >
           Retry loading snippet
-        </Button>
+        </AppButton>
       )}
     </div>
   )

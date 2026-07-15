@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
@@ -72,7 +72,7 @@ const LessonStartMenu = ({ setOpen }) => {
   return (
     <div className="lesson-start-menu-container universal-background">
       <CustomTooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
-        <Button
+        <AppButton
           className="lesson-tour-start-button"
           variant="primary"
           type="button"
@@ -89,11 +89,11 @@ const LessonStartMenu = ({ setOpen }) => {
               <FormattedMessage id="start" />
             </span>
           </div>
-        </Button>
+        </AppButton>
       </CustomTooltip>
 
       <CustomTooltip title={<FormattedMessage id="lesson-customize-info" />}>
-        <Button
+        <AppButton
           className="lesson-tour-setup-button"
           variant="secondary"
           type="button"
@@ -110,7 +110,7 @@ const LessonStartMenu = ({ setOpen }) => {
               <FormattedMessage id="lesson-setup" />
             </span>
           </div>
-        </Button>
+        </AppButton>
       </CustomTooltip>
     </div>
   )

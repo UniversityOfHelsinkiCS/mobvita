@@ -11,7 +11,7 @@ import LibraryTabs from 'Components/LibraryTabs'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
@@ -292,7 +292,7 @@ const LessonList = () => {
 
       {!teacherView && (
         <Link to={link} className="row justify-center align-center">
-          <Button
+          <AppButton
             size="big"
             className="lesson-practice"
             disabled={
@@ -312,7 +312,7 @@ const LessonList = () => {
               border: '2px solid #000' }}
           >
             <FormattedMessage id="start-practice-lesson" />
-          </Button>
+          </AppButton>
         </Link>
       )}
     </Container>
@@ -472,17 +472,17 @@ const LessonList = () => {
                     </div>
                     <div className="lesson-setup-btn-container">
                       {goStep !== 0 && (
-                        <Button
+                        <AppButton
                           variant="secondary"
                           style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBackClick}
                         >
                           <FormattedMessage id="Back" />
-                        </Button>
+                        </AppButton>
                       )}
                       {goStep === 2 ? (
-                        <Button
+                        <AppButton
                           className="lesson-setup-start-btn"
                           style={{ width: '120px', height: '40px' }}
                           type="button"
@@ -497,9 +497,9 @@ const LessonList = () => {
                           }
                         >
                           <FormattedMessage id="start" />
-                        </Button>
+                        </AppButton>
                       ) : (
-                        <Button
+                        <AppButton
                           className="lesson-setup-next-btn"
                           variant="primary"
                           style={{ width: '120px', height: '40px' }}
@@ -507,7 +507,7 @@ const LessonList = () => {
                           onClick={handleContinueClick}
                         >
                           <FormattedMessage id="next-step" />
-                        </Button>
+                        </AppButton>
                       )}
                     </div>
                   </div>

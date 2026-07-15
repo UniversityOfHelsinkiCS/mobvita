@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Divider, Segment, Header, Checkbox, Icon } from 'semantic-ui-react'
 import CustomTooltip from 'Components/CustomTooltip'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
@@ -206,9 +206,9 @@ const ControlledStoryEditView = ({ match }) => {
                     <FormattedMessage id="story-processing-now-finished" />
                   </span>
                 </div>
-                <Button onClick={refreshPage}>
+                <AppButton onClick={refreshPage}>
                   <FormattedMessage id="refresh" />
-                </Button>
+                </AppButton>
               </div>
             )}
             <Divider />
@@ -250,16 +250,16 @@ const ControlledStoryEditView = ({ match }) => {
                     </b>
                   </span>
                 )}
-                <Button
+                <AppButton
                   variant="primary"
                   onClick={saveControlledStory}
                   type="button"
                   style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
                 >
                   <FormattedMessage id="save-controlled-story" />
-                </Button>
+                </AppButton>
               </div>
-              <Button
+              <AppButton
                 variant="secondary"
                 size="sm"
                 onClick={handleEditorReset}
@@ -268,7 +268,7 @@ const ControlledStoryEditView = ({ match }) => {
                 <span>
                   <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
                 </span>
-              </Button>
+              </AppButton>
             </Segment>
           </div>
             <StoryTopics

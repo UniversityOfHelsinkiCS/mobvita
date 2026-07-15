@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { useSelector } from 'react-redux'
@@ -27,9 +27,9 @@ const DailyStoriesEncouragement = ({ handleDailyStoriesClick }) => {
                   &nbsp;
                   <FormattedMessage id="daily-stories-explanation" />
                 </div>
-                <Button onClick={handleDailyStoriesClick} style={{ marginLeft: '.5rem' }}>
+                <AppButton onClick={handleDailyStoriesClick} style={{ marginLeft: '.5rem' }}>
                   <FormattedMessage id="show-daily-stories-button" />
-                </Button>
+                </AppButton>
               </div>
             </div>
           </div>

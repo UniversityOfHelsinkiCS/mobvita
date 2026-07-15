@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Divider, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import {
   setHighlightRange,
@@ -61,15 +61,15 @@ const AnnotationSelectionView = ({
           <div>
             <div className="space-between">
               <div>
-                <Button
+                <AppButton
                   size="sm"
                   disabled={annotationCandidates.length <= 2}
                   onClick={handleShrink}
                   data-cy="annotation-shrink-btn"
                 >
                   <Icon name="double angle left" />
-                </Button>{' '}
-                <Button
+                </AppButton>{' '}
+                <AppButton
                   size="sm"
                   onClick={() =>
                     handleExpand(annotationCandidates[annotationCandidates.length - 1])
@@ -77,17 +77,17 @@ const AnnotationSelectionView = ({
                   data-cy="annotation-expand-btn"
                 >
                   <Icon name="double angle right" />
-                </Button>
+                </AppButton>
               </div>
               <div>
-                <Button
+                <AppButton
                   style={{ marginRight: '1em' }}
                   onClick={handleCreateAnnotationButtonClick}
                   size="sm"
                   data-cy="create-annotation-button"
                 >
                   <FormattedMessage id="create-a-note" />
-                </Button>
+                </AppButton>
                 <Popup
                   position="bottom right"
                   content={

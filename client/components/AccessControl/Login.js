@@ -4,7 +4,7 @@ import { createRealToken } from 'Utilities/redux/userReducer'
 import { Form } from 'semantic-ui-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import ForgotPassword from './ForgotPassword'
 import InterfaceLanguageView from '../LanguageSelectView/InterfaceLanguageView'
 import { localeCodeToName } from 'Utilities/common'
@@ -77,13 +77,13 @@ const Login = () => {
           {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
       </Form>
-      <Button
+      <AppButton
         style={{ paddingLeft: '0px', marginTop: '1em' }}
         onClick={() => setForgotPasswordOpen(true)}
         variant="link"
       >
         <FormattedMessage id="forgot-password" />
-      </Button>
+      </AppButton>
       <ForgotPassword isOpen={forgotPasswordOpen} setOpen={setForgotPasswordOpen} />
 
       {/* Interface Language Selection Modal */}

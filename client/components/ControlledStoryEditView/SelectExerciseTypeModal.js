@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import MultipleChoiceModal from './MultipleChoicesModal'
 
@@ -53,28 +53,28 @@ const SelectExerciseTypeModal = ({
             <div style={{ marginBottom: '0.5em' }}>
               {!noConcepts && (
                 <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
-                  <Button
+                  <AppButton
                     type="submit"
                     onClick={handleAddClozeExercise}
                     onKeyDown={handleAddClozeExercise}
                   >
                     <FormattedMessage id="choose-cloze-exercise" />
-                  </Button>
+                  </AppButton>
                 </span>
               )}
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                <Button
+                <AppButton
                   type="submit"
                   onClick={handleAddHearingExercise}
                   onKeyDown={handleAddHearingExercise}
                 >
                   <FormattedMessage id="choose-listening-exercise" />
-                </Button>
+                </AppButton>
               </span>
               <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                <Button type="submit" onClick={handleOpenMCModal} onKeyDown={handleOpenMCModal}>
+                <AppButton type="submit" onClick={handleOpenMCModal} onKeyDown={handleOpenMCModal}>
                   <FormattedMessage id="choose-multichoice-exercise" />
-                </Button>
+                </AppButton>
               </span>
             </div>
           </div>

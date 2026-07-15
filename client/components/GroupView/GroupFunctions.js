@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setGroupTestDeadline, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { getTestQuestions } from 'Utilities/redux/testReducer'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 import ImportStoryModal from './ImportStoryModal'
@@ -100,18 +100,18 @@ const GroupFunctions = ({
       {width >= 640 ? (
         <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
           {isTeaching && !analyticsView && teacherView && (
-            <Button
+            <AppButton
               variant="primary"
               onClick={handleAnalyticsClick}
               style={{ color: 'white' }}
             >
               <Icon name="chart line" /> <FormattedMessage id="Analytics" />
-            </Button>
+            </AppButton>
           )}
           {isTeaching && teacherView && (
-            <Button onClick={() => setLearningModalGroupId(groupId)}>
+            <AppButton onClick={() => setLearningModalGroupId(groupId)}>
               <Icon name="settings" /> <FormattedMessage id="learning-settings" />
-            </Button>
+            </AppButton>
           )}
           {learningModalGroupId && isTeaching && (
             <GroupLearningSettingsModal
@@ -124,41 +124,41 @@ const GroupFunctions = ({
             <ImportStoryModal open={importStoryModalOpen} setOpen={setImportStoryModalOpen} groupId={groupId} />
           )}
           {isTeaching && teacherView && (
-            <Button
+            <AppButton
               data-cy="enable-test-button"
               onClick={handleTestEnableDisableButtonClick}
               variant={testButtonVariant}
             >
               <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
-            </Button>
+            </AppButton>
           )}
           {!conceptsView && isTeaching && teacherView && (
-            <Button
+            <AppButton
               variant="primary"
               as={Link}
               to={`/groups/teacher/${groupId}/settings`}
               style={{ color: 'white' }}
             >
               <Icon name="settings" /> <FormattedMessage id="test-settings" />
-            </Button>
+            </AppButton>
           )}
-          {isTeaching && teacherView && (<Button onClick={handleStoriesClick}>
+          {isTeaching && teacherView && (<AppButton onClick={handleStoriesClick}>
             <Icon name="book" /> <FormattedMessage id="Stories" />
-          </Button>)}
+          </AppButton>)}
           {!peopleView && isTeaching && teacherView && (
-            <Button data-cy="people-button" onClick={handlePeopleClick}>
+            <AppButton data-cy="people-button" onClick={handlePeopleClick}>
               <Icon name="user" /> <FormattedMessage id="people" />
-            </Button>
+            </AppButton>
           )}
           {isTeaching && teacherView && (
-            <Button onClick={handleShowTokenClick}>
+            <AppButton onClick={handleShowTokenClick}>
               <Icon name="key" /> <FormattedMessage id="show-group-token" />
-            </Button>
+            </AppButton>
           )}
           {isTeaching && teacherView && (
-            <Button onClick={()=> setImportStoryModalOpen(true)}>
+            <AppButton onClick={()=> setImportStoryModalOpen(true)}>
               <Icon name="share" /> <FormattedMessage id="import-story" />
-            </Button>
+            </AppButton>
             
           )}
         </div>

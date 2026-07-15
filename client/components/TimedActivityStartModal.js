@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { Modal } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl';
 
 const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart }) => {
@@ -26,14 +26,14 @@ const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart
         </div>
         <div className="flex-col align-center gap-row-nm">
           <div>
-            <Button data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
+            <AppButton data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
               <FormattedMessage id="start" />
-            </Button>
+            </AppButton>
           </div>
           <div>
-            <Button variant="secondary" onClick={handleBackClick}>
+            <AppButton variant="secondary" onClick={handleBackClick}>
               <FormattedMessage id="go-back" />
-            </Button>
+            </AppButton>
           </div>
         </div>
       </Modal.Content>

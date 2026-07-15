@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Dropdown, Divider, Radio, Icon } from 'semantic-ui-react'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ButtonGroup, Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
-import { Link } from 'react-router-dom'
 import {
   updateExerciseTemplate,
   updateMaxPracticePercent,
@@ -196,8 +195,8 @@ const LearningSettingsModal = ({ trigger }) => {
               onChange={() => handlePersonalOptionClick()}
             />
             </span><br />
-            <Button
-              as={practicePrctMode === 'custom' ? Link : Button}
+            <AppButton
+              as={practicePrctMode === 'custom' ? Link : undefined}
               to="/concepts"
               variant="primary"
               // size="lg"
@@ -206,7 +205,7 @@ const LearningSettingsModal = ({ trigger }) => {
               style={getCustomButtonStyle()}
             >
               <FormattedMessage id="custom" />
-            </Button>
+            </AppButton>
           </div>
           <div className="flex-col learning-settings-radio-button-item">
             <span>
@@ -277,9 +276,9 @@ const LearningSettingsModal = ({ trigger }) => {
             // isDisabled={practicePrctMode !== 'custom'} temporarily comment out since we dont have practice mode anymore
           />
           <br />
-          <Button variant="primary" size="lg" onClick={submitSettings}>
+          <AppButton variant="primary" size="lg" onClick={submitSettings}>
             <FormattedMessage id="update-settings" />
-          </Button>
+          </AppButton>
         </>
       </Modal.Content>
     </Modal>

@@ -2,9 +2,10 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar, Nav, Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Headroom from 'react-headroom'
 import { Badge, FormControlLabel, Switch, Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
 import MenuIcon from '@mui/icons-material/Menu'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
@@ -54,6 +55,21 @@ const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
     />
   )
 }
+
+// Layout wrappers that replace react-bootstrap's <Navbar.Collapse> / <Nav>. All the visual styling
+// still comes from the app's own `.navbar*` classes in custom.scss — these only reproduce the flex
+// plumbing bootstrap used to provide (the collapse grows to fill the row; each group is a flex row).
+const NavCollapse = styled('div')({
+  display: 'flex',
+  flexGrow: 1,
+  flexBasis: 'auto', // matches bootstrap's `.navbar-expand .navbar-collapse` (don't force a 100% wrap)
+  alignItems: 'center',
+})
+
+const NavGroup = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+})
 
 const NewsWebSite = "https://revitaai.github.io/faq-LEARNER-TOC.html"
 
@@ -261,7 +277,11 @@ export default function NavBar() {
 
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
-      <Navbar className={getBackgroundColor()} style={{ padding: '8px 14px 8px 8px' }}>
+      <Box
+        component="nav"
+        className={`navbar ${getBackgroundColor()}`}
+        style={{ padding: '8px 14px 8px 8px', flexWrap: 'nowrap' }}
+      >
         <Tour />
         <MenuIcon
           onClick={() => dispatch(sidebarSetOpen(!open))}
@@ -269,12 +289,13 @@ export default function NavBar() {
           style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
           data-cy="hamburger"
         />
-        <Navbar.Collapse>
+        <NavCollapse>
           {/********************************* HAMBURGER *********************************/}
-          <Nav className="mr-auto">
+          <NavGroup sx={{ mr: 'auto' }}>
             <div className="navbar-container">
               <Link to="/home">
-                <Navbar.Brand
+                <Box
+                  component="span"
                   data-cy="revita-logo"
                   className="navbar-revita-logo tour-start-finish"
                 >
@@ -286,14 +307,15 @@ export default function NavBar() {
                       filter: 'brightness(0%) sepia(100) saturate(100) hue-rotate(0deg)' }}
                   />
                   {hiddenFeatures && <sup> &beta;</sup>}
-                </Navbar.Brand>
+                </Box>
               </Link>
             </div>
-          </Nav>
+          </NavGroup>
           {/********************************* ELO SCORE *********************************/}
-          <Nav className="mr-auto">
+          <NavGroup sx={{ mr: 'auto' }}>
             <div className="navbar-container">
-              <Navbar.Text
+              <Box
+                component="span"
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
@@ -315,12 +337,12 @@ export default function NavBar() {
                     </div>
                   </CustomTooltip>
                 )}
-              </Navbar.Text>
+              </Box>
             </div>
-          </Nav>
+          </NavGroup>
           {/******************************* STUDENT VIEW *******************************/}
           {isTeacher && showTeacherViewSwitch && !smallWindow && (
-            <Nav>
+            <NavGroup>
               <CustomTooltip title={<FormattedMessage id="teacher-view-explanation" />} placement="bottom">
                 <div className='flex space-between'>
                   <FormControlLabel
@@ -330,36 +352,36 @@ export default function NavBar() {
                   />
                 </div>
               </CustomTooltip>
-            </Nav>
+            </NavGroup>
           )}
           {/******************************* PROGRESS *******************************/}
           {(!isTeacher || (isTeacher && !teacherView)) && (
-            <Nav>
+            <NavGroup>
               <CustomTooltip title={<FormattedMessage id="click-here-to-see-progress-explanation" />} placement="top">
                 <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
                   <div className="navbar-level">{user.user.level}</div>
                 </Link>
               </CustomTooltip>
-            </Nav>
+            </NavGroup>
           )}
           {/******************************* TOUR BUTTON *******************************/}
-          <Nav>
+          <NavGroup>
             <div className="navbar-container" style={{ width: '90%' }}>
               <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
                 <LinkOffIcon style={{ color: '#ff944d' }} />
               </Offline>
               {!smallWindow && (
                 <CustomTooltip title={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })} placement="top">
-                  <Button className="tour-button" onClick={handleTourStart}>
+                  <AppButton className="tour-button" onClick={handleTourStart}>
                     <SignpostIcon style={{ color: 'black' }} />
-                  </Button>
+                  </AppButton>
                 </CustomTooltip>
               )}
             </div>
-          </Nav>
+          </NavGroup>
           {/******************************* LANGUAGE FLAG *******************************/}
           {!smallWindow &&  user && user.user.last_used_language && (
-          <Nav>
+          <NavGroup>
             <div className="navbar-container" style={{ width: '90%' }}>
                   <CustomTooltip
                     placement="bottom-end"
@@ -403,11 +425,11 @@ export default function NavBar() {
                     </CustomTooltip>
                   )}
             </div>
-          </Nav>
+          </NavGroup>
           )}
           {/******************************* NEWS BELL *******************************/}
           {!smallWindow && (
-            <Nav>
+            <NavGroup>
               <div className="navbar-container" style={{ width: '90%' }}>
                 <CustomTooltip
                   permanent
@@ -436,9 +458,9 @@ export default function NavBar() {
                   </a>
                 </CustomTooltip>
               </div>
-            </Nav>
+            </NavGroup>
           )}
-          <Nav>
+          <NavGroup>
             <div className="navbar-container" style={{ width: '90%' }}>
               <CustomTooltip title={<FormattedMessage id="help" />} placement="bottom-end">
                 <a
@@ -454,8 +476,8 @@ export default function NavBar() {
                 </a>
               </CustomTooltip>
             </div>
-          </Nav>
-          <Nav>
+          </NavGroup>
+          <NavGroup>
             <CustomTooltip title={<FormattedMessage id="server-status" />} placement="bottom-end">
               <a
                 className="navbar-basic-icon"
@@ -470,10 +492,10 @@ export default function NavBar() {
                   />
               </a>
             </CustomTooltip>
-          </Nav>
+          </NavGroup>
           {/******************************* END *******************************/}
-        </Navbar.Collapse>
-      </Navbar>
+        </NavCollapse>
+      </Box>
     </Headroom>
   )
 }

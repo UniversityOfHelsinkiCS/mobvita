@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { ACCESS, useHasAccess } from 'Utilities/common'
@@ -28,24 +28,24 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
 
       <div className="story-input-options-center">
         <div className="story-input-options-stack">
-            <Button className="add-new-story-button" data-cy="add-story-web" onClick={() => setActiveComponent('web')}>
+            <AppButton className="add-new-story-button" data-cy="add-story-web" onClick={() => setActiveComponent('web')}>
               <img src={uploadWebIcon} alt="web upload" className='story-option-icon' />
               <FormattedMessage id="upload-from-web" />
-            </Button>
-            <Button className="add-new-story-button" data-cy="add-story-file" onClick={() => setActiveComponent('file')}>
+            </AppButton>
+            <AppButton className="add-new-story-button" data-cy="add-story-file" onClick={() => setActiveComponent('file')}>
               <img src={uploadFileIcon} alt="file upload" className='story-option-icon' />
               <FormattedMessage id="upload-stories" />
-            </Button>
+            </AppButton>
 
-            <Button className="add-new-story-button" data-cy="add-story-paste" onClick={() => setActiveComponent('paste')}>
+            <AppButton className="add-new-story-button" data-cy="add-story-paste" onClick={() => setActiveComponent('paste')}>
               <img src={uploadPasteIcon} alt="paste" className='story-option-icon' />
               <FormattedMessage id="paste-a-text" />
-            </Button>
+            </AppButton>
             {lesson_topics?.length !== 0 && canGenerate && (
-              <Button className="add-new-story-button" data-cy="add-story-generate" onClick={goToGeneratePage}>
+              <AppButton className="add-new-story-button" data-cy="add-story-generate" onClick={goToGeneratePage}>
                 <img src={generateAI} alt="generate AI" className='story-option-icon' />
                 <FormattedMessage id="go-generating" />
-              </Button>
+              </AppButton>
             )}
         </div>
       </div>

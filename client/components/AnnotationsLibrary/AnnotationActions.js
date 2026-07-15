@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 
 const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
@@ -11,35 +11,35 @@ const AnnotationActions = ({ storyId, percentCov, setOpenWarning }) => {
           to={`/stories/${storyId}/preview`}
           style={{ marginRight: '.5em', marginBottom: '.25em' }}
         >
-          <Button variant="primary" data-cy="annotation-item-button">
+          <AppButton variant="primary" data-cy="annotation-item-button">
             <FormattedMessage id="preview" />
-          </Button>
+          </AppButton>
         </Link>
       ) : (
         <Link
           to={`/stories/${storyId}/review`}
           style={{ marginRight: '.5em', marginBottom: '.25em' }}
         >
-          <Button variant="primary" disabled={percentCov === 0}>
+          <AppButton variant="primary" disabled={percentCov === 0}>
             <FormattedMessage id="review" />
-          </Button>
+          </AppButton>
         </Link>
       )}
-      {/* 
-      <Button
+      {/*
+      <AppButton
         variant="secondary"
         onClick={() => setShowAnnotationForm(!showAnnotationForm)}
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
       >
         <FormattedMessage id="edit" />
-      </Button>
-      <Button
+      </AppButton>
+      <AppButton
         onClick={() => setOpenWarning(true)}
         variant="outline-danger"
         style={{ marginRight: '.5em', marginBottom: '.25em' }}
       >
         <FormattedMessage id="delete-annotation" />
-      </Button>
+      </AppButton>
       */}
     </div>
   )

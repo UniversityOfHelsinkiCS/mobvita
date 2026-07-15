@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getOpponent } from 'Utilities/redux/competitionReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import OpponentBar from './OpponentBar'
 import PlayerBar from './PlayerBar'
 import CompeteEnd from './CompeteEnd'
@@ -60,13 +60,13 @@ const CompetitionProgress = ({ storyId, youWon, playerFinished, setPlayerFinishe
     return (
       <div className="justify-center" style={{ alignItems: 'center' }}>
         Loading opponent failed. Click
-        <Button
+        <AppButton
           style={{ margin: '0em .5em' }}
           size="sm"
           onClick={() => dispatch(getOpponent(storyId))}
         >
           here
-        </Button>
+        </AppButton>
         to try again.
       </div>
     )

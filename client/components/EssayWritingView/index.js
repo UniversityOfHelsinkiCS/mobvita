@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
@@ -122,14 +122,14 @@ const EssayWritingView = () => {
               <Typography component="h1" variant="h5" className="essay-writing-title">
                 <FormattedMessage id="essay-writing-title" />
               </Typography>
-              <Button
+              <AppButton
                 form="url-upload"
                 type="submit"
                 onClick={() => console.log('story uploaded')}
                 data-cy="submit-essay"
               >
                 <FormattedMessage id="upload-from-web-button" />
-              </Button>
+              </AppButton>
             </Box>
             <Divider sx={{ mt: 2 }} />
             <EssayTextInput

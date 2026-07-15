@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProgressBar } from 'react-bootstrap'
+import AppProgressBar from 'Components/AppProgressBar'
 import Medal from './Medal'
 
 const Achievement = ({ name, level, current, total }) => {
@@ -30,11 +30,10 @@ const Achievement = ({ name, level, current, total }) => {
               <Medal medal={medalAchieved(4) && 'platinum'} />
               <Medal medal={medalAchieved(5) && 'diamond'} />
             </div>
-            <ProgressBar
+            <AppProgressBar
               now={progressPercentage}
-              label={<span>{progressLabel}</span>}
-              className="achievement-progress"
-              variant={level === 5 && 'success'}
+              label={progressLabel}
+              variant={level === 5 ? 'success' : undefined}
             />
           </div>
         </div>

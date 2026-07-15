@@ -1,6 +1,6 @@
 import React from 'react'
 import { images, capitalize } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
@@ -18,13 +18,15 @@ const ToggleButton = ({
 
   return (
     <>
-      <Button
+      <AppButton
         className={`toggle-button ${className || ''}`}
         variant={active ? 'primary' : 'outline-primary'}
         onClick={handleClick}
         style={{ width, height }}
       >
-        <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+        <div
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        >
           <div>
             <Icon name="check" style={{ flex: '0.1', visibility: active ? 'visible' : 'hidden' }} />
           </div>
@@ -56,7 +58,7 @@ const ToggleButton = ({
             <Icon name="check" style={{ flex: '0.1', visibility: 'hidden' }} />
           </div>
         </div>
-      </Button>
+      </AppButton>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Keyboard from 'react-simple-keyboard'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Icon } from 'semantic-ui-react'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -116,9 +116,9 @@ const VirtualKeyboard = () => {
         <>
           {layoutsForLanguage.length > 1 &&
             layoutsForLanguage.map(layout => (
-              <Button key={layout.name} onClick={() => setKeyboardLayout(layout.layout)}>
+              <AppButton key={layout.name} onClick={() => setKeyboardLayout(layout.layout)}>
                 {layout.name}
-              </Button>
+              </AppButton>
             ))}
           <Keyboard
             keyboardRef={k => setKeyboard(k)}

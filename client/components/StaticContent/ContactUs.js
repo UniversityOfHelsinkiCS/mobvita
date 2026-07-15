@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Container, Form } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendEmail } from 'Utilities/redux/emailReducer'
 
@@ -68,7 +68,7 @@ export default function ContactUs({ trigger, open: controlledOpen, setOpen: setC
               <input value={formState.email} onChange={handleFormChange} name="email" placeholder="Email" />
             </Form.Field>
             <Form.TextArea value={formState.message} onChange={handleFormChange} name="message" label="Message" placeholder="What can we help you with?" />
-            <Button type="submit">Submit</Button>
+            <AppButton type="submit">Submit</AppButton>
             {error && <p style={{ color: 'red' }}>{error}</p>}
           </Form>
         </Container>

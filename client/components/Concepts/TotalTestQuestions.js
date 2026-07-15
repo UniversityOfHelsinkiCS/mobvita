@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { updateTestConcepts } from 'Utilities/redux/groupsReducer'
 
 const TotalTestQuestions = ({
@@ -71,12 +71,12 @@ const TotalTestQuestions = ({
   return (
     <div style={hidden}>
       {totalQuestions} {intl.formatMessage({ id: 'total-questions' })}
-      <Button onClick={handleZeroing} size="sm">
+      <AppButton onClick={handleZeroing} size="sm">
         <FormattedMessage id="set-questions-to-zero" />
-      </Button>
-      <Button onClick={handleResetclick} size="sm">
+      </AppButton>
+      <AppButton onClick={handleResetclick} size="sm">
         <FormattedMessage id="reset-to-default" />
-      </Button>
+      </AppButton>
     </div>
   )
 }

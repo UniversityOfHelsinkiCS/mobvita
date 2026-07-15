@@ -7,7 +7,8 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormControl, Button } from 'react-bootstrap'
+import { FormControl } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import { Divider } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
@@ -106,22 +107,22 @@ const EditStoryView = ({ match }) => {
       <div className="justify-center">
         <div className="cont borders-light-grey">
           <div className="flex space-between">
-            <Button variant="primary" onClick={() => navigate('/library')}>
+            <AppButton variant="primary" onClick={() => navigate('/library')}>
               <FormattedMessage id="return-to-library" />
-            </Button>
+            </AppButton>
 
             <div>
-              <Button variant="primary" onClick={updateStory} disabled={submitDisabled}>
+              <AppButton variant="primary" onClick={updateStory} disabled={submitDisabled}>
                 <FormattedMessage id="save-story" />
-              </Button>
-              <Button
+              </AppButton>
+              <AppButton
                 variant="secondary"
                 style={{ marginLeft: '.5rem' }}
                 onClick={initialSettings}
                 disabled={!modified}
               >
                 <FormattedMessage id="undo-changes" />
-              </Button>
+              </AppButton>
             </div>
           </div>
           <Divider />

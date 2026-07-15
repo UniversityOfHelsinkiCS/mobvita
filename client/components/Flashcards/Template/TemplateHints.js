@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Form, Button } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import TemplateListItems from './TemplateListItems'
 
 const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
@@ -53,13 +54,13 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
         onKeyDown={handleHintKeyDown}
         ref={hintRef}
       />
-      <Button
+      <AppButton
         variant="primary"
         className="flashcard-template-button mt-sm"
         onClick={handleHintSave}
       >
         <FormattedMessage id="save-the-hint" />
-      </Button>
+      </AppButton>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Select, Segment } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -65,9 +65,9 @@ const ReadingTestView = () => {
                       value={cycle}
                       onChange={(e, data) => setCycle(data.value)}
                     />
-                    <Button onClick={handleCycleSubmit}>
+                    <AppButton onClick={handleCycleSubmit}>
                       <FormattedMessage id="confirm-next-set" />
-                    </Button>
+                    </AppButton>
                   </div>
                 </div>
               </div>
@@ -75,7 +75,7 @@ const ReadingTestView = () => {
           </div>
         )}
         <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
-          <Button
+          <AppButton
             className="show-ddlang-introductory-button btn-secondary"
             style={{ marginRight: 'auto', marginTop: '1rem' }}
             onClick={() => setShowDDLangIntroductory(true)}
@@ -83,7 +83,7 @@ const ReadingTestView = () => {
             <span>
               <FormattedMessage id="show-ddlang-introductory" />
             </span>
-          </Button>
+          </AppButton>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAnswerFeedback } from 'Utilities/redux/feedbackDebuggerReducer'
 import { Table, Form } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl';
 import Spinner from 'Components/Spinner'
 
@@ -48,9 +48,9 @@ const DebugTestView = () => {
                 onChange={({ target }) => setUserAnswer(target.value)}
               />
             </div>
-            <Button type="submit" style={{ marginTop: '0.5em' }}>
+            <AppButton type="submit" style={{ marginTop: '0.5em' }}>
               submit
-            </Button>
+            </AppButton>
           </Form>
           {feedback && (
             <div>

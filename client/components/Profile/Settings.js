@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Checkbox, Radio, Dropdown, Menu, Accordion, Divider } from 'semantic-ui-react'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useLocation } from 'react-router-dom'
 import {
   updateLocale,
@@ -121,9 +121,9 @@ const Settings = ({teacherView}) => {
         <Divider />
         {!teacherView && (<LearningSettingsModal
           trigger={
-            <Button variant="primary" size="lg">
+            <AppButton variant="primary" size="lg">
               <FormattedMessage id="learning-settings" />
-            </Button>
+            </AppButton>
           }
         />)}
       </div>

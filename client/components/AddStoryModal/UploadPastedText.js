@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import TextField from '@mui/material/TextField'
 import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
@@ -87,7 +87,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
           {` ${charactersLeft}`}
         </div>
         <div className="row-flex">
-          <Button
+          <AppButton
             onClick={addText}
             disabled={submitDisabled}
             data-cy="paste-story-confirm"
@@ -100,7 +100,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
                 <FormattedMessage id="Confirm" />
               </span>
             )}
-          </Button>
+          </AppButton>
           {titleTaken && (
             <span style={{ marginLeft: '.5em', marginTop: '12px', color: '#FF0000' }}>
               <FormattedHTMLMessage id="story-title-already-taken" />

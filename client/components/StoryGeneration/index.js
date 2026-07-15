@@ -7,7 +7,7 @@ import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/Less
 import Topics from 'Components/Topics'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import CountSlider from 'Components/Sliders/CountSlider'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useNavigate } from 'react-router-dom'
 import { Stepper, Step } from 'react-form-stepper'
 import { useLearningLanguage, getTextStyle, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
@@ -284,7 +284,7 @@ const StoryGeneration = () => {
                     onChange={e => setGeneratedStory(e.target.value)}
                   />
                   <div className="row justify-center align-center">
-                    <Button
+                    <AppButton
                       size="big"
                       className="lesson-practice"
                       disabled={noResults}
@@ -299,7 +299,7 @@ const StoryGeneration = () => {
                       onClick={() => uploadStory()}
                     >
                       <FormattedMessage id="upload-generated-story" />
-                    </Button>
+                    </AppButton>
                   </div>
                 </>
               )}
@@ -317,7 +317,7 @@ const StoryGeneration = () => {
                     <FormattedMessage id="story-generation-error" />
                   </span>
                 )}
-                <Button
+                <AppButton
                   size="big"
                   className="lesson-practice"
                   style={{
@@ -331,7 +331,7 @@ const StoryGeneration = () => {
                   onClick={() => dispatch(generateStory(getStoryGenerationPayload()))}
                 >
                   <FormattedMessage id="regenerate-story" />
-                </Button>
+                </AppButton>
               </div>
             </>
           )}
@@ -412,7 +412,7 @@ const StoryGeneration = () => {
                 />
               </Stepper>
 
-              <Button
+              <AppButton
                 style={{
                   float: 'right',
                   marginBottom: '8%',
@@ -435,7 +435,7 @@ const StoryGeneration = () => {
                 }}
               >
                 <FormattedMessage id="next-step" />
-              </Button>
+              </AppButton>
             </div>
             {goStep === -1 && <Spinner fullHeight size={60} />}
             {(goStep === 0 || goStep === -1) && (

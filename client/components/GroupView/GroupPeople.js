@@ -7,7 +7,7 @@ import {
 } from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Table } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
@@ -121,13 +121,13 @@ const GroupPeople = ({ role }) => {
                 <div className="flex space-between" style={{ alignItems: 'center' }}>
                   <span style={{ color: 'gray' }}>{teacher.userName}</span>
                   {currentUserIsTeacher && (
-                    <Button
+                    <AppButton
                       onClick={() => handleResendInvitationClick(teacher._id)}
                       size="sm"
                       style={{ marginRight: '1em' }}
                     >
                       <FormattedMessage id="resend-invitation" />
-                    </Button>
+                    </AppButton>
                   )}
                 </div>
               </Table.Cell>
@@ -181,13 +181,13 @@ const GroupPeople = ({ role }) => {
                       </span>
                       {currentUserIsTeacher && (
                         <div className="flex" style={{ alignItems: 'center' }}>
-                          <Button
+                          <AppButton
                             onClick={() => handleResendInvitationClick(student._id)}
                             size="sm"
                             style={{ marginRight: '1em' }}
                           >
                             <FormattedMessage id="resend-invitation" />
-                          </Button>
+                          </AppButton>
                           <Icon
                             data-cy={`remove-from-group-${student.userName}`}
                             style={{ cursor: 'pointer' }}

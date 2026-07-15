@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { Table, Button } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
 import Draggable from 'react-draggable'
@@ -160,15 +161,15 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             </Table>
           </div>
           <div className="flex space-between" style={{ paddingBottom: '15px' }}>
-            <Button 
-              className="interactable" 
-              variant="primary" 
+            <AppButton
+              className="interactable"
+              variant="primary"
               onClick={handleSubmit}
               disabled={!modified}
             >
               <FormattedMessage id="submit-changes-CEFR" />
-            </Button>
-            <Button
+            </AppButton>
+            <AppButton
               className="interactable"
               style={{ marginLeft: '.5rem' }}
               variant="secondary"
@@ -176,7 +177,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
               disabled={!modified}
             >
               <FormattedMessage id="undo-changes-CEFR" />
-            </Button>
+            </AppButton>
           </div>
         </div>
       </Draggable>

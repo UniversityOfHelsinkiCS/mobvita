@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
 
@@ -65,14 +65,14 @@ const ListView = ({ handleAnnotationBoxCollapse }) => {
         ))}
       </div>
       {highlightRange?.start !== null && (
-        <Button
+        <AppButton
           size="sm"
           variant="outline-secondary"
           onClick={() => dispatch(setHighlightRange(null, null))}
           style={{ marginTop: '1em' }}
         >
           <FormattedMessage id="cancel-highlighting" />
-        </Button>
+        </AppButton>
       )}
     </div>
   )

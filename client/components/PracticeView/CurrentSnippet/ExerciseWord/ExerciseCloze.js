@@ -30,7 +30,7 @@ import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { setHelperSidebarTab, setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseCloze = ({ word, snippet, handleChange }) => {
@@ -184,14 +184,14 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
         <FormattedMessage id="click-to-see-translation" />
       </div>
       <div className="tooltip-hint" style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
+        <AppButton
           variant="primary"
           onMouseDown={handleTooltipWordClick}
           onClick={handleTooltipWordClick}
         >
           <span style={getTextStyle(learningLanguage, 'tooltip')}>{word.base || word.bases} </span>
           → <FormattedMessage id={dictionaryLanguage} />
-        </Button>
+        </AppButton>
       </div>
     </div>
   )

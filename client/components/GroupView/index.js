@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
-import { Button, Table } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
   getGroups,
@@ -273,7 +274,7 @@ const GroupView = () => {
               <GroupActionModal
                 role={role}
                 trigger={
-                  <Button
+                  <AppButton
                     data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
                     size="lg"
                     style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD', float: 'right'}}
@@ -281,7 +282,7 @@ const GroupView = () => {
                     <FormattedMessage
                       id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
                     />
-                  </Button>
+                  </AppButton>
                 }
               />
               <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />

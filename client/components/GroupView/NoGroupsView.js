@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useCurrentUser } from 'Utilities/common'
 import { useNavigate } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
@@ -20,7 +20,7 @@ const NoGroupsView = ({ role }) => {
         <span className="additional-info">
           <FormattedMessage id="groups-for-only-registered-users" />
           <div>
-            <Button
+            <AppButton
               className="mt-nm"
               variant="primary"
               size="lg"
@@ -28,7 +28,7 @@ const NoGroupsView = ({ role }) => {
               onClick={() => navigate('/register')}
             >
               <FormattedMessage id="Register" />
-            </Button>
+            </AppButton>
           </div>
         </span>
       ) : (
@@ -37,14 +37,14 @@ const NoGroupsView = ({ role }) => {
             role={role}
             trigger={
               <div>
-                <Button
+                <AppButton
                   variant="primary"
                   size="lg"
                   data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
                   style={{float: 'right'}}
                 >
                   <FormattedMessage id={role === 'student' ? 'join-a-group' : 'create-new-group'} />
-                </Button>
+                </AppButton>
               </div>
             }
           />

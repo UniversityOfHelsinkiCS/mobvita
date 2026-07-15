@@ -10,7 +10,7 @@ import {
   IconButton,
   TextField,
 } from '@mui/material'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 
 const AddFolder = ({ existingFolderNames, onAddFolder }) => {
@@ -80,12 +80,12 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button variant="outline-secondary" onClick={closeDialog}>
+            <AppButton variant="outline-secondary" onClick={closeDialog}>
               {intl.formatMessage({ id: 'Cancel' })}
-            </Button>
-            <Button type="submit" variant="primary" disabled={!folderName.trim()}>
+            </AppButton>
+            <AppButton type="submit" variant="primary" disabled={!folderName.trim()}>
               {intl.formatMessage({ id: 'Add' })}
-            </Button>
+            </AppButton>
           </DialogActions>
         </Box>
       </Dialog>

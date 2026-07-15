@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
 import {
   postAnswers,
@@ -256,7 +256,7 @@ const SnippetActions = ({
           checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
         />
         <div className="space-between">
-          <Button
+          <AppButton
             variant="secondary"
             size="sm"
             disabled={
@@ -271,9 +271,9 @@ const SnippetActions = ({
             <span>
               <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
             </span>
-          </Button>
+          </AppButton>
           {!isControlledStory && (
-            <Button
+            <AppButton
               variant="secondary"
               size="sm"
               onClick={handleRestart}
@@ -283,7 +283,7 @@ const SnippetActions = ({
               <span>
                 <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
               </span>
-            </Button>
+            </AppButton>
           )}
         </div>
       </div>

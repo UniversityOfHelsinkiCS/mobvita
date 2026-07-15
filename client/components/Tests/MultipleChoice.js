@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import AppButton from 'Components/AppButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 // import { FormattedMessage } from 'react-intl';
@@ -48,22 +48,22 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
         // .filter(choice => choice?.isSelected != true)
         .map(choice => (
           <div key={choice?.option}>
-            <Button
+            <AppButton
               className="test-choice-button"
               onClick={!answerPending ? () => onAnswer(choice) : undefined}
             >
               <span style={{ fontSize: '0.77em' }}>{choice?.option}</span>
-            </Button>
+            </AppButton>
           </div>
         ))
       )}
 
       {/* {showFeedbacks && (
-        <Button className="test-choice-button" onClick={() => {
+        <AppButton className="test-choice-button" onClick={() => {
           dispatch(nextTestQuestion())
         }}>
           <FormattedMessage id="go-to-next-test-question" />
-        </Button>
+        </AppButton>
       )} */}
     </div>
   );

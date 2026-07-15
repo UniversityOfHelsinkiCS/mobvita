@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Dropdown, Input } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { importStoriesFromGroup } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 
@@ -55,10 +55,10 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
         </span>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={submitGroupImport} disabled={selectedGroups.length === 0}>
+        <AppButton onClick={submitGroupImport} disabled={selectedGroups.length === 0}>
             <FormattedMessage id="import" />
-        </Button>
-        <Button
+        </AppButton>
+        <AppButton
           style={{ marginLeft: '1em' }}
           onClick={() => {
             setOpen(false)
@@ -66,7 +66,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
           variant="secondary"
         >
           <FormattedMessage id="cancel" />
-        </Button>
+        </AppButton>
       </Modal.Actions>
     </Modal>
   )

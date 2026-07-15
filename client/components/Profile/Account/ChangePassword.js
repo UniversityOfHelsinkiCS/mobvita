@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Form } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useDispatch } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { changePassword } from 'Utilities/redux/userReducer'
@@ -87,17 +87,17 @@ export default function ChangePassword() {
           </Form.Field>
           {!isAnonymousUser && (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <Button variant="primary" data-cy="reset-password" type="submit">
+              <AppButton variant="primary" data-cy="reset-password" type="submit">
                 {intl.formatMessage({ id: 'Save' })}
-              </Button>
+              </AppButton>
             </div>
           )}
           {isAnonymousUser && (
             <>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Button variant="secondary" data-cy="reset-password" type="submit" disabled>
+                <AppButton variant="secondary" data-cy="reset-password" type="submit" disabled>
                   {intl.formatMessage({ id: 'Save' })}
-                </Button>
+                </AppButton>
               </div>
               <div style={{ marginTop: '1rem' }}>
                 <FormattedMessage id="pw-reset-for-registered-users-only" />

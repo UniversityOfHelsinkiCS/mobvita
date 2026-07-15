@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 const EnableTestMenu = ({
   setGroupTestDeadline,
@@ -73,7 +73,7 @@ const EnableTestMenu = ({
             style={{ minWidth: '120px' }}
             options={testTimeOptions}
           />
-          <Button
+          <AppButton
             data-cy="enable-test-ok-button"
             type="button"
             onClick={handleTestEnableClick}
@@ -81,7 +81,7 @@ const EnableTestMenu = ({
             style={{ margin: '0.5em' }}
           >
             OK
-          </Button>
+          </AppButton>
           <div
             style={{
               display: 'flex',
@@ -89,9 +89,9 @@ const EnableTestMenu = ({
               alignItems: 'center',
             }}
           >
-            <Button onClick={handleTestButtonCancel} variant="danger" style={{ margin: '0.2em' }}>
+            <AppButton onClick={handleTestButtonCancel} variant="danger" style={{ margin: '0.2em' }}>
               <FormattedMessage id="Cancel" />
-            </Button>
+            </AppButton>
           </div>
         </span>
       </div>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { postStory, postFlashcard, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -130,17 +130,17 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
           </div>
 
           <div className="upload-from-file-button">
-            <Button as="label" htmlFor="story" style={{ minWidth: '10em', margin: 0 }}>
+            <AppButton as="label" htmlFor="story" style={{ minWidth: '10em', margin: 0 }}>
               <FormattedMessage id="choose-a-file" />
-            </Button>
+            </AppButton>
 
-            <Button
+            <AppButton
               disabled={submitStoryDisabled}
               onClick={handleStorySubmit}
               style={{ minWidth: '10em' }}
             >
               {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
-            </Button>
+            </AppButton>
           </div>
         </div>
       ) : (
@@ -183,17 +183,17 @@ const UploadFromFile = ({ closeModal, setActiveComponent }) => {
           </div>
 
           <div className="upload-from-file-button">
-            <Button as="label" htmlFor="flashcard" style={{ minWidth: '10em', margin: 0 }}>
+            <AppButton as="label" htmlFor="flashcard" style={{ minWidth: '10em', margin: 0 }}>
               <FormattedMessage id="choose-a-file" />
-            </Button>
+            </AppButton>
 
-            <Button
+            <AppButton
               disabled={submitFlashcardDisabled}
               onClick={handleFlashcardSubmit}
               style={{ minWidth: '10em' }}
             >
               {storyUploading ? <Spinner inline /> : <FormattedMessage id="Submit" />}
-            </Button>
+            </AppButton>
           </div>
         </div>
       )}

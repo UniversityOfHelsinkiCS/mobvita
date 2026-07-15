@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Segment } from 'semantic-ui-react'
@@ -31,12 +31,12 @@ const ReadingTestStats = ({ restartTest }) => {
             <p><FormattedMessage id="overall-correct-rate" />: {overallCorrectRate?.toFixed(2)}%</p>
           </div>
           
-          <Button onClick={restartTest} style={{ marginTop: '20px', marginBot: '3em' }}>
+          <AppButton onClick={restartTest} style={{ marginTop: '20px', marginBot: '3em' }}>
             <FormattedMessage id="restart-reading-test" />
-          </Button>
-          <Button onClick={goToHomePage} style={{ marginTop: '20px', marginBot: '3em' }}>
+          </AppButton>
+          <AppButton onClick={goToHomePage} style={{ marginTop: '20px', marginBot: '3em' }}>
             <FormattedMessage id="go-to-home" />
-          </Button>
+          </AppButton>
         </div>
       </div>
     </Segment>

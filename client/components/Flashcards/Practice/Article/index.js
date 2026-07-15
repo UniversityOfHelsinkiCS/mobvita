@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Icon } from 'semantic-ui-react'
 import Flashcard from '../Flashcard'
 import { set } from 'lodash'
@@ -51,9 +51,9 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   }
 
   const articleButtons = flashcardArticles.map(article => (
-    <Button key={`${article}-${id}`} onClick={() => checkAnswer(article)}>
+    <AppButton key={`${article}-${id}`} onClick={() => checkAnswer(article)}>
       {article}
-    </Button>
+    </AppButton>
   ))
 
   const rightAnswer = `${article} ${lemma}`

@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Accordion from '@mui/material/Accordion'
@@ -100,23 +100,23 @@ const AddToRecommendedSites = useCallback(
       </div>
 
       <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'space-between' }}>
-        <Button form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
+        <AppButton form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
           {storyUploading ? (
             <Spinner inline size={28} />
           ) : (
             <FormattedMessage id="upload-from-web-button" />
           )}
-        </Button>
+        </AppButton>
 
         <CustomTooltip title={<FormattedMessage id="explain-recommended-sites" />}>
-          <Button
+          <AppButton
             type="button"
             form="url-upload"
             onClick={AddToRecommendedSites}
             data-cy="add-to-recommended-sites-button"
           >
             <FormattedMessage id="add-recommended-sites-button" />
-          </Button>
+          </AppButton>
         </CustomTooltip>
       </div>
 

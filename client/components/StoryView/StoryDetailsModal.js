@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Popup, Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { CustomButton, LinkButton } from './Buttons'
@@ -117,12 +117,12 @@ const StoryDetailsModal = ({
                   <Link
                     to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}
                   >
-                    <Button
+                    <AppButton
                       className="story-detail-modal-action-button library-tour-modal-practice-button"
                       variant={isTeacher && inGroupLibrary ? 'secondary' : 'primary'}
                     >
                       <FormattedMessage id="practice" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 )}
                 {!enableOnlyPractice && !isTeacher && (
@@ -130,13 +130,13 @@ const StoryDetailsModal = ({
                     content={<FormattedMessage id="disabled-flashcard-btn-explanation" />}
                     trigger={
                       <Link to={`/flashcards/fillin/story/${story._id}/`}>
-                        <Button
+                        <AppButton
                           className="story-detail-modal-action-button"
                           variant="primary"
                           disabled={story.flashcard_count === 0}
                         >
                           <FormattedMessage id="Flashcards" />
-                        </Button>
+                        </AppButton>
                       </Link>
                     }
                     disabled={story.flashcard_count > 0}
@@ -166,36 +166,36 @@ const StoryDetailsModal = ({
               <>
                 {inGroupLibrary && (
                   <Link to={`/stories/${story._id}/group/preview`}>
-                    <Button className="story-detail-modal-action-button" variant="primary">
+                    <AppButton className="story-detail-modal-action-button" variant="primary">
                       <FormattedMessage id="preview" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 )}
                 {!inGroupLibrary && (
                   <Link to={`/stories/${story._id}/preview`}>
-                    <Button className="story-detail-modal-action-button" variant="secondary">
+                    <AppButton className="story-detail-modal-action-button" variant="secondary">
                       <FormattedMessage id="preview" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 )}
                 {inGroupLibrary ? (
                   <Link to={`/stories/${story._id}/group/review`}>
-                    <Button
+                    <AppButton
                       className="story-detail-modal-action-button library-tour-modal-review-button"
                       variant="primary"
                     >
                       <FormattedMessage id="review" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 ) : (
                   <Link to={`/stories/${story._id}/review`}>
-                    <Button
+                    <AppButton
                       className="story-detail-modal-action-button library-tour-modal-review-button"
                       variant={story.percent_cov === 0 ? 'outline-secondary' : 'secondary'}
                       disabled={story.percent_cov === 0}
                     >
                       <FormattedMessage id="review" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 )}
               </>
@@ -213,24 +213,24 @@ const StoryDetailsModal = ({
             >
               {!isTeacher && (
                 <Link to={`/stories/${story._id}/compete`}>
-                  <Button
+                  <AppButton
                     className="story-detail-modal-action-button"
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
                     <FormattedMessage id="compete" />
-                  </Button>
+                  </AppButton>
                 </Link>
               )}
               {!isTeacher && (
                 <Link to={`/crossword/${story._id}`}>
-                  <Button
+                  <AppButton
                     className="story-detail-modal-action-button"
                     variant={isTeacher && inGroupLibrary ? 'outline-secondary' : 'secondary'}
                     disabled={enableOnlyPractice || (isTeacher && inGroupLibrary)}
                   >
                     <FormattedMessage id="Crossword" />
-                  </Button>
+                  </AppButton>
                 </Link>
               )}
             </div>
@@ -282,9 +282,9 @@ const StoryDetailsModal = ({
 
               {showCancelControlStoryButton && (
                 
-                  <Button variant="secondary" onClick={handleControlledStoryCancel}>
+                  <AppButton variant="secondary" onClick={handleControlledStoryCancel}>
                     <FormattedMessage id="cancel-controlled-story" />
-                  </Button>
+                  </AppButton>
                 
               )}
             </div>
@@ -307,9 +307,9 @@ const StoryDetailsModal = ({
                 />
                 {story.user === user.oid && (
                   <Link to={`/stories/${story._id}/edit`}>
-                    <Button className="story-detail-modal-manage-button" variant="secondary">
+                    <AppButton className="story-detail-modal-manage-button" variant="secondary">
                       <Icon name="edit" /> <FormattedMessage id="edit-story" />
-                    </Button>
+                    </AppButton>
                   </Link>
                 )}
                 {inGroupLibrary && isTeacher && (

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Form } from 'semantic-ui-react'
 import { resetPassword } from 'Utilities/redux/passwordResetReducer'
 
@@ -49,9 +49,9 @@ const ResetPassword = () => {
           />
         </Form.Field>
         <Form.Field>
-          <Button variant="primary" type="submit">
+          <AppButton variant="primary" type="submit">
             <FormattedMessage id="Confirm-Password" />
-          </Button>
+          </AppButton>
         </Form.Field>
       </Form>
     </div>

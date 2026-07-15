@@ -17,7 +17,7 @@ import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import {
   setAnswers,
   clearPractice,
@@ -322,9 +322,9 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
           />
         </div>
       ) : (
-        <Button variant="primary" block onClick={() => startOver()}>
+        <AppButton variant="primary" block onClick={() => startOver()}>
           <FormattedMessage id="restart-competition" />
-        </Button>
+        </AppButton>
       )}
     </form>
   )

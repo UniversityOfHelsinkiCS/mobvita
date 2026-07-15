@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -68,7 +68,7 @@ const ReadingTestMC = ({
           {choices &&
             choices.map(choice => (
               <div key={choice?.option}>
-                <Button
+                <AppButton
                   className={`test-choice-button ${getChoiceClass(choice)}`}
                   onClick={!answerPending ? () => onAnswer(choice) : undefined}
                   disabled={
@@ -85,7 +85,7 @@ const ReadingTestMC = ({
                   }}
                 >
                   <span style={{ fontSize: '0.7em' }}>{choice?.option}</span>
-                </Button>
+                </AppButton>
               </div>
             ))}
         </div>

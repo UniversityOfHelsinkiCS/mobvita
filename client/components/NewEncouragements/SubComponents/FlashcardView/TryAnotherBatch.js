@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { FormattedMessage } from 'react-intl';
 import { images, backgroundColors } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 
 const TryAnotherBatch = ({ handleNewDeck }) => {
@@ -23,9 +23,9 @@ const TryAnotherBatch = ({ handleNewDeck }) => {
         <div>
           <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />
           &nbsp;
-          <Button className="interactable" variant="primary" onClick={() => handleNewDeck()}>
+          <AppButton className="interactable" variant="primary" onClick={() => handleNewDeck()}>
             <FormattedMessage id="next-card" />
-          </Button>
+          </AppButton>
         </div>
       </div>
     </div>

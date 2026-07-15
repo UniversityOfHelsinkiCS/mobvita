@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal, Form } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { forgotPassword } from 'Utilities/redux/passwordResetReducer'
 
 const ForgotPassword = ({ isOpen, setOpen }) => {
@@ -34,9 +34,9 @@ const ForgotPassword = ({ isOpen, setOpen }) => {
             />
           </Form.Field>
           <Form.Field>
-            <Button variant="primary" type="submit">
+            <AppButton variant="primary" type="submit">
               <FormattedMessage id="reset-my-password" />
-            </Button>
+            </AppButton>
           </Form.Field>
         </Form>
       </Modal.Content>

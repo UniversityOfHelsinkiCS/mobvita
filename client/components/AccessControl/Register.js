@@ -9,7 +9,7 @@ import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndCon
 import { useIntl, FormattedMessage } from 'react-intl'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { localeCodeToName } from 'Utilities/common'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 
 const Register = () => {
@@ -169,13 +169,13 @@ const Register = () => {
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
           <Checkbox data-cy="accept-terms" checked={accepted} onChange={() => toggleAccepted()} />
           <TermsAndConditions
-            trigger={<Button variant="link"> Terms and Conditions, Privacy Policy </Button>}
+            trigger={<AppButton variant="link"> Terms and Conditions, Privacy Policy </AppButton>}
           />
         </div>
         {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
           <Checkbox data-cy="accept-terms" checked={ddlangAccepted} onChange={() => toggleDDLangAccepted()} />
           <DDLangTermsAndConditions
-            trigger={<Button variant="link" onClick={() => setShowDDLangModal(true)}> DDLANG policy statement </Button>} 
+            trigger={<AppButton variant="link" onClick={() => setShowDDLangModal(true)}> DDLANG policy statement </AppButton>}
             handleChange={handleDDLangChange}
             openModal={showDDLangModal}
             setOpenModal={setShowDDLangModal}

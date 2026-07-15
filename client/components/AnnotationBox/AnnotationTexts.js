@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AnswerAnnotationForm from './AnswerAnnotationForm'
@@ -61,7 +61,7 @@ const AnnotationTexts = ({
               {displayAuthorInfo(a)}
               {a.uid === user.oid && bigScreen && (
                 <div>
-                  <Button
+                  <AppButton
                     size="sm"
                     variant="outline-secondary"
                     onClick={() => handleEditButtonClick(a.text, a.name, a.thread_id)}
@@ -69,8 +69,8 @@ const AnnotationTexts = ({
                   >
                     <Icon name="pencil alternate" />
                     <FormattedMessage id="edit" />
-                  </Button>
-                  <Button
+                  </AppButton>
+                  <AppButton
                     size="sm"
                     variant="outline-danger"
                     onClick={() => handleDeleteButtonClick(a.thread_id)}
@@ -78,7 +78,7 @@ const AnnotationTexts = ({
                   >
                     <Icon name="trash alternate" />
                     <FormattedMessage id="Delete" />
-                  </Button>
+                  </AppButton>
                 </div>
               )}
             </div>
@@ -88,13 +88,13 @@ const AnnotationTexts = ({
         </div>
       ))}
       <>
-        <Button
+        <AppButton
           style={{ marginTop: '.75em' }}
           size="sm"
           onClick={() => setShowAnswerForm(!showAnswerForm)}
         >
           <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
-        </Button>
+        </AppButton>
         {showAnswerForm && (
           <AnswerAnnotationForm
             focusedSpan={focusedSpan}

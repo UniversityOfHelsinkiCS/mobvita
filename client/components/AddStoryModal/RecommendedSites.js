@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Icon } from 'semantic-ui-react'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import DifficultyStars from 'Components/DifficultyStars'
@@ -26,9 +26,9 @@ export default function RecommendedSites() {
             style={{ cursor: 'pointer' }}
             onClick={() => handleSiteDelete(url)}
           />
-          <Button variant="link" style={{ padding: 0 }} href={url} target="_blank">
+          <AppButton variant="link" style={{ padding: 0 }} href={url} target="_blank">
             {name || url}
-          </Button>
+          </AppButton>
         </div>
         <DifficultyStars difficulty={difficulty} />
       </div>

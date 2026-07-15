@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { Icon, Accordion, AccordionTitle, AccordionContent } from 'semantic-ui-react'
 import TopicListItem from './TopicListItem'
@@ -158,7 +158,7 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
   return (
     <div style={{ paddingBottom: '2em' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
-        <Button
+        <AppButton
           variant="primary"
           disabled={
             topicInstance.instancePending ||
@@ -173,7 +173,7 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
         >
           <Icon name="trash alternate" />
           <FormattedMessage id="exclude-all-topics" />
-        </Button>
+        </AppButton>
 
         <input
           type="text"

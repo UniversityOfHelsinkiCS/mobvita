@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Table, Icon, TableRow, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -344,15 +344,15 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
       {maxPage > 1 && (
         <div className="justify-center align-center">
-          <Button variant="secondary" onClick={() => switchPage(-1)}>
+          <AppButton variant="secondary" onClick={() => switchPage(-1)}>
             <Icon name="angle left" />
-          </Button>
+          </AppButton>
           <span style={{ marginLeft: '1em', marginRight: '1em' }}>
             {page + 1} / {maxPage}
           </span>
-          <Button variant="secondary" onClick={() => switchPage(1)}>
+          <AppButton variant="secondary" onClick={() => switchPage(1)}>
             <Icon name="angle right" />
-          </Button>
+          </AppButton>
         </div>
       )}
       {/* {hiddenFeatures && (

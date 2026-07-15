@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
 import { consistsOfOnlyWhitespace } from 'Utilities/common'
@@ -90,14 +90,14 @@ const AnnotationForm = ({
           data-cy="annotation-text-field"
         />
       </Form>
-      <Button
+      <AppButton
         variant="outline-secondary"
         size="sm"
         onClick={() => dispatch(setAnnotationFormVisibility(false))}
       >
         <FormattedMessage id="Cancel" />
-      </Button>
-      <Button
+      </AppButton>
+      <AppButton
         variant="primary"
         size="sm"
         onClick={() => handleAnnotationSave(publicNote)}
@@ -106,7 +106,7 @@ const AnnotationForm = ({
         data-cy="save-annotation-button"
       >
         <FormattedMessage id="Save" />
-      </Button>
+      </AppButton>
     </div>
   )
 }

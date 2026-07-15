@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import { dictionaryLanguageSelector, images, showAllEncouragements } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -76,14 +76,14 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
         </h5>
       </div>
       <div className="encouragement-button-group">
-        <Button variant="primary" type="button" onClick={startTest}>
+        <AppButton variant="primary" type="button" onClick={startTest}>
           <FormattedMessage id="start-test" />
-        </Button>
-        <Button variant="secondary" type="button" onClick={secondaryTestButton}>
+        </AppButton>
+        <AppButton variant="secondary" type="button" onClick={secondaryTestButton}>
           <FormattedMessage
             id={inStoryPractice ? 'home' : 'blue-cards-test-encouragement-dismiss-button'}
           />
-        </Button>
+        </AppButton>
       </div>
     </div>
   )

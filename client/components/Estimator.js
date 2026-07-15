@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Button, Form, Table, Alert, Badge } from 'react-bootstrap'
+import { Container, Row, Col, Form, Table, Alert, Badge } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import axios from 'axios'
 import Spinner from 'Components/Spinner'
 
@@ -54,7 +55,7 @@ const Estimator = () => {
       </Row>
       <Row className="justify-content-center my-3">
         <Col xs="auto">
-          <Button
+          <AppButton
             type="button"
             style={{ width: '100px', height: '40px' }}
             disabled={!text || isLoading}
@@ -65,7 +66,7 @@ const Estimator = () => {
             ) : (
               <Spinner inline />
             )}
-          </Button>
+          </AppButton>
         </Col>
       </Row>
       {errorMessage && (

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from "react-redux"
 import { useParams, useNavigate  } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
 import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 
@@ -53,12 +53,12 @@ const PreviousStoriesBlueFlashcards = () => {
                   story: prevStoriesBlueCards?.title }}
               />
               &nbsp;
-              <Button
+              <AppButton
                 className="interactable"
                 onClick={() => handleClick()}
               >
                 <FormattedMessage id="flashcards-review" />
-              </Button>
+              </AppButton>
             </div>
           </div>
         </div>

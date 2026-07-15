@@ -4,7 +4,7 @@ import { answerAnnotation } from 'Utilities/redux/storiesReducer'
 import { setFocusedSpan } from 'Utilities/redux/annotationsReducer'
 import { useParams } from 'react-router-dom'
 import { Form, TextArea } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { consistsOfOnlyWhitespace, getMode } from 'Utilities/common'
 
@@ -59,7 +59,7 @@ const AnswerAnnotationForm = ({ focusedSpan, spanAnnotations, setShowAnswerForm 
           autoFocus
           data-cy="annotation-text-field"
         />
-        <Button
+        <AppButton
           variant="primary"
           size="sm"
           style={{ marginLeft: '1em' }}
@@ -68,7 +68,7 @@ const AnswerAnnotationForm = ({ focusedSpan, spanAnnotations, setShowAnswerForm 
           data-cy="answer-annotation-button"
         >
           <FormattedMessage id="Save" />
-        </Button>
+        </AppButton>
       </Form>
     </div>
   )

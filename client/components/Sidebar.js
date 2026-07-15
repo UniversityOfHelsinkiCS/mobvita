@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { FormattedMessage } from 'react-intl'
 import { images } from 'Utilities/common'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { logout, teacherSwitchView } from 'Utilities/redux/userReducer'
@@ -41,7 +40,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutlined'
 import LogoutIcon from '@mui/icons-material/Logout'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import EditNote from '@mui/icons-material/EditNote'
-import { Button as BootstrapButton } from 'react-bootstrap'
+import SidebarNavButton from 'Components/SidebarNavButton'
 
 export default function Sidebar() {
   const dispatch = useDispatch()
@@ -130,16 +129,6 @@ export default function Sidebar() {
 
   const drawerWidth = 350
   const sidebarFontFamily = 'Lato, "Helvetica Neue", Arial, Helvetica, sans-serif'
-
-  const actionButtonSx = {
-    marginTop: marginTopButton,
-    color: 'darkslateblue',
-    borderColor: 'slateblue',
-    fontSize: 'larger',
-    fontWeight: 'bold',
-    fontFamily: sidebarFontFamily,
-    width: '100%',
-  }
 
   const moreMenuItemSx = {
     '&:hover': {
@@ -230,99 +219,74 @@ export default function Sidebar() {
 
         {user && (
           <>
-            {user.user.email === 'anonymous_email' && (
-              <Box sx={{ padding: '0.5em 0em' }}>
-                  <Link to="/register" onClick={closeSidebar}>
-                    <BootstrapButton
-                      variant="primary"
-                      className="sidebar-register-button"
-                      style={{ width: '100%', fontFamily: sidebarFontFamily }}
-                    >
-                      <FormattedMessage id="register-to-save-your-progress" />
-                    </BootstrapButton>
-                  </Link>
-              </Box>
-            )}
-
             <Box className="sidebar-actions-wrap" sx={{ padding: '16px 12px' }}>
-              <BootstrapButton
-              className="sidebar-profile-button sidebar-action-button"
-                  variant="secondary"
-                  style={actionButtonSx}
-                  onClick={() => { closeSidebar(); navigate('/home', { state: { practiceModalOpen: true } }); }}
-                >
-                  <FlagIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                  <FormattedMessage id="practice-now" />
-                </BootstrapButton>
-                <Link to="/library" onClick={closeSidebar}>
-                  <BootstrapButton
-                    className="sidebar-library-button sidebar-action-button"
-                    variant="secondary"
-                    style={actionButtonSx}
-                  >
-                    <BookIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                    <FormattedMessage id="Library" />
-                  </BootstrapButton>
-                </Link>
+              {user.user.email === 'anonymous_email' && (
+                <SidebarNavButton
+                  to="/register"
+                  labelId="register-to-save-your-progress"
+                  onClick={closeSidebar}
+                  variant="contained"
+                  className="sidebar-register-button"
+                />
+              )}
+              <SidebarNavButton
+                  to="/home"
+                  state={{ practiceModalOpen: true }}
+                  icon={<FlagIcon fontSize="small" />}
+                  labelId="practice-now"
+                  onClick={closeSidebar}
+                  className="sidebar-profile-button sidebar-action-button"
+                />
+                <SidebarNavButton
+                  to="/library"
+                  icon={<BookIcon fontSize="small" />}
+                  labelId="Library"
+                  onClick={closeSidebar}
+                  className="sidebar-library-button sidebar-action-button"
+                />
                 {canAccessLessons && (
-                  <Link to="/lessons/library" onClick={closeSidebar}>
-                    <BootstrapButton
-                      className="sidebar-action-button"
-                      variant="secondary"
-                      style={actionButtonSx}
-                    >
-                      <EventAvailableIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                      <FormattedMessage id="Lessons" />
-                    </BootstrapButton>
-                  </Link>
+                  <SidebarNavButton
+                    to="/lessons/library"
+                    icon={<EventAvailableIcon fontSize="small" />}
+                    labelId="Lessons"
+                    onClick={closeSidebar}
+                    className="sidebar-action-button"
+                  />
                 )}
-                <Link to="/essay-writing" onClick={closeSidebar}>
-                  <BootstrapButton
+                <SidebarNavButton
+                  to="/essay-writing"
+                  icon={<EditNote fontSize="small" />}
+                  labelId="essay-writing"
+                  onClick={closeSidebar}
+                  className="sidebar-action-button"
+                />
+                <SidebarNavButton
+                  to="/flashcards/fillin"
+                  icon={<StyleIcon fontSize="small" />}
+                  labelId="Flashcards"
+                  onClick={closeSidebar}
+                  className="sidebar-action-button"
+                />
+                {hasAdaptiveTests && (
+                  <SidebarNavButton
+                    to="/adaptive-test"
+                    icon={<EmojiEventsIcon fontSize="small" />}
+                    labelId="adaptive-test"
+                    onClick={closeSidebar}
                     className="sidebar-action-button"
-                    variant='secondary'
-                    style={actionButtonSx}
-                  >
-                    <EditNote fontSize='small' style={{ marginRight: '0.4em' }} />
-                    <FormattedMessage id='essay-writing' />
-                  </BootstrapButton>
-                </Link>
-                <Link to="/flashcards/fillin" onClick={closeSidebar}>
-                  <BootstrapButton
-                    className="sidebar-action-button"
-                    variant="secondary"
-                    style={actionButtonSx}
-                  >
-                    <StyleIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                    <FormattedMessage id="Flashcards" />
-                  </BootstrapButton>
-                </Link>
-                {hasAdaptiveTests && (<Link to="/adaptive-test" onClick={closeSidebar}>
-                  <BootstrapButton
-                    className="sidebar-action-button"
-                    variant="secondary"
-                    style={actionButtonSx}
-                  >
-                    <EmojiEventsIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-                    <FormattedMessage id="adaptive-test" />
-                  </BootstrapButton>
-                </Link>)}
+                  />
+                )}
                 {hiddenFeatures && (
                   <>
-                    <Link to="/test-construction" onClick={closeSidebar}>
-                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
-                        Grammar check
-                      </BootstrapButton>
-                    </Link>
-                    <Link to="/test-debug" onClick={closeSidebar}>
-                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
-                        Feedback check
-                      </BootstrapButton>
-                    </Link>
-                    <Link to="/correction-debug" onClick={closeSidebar}>
-                      <BootstrapButton className="sidebar-action-button" variant="secondary" style={actionButtonSx}>
-                        Correction check
-                      </BootstrapButton>
-                    </Link>
+                    <SidebarNavButton to="/test-construction" onClick={closeSidebar} className="sidebar-action-button">
+                      Grammar check
+                    </SidebarNavButton>
+                    <SidebarNavButton to="/test-debug" onClick={closeSidebar} className="sidebar-action-button">
+                      Feedback check
+                    </SidebarNavButton>
+                    <SidebarNavButton to="/correction-debug" onClick={closeSidebar} className="sidebar-action-button">
+                      Correction check
+                    </SidebarNavButton>
                   </>
                 )}
 
@@ -341,17 +305,15 @@ export default function Sidebar() {
         )}
         <Box sx={{ marginTop: 'auto', color: 'slateGrey' }}>
           <Box className="sidebar-footer-inner" sx={{ padding: '16px' }}>
-          <Link to="/profile/settings" onClick={closeSidebar}>
-            <BootstrapButton
-              className="sidebar-action-button"
-              variant="secondary"
-              style={{ ...actionButtonSx, marginBottom: marginTopButton }}
-              data-cy="navbar-settings-button"
-            >
-              <SettingsIcon fontSize="small" style={{ marginRight: '0.4em' }} />
-              <FormattedMessage id="Settings" />
-            </BootstrapButton>
-          </Link>
+          <SidebarNavButton
+            to="/profile/settings"
+            icon={<SettingsIcon fontSize="small" />}
+            labelId="Settings"
+            onClick={closeSidebar}
+            className="sidebar-action-button"
+            dataCy="navbar-settings-button"
+            sx={{ marginBottom: marginTopButton }}
+          />
             {isTeacher && smallWindow && (
               <CustomTooltip title={intl.formatMessage({ id: 'teacher-view-explanation' })}>
                 <FormControlLabel

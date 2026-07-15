@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Button, FormControl, Form } from 'react-bootstrap'
+import { FormControl, Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Modal } from 'semantic-ui-react'
 import { createGroup, joinGroup } from 'Utilities/redux/groupsReducer'
 
@@ -47,9 +48,9 @@ const GroupActionModal = ({ trigger, role }) => {
               <FormattedMessage id="enter-token" />
             </span>
             <FormControl as="input" data-cy="group-token" onChange={e => setToken(e.target.value)} />
-            <Button type="submit">
+            <AppButton type="submit">
               <FormattedMessage id="join-group" />
-            </Button>
+            </AppButton>
           </Form>
         ) : (
           <Form className="group-form" data-cy="add-group-form" onSubmit={addGroup}>
@@ -84,9 +85,9 @@ const GroupActionModal = ({ trigger, role }) => {
               onChange={e => setStudents(e.target.value)}
               data-cy="student-emails"
             />
-            <Button type="submit">
+            <AppButton type="submit">
               <FormattedMessage id="create-group" />
-            </Button>
+            </AppButton>
           </Form>
         )}
       </Modal.Content>

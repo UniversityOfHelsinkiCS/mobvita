@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, FormControl, Form } from 'react-bootstrap'
+import { FormControl, Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Modal } from 'semantic-ui-react'
 import { blockUser } from 'Utilities/redux/userReducer'
 import { formatEmailList } from 'Utilities/common'
@@ -52,9 +53,9 @@ const BlockUserModal = ({ showModal, setShowModal }) => {
               <FormattedMessage id="you-cannot-add-yourself" />
             </div>
           )}
-          <Button variant="primary" type="submit">
+          <AppButton variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
-          </Button>
+          </AppButton>
         </Form>
       </Modal.Content>
     </Modal>

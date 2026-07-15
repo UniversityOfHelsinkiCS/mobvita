@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { flashcardColors } from 'Utilities/common'
 import { Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -74,12 +74,12 @@ const FlashcardHintModal = ({ lemma, open, setOpen, hints, displayedHints, setDi
           <div dangerouslySetInnerHTML={{ __html: hints[hintIndex] }} />
           {hints.length > 1 && (
             <div className="flex justify-center gap-col-sm">
-              <Button disabled={hintIndex === 0} onClick={handlePreviousClick}>
+              <AppButton disabled={hintIndex === 0} onClick={handlePreviousClick}>
                 <FormattedMessage id="previous" />
-              </Button>
-              <Button disabled={hintIndex === hints.length - 1} onClick={handleNextClick}>
+              </AppButton>
+              <AppButton disabled={hintIndex === hints.length - 1} onClick={handleNextClick}>
                 <FormattedMessage id="next" />
-              </Button>
+              </AppButton>
             </div>
           )}
         </div>

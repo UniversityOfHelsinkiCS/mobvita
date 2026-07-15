@@ -1,7 +1,8 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ButtonGroup, ToggleButton, Button, Tabs, Tab } from 'react-bootstrap'
+import { ButtonGroup, ToggleButton, Tabs, Tab } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
@@ -221,10 +222,10 @@ const GroupAnalytics = ({ role }) => {
               </ToggleButton>
               {currentGroup?.reading_comprehension && (
                 <>
-                  <Button onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}>
+                  <AppButton onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}>
                     <FormattedMessage id="download-reading-comprehension-report" />
-                  </Button>
-                  <Button
+                  </AppButton>
+                  <AppButton
                     onClick={() =>
                       downloadReadingHistory(
                         currentGroupId,
@@ -235,7 +236,7 @@ const GroupAnalytics = ({ role }) => {
                     }
                   >
                     <FormattedMessage id="download-exercise-history" />
-                  </Button>
+                  </AppButton>
                 </>
               )}
             </ButtonGroup>
@@ -333,13 +334,13 @@ const GroupAnalytics = ({ role }) => {
               />
               <FormattedMessage id="current-cefr-level" />:{' '}
               <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
-              <Button
+              <AppButton
                 variant="primary"
                 onClick={() => setOpenEditModal(true)}
                 style={{ padding: '5px' }}
               >
                 <FormattedMessage id="view-previous-and-edit" />
-              </Button>
+              </AppButton>
             </div>
           )}
           <Divider />

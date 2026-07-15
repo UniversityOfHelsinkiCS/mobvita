@@ -5,7 +5,7 @@ import { backgroundColors,
   showAllEncouragements
 } from "Utilities/common"
 import { FormattedMessage } from 'react-intl';
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -61,12 +61,12 @@ const ConfirmBlueCardsEncouragement = () => {
                   story: prevBlueCards?.title }}
               />
               &nbsp;
-              <Button
+              <AppButton
                 className="interactable"
                 onClick={() => handleClick()}
               >
                 <FormattedMessage id="flashcards-review" />
-              </Button>
+              </AppButton>
             </div>
           </div>
         </div>

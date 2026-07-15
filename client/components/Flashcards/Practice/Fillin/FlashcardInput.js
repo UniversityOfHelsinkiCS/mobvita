@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'
@@ -40,9 +41,9 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
           onChange={event => setAnswer(event.target.value)}
           placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
         />
-        <Button className="flashcard-button" style={{ width: '100%' }} variant="outline-primary" type="submit">
+        <AppButton className="flashcard-button" style={{ width: '100%' }} variant="outline-primary" type="submit">
           {intl.formatMessage({ id: 'check-answer' })}
-        </Button>
+        </AppButton>
       </form>
     </div>
   )

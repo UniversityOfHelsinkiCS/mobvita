@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Form, TextArea, Checkbox } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { consistsOfOnlyWhitespace } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
@@ -65,10 +65,10 @@ const NoteFormModal = ({ open, onClose, onSubmit, initialText = '', initialPubli
             </div>
           )}
         </Form>
-        <Button variant="outline-secondary" size="sm" onClick={handleClose} disabled={loading}>
+        <AppButton variant="outline-secondary" size="sm" onClick={handleClose} disabled={loading}>
           <FormattedMessage id="Cancel" />
-        </Button>
-        <Button
+        </AppButton>
+        <AppButton
           variant="primary"
           size="sm"
           onClick={handleSave}
@@ -77,7 +77,7 @@ const NoteFormModal = ({ open, onClose, onSubmit, initialText = '', initialPubli
           data-cy="save-note-button"
         >
           {loading ? <Spinner inline /> : <FormattedMessage id="Save" />}
-        </Button>
+        </AppButton>
       </Modal.Content>
     </Modal>
   )

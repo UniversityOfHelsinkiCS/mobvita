@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -127,13 +127,13 @@ const ExhaustiveTestView = () => {
       <div className="grow ps-nm flex-col gap-row-sm">
         {!exhaustiveTestSessionId && (
           <div className="pl-nm pt-nm">
-            <Button onClick={startTest} data-cy="start-test">
+            <AppButton onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
-            </Button>
+            </AppButton>
             {language && (
-              <Button onClick={continueTest} style={{ marginLeft: '1rem' }}>
+              <AppButton onClick={continueTest} style={{ marginLeft: '1rem' }}>
                 <FormattedMessage id="resume-test" />
-              </Button>
+              </AppButton>
             )}
             {groups && currentGroup && (
               <div style={{ marginTop: '1.5em' }}>
@@ -152,9 +152,9 @@ const ExhaustiveTestView = () => {
 
             <>
               <hr style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }} />
-              <Button onClick={toggleHistory}>
+              <AppButton onClick={toggleHistory}>
                 <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
-              </Button>
+              </AppButton>
 
               {showHistory && history && (
                 <>

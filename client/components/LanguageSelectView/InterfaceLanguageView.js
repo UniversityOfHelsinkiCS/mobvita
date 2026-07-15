@@ -3,7 +3,7 @@ import { localeOptions } from 'Utilities/common'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Dropdown, Container } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap';
+import AppButton from 'Components/AppButton'
 
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { updateLocale } from 'Utilities/redux/userReducer'
@@ -53,9 +53,9 @@ const InterfaceLanguageView = ({ setShowLangModal, showInterfaceModal }) => {
                             menuStyle={{ maxHeight: '200px', overflowY: 'auto' }}
                         />
                     </div>
-                  <Button variant="primary" onClick={handleLocaleChange}>
+                  <AppButton variant="primary" onClick={handleLocaleChange}>
                     <FormattedMessage id="Continue" />
-                  </Button>
+                  </AppButton>
                 </Container>
             </Modal.Content>
         </Modal>

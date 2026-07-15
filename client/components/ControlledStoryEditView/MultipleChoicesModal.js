@@ -5,7 +5,7 @@ import { Icon, Form, Divider } from 'semantic-ui-react'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import MCFeedbackList from './MCFeedbackList'
 import AddFeedbackInput from './AddFeedbackInput'
 
@@ -353,13 +353,13 @@ const MultipleChoiceModal = ({
                     setCustomFeedback={setCustomFeedback}
                   />
                   <MCFeedbackList feedbackList={feedbackList} removeFeedback={removeFeedback} />
-                  <Button
+                  <AppButton
                     className="interactable"
                     style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
                     type="submit"
                   >
                     Submit
-                  </Button>
+                  </AppButton>
                 </div>
               </Form>
             </div>

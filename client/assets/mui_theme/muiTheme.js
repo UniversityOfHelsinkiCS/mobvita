@@ -5,6 +5,17 @@
 import { createTheme } from '@mui/material/styles'
 
 const muiTheme = createTheme({
+  // Starting palette that approximates the Bootstrap colours the app is migrating away from, so
+  // AppButton (and other MUI components) keep visual parity during the migration. Tune these to the
+  // real brand palette during the redesign — this is the single source of button/component colours.
+  palette: {
+    primary: { main: '#0d6efd' }, // bootstrap "primary"
+    secondary: { main: '#6c757d', contrastText: '#ffffff' }, // bootstrap "secondary" (grey)
+    error: { main: '#dc3545' }, // bootstrap "danger"
+    success: { main: '#198754' }, // bootstrap "success"
+    warning: { main: '#ffc107' },
+    info: { main: '#0dcaf0' },
+  },
   components: {
     // Override backdrop styling only for MUI Dialog
     MuiDialog: {

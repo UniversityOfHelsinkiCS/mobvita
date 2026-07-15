@@ -3,7 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Segment, Button as SemanticButton, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import Switch from '@mui/material/Switch'
 import Spinner from 'Components/Spinner'
 import SettingsIcon from 'Components/PracticeView/SettingsIcon'
@@ -499,19 +499,19 @@ const ReadingPracticeView = () => {
                         onChange={setShowAnswerLocationButtonEnabled}
                       />
                       {showAnswerLocationButtonEnabled && showCorrectAnswer && (
-                        <Button
+                        <AppButton
                           data-cy="rp-show-answer-location-btn"
                           className="btn-secondary"
                           onClick={handleShowAnswerLocation}
                         >
                           <FormattedMessage id="show-where-answer-is" />
-                        </Button>
+                        </AppButton>
                       )}
                     </div>
 
                     <div style={{ display: 'flex' }}>
                       {idx === total - 1 && showCorrectAnswer ? (
-                        <Button
+                        <AppButton
                           style={{ minWidth: 100 }}
                           data-cy="rp-start-over-btn"
                           variant="primary"
@@ -526,16 +526,16 @@ const ReadingPracticeView = () => {
                           }}
                         >
                           <FormattedMessage id="start-over" />
-                        </Button>
+                        </AppButton>
                       ) : (
-                        <Button
+                        <AppButton
                           style={{ minWidth: 100 }}
                           data-cy="rp-next-btn"
                           onClick={goNext}
                           disabled={!showCorrectAnswer || idx >= total - 1}
                         >
                           <FormattedMessage id="next" />
-                        </Button>
+                        </AppButton>
                       )}
                     </div>
                   </div>

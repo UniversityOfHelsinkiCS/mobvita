@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 import { images } from 'Utilities/common'
 
@@ -21,17 +21,17 @@ const LessonCompleted = ({ startOvertLessonSnippets, setShowLessonCompleted }) =
       <h2>Lesson completed!</h2>
       <h5>Do you want to continue practicing with another set of 10 snippets?</h5>
       <div className="lesson-completed-button-group">
-        <Button variant="secondary" type="button" onClick={() => navigate('/lessons/library')}>
+        <AppButton variant="secondary" type="button" onClick={() => navigate('/lessons/library')}>
           <FormattedMessage id="lesson-story-topic" />
-        </Button>
-        <Button
+        </AppButton>
+        <AppButton
           variant="primary"
           style={{ width: '100px' }}
           type="button"
           onClick={handleContinueClick}
         >
           <FormattedMessage id="Continue" />
-        </Button>
+        </AppButton>
       </div>
     </div>
   )

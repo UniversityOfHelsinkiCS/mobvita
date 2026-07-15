@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'semantic-ui-react';
-import { Button } from 'react-bootstrap';
+import AppButton from 'Components/AppButton';
 import { useNavigate } from 'react-router-dom';
 
 import { useLearningLanguage } from 'Utilities/common'
@@ -61,17 +61,17 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <h3 style={{ marginBottom: '40px' }}>
                 <FormattedMessage id="user-role-select" />
               </h3>
-              <Button
+              <AppButton
                 variant="primary"
                 size="lg"
                 onClick={handleStudentClick}
                 style={{ marginRight: '20px' }}
               >
                 <FormattedMessage id="user-role-select-student" />
-              </Button>
-              <Button variant="primary" size="lg" onClick={handleTeacherClick}>
+              </AppButton>
+              <AppButton variant="primary" size="lg" onClick={handleTeacherClick}>
                 <FormattedMessage id="user-role-select-teacher" />
-              </Button>
+              </AppButton>
             </>
           )}
           {step === 2 && !isTeacher && (
@@ -86,13 +86,13 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                   gap: '20px',
                   marginTop: '30px' }}
               >
-                <Button variant="primary" size="lg" onClick={() => setStep(3)}>
+                <AppButton variant="primary" size="lg" onClick={() => setStep(3)}>
                   <FormattedMessage id="set-cefr-manually" />
-                </Button>
+                </AppButton>
                 {hasAdaptiveTests && (
-                  <Button variant="primary" size="lg" onClick={startAdaptiveTest}>
+                  <AppButton variant="primary" size="lg" onClick={startAdaptiveTest}>
                     <FormattedMessage id="adaptive-test-button" />
-                  </Button>
+                  </AppButton>
                 )}
               </div>
             </>
@@ -113,15 +113,15 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                 paddingTop: '1rem' }}
             >
               {step > 1 && (
-                <Button variant="secondary" onClick={() => setStep(step - 1)}>
+                <AppButton variant="secondary" onClick={() => setStep(step - 1)}>
                   <FormattedMessage id="Back" />
-                </Button>
+                </AppButton>
               )}
               <div style={{ marginLeft: 'auto' }}>
                 {step === 3 && (
-                  <Button variant="primary" onClick={submitSettings}>
+                  <AppButton variant="primary" onClick={submitSettings}>
                     <FormattedMessage id="Save" />
-                  </Button>
+                  </AppButton>
                 )}
               </div>
             </div>

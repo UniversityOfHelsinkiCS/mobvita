@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Modal, Icon, Popup } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { Button, FormControl, Form } from 'react-bootstrap'
+import { FormControl, Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { addToGroup } from 'Utilities/redux/groupsReducer'
 import { formatEmailList } from 'Utilities/common'
 
@@ -50,9 +51,9 @@ const AddToGroup = ({ groupId, setGroupId }) => {
             placeholder={intl.formatMessage({ id: 'multiple-email-separate-instructions' })}
             onChange={e => setStudents(e.target.value)}
           />
-          <Button variant="primary" type="submit">
+          <AppButton variant="primary" type="submit">
             <FormattedMessage id="Confirm" />
-          </Button>
+          </AppButton>
         </Form>
       </Modal.Content>
     </Modal>

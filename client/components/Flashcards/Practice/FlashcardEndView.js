@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Link } from 'react-router-dom'
 
 const FlashcardEndView = ({ handleNewDeck, open }) => {
@@ -46,9 +46,9 @@ const FlashcardEndView = ({ handleNewDeck, open }) => {
       </p>
       <div className="flashcard-input" style={{ flex: 0 }}>
         <Link to="/">
-          <Button className="flashcard-button" block variant="outline-primary">
+          <AppButton className="flashcard-button" block variant="outline-primary">
             <FormattedMessage id="return-to-main-page" />
-          </Button>
+          </AppButton>
         </Link>
       </div>
     </div>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { Icon, Segment } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { resetTests, sendAdaptiveTestAnswer, resumeAdaptiveTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
@@ -212,9 +212,9 @@ const AdaptiveTest = ({ showingInfo }) => {
 
               {answerFailure && (
                 <div className="justify-center mt-lg">
-                  <Button onClick={handleTestResumeClick}>
+                  <AppButton onClick={handleTestResumeClick}>
                     <FormattedHTMLMessage id="network-error-click-to-resume" />
-                  </Button>
+                  </AppButton>
                 </div>
               )}
               {currentAdaptiveQuestion && !paused && !answerFailure && !displaySpinner && (

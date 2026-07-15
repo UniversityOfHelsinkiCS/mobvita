@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Divider } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 
@@ -16,9 +16,9 @@ const AddFeedbackInput = ({ addFeedback, customFeedback, setCustomFeedback }) =>
           value={customFeedback}
           onChange={({ target }) => setCustomFeedback(target.value)}
         />
-        <Button variant="primary" onClick={addFeedback}>
+        <AppButton variant="primary" onClick={addFeedback}>
           <FormattedMessage id="add-lesson-practice-btn" />
-        </Button>
+        </AppButton>
       </div>
     </div>
   )

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { Segment } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -502,7 +502,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
               </div>
 
               {feedbacks.length > 0 && (
-                <Button
+                <AppButton
                   className="show-reading-feedbacks-button btn-secondary"
                   style={{ marginLeft: 'auto' }}
                   onClick={() => setShowFeedbacks(true)}
@@ -511,11 +511,11 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                   <span>
                     <FormattedMessage id="show-feedback" />
                   </span>
-                </Button>
+                </AppButton>
               )}
 
               {questionDone && (
-                <Button
+                <AppButton
                   className="next-reading-question-button btn-secondary"
                   style={{ marginLeft: '0.5em' }}
                   onClick={() => nextQuestion()}
@@ -528,7 +528,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                       <FormattedMessage id="next-reading-question" />
                     )}
                   </span>
-                </Button>
+                </AppButton>
               )}
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
@@ -551,7 +551,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             </div>
             {/* This button used to be in hiddenFeatures, now visible to all */}
             <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
-              <Button
+              <AppButton
                 className="restart-reading-test-button btn-secondary"
                 style={{ marginRight: 'auto', marginTop: '1rem' }}
                 onClick={() => restartTest()}
@@ -560,7 +560,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                 <span>
                   <FormattedMessage id="restart-reading-test" />
                 </span>
-              </Button>
+              </AppButton>
             </div>
           </div>
         </div>

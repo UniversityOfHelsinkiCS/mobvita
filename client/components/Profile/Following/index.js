@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { unfollowUser, unblockUser } from 'Utilities/redux/userReducer'
 import { Icon, Table } from 'semantic-ui-react'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -107,9 +107,9 @@ const Following = () => {
         )}
       </div>
 
-      <Button data-cy="follow-user-button" onClick={() => setShowFollowUserModal(true)}>
+      <AppButton data-cy="follow-user-button" onClick={() => setShowFollowUserModal(true)}>
         <FormattedMessage id="follow-a-user" />
-      </Button>
+      </AppButton>
       <hr />
 
       <div style={{ margin: '2em 0em' }}>
@@ -168,9 +168,9 @@ const Following = () => {
           </span>
         )}
       </div>
-      <Button data-cy="block-user-button" onClick={() => setShowBlockUserModal(true)}>
+      <AppButton data-cy="block-user-button" onClick={() => setShowBlockUserModal(true)}>
         <FormattedMessage id="block-a-user" />
-      </Button>
+      </AppButton>
     </div>
   )
 }

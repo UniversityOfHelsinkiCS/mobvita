@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Link } from 'react-router-dom'
 import {
   updateExerciseTemplate,
@@ -89,7 +89,7 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
               </div>
               {/* customize learning settings */}
               <div className="flex-reverse" style={{ marginBottom: '1.5em', marginTop: '1.0em' }}>
-                  <Button
+                  <AppButton
                       variant="primary"
                       size="lg"
                       as={Link}
@@ -97,12 +97,12 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
                       style={{ color: 'yellow', fontWeight: 600, margin: '0 auto'}}
                   >
                       <FormattedMessage id="customize-learning-settings" />
-                  </Button>
+                  </AppButton>
               </div>
               {/* save learning settings */}
-              <Button variant="primary" size="lg" onClick={submitSettings}>
+              <AppButton variant="primary" size="lg" onClick={submitSettings}>
                   <FormattedMessage id="update-settings" />
-              </Button>
+              </AppButton>
           </>
       </Modal.Content>
     </Modal>

@@ -4,7 +4,7 @@ import { setNotification } from 'Utilities/redux/notificationReducer'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FormattedMessage } from 'react-intl'
 import { Icon, Popup } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 const GroupKey = () => {
   const dispatch = useDispatch()
@@ -30,9 +30,9 @@ const GroupKey = () => {
           content={<FormattedMessage id="copy-key" />}
           trigger={
             <CopyToClipboard text={token}>
-              <Button type="button" onClick={handleTokenCopy} disabled={!token}>
+              <AppButton type="button" onClick={handleTokenCopy} disabled={!token}>
                 <Icon name="copy" size="large" />
-              </Button>
+              </AppButton>
             </CopyToClipboard>
           }
         />

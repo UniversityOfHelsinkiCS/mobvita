@@ -1,15 +1,15 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 export const CustomButton = ({ condition = true, translationId, ...props }) => {
   if (!condition) return null
 
   return (
-    <Button {...props} style={{ marginBottom: '.1em' }}>
+    <AppButton {...props} style={{ marginBottom: '.1em' }}>
       <FormattedMessage id={translationId} />
-    </Button>
+    </AppButton>
   )
 }
 

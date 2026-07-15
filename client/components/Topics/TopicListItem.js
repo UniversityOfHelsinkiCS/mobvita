@@ -2,7 +2,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Card, Icon, Popup, Checkbox } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 
 import { useIntl, FormattedMessage } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
@@ -182,7 +182,7 @@ const LessonTitle = ({
         </div>
         <Card.Content extra className="lesson-card-actions-cont">
           <div className="lesson-actions">
-            <Button
+            <AppButton
               variant={selected ? 'primary' : 'outline-primary'}
               onClick={() => {
                 if (selected) {
@@ -202,7 +202,7 @@ const LessonTitle = ({
                   <FormattedMessage id="included-in-lesson" />
                 </>
               )) || <FormattedMessage id="include-into-lesson" />}
-            </Button>
+            </AppButton>
           </div>
         </Card.Content>
       </span>
@@ -234,7 +234,7 @@ const LessonTitle = ({
       )}
       <Card.Content extra className="lesson-card-actions-cont">
         <div className="lesson-actions">
-          <Button
+          <AppButton
             variant={selected ? 'primary' : 'outline-primary'}
             onClick={() => {
               if (selected) {
@@ -255,7 +255,7 @@ const LessonTitle = ({
                 <FormattedMessage id="included-in-lesson" />
               </>
             )) || <FormattedMessage id="include-into-lesson" />}
-          </Button>
+          </AppButton>
         </div>
       </Card.Content>
     </div>

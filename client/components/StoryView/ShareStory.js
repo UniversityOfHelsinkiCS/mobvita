@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Radio } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { Button, FormControl, Form } from 'react-bootstrap'
+import { FormControl, Form } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { Checkbox } from 'semantic-ui-react'
 import { shareStory } from 'Utilities/redux/shareReducer'
 import { formatEmailList } from 'Utilities/common'
@@ -128,9 +129,9 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                       value={message}
                       onChange={e => setMessage(e.target.value)}
                     />
-                    <Button disabled={!shareTargetGroupId} type="submit">
+                    <AppButton disabled={!shareTargetGroupId} type="submit">
                       <FormattedMessage id="Share" />
-                    </Button>
+                    </AppButton>
                   </div>
                 ) : (
                   <div
@@ -171,9 +172,9 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
                 value={message}
                 onChange={e => setMessage(e.target.value)}
               />
-              <Button disabled={shareTargetUserEmails?.length < EMAIL_MIN_LENGTH} type="submit">
+              <AppButton disabled={shareTargetUserEmails?.length < EMAIL_MIN_LENGTH} type="submit">
                 <FormattedMessage id="Share" />
-              </Button>
+              </AppButton>
             </Form>
           </>
         )}

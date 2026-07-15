@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, Icon, Divider } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
@@ -77,16 +77,16 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
           </div>
         </div>
         <div className="competition-results-buttons-cont">
-          <Button onClick={handleRestart} style={{ marginBottom: '.25em' }}>
+          <AppButton onClick={handleRestart} style={{ marginBottom: '.25em' }}>
             {playerScore > botScore ? (
               <FormattedMessage id="restart-competition" />
             ) : (
               <FormattedMessage id="compete:try-again" />
             )}
-          </Button>
-          <Button variant="outline-primary" onClick={handleBackToLibrary}>
+          </AppButton>
+          <AppButton variant="outline-primary" onClick={handleBackToLibrary}>
             <Icon name="arrow left" /> <FormattedMessage id="back-to-library" />
-          </Button>
+          </AppButton>
         </div>
       </Modal.Content>
     </Modal>
