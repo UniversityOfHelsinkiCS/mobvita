@@ -36,6 +36,8 @@ const ConstructTestView = () => {
     }
   }
 
+  const isNoChunkResult = resultObj => /no chunk found/i.test(resultObj?.message || '')
+
   const wordHighlight = json => {
     return json.replace(/(<c[0-9]>.*?<\/c[0-9]>)/g, match => {
       let color = ''
@@ -145,7 +147,7 @@ const ConstructTestView = () => {
                       <div className="ml-sm mb-lg" style={{ whiteSpace: 'pre-line' }}>
                         {resultObj.matches}
                       </div>
-                      {showAnalyses && (
+                      {showAnalyses && !isNoChunkResult(resultObj) && (
                         <div className="ml-sm">
                           <Divider />
                           <div className="bold">Analyses:</div>
