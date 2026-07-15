@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v11'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v12'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 const hashString = value => {
@@ -19,11 +19,17 @@ const hashString = value => {
 export const getWritingCorrectionKey = ({ text, context = '' }) =>
   `writing-correction-${hashString(`${context.trim()}\n${text.trim()}`)}`
 
+// Fetch a writing-correction session id from the backend. The id groups this session's correction
+// and chatbot calls so the backend can track correction history.
+export const getWritingCorrectionSession = (language = DEFAULT_LANGUAGE) =>
+  callBuilder(`/writing/${language}/session`, 'WRITING_CORRECTION_SESSION', 'get')
+
 export const checkWritingCorrection = ({
   language = DEFAULT_LANGUAGE,
   sentenceId,
   text,
   context = '',
+  sessionId = '',
 }) => {
   const normalizedText = text.trim()
   const normalizedContext = context.trim()
@@ -39,6 +45,7 @@ export const checkWritingCorrection = ({
     {
       text: normalizedText,
       context: normalizedContext,
+      session_id: sessionId || '',
     },
     {
       key,
@@ -112,6 +119,8 @@ const initialState = {
   correctionSuggestionsBySentenceId: {},
   correctionsByKey: getStoredWritingCorrectionCache(),
   latestCorrectionKeyBySentenceId: {},
+  sessionId: '',
+  sessionPending: false,
 }
 
 // Backend delete/insert placeholder is U+25AC (▬).
@@ -348,6 +357,25 @@ export default (state = initialState, action) => {
         entry,
       )
     }
+
+    case 'WRITING_CORRECTION_SESSION_ATTEMPT':
+      return {
+        ...state,
+        sessionPending: true,
+      }
+
+    case 'WRITING_CORRECTION_SESSION_SUCCESS':
+      return {
+        ...state,
+        sessionId: action.response?.session_id || state.sessionId,
+        sessionPending: false,
+      }
+
+    case 'WRITING_CORRECTION_SESSION_FAILURE':
+      return {
+        ...state,
+        sessionPending: false,
+      }
 
     case `${PREFIX}_SUCCESS`: {
       const entry = createSuccessEntry(action)
