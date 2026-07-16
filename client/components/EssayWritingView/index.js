@@ -280,18 +280,22 @@ const EssayWritingView = () => {
               setTopic(event.target.value)
               setTopicTaken(false)
             }}
+            onKeyDown={event => {
+              // Enter submits the topic (same guard as the confirm button).
+              if (event.key === 'Enter' && topic.trim() && !uploadPending) {
+                event.preventDefault()
+                handleConfirmUpload()
+              }
+            }}
             placeholder={intl.formatMessage({
-              id: 'topic-singular'
+              id: 'topic-singular',
             })}
             data-cy="essay-topic-input"
             sx={{ mt: 1 }}
           />
           {topicTaken && (
             <Typography color="error" variant="body2" sx={{ mt: 1 }} data-cy="essay-topic-taken">
-              <FormattedMessage
-                id="essay-upload-topic-taken"
-                defaultMessage="This topic is already taken. Please choose a different one."
-              />
+              <FormattedMessage id="essay-upload-topic-taken" />
             </Typography>
           )}
         </DialogContent>
