@@ -183,6 +183,7 @@ const EssayWritingView = () => {
         selectionRequest?.sentence
           ? {
               correctedText: selectionRequest.correctedText || null,
+              feedbackText: selectionRequest.feedbackText || null,
               focusedSentence: selectionRequest.sentence,
               focusedWord: selectionRequest.focusedWord || null,
               focusedWordId: selectionRequest.focusedWordId ?? null,

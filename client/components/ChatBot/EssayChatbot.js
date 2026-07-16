@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
 import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
+import SanitizedHTML from 'Components/SanitizedHTML'
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
@@ -39,6 +40,14 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
       correctionSuggestions.find(suggestion => suggestion.sentenceId === focusedSentenceId)) ||
     null
   const isFocused = Boolean(focusedSuggestion)
+  // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) as bot bubbles
+  // in the conversation instead — one bubble per hint line.
+  const focusedFeedbackHints = isFocused
+    ? (essayFocus?.feedbackText || '')
+        .split('\n')
+        .map(hint => hint.trim())
+        .filter(Boolean)
+    : []
 
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -110,6 +119,15 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
 
       <div className="chatbot-messages">
         {!isFocused && correctionSuggestions.map(suggestion => renderSuggestion(suggestion))}
+        {focusedFeedbackHints.map((hint, index) => (
+          <div
+            className="message message-bot"
+            key={`focused-feedback-${index}`}
+            style={{ display: 'block' }}
+          >
+            <SanitizedHTML html={hint} />
+          </div>
+        ))}
         {essayMessages.map((message, index) =>
           message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
             <div

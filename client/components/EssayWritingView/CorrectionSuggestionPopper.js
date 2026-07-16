@@ -57,7 +57,7 @@ const CorrectionBubble = ({
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
-    {showFeedbackIcon && feedbackText && (
+    {showFeedbackIcon && feedbackText && !isActive && (
       <CustomTooltip
         placement="top"
         title={<SanitizedHTML html={feedbackText} tagName={Box} sx={{ whiteSpace: 'pre-line' }} />}
@@ -138,13 +138,9 @@ const CorrectionSuggestionPopper = ({
   return (
     <>
       {correctionGroups.map((correctionGroup, groupIndex) => {
-        const correctionFocus = getCorrectionGroupFocus(correctionGroup)
-        const groupType = getCorrectionGroupType(correctionGroup)
         const hintText = getCorrectionGroupFeedbackText(correctionGroup)
+        const groupType = getCorrectionGroupType(correctionGroup)
         const isChunk = correctionGroup.words.length > 1
-        // A chunk hides its insertion/deletion answers in production; in dev/staging they render in
-        // place (greyed out — insertion underlined, deletion struck through) so the phrase reads at
-        // the right spots.
         const displayedWords =
           isChunk && !hiddenFeatures
             ? correctionGroup.words.filter(
@@ -153,7 +149,12 @@ const CorrectionSuggestionPopper = ({
             : correctionGroup.words
         const showHintInline =
           !isChunk && (groupType === 'deletion' || groupType === 'insertion') && Boolean(hintText)
-        // The info icon shows on every bubble except a single deletion/insertion one.
+        const bubbleFeedbackText = showHintInline ? '' : hintText
+
+        const correctionFocus = {
+          ...getCorrectionGroupFocus(correctionGroup),
+          feedbackText: bubbleFeedbackText,
+        }
         const isSingleInsertionOrDeletion =
           !isChunk && (groupType === 'deletion' || groupType === 'insertion')
         // A single-token hint bubble renders nothing inline, so reveal its answer below (dev/staging).
@@ -169,7 +170,7 @@ const CorrectionSuggestionPopper = ({
             correctionFocus={correctionFocus}
             correctionRange={correctionGroup.range}
             correctionType={groupType}
-            feedbackText={showHintInline ? '' : hintText}
+            feedbackText={bubbleFeedbackText}
             isActive={rangesMatch(focusedSelection, correctionGroup.range)}
             key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
             onSentenceSelect={onSentenceSelect}
