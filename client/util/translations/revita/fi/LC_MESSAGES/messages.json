@@ -1858,5 +1858,7 @@
     "reading-chatbot-suggestion-explain-answer": "Explain the correct answer",
     "reading-chatbot-suggestion-why-others-wrong": "Why are the other options wrong?",
     "essay-chatbot-followup-question": "Haluatko syventyä johonkin tiettyyn kohtaan tekstistä tai antamaani ehdotukseen? Jos haluat, klikkaa sanaa tai ehdotusta ja kirjoita minulle: “JATKA”!",
-    "enable-tooltips": "Show tooltips"
+    "enable-tooltips": "Show tooltips",
+    "admin-contact-message": "Viesti",
+    "essay-upload-topic-taken": "This topic is already taken. Please choose a different one."
 }

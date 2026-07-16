@@ -14,6 +14,7 @@ import {
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
+  getCorrectionText,
   isCorrectionDeletion,
   isCorrectionInsertion,
 } from './utils/correctionTokens'
@@ -140,13 +141,24 @@ const CorrectionSuggestionPopper = ({
         const groupType = getCorrectionGroupType(correctionGroup)
         const hintText = getCorrectionGroupFeedbackText(correctionGroup)
         const isChunk = correctionGroup.words.length > 1
-        const displayedWords = isChunk
-          ? correctionGroup.words.filter(
-              word => !isCorrectionInsertion(word) && !isCorrectionDeletion(word),
-            )
-          : correctionGroup.words
+        // A chunk hides its insertion/deletion answers in production; in dev/staging they render in
+        // place (greyed out — insertion underlined, deletion struck through) so the phrase reads at
+        // the right spots.
+        const displayedWords =
+          isChunk && !hiddenFeatures
+            ? correctionGroup.words.filter(
+                word => !isCorrectionInsertion(word) && !isCorrectionDeletion(word),
+              )
+            : correctionGroup.words
         const showHintInline =
           !isChunk && (groupType === 'deletion' || groupType === 'insertion') && Boolean(hintText)
+        // A single-token hint bubble renders nothing inline, so reveal its answer below (dev/staging).
+        const devAnswerWords =
+          hiddenFeatures && showHintInline
+            ? correctionGroup.words.filter(
+                word => isCorrectionInsertion(word) || isCorrectionDeletion(word),
+              )
+            : []
 
         return (
           <CorrectionBubble
@@ -168,10 +180,46 @@ const CorrectionSuggestionPopper = ({
                   sx={{ whiteSpace: 'pre-line' }}
                 />
               ) : (
-                displayedWords.map((word, index) => (
-                  <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
-                ))
+                displayedWords.map((word, index) => {
+                  // Dev/staging: show a chunk's insertion/deletion answers at their spot, greyed out
+                  // (insertion underlined, deletion struck through) so they don't read as real text.
+                  const isDevInsertion = hiddenFeatures && isCorrectionInsertion(word)
+                  const isDevDeletion = hiddenFeatures && isCorrectionDeletion(word)
+
+                  if (isDevInsertion || isDevDeletion) {
+                    const answerText = isDevInsertion
+                      ? getCorrectionText(word.corrected).trim()
+                      : getCorrectionText(word.original).trim()
+
+                    if (!answerText) return null
+
+                    return (
+                      <span
+                        key={index}
+                        className="essay-writing-corrected-word-dev-correction"
+                        style={{ textDecoration: isDevDeletion ? 'line-through' : 'underline' }}
+                      >
+                        {answerText}
+                      </span>
+                    )
+                  }
+
+                  return <CorrectedWord key={index} word={word} showCorrection={hiddenFeatures} />
+                })
               )}
+              {devAnswerWords.map((word, index) => (
+                <span
+                  key={`dev-answer-${index}`}
+                  className="essay-writing-corrected-word-dev-correction"
+                  style={{
+                    textDecoration: isCorrectionDeletion(word) ? 'line-through' : 'underline',
+                  }}
+                >
+                  {isCorrectionInsertion(word)
+                    ? `→ ${getCorrectionText(word.corrected).trim()}`
+                    : getCorrectionText(word.original).trim()}
+                </span>
+              ))}
             </Box>
           </CorrectionBubble>
         )

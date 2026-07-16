@@ -41,11 +41,13 @@ const EssayWritingView = () => {
   const [essayResetKey, setEssayResetKey] = useState(0)
   const [topicDialogOpen, setTopicDialogOpen] = useState(false)
   const [topic, setTopic] = useState('')
+  const [topicTaken, setTopicTaken] = useState(false)
   const selectedSelectionRef = useRef(null)
   const uploadInFlightRef = useRef(false)
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const libraryStories = useSelector(({ stories }) => stories.data)
   const { pending: uploadPending, error: uploadError } = useSelector(
     ({ uploadProgress }) => uploadProgress,
   )
@@ -104,16 +106,24 @@ const EssayWritingView = () => {
 
   // Upload the essay as a story to the private library, titled by the topic the user entered.
   const handleConfirmUpload = () => {
-    const newStory = {
-      language: capitalize(learningLanguage),
-      text: `${topic.trim()}\n\n${essayText}`,
+    const trimmedTopic = topic.trim()
+
+    // Best-effort client guard against a duplicate title; the backend rejects it too (handled in the
+    // upload-settled effect), so an unseen duplicate still keeps the dialog open for a retry.
+    if (libraryStories.some(story => story.title === trimmedTopic)) {
+      setTopicTaken(true)
+      return
     }
 
+    const newStory = {
+      language: capitalize(learningLanguage),
+      text: `${trimmedTopic}\n\n${essayText}`,
+    }
+
+    setTopicTaken(false)
     uploadInFlightRef.current = true
     dispatch(setCustomUpload(true))
     dispatch(postStory(newStory))
-    setTopicDialogOpen(false)
-    setTopic('')
   }
 
   // Dev/staging only: wipe the cached corrections + session and the draft.
@@ -122,16 +132,23 @@ const EssayWritingView = () => {
     resetEssayDraft()
   }
 
-  // When library upload settles, clear the cache/session + draft on success (keep it on failure).
+  // When the library upload settles: on success close the dialog and clear the cache/session + draft;
+  // on failure (e.g. duplicate topic) keep the dialog open with a message so the user can retry.
   useEffect(() => {
     if (!uploadInFlightRef.current || uploadPending) return
 
     uploadInFlightRef.current = false
 
-    if (!uploadError) {
-      dispatch(clearWritingCorrectionData())
-      resetEssayDraft()
+    if (uploadError) {
+      setTopicTaken(true)
+      return
     }
+
+    setTopicDialogOpen(false)
+    setTopic('')
+    setTopicTaken(false)
+    dispatch(clearWritingCorrectionData())
+    resetEssayDraft()
   }, [uploadPending, uploadError])
 
   const isSameSelection = (first, second) =>
@@ -258,17 +275,34 @@ const EssayWritingView = () => {
             autoFocus
             fullWidth
             value={topic}
-            onChange={event => setTopic(event.target.value)}
+            error={topicTaken}
+            onChange={event => {
+              setTopic(event.target.value)
+              setTopicTaken(false)
+            }}
             placeholder={intl.formatMessage({
-              id: 'essay-upload-topic-placeholder',
-              defaultMessage: 'Topic',
+              id: 'topic-singular'
             })}
             data-cy="essay-topic-input"
             sx={{ mt: 1 }}
           />
+          {topicTaken && (
+            <Typography color="error" variant="body2" sx={{ mt: 1 }} data-cy="essay-topic-taken">
+              <FormattedMessage
+                id="essay-upload-topic-taken"
+                defaultMessage="This topic is already taken. Please choose a different one."
+              />
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button variant="outline-secondary" onClick={() => setTopicDialogOpen(false)}>
+          <Button
+            variant="outline-secondary"
+            onClick={() => {
+              setTopicDialogOpen(false)
+              setTopicTaken(false)
+            }}
+          >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
           </Button>
           <Button
