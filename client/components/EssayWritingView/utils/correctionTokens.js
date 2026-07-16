@@ -233,32 +233,21 @@ const getChunkMarker = word => {
 
 const hasChunkMarkers = corrections => corrections.some(getChunkMarker)
 
-// Token index ranges delimited by chunk-start / chunk-end markers. Missing markers are inferred so
-// partial backend data still yields ONE chunk per region instead of fragmenting into duplicate
-// bubbles: a proper start…end is one chunk; a stray end with no start since the previous chunk
-// extends that chunk rather than opening a new one; and an unclosed start runs to the last token.
+// Token index ranges delimited by proper chunk_start … chunk_end pairs. A chunk_end with no open
+// chunk_start is ignored — a stray end must NOT fold the whole sentence into one chunk. An unclosed
+// chunk_start runs to the last token.
 const getChunkTokenRanges = corrections => {
   const chunks = []
   let openStart = null
-  let sawStartSinceEnd = false
 
   corrections.forEach((word, index) => {
     const marker = getChunkMarker(word)
 
     if (marker === 'start') {
       if (openStart === null) openStart = index
-      sawStartSinceEnd = true
-    } else if (marker === 'end') {
-      if (openStart != null) {
-        chunks.push({ startIndex: openStart, endIndex: index })
-      } else if (chunks.length && !sawStartSinceEnd) {
-        chunks[chunks.length - 1].endIndex = index
-      } else {
-        chunks.push({ startIndex: 0, endIndex: index })
-      }
-
+    } else if (marker === 'end' && openStart != null) {
+      chunks.push({ startIndex: openStart, endIndex: index })
       openStart = null
-      sawStartSinceEnd = false
     }
   })
 

@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 import {
   checkWritingCorrection,
   getWritingCorrectionKey,
+  getWritingCorrectionSession,
   getWritingCorrectionWords,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
@@ -79,6 +80,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const selectedGroupKeyRef = useRef(null)
   const scrollFrameRef = useRef(null)
   const correctionsByKeyRef = useRef(null)
+  const writingSessionIdRef = useRef('')
+  const writingSessionPendingRef = useRef(false)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -93,9 +96,13 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     start: text.length,
   })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
+  const writingSessionPending = useSelector(state => state.writingCorrection.sessionPending)
   const learningLanguage = useLearningLanguage()
 
   correctionsByKeyRef.current = correctionsByKey
+  writingSessionIdRef.current = writingSessionId
+  writingSessionPendingRef.current = writingSessionPending
 
   const setInputSelection = (input, start, end) => {
     applyingCorrectionSelectionRef.current = true
@@ -236,6 +243,11 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     onEssayTextChange?.(textRef.current)
   }, [])
 
+  // Fetch a backend session id for this writing session (to track correction + chatbot history).
+  useEffect(() => {
+    if (learningLanguage) dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
+  }, [learningLanguage])
+
   useEffect(() => {
     correctionRectsStaleRef.current = true
   }, [text, correctionsByKey])
@@ -288,6 +300,16 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     return nextCompletedSentences
   }
 
+  // Re-fetch the session id if a correction needs it but the initial fetch failed. Guarded on the
+  // pending flag so a burst of corrections can't race several fetches (each mints a different id).
+  const ensureWritingSession = () => {
+    if (!learningLanguage || writingSessionIdRef.current || writingSessionPendingRef.current) return
+    // Mark in-flight now so a same-tick burst of corrections doesn't fire several fetches before
+    // the pending flag round-trips through Redux.
+    writingSessionPendingRef.current = true
+    dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
+  }
+
   const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
@@ -300,12 +322,14 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         }),
       )
     } else {
+      ensureWritingSession()
       dispatch(
         checkWritingCorrection({
           language: capitalize(learningLanguage),
           sentenceId: sentence.sentenceId,
           text: sentence.text,
           context: sentence.context,
+          sessionId: writingSessionIdRef.current,
         }),
       )
     }

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
-import { getEssayChatbotSessionId } from 'Components/EssayWritingView/utils/essayDraftStorage'
 import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
@@ -18,11 +17,14 @@ const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const [essaySessionId] = useState(getEssayChatbotSessionId)
   const [currentMessage, setCurrentMessage] = useState('')
   const latestMessageRef = useRef(null)
-  const { correctionSuggestionSentenceIds, correctionSuggestionsBySentenceId, correctionsByKey } =
-    useSelector(({ writingCorrection }) => writingCorrection)
+  const {
+    correctionSuggestionSentenceIds,
+    correctionSuggestionsBySentenceId,
+    correctionsByKey,
+    sessionId,
+  } = useSelector(({ writingCorrection }) => writingCorrection)
   const { essayMessages, isWaitingForEssayResponse } = useSelector(({ chatbot }) => chatbot)
   const correctionSuggestions = correctionSuggestionSentenceIds
     .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
@@ -75,7 +77,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
 
     dispatch(
       getEssayChatbotResponse({
-        sessionId: essaySessionId,
+        sessionId,
         message: currentMessage,
         originalText: essayFocus?.originalText || essayFocus?.focusedSentence || essayText,
         correctedText: essayFocus?.correctedText || '',

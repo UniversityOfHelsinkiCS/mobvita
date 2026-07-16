@@ -1839,8 +1839,8 @@
     "please-write-in-any-language": "(Please write in any language convenient for you.)",
     "next-please-refresh-page": "Next, refresh the page, or click \"Go back\"",
     "additional-information-modal-examples": "Examples",
-    "note-no-lessons-topic": "Note: you selected no grammar topics.",
-    "note-lessons-topic-count": "You have selected {count} grammar topics.",
+    "note-no-lessons-topic": "Note: no grammar topics selected",
+    "note-lessons-topic-count": "Grammar topics selected: {count}",
     "note-max-lessons-topic": "Maximum number of {count} grammar topics reached",
     "spinner-text-long-generation": "Story creation in progress, we are working on it...",
     "spinner-text-long-task": "This story needs a bit more time, please be patient...",
@@ -1857,5 +1857,7 @@
     "essay-writing": "Essay writing",
     "essay-textfield-placeholder": "Write your text here...",
     "essay-writing-title": "Essay writing",
-    "essay-chatbot-followup-question": "Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to \"FOLLOW UP\"!"
+    "essay-chatbot-followup-question": "Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to \"FOLLOW UP\"!",
+    "admin-contact-message": "Message",
+    "essay-upload-topic-taken": "This topic is already taken. Please choose a different one."
 }
