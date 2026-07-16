@@ -33,6 +33,7 @@ const CorrectionBubble = ({
   isActive,
   onSentenceSelect,
   sentence,
+  showFeedbackIcon,
 }) => (
   <Paper
     className={[
@@ -56,7 +57,7 @@ const CorrectionBubble = ({
     sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
     {children}
-    {feedbackText && (
+    {showFeedbackIcon && feedbackText && (
       <CustomTooltip
         placement="top"
         title={<SanitizedHTML html={feedbackText} tagName={Box} sx={{ whiteSpace: 'pre-line' }} />}
@@ -152,6 +153,9 @@ const CorrectionSuggestionPopper = ({
             : correctionGroup.words
         const showHintInline =
           !isChunk && (groupType === 'deletion' || groupType === 'insertion') && Boolean(hintText)
+        // The info icon shows on every bubble except a single deletion/insertion one.
+        const isSingleInsertionOrDeletion =
+          !isChunk && (groupType === 'deletion' || groupType === 'insertion')
         // A single-token hint bubble renders nothing inline, so reveal its answer below (dev/staging).
         const devAnswerWords =
           hiddenFeatures && showHintInline
@@ -170,6 +174,7 @@ const CorrectionSuggestionPopper = ({
             key={`${correctionGroup.range?.startOffset ?? groupIndex}-${groupIndex}`}
             onSentenceSelect={onSentenceSelect}
             sentence={sentence}
+            showFeedbackIcon={!isSingleInsertionOrDeletion}
           >
             <Box className="essay-writing-correction-content">
               {showHintInline ? (
