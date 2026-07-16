@@ -27,6 +27,7 @@ import {
   findCorrectionGroupAtOffset,
   findInsertionGroupInRegion,
   getCorrectedTextFromCorrectionEntry,
+  getCorrectionGroupChatFeedbackText,
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
@@ -68,7 +69,12 @@ const getInsertionGapSpan = (text, offset) => {
   return { start, end }
 }
 
-const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
+const EssayTextInput = ({
+  focusLocked,
+  onEssayFocusChange,
+  onEssayTextChange,
+  sentenceSelectionRequest,
+}) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
@@ -162,6 +168,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       sentence,
       focus: {
         correctedText: getCorrectedTextFromCorrectionEntry(correctionEntry),
+        feedbackText: getCorrectionGroupChatFeedbackText(group),
         focusedSentence: sentence.text,
         originalText: correctionEntry.text || sentence.text,
         sentenceId: sentence.sentenceId,
@@ -190,6 +197,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       onEssayFocusChange?.(focus)
       return
     }
+
+    if (focusLocked) return
 
     clearSelectedHighlight()
     onEssayFocusChange?.(
@@ -386,7 +395,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }
 
     clearCorrectionHighlight()
-    onEssayFocusChange?.(null)
+
+    if (!focusLocked) onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
     correctionRectsStaleRef.current = true

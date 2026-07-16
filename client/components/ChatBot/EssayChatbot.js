@@ -20,6 +20,8 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
   const intl = useIntl()
   const [currentMessage, setCurrentMessage] = useState('')
   const latestMessageRef = useRef(null)
+  const suggestionRefs = useRef({})
+  const lastFocusedSentenceIdRef = useRef(null)
   const {
     correctionSuggestionSentenceIds,
     correctionSuggestionsBySentenceId,
@@ -52,6 +54,19 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [essayMessages.length, correctionSuggestions.length])
+
+  // Remember which suggestion is open so that, on returning to the full list, it scrolls back to that
+  // suggestion instead of jumping to the top.
+  useEffect(() => {
+    if (isFocused) {
+      if (focusedSentenceId) lastFocusedSentenceIdRef.current = focusedSentenceId
+      return
+    }
+
+    const previousNode =
+      lastFocusedSentenceIdRef.current && suggestionRefs.current[lastFocusedSentenceIdRef.current]
+    previousNode?.scrollIntoView({ block: 'start' })
+  }, [isFocused, focusedSentenceId])
 
   const buildSentenceSelectHandler = ({ key, sentence, sentenceId }) =>
     onSentenceSelect
@@ -102,7 +117,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
       <div className="ai-assistant-header">
         {isFocused && (
           <button type="button" className="essay-chatbot-back" onClick={() => onClearFocus?.()}>
-            <ArrowCircleLeftOutlinedIcon />
+            <ArrowCircleLeftOutlinedIcon sx={{ fontSize: '2.2rem' }} />
           </button>
         )}
         <RobotIcon className="ai-header-icon" size={24} />
@@ -118,7 +133,18 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
       )}
 
       <div className="chatbot-messages">
-        {!isFocused && correctionSuggestions.map(suggestion => renderSuggestion(suggestion))}
+        {!isFocused &&
+          correctionSuggestions.map(suggestion => (
+            <div
+              key={suggestion.sentenceId}
+              ref={node => {
+                if (node) suggestionRefs.current[suggestion.sentenceId] = node
+                else delete suggestionRefs.current[suggestion.sentenceId]
+              }}
+            >
+              {renderSuggestion(suggestion)}
+            </div>
+          ))}
         {focusedFeedbackHints.map((hint, index) => (
           <div
             className="message message-bot"

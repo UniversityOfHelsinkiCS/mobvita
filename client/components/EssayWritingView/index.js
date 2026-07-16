@@ -63,28 +63,6 @@ const EssayWritingView = () => {
     [essayText, correctionsByKey],
   )
 
-  useEffect(() => {
-    const handleDocumentMouseDown = event => {
-      if (!(event.target instanceof Element)) return
-
-      if (
-        event.target.closest(
-          '.essay-writing-input-area, .essay-writing-correction-bubble, .chatbot-input-area .chatbot-input-form',
-        )
-      ) {
-        return
-      }
-
-      clearEssaySelection()
-    }
-
-    document.addEventListener('mousedown', handleDocumentMouseDown)
-
-    return () => {
-      document.removeEventListener('mousedown', handleDocumentMouseDown)
-    }
-  }, [])
-
   const clearEssaySelection = () => {
     selectedSelectionRef.current = null
     setEssayFocus(null)
@@ -242,6 +220,7 @@ const EssayWritingView = () => {
             <Divider sx={{ mt: 2 }} />
             <EssayTextInput
               key={essayResetKey}
+              focusLocked={Boolean(essayFocus?.selection)}
               onEssayFocusChange={setEssayFocus}
               onEssayTextChange={setEssayText}
               sentenceSelectionRequest={sentenceSelectionRequest}

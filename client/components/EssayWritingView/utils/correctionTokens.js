@@ -68,6 +68,29 @@ export const getCorrectionFeedbackText = feedback => {
     .join('\n')
 }
 
+// The feedback for a whole correction group: each word's hint joined by newline, with the bare
+// "Added"/"Removed" markers dropped (they carry no learner-facing hint).
+export const getCorrectionGroupFeedbackText = correctionGroup =>
+  (correctionGroup?.words || [])
+    .map(word => getCorrectionFeedbackText(word.feedback))
+    .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
+    .join('\n')
+
+// The feedback echoed into the essay chatbot when a correction is selected — from a bubble OR from a
+// highlighted word in the text, so both entry points behave identically. A single-token
+// insertion/deletion shows its hint inline in its bubble instead, so it echoes nothing.
+export const getCorrectionGroupChatFeedbackText = correctionGroup => {
+  const feedbackText = getCorrectionGroupFeedbackText(correctionGroup)
+
+  if (!feedbackText) return ''
+
+  const isChunk = (correctionGroup?.words || []).length > 1
+  const groupType = getCorrectionGroupType(correctionGroup)
+  const showsHintInline = !isChunk && (groupType === 'deletion' || groupType === 'insertion')
+
+  return showsHintInline ? '' : feedbackText
+}
+
 const combiningMarkRegex = /[\u0300-\u036f]/
 
 const getNextTextCluster = (value, startOffset) => {

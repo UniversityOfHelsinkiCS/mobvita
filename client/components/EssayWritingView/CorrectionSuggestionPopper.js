@@ -10,7 +10,8 @@ import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
 import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionReducer'
 import {
-  getCorrectionFeedbackText,
+  getCorrectionGroupChatFeedbackText,
+  getCorrectionGroupFeedbackText,
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
@@ -73,12 +74,6 @@ const CorrectionBubble = ({
     )}
   </Paper>
 )
-
-const getCorrectionGroupFeedbackText = correctionGroup =>
-  correctionGroup.words
-    .map(word => getCorrectionFeedbackText(word.feedback))
-    .filter(feedbackText => feedbackText && !['Added', 'Removed'].includes(feedbackText))
-    .join('\n')
 
 const rangesMatch = (firstRange, secondRange) =>
   firstRange &&
@@ -149,7 +144,7 @@ const CorrectionSuggestionPopper = ({
             : correctionGroup.words
         const showHintInline =
           !isChunk && (groupType === 'deletion' || groupType === 'insertion') && Boolean(hintText)
-        const bubbleFeedbackText = showHintInline ? '' : hintText
+        const bubbleFeedbackText = getCorrectionGroupChatFeedbackText(correctionGroup)
 
         const correctionFocus = {
           ...getCorrectionGroupFocus(correctionGroup),
