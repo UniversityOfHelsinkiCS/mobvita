@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Dialog,
@@ -16,11 +17,13 @@ import { Button } from 'react-bootstrap'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import {
+  buildWritingEssaySentences,
   clearWritingCorrectionData,
   getWritingCorrectionKey,
+  saveWritingEssay,
 } from 'Utilities/redux/writingCorrectionReducer'
-import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
+import { saveSelfIntermediate, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
 import EssayChatbot from 'Components/ChatBot/EssayChatbot'
@@ -35,6 +38,7 @@ const EssayWritingView = () => {
   const { width } = useWindowDimensions()
   const intl = useIntl()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const learningLanguage = useLearningLanguage()
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
@@ -48,10 +52,9 @@ const EssayWritingView = () => {
 
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
-  const libraryStories = useSelector(({ stories }) => stories.data)
-  const { pending: uploadPending, error: uploadError } = useSelector(
-    ({ uploadProgress }) => uploadProgress,
-  )
+  const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
+  const savePending = useSelector(state => state.writingCorrection.savePending)
+  const saveError = useSelector(state => state.writingCorrection.saveError)
   const showFooter = width > 640
 
   // Don't let the user upload while a sentence's correction is still in flight — its payload entry
@@ -93,26 +96,19 @@ const EssayWritingView = () => {
     setEssayResetKey(key => key + 1)
   }
 
-  // Upload the essay as a story to the private library, titled by the topic the user entered.
+  // Save the essay as its current list of sentences, each with the backend-id edit history + cached
+  // corrections, under the topic the user entered.
   const handleConfirmUpload = () => {
-    const trimmedTopic = topic.trim()
-
-    // Best-effort client guard against a duplicate title; the backend rejects it too (handled in the
-    // upload-settled effect), so an unseen duplicate still keeps the dialog open for a retry.
-    if (libraryStories.some(story => story.title === trimmedTopic)) {
-      setTopicTaken(true)
-      return
-    }
-
-    const newStory = {
-      language: capitalize(learningLanguage),
-      text: `${trimmedTopic}\n\n${essayText}`,
-    }
-
     setTopicTaken(false)
     uploadInFlightRef.current = true
-    dispatch(setCustomUpload(true))
-    dispatch(postStory(newStory))
+    dispatch(
+      saveWritingEssay({
+        language: capitalize(learningLanguage),
+        sessionId: writingSessionId,
+        sentences: buildWritingEssaySentences(getCompletedSentences(essayText), correctionsByKey),
+        title: topic.trim(),
+      }),
+    )
   }
 
   // Dev/staging only: wipe the cached corrections + session and the draft.
@@ -121,14 +117,14 @@ const EssayWritingView = () => {
     resetEssayDraft()
   }
 
-  // When the library upload settles: on success close the dialog and clear the cache/session + draft;
-  // on failure (e.g. duplicate topic) keep the dialog open with a message so the user can retry.
+  // When the save settles: on success close the dialog and clear the cache/session + draft; on failure
+  // keep the dialog open with a message so the user can retry.
   useEffect(() => {
-    if (!uploadInFlightRef.current || uploadPending) return
+    if (!uploadInFlightRef.current || savePending) return
 
     uploadInFlightRef.current = false
 
-    if (uploadError) {
+    if (saveError) {
       setTopicTaken(true)
       return
     }
@@ -138,7 +134,10 @@ const EssayWritingView = () => {
     setTopicTaken(false)
     dispatch(clearWritingCorrectionData())
     resetEssayDraft()
-  }, [uploadPending, uploadError])
+    dispatch(saveSelfIntermediate({ last_selected_library: 'essays' }))
+    dispatch(updateLibrarySelect('essays'))
+    navigate('/library')
+  }, [savePending, saveError])
 
   const isSameSelection = (first, second) =>
     first &&
@@ -148,7 +147,6 @@ const EssayWritingView = () => {
     first.endOffset === second.endOffset
 
   const requestSentenceSelection = selectionRequest => {
-    // Leaving a hovered bubble reverts the preview to the currently selected bubble (or clears it).
     if (selectionRequest?.interactionType === 'leave') {
       setSentenceSelectionRequest(
         selectedSelectionRef.current
@@ -159,7 +157,6 @@ const EssayWritingView = () => {
     }
 
     if (selectionRequest?.interactionType === 'click') {
-      // Clicking the already-selected bubble toggles it off.
       if (isSameSelection(selectedSelectionRef.current, selectionRequest)) {
         clearEssaySelection()
         return
@@ -192,7 +189,6 @@ const EssayWritingView = () => {
       return
     }
 
-    // Hover preview.
     setSentenceSelectionRequest(selectionRequest)
   }
 
@@ -221,10 +217,12 @@ const EssayWritingView = () => {
                 )}
                 <Button
                   onClick={() => setTopicDialogOpen(true)}
-                  disabled={uploadPending || hasPendingCorrection || !essayText.trim()}
+                  disabled={
+                    savePending || hasPendingCorrection || !essayText.trim() || !writingSessionId
+                  }
                   data-cy="submit-essay"
                 >
-                  <FormattedMessage id="upload-from-web-button" />
+                  <FormattedMessage id="upload-to-my-essays" />
                 </Button>
               </Box>
             </Box>
@@ -272,8 +270,7 @@ const EssayWritingView = () => {
               setTopicTaken(false)
             }}
             onKeyDown={event => {
-              // Enter submits the topic (same guard as the confirm button).
-              if (event.key === 'Enter' && topic.trim() && !uploadPending) {
+              if (event.key === 'Enter' && topic.trim() && !savePending) {
                 event.preventDefault()
                 handleConfirmUpload()
               }
@@ -302,7 +299,7 @@ const EssayWritingView = () => {
           </Button>
           <Button
             onClick={handleConfirmUpload}
-            disabled={!topic.trim() || uploadPending}
+            disabled={!topic.trim() || savePending}
             data-cy="essay-topic-confirm"
           >
             <FormattedMessage id="upload-from-web-button" />

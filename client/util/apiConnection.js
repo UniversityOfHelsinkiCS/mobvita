@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { basePath, timerExpired } from 'Utilities/common'
+import { basePath, hiddenFeatures, timerExpired } from 'Utilities/common'
 import * as Sentry from '@sentry/react'
 import { Howl } from 'howler'
 /**
@@ -7,6 +7,43 @@ import { Howl } from 'howler'
  */
 
 const getAxios = axios.create({ baseURL: `${basePath}api` })
+
+// Dev/staging only: log every writing-correction response from hints so that
+// easy, meta, example, penalty can be inspected.
+// if (hiddenFeatures) {
+//   getAxios.interceptors.response.use(response => {
+//     if (response.config?.url?.includes('/correction')) {
+//       const tokens = response.data?.corrections?.[0]?.corrections || []
+//       tokens.forEach(token => {
+//         if (token?.feedback?.hints[0]?.easy) {
+//           console.log(
+//             'Correction token 0 - \neasy: ',
+//             token?.feedback?.hints[0]?.easy,
+//             '\nmeta: ',
+//             token?.feedback?.hints[0]?.meta,
+//             '\nexample: ',
+//             token?.feedback?.hints[0]?.example[0],
+//             '\npenalty: ',
+//             token?.feedback?.hints[0]?.penalty[1],
+//           )
+//         }
+//         if (token?.feedback?.hints[1]?.easy) {
+//           console.log(
+//             'Correction token 1 - \neasy: ',
+//             token?.feedback?.hints[1]?.easy,
+//             '\nmeta: ',
+//             token?.feedback?.hints[1]?.meta,
+//             '\nexample: ',
+//             token?.feedback?.hints[1]?.example[0],
+//             '\npenalty: ',
+//             token?.feedback?.hints[1]?.penalty[1],
+//           )
+//         }
+//       })
+//     }
+//     return response
+//   })
+// }
 
 const createRequestId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`
 
@@ -94,8 +131,8 @@ const handleNewAchievement = (store, newAchievements) => {
           !cachedAchievements.some(
             cachedAchievement =>
               cachedAchievement.name === achievement.name &&
-              cachedAchievement.level === achievement.level
-          )
+              cachedAchievement.level === achievement.level,
+          ),
       )
     : newAchievements
 
@@ -107,8 +144,8 @@ const handleNewAchievement = (store, newAchievements) => {
     window.localStorage.setItem(
       'newAchievements',
       JSON.stringify(
-        cachedAchievements ? cachedAchievements.concat(filteredAchievements) : filteredAchievements
-      )
+        cachedAchievements ? cachedAchievements.concat(filteredAchievements) : filteredAchievements,
+      ),
     )
   }
 }
@@ -182,10 +219,18 @@ export const handleRequest = store => next => async action => {
             handleNewVocabulary(store, res.data.num_new_vocabulary)
           }
 
-          handleStreakState(store, res.data.is_today_streaked)
-          handleLastActivity(store, res.data.last_activity)
-          handleXP(store, res.data.xp_today)
-          handleLevel(store, res.data.level, res.data.level_up)
+          if (res.data?.is_today_streaked !== undefined) {
+            handleStreakState(store, res.data.is_today_streaked)
+          }
+          if (res.data?.last_activity !== undefined) {
+            handleLastActivity(store, res.data.last_activity)
+          }
+          if (res.data?.xp_today !== undefined) {
+            handleXP(store, res.data.xp_today)
+          }
+          if (res.data?.level !== undefined) {
+            handleLevel(store, res.data.level, res.data.level_up)
+          }
         }
 
         const requestSentAt = new Date()
@@ -202,8 +247,8 @@ export const handleRequest = store => next => async action => {
 const recordSpeak = (text, voice_type, source, lang_code, is_success, message) => {
   callApi(
     `/listen?text=${encodeURIComponent(
-      text
-    )}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`
+      text,
+    )}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`,
   )
 }
 
@@ -241,7 +286,7 @@ export const yandexSpeak = async (text, lang_code, tone, voice_type, speed) => {
   new Howl({
     src: [
       `${basePath}api/yandex_tts?text=${encodeURIComponent(
-        text
+        text,
       )}&tone=${tone}&lang_code=${lang_code}&speed=${speed}`,
     ],
     format: ['opus'],

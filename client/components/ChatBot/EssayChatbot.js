@@ -127,13 +127,19 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
 
     if (!currentMessage.trim()) return
 
+    // Prefer the backend sentence id of the focused suggestion; fall back to the local id when the
+    // backend hasn't returned one yet.
+    const focusedBeSentenceId =
+      (focusedSuggestion && correctionsByKey[focusedSuggestion.key]?.beSentenceId) || null
+
     dispatch(
       getEssayChatbotResponse({
         sessionId,
         message: currentMessage,
         originalText: essayFocus?.originalText || essayFocus?.focusedSentence || essayText,
         correctedText: essayFocus?.correctedText || '',
-        sentenceId: essayFocus?.sentenceId || essayFocus?.selection?.sentenceId || null,
+        sentenceId:
+          focusedBeSentenceId || essayFocus?.sentenceId || essayFocus?.selection?.sentenceId || null,
         focusedWord: essayFocus?.focusedWord || '',
       }),
     )

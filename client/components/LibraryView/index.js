@@ -7,6 +7,7 @@ import {
   IconButton,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
@@ -33,6 +34,16 @@ import {
   updateStoryPath,
   removeStory,
 } from 'Utilities/redux/storiesReducer'
+import {
+  getWritingEssays,
+  getWritingEssay,
+  clearWritingEssay,
+  writingEssayHasContent,
+  getWritingEssayId,
+  getWritingEssaySavedDate,
+  removeWritingEssay,
+  updateWritingEssayPath,
+} from 'Utilities/redux/writingCorrectionReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
@@ -41,6 +52,8 @@ import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
+import EssayListItem from './EssayListItem'
+import EssayDetailModal from './EssayDetailModal'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import {
@@ -72,6 +85,8 @@ const StoryList = () => {
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
   const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
+  const essays = useSelector(state => state.writingCorrection.essays)
+  const essaysPending = useSelector(state => state.writingCorrection.essaysPending)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
@@ -79,9 +94,11 @@ const StoryList = () => {
 
   const smallWindow = useWindowDimensions().width < 520
 
-  const [sorter, setSorter] = useState(savedSortCriterion[savedLibrarySelection].sort_by)
+  const [sorter, setSorter] = useState(
+    savedSortCriterion?.[savedLibrarySelection]?.sort_by || 'title',
+  )
   const [sortDirection, setSortDirection] = useState(
-    savedSortCriterion[savedLibrarySelection].direction,
+    savedSortCriterion?.[savedLibrarySelection]?.direction || 'asc',
   )
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
@@ -94,11 +111,14 @@ const StoryList = () => {
   const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] =
     useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
+  const [detailEssayId, setDetailEssayId] = useState(null)
+  const [essaySearchQuery, setEssaySearchQuery] = useState('')
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
+    essays: false,
     group: false,
   })
   const dispatch = useDispatch()
@@ -107,6 +127,8 @@ const StoryList = () => {
     .map(([key]) => capitalize(key))
   const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
   const libraryIsMutable = activeLibrary !== 'public'
+  const essaysLibraryActive = activeLibrary === 'essays'
+  const uploadedEssays = essays.filter(writingEssayHasContent)
   const {
     clearDragState,
     draggedStoryIds,
@@ -119,6 +141,20 @@ const StoryList = () => {
   } = useLibraryDragAndDrop({
     libraryIsMutable,
     onMoveStories: handleMoveStoriesToPath,
+  })
+  // A second drag-and-drop context for essays (same mechanics, moves via updateWritingEssayPath).
+  const {
+    clearDragState: clearEssayDragState,
+    draggedStoryIds: draggedEssayIds,
+    dragOverFolderPath: essayDragOverFolderPath,
+    handleFolderDragLeave: handleEssayFolderDragLeave,
+    handleFolderDragOver: handleEssayFolderDragOver,
+    handleFolderDrop: handleEssayFolderDrop,
+    handleStoryDragEnd: handleEssayDragEnd,
+    handleStoryDragStart: handleEssayDragStart,
+  } = useLibraryDragAndDrop({
+    libraryIsMutable: essaysLibraryActive,
+    onMoveStories: handleMoveEssaysToPath,
   })
 
   useEffect(() => {
@@ -147,9 +183,11 @@ const StoryList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     setCurrentLibraryPath('')
+    setEssaySearchQuery('')
     clearDragState()
-    setSorter(savedSortCriterion[library].sort_by)
-    setSortDirection(savedSortCriterion[library].direction)
+    clearEssayDragState()
+    setSorter(savedSortCriterion?.[library]?.sort_by || 'title')
+    setSortDirection(savedSortCriterion?.[library]?.direction || 'asc')
     if (library === 'group' && sharedToGroupSinceLastFetch) {
       dispatch(
         getAllStories(learningLanguage, {
@@ -226,6 +264,12 @@ const StoryList = () => {
     }
   }, [])
 
+  // Prefetch the user's essays on mount (and on language change), like stories are prefetched, so the
+  // "My Essays" tab shows its content immediately when selected instead of loading on activation.
+  useEffect(() => {
+    if (learningLanguage) dispatch(getWritingEssays(capitalize(learningLanguage)))
+  }, [learningLanguage])
+
   const handleSearchIconClick = () => {
     setSmallScreenSearchOpen(!smallScreenSearchOpen)
   }
@@ -247,6 +291,15 @@ const StoryList = () => {
       value: 'date',
     })
   }
+
+  const essaySortDropdownOptions = [
+    { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
+    { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
+  ]
+  // sorter is shared per-library state; coerce to a valid essay option so the Select never warns.
+  const essaySorter = essaySortDropdownOptions.some(option => option.value === sorter)
+    ? sorter
+    : 'title'
 
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
@@ -274,13 +327,15 @@ const StoryList = () => {
     },
   }
 
+  // Persist under activeLibrary (synchronous local state that sorter/sortDirection track), not the
+  // async-lagging Redux savedLibrarySelection, so the preference is saved for the displayed library.
   const handleSortChange = e => {
     const newSorter = e.target.value
     setSorter(newSorter)
     dispatch(
       updateSortCriterion({
         ...savedSortCriterion,
-        [savedLibrarySelection]: {
+        [activeLibrary]: {
           sort_by: newSorter,
           direction: sortDirection,
         },
@@ -294,7 +349,7 @@ const StoryList = () => {
     dispatch(
       updateSortCriterion({
         ...savedSortCriterion,
-        [savedLibrarySelection]: {
+        [activeLibrary]: {
           sort_by: sorter,
           direction: newDirection,
         },
@@ -329,7 +384,7 @@ const StoryList = () => {
       <LibraryTabs
         values={libraries}
         onClick={handleLibraryChange}
-        reverse
+        order={['public', 'private', 'essays', 'group']}
         savedGroupSelection={savedGroupSelection}
         groupDropdownOptions={groupDropdownOptions}
         groupDropdownDisabled={!libraries.group}
@@ -394,6 +449,62 @@ const StoryList = () => {
         />
       )}
     </>
+  )
+
+  // Sort (title/date) + title search for the "My Essays" library, styled like the story controls.
+  const essaySearchAndSortControls = (
+    <Box
+      className="search-and-sort"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 2,
+        flexWrap: 'wrap',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FormControl size="small" sx={{ minWidth: 180 }}>
+          <Select
+            value={essaySorter}
+            onChange={handleSortChange}
+            className="library-semantic-select"
+            MenuProps={dropdownMenuProps}
+          >
+            {essaySortDropdownOptions.map(option => (
+              <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
+                {option.text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
+          {sortDirection === 'asc' ? (
+            <ArrowDropUpSharpIcon fontSize="large" />
+          ) : (
+            <ArrowDropDownSharpIcon fontSize="large" />
+          )}
+        </IconButton>
+      </Box>
+
+      <Box className="library-search-control">
+        <TextField
+          className="library-search-field"
+          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
+          value={essaySearchQuery}
+          onChange={event => setEssaySearchQuery(event.target.value)}
+          fullWidth
+          size="small"
+        />
+        <IconButton
+          className="library-search-button"
+          aria-label={essaySearchQuery ? 'Clear search' : 'Search essays'}
+          onClick={() => essaySearchQuery && setEssaySearchQuery('')}
+        >
+          {essaySearchQuery ? <CloseIcon /> : <SearchIcon />}
+        </IconButton>
+      </Box>
+    </Box>
   )
 
   if (pending || !refreshed) {
@@ -477,6 +588,11 @@ const StoryList = () => {
     clearDragState()
   }
 
+  const handleEssayLibraryPathChange = path => {
+    setCurrentLibraryPath(normalizeLibraryPath(path))
+    clearEssayDragState()
+  }
+
   function handleMoveStoriesToPath(storyIds, targetPath) {
     if (!libraryIsMutable) return
 
@@ -490,6 +606,31 @@ const StoryList = () => {
 
     storiesToMove.forEach(story => {
       dispatch(updateStoryPath(story._id, normalizedTargetPath))
+    })
+  }
+
+  function handleMoveEssaysToPath(essayIds, targetPath) {
+    if (!essaysLibraryActive || !learningLanguage) return
+
+    const normalizedTargetPath = normalizeLibraryPath(targetPath)
+    const essayIdSet = new Set(essayIds.map(id => String(id)))
+    const essaysToMove = uploadedEssays.filter(essay => {
+      const id = getWritingEssayId(essay)
+      return (
+        id != null &&
+        essayIdSet.has(String(id)) &&
+        normalizeLibraryPath(essay.path) !== normalizedTargetPath
+      )
+    })
+
+    essaysToMove.forEach(essay => {
+      dispatch(
+        updateWritingEssayPath(
+          capitalize(learningLanguage),
+          getWritingEssayId(essay),
+          normalizedTargetPath,
+        ),
+      )
     })
   }
 
@@ -507,7 +648,7 @@ const StoryList = () => {
           onDragOver={e => handleFolderDragOver('', e)}
           onDrop={e => handleFolderDrop('', e)}
         >
-          <FormattedMessage id="Library" />
+          <FormattedMessage id={capitalize(activeLibrary)} />
         </button>
         {libraryPathParts.map((part, index) => {
           const path = libraryPathParts.slice(0, index + 1).join('/')
@@ -578,16 +719,81 @@ const StoryList = () => {
     })
   }
 
+  const handleDeleteEssayFolderRequest = folderPath => {
+    if (!essaysLibraryActive) return
+
+    const normalizedFolderPath = normalizeLibraryPath(folderPath)
+    const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
+
+    if (essaysInFolder.length === 0) {
+      handleRemoveLocalFolder(normalizedFolderPath)
+      return
+    }
+
+    setFolderDeleteRequest({
+      path: normalizedFolderPath,
+      essayIds: essaysInFolder.map(essay => getWritingEssayId(essay)),
+    })
+  }
+
   const handleConfirmFolderDelete = () => {
     if (!folderDeleteRequest) return
 
-    folderDeleteRequest.storyIds.forEach(storyId => {
+    ;(folderDeleteRequest.storyIds || []).forEach(storyId => {
       dispatch(removeStory(storyId))
     })
+    if (learningLanguage) {
+      ;(folderDeleteRequest.essayIds || []).forEach(essayId => {
+        dispatch(removeWritingEssay(capitalize(learningLanguage), essayId))
+      })
+    }
 
     handleRemoveLocalFolder(folderDeleteRequest.path)
     setFolderDeleteRequest(null)
   }
+
+  const renderEssayPathBreadcrumbs = () => (
+    <Box className="library-folder-breadcrumbs">
+      <Breadcrumbs aria-label="Essay folder path">
+        <button
+          type="button"
+          className="library-folder-breadcrumb"
+          onClick={() => handleEssayLibraryPathChange('')}
+          onDragLeave={e => handleEssayFolderDragLeave('', e)}
+          onDragOver={e => handleEssayFolderDragOver('', e)}
+          onDrop={e => handleEssayFolderDrop('', e)}
+        >
+          <FormattedMessage id="my-essays" />
+        </button>
+        {libraryPathParts.map((part, index) => {
+          const path = libraryPathParts.slice(0, index + 1).join('/')
+          const isCurrentFolder = path === currentLibraryPath
+
+          if (isCurrentFolder) {
+            return (
+              <Typography key={path} className="library-folder-breadcrumb-current">
+                {part}
+              </Typography>
+            )
+          }
+
+          return (
+            <button
+              type="button"
+              key={path}
+              className="library-folder-breadcrumb"
+              onClick={() => handleEssayLibraryPathChange(path)}
+              onDragLeave={e => handleEssayFolderDragLeave(path, e)}
+              onDragOver={e => handleEssayFolderDragOver(path, e)}
+              onDrop={e => handleEssayFolderDrop(path, e)}
+            >
+              {part}
+            </button>
+          )
+        })}
+      </Breadcrumbs>
+    </Box>
+  )
 
   const renderFolderBrowser = () => {
     const foldersInCurrentPath = getFoldersForPath(
@@ -676,8 +882,115 @@ const StoryList = () => {
     )
   }
 
+  // Open the detail view for one essay: fetch it (original + current versions) and show the modal.
+  const openEssayDetail = essayId => {
+    if (!essayId || !learningLanguage) return
+    setDetailEssayId(essayId)
+    dispatch(getWritingEssay(capitalize(learningLanguage), essayId))
+  }
+
+  const closeEssayDetail = () => {
+    setDetailEssayId(null)
+    dispatch(clearWritingEssay())
+  }
+
+  const renderEssaysLibrary = () => {
+    const query = essaySearchQuery.trim().toLowerCase()
+    const searchedEssays = query
+      ? uploadedEssays.filter(essay => (essay.title || '').toLowerCase().includes(query))
+      : uploadedEssays
+
+    const sortedEssays = [...searchedEssays].sort((a, b) => {
+      let dir = 0
+      if (essaySorter === 'date') {
+        const dateA = getWritingEssaySavedDate(a)
+        const dateB = getWritingEssaySavedDate(b)
+        dir = (dateB ? dateB.getTime() : 0) - (dateA ? dateA.getTime() : 0)
+      } else {
+        dir = (a.title || '').localeCompare(b.title || '')
+      }
+      return sortDirection === 'asc' ? dir : -dir
+    })
+
+    const foldersInCurrentPath = getFoldersForPath(
+      sortedEssays,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
+    const essaysInCurrentPath = getStoriesForPath(sortedEssays, currentLibraryPath)
+    const folderIsEmpty = foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0
+
+    return (
+      <>
+        <Box className="library-folder-header">
+          {renderEssayPathBreadcrumbs()}
+          <AddFolder existingFolderNames={foldersInCurrentPath} onAddFolder={handleAddFolder} />
+        </Box>
+        {folderIsEmpty ? (
+          // Render nothing during the initial prefetch (unless searching) to avoid a "no essays" flash.
+          essaysPending && !query ? null : (
+            <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+              <FormattedMessage id="no-essays-found" />
+            </Box>
+          )
+        ) : (
+          <Box data-cy="essay-items" className="library-story-grid">
+            {foldersInCurrentPath.map(folderName => {
+              const folderPath = currentLibraryPath
+                ? `${currentLibraryPath}/${folderName}`
+                : folderName
+              const normalizedFolderPath = normalizeLibraryPath(folderPath)
+              const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
+              const folderIsEmptyLocal =
+                folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
+
+              return (
+                <FolderCard
+                  key={normalizedFolderPath}
+                  isDropTarget={essayDragOverFolderPath === normalizedFolderPath}
+                  isEmpty={folderIsEmptyLocal}
+                  name={folderName}
+                  onClick={() => handleEssayLibraryPathChange(normalizedFolderPath)}
+                  onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
+                  onDragOver={e => handleEssayFolderDragOver(normalizedFolderPath, e)}
+                  onDrop={e => handleEssayFolderDrop(normalizedFolderPath, e)}
+                  onDelete={
+                    essaysInFolder.length > 0
+                      ? () => handleDeleteEssayFolderRequest(normalizedFolderPath)
+                      : undefined
+                  }
+                  onRemove={
+                    folderIsEmptyLocal
+                      ? () => handleRemoveLocalFolder(normalizedFolderPath)
+                      : undefined
+                  }
+                />
+              )
+            })}
+            {essaysInCurrentPath.map((essay, index) => {
+              const essayId = getWritingEssayId(essay)
+              return (
+                <EssayListItem
+                  key={essayId || index}
+                  essay={essay}
+                  draggable={essaysLibraryActive && Boolean(essayId)}
+                  isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
+                  onDragStart={handleEssayDragStart}
+                  onDragEnd={handleEssayDragEnd}
+                  onOpen={essayId ? () => openEssayDetail(essayId) : undefined}
+                />
+              )
+            })}
+          </Box>
+        )}
+      </>
+    )
+  }
+
   return (
-    <Box className={`cont-tall pt-lg cont flex-col auto library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+    <Box
+      className={`cont-tall pt-lg cont flex-col auto library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+    >
       <ConfirmationWarning
         open={Boolean(folderDeleteRequest)}
         setOpen={open => {
@@ -689,35 +1002,49 @@ const StoryList = () => {
       </ConfirmationWarning>
       {libraryControls}
       <Box className="universal-background" sx={{ margin: '0 7px' }}>
-        {libraries.group && (
-          <Box className="library-group-dropdown-container">
-            <FormControl size="small" fullWidth>
-              <Select
-                value={savedGroupSelection}
-                onChange={handleGroupChange}
-                className="library-semantic-select"
-                MenuProps={dropdownMenuProps}
-                sx={{ color: '#777', width: '100%' }}
-              >
-                {groupDropdownOptions.map(option => (
-                  <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                    {option.text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        )}
-        {searchAndSortControls}
-        {lastQuery && (
-          <Box className="mt-nm ml-sm gap-col-sm">
-            <Typography component="span">
-              <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-            </Typography>
-          </Box>
-        )}
+        {activeLibrary === 'essays' ? (
+          <>
+            {essaySearchAndSortControls}
+            {renderEssaysLibrary()}
+            <EssayDetailModal open={Boolean(detailEssayId)} onClose={closeEssayDetail} />
+          </>
+        ) : (
+          <>
+            {libraries.group && (
+              <Box className="library-group-dropdown-container">
+                <FormControl size="small" fullWidth>
+                  <Select
+                    value={savedGroupSelection}
+                    onChange={handleGroupChange}
+                    className="library-semantic-select"
+                    MenuProps={dropdownMenuProps}
+                    sx={{ color: '#777', width: '100%' }}
+                  >
+                    {groupDropdownOptions.map(option => (
+                      <MenuItem
+                        className="library-dropdown-item"
+                        key={option.key}
+                        value={option.value}
+                      >
+                        {option.text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+            )}
+            {searchAndSortControls}
+            {lastQuery && (
+              <Box className="mt-nm ml-sm gap-col-sm">
+                <Typography component="span">
+                  <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+                </Typography>
+              </Box>
+            )}
 
-        {renderFolderBrowser()}
+            {renderFolderBrowser()}
+          </>
+        )}
       </Box>
 
       <HelperSidebar>
