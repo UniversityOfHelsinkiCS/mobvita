@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'semantic-ui-react'
@@ -20,7 +20,12 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
   const intl = useIntl()
   const [currentMessage, setCurrentMessage] = useState('')
   const latestMessageRef = useRef(null)
-  const suggestionRefs = useRef({})
+  const messagesContainerRef = useRef(null)
+  // Where the current focus was entered from, and the list's scroll position when a list bubble was
+  // pressed — so returning to the list restores that position (list) or jumps to the top (textarea).
+  const savedListScrollRef = useRef(0)
+  const pendingListClickRef = useRef(false)
+  const focusOriginRef = useRef('textarea')
   const lastFocusedSentenceIdRef = useRef(null)
   const {
     correctionSuggestionSentenceIds,
@@ -55,22 +60,44 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [essayMessages.length, correctionSuggestions.length])
 
-  // Remember which suggestion is open so that, on returning to the full list, it scrolls back to that
-  // suggestion instead of jumping to the top.
-  useEffect(() => {
+  // Position the list when returning to it: a selection made from the list restores the exact scroll
+  // position it had (bubble stays put); a selection made from the text scrolls that suggestion to the
+  // top of the list so it's the first bubble shown.
+  useLayoutEffect(() => {
     if (isFocused) {
+      focusOriginRef.current = pendingListClickRef.current ? 'list' : 'textarea'
+      pendingListClickRef.current = false
       if (focusedSentenceId) lastFocusedSentenceIdRef.current = focusedSentenceId
       return
     }
 
-    const previousNode =
-      lastFocusedSentenceIdRef.current && suggestionRefs.current[lastFocusedSentenceIdRef.current]
-    previousNode?.scrollIntoView({ block: 'start' })
+    const container = messagesContainerRef.current
+    if (!container) return
+
+    if (focusOriginRef.current === 'list') {
+      container.scrollTop = savedListScrollRef.current
+      return
+    }
+
+    // Textarea selection: bring the selected suggestion to the top (browser clamps the last few).
+    const id = lastFocusedSentenceIdRef.current
+    const escapedId = id && (window.CSS?.escape ? window.CSS.escape(id) : id)
+    const target = escapedId && container.querySelector(`[data-suggestion-id="${escapedId}"]`)
+
+    container.scrollTop = target
+      ? container.scrollTop +
+        (target.getBoundingClientRect().top - container.getBoundingClientRect().top)
+      : 0
   }, [isFocused, focusedSentenceId])
 
   const buildSentenceSelectHandler = ({ key, sentence, sentenceId }) =>
     onSentenceSelect
-      ? (correctionRange, interactionType) =>
+      ? (correctionRange, interactionType) => {
+          if (interactionType === 'click' && !isFocused) {
+            // Selecting from the list: remember its scroll position to restore on the way back.
+            pendingListClickRef.current = true
+            savedListScrollRef.current = messagesContainerRef.current?.scrollTop ?? 0
+          }
           onSentenceSelect({
             correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
             interactionType,
@@ -79,6 +106,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
             sentenceId,
             ...(correctionRange || {}),
           })
+        }
       : undefined
 
   const renderSuggestion = (suggestion, renderOnlyFocused = false) => (
@@ -132,16 +160,10 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
         </div>
       )}
 
-      <div className="chatbot-messages">
+      <div className="chatbot-messages" ref={messagesContainerRef}>
         {!isFocused &&
           correctionSuggestions.map(suggestion => (
-            <div
-              key={suggestion.sentenceId}
-              ref={node => {
-                if (node) suggestionRefs.current[suggestion.sentenceId] = node
-                else delete suggestionRefs.current[suggestion.sentenceId]
-              }}
-            >
+            <div key={suggestion.sentenceId} data-suggestion-id={suggestion.sentenceId}>
               {renderSuggestion(suggestion)}
             </div>
           ))}
