@@ -84,7 +84,7 @@ const EssayTextInput = ({
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
   const selectedGroupKeyRef = useRef(null)
-  const scrollFrameRef = useRef(null)
+  const scrollContentRef = useRef(null)
   const correctionsByKeyRef = useRef(null)
   const writingSessionIdRef = useRef('')
   const writingSessionPendingRef = useRef(false)
@@ -233,7 +233,10 @@ const EssayTextInput = ({
       return
     }
 
-    if (correctionRectsStaleRef.current) computeCorrectionRects()
+    if (correctionRectsStaleRef.current) {
+      computeCorrectionRects()
+      refreshSelectedHighlight()
+    }
 
     const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
     const group = correctionRectsRef.current.find(candidate => candidate.key === key)
@@ -280,13 +283,6 @@ const EssayTextInput = ({
 
     return () => observer.disconnect()
   }, [])
-
-  useEffect(
-    () => () => {
-      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
-    },
-    [],
-  )
 
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
@@ -573,9 +569,9 @@ const EssayTextInput = ({
     correctionRectsStaleRef.current = false
 
     const input = inputRef.current
-    const inputArea = inputAreaRef.current
+    const scrollContent = scrollContentRef.current
 
-    if (!input || !inputArea) {
+    if (!input || !scrollContent) {
       correctionRectsRef.current = []
       return
     }
@@ -615,9 +611,9 @@ const EssayTextInput = ({
     })
 
     const inputRect = input.getBoundingClientRect()
-    const inputAreaRect = inputArea.getBoundingClientRect()
-    const originLeft = inputRect.left - inputAreaRect.left
-    const originTop = inputRect.top - inputAreaRect.top
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+    const originLeft = inputRect.left - scrollContentRect.left
+    const originTop = inputRect.top - scrollContentRect.top
 
     const wordGroups = getTextareaRangeRects(input, wordRanges).map(group => ({
       key: group.key,
@@ -703,17 +699,18 @@ const EssayTextInput = ({
   }
 
   const handleTextMouseMove = event => {
-    const inputArea = inputAreaRef.current
+    const scrollContent = scrollContentRef.current
 
-    if (!inputArea) return
+    if (!scrollContent) return
 
     if (correctionRectsStaleRef.current) {
       computeCorrectionRects()
+      refreshSelectedHighlight()
     }
 
-    const inputAreaRect = inputArea.getBoundingClientRect()
-    const x = event.clientX - inputAreaRect.left
-    const y = event.clientY - inputAreaRect.top
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+    const x = event.clientX - scrollContentRect.left
+    const y = event.clientY - scrollContentRect.top
     const hoveredGroup = correctionRectsRef.current.find(group =>
       rectsContainPoint(group.rects, x, y),
     )
@@ -766,39 +763,31 @@ const EssayTextInput = ({
       }`}
       ref={inputAreaRef}
     >
-      {renderWordHighlights(selectedWordHighlight, 'selected')}
-      {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
-        renderWordHighlights(hoveredWordHighlight, 'hover')}
-      <TextField
-        fullWidth
-        multiline
-        value={text}
-        inputRef={inputRef}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        onClick={handleSelect}
-        onKeyUp={handleSelect}
-        onMouseLeave={handleTextMouseLeave}
-        onMouseMove={handleTextMouseMove}
-        onPaste={handlePaste}
-        onSelect={handleSelect}
-        onScrollCapture={() => {
-          correctionRectsStaleRef.current = true
-          setHoveredWordHighlight(null)
-
-          if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
-
-          scrollFrameRef.current = window.requestAnimationFrame(() => {
-            scrollFrameRef.current = null
-            computeCorrectionRects()
-            refreshSelectedHighlight()
-          })
-        }}
-        placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
-        variant="outlined"
-        className="essay-writing-input"
-        data-cy="essay-writing-input"
-      />
+      <div className="essay-writing-scroll-content" ref={scrollContentRef}>
+        <div className="essay-writing-highlight-layer">
+          {renderWordHighlights(selectedWordHighlight, 'selected')}
+          {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
+            renderWordHighlights(hoveredWordHighlight, 'hover')}
+        </div>
+        <TextField
+          fullWidth
+          multiline
+          value={text}
+          inputRef={inputRef}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          onClick={handleSelect}
+          onKeyUp={handleSelect}
+          onMouseLeave={handleTextMouseLeave}
+          onMouseMove={handleTextMouseMove}
+          onPaste={handlePaste}
+          onSelect={handleSelect}
+          placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
+          variant="outlined"
+          className="essay-writing-input"
+          data-cy="essay-writing-input"
+        />
+      </div>
     </Box>
   )
 }

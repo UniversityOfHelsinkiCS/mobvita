@@ -91,16 +91,35 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-replacement-bg-color};
 
   position: relative;
-  display: flex;
   flex: 1;
   min-height: 0;
   margin-top: 1rem;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
   isolation: isolate;
+}
+
+// Grows to the full height of the essay text so the textarea and overlays scroll together as one.
+.essay-writing-scroll-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .essay-writing-input-area-deletion {
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
+}
+
+// Covers the full scrolled content; the boxes inside are positioned in content coordinates and scroll
+// with the text. Not a stacking/isolated group so the boxes' mix-blend-mode still tints the text.
+.essay-writing-highlight-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .essay-writing-word-highlight {
@@ -141,28 +160,31 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
 .essay-writing-input {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  // Fill the frame when the essay is short (grow) and grow past it when long (no shrink), so the text
+  // fills the whole frame and scrolls inside it rather than the frame resizing to the text.
+  flex: 1 0 auto;
   width: 100%;
-  height: 100%;
   background: #fff;
 
+  // Column flex so the textarea below fills this via flex-grow (reliable) rather than a percentage.
   .MuiInputBase-root {
-    flex: 1;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
     align-items: stretch;
   }
 
+  // The frame/border now lives on .essay-writing-input-area, so hide MUI's own outline.
   .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(0, 0, 0, 0.23) !important;
-    border-width: 1px !important;
+    border: 0 !important;
   }
 
   textarea,
   .MuiInputBase-inputMultiline {
-    flex: 1;
-    height: 100% !important;
+    flex: 1 0 auto;
     box-sizing: border-box;
-    overflow: auto !important;
+    overflow: hidden !important;
+    padding-bottom: 1.75rem;
     resize: none;
 
     font-family: 'Rubik', sans-serif;

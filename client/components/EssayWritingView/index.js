@@ -20,6 +20,7 @@ import {
   getWritingCorrectionKey,
 } from 'Utilities/redux/writingCorrectionReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Footer from '../Footer'
 import EssayChatbot from 'Components/ChatBot/EssayChatbot'
@@ -70,6 +71,16 @@ const EssayWritingView = () => {
       action: 'clear',
       requestId: Date.now(),
     })
+  }
+
+  // Selecting a word/correction in the essay text drives the chatbot focus; open the sidebar so the
+  // chatbot (and its feedback) is visible when the user does so with it collapsed.
+  const handleEssayTextFocusChange = focus => {
+    setEssayFocus(focus)
+
+    if (focus?.selection && !isHelperSidebarOpen) {
+      dispatch(setHelperSidebarOpen(true))
+    }
   }
 
   // Drop the saved draft and remount the editor so it starts empty (after upload / clear cache).
@@ -221,7 +232,7 @@ const EssayWritingView = () => {
             <EssayTextInput
               key={essayResetKey}
               focusLocked={Boolean(essayFocus?.selection)}
-              onEssayFocusChange={setEssayFocus}
+              onEssayFocusChange={handleEssayTextFocusChange}
               onEssayTextChange={setEssayText}
               sentenceSelectionRequest={sentenceSelectionRequest}
             />
