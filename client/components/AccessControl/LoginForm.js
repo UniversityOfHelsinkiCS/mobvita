@@ -84,7 +84,7 @@ const LoginForm = ({
         <FormattedMessage id="dont-have-an-account" />{' '}
         {onSwitchToSignUp && (
           <button type="button" style={linkStyle} onClick={onSwitchToSignUp} data-cy="to-signup">
-            <FormattedMessage id="Sign Up" />
+            <FormattedMessage id="landing-page-sign-up" />
           </button>
         )}
       </div>

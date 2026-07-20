@@ -63,7 +63,7 @@ const SignUpForm = ({
   return (
     <div style={{ fontFamily: font.family, color: colors.ink }}>
       <h1 style={{ fontFamily: font.family, fontSize: font.title, fontWeight: 400, margin: 0 }}>
-        <FormattedMessage id="Sign Up" />
+        <FormattedMessage id="landing-page-sign-up" />
       </h1>
       <div style={{ fontSize: '0.85rem', color: colors.ink, margin: '0.35em 0 1.5em' }}>
         <FormattedMessage id="already-have-an-account" />{' '}
@@ -150,7 +150,7 @@ const SignUpForm = ({
           fullWidth
           sx={primaryButtonSx}
         >
-          {pending ? <Spinner inline /> : <FormattedMessage id="Sign Up" />}
+          {pending ? <Spinner inline /> : <FormattedMessage id="landing-page-sign-up" />}
         </AppButton>
       </form>
     </div>

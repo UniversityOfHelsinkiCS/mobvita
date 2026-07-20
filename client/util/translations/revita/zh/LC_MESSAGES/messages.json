@@ -1238,5 +1238,19 @@
     "essay-chatbot-followup-question": "Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to \"FOLLOW UP\"!",
     "enable-tooltips": "Show tooltips",
     "admin-contact-message": "留言",
-    "essay-upload-topic-taken": "This topic is already taken. Please choose a different one."
+    "essay-upload-topic-taken": "This topic is already taken. Please choose a different one.",
+    "remember-me": "记住我",
+    "dont-have-an-account": "Don't have an account?",
+    "already-have-an-account": "Already have an account?",
+    "i-accept-the-terms": "I accept the terms and privacy policy",
+    "landing-page-sign-up": "Sign Up",
+    "about-revita": "关于Revita",
+    "my-essays": "My Essays",
+    "essay-sentence-count": "sentences",
+    "no-essays-found": "No essays yet.",
+    "essay-original-version": "Original version",
+    "essay-current-version": "Current version",
+    "essay-remove-confirm": "This will permanently delete this essay, are you sure you want to proceed?",
+    "upload-to-my-essays": "Upload to My Essays",
+    "something-went-wrong": "Something went wrong."
 }
