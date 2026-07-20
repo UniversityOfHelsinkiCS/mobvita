@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
-import { getEssayChatbotSessionId } from 'Components/EssayWritingView/utils/essayDraftStorage'
 import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import RobotIcon from 'Components/PracticeView/RobotIcon'
+import SanitizedHTML from 'Components/SanitizedHTML'
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
@@ -18,11 +18,21 @@ const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const [essaySessionId] = useState(getEssayChatbotSessionId)
   const [currentMessage, setCurrentMessage] = useState('')
   const latestMessageRef = useRef(null)
-  const { correctionSuggestionSentenceIds, correctionSuggestionsBySentenceId, correctionsByKey } =
-    useSelector(({ writingCorrection }) => writingCorrection)
+  const messagesContainerRef = useRef(null)
+  // Where the current focus was entered from, and the list's scroll position when a list bubble was
+  // pressed — so returning to the list restores that position (list) or jumps to the top (textarea).
+  const savedListScrollRef = useRef(0)
+  const pendingListClickRef = useRef(false)
+  const focusOriginRef = useRef('textarea')
+  const lastFocusedSentenceIdRef = useRef(null)
+  const {
+    correctionSuggestionSentenceIds,
+    correctionSuggestionsBySentenceId,
+    correctionsByKey,
+    sessionId,
+  } = useSelector(({ writingCorrection }) => writingCorrection)
   const { essayMessages, isWaitingForEssayResponse } = useSelector(({ chatbot }) => chatbot)
   const correctionSuggestions = correctionSuggestionSentenceIds
     .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
@@ -37,14 +47,57 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
       correctionSuggestions.find(suggestion => suggestion.sentenceId === focusedSentenceId)) ||
     null
   const isFocused = Boolean(focusedSuggestion)
+  // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) as bot bubbles
+  // in the conversation instead — one bubble per hint line.
+  const focusedFeedbackHints = isFocused
+    ? (essayFocus?.feedbackText || '')
+        .split('\n')
+        .map(hint => hint.trim())
+        .filter(Boolean)
+    : []
 
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [essayMessages.length, correctionSuggestions.length])
 
+  // Position the list when returning to it: a selection made from the list restores the exact scroll
+  // position it had (bubble stays put); a selection made from the text scrolls that suggestion to the
+  // top of the list so it's the first bubble shown.
+  useLayoutEffect(() => {
+    if (isFocused) {
+      focusOriginRef.current = pendingListClickRef.current ? 'list' : 'textarea'
+      pendingListClickRef.current = false
+      if (focusedSentenceId) lastFocusedSentenceIdRef.current = focusedSentenceId
+      return
+    }
+
+    const container = messagesContainerRef.current
+    if (!container) return
+
+    if (focusOriginRef.current === 'list') {
+      container.scrollTop = savedListScrollRef.current
+      return
+    }
+
+    // Textarea selection: bring the selected suggestion to the top (browser clamps the last few).
+    const id = lastFocusedSentenceIdRef.current
+    const escapedId = id && (window.CSS?.escape ? window.CSS.escape(id) : id)
+    const target = escapedId && container.querySelector(`[data-suggestion-id="${escapedId}"]`)
+
+    container.scrollTop = target
+      ? container.scrollTop +
+        (target.getBoundingClientRect().top - container.getBoundingClientRect().top)
+      : 0
+  }, [isFocused, focusedSentenceId])
+
   const buildSentenceSelectHandler = ({ key, sentence, sentenceId }) =>
     onSentenceSelect
-      ? (correctionRange, interactionType) =>
+      ? (correctionRange, interactionType) => {
+          if (interactionType === 'click' && !isFocused) {
+            // Selecting from the list: remember its scroll position to restore on the way back.
+            pendingListClickRef.current = true
+            savedListScrollRef.current = messagesContainerRef.current?.scrollTop ?? 0
+          }
           onSentenceSelect({
             correctedText: getCorrectedTextFromCorrectionEntry(correctionsByKey[key]),
             interactionType,
@@ -53,6 +106,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
             sentenceId,
             ...(correctionRange || {}),
           })
+        }
       : undefined
 
   const renderSuggestion = (suggestion, renderOnlyFocused = false) => (
@@ -75,7 +129,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
 
     dispatch(
       getEssayChatbotResponse({
-        sessionId: essaySessionId,
+        sessionId,
         message: currentMessage,
         originalText: essayFocus?.originalText || essayFocus?.focusedSentence || essayText,
         correctedText: essayFocus?.correctedText || '',
@@ -91,7 +145,7 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
       <div className="ai-assistant-header">
         {isFocused && (
           <button type="button" className="essay-chatbot-back" onClick={() => onClearFocus?.()}>
-            <ArrowCircleLeftOutlinedIcon />
+            <ArrowCircleLeftOutlinedIcon sx={{ fontSize: '2.2rem' }} />
           </button>
         )}
         <RobotIcon className="ai-header-icon" size={24} />
@@ -106,8 +160,22 @@ const EssayChatbot = ({ essayFocus, essayText, onClearFocus, onSentenceSelect })
         </div>
       )}
 
-      <div className="chatbot-messages">
-        {!isFocused && correctionSuggestions.map(suggestion => renderSuggestion(suggestion))}
+      <div className="chatbot-messages" ref={messagesContainerRef}>
+        {!isFocused &&
+          correctionSuggestions.map(suggestion => (
+            <div key={suggestion.sentenceId} data-suggestion-id={suggestion.sentenceId}>
+              {renderSuggestion(suggestion)}
+            </div>
+          ))}
+        {focusedFeedbackHints.map((hint, index) => (
+          <div
+            className="message message-bot"
+            key={`focused-feedback-${index}`}
+            style={{ display: 'block' }}
+          >
+            <SanitizedHTML html={hint} />
+          </div>
+        ))}
         {essayMessages.map((message, index) =>
           message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
             <div

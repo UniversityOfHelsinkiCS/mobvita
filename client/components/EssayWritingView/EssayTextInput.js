@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 import {
   checkWritingCorrection,
   getWritingCorrectionKey,
+  getWritingCorrectionSession,
   getWritingCorrectionWords,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
@@ -26,6 +27,7 @@ import {
   findCorrectionGroupAtOffset,
   findInsertionGroupInRegion,
   getCorrectedTextFromCorrectionEntry,
+  getCorrectionGroupChatFeedbackText,
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
@@ -67,7 +69,12 @@ const getInsertionGapSpan = (text, offset) => {
   return { start, end }
 }
 
-const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelectionRequest }) => {
+const EssayTextInput = ({
+  focusLocked,
+  onEssayFocusChange,
+  onEssayTextChange,
+  sentenceSelectionRequest,
+}) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
@@ -77,8 +84,10 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
   const selectedGroupKeyRef = useRef(null)
-  const scrollFrameRef = useRef(null)
+  const scrollContentRef = useRef(null)
   const correctionsByKeyRef = useRef(null)
+  const writingSessionIdRef = useRef('')
+  const writingSessionPendingRef = useRef(false)
   const pendingEditedSentenceRef = useRef(null)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
@@ -93,9 +102,13 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     start: text.length,
   })
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
+  const writingSessionPending = useSelector(state => state.writingCorrection.sessionPending)
   const learningLanguage = useLearningLanguage()
 
   correctionsByKeyRef.current = correctionsByKey
+  writingSessionIdRef.current = writingSessionId
+  writingSessionPendingRef.current = writingSessionPending
 
   const setInputSelection = (input, start, end) => {
     applyingCorrectionSelectionRef.current = true
@@ -155,6 +168,7 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       sentence,
       focus: {
         correctedText: getCorrectedTextFromCorrectionEntry(correctionEntry),
+        feedbackText: getCorrectionGroupChatFeedbackText(group),
         focusedSentence: sentence.text,
         originalText: correctionEntry.text || sentence.text,
         sentenceId: sentence.sentenceId,
@@ -183,6 +197,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       onEssayFocusChange?.(focus)
       return
     }
+
+    if (focusLocked) return
 
     clearSelectedHighlight()
     onEssayFocusChange?.(
@@ -217,7 +233,10 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       return
     }
 
-    if (correctionRectsStaleRef.current) computeCorrectionRects()
+    if (correctionRectsStaleRef.current) {
+      computeCorrectionRects()
+      refreshSelectedHighlight()
+    }
 
     const key = `${sentenceIdToSelect}:${startOffset}:${endOffset}`
     const group = correctionRectsRef.current.find(candidate => candidate.key === key)
@@ -235,6 +254,11 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   useEffect(() => {
     onEssayTextChange?.(textRef.current)
   }, [])
+
+  // Fetch a backend session id for this writing session (to track correction + chatbot history).
+  useEffect(() => {
+    if (learningLanguage) dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
+  }, [learningLanguage])
 
   useEffect(() => {
     correctionRectsStaleRef.current = true
@@ -260,13 +284,6 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     return () => observer.disconnect()
   }, [])
 
-  useEffect(
-    () => () => {
-      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
-    },
-    [],
-  )
-
   const createSentenceId = () => {
     sentenceIdCounterRef.current += 1
     return `essay-sentence-${sentenceIdCounterRef.current}`
@@ -288,6 +305,16 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     return nextCompletedSentences
   }
 
+  // Re-fetch the session id if a correction needs it but the initial fetch failed. Guarded on the
+  // pending flag so a burst of corrections can't race several fetches (each mints a different id).
+  const ensureWritingSession = () => {
+    if (!learningLanguage || writingSessionIdRef.current || writingSessionPendingRef.current) return
+    // Mark in-flight now so a same-tick burst of corrections doesn't fire several fetches before
+    // the pending flag round-trips through Redux.
+    writingSessionPendingRef.current = true
+    dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
+  }
+
   const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
@@ -300,12 +327,14 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
         }),
       )
     } else {
+      ensureWritingSession()
       dispatch(
         checkWritingCorrection({
           language: capitalize(learningLanguage),
           sentenceId: sentence.sentenceId,
           text: sentence.text,
           context: sentence.context,
+          sessionId: writingSessionIdRef.current,
         }),
       )
     }
@@ -362,7 +391,8 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     }
 
     clearCorrectionHighlight()
-    onEssayFocusChange?.(null)
+
+    if (!focusLocked) onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
     correctionRectsStaleRef.current = true
@@ -539,9 +569,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     correctionRectsStaleRef.current = false
 
     const input = inputRef.current
-    const inputArea = inputAreaRef.current
+    const scrollContent = scrollContentRef.current
 
-    if (!input || !inputArea) {
+    if (!input || !scrollContent) {
       correctionRectsRef.current = []
       return
     }
@@ -581,9 +611,9 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
     })
 
     const inputRect = input.getBoundingClientRect()
-    const inputAreaRect = inputArea.getBoundingClientRect()
-    const originLeft = inputRect.left - inputAreaRect.left
-    const originTop = inputRect.top - inputAreaRect.top
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+    const originLeft = inputRect.left - scrollContentRect.left
+    const originTop = inputRect.top - scrollContentRect.top
 
     const wordGroups = getTextareaRangeRects(input, wordRanges).map(group => ({
       key: group.key,
@@ -669,17 +699,18 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
   }
 
   const handleTextMouseMove = event => {
-    const inputArea = inputAreaRef.current
+    const scrollContent = scrollContentRef.current
 
-    if (!inputArea) return
+    if (!scrollContent) return
 
     if (correctionRectsStaleRef.current) {
       computeCorrectionRects()
+      refreshSelectedHighlight()
     }
 
-    const inputAreaRect = inputArea.getBoundingClientRect()
-    const x = event.clientX - inputAreaRect.left
-    const y = event.clientY - inputAreaRect.top
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+    const x = event.clientX - scrollContentRect.left
+    const y = event.clientY - scrollContentRect.top
     const hoveredGroup = correctionRectsRef.current.find(group =>
       rectsContainPoint(group.rects, x, y),
     )
@@ -732,39 +763,31 @@ const EssayTextInput = ({ onEssayFocusChange, onEssayTextChange, sentenceSelecti
       }`}
       ref={inputAreaRef}
     >
-      {renderWordHighlights(selectedWordHighlight, 'selected')}
-      {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
-        renderWordHighlights(hoveredWordHighlight, 'hover')}
-      <TextField
-        fullWidth
-        multiline
-        value={text}
-        inputRef={inputRef}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        onClick={handleSelect}
-        onKeyUp={handleSelect}
-        onMouseLeave={handleTextMouseLeave}
-        onMouseMove={handleTextMouseMove}
-        onPaste={handlePaste}
-        onSelect={handleSelect}
-        onScrollCapture={() => {
-          correctionRectsStaleRef.current = true
-          setHoveredWordHighlight(null)
-
-          if (!selectedGroupKeyRef.current || scrollFrameRef.current) return
-
-          scrollFrameRef.current = window.requestAnimationFrame(() => {
-            scrollFrameRef.current = null
-            computeCorrectionRects()
-            refreshSelectedHighlight()
-          })
-        }}
-        placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
-        variant="outlined"
-        className="essay-writing-input"
-        data-cy="essay-writing-input"
-      />
+      <div className="essay-writing-scroll-content" ref={scrollContentRef}>
+        <div className="essay-writing-highlight-layer">
+          {renderWordHighlights(selectedWordHighlight, 'selected')}
+          {hoveredWordHighlight?.key !== selectedWordHighlight?.key &&
+            renderWordHighlights(hoveredWordHighlight, 'hover')}
+        </div>
+        <TextField
+          fullWidth
+          multiline
+          value={text}
+          inputRef={inputRef}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          onClick={handleSelect}
+          onKeyUp={handleSelect}
+          onMouseLeave={handleTextMouseLeave}
+          onMouseMove={handleTextMouseMove}
+          onPaste={handlePaste}
+          onSelect={handleSelect}
+          placeholder={intl.formatMessage({ id: 'essay-textfield-placeholder' })}
+          variant="outlined"
+          className="essay-writing-input"
+          data-cy="essay-writing-input"
+        />
+      </div>
     </Box>
   )
 }

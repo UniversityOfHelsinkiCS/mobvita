@@ -1,13 +1,4 @@
 const ESSAY_WRITING_TEXT_STORAGE_KEY = 'essay-writing-text'
-const ESSAY_CHATBOT_SESSION_STORAGE_KEY = 'essay-chatbot-session-id'
-
-const createEssayChatbotSessionId = () => {
-  if (typeof window !== 'undefined' && window.crypto?.randomUUID) {
-    return window.crypto.randomUUID()
-  }
-
-  return `essay-${Date.now()}-${Math.random().toString(16).slice(2)}`
-}
 
 export const getStoredEssayText = () => {
   try {
@@ -25,16 +16,10 @@ export const saveEssayText = text => {
   }
 }
 
-export const getEssayChatbotSessionId = () => {
+export const clearStoredEssayText = () => {
   try {
-    const storedSessionId = window.localStorage.getItem(ESSAY_CHATBOT_SESSION_STORAGE_KEY)
-
-    if (storedSessionId) return storedSessionId
-
-    const sessionId = createEssayChatbotSessionId()
-    window.localStorage.setItem(ESSAY_CHATBOT_SESSION_STORAGE_KEY, sessionId)
-    return sessionId
+    window.localStorage.removeItem(ESSAY_WRITING_TEXT_STORAGE_KEY)
   } catch {
-    return createEssayChatbotSessionId()
+    // Ignore storage errors.
   }
 }
