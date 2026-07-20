@@ -3,6 +3,14 @@
  */
 import DOMPurify from 'dompurify'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
+import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
+import menu2 from 'Assets/images/menu-02.svg'
+import helpCircle from 'Assets/images/help-circle.svg'
+import asterisk02 from 'Assets/images/asterisk-02.svg'
+import mail05 from 'Assets/images/mail-05.svg'
+import alertCircle from 'Assets/images/alert-circle.svg'
+import xClose from 'Assets/images/x-close.svg'
+import activityHeart from 'Assets/images/activity-heart.svg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
 import flagErzya from 'Assets/images/flags/flag_erzya.png'
 import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
@@ -102,6 +110,14 @@ export const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'developm
 
 export const images = {
   revitaLogoTransparent,
+  universityOfHelsinki,
+  menu2,
+  helpCircle,
+  asterisk02,
+  mail05,
+  alertCircle,
+  xClose,
+  activityHeart,
   flagFinnish,
   flagUdmurt,
   flagUdmurtarch,
@@ -182,7 +198,8 @@ export const images = {
   greenArrow,
   heartbeat,
   uhLogo,
-  network }
+  network,
+}
 
 export const backgroundColors = [
   'lavender',
@@ -250,7 +267,8 @@ export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
     angle: angle,
     spread: randomInRange(50, 70),
     particleCount: randomInRange(50, 100),
-    origin: { x, y } })
+    origin: { x, y },
+  })
 }
 
 export const finalConfettiRain = (colors, endDate) => {
@@ -260,13 +278,15 @@ export const finalConfettiRain = (colors, endDate) => {
       angle: 60,
       spread: 55,
       origin: { x: 0 },
-      colors })
+      colors,
+    })
     confetti({
       particleCount: 2,
       angle: 120,
       spread: 55,
       origin: { x: 1 },
-      colors })
+      colors,
+    })
 
     if (Date.now() < endDate) {
       requestAnimationFrame(frame)
@@ -326,7 +346,8 @@ function colorInterpolate(colorA, colorB, intval) {
   return {
     r: colorVal('r'),
     g: colorVal('g'),
-    b: colorVal('b') }
+    b: colorVal('b'),
+  }
 }
 
 function ColorToHex(color) {
@@ -344,8 +365,9 @@ export const composeExerciseContext = (snippet, word) => {
     .reduce(
       (acc, curr) => ({
         ...acc,
-        [curr.ID]: curr.base }),
-      {}
+        [curr.ID]: curr.base,
+      }),
+      {},
     )
 }
 
@@ -355,7 +377,7 @@ export function getWordColor(
   skillLevels,
   show_review_diff,
   show_preview_exer,
-  mode
+  mode,
 ) {
   if (
     !word_level ||
@@ -461,7 +483,8 @@ export const supportedLearningLanguages = {
     'udmurt-arch',
     'livvi',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac'] }
+  experimental: ['syriac'],
+}
 
 export const learningLanguageLocaleCodes = {
   Finnish: 'fi',
@@ -487,7 +510,8 @@ export const learningLanguageLocaleCodes = {
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
   livvi: 'olo',
-  English: 'en' }
+  English: 'en',
+}
 
 export const betaLanguages = [
   'catalan',
@@ -520,7 +544,8 @@ export const colors = {}
 
 export const flashcardColors = {
   background: ['#F3826A', '#FEA75C', '#F9E79F', '#84C3A3', '#50A278'],
-  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'] }
+  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
+}
 
 const stagingOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
@@ -561,7 +586,7 @@ export const checkRevitaStatus = async () => {
 export const downloadReadingReport = async (groupId, startDate, endDate) => {
   //TODO: generalize downloading from BE properly
   const result = await callApi(
-    `/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`
+    `/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`,
   )
   const blob = new Blob([result.data], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
@@ -573,7 +598,7 @@ export const downloadReadingReport = async (groupId, startDate, endDate) => {
 
 export const downloadReadingHistory = async (groupId, groupName, startDate, endDate) => {
   const result = await callApi(
-    `/groups/${groupId}/reading_history?start_date=${startDate}&end_date=${endDate}`
+    `/groups/${groupId}/reading_history?start_date=${startDate}&end_date=${endDate}`,
   )
   const blob = new Blob([result.data], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
@@ -611,7 +636,9 @@ const defaultAllowed = [
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   return {
     __html: DOMPurify.sanitize(dirty || '', {
-      ALLOWED_TAGS: allowedTags }) }
+      ALLOWED_TAGS: allowedTags,
+    }),
+  }
 }
 
 export const formatGreenFeedbackText = text =>
@@ -687,7 +714,7 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
         lang_code,
         tone,
         voice_type,
-        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3)
+        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3),
       )
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
@@ -732,7 +759,7 @@ export const levenshteinDistance = (a, b) => {
         val = Math.min(
           row[j - 1] + 1, // substitution
           prev + 1, // insertion
-          row[j] + 1 // deletion
+          row[j] + 1, // deletion
         )
       }
       row[j - 1] = prev
@@ -1020,7 +1047,8 @@ export const translatableLanguages = {
     'Portuguese',
     'Japanese',
     'Hindi',
-  ] }
+  ],
+}
 export const getHelpLink = (locale, isTeacher, learningLanguage) => {
   const interface_language = localeCodeToName(locale)
   if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish')
@@ -1043,4 +1071,3 @@ export const getHelpLink = (locale, isTeacher, learningLanguage) => {
     return 'https://docs.google.com/presentation/d/1OSNXy5cydhqMRqRO4I2csG2DqN70Po1HTW-3DYJMxZ8/edit?usp=drive_link'
   else return '/help'
 }
-

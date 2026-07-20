@@ -1,31 +1,53 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Icon, Dropdown, Popup } from 'semantic-ui-react'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { images, localeOptions, localeCodeToName } from 'Utilities/common'
-import useWindowDimensions from 'Utilities/windowDimensions'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { createAnonToken, setLandingPageLangManuallySelected } from 'Utilities/redux/userReducer'
 import Login from 'Components/AccessControl/Login'
 import Register from 'Components/AccessControl/Register'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import ContactUs from '../StaticContent/ContactUs'
+import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+
+const BRAND_TAGLINE_ID = 'Revita: for language learning and supporting endangered languages'
+
+const menuIconStyle = { width: '22px', height: '22px' }
+
+const LANG_BUTTON_STYLE = {
+  backgroundColor: colors.green,
+  color: colors.ink,
+  border: 'none',
+  borderRadius: '999px',
+  padding: '4px 8px 4px 16px',
+  fontFamily: font.family,
+  fontWeight: 500,
+  fontSize: '16px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  cursor: 'pointer',
+  marginLeft: '40px',
+}
 
 const LandingPage = () => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const smallWindow = useWindowDimensions().width < 700
 
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
   const [registering, setRegistering] = useState(false)
+  const [contactOpen, setContactOpen] = useState(false)
+  const [termsOpen, setTermsOpen] = useState(false)
 
-  const open = useSelector(({ sidebar }) => sidebar.open)
   const { locale } = useSelector(({ locale }) => locale)
   const { landingPageLangManuallySelected } = useSelector(({ user }) => user)
   const { pending, accountCreated } = useSelector(({ register }) => register)
 
   const actualLocale = locale
+  const currentLanguageName =
+    localeOptions.find(option => option.code === actualLocale)?.displayName || actualLocale
 
   useEffect(() => {
     const temp = localeOptions.map(option => ({
@@ -59,164 +81,217 @@ const LandingPage = () => {
   const loginAnon = () => dispatch(createAnonToken(localeCodeToName(locale)))
 
   return (
-    <div className="landing-page">
-      <div>
-        {smallWindow && (
-          <Icon
-            name="bars"
-            size="big"
-            onClick={() => dispatch(sidebarSetOpen(!open))}
-            style={{
-              position: 'fixed',
-              color: 'whitesmoke',
-              top: '0.2em',
-              left: '0.3em',
-              cursor: 'pointer',
-              zIndex: 90,
-            }}
-            data-cy="hamburger"
-          />
-        )}
-        {!smallWindow && (
-          <div className="landing-page-menu-button-cont">
-            <div className="flex align-center">
-              <div style={{ whiteSpace: 'nowrap', marginRight: '.3em' }}>
-                <FormattedMessage id="interface-language" />:
-              </div>
-              <Dropdown
-                fluid
-                value={actualLocale}
-                options={localeDropdownOptions}
-                selection
-                onChange={(e, data) => handleLocaleChange(data.value)}
-                data-cy="ui-lang-select"
-                style={{ color: '#777', fontSize: '.9rem', width: '125px' }}
-              />
-            </div>
-            <Dropdown
-              scrolling={false}
-              direction="left"
-              floating
-              style={{ alignSelf: 'center' }}
-              icon={
-                <img
-                  src={images.infoIcon}
-                  alt="info icon"
-                  style={{ width: '24px', height: '24px', filter: 'grayscale(1) invert(1)' }}
-                />
-              }
-            >
-              <Dropdown.Menu style={{ fontSize: '1.05rem' }}>
-                <Dropdown.Item
-                  text={<FormattedMessage id="about" />}
-                  href="https://revitaai.github.io/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-                <Dropdown.Item
-                  text={intl.formatMessage({ id: 'help' }) + ' & ' + intl.formatMessage({ id: 'faq' })}
-                  href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-                <ContactUs
-                  trigger={
-                    <Dropdown.Item>
-                      <FormattedMessage id="contact-us" />
-                    </Dropdown.Item>
-                  }
-                />
-                <TermsAndConditions
-                  trigger={
-                    <Dropdown.Item data-cy="navbar-tc-button">
-                      <span>
-                        {intl.formatMessage({ id: 'terms-and-conditions' })}
-                        <br /> & {intl.formatMessage({ id: 'privacy-policy' })}
-                      </span>
-                    </Dropdown.Item>
-                  }
-                />
-              </Dropdown.Menu>
-            </Dropdown>
-            <Popup
-              trigger={
-                <a
-                  href="https://revitaai.github.io/SERVER-STATUS.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ marginRight: '3em', alignSelf: 'center' }}
-                >
-                  <img
-                      src={images.heartbeat}
-                      alt="heartbeat icon"
-                      style={{ width: '24px', height: '24px', filter: 'grayscale(1) invert(1)' }}
-                    />
-                </a>
-              }
-              content={
-                <FormattedMessage id="server-status" />
-              }
-              on="hover"
-              position="bottom right"
-            />
-          </div>
-        )}
-      </div>
+    <div
+      className="landing-page"
+      style={{
+        backgroundImage: 'none',
+        backgroundColor: colors.panel,
+        padding: 0,
+        overflow: 'auto',
+      }}
+    >
       <div
-        className="space-evenly align-center slide-from-bottom"
-        style={{ height: '100%', flexWrap: 'wrap', maxWidth: '1920px', margin: 'auto' }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: colors.card,
+          padding: '0.5em 1.25em',
+          zIndex: 100,
+        }}
       >
-        <div style={{ width: '40%', maxWidth: '520px', minWidth: '300px' }}>
-          <img
-            style={{ width: '15em', marginLeft: '-0.5em', filter: 'brightness(1.3)' }}
-            src={images.logo}
-            alt="revitaLogo"
-          />
-          <h2 style={{ color: 'white', fontWeight: 600, paddingTop: '0.5em' }}>
-            <FormattedMessage id="Master-a-language-by-learning-from-stories" />
-          </h2>
-          <p
+        {/* Left: burger menu */}
+        <AppMenu
+          trigger={
+            <img
+              src={images.menu2}
+              alt="menu"
+              style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block' }}
+            />
+          }
+          closeIcon={<img src={images.xClose} alt="close" />}
+        >
+          <AppMenuItem
+            href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
+            target="_blank"
+            rel="noopener noreferrer"
+            icon={<img src={images.helpCircle} alt="" style={menuIconStyle} />}
+          >
+            <FormattedMessage id="help" />
+          </AppMenuItem>
+
+          <AppMenuItem
+            href="https://revitaai.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            icon={<img src={images.asterisk02} alt="" style={menuIconStyle} />}
+          >
+            <FormattedMessage id="about-revita" />
+          </AppMenuItem>
+
+          <AppMenuItem
+            icon={<img src={images.mail05} alt="" style={menuIconStyle} />}
+            onClick={() => setContactOpen(true)}
+          >
+            <FormattedMessage id="contact-us" />
+          </AppMenuItem>
+
+          <AppMenuItem
+            data-cy="navbar-tc-button"
+            icon={<img src={images.alertCircle} alt="" style={menuIconStyle} />}
+            onClick={() => setTermsOpen(true)}
+          >
+            <span>
+              {intl.formatMessage({ id: 'terms-and-conditions' })},{' '}
+              {intl.formatMessage({ id: 'privacy-policy' })}
+            </span>
+          </AppMenuItem>
+
+          <AppMenuItem
+            href="https://revitaai.github.io/SERVER-STATUS.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            icon={<img src={images.activityHeart} alt="" style={menuIconStyle} />}
+          >
+            <FormattedMessage id="server-status" />
+          </AppMenuItem>
+        </AppMenu>
+
+        {/* Right: language switcher */}
+        <AppMenu
+          minWidth={200}
+          borderRadius="30px 30px 30px 30px"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          trigger={
+            <button type="button" data-cy="ui-lang-select" style={LANG_BUTTON_STYLE}>
+              {currentLanguageName}
+              <KeyboardArrowDownIcon style={{ fontSize: 20 }} />
+            </button>
+          }
+        >
+          {localeDropdownOptions.map(option => (
+            <AppMenuItem
+              key={option.value}
+              selected={option.value === actualLocale}
+              onClick={() => handleLocaleChange(option.value)}
+            >
+              {option.text}
+            </AppMenuItem>
+          ))}
+        </AppMenu>
+      </div>
+
+      {/* Modals lifted out of the menu so closing the menu doesn't unmount them */}
+      <ContactUs open={contactOpen} setOpen={setContactOpen} />
+      <TermsAndConditions open={termsOpen} setOpen={setTermsOpen} />
+      <div
+        className="slide-from-bottom"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          padding: '2em 1em',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '48px',
+            width: '100%',
+            maxWidth: '960px',
+          }}
+        >
+          {/* Brand — text directly on the blue page background (no card) */}
+          <div
             style={{
-              color: 'lightgray',
-              fontSize: '16px',
-              paddingBottom: '1em',
-              paddingTop: '1em',
+              flex: '1 1 300px',
+              color: colors.ink,
+              padding: '1em 0',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            <FormattedMessage id="Revita: for language learning and supporting endangered languages" />
-          </p>
-          <button
-            type="button"
-            onClick={loginAnon}
-            className="landing-page-button"
-            style={{ marginRight: '1em', marginBottom: '1em' }}
-            data-cy="login-anon"
+            <div style={{ textAlign: 'left' }}>
+              <div>
+                <h1
+                  style={{
+                    fontFamily: font.family,
+                    fontSize: font.brand,
+                    fontWeight: 500,
+                    margin: 0,
+                    lineHeight: 1,
+                  }}
+                >
+                  Revita
+                </h1>
+                <p
+                  style={{
+                    fontFamily: font.family,
+                    fontSize: '15px',
+                    marginTop: '1em',
+                    maxWidth: '20em',
+                    color: colors.ink,
+                  }}
+                >
+                  <FormattedMessage id={BRAND_TAGLINE_ID} />
+                </p>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  marginTop: '2em',
+                  fontFamily: font.family,
+                  fontSize: '12px',
+                  color: colors.ink,
+                }}
+              >
+                <img
+                  src={images.universityOfHelsinki}
+                  alt="University of Helsinki"
+                  style={{ height: '40px', display: 'block' }}
+                />
+                <div style={{ lineHeight: 1.4 }}>
+                  © 2020–{new Date().getFullYear()}
+                  <br />
+                  University of Helsinki
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Form card — cream card floating on the blue page background */}
+          <div
+            style={{
+              flex: '0 1 450px',
+              backgroundColor: colors.card,
+              borderRadius: `${shape.cardRadius}px`,
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
+              padding: shape.cardPadding,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
           >
-            <FormattedMessage id="try-revita" />
-          </button>
-          {registering ? (
-            <button
-              type="button"
-              onClick={() => setRegistering(false)}
-              className="landing-page-button"
-              style={{ marginBottom: '1em' }}
-            >
-              <FormattedMessage id="Login" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setRegistering(true)}
-              className="landing-page-button"
-              style={{ marginBottom: '1em' }}
-              data-cy="register-button"
-            >
-              <FormattedMessage id="Register" />
-            </button>
-          )}
-        </div>
-        <div style={{ width: '40%', maxWidth: '520px', minWidth: '300px' }}>
-          {registering ? <Register /> : <Login />}
+            {registering ? (
+              <Register onSwitchToLogin={() => setRegistering(false)} />
+            ) : (
+              <Login onSwitchToSignUp={() => setRegistering(true)} onTryRevita={loginAnon} />
+            )}
+          </div>
         </div>
       </div>
     </div>

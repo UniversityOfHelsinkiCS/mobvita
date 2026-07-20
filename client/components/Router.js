@@ -49,6 +49,7 @@ const Flashcards = lazy(() => import('./Flashcards'))
 const Achievements = lazy(() => import('./Achievements'))
 const Leaderboard = lazy(() => import('./LeaderboardView'))
 const RegisterView = lazy(() => import('./RegisterView'))
+const DesignSystem = lazy(() => import('./DesignSystem'))
 const DebugTestView = lazy(() => import('./DebugTestView'))
 const DebugCorrectionView = lazy(() => import('./EssayWritingView/DebugCorrectionView'))
 const AnnotationsLibrary = lazy(() => import('./AnnotationsLibrary'))
@@ -115,6 +116,7 @@ export default () => {
                     <Route path="/reset-password/:token" element={<ResetPassword />} />
                     <Route path="/group-confirmation/:token" element={<InvitationConfirm />} />
                     <Route path="/register" element={<RegisterView />} />
+                    <Route path="/design" element={<DesignSystem />} />
                     <Route path="/help" element={<Help />} />
                     <Route
                       path="/accept_story"
