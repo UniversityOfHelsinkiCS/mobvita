@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Card, CardContent, IconButton, Typography } from '@mui/material'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { FormattedMessage } from 'react-intl'
 import { capitalize, getTextStyle, learningLanguageSelector } from 'Utilities/common'
@@ -10,10 +9,10 @@ import {
   getWritingEssayId,
   getWritingEssaySavedDate,
   removeWritingEssay,
+  removeEssayFromList,
 } from 'Utilities/redux/writingCorrectionReducer'
 import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import EssayShareModal from './EssayShareModal'
 
 // A single essay in the "My Essays" library: title (styled like a story) + save date + delete.
 // Clicking the card opens the essay detail dialog (original + current versions).
@@ -27,14 +26,20 @@ const EssayListItem = ({
 }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
+  const userId = useSelector(({ user }) => user.data?.user?.oid)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
-  const [shareOpen, setShareOpen] = useState(false)
+
+  // Only the owner can delete an essay (the backend /remove is scoped to the authenticated user), so
+  // hide Delete on essays a teacher is only viewing (e.g. a student's essay).
+  const isOwnEssay = Boolean(userId) && essay.user === userId
 
   const essayId = getWritingEssayId(essay)
   const title = essay.title || essay.sentences?.[0]?.original_text || null
   const parsedDate = getWritingEssaySavedDate(essay)
   const formattedDate =
-    parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate.toLocaleDateString() : null
+    parsedDate && !Number.isNaN(parsedDate.getTime())
+      ? parsedDate.toLocaleDateString('en-GB')
+      : null
   const sentenceCount = Array.isArray(essay.sentences) ? essay.sentences.length : 0
 
   const clickable = typeof onOpen === 'function'
@@ -49,6 +54,7 @@ const EssayListItem = ({
   const deleteEssay = () => {
     if (!essayId || !learningLanguage) return
     dispatch(removeWritingEssay(capitalize(learningLanguage), essayId))
+    dispatch(removeEssayFromList(essayId))
   }
 
   return (
@@ -103,25 +109,13 @@ const EssayListItem = ({
               )}
             </Box>
           )}
-          <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center' }}>
-            <CustomTooltip title={<FormattedMessage id="share-essay" />}>
-              <IconButton
-                data-cy="essay-share"
-                aria-label="Share essay"
-                size="small"
-                onClick={event => {
-                  event.stopPropagation()
-                  setShareOpen(true)
-                }}
-              >
-                <ShareOutlinedIcon fontSize="small" />
-              </IconButton>
-            </CustomTooltip>
+          {isOwnEssay && (
             <CustomTooltip title={<FormattedMessage id="Delete" />}>
               <IconButton
                 data-cy="essay-delete"
                 aria-label="Delete essay"
                 size="small"
+                sx={{ ml: 'auto' }}
                 onClick={event => {
                   event.stopPropagation()
                   setConfirmationOpen(true)
@@ -130,7 +124,7 @@ const EssayListItem = ({
                 <DeleteOutlineOutlinedIcon fontSize="small" />
               </IconButton>
             </CustomTooltip>
-          </Box>
+          )}
         </CardContent>
       </Card>
 
@@ -141,8 +135,6 @@ const EssayListItem = ({
       >
         <FormattedMessage id="essay-remove-confirm" />
       </ConfirmationWarning>
-
-      <EssayShareModal open={shareOpen} onClose={() => setShareOpen(false)} essay={essay} />
     </>
   )
 }

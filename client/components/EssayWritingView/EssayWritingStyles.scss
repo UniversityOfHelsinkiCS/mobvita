@@ -87,6 +87,81 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   font-size: 26px;
 }
 
+// Teacher read-only view: the page split into two panels (original vs current version).
+.essay-teacher-split {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  gap: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  min-height: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: 100%;
+  }
+}
+
+.essay-teacher-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+  height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
+  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
+  padding: 1rem;
+  border-radius: 4px;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 40vh;
+  }
+}
+
+.essay-teacher-text {
+  flex: 1;
+  min-height: 0;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
+  font-family: 'Rubik', sans-serif;
+  line-height: 1.5;
+}
+
+// Cross-version highlighting in the teacher panels: a whole sentence is highlighted when the pointer
+// (hover or selected word) is on the OTHER version; a single word is highlighted when it's selected.
+.essay-sentence {
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.essay-sentence-highlighted {
+  background: rgba(#fdea3b, 0.85);
+}
+
+.essay-word {
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(#fdea3b, 0.75);
+  }
+}
+
+.essay-word-highlighted,
+.essay-word-highlighted:hover {
+  background: rgba(#fdea3b, 0.75);
+}
+
 .essay-writing-input-area {
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-replacement-bg-color};
 

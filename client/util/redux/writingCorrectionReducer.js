@@ -94,22 +94,13 @@ export const getWritingEssaySavedDate = essay => {
   return null
 }
 
-// Delete one saved essay by id — removed from the list on success. Mirrors removeStory's
-// GET /stories/{id}/remove convention.
+// Delete one saved essay by id via GET /writing/{lang}/essays/{id}/remove (per the API — path params
+// only, no query/body). Pair with removeEssayFromList to drop it from the list immediately.
 export const removeWritingEssay = (language = DEFAULT_LANGUAGE, essayId) =>
-  callBuilder(
-    `/writing/${language}/essays/${essayId}/remove`,
-    'WRITING_DELETE_ESSAY',
-    'get',
-    undefined,
-    { essayId },
-  )
+  callBuilder(`/writing/${language}/essays/${essayId}/remove`, 'WRITING_DELETE_ESSAY', 'get')
 
-// Share one saved essay with a list of user emails (fire-and-forget, like ShareStory).
-export const shareWritingEssay = (language = DEFAULT_LANGUAGE, essayId, emails = []) =>
-  callBuilder(`/writing/${language}/essays/${essayId}/share`, 'WRITING_SHARE_ESSAY', 'post', {
-    share_with: emails,
-  })
+// Remove an essay from the library list locally (optimistic, paired with removeWritingEssay).
+export const removeEssayFromList = essayId => ({ type: 'WRITING_ESSAY_REMOVE_LOCAL', essayId })
 
 // Move an essay into a library folder by setting its "/"-separated path. Mirrors updateStoryPath;
 // the essayId is echoed in the query so the reducer can update the right item optimistically.
@@ -154,6 +145,16 @@ export const getWritingEssayVersions = essay => {
     title: essay?.title || getEssaySentenceCurrentText(sentences[0]) || '',
     original,
     current,
+  }
+}
+
+// The essay's original + current text as index-aligned per-sentence arrays (sentence i is the same
+// sentence in both versions), so a UI can align/highlight the matching sentence across the versions.
+export const getWritingEssaySentenceVersions = essay => {
+  const sentences = Array.isArray(essay?.sentences) ? essay.sentences : []
+  return {
+    original: sentences.map(getEssaySentenceOriginalText),
+    current: sentences.map(getEssaySentenceCurrentText),
   }
 }
 
@@ -282,6 +283,7 @@ const initialState = {
   essays: [],
   essaysPending: false,
   essaysError: false,
+  deletedEssayIds: [],
   openedEssay: null,
   openedEssayPending: false,
   openedEssayError: false,
@@ -595,15 +597,18 @@ export default (state = initialState, action) => {
         essaysError: false,
       }
 
-    case 'WRITING_GET_ESSAYS_SUCCESS':
+    case 'WRITING_GET_ESSAYS_SUCCESS': {
+      const fetched = Array.isArray(action.response)
+        ? action.response
+        : action.response?.essays ?? []
       return {
         ...state,
-        essays: Array.isArray(action.response)
-          ? action.response
-          : action.response?.essays ?? [],
+        // Drop essays deleted this session so an in-flight/late list fetch can't re-add them.
+        essays: fetched.filter(essay => !state.deletedEssayIds.includes(getWritingEssayId(essay))),
         essaysPending: false,
         essaysError: false,
       }
+    }
 
     case 'WRITING_GET_ESSAYS_FAILURE':
       return {
@@ -643,12 +648,15 @@ export default (state = initialState, action) => {
         openedEssayError: false,
       }
 
-    case 'WRITING_DELETE_ESSAY_SUCCESS': {
-      const deletedId = getActionQuery(action).essayId
-      const openedWasDeleted = getWritingEssayId(state.openedEssay) === deletedId
+    case 'WRITING_ESSAY_REMOVE_LOCAL': {
+      const { essayId } = action
+      const openedWasDeleted = getWritingEssayId(state.openedEssay) === essayId
       return {
         ...state,
-        essays: state.essays.filter(essay => getWritingEssayId(essay) !== deletedId),
+        essays: state.essays.filter(essay => getWritingEssayId(essay) !== essayId),
+        deletedEssayIds: state.deletedEssayIds.includes(essayId)
+          ? state.deletedEssayIds
+          : [...state.deletedEssayIds, essayId],
         openedEssay: openedWasDeleted ? null : state.openedEssay,
       }
     }

@@ -20,7 +20,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   updateLibrarySelect,
   updateGroupSelect,
@@ -37,7 +37,6 @@ import {
 import {
   getWritingEssays,
   getWritingEssay,
-  clearWritingEssay,
   writingEssayHasContent,
   getWritingEssayId,
   getWritingEssaySavedDate,
@@ -53,7 +52,6 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
 import EssayListItem from './EssayListItem'
-import EssayDetailModal from './EssayDetailModal'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import {
@@ -73,6 +71,7 @@ import useLibraryDragAndDrop from './useLibraryDragAndDrop'
 const StoryList = () => {
   const intl = useIntl()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const {
     library_sort_criterion: savedSortCriterion,
@@ -111,7 +110,6 @@ const StoryList = () => {
   const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] =
     useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
-  const [detailEssayId, setDetailEssayId] = useState(null)
   const [essaySearchQuery, setEssaySearchQuery] = useState('')
   const groupsLibrary = location.pathname.includes('group')
   const privateLibrary = location.pathname.includes('private')
@@ -882,16 +880,16 @@ const StoryList = () => {
     )
   }
 
-  // Open the detail view for one essay: fetch it (original + current versions) and show the modal.
-  const openEssayDetail = essayId => {
-    if (!essayId || !learningLanguage) return
-    setDetailEssayId(essayId)
-    dispatch(getWritingEssay(capitalize(learningLanguage), essayId))
-  }
-
-  const closeEssayDetail = () => {
-    setDetailEssayId(null)
-    dispatch(clearWritingEssay())
+  // Tapping an essay opens the essay-writing page for it: the essay is fetched into Redux and the
+  // page renders by role (students continue the current text; teachers see a read-only
+  // original-vs-current split) — handled inside EssayWritingView.
+  const handleEssayCardOpen = essayId => {
+    if (essayId && learningLanguage) {
+      dispatch(getWritingEssay(capitalize(learningLanguage), essayId))
+      navigate('/essay-writing', { state: { loadEssayId: essayId } })
+    } else {
+      navigate('/essay-writing')
+    }
   }
 
   const renderEssaysLibrary = () => {
@@ -977,7 +975,7 @@ const StoryList = () => {
                   isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
                   onDragStart={handleEssayDragStart}
                   onDragEnd={handleEssayDragEnd}
-                  onOpen={essayId ? () => openEssayDetail(essayId) : undefined}
+                  onOpen={essayId ? () => handleEssayCardOpen(essayId) : undefined}
                 />
               )
             })}
@@ -1006,7 +1004,6 @@ const StoryList = () => {
           <>
             {essaySearchAndSortControls}
             {renderEssaysLibrary()}
-            <EssayDetailModal open={Boolean(detailEssayId)} onClose={closeEssayDetail} />
           </>
         ) : (
           <>
