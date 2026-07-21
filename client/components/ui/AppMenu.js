@@ -27,7 +27,7 @@ const StyledPopover = styled(Popover, {
   '& .MuiPopover-paper': {
     backgroundColor: colors.card,
     boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
-    padding: '20px',
+    padding: '10px 15px',
     overflow: 'visible',
     borderRadius: radius,
     minWidth: menuMinWidth,

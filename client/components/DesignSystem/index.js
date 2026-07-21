@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
+import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import LoginForm from 'Components/AccessControl/LoginForm'
@@ -91,6 +92,15 @@ const DesignSystem = () => {
         <div style={{ width: 240 }}>
           <AppTextField label="Disabled" disabled placeholder="Disabled" />
         </div>
+      </Section>
+
+      <Section title="AppCheckbox">
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <AppCheckbox defaultChecked /> Checked
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <AppCheckbox /> Unchecked
+        </label>
       </Section>
 
       <Section title="AppMenu (click the burger)">

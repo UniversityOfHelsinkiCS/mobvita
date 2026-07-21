@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import Checkbox from '@mui/material/Checkbox'
+import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
@@ -51,6 +51,8 @@ const linkStyle = {
   background: 'none',
   border: 'none',
   padding: 0,
+  whiteSpace: 'nowrap',
+  lineHeight: 1.5, // match the label's inherited line-height so both sit on the same level
 }
 
 const LoginForm = ({
@@ -118,6 +120,8 @@ const LoginForm = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '4px 12px',
             marginBottom: '1.5em',
           }}
         >
@@ -126,14 +130,16 @@ const LoginForm = ({
               display: 'flex',
               alignItems: 'center',
               fontSize: '0.85rem',
+              lineHeight: 1.5,
+              marginBottom: 0,
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
-            <Checkbox
-              size="small"
+            <AppCheckbox
               checked={rememberMe}
               onChange={e => onRememberMeChange && onRememberMeChange(e.target.checked)}
-              sx={{ p: 0, mr: 1, color: colors.green, '&.Mui-checked': { color: colors.green } }}
+              sx={{ p: 0, mr: 1 }}
             />
             <FormattedMessage id="remember-me" />
           </label>

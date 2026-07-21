@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import Checkbox from '@mui/material/Checkbox'
+import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
@@ -127,12 +127,11 @@ const SignUpForm = ({
             marginBottom: '1.5em',
           }}
         >
-          <Checkbox
-            size="small"
+          <AppCheckbox
             checked={accepted}
             onChange={e => onAcceptedChange && onAcceptedChange(e.target.checked)}
             data-cy="accept-terms"
-            sx={{ p: 0, mr: 1, color: colors.green, '&.Mui-checked': { color: colors.green } }}
+            sx={{ p: 0, mr: 1 }}
           />
           {termsTrigger || <FormattedMessage id="i-accept-the-terms" />}
         </label>

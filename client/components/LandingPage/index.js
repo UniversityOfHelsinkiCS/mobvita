@@ -104,13 +104,23 @@ const LandingPage = () => {
           zIndex: 100,
         }}
       >
-        {/* Left: burger menu */}
+        {/* Left: burger menu — opens upward/overlapping so the X close lands on the burger */}
         <AppMenu
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          // Nudge the panel in px: +marginTop moves down, +marginLeft moves right (negatives = up/left)
+          slotProps={{ paper: { sx: { marginTop: '-10px', marginLeft: '-30px' } } }}
           trigger={
             <img
               src={images.menu2}
               alt="menu"
-              style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block' }}
+              style={{
+                width: '24px',
+                height: '24px',
+                cursor: 'pointer',
+                display: 'block',
+                marginLeft: '16px',
+              }}
             />
           }
           closeIcon={<img src={images.xClose} alt="close" />}
