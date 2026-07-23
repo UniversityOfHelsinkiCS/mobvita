@@ -109,7 +109,7 @@ export default function Sidebar() {
           zIndex: 1001,
           boxSizing: 'border-box',
           backgroundColor: colors.card,
-          borderTopRightRadius: shape.cardRadius,
+          borderBottomLeftRadius: shape.cardRadius,
           borderBottomRightRadius: shape.cardRadius,
           boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
           display: 'flex',

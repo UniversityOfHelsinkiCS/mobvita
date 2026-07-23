@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
@@ -69,16 +70,58 @@ const DesignSystem = () => {
         </AppButton>
       </div>
 
-      <Section title="AppButton — variants (current theme)">
-        <AppButton variant="primary">Primary</AppButton>
-        <AppButton variant="secondary">Secondary</AppButton>
-        <AppButton variant="danger">Danger</AppButton>
-        <AppButton variant="success">Success</AppButton>
-        <AppButton variant="outline-primary">Outline</AppButton>
-        <AppButton variant="link">Link</AppButton>
-        <AppButton variant="primary" disabled>
-          Disabled
-        </AppButton>
+      <Section title="AppButton — design variants (active / disabled)">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {['tan', 'contrast', 'contrast-outline', 'tan-outline', 'danger', 'link'].map(v => (
+            <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <span style={{ width: 130, color: '#666', fontSize: 13 }}>{v}</span>
+              <AppButton variant={v}>
+                <MicNoneIcon />
+                Button L
+              </AppButton>
+              <AppButton variant={v} disabled>
+                <MicNoneIcon />
+                Button L
+              </AppButton>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="AppButton — sizes (sm / md / lg)">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <AppButton variant="tan" size="sm">Button</AppButton>
+          <AppButton variant="tan">Button</AppButton>
+          <AppButton variant="tan" size="lg">Button</AppButton>
+        </div>
+      </Section>
+
+      <Section title="AppButton — inverse (dark background)">
+        <div
+          style={{
+            display: 'flex',
+            gap: 14,
+            padding: 24,
+            borderRadius: 16,
+            backgroundColor: colors.ink,
+          }}
+        >
+          <AppButton variant="inverse">
+            <MicNoneIcon />
+            Button L
+          </AppButton>
+          <AppButton variant="inverse" disabled>
+            <MicNoneIcon />
+            Button L
+          </AppButton>
+        </div>
+      </Section>
+
+      <Section title="AppButton — legacy aliases (should match design variants)">
+        <AppButton variant="primary">primary → tan</AppButton>
+        <AppButton variant="secondary">secondary → contrast</AppButton>
+        <AppButton variant="outline">outline → contrast-outline</AppButton>
+        <AppButton variant="link">link</AppButton>
       </Section>
 
       <Section title="AppTextField">
