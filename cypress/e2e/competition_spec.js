@@ -20,13 +20,13 @@ describe("competition mode", function () {
 
   it("shows player's progress correctly and shows modal on finish", function () {
     cy.get("[data-cy=start-timed-activity]").click()
-    cy.get('[data-cy=next-snippet-ready] > span').click()
+    cy.get('[data-cy=next-snippet-ready]').click()
     cy.get('[data-cy=progress-025]')
-    cy.get('[data-cy=next-snippet-ready] > span').click()
+    cy.get('[data-cy=next-snippet-ready]').click()
     cy.get('[data-cy=progress-050]')
-    cy.get('[data-cy=next-snippet-ready] > span').click()
+    cy.get('[data-cy=next-snippet-ready]').click()
     cy.get('[data-cy=progress-075]')
-    cy.get('[data-cy=next-snippet-ready] > span').click()
+    cy.get('[data-cy=next-snippet-ready]').click()
     cy.get('[data-cy=progress-100]')
     cy.get('[data-cy=competition-end-modal]')
   })
