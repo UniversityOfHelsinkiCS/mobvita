@@ -1,27 +1,8 @@
-<<<<<<< HEAD
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
-=======
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { Button } from 'react-bootstrap'
->>>>>>> f9cd0a46a1297566aaf774f24f2071c83ebaf898
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import {
@@ -360,7 +341,6 @@ const EssayWritingView = () => {
               <Typography component="h1" variant="h5" className="essay-writing-title">
                 <FormattedMessage id="essay-writing-title" />
               </Typography>
-<<<<<<< HEAD
               <AppButton
                 form="url-upload"
                 type="submit"
@@ -369,28 +349,6 @@ const EssayWritingView = () => {
               >
                 <FormattedMessage id="upload-from-web-button" />
               </AppButton>
-=======
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                {hiddenFeatures && (
-                  <Button
-                    variant="outline-secondary"
-                    onClick={handleClearCache}
-                    data-cy="essay-clear-cache"
-                  >
-                    Clear cache
-                  </Button>
-                )}
-                <Button
-                  onClick={() => setTopicDialogOpen(true)}
-                  disabled={
-                    savePending || hasPendingCorrection || !essayText.trim() || !writingSessionId
-                  }
-                  data-cy="submit-essay"
-                >
-                  <FormattedMessage id="upload-to-my-essays" />
-                </Button>
-              </Box>
->>>>>>> f9cd0a46a1297566aaf774f24f2071c83ebaf898
             </Box>
             <Divider sx={{ mt: 2 }} />
             <EssayTextInput
