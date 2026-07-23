@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from 'react'
 import Popover from '@mui/material/Popover'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
+import { MenuRow } from './menuRow'
 
 /**
  * AppMenu / AppMenuItem — design-system dropdown menu (MUI `Popover`, not semantic-ui `Dropdown`).
@@ -17,8 +18,6 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *     <SomeModal trigger={<AppMenuItem icon={<img src={ic} />}>Contact</AppMenuItem>} />
  *   </AppMenu>
  */
-const MENU_HOVER = '#ECE3BE'
-
 const AppMenuCloseContext = createContext(null)
 
 const StyledPopover = styled(Popover, {
@@ -44,54 +43,20 @@ const CloseButton = styled('button')({
   '& img, & svg': { display: 'block', width: 22, height: 22 },
 })
 
-const rowStyles = ({ selected }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 14,
-  padding: '11px 20px',
-  fontFamily: font.family,
-  fontWeight: 500,
-  fontSize: 16,
-  color: colors.ink,
-  borderRadius: 999,
-  cursor: 'pointer',
-  textDecoration: 'none',
-  whiteSpace: 'nowrap',
-  backgroundColor: selected ? MENU_HOVER : 'transparent',
-  // Link items render as <a>; override the global anchor styles (blue, underline, :visited).
-  '&:visited, &:focus, &:active': { color: colors.ink, textDecoration: 'none' },
-  '&:hover': { backgroundColor: MENU_HOVER, color: colors.ink, textDecoration: 'none' },
+// AppMenuItem = the shared MenuRow + auto-close-on-click behavior. forwardRef so consumers that
+// need the DOM node (e.g. a semantic-ui `Modal` trigger) can attach a ref rather than findDOMNode.
+export const AppMenuItem = React.forwardRef(({ onClick, ...rest }, ref) => {
+  const close = useContext(AppMenuCloseContext)
+
+  const handleClick = e => {
+    if (onClick) onClick(e)
+    // Defer the close: closing unmounts this row synchronously, which would cancel an anchor item's
+    // default navigation (and a modal trigger's open) before the browser acts on it.
+    if (close) window.setTimeout(close, 0)
+  }
+
+  return <MenuRow ref={ref} onClick={handleClick} {...rest} />
 })
-
-const forwardOptions = { shouldForwardProp: prop => prop !== 'selected' }
-// Render a real <a> for link items and a <div> otherwise. (The `as` prop with a custom
-// shouldForwardProp doesn't reliably switch the tag in MUI 9, leaving links as un-navigable divs.)
-const MenuRowDiv = styled('div', forwardOptions)(rowStyles)
-const MenuRowLink = styled('a', forwardOptions)(rowStyles)
-
-// forwardRef so consumers that need the DOM node (e.g. a semantic-ui `Modal` trigger) can attach a
-// ref instead of falling back to the deprecated `findDOMNode`.
-export const AppMenuItem = React.forwardRef(
-  ({ icon, children, onClick, selected = false, href, ...rest }, ref) => {
-    const close = useContext(AppMenuCloseContext)
-
-    const handleClick = e => {
-      if (onClick) onClick(e)
-      // Defer the close: closing unmounts this row synchronously, which would cancel an anchor
-      // item's default navigation (and a modal trigger's open) before the browser acts on it.
-      if (close) window.setTimeout(close, 0)
-    }
-
-    const Row = href ? MenuRowLink : MenuRowDiv
-
-    return (
-      <Row ref={ref} href={href} selected={selected} onClick={handleClick} {...rest}>
-        {icon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{icon}</span>}
-        <span>{children}</span>
-      </Row>
-    )
-  },
-)
 
 AppMenuItem.displayName = 'AppMenuItem'
 

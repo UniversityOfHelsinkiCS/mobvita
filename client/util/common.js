@@ -11,6 +11,20 @@ import mail05 from 'Assets/images/mail-05.svg'
 import alertCircle from 'Assets/images/alert-circle.svg'
 import xClose from 'Assets/images/x-close.svg'
 import activityHeart from 'Assets/images/activity-heart.svg'
+import bookmark from 'Assets/images/bookmark.svg'
+import bookOpen from 'Assets/images/book-open-01.svg'
+import iconHome from 'Assets/images/icon-home.svg'
+import layersThree from 'Assets/images/layers-three-01.svg'
+import libraryBig from 'Assets/images/library-big.svg'
+import rocket from 'Assets/images/rocket-02.svg'
+import route from 'Assets/images/route.svg'
+import playCircleColored from 'Assets/images/play-circle-colored.svg'
+import wavesColored from 'Assets/images/waves-colored.svg'
+import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
+import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
+import libraryBigColored from 'Assets/images/library-big-colored.svg'
+import star06Colored from 'Assets/images/star-06-colored.svg'
+import users01Colored from 'Assets/images/users-01-colored.svg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
 import flagErzya from 'Assets/images/flags/flag_erzya.png'
 import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
@@ -118,6 +132,20 @@ export const images = {
   alertCircle,
   xClose,
   activityHeart,
+  bookmark,
+  bookOpen,
+  iconHome,
+  layersThree,
+  libraryBig,
+  rocket,
+  route,
+  playCircleColored,
+  wavesColored,
+  bookOpenColored,
+  layersThreeColored,
+  libraryBigColored,
+  star06Colored,
+  users01Colored,
   flagFinnish,
   flagUdmurt,
   flagUdmurtarch,

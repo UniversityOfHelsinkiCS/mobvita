@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBackgroundColor } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 // Eagerly loaded: always present (NavBar), wrapper (ProtectedRoute),
 // initial public route (LandingPage), and Suspense fallback (Spinner).
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
@@ -108,7 +108,7 @@ export default () => {
         element={
           <>
             <NavBar />
-            <main className={`application-content ${getBackgroundColor()}`}>
+            <main className="application-content" style={{ backgroundColor: colors.panel }}>
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <Routes>

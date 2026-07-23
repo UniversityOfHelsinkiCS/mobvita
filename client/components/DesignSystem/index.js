@@ -5,6 +5,8 @@ import AppTextField from 'Components/ui/AppTextField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
+import AppActionCard from 'Components/ui/AppActionCard'
+import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
 import { images } from 'Utilities/common'
@@ -91,6 +93,24 @@ const DesignSystem = () => {
         </div>
         <div style={{ width: 240 }}>
           <AppTextField label="Disabled" disabled placeholder="Disabled" />
+        </div>
+      </Section>
+
+      <Section title="AppActionCard">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 420 }}>
+          <AppActionCard icon={<img src={images.wavesColored} alt="" />}>Dive in</AppActionCard>
+          <AppActionCard icon={<img src={images.layersThreeColored} alt="" />}>
+            Flashcards
+          </AppActionCard>
+          <AppActionCard icon={<img src={images.libraryBigColored} alt="" />} disabled>
+            Disabled
+          </AppActionCard>
+        </div>
+      </Section>
+
+      <Section title="Progress card (EloChart — connected)">
+        <div style={{ width: 380 }}>
+          <EloChart width="100%" />
         </div>
       </Section>
 

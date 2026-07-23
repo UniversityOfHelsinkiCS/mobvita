@@ -1,185 +1,303 @@
-import React, { useEffect } from 'react'
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
-import { useSelector, shallowEqual, useDispatch } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import moment from 'moment-timezone'
-import { useIntl } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
-import { images, hiddenFeatures } from 'Utilities/common'
-import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
+import { FormattedMessage } from 'react-intl'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
+import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
+import { cefrNum2Cefr } from 'Utilities/common'
+import CustomTooltip from 'Components/CustomTooltip'
+import Medal from 'Components/Achievements/Medal'
+import { colors, font } from 'Assets/mui_theme/designTokens'
+
+const CARD_BG = colors.card
+const TRACK = '#E4E1D3' // ring / gridline track
+
+// Format fractional hours as "h:mm" (2.22 → "2:13").
+const formatHM = hours => {
+  const h = Math.floor(hours)
+  const m = Math.round((hours - h) * 60)
+  return `${h}:${String(m).padStart(2, '0')}`
+}
+
+const MEDAL_TIERS = ['bronze', 'silver', 'gold', 'platinum', 'diamond']
+
+// CEFR badge with an XP-progress ring (progress 0..1).
+const CefrRing = ({ cefr, progress }) => {
+  const size = 56
+  const stroke = 4
+  const r = (size - stroke) / 2
+  const c = 2 * Math.PI * r
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <svg width={size} height={size}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={TRACK} strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={colors.ink}
+          strokeWidth={stroke}
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - Math.min(1, Math.max(0, progress)))}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
+      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontFamily: font.family,
+          fontWeight: 600,
+          fontSize: 15,
+          color: colors.ink,
+        }}
+      >
+        {cefr}
+      </div>
+    </div>
+  )
+}
+
+// Lightweight practiced-hours bar chart with 1h/2h gridlines.
+const HoursBars = ({ weeks }) => {
+  const CHART_H = 150
+  const maxHours = Math.max(1, ...weeks.map(w => w.hours))
+  const scale = Math.max(2, Math.ceil(maxHours))
+  const gridlines = []
+  for (let h = 1; h <= scale; h += 1) gridlines.push(h)
+
+  return (
+    <div style={{ display: 'flex', gap: 12 }}>
+      {/* y-axis labels + gridlines */}
+      <div style={{ position: 'relative', width: '100%', height: CHART_H, marginLeft: 34 }}>
+        {gridlines.map(h => (
+          <div
+            key={h}
+            style={{ position: 'absolute', left: 0, right: 0, bottom: (h / scale) * CHART_H }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                left: -34,
+                top: -9,
+                fontSize: 12,
+                color: colors.muted,
+                fontFamily: font.family,
+              }}
+            >
+              {h} h
+            </span>
+            <div style={{ borderTop: `1px solid ${TRACK}`, width: '100%' }} />
+          </div>
+        ))}
+        {/* bars */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-around',
+            gap: 8,
+          }}
+        >
+          {weeks.map(w => (
+            <div
+              key={w.week}
+              title={`${formatHM(w.hours)} · week ${w.week}`}
+              style={{
+                flex: 1,
+                maxWidth: 44,
+                height: `${(w.hours / scale) * 100}%`,
+                minHeight: w.hours > 0 ? 8 : 0,
+                backgroundColor: colors.green,
+                borderRadius: 12,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const last = arr => (arr && arr.length ? arr[arr.length - 1] : null)
+
+const statStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  fontSize: 16,
+  fontWeight: 600,
+  cursor: 'default',
+}
 
 const EloChart = ({ width }) => {
-  const dispatch = useDispatch()
-  const { flashcardHistory, daysStreaked } = useSelector(({ practiceHistory }) => practiceHistory)
-  const practiceHistory = useSelector(({ practiceHistory }) => practiceHistory)
-
-  useEffect(() => {
-    const date_now = moment().toDate()
-    const start_query_date = moment('2021-01-01').toDate()
-    dispatch(getPracticeHistory(start_query_date, date_now))
-  }, [])
-
-  const irtExerciseHistory = practiceHistory.irtExerciseHistory
-  const scoreHistory = practiceHistory.irtExerciseHistory.map(exercise => exercise.score)
-  const weeklyPracticeTimeHistory = useSelector(({ user }) => user.data.user.weekly_times)
-  const intl = useIntl()
   const navigate = useNavigate()
+  const user = useSelector(({ user }) => user.data.user)
+  const { flashcardHistory, irtExerciseHistory, eloExerciseHistory, daysStreaked } = useSelector(
+    state => state.practiceHistory
+  )
 
-  // if (eloHistory.length === 0) return null
+  const streak = daysStreaked ?? 0
+  const abilityRaw = last(irtExerciseHistory)?.score ?? last(eloExerciseHistory)?.score ?? 0
+  const abilityScore = Math.round(abilityRaw * 10) / 10
+  const flashcardScore = last(flashcardHistory)?.score ?? 0
 
-  const filteredHistory = []
-  const weeks = weeklyPracticeTimeHistory.map(element => element.week).reverse()
+  const weeklyTimes = user.weekly_times || []
+  const weeks = weeklyTimes
+    .map(e => ({ week: e.week, hours: e.practice_time || 0 }))
+    .reverse()
+    .slice(-6)
 
-  if (scoreHistory.length > 0) {
-    irtExerciseHistory.forEach(e => {
-      const date = new Date(e.date)
-      const week = moment(new Date(date)).week()
-      const weekday = moment(new Date(date)).isoWeekday()
+  const latestHours = weeks.length ? weeks[weeks.length - 1].hours : 0
 
-      if (weeks.find(element => element === week)) {
-        filteredHistory.push({ weekday, score: e.score, week })
-      }
-    })
-  }
-  let scoreResults = []
-  if (irtExerciseHistory.lenght > 0) {
-    scoreResults =
-      irtExerciseHistory && irtExerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
-  }
-  let flashcardEloResults = []
-  if (flashcardHistory.lenght > 0) {
-    flashcardEloResults =
-      flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
-  }
-  // Extend the curve to current day
-  if (scoreResults && scoreResults[0]) {
-    scoreResults.push([moment().valueOf(), scoreResults[scoreResults.length - 1][1]])
-  }
+  const cefrScore = user.current_proficiency_score ?? user.current_cefr
+  const cefr = cefrNum2Cefr(cefrScore) || '—'
 
-  if (flashcardEloResults && flashcardEloResults[0]) {
-    flashcardEloResults.push([
-      moment().valueOf(),
-      flashcardEloResults[flashcardEloResults.length - 1][1],
-    ])
-  }
+  const level = user.level ?? 0
+  const requiredXp = (((level + 1) * 50 - 25) ** 2 - 625) / 100
+  const xpProgress = requiredXp > 0 ? (requiredXp - (user.xp_to_next_level ?? 0)) / requiredXp : 0
 
-  const practicetimes = {
-    type: 'column',
-    yAxis: 1,
-    xAxis: 1,
-    data: weeklyPracticeTimeHistory.map(element => [element.week, element.practice_time]).reverse(),
-  }
-
-  const series = [practicetimes, { data: scoreResults }]
-  if (hiddenFeatures) series.push({ data: flashcardEloResults, color: '#dc3545' })
-
-  const options = {
-    accessibility: { enabled: false },
-    title: { text: '' },
-    series,
-    chart: { height: '45%', marginTop: 20 },
-    legend: { enabled: false },
-    credits: { enabled: false },
-    tooltip: {
-      formatter() {
-        // eslint-disable-next-line react/no-this-in-sfc
-        return this.y
-      },
+  const earnedTiers = (user.achievements || []).reduce(
+    (acc, a) => {
+      MEDAL_TIERS.forEach((tier, i) => {
+        if (a.level >= i + 1) acc[tier] += 1
+      })
+      return acc
     },
-    yAxis: [
-      {
-        title: { enabled: false },
-        // eslint-disable-next-line
-        tickPositioner: function () {
-          // eslint-disable-next-line
-          return [Math.floor(this.dataMin / 10) * 10, Math.ceil(this.dataMax / 10) * 10]
-        },
-      },
-      {
-        title: {
-          text: intl.formatMessage({ id: 'Practiced hours' }),
-          rotation: 0,
-          align: 'high',
-          offset: 32,
-          y: -10,
-          reserveSpace: false,
-          style: {
-            direction: 'rtl',
-            whiteSpace: 'nowrap',
-          },
-        },
-        opposite: true,
-      },
-    ],
-    xAxis: [
-      { visible: false, min: moment().subtract(4, 'weeks').valueOf() },
-      {
-        visible: true,
-        title: {
-          text: intl.formatMessage({ id: 'Week' }),
-          align: 'low',
-          offset: 4,
-          x: -10,
-        },
-        tickInterval: 1,
-      },
-    ],
-    plotOptions: {
-      series: {
-        groupPadding: 0,
-        pointPadding: 0,
-        borderWidth: 0,
-      },
-      line: { marker: { enabled: false } },
-    },
-  }
-
-  const showStoryScore = irtExerciseHistory && irtExerciseHistory.length > 0
-  const showFlashcardScore = hiddenFeatures && flashcardHistory?.length > 0
+    { bronze: 0, silver: 0, gold: 0, platinum: 0, diamond: 0 }
+  )
+  const medals = MEDAL_TIERS.filter(tier => earnedTiers[tier] > 0)
 
   return (
     <div
-      className="homeview-item tour-progress"
       style={{
         width,
-        textAlign: 'center',
-        cursor: 'pointer',
-        alignSelf: 'flex-start',
-        padding: '1em .5em 0em .5em',
+        boxSizing: 'border-box',
+        backgroundColor: CARD_BG,
+        borderRadius: 30,
+        padding: '24px 28px',
+        fontFamily: font.family,
+        color: colors.ink,
       }}
-      onClick={() => navigate('/profile/progress')}
     >
-      <div className="space-evenly pb-sm">
-        <span>
-          <img
-            src={images.flameIcon}
-            alt="flame icon"
-            width="18px"
-            style={{ marginRight: '0.2em' }}
-          />
-          {daysStreaked}
-        </span>
-
-        {showStoryScore && (
-          <span>
-            <Icon name="star outline" style={{ margin: 0 }} />{' '}
-            {irtExerciseHistory[irtExerciseHistory.length - 1].score}
-          </span>
-        )}
-        {showFlashcardScore && (
-          <span>
-            <img
-              src={images.flashcardIcon}
-              alt="three cards"
-              width="18px"
-              style={{ marginRight: '0.2em' }}
-            />
-            {flashcardHistory[flashcardHistory.length - 1].score}
-          </span>
-        )}
+      {/* Header: title + CEFR ring */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h2 style={{ margin: 0, fontFamily: font.family, fontSize: 28, fontWeight: 500 }}>
+          <FormattedMessage id="Progress" />
+        </h2>
+        <CefrRing cefr={cefr} progress={xpProgress} />
       </div>
-      <HighchartsReact highcharts={Highcharts} options={options} allowChartUpdate={false} />
+
+      {/* Streak / ability / flashcard scores */}
+      <div style={{ display: 'flex', gap: 28, marginTop: 16 }}>
+        <CustomTooltip permanent placement="top" keyId="progress-streak-explanation">
+          <span style={statStyle}>
+            <LocalFireDepartmentIcon style={{ fontSize: 18 }} />
+            {streak}
+          </span>
+        </CustomTooltip>
+        <CustomTooltip permanent placement="top" keyId="progress-ability-explanation">
+          <span style={statStyle}>
+            <StarBorderIcon style={{ fontSize: 18 }} />
+            {abilityScore}
+          </span>
+        </CustomTooltip>
+        <CustomTooltip permanent placement="top" keyId="progress-flashcard-explanation">
+          <span style={statStyle}>
+            <StyleOutlinedIcon style={{ fontSize: 18 }} />
+            {flashcardScore}
+          </span>
+        </CustomTooltip>
+      </div>
+
+      {/* Practiced hours */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20 }}>
+        <span style={{ color: colors.muted, fontSize: 15 }}>
+          <FormattedMessage id="Practiced hours" />
+        </span>
+        <span
+          style={{
+            backgroundColor: colors.panel,
+            color: colors.ink,
+            borderRadius: 999,
+            padding: '2px 12px',
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+        >
+          {formatHM(latestHours)}
+        </span>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <HoursBars weeks={weeks} />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            gap: 8,
+            marginLeft: 46,
+            marginTop: 6,
+          }}
+        >
+          {weeks.map(w => (
+            <span
+              key={w.week}
+              style={{ flex: 1, maxWidth: 44, textAlign: 'center', fontSize: 12, color: colors.muted }}
+            >
+              {w.week}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Achievements */}
+      <div style={{ marginTop: 20 }}>
+        <div style={{ color: colors.muted, fontSize: 15, marginBottom: 8 }}>
+          <FormattedMessage id="Achievements" />
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
+          {medals.length ? (
+            medals.map(tier => (
+              <div key={tier} style={{ width: 40 }}>
+                <Medal medal={tier} />
+              </div>
+            ))
+          ) : (
+            <span style={{ color: colors.muted, fontSize: 13 }}>—</span>
+          )}
+        </div>
+      </div>
+
+      {/* See all stats */}
+      <button
+        type="button"
+        data-cy="see-all-stats"
+        onClick={() => navigate('/profile/progress')}
+        style={{
+          marginTop: 20,
+          width: '100%',
+          padding: '12px',
+          border: `1px solid ${colors.ink}`,
+          borderRadius: 999,
+          backgroundColor: 'transparent',
+          color: colors.ink,
+          fontFamily: font.family,
+          fontWeight: 600,
+          fontSize: 16,
+          cursor: 'pointer',
+        }}
+      >
+        <FormattedMessage id="see-all-stats" />
+      </button>
     </div>
   )
 }

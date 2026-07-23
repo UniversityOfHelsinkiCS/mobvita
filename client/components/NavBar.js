@@ -1,25 +1,32 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import AppButton from 'Components/AppButton'
+import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
+import { MenuRow } from 'Components/ui/menuRow'
 import Headroom from 'react-headroom'
-import { Badge, FormControlLabel, Switch, Box } from '@mui/material'
+import { Switch, Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
-import MenuIcon from '@mui/icons-material/Menu'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import LinkOffIcon from '@mui/icons-material/LinkOff'
-import SignpostIcon from '@mui/icons-material/Signpost'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
-import { Link, useNavigate, useLocation} from 'react-router-dom'
-import { 
-  logout, 
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import GroupIcon from '@mui/icons-material/Group'
+import SettingsIcon from '@mui/icons-material/Settings'
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import {
+  logout,
   getLatestIRTScore,
-  calculateIRTScore, 
-  getSelf, 
-  setIrtDummyScore, 
-  teacherSwitchView } from 'Utilities/redux/userReducer'
+  calculateIRTScore,
+  getSelf,
+  setIrtDummyScore,
+  teacherSwitchView,
+} from 'Utilities/redux/userReducer'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
@@ -28,7 +35,8 @@ import {
   startLessonsTour,
   startLibraryTour,
   startProgressTour,
-  startPracticeTour } from 'Utilities/redux/tourReducer'
+  startPracticeTour,
+} from 'Utilities/redux/tourReducer'
 import { getNews } from 'Utilities/redux/newsReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -36,13 +44,14 @@ import {
   capitalize,
   images,
   learningLanguageSelector,
-  getBackgroundColor,
   supportedLearningLanguages,
-  getHelpLink
+  getHelpLink,
 } from 'Utilities/common'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { Offline } from 'react-detect-offline'
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
+import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
 import Tour from './Tour'
 
 const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
@@ -71,15 +80,29 @@ const NavGroup = styled('div')({
   alignItems: 'center',
 })
 
-const NewsWebSite = "https://revitaai.github.io/faq-LEARNER-TOC.html"
+const NewsWebSite = 'https://revitaai.github.io/faq-LEARNER-TOC.html'
 
+// Initials for the profile avatar, e.g. "roman.yangarber" / "Roman Yangarber" → "RY".
+const getInitials = name => {
+  if (!name) return '?'
+  const parts = name
+    .trim()
+    .split(/[\s._-]+/)
+    .filter(Boolean)
+  const letters = parts
+    .slice(0, 2)
+    .map(part => part[0])
+    .join('')
+  return (letters || name.slice(0, 2)).toUpperCase()
+}
 
 export default function NavBar() {
   const user = useSelector(({ user }) => user.data)
   const {
     irtCalculationPending,
     pending: userPending,
-    irt_dummy_score } = useSelector(({ user }) => user)
+    irt_dummy_score,
+  } = useSelector(({ user }) => user)
   const { numUnreadNews } = useSelector(({ metadata }) => metadata)
   const { sessionId, answersPending } = useSelector(({ snippets }) => snippets)
   // const { show, open: encOpen, fcShow, fcOpen } = useSelector(({ encouragement }) => encouragement)
@@ -102,7 +125,7 @@ export default function NavBar() {
   const teacherView = user?.teacherView
   const check = location.pathname
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
-    learningLanguage?.toLowerCase()
+    learningLanguage?.toLowerCase(),
   )
 
   const irt_support_languages = ['Russian', 'Finnish']
@@ -115,6 +138,8 @@ export default function NavBar() {
   const practiceHistory = useSelector(state => state.practiceHistory)
   const { flashcardHistory, irtExerciseHistory, eloExerciseHistory } = practiceHistory
   const [helpLink, setHelpLink] = useState(null)
+  const [darkVisual, setDarkVisual] = useState(false) // Dark Theme toggle — visual only for now
+  const [langDialogOpen, setLangDialogOpen] = useState(false)
 
   const signOut = () => {
     dispatch(logout())
@@ -250,8 +275,8 @@ export default function NavBar() {
       ability_score = irtCalculationPending
         ? '...'
         : irt_dummy_score != undefined
-        ? Math.round(irt_dummy_score * 10) / 10
-        : '...'
+          ? Math.round(irt_dummy_score * 10) / 10
+          : '...'
       grammar_score_type = 'irt'
     }
     return (
@@ -279,47 +304,98 @@ export default function NavBar() {
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
       <Box
         component="nav"
-        className={`navbar ${getBackgroundColor()}`}
-        style={{ padding: '8px 14px 8px 8px', flexWrap: 'nowrap' }}
+        className="navbar"
+        style={{
+          padding: '8px 14px 8px 8px',
+          flexWrap: 'nowrap',
+          backgroundColor: colors.card,
+        }}
       >
         <Tour />
-        <MenuIcon
+        <LanguageSelectDialog open={langDialogOpen} onClose={() => setLangDialogOpen(false)} />
+        <img
+          src={images.menu2}
+          alt="menu"
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger"
-          style={{ color: 'black', fontSize: '32px', cursor: 'pointer' }}
           data-cy="hamburger"
+          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block' }}
         />
         <NavCollapse>
           {/********************************* HAMBURGER *********************************/}
           <NavGroup sx={{ mr: 'auto' }}>
-            <div className="navbar-container">
-              <Link to="/home">
+            <div
+              className="navbar-container"
+              style={{ display: 'flex', alignItems: 'center', gap: '20px' }}
+            >
+              <Link to="/home" style={{ textDecoration: 'none' }}>
                 <Box
                   component="span"
                   data-cy="revita-logo"
                   className="navbar-revita-logo tour-start-finish"
+                  sx={{
+                    fontFamily: font.family,
+                    fontSize: '24px',
+                    fontWeight: 500,
+                    color: colors.ink,
+                  }}
                 >
-                  <img
-                    src={images.navbarLogo}
-                    alt="revita logo"
-                    width="70"
-                    style={{
-                      filter: 'brightness(0%) sepia(100) saturate(100) hue-rotate(0deg)' }}
-                  />
+                  Revita
                   {hiddenFeatures && <sup> &beta;</sup>}
                 </Box>
               </Link>
+              {user.user.last_used_language && (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  <CustomTooltip
+                    placement="bottom-end"
+                    title={intl.formatMessage({
+                      id: 'click-to-change-learning-language-explanation',
+                    })}
+                  >
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      data-cy="navbar-learning-language"
+                      className="tour-navbar-learning-language"
+                      onClick={() => setLangDialogOpen(true)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        color: colors.ink,
+                        fontFamily: font.family,
+                        fontWeight: 600,
+                        fontSize: '18px',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <img
+                        src={getLearningLanguageFlag()}
+                        alt=""
+                        style={{ width: 26, height: 26, borderRadius: '50%', objectFit: 'cover' }}
+                      />
+                      {user.user.last_used_language}
+                    </span>
+                  </CustomTooltip>
+                  <MoreVertIcon
+                    data-cy="language-options"
+                    onClick={() => setLangDialogOpen(true)}
+                    style={{ color: colors.ink, cursor: 'pointer', fontSize: 22 }}
+                  />
+                </div>
+              )}
             </div>
           </NavGroup>
           {/********************************* ELO SCORE *********************************/}
-          <NavGroup sx={{ mr: 'auto' }}>
+          <NavGroup>
             <div className="navbar-container">
               <Box
                 component="span"
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
               >
-                { showStoryElo && get_student_ability_score_component() }
+                {showStoryElo && get_student_ability_score_component()}
                 {showFlashcardElo && (
                   <CustomTooltip
                     permanent
@@ -340,158 +416,107 @@ export default function NavBar() {
               </Box>
             </div>
           </NavGroup>
-          {/******************************* STUDENT VIEW *******************************/}
-          {isTeacher && showTeacherViewSwitch && !smallWindow && (
-            <NavGroup>
-              <CustomTooltip title={<FormattedMessage id="teacher-view-explanation" />} placement="bottom">
-                <div className='flex space-between'>
-                  <FormControlLabel
-                    sx={{ mt: 0.5, mr: 0.5 }}
-                    control={<Switch checked={!teacherView} onChange={handleStudentViewSwitch} />}
-                    label={intl.formatMessage({ id: 'student-view' })}
-                  />
-                </div>
-              </CustomTooltip>
-            </NavGroup>
-          )}
-          {/******************************* PROGRESS *******************************/}
-          {(!isTeacher || (isTeacher && !teacherView)) && (
-            <NavGroup>
-              <CustomTooltip title={<FormattedMessage id="click-here-to-see-progress-explanation" />} placement="top">
-                <Link className="navbar-basic-icon progress-button" to="/profile/main" style={{ textDecoration: 'none' }}>
-                  <div className="navbar-level">{user.user.level}</div>
-                </Link>
-              </CustomTooltip>
-            </NavGroup>
-          )}
-          {/******************************* TOUR BUTTON *******************************/}
+          {/******************************* USER OPTIONS *******************************/}
           <NavGroup>
-            <div className="navbar-container" style={{ width: '90%' }}>
-              <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
-                <LinkOffIcon style={{ color: '#ff944d' }} />
-              </Offline>
-              {!smallWindow && (
-                <CustomTooltip title={intl.formatMessage({ id: 'click-to-see-TOUR-explanation' })} placement="top">
-                  <AppButton className="tour-button" onClick={handleTourStart}>
-                    <SignpostIcon style={{ color: 'black' }} />
-                  </AppButton>
-                </CustomTooltip>
-              )}
-            </div>
-          </NavGroup>
-          {/******************************* LANGUAGE FLAG *******************************/}
-          {!smallWindow &&  user && user.user.last_used_language && (
-          <NavGroup>
-            <div className="navbar-container" style={{ width: '90%' }}>
-                  <CustomTooltip
-                    placement="bottom-end"
-                    title={intl.formatMessage({ id: 'click-to-change-learning-language-explanation' })}
-                  >
-                    <Link to="/learningLanguage">
-                      <img
-                        className="tour-navbar-learning-language navbar-basic-icon navbar-flag"
-                        src={getLearningLanguageFlag()}
-                        alt="learningLanguageFlag"
-                      />
-                    </Link>
-                  </CustomTooltip>
-                  {!isMajorLanguage && (
-                    <CustomTooltip
-                      permanent
-                      placement="bottom-end"
-                      title={
-                        <FormattedMessage
-                          id="beta-language-warning"
-                          values={{ language: user.user.last_used_language }}
-                        />
-                      }
-                    >
-                      <Box
-                        component="span"
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: '#db2828',
-                          color: '#fff',
-                          fontSize: '0.7rem',
-                          borderRadius: '10px',
-                          px: 0.75,
-                          py: 0.1,
-                        }}
-                      >
-                        <span>&beta;</span>
-                      </Box>
-                    </CustomTooltip>
+            <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
+              <LinkOffIcon style={{ color: '#ff944d' }} />
+            </Offline>
+            <AppMenu
+              minWidth={240}
+              borderRadius="30px"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              trigger={
+                <Box
+                  data-cy="user-options"
+                  sx={{
+                    position: 'relative',
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: colors.ink,
+                    color: '#fff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: font.family,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
+                  {getInitials(user.user.username)}
+                  {numUnreadNews > 0 && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: -1,
+                        right: -1,
+                        width: 10,
+                        height: 10,
+                        borderRadius: '50%',
+                        backgroundColor: '#ff944d',
+                        border: `2px solid ${colors.card}`,
+                      }}
+                    />
                   )}
-            </div>
-          </NavGroup>
-          )}
-          {/******************************* NEWS BELL *******************************/}
-          {!smallWindow && (
-            <NavGroup>
-              <div className="navbar-container" style={{ width: '90%' }}>
-                <CustomTooltip
-                  permanent
-                  placement="bottom-end"
-                  title={<FormattedMessage id="news-bell-info-popup-text" values={{ numUnreadNews }} />}
-                >
-                  <a
-                    className="navbar-basic-icon"
-                    style={{ display: 'table-cell' }}
-                    href={NewsWebSite}
-                    onClick={event => {
-                      confirmNewsClick(event, NewsWebSite)
-                    }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span style={{ position: 'relative', cursor: 'pointer' }}>
-                      {numUnreadNews > 0 ? (
-                        <Badge badgeContent={numUnreadNews} color="error" onClick={handleNewsClick}>
-                          <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                        </Badge>
-                      ) : (
-                        <NavbarIcon imgSrc={images.bellIcon} altText="bell icon" />
-                      )}
+                </Box>
+              }
+            >
+              <AppMenuItem icon={<PersonOutlinedIcon />} onClick={() => navigate('/profile/main')}>
+                <FormattedMessage id="your-profile" defaultMessage="Your Profile" />
+              </AppMenuItem>
+              <AppMenuItem icon={<NotificationsNoneIcon />} onClick={handleNewsClick}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <FormattedMessage id="notifications" defaultMessage="Notifications" />
+                  {numUnreadNews > 0 && (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minWidth: 20,
+                        height: 20,
+                        padding: '0 6px',
+                        borderRadius: 999,
+                        backgroundColor: '#dc3545',
+                        color: '#fff',
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {numUnreadNews}
                     </span>
-                  </a>
-                </CustomTooltip>
-              </div>
-            </NavGroup>
-          )}
-          <NavGroup>
-            <div className="navbar-container" style={{ width: '90%' }}>
-              <CustomTooltip title={<FormattedMessage id="help" />} placement="bottom-end">
-                <a
-                  className="navbar-basic-icon tour-help"
-                  style={{ display: 'table-cell' }}
-                  href={helpLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span style={{position: 'relative', cursor: 'pointer' }}>
-                    <HelpOutlineIcon style={{ color: 'black' }} />
+                  )}
+                </span>
+              </AppMenuItem>
+              <AppMenuItem icon={<GroupIcon />} onClick={() => navigate('/groups/teacher')}>
+                <FormattedMessage id="Groups" defaultMessage="Groups" />
+              </AppMenuItem>
+              <AppMenuItem icon={<SettingsIcon />} onClick={() => navigate('/profile/settings')}>
+                <FormattedMessage id="Settings" defaultMessage="Settings" />
+              </AppMenuItem>
+              {isTeacher && (
+                <MenuRow style={{ justifyContent: 'space-between', cursor: 'default' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
+                    <SchoolOutlinedIcon />
+                    {intl.formatMessage({ id: 'student-view' })}
                   </span>
-                </a>
-              </CustomTooltip>
-            </div>
-          </NavGroup>
-          <NavGroup>
-            <CustomTooltip title={<FormattedMessage id="server-status" />} placement="bottom-end">
-              <a
-                className="navbar-basic-icon"
-                href="https://revitaai.github.io/SERVER-STATUS.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                    src={images.heartbeat}
-                    alt="heartbeat icon"
-                    style={{ height: '20px' }}
-                  />
-              </a>
-            </CustomTooltip>
+                  <Switch size="small" checked={!teacherView} onChange={handleStudentViewSwitch} />
+                </MenuRow>
+              )}
+              <MenuRow style={{ justifyContent: 'space-between', cursor: 'default' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
+                  <DarkModeOutlinedIcon />
+                  <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
+                </span>
+                <Switch size="small" checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
+              </MenuRow>
+              <AppMenuItem icon={<LogoutIcon />} onClick={signOut}>
+                <FormattedMessage id="Logout" defaultMessage="Logout" />
+              </AppMenuItem>
+            </AppMenu>
           </NavGroup>
           {/******************************* END *******************************/}
         </NavCollapse>
