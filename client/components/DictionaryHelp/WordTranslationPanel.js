@@ -343,7 +343,7 @@ const WordTranslationPanel = () => {
                       ? () => openWordNest(translated.lemma)
                       : undefined
                   }
-                  showInflactionLink={data.length > 2 && idx > 0}
+                  showInflactionLink={data.length < 3 || idx > 0}
                   style={{
                     marginBottom: '8px',
                     padding: '15px',

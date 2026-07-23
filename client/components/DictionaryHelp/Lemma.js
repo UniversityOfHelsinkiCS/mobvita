@@ -3,6 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { Icon, Placeholder, PlaceholderLine } from 'semantic-ui-react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import CustomTooltip from 'Components/CustomTooltip';
 
 import {
@@ -63,8 +64,13 @@ const Lemma = ({
           {maskSymbol || title}
           {showInflactionLink && inflectionRef && (
             <CustomTooltip title={<FormattedHTMLMessage id="explain-goto-inflection-table" />}>
-              <a href={inflectionRef.url} target="_blank" rel="noopener noreferrer" style={{ display: 'contents' }}>
-                <Icon name="external" style={{ marginLeft: '1rem' }} />
+              <a
+                href={inflectionRef.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '1rem', color: 'inherit' }}
+              >
+                <OpenInNewIcon style={{ fontSize: 18 }} />
               </a>
             </CustomTooltip>
           )}

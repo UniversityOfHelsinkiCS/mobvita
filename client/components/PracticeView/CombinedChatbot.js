@@ -1268,7 +1268,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             inflectionRef={translated.ref}
             preferred={translated.preferred}
             translations={translated.glosses} // Pass the glosses array to the bottom row
-            showInflactionLink={translationState.data.length > 2 && idx > 0} 
+            showInflactionLink={translationState.data.length < 3 || idx > 0}
             // Pass the dynamic styling to the root of the Lemma component
             style={{
                 marginBottom: '8px',
