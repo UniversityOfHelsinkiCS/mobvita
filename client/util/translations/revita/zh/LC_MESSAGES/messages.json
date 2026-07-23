@@ -1252,5 +1252,9 @@
     "essay-current-version": "Current version",
     "essay-remove-confirm": "This will permanently delete this essay, are you sure you want to proceed?",
     "upload-to-my-essays": "Upload to My Essays",
-    "something-went-wrong": "Something went wrong."
+    "something-went-wrong": "Something went wrong.",
+    "see-all-stats": "See All Stats",
+    "progress-streak-explanation": "Your practice streak — the number of days in a row you have practiced.",
+    "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
+    "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary."
 }

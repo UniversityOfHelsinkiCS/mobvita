@@ -1872,5 +1872,9 @@
     "essay-current-version": "Nykyinen version",
     "essay-remove-confirm": "Tämä poistaa esseen pysyvästi. Oletko varma?",
     "upload-to-my-essays": "Lisää omiin esseisiin",
-    "something-went-wrong": "Jotain meni vikaan."
+    "something-went-wrong": "Jotain meni vikaan.",
+    "see-all-stats": "See All Stats",
+    "progress-streak-explanation": "Your practice streak — the number of days in a row you have practiced.",
+    "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
+    "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary."
 }
