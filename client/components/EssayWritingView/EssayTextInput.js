@@ -39,6 +39,9 @@ import { capitalize, useLearningLanguage } from 'Utilities/common'
 
 const MIN_WORD_HIGHLIGHT_WIDTH = 14
 const MIN_INSERTION_UNDERLINE_WIDTH = 12
+// How many times to re-fetch the writing session before giving up and correcting without it, so a
+// failing session endpoint can't block corrections forever.
+const MAX_SESSION_ATTEMPTS = 2
 
 // The character span covering the word before + the word after an insertion point (the gap between
 // them included), so the insertion highlight can mark the two words it should be inserted between.
@@ -88,7 +91,10 @@ const EssayTextInput = ({
   const correctionsByKeyRef = useRef(null)
   const writingSessionIdRef = useRef('')
   const writingSessionPendingRef = useRef(false)
+  const deferredCorrectionsRef = useRef([])
+  const sessionAttemptsRef = useRef(0)
   const pendingEditedSentenceRef = useRef(null)
+  const pendingEditIsInPlaceRef = useRef(false)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
   const textRef = useRef(text)
@@ -256,9 +262,35 @@ const EssayTextInput = ({
   }, [])
 
   // Fetch a backend session id for this writing session (to track correction + chatbot history).
+  // Mark pending synchronously so a correction fired on the same tick (e.g. restored text) defers
+  // instead of kicking off a second fetch.
   useEffect(() => {
-    if (learningLanguage) dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
+    if (!learningLanguage) return
+    writingSessionPendingRef.current = true
+    dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
   }, [learningLanguage])
+
+  // Once the session id resolves, run the corrections held while it loaded so they carry session_id.
+  // If the fetch settles without one, retry a few times, then correct without it so nothing sticks.
+  useEffect(() => {
+    if (!deferredCorrectionsRef.current.length) return
+
+    if (writingSessionId) {
+      sessionAttemptsRef.current = 0
+      flushDeferredCorrections()
+      return
+    }
+
+    if (writingSessionPending) return
+
+    if (sessionAttemptsRef.current < MAX_SESSION_ATTEMPTS) {
+      sessionAttemptsRef.current += 1
+      ensureWritingSession()
+      return
+    }
+
+    flushDeferredCorrections()
+  }, [writingSessionId, writingSessionPending])
 
   useEffect(() => {
     correctionRectsStaleRef.current = true
@@ -315,7 +347,29 @@ const EssayTextInput = ({
     dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
   }
 
-  const openCorrectionForSentence = sentence => {
+  const dispatchWritingCorrection = (sentence, isEdit) => {
+    dispatch(
+      checkWritingCorrection({
+        language: capitalize(learningLanguage),
+        sentenceId: sentence.sentenceId,
+        text: sentence.text,
+        context: sentence.context,
+        sessionId: writingSessionIdRef.current,
+        isEdit,
+      }),
+    )
+  }
+
+  // Run any corrections that were held while the session id was still loading, now that it's known.
+  const flushDeferredCorrections = () => {
+    const deferred = deferredCorrectionsRef.current
+    deferredCorrectionsRef.current = []
+    deferred.forEach(({ sentence, isEdit }) => dispatchWritingCorrection(sentence, isEdit))
+  }
+
+  // isEdit = this correction is an in-place edit of the same sentence (its backend-id history carries
+  // forward); a split/merge/new sentence passes false and starts a fresh history.
+  const openCorrectionForSentence = (sentence, isEdit = false) => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
     if (correctionsByKey[nextCorrectionKey]) {
@@ -326,18 +380,23 @@ const EssayTextInput = ({
           sentenceId: sentence.sentenceId,
         }),
       )
-    } else {
-      ensureWritingSession()
-      dispatch(
-        checkWritingCorrection({
-          language: capitalize(learningLanguage),
-          sentenceId: sentence.sentenceId,
-          text: sentence.text,
-          context: sentence.context,
-          sessionId: writingSessionIdRef.current,
-        }),
-      )
+      return
     }
+
+    if (writingSessionIdRef.current) {
+      dispatchWritingCorrection(sentence, isEdit)
+      return
+    }
+
+    // No session id yet: fetch it and hold this correction (deduped by key) until it arrives, so the
+    // request doesn't go out with an empty session_id. Flushed by the session effect below.
+    ensureWritingSession()
+    deferredCorrectionsRef.current = [
+      ...deferredCorrectionsRef.current.filter(
+        deferred => getWritingCorrectionKey(deferred.sentence) !== nextCorrectionKey,
+      ),
+      { sentence, isEdit },
+    ]
   }
 
   useEffect(() => {
@@ -349,11 +408,12 @@ const EssayTextInput = ({
       textRef.current.length,
     )
 
-    restoredCompletedSentences.forEach(openCorrectionForSentence)
+    restoredCompletedSentences.forEach(sentence => openCorrectionForSentence(sentence, false))
   }, [])
 
-  const queueEditedSentence = sentence => {
+  const queueEditedSentence = (sentence, isEdit = false) => {
     pendingEditedSentenceRef.current = sentence
+    pendingEditIsInPlaceRef.current = isEdit
   }
 
   const commitPendingEditedSentence = () => {
@@ -371,7 +431,7 @@ const EssayTextInput = ({
       return false
     }
 
-    openCorrectionForSentence(updatedSentence)
+    openCorrectionForSentence(updatedSentence, pendingEditIsInPlaceRef.current)
     return true
   }
 
@@ -409,6 +469,7 @@ const EssayTextInput = ({
     const editIndex = getFirstChangedIndex(previousText, nextText)
     const previousCompletedSentences = completedSentencesRef.current
     const nextCompletedSentences = updateCompletedSentences(nextText, editIndex)
+    const isInPlaceEdit = previousCompletedSentences.length === nextCompletedSentences.length
 
     setText(nextText)
     textRef.current = nextText
@@ -427,7 +488,7 @@ const EssayTextInput = ({
 
       if (sentencesToCorrect.length) {
         pendingEditedSentenceRef.current = null
-        sentencesToCorrect.forEach(openCorrectionForSentence)
+        sentencesToCorrect.forEach(sentence => openCorrectionForSentence(sentence, false))
         return
       }
     }
@@ -444,12 +505,16 @@ const EssayTextInput = ({
       }
 
       if (cursorIsInsideSentence(updatedPendingSentence, cursorIndex)) {
-        queueEditedSentence(updatedPendingSentence)
+        queueEditedSentence(updatedPendingSentence, isInPlaceEdit)
         return
       }
 
       pendingEditedSentenceRef.current = null
-      openCorrectionForSentence(updatedPendingSentence)
+
+      openCorrectionForSentence(
+        updatedPendingSentence,
+        pendingEditIsInPlaceRef.current && isInPlaceEdit,
+      )
       return
     }
 
@@ -479,7 +544,7 @@ const EssayTextInput = ({
 
     if (!completedSentence) {
       if (previousCompletedSentence) {
-        queueEditedSentence(previousCompletedSentence)
+        queueEditedSentence(previousCompletedSentence, isInPlaceEdit)
       }
 
       return
@@ -494,7 +559,7 @@ const EssayTextInput = ({
         previousCompletedSentences,
       })
     ) {
-      openCorrectionForSentence(completedSentence)
+      openCorrectionForSentence(completedSentence, isInPlaceEdit)
       return
     }
 
@@ -503,7 +568,7 @@ const EssayTextInput = ({
         getWritingCorrectionKey(previousCompletedSentence) !==
         getWritingCorrectionKey(completedSentence)
       ) {
-        queueEditedSentence(completedSentence)
+        queueEditedSentence(completedSentence, isInPlaceEdit)
         return
       }
 
@@ -511,16 +576,16 @@ const EssayTextInput = ({
         return
       }
 
-      openCorrectionForSentence(completedSentence)
+      openCorrectionForSentence(completedSentence, isInPlaceEdit)
       return
     }
 
     if (cursorIsInsideSentence(completedSentence, cursorIndex)) {
-      queueEditedSentence(completedSentence)
+      queueEditedSentence(completedSentence, isInPlaceEdit)
       return
     }
 
-    openCorrectionForSentence(completedSentence)
+    openCorrectionForSentence(completedSentence, isInPlaceEdit)
   }
 
   const handleSelect = e => {

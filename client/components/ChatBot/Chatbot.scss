@@ -125,6 +125,28 @@
   font-size: 1.15rem;
 }
 
+// The list ↔ focused views are the two faces of a Swiper flip card (see EssayChatbot.js).
+.essay-chatbot-flip {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.essay-chatbot-face {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+// When flipped to a focused suggestion the chatbot's title bar takes on that correction type's colour
+// (set inline); the message faces and input stay white so the text stays readable. The colour fades in
+// step with the flip. Scoped to the essay chatbot so the other chatbots are untouched.
+.essay-chatbot .ai-assistant-header {
+  transition: background-color 0.3s ease;
+}
+
 .chatbot-messages {
   flex: 1;
   padding: 15px;
