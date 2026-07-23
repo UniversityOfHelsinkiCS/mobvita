@@ -233,6 +233,21 @@
     line-height: 1.2;
   }
 
+  .essay-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 12px;
+  }
+
+  .essay-card-meta-info {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    min-width: 0;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
   .story-description {
     font-size: 1rem;
     font-weight: 400;

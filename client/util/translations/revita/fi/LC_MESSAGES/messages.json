@@ -1858,5 +1858,22 @@
     "reading-chatbot-suggestion-explain-answer": "Explain the correct answer",
     "reading-chatbot-suggestion-why-others-wrong": "Why are the other options wrong?",
     "essay-chatbot-followup-question": "Haluatko syventyä johonkin tiettyyn kohtaan tekstistä tai antamaani ehdotukseen? Jos haluat, klikkaa sanaa tai ehdotusta ja kirjoita minulle: “JATKA”!",
-    "enable-tooltips": "Show tooltips"
+    "enable-tooltips": "Show tooltips",
+    "admin-contact-message": "Viesti",
+    "essay-upload-topic-taken": "Tämä aihe on jo varattu. Valitse toinen aihe.",
+    "my-essays": "Omat Esseet",
+    "essay-sentence-count": "lauseet",
+    "no-essays-found": "Ei esseitä vielä.",
+    "essay-original-version": "Alkuperäinen versio",
+    "essay-current-version": "Nykyinen version",
+    "essay-remove-confirm": "Tämä poistaa esseen pysyvästi. Oletko varma?",
+    "upload-to-my-essays": "Lisää omiin esseisiin",
+    "dont-have-an-account": "Don't have an account?",
+    "something-went-wrong": "Jotain meni vikaan.",
+    "already-have-an-account": "Already have an account?",
+    "i-accept-the-terms": "I accept the terms and privacy policy",
+    "landing-page-sign-up": "Sign Up",
+    "share-essay": "Jaa essee",
+    "share-essay-with": "Share with",
+    "share-essay-failed": "Could not share with"
 }

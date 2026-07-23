@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  CORRECTION_PLACEHOLDER,
   getCorrectionText,
   isCorrectionDeletion,
   isCorrectionInsertion,
@@ -7,10 +8,13 @@ import {
 
 const textHasLettersOrNumbers = text => /[\p{L}\p{N}]/u.test(text)
 
+// The ▬ placeholder marks an empty slot (e.g. a chunk-boundary marker); it is never real text.
+const withoutPlaceholder = text => (text === CORRECTION_PLACEHOLDER ? '' : text)
+
 const CorrectedWord = ({ word, showCorrection }) => {
   const { original, corrected } = word
-  const originalText = getCorrectionText(original).trim()
-  const correctedText = getCorrectionText(corrected).trim()
+  const originalText = withoutPlaceholder(getCorrectionText(original).trim())
+  const correctedText = withoutPlaceholder(getCorrectionText(corrected).trim())
   const isDeletion = isCorrectionDeletion(word)
   const isInsertion = isCorrectionInsertion(word)
   const isDeletedPunctuation = isDeletion && !textHasLettersOrNumbers(originalText)
