@@ -9,6 +9,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
+import AppSelect from 'Components/ui/AppSelect'
 import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
@@ -55,6 +56,7 @@ const DesignSystem = () => {
   const [error, setError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
+  const [selectValue, setSelectValue] = useState('')
 
   return (
     <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem', fontFamily: font.family }}>
@@ -154,6 +156,50 @@ const DesignSystem = () => {
         </div>
       </Section>
 
+      <Section title="AppSelect — variants (active / disabled)">
+        {(() => {
+          const opts = [
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+            { value: '3', label: 'Option 3' },
+          ]
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {['tan', 'contrast', 'contrast-outline', 'tan-outline'].map(v => (
+                <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <span style={{ width: 130, color: '#666', fontSize: 13 }}>{v}</span>
+                  <div style={{ width: 220 }}>
+                    <AppSelect
+                      variant={v}
+                      value={selectValue}
+                      onChange={setSelectValue}
+                      options={opts}
+                    />
+                  </div>
+                  <div style={{ width: 220 }}>
+                    <AppSelect variant={v} disabled options={opts} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
+      </Section>
+
+      <Section title="AppSelect — inverse (dark background)">
+        <div style={{ padding: 24, borderRadius: 16, backgroundColor: colors.ink, width: 300 }}>
+          <AppSelect
+            variant="inverse"
+            value={selectValue}
+            onChange={setSelectValue}
+            options={[
+              { value: '1', label: 'Option 1' },
+              { value: '2', label: 'Option 2' },
+            ]}
+          />
+        </div>
+      </Section>
+
       <Section title="ChatBubble variants">
         <div
           style={{
@@ -168,6 +214,7 @@ const DesignSystem = () => {
         >
           <ChatBubble variant="bot">Hi! I&apos;m Vita. Ask me anything.</ChatBubble>
           <ChatBubble variant="user">How is my progress?</ChatBubble>
+          <ChatBubble variant="hint">A hint to help you along.</ChatBubble>
           <ChatBubble variant="note">Feedback note about your sentence.</ChatBubble>
           <ChatBubble variant="user-note" onRemove={() => {}}>
             My own note (removable).

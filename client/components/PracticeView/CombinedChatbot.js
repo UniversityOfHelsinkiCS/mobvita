@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import CustomTooltip from 'Components/CustomTooltip';
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
-import { Icon, Placeholder, PlaceholderLine, Button } from 'semantic-ui-react'
+import { Icon, Placeholder, PlaceholderLine } from 'semantic-ui-react'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
@@ -31,7 +31,6 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { useParams, useLocation } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import Lemma from 'Components/DictionaryHelp/Lemma'
-import RobotIcon from './RobotIcon'
 import {
     setFocusedWord,
     mcExerciseTouched,
@@ -48,6 +47,8 @@ import { setHelperSidebarOpen, toggleHelperSidebar, setHelperSidebarTab } from '
 import { clearNotes } from 'Utilities/redux/notesReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
+import ChatInput from 'Components/ui/ChatInput'
+import ChatBubble from 'Components/ui/ChatBubble'
 import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
@@ -556,7 +557,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   }
 
   const handleMessageSubmit = (event) => {
-    event.preventDefault()    
+    event?.preventDefault()
     const source = (helperActiveTab === 'exercise' && currentWord && Object.keys(currentWord).length > 0)
       ? currentWord
       : translationState || {};
@@ -858,18 +859,15 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       </ConfirmationWarning>
 
       <div className="ai-assistant-header">
-        <RobotIcon className="ai-header-icon" size={24} />
-        <h3 className="ai-header-title">
-            <FormattedMessage id="chatbot-toggle-label" />
-        </h3>
+        <h3 className="ai-header-title">Vita - AI Assistant</h3>
         <AssistentSettings className="settings-icon" />
       </div>
       
       { currentWord && isEmpty(currentWord) && translationState && isEmpty(translationState.data) && isEmpty(translationState.surfaceWord) && (
         <div className="first-message">
-          <div className="message message-bot" data-cy="dictionary-info">
+          <ChatBubble variant="bot" data-cy="dictionary-info">
             <FormattedMessage id="chatbox-initial-instruction" />
-          </div>
+          </ChatBubble>
         </div>          
       )}
       {/* Exercise block */}
@@ -934,12 +932,12 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             ) : (
                   <>       
                     {!isEmpty(currentWord.frozen_messages) && (
-                      <div className="message message-bot message-hint" style={{ backgroundColor: '#ffeece' }}>
+                      <ChatBubble variant="hint" className="message-hint">
                         <div className="hint-item">
                           <Icon name="lightbulb" className="hint-bulb" />
-                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />                                
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />
                         </div>
-                      </div>
+                      </ChatBubble>
                       )}
                             
                     {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
@@ -1010,7 +1008,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         <>                          
 
                           {currentWord.hint2penalty && attempt === 0 && (
-                            <div className="message message-bot message-hint">
+                            <ChatBubble variant="hint" className="message-hint">
                               <div className="hint-item">
                                 <Icon name="lightbulb" className="hint-bulb" />
                                 <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
@@ -1022,11 +1020,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                   />
                                 )}
                               </div>
-                            </div>
+                            </ChatBubble>
                             )}
                             
                             {preHints?.map((hint, index) => (
-                              <div key={index} className="message message-bot message-hint">
+                              <ChatBubble key={index} variant="hint" className="message-hint">
                                 <div className="hint-item">
                                   <Icon name="lightbulb" className="hint-bulb" />
                                   <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
@@ -1038,32 +1036,31 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                     />
                                   )}
                                 </div>
-                              </div>
+                              </ChatBubble>
                             ))}
                         </>
                       )}
 
                       {/* Chat Messages */}
                       {messages.map((message, index) => (
-                          <div
+                          <ChatBubble
                               ref={index === messages.length - 1 ? latestMessageRef : null}
                               key={index}
-                              className={`message message-${message.type}`}
-                              style={{ display: 'block' }}
+                              variant={message.type === 'user' ? 'user' : 'bot'}
                           >
                               {message.text ? (
                                   <ReactMarkdown children={message.text} />
                               ) : (
                                   <FormattedMessage id="Error rendering message" />
                               )}
-                          </div>
+                          </ChatBubble>
                       ))}
 
                       {/* Hint Messages (after first attempt) */}
                         {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
                           <>
                               {currentWord.hint2penalty && attempt === 0 && (
-                                  <div className="message message-bot message-hint">
+                                  <ChatBubble variant="hint" className="message-hint">
                                       <div className="hint-item">
                                           <Icon name="lightbulb" className="hint-bulb" />
                                           <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
@@ -1075,10 +1072,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                               />
                                           )}
                                       </div>
-                                  </div>
+                                  </ChatBubble>
                               )}
                               {preHints?.map((hint, index) => (
-                                <div key={index} className="message message-bot message-hint">
+                                <ChatBubble key={index} variant="hint" className="message-hint">
                                   <div className="hint-item">
                                     <Icon name="lightbulb" className="hint-bulb" />
                                     <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
@@ -1090,7 +1087,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                         />
                                     )}
                                   </div>
-                                </div>
+                                </ChatBubble>
                               ))}
                           </>
                       )}
@@ -1112,23 +1109,19 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           </div>
           <div className="chatbot-input-area">
             {(showAllHintsUsed || !hasHints) ? (
-              <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                <input
-                  type="text"
-                  name="userInput"
-                  placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+              <>
+                <ChatInput
                   value={currentMessage}
+                  onChange={setCurrentMessage}
+                  onSubmit={handleMessageSubmit}
+                  placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
                   disabled={!validToChat || isWaitingForResponse}
-                  onChange={(e) => setCurrentMessage(e.target.value)}
                 />
-                <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
-                  <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                </Button>
                 <ChatbotSuggestions
                   predefinedChatbotRequests={[]}
                   disabled={!validToChat || isWaitingForResponse}
                 />
-              </form>
+              </>
             ) : (<div className="hint-request-container">
                   <CustomTooltip
                   title={
@@ -1300,18 +1293,17 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                   <>
                     {/* Chat Messages */}
                       {messages.map((message, index) => (
-                          <div
+                          <ChatBubble
                               ref={index === messages.length - 1 ? latestMessageRef : null}
                               key={index}
-                              className={`message message-${message.type}`}
-                              style={{ display: 'block' }}
+                              variant={message.type === 'user' ? 'user' : 'bot'}
                           >
                               {message.text ? (
                                   <ReactMarkdown children={message.text} />
                               ) : (
                                   <FormattedMessage id="Error rendering message" />
                               )}
-                          </div>
+                          </ChatBubble>
                       ))}                     
 
                       {isWaitingForResponse && (
@@ -1338,23 +1330,19 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           
           <div className="chatbot-input-area">
             {(typeof helperActiveTab !== 'undefined') && (
-              <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                <input
-                  type="text"
-                  name="userInput"
-                  placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+              <>
+                <ChatInput
                   value={currentMessage}
+                  onChange={setCurrentMessage}
+                  onSubmit={handleMessageSubmit}
+                  placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
                   disabled={isWaitingForResponse}
-                  onChange={(e) => setCurrentMessage(e.target.value)}
                 />
-                <Button type="submit" primary disabled={isWaitingForResponse}>
-                  <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                </Button>
                 <ChatbotSuggestions
                   predefinedChatbotRequests={[]}
                   disabled={!validToChat || isWaitingForResponse}
                 />
-              </form>
+              </>
             )}
           </div>          
         </>

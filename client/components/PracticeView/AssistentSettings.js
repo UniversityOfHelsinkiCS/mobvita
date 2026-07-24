@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { Popup } from 'semantic-ui-react'
-import SettingsIcon from 'Components/PracticeView/SettingsIcon'
+import { useIntl, FormattedMessage } from 'react-intl'
+import AppMenu from 'Components/ui/AppMenu'
+import AppSelect from 'Components/ui/AppSelect'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
-import { useLearningLanguage, translatableLanguages } from 'Utilities/common'
+import { useLearningLanguage, translatableLanguages, images } from 'Utilities/common'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 
+/**
+ * AssistentSettings — the assistant's settings gear (Circle-settings icon). Clicking it opens the
+ * design-system settings menu (AppMenu). For now the menu holds a single item — the dictionary
+ * language selection (AppSelect, which opens its own list) — but it's structured so more settings
+ * rows can be added later without changing the entry point.
+ */
 const AssistentSettings = ({ className = '' }) => {
-  const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
   const intl = useIntl()
   const learningLanguage = useLearningLanguage()
 
-  // Safe optional chaining for Redux state
   const translationLanguageCode = useSelector(
     ({ user }) => user?.data?.user?.last_trans_language || 'English'
   )
@@ -21,13 +26,12 @@ const AssistentSettings = ({ className = '' }) => {
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
-        key: element,
         value: element,
-        text: intl.formatMessage({ id: element }),
+        label: intl.formatMessage({ id: element }),
       }))
     : []
 
-  const handleDropdownChange = (value) => {
+  const handleDropdownChange = value => {
     if (translation) {
       const lemmas = translation?.map(t => t?.lemma).join('+')
       if (lemmas !== '') {
@@ -35,78 +39,48 @@ const AssistentSettings = ({ className = '' }) => {
       }
     }
     dispatch(updateDictionaryLanguage(value))
-    setOpen(false) // Close popup after selection
   }
 
-  const popupContent = (
-    <div style={{ padding: '0.5em 1em', minWidth: '180px' }}>
-      {dictionaryOptions.length > 0 ? (
-        <>
-          <div style={{ fontWeight: 'bold', marginBottom: '0.5em', color: '#555' }}>
-            <FormattedMessage id="select-dictionary-language"  />
-          </div>
-          <select
-            disabled={dictionaryOptions.length <= 1}
-            value={translationLanguageCode}
-            data-cy="dictionary-dropdown"
-            style={{
-              width: '100%',
-              padding: '0.4em 0.6em',
-              border: '1px solid #ccc',
-              borderRadius: '10px',
-              backgroundColor: 'white',
-              color: '#333',
-              fontSize: '0.9rem',
-              cursor: dictionaryOptions.length <= 1 ? 'not-allowed' : 'pointer',
-            }}
-            onChange={(e) => handleDropdownChange(e.target.value)}
-            onClick={(e) => e.stopPropagation()} // Prevent popup from closing on dropdown click
-          >
-            {dictionaryOptions.map(option => (
-              <option key={option.key} value={option.value}>
-                {option.text}
-              </option>
-            ))}
-          </select>
-        </>
-      ) : (
-        <div style={{ color: '#888', fontSize: '0.9rem' }}>
-          No dictionary languages available
-        </div>
-      )}
-    </div>
+  const gear = (
+    <img
+      src={images.circleSettings}
+      alt="settings"
+      data-cy="ai-assistant-settings-popup"
+      className={className}
+      style={{ width: 28, height: 28, cursor: 'pointer', display: 'block' }}
+    />
   )
 
   return (
-    <Popup
-      open={open}
-      on="click" 
-      onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}      
-      trigger={
-                <span 
-          data-cy="ai-assistant-settings-popup"
-          style={{ display: 'inline-block', cursor: 'pointer' }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              setOpen(prev => !prev)
-            }
+    <AppMenu
+      trigger={gear}
+      minWidth={240}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
+      {/* Settings item: dictionary language. Add more items below as needed. */}
+      <div style={{ padding: '2px 6px 6px' }}>
+        <div
+          style={{
+            fontFamily: font.family,
+            fontSize: 13,
+            fontWeight: 600,
+            color: colors.muted,
+            marginBottom: 8,
           }}
         >
-          <SettingsIcon className={className} />
-        </span>
-
-      }
-      content={popupContent}
-      position="bottom right"
-      basic
-      flowing
-      hideOnScroll      
-      style={{  borderRadius: '10px', padding: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.15)' }}
-    />
+          <FormattedMessage id="select-dictionary-language" />
+        </div>
+        <AppSelect
+          variant="tan-outline"
+          value={translationLanguageCode}
+          onChange={handleDropdownChange}
+          options={dictionaryOptions}
+          disabled={dictionaryOptions.length <= 1}
+          minWidth={210}
+        />
+      </div>
+    </AppMenu>
   )
 }
 

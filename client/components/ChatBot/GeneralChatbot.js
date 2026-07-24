@@ -47,7 +47,7 @@ const GeneralChatbot = () => {
   return (
     <div className="chatbot vita-chatbot">
       <div className="ai-assistant-header">
-        <h3 className="ai-header-title">Vita</h3>
+        <h3 className="ai-header-title">Vita - AI Assistant</h3>
       </div>
 
       <div className="chatbot-messages">

@@ -10,7 +10,7 @@ import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import LinkOffIcon from '@mui/icons-material/LinkOff'
+import CircleIcon from '@mui/icons-material/Circle'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
 import GroupIcon from '@mui/icons-material/Group'
@@ -48,7 +48,7 @@ import {
   getHelpLink,
 } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
-import { Offline } from 'react-detect-offline'
+import { Detector } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
@@ -418,9 +418,22 @@ export default function NavBar() {
           </NavGroup>
           {/******************************* USER OPTIONS *******************************/}
           <NavGroup>
-            <Offline className="navbar-basic-item" polling={{ timeout: 20000 }}>
-              <LinkOffIcon style={{ color: '#ff944d' }} />
-            </Offline>
+            <Detector
+              polling={{ timeout: 20000 }}
+              render={({ online }) => (
+                <CircleIcon
+                  className="navbar-basic-item"
+                  titleAccess={intl.formatMessage({
+                    id: online ? 'connection-online' : 'connection-offline',
+                  })}
+                  style={{
+                    fontSize: 10,
+                    color: online ? '#37B24D' : colors.error,
+                    margin: '0 10px',
+                  }}
+                />
+              )}
+            />
             <AppMenu
               minWidth={240}
               borderRadius="30px"

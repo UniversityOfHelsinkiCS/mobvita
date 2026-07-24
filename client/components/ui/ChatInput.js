@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import { colors, font } from 'Assets/mui_theme/designTokens'
+import { images } from 'Utilities/common'
 
 /**
  * ChatInput — the pill text field + circular send button shared by the chatbots.
@@ -16,39 +16,41 @@ const Form = styled('form')({
   width: '100%',
 })
 
+// Resting/empty border is soft; it firms up (and the field brightens) once the user is typing.
+const SOFT_BORDER = '#D3E2D9'
+
 const Field = styled('input')({
   flex: 1,
   minWidth: 0,
   height: 44,
   padding: '0 20px',
   borderRadius: 999,
-  border: `1px solid ${colors.green}`,
+  border: `1px solid ${SOFT_BORDER}`,
   backgroundColor: '#FFFFFF',
   fontFamily: font.family,
   fontSize: 15,
   color: colors.ink,
   outline: 'none',
+  transition: 'border-color 0.15s ease, background-color 0.15s ease',
   '&::placeholder': { color: colors.muted },
-  '&:focus': { borderColor: colors.focus },
-  '&:disabled': { backgroundColor: 'transparent', cursor: 'not-allowed' },
+  // "active": focused or holding text
+  '&:focus': { borderColor: colors.green },
+  '&:not(:placeholder-shown)': { borderColor: colors.green },
+  '&:disabled': { backgroundColor: 'transparent', borderColor: SOFT_BORDER, cursor: 'not-allowed' },
 })
 
+// Bare button — the Circle SVG (active/disabled) is the whole circle+arrow icon.
 const SendButton = styled('button')({
   flexShrink: 0,
-  width: 40,
-  height: 40,
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: '50%',
-  border: `1px solid ${colors.green}`,
-  backgroundColor: 'transparent',
-  color: colors.ink,
+  padding: 0,
+  border: 'none',
+  background: 'none',
   cursor: 'pointer',
-  transition: 'background-color 0.15s ease, color 0.15s ease',
-  '& svg': { fontSize: 20 },
-  '&:hover:not(:disabled)': { backgroundColor: colors.green },
-  '&:disabled': { color: colors.muted, borderColor: '#D9D6C9', cursor: 'not-allowed' },
+  '& img': { width: 36, height: 36, display: 'block' },
+  '&:disabled': { cursor: 'not-allowed' },
 })
 
 const ChatInput = ({
@@ -60,9 +62,11 @@ const ChatInput = ({
   name = 'userInput',
   ...rest
 }) => {
+  const canSend = !disabled && !!value?.trim()
+
   const handleSubmit = event => {
     event.preventDefault()
-    if (disabled || !value?.trim()) return
+    if (!canSend) return
     onSubmit()
   }
 
@@ -76,8 +80,8 @@ const ChatInput = ({
         disabled={disabled}
         onChange={e => onChange(e.target.value)}
       />
-      <SendButton type="submit" aria-label="Send" disabled={disabled || !value?.trim()}>
-        <ArrowUpwardIcon />
+      <SendButton type="submit" aria-label="Send" disabled={!canSend}>
+        <img src={canSend ? images.sendActive : images.sendInactive} alt="Send" />
       </SendButton>
     </Form>
   )

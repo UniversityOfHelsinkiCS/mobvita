@@ -6,6 +6,9 @@ import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
 import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
 import menu2 from 'Assets/images/menu-02.svg'
 import buttonCircle from 'Assets/images/button-circle.svg'
+import sendActive from 'Assets/images/Circle-1.svg'
+import sendInactive from 'Assets/images/Circle.svg'
+import circleSettings from 'Assets/images/Circle-settings.svg'
 import helpCircle from 'Assets/images/help-circle.svg'
 import asterisk02 from 'Assets/images/asterisk-02.svg'
 import mail05 from 'Assets/images/mail-05.svg'
@@ -128,6 +131,9 @@ export const images = {
   universityOfHelsinki,
   menu2,
   buttonCircle,
+  sendActive,
+  sendInactive,
+  circleSettings,
   helpCircle,
   asterisk02,
   mail05,

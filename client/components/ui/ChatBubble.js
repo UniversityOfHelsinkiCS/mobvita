@@ -7,10 +7,11 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  * ChatBubble — a single chat message bubble, shared across the chatbots.
  *
  * variant:
- *   'bot'       - assistant reply (left, light cream)
+ *   'bot'       - assistant reply (left, white)
  *   'user'      - the user's message (right, sage green)
  *   'note'      - feedback / system note (left, blue panel tint)
  *   'user-note' - the user's own note (right, warm cream tint)
+ *   'hint'      - a hint bubble (left, warm yellow)
  *
  * Pass `onRemove` to show a small close button (top-right) for removable messages.
  */
@@ -18,7 +19,8 @@ const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: '#FFFFFF', color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: colors.green, color: colors.ink },
   note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink },
-  'user-note': { alignSelf: 'flex-end', backgroundColor: '#ECE3BE', color: colors.ink },
+  'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
+  hint: { alignSelf: 'flex-start', backgroundColor: '#FFEECE', color: colors.ink },
 }
 
 const Bubble = styled('div', {
