@@ -1,7 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Box, Divider, Paper, Typography } from '@mui/material'
-import { FormattedMessage } from 'react-intl'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useLocation } from 'react-router-dom'
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material'
+import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
@@ -341,14 +352,26 @@ const EssayWritingView = () => {
               <Typography component="h1" variant="h5" className="essay-writing-title">
                 <FormattedMessage id="essay-writing-title" />
               </Typography>
-              <AppButton
-                form="url-upload"
-                type="submit"
-                onClick={() => console.log('story uploaded')}
-                data-cy="submit-essay"
-              >
-                <FormattedMessage id="upload-from-web-button" />
-              </AppButton>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {hiddenFeatures && (
+                  <AppButton
+                    variant="outline"
+                    onClick={handleClearCache}
+                    data-cy="essay-clear-cache"
+                  >
+                    Clear cache
+                  </AppButton>
+                )}
+                <AppButton
+                  onClick={() => setTopicDialogOpen(true)}
+                  disabled={
+                    savePending || hasPendingCorrection || !essayText.trim() || !writingSessionId
+                  }
+                  data-cy="submit-essay"
+                >
+                  <FormattedMessage id="upload-to-my-essays" />
+                </AppButton>
+              </Box>
             </Box>
             <Divider sx={{ mt: 2 }} />
             <EssayTextInput
@@ -412,22 +435,22 @@ const EssayWritingView = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outline-secondary"
+          <AppButton
+            variant="outline"
             onClick={() => {
               setTopicDialogOpen(false)
               setTopicTaken(false)
             }}
           >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
-          </Button>
-          <Button
+          </AppButton>
+          <AppButton
             onClick={handleConfirmUpload}
             disabled={!topic.trim() || savePending}
             data-cy="essay-topic-confirm"
           >
             <FormattedMessage id="upload-to-my-essays" />
-          </Button>
+          </AppButton>
         </DialogActions>
       </Dialog>
     </Box>
