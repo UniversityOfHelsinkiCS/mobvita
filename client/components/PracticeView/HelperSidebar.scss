@@ -1,11 +1,18 @@
+// 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
+$hs-card: #faf8ed; // cream panel
+$hs-ink: #2d2c2a; // text / chevron
+$hs-radius: 30px; // card radius
+
 .helper-sidebar {
   position: fixed;
   right: 0;
-  top: 3em;
+  top: 4.5em;
   bottom: 0;
   width: 380px;
-  background: #f9f9f9;
-  box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+  background: $hs-card;
+  border-top-left-radius: $hs-radius;
+  border-bottom-left-radius: $hs-radius;
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease;
   z-index: 100;
   display: flex;
@@ -17,23 +24,29 @@
 
   .sidebar-toggle {
     position: absolute;
-    left: -30px;
+    left: -28px;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 60px;
-    background: white;
-    border: 1px solid #ddd;
-    border-right: none;
-    border-radius: 8px 0 0 8px;
+    width: 28px;
+    height: 56px;
+    background: $hs-card;
+    color: $hs-ink;
+    border: none;
+    border-radius: 14px 0 0 14px;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.08);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 101;
+    transition: background 0.15s ease;
+
+    svg {
+      font-size: 22px;
+    }
 
     &:hover {
-      background: #f0f0f0;
+      background: #f1eeda;
     }
   }
 
@@ -158,32 +171,31 @@
       transform: translateX(-50%);
       width: 60px;
       height: 30px;
-      border-radius: 8px 8px 0 0;
+      border-radius: 14px 14px 0 0;
       border: none;
       outline: none;
-      background: #f1f1f1;
+      background: $hs-card;
       border-bottom: none;
       z-index: 1100;
 
-      i.icon {
-        font-size: 1.4rem;
+      svg {
+        font-size: 22px;
         transition: transform 0.2s ease, font-size 0.15s ease;
-        margin-left: 10px;
       }
 
       &:hover {
-        background: #f1f1f1;
-        i.icon {
-          font-size: 1.6rem;
+        background: #f1eeda;
+        svg {
+          font-size: 26px;
         }
       }
     }
 
-    /* Rotate icon for vertical handle */
-    .sidebar-toggle i.icon {
+    /* Rotate chevron for the horizontal (bottom-sheet) handle */
+    .sidebar-toggle svg {
       transform: rotate(90deg);
     }
-    .helper-sidebar.open .sidebar-toggle i.icon {
+    .helper-sidebar.open .sidebar-toggle svg {
       transform: rotate(-90deg);
     }
   }   

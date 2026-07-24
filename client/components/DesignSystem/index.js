@@ -7,6 +7,8 @@ import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
+import ChatBubble from 'Components/ui/ChatBubble'
+import ChatInput from 'Components/ui/ChatInput'
 import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
@@ -52,6 +54,7 @@ const DesignSystem = () => {
   const [pending, setPending] = useState(false)
   const [error, setError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [chatMessage, setChatMessage] = useState('')
 
   return (
     <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem', fontFamily: font.family }}>
@@ -148,6 +151,38 @@ const DesignSystem = () => {
           <AppActionCard icon={<img src={images.libraryBigColored} alt="" />} disabled>
             Disabled
           </AppActionCard>
+        </div>
+      </Section>
+
+      <Section title="ChatBubble variants">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            width: 340,
+            padding: 16,
+            backgroundColor: colors.card,
+            borderRadius: 16,
+          }}
+        >
+          <ChatBubble variant="bot">Hi! I&apos;m Vita. Ask me anything.</ChatBubble>
+          <ChatBubble variant="user">How is my progress?</ChatBubble>
+          <ChatBubble variant="note">Feedback note about your sentence.</ChatBubble>
+          <ChatBubble variant="user-note" onRemove={() => {}}>
+            My own note (removable).
+          </ChatBubble>
+        </div>
+      </Section>
+
+      <Section title="ChatInput">
+        <div style={{ width: 340, padding: 16, backgroundColor: colors.card, borderRadius: 16 }}>
+          <ChatInput
+            value={chatMessage}
+            onChange={setChatMessage}
+            onSubmit={() => setChatMessage('')}
+            placeholder="Ask Assistant…"
+          />
         </div>
       </Section>
 

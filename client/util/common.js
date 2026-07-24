@@ -5,6 +5,7 @@ import DOMPurify from 'dompurify'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
 import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
 import menu2 from 'Assets/images/menu-02.svg'
+import buttonCircle from 'Assets/images/button-circle.svg'
 import helpCircle from 'Assets/images/help-circle.svg'
 import asterisk02 from 'Assets/images/asterisk-02.svg'
 import mail05 from 'Assets/images/mail-05.svg'
@@ -126,6 +127,7 @@ export const images = {
   revitaLogoTransparent,
   universityOfHelsinki,
   menu2,
+  buttonCircle,
   helpCircle,
   asterisk02,
   mail05,
