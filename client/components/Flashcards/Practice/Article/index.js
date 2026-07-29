@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
 import AppButton from 'Components/AppButton'
-import { Icon } from 'semantic-ui-react'
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined'
+import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined'
 import Flashcard from '../Flashcard'
 import { set } from 'lodash'
 
@@ -59,7 +60,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   const rightAnswer = `${article} ${lemma}`
 
   const fontClass = lemma.length > 12 ? 'header-4' : 'header-2'
-  const resultIconName = answerCorrect ? 'thumbs up outline' : 'thumbs down outline'
+  const ResultIcon = answerCorrect ? ThumbUpAltOutlinedIcon : ThumbDownAltOutlinedIcon
 
   return (
     <ReactCardFlip isFlipped={flipped}>
@@ -73,11 +74,9 @@ const Article = ({ card, cardNumbering, answerCard }) => {
         <div className="flex-col space-evenly align-center grow">
           <span className="header-2">{rightAnswer}</span>
           {answerCorrect !== null && (
-            <Icon
+            <ResultIcon
               ref={iconRef}
-              style={{ marginLeft: 'auto', marginRight: 'auto' }}
-              name={resultIconName}
-              size="huge"
+              sx={{ marginLeft: 'auto', marginRight: 'auto', fontSize: 48 }}
             />
           )}
         </div>

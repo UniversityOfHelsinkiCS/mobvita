@@ -20,7 +20,8 @@ import {
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
-import { Divider, Icon } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import CustomTooltip from 'Components/CustomTooltip'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
@@ -397,10 +398,8 @@ const Progress = () => {
                 permanent
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                    name="info circle"
-                    color="grey"
+                  <InfoOutlined
+                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
                   />
                 </span>
               </CustomTooltip>
@@ -443,10 +442,8 @@ const Progress = () => {
                 permanent
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                    name="info circle"
-                    color="grey"
+                  <InfoOutlined
+                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
                   />
                 </span>
               </CustomTooltip>
@@ -488,10 +485,8 @@ const Progress = () => {
                 permanent
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                    name="info circle"
-                    color="grey"
+                  <InfoOutlined
+                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
                   />
                 </span>
               </CustomTooltip>
@@ -514,10 +509,8 @@ const Progress = () => {
                 permanent
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                    name="info circle"
-                    color="grey"
+                  <InfoOutlined
+                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
                   />
                 </span>
               </CustomTooltip>
@@ -540,10 +533,8 @@ const Progress = () => {
                 permanent
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                    name="info circle"
-                    color="grey"
+                  <InfoOutlined
+                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
                   />
                 </span>
               </CustomTooltip>

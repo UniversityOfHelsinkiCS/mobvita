@@ -2,9 +2,20 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Checkbox, Radio, Dropdown, Menu, Accordion, Divider } from 'semantic-ui-react'
+import {
+  RadioGroup,
+  FormControlLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import AppRadio from 'Components/ui/AppRadio'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
+import AppSwitch from 'Components/ui/AppSwitch'
+import AppSelect from 'Components/ui/AppSelect'
 import { useLocation } from 'react-router-dom'
 import {
   updateLocale,
@@ -26,7 +37,20 @@ import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import LearningSettingsModal from '../LearningSettingsModal'
 
 const SettingToggle = ({ translationId, ...props }) => {
-  return <Checkbox toggle label={{children: <FormattedHTMLMessage id={translationId} />}} {...props} />
+  return (
+    <FormControlLabel
+      control={<AppSwitch {...props} />}
+      label={<FormattedHTMLMessage id={translationId} />}
+      disabled={props.disabled}
+      sx={{
+        '& .MuiFormControlLabel-label': {
+          marginLeft: '0.5em',
+          fontFamily: font.family,
+          color: colors.ink,
+        },
+      }}
+    />
+  )
 }
 
 const Settings = ({teacherView}) => {
@@ -37,7 +61,7 @@ const Settings = ({teacherView}) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const [localeDropdownOptions, setLocaleDropdownOptions] = useState([])
-  const [accordionState, setAccordionState] = useState(0)
+  const [accordionState, setAccordionState] = useState(7)
   const handleLocaleChange = newLocale => {
     dispatch(setLocale(newLocale)) // Sets locale in root reducer...
     if (user) dispatch(updateLocale(newLocale)) // Updates user-object
@@ -74,8 +98,7 @@ const Settings = ({teacherView}) => {
   useEffect(() => {
     const temp = localeOptions.map(option => ({
       value: option.code,
-      text: option.displayName,
-      key: option.code,
+      label: option.displayName,
     }))
     setLocaleDropdownOptions(temp)
   }, [])
@@ -92,306 +115,301 @@ const Settings = ({teacherView}) => {
   }
 
   const deckSizeOptions = [
-    { value: 20, text: <b>20</b>, key: 20 },
-    { value: 50, text: <b>50</b>, key: 50 },
-    { value: 100, text: <b>100</b>, key: 100 },
+    { value: 20, label: <b>20</b> },
+    { value: 50, label: <b>50</b> },
+    { value: 100, label: <b>100</b> },
     {
       value: 'all',
-      text: <b>{intl.formatMessage({ id: 'all' })}</b>,
-      key: 'all',
+      label: <b>{intl.formatMessage({ id: 'all' })}</b>,
     },
   ]
 
   return (
     <div>
-      <div>
-        <h2 className="profile-page-setting-header">
-          <FormattedMessage id="interface-language" />
-        </h2>
-        <Dropdown
-          fluid
-          placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
-          value={actualLocale}
-          options={localeDropdownOptions}
-          selection
-          onChange={(e, data) => handleLocaleChange(data.value)}
-          data-cy="ui-lang-dropdown"
-          style={{ width: '200px' }}
-        />
-        <Divider />
-        {!teacherView && (<LearningSettingsModal
-          trigger={
-            <AppButton variant="primary" size="lg">
-              <FormattedMessage id="learning-settings" />
-            </AppButton>
-          }
-        />)}
-      </div>
-      <Accordion as={Menu} fluid vertical>
-        <div className="const ps-nm bg-settings">
-          <Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 1}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="user-settings-options" />
-                </h2>
-              }
-              index={1}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 1}
-              content={
-                <div>
-                  <Divider />
-                  <div className="space-evenly" style={{ marginTop: '.5em' }}>
-                    <span style={{ marginRight: '.5em', fontSize: '18px' }}>
-                      <input
-                        type="radio"
-                        style={{ marginRight: '.75em' }}
-                        onChange={() => dispatch(updateIsTeacher(false))}
-                        checked={!user.is_teacher}
-                        disabled={true}
-                      />
-                      <span style={{ color: user.is_teacher ? '#D3D3D3' : '#000000' }}>
-                        <FormattedMessage id="user-role-select-student" />
-                      </span>
-                    </span>
-                    <span style={{ marginRight: '.5em', fontSize: '18px' }}>
-                      <input
-                        type="radio"
-                        style={{ marginRight: '.75em' }}
-                        onChange={() => dispatch(updateIsTeacher(true))}
-                        checked={user.is_teacher}
-                        disabled={true}
-                      />
-                      <span style={{ color: !user.is_teacher ? '#D3D3D3' : '#000000' }}>
-                        <FormattedMessage id="user-role-select-teacher" />
-                      </span>
-                    </span>
-                  </div>
-                  <Divider />
-                  <SettingToggle
-                    translationId="enable-tooltips"
-                    checked={user.show_tooltips ?? Boolean(user.is_new_user)}
-                    onChange={() =>
-                      dispatch(updateShowTooltips(!(user.show_tooltips ?? Boolean(user.is_new_user))))
-                    }
-                    disabled={pending}
-                  />
-                </div>
-              }
-            />
-          </Menu.Item>
-          <Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 2}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="practice-settings" />
-                </h2>
-              }
-              index={2}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 2}
-              content={
-                <div className="flex-col gap-row-nm">
-                  <Divider />
-                  <SettingToggle
-                    translationId="practice-grammar-cloze-exercises"
-                    checked={user.blank_filling}
-                    onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
-                    disabled={pending}
-                  />
-                  <SettingToggle
-                    translationId="practice-grammar-MC-exercises"
-                    checked={user.multi_choice}
-                    onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
-                    disabled={pending}
-                  />
-                  {/* <SettingToggle
-                    translationId="practice-listening-cloze-exercises"
-                    checked={user.task_audio}
-                    onChange={() => dispatch(updateAudioTask(!user.task_audio))}
-                    disabled={pending}
-                  /> */}
-                  <ListeningExerciseSettings />
-                  {hiddenFeatures && (<SettingToggle
-                    translationId="practice-pronunciation-exercises"
-                    checked={user.task_speech}
-                    onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
-                    disabled={pending}
-                  />)}
-                  <Divider />
-                  <SettingToggle
-                    translationId="multiple-chances-when-practicing"
-                    checked={user.second_try}
-                    onChange={() => dispatch(updateSecondTry(!user.second_try))}
-                    disabled={pending}
-                  />
+      <div className="const ps-nm bg-settings">
+        <Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 7}
+          onChange={e => handleClick(e, { index: 7 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="interface-settings" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <label style={{ display: 'block', paddingBottom: '0.4rem' }}>
+                <FormattedMessage id="interface-language" />
+              </label>
+              <div data-cy="ui-lang-dropdown">
+                <AppSelect
+                  placeholder={intl.formatMessage({ id: 'choose-interface-language' })}
+                  value={actualLocale}
+                  options={localeDropdownOptions}
+                  onChange={value => handleLocaleChange(value)}
+                  variant="tan-outline"
+                  minWidth={200}
+                />
+              </div>
+            </div>
+          </AccordionDetails>
+        </Accordion>
 
-                  {hiddenFeatures && (
-                    <div>
-                      <hr />
-                      <span className="pb-sm bold">
-                        <FormattedMessage id="participle-exercise" /> (staging only):
-                      </span>
-                      <div className="profile-page-radio-button-group">
-                        <Radio
-                          label={intl.formatMessage({ id: 'participle-base-exer' })}
-                          name="part_exer"
-                          value="participle"
-                          checked={user.part_exer === 'participle'}
-                          onChange={() => dispatch(updateParticipleExer('participle'))}
-                        />
-                        <Radio
-                          label={intl.formatMessage({ id: 'verb-base-exer' })}
-                          name="part_exer"
-                          value="verb"
-                          checked={user.part_exer === 'verb'}
-                          onChange={() => dispatch(updateParticipleExer('verb'))}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              }
-            />
-          </Menu.Item>
-          {!teacherView && (<Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 3}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="Flashcards" />
-                </h2>
-              }
-              index={3}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 3}
-              content={
-                <div>
-                  <Divider />
-                  <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
-                    <FormattedMessage id="how-many-cards-per-practice-session" />
-                    :&nbsp;&nbsp;
-                  </label>
-                  <Dropdown
-                    id="flashcard-amount"
-                    value={user.flashcard_num}
-                    options={deckSizeOptions}
-                    onChange={(e, data) => dispatch(updateNumberOfFlashcards(Number(data.value)))}
-                    disabled={pending}
+        {!teacherView && (
+          <Accordion
+            className="add-story-accordion-item"
+            expanded={accordionState === 8}
+            onChange={e => handleClick(e, { index: 8 })}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <h2 className="profile-page-setting-header">
+                <FormattedMessage id="learning-settings" />
+              </h2>
+            </AccordionSummary>
+            <AccordionDetails className="add-story-accordion-item-content">
+              <div>
+                  <LearningSettingsModal
+                  trigger={
+                    <AppButton variant="primary" size="lg">
+                      <FormattedMessage id="learning-settings" />
+                    </AppButton>
+                  }
+                />
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        )}
+
+        <Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 1}
+          onChange={e => handleClick(e, { index: 1 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="user-settings-options" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <div className="space-evenly" style={{ marginTop: '.5em' }}>
+                <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+                  <input
+                    type="radio"
+                    style={{ marginRight: '.75em' }}
+                    onChange={() => dispatch(updateIsTeacher(false))}
+                    checked={!user.is_teacher}
+                    disabled={true}
                   />
-                </div>
-              }
-            />
-          </Menu.Item>)}
-          {!teacherView && (<Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 4}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="audio-settings" />
-                </h2>
-              }
-              index={4}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 4}
-              content={
-                <div>
-                  <Divider />
-                  <span className="pb-sm bold">
-                    <FormattedMessage id="Pronounce clicked words" />:
+                  <span style={{ color: user.is_teacher ? '#D3D3D3' : '#000000' }}>
+                    <FormattedMessage id="user-role-select-student" />
                   </span>
-                  <div className="profile-page-radio-button-group">
-                    <Radio
-                      label={intl.formatMessage({ id: 'Always' })}
-                      name="autoSpeak"
-                      value="always"
-                      checked={user.auto_speak === 'always'}
-                      onChange={() => dispatch(updateAutoSpeak('always'))}
-                    />
-                    <Radio
-                      label={intl.formatMessage({ id: 'Only on demand' })}
-                      name="autoSpeak"
-                      value="demand"
-                      checked={user.auto_speak === 'demand'}
-                      onChange={() => dispatch(updateAutoSpeak('demand'))}
-                    />
-                  </div>
-                  <br />
-                </div>
-              }
-            />
-          </Menu.Item>)}
-          {!teacherView && (<Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 5}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="Privacy" />
-                </h2>
-              }
-              index={5}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 5}
-              content={
-                <div>
-                  <Divider />
-                  <SettingToggle
-                    translationId="Show my username in leaderboards"
-                    checked={user.publish_progress}
-                    onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
-                    disabled={pending}
+                </span>
+                <span style={{ marginRight: '.5em', fontSize: '18px' }}>
+                  <input
+                    type="radio"
+                    style={{ marginRight: '.75em' }}
+                    onChange={() => dispatch(updateIsTeacher(true))}
+                    checked={user.is_teacher}
+                    disabled={true}
                   />
-                </div>
-              }
-            />
-          </Menu.Item>)}
-          {/* !teacherView && (<Menu.Item className="add-story-accordion-item">
-            <Accordion.Title
-              active={accordionState === 6}
-              content={
-                <h2 className="profile-page-setting-header">
-                  <FormattedMessage id="notification-settings" />
-                </h2>
-              }
-              index={6}
-              onClick={handleClick}
-            />
-            <Accordion.Content
-              className="add-story-accordion-item-content"
-              active={accordionState === 6}
-              content={
+                  <span style={{ color: !user.is_teacher ? '#D3D3D3' : '#000000' }}>
+                    <FormattedMessage id="user-role-select-teacher" />
+                  </span>
+                </span>
+              </div>
+              <SettingToggle
+                translationId="enable-tooltips"
+                checked={user.show_tooltips ?? Boolean(user.is_new_user)}
+                onChange={() =>
+                  dispatch(updateShowTooltips(!(user.show_tooltips ?? Boolean(user.is_new_user))))
+                }
+                disabled={pending}
+              />
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 2}
+          onChange={e => handleClick(e, { index: 2 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="practice-settings" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div className="flex-col gap-row-nm">
+              <SettingToggle
+                translationId="practice-grammar-cloze-exercises"
+                checked={user.blank_filling}
+                onChange={() => dispatch(updateBlankFilling(!user.blank_filling))}
+                disabled={pending}
+              />
+              <SettingToggle
+                translationId="practice-grammar-MC-exercises"
+                checked={user.multi_choice}
+                onChange={() => dispatch(updateMultiChoice(!user.multi_choice))}
+                disabled={pending}
+              />
+              {/* <SettingToggle
+                translationId="practice-listening-cloze-exercises"
+                checked={user.task_audio}
+                onChange={() => dispatch(updateAudioTask(!user.task_audio))}
+                disabled={pending}
+              /> */}
+              <ListeningExerciseSettings />
+              {hiddenFeatures && (<SettingToggle
+                translationId="practice-pronunciation-exercises"
+                checked={user.task_speech}
+                onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
+                disabled={pending}
+              />)}
+              <SettingToggle
+                translationId="multiple-chances-when-practicing"
+                checked={user.second_try}
+                onChange={() => dispatch(updateSecondTry(!user.second_try))}
+                disabled={pending}
+              />
+
+              {hiddenFeatures && (
                 <div>
-                  <Divider />
-                  <SettingToggle
-                    translationId="enable-recommendations"
-                    checked={user.enable_recmd}
-                    onChange={() => dispatch(updateEnableRecmd(!user.enable_recmd))}
-                    disabled={pending}
-                  />
+                  <span className="pb-sm bold">
+                    <FormattedMessage id="participle-exercise" /> (staging only):
+                  </span>
+                  <RadioGroup
+                    row
+                    className="profile-page-radio-button-group"
+                    name="part_exer"
+                    value={user.part_exer}
+                    onChange={e => dispatch(updateParticipleExer(e.target.value))}
+                  >
+                    <FormControlLabel
+                      value="participle"
+                      control={<AppRadio />}
+                      label={intl.formatMessage({ id: 'participle-base-exer' })}
+                    />
+                    <FormControlLabel
+                      value="verb"
+                      control={<AppRadio />}
+                      label={intl.formatMessage({ id: 'verb-base-exer' })}
+                    />
+                  </RadioGroup>
                 </div>
-              }
-            />
-          </Menu.Item>) */}
-        </div>
-      </Accordion>
+              )}
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        {!teacherView && (<Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 3}
+          onChange={e => handleClick(e, { index: 3 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="Flashcards" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <label htmlFor="flashcard-amount" style={{ paddingRight: '0.5rem' }}>
+                <FormattedMessage id="how-many-cards-per-practice-session" />
+                :&nbsp;&nbsp;
+              </label>
+              <AppSelect
+                id="flashcard-amount"
+                value={user.flashcard_num}
+                options={deckSizeOptions}
+                onChange={value => dispatch(updateNumberOfFlashcards(Number(value)))}
+                disabled={pending}
+                variant="tan-outline"
+                minWidth={120}
+              />
+            </div>
+          </AccordionDetails>
+        </Accordion>)}
+        {!teacherView && (<Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 4}
+          onChange={e => handleClick(e, { index: 4 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="audio-settings" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <span className="pb-sm bold">
+                <FormattedMessage id="Pronounce clicked words" />:
+              </span>
+              <RadioGroup
+                row
+                className="profile-page-radio-button-group"
+                name="autoSpeak"
+                value={user.auto_speak}
+                onChange={e => dispatch(updateAutoSpeak(e.target.value))}
+              >
+                <FormControlLabel
+                  value="always"
+                  control={<AppRadio />}
+                  label={intl.formatMessage({ id: 'Always' })}
+                />
+                <FormControlLabel
+                  value="demand"
+                  control={<AppRadio />}
+                  label={intl.formatMessage({ id: 'Only on demand' })}
+                />
+              </RadioGroup>
+              <br />
+            </div>
+          </AccordionDetails>
+        </Accordion>)}
+        {!teacherView && (<Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 5}
+          onChange={e => handleClick(e, { index: 5 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="Privacy" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <SettingToggle
+                translationId="Show my username in leaderboards"
+                checked={user.publish_progress}
+                onChange={() => dispatch(updatePublishProgress(!user.publish_progress))}
+                disabled={pending}
+              />
+            </div>
+          </AccordionDetails>
+        </Accordion>)}
+        {/* !teacherView && (<Accordion
+          className="add-story-accordion-item"
+          expanded={accordionState === 6}
+          onChange={e => handleClick(e, { index: 6 })}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h2 className="profile-page-setting-header">
+              <FormattedMessage id="notification-settings" />
+            </h2>
+          </AccordionSummary>
+          <AccordionDetails className="add-story-accordion-item-content">
+            <div>
+              <SettingToggle
+                translationId="enable-recommendations"
+                checked={user.enable_recmd}
+                onChange={() => dispatch(updateEnableRecmd(!user.enable_recmd))}
+                disabled={pending}
+              />
+            </div>
+          </AccordionDetails>
+        </Accordion>) */}
+      </div>
     </div>
   )
 }

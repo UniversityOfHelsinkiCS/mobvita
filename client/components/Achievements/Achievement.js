@@ -1,5 +1,5 @@
 import React from 'react'
-import AppProgressBar from 'Components/AppProgressBar'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import Medal from './Medal'
 
 const Achievement = ({ name, level, current, total }) => {
@@ -31,9 +31,9 @@ const Achievement = ({ name, level, current, total }) => {
               <Medal medal={medalAchieved(5) && 'diamond'} />
             </div>
             <AppProgressBar
-              now={progressPercentage}
+              value={progressPercentage}
               label={progressLabel}
-              variant={level === 5 ? 'success' : undefined}
+              fillColor={level === 5 ? '#7BC47F' : undefined}
             />
           </div>
         </div>

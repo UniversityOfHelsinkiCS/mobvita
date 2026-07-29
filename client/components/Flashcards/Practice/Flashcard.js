@@ -1,5 +1,6 @@
 import React from 'react'
-import { Icon } from 'semantic-ui-react'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { FormattedMessage } from 'react-intl'
 import { flashcardColors } from 'Utilities/common'
 import FlashcardDelete from './FlashcardDelete'
@@ -17,7 +18,7 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
           <div>
             {handleEdit && (
               <button className="flashcard-blended-input" type="button" onClick={handleEdit}>
-                <Icon name="edit" style={{ color: foreground[stage] || 'white' }} />
+                <EditOutlinedIcon sx={{ color: foreground[stage] || 'white' }} />
               </button>
             )}
             {cardNumbering}
@@ -35,7 +36,7 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
         >
           <FormattedMessage id="Flip" />
           {'  '}
-          <Icon name="arrow right" style={{ color: foreground[stage] }} />
+          <ArrowForwardIcon sx={{ color: foreground[stage] }} />
         </button>
       </div>
     </div>

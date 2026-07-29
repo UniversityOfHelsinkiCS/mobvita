@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Form } from 'react-bootstrap'
+import AppTextField from 'Components/ui/AppTextField'
 
 const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editing = false }) => {
   const handleWordChange = e => {
@@ -23,10 +23,9 @@ const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editin
           <label htmlFor="newWord" className="header-3 justify-center">
             <FormattedMessage id="new-word" />
           </label>
-          <Form.Control
+          <AppTextField
             id="newWord"
-            type="text"
-            ref={wordRef}
+            inputRef={wordRef}
             value={word}
             onChange={handleWordChange}
             onBlur={getTranslations}

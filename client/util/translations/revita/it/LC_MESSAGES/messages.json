@@ -1877,5 +1877,6 @@
     "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "connection-online": "Connected",
-    "connection-offline": "No connection"
+    "connection-offline": "No connection",
+    "interface-settings": "Interface settings"
 }

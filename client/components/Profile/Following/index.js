@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import { unfollowUser, unblockUser } from 'Utilities/redux/userReducer'
-import { Icon, Table } from 'semantic-ui-react'
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
+import CloseIcon from '@mui/icons-material/Close'
 import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { sanitizeHtml } from 'Utilities/common'
@@ -58,7 +60,7 @@ const Following = () => {
             permanent
           >
             <span style={{ display: 'inline-flex' }}>
-              <Icon name="info circle" size="small" color="grey" />
+              <InfoOutlined fontSize="small" sx={{ color: 'grey' }} />
             </span>
           </CustomTooltip>
           <FormattedMessage id="followed-users" />{' '}
@@ -66,9 +68,9 @@ const Following = () => {
 
         {followedUsers.length > 0 ? (
           <Table size="small" data-cy="followed-table">
-            <Table.Header>
-              <Table.Row key="followed-header-row">
-                <Table.HeaderCell>
+            <TableHead>
+              <TableRow key="followed-header-row">
+                <TableCell>
                   <div className="space-between">
                     <div>
                       <FormattedMessage id="username" />
@@ -77,28 +79,26 @@ const Following = () => {
                       <FormattedMessage id="actions" />
                     </div>
                   </div>
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {followedUsers.map(followed => (
-                <Table.Row key={`${followed.usename}`}>
-                  <Table.Cell>
+                <TableRow key={`${followed.usename}`}>
+                  <TableCell>
                     <div className="space-between">
                       <div>
                         {followed.username} ({followed.email})
                       </div>
-                      <Icon
-                        style={{ cursor: 'pointer' }}
-                        name="close"
-                        color="red"
+                      <CloseIcon
+                        sx={{ cursor: 'pointer', color: 'red' }}
                         onClick={() => setUserToUnfollow(followed)}
                       />
                     </div>
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
-            </Table.Body>
+            </TableBody>
           </Table>
         ) : (
           <span className="additional-info">
@@ -120,7 +120,7 @@ const Following = () => {
             permanent
           >
             <span style={{ display: 'inline-flex' }}>
-              <Icon name="info circle" size="small" color="grey" />
+              <InfoOutlined fontSize="small" sx={{ color: 'grey' }} />
             </span>
           </CustomTooltip>
           <FormattedMessage id="blocked-users" />{' '}
@@ -128,9 +128,9 @@ const Following = () => {
 
         {blocked.length > 0 ? (
           <Table size="small" data-cy="blocked-table">
-            <Table.Header>
-              <Table.Row key="blocked-header-row">
-                <Table.HeaderCell>
+            <TableHead>
+              <TableRow key="blocked-header-row">
+                <TableCell>
                   <div className="space-between">
                     <div>
                       <FormattedMessage id="username" />
@@ -139,28 +139,26 @@ const Following = () => {
                       <FormattedMessage id="actions" />
                     </div>
                   </div>
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {blocked.map(user => (
-                <Table.Row key={`${user.username}`}>
-                  <Table.Cell>
+                <TableRow key={`${user.username}`}>
+                  <TableCell>
                     <div className="space-between">
                       <div data-cy={user.email}>
                         {user.username} ({user.email})
                       </div>
-                      <Icon
-                        style={{ cursor: 'pointer' }}
-                        name="close"
-                        color="red"
+                      <CloseIcon
+                        sx={{ cursor: 'pointer', color: 'red' }}
                         onClick={() => setUserToUnblock(user)}
                       />
                     </div>
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
-            </Table.Body>
+            </TableBody>
           </Table>
         ) : (
           <span className="additional-info">

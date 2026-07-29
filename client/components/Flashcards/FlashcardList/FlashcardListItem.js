@@ -1,29 +1,18 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useMemo, useCallback, useRef } from 'react'
+import React, { useMemo, useCallback, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { ListGroup, Card, Accordion, useAccordionButton } from 'react-bootstrap'
-import { Icon } from 'semantic-ui-react'
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import CheckIcon from '@mui/icons-material/Check'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl';
 import { sanitizeHtml, flashcardColors } from 'Utilities/common'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
-
-const AccordionToggle = ({ eventKey, onClick, style, children }) => {
-  const handleClick = useAccordionButton(eventKey, onClick)
-  return (
-    <div
-      onClick={handleClick}
-      style={style}
-      role="button"
-      tabIndex={0}
-      onKeyDown={e => e.key === 'Enter' && handleClick(e)}
-    >
-      {children}
-    </div>
-  )
-}
 
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
@@ -32,6 +21,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
   const dispatch = useDispatch()
 
   const cardContainerRef = useRef(null)
+  const [expanded, setExpanded] = useState(false)
 
   const scrollToCardTopIfOpenedAndOffscreen = useCallback(() => {
     const cardEl = cardContainerRef.current
@@ -40,14 +30,13 @@ const FlashcardListItem = ({ card, handleEdit }) => {
     const HEADER_OFFSET_PX = 52
 
     const isCollapseOpen = collapseEl =>
-      Boolean(collapseEl) &&
-      (collapseEl.classList.contains('show') || collapseEl.classList.contains('in'))
+      Boolean(collapseEl) && collapseEl.classList.contains('MuiCollapse-entered')
 
     const tryScroll = () => {
       const el = cardContainerRef.current
       if (!el) return
 
-      const collapseEl = el.querySelector('.collapse')
+      const collapseEl = el.querySelector('.MuiCollapse-root')
       if (!isCollapseOpen(collapseEl)) return
 
       const topInViewport = el.getBoundingClientRect().top
@@ -61,11 +50,18 @@ const FlashcardListItem = ({ card, handleEdit }) => {
     ;[0, 50, 200, 400].forEach(ms => window.setTimeout(tryScroll, ms))
   }, [])
 
-  const handleDelete = () => {
+  const handleAccordionChange = (e, isExpanded) => {
+    setExpanded(isExpanded)
+    if (isExpanded) scrollToCardTopIfOpenedAndOffscreen()
+  }
+
+  const handleDelete = e => {
+    e.stopPropagation()
     dispatch(deleteFlashcard(_id))
   }
 
-  const handleKnowFlashcard = () => {
+  const handleKnowFlashcard = e => {
+    e.stopPropagation()
     const answerDetails = {
       correct: true,
       answer: null,
@@ -78,7 +74,8 @@ const FlashcardListItem = ({ card, handleEdit }) => {
     dispatch(changeFlashcardStage(_id, 4))
   }
 
-  const handleNotKnowFlashcard = () => {
+  const handleNotKnowFlashcard = e => {
+    e.stopPropagation()
     const answerDetails = {
       correct: false,
       answer: null,
@@ -105,59 +102,64 @@ const FlashcardListItem = ({ card, handleEdit }) => {
   )
 
   return (
-    <Card ref={cardContainerRef} style={{ backgroundColor: background[stage] }}>
-      <ListGroup.Item
-        style={{
-          display: 'flex',
-          border: 0,
-          alignItems: 'center',
+    <Accordion
+      ref={cardContainerRef}
+      expanded={expanded}
+      onChange={handleAccordionChange}
+      disableGutters
+      square
+      sx={{
+        backgroundColor: background[stage],
+        boxShadow: 'none',
+        marginBottom: '1px',
+        '&:before': { display: 'none' },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        sx={{
           backgroundColor: 'transparent',
+          '& .MuiAccordionSummary-content': {
+            display: 'flex',
+            alignItems: 'center',
+            margin: 0,
+          },
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-know-word" />}>
             <span style={{ display: 'inline-flex' }}>
-              <Icon
-                name="check"
+              <CheckIcon
                 onClick={handleKnowFlashcard}
-                style={{ cursor: 'pointer' }}
+                sx={{ cursor: 'pointer' }}
               />
             </span>
           </CustomTooltip>
           <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-dont-know-word" />}>
             <span style={{ display: 'inline-flex' }}>
-              <Icon
-                name="question"
+              <HelpOutlineIcon
                 onClick={handleNotKnowFlashcard}
-                style={{ cursor: 'pointer' }}
+                sx={{ cursor: 'pointer' }}
               />
             </span>
           </CustomTooltip>
         </div>
 
-        <AccordionToggle
-          eventKey={_id}
-          onClick={scrollToCardTopIfOpenedAndOffscreen}
+        <div
           style={{
-            backgroundColor: 'transparent',
-            border: 0,
             flex: 1,
             textAlign: 'center',
-            justifyContent: 'center',
-            outline: 0,
-            cursor: 'pointer',
             paddingLeft: '0.5rem',
             minWidth: 0,
           }}
         >
           {lemma}
-        </AccordionToggle>
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Icon
-            name="edit outline"
-            style={{ cursor: 'pointer' }}
-            onClick={(e) => {
+          <EditOutlinedIcon
+            sx={{ cursor: 'pointer' }}
+            onClick={e => {
               e.stopPropagation()
               handleEdit(card)
             }}
@@ -165,33 +167,30 @@ const FlashcardListItem = ({ card, handleEdit }) => {
 
           <CustomTooltip placement="top" title={<FormattedMessage id="remove-card-tooltip" />}>
             <span style={{ display: 'inline-flex' }}>
-              <Icon
-                name="trash alternate"
+              <DeleteOutlineIcon
                 onClick={handleDelete}
-                style={{ cursor: 'pointer' }}
+                sx={{ cursor: 'pointer' }}
               />
             </span>
           </CustomTooltip>
         </div>
-      </ListGroup.Item>
+      </AccordionSummary>
 
-      <Accordion.Collapse eventKey={_id}>
-        <Card.Body>
-          <span className="bold">
-            <FormattedMessage id="Translations" />
-          </span>
-          <ul>{uniqueGlossListItems}</ul>
-          {card.hint.length > 0 && (
-            <div>
-              <span className="bold">
-                <FormattedMessage id="Hints" />
-              </span>
-              <ul>{uniqueHintListItems}</ul>
-            </div>
-          )}
-        </Card.Body>
-      </Accordion.Collapse>
-    </Card>
+      <AccordionDetails>
+        <span className="bold">
+          <FormattedMessage id="Translations" />
+        </span>
+        <ul>{uniqueGlossListItems}</ul>
+        {card.hint.length > 0 && (
+          <div>
+            <span className="bold">
+              <FormattedMessage id="Hints" />
+            </span>
+            <ul>{uniqueHintListItems}</ul>
+          </div>
+        )}
+      </AccordionDetails>
+    </Accordion>
   )
 }
 

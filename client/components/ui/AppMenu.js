@@ -23,11 +23,16 @@ const AppMenuCloseContext = createContext(null)
 const StyledPopover = styled(Popover, {
   shouldForwardProp: prop => prop !== 'radius' && prop !== 'menuMinWidth',
 })(({ radius, menuMinWidth }) => ({
+  // Sit above semantic-ui Popup/Modal (z-index ~1900) so the menu isn't hidden behind them.
+  zIndex: 3000,
   '& .MuiPopover-paper': {
     backgroundColor: colors.card,
     boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
     padding: '10px 15px',
-    overflow: 'visible',
+    // Scroll long lists (e.g. AppSelect language options) instead of overflowing off-screen.
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    maxHeight: 'min(60vh, 420px)',
     borderRadius: radius,
     minWidth: menuMinWidth,
   },

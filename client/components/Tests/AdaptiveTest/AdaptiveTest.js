@@ -2,8 +2,13 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
-import { Icon, Segment } from 'semantic-ui-react'
+import { Box } from '@mui/material'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
+import StopIcon from '@mui/icons-material/Stop'
 import AppButton from 'Components/AppButton'
+import AppProgressBar from 'Components/ui/AppProgressBar'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { resetTests, sendAdaptiveTestAnswer, resumeAdaptiveTest } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
@@ -139,7 +144,7 @@ const AdaptiveTest = ({ showingInfo }) => {
 
   return (
     <div className="cont mt-nm">
-      <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
+      <Box sx={{ minHeight: '700px', position: 'relative' }}>
         <div className="align-center justify-center">
           {timedTest && (
             <div
@@ -147,18 +152,30 @@ const AdaptiveTest = ({ showingInfo }) => {
               style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
             >
               <div className="test-controls">
-                <Icon
-                  size="large"
-                  color={willPause ? 'grey' : 'black'}
-                  name={paused ? 'play' : 'pause'}
-                  onClick={paused ? resumeTimer : pauseTimer}
-                  style={{ margin: '0.25em' }}
-                />
-                <Icon
-                  size="large"
-                  name="stop"
+                {paused ? (
+                  <PlayArrowIcon
+                    onClick={resumeTimer}
+                    sx={{
+                      fontSize: 28,
+                      color: willPause ? 'grey.600' : colors.ink,
+                      cursor: 'pointer',
+                      m: '0.25em',
+                    }}
+                  />
+                ) : (
+                  <PauseIcon
+                    onClick={pauseTimer}
+                    sx={{
+                      fontSize: 28,
+                      color: willPause ? 'grey.600' : colors.ink,
+                      cursor: 'pointer',
+                      m: '0.25em',
+                    }}
+                  />
+                )}
+                <StopIcon
                   onClick={() => setWillStop(true)}
-                  style={{ margin: '0.25em' }}
+                  sx={{ fontSize: 28, color: colors.ink, cursor: 'pointer', m: '0.25em' }}
                 />
               </div>
               <div
@@ -175,16 +192,12 @@ const AdaptiveTest = ({ showingInfo }) => {
             </div>
           )}
           <div className="test-container">
-            <div className={`ui progress ${progress}`}>
-              <div
-                className="bar"
-                style={{
-                  width: `${pct}%`,
-                  minWidth: 8,
-                  transition: 'width 200ms ease',
-                }}
-              />
-            </div>
+            <AppProgressBar
+              value={pct}
+              fillColor={
+                progress === 'green' ? colors.green : progress === 'yellow' ? '#E8D08A' : '#E0A9A9'
+              }
+            />
             
             <div className="test-top-info space-between">
               <div>
@@ -234,7 +247,7 @@ const AdaptiveTest = ({ showingInfo }) => {
             </div>
           </div>
         </div>
-      </Segment>
+      </Box>
     </div>
   )
 }

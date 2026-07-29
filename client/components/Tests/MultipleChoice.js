@@ -47,7 +47,7 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
       {choices && (choices
         // .filter(choice => choice?.isSelected != true)
         .map(choice => (
-          <div key={choice?.option}>
+          <div key={choice?.option} style={{ marginBottom: '0.75em' }}>
             <AppButton
               className="test-choice-button"
               onClick={!answerPending ? () => onAnswer(choice) : undefined}

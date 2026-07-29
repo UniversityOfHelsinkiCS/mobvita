@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { FormattedMessage } from 'react-intl'
-import { Accordion } from 'react-bootstrap'
-import { Pagination } from 'semantic-ui-react'
+import { Pagination } from '@mui/material'
 import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashcardListReducer'
 import Spinner from 'Components/Spinner'
@@ -48,18 +47,9 @@ const FlashcardList = () => {
     setEditableCard(card)
   }
 
-  const handlePageChange = (e, { activePage }) => {
-    setActivePage(activePage)
-    debouncedPageFetch(activePage - 1)
-  }
-
-  const handleEllipsisClick = (e, { value: ellipsisPosition }) => {
-    const newPage =
-      ellipsisPosition > activePage
-        ? activePage + Math.ceil((numberOfPages - activePage) / 2)
-        : activePage - Math.ceil(activePage / 2)
-    setActivePage(newPage)
-    debouncedPageFetch(newPage - 1)
+  const handlePageChange = (e, page) => {
+    setActivePage(page)
+    debouncedPageFetch(page - 1)
   }
 
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
@@ -81,16 +71,10 @@ const FlashcardList = () => {
 
   const pagination = (
     <Pagination
-      activePage={activePage}
-      totalPages={numberOfPages || 1}
-      firstItem={null}
-      lastItem={null}
-      onPageChange={handlePageChange}
-      ellipsisItem={{
-        content: '...',
-        onClick: handleEllipsisClick,
-      }}
-      size="mini"
+      page={activePage}
+      count={numberOfPages || 1}
+      onChange={handlePageChange}
+      size="small"
       className="semantic-pagination"
     />
   )
@@ -107,11 +91,11 @@ const FlashcardList = () => {
         <Spinner fullHeight size={60} variant='primary'/>
       ) : (
         <div>
-          <Accordion className="pt-sm">
+          <div className="pt-sm">
             {cardsInCurrentPage.map(card => (
               <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
             ))}
-          </Accordion>
+          </div>
           <div className="flex pt-sm">{pagination}</div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from 'semantic-ui-react'
+import { Box } from '@mui/material'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -12,29 +12,43 @@ import { XpBar } from './UserLevelInfo'
 const DesktopView = ({teacherView}) => {
   return (
     <div className="cont ps-nm">
-      <Grid columns={2} divided>
-        {!teacherView && (<Grid.Column className="flex-col gap-row-nm">
-          <Grid.Row>
-            <div className="prof-info">
-              <ProfileInfo />
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: teacherView ? '1fr' : '1fr 1fr',
+          gap: 2,
+        }}
+      >
+        {!teacherView && (
+          <Box className="flex-col gap-row-nm">
+            <div>
+              <div className="prof-info">
+                <ProfileInfo />
+              </div>
             </div>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column><UserLevel /></Grid.Column>
-            <Grid.Column>
-              <div className="xp-bar"><XpBar /></div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <ProfileStreakInfo />
-          </Grid.Row>
-        </Grid.Column>)}
-        <Grid.Column>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box sx={{ flex: 1 }}><UserLevel /></Box>
+              <Box sx={{ flex: 1 }}>
+                <div className="xp-bar"><XpBar /></div>
+              </Box>
+            </Box>
+            <div>
+              <ProfileStreakInfo />
+            </div>
+          </Box>
+        )}
+        <Box
+          sx={
+            teacherView
+              ? undefined
+              : { borderLeft: '1px solid rgba(34,36,38,.15)', pl: 2 }
+          }
+        >
           <ProgressStatistics />
           <EloChart />
           <MedalSummary />
-        </Grid.Column>
-      </Grid>
+        </Box>
+      </Box>
     </div>
   )
 }
@@ -42,21 +56,21 @@ const DesktopView = ({teacherView}) => {
 const MobileView = ({teacherView}) => {
   return (
     <div className="cont ps-nm">
-      {!teacherView && (<Grid columns={1} divided>
-        <Grid.Column className="flex-col gap-row-nm">
-          <Grid.Column>
-           <div className="prof-info">
+      {!teacherView && (
+        <Box className="flex-col gap-row-nm">
+          <div>
+            <div className="prof-info">
               <ProfileInfo />
             </div>
-          </Grid.Column>
-          <Grid.Row className="ps-nm">
-            <Grid.Column><UserLevel /></Grid.Column>
-            <Grid.Column>
+          </div>
+          <Box className="ps-nm" sx={{ display: 'flex', gap: 2 }}>
+            <Box sx={{ flex: 1 }}><UserLevel /></Box>
+            <Box sx={{ flex: 1 }}>
               <div className="xp-bar"><XpBar /></div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid.Column>
-      </Grid>)}
+            </Box>
+          </Box>
+        </Box>
+      )}
       {!teacherView && (<div className="pt-nm">
         <ProfileStreakInfo />
         <ProgressStatistics />

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Icon, Input, Button } from 'semantic-ui-react'
+import EditOutlined from '@mui/icons-material/EditOutlined'
+import AppButton from 'Components/AppButton'
+import AppTextField from 'Components/ui/AppTextField'
 import { updateUsername } from 'Utilities/redux/userReducer'
 
 const AccountInfo = () => {
@@ -30,26 +32,22 @@ const AccountInfo = () => {
           :&nbsp;
         </span>
         {!editingUser && (
-          <Icon
+          <EditOutlined
             onClick={() => setEditingUser(true)}
-            name="edit"
-            size="small"
-            color="grey"
-            style={{ marginLeft: '0.5em', cursor: 'pointer' }}
+            sx={{ fontSize: 18, color: 'grey', marginLeft: '0.5em', cursor: 'pointer' }}
           />
         )}
       </div>
       {editingUser ? (
-        <Input
-          value={usernameValue}
-          onChange={e => setUsernameValue(e.target.value)}
-          label={
-            <Button primary onClick={handleUsernameSave}>
-              <FormattedMessage id="Save" />
-            </Button>
-          }
-          labelPosition="right"
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <AppTextField
+            value={usernameValue}
+            onChange={e => setUsernameValue(e.target.value)}
+          />
+          <AppButton variant="primary" onClick={handleUsernameSave}>
+            <FormattedMessage id="Save" />
+          </AppButton>
+        </div>
       ) : (
         <p className="account-info-item">{usernameValue}</p>
       )}

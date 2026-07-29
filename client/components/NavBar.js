@@ -5,7 +5,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { MenuRow } from 'Components/ui/menuRow'
 import Headroom from 'react-headroom'
-import { Switch, Box } from '@mui/material'
+import { Box } from '@mui/material'
+import AppSwitch from 'Components/ui/AppSwitch'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
@@ -511,20 +512,28 @@ export default function NavBar() {
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
               </AppMenuItem>
               {isTeacher && (
-                <MenuRow style={{ justifyContent: 'space-between', cursor: 'default' }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                    <SchoolOutlinedIcon />
-                    {intl.formatMessage({ id: 'student-view' })}
-                  </span>
-                  <Switch size="small" checked={!teacherView} onChange={handleStudentViewSwitch} />
+                <MenuRow
+                  style={{ justifyContent: 'space-between', cursor: 'default' }}
+                  icon={
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
+                      <SchoolOutlinedIcon />
+                      {intl.formatMessage({ id: 'student-view' })}
+                    </span>
+                  }
+                >
+                  <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} />
                 </MenuRow>
               )}
-              <MenuRow style={{ justifyContent: 'space-between', cursor: 'default' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                  <DarkModeOutlinedIcon />
-                  <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
-                </span>
-                <Switch size="small" checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
+              <MenuRow
+                style={{ justifyContent: 'space-between', cursor: 'default' }}
+                icon={
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
+                    <DarkModeOutlinedIcon />
+                    <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
+                  </span>
+                }
+              >
+                <AppSwitch checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
               </MenuRow>
               <AppMenuItem icon={<LogoutIcon />} onClick={signOut}>
                 <FormattedMessage id="Logout" defaultMessage="Logout" />

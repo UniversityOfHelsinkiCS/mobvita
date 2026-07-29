@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Form } from 'react-bootstrap'
+import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 import TemplateListItems from './TemplateListItems'
@@ -60,9 +60,8 @@ const TemplateTranslations = ({
           )}
         </div>
       </div>
-      <Form.Control
+      <AppTextField
         id="newTranslation"
-        type="text"
         placeholder={intl.formatMessage({ id: 'type-new-translation' })}
         value={translation}
         onChange={handleTranslationChange}
@@ -70,8 +69,8 @@ const TemplateTranslations = ({
       />
       <AppButton
         variant="primary"
-        className="flashcard-template-button mt-sm mb-lg"
-        style={{ width: '100%' }}
+        className="flashcard-template-button mb-lg"
+        style={{ width: '100%', marginTop: '0.75em' }}
         onClick={handleTranslationSave}
       >
         <FormattedMessage id="save-the-translation" />

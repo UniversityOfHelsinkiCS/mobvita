@@ -4,10 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Placeholder, Icon, Container, Select } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import Stepper from '@keyvaluesystems/react-stepper'
 import ScrollArrow from 'Components/ScrollArrow'
-import LibraryTabs from 'Components/LibraryTabs'
+import AppTabs from 'Components/ui/AppTabs'
+import AppSelect from 'Components/ui/AppSelect'
+import { colors } from 'Assets/mui_theme/designTokens'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
 import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
@@ -254,6 +258,32 @@ const LessonList = () => {
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
+  // Which library tab is active, and the tabs to show (Private for learners, Group when the user
+  // has groups / is a teacher). Group shows the group count as an orange badge.
+  const activeLibrary = Object.keys(libraries).find(key => libraries[key]) || 'private'
+  const libraryTabs = [
+    !teacherView && {
+      value: 'private',
+      label: <FormattedMessage id="Private" />,
+      icon: <LockOutlinedIcon />,
+    },
+    (teacherView || groups.length > 0) && {
+      value: 'group',
+      label: <FormattedMessage id="Group" />,
+      icon: <GroupsOutlinedIcon />,
+      badge: groups.length || undefined,
+    },
+  ].filter(Boolean)
+
+  // The tab content sits in its own cream rounded block (replacing the old black-bordered
+  // universal-background box).
+  const creamBlock = {
+    backgroundColor: colors.card,
+    borderRadius: 30,
+    padding: 24,
+    overflow: 'hidden',
+  }
+
   const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
 
   // Lesson Group View
@@ -383,37 +413,25 @@ const LessonList = () => {
           </div>
         ) : (
           <>
-            {!teacherView && !isAnonymousUser && (
-              <LibraryTabs
-                values={Object.fromEntries(
-                  Object.entries(libraries).filter(
-                    ([key]) =>
-                      (key === 'private' && !teacherView) ||
-                      (key === 'group' && (teacherView || groups.length > 0))
-                  )
-                )}
-                onClick={handleLibraryChange}
-                reverse
-                savedGroupSelection={savedGroupSelection}
-                groupDropdownOptions={groupDropdownOptions}
-                groupDropdownDisabled={!libraries.group}
-                handleGroupChange={handleGroupChange}
-              />
+            {!teacherView && !isAnonymousUser && libraryTabs.length > 0 && (
+              <div style={{ margin: '1.5em 0 20px' }}>
+                <AppTabs
+                  tabs={libraryTabs}
+                  value={activeLibrary}
+                  onChange={handleLibraryChange}
+                  fullWidth
+                />
+              </div>
             )}
             {libraries.group && !teacherView ? (
-              <div className="lesson-group-container universal-background" style={{ margin: '0' }}>
+              <div className="lesson-group-container" style={{ ...creamBlock, margin: 0 }}>
                 {lessonPending && <Spinner size={60} />}
                 {lessonStartControls}
               </div>
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
-              <div
-                className={`${
-                  teacherView ? 'universal-background-full' : 'universal-background'
-                }`.trim()}
-                style={{ display: 'flex', height: '80vh', margin: '0' }}
-              >
+              <div style={{ ...creamBlock, display: 'flex', height: '80vh', margin: 0 }}>
                 <div
                   style={{
                     flex: 1,
@@ -436,11 +454,13 @@ const LessonList = () => {
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>
                           <FormattedMessage id="Group" />:
                         </span>
-                        <Select
+                        <AppSelect
+                          variant="tan-outline"
                           placeholder={intl.formatMessage({ id: 'select-group' })}
                           value={savedGroupSelection || ''}
-                          options={groupDropdownOptions}
-                          onChange={handleGroupChange}
+                          options={groupDropdownOptions.map(o => ({ value: o.value, label: o.text }))}
+                          onChange={value => handleGroupChange(null, { value })}
+                          minWidth={220}
                         />
                       </div>
                     )}

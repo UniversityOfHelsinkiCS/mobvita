@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
 import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
-import AppProgressBar from 'Components/AppProgressBar'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
+import AppRadio from 'Components/ui/AppRadio'
+import { RadioGroup, FormControlLabel } from '@mui/material'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
 import AppSelect from 'Components/ui/AppSelect'
+import AppSwitch from 'Components/ui/AppSwitch'
+import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
+import AppTabs from 'Components/ui/AppTabs'
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
@@ -57,6 +65,10 @@ const DesignSystem = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
+  const [tab, setTab] = useState('public')
+  const [switchOn, setSwitchOn] = useState(true)
+  const [darkMode, setDarkMode] = useState(false)
+  const [radioValue, setRadioValue] = useState('a')
 
   return (
     <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem', fontFamily: font.family }}>
@@ -74,6 +86,67 @@ const DesignSystem = () => {
           Toggle error
         </AppButton>
       </div>
+
+      <Section title="Icons — custom SVGs (new)">
+        {(() => {
+          const newIcons = [
+            'menu2',
+            'buttonCircle',
+            'sendActive',
+            'sendInactive',
+            'circleSettings',
+            'settingsContrast',
+            'helpCircle',
+            'asterisk02',
+            'mail05',
+            'alertCircle',
+            'xClose',
+            'activityHeart',
+            'bookmark',
+            'bookOpen',
+            'iconHome',
+            'layersThree',
+            'libraryBig',
+            'rocket',
+            'route',
+            'universityOfHelsinki',
+            'playCircleColored',
+            'wavesColored',
+            'bookOpenColored',
+            'layersThreeColored',
+            'libraryBigColored',
+            'star06Colored',
+            'users01Colored',
+          ]
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              {newIcons.map(name => (
+                <div
+                  key={name}
+                  style={{
+                    width: 104,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: 12,
+                    backgroundColor: '#fff',
+                    border: '1px solid #eee',
+                    borderRadius: 12,
+                  }}
+                >
+                  <img src={images[name]} alt={name} style={{ width: 30, height: 30 }} />
+                  <span
+                    style={{ fontSize: 11, color: '#666', textAlign: 'center', wordBreak: 'break-word' }}
+                  >
+                    {name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
+      </Section>
 
       <Section title="AppButton — design variants (active / disabled)">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -154,6 +227,64 @@ const DesignSystem = () => {
             Disabled
           </AppActionCard>
         </div>
+      </Section>
+
+      <Section title="AppSwitch">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
+            off <AppSwitch checked={false} readOnly />
+          </span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
+            on <AppSwitch checked readOnly />
+          </span>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 10, color: colors.ink }}>
+            <AppSwitch checked={switchOn} onChange={e => setSwitchOn(e.target.checked)} />
+            Interactive
+          </label>
+          <AppSwitch disabled checked />
+        </div>
+      </Section>
+
+      <Section title="AppThemeSwitch (light / dark)">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
+            light <AppThemeSwitch checked={false} readOnly />
+          </span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
+            dark <AppThemeSwitch checked readOnly />
+          </span>
+          <AppThemeSwitch checked={darkMode} onChange={e => setDarkMode(e.target.checked)} />
+        </div>
+      </Section>
+
+      <Section title="AppTabs">
+        {(() => {
+          const tabs = [
+            { value: 'public', label: 'Public', icon: <PublicOutlinedIcon /> },
+            { value: 'private', label: 'Private', icon: <LockOutlinedIcon /> },
+            { value: 'group', label: 'Group', icon: <GroupsOutlinedIcon />, badge: 2 },
+          ]
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%' }}>
+              <AppTabs tabs={tabs} value={tab} onChange={setTab} />
+              <div style={{ maxWidth: 620 }}>
+                <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth />
+              </div>
+              <div
+                style={{
+                  backgroundColor: colors.card,
+                  borderRadius: 30,
+                  padding: 24,
+                  maxWidth: 620,
+                  color: '#666',
+                }}
+              >
+                Content for the <strong style={{ color: colors.ink }}>{tab}</strong> tab goes in a
+                separate cream block below the tab bar.
+              </div>
+            </div>
+          )
+        })()}
       </Section>
 
       <Section title="AppSelect — variants (active / disabled)">
@@ -239,6 +370,18 @@ const DesignSystem = () => {
         </div>
       </Section>
 
+      <Section title="AppRadio">
+        <RadioGroup
+          row
+          value={radioValue}
+          onChange={e => setRadioValue(e.target.value)}
+        >
+          <FormControlLabel value="a" control={<AppRadio />} label="Option A" />
+          <FormControlLabel value="b" control={<AppRadio />} label="Option B" />
+          <FormControlLabel value="c" control={<AppRadio />} label="Option C" disabled />
+        </RadioGroup>
+      </Section>
+
       <Section title="AppCheckbox">
         <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <AppCheckbox defaultChecked /> Checked
@@ -293,11 +436,11 @@ const DesignSystem = () => {
       </Section>
 
       <Section title="AppProgressBar">
-        <div style={{ width: 300 }}>
-          <AppProgressBar now={35} label="35%" />
-        </div>
-        <div style={{ width: 300 }}>
-          <AppProgressBar now={100} label="Done" variant="success" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 420 }}>
+          <AppProgressBar value={20} />
+          <AppProgressBar value={50} label="3 / 6" />
+          <AppProgressBar value={80} />
+          <AppProgressBar value={100} label="Done" />
         </div>
       </Section>
 

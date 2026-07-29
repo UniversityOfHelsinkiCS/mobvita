@@ -9,6 +9,7 @@ import buttonCircle from 'Assets/images/button-circle.svg'
 import sendActive from 'Assets/images/Circle-1.svg'
 import sendInactive from 'Assets/images/Circle.svg'
 import circleSettings from 'Assets/images/Circle-settings.svg'
+import settingsContrast from 'Assets/images/settings-contrast.svg'
 import helpCircle from 'Assets/images/help-circle.svg'
 import asterisk02 from 'Assets/images/asterisk-02.svg'
 import mail05 from 'Assets/images/mail-05.svg'
@@ -134,6 +135,7 @@ export const images = {
   sendActive,
   sendInactive,
   circleSettings,
+  settingsContrast,
   helpCircle,
   asterisk02,
   mail05,

@@ -4,7 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InitAdaptiveTest, resetTests, updateTimed } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
-import { Checkbox } from 'semantic-ui-react'
+import { Box, FormControlLabel } from '@mui/material'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
@@ -48,18 +50,32 @@ const AdaptiveTestView = () => {
 
   return (
     <div className="cont-tall cont flex-col auto gap-row-sm">
-      <div className="grow ps-nm flex-col gap-row-sm mt-md">
+      <Box
+        sx={{
+          mt: '1.5em',
+          backgroundColor: colors.card,
+          borderRadius: '30px',
+          padding: { xs: '1.25em', sm: '1.75em' },
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         {!adaptiveTestSessionId && (
-          <div className="my-xl pb-xl align-center flex space-between">
+          <div className="align-center flex space-between">
             <AppButton size="lg" onClick={startTest} data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
             </AppButton>
-            <Checkbox
-              toggle
+            <FormControlLabel
+              control={<AppSwitch checked={timedTest} onChange={() => setIsTimed(!isTimed)} />}
               label={intl.formatMessage({ id: 'timed-adaptive-test' })}
-              checked={timedTest}
-              onChange={() => setIsTimed(!isTimed)}
-              style={{ paddingTop: '.5em' }}
+              sx={{
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  fontFamily: font.family,
+                  color: colors.ink,
+                },
+              }}
             />
           </div>
         )}
@@ -67,11 +83,6 @@ const AdaptiveTestView = () => {
           <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
         )}
         {adaptiveTestSessionId && <TestView showingInfo={startModalOpen} />}
-        {!adaptiveTestSessionId && (
-          <div>
-            <hr className="my-2" />
-          </div>
-        )}
         <StartModal
           open={startModalOpen}
           setOpen={setStartModalOpen}
@@ -79,7 +90,7 @@ const AdaptiveTestView = () => {
           onBackClick={() => dispatch(resetTests())}
         />
         <ReportButton extraClass="align-self-end mb-sm" />
-      </div>
+      </Box>
     </div>
   )
 }

@@ -1,27 +1,30 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import CustomTooltip from 'Components/CustomTooltip'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
-import { Icon, Popup } from 'semantic-ui-react'
+import Language from '@mui/icons-material/Language'
+import ListAltOutlined from '@mui/icons-material/ListAltOutlined'
+import Edit from '@mui/icons-material/Edit'
+import KeyboardOutlined from '@mui/icons-material/KeyboardOutlined'
+import TextFields from '@mui/icons-material/TextFields'
+import Bolt from '@mui/icons-material/Bolt'
+import ViewList from '@mui/icons-material/ViewList'
 import { backgroundColors, images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
 const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children }) => (
-  <Popup
-    content={<FormattedHTMLMessage id={tooltip} />}
-    trigger={
-      <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
-        <div className="flashcard-fab-icon" style={iconStyle}>
-          {children}
-        </div>
-        <span className="flashcard-fab-text">
-          <FormattedHTMLMessage id={translationId} />
-        </span>
-      </button>
-    }
-    position="top left"
-  />
+  <CustomTooltip keyId={tooltip} placement="top-start">
+    <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
+      <div className="flashcard-fab-icon" style={iconStyle}>
+        {children}
+      </div>
+      <span className="flashcard-fab-text">
+        <FormattedHTMLMessage id={translationId} />
+      </span>
+    </button>
+  </CustomTooltip>
 )
 
 const CardManagementOptions = ({ handleOptionClick }) => {
@@ -34,7 +37,7 @@ const CardManagementOptions = ({ handleOptionClick }) => {
           className="flashcard-fab-icon"
           style={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
         >
-          <Icon name="language" style={{ margin: 'auto', padding: 0 }} />
+          <Language sx={{ margin: 'auto', padding: 0 }} />
         </div>
         <span className="flashcard-fab-text gap-col-sm">
           <span>
@@ -64,7 +67,7 @@ const CardManagementOptions = ({ handleOptionClick }) => {
         iconStyle={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
         tooltip='flashcards-edit-card-list-EXPLANATION'
       >
-        <Icon name="list alternate outline" style={{ margin: 'auto' }} />
+        <ListAltOutlined sx={{ margin: 'auto' }} />
       </FabOption>
       <FabOption
         handleClick={() => handleOptionClick('new')}
@@ -72,7 +75,7 @@ const CardManagementOptions = ({ handleOptionClick }) => {
         iconStyle={{ paddingBottom: '0.5em', paddingLeft: '0.1em' }}
         tooltip='flashcards-add-cards-EXPLANATION'
       >
-        <Icon name="edit" style={{ margin: 'auto' }} />
+        <Edit sx={{ margin: 'auto' }} />
       </FabOption>
     </div>
   )
@@ -94,7 +97,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         translationId="fill-in"
         tooltip='flashcards-translate-cards-EXPLANATION'
       >
-        <Icon name="keyboard outline" style={{ margin: 'auto' }} />
+        <KeyboardOutlined sx={{ margin: 'auto' }} />
       </FabOption>
       {flashcardArticles && (
         <button
@@ -106,7 +109,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
             className="flashcard-fab-icon"
             style={{ paddingBottom: '0.4em', backgroundColor: 'rgb(255, 218, 193)' }}
           >
-            <Icon name="font" style={{ margin: 'auto' }} />
+            <TextFields sx={{ margin: 'auto' }} />
           </div>
           <span className="flashcard-fab-text">{articleLabel}</span>
         </button>
@@ -120,7 +123,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         translationId="Quick cards"
         tooltip='flashcards-quick-cards-EXPLANATION'
       >
-        <Icon name="lightning" style={{ margin: 'auto' }} />
+        <Bolt sx={{ margin: 'auto' }} />
       </FabOption>
     </div>
   )
@@ -148,7 +151,7 @@ const FloatMenu = () => {
   return (
     <div className="flashcard-fab-menu">
       <button type="button" onClick={handleFabClick} className="flashcard-fab">
-        <Icon name="th list" style={{ color: 'white' }} />
+        <ViewList sx={{ color: 'white' }} />
       </button>
       {open && (
         <div className="flex-column-reverse pb-sm slide-from-left" style={{ paddingLeft: '0.3em' }}>

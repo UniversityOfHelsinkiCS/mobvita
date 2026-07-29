@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from 'semantic-ui-react'
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
 
 const ArrowButton = ({ disabled, onClick, hidden = false }) => {
   if (hidden) return null
@@ -12,7 +12,7 @@ const ArrowButton = ({ disabled, onClick, hidden = false }) => {
       className="flashcard-arrow-button"
       style={{ marginLeft: 0 }}
     >
-      <Icon name="angle double right" size="huge" />
+      <KeyboardDoubleArrowRightIcon sx={{ fontSize: 48 }} />
     </button>
   )
 }

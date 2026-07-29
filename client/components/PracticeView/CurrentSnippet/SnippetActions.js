@@ -2,7 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
+import ReplayIcon from '@mui/icons-material/Replay'
 import AppButton from 'Components/AppButton'
 import { confettiRain, finalConfettiRain } from 'Utilities/common'
 import {
@@ -34,10 +35,8 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const [barColor, setBarColor] = useState('rgb(50, 170, 248)')
   const [attemptRatioPercentage, setAttemptRatioPercentage] = useState(100)
 
-  const getFontStyle = () => {
-    if (attemptRatioPercentage > 60) return { color: 'white' }
-    return { color: 'black', textShadow: '0px 0px 4px #FFF' }
-  }
+  // Ink label in all states — it stays readable over both the cream base and the green fill.
+  const getFontStyle = () => ({ color: '#2D2C2A' })
 
   useEffect(() => {
     if (!snippetPending) {
@@ -269,7 +268,8 @@ const SnippetActions = ({
             style={{ marginBottom: '0.5em' }}
           >
             <span>
-              <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
+              <FormattedMessage id="go-to-next-snippet" />{' '}
+              <SubdirectoryArrowRightIcon sx={{ fontSize: 18, verticalAlign: 'middle' }} />
             </span>
           </AppButton>
           {!isControlledStory && (
@@ -281,7 +281,8 @@ const SnippetActions = ({
               disabled={snippets.answersPending || snippets.pending}
             >
               <span>
-                <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+                <FormattedMessage id="start-over" />{' '}
+                <ReplayIcon sx={{ fontSize: 18, verticalAlign: 'middle' }} />
               </span>
             </AppButton>
           )}

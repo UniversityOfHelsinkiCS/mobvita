@@ -1,0 +1,76 @@
+import React from 'react'
+import { colors, font } from 'Assets/mui_theme/designTokens'
+
+/**
+ * AppProgressBar — the 2026 progress bar: a pill with a pale-green track and a sage-green fill.
+ *
+ * `value` is 0–100. Pass `label` (string/node) to overlay a centered caption (e.g. "3 / 6"); it
+ * reads well over both the track and the fill. `trackColor` / `fillColor` / `height` are
+ * overridable; extra props spread onto the root, and `labelProps` onto the caption span.
+ */
+const TRACK = '#E5EDE4'
+const FILL = '#A6CDB4'
+
+const AppProgressBar = ({
+  value = 0,
+  label,
+  labelProps,
+  height = '1.5em',
+  trackColor = TRACK,
+  fillColor = FILL,
+  style,
+  ...rest
+}) => {
+  const pct = Math.min(100, Math.max(0, value))
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        height,
+        borderRadius: 999,
+        backgroundColor: trackColor,
+        overflow: 'hidden',
+        ...style,
+      }}
+      {...rest}
+    >
+      <div
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        style={{
+          height: '100%',
+          width: `${pct}%`,
+          backgroundColor: fillColor,
+          borderRadius: 999,
+          transition: 'width 0.4s ease',
+        }}
+      />
+      {label != null && (
+        <span
+          {...labelProps}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: 0,
+            right: 0,
+            transform: 'translateY(-50%)',
+            textAlign: 'center',
+            lineHeight: 1,
+            fontFamily: font.family,
+            fontWeight: 600,
+            fontSize: '0.85em',
+            color: colors.ink,
+            ...(labelProps && labelProps.style),
+          }}
+        >
+          {label}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default AppProgressBar

@@ -6,6 +6,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { images, cefrNumberToLevel } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { setLessonInstance, setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
 
 import './LessonStartMenuStyles.scss'
@@ -70,7 +71,10 @@ const LessonStartMenu = ({ setOpen }) => {
   }
 
   return (
-    <div className="lesson-start-menu-container universal-background">
+    <div
+      className="lesson-start-menu-container"
+      style={{ backgroundColor: colors.card, borderRadius: 30, padding: 24, overflow: 'hidden' }}
+    >
       <CustomTooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
         <AppButton
           className="lesson-tour-start-button"
@@ -81,9 +85,9 @@ const LessonStartMenu = ({ setOpen }) => {
           <div className="lesson-menu-button">
             <img
               className="lesson-menu-button-icon"
-              src={images.readingBook}
+              src={images.bookOpen}
               alt="open book"
-              style={{ maxWidth: '46px', maxHeight: '46px' }}
+              style={{ width: '26px', height: '26px' }}
             />
             <span className="lesson-menu-button-text">
               <FormattedMessage id="start" />
@@ -102,9 +106,9 @@ const LessonStartMenu = ({ setOpen }) => {
           <div className="lesson-menu-button">
             <img
               className="lesson-menu-button-icon"
-              src={images.settingsIcon}
+              src={images.settingsContrast}
               alt="settings"
-              style={{ maxWidth: '36px', maxHeight: '36px' }}
+              style={{ width: '36px', height: '36px' }}
             />
             <span className="lesson-menu-button-text">
               <FormattedMessage id="lesson-setup" />

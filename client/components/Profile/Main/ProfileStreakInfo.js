@@ -5,7 +5,7 @@ import { images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
-import { Icon } from 'semantic-ui-react'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import CustomTooltip from 'Components/CustomTooltip'
 
 const ProfileStreakInfo = () => {
@@ -56,7 +56,7 @@ const ProfileStreakInfo = () => {
               permanent
             >
               <span style={{ display: 'inline-flex' }}>
-                <Icon name="info circle" size="small" color="grey" />
+                <InfoOutlined sx={{ fontSize: 18, color: 'grey.600' }} />
               </span>
             </CustomTooltip>
           </div>
@@ -86,7 +86,7 @@ const ProfileStreakInfo = () => {
               permanent
             >
               <span style={{ display: 'inline-flex' }}>
-                <Icon name="info circle" size="small" color="grey" />
+                <InfoOutlined sx={{ fontSize: 18, color: 'grey.600' }} />
               </span>
             </CustomTooltip>
           </div>

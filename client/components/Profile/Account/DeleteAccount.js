@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { Modal, Button, Form } from 'semantic-ui-react'
+import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTextField from 'Components/ui/AppTextField'
 import { logout, deleteUser } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -28,41 +30,35 @@ const DeleteAccount = () => {
   return (
     <div>
       <h2 className="header-2 pb-sm">{intl.formatMessage({ id: 'delete-account' })}</h2>
-      <Button negative onClick={() => setOpen(true)}>
+      <AppButton variant="danger" onClick={() => setOpen(true)}>
         <FormattedMessage id="delete-account" />
-      </Button>
-      <Modal
-        dimmer="inverted"
+      </AppButton>
+      <AppDialog
         open={open}
-        onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
+        title={<FormattedMessage id="delete-account-confirmation" />}
       >
-        <Modal.Header>
-          <FormattedMessage id="delete-account-confirmation" />
-        </Modal.Header>
-        <Modal.Content>
-          <div className="mb-nm">
-            <FormattedMessage id="delete-account-information" />
-          </div>
-          <Form>
-            <Form.Field>
-              <Form.Input
-                value={passwordConfirmation}
-                type="password"
-                onChange={e => setPasswordConfirmation(e.target.value)}
-              />
-            </Form.Field>
-          </Form>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button negative onClick={() => handleAccept()} data-cy="confirm-warning-dialog">
-            <FormattedMessage id="Confirm" />
-          </Button>
-          <Button onClick={() => handleReject()}>
+        <div className="mb-nm">
+          <FormattedMessage id="delete-account-information" />
+        </div>
+        <AppTextField
+          value={passwordConfirmation}
+          type="password"
+          onChange={e => setPasswordConfirmation(e.target.value)}
+        />
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
+          <AppButton variant="outline" onClick={() => handleReject()}>
             <FormattedMessage id="Cancel" />
-          </Button>
-        </Modal.Actions>
-      </Modal>
+          </AppButton>
+          <AppButton
+            variant="danger"
+            onClick={() => handleAccept()}
+            data-cy="confirm-warning-dialog"
+          >
+            <FormattedMessage id="Confirm" />
+          </AppButton>
+        </div>
+      </AppDialog>
     </div>
   )
 }
