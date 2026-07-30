@@ -42,15 +42,6 @@ const CORRECTION_TYPE_ACCENT_COLORS = {
   deletion: '#dc3545',
 }
 
-// Blend a hex colour toward white (amount 0..1). Used to make the sidebar tint lighter than the
-// full-strength title bar so the title's colour stays clearly visible against it.
-const lightenColor = (hex, amount) => {
-  const value = hex.replace('#', '')
-  const channel = index => parseInt(value.slice(index, index + 2), 16)
-  const mix = component => Math.round(component + (255 - component) * amount)
-  return `rgb(${mix(channel(0))}, ${mix(channel(2))}, ${mix(channel(4))})`
-}
-
 const rangesMatch = (firstRange, secondRange) =>
   Boolean(firstRange) &&
   Boolean(secondRange) &&
@@ -65,29 +56,6 @@ const getFocusedCorrectionType = (correctionEntry, sentence, selection) => {
     rangesMatch(selection, candidate.range),
   )
   return group ? getCorrectionGroupType(group) : null
-}
-
-// The correction colour of the currently focused suggestion, resolved from the writingCorrection slice
-// and the current essay focus. Exported so the parent can tint the sidebar frame to match the chatbot.
-export const getEssayFocusAccentColor = (writingCorrection, essayFocus) => {
-  const focusedSentenceId = essayFocus?.selection?.sentenceId
-  if (!focusedSentenceId || !writingCorrection) return null
-  const {
-    correctionSuggestionSentenceIds = [],
-    correctionSuggestionsBySentenceId = {},
-    correctionsByKey = {},
-  } = writingCorrection
-  const suggestion = correctionSuggestionSentenceIds
-    .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
-    .find(candidate => candidate && candidate.sentenceId === focusedSentenceId)
-  if (!suggestion) return null
-  const type = getFocusedCorrectionType(
-    correctionsByKey[suggestion.key],
-    suggestion.sentence,
-    essayFocus.selection,
-  )
-  // Lighter than the title bar (which uses the full-strength CORRECTION_TYPE_COLORS) so the title stands out.
-  return type ? lightenColor(CORRECTION_TYPE_COLORS[type], 0.6) : null
 }
 
 const EssayChatbot = ({

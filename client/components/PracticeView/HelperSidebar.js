@@ -4,7 +4,7 @@ import { Icon } from 'semantic-ui-react'
 import { toggleHelperSidebar } from 'Utilities/redux/helperSidebarReducer'
 import './HelperSidebar.scss'
 
-const HelperSidebar = ({ children, accentColor }) => {
+const HelperSidebar = ({ children }) => {
   const dispatch = useDispatch()
   
   const isOpen = useSelector(state => state.helperSidebar?.isOpen ?? true)
@@ -29,10 +29,7 @@ const HelperSidebar = ({ children, accentColor }) => {
         <Icon name={isOpen ? 'angle right' : 'angle left'} />
       </button>
       
-      <div
-        className="helper-sidebar-content"
-        style={accentColor ? { background: accentColor } : undefined}
-      >
+      <div className="helper-sidebar-content">
         {children}
       </div>
     </aside>

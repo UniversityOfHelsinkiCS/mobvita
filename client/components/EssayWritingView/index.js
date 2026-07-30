@@ -31,7 +31,7 @@ import { saveSelfIntermediate, updateLibrarySelect } from 'Utilities/redux/userR
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Spinner from 'Components/Spinner'
 import Footer from '../Footer'
-import EssayChatbot, { getEssayFocusAccentColor } from 'Components/ChatBot/EssayChatbot'
+import EssayChatbot from 'Components/ChatBot/EssayChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EssayTextInput from './EssayTextInput'
 import EssayVersionText from './EssayVersionText'
@@ -70,24 +70,10 @@ const EssayWritingView = () => {
   const isTeacherEssayView = Boolean(teacherView && loadEssayId)
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
-  const correctionSuggestionSentenceIds = useSelector(
-    state => state.writingCorrection.correctionSuggestionSentenceIds,
-  )
-  const correctionSuggestionsBySentenceId = useSelector(
-    state => state.writingCorrection.correctionSuggestionsBySentenceId,
-  )
   const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
   const savePending = useSelector(state => state.writingCorrection.savePending)
   const saveError = useSelector(state => state.writingCorrection.saveError)
   const showFooter = width > 640
-
-  // Tint the chatbot's helper sidebar with the focused suggestion's correction colour (student view only).
-  const sidebarAccentColor = isTeacherEssayView
-    ? null
-    : getEssayFocusAccentColor(
-        { correctionSuggestionSentenceIds, correctionSuggestionsBySentenceId, correctionsByKey },
-        essayFocus,
-      )
 
   // Don't let the user upload while a sentence's correction is still in flight — its payload entry
   // would be empty.
@@ -383,7 +369,7 @@ const EssayWritingView = () => {
             />
           </Paper>
 
-          <HelperSidebar accentColor={sidebarAccentColor}>
+          <HelperSidebar>
             <EssayChatbot
               essayFocus={essayFocus}
               essayText={essayText}
