@@ -14,6 +14,12 @@ $essay-bubble-replacement-bg-color: #88cefb;
 $essay-bubble-insertion-bg-color: #92f294;
 $essay-bubble-deletion-bg-color: #f6b3b3;
 
+// 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
+$essay-card: #faf8ed; // cream panel
+$essay-ink: #2d2c2a; // text
+$essay-green: #b1d3c2; // border / accent
+$essay-font: 'Geologica', sans-serif;
+
 .essay-writing-page {
   display: flex;
   flex-direction: column;
@@ -66,8 +72,11 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   max-width: $essay-content-width;
   height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
   min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  padding: 1rem;
-  border-radius: 4px;
+  margin-top: 1.5em;
+  padding: 1.5rem;
+  background: $essay-card !important;
+  border-radius: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
   @media (min-width: 700px) {
     min-width: $essay-content-min-width;
@@ -78,11 +87,11 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   display: flex;
   align-items: center;
   height: auto;
-  font-family: 'Rubik', sans-serif;
+  font-family: $essay-font;
   font-style: normal;
   font-weight: 500;
   line-height: 27px;
-  color: rgb(33, 37, 41);
+  color: $essay-ink;
   padding-right: 1em;
   font-size: 26px;
 }
@@ -112,8 +121,11 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   box-sizing: border-box;
   height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
   min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  padding: 1rem;
-  border-radius: 4px;
+  margin-top: 1.5em;
+  padding: 1.5rem;
+  background: $essay-card !important;
+  border-radius: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
   @media (max-width: 768px) {
     height: auto;
@@ -129,10 +141,11 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   overflow-y: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  border-radius: 4px;
-  font-family: 'Rubik', sans-serif;
+  background: $essay-card;
+  border: 1px solid $essay-green;
+  border-radius: 18px;
+  font-family: $essay-font;
+  color: $essay-ink;
   line-height: 1.5;
 }
 
@@ -171,9 +184,9 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   margin-top: 1rem;
   overflow-x: hidden;
   overflow-y: auto;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.23);
-  border-radius: 4px;
+  background: $essay-card;
+  border: 1px solid $essay-green;
+  border-radius: 18px;
   isolation: isolate;
 }
 
@@ -239,7 +252,7 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   // fills the whole frame and scrolls inside it rather than the frame resizing to the text.
   flex: 1 0 auto;
   width: 100%;
-  background: #fff;
+  background: $essay-card;
 
   // Column flex so the textarea below fills this via flex-grow (reliable) rather than a percentage.
   .MuiInputBase-root {
@@ -262,12 +275,12 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
     padding-bottom: 1.75rem;
     resize: none;
 
-    font-family: 'Rubik', sans-serif;
+    font-family: $essay-font;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 32px;
-    color: rgb(33, 37, 41);
+    color: $essay-ink;
 
     &::selection {
       background-color: var(--essay-writing-selection-bg-color) !important;
@@ -291,9 +304,10 @@ $essay-bubble-deletion-bg-color: #f6b3b3;
   max-width: min(520px, calc(100vw - 32px));
   margin-bottom: 8px;
   padding: 0.75rem 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.18);
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid $essay-green;
+  border-radius: 16px;
+  background: $essay-card;
+  font-family: $essay-font;
   transition: filter 0.2s;
 
   &:hover {

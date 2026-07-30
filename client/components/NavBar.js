@@ -12,13 +12,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
-import GroupIcon from '@mui/icons-material/Group'
-import SettingsIcon from '@mui/icons-material/Settings'
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
-import LogoutIcon from '@mui/icons-material/Logout'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   logout,
@@ -478,10 +472,16 @@ export default function NavBar() {
                 </Box>
               }
             >
-              <AppMenuItem icon={<PersonOutlinedIcon />} onClick={() => navigate('/profile/main')}>
+              <AppMenuItem
+                icon={<img src={images.user01} alt="" style={{ width: 22, height: 22 }} />}
+                onClick={() => navigate('/profile/main')}
+              >
                 <FormattedMessage id="your-profile" defaultMessage="Your Profile" />
               </AppMenuItem>
-              <AppMenuItem icon={<NotificationsNoneIcon />} onClick={handleNewsClick}>
+              <AppMenuItem
+                icon={<img src={images.bell04} alt="" style={{ width: 22, height: 22 }} />}
+                onClick={handleNewsClick}
+              >
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                   <FormattedMessage id="notifications" defaultMessage="Notifications" />
                   {numUnreadNews > 0 && (
@@ -505,10 +505,16 @@ export default function NavBar() {
                   )}
                 </span>
               </AppMenuItem>
-              <AppMenuItem icon={<GroupIcon />} onClick={() => navigate('/groups/teacher')}>
+              <AppMenuItem
+                icon={<img src={images.users01} alt="" style={{ width: 22, height: 22 }} />}
+                onClick={() => navigate('/groups/teacher')}
+              >
                 <FormattedMessage id="Groups" defaultMessage="Groups" />
               </AppMenuItem>
-              <AppMenuItem icon={<SettingsIcon />} onClick={() => navigate('/profile/settings')}>
+              <AppMenuItem
+                icon={<img src={images.settings02} alt="" style={{ width: 22, height: 22 }} />}
+                onClick={() => navigate('/profile/settings')}
+              >
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
               </AppMenuItem>
               {isTeacher && (
@@ -528,14 +534,17 @@ export default function NavBar() {
                 style={{ justifyContent: 'space-between', cursor: 'default' }}
                 icon={
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                    <DarkModeOutlinedIcon />
+                    <img src={images.brush01} alt="" style={{ width: 22, height: 22 }} />
                     <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
                   </span>
                 }
               >
                 <AppSwitch checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
               </MenuRow>
-              <AppMenuItem icon={<LogoutIcon />} onClick={signOut}>
+              <AppMenuItem
+                icon={<img src={images.logOut01} alt="" style={{ width: 22, height: 22 }} />}
+                onClick={signOut}
+              >
                 <FormattedMessage id="Logout" defaultMessage="Logout" />
               </AppMenuItem>
             </AppMenu>

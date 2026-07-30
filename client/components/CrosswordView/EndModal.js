@@ -1,33 +1,38 @@
 import React from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Box } from '@mui/material'
 import AppButton from 'Components/AppButton'
-import { FormattedMessage } from 'react-intl'
+import AppDialog from 'Components/ui/AppDialog'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 
 const EndModal = ({ open, setOpen, restart }) => {
+  const intl = useIntl()
+
+  const handleClose = () => setOpen(false)
+
   const handleRestart = () => {
     setOpen(false)
     restart()
   }
 
   return (
-    <Modal open={open} size="tiny">
-      <Modal.Header>
-        <span>
-          <FormattedMessage id="congratulations-you-have-solved-this-crossword" />
-        </span>
-      </Modal.Header>
-      <Modal.Content>
-        <AppButton variant="primary" onClick={handleRestart} style={{ marginRight: '0.5em' }}>
+    <AppDialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="xs"
+      title={intl.formatMessage({ id: 'congratulations-you-have-solved-this-crossword' })}
+    >
+      <Box sx={{ display: 'flex', gap: '0.75em', flexWrap: 'wrap', mt: '0.5em' }}>
+        <AppButton variant="tan" onClick={handleRestart}>
           <FormattedMessage id="New crossword" />
         </AppButton>
         <Link to="/library">
-          <AppButton variant="secondary">
+          <AppButton variant="contrast-outline">
             <FormattedMessage id="Back to library" />
           </AppButton>
         </Link>
-      </Modal.Content>
-    </Modal>
+      </Box>
+    </AppDialog>
   )
 }
 

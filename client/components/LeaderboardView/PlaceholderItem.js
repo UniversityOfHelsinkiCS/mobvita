@@ -1,27 +1,19 @@
 import React from 'react'
-import { Placeholder } from 'semantic-ui-react'
+import { Skeleton } from '@mui/material'
 
 const PlaceholderItem = ({ position }) => {
   return (
     <div className="leaderboard-item-container">
-      <div className="flex">
+      <div className="flex" style={{ alignItems: 'center', flex: 1 }}>
         <div
           className="justify-center"
           style={{ width: '2.5rem', fontSize: '1.1rem', paddingRight: '.5rem' }}
         >
           {position}
         </div>
-        <Placeholder style={{ minWidth: '15em', alignSelf: 'center' }}>
-          <Placeholder.Header>
-            <Placeholder.Line length="long" />
-          </Placeholder.Header>
-        </Placeholder>
+        <Skeleton variant="text" sx={{ fontSize: '1.1rem', minWidth: '15em', flex: 1 }} />
       </div>
-      <Placeholder style={{ minWidth: '2.5rem', alignSelf: 'center' }}>
-        <Placeholder.Header>
-          <Placeholder.Line length="very long" />
-        </Placeholder.Header>
-      </Placeholder>
+      <Skeleton variant="text" sx={{ fontSize: '1.1rem', minWidth: '2.5rem' }} />
     </div>
   )
 }

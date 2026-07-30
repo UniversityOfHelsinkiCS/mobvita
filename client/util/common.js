@@ -18,6 +18,26 @@ import xClose from 'Assets/images/x-close.svg'
 import activityHeart from 'Assets/images/activity-heart.svg'
 import bookmark from 'Assets/images/bookmark.svg'
 import bookOpen from 'Assets/images/book-open-01.svg'
+import cardsIcon from 'Assets/images/cards.svg'
+import fileCheck from 'Assets/images/file-check-02.svg'
+import flag01 from 'Assets/images/flag-01.svg'
+import grid01 from 'Assets/images/grid-01.svg'
+import iconEdit from 'Assets/images/icon-edit-2.svg'
+import trash03 from 'Assets/images/trash-03.svg'
+import bell04 from 'Assets/images/bell-04.svg'
+import brush01 from 'Assets/images/brush-01.svg'
+import logOut01 from 'Assets/images/log-out-01.svg'
+import settings02 from 'Assets/images/settings-02.svg'
+import user01 from 'Assets/images/user-01.svg'
+import users01 from 'Assets/images/users-01.svg'
+import edit03 from 'Assets/images/edit-03.svg'
+import fileCheck03 from 'Assets/images/file-check-03.svg'
+import target04 from 'Assets/images/target-04.svg'
+import trophy01 from 'Assets/images/trophy-01.svg'
+import waves from 'Assets/images/waves.svg'
+import place1 from 'Assets/images/place1.svg'
+import place2 from 'Assets/images/place2.svg'
+import place3 from 'Assets/images/place3.svg'
 import iconHome from 'Assets/images/icon-home.svg'
 import layersThree from 'Assets/images/layers-three-01.svg'
 import libraryBig from 'Assets/images/library-big.svg'
@@ -144,6 +164,26 @@ export const images = {
   activityHeart,
   bookmark,
   bookOpen,
+  cardsIcon,
+  fileCheck,
+  flag01,
+  grid01,
+  iconEdit,
+  trash03,
+  bell04,
+  brush01,
+  logOut01,
+  settings02,
+  user01,
+  users01,
+  edit03,
+  fileCheck03,
+  target04,
+  trophy01,
+  waves,
+  place1,
+  place2,
+  place3,
   iconHome,
   layersThree,
   libraryBig,

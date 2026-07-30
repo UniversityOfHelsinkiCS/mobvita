@@ -3075,43 +3075,45 @@ label.file-upload-btn {
 .leaderboard-item-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: bold;
-  padding: 1em 1.2em;
-  margin-right: - map.get($spacing, "xs");
-  margin-left: - map.get($spacing, "xs");
+  padding: 0.75em 1em;
+  border-bottom: 1px solid rgba(177, 211, 194, 0.5); // colors.border @ 50%
 }
 
 .leaderboard-item-container:last-of-type {
-  border-radius: 0 0 10px 10px;
+  border-bottom: none;
 }
 
 .leaderboard-reward {
-  height: 1.3rem;
-  width: 1.3rem;
+  height: 1.45rem;
+  width: 1.45rem;
   margin-left: .5rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: .7rem;
-  color: white;
+  font-size: .72rem;
+  font-weight: 600;
+  font-family: 'Geologica', sans-serif;
+  line-height: 1;
+  color: #2d2c2a; // ink number — readable on all three medal fills
   align-self: center;
 }
 
+// Flat medal fills that echo the trophy SVG palette (place1/2/3). No border — the solid
+// circle + ink number reads cleanly at this small size.
 .position {
   &-gold {
-    background-color: gold;
-    border: 1px dotted goldenrod;
+    background-color: #f2ce4b;
   }
 
   &-silver {
-    background-color: silver;
-    border: 1px dotted gray;
+    background-color: #cfd4da;
   }
 
   &-bronze {
-    background-color: #CD7F32;
-    border: 1px dotted #A75B10;
+    background-color: #dfab6e;
   }
 }
 
@@ -3156,20 +3158,39 @@ label.file-upload-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
+  // Allow the flex column to shrink below its content width so long names wrap inside the
+  // column instead of pushing it wider than its third (and overflowing the card).
+  min-width: 0;
+}
+
+.leaderboard-winner-rewards {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+
+  .leaderboard-reward {
+    margin-left: 0;
+  }
 }
 
 .leaderboard-winner-name {
   text-align: center;
-  padding-top: .5rem;
+  padding: .5rem .25rem 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   font-weight: 500;
   font-size: 13px;
-  color: dimgray;
+  font-family: 'Geologica', sans-serif;
+  color: #2d2c2a; // ink
 }
 
 .leaderboard-winner-record {
   font-size: 12px;
   font-weight: 650;
-  color: steelblue;
+  font-family: 'Geologica', sans-serif;
+  color: #6f8f7f; // muted green
 }
 
 .leaderboard-wreadth {
@@ -3810,10 +3831,9 @@ label.file-upload-btn {
   --story-detail-modal-button-bg: #f9f9f9;
 }
 
+// Kept as a product-tour anchor; the 2026 modal lays these out as full-width pills.
 .story-detail-modal-action-button {
-  width: 140px;
-  padding: 4px 0;
-  text-align: center;
+  width: 100%;
 }
 
 .story-detail-modal-action-button-long {

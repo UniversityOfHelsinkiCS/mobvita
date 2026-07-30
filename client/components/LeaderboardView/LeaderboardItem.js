@@ -1,9 +1,16 @@
 import React from 'react'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 
 const LeaderboardItem = ({ position, username, value, rankingHistory, highlighted = false }) => (
   <div
     className="leaderboard-item-container"
-    style={highlighted ? { backgroundColor: '#32AAF8', color: '#000' } : {}}
+    style={{
+      fontFamily: font.family,
+      color: colors.ink,
+      borderRadius: highlighted ? '14px' : 0,
+      backgroundColor: highlighted ? colors.green : 'transparent',
+      borderBottom: highlighted ? 'none' : undefined,
+    }}
   >
     <div className="flex" style={{ maxWidth: '75%' }}>
       <div className="justify-center" style={{ width: '2.5rem', fontSize: '1.1rem' }}>
@@ -36,7 +43,7 @@ const LeaderboardItem = ({ position, username, value, rankingHistory, highlighte
       style={{
         fontWeight: 400,
         fontSize: '1.1rem',
-        color: highlighted ? '#000' : '#000',
+        color: colors.ink,
         paddingRight: '.75rem',
       }}
     >

@@ -4,17 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const EMPTY_LOADING_PROGRESS = {}
-import {
-  Divider,
-  Segment,
-  Icon,
-  Header,
-  Checkbox,
-  Dropdown,
-  Button as SemanticButton,
-  Modal,
-  Tab,
-  TabPane } from 'semantic-ui-react'
+import { Divider, FormControlLabel, Box } from '@mui/material'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { colors, font } from 'Assets/mui_theme/designTokens'
+import AppSwitch from 'Components/ui/AppSwitch'
+import AppSelect from 'Components/ui/AppSelect'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTabs from 'Components/ui/AppTabs'
+import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl';
 import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -47,7 +44,6 @@ import {
   ACCESS,
   useHasAccess } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import AnnotationBox from 'Components/AnnotationBox'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
@@ -66,7 +62,11 @@ import './ReadViewsStyles.css'
 
 const SettingToggle = ({ translationId, ...props }) => {
   return (
-    <Checkbox toggle label={{ children: <FormattedHTMLMessage id={translationId} /> }} {...props} />
+    <FormControlLabel
+      control={<AppSwitch {...props} />}
+      label={<FormattedHTMLMessage id={translationId} />}
+      sx={{ '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
+    />
   )
 }
 
@@ -120,6 +120,7 @@ const ReadViews = ({ match }) => {
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const [open, setOpen] = useState(false)
   const [topicsModal, setTopicsModal] = useState(false)
+  const [topicsTab, setTopicsTab] = useState('grammar')
   const dropDownMenuText = currentStudent
     ? `${currentStudent?.userName} (${currentStudent?.email})`
     : intl.formatMessage({ id: 'group-review-dropdown-placeholder' })
@@ -399,28 +400,30 @@ const ReadViews = ({ match }) => {
     return (
       <>
         {routeStory?.control_story ? (
-          <SemanticButton
+          <AppButton
             as={Link}
             to={`/stories/${id}/controlled-practice`}
             style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
           >
             <FormattedMessage id="tailored-begin-practice" />
-          </SemanticButton>
+          </AppButton>
         ) : (
           preProcessingReady && (
             <>
               <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    name="cog"
-                    size="large"
-                    style={{ color: '#0088CB', cursor: 'pointer', marginRight: '12px' }}
+                  <SettingsIcon
                     onClick={handle_cog_click}
+                    sx={{
+                      color: '#0088CB',
+                      cursor: 'pointer',
+                      marginRight: '12px',
+                      fontSize: '1.5em' }}
                   />
                 </span>
               </CustomTooltip>
               {!teacherView && (
-                <SemanticButton
+                <AppButton
                   as={Link}
                   to={
                     user?.user?.reading_comprehension
@@ -432,19 +435,19 @@ const ReadViews = ({ match }) => {
                   disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
                 >
                   <FormattedMessage id="start-practice-story" />
-                </SemanticButton>
+                </AppButton>
               )}
               {teacherView && (
                 <div
                   className="practice-tour-edit-delete-story"
                   style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
                 >
-                  <SemanticButton color="yellow" as={Link} to={`/stories/${id}/edit/`}>
+                  <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
                     <FormattedMessage id="edit" />
-                  </SemanticButton>
-                  <SemanticButton color="red" onClick={() => setConfirmationOpen(true)}>
+                  </AppButton>
+                  <AppButton variant="danger" onClick={() => setConfirmationOpen(true)}>
                     <FormattedMessage id="Delete" />
-                  </SemanticButton>
+                  </AppButton>
                 </div>
               )}
             </>
@@ -459,57 +462,28 @@ const ReadViews = ({ match }) => {
     dispatch(updateTempExerciseTopics(topics, id))
   }
 
-  const panes = [
-    {
-      menuItem: intl.formatMessage({ id: 'Grammar topics' }),
-      render: () => (
-        <TabPane
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '500px' }}
-        >
-          <h1 style={{ marginBottom: '100px' }}>
-            <FormattedMessage id="select-lesson-grammar" />
-          </h1>
-          <SelectGrammarLevel
-            topicInstance={{
-              topic_ids: routeStory?.topics || [],
-              instancePending: pending || !routeStory }}
-            editable
-            setSelectedTopics={setSelectedTopics}
-            selectedTopicIds={routeStory?.topics || []}
-            showPerf
-            setShowPerf={setShowDifficulty}
-            lessons={lessons}
-            currentStepIndex={2}
-          />
-        </TabPane>
-      ) },
-    {
-      menuItem: intl.formatMessage({ id: 'listening-exercises' }),
-      render: () => (
-        <TabPane
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '500px' }}
-        >
-          <ListeningExerciseSettings />
-        </TabPane>
-      ) },
+  const topicsTabs = [
+    { value: 'grammar', label: intl.formatMessage({ id: 'Grammar topics' }) },
+    { value: 'listening', label: intl.formatMessage({ id: 'listening-exercises' }) },
   ]
 
   return (
     <div className="cont-tall flex-col space-between align-center"> 
       <div className="flex mb-nm">
         <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-          <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
+          <Box
+            data-cy="readmodes-text"
+            className="cont"
+            sx={{
+              backgroundColor: colors.card,
+              borderRadius: '30px',
+              padding: { xs: '1em', sm: '1.5em' },
+              marginTop: '1.5em',
+              marginBottom: '1em' }}
+            style={getTextStyle(learningLanguage)}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Header className="space-between" style={getTextStyle(learningLanguage, 'title')}>
+              <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
 
                   {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
@@ -519,17 +493,13 @@ const ReadViews = ({ match }) => {
                   )}
                   <StoryTitleTranslate title={routeStory?.title} />
                 </div>
-              </Header>
-              {(preProcessingReady || processingFinished) && (
-                <div
-                  className="cefr-level"
-                  style={{
-                    background:
-                      String(difficultyValueDisplay).trim() === '' ? '#ffffff' : '#b7fcff' }}
-                >
-                  {difficultyValueDisplay}
-                </div>
-              )}
+              </div>
+              {(preProcessingReady || processingFinished) &&
+                String(difficultyValueDisplay).trim() !== '' && (
+                  <div className="cefr-level" style={{ background: colors.green }}>
+                    {difficultyValueDisplay}
+                  </div>
+                )}
             </div>
             {underProcessing && preProcessingReady && !processingComplete && (
               <div className="story-not-processed">
@@ -542,22 +512,26 @@ const ReadViews = ({ match }) => {
               <div>
                 {mode === 'practice-preview' && <div />}
                 {preProcessingReady && mode === 'preview' && (
-                  <Checkbox
+                  <FormControlLabel
                     className="highlight-exercises"
-                    toggle
+                    control={
+                      <AppSwitch checked={previewToggleOn} onChange={updateUserPreviewExer} />
+                    }
                     label={intl.formatMessage({ id: 'show preview' })}
-                    checked={previewToggleOn}
-                    onChange={updateUserPreviewExer}
-                    style={{ paddingTop: '.5em' }}
+                    sx={{
+                      paddingTop: '.5em',
+                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
                   />
                 )}
                 {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
-                  <Checkbox
-                    toggle
+                  <FormControlLabel
+                    control={
+                      <AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />
+                    }
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                    checked={showDifficulty}
-                    onChange={updateUserReviewDiff}
-                    style={{ paddingTop: '.5em' }}
+                    sx={{
+                      paddingTop: '.5em',
+                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
                   />
                 )}
               </div>
@@ -568,12 +542,13 @@ const ReadViews = ({ match }) => {
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}
                       </span>
-                      <Dropdown
-                        text={dropDownMenuText}
-                        selection
-                        fluid
-                        options={studentOptions}
-                        onChange={(_, { value }) => handleStudentChange(value)}
+                      <AppSelect
+                        value={currentStudent ? JSON.stringify(currentStudent) : undefined}
+                        placeholder={dropDownMenuText}
+                        options={studentOptions.map(o => ({ value: o.value, label: o.text }))}
+                        onChange={value => handleStudentChange(value)}
+                        variant="tan-outline"
+                        minWidth={180}
                       />
                     </div>
                   )}
@@ -590,12 +565,13 @@ const ReadViews = ({ match }) => {
                       <span style={{ marginRight: '.5em' }}>
                         <FormattedMessage id="student" />:{' '}
                       </span>
-                      <Dropdown
-                        text={dropDownMenuText}
-                        selection
-                        fluid
-                        options={studentOptions}
-                        onChange={(_, { value }) => handleStudentChange(value)}
+                      <AppSelect
+                        value={currentStudent ? JSON.stringify(currentStudent) : undefined}
+                        placeholder={dropDownMenuText}
+                        options={studentOptions.map(o => ({ value: o.value, label: o.text }))}
+                        onChange={value => handleStudentChange(value)}
+                        variant="tan-outline"
+                        minWidth={180}
                       />
                     </div>
                   )}
@@ -630,7 +606,7 @@ const ReadViews = ({ match }) => {
               ))
             )}
             <ScrollArrow />
-          </Segment>
+          </Box>
           {width >= 500 ? (
             <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
               <ReportButton />
@@ -656,18 +632,12 @@ const ReadViews = ({ match }) => {
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
-      <Modal
-        size="tiny"
+      <AppDialog
         open={open}
-        dimmer="inverted"
         onClose={() => setOpen(false)}
-        closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
+        title={<FormattedMessage id="practice-settings" />}
       >
-        <Modal.Header>
-          <FormattedMessage id="practice-settings" />
-        </Modal.Header>
-        <Modal.Content>
-          <div className="flex-col gap-row-nm">
+        <div className="flex-col gap-row-nm">
             <SettingToggle
               translationId="practice-grammar-cloze-exercises"
               checked={user?.user.blank_filling}
@@ -695,19 +665,52 @@ const ReadViews = ({ match }) => {
               />
             )}
           </div>
-        </Modal.Content>
-      </Modal>
-      <Modal
+      </AppDialog>
+      <AppDialog
         open={topicsModal}
         onClose={() => setTopicsModal(false)}
-        size="large"
-        closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+        title={<FormattedMessage id="practice-settings" />}
+        maxWidth="lg"
       >
-        <Modal.Header>
-          <FormattedMessage id="practice-settings" />
-        </Modal.Header>
-        <Tab panes={panes} />
-      </Modal>
+        <AppTabs tabs={topicsTabs} value={topicsTab} onChange={setTopicsTab} />
+        {topicsTab === 'grammar' && (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '500px' }}
+          >
+            <h1 style={{ marginBottom: '100px' }}>
+              <FormattedMessage id="select-lesson-grammar" />
+            </h1>
+            <SelectGrammarLevel
+              topicInstance={{
+                topic_ids: routeStory?.topics || [],
+                instancePending: pending || !routeStory }}
+              editable
+              setSelectedTopics={setSelectedTopics}
+              selectedTopicIds={routeStory?.topics || []}
+              showPerf
+              setShowPerf={setShowDifficulty}
+              lessons={lessons}
+              currentStepIndex={2}
+            />
+          </div>
+        )}
+        {topicsTab === 'listening' && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '500px' }}
+          >
+            <ListeningExerciseSettings />
+          </div>
+        )}
+      </AppDialog>
       <ConfirmationWarning
         open={confirmationOpen}
         setOpen={setConfirmationOpen}

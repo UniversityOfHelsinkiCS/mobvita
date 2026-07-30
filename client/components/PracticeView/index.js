@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
-import { Segment, Icon, Checkbox } from 'semantic-ui-react'
+import { Box, FormControlLabel } from '@mui/material'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
   clearFocusedSnippet,
@@ -31,11 +34,8 @@ import {
   hiddenFeatures,
   dictionaryLanguageSelector,
 } from 'Utilities/common'
-import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
-import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
-import AnnotationBox from 'Components/AnnotationBox'
 import StartModal from 'Components/TimedActivityStartModal'
 import MessageDialog from 'Components/MessageDialog/MessageDialog'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
@@ -218,7 +218,7 @@ const PracticeView = () => {
 
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime()) return <Spinner inline size={60} />
-    if (practiceFinished) return <Icon size="small" name="thumbs up" style={{ margin: 0 }} />
+    if (practiceFinished) return <ThumbUpIcon sx={{ fontSize: '1.1em', color: colors.ink }} />
 
     return Math.round(timer.getTime() / 1000)
   }
@@ -227,7 +227,19 @@ const PracticeView = () => {
     <div className="cont-tall flex-col space-between">
       <div className="justify-center">
         <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-          <Segment>
+          <Box
+            className="practice-card"
+            sx={{
+              position: 'relative',
+              // Align the card's top with the assistant panel (HelperSidebar top: 4.5em; the
+              // content starts at the 3em navbar, so 1.5em brings them to the same level).
+              marginTop: '1.5em',
+              backgroundColor: colors.card,
+              borderRadius: '30px',
+              padding: '1.5em',
+              boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+            }}
+          >
             <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
               <ProgressBar
                 snippetProgress={currentSnippetNum}
@@ -262,12 +274,18 @@ const PracticeView = () => {
               </a>
             )}
             {hiddenFeatures && (
-              <Checkbox
-                toggle
+              <FormControlLabel
+                control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
                 label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                checked={showDifficulty}
-                onChange={updateUserReviewDiff}
-                style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+                sx={{
+                  mt: '.5em',
+                  ml: '.5em',
+                  '& .MuiFormControlLabel-label': {
+                    marginLeft: '0.5em',
+                    fontFamily: font.family,
+                    color: colors.ink,
+                  },
+                }}
               />
             )}
             <PreviousSnippets showDifficulty={showDifficulty} />
@@ -291,7 +309,7 @@ const PracticeView = () => {
                 <FormattedMessage id="pausing-after-this-snippet" />
               </div>
             )}
-          </Segment>
+          </Box>
 
           {showVirtualKeyboard && (
             <div>

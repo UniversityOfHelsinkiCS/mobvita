@@ -1,6 +1,8 @@
 import React from 'react'
-import { Modal, Button } from 'semantic-ui-react'
+import { Box } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
+import AppDialog from 'Components/ui/AppDialog'
+import AppButton from 'Components/AppButton'
 
 const ConfirmationWarning = ({ open, setOpen, action, children }) => {
   const handleAccept = () => {
@@ -13,25 +15,22 @@ const ConfirmationWarning = ({ open, setOpen, action, children }) => {
   }
 
   return (
-    <Modal
-      dimmer="inverted"
+    <AppDialog
       open={open}
-      onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
+      onClose={handleReject}
+      maxWidth="xs"
+      title={<FormattedMessage id="Warning" />}
     >
-      <Modal.Header>
-        <FormattedMessage id="Warning" />
-      </Modal.Header>
-      <Modal.Content>{children}</Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => handleAccept()} data-cy="confirm-warning-dialog">
-          <FormattedMessage id="Confirm" />
-        </Button>
-        <Button onClick={() => handleReject()}>
+      <Box sx={{ mb: '1.75em', lineHeight: 1.5 }}>{children}</Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75em' }}>
+        <AppButton variant="contrast-outline" onClick={handleReject}>
           <FormattedMessage id="Cancel" />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+        </AppButton>
+        <AppButton variant="danger" onClick={handleAccept} data-cy="confirm-warning-dialog">
+          <FormattedMessage id="Confirm" />
+        </AppButton>
+      </Box>
+    </AppDialog>
   )
 }
 

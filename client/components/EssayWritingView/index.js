@@ -1,19 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Divider, Paper, Typography } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTextField from 'Components/ui/AppTextField'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import {
@@ -397,46 +389,37 @@ const EssayWritingView = () => {
       </Box>
       {showFooter && <Footer />}
 
-      <Dialog
+      <AppDialog
         open={topicDialogOpen}
         onClose={() => setTopicDialogOpen(false)}
-        fullWidth
         maxWidth="sm"
+        title={intl.formatMessage({ id: 'upload-to-my-essays' })}
       >
-        <DialogTitle>
-          <FormattedMessage id="upload-to-my-essays" />
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            fullWidth
-            value={topic}
-            error={topicTaken}
-            onChange={event => {
-              setTopic(event.target.value)
-              setTopicTaken(false)
-            }}
-            onKeyDown={event => {
-              if (event.key === 'Enter' && topic.trim() && !savePending) {
-                event.preventDefault()
-                handleConfirmUpload()
-              }
-            }}
-            placeholder={intl.formatMessage({
-              id: 'topic-singular',
-            })}
-            data-cy="essay-topic-input"
-            sx={{ mt: 1 }}
-          />
-          {topicTaken && (
-            <Typography color="error" variant="body2" sx={{ mt: 1 }} data-cy="essay-topic-taken">
-              <FormattedMessage id="essay-upload-topic-taken" />
-            </Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
+        <AppTextField
+          autoFocus
+          value={topic}
+          error={topicTaken}
+          onChange={event => {
+            setTopic(event.target.value)
+            setTopicTaken(false)
+          }}
+          onKeyDown={event => {
+            if (event.key === 'Enter' && topic.trim() && !savePending) {
+              event.preventDefault()
+              handleConfirmUpload()
+            }
+          }}
+          placeholder={intl.formatMessage({ id: 'topic-singular' })}
+          inputProps={{ 'data-cy': 'essay-topic-input' }}
+        />
+        {topicTaken && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }} data-cy="essay-topic-taken">
+            <FormattedMessage id="essay-upload-topic-taken" />
+          </Typography>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 3 }}>
           <AppButton
-            variant="outline"
+            variant="contrast-outline"
             onClick={() => {
               setTopicDialogOpen(false)
               setTopicTaken(false)
@@ -451,8 +434,8 @@ const EssayWritingView = () => {
           >
             <FormattedMessage id="upload-to-my-essays" />
           </AppButton>
-        </DialogActions>
-      </Dialog>
+        </Box>
+      </AppDialog>
     </Box>
   )
 }

@@ -12,8 +12,6 @@ import {
   startProgressTour,
   startPracticeTour,
 } from 'Utilities/redux/tourReducer'
-import EditNoteIcon from '@mui/icons-material/EditNote'
-import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
 import ContactUs from './StaticContent/ContactUs'
 import PracticeModal from './HomeView/PracticeModal'
 import { MenuRow } from 'Components/ui/menuRow'
@@ -25,7 +23,6 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * navbar's user-options menu instead. Rows reuse the shared `MenuRow` so they match the dropdowns.
  */
 const DRAWER_WIDTH = 320
-const iconSx = { fontSize: 22 }
 const imgIconStyle = { width: 22, height: 22 } // for the landing-menu SVG icons (help, about, …)
 
 export default function Sidebar() {
@@ -162,7 +159,7 @@ export default function Sidebar() {
             </MenuRow>
           )}
           <MenuRow
-            icon={<img src={images.layersThree} alt="" style={imgIconStyle} />}
+            icon={<img src={images.cardsIcon} alt="" style={imgIconStyle} />}
             selected={isActive('/flashcards')}
             onClick={() => go('/flashcards/fillin')}
           >
@@ -184,7 +181,7 @@ export default function Sidebar() {
           </MenuRow>
 
           <MenuRow
-            icon={<EditNoteIcon sx={iconSx} />}
+            icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
             selected={isActive('/essay-writing')}
             onClick={() => go('/essay-writing')}
           >
@@ -192,7 +189,7 @@ export default function Sidebar() {
           </MenuRow>
           {hasAdaptiveTests && (
             <MenuRow
-              icon={<EmojiEventsOutlinedIcon sx={iconSx} />}
+              icon={<img src={images.trophy01} alt="" style={imgIconStyle} />}
               selected={isActive('/adaptive-test')}
               onClick={() => go('/adaptive-test')}
             >
@@ -201,9 +198,24 @@ export default function Sidebar() {
           )}
           {hiddenFeatures && (
             <>
-              <MenuRow onClick={() => go('/test-construction')}>Grammar check</MenuRow>
-              <MenuRow onClick={() => go('/test-debug')}>Feedback check</MenuRow>
-              <MenuRow onClick={() => go('/correction-debug')}>Correction check</MenuRow>
+              <MenuRow
+                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                onClick={() => go('/test-construction')}
+              >
+                Grammar check
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                onClick={() => go('/test-debug')}
+              >
+                Feedback check
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                onClick={() => go('/correction-debug')}
+              >
+                Correction check
+              </MenuRow>
             </>
           )}
 
