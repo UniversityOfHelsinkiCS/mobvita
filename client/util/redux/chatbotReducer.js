@@ -98,6 +98,7 @@ export const getEssayChatbotResponse = ({
   correctedText = '',
   sentenceId = null,
   focusedWord = '',
+  focusKey = '',
 }) => {
   const route = `/chatbot/essay`
   const prefix = 'GET_ESSAY_CHATBOT_RESPONSE'
@@ -113,6 +114,7 @@ export const getEssayChatbotResponse = ({
 
   return callBuilder(route, prefix, 'post', payload, {
     showFollowUpQuestion: !sentenceId,
+    focusKey,
   })
 }
 
@@ -159,7 +161,11 @@ export default (state = initialState, action) => {
         isWaitingForEssayResponse: true,
         essayMessages: [
           ...state.essayMessages,
-          { type: 'user', text: action.requestSettings.data.message },
+          {
+            type: 'user',
+            text: action.requestSettings.data.message,
+            focusKey: action.requestSettings.query?.focusKey ?? '',
+          },
         ],
       }
     case 'GET_ESSAY_CHATBOT_RESPONSE_FAILURE':
@@ -168,9 +174,10 @@ export default (state = initialState, action) => {
         isWaitingForEssayResponse: false,
       }
     case 'GET_ESSAY_CHATBOT_RESPONSE_SUCCESS': {
+      const focusKey = action.query?.focusKey ?? ''
       const essayResponseMessages = [
         ...state.essayMessages,
-        { type: 'bot', text: getEssayChatbotResponseText(response) },
+        { type: 'bot', text: getEssayChatbotResponseText(response), focusKey },
       ]
 
       return {
@@ -181,6 +188,7 @@ export default (state = initialState, action) => {
               type: 'bot',
               messageId: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE_ID,
               text: ESSAY_CHATBOT_FOLLOW_UP_MESSAGE,
+              focusKey,
             })
           : essayResponseMessages,
       }
