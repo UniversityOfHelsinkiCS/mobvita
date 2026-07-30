@@ -33,6 +33,7 @@ const CORRECTION_TYPE_COLORS = {
   deletion: '#f6b3b3',
 }
 
+// When the panel flips to a focused suggestion it shows these as bg colors behind the conversation and focused suggestion.
 const CORRECTION_TYPE_BG_COLORS = {
   replacement: '#c5e5f8',
   multi: '#c5e5f8',
