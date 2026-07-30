@@ -59,11 +59,13 @@ import {
   getFoldersForPath,
   getLocalFolderPathsForLibrary,
   getLocalFolderStorageKey,
+  getRenamedItemPath,
   getStoriesForPath,
   getStoriesInFolder,
   getStoredLocalFolders,
   normalizeLibraryPath,
   removeLocalFolder,
+  renameLocalFolder,
   saveStoredLocalFolders,
 } from './folderUtils'
 import useLibraryDragAndDrop from './useLibraryDragAndDrop'
@@ -717,6 +719,63 @@ const StoryList = () => {
     })
   }
 
+  // Rename a folder: re-path every story inside it (folder itself + sub-paths) and rename any matching
+  // empty local-folder entries. The item drag/move endpoint (updateStoryPath) is reused for the re-path.
+  const handleRenameFolder = (folderPath, newName) => {
+    if (!libraryIsMutable) return
+
+    const normalizedOldPath = normalizeLibraryPath(folderPath)
+    const parentPath = normalizedOldPath.split('/').slice(0, -1).join('/')
+    const newFolderPath = normalizeLibraryPath(parentPath ? `${parentPath}/${newName}` : newName)
+
+    if (!newFolderPath || newFolderPath === normalizedOldPath) return
+
+    getStoriesInFolder(allStoriesInActiveLibrary, normalizedOldPath).forEach(story => {
+      dispatch(
+        updateStoryPath(story._id, getRenamedItemPath(story.path, normalizedOldPath, newFolderPath)),
+      )
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, normalizedOldPath, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath =>
+      getRenamedItemPath(currentPath, normalizedOldPath, newFolderPath),
+    )
+    clearDragState()
+  }
+
+  const handleRenameEssayFolder = (folderPath, newName) => {
+    if (!essaysLibraryActive || !learningLanguage) return
+
+    const normalizedOldPath = normalizeLibraryPath(folderPath)
+    const parentPath = normalizedOldPath.split('/').slice(0, -1).join('/')
+    const newFolderPath = normalizeLibraryPath(parentPath ? `${parentPath}/${newName}` : newName)
+
+    if (!newFolderPath || newFolderPath === normalizedOldPath) return
+
+    getStoriesInFolder(uploadedEssays, normalizedOldPath).forEach(essay => {
+      const essayId = getWritingEssayId(essay)
+      if (essayId == null) return
+
+      dispatch(
+        updateWritingEssayPath(
+          capitalize(learningLanguage),
+          essayId,
+          getRenamedItemPath(essay.path, normalizedOldPath, newFolderPath),
+        ),
+      )
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, normalizedOldPath, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath =>
+      getRenamedItemPath(currentPath, normalizedOldPath, newFolderPath),
+    )
+    clearEssayDragState()
+  }
+
   const handleDeleteEssayFolderRequest = folderPath => {
     if (!essaysLibraryActive) return
 
@@ -799,6 +858,13 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
+    // Add/rename name-collision checks must see every sibling folder, not just the ones matching the
+    // active search, so a rename can't silently merge into a folder the search is currently hiding.
+    const allFolderNamesInCurrentPath = getFoldersForPath(
+      allStoriesInActiveLibrary,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
     const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
     const folderIsEmpty = foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0
 
@@ -807,7 +873,10 @@ const StoryList = () => {
         <Box className="library-folder-header">
           {renderLibraryPathBreadcrumbs()}
           {libraryIsMutable && (
-            <AddFolder existingFolderNames={foldersInCurrentPath} onAddFolder={handleAddFolder} />
+            <AddFolder
+              existingFolderNames={allFolderNamesInCurrentPath}
+              onAddFolder={handleAddFolder}
+            />
           )}
         </Box>
         {folderIsEmpty ? (
@@ -858,6 +927,12 @@ const StoryList = () => {
                       ? () => handleRemoveLocalFolder(normalizedFolderPath)
                       : undefined
                   }
+                  onRename={
+                    libraryIsMutable
+                      ? newName => handleRenameFolder(normalizedFolderPath, newName)
+                      : undefined
+                  }
+                  existingFolderNames={allFolderNamesInCurrentPath}
                 />
               )
             })}
@@ -915,6 +990,13 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
+    // Collision checks use the full essay set (not the search-filtered one) so a rename can't silently
+    // merge into a sibling folder the active search is hiding.
+    const allFolderNamesInCurrentPath = getFoldersForPath(
+      uploadedEssays,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
     const essaysInCurrentPath = getStoriesForPath(sortedEssays, currentLibraryPath)
     const folderIsEmpty = foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0
 
@@ -922,7 +1004,10 @@ const StoryList = () => {
       <>
         <Box className="library-folder-header">
           {renderEssayPathBreadcrumbs()}
-          <AddFolder existingFolderNames={foldersInCurrentPath} onAddFolder={handleAddFolder} />
+          <AddFolder
+            existingFolderNames={allFolderNamesInCurrentPath}
+            onAddFolder={handleAddFolder}
+          />
         </Box>
         {folderIsEmpty ? (
           // Render nothing during the initial prefetch (unless searching) to avoid a "no essays" flash.
@@ -962,6 +1047,8 @@ const StoryList = () => {
                       ? () => handleRemoveLocalFolder(normalizedFolderPath)
                       : undefined
                   }
+                  onRename={newName => handleRenameEssayFolder(normalizedFolderPath, newName)}
+                  existingFolderNames={allFolderNamesInCurrentPath}
                 />
               )
             })}

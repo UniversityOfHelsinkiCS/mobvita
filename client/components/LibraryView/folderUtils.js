@@ -123,3 +123,28 @@ export const removeLocalFolder = (localFolders, activeLibrary, folderPath) => {
     )
   })
 }
+
+// When a folder is renamed (oldFolderPath -> newFolderPath), an item/path either sits exactly at the
+// folder or inside it (a deeper sub-path); its prefix is swapped. Anything else is returned unchanged.
+export const getRenamedItemPath = (itemPath, oldFolderPath, newFolderPath) => {
+  const normalizedItemPath = normalizeLibraryPath(itemPath)
+  const normalizedOldPath = normalizeLibraryPath(oldFolderPath)
+  const normalizedNewPath = normalizeLibraryPath(newFolderPath)
+
+  if (normalizedItemPath === normalizedOldPath) return normalizedNewPath
+  if (normalizedItemPath.startsWith(`${normalizedOldPath}/`)) {
+    return `${normalizedNewPath}${normalizedItemPath.slice(normalizedOldPath.length)}`
+  }
+
+  return normalizedItemPath
+}
+
+export const renameLocalFolder = (localFolders, activeLibrary, oldFolderPath, newFolderPath) =>
+  localFolders.map(folder => {
+    if (folder.library !== activeLibrary) return folder
+
+    return {
+      ...folder,
+      path: getRenamedItemPath(folder.path, oldFolderPath, newFolderPath),
+    }
+  })

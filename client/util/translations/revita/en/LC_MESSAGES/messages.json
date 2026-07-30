@@ -1874,5 +1874,13 @@
     "landing-page-sign-up": "Sign Up",
     "share-essay": "Share essay",
     "share-essay-with": "Share with",
-    "share-essay-failed": "Could not share with"
+    "share-essay-failed": "Could not share with",
+    "connection-online": "Connected",
+    "connection-offline": "No connection",
+    "see-all-stats": "See All Stats",
+    "progress-streak-explanation": "Your practice streak — the number of days in a row you have practiced.",
+    "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
+    "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
+    "interface-settings": "Interface settings",
+    "rename-folder": "Rename folder"
 }
