@@ -33,6 +33,13 @@ const CORRECTION_TYPE_COLORS = {
   deletion: '#f6b3b3',
 }
 
+const CORRECTION_TYPE_BG_COLORS = {
+  replacement: '#c5e5f8',
+  multi: '#c5e5f8',
+  insertion: '#ccf7cc',
+  deletion: '#fff0f0',
+}
+
 // Strong version of each correction colour for the "back to list" arrow, so it stays readable on the
 // tinted title bar and matches its hue (blue/green/red) instead of always being blue.
 const CORRECTION_TYPE_ACCENT_COLORS = {
@@ -118,6 +125,7 @@ const EssayChatbot = ({
       )
     : null
   const focusedColor = focusedCorrectionType ? CORRECTION_TYPE_COLORS[focusedCorrectionType] : null
+  const focusedBgColor = focusedCorrectionType ? CORRECTION_TYPE_BG_COLORS[focusedCorrectionType] : null
   const focusedAccentColor = focusedCorrectionType
     ? CORRECTION_TYPE_ACCENT_COLORS[focusedCorrectionType]
     : null
@@ -297,14 +305,21 @@ const EssayChatbot = ({
           </div>
         </SwiperSlide>
 
-        {/* Back face: the selected suggestion pinned on top, plus its feedback and the conversation. */}
+        {/* Back face: the selected suggestion pinned on top, plus its feedback and the conversation.
+            Both areas take the focused suggestion's correction colour so the view matches its bubble. */}
         <SwiperSlide className="essay-chatbot-face">
           {isFocused && (
-            <div className="essay-chatbot-focused-suggestion">
+            <div
+              className="essay-chatbot-focused-suggestion"
+              style={focusedBgColor ? { background: focusedBgColor } : undefined}
+            >
               {renderSuggestion(focusedSuggestion, true)}
             </div>
           )}
-          <div className="chatbot-messages">
+          <div
+            className="chatbot-messages"
+            style={focusedBgColor ? { background: focusedBgColor } : undefined}
+          >
             {focusedFeedbackHints.map((hint, index) => (
               <div
                 className="message message-bot"
