@@ -1871,7 +1871,7 @@
     "essay-original-version": "Alkuperäinen versio",
     "essay-current-version": "Nykyinen version",
     "essay-remove-confirm": "Tämä poistaa esseen pysyvästi. Oletko varma?",
-    "upload-to-my-essays": "Lisää omiin esseisiin",
+    "upload-to-my-essays": "Tallenna omiin esseisiin",
     "something-went-wrong": "Jotain meni vikaan.",
     "see-all-stats": "See All Stats",
     "progress-streak-explanation": "Your practice streak — the number of days in a row you have practiced.",
@@ -1879,5 +1879,7 @@
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "connection-online": "Connected",
     "connection-offline": "No connection",
-    "interface-settings": "Interface settings"
+    "interface-settings": "Interface settings",
+    "all-topics-in-text": "All Topics In Text",
+    "rename-folder": "Nimeä kansio uudelleen"
 }

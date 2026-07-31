@@ -5,10 +5,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const EMPTY_LOADING_PROGRESS = {}
 import { Divider, FormControlLabel, Box } from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings'
+import { images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppSelect from 'Components/ui/AppSelect'
+import TopicsSelect from 'Components/StoryView/TopicsSelect'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTabs from 'Components/ui/AppTabs'
 import AppButton from 'Components/AppButton'
@@ -391,69 +392,108 @@ const ReadViews = ({ match }) => {
     navigate('/library', { replace: true })
   }
 
-  const StoryFunctionsDropdown = () => {
-    const chooseDropdownMenuSide = () => {
-      if (bigScreen) return null
-      return { right: 'auto', left: 0 }
-    }
+  // The practice CTA + settings gear + topics select now live in the card's top toolbar (see
+  // PreviewToolbar below); this only renders the teacher's edit/delete controls.
+  const StoryFunctionsDropdown = () =>
+    preProcessingReady && teacherView && !routeStory?.control_story ? (
+      <div
+        className="practice-tour-edit-delete-story"
+        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+      >
+        <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
+          <FormattedMessage id="edit" />
+        </AppButton>
+        <AppButton variant="danger" onClick={() => setConfirmationOpen(true)}>
+          <FormattedMessage id="Delete" />
+        </AppButton>
+      </div>
+    ) : null
+
+  // Top toolbar of the story card: practice CTA on the left, topics select + settings gear on the
+  // right (matches the 2026 preview design).
+  const PreviewToolbar = () => {
+    if (!preProcessingReady || isGroupReview || isGroupPreview) return null
+
+    const practiceCta = routeStory?.control_story ? (
+      <AppButton
+        as={Link}
+        to={`/stories/${id}/controlled-practice`}
+        variant="tan"
+        sx={{ gap: '0.5em' }}
+      >
+        <img src={images.play} alt="" />
+        <FormattedMessage id="tailored-begin-practice" />
+      </AppButton>
+    ) : (
+      !teacherView && (
+        <AppButton
+          as={Link}
+          to={
+            user?.user?.reading_comprehension
+              ? `/stories/${id}/reading_practice`
+              : `/stories/${id}/practice/`
+          }
+          className="practice-tour-start-practice-story"
+          variant="tan"
+          disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
+          sx={{ gap: '0.5em' }}
+        >
+          <img src={images.play} alt="" />
+          <FormattedMessage id="start-practice-story" />
+        </AppButton>
+      )
+    )
 
     return (
-      <>
-        {routeStory?.control_story ? (
-          <AppButton
-            as={Link}
-            to={`/stories/${id}/controlled-practice`}
-            style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-          >
-            <FormattedMessage id="tailored-begin-practice" />
-          </AppButton>
-        ) : (
-          preProcessingReady && (
-            <>
-              <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
-                <span style={{ display: 'inline-flex' }}>
-                  <SettingsIcon
-                    onClick={handle_cog_click}
-                    sx={{
-                      color: '#0088CB',
-                      cursor: 'pointer',
-                      marginRight: '12px',
-                      fontSize: '1.5em' }}
-                  />
-                </span>
-              </CustomTooltip>
-              {!teacherView && (
-                <AppButton
-                  as={Link}
-                  to={
-                    user?.user?.reading_comprehension
-                      ? `/stories/${id}/reading_practice`
-                      : `/stories/${id}/practice/`
-                  }
-                  className="practice-tour-start-practice-story"
-                  style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
-                  disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
-                >
-                  <FormattedMessage id="start-practice-story" />
-                </AppButton>
-              )}
-              {teacherView && (
-                <div
-                  className="practice-tour-edit-delete-story"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-                >
-                  <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
-                    <FormattedMessage id="edit" />
-                  </AppButton>
-                  <AppButton variant="danger" onClick={() => setConfirmationOpen(true)}>
-                    <FormattedMessage id="Delete" />
-                  </AppButton>
-                </div>
-              )}
-            </>
-          )
-        )}
-      </>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75em',
+          marginBottom: '1.25em',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75em' }}>
+          {practiceCta}
+          {mode === 'preview' && (
+            <FormControlLabel
+              className="highlight-exercises"
+              control={<AppSwitch checked={previewToggleOn} onChange={updateUserPreviewExer} />}
+              label={intl.formatMessage({ id: 'show preview' })}
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  fontFamily: font.family,
+                  color: colors.ink,
+                },
+              }}
+            />
+          )}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
+          {canSeeTopics && !routeStory?.control_story && (
+            <TopicsSelect
+              conceptCount={routeStory?.concept_count || {}}
+              focusedConcept={focusedConcept}
+              setFocusedConcept={setFocusedConcept}
+            />
+          )}
+          {!routeStory?.control_story && (
+            <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
+              <span
+                onClick={handle_cog_click}
+                data-cy="story-preview-settings"
+                style={{ display: 'inline-flex', cursor: 'pointer' }}
+              >
+                <img src={images.circleSettings} alt="" style={{ width: 28, height: 28 }} />
+              </span>
+            </CustomTooltip>
+          )}
+        </Box>
+      </Box>
     )
   }
 
@@ -482,6 +522,7 @@ const ReadViews = ({ match }) => {
               marginBottom: '1em' }}
             style={getTextStyle(learningLanguage)}
           >
+            {PreviewToolbar()}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
@@ -511,18 +552,6 @@ const ReadViews = ({ match }) => {
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
               <div>
                 {mode === 'practice-preview' && <div />}
-                {preProcessingReady && mode === 'preview' && (
-                  <FormControlLabel
-                    className="highlight-exercises"
-                    control={
-                      <AppSwitch checked={previewToggleOn} onChange={updateUserPreviewExer} />
-                    }
-                    label={intl.formatMessage({ id: 'show preview' })}
-                    sx={{
-                      paddingTop: '.5em',
-                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
-                  />
-                )}
                 {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
                   <FormControlLabel
                     control={

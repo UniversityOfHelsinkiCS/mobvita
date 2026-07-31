@@ -1553,6 +1553,7 @@
     "Reset Lesson": "Configure lesson",
     "lessons-ready-for-practice": "Lesson is ready for practice!",
     "start-practice-story": "Begin practice",
+    "all-topics-in-text": "All Topics In Text",
     "practice-button-story-mode": "Begin practice!",
     "download-reading-comprehension-report": "Download overview report",
     "tailored-practice-mode": "Practice",
@@ -1878,5 +1879,6 @@
     "see-all-stats": "See All Stats",
     "progress-streak-explanation": "Your practice streak — the number of days in a row you have practiced.",
     "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
-    "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary."
+    "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
+    "rename-folder": "Rename folder"
 }

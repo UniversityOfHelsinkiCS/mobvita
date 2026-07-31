@@ -38,6 +38,11 @@ import waves from 'Assets/images/waves.svg'
 import place1 from 'Assets/images/place1.svg'
 import place2 from 'Assets/images/place2.svg'
 import place3 from 'Assets/images/place3.svg'
+import flipBackward from 'Assets/images/flip-backward.svg'
+import folder from 'Assets/images/folder.svg'
+import folderPlus from 'Assets/images/folder-plus.svg'
+import star06 from 'Assets/images/star-06.svg'
+import play from 'Assets/images/play.svg'
 import iconHome from 'Assets/images/icon-home.svg'
 import layersThree from 'Assets/images/layers-three-01.svg'
 import libraryBig from 'Assets/images/library-big.svg'
@@ -184,6 +189,11 @@ export const images = {
   place1,
   place2,
   place3,
+  flipBackward,
+  folder,
+  folderPlus,
+  star06,
+  play,
   iconHome,
   layersThree,
   libraryBig,
