@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #fff;
+  background: #faf8ed; // cream
   border-radius: 8px;
   overflow: hidden;
 }
@@ -10,11 +10,11 @@
 .ai-assistant-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 1.2rem;
-  background: #f1f1f1;
-  color: rgb(0, 0, 0);
-  border-bottom: 1px solid #e0e0e0;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  background: transparent;
+  color: #2d2c2a;
+  border-bottom: 1px solid rgba(45, 44, 42, 0.12);
 }
 
 .robot-icon {
@@ -25,9 +25,11 @@
 
 .ai-header-title {
   margin: 0;
-  font-size: 1.2rem;
+  font-family: 'Geologica', sans-serif;
+  font-size: 1.4rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
+  color: #2d2c2a;
 }
 
 .settings-icon {      
@@ -85,8 +87,7 @@
 .chatbot-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: #f8f9fa;
+  justify-content: space-between;  
   border-radius: 8px;
   padding: 12px 15px;
   margin-bottom: 1rem;
@@ -139,7 +140,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #666;
+    color: #2d2c2a;
     transition: transform 0.15s ease;
     transform-origin: center;
     border: none;
@@ -154,42 +155,44 @@
     }
   }
 
+  // Design-system menu: cream panel, soft shadow, pill rows with tan hover.
   .chat-action-options {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    background: white;
-    border-radius: 10px;
-    padding: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    background: #faf8ed; // cream
+    border-radius: 18px;
+    padding: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-width: 140px;
+    gap: 4px;
+    min-width: 210px;
     z-index: 1000;
 
     .chat-action-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 12px;
+      padding: 10px 14px;
       border: none;
       background: transparent;
-      border-radius: 8px;
+      border-radius: 999px; // pill row
       cursor: pointer;
       transition: background 0.15s;
+      text-align: left;
 
       &:hover {
-        background: #f0f7ff;
+        background: #ece3be; // tan hover
       }
 
       .chat-action-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
 
         i.icon {
           margin: 0;
@@ -200,9 +203,10 @@
       }
 
       .chat-action-text {
-        font-size: 0.9rem;
+        font-family: 'Geologica', sans-serif;
+        font-size: 15px;
         font-weight: 500;
-        color: #333;
+        color: #2d2c2a;
         white-space: nowrap;
       }
     }
@@ -212,23 +216,25 @@
 
 // Chat Messages Container (Handles all scrolling)
 .chatbot-messages-container {
-  flex: 1;      
+  flex: 1;
   padding: 10px 15px;
-  background: white;
+  background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 12px; 
+  gap: 12px;
 }
 
     // Chat Input Area (Fixed at bottom)
     .chatbot-input-area {
       flex-shrink: 0;
-      padding: 10px 15px;
-      background: white;
-      border-top: 1px solid #e0e0e0;
+      padding: 12px 15px;
+      background: transparent;
+      border-top: 1px solid rgba(45, 44, 42, 0.12);
       z-index: 5;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
       min-height: 67px;
 
       .chatbot-input-form {
@@ -408,18 +414,22 @@
 
 .message-bot {
   align-self: flex-start;
-  background-color: #f8f9fa;
-  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   ul {
     margin-bottom: 0;
     padding-left: 1.2em;
   }
-}    
+}
 
 .message-user {
   align-self: flex-end;
-  background-color: #d4eef1;
-  border: 1px solid #b8d8e0;
+  background-color: #b1d3c2; // sage green
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   margin-left: auto;
 }
 

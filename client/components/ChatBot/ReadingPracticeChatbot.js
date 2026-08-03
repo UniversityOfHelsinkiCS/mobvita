@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from 'semantic-ui-react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import './Chatbot.scss';
@@ -9,8 +8,9 @@ import {
     getReadingPracticeAgentConversationHistory
 } from 'Utilities/redux/chatbotReducer';
 import ChatbotSuggestions from './ChatbotSuggestions'
+import ChatInput from 'Components/ui/ChatInput'
+import ChatBubble from 'Components/ui/ChatBubble'
 import Spinner from 'Components/Spinner'
-import RobotIcon from 'Components/PracticeView/RobotIcon'
 import AssistentSettings from 'Components/PracticeView/AssistentSettings'
 
 const ReadingPracticeChatBot = ({
@@ -73,7 +73,7 @@ const ReadingPracticeChatBot = ({
     }, [loadHistory, session_id, reading_question_id, dispatch]);
 
     const handleMessageSubmit = (event) => {
-        event.preventDefault();
+        event?.preventDefault();
         if (currentMessage.trim() === '') return;
         dispatch(
             getReadingPracticeChatbotResponse(
@@ -87,12 +87,9 @@ const ReadingPracticeChatBot = ({
     };
 
     return (
-        <div className="chatbot">
+        <div className="chatbot vita-chatbot">
             <div className="ai-assistant-header">
-                <RobotIcon className="ai-header-icon" size={24} />
-                <h3 className="ai-header-title">
-                    <FormattedMessage id="chatbot-toggle-label" />
-                </h3>
+                <h3 className="ai-header-title">Vita - AI Assistant</h3>
                 <AssistentSettings className="settings-icon" />
             </div>
             <div className="chatbot-messages">
@@ -104,12 +101,12 @@ const ReadingPracticeChatBot = ({
                 {!questionDone ? (
                     // Intro hint — hidden once a translation card is shown or the chatbot unlocks.
                     !showTranslation && (
-                        <div className="message message-bot">
+                        <ChatBubble variant="bot">
                             <FormattedMessage
                                 id="reading-chatbot-answer-first"
                                 defaultMessage="Click on words to see their translations. The chatbot becomes available once you answer correctly or use all your attempts."
                             />
-                        </div>
+                        </ChatBubble>
                     )
                 ) : isLoadingHistory ? (
                     <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
@@ -118,14 +115,13 @@ const ReadingPracticeChatBot = ({
                 ) : (
                     <>
                         {messages.map((message, index) => (
-                            <div
+                            <ChatBubble
                                 ref={index === messages.length - 1 ? latestMessageRef : null}
                                 key={index}
-                                className={`message message-${message.type}`}
-                                style={{ display: 'block' }}
+                                variant={message.type === 'user' ? 'user' : 'bot'}
                             >
                                 {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
-                            </div>
+                            </ChatBubble>
                         ))}
                         {isWaitingForResponse && (
                             <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
@@ -136,23 +132,17 @@ const ReadingPracticeChatBot = ({
                 )}
             </div>
             <div className="chatbot-input-area">
-                <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                    <input
-                        type="text"
-                        name="userInput"
-                        placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-                        value={currentMessage}
-                        disabled={inputDisabled}
-                        onChange={(e) => setCurrentMessage(e.target.value)}
-                    />
-                    <Button type="submit" primary disabled={inputDisabled}>
-                        <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                    </Button>
-                    <ChatbotSuggestions
-                        predefinedChatbotRequests={predefinedChatbotRequests}
-                        disabled={inputDisabled}
-                    />
-                </form>
+                <ChatInput
+                    value={currentMessage}
+                    onChange={setCurrentMessage}
+                    onSubmit={handleMessageSubmit}
+                    placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+                    disabled={inputDisabled}
+                />
+                <ChatbotSuggestions
+                    predefinedChatbotRequests={predefinedChatbotRequests}
+                    disabled={inputDisabled}
+                />
             </div>
         </div>
     );

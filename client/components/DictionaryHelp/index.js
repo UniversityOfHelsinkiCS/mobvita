@@ -1,7 +1,10 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, Segment, Icon, Popup } from 'semantic-ui-react'
+import { Box } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
@@ -163,7 +166,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             <div
               data-cy="translations"
               style={{
-                color: '#555555',
+                color: colors.ink,
+                fontFamily: font.family,
                 marginBottom: '1em',
                 padding: '1em',
                 borderRadius: '15px',
@@ -235,12 +239,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     return surfaceWord.toLowerCase() !== parsedLemmas()[0].toLowerCase()
   }
 
-  const getWindowCornerIcon = () => {
-    if (windowWidth < 1024) {
-      return showDictionaryBox ? 'angle down' : 'angle up'
-    }
-    return showDictionaryBox ? 'angle up' : 'angle down'
-  }
+  // Which way the collapse chevron points. On narrow windows the box sits at the bottom, so the
+  // arrow inverts relative to the desktop layout.
+  const cornerArrowUp = windowWidth < 1024 ? !showDictionaryBox : showDictionaryBox
 
   const translationResults = () => {
     if (translation === 'no-clue-translation') {
@@ -275,7 +276,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       )
     if (!translation) {
       return (
-        <List.Item style={{ color: '#555555' }}>
+        <div style={{ color: colors.ink, fontFamily: font.family }}>
           {!clue && !inWordNestModal && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
                 <CustomTooltip title={intl.formatMessage({ id: 'explain-speaker-lemma' })}>
@@ -286,12 +287,12 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               {maskSymbol || parsedLemmas()[0]}
             </div>
           )}
-          <List bulleted style={{ color: 'slateGrey', fontStyle: 'italic' }}>
-            <span>
+          <ul style={{ color: colors.muted, fontStyle: 'italic', margin: '0.3em 0 0', paddingLeft: '1.1em' }}>
+            <li>
               <FormattedMessage id="dictionaryhelp-no-translation-available" />
-            </span>
-          </List>
-        </List.Item>
+            </li>
+          </ul>
+        </div>
       )
     }
     return null
@@ -303,26 +304,32 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         smallWindow && !inWordNestModal ? ' dictionary-help-overlay' : ''
       }`}
     >
-      <Segment>
+      <Box
+        sx={{
+          backgroundColor: colors.card,
+          borderRadius: '20px',
+          padding: '1em',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+          fontFamily: font.family,
+          color: colors.ink,
+        }}
+      >
         {!mobileDisplayAnnotations && (
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
-              <div className="header-3" style={{ fontWeight: '500' }}>
-                <Popup
-                  content={
-                    <FormattedHTMLMessage id="click-on-words-near-the-exercises-to-explore-their-meaning" />
-                  }
-                  trigger={
-                    <Icon
-                      style={{ paddingRight: '0.5em', cursor: 'pointer' }}
-                      name="info circle"
-                      size="small"
-                      color="grey"
-                      data-cy="dictionary-info"
-                    />
-                  }
-                  on="click"
-                />{' '}
+              <div
+                className="header-3"
+                style={{ fontWeight: '500', fontFamily: font.family, color: colors.ink, display: 'flex', alignItems: 'center' }}
+              >
+                <CustomTooltip
+                  keyId="click-on-words-near-the-exercises-to-explore-their-meaning"
+                  permanent
+                >
+                  <InfoOutlinedIcon
+                    data-cy="dictionary-info"
+                    sx={{ fontSize: 18, color: colors.muted, cursor: 'pointer', mr: '0.5em' }}
+                  />
+                </CustomTooltip>
                 <FormattedMessage id="dictionary-header" />
               </div>
             </div>
@@ -336,26 +343,42 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 }}
                 role="button"
                 tabIndex={0}
+                style={{ cursor: 'pointer', color: colors.ink }}
               >
-                <Icon name={getWindowCornerIcon()} size="large" />
+                {cornerArrowUp ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </div>
             )}
           </div>
         )}
 
         {!mobileDisplayAnnotations && showDictionaryBox && translationResults() && (
-          <div className="align-right" style={{ color: 'slateGrey' }}>
-            <FormattedMessage id="translation-target-language" />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '0.5em',
+              marginBottom: '1em',
+            }}
+          >
+            <span style={{ fontFamily: font.family, color: colors.muted }}>
+              <FormattedMessage id="translation-target-language" />
+            </span>
+            {/* Kept as a native <select> (not AppSelect) so Cypress `.select()` in
+                dictionary_spec.js keeps working; styled to the design system. */}
             <select
               disabled={dictionaryOptions.length <= 1}
               defaultValue={translationLanguageCode}
               data-cy="dictionary-dropdown"
               style={{
-                marginLeft: '0.5em',
-                border: 'none',
-                color: 'darkSlateGrey',
-                backgroundColor: 'white',
-                marginBottom: '1em',
+                fontFamily: font.family,
+                fontSize: font.input,
+                color: colors.ink,
+                backgroundColor: colors.card,
+                border: `1px solid ${colors.border}`,
+                borderRadius: '999px',
+                padding: '4px 12px',
+                cursor: dictionaryOptions.length <= 1 ? 'default' : 'pointer',
               }}
               onChange={e => handleDropdownChange(e.target.value)}
             >
@@ -441,7 +464,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             </div>
           ) : null */}
         </div>
-      </Segment>
+      </Box>
     </div>
   )
 }

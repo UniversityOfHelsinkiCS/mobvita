@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'semantic-ui-react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFlip } from 'swiper/modules'
@@ -11,8 +10,9 @@ import {
   getCorrectionGroups,
   getCorrectionGroupType,
 } from 'Components/EssayWritingView/utils/correctionTokens'
-import RobotIcon from 'Components/PracticeView/RobotIcon'
 import SanitizedHTML from 'Components/SanitizedHTML'
+import ChatInput from 'Components/ui/ChatInput'
+import ChatBubble from 'Components/ui/ChatBubble'
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
@@ -217,7 +217,7 @@ const EssayChatbot = ({
   )
 
   const handleMessageSubmit = event => {
-    event.preventDefault()
+    event?.preventDefault()
 
     if (!currentMessage.trim()) return
 
@@ -244,11 +244,28 @@ const EssayChatbot = ({
     setCurrentMessage('')
   }
 
-  // Each face shows only its own thread: the list face the general ('') thread, the focused face the
-  // current bubble's thread. Only the visible face pins the scroll-to-latest ref.
-  const renderConversationMessages = (faceFocusKey, isActiveFace) => {
-    const faceMessages = essayMessages.filter(
-      message => (message.focusKey ?? '') === faceFocusKey,
+  // The conversation (bot/user messages) lives on both flip faces, but only the visible face pins the
+  // scroll-to-latest ref so auto-scroll targets the face the user is actually looking at.
+  const renderConversationMessages = isActiveFace => {
+    essayMessages.map((message, index) =>
+      message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
+        <ChatBubble
+          variant={message.type === 'user' ? 'user' : 'bot'}
+          key={`${message.type}-${index}`}
+          ref={isActiveFace && index === essayMessages.length - 1 ? latestMessageRef : null}
+        >
+          {message.messageId ? (
+            <FormattedMessage
+              id={message.messageId}
+              defaultMessage='Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to "FOLLOW UP"!'
+            />
+          ) : message.text ? (
+            <ReactMarkdown children={message.text} />
+          ) : (
+            <FormattedMessage id="Error rendering message" />
+          )}
+        </ChatBubble>
+      ),
     )
 
     return faceMessages.map((message, index) => (
@@ -280,7 +297,7 @@ const EssayChatbot = ({
     ) : null
 
   return (
-    <div className="chatbot essay-chatbot">
+    <div className="chatbot essay-chatbot vita-chatbot">
       <div
         className="ai-assistant-header"
         style={focusedColor ? { background: focusedColor } : undefined}
@@ -295,10 +312,7 @@ const EssayChatbot = ({
             <ArrowCircleLeftOutlinedIcon sx={{ fontSize: '2.2rem' }} />
           </button>
         )}
-        <RobotIcon className="ai-header-icon" size={24} />
-        <h3 className="ai-header-title">
-          <FormattedMessage id="chatbot-toggle-label" />
-        </h3>
+        <h3 className="ai-header-title">Vita - AI Assistant</h3>
       </div>
 
       <Swiper
@@ -340,13 +354,9 @@ const EssayChatbot = ({
             style={focusedBgColor ? { background: focusedBgColor } : undefined}
           >
             {focusedFeedbackHints.map((hint, index) => (
-              <div
-                className="message message-bot"
-                key={`focused-feedback-${index}`}
-                style={{ display: 'block' }}
-              >
+              <ChatBubble variant="bot" key={`focused-feedback-${index}`}>
                 <SanitizedHTML html={hint} />
-              </div>
+              </ChatBubble>
             ))}
             {renderConversationMessages(activeFocusKey, isFocused)}
             {renderWaitingSpinner()}
@@ -355,19 +365,14 @@ const EssayChatbot = ({
       </Swiper>
 
       <div className="chatbot-input-area">
-        <form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-          <input
-            type="text"
-            name="essayChatbotInput"
-            placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-            value={currentMessage}
-            disabled={isWaitingForEssayResponse}
-            onChange={event => setCurrentMessage(event.target.value)}
-          />
-          <Button type="submit" primary disabled={isWaitingForEssayResponse}>
-            <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-          </Button>
-        </form>
+        <ChatInput
+          value={currentMessage}
+          onChange={setCurrentMessage}
+          onSubmit={handleMessageSubmit}
+          placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+          disabled={isWaitingForEssayResponse}
+          name="essayChatbotInput"
+        />
       </div>
     </div>
   )

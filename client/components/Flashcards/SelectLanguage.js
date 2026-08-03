@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dropdown } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
+import AppSelect from 'Components/ui/AppSelect'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
@@ -9,7 +9,7 @@ import {
 } from 'Utilities/common'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 
-const SelectLanguage = () => {
+const SelectLanguage = ({ trigger }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -17,25 +17,26 @@ const SelectLanguage = () => {
 
   const dictionaryOptions = translatableLanguages[learningLanguage]
     ? translatableLanguages[learningLanguage].map(element => ({
-        key: element,
         value: element,
-        text: intl.formatMessage({ id: element }),
+        label: intl.formatMessage({ id: element }),
       }))
     : []
 
-  const handleLanguageChange = async (_, data) => {
-    dispatch(updateDictionaryLanguage(data.value))
+  const handleLanguageChange = value => {
+    dispatch(updateDictionaryLanguage(value))
   }
 
   return (
-    <Dropdown
-      data-cy="flashcards-dictionary-language"
-      selection
-      fluid
-      options={dictionaryOptions}
-      value={dictionaryLanguage}
-      onChange={handleLanguageChange}
-    />
+    <div data-cy="flashcards-dictionary-language">
+      <AppSelect
+        variant="tan-outline"
+        trigger={trigger}
+        value={dictionaryLanguage}
+        onChange={handleLanguageChange}
+        options={dictionaryOptions}
+        minWidth={200}
+      />
+    </div>
   )
 }
 

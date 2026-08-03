@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Form } from 'semantic-ui-react'
 import AppButton from 'Components/AppButton'
+import AppTextField from 'Components/ui/AppTextField'
 import { useDispatch } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { changePassword } from 'Utilities/redux/userReducer'
@@ -53,38 +53,37 @@ export default function ChangePassword() {
       <div>
         <h2 className="header-2 pb-sm">{intl.formatMessage({ id: 'reset-password' })}</h2>
 
-        <Form onSubmit={saveSettings}>
-          <Form.Field>
-            <Form.Input
-              label={`${intl.formatMessage({ id: 'current-password' })}:`}
-              type="password"
-              name="currentPassword"
-              value={currentPassword}
-              error={passwordError}
-              onChange={handleSettingChange}
-            />
-            <hr />
-            <Form.Field>
-              <Form.Input
-                label={`${intl.formatMessage({ id: 'new-password' })}:`}
-                type="password"
-                name="newPassword"
-                value={newPassword}
-                error={passwordError}
-                onChange={handleSettingChange}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Form.Input
-                label={`${intl.formatMessage({ id: 'repeat-password' })}:`}
-                type="password"
-                name="newPasswordAgain"
-                value={newPasswordAgain}
-                error={passwordError}
-                onChange={handleSettingChange}
-              />
-            </Form.Field>
-          </Form.Field>
+        <form
+          onSubmit={e => {
+            e.preventDefault()
+            saveSettings()
+          }}
+        >
+          <AppTextField
+            label={`${intl.formatMessage({ id: 'current-password' })}:`}
+            type="password"
+            name="currentPassword"
+            value={currentPassword}
+            error={passwordError}
+            onChange={handleSettingChange}
+          />
+          <hr />
+          <AppTextField
+            label={`${intl.formatMessage({ id: 'new-password' })}:`}
+            type="password"
+            name="newPassword"
+            value={newPassword}
+            error={passwordError}
+            onChange={handleSettingChange}
+          />
+          <AppTextField
+            label={`${intl.formatMessage({ id: 'repeat-password' })}:`}
+            type="password"
+            name="newPasswordAgain"
+            value={newPasswordAgain}
+            error={passwordError}
+            onChange={handleSettingChange}
+          />
           {!isAnonymousUser && (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <AppButton variant="primary" data-cy="reset-password" type="submit">
@@ -104,7 +103,7 @@ export default function ChangePassword() {
               </div>
             </>
           )}
-        </Form>
+        </form>
       </div>
     </div>
   )

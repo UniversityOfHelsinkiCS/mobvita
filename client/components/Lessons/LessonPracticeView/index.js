@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { Segment, Checkbox } from 'semantic-ui-react'
+import { Box, FormControlLabel } from '@mui/material'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import {
   clearFocusedSnippet,
   resetSnippets,
@@ -179,7 +181,19 @@ const LessonPracticeView = () => {
         <div className="cont-tall flex-col space-between">
           <div className="justify-center">
             <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-              <Segment>
+              <Box
+                className="lesson-practice-card"
+                sx={{
+                  position: 'relative',
+                  // Align the card's top with the assistant panel (HelperSidebar top: 4.5em; the
+                  // content starts at the 3em navbar, so 1.5em brings them to the same level).
+                  marginTop: '1.5em',
+                  backgroundColor: colors.card,
+                  borderRadius: '30px',
+                  padding: '1.5em',
+                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+                }}
+              >
                 <div
                   className="progress-bar-cont"
                   style={{ top: smallScreen ? '.25em' : '3.25em' }}
@@ -191,12 +205,20 @@ const LessonPracticeView = () => {
                   />
                 </div>
                 {hiddenFeatures && (
-                  <Checkbox
-                    toggle
+                  <FormControlLabel
+                    control={
+                      <AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />
+                    }
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                    checked={showDifficulty}
-                    onChange={updateUserReviewDiff}
-                    style={{ paddingTop: '.5em', marginLeft: '.5em' }}
+                    sx={{
+                      mt: '1.5em',
+                      ml: '.5em',
+                      '& .MuiFormControlLabel-label': {
+                        marginLeft: '0.5em',
+                        fontFamily: font.family,
+                        color: colors.ink,
+                      },
+                    }}
                   />
                 )}
                 <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
@@ -222,7 +244,7 @@ const LessonPracticeView = () => {
                     <FormattedMessage id="pausing-after-this-snippet" />
                   </div>
                 )}
-              </Segment>
+              </Box>
 
               {showVirtualKeyboard && (
                 <div>

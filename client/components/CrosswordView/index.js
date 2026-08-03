@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'react-bootstrap'
+import { Box } from '@mui/material'
+import Spinner from 'Components/Spinner'
+import AppButton from 'Components/AppButton'
+import AppTextField from 'Components/ui/AppTextField'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import {
   useLearningLanguage,
   useDictionaryLanguage,
@@ -14,6 +18,7 @@ import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import { isEmpty } from 'lodash'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import { setWords, getClueTranslationAction } from 'Utilities/redux/translationReducer'
 import EndModal from './EndModal'
 
@@ -33,6 +38,7 @@ const CrosswordView = () => {
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const {
     data: crosswordData,
     clues,
@@ -141,7 +147,9 @@ const CrosswordView = () => {
             <span
               className="crosswords-clue"
               style={{
-                backgroundColor: currentClue && currentClue.ID === clue.ID ? 'yellow' : undefined,
+                backgroundColor: currentClue && currentClue.ID === clue.ID ? colors.green : undefined,
+                borderRadius: currentClue && currentClue.ID === clue.ID ? '6px' : undefined,
+                padding: currentClue && currentClue.ID === clue.ID ? '0 4px' : undefined,
               }}
               onClick={() => handleClueClick(clue)}
               onKeyDown={() => handleClueClick(clue)}
@@ -255,31 +263,69 @@ const CrosswordView = () => {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontWeight: 550, fontSize: '26px' }}>
+        <h1 style={{ fontWeight: 550, fontSize: '26px', fontFamily: font.family, color: colors.ink }}>
           <FormattedMessage id="building-your-crossword" />
         </h1>
-        <Spinner animation="grow" />
+        <Spinner inline size={60} />
       </div>
     )
 
   return (
     <div className="justify-center pt-sm" style={{ height: '100%', maxHeight: '90vh' }}>
-      <div style={{ maxHeight: '100%', position: 'relative' }}>
-        {hiddenFeatures && (
-          <>
+      <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+        <Box
+          sx={{
+            position: 'relative',
+            marginTop: '1.5em',
+            backgroundColor: colors.card,
+            borderRadius: '30px',
+            padding: '1.5em',
+            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
+            fontFamily: font.family,
+            color: colors.ink,
+            // The whole card is the scroll container: it grows to the taller of the grid
+            // or the clue list, and the full block scrolls together (not just the text).
+            maxHeight: 'calc(90vh - 1.5em)',
+            overflowY: 'auto',
+          }}
+        >
+          {hiddenFeatures && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'flex-end',
+              gap: '0.75em',
+              marginBottom: '1.25em',
+            }}
+          >
             {Object.entries(crosswordOptions).map(([name, value]) => (
-              <span key={name}>
-                <span>{name}</span>
-                <input type="text" value={value} onChange={handleOptionChange(name)} />
-              </span>
+              <Box key={name} sx={{ width: 80 }}>
+                <AppTextField
+                  label={name.charAt(0).toUpperCase() + name.slice(1)}
+                  value={value}
+                  onChange={handleOptionChange(name)}
+                  sx={{ '& .MuiOutlinedInput-root': { height: 32 } }}
+                />
+              </Box>
             ))}
-            <button type="button" onClick={refetchCrossword}>
+            <AppButton
+              variant="tan"
+              size="sm"
+              onClick={refetchCrossword}
+              sx={{ height: 32, py: 0 }}
+            >
               refetch
-            </button>
-            <button onClick={solveCrossword} type="button">
+            </AppButton>
+            <AppButton
+              variant="contrast-outline"
+              size="sm"
+              onClick={solveCrossword}
+              sx={{ height: 32, py: 0 }}
+            >
               solve crossword
-            </button>
-          </>
+            </AppButton>
+          </Box>
         )}
         <Crossword
           onCrosswordCorrect={handleCrosswordCorrect}
@@ -288,29 +334,31 @@ const CrosswordView = () => {
           data={formattedData}
           ref={crosswordRef}
           customClues={
-            <>
-              <div
-                style={{
-                  overflow: 'auto',
-                  maxHeight: '100%',
-                  maxWidth: '600px',
-                  lineHeight: '2em',
-                  border: '1px solid #ccc',
-                  padding: '1em',
-                  boxShadow: 'inset 0 1px 1px rgba(0, 0, 0, 0.075)',
-                  borderRadius: '4px',
-                }}
-              >
-                <h1 style={{ fontWeight: 550, fontSize: '22px' }}>{title}</h1>
-                <hr />
-                {clueElements}
-              </div>
-            </>
+            <div
+              style={{
+                maxWidth: '600px',
+                lineHeight: '2em',
+                fontFamily: font.family,
+                color: colors.ink,
+                // Override CluesWrapper's `> div { background: #fff }` so the clue
+                // list shares the cream card behind it instead of a white panel.
+                background: 'transparent',
+              }}
+            >
+              <h1 style={{ fontWeight: 550, fontSize: '22px', fontFamily: font.family, color: colors.ink }}>
+                {title}
+              </h1>
+              <hr />
+              {clueElements}
+            </div>
           }
           dimensions={dimensions}
         />
+        </Box>
       </div>
-      <DictionaryHelp minimized={false} inCrossword />
+      <HelperSidebar>
+        <DictionaryHelp minimized={false} inCrossword />
+      </HelperSidebar>
       {modalOpen && (
         <EndModal
           open={modalOpen}

@@ -47,7 +47,7 @@ $universal-bg-color: #77c8d4;
 }
 
 // app's background color
-$app-bg-color: #e8f3fd;
+$app-bg-color: #c1dce6; // 2026 redesign panel blue (colors.panel); matches the <main> bg
 
 :root {
   --app-bg-color: #{$app-bg-color};
@@ -717,9 +717,6 @@ $value in $spacing {
 .continue-activity-btn-cont {
   grid-area: continue-activity;
 }
-.continue-activity-btn-cont > button {
-  background-color: #a5ddff !important;
-}
 
 .add-new-stories-btn-cont {
   grid-area: add-new-stories;
@@ -955,7 +952,7 @@ $value in $spacing {
 }
 
 .attempt-bar {
-  background: rgb(50, 170, 248);
+  background: #b1d3c2; // sage green (design system)
 }
 
 .homeview-btn:hover,
@@ -1386,12 +1383,16 @@ $value in $spacing {
 }
 
 .check-answers-button {
-  letter-spacing: 1px;
-  font-weight: 500;
+  letter-spacing: 0;
+  font-family: 'Geologica', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #2d2c2a;
   width: 100%;
   padding: 0;
-  border-radius: 14px;
-  border: 1px solid #000;
+  border-radius: 999px;
+  border: 1px solid #b1d3c2;
+  background: #faf8ed; // cream base; the green attempt-bar fills over it
   margin-bottom: .5rem;
   position: relative;
   outline: 0;
@@ -1399,25 +1400,24 @@ $value in $spacing {
   overflow: hidden;
 
   &:hover {
-    border: 1px solid $btn-color-primary;
+    border: 1px solid #9cc6b2;
 
     &>div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.08) !important;
     }
   }
 
   &:focus {
     outline: 0;
-    background-color: #d7d7d7;
 
     &>div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.08) !important;
     }
   }
 
   &>div {
     height: 2.5rem;
-    border-radius: .25rem;
+    border-radius: 999px;
     transition: width 500ms ease-in-out;
   }
 
@@ -1429,9 +1429,10 @@ $value in $spacing {
   }
 
   &:disabled {
+    opacity: 0.6;
+
     &>div {
-      background-color: #007bff;
-      opacity: 0.65;
+      background-color: #c9ded2;
     }
   }
 }
@@ -1798,9 +1799,21 @@ label.file-upload-btn {
 }
 
 .bg-settings {
-  background-color: var(--app-bg-color);
+  background-color: #faf8ed; // cream (matches the profile card)
   padding-top: 1em;
   padding-bottom: 1em;
+
+  // Settings accordions: flat on the cream — no white paper / shadow / MUI divider line, and a
+  // constant margin so expanding is a clean slide-down instead of the default scale/shift jump.
+  .add-story-accordion-item {
+    margin: 0.5rem 0 !important;
+    background-color: transparent;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
 }
 
 .library-toggle-button {
@@ -2383,7 +2396,7 @@ label.file-upload-btn {
   font-weight: 600;
 }
 
-.flashcard-settings-trigger.ui.button {
+.flashcard-settings-trigger {
   padding: 0 !important;
   background: transparent !important;
   min-width: 0;
@@ -2395,16 +2408,19 @@ label.file-upload-btn {
   right: 12px;
   z-index: 5;
   box-shadow: none !important;
+  transform-origin: center;
+  transition: transform 0.15s ease;
 
   @media (max-width: 839px) {
     display: none !important;
   }
 }
 
-.flashcard-settings-trigger.ui.button:hover,
-.flashcard-settings-trigger.ui.button:focus {
+.flashcard-settings-trigger:hover,
+.flashcard-settings-trigger:focus {
   background: transparent !important;
   box-shadow: none !important;
+  transform: scale(1.15);
 }
 
 .test {
@@ -3059,43 +3075,45 @@ label.file-upload-btn {
 .leaderboard-item-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: bold;
-  padding: 1em 1.2em;
-  margin-right: - map.get($spacing, "xs");
-  margin-left: - map.get($spacing, "xs");
+  padding: 0.75em 1em;
+  border-bottom: 1px solid rgba(177, 211, 194, 0.5); // colors.border @ 50%
 }
 
 .leaderboard-item-container:last-of-type {
-  border-radius: 0 0 10px 10px;
+  border-bottom: none;
 }
 
 .leaderboard-reward {
-  height: 1.3rem;
-  width: 1.3rem;
+  height: 1.45rem;
+  width: 1.45rem;
   margin-left: .5rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: .7rem;
-  color: white;
+  font-size: .72rem;
+  font-weight: 600;
+  font-family: 'Geologica', sans-serif;
+  line-height: 1;
+  color: #2d2c2a; // ink number — readable on all three medal fills
   align-self: center;
 }
 
+// Flat medal fills that echo the trophy SVG palette (place1/2/3). No border — the solid
+// circle + ink number reads cleanly at this small size.
 .position {
   &-gold {
-    background-color: gold;
-    border: 1px dotted goldenrod;
+    background-color: #f2ce4b;
   }
 
   &-silver {
-    background-color: silver;
-    border: 1px dotted gray;
+    background-color: #cfd4da;
   }
 
   &-bronze {
-    background-color: #CD7F32;
-    border: 1px dotted #A75B10;
+    background-color: #dfab6e;
   }
 }
 
@@ -3140,20 +3158,39 @@ label.file-upload-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
+  // Allow the flex column to shrink below its content width so long names wrap inside the
+  // column instead of pushing it wider than its third (and overflowing the card).
+  min-width: 0;
+}
+
+.leaderboard-winner-rewards {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+
+  .leaderboard-reward {
+    margin-left: 0;
+  }
 }
 
 .leaderboard-winner-name {
   text-align: center;
-  padding-top: .5rem;
+  padding: .5rem .25rem 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
   font-weight: 500;
   font-size: 13px;
-  color: dimgray;
+  font-family: 'Geologica', sans-serif;
+  color: #2d2c2a; // ink
 }
 
 .leaderboard-winner-record {
   font-size: 12px;
   font-weight: 650;
-  color: steelblue;
+  font-family: 'Geologica', sans-serif;
+  color: #6f8f7f; // muted green
 }
 
 .leaderboard-wreadth {
@@ -3222,9 +3259,7 @@ label.file-upload-btn {
   font-size: 0.9rem;
   padding: 0.5em;
   width: 100%;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1400px;  
   background-color: #f7f7f7;
   border-radius: 5px;
   display: flex;
@@ -3403,15 +3438,24 @@ label.file-upload-btn {
 }
 
 .report-button {
-  border-radius: 1em;
-  padding: 0.5rem 1rem;
-  background-color: #4c91cd36; // #4c91cd;
-  color: #3287f3; // white;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1em;
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  background-color: transparent;
+  color: #9d9b92; // muted
+  font-family: 'Geologica', sans-serif;
   font-weight: 600;
-  border: none;
+  border: 1px solid #9d9b92; // muted, visible on the blue page
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
   &:hover {
-    background-color: #4c91cd69; // #0069d9;
+    background-color: #f1eeda;
+    color: #2d2c2a; // ink
+    border-color: #b1d3c2; // green
   }
 }
 
@@ -3787,10 +3831,9 @@ label.file-upload-btn {
   --story-detail-modal-button-bg: #f9f9f9;
 }
 
+// Kept as a product-tour anchor; the 2026 modal lays these out as full-width pills.
 .story-detail-modal-action-button {
-  width: 140px;
-  padding: 4px 0;
-  text-align: center;
+  width: 100%;
 }
 
 .story-detail-modal-action-button-long {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Keyboard from 'react-simple-keyboard'
 import AppButton from 'Components/AppButton'
-import { Icon } from 'semantic-ui-react'
+import KeyboardIcon from '@mui/icons-material/Keyboard'
 import { setTouchedIds, setAnswers } from 'Utilities/redux/practiceReducer'
 import { learningLanguageSelector } from 'Utilities/common'
 import { keyboardLayouts, keyboardDisplay } from './KeyboardLayouts'
@@ -105,12 +105,10 @@ const VirtualKeyboard = () => {
 
   return (
     <>
-      <Icon
+      <KeyboardIcon
         data-cy="onscreen-keyboard"
-        style={{ color: '#004085',cursor: 'pointer',marginTop: '0.2em'}}
-        name="keyboard"
-        size = 'huge'
         onClick={() => setShowKeyboard(!showKeyboard)}
+        sx={{ color: '#004085', cursor: 'pointer', mt: '0.2em', fontSize: '3rem' }}
       />
       {showKeyboard && (
         <>

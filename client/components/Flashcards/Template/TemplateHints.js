@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Form } from 'react-bootstrap'
+import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import TemplateListItems from './TemplateListItems'
 
@@ -44,19 +44,21 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
           <TemplateListItems values={hints} handleDelete={handleHintDelete} />
         </ul>
       </div>
-      <Form.Control
-        className="flex-static-size mt-sm"
-        id="hints"
-        as="textarea"
-        placeholder={intl.formatMessage({ id: 'type-new-hint' })}
-        value={hint}
-        onChange={handleHintChange}
-        onKeyDown={handleHintKeyDown}
-        ref={hintRef}
-      />
+      <div className="flex-static-size mt-sm">
+        <AppTextField
+          multiline
+          id="hints"
+          placeholder={intl.formatMessage({ id: 'type-new-hint' })}
+          value={hint}
+          onChange={handleHintChange}
+          onKeyDown={handleHintKeyDown}
+          inputRef={hintRef}
+        />
+      </div>
       <AppButton
         variant="primary"
-        className="flashcard-template-button mt-sm"
+        className="flashcard-template-button"
+        style={{ marginTop: '0.75em' }}
         onClick={handleHintSave}
       >
         <FormattedMessage id="save-the-hint" />

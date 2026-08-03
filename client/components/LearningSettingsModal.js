@@ -1,10 +1,12 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Dropdown, Divider, Radio, Icon } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import {
   updateExerciseTemplate,
@@ -151,16 +153,13 @@ const LearningSettingsModal = ({ trigger }) => {
   }
 
   return (
-    <Modal
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      trigger={trigger}
-    >
-      <Modal.Header>
-        <FormattedMessage id="learning-settings" />
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
+    <>
+      {React.cloneElement(trigger, { onClick: () => setOpen(true) })}
+      <AppDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title={<FormattedMessage id="learning-settings" />}
+      >
         {/* <div className="space-between" style={{ marginBottom: '0.5em' }}>
           <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
             <CustomTooltip
@@ -256,7 +255,15 @@ const LearningSettingsModal = ({ trigger }) => {
         */}
         <>
           {/* <Divider /> */}
-          <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
+          <h2
+            style={{
+              fontFamily: font.family,
+              fontSize: '17px',
+              fontWeight: 600,
+              color: colors.ink,
+              marginTop: 0,
+            }}
+          >
             <CustomTooltip
               permanent
               placement="top"
@@ -265,7 +272,7 @@ const LearningSettingsModal = ({ trigger }) => {
               })}
             >
               <span style={{ display: 'inline-flex' }}>
-                <Icon name="info circle" color="grey" />
+                <InfoOutlinedIcon sx={{ fontSize: 18, color: 'grey.600' }} />
               </span>
             </CustomTooltip>{' '}
             <FormattedMessage id="select-cefr-level" />
@@ -280,8 +287,8 @@ const LearningSettingsModal = ({ trigger }) => {
             <FormattedMessage id="update-settings" />
           </AppButton>
         </>
-      </Modal.Content>
-    </Modal>
+      </AppDialog>
+    </>
   )
 }
 

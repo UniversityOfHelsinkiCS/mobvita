@@ -1,7 +1,8 @@
 import React from 'react'
-import { getBackgroundColor, images } from 'Utilities/common'
+import { images } from 'Utilities/common'
 import { useLocation } from 'react-router-dom'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const Footer = () => {
   const location = useLocation()
@@ -12,7 +13,7 @@ const Footer = () => {
 
   return (
     <footer className="footer-wrapper">
-      <div className={`footer ${getBackgroundColor()}`}>
+      <div className="footer" style={{ backgroundColor: colors.panel }}>
         {showTermsAndConditionsAndBuildVersion && (
           <>
             <TermsAndConditions

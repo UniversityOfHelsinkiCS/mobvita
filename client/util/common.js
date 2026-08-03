@@ -3,6 +3,58 @@
  */
 import DOMPurify from 'dompurify'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
+import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
+import menu2 from 'Assets/images/menu-02.svg'
+import buttonCircle from 'Assets/images/button-circle.svg'
+import sendActive from 'Assets/images/Circle-1.svg'
+import sendInactive from 'Assets/images/Circle.svg'
+import circleSettings from 'Assets/images/Circle-settings.svg'
+import settingsContrast from 'Assets/images/settings-contrast.svg'
+import helpCircle from 'Assets/images/help-circle.svg'
+import asterisk02 from 'Assets/images/asterisk-02.svg'
+import mail05 from 'Assets/images/mail-05.svg'
+import alertCircle from 'Assets/images/alert-circle.svg'
+import xClose from 'Assets/images/x-close.svg'
+import activityHeart from 'Assets/images/activity-heart.svg'
+import bookmark from 'Assets/images/bookmark.svg'
+import bookOpen from 'Assets/images/book-open-01.svg'
+import cardsIcon from 'Assets/images/cards.svg'
+import fileCheck from 'Assets/images/file-check-02.svg'
+import flag01 from 'Assets/images/flag-01.svg'
+import grid01 from 'Assets/images/grid-01.svg'
+import iconEdit from 'Assets/images/icon-edit-2.svg'
+import trash03 from 'Assets/images/trash-03.svg'
+import bell04 from 'Assets/images/bell-04.svg'
+import brush01 from 'Assets/images/brush-01.svg'
+import logOut01 from 'Assets/images/log-out-01.svg'
+import settings02 from 'Assets/images/settings-02.svg'
+import user01 from 'Assets/images/user-01.svg'
+import users01 from 'Assets/images/users-01.svg'
+import edit03 from 'Assets/images/edit-03.svg'
+import fileCheck03 from 'Assets/images/file-check-03.svg'
+import target04 from 'Assets/images/target-04.svg'
+import trophy01 from 'Assets/images/trophy-01.svg'
+import waves from 'Assets/images/waves.svg'
+import place1 from 'Assets/images/place1.svg'
+import place2 from 'Assets/images/place2.svg'
+import place3 from 'Assets/images/place3.svg'
+import flipBackward from 'Assets/images/flip-backward.svg'
+import folder from 'Assets/images/folder.svg'
+import folderPlus from 'Assets/images/folder-plus.svg'
+import star06 from 'Assets/images/star-06.svg'
+import play from 'Assets/images/play.svg'
+import iconHome from 'Assets/images/icon-home.svg'
+import layersThree from 'Assets/images/layers-three-01.svg'
+import libraryBig from 'Assets/images/library-big.svg'
+import rocket from 'Assets/images/rocket-02.svg'
+import route from 'Assets/images/route.svg'
+import playCircleColored from 'Assets/images/play-circle-colored.svg'
+import wavesColored from 'Assets/images/waves-colored.svg'
+import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
+import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
+import libraryBigColored from 'Assets/images/library-big-colored.svg'
+import star06Colored from 'Assets/images/star-06-colored.svg'
+import users01Colored from 'Assets/images/users-01-colored.svg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
 import flagErzya from 'Assets/images/flags/flag_erzya.png'
 import flagKomizyrian from 'Assets/images/flags/flag_komi-zyrian.png'
@@ -102,6 +154,58 @@ export const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'developm
 
 export const images = {
   revitaLogoTransparent,
+  universityOfHelsinki,
+  menu2,
+  buttonCircle,
+  sendActive,
+  sendInactive,
+  circleSettings,
+  settingsContrast,
+  helpCircle,
+  asterisk02,
+  mail05,
+  alertCircle,
+  xClose,
+  activityHeart,
+  bookmark,
+  bookOpen,
+  cardsIcon,
+  fileCheck,
+  flag01,
+  grid01,
+  iconEdit,
+  trash03,
+  bell04,
+  brush01,
+  logOut01,
+  settings02,
+  user01,
+  users01,
+  edit03,
+  fileCheck03,
+  target04,
+  trophy01,
+  waves,
+  place1,
+  place2,
+  place3,
+  flipBackward,
+  folder,
+  folderPlus,
+  star06,
+  play,
+  iconHome,
+  layersThree,
+  libraryBig,
+  rocket,
+  route,
+  playCircleColored,
+  wavesColored,
+  bookOpenColored,
+  layersThreeColored,
+  libraryBigColored,
+  star06Colored,
+  users01Colored,
   flagFinnish,
   flagUdmurt,
   flagUdmurtarch,
@@ -182,7 +286,8 @@ export const images = {
   greenArrow,
   heartbeat,
   uhLogo,
-  network }
+  network,
+}
 
 export const backgroundColors = [
   'lavender',
@@ -250,7 +355,8 @@ export const confettiRain = (x = 0.4, y = 0.6, angle = null) => {
     angle: angle,
     spread: randomInRange(50, 70),
     particleCount: randomInRange(50, 100),
-    origin: { x, y } })
+    origin: { x, y },
+  })
 }
 
 export const finalConfettiRain = (colors, endDate) => {
@@ -260,13 +366,15 @@ export const finalConfettiRain = (colors, endDate) => {
       angle: 60,
       spread: 55,
       origin: { x: 0 },
-      colors })
+      colors,
+    })
     confetti({
       particleCount: 2,
       angle: 120,
       spread: 55,
       origin: { x: 1 },
-      colors })
+      colors,
+    })
 
     if (Date.now() < endDate) {
       requestAnimationFrame(frame)
@@ -326,7 +434,8 @@ function colorInterpolate(colorA, colorB, intval) {
   return {
     r: colorVal('r'),
     g: colorVal('g'),
-    b: colorVal('b') }
+    b: colorVal('b'),
+  }
 }
 
 function ColorToHex(color) {
@@ -344,8 +453,9 @@ export const composeExerciseContext = (snippet, word) => {
     .reduce(
       (acc, curr) => ({
         ...acc,
-        [curr.ID]: curr.base }),
-      {}
+        [curr.ID]: curr.base,
+      }),
+      {},
     )
 }
 
@@ -355,7 +465,7 @@ export function getWordColor(
   skillLevels,
   show_review_diff,
   show_preview_exer,
-  mode
+  mode,
 ) {
   if (
     !word_level ||
@@ -461,7 +571,8 @@ export const supportedLearningLanguages = {
     'udmurt-arch',
     'livvi',
   ].sort((a, b) => a.localeCompare(b)),
-  experimental: ['syriac'] }
+  experimental: ['syriac'],
+}
 
 export const learningLanguageLocaleCodes = {
   Finnish: 'fi',
@@ -487,7 +598,8 @@ export const learningLanguageLocaleCodes = {
   Chinese: 'zh',
   'Udmurt-Arch': 'udm',
   livvi: 'olo',
-  English: 'en' }
+  English: 'en',
+}
 
 export const betaLanguages = [
   'catalan',
@@ -520,7 +632,8 @@ export const colors = {}
 
 export const flashcardColors = {
   background: ['#F3826A', '#FEA75C', '#F9E79F', '#84C3A3', '#50A278'],
-  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'] }
+  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
+}
 
 const stagingOptions = [
   { displayName: 'Suomi', name: 'Finnish', code: 'fi' },
@@ -561,7 +674,7 @@ export const checkRevitaStatus = async () => {
 export const downloadReadingReport = async (groupId, startDate, endDate) => {
   //TODO: generalize downloading from BE properly
   const result = await callApi(
-    `/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`
+    `/groups/${groupId}/reading_report?start_date=${startDate}&end_date=${endDate}`,
   )
   const blob = new Blob([result.data], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
@@ -573,7 +686,7 @@ export const downloadReadingReport = async (groupId, startDate, endDate) => {
 
 export const downloadReadingHistory = async (groupId, groupName, startDate, endDate) => {
   const result = await callApi(
-    `/groups/${groupId}/reading_history?start_date=${startDate}&end_date=${endDate}`
+    `/groups/${groupId}/reading_history?start_date=${startDate}&end_date=${endDate}`,
   )
   const blob = new Blob([result.data], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
@@ -611,7 +724,9 @@ const defaultAllowed = [
 export const sanitizeHtml = (dirty, allowedTags = defaultAllowed) => {
   return {
     __html: DOMPurify.sanitize(dirty || '', {
-      ALLOWED_TAGS: allowedTags }) }
+      ALLOWED_TAGS: allowedTags,
+    }),
+  }
 }
 
 export const formatGreenFeedbackText = text =>
@@ -687,7 +802,7 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
         lang_code,
         tone,
         voice_type,
-        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3)
+        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3),
       )
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
       tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
@@ -732,7 +847,7 @@ export const levenshteinDistance = (a, b) => {
         val = Math.min(
           row[j - 1] + 1, // substitution
           prev + 1, // insertion
-          row[j] + 1 // deletion
+          row[j] + 1, // deletion
         )
       }
       row[j - 1] = prev
@@ -1020,7 +1135,8 @@ export const translatableLanguages = {
     'Portuguese',
     'Japanese',
     'Hindi',
-  ] }
+  ],
+}
 export const getHelpLink = (locale, isTeacher, learningLanguage) => {
   const interface_language = localeCodeToName(locale)
   if (isTeacher && interface_language == 'Russian' && learningLanguage == 'Finnish')
@@ -1043,4 +1159,3 @@ export const getHelpLink = (locale, isTeacher, learningLanguage) => {
     return 'https://docs.google.com/presentation/d/1OSNXy5cydhqMRqRO4I2csG2DqN70Po1HTW-3DYJMxZ8/edit?usp=drive_link'
   else return '/help'
 }
-

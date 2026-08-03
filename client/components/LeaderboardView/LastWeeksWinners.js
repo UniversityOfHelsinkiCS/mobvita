@@ -1,77 +1,41 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Placeholder } from 'semantic-ui-react'
+import { Skeleton } from '@mui/material'
 import { images } from 'Utilities/common'
+
+const PLACE_TROPHY = { first: images.place1, second: images.place2, third: images.place3 }
 
 const Winner = ({ position, name, record, rankingHistory }) => {
   const first = position === 'first'
-  const medalHeight = first ? '54px' : '43px'
-  const wreadthSource = first ? images.fancyWreadth : images.wreadth
-  const wreadthHeight = first ? '95px' : '70px'
-  const silverRewardPositioning = first
-    ? { top: '-5px', left: '3px' }
-    : { top: '-3px', left: '-3px' }
-  const goldRewardPositioning = first
-    ? { top: '-10px', left: '25px' }
-    : { top: '-10px', left: '17px' }
-  const bronzeRewardPositioning = first
-    ? { top: '-5px', left: '47px' }
-    : { top: '-3px', left: '37px' }
 
-  const getMedalAmount = position => {
+  const getMedalAmount = medalPosition => {
     if (!name) return null
-    return rankingHistory[position - 1] || 0
+    return rankingHistory[medalPosition - 1] || 0
   }
 
   return (
     <div className="leaderboard-winner">
-      <div className={`leaderboard-winner-graphic ${position}`}>
-        <img
-          src={images[`${position}Medal`]}
-          alt={`${position} position medal`}
-          height={medalHeight}
-        />
-        <img
-          src={wreadthSource}
-          alt="wreadth"
-          height={wreadthHeight}
-          className={`leaderboard-wreadth ${position}-wreadth`}
-        />
-        <div
-          className="leaderboard-reward position-silver"
-          style={{ position: 'absolute', ...silverRewardPositioning }}
-        >
-          {getMedalAmount(2)}
-        </div>
-        <div
-          className="leaderboard-reward position-gold"
-          style={{ position: 'absolute', ...goldRewardPositioning }}
-        >
-          {getMedalAmount(1)}
-        </div>
-        <div
-          className="leaderboard-reward position-bronze"
-          style={{ position: 'absolute', ...bronzeRewardPositioning }}
-        >
-          {getMedalAmount(3)}
-        </div>
-      </div>
+      {/* Width-based so the trophies scale down to fit the narrow home summary card as well as
+          the wider /leaderboard page. #1 is larger than #2/#3. */}
+      <img
+        src={PLACE_TROPHY[position]}
+        alt={`${position} place trophy`}
+        style={{ width: '100%', maxWidth: first ? '104px' : '82px', height: 'auto' }}
+      />
       {name ? (
         <div className="flex-col align-center">
+          <div className="leaderboard-winner-rewards">
+            <div className="leaderboard-reward position-silver">{getMedalAmount(2)}</div>
+            <div className="leaderboard-reward position-gold">{getMedalAmount(1)}</div>
+            <div className="leaderboard-reward position-bronze">{getMedalAmount(3)}</div>
+          </div>
           <span className="leaderboard-winner-name">{name}</span>
           <span className="leaderboard-winner-record">{record}</span>
         </div>
       ) : (
-        <div className="flex-col">
-          <Placeholder style={{ minWidth: '5rem', alignSelf: 'center' }}>
-            <Placeholder.Line
-              length="very long"
-              style={{ position: 'initial', marginBottom: '.7rem' }}
-            />
-          </Placeholder>
-          <Placeholder style={{ minWidth: '2rem', alignSelf: 'center', marginTop: '.5rem' }}>
-            <Placeholder.Line length="short" style={{ height: '0', marginTop: '1rem' }} />
-          </Placeholder>
+        <div className="flex-col align-center">
+          <Skeleton variant="text" sx={{ minWidth: '5rem', mt: '.5rem' }} />
+          <Skeleton variant="text" sx={{ minWidth: '2rem' }} />
         </div>
       )}
     </div>

@@ -1,14 +1,15 @@
 import React from 'react'
-import { Icon } from 'semantic-ui-react'
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined'
+import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined'
 
 const FlashcardResult = ({ answerCorrect }) => {
   if (answerCorrect === null) return null
 
-  const iconName = answerCorrect ? 'thumbs up outline' : 'thumbs down outline'
+  const ResultIcon = answerCorrect ? ThumbUpAltOutlinedIcon : ThumbDownAltOutlinedIcon
 
   return (
     <div className="flashcard-result">
-      <Icon name={iconName} size="huge" />
+      <ResultIcon sx={{ fontSize: 48 }} />
     </div>
   )
 }

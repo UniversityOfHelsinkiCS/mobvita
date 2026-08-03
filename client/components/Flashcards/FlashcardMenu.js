@@ -1,8 +1,11 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import CustomTooltip from 'Components/CustomTooltip'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Icon, Popup } from 'semantic-ui-react'
+import KeyboardOutlined from '@mui/icons-material/KeyboardOutlined'
+import TextFields from '@mui/icons-material/TextFields'
+import Bolt from '@mui/icons-material/Bolt'
 
 const baseMenuItemStyle = {
   background: 'linear-gradient(180deg, #b8d6ff 0%, #8ebbf9 100%)',
@@ -40,11 +43,11 @@ const MenuItem = ({ tooltip, ...props }) => {
   if (!tooltip) return <MenuItemButton {...props} />
 
   return (
-  <Popup
-    content={<FormattedHTMLMessage id={tooltip} />}
-    trigger={<MenuItemButton {...props} />}
-    position="top center"
-  />
+    <CustomTooltip keyId={tooltip} placement="top">
+      <span style={{ display: 'inline-flex' }}>
+        <MenuItemButton {...props} />
+      </span>
+    </CustomTooltip>
   )
 }
 
@@ -69,7 +72,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
         }}
         tooltip="flashcards-translate-cards-EXPLANATION"
       >
-        <Icon name="keyboard outline" size="big" />
+        <KeyboardOutlined sx={{ fontSize: '2em' }} />
       </MenuItem>
       {flashcardArticles && (
         <MenuItem
@@ -83,7 +86,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
             borderLeft: '1px solid #323841',
           }}
         >
-          <Icon name="font" size="big" />
+          <TextFields sx={{ fontSize: '2em' }} />
         </MenuItem>
       )}
       <MenuItem
@@ -97,7 +100,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
         }}
         tooltip="flashcards-quick-cards-EXPLANATION"
       >
-        <Icon name="lightning" size="big" />
+        <Bolt sx={{ fontSize: '2em' }} />
       </MenuItem>
     </div>
   )

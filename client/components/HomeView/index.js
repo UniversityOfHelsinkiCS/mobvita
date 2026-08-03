@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl'
 import { images, supportedLearningLanguages, ACCESS, useHasAccess } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import CustomTooltip from 'Components/CustomTooltip'
+import AppActionCard from 'Components/ui/AppActionCard'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
 import AddStoryModal from 'Components/AddStoryModal'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
 import { startTour } from 'Utilities/redux/tourReducer'
-import { 
-  homeTourViewed, 
-  ddlangIntroductoryViewed, 
-  ddlangBackgroundQuestionsAnswered 
+import {
+  homeTourViewed,
+  ddlangIntroductoryViewed,
+  ddlangBackgroundQuestionsAnswered,
 } from 'Utilities/redux/userReducer'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
@@ -24,48 +25,45 @@ import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
 // import DDLangTermsAndConditions from 'Components/StaticContent/DDLangTermsAndConditions'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
-import HelperSidebar from 'Components/PracticeView/HelperSidebar';
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
+const HomeviewButton = ({
+  imgSrc,
+  altText,
+  translationKey,
+  handleClick,
+  dataCy,
+  beta_feature,
+  content = null,
+  permanent = false,
+}) => {
+  const button = (
+    <AppActionCard onClick={handleClick} data-cy={dataCy} icon={<img src={imgSrc} alt={altText} />}>
+      <FormattedMessage id={translationKey} />
+      {beta_feature && (
+        <sup>
+          <b style={{ color: 'red' }}>BETA</b>
+        </sup>
+      )}
+    </AppActionCard>
+  )
+  if (!content) {
+    return button
+  }
 
-const HomeviewButton = ({imgSrc, altText,
-                         translationKey, handleClick,
-                         dataCy, wide, beta_feature, content=null, permanent=false
-                        }) =>
-      {
-        const button = (
-          <button
-            className={`flex justify-center homeview-btn${wide ? ' homeview-btn-wide' : ' homeview-btn-narrow'}`}
-            type="button"
-            onClick={handleClick}
-            data-cy={dataCy}
-          >
-            {!wide && <img src={imgSrc} alt={altText} style={{ maxWidth: '50px', maxHeight: '50px' }}/>}
-            <div 
-              className="homeview-btn-text flex items-center justify-center" 
-              style={{ width: '100%', height: '100%', alignItems: 'center'}}
-            >
-              <FormattedMessage id={translationKey} />
-              {beta_feature && (
-                <sup>
-                  <b style={{ color: 'red' }}>BETA</b>
-                </sup>
-              )}
-            </div>
-          </button>
-        )
-        if (!content) {
-          return button
-        }
-
-        return <CustomTooltip keyId={content} permanent={permanent}>{button}</CustomTooltip>
-      }
-
+  return (
+    <CustomTooltip keyId={content} permanent={permanent}>
+      {button}
+    </CustomTooltip>
+  )
+}
 
 const HomeviewButtons = ({
   setPracticeModalOpen,
   setAddStoryModalOpen,
   aTestIsEnabled,
-  aReadingComprehensionEnabled }) => {
+  aReadingComprehensionEnabled,
+}) => {
   const navigate = useNavigate()
 
   const hasTests = useSelector(state => state.metadata.hasTests)
@@ -78,12 +76,10 @@ const HomeviewButtons = ({
   const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
   const hasTeacherRole = Boolean(teacherAccess)
 
-  const homeViewButtonsGridClassName = hasTeacherRole && isTeacherView ? "teacher" : "student"
-  
-  const assembleActivityLink = (lastActivity) => {
+  const assembleActivityLink = lastActivity => {
     switch (lastActivity && lastActivity.type) {
       case 'flashcard':
-        return `/flashcards`
+        return '/flashcards'
       case 'preview':
         if (stories?.find(x => x._id === lastActivity.story_id))
           return `/stories/${lastActivity.story_id}/preview/`
@@ -94,36 +90,44 @@ const HomeviewButtons = ({
         else return null
       case 'practice':
         const story = stories?.find(x => x._id === lastActivity.story_id)
-        if (story?.control_story) 
-          return `/stories/${lastActivity.story_id}/controlled-practice/`
-        else if (story) 
-          return `/stories/${lastActivity.story_id}/practice/`
+        if (story?.control_story) return `/stories/${lastActivity.story_id}/controlled-practice/`
+        else if (story) return `/stories/${lastActivity.story_id}/practice/`
         else return null
-      
+
       case 'lesson':
         if (lastActivity.group_id) return `/lesson/group/${lastActivity.group_id}/practice`
-        else return `/lesson/practice`
+        else return '/lesson/practice'
 
       case 'crossword':
         return `/crossword/${lastActivity.story_id}`
 
       case 'reading-test':
-        if (learningLanguage === lastActivity.language && aReadingComprehensionEnabled) return `/reading-test`
+        if (learningLanguage === lastActivity.language && aReadingComprehensionEnabled)
+          return '/reading-test'
         else return null
       default:
         return null
     }
   }
   const activityLink = assembleActivityLink(lastActivity)
-  return (    
+  return (
     <div className="service-cards">
-      {(hasTeacherRole && isTeacherView) && (
-        <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
+      {hasTeacherRole && isTeacherView && (
+        <div
+          className="homeview-btns-cont"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            width: '100%',
+            maxWidth: '620px',
+            margin: '0 auto',
+          }}
+        >
           <div className="add-new-stories-btn-cont tour-add-new-stories">
             <HomeviewButton
-              imgSrc={images.addStoriesIcon}
+              imgSrc={images.star06Colored}
               altText="Add stories"
-              // wide
               translationKey="add-your-stories"
               handleClick={() => setAddStoryModalOpen(true)}
               dataCy="add-story-button"
@@ -131,8 +135,8 @@ const HomeviewButtons = ({
           </div>
           <div className="groups-btn-cont tour-groups">
             <HomeviewButton
-              imgSrc={images.group1}
-              altText="two books in a pile"
+              imgSrc={images.users01Colored}
+              altText="Groups"
               translationKey="Groups"
               handleClick={() => navigate('/groups/teacher')}
               dataCy="groups-button"
@@ -140,18 +144,18 @@ const HomeviewButtons = ({
           </div>
           <div className="library-btn-cont tour-library">
             <HomeviewButton
-              imgSrc={images.library}
+              imgSrc={images.libraryBigColored}
               altText="two books in a pile"
               translationKey="Library"
               handleClick={() => navigate('/library')}
               dataCy="library-button"
-              content="Home-Library-EXPLANATION"              
+              content="Home-Library-EXPLANATION"
             />
           </div>
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
-                imgSrc={images.readingBook}
+                imgSrc={images.bookOpenColored}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 handleClick={() => navigate('/lessons/library')}
@@ -163,11 +167,21 @@ const HomeviewButtons = ({
       )}
 
       {(!hasTeacherRole || !isTeacherView) && (
-        <div className={`homeview-btns-cont homeview-btns-cont-${homeViewButtonsGridClassName}`}>
+        <div
+          className="homeview-btns-cont"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            width: '100%',
+            maxWidth: '620px',
+            margin: '0 auto',
+          }}
+        >
           {activityLink && (
             <div className="continue-activity-btn-cont">
               <HomeviewButton
-                imgSrc={images.notesIcon}
+                imgSrc={images.playCircleColored}
                 altText="Continue"
                 translationKey="continue-activity"
                 handleClick={() => navigate(activityLink)}
@@ -178,9 +192,7 @@ const HomeviewButtons = ({
           )}
           <div className="practice-btn-cont tour-practice-now">
             <HomeviewButton
-              // imgSrc={images.dices}
-              // altText="two dices"
-              imgSrc={images.diveIn}
+              imgSrc={images.wavesColored}
               altText="dive in"
               translationKey="practice-now"
               handleClick={() => setPracticeModalOpen(true)}
@@ -191,7 +203,7 @@ const HomeviewButtons = ({
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
-                imgSrc={images.readingBook}
+                imgSrc={images.bookOpenColored}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 handleClick={() => navigate('/lessons/library')}
@@ -199,23 +211,23 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          <div className="library-btn-cont tour-library">
-            <HomeviewButton
-              imgSrc={images.library}
-              altText="two books in a pile"
-              translationKey="Library"
-              handleClick={() => navigate('/library')}
-              dataCy="library-button"
-              content="Home-Library-EXPLANATION"              
-            />
-          </div>
           <div className="flashcards-btn-cont tour-flashcards">
             <HomeviewButton
-              imgSrc={images.flashcards}
+              imgSrc={images.layersThreeColored}
               altText="three playing cards"
               translationKey="Flashcards"
               handleClick={() => navigate('/flashcards/fillin')}
               content="Home-Flashcards-EXPLANATION"
+            />
+          </div>
+          <div className="library-btn-cont tour-library">
+            <HomeviewButton
+              imgSrc={images.libraryBigColored}
+              altText="two books in a pile"
+              translationKey="Library"
+              handleClick={() => navigate('/library')}
+              dataCy="library-button"
+              content="Home-Library-EXPLANATION"
             />
           </div>
           {hasTests && aTestIsEnabled && (
@@ -229,19 +241,21 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          {learningLanguage != undefined && learningLanguage === "English" && aReadingComprehensionEnabled && (
-            <div  className="reading-test-btn-cont">
-              <HomeviewButton
-                imgSrc={images.readingBook}
-                altText="reading test"
-                translationKey="reading-test"
-                handleClick={() => navigate('/reading-test')}
-                dataCy="reading-test-button"
-              />
-            </div>
-          )}
+          {learningLanguage != undefined &&
+            learningLanguage === 'English' &&
+            aReadingComprehensionEnabled && (
+              <div className="reading-test-btn-cont">
+                <HomeviewButton
+                  imgSrc={images.readingBook}
+                  altText="reading test"
+                  translationKey="reading-test"
+                  handleClick={() => navigate('/reading-test')}
+                  dataCy="reading-test-button"
+                />
+              </div>
+            )}
         </div>
-      )}     
+      )}
     </div>
   )
 }
@@ -268,16 +282,18 @@ const HomeView = () => {
   const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
   const hasSeenHomeTour = useSelector(state => state.user.data.user?.has_seen_home_tour)
   const hasSeenDDLangIntroductory = useSelector(
-    state => state.user.data.user?.has_seen_ddlang_introductory
+    state => state.user.data.user?.has_seen_ddlang_introductory,
   )
   const ddlangDeveloperScope = useSelector(state => state.user.data.user?.developer_of_language)
   const inAnyDDLangGroups = useSelector(state => state.user.data.user?.in_any_ddlang_groups)
   const ddlangYears = useSelector(state => state.user.data.user?.ddlang_years)
-  const ddlangObligatoryCourses = useSelector(state => state.user.data.user?.ddlang_obligatoryCourses)
+  const ddlangObligatoryCourses = useSelector(
+    state => state.user.data.user?.ddlang_obligatoryCourses,
+  )
   const ddlangOptionalCourses = useSelector(state => state.user.data.user?.ddlang_optionalCourses)
   const ddlangGrade = useSelector(state => state.user.data.user?.ddlang_grade)
 
-    const [betaModalOpen, setBetaModalOpen] = useState(false)
+  const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const userIsAnonymous = userEmail === 'anonymous_email'
@@ -306,7 +322,8 @@ const HomeView = () => {
       dispatch(
         getAllStories(learningLanguage, {
           sort_by: 'date',
-          order: -1 })
+          order: -1,
+        }),
       )
     }
   }, [])
@@ -336,13 +353,10 @@ const HomeView = () => {
 
   useEffect(() => {
     if (
-        !hasSeenDDLangIntroductory && 
-        learningLanguage === "English" &&
-        (
-          ddlangDeveloperScope === "all" ||
-          inAnyDDLangGroups == true
-        )
-      ) {
+      !hasSeenDDLangIntroductory &&
+      learningLanguage === 'English' &&
+      (ddlangDeveloperScope === 'all' || inAnyDDLangGroups == true)
+    ) {
       dispatch(ddlangIntroductoryViewed())
       setShowDDLangIntroductory(true)
     }
@@ -350,31 +364,25 @@ const HomeView = () => {
 
   useEffect(() => {
     if (
-      // !user.user.has_answer_ddlang_background_questions && 
-      (
-        !ddlangYears || 
-        !ddlangObligatoryCourses || 
-        !ddlangOptionalCourses || 
-        !ddlangGrade
-      ) &&
-      learningLanguage === "English" &&
-      (
-        ddlangDeveloperScope === "all" ||
-        inAnyDDLangGroups == true
-      )
+      // !user.user.has_answer_ddlang_background_questions &&
+      (!ddlangYears || !ddlangObligatoryCourses || !ddlangOptionalCourses || !ddlangGrade) &&
+      learningLanguage === 'English' &&
+      (ddlangDeveloperScope === 'all' || inAnyDDLangGroups == true)
     ) {
       dispatch(ddlangBackgroundQuestionsAnswered())
       setShowDDLangBackGroundQuestions(true)
     }
   }, [])
 
-  const homeviewButtonsContainerClassName = teacherAccess && teacherView ? "pb-nm" : "flex pb-nm"
+  const homeviewButtonsContainerClassName = teacherAccess && teacherView ? 'pb-nm' : 'flex pb-nm'
 
   return (
     <div
-      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg blue-bg`}    
+      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg`}
     >
-      {showDDLangIntroductory && <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory}/>}
+      {showDDLangIntroductory && (
+        <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory} />
+      )}
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
@@ -391,12 +399,8 @@ const HomeView = () => {
         !userGrade &&
         !userIsAnonymous &&
         isNewUser && (
-          <SetCEFRReminder
-            open={openReminder}
-            setOpen={setOpenReminder}
-            newUser={isNewUser}
-          />
-      )}
+          <SetCEFRReminder open={openReminder} setOpen={setOpenReminder} newUser={isNewUser} />
+        )}
       <div className="grow flex-col">
         {bigScreen ? (
           <div className="grow flex-col space-between gap-row-nm">
@@ -412,7 +416,8 @@ const HomeView = () => {
                   className="flex-col"
                   style={{
                     width: '350px',
-                    gap: '1.9em' }}
+                    gap: '1.9em',
+                  }}
                 >
                   <EloChart width="100%" />
                   <LeaderboardSummary />
@@ -439,7 +444,7 @@ const HomeView = () => {
         )}
         <HelperSidebar>
           <GeneralChatbot />
-        </HelperSidebar>        
+        </HelperSidebar>
         {showFooter && <Footer />}
       </div>
     </div>

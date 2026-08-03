@@ -1,7 +1,7 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBackgroundColor } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 // Eagerly loaded: always present (NavBar), wrapper (ProtectedRoute),
 // initial public route (LandingPage), and Suspense fallback (Spinner).
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
@@ -49,6 +49,7 @@ const Flashcards = lazy(() => import('./Flashcards'))
 const Achievements = lazy(() => import('./Achievements'))
 const Leaderboard = lazy(() => import('./LeaderboardView'))
 const RegisterView = lazy(() => import('./RegisterView'))
+const DesignSystem = lazy(() => import('./DesignSystem'))
 const DebugTestView = lazy(() => import('./DebugTestView'))
 const DebugCorrectionView = lazy(() => import('./EssayWritingView/DebugCorrectionView'))
 const AnnotationsLibrary = lazy(() => import('./AnnotationsLibrary'))
@@ -107,7 +108,7 @@ export default () => {
         element={
           <>
             <NavBar />
-            <main className={`application-content ${getBackgroundColor()}`}>
+            <main className="application-content" style={{ backgroundColor: colors.panel }}>
               <ErrorBoundary>
                 <Suspense fallback={null}>
                   <Routes>
@@ -115,6 +116,7 @@ export default () => {
                     <Route path="/reset-password/:token" element={<ResetPassword />} />
                     <Route path="/group-confirmation/:token" element={<InvitationConfirm />} />
                     <Route path="/register" element={<RegisterView />} />
+                    <Route path="/design" element={<DesignSystem />} />
                     <Route path="/help" element={<Help />} />
                     <Route
                       path="/accept_story"

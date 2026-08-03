@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Modal, Button, Icon } from 'semantic-ui-react'
+import CloseIcon from '@mui/icons-material/Close'
+import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
 const FlashcardDelete = ({ id }) => {
@@ -13,30 +15,22 @@ const FlashcardDelete = ({ id }) => {
   }
 
   return (
-    <Modal
-      dimmer="inverted"
-      open={open}
-      trigger={
-        <button className="flashcard-blended-input" type="button" onClick={() => setOpen(true)}>
-          <Icon name="delete" color="grey" />
-        </button>
-      }
-    >
-      <Modal.Header>
-        <FormattedMessage id="Warning" />
-      </Modal.Header>
-      <Modal.Content>
+    <>
+      <button className="flashcard-blended-input" type="button" onClick={() => setOpen(true)}>
+        <CloseIcon sx={{ color: 'grey' }} />
+      </button>
+      <AppDialog open={open} onClose={() => setOpen(false)} title={<FormattedMessage id="Warning" />}>
         <FormattedMessage id="this-will-permanently-remove-this-flashcard-are-you-sure-you-want-to-proceed" />
-      </Modal.Content>
-      <Modal.Actions>
-        <Button negative onClick={() => handleRemove()}>
-          <FormattedMessage id="Remove" />
-        </Button>
-        <Button onClick={() => setOpen(false)}>
-          <FormattedMessage id="Cancel" />
-        </Button>
-      </Modal.Actions>
-    </Modal>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
+          <AppButton variant="outline" onClick={() => setOpen(false)}>
+            <FormattedMessage id="Cancel" />
+          </AppButton>
+          <AppButton variant="danger" onClick={() => handleRemove()}>
+            <FormattedMessage id="Remove" />
+          </AppButton>
+        </div>
+      </AppDialog>
+    </>
   )
 }
 

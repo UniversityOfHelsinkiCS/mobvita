@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
-import { Modal, Container, Form } from 'semantic-ui-react'
-import AppButton from 'Components/AppButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendEmail } from 'Utilities/redux/emailReducer'
+import AppDialog from 'Components/ui/AppDialog'
+import ContactForm from './ContactForm'
 
-
+/**
+ * ContactUs — connected container for the contact modal.
+ *
+ * Works two ways: pass a `trigger` element (it's cloned with an onClick that opens the dialog), or
+ * drive it with `open` / `setOpen`. Owns redux (sendEmail) and form state; renders the pure
+ * <ContactForm> inside the design-system <AppDialog>.
+ */
 export default function ContactUs({ trigger, open: controlledOpen, setOpen: setControlledOpen }) {
   const dispatch = useDispatch()
 
@@ -12,69 +18,43 @@ export default function ContactUs({ trigger, open: controlledOpen, setOpen: setC
   const session = useSelector(({ user }) => user)
   const user = session.data ? session.data.user : null
 
+  const [internalOpen, setInternalOpen] = useState(false)
+  const controlled = typeof controlledOpen === 'boolean' && typeof setControlledOpen === 'function'
+  const open = controlled ? controlledOpen : internalOpen
+  const setOpen = controlled ? setControlledOpen : setInternalOpen
+
   const initialFormState = {
     name: user ? user.username : '',
     email: user ? user.email : '',
     subject: 'Revita',
     message: '',
   }
-
   const [formState, setFormState] = useState(initialFormState)
-  const [internalOpen, setInternalOpen] = useState(false)
-  const isControlled = typeof controlledOpen === 'boolean' && typeof setControlledOpen === 'function'
-  const modalOpen = isControlled ? controlledOpen : internalOpen
-  const setModalOpen = isControlled ? setControlledOpen : setInternalOpen
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target
-
-    setFormState({
-      ...formState,
-      [name]: value,
-    })
+  const handleFieldChange = (name, value) => {
+    setFormState(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleFormSubmit = () => {
-    setModalOpen(false)
+  const handleSubmit = () => {
+    setOpen(false)
     dispatch(sendEmail(formState))
     setFormState(initialFormState)
   }
 
-
   return (
-    <Modal
-      dimmer="inverted"
-      closeIcon
-      open={modalOpen}
-      onClose={() => setModalOpen(false)}
-      onOpen={() => setModalOpen(true)}
-      trigger={trigger}
-    >
-      <Modal.Header>Contact us</Modal.Header>
-      <Modal.Content className="practiceModal">
-
-        <Container>
-          <Form onSubmit={handleFormSubmit}>
-            <Form.Field>
-              <label>Name</label>
-              <input value={formState.name} onChange={handleFormChange} name="name" placeholder="Name" />
-            </Form.Field>
-            <Form.Field>
-              <label>Subject</label>
-              <input value={formState.subject} onChange={handleFormChange} name="subject" placeholder="Subject" />
-            </Form.Field>
-            <Form.Field>
-              <label>Email</label>
-              <input value={formState.email} onChange={handleFormChange} name="email" placeholder="Email" />
-            </Form.Field>
-            <Form.TextArea value={formState.message} onChange={handleFormChange} name="message" label="Message" placeholder="What can we help you with?" />
-            <AppButton type="submit">Submit</AppButton>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-          </Form>
-        </Container>
-
-
-      </Modal.Content>
-    </Modal>
+    <>
+      {trigger && React.cloneElement(trigger, { onClick: () => setOpen(true) })}
+      <AppDialog open={open} onClose={() => setOpen(false)} title="Contact us">
+        <ContactForm
+          name={formState.name}
+          email={formState.email}
+          subject={formState.subject}
+          message={formState.message}
+          onFieldChange={handleFieldChange}
+          onSubmit={handleSubmit}
+          error={error}
+        />
+      </AppDialog>
+    </>
   )
 }

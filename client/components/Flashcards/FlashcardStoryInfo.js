@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 
 import CustomTooltip from 'Components/CustomTooltip'
-import { Icon } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
 const content = ({ type, numOfRewardableWords, truncatedTitle }) => (
   <>
@@ -61,7 +61,7 @@ export const FlashcardStoryInfoIcon = ({ type, numOfRewardableWords, title }) =>
           alignSelf: 'flex-start',
         }}
       >
-        <Icon name="info circle" style={{ width: '24px', height: '24px', display: 'block' }} />
+        <InfoOutlinedIcon sx={{ fontSize: 24, display: 'block' }} />
       </div>
     </CustomTooltip>
   )

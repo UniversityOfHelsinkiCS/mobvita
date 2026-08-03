@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken } from 'Utilities/redux/userReducer'
-import { Form } from 'semantic-ui-react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { FormattedMessage, useIntl } from 'react-intl'
-import AppButton from 'Components/AppButton'
+import { localeCodeToName } from 'Utilities/common'
+import LoginForm from './LoginForm'
 import ForgotPassword from './ForgotPassword'
 import InterfaceLanguageView from '../LanguageSelectView/InterfaceLanguageView'
-import { localeCodeToName } from 'Utilities/common'
-import Spinner from 'Components/Spinner'
 
-const Login = () => {
+/**
+ * Login — connected container. Owns all redux/navigation/effects and the auxiliary modals, and
+ * renders the pure <LoginForm> for the markup. Keep this file free of presentational concerns.
+ */
+const Login = ({ onSwitchToSignUp, onTryRevita }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false) // visual only for now — see redesign notes
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false)
   const [showLangModal, setShowLangModal] = useState(false)
 
@@ -23,13 +25,10 @@ const Login = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
-
-  const intl = useIntl()
-
   const dispatch = useDispatch()
 
   const login = () => {
-    dispatch(createRealToken(email, password, updated && localeCodeToName(locale) || null))
+    dispatch(createRealToken(email, password, (updated && localeCodeToName(locale)) || null))
   }
 
   useEffect(() => {
@@ -46,49 +45,27 @@ const Login = () => {
   }, [navigate, location.state, user])
 
   return (
-    <div className="login-form">
-      <Form onSubmit={login}>
-        <Form.Field>
-          <Form.Input
-            error={loginError}
-            type="email"
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
-            placeholder={intl.formatMessage({ id: 'email-address' })}
-          />
-        </Form.Field>
-        <Form.Field>
-          <Form.Input
-            error={loginError}
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-            placeholder={intl.formatMessage({ id: 'Password' })}
-          />
-        </Form.Field>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <button data-cy="login" type="submit" className="landing-page-button" disabled={pending}>
-            {pending ? (
-              <Spinner inline />
-            ) : (
-              <span>{intl.formatMessage({ id: 'Login' })}</span>
-            )}
-          </button>
-          {loginError && <div style={{ color: 'red' }}>{errorMessage}</div>}
-        </div>
-      </Form>
-      <AppButton
-        style={{ paddingLeft: '0px', marginTop: '1em' }}
-        onClick={() => setForgotPasswordOpen(true)}
-        variant="link"
-      >
-        <FormattedMessage id="forgot-password" />
-      </AppButton>
+    <>
+      <LoginForm
+        email={email}
+        password={password}
+        onEmailChange={setEmail}
+        onPasswordChange={setPassword}
+        onSubmit={login}
+        onForgotPassword={() => setForgotPasswordOpen(true)}
+        onSwitchToSignUp={onSwitchToSignUp}
+        onTryRevita={onTryRevita}
+        rememberMe={rememberMe}
+        onRememberMeChange={setRememberMe}
+        error={loginError}
+        errorMessage={errorMessage}
+        pending={pending}
+      />
       <ForgotPassword isOpen={forgotPasswordOpen} setOpen={setForgotPasswordOpen} />
 
       {/* Interface Language Selection Modal */}
       {showLangModal && <InterfaceLanguageView setShowLangModal={setShowLangModal} />}
-    </div>
+    </>
   )
 }
 

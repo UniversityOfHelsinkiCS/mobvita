@@ -11,7 +11,12 @@ import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 import { FlashcardStoryInfo, FlashcardStoryInfoIcon } from './FlashcardStoryInfo'
-import LibraryTabs from 'Components/LibraryTabs'
+import AppTabs from 'Components/ui/AppTabs'
+import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
+import AddIcon from '@mui/icons-material/Add'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import { FormattedMessage } from 'react-intl'
+import { colors } from 'Assets/mui_theme/designTokens'
 import SettingButton from 'Components/SettingsButton'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
@@ -126,35 +131,37 @@ const Flashcards = () => {
     }
   }
 
-  const tabs = [
+  const activeTab = mode === 'new' ? 'new' : mode === 'list' ? 'list' : 'fillin'
+
+  const flashcardTabs = [
     {
-      key: 'Practice flashcards',
-      selected: mode !== 'new' && mode !== 'list',
-      onSelect: () => pushWithOptionalContext('fillin') },
+      value: 'fillin',
+      label: <FormattedMessage id="Practice flashcards" />,
+      icon: <StyleOutlinedIcon />,
+    },
     {
-      key: 'Add flashcard',
-      selected: mode === 'new',
-      onSelect: () => navigate('/flashcards/new') },
-    {
-      key: 'Flashcard list',
-      selected: mode === 'list',
-      onSelect: () => pushWithOptionalContext('list') },
+      value: 'list',
+      label: <FormattedMessage id="Flashcard list" />,
+      icon: <FormatListBulletedIcon />,
+    },
+    { value: 'new', label: <FormattedMessage id="Add flashcard" />, icon: <AddIcon /> },
   ]
 
-  const tabValues = Object.fromEntries(tabs.map(tab => [tab.key, tab.selected]))
-
-  const handleTabChange = tabKey => {
-    const tab = tabs.find(t => t.key === tabKey)
-    if (tab) tab.onSelect()
+  const handleTabChange = value => {
+    if (value === 'new') navigate('/flashcards/new')
+    else pushWithOptionalContext(value)
   }
 
   return (
-    <div className={`cont-tall cont pb-nm flex-col auto pt-xl ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-      <div data-cy="library-controls" className="library-control">
-        <LibraryTabs values={tabValues} onClick={handleTabChange} reverse />
+    <div className={`cont-tall cont pb-nm flex-col auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+      <div data-cy="library-controls" style={{ margin: '1.5em 0 20px' }}>
+        <AppTabs tabs={flashcardTabs} value={activeTab} onChange={handleTabChange} fullWidth />
       </div>
 
-      <div className="flashcard-body universal-background">
+      <div
+        className="flashcard-body"
+        style={{ backgroundColor: colors.card, borderRadius: 30 }}
+      >
         {mode !== 'list' && mode !== 'new' ? (
           width >= 840 ? (
             <div className="flashcard-side-column">

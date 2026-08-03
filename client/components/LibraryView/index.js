@@ -17,7 +17,12 @@ import SearchIcon from '@mui/icons-material/Search'
 import AppButton from 'Components/AppButton'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
-import LibraryTabs from 'Components/LibraryTabs'
+import AppTabs from 'Components/ui/AppTabs'
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -381,15 +386,22 @@ const StoryList = () => {
         {intl.formatMessage({ id: 'add-your-stories' })}
       </AppButton>
 
-      <LibraryTabs
-        values={libraries}
-        onClick={handleLibraryChange}
-        order={['public', 'private', 'essays', 'group']}
-        savedGroupSelection={savedGroupSelection}
-        groupDropdownOptions={groupDropdownOptions}
-        groupDropdownDisabled={!libraries.group}
-        handleGroupChange={handleGroupChange}
-      />
+      {(() => {
+        const meta = {
+          public: { label: <FormattedMessage id="Public" />, icon: <PublicOutlinedIcon /> },
+          private: { label: <FormattedMessage id="Private" />, icon: <LockOutlinedIcon /> },
+          essays: { label: <FormattedMessage id="my-essays" />, icon: <ArticleOutlinedIcon /> },
+          group: { label: <FormattedMessage id="Group" />, icon: <GroupsOutlinedIcon /> },
+        }
+        const tabs = ['public', 'private', 'essays', 'group']
+          .filter(key => key in libraries)
+          .map(key => ({ value: key, ...meta[key] }))
+        return (
+          <div style={{ margin: '1.5em 0 20px' }}>
+            <AppTabs tabs={tabs} value={activeLibrary} onChange={handleLibraryChange} fullWidth />
+          </div>
+        )
+      })()}
     </Box>
   )
 
@@ -1086,7 +1098,14 @@ const StoryList = () => {
         <FormattedMessage id="confirm-folder-delete" />
       </ConfirmationWarning>
       {libraryControls}
-      <Box className="universal-background" sx={{ margin: '0 7px' }}>
+      <Box
+        sx={{
+          margin: '0 7px',
+          backgroundColor: colors.card,
+          borderRadius: '30px',
+          padding: { xs: '1em', sm: '1.5em' },
+        }}
+      >
         {activeLibrary === 'essays' ? (
           <>
             {essaySearchAndSortControls}

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { Link } from 'react-router-dom'
+import { colors, font } from 'Assets/mui_theme/designTokens'
+import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import LeaderboardList from 'Components/LeaderboardView/LeaderboardList'
 import LastWeeksWinners from 'Components/LeaderboardView/LastWeeksWinners'
 
@@ -15,8 +16,17 @@ const LeaderboardSummary = () => {
   }, [])
 
   return (
-    <Link to="/leaderboard" style={{ color: '#212529', textDecoration: 'none' }}>
-      <div className="homeview-item" style={{ padding: '1em .2em 0 .2em' }}>
+    <Link to="/leaderboard" style={{ textDecoration: 'none' }}>
+      <div
+        style={{
+          boxSizing: 'border-box',
+          backgroundColor: colors.card,
+          borderRadius: 30,
+          padding: '24px 28px',
+          fontFamily: font.family,
+          color: colors.ink,
+        }}
+      >
         <LastWeeksWinners />
         <LeaderboardList amountToShow={3} />
       </div>

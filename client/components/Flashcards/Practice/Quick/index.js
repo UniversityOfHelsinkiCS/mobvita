@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import ReactCardFlip from 'react-card-flip'
-import { Button, Icon } from 'semantic-ui-react'
+import Check from '@mui/icons-material/Check'
+import QuestionMark from '@mui/icons-material/QuestionMark'
+import AppButton from 'Components/AppButton'
 import { addToTotal } from 'Utilities/redux/flashcardReducer'
 import { useDispatch } from 'react-redux'
 import Flashcard from '../Flashcard'
@@ -46,20 +48,18 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
           <span className={fontClass}>{lemma}</span>
           {!answered && (
             <div className="flex space-evenly padding-bottom-4">
-              <Button
-                circular
-                style={{ backgroundColor: 'white', padding: '1em' }}
+              <AppButton
+                style={{ backgroundColor: 'white', padding: '1em', borderRadius: '50%' }}
                 onClick={() => checkAnswer(true)}
               >
-                <Icon name="checkmark" size="huge" color="green" style={{ margin: 0 }} />
-              </Button>
-              <Button
-                circular
-                style={{ backgroundColor: 'white', padding: '1em' }}
+                <Check sx={{ fontSize: '4rem', margin: 0, color: '#21BA45' }} />
+              </AppButton>
+              <AppButton
+                style={{ backgroundColor: 'white', padding: '1em', borderRadius: '50%' }}
                 onClick={() => checkAnswer(false)}
               >
-                <Icon name="question" size="huge" color="yellow" style={{ margin: 0 }} />
-              </Button>
+                <QuestionMark sx={{ fontSize: '4rem', margin: 0, color: '#FBBD08' }} />
+              </AppButton>
             </div>
           )}
         </div>

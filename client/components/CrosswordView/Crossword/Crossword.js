@@ -783,7 +783,14 @@ const Crossword = React.forwardRef(
           <ThemeProvider theme={finalTheme}>
             <OuterWrapper correct={crosswordCorrect} ref={outerWrapperRef}>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div style={{ backgroundColor: finalTheme.gridBackground, width: '50%' }}>
+                <div
+                  style={{
+                    backgroundColor: finalTheme.gridBackground,
+                    width: '50%',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                  }}
+                >
                   <svg
                     viewBox={`0 0 ${width} ${height}`}
                     style={{
@@ -827,7 +834,7 @@ const Crossword = React.forwardRef(
                     outline: 'none',
                   }}
                 />
-                <div style={{ width: '50%', maxHeight: '80vh', overflowY: 'auto' }}>
+                <div style={{ width: '50%' }}>
                   <CluesWrapper>
                     {customClues ||
                       (clues &&

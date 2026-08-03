@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon } from 'semantic-ui-react'
+import CloseIcon from '@mui/icons-material/Close'
 import { sanitizeHtml } from 'Utilities/common'
 
 const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = false }) => {
@@ -13,10 +13,8 @@ const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = 
         <li key={`${value}-${index}`} className={itemClass}>
           <div className="space-between align-center">
             <span className={textClass} dangerouslySetInnerHTML={sanitizeHtml(value)} />
-            <Icon
-              name="close"
-              color="grey"
-              style={{ textShadow: 'none', cursor: 'pointer', marginRight: 0 }}
+            <CloseIcon
+              sx={{ color: 'grey', textShadow: 'none', cursor: 'pointer', marginRight: 0 }}
               onClick={e => {
                 e.preventDefault()
                 e.stopPropagation()

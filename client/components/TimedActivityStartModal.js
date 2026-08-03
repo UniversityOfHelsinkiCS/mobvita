@@ -1,8 +1,8 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React from 'react'
-import { Modal } from 'semantic-ui-react'
 import AppButton from 'Components/AppButton'
-import { FormattedMessage } from 'react-intl';
+import AppDialog from 'Components/ui/AppDialog'
+import { FormattedMessage } from 'react-intl'
 
 const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart }) => {
   const handleStartClick = () => {
@@ -16,28 +16,27 @@ const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart
   }
 
   return (
-    <Modal open={open} dimmer="blurring" size="tiny">
-      <Modal.Header>
-        <FormattedMessage id={activity} />
-      </Modal.Header>
-      <Modal.Content>
-        <div className="mb-lg">
-          <FormattedHTMLMessage id={`${activity}-info-text`} />
-        </div>
-        <div className="flex-col align-center gap-row-nm">
-          <div>
-            <AppButton data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
-              <FormattedMessage id="start" />
-            </AppButton>
-          </div>
-          <div>
-            <AppButton variant="secondary" onClick={handleBackClick}>
-              <FormattedMessage id="go-back" />
-            </AppButton>
-          </div>
-        </div>
-      </Modal.Content>
-    </Modal>
+    <AppDialog open={open} onClose={handleBackClick} title={<FormattedMessage id={activity} />}>
+      <div className="mb-lg">
+        <FormattedHTMLMessage id={`${activity}-info-text`} />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.75em',
+          marginTop: '1em',
+        }}
+      >
+        <AppButton data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
+          <FormattedMessage id="start" />
+        </AppButton>
+        <AppButton variant="secondary" onClick={handleBackClick}>
+          <FormattedMessage id="go-back" />
+        </AppButton>
+      </div>
+    </AppDialog>
   )
 }
 

@@ -1,46 +1,31 @@
 import React, { useState } from 'react'
-import { Modal, Form } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import AppButton from 'Components/AppButton'
 import { forgotPassword } from 'Utilities/redux/passwordResetReducer'
+import AppDialog from 'Components/ui/AppDialog'
+import ForgotPasswordForm from './ForgotPasswordForm'
 
+/**
+ * ForgotPassword — container for the reset-request dialog. Controlled via `isOpen` / `setOpen`.
+ * Owns redux (forgotPassword) + email state; renders the pure <ForgotPasswordForm> in AppDialog.
+ */
 const ForgotPassword = ({ isOpen, setOpen }) => {
   const [email, setEmail] = useState('')
-
   const dispatch = useDispatch()
-  const intl = useIntl()
 
-  const requestPassword = e => {
-    e.preventDefault()
-
+  const requestPassword = () => {
     dispatch(forgotPassword(email))
     setOpen(false)
   }
 
   return (
-    <Modal dimmer="inverted" closeIcon open={isOpen} onClose={() => setOpen(false)}>
-      <Modal.Header>
-        <FormattedMessage id="forgot-password" />
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <Form onSubmit={requestPassword}>
-          <Form.Field>
-            <Form.Input
-              label={intl.formatMessage({ id: 'password-reset-instructions' })}
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder={intl.formatMessage({ id: 'Email' })}
-            />
-          </Form.Field>
-          <Form.Field>
-            <AppButton variant="primary" type="submit">
-              <FormattedMessage id="reset-my-password" />
-            </AppButton>
-          </Form.Field>
-        </Form>
-      </Modal.Content>
-    </Modal>
+    <AppDialog
+      open={isOpen}
+      onClose={() => setOpen(false)}
+      title={<FormattedMessage id="forgot-password" />}
+    >
+      <ForgotPasswordForm email={email} onEmailChange={setEmail} onSubmit={requestPassword} />
+    </AppDialog>
   )
 }
 

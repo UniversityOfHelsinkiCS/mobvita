@@ -1,72 +1,153 @@
 import React from 'react'
 import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
 /**
- * AppButton — the app's standard button (MUI `Button` inside a `styled` wrapper).
+ * AppButton — the app's standard button, styled to the 2026 design system ("Button M IconText").
  *
- * It intentionally mirrors the react-bootstrap `Button` prop names we use across the app so
- * migrating is close to a drop-in: swap the import + tag name, keep the props. Internally the
- * bootstrap-style `variant` / `size` / `block` are mapped onto MUI.
+ * Design variants (use these in new code):
+ *   tan              - solid sage-green fill, ink text
+ *   contrast         - solid ink fill, cream text
+ *   contrast-outline - transparent, ink border/text; hover fills green
+ *   tan-outline      - pale-green fill, green border; hover fills green
+ *   inverse          - for dark backgrounds: transparent, cream border/text; hover fills green
+ *   danger           - solid red (not in the button sheet, kept for destructive actions)
+ *   link             - text-only, underlined
  *
- * Props:
- *   variant  - 'primary' | 'secondary' | 'danger' | 'success' | 'link' | 'outline-primary' | 'outline'
- *   size     - 'sm' | 'lg'            (bootstrap sizes; anything else = default/medium)
- *   block    - full width
- *   as       - element/component to render as (e.g. Link); mapped to MUI `component`
- *   type / onClick / disabled / className / style / data-cy / children … pass straight through.
+ * Legacy bootstrap variant names are aliased onto the above so the ~90 existing call sites re-skin
+ * automatically (primary→tan, secondary/dark→contrast, outline*→contrast-outline, …).
+ *
+ * Props: variant, size ('sm' | 'lg' — else medium), block (full width), as (→ MUI `component`),
+ * sx (wins over variant/size styles), plus type/onClick/disabled/className/data-cy/children.
  */
 
-// Map our bootstrap-style variants to MUI's (variant + color).
-const VARIANTS = {
-  primary: { variant: 'contained', color: 'primary' },
-  secondary: { variant: 'contained', color: 'secondary' },
-  danger: { variant: 'contained', color: 'error' },
-  success: { variant: 'contained', color: 'success' },
-  link: { variant: 'text', color: 'primary' },
-  outline: { variant: 'outlined', color: 'primary' },
-  'outline-primary': { variant: 'outlined', color: 'primary' },
+// Derived states not directly in designTokens.
+const DISABLED_BG = '#E4E1D3'
+const DISABLED_TEXT = '#B7B4A8'
+const INK_HOVER = '#4A4844'
+const TAN_OUTLINE_BG = '#E9F1EC'
+const INVERSE_DISABLED = '#6B6862'
+
+const VARIANT_STYLES = {
+  tan: {
+    backgroundColor: colors.green,
+    color: colors.ink,
+    border: '1px solid transparent',
+    '&:hover': { backgroundColor: colors.greenHover },
+    '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
+  },
+  contrast: {
+    backgroundColor: colors.ink,
+    color: colors.card,
+    border: '1px solid transparent',
+    '&:hover': { backgroundColor: INK_HOVER },
+    '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
+  },
+  'contrast-outline': {
+    backgroundColor: 'transparent',
+    color: colors.ink,
+    border: `1px solid ${colors.ink}`,
+    '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
+    '&.Mui-disabled': { backgroundColor: 'transparent', color: DISABLED_TEXT, borderColor: DISABLED_BG },
+  },
+  'tan-outline': {
+    backgroundColor: TAN_OUTLINE_BG,
+    color: colors.ink,
+    border: `1px solid ${colors.green}`,
+    '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
+    '&.Mui-disabled': { backgroundColor: 'transparent', color: DISABLED_TEXT, borderColor: DISABLED_BG },
+  },
+  inverse: {
+    backgroundColor: 'transparent',
+    color: colors.card,
+    border: `1px solid ${colors.card}`,
+    '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
+    '&.Mui-disabled': { backgroundColor: 'transparent', color: INVERSE_DISABLED, borderColor: INVERSE_DISABLED },
+  },
+  danger: {
+    backgroundColor: colors.error,
+    color: '#fff',
+    border: '1px solid transparent',
+    '&:hover': { backgroundColor: '#B83A3A' },
+    '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
+  },
+  link: {
+    backgroundColor: 'transparent',
+    color: colors.ink,
+    border: '1px solid transparent',
+    padding: 0,
+    minWidth: 0,
+    textDecoration: 'underline',
+    '&:hover': { backgroundColor: 'transparent', textDecoration: 'none' },
+  },
 }
 
-const SIZES = { sm: 'small', lg: 'large' }
+const ALIASES = {
+  primary: 'tan',
+  success: 'tan',
+  secondary: 'contrast',
+  dark: 'contrast',
+  outline: 'contrast-outline',
+  'outline-primary': 'contrast-outline',
+  'outline-secondary': 'contrast-outline',
+  'outline-danger': 'danger',
+  error: 'danger',
+}
+
+// Sizes per the Figma "Button M" (medium) and "Button Small" sheets; large is derived.
+const SIZE_STYLES = {
+  small: { padding: '5px 16px', fontSize: 14 },
+  medium: { padding: '9px 26px', fontSize: font.button },
+  large: { padding: '12px 34px', fontSize: 18 },
+}
+const SIZE_KEYS = { sm: 'small', lg: 'large' }
+
+const resolveVariant = variant =>
+  VARIANT_STYLES[variant] ? variant : ALIASES[variant] || 'tan'
 
 const StyledButton = styled(Button)({
-  textTransform: 'none', // bootstrap doesn't uppercase button text; keep original casing
-  borderRadius: 8,
-  // Many call sites (migrated from react-bootstrap) put a semantic-ui <Icon> straight inside the
-  // button as a child. Semantic renders it as <i class="icon"> and paints the glyph from an
-  // ::before using the 'Icons' font. Inside MUI's inline-flex Button that <i>'s em-based
-  // width/height and baseline get distorted (the glyph shows clipped / as a broken box). Pin the
-  // icon layout here once so every AppButton renders child icons inline with the label — no need
-  // to touch each call site.
+  textTransform: 'none',
+  borderRadius: shape.buttonRadius,
+  fontFamily: font.family,
+  fontWeight: 600,
+  lineHeight: 1.2,
+  boxShadow: 'none',
+  gap: 8,
+  transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
+  '&:hover': { boxShadow: 'none' },
+  '& img, & > svg': { width: 20, height: 20 },
+  '& > svg': { color: 'currentColor' },
+  // Legacy: some call sites drop a semantic-ui <Icon> (<i class="icon">) straight inside the button.
+  // Pin its layout so the glyph renders inline with the label instead of clipped/boxed.
   '& > i.icon': {
-    fontFamily: 'Icons', // defensive: keep the icon font even inside MUI's typography
+    fontFamily: 'Icons',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 'auto',
     height: 'auto',
-    margin: '0 0.4em 0 0',
+    margin: 0,
     lineHeight: 1,
     verticalAlign: 'middle',
     background: 'none',
   },
-  '& > i.icon::before': {
-    fontFamily: 'Icons',
-    background: 'none',
-  },
+  '& > i.icon::before': { fontFamily: 'Icons', background: 'none' },
 })
 
 const AppButton = ({ variant = 'primary', size, block = false, as, sx, children, ...rest }) => {
-  const mapped = VARIANTS[variant] || VARIANTS.primary
+  const variantSx = VARIANT_STYLES[resolveVariant(variant)]
+  const sizeSx = SIZE_STYLES[SIZE_KEYS[size] || 'medium']
+  const userSx = Array.isArray(sx) ? sx : [sx]
+
   return (
     <StyledButton
-      variant={mapped.variant}
-      color={mapped.color}
-      size={SIZES[size] || 'medium'}
+      variant="text"
+      disableElevation
+      size="medium"
       fullWidth={block}
       component={as}
-      sx={sx}
+      sx={[sizeSx, variantSx, ...userSx]}
       {...rest}
     >
       {children}
