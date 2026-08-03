@@ -5,7 +5,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { toggleHelperSidebar } from 'Utilities/redux/helperSidebarReducer'
 import './HelperSidebar.scss'
 
-const HelperSidebar = ({ children }) => {
+const HelperSidebar = ({ children, accentColor }) => {
   const dispatch = useDispatch()
 
   const isOpen = useSelector(state => state.helperSidebar?.isOpen ?? true)
