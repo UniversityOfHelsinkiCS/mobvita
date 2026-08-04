@@ -1,3 +1,4 @@
+/* global __VERSION__, __COMMIT__ */
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -83,7 +84,6 @@ export default function Sidebar() {
 
   const helpLink = getHelpLink(locale, isTeacher, learningLanguage)
   const isActive = path => location.pathname.startsWith(path)
-  const currentYear = new Date().getFullYear()
 
   if (!user) return null
 
@@ -280,18 +280,19 @@ export default function Sidebar() {
           </MenuRow>
         </Box>
 
-        {/* Footer: University of Helsinki */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px' }}>
-          <img
-            src={images.universityOfHelsinki}
-            alt="University of Helsinki"
-            style={{ height: 36 }}
-          />
-          <div style={{ fontSize: 12, lineHeight: 1.4, color: colors.ink }}>
-            © 2020–{currentYear}
-            <br />
-            University of Helsinki
-          </div>
+        {/* Build info (injected by vite: __VERSION__ = build time, __COMMIT__ = short hash) */}
+        <Box
+          sx={{
+            mt: 1,
+            textAlign: 'center',
+            color: colors.muted,
+            fontFamily: font.family,
+            fontSize: 11,
+            lineHeight: 1.4,
+          }}
+        >
+          <div>{`Built: ${__VERSION__}`}</div>
+          <div>{__COMMIT__}</div>
         </Box>
       </Box>
     </>

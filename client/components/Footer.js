@@ -14,20 +14,21 @@ const Footer = () => {
   return (
     <footer className="footer-wrapper">
       <div className="footer" style={{ backgroundColor: colors.panel }}>
-        {showTermsAndConditionsAndBuildVersion && (
-          <>
-            <TermsAndConditions
-              trigger={
-                <button className="footer-button" type="button" data-cy="tc-button" variant="link">
-                  Terms and Conditions, Privacy Policy
-                </button>
-              }
-            />
-          </>
-        )}
-        <div className="footer-item">
-                    <img src={images.uhLogo} alt="logo" width={20} height={20} /> © University of Helsinki
-          {' 2020–' + new Date().getFullYear()}
+        {/* Left: University of Helsinki logo */}
+        <div
+          className="footer-item"
+          style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+        >
+          <img
+            src={images.universityOfHelsinki}
+            alt="University of Helsinki"
+            style={{ height: 36 }}
+          />
+          <div style={{ fontSize: 12, lineHeight: 1.4, color: colors.ink }}>
+            © 2020–{new Date().getFullYear()}
+            <br />
+            University of Helsinki
+          </div>
         </div>
         {showResonsiveVoiceMention && (
           <div className="footer-item">
@@ -44,6 +45,16 @@ const Footer = () => {
               />
             </a>
           </div>
+        )}
+        {/* Right: Terms & Conditions */}
+        {showTermsAndConditionsAndBuildVersion && (
+          <TermsAndConditions
+            trigger={
+              <button className="footer-button" type="button" data-cy="tc-button" variant="link">
+                Terms and Conditions, Privacy Policy
+              </button>
+            }
+          />
         )}
       </div>
     </footer>
