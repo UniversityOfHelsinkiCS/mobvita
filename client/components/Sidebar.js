@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
@@ -40,6 +40,17 @@ export default function Sidebar() {
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [contactUsOpen, setContactUsOpen] = useState(false)
+  const panelRef = useRef(null)
+
+  // When closed the drawer stays in the DOM (translated off-screen), so mark it `inert` to keep it
+  // non-interactive/non-focusable. Set imperatively (not via a prop) because MUI Box / React 18.3
+  // don't reliably forward an `inert` prop to the DOM node.
+  useEffect(() => {
+    const el = panelRef.current
+    if (!el) return
+    if (open) el.removeAttribute('inert')
+    else el.setAttribute('inert', '')
+  }, [open])
 
   const closeSidebar = () => dispatch(sidebarSetOpen(false))
 
@@ -97,9 +108,7 @@ export default function Sidebar() {
       <Box
         component="aside"
         data-cy="sidebar-panel"
-        // When closed the drawer is translated off-screen but still in the DOM; mark it `inert`
-        // so it's non-interactive (and so tests can detect open/closed via the attribute).
-        inert={!open ? true : undefined}
+        ref={panelRef}
         sx={{
           position: 'fixed',
           top: 0,
