@@ -97,6 +97,9 @@ export default function Sidebar() {
       <Box
         component="aside"
         data-cy="sidebar-panel"
+        // When closed the drawer is translated off-screen but still in the DOM; mark it `inert`
+        // so it's non-interactive (and so tests can detect open/closed via the attribute).
+        inert={!open ? true : undefined}
         sx={{
           position: 'fixed',
           top: 0,
@@ -124,7 +127,7 @@ export default function Sidebar() {
             src={images.xClose}
             alt="close"
             onClick={closeSidebar}
-            data-cy="sidebar-close"
+            data-cy="sidebar-close-hamburger"
             style={{ width: 22, height: 22, cursor: 'pointer' }}
           />
           <span
@@ -231,6 +234,7 @@ export default function Sidebar() {
             <FormattedMessage id="help" />
           </MenuRow>
           <MenuRow
+            className="tour-button"
             icon={<img src={images.route} alt="" style={imgIconStyle} />}
             onClick={handleTourStart}
           >

@@ -22,6 +22,8 @@ import 'swiper/css'
 import 'swiper/css/effect-flip'
 import './Chatbot.scss'
 
+const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
+
 // When the panel flips to a focused suggestion it takes on that correction type's colour.
 // Mirrors the $essay-bubble-*-bg-color values in EssayWritingView/EssayWritingStyles.scss.
 const CORRECTION_TYPE_COLORS = {
@@ -105,6 +107,7 @@ const EssayChatbot = ({
     : correctionSuggestionSentenceIds
         .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
         .filter(Boolean)
+  const hasActiveSelection = Boolean(essayFocus?.selection)
 
   // When a suggestion is selected the panel switches from the full list to a focused view: just that
   // one suggestion pinned on top, with the conversation below it.
@@ -246,7 +249,7 @@ const EssayChatbot = ({
 
   // The conversation (bot/user messages) lives on both flip faces, but only the visible face pins the
   // scroll-to-latest ref so auto-scroll targets the face the user is actually looking at.
-  const renderConversationMessages = isActiveFace => {
+  const renderConversationMessages = isActiveFace =>
     essayMessages.map((message, index) =>
       message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
         <ChatBubble
@@ -267,27 +270,6 @@ const EssayChatbot = ({
         </ChatBubble>
       ),
     )
-
-    return faceMessages.map((message, index) => (
-      <div
-        className={`message message-${message.type}`}
-        key={`${message.type}-${index}`}
-        ref={isActiveFace && index === faceMessages.length - 1 ? latestMessageRef : null}
-        style={{ display: 'block' }}
-      >
-        {message.messageId ? (
-          <FormattedMessage
-            id={message.messageId}
-            defaultMessage='Do you want to go deeper and focus your question on a particular part of the text or a suggestion I made? If so, click on the word or suggestion, and tell me to "FOLLOW UP"!'
-          />
-        ) : message.text ? (
-          <ReactMarkdown children={message.text} />
-        ) : (
-          <FormattedMessage id="Error rendering message" />
-        )}
-      </div>
-    ))
-  }
 
   const renderWaitingSpinner = () =>
     isWaitingForEssayResponse ? (
@@ -333,7 +315,7 @@ const EssayChatbot = ({
                 {renderSuggestion(suggestion)}
               </div>
             ))}
-            {renderConversationMessages('', !isFocused)}
+            {renderConversationMessages(!isFocused)}
             {renderWaitingSpinner()}
           </div>
         </SwiperSlide>
@@ -358,7 +340,7 @@ const EssayChatbot = ({
                 <SanitizedHTML html={hint} />
               </ChatBubble>
             ))}
-            {renderConversationMessages(activeFocusKey, isFocused)}
+            {renderConversationMessages(isFocused)}
             {renderWaitingSpinner()}
           </div>
         </SwiperSlide>

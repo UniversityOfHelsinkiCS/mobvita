@@ -2,7 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppMenu from 'Components/ui/AppMenu'
-import AppSelect from 'Components/ui/AppSelect'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { useLearningLanguage, translatableLanguages, images } from 'Utilities/common'
@@ -71,14 +70,31 @@ const AssistentSettings = ({ className = '' }) => {
         >
           <FormattedMessage id="select-dictionary-language" />
         </div>
-        <AppSelect
-          variant="tan-outline"
+        {/* Native <select> (not AppSelect) so Cypress `.select()` in dictionary_spec.js works;
+            styled to the design system (cream pill, green border). */}
+        <select
+          data-cy="dictionary-dropdown"
           value={translationLanguageCode}
-          onChange={handleDropdownChange}
-          options={dictionaryOptions}
+          onChange={e => handleDropdownChange(e.target.value)}
           disabled={dictionaryOptions.length <= 1}
-          minWidth={210}
-        />
+          style={{
+            width: '100%',
+            fontFamily: font.family,
+            fontSize: font.input,
+            color: colors.ink,
+            backgroundColor: colors.card,
+            border: `1px solid ${colors.border}`,
+            borderRadius: 999,
+            padding: '7px 14px',
+            cursor: dictionaryOptions.length <= 1 ? 'default' : 'pointer',
+          }}
+        >
+          {dictionaryOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
     </AppMenu>
   )

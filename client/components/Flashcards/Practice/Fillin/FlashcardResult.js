@@ -9,7 +9,8 @@ const FlashcardResult = ({ answerCorrect }) => {
 
   return (
     <div className="flashcard-result">
-      <ResultIcon sx={{ fontSize: 48 }} />
+      {/* `thumbs up` / `thumbs down` classes are kept for flashcards_spec.js selectors. */}
+      <ResultIcon className={answerCorrect ? 'thumbs up' : 'thumbs down'} sx={{ fontSize: 48 }} />
     </div>
   )
 }
