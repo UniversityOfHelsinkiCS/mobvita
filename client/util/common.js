@@ -43,6 +43,14 @@ import folder from 'Assets/images/folder.svg'
 import folderPlus from 'Assets/images/folder-plus.svg'
 import star06 from 'Assets/images/star-06.svg'
 import play from 'Assets/images/play.svg'
+import star06Pick from 'Assets/images/star-06-pick.svg'
+import lock01 from 'Assets/images/lock-01.svg'
+import globe02 from 'Assets/images/globe-02.svg'
+import users01Pick from 'Assets/images/users-01-pick.svg'
+import brush01Pick from 'Assets/images/brush-01-pick.svg'
+import globe04 from 'Assets/images/globe-04.svg'
+import microscope from 'Assets/images/microscope.svg'
+import trophy01Pick from 'Assets/images/trophy-01-pick.svg'
 import iconHome from 'Assets/images/icon-home.svg'
 import layersThree from 'Assets/images/layers-three-01.svg'
 import libraryBig from 'Assets/images/library-big.svg'
@@ -194,6 +202,14 @@ export const images = {
   folderPlus,
   star06,
   play,
+  star06Pick,
+  lock01,
+  globe02,
+  users01Pick,
+  brush01Pick,
+  globe04,
+  microscope,
+  trophy01Pick,
   iconHome,
   layersThree,
   libraryBig,

@@ -1,30 +1,61 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, shallowEqual } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
+import AppDialog from 'Components/ui/AppDialog'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 
 const extractFilters = object =>
   Object.entries(object)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
 
-const PracticeModalButton = ({ handleClick, name, extraImgSrc, storyNum }) => {
-  const imgSrc = extraImgSrc ?? `${name}1`
-
-  return (
-    <button style={{ marginRight: "auto" }} data-cy={name} className="practice-now-modal-btn" type="button" onClick={handleClick}>
-      <div className="align-center flex-col space-between">
-        <div style={{ marginBottom: '1em' }}>
-          <FormattedMessage id={capitalize(name)} /> {storyNum && <span> ({storyNum})</span>}
-        </div>
-        <img src={images[imgSrc]} alt={name} style={{ maxWidth: '45%', maxHeight: '45%' }} />
-      </div>
-    </button>
-  )
+// Which custom icon each library / category pill uses (keys into the shared `images` map).
+const LIBRARY_ICON = { public: 'globe02', private: 'lock01', group: 'users01Pick' }
+const CATEGORY_ICON = {
+  culture: 'brush01Pick',
+  politics: 'globe04',
+  science: 'microscope',
+  sport: 'trophy01Pick',
 }
+
+// A "Pick a story" pill: icon on the left, label (+ optional count). Matches the 2026 modal design.
+const PickButton = ({ handleClick, name, iconKey, storyNum }) => (
+  <Box
+    component="button"
+    type="button"
+    data-cy={name}
+    onClick={handleClick}
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.7em',
+      width: '100%',
+      padding: '0.7em 1.1em',
+      borderRadius: '999px',
+      border: '1px solid #E3E0D2',
+      backgroundColor: '#fff',
+      cursor: 'pointer',
+      textAlign: 'left',
+      fontFamily: font.family,
+      transition: 'background-color 0.15s ease, border-color 0.15s ease',
+      '&:hover': { backgroundColor: colors.card, borderColor: colors.focus },
+    }}
+  >
+    {iconKey && (
+      <img src={images[iconKey]} alt="" style={{ width: 24, height: 24, flexShrink: 0 }} />
+    )}
+    <span style={{ fontSize: 17, fontWeight: 600, color: colors.ink }}>
+      <FormattedMessage id={capitalize(name)} />
+      {storyNum != null && (
+        <span style={{ color: colors.muted, fontWeight: 500 }}> ({storyNum})</span>
+      )}
+    </span>
+  </Box>
+)
 
 const PracticeModal = ({ open, setOpen }) => {
   const navigate = useNavigate()
@@ -72,19 +103,13 @@ const PracticeModal = ({ open, setOpen }) => {
     return clearTimeout(temp)
   }, [pending, refreshed])
 
-  // preload practice modal images
+  // preload practice modal icons
   useLayoutEffect(() => {
-    new Image().src = images.library
-
-    new Image().src = images.dices
-    new Image().src = images.public1
-    new Image().src = images.group1
-    new Image().src = images.private1
-
-    new Image().src = images.culture1
-    new Image().src = images.politics1
-    new Image().src = images.science1
-    new Image().src = images.sport1
+    ;['star06Pick', 'lock01', 'globe02', 'users01Pick', 'brush01Pick', 'globe04', 'microscope', 'trophy01Pick'].forEach(
+      key => {
+        new Image().src = images[key]
+      }
+    )
   }, [])
 
   useEffect(() => {
@@ -194,79 +219,76 @@ const PracticeModal = ({ open, setOpen }) => {
       [category]: true })
   }
 
+  const sectionLabel = { fontFamily: font.family, fontSize: 14, color: colors.ink, marginBottom: '0.9em' }
+  const gridStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75em' }
+
   return (
-    <Modal
-      dimmer="inverted"
+    <AppDialog
       open={open}
       onClose={handleClose}
-      closeIcon={{ style: { top: '1rem', right: '2.5rem' }, color: 'black', name: 'close' }}
+      maxWidth="sm"
+      title={<FormattedMessage id="pick-a-story" defaultMessage="Pick a story" />}
     >
-      <Modal.Content style={{ background: 'rgb(230, 235, 233)' }}>
-        <div className="flex-col" style={{ gap: '3em' }}>
-          <div>
-            <div className="practice-now-modal-label" style={{ width: '85%' }}>
-              <FormattedMessage id="practice-random-story-from-library" />
-            </div>
+      <div className="flex-col" style={{ gap: '1.75em', display: 'flex', flexDirection: 'column' }}>
+        <div>
+          <div style={sectionLabel}>
+            <FormattedMessage id="practice-random-story-from-library" />
+          </div>
 
-            <div className="practice-now-modal-group-cont" data-cy="practice-libraries">
-              {waiting ? (
-                <button type="button" className="practice-now-modal-btn">
-                  <div className="align-center flex-col space-between">
-                    <Spinner inline />
-                  </div>
-                </button>
-              ) : (
-                <PracticeModalButton
-                  handleClick={() => navigate(filteredLink)}
-                  name="All-Stories"
-                  extraImgSrc="dices"
-                  storyNum={filteredStories.length}
-                />
-              )}
-              {Object.entries(libraries).map(([key, _]) => (
-                <PracticeModalButton
-                  key={key}
-                  handleClick={() => handleLibraryChange(key)}
-                  name={key}
+          <div style={gridStyle} data-cy="practice-libraries">
+            {waiting ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.7em 1.1em',
+                  borderRadius: '999px',
+                  border: '1px solid #E3E0D2',
+                  backgroundColor: '#fff',
+                }}
+              >
+                <Spinner inline />
+              </Box>
+            ) : (
+              <PickButton
+                handleClick={() => navigate(filteredLink)}
+                name="All-Stories"
+                iconKey="star06Pick"
+                storyNum={filteredStories.length}
+              />
+            )}
+            {['private', 'public', 'group'].map(key => (
+              <PickButton
+                key={key}
+                handleClick={() => handleLibraryChange(key)}
+                name={key}
+                iconKey={LIBRARY_ICON[key]}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div style={sectionLabel}>
+            <FormattedMessage id="or-from-category" />
+          </div>
+          <div style={gridStyle} data-cy="practice-categories">
+            {Object.entries(categories)
+              .sort()
+              .slice(0, 4)
+              .map(([name]) => (
+                <PickButton
+                  key={name}
+                  handleClick={() => handleCategoryChange(name)}
+                  name={name}
+                  iconKey={CATEGORY_ICON[name]}
                 />
               ))}
-            </div>
           </div>
-
-          <div style={{ width: '100%' }}>
-            <div className="practice-now-modal-label">
-              <FormattedMessage id="or-from-category" />
-            </div>
-            <div className="practice-now-modal-group-cont" data-cy="practice-categories">
-              {Object.entries(categories)
-                .sort()
-                .slice(0, 4)
-                .map(([name, _]) => (
-                  <PracticeModalButton
-                    key={name}
-                    handleClick={() => handleCategoryChange(name)}
-                    name={name}
-                  />
-                ))}
-            </div>
-          </div>
-
-          {/* <div style={{ width: '100%' }}>
-            <div className="practice-now-modal-label">
-              <FormattedMessage id="check-library" />
-            </div>
-            <div className="practice-now-modal-group-cont" data-cy="practice-library">
-              <PracticeModalButton
-                handleClick={() => navigate('/library')}
-                name="Library"
-                extraImgSrc="library"
-                dataCy="check-library-button"
-              />
-            </div>
-          </div> */}
         </div>
-      </Modal.Content>
-    </Modal>
+      </div>
+    </AppDialog>
   )
 }
 
