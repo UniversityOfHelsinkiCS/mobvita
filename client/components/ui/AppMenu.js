@@ -18,7 +18,7 @@ import { MenuRow } from './menuRow'
  *     <SomeModal trigger={<AppMenuItem icon={<img src={ic} />}>Contact</AppMenuItem>} />
  *   </AppMenu>
  */
-const AppMenuCloseContext = createContext(null)
+export const AppMenuCloseContext = createContext(null)
 
 const StyledPopover = styled(Popover, {
   shouldForwardProp: prop => prop !== 'radius' && prop !== 'menuMinWidth',

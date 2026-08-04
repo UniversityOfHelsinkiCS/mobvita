@@ -1,11 +1,47 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
-import AppMenu from 'Components/ui/AppMenu'
+import AppMenu, { AppMenuCloseContext } from 'Components/ui/AppMenu'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { useLearningLanguage, translatableLanguages, images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
+
+// Native <select> (not AppSelect) so Cypress `.select()` in dictionary_spec.js works. Rendered
+// inside AppMenu, so it consumes the menu's close context and dismisses the popover after a pick —
+// otherwise the (invisible) Popover backdrop lingers over the dictionary content.
+const DictionaryLanguageSelect = ({ value, options, disabled, onChange }) => {
+  const closeMenu = useContext(AppMenuCloseContext)
+
+  return (
+    <select
+      data-cy="dictionary-dropdown"
+      value={value}
+      disabled={disabled}
+      onChange={e => {
+        onChange(e.target.value)
+        if (closeMenu) closeMenu()
+      }}
+      style={{
+        width: '100%',
+        fontFamily: font.family,
+        fontSize: font.input,
+        color: colors.ink,
+        backgroundColor: colors.card,
+        border: `1px solid ${colors.border}`,
+        borderRadius: 999,
+        padding: '7px 14px',
+        cursor: disabled ? 'default' : 'pointer',
+      }}
+    >
+      {options.map(option => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  )
+}
 
 /**
  * AssistentSettings — the assistant's settings gear (Circle-settings icon). Clicking it opens the
@@ -70,31 +106,12 @@ const AssistentSettings = ({ className = '' }) => {
         >
           <FormattedMessage id="select-dictionary-language" />
         </div>
-        {/* Native <select> (not AppSelect) so Cypress `.select()` in dictionary_spec.js works;
-            styled to the design system (cream pill, green border). */}
-        <select
-          data-cy="dictionary-dropdown"
+        <DictionaryLanguageSelect
           value={translationLanguageCode}
-          onChange={e => handleDropdownChange(e.target.value)}
+          options={dictionaryOptions}
           disabled={dictionaryOptions.length <= 1}
-          style={{
-            width: '100%',
-            fontFamily: font.family,
-            fontSize: font.input,
-            color: colors.ink,
-            backgroundColor: colors.card,
-            border: `1px solid ${colors.border}`,
-            borderRadius: 999,
-            padding: '7px 14px',
-            cursor: dictionaryOptions.length <= 1 ? 'default' : 'pointer',
-          }}
-        >
-          {dictionaryOptions.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={handleDropdownChange}
+        />
       </div>
     </AppMenu>
   )
