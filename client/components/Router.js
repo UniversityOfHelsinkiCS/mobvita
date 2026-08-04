@@ -65,6 +65,7 @@ const ReadingPracticeView = lazy(
 )
 const EssayWritingView = lazy(() => import('./EssayWritingView'))
 const Dashboard = lazy(() => import('./Dashboard'))
+const NotFound = lazy(() => import('./NotFound'))
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -354,6 +355,10 @@ export default () => {
                       path="/dashboard"
                       element={<ProtectedRoute component={Dashboard} languageRequired={false} />}
                     />
+                    <Route path="/404" element={<NotFound />} />
+                    {/* Catch-all: any unknown URL renders the 404 page (inside the normal layout),
+                        instead of an empty <main>. */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
               </ErrorBoundary>

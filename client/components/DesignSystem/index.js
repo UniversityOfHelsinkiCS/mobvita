@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
@@ -69,6 +71,13 @@ const DesignSystem = () => {
   const [switchOn, setSwitchOn] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
   const [radioValue, setRadioValue] = useState('a')
+
+  // /design is a dev-only tool. Hide it behind a 404 for anyone without full developer scope
+  // (same gate as the /dashboard admin page). Wait for the user fetch so we don't flash a 404.
+  const developerScope = useSelector(state => state.user?.data?.user?.developer_of_language)
+  const userPending = useSelector(state => state.user?.pending)
+  if (userPending) return null
+  if (developerScope !== 'all') return <Navigate to="/404" replace />
 
   return (
     <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem', fontFamily: font.family }}>
