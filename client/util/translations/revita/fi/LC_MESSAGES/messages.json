@@ -1373,7 +1373,7 @@
     "go-to-group-library-link": "ryhmäkirjastossa",
     "beta-language-warning": "Huomioi: {language} on BETA-kieli, jonka kehitys on vielä kesken.",
     "story-title-validation": "Tekstin otsikon on oltava vähintään 3 kirjaimen pituinen",
-    "search-input-placeholder": "Etsi...",
+    "search-input-placeholder": "Etsi otsikoita, tekstiä tai kontekstia…",
     "group-review-dropdown-placeholder": "Valitse tarkasteltava opiskelija",
     "sort-by-title-option": "Otsikko",
     "sort-by-difficulty-option": "Taso",

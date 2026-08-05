@@ -1,3 +1,10 @@
+.library-dashboard {
+  width: 838px;
+  height: 1065px;
+  gap: 20px;
+  opacity: 1;
+}
+
 .library-story-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -38,7 +45,7 @@
   background: transparent;
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   padding: 0;
@@ -46,7 +53,7 @@
 
 .library-folder-breadcrumb-current {
   color: rgba(0, 0, 0, 0.55);
-  font-family: "Rubik", sans-serif !important;
+  font-family: 'Rubik', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
 }
@@ -61,7 +68,9 @@
   white-space: normal;
   word-wrap: break-word;
   box-shadow: none;
-  transition: box-shadow 0.1s ease, width 0.1s ease;
+  transition:
+    box-shadow 0.1s ease,
+    width 0.1s ease;
 
   .MuiSelect-select {
     min-height: 1em !important;
@@ -118,50 +127,6 @@
   }
 }
 
-.library-search-control {
-  display: flex;
-  align-items: stretch;
-  min-width: 260px;
-  height: 40px;
-  background-color: transparent;
-  border-radius: 0.28571429rem;
-  overflow: hidden;
-}
-
-.library-search-field {
-  flex: 1 1 auto;
-  background-color: #ffffff;
-
-  .MuiOutlinedInput-root {
-    height: 40px;
-    background-color: #ffffff;
-    border-radius: 0.28571429rem 0 0 0.28571429rem;
-  }
-
-  .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(34, 36, 38, 0.15) !important;
-  }
-
-  .MuiInputBase-input {
-    background-color: #ffffff;
-  }
-}
-
-.library-search-button {
-  width: 56px;
-  height: 40px;
-  padding: 0 !important;
-  color: #ffffff !important;
-  background: linear-gradient(#5f6068, #3f4048) !important;
-  border-radius: 0 0.28571429rem 0.28571429rem 0 !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  border-left: none !important;
-}
-
-.library-search-button:hover {
-  background: linear-gradient(#55565d, #393a41) !important;
-}
-
 .mui-story-card {
   max-width: 100%;
   width: 100%;
@@ -171,8 +136,12 @@
   border: none !important;
   border-radius: 12px !important;
   background: #fff;
-  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
-  transition: box-shadow 0.1s ease, transform 0.1s ease;
+  box-shadow:
+    0 1px 3px 0 #d4d4d5,
+    0 0 0 1px #d4d4d5 !important;
+  transition:
+    box-shadow 0.1s ease,
+    transform 0.1s ease;
   font-size: 1em;
   overflow: visible;
 
@@ -229,7 +198,7 @@
     margin: 0 12px;
     font-size: 1.15rem;
     font-weight: 500;
-    font-family: "Rubik", sans-serif;
+    font-family: 'Rubik', sans-serif;
     line-height: 1.2;
   }
 
@@ -251,7 +220,7 @@
   .story-description {
     font-size: 1rem;
     font-weight: 400;
-    font-family: "Rubik", sans-serif;
+    font-family: 'Rubik', sans-serif;
     line-height: 1.4285em;
     color: rgba(0, 0, 0, 0.4);
   }
@@ -276,11 +245,14 @@
   cursor: pointer;
   text-align: left;
   padding: 28px 24px 20px;
-  transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+  transition:
+    background 0.12s ease,
+    box-shadow 0.12s ease,
+    transform 0.12s ease;
 }
 
 .library-folder-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -8px;
   left: -1px;
@@ -303,11 +275,11 @@
 
 .library-folder-card-empty {
   background-color: white;
-  background: linear-gradient(170deg, #f1f0f0  0%, #e8e8e8 100%);
+  background: linear-gradient(170deg, #f1f0f0 0%, #e8e8e8 100%);
 }
 
 .library-folder-card-empty::before {
-  background: linear-gradient(170deg, #f1f0f0  0%, #f1f1f1 100%);
+  background: linear-gradient(170deg, #f1f0f0 0%, #f1f1f1 100%);
 }
 
 .library-folder-card-empty.library-folder-card-drop-target {
@@ -329,7 +301,9 @@
   font-size: 88px;
   width: 88px;
   height: 72px;
-  transition: filter 0.12s ease, transform 0.12s ease;
+  transition:
+    filter 0.12s ease,
+    transform 0.12s ease;
 }
 
 .library-folder-card-drop-target .library-folder-icon {

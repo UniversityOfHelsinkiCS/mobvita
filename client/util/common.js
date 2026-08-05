@@ -61,6 +61,7 @@ import wavesColored from 'Assets/images/waves-colored.svg'
 import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
 import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
 import libraryBigColored from 'Assets/images/library-big-colored.svg'
+import searchTextfield from 'Assets/images/search-textfield.svg'
 import star06Colored from 'Assets/images/star-06-colored.svg'
 import users01Colored from 'Assets/images/users-01-colored.svg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
@@ -220,6 +221,7 @@ export const images = {
   bookOpenColored,
   layersThreeColored,
   libraryBigColored,
+  searchTextfield,
   star06Colored,
   users01Colored,
   flagFinnish,

@@ -7,17 +7,15 @@ import {
   IconButton,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
-import CloseIcon from '@mui/icons-material/Close'
-import SearchIcon from '@mui/icons-material/Search'
 import AppButton from 'Components/AppButton'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
+import AppSearchField from 'Components/ui/AppSearchField'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
@@ -98,8 +96,6 @@ const StoryList = () => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const localFolderStorageKey = getLocalFolderStorageKey(userId, learningLanguage)
 
-  const smallWindow = useWindowDimensions().width < 520
-
   const [sorter, setSorter] = useState(
     savedSortCriterion?.[savedLibrarySelection]?.sort_by || 'title',
   )
@@ -107,7 +103,6 @@ const StoryList = () => {
     savedSortCriterion?.[savedLibrarySelection]?.direction || 'asc',
   )
   const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
@@ -275,10 +270,6 @@ const StoryList = () => {
     if (learningLanguage) dispatch(getWritingEssays(capitalize(learningLanguage)))
   }, [learningLanguage])
 
-  const handleSearchIconClick = () => {
-    setSmallScreenSearchOpen(!smallScreenSearchOpen)
-  }
-
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
@@ -407,74 +398,46 @@ const StoryList = () => {
 
   const searchAndSortControls = (
     <>
-      <Box
-        className="search-and-sort"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
-          flexWrap: 'wrap',
-        }}
-      >
-        <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <FormControl size="small" sx={{ minWidth: 180 }}>
-            <Select
-              value={sorter}
-              onChange={handleSortChange}
-              className="library-semantic-select"
-              MenuProps={dropdownMenuProps}
-            >
-              {sortDropdownOptions.map(option => (
-                <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-            {sortDirection === 'asc' ? (
-              <ArrowDropUpSharpIcon fontSize="large" />
-            ) : (
-              <ArrowDropDownSharpIcon fontSize="large" />
-            )}
-          </IconButton>
-        </Box>
+      <LibrarySearch
+        setDisplayedStories={setDisplayedStories}
+        setDisplaySearchResults={setDisplaySearchResults}
+      />
 
-        {smallWindow ? (
-          <IconButton aria-label="Search library" onClick={handleSearchIconClick}>
-            {smallScreenSearchOpen ? <CloseIcon /> : <SearchIcon />}
-          </IconButton>
-        ) : (
-          <LibrarySearch
-            setDisplayedStories={setDisplayedStories}
-            setDisplaySearchResults={setDisplaySearchResults}
-          />
-        )}
+      <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FormControl size="small" sx={{ minWidth: 180 }}>
+          <Select
+            value={sorter}
+            onChange={handleSortChange}
+            className="library-semantic-select"
+            MenuProps={dropdownMenuProps}
+          >
+            {sortDropdownOptions.map(option => (
+              <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
+                {option.text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
+          {sortDirection === 'asc' ? (
+            <ArrowDropUpSharpIcon fontSize="large" />
+          ) : (
+            <ArrowDropDownSharpIcon fontSize="large" />
+          )}
+        </IconButton>
       </Box>
-
-      {smallScreenSearchOpen && (
-        <LibrarySearch
-          setDisplayedStories={setDisplayedStories}
-          setDisplaySearchResults={setDisplaySearchResults}
-          fluid
-        />
-      )}
     </>
   )
 
   // Sort (title/date) + title search for the "My Essays" library, styled like the story controls.
   const essaySearchAndSortControls = (
-    <Box
-      className="search-and-sort"
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 2,
-        flexWrap: 'wrap',
-      }}
-    >
+    <>
+      <AppSearchField
+        placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
+        value={essaySearchQuery}
+        onChange={setEssaySearchQuery}
+      />
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <FormControl size="small" sx={{ minWidth: 180 }}>
           <Select
@@ -498,25 +461,7 @@ const StoryList = () => {
           )}
         </IconButton>
       </Box>
-
-      <Box className="library-search-control">
-        <TextField
-          className="library-search-field"
-          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-          value={essaySearchQuery}
-          onChange={event => setEssaySearchQuery(event.target.value)}
-          fullWidth
-          size="small"
-        />
-        <IconButton
-          className="library-search-button"
-          aria-label={essaySearchQuery ? 'Clear search' : 'Search essays'}
-          onClick={() => essaySearchQuery && setEssaySearchQuery('')}
-        >
-          {essaySearchQuery ? <CloseIcon /> : <SearchIcon />}
-        </IconButton>
-      </Box>
-    </Box>
+    </>
   )
 
   if (pending || !refreshed) {
@@ -744,7 +689,10 @@ const StoryList = () => {
 
     getStoriesInFolder(allStoriesInActiveLibrary, normalizedOldPath).forEach(story => {
       dispatch(
-        updateStoryPath(story._id, getRenamedItemPath(story.path, normalizedOldPath, newFolderPath)),
+        updateStoryPath(
+          story._id,
+          getRenamedItemPath(story.path, normalizedOldPath, newFolderPath),
+        ),
       )
     })
 
@@ -807,7 +755,6 @@ const StoryList = () => {
 
   const handleConfirmFolderDelete = () => {
     if (!folderDeleteRequest) return
-
     ;(folderDeleteRequest.storyIds || []).forEach(storyId => {
       dispatch(removeStory(storyId))
     })
@@ -1086,7 +1033,7 @@ const StoryList = () => {
 
   return (
     <Box
-      className={`cont-tall pt-lg cont flex-col auto library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+      className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
     >
       <ConfirmationWarning
         open={Boolean(folderDeleteRequest)}

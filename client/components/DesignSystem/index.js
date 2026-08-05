@@ -5,6 +5,7 @@ import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
+import AppSearchField from 'Components/ui/AppSearchField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppRadio from 'Components/ui/AppRadio'
 import { RadioGroup, FormControlLabel } from '@mui/material'
@@ -67,6 +68,7 @@ const DesignSystem = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
+  const [searchDemo, setSearchDemo] = useState('Kalevala')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
@@ -157,6 +159,7 @@ const DesignSystem = () => {
             'bookOpenColored',
             'layersThreeColored',
             'libraryBigColored',
+            'searchTextfield',
             'star06Colored',
             'users01Colored',
           ]
@@ -256,6 +259,22 @@ const DesignSystem = () => {
         </div>
         <div style={{ width: 240 }}>
           <AppTextField label="Disabled" disabled placeholder="Disabled" />
+        </div>
+      </Section>
+
+      <Section title="AppSearchField">
+        <div style={{ width: 360 }}>
+          <AppSearchField
+            value={searchDemo}
+            onChange={setSearchDemo}
+            placeholder="Search stories, essays, words…"
+          />
+        </div>
+        <div style={{ width: 360 }}>
+          <AppSearchField value="" onChange={() => {}} placeholder="Empty — no clear button" />
+        </div>
+        <div style={{ width: 360 }}>
+          <AppSearchField value="disabled" onChange={() => {}} disabled />
         </div>
       </Section>
 
