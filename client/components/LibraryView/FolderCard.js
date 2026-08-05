@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
-import Folder from '../../assets/images/folder.png'
+import Folder from '../../assets/images/folder.svg'
 import FolderEmpty from '../../assets/images/folder_empty.png'
 import './LibraryView.scss'
 

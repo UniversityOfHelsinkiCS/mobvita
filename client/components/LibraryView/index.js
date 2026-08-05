@@ -774,7 +774,10 @@ const StoryList = () => {
     </Box>
   )
 
-  const renderFolderBrowser = () => {
+  // The folder section (breadcrumbs + the folder pills) sits at the TOP of the library card, above the
+  // search/sort row. The stories that live in the current folder render separately, BELOW that row (see
+  // renderStoriesGrid), per the 2026 library layout.
+  const renderFolderSection = () => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
       currentLibraryPath,
@@ -787,8 +790,6 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
-    const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
-    const folderIsEmpty = foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0
 
     return (
       <>
@@ -801,12 +802,8 @@ const StoryList = () => {
             />
           )}
         </Box>
-        {folderIsEmpty ? (
-          <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-            <FormattedMessage id="no-stories-found" />
-          </Box>
-        ) : (
-          <Box data-cy="story-items" className="library-story-grid">
+        {foldersInCurrentPath.length > 0 && (
+          <Box data-cy="library-folders" className="library-folder-grid">
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -858,22 +855,44 @@ const StoryList = () => {
                 />
               )
             })}
-            {storiesInCurrentPath.map(story => (
-              <StoryListItem
-                key={story._id}
-                draggable={libraryIsMutable}
-                isDragging={draggedStoryIds.includes(story._id)}
-                libraryShown={libraries}
-                onDragEnd={handleStoryDragEnd}
-                onDragStart={handleStoryDragStart}
-                story={story}
-                selectedGroup={savedGroupSelection}
-                savedLibrarySelection={savedLibrarySelection}
-              />
-            ))}
           </Box>
         )}
       </>
+    )
+  }
+
+  const renderStoriesGrid = () => {
+    const foldersInCurrentPath = getFoldersForPath(
+      libraryFilteredStories,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
+    const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
+
+    if (foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0) {
+      return (
+        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-stories-found" />
+        </Box>
+      )
+    }
+
+    return (
+      <Box data-cy="story-items" className="library-story-grid">
+        {storiesInCurrentPath.map(story => (
+          <StoryListItem
+            key={story._id}
+            draggable={libraryIsMutable}
+            isDragging={draggedStoryIds.includes(story._id)}
+            libraryShown={libraries}
+            onDragEnd={handleStoryDragEnd}
+            onDragStart={handleStoryDragStart}
+            story={story}
+            selectedGroup={savedGroupSelection}
+            savedLibrarySelection={savedLibrarySelection}
+          />
+        ))}
+      </Box>
     )
   }
 
@@ -1009,14 +1028,17 @@ const StoryList = () => {
       </ConfirmationWarning>
       {libraryControls}
       <Box
+        data-cy="library-container"
         sx={{
           margin: '0 7px',
           backgroundColor: colors.card,
           borderRadius: '30px',
-          padding: { xs: '1em', sm: '1.5em' },
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
         }}
       >
-        {renderFolderBrowser()}
         {activeLibrary === 'essays' ? (
           <>
             {essaySearchAndSortControls}
@@ -1024,6 +1046,7 @@ const StoryList = () => {
           </>
         ) : (
           <>
+            {renderFolderSection()}
             {libraries.group && (
               <Box className="library-group-dropdown-container">
                 <FormControl size="small" fullWidth>
@@ -1053,12 +1076,13 @@ const StoryList = () => {
             />
             {renderSortAndAddRow(sorter, sortDropdownOptions)}
             {lastQuery && (
-              <Box className="mt-nm ml-sm gap-col-sm">
+              <Box>
                 <Typography component="span">
                   <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
                 </Typography>
               </Box>
             )}
+            {renderStoriesGrid()}
           </>
         )}
       </Box>

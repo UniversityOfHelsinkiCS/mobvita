@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useIntl } from 'react-intl'
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
+import addFolderIcon from '../../assets/images/folder-plus.svg'
 import {
   Box,
   Dialog,
@@ -54,10 +54,9 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
       <CustomTooltip title={intl.formatMessage({ id: 'add-folder' })}>
         <IconButton
           aria-label={intl.formatMessage({ id: 'add-folder' })}
-          className="library-add-folder-button"
           onClick={openDialog}
         >
-          <CreateNewFolderIcon />
+          <img src={addFolderIcon} alt="" style={{ width: 24, height: 24 }} />
         </IconButton>
       </CustomTooltip>
 

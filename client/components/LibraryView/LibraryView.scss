@@ -10,7 +10,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 2em;
   row-gap: 1.75em;
-  margin: 0.875em 1em;
   align-items: stretch;
 
   @media (max-width: 699px) {
@@ -30,14 +29,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin: 0.875em 1em 0;
 }
 
-.library-add-folder-button {
-  color: #1f78c8 !important;
-  background-color: #ffffff !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  border-radius: 0.28571429rem !important;
+// Folder pills wrap into rows at the top of the library (Figma "Frame 2087326861"): each folder grows to
+// share the row, min 300px, so up to two sit side by side and a lone folder spans the full width.
+.library-folder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .library-folder-breadcrumb {
@@ -49,6 +50,7 @@
   font-size: 1rem;
   font-weight: 500;
   padding: 0;
+  text-decoration: underline;
 }
 
 .library-folder-breadcrumb-current {
@@ -230,94 +232,89 @@
   opacity: 0.55;
 }
 
+// Figma "Library Folder": a pill row (icon + bold name), grows to share the row, min 300px.
 .library-folder-card {
   position: relative;
-  margin-top: 10px;
   box-sizing: border-box;
-  min-height: 0;
-  height: 95%;
-  width: 100%;
-  border: 1px solid #000000;
-  border-radius: 0 12px 12px 12px;
-  box-shadow: 0.3em 0.3em 0.4em rgba(128, 128, 128, 0.792);
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-
+  display: flex;
+  flex: 1 1 300px;
+  max-width: 393px;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 2px 12px;
+  border: none;
+  border-radius: 360px;
   cursor: pointer;
   text-align: left;
-  padding: 28px 24px 20px;
   transition:
     background 0.12s ease,
-    box-shadow 0.12s ease,
     transform 0.12s ease;
+
+  &:hover {
+    background: #dbe9df;
+  }
+
+  .library-folder-menu {
+    position: static !important;
+    top: auto;
+    right: auto;
+    flex-shrink: 0;
+  }
 }
 
-.library-folder-card::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: -1px;
-  width: 120px;
-  height: 8px;
-  border: 1px solid #000000;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+// The old paper-folder "tab" is gone in the pill layout.
+.library-folder-tab {
+  display: none;
 }
 
 .library-folder-card-drop-target {
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-  transform: translateY(-2px);
-}
-
-.library-folder-card-drop-target::before {
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+  background: #cfe6d6;
+  transform: translateY(-1px);
 }
 
 .library-folder-card-empty {
-  background-color: white;
-  background: linear-gradient(170deg, #f1f0f0 0%, #e8e8e8 100%);
-}
+  background: #f1f0f0;
 
-.library-folder-card-empty::before {
-  background: linear-gradient(170deg, #f1f0f0 0%, #f1f1f1 100%);
-}
-
-.library-folder-card-empty.library-folder-card-drop-target {
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-}
-
-.library-folder-card-empty.library-folder-card-drop-target::before {
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+  &:hover {
+    background: #e8e8e8;
+  }
 }
 
 .library-folder-content {
   display: flex;
+  flex: 1;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .library-folder-icon {
-  color: #6aaaf2;
-  font-size: 88px;
-  width: 88px;
-  height: 72px;
+  flex-shrink: 0;
+  width: 30px;
+  height: 27px;
+  object-fit: contain;
   transition:
     filter 0.12s ease,
     transform 0.12s ease;
 }
 
 .library-folder-card-drop-target .library-folder-icon {
-  filter: drop-shadow(0 4px 4px rgba(31, 120, 200, 0.35)) saturate(1.15);
-  transform: translateY(-2px) scale(1.08);
+  filter: drop-shadow(0 2px 3px rgba(80, 140, 110, 0.35)) saturate(1.1);
 }
 
 .library-folder-name {
-  font-family: 'Rubik', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding-top: 8px;
-  padding-left: 8px;
-  color: #3b4a5a;
+  flex: 1;
+  min-width: 0;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #2d2c2a;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .library-folder-menu {
@@ -331,7 +328,6 @@
   align-items: center;
   gap: 20px;
   max-width: 798px;
-  margin-top: 16px;
 }
 
 .library-sort-select {
