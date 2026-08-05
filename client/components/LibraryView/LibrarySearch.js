@@ -1,11 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import AppSearchField from 'Components/ui/AppSearchField'
 import { setLastQuery } from 'Utilities/redux/storiesReducer'
 import { useIntl } from 'react-intl'
-import CustomTooltip from 'Components/CustomTooltip'
+import AppSearchField from 'Components/ui/AppSearchField'
 
 const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories }) => {
   const dispatch = useDispatch()
@@ -45,10 +43,8 @@ const LibrarySearch = ({ setDisplaySearchResults, setDisplayedStories }) => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
-      <CustomTooltip title={intl.formatMessage({ id: 'explain-library-search' })}>
-        <InfoOutlinedIcon color="action" fontSize="small" sx={{ flexShrink: 0 }} />
-      </CustomTooltip>
       <AppSearchField
+        className="library-search-field"
         value={currentQuery}
         onChange={setCurrentQuery}
         onSearch={filterStories}

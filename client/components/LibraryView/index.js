@@ -16,11 +16,13 @@ import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
 import AppSearchField from 'Components/ui/AppSearchField'
+import AppSelect from 'Components/ui/AppSelect'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
+import star06Icon from 'Assets/images/star-06.svg'
 import { capitalize, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -46,7 +48,6 @@ import {
   removeWritingEssay,
   updateWritingEssayPath,
 } from 'Utilities/redux/writingCorrectionReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import AddStoryModal from 'Components/AddStoryModal'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
@@ -72,6 +73,7 @@ import {
   saveStoredLocalFolders,
 } from './folderUtils'
 import useLibraryDragAndDrop from './useLibraryDragAndDrop'
+import './LibraryView.scss'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -325,8 +327,7 @@ const StoryList = () => {
 
   // Persist under activeLibrary (synchronous local state that sorter/sortDirection track), not the
   // async-lagging Redux savedLibrarySelection, so the preference is saved for the displayed library.
-  const handleSortChange = e => {
-    const newSorter = e.target.value
+  const handleSortChange = newSorter => {
     setSorter(newSorter)
     dispatch(
       updateSortCriterion({
@@ -357,26 +358,6 @@ const StoryList = () => {
     <Box data-cy="library-controls" className="library-control">
       <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
 
-      <AppButton
-        className="tour-add-new-stories"
-        onClick={() => setAddStoryModalOpen(true)}
-        data-cy="add-story-button"
-        variant="primary"
-        size="large"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          margin: '0 auto 2em auto',
-          padding: '1rem 0',
-          width: '50%',
-          border: '2px solid #000',
-          fontSize: '1.3em',
-          fontWeight: 500,
-        }}
-      >
-        {intl.formatMessage({ id: 'add-your-stories' })}
-      </AppButton>
-
       {(() => {
         const meta = {
           public: { label: <FormattedMessage id="Public" />, icon: <PublicOutlinedIcon /> },
@@ -396,71 +377,53 @@ const StoryList = () => {
     </Box>
   )
 
-  const searchAndSortControls = (
-    <>
-      <LibrarySearch
-        setDisplayedStories={setDisplayedStories}
-        setDisplaySearchResults={setDisplaySearchResults}
-      />
+  const addStoryButton = (
+    <AppButton
+      className="tour-add-new-stories library-add-story-button"
+      variant="contrast"
+      onClick={() => setAddStoryModalOpen(true)}
+      data-cy="add-story-button"
+    >
+      <img src={star06Icon} alt="" />
+      {intl.formatMessage({ id: 'add-your-stories' })}
+    </AppButton>
+  )
 
-      <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <Select
-            value={sorter}
-            onChange={handleSortChange}
-            className="library-semantic-select"
-            MenuProps={dropdownMenuProps}
-          >
-            {sortDropdownOptions.map(option => (
-              <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                {option.text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-          {sortDirection === 'asc' ? (
-            <ArrowDropUpSharpIcon fontSize="large" />
-          ) : (
-            <ArrowDropDownSharpIcon fontSize="large" />
-          )}
-        </IconButton>
-      </Box>
-    </>
+  const renderSortAndAddRow = (sortValue, options) => (
+    <div className="library-sort-add-row">
+      <div className="library-sort-select">
+        <AppSelect
+          variant="contrast-outline"
+          value={sortValue}
+          onChange={handleSortChange}
+          options={options.map(option => ({ value: option.value, label: option.text }))}
+        />
+      </div>
+      <IconButton
+        aria-label="Toggle sort direction"
+        onClick={handleDirectionChange}
+        className="library-sort-direction"
+      >
+        {sortDirection === 'asc' ? (
+          <ArrowDropUpSharpIcon fontSize="large" />
+        ) : (
+          <ArrowDropDownSharpIcon fontSize="large" />
+        )}
+      </IconButton>
+      {addStoryButton}
+    </div>
   )
 
   // Sort (title/date) + title search for the "My Essays" library, styled like the story controls.
   const essaySearchAndSortControls = (
     <>
       <AppSearchField
+        className="library-search-field"
         placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
         value={essaySearchQuery}
         onChange={setEssaySearchQuery}
       />
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <Select
-            value={essaySorter}
-            onChange={handleSortChange}
-            className="library-semantic-select"
-            MenuProps={dropdownMenuProps}
-          >
-            {essaySortDropdownOptions.map(option => (
-              <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                {option.text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-          {sortDirection === 'asc' ? (
-            <ArrowDropUpSharpIcon fontSize="large" />
-          ) : (
-            <ArrowDropDownSharpIcon fontSize="large" />
-          )}
-        </IconButton>
-      </Box>
+      {renderSortAndAddRow(essaySorter, essaySortDropdownOptions)}
     </>
   )
 
@@ -1053,6 +1016,7 @@ const StoryList = () => {
           padding: { xs: '1em', sm: '1.5em' },
         }}
       >
+        {renderFolderBrowser()}
         {activeLibrary === 'essays' ? (
           <>
             {essaySearchAndSortControls}
@@ -1083,7 +1047,11 @@ const StoryList = () => {
                 </FormControl>
               </Box>
             )}
-            {searchAndSortControls}
+            <LibrarySearch
+              setDisplayedStories={setDisplayedStories}
+              setDisplaySearchResults={setDisplaySearchResults}
+            />
+            {renderSortAndAddRow(sorter, sortDropdownOptions)}
             {lastQuery && (
               <Box className="mt-nm ml-sm gap-col-sm">
                 <Typography component="span">
@@ -1091,8 +1059,6 @@ const StoryList = () => {
                 </Typography>
               </Box>
             )}
-
-            {renderFolderBrowser()}
           </>
         )}
       </Box>

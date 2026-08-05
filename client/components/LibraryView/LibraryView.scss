@@ -325,3 +325,33 @@
   top: 14px;
   right: 14px;
 }
+
+.library-sort-add-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 798px;
+  margin-top: 16px;
+}
+
+.library-sort-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.library-sort-direction {
+  flex-shrink: 0;
+}
+
+.library-add-story-button {
+  width: 250px;
+  height: 36px;
+  flex-shrink: 0;
+  gap: 10px !important;
+  padding: 8px 10px 8px 12px !important;
+}
+
+// The library search input overrides the AppTextField cream default to a white background.
+.library-search-field .MuiOutlinedInput-root {
+  background-color: #fff !important;
+}
