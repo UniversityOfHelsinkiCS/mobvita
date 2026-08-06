@@ -259,11 +259,13 @@ $menu-hover: #ece3be;
     background: $menu-hover;
   }
 
+  // The three-dots menu is hidden until the folder is selected (see .library-folder-card-selected below).
   .library-folder-menu {
     position: static !important;
     top: auto;
     right: auto;
     flex-shrink: 0;
+    display: none;
   }
 }
 
@@ -271,6 +273,11 @@ $menu-hover: #ece3be;
 .library-folder-card-selected,
 .library-folder-card-selected:hover {
   background: #b1d3c2;
+}
+
+// The three-dots menu is only revealed on the selected folder.
+.library-folder-card-selected .library-folder-menu {
+  display: inline-flex;
 }
 
 // The old paper-folder "tab" is gone in the pill layout.
