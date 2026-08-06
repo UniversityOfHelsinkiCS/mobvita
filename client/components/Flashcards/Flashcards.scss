@@ -51,6 +51,9 @@
   transform: translateY(-50%);
   display: flex;
   align-items: center;
+  // The centred card (.react-card-front) is up to 40em wide with an inline z-index:2, so it paints
+  // over this absolutely-positioned arrow. Lift the arrow above it so it stays clickable/visible.
+  z-index: 10;
 
   // On narrow screens the card shrinks / the container is tighter, so the arrow ends up off-screen.
   // Pull it 100px back to the left to keep it visible.

@@ -1384,7 +1384,7 @@
     "go-to-group-library-link": "group library",
     "beta-language-warning": "Please note: {language} is a BETA language under development — it is work in progress!",
     "story-title-validation": "Story title has to be at least 3 characters long",
-    "search-input-placeholder": "Search...",
+    "search-input-placeholder": "Search for titles, texts, or context...",
     "group-review-dropdown-placeholder": "Select student to review",
     "sort-by-title-option": "Title",
     "sort-by-difficulty-option": "Level",

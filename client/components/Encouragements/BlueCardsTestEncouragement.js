@@ -81,7 +81,7 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
       </div>
       <div className="encouragement-button-group">
         <AppButton variant="primary" type="button" onClick={startTest}>
-          <FormattedMessage id="start-test" />
+          <FormattedMessage id="start" />
         </AppButton>
         <AppButton variant="secondary" type="button" onClick={secondaryTestButton}>
           <FormattedMessage

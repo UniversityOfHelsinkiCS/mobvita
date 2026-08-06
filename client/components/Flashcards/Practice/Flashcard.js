@@ -30,7 +30,7 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
       </div>
       <div className="flashcard-footer">
         <button
-          className="flashcard-flip-button"
+          className="flashcard-flip-button flashcard-blended-input"
           type="button"
           onClick={() => flipCard()}
           style={{
