@@ -63,7 +63,11 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
-        <img src={images.flashcards} alt="flashcard batch" />
+        <img
+          src={images.cardsIcon}
+          alt="flashcards"
+          style={{ width: 64, height: 64, marginBottom: 24 }}
+        />
         <h2>
           <FormattedMessage
             id="blue-cards-test-encouragement-title"

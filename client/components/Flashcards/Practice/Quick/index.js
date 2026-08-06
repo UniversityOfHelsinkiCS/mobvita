@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ReactCardFlip from 'react-card-flip'
-import Check from '@mui/icons-material/Check'
-import QuestionMark from '@mui/icons-material/QuestionMark'
 import AppButton from 'Components/AppButton'
-import { addToTotal } from 'Utilities/redux/flashcardReducer'
+import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import Flashcard from '../Flashcard'
 
@@ -47,18 +45,26 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
         <div className="flex-col grow">
           <span className={fontClass}>{lemma}</span>
           {!answered && (
-            <div className="flex space-evenly padding-bottom-4">
+            <div className="flex space-evenly" style={{ paddingBottom: '2.5em' }}>
               <AppButton
-                style={{ backgroundColor: 'white', padding: '1em', borderRadius: '50%' }}
+                style={{ backgroundColor: 'transparent', padding: '0.25em', borderRadius: '50%' }}
+                sx={{
+                  transition: 'transform 0.15s ease',
+                  '&:hover': { backgroundColor: 'transparent', transform: 'scale(1.15)' },
+                }}
                 onClick={() => checkAnswer(true)}
               >
-                <Check sx={{ fontSize: '4rem', margin: 0, color: '#21BA45' }} />
+                <img src={images.checkCircle} alt="I know it" style={{ width: 64, height: 64 }} />
               </AppButton>
               <AppButton
-                style={{ backgroundColor: 'white', padding: '1em', borderRadius: '50%' }}
+                style={{ backgroundColor: 'transparent', padding: '0.25em', borderRadius: '50%' }}
+                sx={{
+                  transition: 'transform 0.15s ease',
+                  '&:hover': { backgroundColor: 'transparent', transform: 'scale(1.15)' },
+                }}
                 onClick={() => checkAnswer(false)}
               >
-                <QuestionMark sx={{ fontSize: '4rem', margin: 0, color: '#FBBD08' }} />
+                <img src={images.question} alt="I don't know" style={{ width: 64, height: 64 }} />
               </AppButton>
             </div>
           )}

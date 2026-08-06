@@ -14,6 +14,7 @@ import { learningLanguageSelector } from 'Utilities/common'
 import AchievementToast from 'Components/Achievements/AchievementToast'
 import StreakToast from 'Components/Streak/StreakToast'
 import LevelUpToast from './LevelUpToast'
+import ServerIssuesToast from './ServerIssuesToast'
 
 export default function Toaster() {
   const dispatch = useDispatch()
@@ -163,8 +164,10 @@ export default function Toaster() {
   useEffect(() => {
     if (serverError && !serverErrorToastId) {
       setServerErrorToastId(
-        toast(intl.formatMessage({ id: 'server-issues' }), {
-          type: 'error',
+        toast(<ServerIssuesToast />, {
+          type: 'default',
+          className: 'server-issues-toast',
+          position: 'bottom-left',
           autoClose: false,
           onClose: () => {
             dispatch(clearServerError())
@@ -211,8 +214,6 @@ export default function Toaster() {
   }, [message])
 
   return (
-    <ToastContainer
-      position={serverError && !serverErrorToastId ? 'top-center' : 'bottom-center'}
-    />
+    <ToastContainer position="bottom-center" />
   )
 }

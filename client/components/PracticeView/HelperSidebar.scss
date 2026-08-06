@@ -12,7 +12,6 @@ $hs-radius: 30px; // card radius
   background: $hs-card;
   border-top-left-radius: $hs-radius;
   border-bottom-left-radius: $hs-radius;
-  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease;
   z-index: 100;
   display: flex;
@@ -131,7 +130,8 @@ $hs-radius: 30px; // card radius
   transition: margin-right 0.3s ease;
 
   &.sidebar-open {
-    width: calc(100% - 380px);
+    // 380px sidebar + 20px gap between the content and the sidebar.
+    width: calc(100% - 400px);
   }
 
   @media (max-width: 768px) {

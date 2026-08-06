@@ -1,4 +1,3 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -12,14 +11,15 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 import { FlashcardStoryInfo, FlashcardStoryInfoIcon } from './FlashcardStoryInfo'
 import AppTabs from 'Components/ui/AppTabs'
-import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import AddIcon from '@mui/icons-material/Add'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
+import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import SettingButton from 'Components/SettingsButton'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+
+import './Flashcards.scss'
 
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
@@ -133,18 +133,19 @@ const Flashcards = () => {
 
   const activeTab = mode === 'new' ? 'new' : mode === 'list' ? 'list' : 'fillin'
 
+  const tabIcon = src => <img src={src} alt="" style={{ width: 20, height: 20 }} />
   const flashcardTabs = [
     {
       value: 'fillin',
       label: <FormattedMessage id="Practice flashcards" />,
-      icon: <StyleOutlinedIcon />,
+      icon: tabIcon(images.cardsIcon),
     },
     {
       value: 'list',
       label: <FormattedMessage id="Flashcard list" />,
-      icon: <FormatListBulletedIcon />,
+      icon: tabIcon(images.dotpoints01),
     },
-    { value: 'new', label: <FormattedMessage id="Add flashcard" />, icon: <AddIcon /> },
+    { value: 'new', label: <FormattedMessage id="Add flashcard" />, icon: tabIcon(images.plusOutline) },
   ]
 
   const handleTabChange = value => {
@@ -158,52 +159,54 @@ const Flashcards = () => {
         <AppTabs tabs={flashcardTabs} value={activeTab} onChange={handleTabChange} fullWidth />
       </div>
 
-      <div
-        className="flashcard-body"
-        style={{ backgroundColor: colors.card, borderRadius: 30 }}
-      >
-        {mode !== 'list' && mode !== 'new' ? (
-          width >= 840 ? (
+      
+
+      <div className="flashcard-body" style={{ backgroundColor: colors.card, borderRadius: 30 }}>
+        {/* First item: a row with the practice-mode menu (Translate/Quick) + the settings gear.
+            On the "All cards" list page the gear moves into the pagination header row instead
+            (see FlashcardList), so the top bar is skipped there. */}
+        {width >= 840 && mode !== 'list' && (
+          <div className="flashcard-top-bar">
+            <div className="flashcard-top-bar-menu">
+              {mode !== 'new' && <FlashcardMenu />}
+            </div>
+            <SettingButton style={{ position: 'static', margin: 0 }} />
+          </div>
+        )}
+        {/* Only render the story-info column/icon when there's actually story info to show. */}
+        {shouldShowStoryInfo &&
+          (width >= 840 ? (
             <div className="flashcard-side-column">
-              {shouldShowStoryInfo ? (
-                <FlashcardStoryInfo
+              <FlashcardStoryInfo
                 title={title}
                 type={type}
                 numOfRewardableWords={numOfRewardableWords}
-                />
-              ) : <div></div>}
-              <FlashcardMenu />
+              />
             </div>
           ) : (
             <div className="flashcard-story-info-icon-slot">
-              {shouldShowStoryInfo ? (
-                <FlashcardStoryInfoIcon
-                  title={title}
-                  type={type}
-                  numOfRewardableWords={numOfRewardableWords}
-                />
-              ) : null}
+              <FlashcardStoryInfoIcon
+                title={title}
+                type={type}
+                numOfRewardableWords={numOfRewardableWords}
+              />
             </div>
-          )
-        ) : null}
+          ))}
 
-        {showBlueCardsTestEncouragement && (
-          <div
-            className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-          >
-            <div className="col-flex">
-              <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
-            </div>
-          </div>
-        )}
+        <AppDialog
+          open={showBlueCardsTestEncouragement}
+          onClose={() => handleBlueCardsPromptVisibility(false)}
+          maxWidth="xs"
+        >
+          <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
+        </AppDialog>
 
         {width < 840 ? <FloatMenu /> : null}
 
-        <div className="flashcard-main">{content()}</div>
-
-        <div className="flashcard-arrow-button" id="flashcard-arrow-slot" />
-
-        <SettingButton />
+        <div className="flashcard-main-row">
+          <div className="flashcard-main">{content()}</div>
+          <div className="flashcard-arrow-button" id="flashcard-arrow-slot" />
+        </div>
       </div>
 
       <HelperSidebar>

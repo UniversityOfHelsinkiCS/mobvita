@@ -60,7 +60,7 @@ describe('wordnest modal', function () {
     
     cy.get('[data-cy=wordnest-modal]', { timeout: 30000 }).should('be.visible')
     
-    cy.get('.ui.dimmer.modals.page', { timeout: 30000 })
+    cy.get('[data-cy=wordnest-modal] .MuiBackdrop-root', { timeout: 30000 })
       .filter(':visible')
       .first()
       .click('bottomLeft')

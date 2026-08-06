@@ -17,6 +17,7 @@ import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
 import AppTabs from 'Components/ui/AppTabs'
+import AppPagination from 'Components/ui/AppPagination'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -71,6 +72,7 @@ const DesignSystem = () => {
   const [switchOn, setSwitchOn] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
   const [radioValue, setRadioValue] = useState('a')
+  const [pageDemo, setPageDemo] = useState(3)
 
   // /design is a dev-only tool. Hide it behind a 404 for anyone without full developer scope
   // (same gate as the /dashboard admin page). Wait for the user fetch so we don't flash a 404.
@@ -146,6 +148,22 @@ const DesignSystem = () => {
             'globe04',
             'microscope',
             'trophy01Pick',
+            'faceCorrect',
+            'faceIncorrect',
+            'faceNeutral',
+            'flip',
+            'speaker',
+            'wordnest',
+            'bulb',
+            'bulbEmpty',
+            'plusOutline',
+            'quick',
+            'translate01',
+            'dotpoints01',
+            'playCircle',
+            'arrowRight',
+            'checkCircle',
+            'question',
             'iconHome',
             'layersThree',
             'libraryBig',
@@ -296,6 +314,13 @@ const DesignSystem = () => {
             dark <AppThemeSwitch checked readOnly />
           </span>
           <AppThemeSwitch checked={darkMode} onChange={e => setDarkMode(e.target.checked)} />
+        </div>
+      </Section>
+
+      <Section title="AppPagination">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <AppPagination page={pageDemo} count={5} onChange={setPageDemo} />
+          <AppPagination page={pageDemo} count={12} onChange={setPageDemo} />
         </div>
       </Section>
 

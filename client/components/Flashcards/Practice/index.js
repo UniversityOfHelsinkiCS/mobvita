@@ -238,7 +238,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   if (pending || deletePending || !cards)
     return (
       <div className="grow flex space-evenly">
-        <div className="flashcard">
+        <div className="flashcard flashcard--placeholder">
           <Spinner size={60} />
         </div>
         {renderArrowButton({ hidden: false, disabled: true, onClick: undefined })}

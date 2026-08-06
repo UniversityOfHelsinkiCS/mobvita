@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Button } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
+import AppButton from 'Components/AppButton'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
 
@@ -15,8 +15,12 @@ const WordNestLauncher = ({
   className = '',
   buttonStyle = {},
   divStyle = { alignSelf: 'flex-start', marginLeft: '1em' },
-  buttonSize = 'mini',
+  variant = 'tan-outline',
   dataCy = 'nest-button',
+  // Optional: a custom icon + label (used by the flashcard's green "Word Nest" pill). When omitted,
+  // the button keeps its default network icon so other call sites are unchanged.
+  icon = null,
+  label = null,
 }) => {
   const intl = useIntl()
 
@@ -43,16 +47,21 @@ const WordNestLauncher = ({
       <div style={divStyle}>
         <CustomTooltip title={intl.formatMessage({ id: popupMessageId })}>
           <span style={{ display: 'inline-flex' }}>
-            <Button
+            <AppButton
               className={className}
-              style={{ padding: '5px', outline: '1px solid #ccc', ...buttonStyle }}
-              size={buttonSize}
+              variant={variant}
+              size="sm"
               onClick={handleClick}
               data-cy={dataCy}
-              type="button"
+              sx={{ gap: '0.45em', ...buttonStyle }}
             >
-              <img src={images.network} alt="network icon" width="32" />
-            </Button>
+              <img
+                src={icon || images.network}
+                alt=""
+                style={{ width: icon ? 20 : 24, height: icon ? 20 : 24 }}
+              />
+              {label}
+            </AppButton>
           </span>
         </CustomTooltip>
       </div>
