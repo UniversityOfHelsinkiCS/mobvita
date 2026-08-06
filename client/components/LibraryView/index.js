@@ -108,6 +108,7 @@ const StoryList = () => {
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
+  const [selectedFolderPath, setSelectedFolderPath] = useState(null)
   const [localFolders, setLocalFolders] = useState(() =>
     getStoredLocalFolders(localFolderStorageKey),
   )
@@ -185,6 +186,7 @@ const StoryList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     setCurrentLibraryPath('')
+    setSelectedFolderPath(null)
     setEssaySearchQuery('')
     clearDragState()
     clearEssayDragState()
@@ -393,6 +395,7 @@ const StoryList = () => {
     <div className="library-sort-add-row">
       <div className="library-sort-select">
         <AppSelect
+          className="library-sort-menu"
           variant="contrast-outline"
           value={sortValue}
           onChange={handleSortChange}
@@ -505,12 +508,24 @@ const StoryList = () => {
 
   const handleLibraryPathChange = path => {
     setCurrentLibraryPath(normalizeLibraryPath(path))
+    setSelectedFolderPath(null)
     clearDragState()
   }
 
   const handleEssayLibraryPathChange = path => {
     setCurrentLibraryPath(normalizeLibraryPath(path))
+    setSelectedFolderPath(null)
     clearEssayDragState()
+  }
+
+  // Tapping a folder: navigate into it when it has sub-folders, otherwise just preview it (highlighted
+  // green) and show its stories below via selectedFolderPath. Tapping the same leaf again clears it.
+  const handleFolderTap = (folderPath, hasSubfolders, navigateInto) => {
+    if (hasSubfolders) {
+      navigateInto(folderPath)
+      return
+    }
+    setSelectedFolderPath(previous => (previous === folderPath ? null : folderPath))
   }
 
   function handleMoveStoriesToPath(storyIds, targetPath) {
@@ -815,14 +830,23 @@ const StoryList = () => {
               )
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
+              const hasSubfolders =
+                getFoldersForPath(
+                  libraryFilteredStories,
+                  normalizedFolderPath,
+                  localFolderPathsForLibrary,
+                ).length > 0
 
               return (
                 <FolderCard
                   key={normalizedFolderPath}
                   isDropTarget={libraryIsMutable && dragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
+                  isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
-                  onClick={() => handleLibraryPathChange(normalizedFolderPath)}
+                  onClick={() =>
+                    handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
+                  }
                   onDragLeave={
                     libraryIsMutable
                       ? e => handleFolderDragLeave(normalizedFolderPath, e)
@@ -867,7 +891,11 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
-    const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
+
+    const storiesInCurrentPath = getStoriesForPath(
+      libraryFilteredStories,
+      selectedFolderPath || currentLibraryPath,
+    )
 
     if (foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0) {
       return (
@@ -908,13 +936,15 @@ const StoryList = () => {
     }
   }
 
-  const renderEssaysLibrary = () => {
+  // Essays that survive the current title search, newest/A-Z per the essay sort. Shared by the essay folder
+  // section (top of the card) and the essay items (below the sort/add row).
+  const getSortedEssaysInView = () => {
     const query = essaySearchQuery.trim().toLowerCase()
     const searchedEssays = query
       ? uploadedEssays.filter(essay => (essay.title || '').toLowerCase().includes(query))
       : uploadedEssays
 
-    const sortedEssays = [...searchedEssays].sort((a, b) => {
+    return [...searchedEssays].sort((a, b) => {
       let dir = 0
       if (essaySorter === 'date') {
         const dateA = getWritingEssaySavedDate(a)
@@ -925,7 +955,11 @@ const StoryList = () => {
       }
       return sortDirection === 'asc' ? dir : -dir
     })
+  }
 
+  // Breadcrumbs + essay folder pills — rendered at the TOP of the essay card.
+  const renderEssayFolderSection = () => {
+    const sortedEssays = getSortedEssaysInView()
     const foldersInCurrentPath = getFoldersForPath(
       sortedEssays,
       currentLibraryPath,
@@ -938,8 +972,6 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
-    const essaysInCurrentPath = getStoriesForPath(sortedEssays, currentLibraryPath)
-    const folderIsEmpty = foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0
 
     return (
       <>
@@ -950,15 +982,8 @@ const StoryList = () => {
             onAddFolder={handleAddFolder}
           />
         </Box>
-        {folderIsEmpty ? (
-          // Render nothing during the initial prefetch (unless searching) to avoid a "no essays" flash.
-          essaysPending && !query ? null : (
-            <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-              <FormattedMessage id="no-essays-found" />
-            </Box>
-          )
-        ) : (
-          <Box data-cy="essay-items" className="library-story-grid">
+        {foldersInCurrentPath.length > 0 && (
+          <Box data-cy="essay-folders" className="library-folder-grid">
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -967,14 +992,27 @@ const StoryList = () => {
               const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
+              const hasSubfolders =
+                getFoldersForPath(
+                  sortedEssays,
+                  normalizedFolderPath,
+                  localFolderPathsForLibrary,
+                ).length > 0
 
               return (
                 <FolderCard
                   key={normalizedFolderPath}
                   isDropTarget={essayDragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
+                  isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
-                  onClick={() => handleEssayLibraryPathChange(normalizedFolderPath)}
+                  onClick={() =>
+                    handleFolderTap(
+                      normalizedFolderPath,
+                      hasSubfolders,
+                      handleEssayLibraryPathChange,
+                    )
+                  }
                   onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
                   onDragOver={e => handleEssayFolderDragOver(normalizedFolderPath, e)}
                   onDrop={e => handleEssayFolderDrop(normalizedFolderPath, e)}
@@ -993,23 +1031,53 @@ const StoryList = () => {
                 />
               )
             })}
-            {essaysInCurrentPath.map((essay, index) => {
-              const essayId = getWritingEssayId(essay)
-              return (
-                <EssayListItem
-                  key={essayId || index}
-                  essay={essay}
-                  draggable={essaysLibraryActive && Boolean(essayId)}
-                  isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
-                  onDragStart={handleEssayDragStart}
-                  onDragEnd={handleEssayDragEnd}
-                  onOpen={essayId ? () => handleEssayCardOpen(essayId) : undefined}
-                />
-              )
-            })}
           </Box>
         )}
       </>
+    )
+  }
+
+  const renderEssayItems = () => {
+    const query = essaySearchQuery.trim().toLowerCase()
+    const sortedEssays = getSortedEssaysInView()
+    const foldersInCurrentPath = getFoldersForPath(
+      sortedEssays,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
+    const essaysInCurrentPath = getStoriesForPath(
+      sortedEssays,
+      selectedFolderPath || currentLibraryPath,
+    )
+
+    if (foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0) {
+      if (essaysPending && !query) return null
+      return (
+        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-essays-found" />
+        </Box>
+      )
+    }
+
+    if (essaysInCurrentPath.length === 0) return null
+
+    return (
+      <Box data-cy="essay-items" className="library-story-grid">
+        {essaysInCurrentPath.map((essay, index) => {
+          const essayId = getWritingEssayId(essay)
+          return (
+            <EssayListItem
+              key={essayId || index}
+              essay={essay}
+              draggable={essaysLibraryActive && Boolean(essayId)}
+              isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
+              onDragStart={handleEssayDragStart}
+              onDragEnd={handleEssayDragEnd}
+              onOpen={essayId ? () => handleEssayCardOpen(essayId) : undefined}
+            />
+          )
+        })}
+      </Box>
     )
   }
 
@@ -1041,8 +1109,9 @@ const StoryList = () => {
       >
         {activeLibrary === 'essays' ? (
           <>
+            {renderEssayFolderSection()}
             {essaySearchAndSortControls}
-            {renderEssaysLibrary()}
+            {renderEssayItems()}
           </>
         ) : (
           <>

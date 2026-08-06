@@ -29,6 +29,7 @@ const FolderCard = ({
   existingFolderNames = [],
   isDropTarget = false,
   isEmpty = false,
+  isSelected = false,
 }) => {
   const intl = useIntl()
   const [menuAnchor, setMenuAnchor] = useState(null)
@@ -105,6 +106,7 @@ const FolderCard = ({
     'library-folder-card',
     isDropTarget ? 'library-folder-card-drop-target' : '',
     isEmpty ? 'library-folder-card-empty' : '',
+    isSelected ? 'library-folder-card-selected' : '',
   ]
     .filter(Boolean)
     .join(' ')

@@ -6,7 +6,7 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  * Shared row styling for the design-system menu surfaces (AppMenu dropdown, AppSidebar drawer).
  * Both render an identical row — icon + label, tan hover/selected pill — so they stay consistent.
  */
-export const MENU_HOVER = '#ECE3BE' // tan highlight behind hovered/selected rows
+export const MENU_HOVER = colors.menuHover // shared tan highlight behind hovered/selected rows
 
 export const rowStyles = ({ selected }) => ({
   display: 'flex',
@@ -38,10 +38,15 @@ const MenuRowLink = styled('a', forwardOptions)(rowStyles)
  * else <div>. forwardRef so a consumer (e.g. a semantic-ui Modal trigger) can attach a ref.
  */
 export const MenuRow = React.forwardRef(
-  ({ icon, children, href, selected = false, ...rest }, ref) => {
+  ({ icon, children, href, selected = false, className = '', ...rest }, ref) => {
     const Row = href ? MenuRowLink : MenuRowDiv
+    // Stable classes (in addition to the emotion styles) so a specific menu can re-skin its rows —
+    // e.g. the library sort dropdown scopes selected/hover colours via `.app-menu-row(-selected)`.
+    const rowClassName = ['app-menu-row', selected && 'app-menu-row-selected', className]
+      .filter(Boolean)
+      .join(' ')
     return (
-      <Row ref={ref} href={href} selected={selected} {...rest}>
+      <Row ref={ref} href={href} selected={selected} className={rowClassName} {...rest}>
         {icon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{icon}</span>}
         <span>{children}</span>
       </Row>

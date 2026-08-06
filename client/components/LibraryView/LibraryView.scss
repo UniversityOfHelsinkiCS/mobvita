@@ -1,3 +1,6 @@
+// Mirrors colors.menuHover in designTokens.js — the shared tan used for EVERY hover in the library.
+$menu-hover: #ece3be;
+
 .library-dashboard {
   width: 838px;
   height: 1065px;
@@ -119,7 +122,7 @@
   pointer-events: all;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.03) !important;
+    background-color: $menu-hover !important;
   }
 
   &.Mui-selected,
@@ -251,8 +254,9 @@
     background 0.12s ease,
     transform 0.12s ease;
 
+  // Hover = shared menuHover tan, selected = green (see .library-folder-card-selected below).
   &:hover {
-    background: #dbe9df;
+    background: $menu-hover;
   }
 
   .library-folder-menu {
@@ -261,6 +265,12 @@
     right: auto;
     flex-shrink: 0;
   }
+}
+
+// A tapped leaf folder stays green even while hovered (must win over the :hover tan above).
+.library-folder-card-selected,
+.library-folder-card-selected:hover {
+  background: #b1d3c2;
 }
 
 // The old paper-folder "tab" is gone in the pill layout.
@@ -277,7 +287,7 @@
   background: #f1f0f0;
 
   &:hover {
-    background: #e8e8e8;
+    background: $menu-hover;
   }
 }
 
@@ -350,4 +360,17 @@
 // The library search input overrides the AppTextField cream default to a white background.
 .library-search-field .MuiOutlinedInput-root {
   background-color: #fff !important;
+}
+
+// Sort dropdown (AppSelect menu): the chosen option is green; hovering uses the shared menuHover tan
+// (same as the AppMenu default). Scoped so only the selected-green is library-specific.
+.library-sort-menu {
+  .app-menu-row:hover {
+    background-color: $menu-hover !important;
+  }
+
+  .app-menu-row-selected,
+  .app-menu-row-selected:hover {
+    background-color: #b1d3c2 !important;
+  }
 }
