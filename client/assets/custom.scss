@@ -1674,22 +1674,6 @@ $value in $spacing {
   }
 }
 
-.library-group-dropdown-container {
-  display: flex;
-  max-width: 225px;
-  justify-content: flex-end;
-
-  margin: 0 12px 24px auto;
-  background: var(--universal-bg-color);
-
-  @media (max-width: 520px) {
-    justify-content: flex-start;
-
-    margin-left: 0;
-    margin-right: 0; 
-  }
-}
-
 .practice-now-overlay-icon {
   position: absolute;
   top: -10%;

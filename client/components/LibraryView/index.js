@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Box,
-  Breadcrumbs,
-  FormControl,
-  IconButton,
-  MenuItem,
-  Select,
-  Typography,
-} from '@mui/material'
+import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import AppButton from 'Components/AppButton'
@@ -257,8 +249,27 @@ const StoryList = () => {
     }
   }, [searchResults])
 
-  const handleGroupChange = event => {
-    dispatch(updateGroupSelect(event.target.value))
+  const handleGroupChange = groupId => {
+    dispatch(updateGroupSelect(groupId))
+  }
+
+  // Group selector for the "Group" library — the design-system dropdown, rendered in the folder header.
+  const renderGroupDropdown = () => {
+    if (!libraries.group) return null
+    return (
+      <Box className="library-group-dropdown-container">
+        <AppSelect
+          className="library-menu"
+          variant="contrast-outline"
+          value={savedGroupSelection}
+          onChange={handleGroupChange}
+          options={groupDropdownOptions.map(option => ({
+            value: option.value,
+            label: option.text,
+          }))}
+        />
+      </Box>
+    )
   }
 
   useEffect(() => {
@@ -306,26 +317,6 @@ const StoryList = () => {
     text: group.groupName,
     value: group.group_id,
   }))
-
-  const dropdownMenuProps = {
-    anchorOrigin: {
-      vertical: 'bottom',
-      horizontal: 'left',
-    },
-    transformOrigin: {
-      vertical: 'top',
-      horizontal: 'left',
-    },
-    PaperProps: {
-      className: 'library-dropdown-menu',
-      sx: {
-        backgroundColor: '#ffffff',
-      },
-    },
-    MenuListProps: {
-      className: 'library-dropdown-menu-list',
-    },
-  }
 
   // Persist under activeLibrary (synchronous local state that sorter/sortDirection track), not the
   // async-lagging Redux savedLibrarySelection, so the preference is saved for the displayed library.
@@ -395,7 +386,7 @@ const StoryList = () => {
     <div className="library-sort-add-row">
       <div className="library-sort-select">
         <AppSelect
-          className="library-sort-menu"
+          className="library-menu"
           variant="contrast-outline"
           value={sortValue}
           onChange={handleSortChange}
@@ -810,6 +801,7 @@ const StoryList = () => {
       <>
         <Box className="library-folder-header">
           {renderLibraryPathBreadcrumbs()}
+          {renderGroupDropdown()}
           {libraryIsMutable && (
             <AddFolder
               existingFolderNames={allFolderNamesInCurrentPath}
@@ -993,11 +985,8 @@ const StoryList = () => {
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
               const hasSubfolders =
-                getFoldersForPath(
-                  sortedEssays,
-                  normalizedFolderPath,
-                  localFolderPathsForLibrary,
-                ).length > 0
+                getFoldersForPath(sortedEssays, normalizedFolderPath, localFolderPathsForLibrary)
+                  .length > 0
 
               return (
                 <FolderCard
@@ -1116,29 +1105,6 @@ const StoryList = () => {
         ) : (
           <>
             {renderFolderSection()}
-            {libraries.group && (
-              <Box className="library-group-dropdown-container">
-                <FormControl size="small" fullWidth>
-                  <Select
-                    value={savedGroupSelection}
-                    onChange={handleGroupChange}
-                    className="library-semantic-select"
-                    MenuProps={dropdownMenuProps}
-                    sx={{ color: '#777', width: '100%' }}
-                  >
-                    {groupDropdownOptions.map(option => (
-                      <MenuItem
-                        className="library-dropdown-item"
-                        key={option.key}
-                        value={option.value}
-                      >
-                        {option.text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            )}
             <LibrarySearch
               setDisplayedStories={setDisplayedStories}
               setDisplaySearchResults={setDisplaySearchResults}
