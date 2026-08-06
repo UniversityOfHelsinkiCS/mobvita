@@ -463,21 +463,3 @@ $menu-hover: #ece3be;
   line-height: 15px;
   color: #9d9b92;
 }
-
-.library-item-progressbar {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-  height: 10px;
-}
-
-.library-item-seg {
-  flex: 1;
-  height: 10px;
-  border-radius: 3px;
-  background: #dbe9df;
-
-  &.is-filled {
-    background: #b1d3c2;
-  }
-}

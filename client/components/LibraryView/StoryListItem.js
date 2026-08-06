@@ -23,6 +23,7 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import './LibraryView.scss'
 
@@ -207,10 +208,6 @@ const StoryListItem = ({
     ? story.groups.find(g => g?.group_id === currentGroup?.group_id)
     : null
 
-  // Reading coverage (0–1) drives the 10-segment progress bar and the "Progress X%" label.
-  const progressPct = Math.max(0, Math.min(100, Math.round((story?.percent_cov || 0) * 100)))
-  const filledSegments = Math.round(progressPct / 10)
-
   return (
     <Card
       key={story._id}
@@ -288,17 +285,14 @@ const StoryListItem = ({
               </div>
               <div className="library-item-progress">
                 <span className="library-item-progress-label">
-                  <FormattedMessage id="Progress" /> {progressPct}%
+                  <FormattedMessage id="Progress" /> {story?.percent_cov}%
                 </span>
-                <div className="library-item-progressbar" aria-hidden="true">
-                  {Array.from({ length: 10 }).map((_, index) => (
-                    <span
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={index}
-                      className={`library-item-seg ${index < filledSegments ? 'is-filled' : ''}`}
-                    />
-                  ))}
-                </div>
+                <AppProgressBar
+                  value={story?.percent_cov}
+                  height="10px"
+                  fillColor="#b1d3c2"
+                  trackColor="#dbe9df"
+                />
               </div>
             </div>
           </div>
