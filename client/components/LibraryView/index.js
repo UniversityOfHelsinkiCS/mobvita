@@ -260,6 +260,7 @@ const StoryList = () => {
       <Box className="library-group-dropdown-container">
         <AppSelect
           className="library-menu"
+          borderRadius="30px"
           variant="contrast-outline"
           value={savedGroupSelection}
           onChange={handleGroupChange}
@@ -387,6 +388,7 @@ const StoryList = () => {
       <div className="library-sort-select">
         <AppSelect
           className="library-menu"
+          borderRadius="30px"
           variant="contrast-outline"
           value={sortValue}
           onChange={handleSortChange}
