@@ -18,6 +18,9 @@ import xClose from 'Assets/images/x-close.svg'
 import activityHeart from 'Assets/images/activity-heart.svg'
 import bookmark from 'Assets/images/bookmark.svg'
 import bookOpen from 'Assets/images/book-open-01.svg'
+import bookOpenGreen from 'Assets/images/book-open-green.svg'
+import bulb from 'Assets/images/bulb.svg'
+import bulbEmpty from 'Assets/images/bulb-empty.svg'
 import cardsIcon from 'Assets/images/cards.svg'
 import fileCheck from 'Assets/images/file-check-02.svg'
 import flag01 from 'Assets/images/flag-01.svg'
@@ -178,6 +181,9 @@ export const images = {
   activityHeart,
   bookmark,
   bookOpen,
+  bookOpenGreen,
+  bulb,
+  bulbEmpty,
   cardsIcon,
   fileCheck,
   flag01,

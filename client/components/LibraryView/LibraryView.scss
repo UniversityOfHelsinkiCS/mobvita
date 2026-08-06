@@ -8,16 +8,13 @@ $menu-hover: #ece3be;
   opacity: 1;
 }
 
+// Figma "Frame 2087326746": library items stack full-width in a single column.
 .library-story-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 2em;
-  row-gap: 1.75em;
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   @media (max-width: 699px) {
-    grid-template-columns: 1fr;
-    column-gap: 0;
     margin-bottom: 5.5em;
   }
 }
@@ -379,5 +376,108 @@ $menu-hover: #ece3be;
   .app-menu-row-selected,
   .app-menu-row-selected:hover {
     background-color: #b1d3c2 !important;
+  }
+}
+
+// Figma "Library Item": a full-width row — a green book icon beside a column of (title + badges) and a
+// 10-segment progress bar. Used by both story and essay cards.
+.library-item-card {
+  box-sizing: border-box;
+  width: 100%;
+  background: #fff !important;
+  border: 4px solid #c6e0d7 !important;
+  border-radius: 30px !important;
+  box-shadow: none !important;
+  padding: 16px 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.library-item-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+
+.library-item-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.library-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.library-item-toprow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.library-item-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #2d2c2a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-item-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: #2d2c2a;
+}
+
+.library-item-bulb {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.library-item-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.library-item-progress-label {
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #9d9b92;
+}
+
+.library-item-progressbar {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  height: 10px;
+}
+
+.library-item-seg {
+  flex: 1;
+  height: 10px;
+  border-radius: 3px;
+  background: #dbe9df;
+
+  &.is-filled {
+    background: #b1d3c2;
   }
 }
