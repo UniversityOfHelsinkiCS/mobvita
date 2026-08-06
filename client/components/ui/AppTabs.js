@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
+import CustomTooltip from 'Components/CustomTooltip'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 
 /**
@@ -12,7 +13,9 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  */
 const BADGE_ORANGE = '#FF7A45'
 
-const TabsBar = styled('div', { shouldForwardProp: prop => prop !== 'fullWidth' })(({ fullWidth }) => ({
+const TabsBar = styled('div', {
+  shouldForwardProp: prop => prop !== 'fullWidth' && prop !== 'bordered',
+})(({ fullWidth, bordered }) => ({
   display: fullWidth ? 'flex' : 'inline-flex',
   width: fullWidth ? '100%' : 'auto',
   alignItems: 'center',
@@ -21,6 +24,8 @@ const TabsBar = styled('div', { shouldForwardProp: prop => prop !== 'fullWidth' 
   boxSizing: 'border-box',
   backgroundColor: colors.card,
   borderRadius: 999,
+  // Optional 1px outline (same green as the active tab) so the whole bar reads on a cream surface.
+  border: bordered ? `1px solid ${colors.green}` : '1px solid transparent',
 }))
 
 const Tab = styled('button', {
@@ -62,23 +67,33 @@ const Badge = styled('span')({
   lineHeight: 1,
 })
 
-const AppTabs = ({ tabs = [], value, onChange, fullWidth = false }) => (
-  <TabsBar fullWidth={fullWidth} role="tablist">
-    {tabs.map(tab => (
-      <Tab
-        key={tab.value}
-        type="button"
-        role="tab"
-        aria-selected={tab.value === value}
-        active={tab.value === value}
-        fullWidth={fullWidth}
-        onClick={() => onChange(tab.value)}
-      >
-        {tab.icon}
-        <span>{tab.label}</span>
-        {tab.badge != null && <Badge>{tab.badge}</Badge>}
-      </Tab>
-    ))}
+const AppTabs = ({ tabs = [], value, onChange, fullWidth = false, bordered = false }) => (
+  <TabsBar fullWidth={fullWidth} bordered={bordered} role="tablist">
+    {tabs.map(tab => {
+      const tabButton = (
+        <Tab
+          type="button"
+          role="tab"
+          aria-selected={tab.value === value}
+          active={tab.value === value}
+          fullWidth={fullWidth}
+          onClick={() => onChange(tab.value)}
+        >
+          {tab.icon}
+          <span>{tab.label}</span>
+          {tab.badge != null && <Badge>{tab.badge}</Badge>}
+        </Tab>
+      )
+
+      // `tooltip` is an i18n key id (rendered via CustomTooltip's keyId, so it supports HTML).
+      return tab.tooltip ? (
+        <CustomTooltip key={tab.value} keyId={tab.tooltip} placement="top">
+          {tabButton}
+        </CustomTooltip>
+      ) : (
+        <React.Fragment key={tab.value}>{tabButton}</React.Fragment>
+      )
+    })}
   </TabsBar>
 )
 

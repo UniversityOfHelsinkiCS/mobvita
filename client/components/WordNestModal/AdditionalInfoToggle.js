@@ -1,18 +1,25 @@
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { Checkbox } from 'semantic-ui-react'
+import { FormControlLabel } from '@mui/material'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 
 const AdditionalInfoToggle = ({ showMoreInfo, setShowMoreInfo }) => {
   const intl = useIntl()
 
   return (
     <div className="concept-toggles">
-      <Checkbox
-        toggle
+      <FormControlLabel
+        control={<AppSwitch checked={showMoreInfo} onChange={() => setShowMoreInfo(!showMoreInfo)} />}
         label={intl.formatMessage({ id: 'show-additional-info' })}
-        checked={showMoreInfo}
-        onChange={() => setShowMoreInfo(!showMoreInfo)}
-        className="concept-toggle"
+        sx={{
+          m: 0,
+          '& .MuiFormControlLabel-label': {
+            marginLeft: '0.5em',
+            fontFamily: font.family,
+            color: colors.ink,
+          },
+        }}
       />
     </div>
   )

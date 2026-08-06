@@ -59,12 +59,15 @@ describe('wordnest modal', function () {
     cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
     
     cy.get('[data-cy=wordnest-modal]', { timeout: 30000 }).should('be.visible')
-    
-    cy.get('.ui.dimmer.modals.page', { timeout: 30000 })
+
+    // MUI Dialog detects an outside click on the .MuiDialog-container (it overlays the backdrop):
+    // its onMouseDown flags the click as a backdrop click and the root's onClick fires onClose.
+    // Click a corner of the container so we land outside the centred paper.
+    cy.get('.MuiDialog-container', { timeout: 30000 })
       .filter(':visible')
       .first()
-      .click('bottomLeft')
-    
+      .click('topLeft')
+
     cy.get('[data-cy=wordnest-modal]', { timeout: 2000 }).should('not.exist')
   })
 

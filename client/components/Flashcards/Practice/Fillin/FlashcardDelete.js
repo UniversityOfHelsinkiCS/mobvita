@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import CloseIcon from '@mui/icons-material/Close'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import { images } from 'Utilities/common'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
 const FlashcardDelete = ({ id }) => {
@@ -17,7 +17,7 @@ const FlashcardDelete = ({ id }) => {
   return (
     <>
       <button className="flashcard-blended-input" type="button" onClick={() => setOpen(true)}>
-        <CloseIcon sx={{ color: 'grey' }} />
+        <img src={images.xClose} alt="close" style={{ width: 20, height: 20 }} />
       </button>
       <AppDialog open={open} onClose={() => setOpen(false)} title={<FormattedMessage id="Warning" />}>
         <FormattedMessage id="this-will-permanently-remove-this-flashcard-are-you-sure-you-want-to-proceed" />

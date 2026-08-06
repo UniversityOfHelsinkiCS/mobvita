@@ -480,7 +480,13 @@ export default function NavBar() {
               </AppMenuItem>
               <AppMenuItem
                 icon={<img src={images.bell04} alt="" style={{ width: 22, height: 22 }} />}
-                onClick={handleNewsClick}
+                href={NewsWebSite}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={event => {
+                  // Confirm before leaving; if the user proceeds, also mark the news as read.
+                  if (confirmNewsClick(event, NewsWebSite)) handleNewsClick()
+                }}
               >
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                   <FormattedMessage id="notifications" defaultMessage="Notifications" />

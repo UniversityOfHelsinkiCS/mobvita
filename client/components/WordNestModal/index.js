@@ -1,8 +1,12 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
-import { Modal, Icon, Divider, Checkbox } from 'semantic-ui-react'
+import { Divider, FormControlLabel } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
+import AppDialog from 'Components/ui/AppDialog'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
@@ -296,106 +300,106 @@ const WordNestModal = ({
   }, [open, wordToCheck, learningLanguage, dictionaryLanguage, dispatch])
 
   return (
-    <Modal
-      data-cy="wordnest-modal"
+    <AppDialog
       open={open}
-      centered={false}
-      dimmer={{ blurring: false }}
-      size="large"
-      onClose={handleModalclose
-    }>
-      <Modal.Header className="bold wordnest-modal-header">
-        <div className="wordnest-modal-header-items">
-          <span>
-            <CustomTooltip title={intl.formatMessage({ id: 'wordnest-info-text' })}>
-              <span style={{ display: 'inline-flex' }}>
-                <Icon name="info circle" size="small" />
-              </span>
-            </CustomTooltip>
-            <FormattedMessage id="nest" />: {modalTitle}{' '}
-          </span>
+      onClose={handleModalclose}
+      maxWidth="lg"
+      data-cy="wordnest-modal"
+      closeDataCy="wordnest-close"
+      title={
+        <span
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4em', fontFamily: font.family }}
+        >
+          <CustomTooltip title={intl.formatMessage({ id: 'wordnest-info-text' })}>
+            <span style={{ display: 'inline-flex' }}>
+              <InfoOutlinedIcon sx={{ fontSize: 20, color: colors.muted }} />
+            </span>
+          </CustomTooltip>
+          <FormattedMessage id="nest" />: {modalTitle}
+        </span>
+      }
+    >
+      {(wordNestHasCompounds || (!smallWindow && hasAdditionalInfo)) && (
+        <div
+          className="wordnest-modal-header-items"
+          style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5em', marginBottom: '1em' }}
+        >
           {wordNestHasCompounds && (
-            <div className="concept-toggles">
-              <Checkbox
-                toggle
-                label={{
-                  children: <FormattedHTMLMessage id="word-nest-show-compounds-label" />,
-                }}
-                checked={showCompounds}
-                onChange={() => setShowCompounds(!showCompounds)}
-                className="concept-toggle"
-              />
-            </div>
+            <FormControlLabel
+              control={
+                <AppSwitch
+                  checked={showCompounds}
+                  onChange={() => setShowCompounds(!showCompounds)}
+                />
+              }
+              label={<FormattedHTMLMessage id="word-nest-show-compounds-label" />}
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  fontFamily: font.family,
+                  color: colors.ink,
+                },
+              }}
+            />
           )}
           {!smallWindow && hasAdditionalInfo && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
         </div>
-        <Icon data-cy="wordnest-close" onClick={handleModalclose} size="small" name="close" className="clickable" />
-      </Modal.Header>
-      <Modal.Content>
-        {!smallWindow ? (
-          <div className="space-between">
-            <div
-              className="wordnest-cont"
-              style={{
-                maxHeight: windowHeight * 0.85,
-              }}
-            >
-              {wordNest?.map((n, index) => (
-                <WordNest
-                  key={`${n.word}-${index}`}
-                  wordNest={n}
-                  hasSeveralRoots={hasSeveralRoots}
-                  wordToCheck={wordToCheck}
-                  showMoreInfo={showMoreInfo}
-                  showCompounds={showCompounds}
-                />
-              ))}
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexFlow: 'column',
-                justifyContent: 'space-between',
-                gap: '2em',
-              }}
-            >
-              <DictionaryHelp inWordNestModal />
-              <div className="align-self-end">
-                <ReportButton />
-              </div>
+      )}
+
+      {!smallWindow ? (
+        <div className="space-between">
+          <div className="wordnest-cont" style={{ maxHeight: windowHeight * 0.85 }}>
+            {wordNest?.map((n, index) => (
+              <WordNest
+                key={`${n.word}-${index}`}
+                wordNest={n}
+                hasSeveralRoots={hasSeveralRoots}
+                wordToCheck={wordToCheck}
+                showMoreInfo={showMoreInfo}
+                showCompounds={showCompounds}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexFlow: 'column',
+              justifyContent: 'space-between',
+              gap: '2em',
+            }}
+          >
+            <DictionaryHelp inWordNestModal />
+            <div className="align-self-end">
+              <ReportButton />
             </div>
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div>
           <div>
-            <div>
-              <DictionaryHelp inWordNestModal />
-            </div>
-            <div
-              style={{
-                maxHeight: windowHeight * 0.4,
-                overflowY: 'auto',
-              }}
-            >
-              {wordNest?.map((n, index) => (
-                <WordNest
-                  key={`${n.word}-${index}`}
-                  wordNest={n}
-                  hasSeveralRoots={hasSeveralRoots}
-                  wordToCheck={wordToCheck}
-                  showCompounds={showCompounds}
-                />
-              ))}
-            </div>
-            <hr />
-            <div>
-              <ReportButton extraClass="auto-top" />
-            </div>
+            <DictionaryHelp inWordNestModal />
           </div>
-        )}
-      </Modal.Content>
-    </Modal>
+          <div style={{ maxHeight: windowHeight * 0.4, overflowY: 'auto' }}>
+            {wordNest?.map((n, index) => (
+              <WordNest
+                key={`${n.word}-${index}`}
+                wordNest={n}
+                hasSeveralRoots={hasSeveralRoots}
+                wordToCheck={wordToCheck}
+                showCompounds={showCompounds}
+              />
+            ))}
+          </div>
+          <hr />
+          <div>
+            <ReportButton extraClass="auto-top" />
+          </div>
+        </div>
+      )}
+    </AppDialog>
   )
 }
 

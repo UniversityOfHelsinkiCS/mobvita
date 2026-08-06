@@ -39,6 +39,9 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
           value={answer}
           onChange={event => setAnswer(event.target.value)}
           placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
+          // The placeholder ("Type <language> translation here…") is long; shrink only the
+          // placeholder so it fits, while the typed answer stays full size.
+          sx={{ '& .MuiOutlinedInput-input::placeholder': { fontSize: 13 } }}
         />
         <AppButton
           className="flashcard-button"

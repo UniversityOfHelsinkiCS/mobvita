@@ -63,7 +63,11 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
-        <img src={images.flashcards} alt="flashcard batch" />
+        <img
+          src={images.cardsIcon}
+          alt="flashcards"
+          style={{ width: 64, height: 64, marginBottom: 24 }}
+        />
         <h2>
           <FormattedMessage
             id="blue-cards-test-encouragement-title"
@@ -77,7 +81,7 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
       </div>
       <div className="encouragement-button-group">
         <AppButton variant="primary" type="button" onClick={startTest}>
-          <FormattedMessage id="start-test" />
+          <FormattedMessage id="start" />
         </AppButton>
         <AppButton variant="secondary" type="button" onClick={secondaryTestButton}>
           <FormattedMessage

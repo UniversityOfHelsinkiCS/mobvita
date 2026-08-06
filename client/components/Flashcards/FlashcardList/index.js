@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { FormattedMessage } from 'react-intl'
-import { Pagination } from '@mui/material'
+import AppPagination from 'Components/ui/AppPagination'
+import useWindowDimensions from 'Utilities/windowDimensions'
+import SettingButton from 'Components/SettingsButton'
 import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashcardListReducer'
 import Spinner from 'Components/Spinner'
@@ -20,6 +22,7 @@ const FlashcardList = () => {
   )
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  const { width } = useWindowDimensions()
 
   const dispatch = useDispatch()
   const { storyId } = useParams()
@@ -70,33 +73,34 @@ const FlashcardList = () => {
   }
 
   const pagination = (
-    <Pagination
+    <AppPagination
       page={activePage}
       count={numberOfPages || 1}
-      onChange={handlePageChange}
-      size="small"
-      className="semantic-pagination"
+      onChange={page => handlePageChange(null, page)}
     />
   )
 
   return (
     <div className="flashcard-list-view">
-      <div className="flex-reverse space-between wrap pt-sm">
-        <span className="additional-info pl-nm">
+      <div className="flashcard-list-header">
+        <span className="flashcard-list-count">
           <FormattedMessage id="cards total" values={{ numberOfCards }} />
         </span>
-        {pagination}
+        <div className="flashcard-list-header-pages">{pagination}</div>
+        <div className="flashcard-list-header-settings">
+          {width >= 840 && <SettingButton style={{ position: 'static', margin: 0 }} />}
+        </div>
       </div>
       {nextPagePending ? (
-        <Spinner fullHeight size={60} variant='primary'/>
+        <Spinner fullHeight size={60} variant="primary" />
       ) : (
         <div>
-          <div className="pt-sm">
+          <div className="flashcard-list-rows">
             {cardsInCurrentPage.map(card => (
               <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
             ))}
           </div>
-          <div className="flex pt-sm">{pagination}</div>
+          <div className="flashcard-list-footer">{pagination}</div>
         </div>
       )}
     </div>

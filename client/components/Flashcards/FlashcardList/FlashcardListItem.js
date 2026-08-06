@@ -1,18 +1,17 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useMemo, useCallback, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import CheckIcon from '@mui/icons-material/Check'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import CustomTooltip from 'Components/CustomTooltip'
-import { FormattedMessage } from 'react-intl';
-import { sanitizeHtml, flashcardColors } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
+import { sanitizeHtml, flashcardColors, images } from 'Utilities/common'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
+const IconImg = ({ src, alt }) => (
+  <img src={src} alt={alt} style={{ width: 24, height: 24, display: 'block' }} />
+)
 
 const FlashcardListItem = ({ card, handleEdit }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
@@ -107,18 +106,21 @@ const FlashcardListItem = ({ card, handleEdit }) => {
       expanded={expanded}
       onChange={handleAccordionChange}
       disableGutters
-      square
       sx={{
-        backgroundColor: background[stage],
+        backgroundColor: 'transparent',
         boxShadow: 'none',
-        marginBottom: '1px',
+        margin: '0 0 10px 0',
         '&:before': { display: 'none' },
+        '&.Mui-expanded': { margin: '0 0 10px 0' },
       }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
         sx={{
-          backgroundColor: 'transparent',
+          backgroundColor: background[stage],
+          borderRadius: '999px',
+          minHeight: 0,
+          padding: '6px 16px',
+          '&.Mui-expanded': { minHeight: 0 },
           '& .MuiAccordionSummary-content': {
             display: 'flex',
             alignItems: 'center',
@@ -128,19 +130,22 @@ const FlashcardListItem = ({ card, handleEdit }) => {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-know-word" />}>
-            <span style={{ display: 'inline-flex' }}>
-              <CheckIcon
-                onClick={handleKnowFlashcard}
-                sx={{ cursor: 'pointer' }}
-              />
+            <span
+              style={{ display: 'inline-flex', cursor: 'pointer' }}
+              onClick={handleKnowFlashcard}
+            >
+              <IconImg src={images.checkCircle} alt="I know it" />
             </span>
           </CustomTooltip>
-          <CustomTooltip placement="top" title={<FormattedHTMLMessage id="explain-i-dont-know-word" />}>
-            <span style={{ display: 'inline-flex' }}>
-              <HelpOutlineIcon
-                onClick={handleNotKnowFlashcard}
-                sx={{ cursor: 'pointer' }}
-              />
+          <CustomTooltip
+            placement="top"
+            title={<FormattedHTMLMessage id="explain-i-dont-know-word" />}
+          >
+            <span
+              style={{ display: 'inline-flex', cursor: 'pointer' }}
+              onClick={handleNotKnowFlashcard}
+            >
+              <IconImg src={images.question} alt="I don't know" />
             </span>
           </CustomTooltip>
         </div>
@@ -149,34 +154,38 @@ const FlashcardListItem = ({ card, handleEdit }) => {
           style={{
             flex: 1,
             textAlign: 'center',
-            paddingLeft: '0.5rem',
+            padding: '0 0.5rem',
             minWidth: 0,
+            fontFamily: font.family,
+            fontWeight: 600,
+            color: colors.ink,
           }}
         >
           {lemma}
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <EditOutlinedIcon
-            sx={{ cursor: 'pointer' }}
+          <span
+            style={{ display: 'inline-flex', cursor: 'pointer' }}
             onClick={e => {
               e.stopPropagation()
               handleEdit(card)
             }}
-          />
-
+          >
+            <IconImg src={images.edit03} alt="edit" />
+          </span>
           <CustomTooltip placement="top" title={<FormattedMessage id="remove-card-tooltip" />}>
-            <span style={{ display: 'inline-flex' }}>
-              <DeleteOutlineIcon
-                onClick={handleDelete}
-                sx={{ cursor: 'pointer' }}
-              />
+            <span
+              style={{ display: 'inline-flex', cursor: 'pointer' }}
+              onClick={handleDelete}
+            >
+              <IconImg src={images.trash03} alt="delete" />
             </span>
           </CustomTooltip>
         </div>
       </AccordionSummary>
 
-      <AccordionDetails>
+      <AccordionDetails sx={{ fontFamily: font.family, color: colors.ink, padding: '10px 20px 4px' }}>
         <span className="bold">
           <FormattedMessage id="Translations" />
         </span>

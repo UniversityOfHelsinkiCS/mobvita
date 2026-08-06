@@ -391,6 +391,26 @@ $value in $spacing {
   }
 }
 
+// 2026 design-system server-issues notice (network problem). Cream card, ink text, bottom-left.
+.server-issues-toast.Toastify__toast {
+  background-color: #faf8ed;
+  border: 1px solid #b1d3c2;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(45, 44, 42, 0.14);
+  text-align: left;
+  font-weight: 500;
+  padding: 14px 16px;
+
+  .Toastify__close-button {
+    color: #2d2c2a;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 // BOOTSTRAP OVERRIDES FROM REVITA:
 .btn-primary,
 .btn-secondary,
@@ -1982,14 +2002,35 @@ label.file-upload-btn {
   height: 35em;
   margin: 0 auto 40px auto;
   padding: 1em 1.5em 1.5em 1em;
-  border: 0.1em solid grey;
   border-radius: 0.8em;
-  box-shadow: 0.5em 0.5em 0.6em grey;
-  background-color: hsla(208, 56%, 55%, 1);
-  color: #fff;
+  // Neutral base for the placeholder cards (loading spinner / no-cards / end view). Real practice
+  // cards override this per knowledge stage (see flashcardColors); this is what shows when there's
+  // no stage colour.
+  background-color: #f1eede;
+  color: #2d2c2a;
 
   &:focus {
     outline: none;
+  }
+
+  // Placeholder card (loading / empty): centre its single element (spinner or message) instead of
+  // top-aligning it.
+  &--placeholder {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.25em;
+  }
+
+  // "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
+  &-no-cards {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0.5em;
+    line-height: 1.5;
   }
 
   &-body {
@@ -2023,7 +2064,7 @@ label.file-upload-btn {
     flex-direction: column;
     width: 75%;
     margin-top: -0.5rem;
-    padding: 2px 12px 16px 12px;
+    padding: 2px 12px 36px 12px;
 
     @media (max-width: 900px) {
       width: 85%;
@@ -2041,7 +2082,7 @@ label.file-upload-btn {
   &-header {
     height: 2em;
     display: flex;
-    flex-direction: row-reverse;
+    align-items: center;
     justify-content: space-between;
     font-weight: 550;
   }
@@ -3837,7 +3878,9 @@ label.file-upload-btn {
 }
 
 .cont.sidebar-pushed {
-  margin-right: 380px !important;  
+  // Sidebar is 380px wide (fixed, right:0); the extra 20px keeps a constant gap between the
+  // content card and the helper sidebar.
+  margin-right: 400px !important;
   width: auto !important;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-width: 100%;

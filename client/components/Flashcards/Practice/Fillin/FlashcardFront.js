@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
+import { learningLanguageSelector, dictionaryLanguageSelector, images } from 'Utilities/common'
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 import FlashcardHint from './FlashcardHint'
 import Flashcard from '../Flashcard'
 import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
+import { WORDNEST_PILL_STYLE } from './FlashcardBack'
 
 const FlashcardFront = ({
   answerChecked,
@@ -52,12 +54,17 @@ const FlashcardFront = ({
         </div>
       )}
       {answerChecked && (
-        <WordNestLauncher
-          lemma={lemma}
-          translation={translation}
-          className="pop-in-word-nest"
-          buttonStyle={{ backgroundColor: 'rgba(255,255,240,0.9)' }}
-        />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75em' }}>
+          <WordNestLauncher
+            lemma={lemma}
+            translation={translation}
+            className="pop-in-word-nest"
+            icon={images.wordnest}
+            label={<FormattedMessage id="word-nest" defaultMessage="Word Nest" />}
+            buttonStyle={WORDNEST_PILL_STYLE}
+            divStyle={{ display: 'inline-flex' }}
+          />
+        </div>
       )}
     </Flashcard>
   )

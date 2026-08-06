@@ -1,109 +1,37 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import CustomTooltip from 'Components/CustomTooltip'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import KeyboardOutlined from '@mui/icons-material/KeyboardOutlined'
+import { FormattedMessage } from 'react-intl'
 import TextFields from '@mui/icons-material/TextFields'
-import Bolt from '@mui/icons-material/Bolt'
+import AppTabs from 'Components/ui/AppTabs'
+import { images } from 'Utilities/common'
 
-const baseMenuItemStyle = {
-  background: 'linear-gradient(180deg, #b8d6ff 0%, #8ebbf9 100%)',
-  boxShadow:
-    'inset 1px 1px 2px rgba(255, 255, 255, 0.8), inset -1px -1px 2px rgba(0, 0, 0, 0.18)',
-  overflow: 'hidden',
-  position: 'relative',
-}
-
-const selectedMenuItemStyle = {
-  background: 'linear-gradient(180deg, #5f94e8 0%, #83b5f9 100%)',
-  borderColor: '#000000',
-  boxShadow:
-    'inset 8px 20px 20px rgba(18, 11, 145, 0.27), inset -8px -8px 20px rgba(7, 5, 115, 0.3), inset 0 0 0 2px rgba(70, 21, 229, 0.1)',
-}
-
-const MenuItemButton = ({ active, handleClick, label, style, translationId, children }) => (
-  <button
-    type="button"
-    aria-pressed={active}
-    className={`flashcard-menu-item${active ? ' flashcard-menu-item-selected' : ''}`}
-    style={{ ...baseMenuItemStyle, ...style, ...(active ? selectedMenuItemStyle : {}) }}
-    onClick={handleClick}
-  >
-    <span style={{ display: 'inline-flex', position: 'relative', zIndex: 1 }}>
-      {children}
-    </span>
-    <span style={{ position: 'relative', whiteSpace: 'nowrap', zIndex: 1 }}>
-      {label || <FormattedHTMLMessage id={translationId} />}
-    </span>
-  </button>
-)
-
-const MenuItem = ({ tooltip, ...props }) => {
-  if (!tooltip) return <MenuItemButton {...props} />
-
-  return (
-    <CustomTooltip keyId={tooltip} placement="top">
-      <span style={{ display: 'inline-flex' }}>
-        <MenuItemButton {...props} />
-      </span>
-    </CustomTooltip>
-  )
-}
+const tabIcon = src => <img src={src} alt="" style={{ width: 18, height: 18 }} />
 
 const PracticeModeOptions = ({ handleOptionClick, mode }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
-
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
 
-  return (
-    <div className="flex-col flashcard-menu-items-boxshadow">
-      <MenuItem
-        active={mode === 'fillin'}
-        handleClick={() => handleOptionClick('fillin')}
-        translationId="fill-in"
-        style={{
-          backgroundColor: '#8ebbf9',
-          borderTop: '1px solid #323841',
-          borderRight: '1px solid #323841',
-          borderBottom: '0',
-          borderLeft: '1px solid #323841',
-          borderRadius: '1em 1em 0 0',
-        }}
-        tooltip="flashcards-translate-cards-EXPLANATION"
-      >
-        <KeyboardOutlined sx={{ fontSize: '2em' }} />
-      </MenuItem>
-      {flashcardArticles && (
-        <MenuItem
-          active={mode === 'article'}
-          handleClick={() => handleOptionClick('article')}
-          label={articleLabel}
-          style={{
-            borderTop: '1px solid #323841',
-            borderRight: '1px solid #323841',
-            borderBottom: '0',
-            borderLeft: '1px solid #323841',
-          }}
-        >
-          <TextFields sx={{ fontSize: '2em' }} />
-        </MenuItem>
-      )}
-      <MenuItem
-        active={mode === 'quick'}
-        handleClick={() => handleOptionClick('quick')}
-        translationId="Quick cards"
-        style={{
-          backgroundColor: '#8ebbf9',
-          border: '1px solid #323841',
-          borderRadius: '0 0 1em 1em',
-        }}
-        tooltip="flashcards-quick-cards-EXPLANATION"
-      >
-        <Bolt sx={{ fontSize: '2em' }} />
-      </MenuItem>
-    </div>
-  )
+  const tabs = [
+    {
+      value: 'fillin',
+      label: <FormattedMessage id="translate-cards" defaultMessage="Translate Cards" />,
+      icon: tabIcon(images.translate01),
+      tooltip: 'flashcards-translate-cards-EXPLANATION',
+    },
+    ...(flashcardArticles
+      ? [{ value: 'article', label: articleLabel, icon: <TextFields sx={{ fontSize: 18 }} /> }]
+      : []),
+    {
+      value: 'quick',
+      label: <FormattedMessage id="Quick cards" defaultMessage="Quick Cards" />,
+      icon: tabIcon(images.quick),
+      tooltip: 'flashcards-quick-cards-EXPLANATION',
+    },
+  ]
+
+  // 1px green outline around the whole bar so it reads against the cream card.
+  return <AppTabs tabs={tabs} value={mode} onChange={handleOptionClick} fullWidth bordered />
 }
 
 const FlashcardMenu = () => {
@@ -112,8 +40,8 @@ const FlashcardMenu = () => {
 
   const storyUrl = storyId ? `/${storyId}` : ''
 
-  const handleOptionClick = mode => {
-    const path = storyUrl ? `/flashcards/${mode}/story${storyUrl}` : `/flashcards/${mode}`
+  const handleOptionClick = nextMode => {
+    const path = storyUrl ? `/flashcards/${nextMode}/story${storyUrl}` : `/flashcards/${nextMode}`
 
     navigate(path)
   }

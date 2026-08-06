@@ -54,6 +54,22 @@ import brush01Pick from 'Assets/images/brush-01-pick.svg'
 import globe04 from 'Assets/images/globe-04.svg'
 import microscope from 'Assets/images/microscope.svg'
 import trophy01Pick from 'Assets/images/trophy-01-pick.svg'
+import faceCorrect from 'Assets/images/face-correct.svg'
+import faceIncorrect from 'Assets/images/face-incorrect.svg'
+import faceNeutral from 'Assets/images/face-neutral.svg'
+import flip from 'Assets/images/flip.svg'
+import speaker from 'Assets/images/speaker.svg'
+import wordnest from 'Assets/images/wordnest.svg'
+import bulb from 'Assets/images/Bulb.svg'
+import bulbEmpty from 'Assets/images/Bulb-empty.svg'
+import plusOutline from 'Assets/images/plus-outline.svg'
+import quick from 'Assets/images/quick.svg'
+import translate01 from 'Assets/images/translate-01.svg'
+import dotpoints01 from 'Assets/images/dotpoints-01.svg'
+import playCircle from 'Assets/images/play-circle.svg'
+import arrowRight from 'Assets/images/arrow-right.svg'
+import checkCircle from 'Assets/images/check-circle.svg'
+import question from 'Assets/images/question.svg'
 import iconHome from 'Assets/images/icon-home.svg'
 import layersThree from 'Assets/images/layers-three-01.svg'
 import libraryBig from 'Assets/images/library-big.svg'
@@ -217,6 +233,22 @@ export const images = {
   globe04,
   microscope,
   trophy01Pick,
+  faceCorrect,
+  faceIncorrect,
+  faceNeutral,
+  flip,
+  speaker,
+  wordnest,
+  bulb,
+  bulbEmpty,
+  plusOutline,
+  quick,
+  translate01,
+  dotpoints01,
+  playCircle,
+  arrowRight,
+  checkCircle,
+  question,
   iconHome,
   layersThree,
   libraryBig,
@@ -655,8 +687,8 @@ export const exerciseMaskedLanguages = ['Chinese']
 export const colors = {}
 
 export const flashcardColors = {
-  background: ['#F3826A', '#FEA75C', '#F9E79F', '#84C3A3', '#50A278'],
-  foreground: ['#055A5B', '#055A5B', '#055A5B', '#055A5B', '#055A5B'],
+  background: ['#CACAE0', '#ADC5DD', '#B4D2AF', '#F2DF9A', '#E5BDAA'],
+  foreground: ['#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A'],
 }
 
 const stagingOptions = [

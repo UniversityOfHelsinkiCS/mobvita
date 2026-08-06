@@ -34,6 +34,7 @@ const AppDialog = ({
   children,
   maxWidth = 'sm',
   fullWidth = true,
+  closeDataCy,
   ...rest
 }) => (
   <StyledDialog open={open} onClose={onClose} maxWidth={maxWidth} fullWidth={fullWidth} {...rest}>
@@ -45,6 +46,7 @@ const AppDialog = ({
         <IconButton
           onClick={onClose}
           aria-label="close"
+          data-cy={closeDataCy}
           sx={{ position: 'absolute', right: 16, top: 16, color: colors.ink }}
         >
           <CloseIcon />

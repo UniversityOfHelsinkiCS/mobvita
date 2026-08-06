@@ -1,0 +1,110 @@
+// Styles for the Flashcards page (client/components/Flashcards).
+// Layout-level rules live here; card-face styling still lives in the shared custom.scss for now.
+
+.flashcard-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+// First row inside the cream card: the practice-mode menu (Translate / Quick) on the left and the
+// settings gear on the right.
+.flashcard-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 1.25em 1.5em 0;
+
+  &-menu {
+    // flex item with a definite width so the fullWidth AppTabs inside resolves its 100% correctly
+    // (a plain width:100% flex item would collapse to min-content).
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// Wrapper around the AppTabs practice-mode segmented control.
+.flashcard-menu {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+// The card area: takes the remaining height and centres the card both vertically and horizontally.
+.flashcard-main-row {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// The "next" arrow floats to the right of the (centred) card. It's absolutely positioned so it does
+// NOT take flow space — the card stays centred instead of being pushed left. Anchored just past the
+// right edge of the ~21em card (10.5em from centre + a small gap).
+.flashcard-arrow-button {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 11em);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  // The centred card (.react-card-front) is up to 40em wide with an inline z-index:2, so it paints
+  // over this absolutely-positioned arrow. Lift the arrow above it so it stays clickable/visible.
+  z-index: 10;
+
+  // On narrow screens the card shrinks / the container is tighter, so the arrow ends up off-screen.
+  // Pull it 100px back to the left to keep it visible.
+  @media (max-width: 800px) {
+    left: calc(50% + 11em - 50px);
+  }
+}
+
+// ── All-cards list ────────────────────────────────────────────────────────────
+
+// The list view has no separate top bar on this page (the gear moved into the header row), so give
+// the whole view breathing room from the cream card's rounded top edge.
+.flashcard-list-view {
+  padding-top: 1.25em;
+}
+
+// Header row: "N Cards" on the left, pagination centred, and the settings gear right-aligned so it
+// shares this line with the pagination.
+.flashcard-list-header {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0 0.5rem 0.75rem;
+
+  &-pages {
+    flex-shrink: 0;
+  }
+
+  // The count and the trailing settings slot each take an equal share so the pagination sits centred.
+  .flashcard-list-count,
+  .flashcard-list-header-settings {
+    flex: 1;
+  }
+
+  // Settings gear shares the pagination line, right-aligned.
+  &-settings {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+.flashcard-list-count {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 600;
+  color: #2d2c2a;
+  white-space: nowrap;
+}
+
+.flashcard-list-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}

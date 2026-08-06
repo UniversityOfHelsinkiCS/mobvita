@@ -1,5 +1,5 @@
 import React from 'react'
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
+import { images } from 'Utilities/common'
 
 const ArrowButton = ({ disabled, onClick, hidden = false }) => {
   if (hidden) return null
@@ -12,7 +12,7 @@ const ArrowButton = ({ disabled, onClick, hidden = false }) => {
       className="flashcard-arrow-button"
       style={{ marginLeft: 0 }}
     >
-      <KeyboardDoubleArrowRightIcon sx={{ fontSize: 48 }} />
+      <img src={images.arrowRight} alt="next" style={{ width: 40, height: 40 }} />
     </button>
   )
 }
