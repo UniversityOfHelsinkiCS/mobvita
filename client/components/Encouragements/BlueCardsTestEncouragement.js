@@ -25,7 +25,6 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
   const resolvedStoryId = storyId ?? prevBlueCards?.story_id
   const resolvedStoryTitle = storyTitle ?? prevBlueCards?.title
   const resolvedBlueCardCount = blueCardCount ?? prevBlueCards?.num_of_rewardable_words
-  console.log(storyBlueCards, 'storyBlueCards')
 
   useEffect(() => {
     if (storyId) return
