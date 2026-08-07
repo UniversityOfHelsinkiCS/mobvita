@@ -6,8 +6,6 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  * Shared row styling for the design-system menu surfaces (AppMenu dropdown, AppSidebar drawer).
  * Both render an identical row — icon + label, tan hover/selected pill — so they stay consistent.
  */
-export const MENU_HOVER = colors.menuHover // shared tan highlight behind hovered/selected rows
-
 export const rowStyles = ({ selected }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -21,10 +19,14 @@ export const rowStyles = ({ selected }) => ({
   cursor: 'pointer',
   textDecoration: 'none',
   whiteSpace: 'nowrap',
-  backgroundColor: selected ? MENU_HOVER : 'transparent',
+  backgroundColor: selected ? colors.green : 'transparent',
   // Link rows render as <a>; override global anchor styles (blue, underline, :visited).
   '&:visited, &:focus, &:active': { color: colors.ink, textDecoration: 'none' },
-  '&:hover': { backgroundColor: MENU_HOVER, color: colors.ink, textDecoration: 'none' },
+  '&:hover': {
+    backgroundColor: selected ? colors.green : colors.menuHover,
+    color: colors.ink,
+    textDecoration: 'none',
+  },
 })
 
 const forwardOptions = { shouldForwardProp: prop => prop !== 'selected' }
