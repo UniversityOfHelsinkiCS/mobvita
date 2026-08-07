@@ -1,0 +1,81 @@
+// Figma "Answer": the add-story options shown inline in the assistant — a transparent, left-aligned block
+// (a heading over the story-source pills), NOT a chat bubble. No background.
+.add-story-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 0;
+  background: transparent;
+}
+
+// Pinned above the chat input: the options dock stays at the bottom while the discussion scrolls above it.
+.chatbot-add-story-dock {
+  display: flex;
+  flex-shrink: 0;
+  padding: 8px 12px 0;
+}
+
+.add-story-options-lead-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  align-self: stretch;
+}
+
+.add-story-options-lead {
+  flex: 1;
+  margin: 0;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #2d2c2a;
+}
+
+.add-story-options-close {
+  flex-shrink: 0;
+  color: #2d2c2a !important;
+}
+
+.add-story-options-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d2c2a;
+}
+
+.story-input-options-root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.story-input-options-anon-warning {
+  color: #c0392b;
+  font-size: 0.9em;
+}
+
+.story-input-options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.story-option-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}

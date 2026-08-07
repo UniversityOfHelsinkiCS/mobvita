@@ -18,6 +18,9 @@ import xClose from 'Assets/images/x-close.svg'
 import activityHeart from 'Assets/images/activity-heart.svg'
 import bookmark from 'Assets/images/bookmark.svg'
 import bookOpen from 'Assets/images/book-open-01.svg'
+import bookOpenGreen from 'Assets/images/book-open-green.svg'
+import bulb from 'Assets/images/bulb.svg'
+import bulbEmpty from 'Assets/images/bulb-empty.svg'
 import cardsIcon from 'Assets/images/cards.svg'
 import fileCheck from 'Assets/images/file-check-02.svg'
 import flag01 from 'Assets/images/flag-01.svg'
@@ -42,6 +45,9 @@ import flipBackward from 'Assets/images/flip-backward.svg'
 import folder from 'Assets/images/folder.svg'
 import folderPlus from 'Assets/images/folder-plus.svg'
 import star06 from 'Assets/images/star-06.svg'
+import globe from 'Assets/images/globe.svg'
+import upload from 'Assets/images/upload.svg'
+import paste from 'Assets/images/paste.svg'
 import play from 'Assets/images/play.svg'
 import star06Pick from 'Assets/images/star-06-pick.svg'
 import lock01 from 'Assets/images/lock-01.svg'
@@ -57,8 +63,6 @@ import faceNeutral from 'Assets/images/face-neutral.svg'
 import flip from 'Assets/images/flip.svg'
 import speaker from 'Assets/images/speaker.svg'
 import wordnest from 'Assets/images/wordnest.svg'
-import bulb from 'Assets/images/Bulb.svg'
-import bulbEmpty from 'Assets/images/Bulb-empty.svg'
 import plusOutline from 'Assets/images/plus-outline.svg'
 import quick from 'Assets/images/quick.svg'
 import translate01 from 'Assets/images/translate-01.svg'
@@ -77,6 +81,7 @@ import wavesColored from 'Assets/images/waves-colored.svg'
 import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
 import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
 import libraryBigColored from 'Assets/images/library-big-colored.svg'
+import searchTextfield from 'Assets/images/search-textfield.svg'
 import star06Colored from 'Assets/images/star-06-colored.svg'
 import users01Colored from 'Assets/images/users-01-colored.svg'
 import flagFinnish from 'Assets/images/flags/flag_finnish.png'
@@ -193,6 +198,9 @@ export const images = {
   activityHeart,
   bookmark,
   bookOpen,
+  bookOpenGreen,
+  bulb,
+  bulbEmpty,
   cardsIcon,
   fileCheck,
   flag01,
@@ -217,6 +225,9 @@ export const images = {
   folder,
   folderPlus,
   star06,
+  globe,
+  upload,
+  paste,
   play,
   star06Pick,
   lock01,
@@ -232,8 +243,6 @@ export const images = {
   flip,
   speaker,
   wordnest,
-  bulb,
-  bulbEmpty,
   plusOutline,
   quick,
   translate01,
@@ -252,6 +261,7 @@ export const images = {
   bookOpenColored,
   layersThreeColored,
   libraryBigColored,
+  searchTextfield,
   star06Colored,
   users01Colored,
   flagFinnish,

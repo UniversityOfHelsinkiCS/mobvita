@@ -69,6 +69,7 @@ const AppMenu = ({
   trigger,
   closeIcon,
   children,
+  onOpenChange,
   minWidth = 320,
   borderRadius = '0 0 30px 30px',
   anchorOrigin = { vertical: 'bottom', horizontal: 'left' },
@@ -77,17 +78,24 @@ const AppMenu = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
+  // `onOpenChange` lets a consumer react to the menu opening/closing (e.g. keep a card highlighted while
+  // its menu is open) — AppMenu still owns the anchor state itself.
+  const openMenu = e => {
+    setAnchorEl(e.currentTarget)
+    if (onOpenChange) onOpenChange(true)
+  }
   const close = () => {
     // Drop focus before the Popover hides — otherwise MUI applies aria-hidden to the panel while a
     // descendant (the close button / clicked row) still holds focus, which the browser blocks.
     const active = document.activeElement
     if (active && typeof active.blur === 'function') active.blur()
     setAnchorEl(null)
+    if (onOpenChange) onOpenChange(false)
   }
 
   return (
     <>
-      {React.cloneElement(trigger, { onClick: e => setAnchorEl(e.currentTarget) })}
+      {React.cloneElement(trigger, { onClick: openMenu })}
       <AppMenuCloseContext.Provider value={close}>
         <StyledPopover
           open={open}

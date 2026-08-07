@@ -1883,5 +1883,6 @@
     "connection-offline": "No connection",
     "interface-settings": "Interface settings",
     "all-topics-in-text": "All Topics In Text",
-    "rename-folder": "Rename folder"
+    "rename-folder": "Rename folder",
+    "add-stories-assistant-lead": "Learn language by adding new stories to the library"
 }

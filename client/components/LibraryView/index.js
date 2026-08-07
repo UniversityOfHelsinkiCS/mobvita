@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Box,
-  Breadcrumbs,
-  FormControl,
-  IconButton,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
-import CloseIcon from '@mui/icons-material/Close'
-import SearchIcon from '@mui/icons-material/Search'
 import AppButton from 'Components/AppButton'
 import StoryListItem from 'Components/LibraryView/StoryListItem'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
+import AppSearchField from 'Components/ui/AppSearchField'
+import AppSelect from 'Components/ui/AppSelect'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { capitalize, useLearningLanguage } from 'Utilities/common'
+import star06Icon from 'Assets/images/star-06.svg'
+import { capitalize, images, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -48,8 +40,7 @@ import {
   removeWritingEssay,
   updateWritingEssayPath,
 } from 'Utilities/redux/writingCorrectionReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
-import AddStoryModal from 'Components/AddStoryModal'
+import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
@@ -74,6 +65,7 @@ import {
   saveStoredLocalFolders,
 } from './folderUtils'
 import useLibraryDragAndDrop from './useLibraryDragAndDrop'
+import './LibraryView.scss'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -98,19 +90,16 @@ const StoryList = () => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const localFolderStorageKey = getLocalFolderStorageKey(userId, learningLanguage)
 
-  const smallWindow = useWindowDimensions().width < 520
-
   const [sorter, setSorter] = useState(
     savedSortCriterion?.[savedLibrarySelection]?.sort_by || 'title',
   )
   const [sortDirection, setSortDirection] = useState(
     savedSortCriterion?.[savedLibrarySelection]?.direction || 'asc',
   )
-  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
-  const [smallScreenSearchOpen, setSmallScreenSearchOpen] = useState(false)
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
+  const [selectedFolderPath, setSelectedFolderPath] = useState(null)
   const [localFolders, setLocalFolders] = useState(() =>
     getStoredLocalFolders(localFolderStorageKey),
   )
@@ -137,29 +126,37 @@ const StoryList = () => {
   const {
     clearDragState,
     draggedStoryIds,
+    draggedFolderPath,
     dragOverFolderPath,
     handleFolderDragLeave,
     handleFolderDragOver,
     handleFolderDrop,
+    handleFolderDragStart,
     handleStoryDragEnd,
     handleStoryDragStart,
   } = useLibraryDragAndDrop({
     libraryIsMutable,
     onMoveStories: handleMoveStoriesToPath,
+    onMoveFolder: handleMoveFolderToPath,
+    canDropFolder: canMoveFolderInto,
   })
   // A second drag-and-drop context for essays (same mechanics, moves via updateWritingEssayPath).
   const {
     clearDragState: clearEssayDragState,
     draggedStoryIds: draggedEssayIds,
+    draggedFolderPath: draggedEssayFolderPath,
     dragOverFolderPath: essayDragOverFolderPath,
     handleFolderDragLeave: handleEssayFolderDragLeave,
     handleFolderDragOver: handleEssayFolderDragOver,
     handleFolderDrop: handleEssayFolderDrop,
+    handleFolderDragStart: handleEssayFolderDragStart,
     handleStoryDragEnd: handleEssayDragEnd,
     handleStoryDragStart: handleEssayDragStart,
   } = useLibraryDragAndDrop({
     libraryIsMutable: essaysLibraryActive,
     onMoveStories: handleMoveEssaysToPath,
+    onMoveFolder: handleMoveEssayFolderToPath,
+    canDropFolder: canMoveFolderInto,
   })
 
   useEffect(() => {
@@ -188,6 +185,7 @@ const StoryList = () => {
     dispatch(updateLibrarySelect(library))
     setLibrary(library)
     setCurrentLibraryPath('')
+    setSelectedFolderPath(null)
     setEssaySearchQuery('')
     clearDragState()
     clearEssayDragState()
@@ -258,8 +256,28 @@ const StoryList = () => {
     }
   }, [searchResults])
 
-  const handleGroupChange = event => {
-    dispatch(updateGroupSelect(event.target.value))
+  const handleGroupChange = groupId => {
+    dispatch(updateGroupSelect(groupId))
+  }
+
+  // Group selector for the "Group" library — the design-system dropdown, rendered in the folder header.
+  const renderGroupDropdown = () => {
+    if (!libraries.group) return null
+    return (
+      <Box className="library-group-dropdown-container">
+        <AppSelect
+          className="library-menu"
+          borderRadius="30px"
+          variant="contrast-outline"
+          value={savedGroupSelection}
+          onChange={handleGroupChange}
+          options={groupDropdownOptions.map(option => ({
+            value: option.value,
+            label: option.text,
+          }))}
+        />
+      </Box>
+    )
   }
 
   useEffect(() => {
@@ -274,10 +292,6 @@ const StoryList = () => {
   useEffect(() => {
     if (learningLanguage) dispatch(getWritingEssays(capitalize(learningLanguage)))
   }, [learningLanguage])
-
-  const handleSearchIconClick = () => {
-    setSmallScreenSearchOpen(!smallScreenSearchOpen)
-  }
 
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
@@ -312,30 +326,9 @@ const StoryList = () => {
     value: group.group_id,
   }))
 
-  const dropdownMenuProps = {
-    anchorOrigin: {
-      vertical: 'bottom',
-      horizontal: 'left',
-    },
-    transformOrigin: {
-      vertical: 'top',
-      horizontal: 'left',
-    },
-    PaperProps: {
-      className: 'library-dropdown-menu',
-      sx: {
-        backgroundColor: '#ffffff',
-      },
-    },
-    MenuListProps: {
-      className: 'library-dropdown-menu-list',
-    },
-  }
-
   // Persist under activeLibrary (synchronous local state that sorter/sortDirection track), not the
   // async-lagging Redux savedLibrarySelection, so the preference is saved for the displayed library.
-  const handleSortChange = e => {
-    const newSorter = e.target.value
+  const handleSortChange = newSorter => {
     setSorter(newSorter)
     dispatch(
       updateSortCriterion({
@@ -364,28 +357,6 @@ const StoryList = () => {
 
   const libraryControls = (
     <Box data-cy="library-controls" className="library-control">
-      <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
-
-      <AppButton
-        className="tour-add-new-stories"
-        onClick={() => setAddStoryModalOpen(true)}
-        data-cy="add-story-button"
-        variant="primary"
-        size="large"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          margin: '0 auto 2em auto',
-          padding: '1rem 0',
-          width: '50%',
-          border: '2px solid #000',
-          fontSize: '1.3em',
-          fontWeight: 500,
-        }}
-      >
-        {intl.formatMessage({ id: 'add-your-stories' })}
-      </AppButton>
-
       {(() => {
         const meta = {
           public: { label: <FormattedMessage id="Public" />, icon: <PublicOutlinedIcon /> },
@@ -397,7 +368,7 @@ const StoryList = () => {
           .filter(key => key in libraries)
           .map(key => ({ value: key, ...meta[key] }))
         return (
-          <div style={{ margin: '1.5em 0 20px' }}>
+          <div style={{ margin: '1.5em 0 12px' }}>
             <AppTabs tabs={tabs} value={activeLibrary} onChange={handleLibraryChange} fullWidth />
           </div>
         )
@@ -405,118 +376,56 @@ const StoryList = () => {
     </Box>
   )
 
-  const searchAndSortControls = (
-    <>
-      <Box
-        className="search-and-sort"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
-          flexWrap: 'wrap',
-        }}
-      >
-        <Box className="flex align-center" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <FormControl size="small" sx={{ minWidth: 180 }}>
-            <Select
-              value={sorter}
-              onChange={handleSortChange}
-              className="library-semantic-select"
-              MenuProps={dropdownMenuProps}
-            >
-              {sortDropdownOptions.map(option => (
-                <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                  {option.text}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-            {sortDirection === 'asc' ? (
-              <ArrowDropUpSharpIcon fontSize="large" />
-            ) : (
-              <ArrowDropDownSharpIcon fontSize="large" />
-            )}
-          </IconButton>
-        </Box>
+  const addStoryButton = (
+    <AppButton
+      className="tour-add-new-stories library-add-story-button"
+      variant="contrast"
+      onClick={() => dispatch(openAddStoryOptions())}
+      data-cy="add-story-button"
+    >
+      <img src={star06Icon} alt="" />
+      {intl.formatMessage({ id: 'add-your-stories' })}
+    </AppButton>
+  )
 
-        {smallWindow ? (
-          <IconButton aria-label="Search library" onClick={handleSearchIconClick}>
-            {smallScreenSearchOpen ? <CloseIcon /> : <SearchIcon />}
-          </IconButton>
-        ) : (
-          <LibrarySearch
-            setDisplayedStories={setDisplayedStories}
-            setDisplaySearchResults={setDisplaySearchResults}
-          />
-        )}
-      </Box>
-
-      {smallScreenSearchOpen && (
-        <LibrarySearch
-          setDisplayedStories={setDisplayedStories}
-          setDisplaySearchResults={setDisplaySearchResults}
-          fluid
+  const renderSortAndAddRow = (sortValue, options) => (
+    <div className="library-sort-add-row">
+      <div className="library-sort-select">
+        <AppSelect
+          className="library-menu"
+          borderRadius="30px"
+          variant="contrast-outline"
+          value={sortValue}
+          onChange={handleSortChange}
+          options={options.map(option => ({ value: option.value, label: option.text }))}
         />
-      )}
-    </>
+      </div>
+      <IconButton
+        aria-label="Toggle sort direction"
+        onClick={handleDirectionChange}
+        className="library-sort-direction"
+      >
+        {sortDirection === 'asc' ? (
+          <ArrowDropUpSharpIcon fontSize="large" />
+        ) : (
+          <ArrowDropDownSharpIcon fontSize="large" />
+        )}
+      </IconButton>
+      {addStoryButton}
+    </div>
   )
 
   // Sort (title/date) + title search for the "My Essays" library, styled like the story controls.
   const essaySearchAndSortControls = (
-    <Box
-      className="search-and-sort"
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 2,
-        flexWrap: 'wrap',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <FormControl size="small" sx={{ minWidth: 180 }}>
-          <Select
-            value={essaySorter}
-            onChange={handleSortChange}
-            className="library-semantic-select"
-            MenuProps={dropdownMenuProps}
-          >
-            {essaySortDropdownOptions.map(option => (
-              <MenuItem className="library-dropdown-item" key={option.key} value={option.value}>
-                {option.text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <IconButton aria-label="Toggle sort direction" onClick={handleDirectionChange}>
-          {sortDirection === 'asc' ? (
-            <ArrowDropUpSharpIcon fontSize="large" />
-          ) : (
-            <ArrowDropDownSharpIcon fontSize="large" />
-          )}
-        </IconButton>
-      </Box>
-
-      <Box className="library-search-control">
-        <TextField
-          className="library-search-field"
-          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-          value={essaySearchQuery}
-          onChange={event => setEssaySearchQuery(event.target.value)}
-          fullWidth
-          size="small"
-        />
-        <IconButton
-          className="library-search-button"
-          aria-label={essaySearchQuery ? 'Clear search' : 'Search essays'}
-          onClick={() => essaySearchQuery && setEssaySearchQuery('')}
-        >
-          {essaySearchQuery ? <CloseIcon /> : <SearchIcon />}
-        </IconButton>
-      </Box>
-    </Box>
+    <>
+      <AppSearchField
+        className="library-search-field"
+        placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
+        value={essaySearchQuery}
+        onChange={setEssaySearchQuery}
+      />
+      {renderSortAndAddRow(essaySorter, essaySortDropdownOptions)}
+    </>
   )
 
   if (pending || !refreshed) {
@@ -597,18 +506,45 @@ const StoryList = () => {
 
   const handleLibraryPathChange = path => {
     setCurrentLibraryPath(normalizeLibraryPath(path))
+    setSelectedFolderPath(null)
     clearDragState()
   }
 
   const handleEssayLibraryPathChange = path => {
     setCurrentLibraryPath(normalizeLibraryPath(path))
+    setSelectedFolderPath(null)
     clearEssayDragState()
+  }
+
+  // Tapping a folder: navigate into it when it has sub-folders, otherwise just preview it (highlighted
+  // green) and show its stories below via selectedFolderPath. Tapping the same leaf again clears it.
+  const handleFolderTap = (folderPath, hasSubfolders, navigateInto) => {
+    if (hasSubfolders) {
+      navigateInto(folderPath)
+      return
+    }
+    setSelectedFolderPath(previous => (previous === folderPath ? null : folderPath))
   }
 
   function handleMoveStoriesToPath(storyIds, targetPath) {
     if (!libraryIsMutable) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
+
+    // Don't let the folder you're viewing be emptied of its direct stories by moving ALL of them into one
+    // of its own subfolders — that leaves a folder with subfolders but no stories, which we don't handle
+    // yet. Prevent it for now.
+    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
+      const directStories = getStoriesForPath(allStoriesInActiveLibrary, currentLibraryPath)
+      const movingIds = new Set(storyIds.map(String))
+      if (
+        directStories.length > 0 &&
+        directStories.every(story => movingIds.has(String(story._id)))
+      ) {
+        return
+      }
+    }
+
     const storyIdSet = new Set(storyIds.map(storyId => String(storyId)))
     const storiesToMove = libraryFilteredStories.filter(
       story =>
@@ -625,6 +561,20 @@ const StoryList = () => {
     if (!essaysLibraryActive || !learningLanguage) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
+
+    // Same guard as stories: don't empty the folder you're viewing by moving all its essays into one of
+    // its own subfolders (see handleMoveStoriesToPath).
+    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
+      const directEssays = getStoriesForPath(uploadedEssays, currentLibraryPath)
+      const movingIds = new Set(essayIds.map(String))
+      if (
+        directEssays.length > 0 &&
+        directEssays.every(essay => movingIds.has(String(getWritingEssayId(essay))))
+      ) {
+        return
+      }
+    }
+
     const essayIdSet = new Set(essayIds.map(id => String(id)))
     const essaysToMove = uploadedEssays.filter(essay => {
       const id = getWritingEssayId(essay)
@@ -644,6 +594,70 @@ const StoryList = () => {
         ),
       )
     })
+  }
+
+  // A folder move is a re-path of the folder and everything inside it. Reject moves that don't make
+  // sense: onto itself, into its own descendant, or into the parent it already lives in.
+  function canMoveFolderInto(sourceFolderPath, targetPath) {
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    if (!source || target === source) return false
+    if (target.startsWith(`${source}/`)) return false
+    const sourceParent = source.split('/').slice(0, -1).join('/')
+    return target !== sourceParent
+  }
+
+  // Re-path a dragged folder into targetPath, keeping its name: re-path every story inside it and rename
+  // the matching empty local-folder entries (same mechanism as renaming a folder).
+  function handleMoveFolderToPath(sourceFolderPath, targetPath) {
+    if (!libraryIsMutable || !canMoveFolderInto(sourceFolderPath, targetPath)) return
+
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    const folderName = source.split('/').pop()
+    const newFolderPath = normalizeLibraryPath(target ? `${target}/${folderName}` : folderName)
+
+    getStoriesInFolder(allStoriesInActiveLibrary, source).forEach(story => {
+      dispatch(updateStoryPath(story._id, getRenamedItemPath(story.path, source, newFolderPath)))
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
+    clearDragState()
+  }
+
+  function handleMoveEssayFolderToPath(sourceFolderPath, targetPath) {
+    if (
+      !essaysLibraryActive ||
+      !learningLanguage ||
+      !canMoveFolderInto(sourceFolderPath, targetPath)
+    )
+      return
+
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    const folderName = source.split('/').pop()
+    const newFolderPath = normalizeLibraryPath(target ? `${target}/${folderName}` : folderName)
+
+    getStoriesInFolder(uploadedEssays, source).forEach(essay => {
+      const essayId = getWritingEssayId(essay)
+      if (essayId == null) return
+      dispatch(
+        updateWritingEssayPath(
+          capitalize(learningLanguage),
+          essayId,
+          getRenamedItemPath(essay.path, source, newFolderPath),
+        ),
+      )
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
+    clearEssayDragState()
   }
 
   const folderIsLocalOnly = folderPath =>
@@ -695,13 +709,21 @@ const StoryList = () => {
   const handleAddFolder = folderName => {
     if (!libraryIsMutable) return
 
+    // When a leaf folder is selected, nest the new folder inside it and move into that folder so the
+    // user sees the new subfolder; otherwise add it to the folder currently open.
+    const parentPath = selectedFolderPath || currentLibraryPath
     const newFolderPath = normalizeLibraryPath(
-      currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName,
+      parentPath ? `${parentPath}/${folderName}` : folderName,
     )
 
     setLocalFolders(currentLocalFolders =>
       addLocalFolder(currentLocalFolders, activeLibrary, newFolderPath),
     )
+
+    if (selectedFolderPath) {
+      setCurrentLibraryPath(selectedFolderPath)
+      setSelectedFolderPath(null)
+    }
   }
 
   const handleRemoveLocalFolder = folderPath => {
@@ -744,7 +766,10 @@ const StoryList = () => {
 
     getStoriesInFolder(allStoriesInActiveLibrary, normalizedOldPath).forEach(story => {
       dispatch(
-        updateStoryPath(story._id, getRenamedItemPath(story.path, normalizedOldPath, newFolderPath)),
+        updateStoryPath(
+          story._id,
+          getRenamedItemPath(story.path, normalizedOldPath, newFolderPath),
+        ),
       )
     })
 
@@ -807,7 +832,6 @@ const StoryList = () => {
 
   const handleConfirmFolderDelete = () => {
     if (!folderDeleteRequest) return
-
     ;(folderDeleteRequest.storyIds || []).forEach(storyId => {
       dispatch(removeStory(storyId))
     })
@@ -864,7 +888,10 @@ const StoryList = () => {
     </Box>
   )
 
-  const renderFolderBrowser = () => {
+  // The folder section (breadcrumbs + the folder pills) sits at the TOP of the library card, above the
+  // search/sort row. The stories that live in the current folder render separately, BELOW that row (see
+  // renderStoriesGrid), per the 2026 library layout.
+  const renderFolderSection = () => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
       currentLibraryPath,
@@ -877,26 +904,35 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
-    const storiesInCurrentPath = getStoriesForPath(libraryFilteredStories, currentLibraryPath)
-    const folderIsEmpty = foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0
 
     return (
       <>
         <Box className="library-folder-header">
           {renderLibraryPathBreadcrumbs()}
+          {renderGroupDropdown()}
           {libraryIsMutable && (
             <AddFolder
-              existingFolderNames={allFolderNamesInCurrentPath}
+              existingFolderNames={
+                selectedFolderPath
+                  ? getFoldersForPath(
+                      allStoriesInActiveLibrary,
+                      selectedFolderPath,
+                      localFolderPathsForLibrary,
+                    )
+                  : allFolderNamesInCurrentPath
+              }
               onAddFolder={handleAddFolder}
             />
           )}
         </Box>
-        {folderIsEmpty ? (
-          <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-            <FormattedMessage id="no-stories-found" />
-          </Box>
-        ) : (
-          <Box data-cy="story-items" className="library-story-grid">
+        {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
+          <Box data-cy="library-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -908,14 +944,30 @@ const StoryList = () => {
               )
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
+              const hasSubfolders =
+                getFoldersForPath(
+                  libraryFilteredStories,
+                  normalizedFolderPath,
+                  localFolderPathsForLibrary,
+                ).length > 0
 
               return (
                 <FolderCard
                   key={normalizedFolderPath}
+                  draggable={libraryIsMutable}
+                  isDragging={draggedFolderPath === normalizedFolderPath}
                   isDropTarget={libraryIsMutable && dragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
+                  isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
-                  onClick={() => handleLibraryPathChange(normalizedFolderPath)}
+                  onClick={() =>
+                    handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
+                  }
+                  onDragStart={
+                    libraryIsMutable
+                      ? e => handleFolderDragStart(normalizedFolderPath, e)
+                      : undefined
+                  }
                   onDragLeave={
                     libraryIsMutable
                       ? e => handleFolderDragLeave(normalizedFolderPath, e)
@@ -948,22 +1000,48 @@ const StoryList = () => {
                 />
               )
             })}
-            {storiesInCurrentPath.map(story => (
-              <StoryListItem
-                key={story._id}
-                draggable={libraryIsMutable}
-                isDragging={draggedStoryIds.includes(story._id)}
-                libraryShown={libraries}
-                onDragEnd={handleStoryDragEnd}
-                onDragStart={handleStoryDragStart}
-                story={story}
-                selectedGroup={savedGroupSelection}
-                savedLibrarySelection={savedLibrarySelection}
-              />
-            ))}
           </Box>
         )}
       </>
+    )
+  }
+
+  const renderStoriesGrid = () => {
+    const foldersInCurrentPath = getFoldersForPath(
+      libraryFilteredStories,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
+
+    const storiesInCurrentPath = getStoriesForPath(
+      libraryFilteredStories,
+      selectedFolderPath || currentLibraryPath,
+    )
+
+    if (foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0) {
+      return (
+        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-stories-found" />
+        </Box>
+      )
+    }
+
+    return (
+      <Box data-cy="story-items" className="library-story-grid">
+        {storiesInCurrentPath.map(story => (
+          <StoryListItem
+            key={story._id}
+            draggable={libraryIsMutable}
+            isDragging={draggedStoryIds.includes(story._id)}
+            libraryShown={libraries}
+            onDragEnd={handleStoryDragEnd}
+            onDragStart={handleStoryDragStart}
+            story={story}
+            selectedGroup={savedGroupSelection}
+            savedLibrarySelection={savedLibrarySelection}
+          />
+        ))}
+      </Box>
     )
   }
 
@@ -979,13 +1057,15 @@ const StoryList = () => {
     }
   }
 
-  const renderEssaysLibrary = () => {
+  // Essays that survive the current title search, newest/A-Z per the essay sort. Shared by the essay folder
+  // section (top of the card) and the essay items (below the sort/add row).
+  const getSortedEssaysInView = () => {
     const query = essaySearchQuery.trim().toLowerCase()
     const searchedEssays = query
       ? uploadedEssays.filter(essay => (essay.title || '').toLowerCase().includes(query))
       : uploadedEssays
 
-    const sortedEssays = [...searchedEssays].sort((a, b) => {
+    return [...searchedEssays].sort((a, b) => {
       let dir = 0
       if (essaySorter === 'date') {
         const dateA = getWritingEssaySavedDate(a)
@@ -996,7 +1076,11 @@ const StoryList = () => {
       }
       return sortDirection === 'asc' ? dir : -dir
     })
+  }
 
+  // Breadcrumbs + essay folder pills — rendered at the TOP of the essay card.
+  const renderEssayFolderSection = () => {
+    const sortedEssays = getSortedEssaysInView()
     const foldersInCurrentPath = getFoldersForPath(
       sortedEssays,
       currentLibraryPath,
@@ -1009,27 +1093,30 @@ const StoryList = () => {
       currentLibraryPath,
       localFolderPathsForLibrary,
     )
-    const essaysInCurrentPath = getStoriesForPath(sortedEssays, currentLibraryPath)
-    const folderIsEmpty = foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0
 
     return (
       <>
         <Box className="library-folder-header">
           {renderEssayPathBreadcrumbs()}
           <AddFolder
-            existingFolderNames={allFolderNamesInCurrentPath}
+            existingFolderNames={
+              selectedFolderPath
+                ? getFoldersForPath(uploadedEssays, selectedFolderPath, localFolderPathsForLibrary)
+                : allFolderNamesInCurrentPath
+            }
             onAddFolder={handleAddFolder}
           />
         </Box>
-        {folderIsEmpty ? (
-          // Render nothing during the initial prefetch (unless searching) to avoid a "no essays" flash.
-          essaysPending && !query ? null : (
-            <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-              <FormattedMessage id="no-essays-found" />
-            </Box>
-          )
-        ) : (
-          <Box data-cy="essay-items" className="library-story-grid">
+        {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
+          <Box data-cy="essay-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                onClick={() =>
+                  handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))
+                }
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -1038,14 +1125,27 @@ const StoryList = () => {
               const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
+              const hasSubfolders =
+                getFoldersForPath(sortedEssays, normalizedFolderPath, localFolderPathsForLibrary)
+                  .length > 0
 
               return (
                 <FolderCard
                   key={normalizedFolderPath}
+                  draggable={essaysLibraryActive}
+                  isDragging={draggedEssayFolderPath === normalizedFolderPath}
                   isDropTarget={essayDragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
+                  isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
-                  onClick={() => handleEssayLibraryPathChange(normalizedFolderPath)}
+                  onClick={() =>
+                    handleFolderTap(
+                      normalizedFolderPath,
+                      hasSubfolders,
+                      handleEssayLibraryPathChange,
+                    )
+                  }
+                  onDragStart={e => handleEssayFolderDragStart(normalizedFolderPath, e)}
                   onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
                   onDragOver={e => handleEssayFolderDragOver(normalizedFolderPath, e)}
                   onDrop={e => handleEssayFolderDrop(normalizedFolderPath, e)}
@@ -1064,96 +1164,114 @@ const StoryList = () => {
                 />
               )
             })}
-            {essaysInCurrentPath.map((essay, index) => {
-              const essayId = getWritingEssayId(essay)
-              return (
-                <EssayListItem
-                  key={essayId || index}
-                  essay={essay}
-                  draggable={essaysLibraryActive && Boolean(essayId)}
-                  isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
-                  onDragStart={handleEssayDragStart}
-                  onDragEnd={handleEssayDragEnd}
-                  onOpen={essayId ? () => handleEssayCardOpen(essayId) : undefined}
-                />
-              )
-            })}
           </Box>
         )}
       </>
     )
   }
 
-  return (
-    <Box
-      className={`cont-tall pt-lg cont flex-col auto library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
-    >
-      <ConfirmationWarning
-        open={Boolean(folderDeleteRequest)}
-        setOpen={open => {
-          if (!open) setFolderDeleteRequest(null)
-        }}
-        action={handleConfirmFolderDelete}
-      >
-        <FormattedMessage id="confirm-folder-delete" />
-      </ConfirmationWarning>
-      {libraryControls}
-      <Box
-        sx={{
-          margin: '0 7px',
-          backgroundColor: colors.card,
-          borderRadius: '30px',
-          padding: { xs: '1em', sm: '1.5em' },
-        }}
-      >
-        {activeLibrary === 'essays' ? (
-          <>
-            {essaySearchAndSortControls}
-            {renderEssaysLibrary()}
-          </>
-        ) : (
-          <>
-            {libraries.group && (
-              <Box className="library-group-dropdown-container">
-                <FormControl size="small" fullWidth>
-                  <Select
-                    value={savedGroupSelection}
-                    onChange={handleGroupChange}
-                    className="library-semantic-select"
-                    MenuProps={dropdownMenuProps}
-                    sx={{ color: '#777', width: '100%' }}
-                  >
-                    {groupDropdownOptions.map(option => (
-                      <MenuItem
-                        className="library-dropdown-item"
-                        key={option.key}
-                        value={option.value}
-                      >
-                        {option.text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            )}
-            {searchAndSortControls}
-            {lastQuery && (
-              <Box className="mt-nm ml-sm gap-col-sm">
-                <Typography component="span">
-                  <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-                </Typography>
-              </Box>
-            )}
+  const renderEssayItems = () => {
+    const query = essaySearchQuery.trim().toLowerCase()
+    const sortedEssays = getSortedEssaysInView()
+    const foldersInCurrentPath = getFoldersForPath(
+      sortedEssays,
+      currentLibraryPath,
+      localFolderPathsForLibrary,
+    )
+    const essaysInCurrentPath = getStoriesForPath(
+      sortedEssays,
+      selectedFolderPath || currentLibraryPath,
+    )
 
-            {renderFolderBrowser()}
-          </>
-        )}
+    if (foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0) {
+      if (essaysPending && !query) return null
+      return (
+        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
+          <FormattedMessage id="no-essays-found" />
+        </Box>
+      )
+    }
+
+    if (essaysInCurrentPath.length === 0) return null
+
+    return (
+      <Box data-cy="essay-items" className="library-story-grid">
+        {essaysInCurrentPath.map((essay, index) => {
+          const essayId = getWritingEssayId(essay)
+          return (
+            <EssayListItem
+              key={essayId || index}
+              essay={essay}
+              draggable={essaysLibraryActive && Boolean(essayId)}
+              isDragging={Boolean(essayId) && draggedEssayIds.includes(String(essayId))}
+              onDragStart={handleEssayDragStart}
+              onDragEnd={handleEssayDragEnd}
+              onOpen={essayId ? () => handleEssayCardOpen(essayId) : undefined}
+            />
+          )
+        })}
+      </Box>
+    )
+  }
+
+  return (
+    <div className="library-page">
+      <Box
+        className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+      >
+        <ConfirmationWarning
+          open={Boolean(folderDeleteRequest)}
+          setOpen={open => {
+            if (!open) setFolderDeleteRequest(null)
+          }}
+          action={handleConfirmFolderDelete}
+        >
+          <FormattedMessage id="confirm-folder-delete" />
+        </ConfirmationWarning>
+        {libraryControls}
+        <Box
+          data-cy="library-container"
+          sx={{
+            margin: '0 7px',
+            backgroundColor: colors.card,
+            borderRadius: '30px',
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          {activeLibrary === 'essays' ? (
+            <>
+              {renderEssayFolderSection()}
+              {essaySearchAndSortControls}
+              {renderEssayItems()}
+            </>
+          ) : (
+            <>
+              {renderFolderSection()}
+              <LibrarySearch
+                setDisplayedStories={setDisplayedStories}
+                setDisplaySearchResults={setDisplaySearchResults}
+              />
+              {renderSortAndAddRow(sorter, sortDropdownOptions)}
+              {lastQuery && (
+                <Box>
+                  <Typography component="span">
+                    <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+                  </Typography>
+                </Box>
+              )}
+              {renderStoriesGrid()}
+            </>
+          )}
+        </Box>
       </Box>
 
       <HelperSidebar>
         <GeneralChatbot />
       </HelperSidebar>
-    </Box>
+    </div>
   )
 }
 
