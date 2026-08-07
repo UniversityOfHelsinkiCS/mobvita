@@ -1070,9 +1070,10 @@ const StoryList = () => {
   }
 
   return (
-    <Box
-      className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
-    >
+    <div className="library-page">
+      <Box
+        className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+      >
       <ConfirmationWarning
         open={Boolean(folderDeleteRequest)}
         setOpen={open => {
@@ -1120,11 +1121,12 @@ const StoryList = () => {
           </>
         )}
       </Box>
+      </Box>
 
       <HelperSidebar>
         <GeneralChatbot />
       </HelperSidebar>
-    </Box>
+    </div>
   )
 }
 
