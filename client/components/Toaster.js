@@ -214,6 +214,6 @@ export default function Toaster() {
   }, [message])
 
   return (
-    <ToastContainer position="bottom-center" />
+    <ToastContainer position="bottom-center" icon={false} />
   )
 }

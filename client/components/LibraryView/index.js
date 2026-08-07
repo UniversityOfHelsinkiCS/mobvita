@@ -15,7 +15,7 @@ import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
 import star06Icon from 'Assets/images/star-06.svg'
-import { capitalize, useLearningLanguage } from 'Utilities/common'
+import { capitalize, images, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -530,6 +530,21 @@ const StoryList = () => {
     if (!libraryIsMutable) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
+
+    // Don't let the folder you're viewing be emptied of its direct stories by moving ALL of them into one
+    // of its own subfolders — that leaves a folder with subfolders but no stories, which we don't handle
+    // yet. Prevent it for now.
+    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
+      const directStories = getStoriesForPath(allStoriesInActiveLibrary, currentLibraryPath)
+      const movingIds = new Set(storyIds.map(String))
+      if (
+        directStories.length > 0 &&
+        directStories.every(story => movingIds.has(String(story._id)))
+      ) {
+        return
+      }
+    }
+
     const storyIdSet = new Set(storyIds.map(storyId => String(storyId)))
     const storiesToMove = libraryFilteredStories.filter(
       story =>
@@ -546,6 +561,20 @@ const StoryList = () => {
     if (!essaysLibraryActive || !learningLanguage) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
+
+    // Same guard as stories: don't empty the folder you're viewing by moving all its essays into one of
+    // its own subfolders (see handleMoveStoriesToPath).
+    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
+      const directEssays = getStoriesForPath(uploadedEssays, currentLibraryPath)
+      const movingIds = new Set(essayIds.map(String))
+      if (
+        directEssays.length > 0 &&
+        directEssays.every(essay => movingIds.has(String(getWritingEssayId(essay))))
+      ) {
+        return
+      }
+    }
+
     const essayIdSet = new Set(essayIds.map(id => String(id)))
     const essaysToMove = uploadedEssays.filter(essay => {
       const id = getWritingEssayId(essay)
@@ -600,7 +629,11 @@ const StoryList = () => {
   }
 
   function handleMoveEssayFolderToPath(sourceFolderPath, targetPath) {
-    if (!essaysLibraryActive || !learningLanguage || !canMoveFolderInto(sourceFolderPath, targetPath))
+    if (
+      !essaysLibraryActive ||
+      !learningLanguage ||
+      !canMoveFolderInto(sourceFolderPath, targetPath)
+    )
       return
 
     const source = normalizeLibraryPath(sourceFolderPath)
@@ -931,7 +964,9 @@ const StoryList = () => {
                     handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
                   }
                   onDragStart={
-                    libraryIsMutable ? e => handleFolderDragStart(normalizedFolderPath, e) : undefined
+                    libraryIsMutable
+                      ? e => handleFolderDragStart(normalizedFolderPath, e)
+                      : undefined
                   }
                   onDragLeave={
                     libraryIsMutable
@@ -1077,7 +1112,9 @@ const StoryList = () => {
             {libraryPathParts.length > 0 && (
               <FolderCard
                 isBack
-                onClick={() => handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+                onClick={() =>
+                  handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))
+                }
               />
             )}
             {foldersInCurrentPath.map(folderName => {
@@ -1182,53 +1219,53 @@ const StoryList = () => {
       <Box
         className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
       >
-      <ConfirmationWarning
-        open={Boolean(folderDeleteRequest)}
-        setOpen={open => {
-          if (!open) setFolderDeleteRequest(null)
-        }}
-        action={handleConfirmFolderDelete}
-      >
-        <FormattedMessage id="confirm-folder-delete" />
-      </ConfirmationWarning>
-      {libraryControls}
-      <Box
-        data-cy="library-container"
-        sx={{
-          margin: '0 7px',
-          backgroundColor: colors.card,
-          borderRadius: '30px',
-          padding: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-        }}
-      >
-        {activeLibrary === 'essays' ? (
-          <>
-            {renderEssayFolderSection()}
-            {essaySearchAndSortControls}
-            {renderEssayItems()}
-          </>
-        ) : (
-          <>
-            {renderFolderSection()}
-            <LibrarySearch
-              setDisplayedStories={setDisplayedStories}
-              setDisplaySearchResults={setDisplaySearchResults}
-            />
-            {renderSortAndAddRow(sorter, sortDropdownOptions)}
-            {lastQuery && (
-              <Box>
-                <Typography component="span">
-                  <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-                </Typography>
-              </Box>
-            )}
-            {renderStoriesGrid()}
-          </>
-        )}
-      </Box>
+        <ConfirmationWarning
+          open={Boolean(folderDeleteRequest)}
+          setOpen={open => {
+            if (!open) setFolderDeleteRequest(null)
+          }}
+          action={handleConfirmFolderDelete}
+        >
+          <FormattedMessage id="confirm-folder-delete" />
+        </ConfirmationWarning>
+        {libraryControls}
+        <Box
+          data-cy="library-container"
+          sx={{
+            margin: '0 7px',
+            backgroundColor: colors.card,
+            borderRadius: '30px',
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          {activeLibrary === 'essays' ? (
+            <>
+              {renderEssayFolderSection()}
+              {essaySearchAndSortControls}
+              {renderEssayItems()}
+            </>
+          ) : (
+            <>
+              {renderFolderSection()}
+              <LibrarySearch
+                setDisplayedStories={setDisplayedStories}
+                setDisplaySearchResults={setDisplaySearchResults}
+              />
+              {renderSortAndAddRow(sorter, sortDropdownOptions)}
+              {lastQuery && (
+                <Box>
+                  <Typography component="span">
+                    <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+                  </Typography>
+                </Box>
+              )}
+              {renderStoriesGrid()}
+            </>
+          )}
+        </Box>
       </Box>
 
       <HelperSidebar>

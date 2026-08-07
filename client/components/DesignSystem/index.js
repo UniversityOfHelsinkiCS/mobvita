@@ -14,6 +14,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
+import AppToast from 'Components/ui/AppToast'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
@@ -445,6 +446,30 @@ const DesignSystem = () => {
           <ChatBubble variant="options">
             See-through bubble that holds action content (no background/shadow/padding).
           </ChatBubble>
+        </div>
+      </Section>
+
+      <Section title="AppToast">
+        {/* Preview inside a mock toast card — the real card comes from .Toastify__toast in custom.scss. */}
+        <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 12 }}>
+          {[
+            { message: 'Every toast is a cream card with ink text.', icon: images.globe04 },
+            { message: 'Without an icon, just the message.' },
+          ].map(({ message, icon }) => (
+            <div
+              key={message}
+              style={{
+                width: 320,
+                padding: '14px 16px',
+                backgroundColor: '#faf8ed',
+                border: '1px solid #b1d3c2',
+                borderRadius: 16,
+                boxShadow: '0 8px 24px rgba(45, 44, 42, 0.14)',
+              }}
+            >
+              <AppToast message={message} icon={icon} />
+            </div>
+          ))}
         </div>
       </Section>
 

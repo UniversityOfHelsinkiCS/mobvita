@@ -367,39 +367,19 @@ $value in $spacing {
   width: 100%;
 }
 
-// TOASTIFY OVERRIDES FROM REVITA:
+// 2026 design-system toasts — EVERY toast is a cream card with ink text (pair with the AppToast content
+// component for the icon + message layout). We override toastify's own CSS variables so the card wins no
+// matter the stylesheet load order; the old centred, per-type coloured toasts are gone.
 .Toastify__toast {
-  text-align: center;
-  border-radius: 5px;
-  font-weight: 700;
-  word-wrap: normal;
-
-  &--success {
-    background-color: rgb(131, 214, 126);
-  }
-
-  &--warning {
-    background-color: rgb(255, 184, 107);
-  }
-
-  &--info {
-    background-color: $btn-color-primary;
-  }
-
-  &--error {
-    background-color: rgb(239, 135, 132);
-  }
-}
-
-// 2026 design-system server-issues notice (network problem). Cream card, ink text, bottom-left.
-.server-issues-toast.Toastify__toast {
-  background-color: #faf8ed;
+  --toastify-color-light: #faf8ed;
+  --toastify-text-color-light: #2d2c2a;
+  --toastify-toast-bd-radius: 16px;
+  --toastify-toast-shadow: 0 8px 24px rgba(45, 44, 42, 0.14);
+  --toastify-toast-padding: 14px 16px;
+  --toastify-font-family: 'Geologica', 'Rubik', sans-serif;
   border: 1px solid #b1d3c2;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(45, 44, 42, 0.14);
   text-align: left;
   font-weight: 500;
-  padding: 14px 16px;
 
   .Toastify__close-button {
     color: #2d2c2a;
@@ -408,6 +388,10 @@ $value in $spacing {
     &:hover {
       opacity: 1;
     }
+  }
+
+  .Toastify__progress-bar {
+    background: #b1d3c2;
   }
 }
 
