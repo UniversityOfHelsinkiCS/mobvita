@@ -95,6 +95,14 @@ const seedStoryQuestions = (token, storyId, questions) =>
 // ---- UI helpers ----
 
 const createStoryViaPaste = (title, body) => {
+  // The AI assistant sidebar overlaps the add-story button on narrow viewports, so close it first.
+  // (Clicking the button re-opens the assistant with the add-story options rendered inside it.)
+  cy.get('.helper-sidebar').then($sidebar => {
+    if ($sidebar.hasClass('open')) {
+      cy.get('[data-cy=helper-sidebar-toggle]').click()
+      cy.get('.helper-sidebar').should('have.class', 'collapsed')
+    }
+  })
   cy.get('[data-cy=add-story-button]').click()
   cy.get('[data-cy=add-story-paste]').click()
   cy.get('[data-cy=paste-story-title-input] input').clear().type(title)
@@ -114,7 +122,7 @@ const deleteCreatedStoriesViaUi = stories => {
   stories.forEach(s => {
     cy.get(`[data-cy="library-story-card-${s.id}"]`, { timeout: 60000 })
       .should('exist')
-      .find('.story-item-title')
+      .find('.library-item-title')
       .click()
     cy.get('[data-cy="story-detail-modal-delete-button"]', { timeout: 30000 })
       .should('not.be.disabled')
