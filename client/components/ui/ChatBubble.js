@@ -12,6 +12,8 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *   'note'      - feedback / system note (left, blue panel tint)
  *   'user-note' - the user's own note (right, warm cream tint)
  *   'hint'      - a hint bubble (left, warm yellow)
+ *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
+ *                 left-aligned like a bot reply but no background, shadow, or padding
  *
  * Pass `onRemove` to show a small close button (top-right) for removable messages.
  */
@@ -21,6 +23,15 @@ const VARIANT_STYLES = {
   note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink },
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   hint: { alignSelf: 'flex-start', backgroundColor: '#FFEECE', color: colors.ink },
+  options: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'transparent',
+    color: colors.ink,
+    boxShadow: 'none',
+    maxWidth: '100%',
+    width: '100%',
+    padding: 0,
+  },
 }
 
 const Bubble = styled('div', {

@@ -60,8 +60,6 @@ import faceNeutral from 'Assets/images/face-neutral.svg'
 import flip from 'Assets/images/flip.svg'
 import speaker from 'Assets/images/speaker.svg'
 import wordnest from 'Assets/images/wordnest.svg'
-import bulb from 'Assets/images/Bulb.svg'
-import bulbEmpty from 'Assets/images/Bulb-empty.svg'
 import plusOutline from 'Assets/images/plus-outline.svg'
 import quick from 'Assets/images/quick.svg'
 import translate01 from 'Assets/images/translate-01.svg'
@@ -239,8 +237,6 @@ export const images = {
   flip,
   speaker,
   wordnest,
-  bulb,
-  bulbEmpty,
   plusOutline,
   quick,
   translate01,

@@ -40,7 +40,7 @@ import {
   removeWritingEssay,
   updateWritingEssayPath,
 } from 'Utilities/redux/writingCorrectionReducer'
-import AddStoryModal from 'Components/AddStoryModal'
+import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
@@ -96,7 +96,6 @@ const StoryList = () => {
   const [sortDirection, setSortDirection] = useState(
     savedSortCriterion?.[savedLibrarySelection]?.direction || 'asc',
   )
-  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
   const [currentLibraryPath, setCurrentLibraryPath] = useState('')
@@ -350,8 +349,6 @@ const StoryList = () => {
 
   const libraryControls = (
     <Box data-cy="library-controls" className="library-control">
-      <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
-
       {(() => {
         const meta = {
           public: { label: <FormattedMessage id="Public" />, icon: <PublicOutlinedIcon /> },
@@ -375,7 +372,7 @@ const StoryList = () => {
     <AppButton
       className="tour-add-new-stories library-add-story-button"
       variant="contrast"
-      onClick={() => setAddStoryModalOpen(true)}
+      onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
     >
       <img src={star06Icon} alt="" />

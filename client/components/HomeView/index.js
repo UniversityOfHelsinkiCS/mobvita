@@ -9,7 +9,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import AppActionCard from 'Components/ui/AppActionCard'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Footer from 'Components/Footer'
-import AddStoryModal from 'Components/AddStoryModal'
+import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
 import { startTour } from 'Utilities/redux/tourReducer'
@@ -60,11 +60,11 @@ const HomeviewButton = ({
 
 const HomeviewButtons = ({
   setPracticeModalOpen,
-  setAddStoryModalOpen,
   aTestIsEnabled,
   aReadingComprehensionEnabled,
 }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const hasTests = useSelector(state => state.metadata.hasTests)
   const lessons = useSelector(state => state.metadata.lessons)
@@ -129,7 +129,7 @@ const HomeviewButtons = ({
               imgSrc={images.star06Colored}
               altText="Add stories"
               translationKey="add-your-stories"
-              handleClick={() => setAddStoryModalOpen(true)}
+              handleClick={() => dispatch(openAddStoryOptions())}
               dataCy="add-story-button"
             />
           </div>
@@ -295,7 +295,6 @@ const HomeView = () => {
 
   const [betaModalOpen, setBetaModalOpen] = useState(false)
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
-  const [addStoryModalOpen, setAddStoryModalOpen] = useState(false)
   const userIsAnonymous = userEmail === 'anonymous_email'
 
   // If navigation set state to open practice modal (e.g. from Sidebar), open it and clear history state
@@ -384,7 +383,6 @@ const HomeView = () => {
         <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory} />
       )}
       {/* {showDDLangBackGroundQuestions && <DDLangTermsAndConditions openModal={showDDLangBackGroundQuestions} setOpenModal={setShowDDLangBackGroundQuestions}/>} */}
-      <AddStoryModal open={addStoryModalOpen} setOpen={setAddStoryModalOpen} />
       <PracticeModal open={practiceModalOpen} setOpen={setPracticeModalOpen} />
       <BetaLanguageModal
         open={betaModalOpen}
@@ -407,7 +405,6 @@ const HomeView = () => {
             <div className={homeviewButtonsContainerClassName} style={{ gap: '1.5em' }}>
               <HomeviewButtons
                 setPracticeModalOpen={setPracticeModalOpen}
-                setAddStoryModalOpen={setAddStoryModalOpen}
                 aTestIsEnabled={aTestIsEnabled}
                 aReadingComprehensionEnabled={aReadingComprehensionEnabled}
               />
@@ -429,7 +426,6 @@ const HomeView = () => {
           <div className="flex-col" style={{ gap: '1.5em', marginBottom: '5.5em' }}>
             <HomeviewButtons
               setPracticeModalOpen={setPracticeModalOpen}
-              setAddStoryModalOpen={setAddStoryModalOpen}
               aTestIsEnabled={aTestIsEnabled}
               aReadingComprehensionEnabled={aReadingComprehensionEnabled}
             />

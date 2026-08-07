@@ -12,9 +12,19 @@ export const setHelperSidebarTab = tab => ({
   tab,
 })
 
-const initialState = {  
-  isOpen: (typeof window !== 'undefined') && window.innerWidth >= 450 ? true : false,
+// Open the assistant sidebar AND show the "add new stories" options inside it (replaces the old modal).
+export const openAddStoryOptions = () => ({
+  type: 'OPEN_ADD_STORY_OPTIONS',
+})
+
+export const closeAddStoryOptions = () => ({
+  type: 'CLOSE_ADD_STORY_OPTIONS',
+})
+
+const initialState = {
+  isOpen: typeof window !== 'undefined' && window.innerWidth >= 450 ? true : false,
   activeTab: undefined,
+  addStoryOptionsOpen: false,
 }
 
 export default (state = initialState, action) => {
@@ -33,6 +43,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         activeTab: action.tab,
+      }
+    case 'OPEN_ADD_STORY_OPTIONS':
+      return {
+        ...state,
+        isOpen: true,
+        addStoryOptionsOpen: true,
+      }
+    case 'CLOSE_ADD_STORY_OPTIONS':
+      return {
+        ...state,
+        addStoryOptionsOpen: false,
       }
     default:
       return state
