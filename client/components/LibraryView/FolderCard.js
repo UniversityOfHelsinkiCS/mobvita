@@ -15,6 +15,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import Folder from '../../assets/images/folder.svg'
 import FolderEmpty from '../../assets/images/folder_empty.png'
+import FlipBackward from '../../assets/images/flip-backward.svg'
 import './LibraryView.scss'
 
 const FolderCard = ({
@@ -30,6 +31,7 @@ const FolderCard = ({
   isDropTarget = false,
   isEmpty = false,
   isSelected = false,
+  isBack = false,
 }) => {
   const intl = useIntl()
   const [menuAnchor, setMenuAnchor] = useState(null)
@@ -100,6 +102,26 @@ const FolderCard = ({
 
     onRename(trimmedName)
     closeRenameDialog()
+  }
+
+  // A leading "go up one level" pill shown inside a subfolder: same size as a folder card, but a green
+  // flip-backward icon and "..." in place of the name (Figma "Library Folder" back variant).
+  if (isBack) {
+    return (
+      <div
+        className="library-folder-card library-folder-card-back"
+        role="button"
+        tabIndex={0}
+        aria-label={'Back to parent folder'}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+      >
+        <span className="library-folder-content">
+          <img src={FlipBackward} alt="" className="library-folder-icon" />
+          <span className="library-folder-name">...</span>
+        </span>
+      </div>
+    )
   }
 
   const cardClassName = [

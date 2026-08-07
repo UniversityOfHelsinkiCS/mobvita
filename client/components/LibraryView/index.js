@@ -808,8 +808,14 @@ const StoryList = () => {
             />
           )}
         </Box>
-        {foldersInCurrentPath.length > 0 && (
+        {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="library-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -973,8 +979,14 @@ const StoryList = () => {
             onAddFolder={handleAddFolder}
           />
         </Box>
-        {foldersInCurrentPath.length > 0 && (
+        {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="essay-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                onClick={() => handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
