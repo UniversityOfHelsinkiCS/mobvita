@@ -146,13 +146,19 @@ $menu-hover: #ece3be;
     background: $menu-hover;
   }
 
-  // The three-dots menu is hidden until the folder is selected (see .library-folder-card-selected below).
+  // The three-dots menu is hidden by default, revealed on hover (or when selected — see below). Hover is
+  // what makes it reachable for folders WITH subfolders: tapping those navigates in instead of selecting,
+  // so they'd otherwise never expose their rename/delete options.
   .library-folder-menu {
     position: static !important;
     top: auto;
     right: auto;
     flex-shrink: 0;
     display: none;
+  }
+
+  &:hover .library-folder-menu {
+    display: inline-flex;
   }
 }
 
@@ -162,9 +168,17 @@ $menu-hover: #ece3be;
   background: #b1d3c2;
 }
 
-// The three-dots menu is only revealed on the selected folder.
+// A selected folder keeps its three-dots menu visible even when not hovered.
 .library-folder-card-selected .library-folder-menu {
   display: inline-flex;
+}
+
+// Transparent wrapper around the folder's AppMenu trigger — it swallows clicks so opening the menu
+// doesn't also navigate/select the card, and collapses to nothing while the (hidden) button isn't shown.
+.library-folder-menu-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 // The old paper-folder "tab" is gone in the pill layout.
