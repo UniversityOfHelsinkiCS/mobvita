@@ -2,10 +2,9 @@
 $menu-hover: #ece3be;
 
 .library-dashboard {
-  width: 838px;
-  height: 1065px;
-  gap: 20px;
-  opacity: 1;
+  width: 100%;
+  max-width: 838px;
+  display: flow-root;
 }
 
 // Figma "Frame 2087326746": library items stack full-width in a single column.
