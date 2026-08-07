@@ -126,29 +126,37 @@ const StoryList = () => {
   const {
     clearDragState,
     draggedStoryIds,
+    draggedFolderPath,
     dragOverFolderPath,
     handleFolderDragLeave,
     handleFolderDragOver,
     handleFolderDrop,
+    handleFolderDragStart,
     handleStoryDragEnd,
     handleStoryDragStart,
   } = useLibraryDragAndDrop({
     libraryIsMutable,
     onMoveStories: handleMoveStoriesToPath,
+    onMoveFolder: handleMoveFolderToPath,
+    canDropFolder: canMoveFolderInto,
   })
   // A second drag-and-drop context for essays (same mechanics, moves via updateWritingEssayPath).
   const {
     clearDragState: clearEssayDragState,
     draggedStoryIds: draggedEssayIds,
+    draggedFolderPath: draggedEssayFolderPath,
     dragOverFolderPath: essayDragOverFolderPath,
     handleFolderDragLeave: handleEssayFolderDragLeave,
     handleFolderDragOver: handleEssayFolderDragOver,
     handleFolderDrop: handleEssayFolderDrop,
+    handleFolderDragStart: handleEssayFolderDragStart,
     handleStoryDragEnd: handleEssayDragEnd,
     handleStoryDragStart: handleEssayDragStart,
   } = useLibraryDragAndDrop({
     libraryIsMutable: essaysLibraryActive,
     onMoveStories: handleMoveEssaysToPath,
+    onMoveFolder: handleMoveEssayFolderToPath,
+    canDropFolder: canMoveFolderInto,
   })
 
   useEffect(() => {
@@ -559,6 +567,66 @@ const StoryList = () => {
     })
   }
 
+  // A folder move is a re-path of the folder and everything inside it. Reject moves that don't make
+  // sense: onto itself, into its own descendant, or into the parent it already lives in.
+  function canMoveFolderInto(sourceFolderPath, targetPath) {
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    if (!source || target === source) return false
+    if (target.startsWith(`${source}/`)) return false
+    const sourceParent = source.split('/').slice(0, -1).join('/')
+    return target !== sourceParent
+  }
+
+  // Re-path a dragged folder into targetPath, keeping its name: re-path every story inside it and rename
+  // the matching empty local-folder entries (same mechanism as renaming a folder).
+  function handleMoveFolderToPath(sourceFolderPath, targetPath) {
+    if (!libraryIsMutable || !canMoveFolderInto(sourceFolderPath, targetPath)) return
+
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    const folderName = source.split('/').pop()
+    const newFolderPath = normalizeLibraryPath(target ? `${target}/${folderName}` : folderName)
+
+    getStoriesInFolder(allStoriesInActiveLibrary, source).forEach(story => {
+      dispatch(updateStoryPath(story._id, getRenamedItemPath(story.path, source, newFolderPath)))
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
+    clearDragState()
+  }
+
+  function handleMoveEssayFolderToPath(sourceFolderPath, targetPath) {
+    if (!essaysLibraryActive || !learningLanguage || !canMoveFolderInto(sourceFolderPath, targetPath))
+      return
+
+    const source = normalizeLibraryPath(sourceFolderPath)
+    const target = normalizeLibraryPath(targetPath)
+    const folderName = source.split('/').pop()
+    const newFolderPath = normalizeLibraryPath(target ? `${target}/${folderName}` : folderName)
+
+    getStoriesInFolder(uploadedEssays, source).forEach(essay => {
+      const essayId = getWritingEssayId(essay)
+      if (essayId == null) return
+      dispatch(
+        updateWritingEssayPath(
+          capitalize(learningLanguage),
+          essayId,
+          getRenamedItemPath(essay.path, source, newFolderPath),
+        ),
+      )
+    })
+
+    setLocalFolders(currentLocalFolders =>
+      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+    )
+    setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
+    clearEssayDragState()
+  }
+
   const folderIsLocalOnly = folderPath =>
     localFolderPathsForLibrary.includes(normalizeLibraryPath(folderPath))
 
@@ -608,13 +676,21 @@ const StoryList = () => {
   const handleAddFolder = folderName => {
     if (!libraryIsMutable) return
 
+    // When a leaf folder is selected, nest the new folder inside it and move into that folder so the
+    // user sees the new subfolder; otherwise add it to the folder currently open.
+    const parentPath = selectedFolderPath || currentLibraryPath
     const newFolderPath = normalizeLibraryPath(
-      currentLibraryPath ? `${currentLibraryPath}/${folderName}` : folderName,
+      parentPath ? `${parentPath}/${folderName}` : folderName,
     )
 
     setLocalFolders(currentLocalFolders =>
       addLocalFolder(currentLocalFolders, activeLibrary, newFolderPath),
     )
+
+    if (selectedFolderPath) {
+      setCurrentLibraryPath(selectedFolderPath)
+      setSelectedFolderPath(null)
+    }
   }
 
   const handleRemoveLocalFolder = folderPath => {
@@ -803,7 +879,15 @@ const StoryList = () => {
           {renderGroupDropdown()}
           {libraryIsMutable && (
             <AddFolder
-              existingFolderNames={allFolderNamesInCurrentPath}
+              existingFolderNames={
+                selectedFolderPath
+                  ? getFoldersForPath(
+                      allStoriesInActiveLibrary,
+                      selectedFolderPath,
+                      localFolderPathsForLibrary,
+                    )
+                  : allFolderNamesInCurrentPath
+              }
               onAddFolder={handleAddFolder}
             />
           )}
@@ -837,12 +921,17 @@ const StoryList = () => {
               return (
                 <FolderCard
                   key={normalizedFolderPath}
+                  draggable={libraryIsMutable}
+                  isDragging={draggedFolderPath === normalizedFolderPath}
                   isDropTarget={libraryIsMutable && dragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
                   isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
                   onClick={() =>
                     handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
+                  }
+                  onDragStart={
+                    libraryIsMutable ? e => handleFolderDragStart(normalizedFolderPath, e) : undefined
                   }
                   onDragLeave={
                     libraryIsMutable
@@ -975,7 +1064,11 @@ const StoryList = () => {
         <Box className="library-folder-header">
           {renderEssayPathBreadcrumbs()}
           <AddFolder
-            existingFolderNames={allFolderNamesInCurrentPath}
+            existingFolderNames={
+              selectedFolderPath
+                ? getFoldersForPath(uploadedEssays, selectedFolderPath, localFolderPathsForLibrary)
+                : allFolderNamesInCurrentPath
+            }
             onAddFolder={handleAddFolder}
           />
         </Box>
@@ -1002,6 +1095,8 @@ const StoryList = () => {
               return (
                 <FolderCard
                   key={normalizedFolderPath}
+                  draggable={essaysLibraryActive}
+                  isDragging={draggedEssayFolderPath === normalizedFolderPath}
                   isDropTarget={essayDragOverFolderPath === normalizedFolderPath}
                   isEmpty={folderIsEmptyLocal}
                   isSelected={selectedFolderPath === normalizedFolderPath}
@@ -1013,6 +1108,7 @@ const StoryList = () => {
                       handleEssayLibraryPathChange,
                     )
                   }
+                  onDragStart={e => handleEssayFolderDragStart(normalizedFolderPath, e)}
                   onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
                   onDragOver={e => handleEssayFolderDragOver(normalizedFolderPath, e)}
                   onDrop={e => handleEssayFolderDrop(normalizedFolderPath, e)}

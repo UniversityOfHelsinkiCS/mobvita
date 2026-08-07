@@ -21,6 +21,7 @@ import './LibraryView.scss'
 const FolderCard = ({
   name,
   onClick,
+  onDragStart,
   onDragLeave,
   onDragOver,
   onDrop,
@@ -28,6 +29,8 @@ const FolderCard = ({
   onRemove,
   onRename,
   existingFolderNames = [],
+  draggable = false,
+  isDragging = false,
   isDropTarget = false,
   isEmpty = false,
   isSelected = false,
@@ -129,6 +132,7 @@ const FolderCard = ({
     isDropTarget ? 'library-folder-card-drop-target' : '',
     isEmpty ? 'library-folder-card-empty' : '',
     isSelected ? 'library-folder-card-selected' : '',
+    isDragging ? 'library-folder-card-dragging' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -139,8 +143,10 @@ const FolderCard = ({
         className={cardClassName}
         role="button"
         tabIndex={0}
+        draggable={draggable}
         onClick={onClick}
         onKeyDown={handleKeyDown}
+        onDragStart={onDragStart}
         onDragLeave={onDragLeave}
         onDragOver={onDragOver}
         onDrop={onDrop}
