@@ -39,7 +39,6 @@ export const shape = {
   inputHeight: 36,
   inputPaddingX: 10, // Figma search field "padding-left/right: 10" — pill padding when adorned
   inputIconGap: 8, // derived — Figma gives no icon↔text gap
-
   fieldGap: 30,
   cardPadding: '40px 60px', // Figma "40,60" — assumed vertical/horizontal; confirm
 }

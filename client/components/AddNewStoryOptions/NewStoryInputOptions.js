@@ -3,9 +3,6 @@ import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { ACCESS, images, useHasAccess } from 'Utilities/common'
-import uploadFileIcon from '../../assets/images/upload-file.png'
-import uploadWebIcon from '../../assets/images/upload-cloud.png'
-import uploadPasteIcon from '../../assets/images/paste.png'
 
 // Figma "Chat Bot answer": each story source is a full-width pill in its own pastel colour.
 const optionButtonSx = background => ({
@@ -18,7 +15,7 @@ const optionButtonSx = background => ({
   '&:hover': { backgroundColor: background, filter: 'brightness(0.96)' },
 })
 
-const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
+const NewStoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
   const navigate = useNavigate()
   // Generate-story button is for registered+ users (hidden for access <= 0).
   const canGenerate = useHasAccess(ACCESS.REGISTERED)
@@ -42,15 +39,15 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           data-cy="add-story-web"
           onClick={() => setActiveComponent('web')}
         >
-          <img src={uploadWebIcon} alt="" className="story-option-icon" />
+          <img src={images.globe} alt="" className="story-option-icon" />
           <FormattedMessage id="upload-from-web" />
         </AppButton>
         <AppButton
-          sx={optionButtonSx('#c1dce6')}
+          sx={optionButtonSx('#C0DCE6')}
           data-cy="add-story-file"
           onClick={() => setActiveComponent('file')}
         >
-          <img src={uploadFileIcon} alt="" className="story-option-icon" />
+          <img src={images.upload} alt="" className="story-option-icon" />
           <FormattedMessage id="upload-stories" />
         </AppButton>
         <AppButton
@@ -58,7 +55,7 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
           data-cy="add-story-paste"
           onClick={() => setActiveComponent('paste')}
         >
-          <img src={uploadPasteIcon} alt="" className="story-option-icon" />
+          <img src={images.paste} alt="" className="story-option-icon" />
           <FormattedMessage id="paste-a-text" />
         </AppButton>
         {lesson_topics?.length !== 0 && canGenerate && (
@@ -67,7 +64,12 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
             data-cy="add-story-generate"
             onClick={goToGeneratePage}
           >
-            <img src={images.star06} alt="" className="story-option-icon" />
+            <img
+              src={images.star06}
+              alt=""
+              className="story-option-icon"
+              style={{ filter: 'brightness(0)' }}
+            />
             <FormattedMessage id="go-generating" />
           </AppButton>
         )}
@@ -76,4 +78,4 @@ const StoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActi
   )
 }
 
-export default StoryInputOptions
+export default NewStoryInputOptions

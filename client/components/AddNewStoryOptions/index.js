@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import CloseIcon from '@mui/icons-material/Close'
 import { useCurrentUser } from 'Utilities/common'
-import StoryInputOptions from './StoryInputOptions'
+import NewStoryInputOptions from './NewStoryInputOptions'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
@@ -57,7 +57,7 @@ const AddNewStoryOptions = ({ onClose }) => {
           </IconButton>
         )}
       </div>
-      <StoryInputOptions
+      <NewStoryInputOptions
         closeModal={onClose}
         lesson_topics={lesson_topics}
         userIsAnonymous={userIsAnonymous}
