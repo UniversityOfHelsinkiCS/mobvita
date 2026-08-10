@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { Icon, Accordion, AccordionTitle, AccordionContent } from 'semantic-ui-react'
 import TopicListItem from './TopicListItem'
 
 const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) => {
@@ -78,12 +81,6 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
         return x
       }, {})) ||
     {}
-
-  const handleClick = (e, props) => {
-    const { index } = props
-    const newIndex = accordionState === index ? -1 : index
-    setAccordionState(newIndex)
-  }
 
   const handleSearchChange = event => {
     setSearchQuery(event.target.value)
@@ -171,7 +168,7 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
           }}
           onClick={() => excludeAllTopics()}
         >
-          <Icon name="trash alternate" />
+          <DeleteOutlineIcon />
           <FormattedMessage id="exclude-all-topics" />
         </AppButton>
 
@@ -210,23 +207,27 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
       )}
 
       {lessonGroups && (
-        <Accordion fluid styled style={{ background: '#fffaf0' }}>
+        <div style={{ background: '#fffaf0', borderRadius: 12, overflow: 'hidden' }}>
           {Object.keys(lessonGroups)
             .sort()
             .map((group, index) => (
-              <React.Fragment key={`lesson-group-${group}`}>
-                <AccordionTitle
-                  className="level-content"
-                  active={accordionState === index}
-                  index={index}
-                  onClick={handleClick}
-                >
-                  <h4 className="lesson-topic-item">
-                    <Icon name="dropdown" />
+              <Accordion
+                key={`lesson-group-${group}`}
+                expanded={accordionState === index}
+                onChange={() => setAccordionState(accordionState === index ? -1 : index)}
+                disableGutters
+                elevation={0}
+                sx={{
+                  backgroundColor: 'transparent',
+                  '&:before': { display: 'none' },
+                }}
+              >
+                <AccordionSummary className="level-content" expandIcon={<ExpandMoreIcon />}>
+                  <h4 className="lesson-topic-item" style={{ margin: 0 }}>
                     <FormattedMessage id="lesson-group" values={{ group }} />
                   </h4>
-                </AccordionTitle>
-                <AccordionContent active={accordionState === index}>
+                </AccordionSummary>
+                <AccordionDetails>
                   {lessonGroups[group].map(lesson =>
                     rowRenderer({
                       key: `lesson-${lesson.ID}`,
@@ -234,10 +235,10 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
                       style: {},
                     }),
                   )}
-                </AccordionContent>
-              </React.Fragment>
+                </AccordionDetails>
+              </Accordion>
             ))}
-        </Accordion>
+        </div>
       )}
     </div>
   )

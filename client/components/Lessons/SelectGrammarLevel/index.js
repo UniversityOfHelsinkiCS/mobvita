@@ -1,10 +1,16 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Modal, Tab, TabPane, Icon, Popup } from 'semantic-ui-react'
+import IconButton from '@mui/material/IconButton'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { cefrNumberToLevel } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTabs from 'Components/ui/AppTabs'
+import CustomTooltip from 'Components/CustomTooltip'
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import ToggleButton from '../ToggleButton'
@@ -33,6 +39,7 @@ const SelectGrammarLevel = ({
   showListeningSettings,
 }) => {
   const [modal, setModal] = useState(false)
+  const [activeTab, setActiveTab] = useState('grammar')
   const intl = useIntl()
   const lessonTopicItems = lessons || []
   const { grade, current_cefr: currentCefr } = useSelector(state => state.user.data.user)
@@ -128,90 +135,79 @@ const SelectGrammarLevel = ({
     return null
   }
 
-  const panes = [
-    {
-      menuItem: intl.formatMessage({ id: 'Grammar topics' }),
-      render: () => (
-        <TabPane>
-          <Topics
-            topicInstance={topicInstance}
-            editable={editable}
-            setSelectedTopics={handleCustomTopicsChange}
-            showPerf={showPerf}
-          />
-        </TabPane>
-      ),
-    },
-    {
-      menuItem: intl.formatMessage({ id: 'listening-exercises' }),
-      render: () => (
-        <TabPane
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '500px',
-          }}
-        >
-          <ListeningExerciseSettings />
-        </TabPane>
-      ),
-    },
+  const topicsPane = (
+    <Topics
+      topicInstance={topicInstance}
+      editable={editable}
+      setSelectedTopics={handleCustomTopicsChange}
+      showPerf={showPerf}
+    />
+  )
+
+  const tabItems = [
+    { value: 'grammar', label: intl.formatMessage({ id: 'Grammar topics' }) },
+    { value: 'listening', label: intl.formatMessage({ id: 'listening-exercises' }) },
   ]
+
+  // The tabs variant ("Customize learning settings") and the plain variant share one AppDialog;
+  // only the title and body differ.
+  const dialogTitle = showListeningSettings ? (
+    <FormattedMessage id="custom" />
+  ) : (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
+      <IconButton
+        onClick={() => setModal(false)}
+        aria-label="back"
+        size="small"
+        sx={{ color: colors.ink }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <FormattedMessage id="select-lesson-grammar" />
+    </span>
+  )
 
   return (
     <>
-      <Modal
-        open={modal}
-        onClose={() => setModal(false)}
-        size="large"
-        closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
-      >
+      <AppDialog open={modal} onClose={() => setModal(false)} maxWidth="md" title={dialogTitle}>
         {showListeningSettings ? (
           <>
-            <Modal.Header>
-              <FormattedMessage id="custom" />
-            </Modal.Header>
-            <Tab panes={panes} />
-          </>
-        ) : (
-          <>
-            <Modal.Header>
-              <button
-                type="button"
-                onClick={() => setModal(false)}
+            <div style={{ marginBottom: 24 }}>
+              <AppTabs tabs={tabItems} value={activeTab} onChange={setActiveTab} fullWidth bordered />
+            </div>
+            {activeTab === 'grammar' ? (
+              topicsPane
+            ) : (
+              <div
                 style={{
-                  background: 'transparent',
-                  border: 'none',
-                  marginRight: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: 500,
                 }}
               >
-                <Icon name="arrow left" />
-              </button>
-              <FormattedMessage id="select-lesson-grammar" />
-            </Modal.Header>
-            <Modal.Content>
-              <Topics
-                topicInstance={topicInstance}
-                editable={editable}
-                setSelectedTopics={handleCustomTopicsChange}
-                showPerf={showPerf}
-              />
-            </Modal.Content>
+                <ListeningExerciseSettings />
+              </div>
+            )}
           </>
+        ) : (
+          topicsPane
         )}
-      </Modal>
+      </AppDialog>
       <div className="grammar-buttons-container">
         <div className="grammar-level-button-group">
           {GRAMMAR_LEVELS.map(level => (
             <div className="button-with-marker" key={level}>
               {recommendedLevel === level && (
-                <Popup
-                  trigger={<Icon name="caret down" size="large" />}
-                  content={intl.formatMessage({ id: 'recommended-grammar-topics-level-popup' })}
-                  inverted
-                  basic
-                />
+                <CustomTooltip
+                  title={intl.formatMessage({ id: 'recommended-grammar-topics-level-popup' })}
+                  placement="top"
+                  permanent
+                >
+                  <span style={{ display: 'inline-flex' }}>
+                    <ArrowDropDownIcon fontSize="large" sx={{ color: colors.ink }} />
+                  </span>
+                </CustomTooltip>
               )}
               <ToggleButton
                 handleClick={() => handleLevelClick(level)}

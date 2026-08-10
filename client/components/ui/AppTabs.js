@@ -10,6 +10,12 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *
  * Controlled: `value` + `onChange(value)`. Set `fullWidth` to stretch the bar and split the segments
  * evenly across it.
+ *
+ * Variants:
+ *   - default : no outline — use on the page background where the cream bar reads on its own.
+ *   - inner   : pass `bordered` for a 1px green outline around the whole bar, so it stays legible
+ *               when nested inside another cream surface (a card or modal — e.g. Flashcards, the
+ *               learning-settings modal).
  */
 const BADGE_ORANGE = '#FF7A45'
 

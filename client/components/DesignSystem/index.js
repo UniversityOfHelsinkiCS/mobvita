@@ -337,6 +337,13 @@ const DesignSystem = () => {
               <div style={{ maxWidth: 620 }}>
                 <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth />
               </div>
+              <div style={{ maxWidth: 620 }}>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  Inner tab panel (<code>bordered</code>) — a green outline so the bar reads when it
+                  sits inside a cream card or modal (e.g. Flashcards, the learning-settings modal).
+                </div>
+                <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth bordered />
+              </div>
               <div
                 style={{
                   backgroundColor: colors.card,

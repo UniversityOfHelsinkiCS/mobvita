@@ -1,8 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Icon, Popup, Checkbox } from 'semantic-ui-react'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import CheckIcon from '@mui/icons-material/Check'
 import AppButton from 'Components/AppButton'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import CustomTooltip from 'Components/CustomTooltip'
 
 import { useIntl, FormattedMessage } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
@@ -100,7 +103,7 @@ const LessonTitle = ({
             ...color,
           }}
         >
-          <Checkbox
+          <AppCheckbox
             checked={
               lesson_instance != undefined &&
               lesson_instance?.topic_ids != undefined &&
@@ -109,52 +112,52 @@ const LessonTitle = ({
             onChange={() => {
               toggleTopic(lesson_topics[k])
             }}
+            sx={{ padding: 0 }}
           />
         </span>
         {showPerf && (
-          <Popup
-            position="top center"
-            // content={intl.formatMessage({ id: 'explanations-popup-flashcard-elo' })}
-            content={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
-            trigger={
-              <div
-                className="lesson-performance"
+          <CustomTooltip
+            placement="top"
+            permanent
+            title={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
+          >
+            <div
+              className="lesson-performance"
+              style={{
+                minWidth: '50px',
+                maxWidth: '50px',
+              }}
+            >
+              <span
+                float="left"
                 style={{
-                  minWidth: '50px',
-                  maxWidth: '50px',
+                  display: 'inline-grid',
+                  justifyContent: 'end',
+                  width: '6%',
+                  textAlign: 'right',
+                  marginRight: '5px',
+                  maxWidth: '25px',
+                  minWidth: '25px',
+                  verticalAlign: 'top',
+                  ...color,
                 }}
               >
-                <span
-                  float="left"
-                  style={{
-                    display: 'inline-grid',
-                    justifyContent: 'end',
-                    width: '6%',
-                    textAlign: 'right',
-                    marginRight: '5px',
-                    maxWidth: '25px',
-                    minWidth: '25px',
-                    verticalAlign: 'top',
-                    ...color,
-                  }}
-                >
-                  {String(Math.round(get_lesson_performance(correct, total) * 100)).padEnd(3, ' ')}
-                </span>
-                <span
-                  style={{
-                    width: '3%',
-                    textAlign: 'center',
-                    maxWidth: '20px',
-                    minWidth: '18px',
-                    verticalAlign: 'top',
-                    ...color,
-                  }}
-                >
-                  %
-                </span>
-              </div>
-            }
-          />
+                {String(Math.round(get_lesson_performance(correct, total) * 100)).padEnd(3, ' ')}
+              </span>
+              <span
+                style={{
+                  width: '3%',
+                  textAlign: 'center',
+                  maxWidth: '20px',
+                  minWidth: '18px',
+                  verticalAlign: 'top',
+                  ...color,
+                }}
+              >
+                %
+              </span>
+            </div>
+          </CustomTooltip>
         )}
         <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
@@ -172,7 +175,7 @@ const LessonTitle = ({
   return bigScreen ? (
     <div>
       <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-        <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
+        <MoreVertIcon className="lesson-item-dots" sx={{ color: 'grey' }} />
         <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
           <h5
             className="story-item-title"
@@ -180,7 +183,7 @@ const LessonTitle = ({
             dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
           />
         </div>
-        <Card.Content extra className="lesson-card-actions-cont">
+        <div className="lesson-card-actions-cont">
           <div className="lesson-actions">
             <AppButton
               variant={selected ? 'primary' : 'outline-primary'}
@@ -198,17 +201,15 @@ const LessonTitle = ({
             >
               {(selected && (
                 <>
-                  <Icon name="check" />
+                  <CheckIcon />
                   <FormattedMessage id="included-in-lesson" />
                 </>
               )) || <FormattedMessage id="include-into-lesson" />}
             </AppButton>
           </div>
-        </Card.Content>
+        </div>
       </span>
-      {canSeeTopics && (
-        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
-      )}
+      {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
     </div>
   ) : (
     <div>
@@ -223,16 +224,14 @@ const LessonTitle = ({
               ...getTextStyle(learningLanguage),
             }}
           >
-            <Icon color="grey" name="ellipsis vertical" className="lesson-item-dots" />
+            <MoreVertIcon className="lesson-item-dots" sx={{ color: 'grey' }} />
             <span dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }} />
             {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
           </h5>
         </div>
       </span>
-      {canSeeTopics && (
-        <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>
-      )}
-      <Card.Content extra className="lesson-card-actions-cont">
+      {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
+      <div className="lesson-card-actions-cont">
         <div className="lesson-actions">
           <AppButton
             variant={selected ? 'primary' : 'outline-primary'}
@@ -251,13 +250,13 @@ const LessonTitle = ({
           >
             {(selected && (
               <>
-                <Icon name="check" />
+                <CheckIcon />
                 <FormattedMessage id="included-in-lesson" />
               </>
             )) || <FormattedMessage id="include-into-lesson" />}
           </AppButton>
         </div>
-      </Card.Content>
+      </div>
     </div>
   )
 }
@@ -273,16 +272,21 @@ const TopicListItem = ({
   showPerf,
 }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
-  let backgroundColor = '#ffffff'
+  // Default cards are transparent so they sit on the cream card; only high-scoring lessons tint green.
+  let backgroundColor = 'transparent'
   if (correct_perc >= 0.8) backgroundColor = '#E2FFE1'
   return (
-    <Card
-      fluid
+    <div
       key={lesson.ID}
       className="lesson-list-card"
-      style={{ backgroundColor: backgroundColor }}
+      style={{
+        backgroundColor,
+        border: '1px solid #B1D3C2',
+        borderRadius: 16,
+        padding: '14px 18px',
+      }}
     >
-      <Card.Content extra className="lesson-card-title-cont">
+      <div className="lesson-card-title-cont">
         <LessonTitle
           lesson={lesson}
           lesson_instance={lesson_instance}
@@ -293,8 +297,8 @@ const TopicListItem = ({
           excludeLesson={excludeLesson}
           showPerf={showPerf}
         />
-      </Card.Content>
-    </Card>
+      </div>
+    </div>
   )
 }
 
