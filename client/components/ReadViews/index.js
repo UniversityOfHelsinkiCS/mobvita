@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const EMPTY_LOADING_PROGRESS = {}
-import { Divider, FormControlLabel, Box } from '@mui/material'
+import { FormControlLabel, Box } from '@mui/material'
 import { images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import AppSwitch from 'Components/ui/AppSwitch'
@@ -50,7 +50,6 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import StoryTopics from 'Components/StoryView/StoryTopics'
 import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
@@ -474,13 +473,6 @@ const ReadViews = ({ match }) => {
           )}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
-          {canSeeTopics && !routeStory?.control_story && (
-            <TopicsSelect
-              conceptCount={routeStory?.concept_count || {}}
-              focusedConcept={focusedConcept}
-              setFocusedConcept={setFocusedConcept}
-            />
-          )}
           {!routeStory?.control_story && (
             <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
               <span
@@ -608,8 +600,7 @@ const ReadViews = ({ match }) => {
                 </div>
               )}
             </div>
-            <Divider />
-                        {isStudentPreviewProcessing ? (
+            {isStudentPreviewProcessing ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>
                 <Spinner size={60} text={intl.formatMessage({ id: 'loading-story' })} />
               </div>
@@ -647,12 +638,11 @@ const ReadViews = ({ match }) => {
           )}
         </div>         
           <HelperSidebar>
-            {canSeeTopics && (
-              <StoryTopics
-                conceptCount={routeStory?.concept_count || 0}
+            {canSeeTopics && !routeStory?.control_story && (
+              <TopicsSelect
+                conceptCount={routeStory?.concept_count || {}}
                 focusedConcept={focusedConcept}
                 setFocusedConcept={setFocusedConcept}
-                loadingReady={processingFinished}
               />
             )}
             <CombinedChatbot />

@@ -66,10 +66,12 @@ import wordnest from 'Assets/images/wordnest.svg'
 import plusOutline from 'Assets/images/plus-outline.svg'
 import quick from 'Assets/images/quick.svg'
 import translate01 from 'Assets/images/translate-01.svg'
+import translate from 'Assets/images/translate.svg'
 import dotpoints01 from 'Assets/images/dotpoints-01.svg'
 import playCircle from 'Assets/images/play-circle.svg'
 import arrowRight from 'Assets/images/arrow-right.svg'
 import checkCircle from 'Assets/images/check-circle.svg'
+import checkIcon from 'Assets/images/check-icon.svg'
 import question from 'Assets/images/question.svg'
 import iconHome from 'Assets/images/icon-home.svg'
 import layersThree from 'Assets/images/layers-three-01.svg'
@@ -246,10 +248,12 @@ export const images = {
   plusOutline,
   quick,
   translate01,
+  translate,
   dotpoints01,
   playCircle,
   arrowRight,
   checkCircle,
+  checkIcon,
   question,
   iconHome,
   layersThree,

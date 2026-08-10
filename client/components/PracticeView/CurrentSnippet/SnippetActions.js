@@ -2,10 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
-import ReplayIcon from '@mui/icons-material/Replay'
 import AppButton from 'Components/AppButton'
-import { confettiRain, finalConfettiRain } from 'Utilities/common'
+import { confettiRain, finalConfettiRain, images } from 'Utilities/common'
 import {
   postAnswers,
   resetCurrentSnippet,
@@ -63,14 +61,17 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
 
   return (
     <>
-      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {answersPending && <Spinner inline size={60} />}
-      </div>
+      {answersPending && (
+        <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}>
+          <Spinner inline size={60} />
+        </div>
+      )}
       <button
         data-cy="check-answer"
         type="button"
         onClick={() => handleClick()}
         className="check-answers-button"
+        style={{ marginBottom: 0, height: 46 }}
         disabled={
           answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
         }
@@ -79,10 +80,16 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
           className="attempt-bar"
           style={{
             width: `${attemptRatioPercentage}%`,
+            height: '100%',
             borderRadius: '13px',
           }}
         />
-        <span style={{ ...getFontStyle() }}>{<FormattedMessage id="check-answer" />}</span>
+        <span
+          style={{ ...getFontStyle(), display: 'inline-flex', alignItems: 'center', gap: '0.5em' }}
+        >
+          <img src={images.checkIcon} alt="" style={{ width: 20, height: 20 }} />
+          <FormattedMessage id="check-answer" />
+        </span>
       </button>
     </>
   )
@@ -122,9 +129,9 @@ const SnippetActions = ({
       snippets.focused &&
       snippets.focused?.practice_snippet?.reduce(
         (sum, word) => (word.tested && !word.isWrong ? sum + 1 : sum),
-        0
+        0,
       ),
-    [snippets]
+    [snippets],
   )
 
   useEffect(() => {
@@ -140,7 +147,7 @@ const SnippetActions = ({
     for (const [key, answerObject] of Object.entries(currentAnswers)) {
       let word_ID = key.split('-')[0]
       answerObject['requestedHintsList'] = practice_snippet.find(
-        w => w.ID == word_ID
+        w => w.ID == word_ID,
       )?.requested_hints
       update_answers[key] = answerObject
     }
@@ -189,7 +196,7 @@ const SnippetActions = ({
     const wrongAnswers = Object.keys(filteredCurrentAnswers).filter(
       key =>
         filteredCurrentAnswers[key].users_answer.toLowerCase() !==
-        filteredCurrentAnswers[key].correct.toLowerCase()
+        filteredCurrentAnswers[key].correct.toLowerCase(),
     )
 
     let update_answers = {}
@@ -249,44 +256,42 @@ const SnippetActions = ({
 
   return (
     <div>
-      <div className="snippet-actions">
-        <CheckAnswersButton
-          handleClick={checkAnswers}
-          checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
-        />
-        <div className="space-between">
-          <AppButton
-            variant="secondary"
-            size="sm"
-            disabled={
-              snippets.answersPending ||
-              snippets.pending ||
-              !snippets.focused ||
-              snippets.cacheSize === 0
-            }
-            onClick={submitAnswers}
-            style={{ marginBottom: '0.5em' }}
-          >
-            <span>
-              <FormattedMessage id="go-to-next-snippet" />{' '}
-              <SubdirectoryArrowRightIcon sx={{ fontSize: 18, verticalAlign: 'middle' }} />
-            </span>
-          </AppButton>
-          {!isControlledStory && (
-            <AppButton
-              variant="secondary"
-              size="sm"
-              onClick={handleRestart}
-              style={{ marginBottom: '0.5em' }}
-              disabled={snippets.answersPending || snippets.pending}
-            >
-              <span>
-                <FormattedMessage id="start-over" />{' '}
-                <ReplayIcon sx={{ fontSize: 18, verticalAlign: 'middle' }} />
-              </span>
-            </AppButton>
-          )}
+      <div
+        className="snippet-actions"
+        style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '0.75em' }}
+      >
+        {/* Check Answers is twice the width of Next / Start Over; all share the same big height. */}
+        <div style={{ flex: '2 1 200px' }}>
+          <CheckAnswersButton
+            handleClick={checkAnswers}
+            checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
+          />
         </div>
+        <AppButton
+          variant="contrast-outline"
+          disabled={
+            snippets.answersPending ||
+            snippets.pending ||
+            !snippets.focused ||
+            snippets.cacheSize === 0
+          }
+          onClick={submitAnswers}
+          sx={{ flex: '1 1 100px', height: 46 }}
+        >
+          <img src={images.arrowRight} alt="" style={{ width: 18, height: 18 }} />
+          <FormattedMessage id="go-to-next-snippet" />
+        </AppButton>
+        {!isControlledStory && (
+          <AppButton
+            variant="contrast-outline"
+            onClick={handleRestart}
+            disabled={snippets.answersPending || snippets.pending}
+            sx={{ flex: '1 1 100px', height: 46 }}
+          >
+            <img src={images.flipBackward} alt="" style={{ width: 18, height: 18 }} />
+            <FormattedMessage id="start-over" />
+          </AppButton>
+        )}
       </div>
     </div>
   )

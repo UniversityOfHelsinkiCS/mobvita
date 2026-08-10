@@ -1,20 +1,21 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
 import {
+  images,
   learningLanguageSelector,
   dictionaryLanguageSelector,
   learningLanguageLocaleCodes,
 } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 import {
   getContextTranslation,
   setContextTranslationVisible,
 } from 'Utilities/redux/contextTranslationReducer'
 import { setHelperSidebarOpen, setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
 
-// Small translate icon shown next to the story title. Context-translates the title (same ctxTranslate
-// call as the "Translate Sentence" action-menu item) and shows it in the CombinedChatbot's
-// context-translation bubble. Used in both PracticeView and ReadViews.
+// Small translate icon shown next to the story title. Context-translates the title (same
+// ctxTranslate call as the "Translate Sentence" action-menu item) and shows it in the
+// CombinedChatbot's context-translation bubble. Used in both PracticeView and ReadViews.
 const StoryTitleTranslate = ({ title }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -28,8 +29,8 @@ const StoryTitleTranslate = ({ title }) => {
       getContextTranslation(
         title,
         learningLanguageLocaleCodes[learningLanguage],
-        learningLanguageLocaleCodes[dictionaryLanguage]
-      )
+        learningLanguageLocaleCodes[dictionaryLanguage],
+      ),
     )
     dispatch(setContextTranslationVisible(true))
     dispatch(setHelperSidebarOpen(true))
@@ -40,26 +41,34 @@ const StoryTitleTranslate = ({ title }) => {
   }
 
   return (
-    <Icon
-      name="language"
+    <button
+      type="button"
       data-cy="story-title-translate"
-      role="button"
+      aria-label="translate title"
       onClick={handleClick}
       style={{
+        // Circular sage-green icon button beside the title (2026 design).
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        width: '1.8em',
+        height: '1.8em',
+        marginLeft: '0.5em',
+        padding: 0,
+        border: 'none',
+        borderRadius: '50%',
+        backgroundColor: colors.green,
         cursor: 'pointer',
-        marginLeft: '0.4em',
-        // Fixed size + line-height:1 so the glyph isn't blown up by the title font-size and
-        // isn't pushed to the corner by the title's inherited line-height.
-        fontSize: '1.4rem',
-        lineHeight: 1,
-        height: '1em',
-        width: 'auto',
-        color: '#17a2b8',
-        verticalAlign: 'baseline',
-        alignSelf: 'baseline',
-        marginBottom: '10px',
+        alignSelf: 'center',
       }}
-    />
+    >
+      <img
+        src={images.translate}
+        alt=""
+        style={{ width: '1em', height: '1em', display: 'block' }}
+      />
+    </button>
   )
 }
 

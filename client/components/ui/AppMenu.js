@@ -71,6 +71,9 @@ const AppMenu = ({
   children,
   onOpenChange,
   minWidth = 320,
+  // When true the panel is sized to the trigger's width (e.g. a full-width trigger in a sidebar),
+  // so the dropdown spans the same width as the control that opened it, ignoring `minWidth`.
+  matchTriggerWidth = false,
   borderRadius = '0 0 30px 30px',
   anchorOrigin = { vertical: 'bottom', horizontal: 'left' },
   transformOrigin = { vertical: 'top', horizontal: 'left' },
@@ -78,8 +81,8 @@ const AppMenu = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-  // `onOpenChange` lets a consumer react to the menu opening/closing (e.g. keep a card highlighted while
-  // its menu is open) — AppMenu still owns the anchor state itself.
+  // `onOpenChange` lets a consumer react to the menu opening/closing (e.g. keep a card highlighted
+  // while its menu is open) — AppMenu still owns the anchor state itself.
   const openMenu = e => {
     setAnchorEl(e.currentTarget)
     if (onOpenChange) onOpenChange(true)
@@ -104,7 +107,12 @@ const AppMenu = ({
           anchorOrigin={anchorOrigin}
           transformOrigin={transformOrigin}
           radius={borderRadius}
-          menuMinWidth={minWidth}
+          menuMinWidth={matchTriggerWidth ? 0 : minWidth}
+          slotProps={
+            matchTriggerWidth && anchorEl
+              ? { paper: { style: { width: anchorEl.clientWidth } } }
+              : undefined
+          }
           {...popoverProps}
         >
           {closeIcon && (

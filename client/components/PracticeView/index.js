@@ -240,12 +240,54 @@ const PracticeView = () => {
               boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
             }}
           >
-            <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
-              <ProgressBar
-                snippetProgress={currentSnippetNum}
-                snippetsTotal={snippetsTotalNum}
-                progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
-              />
+            <div
+              className="progress-bar-cont"
+              style={{
+                top: smallScreen ? '.25em' : '3.25em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1em',
+              }}
+            >
+              {snippetsTotalNum ? (
+                <span
+                  data-cy="snippet-progress"
+                  style={{
+                    flexShrink: 0,
+                    whiteSpace: 'nowrap',
+                    fontFamily: font.family,
+                    fontWeight: 600,
+                    fontSize: '0.95em',
+                    color: colors.ink,
+                  }}
+                >
+                  {currentSnippetNum} / {snippetsTotalNum}
+                </span>
+              ) : null}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <ProgressBar
+                  hideLabel
+                  snippetProgress={currentSnippetNum}
+                  snippetsTotal={snippetsTotalNum}
+                  progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
+                />
+              </div>
+              {hiddenFeatures && (
+                <FormControlLabel
+                  labelPlacement="start"
+                  control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
+                  label={intl.formatMessage({ id: 'show-difficulty-level' })}
+                  sx={{
+                    m: 0,
+                    flexShrink: 0,
+                    '& .MuiFormControlLabel-label': {
+                      marginRight: '0.5em',
+                      fontFamily: font.family,
+                      color: colors.ink,
+                    },
+                  }}
+                />
+              )}
             </div>
             {timedExercise && (
               <PracticeTimer
@@ -269,27 +311,27 @@ const PracticeView = () => {
               {!pending && <StoryTitleTranslate title={story.title} />}
             </div>
             {story.url && !pending && (
-              <a href={story.url} target="_blank" rel="noopener noreferrer">
+              <a
+                href={story.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '4px 16px',
+                  borderRadius: 999,
+                  border: `1px solid ${colors.border}`,
+                  fontFamily: font.family,
+                  fontWeight: 500,
+                  fontSize: 14,
+                  color: colors.ink,
+                  textDecoration: 'none',
+                }}
+              >
                 <FormattedMessage id="Source" />
               </a>
             )}
-            {hiddenFeatures && (
-              <FormControlLabel
-                control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
-                label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                sx={{
-                  mt: '.5em',
-                  ml: '.5em',
-                  '& .MuiFormControlLabel-label': {
-                    marginLeft: '0.5em',
-                    fontFamily: font.family,
-                    color: colors.ink,
-                  },
-                }}
-              />
-            )}
-            <PreviousSnippets showDifficulty={showDifficulty} />
-            <hr />
+            <PreviousSnippets showDifficulty={showDifficulty} />            
             <CurrentSnippet
               storyId={id}
               handleInputChange={handleAnswerChange}
@@ -345,7 +387,7 @@ const PracticeView = () => {
           />
         )}
         <HelperSidebar>
-          <CombinedChatbot />          
+          <CombinedChatbot />
         </HelperSidebar>
         <FeedbackInfoModal />
       </div>
