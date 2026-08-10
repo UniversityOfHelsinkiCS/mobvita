@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material'
+import { Card, IconButton } from '@mui/material'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { FormattedMessage } from 'react-intl'
-import { capitalize, getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { capitalize, getTextStyle, images, learningLanguageSelector } from 'Utilities/common'
 import {
   getWritingEssayId,
   getWritingEssaySavedDate,
@@ -60,7 +59,7 @@ const EssayListItem = ({
   return (
     <>
       <Card
-        className={`card mui-story-card essay-card ${
+        className={`library-item-card essay-card ${
           isDragging ? 'library-story-card-dragging' : ''
         }`}
         data-cy="essay-item"
@@ -77,55 +76,43 @@ const EssayListItem = ({
         }}
         sx={clickable ? { cursor: 'pointer' } : undefined}
       >
-        <CardContent className="story-card-title-cont">
-          <Box
-            component="span"
-            className="flex"
-            sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', width: '100%' }}
-          >
-            <MoreVertIcon className="story-item-dots" color="action" fontSize="small" />
-            <Typography
-              component="h5"
-              className="story-item-title"
-              sx={{ fontSize: '1.15rem', flex: 1, minWidth: 0, ...getTextStyle(learningLanguage) }}
-            >
-              {title || ''}
-            </Typography>
-          </Box>
-        </CardContent>
-        <CardContent className="story-card-actions-cont essay-card-meta">
-          {(formattedDate || sentenceCount > 0) && (
-            <Box className="essay-card-meta-info">
-              {formattedDate && (
-                <Typography variant="caption" component="span">
-                  {formattedDate}
-                </Typography>
-              )}
-              {sentenceCount > 0 && (
-                <Typography variant="caption" component="span">
-                  {sentenceCount}{' '}
-                  <FormattedMessage id="essay-sentence-count" />
-                </Typography>
-              )}
-            </Box>
-          )}
-          {isOwnEssay && (
-            <CustomTooltip title={<FormattedMessage id="Delete" />}>
-              <IconButton
-                data-cy="essay-delete"
-                aria-label="Delete essay"
-                size="small"
-                sx={{ ml: 'auto' }}
-                onClick={event => {
-                  event.stopPropagation()
-                  setConfirmationOpen(true)
-                }}
-              >
-                <DeleteOutlineOutlinedIcon fontSize="small" />
-              </IconButton>
-            </CustomTooltip>
-          )}
-        </CardContent>
+        <div className="library-item-body">
+          <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+          <div className="library-item-main">
+            <div className="library-item-toprow">
+              <span className="library-item-title" style={getTextStyle(learningLanguage)}>
+                {title || ''}
+              </span>
+              <div className="library-item-badges">
+                {formattedDate && (
+                  <span style={{ fontSize: 12, color: '#9d9b92', whiteSpace: 'nowrap' }}>
+                    {formattedDate}
+                  </span>
+                )}
+                {sentenceCount > 0 && (
+                  <span style={{ fontSize: 12, color: '#9d9b92', whiteSpace: 'nowrap' }}>
+                    {sentenceCount} <FormattedMessage id="essay-sentence-count" />
+                  </span>
+                )}
+                {isOwnEssay && (
+                  <CustomTooltip title={<FormattedMessage id="Delete" />}>
+                    <IconButton
+                      data-cy="essay-delete"
+                      aria-label="Delete essay"
+                      size="small"
+                      onClick={event => {
+                        event.stopPropagation()
+                        setConfirmationOpen(true)
+                      }}
+                    >
+                      <DeleteOutlineOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </CustomTooltip>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </Card>
 
       <ConfirmationWarning

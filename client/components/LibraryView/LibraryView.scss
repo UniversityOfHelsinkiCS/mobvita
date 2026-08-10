@@ -1,14 +1,72 @@
+// Mirrors colors.menuHover in designTokens.js — the shared tan used for EVERY hover in the library.
+$menu-hover: #ece3be;
+
+.library-dashboard {
+  width: 100%;
+  max-width: 838px;
+  max-height: 100%;
+  display: flow-root;
+}
+
+// Below 1400px: unchanged — the dashboard flows on its own and the assistant is the fixed right rail
+// (see HelperSidebar.scss). At 1400px+ the page becomes a centered band holding both side by side
+// (Figma "MAIN": width 1400, padding 0 40, gap 32, justify-content center).
+.library-page {
+  @media (min-width: 1400px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    max-height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 1400px) {
+  .library-page .library-dashboard {
+    flex: 1 1 auto;
+    max-width: 838px;
+  }
+
+  // The assistant leaves the fixed right rail and sits in-flow beside the dashboard: 450px wide, fully
+  // rounded (Figma "Chat 2"), stretched to the dashboard's height, always open (toggle hidden).
+  .library-page .helper-sidebar {
+    position: sticky;
+    inset: auto;
+    top: calc(3em + 20px);
+    align-self: flex-start;
+    flex: 0 0 450px;
+    margin: 20px 0;
+    height: calc(100vh - 3em - 40px);
+    max-height: 1014px;
+    width: 450px;
+    max-width: 450px;
+    border-radius: 30px;
+    overflow: hidden;
+    transform: none;
+    transition: none;
+
+    &.collapsed {
+      transform: none;
+    }
+
+    .sidebar-toggle {
+      display: none;
+    }
+  }
+}
+
+// Figma "Frame 2087326746": library items stack full-width in a single column.
 .library-story-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 2em;
-  row-gap: 1.75em;
-  margin: 0.875em 1em;
-  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   @media (max-width: 699px) {
-    grid-template-columns: 1fr;
-    column-gap: 0;
     margin-bottom: 5.5em;
   }
 }
@@ -23,14 +81,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin: 0.875em 1em 0;
 }
 
-.library-add-folder-button {
-  color: #1f78c8 !important;
-  background-color: #ffffff !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  border-radius: 0.28571429rem !important;
+// Folder pills wrap into rows at the top of the library (Figma "Frame 2087326861"): each folder grows to
+// share the row, min 300px, so up to two sit side by side and a lone folder spans the full width.
+.library-folder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .library-folder-breadcrumb {
@@ -38,316 +98,293 @@
   background: transparent;
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   padding: 0;
+  text-decoration: underline;
 }
 
 .library-folder-breadcrumb-current {
   color: rgba(0, 0, 0, 0.55);
-  font-family: "Rubik", sans-serif !important;
+  font-family: 'Rubik', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
 }
 
-.library-semantic-select {
-  min-width: 14em;
-  min-height: 2.71428571em;
-  background-color: #ffffff !important;
-  color: rgba(0, 0, 0, 0.87);
-  border-radius: 0.28571429rem !important;
-  line-height: 1em;
-  white-space: normal;
-  word-wrap: break-word;
-  box-shadow: none;
-  transition: box-shadow 0.1s ease, width 0.1s ease;
-
-  .MuiSelect-select {
-    min-height: 1em !important;
-    padding: 0.78571429em 2.1em 0.78571429em 1em !important;
-    line-height: 1em;
-    background-color: #ffffff !important;
-  }
-
-  .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(34, 36, 38, 0.15) !important;
-  }
-
-  &:hover .MuiOutlinedInput-notchedOutline,
-  &.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(34, 36, 38, 0.35) !important;
-    box-shadow: none;
-  }
-
-  .MuiSvgIcon-root {
-    color: rgba(0, 0, 0, 0.6);
-  }
-}
-
-.library-dropdown-menu {
-  background-color: #ffffff !important;
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  border-radius: 0 0 0.28571429rem 0.28571429rem !important;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15) !important;
-  margin-top: 0 !important;
-  max-height: 22rem;
-}
-
-.library-dropdown-menu-list {
-  background-color: #ffffff !important;
-  padding: 0 !important;
-}
-
-.library-dropdown-item {
-  background-color: #ffffff !important;
-  color: rgba(0, 0, 0, 0.87) !important;
-  min-height: 0 !important;
-  padding: 0.78571429em 1.14285714em !important;
-  line-height: 1em !important;
-  pointer-events: all;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.03) !important;
-  }
-
-  &.Mui-selected,
-  &.Mui-selected:hover {
-    background-color: rgba(0, 0, 0, 0.05) !important;
-    font-weight: 700;
-  }
-}
-
-.library-search-control {
-  display: flex;
-  align-items: stretch;
-  min-width: 260px;
-  height: 40px;
-  background-color: transparent;
-  border-radius: 0.28571429rem;
-  overflow: hidden;
-}
-
-.library-search-field {
-  flex: 1 1 auto;
-  background-color: #ffffff;
-
-  .MuiOutlinedInput-root {
-    height: 40px;
-    background-color: #ffffff;
-    border-radius: 0.28571429rem 0 0 0.28571429rem;
-  }
-
-  .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(34, 36, 38, 0.15) !important;
-  }
-
-  .MuiInputBase-input {
-    background-color: #ffffff;
-  }
-}
-
-.library-search-button {
-  width: 56px;
-  height: 40px;
-  padding: 0 !important;
-  color: #ffffff !important;
-  background: linear-gradient(#5f6068, #3f4048) !important;
-  border-radius: 0 0.28571429rem 0.28571429rem 0 !important;
-  border: 1px solid rgba(34, 36, 38, 0.15) !important;
-  border-left: none !important;
-}
-
-.library-search-button:hover {
-  background: linear-gradient(#55565d, #393a41) !important;
-}
-
-.mui-story-card {
-  max-width: 100%;
-  width: 100%;
-  min-height: 0;
-  height: 95%;
-  padding: 0;
-  border: none !important;
-  border-radius: 12px !important;
-  background: #fff;
-  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5 !important;
-  transition: box-shadow 0.1s ease, transform 0.1s ease;
-  font-size: 1em;
-  overflow: visible;
-
-  .MuiCardContent-root {
-    max-width: 100%;
-    min-height: 0 !important;
-    flex-grow: 0;
-    position: static;
-    width: auto;
-    margin: 0;
-    color: rgba(0, 0, 0, 0.4);
-    box-shadow: none;
-    transition: color 0.1s ease;
-    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-
-    &:first-of-type {
-      border-top: none !important;
-      border-radius: 0.28571429rem 0.28571429rem 0 0 !important;
-    }
-
-    &:last-child {
-      border-radius: 0 0 0.28571429rem 0.28571429rem !important;
-    }
-  }
-
-  .story-card-title-cont {
-    padding: 15px 15px 10px 15px !important;
-  }
-
-  .story-card-description-cont {
-    padding: 0.75em 1em !important;
-  }
-
-  .story-card-actions-cont {
-    padding: 10px 15px !important;
-
-    &:last-child {
-      padding-bottom: 0 !important;
-    }
-  }
-
-  .library-tour-open-story-modal {
-    min-width: 0;
-  }
-
-  .story-item-dots {
-    flex: 0 0 auto;
-    width: 1.18em;
-    height: 1.18em;
-    color: rgba(0, 0, 0, 0.4);
-  }
-
-  .story-item-title {
-    margin: 0 12px;
-    font-size: 1.15rem;
-    font-weight: 500;
-    font-family: "Rubik", sans-serif;
-    line-height: 1.2;
-  }
-
-  .essay-card-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 12px;
-  }
-
-  .essay-card-meta-info {
-    display: flex;
-    align-items: center;
-    column-gap: 12px;
-    min-width: 0;
-    color: rgba(0, 0, 0, 0.4);
-  }
-
-  .story-description {
-    font-size: 1rem;
-    font-weight: 400;
-    font-family: "Rubik", sans-serif;
-    line-height: 1.4285em;
-    color: rgba(0, 0, 0, 0.4);
-  }
-}
-
-.mui-story-card.library-story-card-dragging {
+// A card being dragged dims (the cards are now .library-item-card, not the old .mui-story-card).
+.library-item-card.library-story-card-dragging {
   opacity: 0.55;
 }
 
-.library-folder-card {
-  position: relative;
-  margin-top: 10px;
-  box-sizing: border-box;
-  min-height: 0;
-  height: 95%;
-  width: 100%;
-  border: 1px solid #000000;
-  border-radius: 0 12px 12px 12px;
-  box-shadow: 0.3em 0.3em 0.4em rgba(128, 128, 128, 0.792);
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-
-  cursor: pointer;
-  text-align: left;
-  padding: 28px 24px 20px;
-  transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+// A folder pill being dragged (to move it into another folder) dims the same way.
+.library-folder-card-dragging {
+  opacity: 0.55;
 }
 
-.library-folder-card::before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: -1px;
-  width: 120px;
-  height: 8px;
-  border: 1px solid #000000;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+// Figma "Library Folder": a pill row (icon + bold name), grows to share the row, min 300px.
+.library-folder-card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 300px;
+  max-width: 393px;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 2px 12px;
+  border: none;
+  border-radius: 360px;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.12s ease,
+    transform 0.12s ease;
+
+  // Hover = shared menuHover tan, selected = green (see .library-folder-card-selected below).
+  &:hover {
+    background: $menu-hover;
+  }
+
+  // The three-dots menu is hidden by default, revealed on hover (or when selected — see below). Hover is
+  // what makes it reachable for folders WITH subfolders: tapping those navigates in instead of selecting,
+  // so they'd otherwise never expose their rename/delete options.
+  .library-folder-menu {
+    position: static !important;
+    top: auto;
+    right: auto;
+    flex-shrink: 0;
+    display: none;
+  }
+
+  &:hover .library-folder-menu {
+    display: inline-flex;
+  }
+}
+
+// A tapped leaf folder stays green even while hovered (must win over the :hover tan above).
+.library-folder-card-selected,
+.library-folder-card-selected:hover {
+  background: #b1d3c2;
+}
+
+// A selected folder keeps its three-dots menu visible even when not hovered.
+.library-folder-card-selected .library-folder-menu {
+  display: inline-flex;
+}
+
+// Transparent wrapper around the folder's AppMenu trigger — it swallows clicks so opening the menu
+// doesn't also navigate/select the card, and collapses to nothing while the (hidden) button isn't shown.
+.library-folder-menu-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+// The old paper-folder "tab" is gone in the pill layout.
+.library-folder-tab {
+  display: none;
 }
 
 .library-folder-card-drop-target {
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-  transform: translateY(-2px);
-}
-
-.library-folder-card-drop-target::before {
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+  background: #cfe6d6;
+  transform: translateY(-1px);
 }
 
 .library-folder-card-empty {
-  background-color: white;
-  background: linear-gradient(170deg, #f1f0f0  0%, #e8e8e8 100%);
-}
+  background: #f1f0f0;
 
-.library-folder-card-empty::before {
-  background: linear-gradient(170deg, #f1f0f0  0%, #f1f1f1 100%);
-}
-
-.library-folder-card-empty.library-folder-card-drop-target {
-  background: linear-gradient(170deg, #d7ecff 0%, #8ebbf9 100%);
-}
-
-.library-folder-card-empty.library-folder-card-drop-target::before {
-  background: linear-gradient(170deg, #d7ecff 0%, #cee8ff 100%);
+  &:hover {
+    background: $menu-hover;
+  }
 }
 
 .library-folder-content {
   display: flex;
+  flex: 1;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .library-folder-icon {
-  color: #6aaaf2;
-  font-size: 88px;
-  width: 88px;
-  height: 72px;
-  transition: filter 0.12s ease, transform 0.12s ease;
+  flex-shrink: 0;
+  width: 30px;
+  height: 27px;
+  object-fit: contain;
+  transition:
+    filter 0.12s ease,
+    transform 0.12s ease;
 }
 
 .library-folder-card-drop-target .library-folder-icon {
-  filter: drop-shadow(0 4px 4px rgba(31, 120, 200, 0.35)) saturate(1.15);
-  transform: translateY(-2px) scale(1.08);
+  filter: drop-shadow(0 2px 3px rgba(80, 140, 110, 0.35)) saturate(1.1);
 }
 
 .library-folder-name {
-  font-family: 'Rubik', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding-top: 8px;
-  padding-left: 8px;
-  color: #3b4a5a;
+  flex: 1;
+  min-width: 0;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #2d2c2a;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .library-folder-menu {
   position: absolute !important;
   top: 14px;
   right: 14px;
+}
+
+.library-sort-add-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 798px;
+}
+
+.library-sort-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.library-sort-direction {
+  flex-shrink: 0;
+}
+
+.library-add-story-button {
+  width: 250px;
+  height: 36px;
+  flex-shrink: 0;
+  gap: 10px !important;
+  padding: 8px 10px 8px 12px !important;
+}
+
+// The library search input overrides the AppTextField cream default to a white background.
+.library-search-field .MuiOutlinedInput-root {
+  background-color: #fff !important;
+}
+
+// Library dropdowns (sort + group AppSelect menus): the chosen option is green; hovering uses the shared
+// menuHover tan (same as the AppMenu default). Scoped so only the selected-green is library-specific.
+.library-menu {
+  .app-menu-row:hover {
+    background-color: $menu-hover !important;
+  }
+
+  .app-menu-row-selected,
+  .app-menu-row-selected:hover {
+    background-color: #b1d3c2 !important;
+  }
+}
+
+// Figma "Library Item": a full-width row — a green book icon beside a column of (title + badges) and a
+// 10-segment progress bar. Used by both story and essay cards.
+.library-item-card {
+  box-sizing: border-box;
+  width: 100%;
+  background: #fff !important;
+  border: 4px solid #c6e0d7 !important;
+  border-radius: 30px !important;
+  box-shadow: none !important;
+  padding: 16px 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.library-item-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+
+.library-item-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.library-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.library-item-toprow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.library-item-title {
+  flex: 1;
+  min-width: 0;
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #2d2c2a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-item-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: #2d2c2a;
+}
+
+.library-item-bulb {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.library-item-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.library-item-progress-label {
+  font-family: 'Geologica', 'Rubik', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #9d9b92;
+}
+
+.library-group-dropdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 225px;
+  max-height: 36px;
+  // The header is `justify-content: space-between`; this auto left-margin eats the free space so the
+  // dropdown (and the Add-folder button after it) hug the right instead of centering.
+  margin-left: auto;
+
+  // Keep the selected group name on one line, ellipsising when too long. The AppSelect trigger is a flex
+  // button, so its label span needs `min-width: 0` before overflow/ellipsis can take effect.
+  button > span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

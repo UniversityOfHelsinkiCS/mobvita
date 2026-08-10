@@ -5,6 +5,7 @@ import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
+import AppSearchField from 'Components/ui/AppSearchField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppRadio from 'Components/ui/AppRadio'
 import { RadioGroup, FormControlLabel } from '@mui/material'
@@ -13,6 +14,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
+import AppToast from 'Components/ui/AppToast'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
@@ -68,6 +70,7 @@ const DesignSystem = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
+  const [searchDemo, setSearchDemo] = useState('Kalevala')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
@@ -138,7 +141,13 @@ const DesignSystem = () => {
             'flipBackward',
             'folder',
             'folderPlus',
+            'bookOpenGreen',
+            'bulb',
+            'bulbEmpty',
             'star06',
+            'globe',
+            'upload',
+            'paste',
             'play',
             'star06Pick',
             'lock01',
@@ -175,6 +184,7 @@ const DesignSystem = () => {
             'bookOpenColored',
             'layersThreeColored',
             'libraryBigColored',
+            'searchTextfield',
             'star06Colored',
             'users01Colored',
           ]
@@ -274,6 +284,22 @@ const DesignSystem = () => {
         </div>
         <div style={{ width: 240 }}>
           <AppTextField label="Disabled" disabled placeholder="Disabled" />
+        </div>
+      </Section>
+
+      <Section title="AppSearchField">
+        <div style={{ width: 360 }}>
+          <AppSearchField
+            value={searchDemo}
+            onChange={setSearchDemo}
+            placeholder="Search stories, essays, words…"
+          />
+        </div>
+        <div style={{ width: 360 }}>
+          <AppSearchField value="" onChange={() => {}} placeholder="Empty — no clear button" />
+        </div>
+        <div style={{ width: 360 }}>
+          <AppSearchField value="disabled" onChange={() => {}} disabled />
         </div>
       </Section>
 
@@ -424,6 +450,33 @@ const DesignSystem = () => {
           <ChatBubble variant="user-note" onRemove={() => {}}>
             My own note (removable).
           </ChatBubble>
+          <ChatBubble variant="options">
+            See-through bubble that holds action content (no background/shadow/padding).
+          </ChatBubble>
+        </div>
+      </Section>
+
+      <Section title="AppToast">
+        {/* Preview inside a mock toast card — the real card comes from .Toastify__toast in custom.scss. */}
+        <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 12 }}>
+          {[
+            { message: 'Every toast is a cream card with ink text.', icon: images.globe04 },
+            { message: 'Without an icon, just the message.' },
+          ].map(({ message, icon }) => (
+            <div
+              key={message}
+              style={{
+                width: 320,
+                padding: '14px 16px',
+                backgroundColor: '#faf8ed',
+                border: '1px solid #b1d3c2',
+                borderRadius: 16,
+                boxShadow: '0 8px 24px rgba(45, 44, 42, 0.14)',
+              }}
+            >
+              <AppToast message={message} icon={icon} />
+            </div>
+          ))}
         </div>
       </Section>
 

@@ -6,8 +6,6 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  * Shared row styling for the design-system menu surfaces (AppMenu dropdown, AppSidebar drawer).
  * Both render an identical row — icon + label, tan hover/selected pill — so they stay consistent.
  */
-export const MENU_HOVER = '#ECE3BE' // tan highlight behind hovered/selected rows
-
 export const rowStyles = ({ selected }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -21,10 +19,14 @@ export const rowStyles = ({ selected }) => ({
   cursor: 'pointer',
   textDecoration: 'none',
   whiteSpace: 'nowrap',
-  backgroundColor: selected ? MENU_HOVER : 'transparent',
+  backgroundColor: selected ? colors.green : 'transparent',
   // Link rows render as <a>; override global anchor styles (blue, underline, :visited).
   '&:visited, &:focus, &:active': { color: colors.ink, textDecoration: 'none' },
-  '&:hover': { backgroundColor: MENU_HOVER, color: colors.ink, textDecoration: 'none' },
+  '&:hover': {
+    backgroundColor: selected ? colors.green : colors.menuHover,
+    color: colors.ink,
+    textDecoration: 'none',
+  },
 })
 
 const forwardOptions = { shouldForwardProp: prop => prop !== 'selected' }
@@ -38,10 +40,15 @@ const MenuRowLink = styled('a', forwardOptions)(rowStyles)
  * else <div>. forwardRef so a consumer (e.g. a semantic-ui Modal trigger) can attach a ref.
  */
 export const MenuRow = React.forwardRef(
-  ({ icon, children, href, selected = false, ...rest }, ref) => {
+  ({ icon, children, href, selected = false, className = '', ...rest }, ref) => {
     const Row = href ? MenuRowLink : MenuRowDiv
+    // Stable classes (in addition to the emotion styles) so a specific menu can re-skin its rows —
+    // e.g. the library sort dropdown scopes selected/hover colours via `.app-menu-row(-selected)`.
+    const rowClassName = ['app-menu-row', selected && 'app-menu-row-selected', className]
+      .filter(Boolean)
+      .join(' ')
     return (
-      <Row ref={ref} href={href} selected={selected} {...rest}>
+      <Row ref={ref} href={href} selected={selected} className={rowClassName} {...rest}>
         {icon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{icon}</span>}
         <span>{children}</span>
       </Row>

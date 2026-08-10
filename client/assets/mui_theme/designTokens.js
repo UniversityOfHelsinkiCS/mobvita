@@ -20,6 +20,7 @@ export const colors = {
   focus: '#8FBBA6', // derived — focus border not provided
   error: '#D64545', // derived — error red not provided
   pageBg: '#EDEBE2', // derived — neutral behind the split card
+  menuHover: '#ECE3BE', // hover used for menus, folders, etc.
 }
 
 export const font = {
@@ -36,6 +37,8 @@ export const shape = {
   buttonRadius: 999, // pill
   cardRadius: 30,
   inputHeight: 36,
+  inputPaddingX: 10, // Figma search field "padding-left/right: 10" — pill padding when adorned
+  inputIconGap: 8, // derived — Figma gives no icon↔text gap
   fieldGap: 30,
   cardPadding: '40px 60px', // Figma "40,60" — assumed vertical/horizontal; confirm
 }

@@ -14,6 +14,10 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * standalone on /design. Matches the 2026 auth mockups: a small static label above a pill-shaped
  * cream input with a green border. When `type="password"` it renders a show/hide eye toggle.
  *
+ * `startIcon` / `endIcon` take any node and render as adornments inside the pill. They are
+ * presentation only — behaviour built on them lives in a wrapper (see AppSearchField). The password
+ * toggle owns the end slot, so `endIcon` is ignored when `type="password"`.
+ *
  * onChange receives the native MUI event (use `e.target.value`).
  */
 const Label = styled('label')({
@@ -26,10 +30,15 @@ const Label = styled('label')({
 })
 
 // `multiline` is read for styling (auto height + softer radius for textareas) and still forwarded
-// to TextField so it renders a textarea.
-const StyledTextField = styled(TextField)(({ multiline }) => ({
+// to TextField so it renders a textarea. `hasStart`/`hasEnd` are styling-only, so they are held
+// back from the DOM — they shift padding from the text onto the pill to fit the adornments.
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: prop => prop !== 'hasStart' && prop !== 'hasEnd',
+})(({ multiline, hasStart, hasEnd }) => ({
   '& .MuiOutlinedInput-root': {
     ...(multiline ? { padding: '10px 18px' } : { height: shape.inputHeight }),
+    ...(hasStart && { paddingLeft: shape.inputPaddingX }),
+    ...(hasEnd && { paddingRight: shape.inputPaddingX }),
     backgroundColor: colors.card,
     borderRadius: multiline ? '18px' : shape.inputRadius,
     fontFamily: font.family,
@@ -42,6 +51,10 @@ const StyledTextField = styled(TextField)(({ multiline }) => ({
   },
   '& .MuiOutlinedInput-input': {
     padding: multiline ? 0 : '0 18px',
+    // With an adornment the pill already supplies the outer padding; the input only needs the gap
+    // between icon and text.
+    ...(hasStart && { paddingLeft: shape.inputIconGap }),
+    ...(hasEnd && { paddingRight: shape.inputIconGap }),
     '&::placeholder': { color: colors.muted, opacity: 1 },
     // Browsers repaint autofilled fields (username/password) with their own tint, overriding the
     // cream input background. Force it back to the card colour and keep the text readable.
@@ -59,6 +72,8 @@ const AppTextField = ({
   label,
   type = 'text',
   fullWidth = true,
+  startIcon,
+  endIcon,
   inputProps,
   slotProps,
   ...rest
@@ -71,32 +86,33 @@ const AppTextField = ({
   // (which is why they leaked to the DOM). Build the slots here: `input` = the Input component
   // (adornments etc.), `htmlInput` = the native <input> attributes (data-cy, etc.). Callers can
   // still pass `inputProps`/`slotProps` and we fold them in.
-  const passwordAdornment = isPassword
-    ? {
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              onClick={() => setShowPassword(prev => !prev)}
-              edge="end"
-              size="small"
-              tabIndex={-1}
-              aria-label="toggle password visibility"
-              sx={{ color: colors.muted }}
-            >
-              {showPassword ? (
-                <VisibilityOffIcon fontSize="small" />
-              ) : (
-                <VisibilityIcon fontSize="small" />
-              )}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }
-    : undefined
+  const passwordToggle = isPassword ? (
+    <IconButton
+      onClick={() => setShowPassword(prev => !prev)}
+      edge="end"
+      size="small"
+      tabIndex={-1}
+      aria-label="toggle password visibility"
+      sx={{ color: colors.muted }}
+    >
+      {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+    </IconButton>
+  ) : null
+
+  // The password toggle and `endIcon` compete for the same slot; the toggle wins so a password
+  // field can never lose its show/hide affordance.
+  const endNode = passwordToggle || endIcon
+  const inputSlot = {
+    ...slotProps?.input,
+    ...(startIcon && {
+      startAdornment: <InputAdornment position="start">{startIcon}</InputAdornment>,
+    }),
+    ...(endNode && { endAdornment: <InputAdornment position="end">{endNode}</InputAdornment> }),
+  }
 
   const mergedSlotProps = {
     ...slotProps,
-    ...(passwordAdornment ? { input: { ...slotProps?.input, ...passwordAdornment } } : {}),
+    input: inputSlot,
     ...(inputProps ? { htmlInput: { ...slotProps?.htmlInput, ...inputProps } } : {}),
   }
 
@@ -107,6 +123,8 @@ const AppTextField = ({
         type={resolvedType}
         fullWidth={fullWidth}
         variant="outlined"
+        hasStart={!!startIcon}
+        hasEnd={!!endNode}
         slotProps={mergedSlotProps}
         {...rest}
       />

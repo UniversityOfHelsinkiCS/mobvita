@@ -1881,5 +1881,6 @@
     "connection-offline": "No connection",
     "interface-settings": "Interface settings",
     "all-topics-in-text": "All Topics In Text",
-    "rename-folder": "Nimeä kansio uudelleen"
+    "rename-folder": "Nimeä kansio uudelleen",
+    "add-stories-assistant-lead": "Opiskele kieltä lisäämällä uusia tekstejä kirjastoon"
 }

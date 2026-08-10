@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import CommentsIcon from '@mui/icons-material/ModeComment'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import GroupsIcon from '@mui/icons-material/Groups'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 import MailOutlineIcon from '@mui/icons-material/MailOutlined'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { FormattedMessage } from 'react-intl'
@@ -18,20 +17,21 @@ import {
   setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
 import { callApi } from 'Utilities/apiConnection'
-import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, images, learningLanguageSelector } from 'Utilities/common'
 import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
-import rcIcon from 'Assets/images/RC-icon.png'
 import './LibraryView.scss'
 
 const liveDescriptionCache = {}
 
 const StoryTitle = ({
   story,
+  triggerContent,
   setShareModalOpen,
   inGroupLibrary,
   currentGroup,
@@ -42,7 +42,6 @@ const StoryTitle = ({
   setSharedStoryVisibility,
   savedLibrarySelection,
 }) => {
-  const learningLanguage = useSelector(learningLanguageSelector)
   const { user, teacherView } = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
   const isControlledStory = !!story?.control_story
@@ -57,38 +56,7 @@ const StoryTitle = ({
 
   return (
     <StoryDetailsModal
-      trigger={
-        <Box
-          component="span"
-          className="flex library-tour-open-story-modal"
-          sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden', width: '100%' }}
-        >
-          <MoreVertIcon className="story-item-dots" color="action" fontSize="small" />
-          <Typography
-            component="h5"
-            className="story-item-title"
-            sx={{
-              fontSize: '1.15rem',
-              ...getTextStyle(learningLanguage),
-            }}
-          >
-            {story.title}
-          </Typography>
-          {inGroupLibrary && storyGroupShareInfo && (
-            <Typography
-              component="span"
-              sx={{
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                width: '30%',
-              }}
-            >
-              {storyGroupShareInfo.message}
-            </Typography>
-          )}
-        </Box>
-      }
+      trigger={triggerContent}
       story={story}
       setShareModalOpen={setShareModalOpen}
       showShareButton={showShareButton}
@@ -244,7 +212,7 @@ const StoryListItem = ({
     <Card
       key={story._id}
       data-cy={`library-story-card-${story._id}`}
-      className={`card mui-story-card ${
+      className={`library-item-card ${
         isControlledStory ? 'card-controlled-story' : ''
       } ${isDragging ? 'library-story-card-dragging' : ''} tour-story-card`}
       elevation={0}
@@ -255,89 +223,81 @@ const StoryListItem = ({
         onDragStart(story._id, event)
       }}
     >
-      <CardContent className="extra content story-card-title-cont">
-        <StoryTitle
-          story={story}
-          setConfirmationOpen={setConfirmationOpen}
-          setShareModalOpen={setShareModalOpen}
-          inGroupLibrary={inGroupLibrary}
-          currentGroup={currentGroup}
-          libraryShown={libraryShown}
-          storyGroupShareInfo={storyGroupShareInfo}
-          handleControlledStoryCancel={handleControlledStoryCancel}
-          setSharedStoryVisibility={setSharedStoryVisibility}
-          savedLibrarySelection={savedLibrarySelection}
-        />
-      </CardContent>
-      <CardContent className="extra content story-card-description-cont">
-        <Typography className="story-description" component="div">
-          {shouldPollForLiveDescription && !processingDescription ? (
-            <FormattedMessage id="processing-story" />
-          ) : (
-            processingDescription || story.description
-          )}
-        </Typography>
-      </CardContent>
-      <CardContent className="extra content story-card-actions-cont">
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Box>
-            {story?.has_questions ? (
-              <img src={rcIcon} alt="RC Icon" style={{ height: '24px', width: '24px' }} />
-            ) : null}
-          </Box>
-
-          <Box sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-            {story.flashcardsOnly && <ContentCopyIcon fontSize="small" sx={{ mr: '15px' }} />}
-
-            {showGroupNames && <GroupsSharedTo groups={story.groups} />}
-
-            {uploadUnfinished && (
-              <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
-                <HourglassBottomIcon color="warning" sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-
-            {libraryShown.group && storyGroupShareInfo?.hidden && (
-              <CustomTooltip title={<FormattedMessage id="group-hidden-story" />}>
-                <VisibilityOffIcon color="error" sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-
-            {timedExercise && (
-              <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
-                <TimerOutlinedIcon color="error" sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-            {commentsOnStory && (
-              <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
-                <CommentsIcon sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-
-            {libraryShown.group && (
-              <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
-                <MailOutlineIcon sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-
-            {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
-              <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
-                <MailOutlineIcon sx={{ mr: '15px' }} />
-              </CustomTooltip>
-            )}
-            <Box className="library-tour-difficulty-stars" sx={{ whiteSpace: 'nowrap' }}>
-              <DifficultyStars difficulty={story.difficulty} />
-            </Box>
-          </Box>
-        </Box>
-      </CardContent>
+      <StoryTitle
+        story={story}
+        setConfirmationOpen={setConfirmationOpen}
+        setShareModalOpen={setShareModalOpen}
+        inGroupLibrary={inGroupLibrary}
+        currentGroup={currentGroup}
+        libraryShown={libraryShown}
+        storyGroupShareInfo={storyGroupShareInfo}
+        handleControlledStoryCancel={handleControlledStoryCancel}
+        setSharedStoryVisibility={setSharedStoryVisibility}
+        savedLibrarySelection={savedLibrarySelection}
+        triggerContent={
+          <div className="library-item-body library-tour-open-story-modal" role="button" tabIndex={0}>
+            <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+            <div className="library-item-main">
+              <div className="library-item-toprow">
+                <span className="library-item-title" style={getTextStyle(learningLanguage)}>
+                  {story.title}
+                </span>
+                <div className="library-item-badges library-tour-difficulty-stars">
+                  {story.flashcardsOnly && <ContentCopyIcon fontSize="small" />}
+                  {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+                  {uploadUnfinished && (
+                    <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
+                      <HourglassBottomIcon color="warning" fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  {libraryShown.group && storyGroupShareInfo?.hidden && (
+                    <CustomTooltip title={<FormattedMessage id="group-hidden-story" />}>
+                      <VisibilityOffIcon color="error" fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  {timedExercise && (
+                    <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
+                      <TimerOutlinedIcon color="error" fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  {commentsOnStory && (
+                    <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
+                      <CommentsIcon fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  {libraryShown.group && (
+                    <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
+                      <MailOutlineIcon fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
+                    <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
+                      <MailOutlineIcon fontSize="small" />
+                    </CustomTooltip>
+                  )}
+                  <img
+                    src={story?.has_questions ? images.bulb : images.bulbEmpty}
+                    alt=""
+                    className="library-item-bulb"
+                  />
+                  <DifficultyStars difficulty={story.difficulty} />
+                </div>
+              </div>
+              <div className="library-item-progress">
+                <span className="library-item-progress-label">
+                  <FormattedMessage id="Progress" /> {story?.percent_cov}%
+                </span>
+                <AppProgressBar
+                  value={story?.percent_cov}
+                  height="10px"
+                  fillColor="#b1d3c2"
+                  trackColor="#dbe9df"
+                />
+              </div>
+            </div>
+          </div>
+        }
+      />
 
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
       <ConfirmationWarning
