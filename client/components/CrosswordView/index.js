@@ -271,9 +271,11 @@ const CrosswordView = () => {
     )
 
   return (
-    <div className="justify-center pt-sm" style={{ height: '100%', maxHeight: '90vh' }}>
-      <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+    <div className="cont-tall flex-col">
+      <div className="justify-center">
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
         <Box
+          className="practice-card"
           sx={{
             position: 'relative',
             marginTop: '1.5em',
@@ -283,10 +285,6 @@ const CrosswordView = () => {
             boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
             fontFamily: font.family,
             color: colors.ink,
-            // The whole card is the scroll container: it grows to the taller of the grid
-            // or the clue list, and the full block scrolls together (not just the text).
-            maxHeight: 'calc(90vh - 1.5em)',
-            overflowY: 'auto',
           }}
         >
           {hiddenFeatures && (
@@ -355,17 +353,18 @@ const CrosswordView = () => {
           dimensions={dimensions}
         />
         </Box>
+        </div>
+        <HelperSidebar>
+          <DictionaryHelp minimized={false} inCrossword />
+        </HelperSidebar>
+        {modalOpen && (
+          <EndModal
+            open={modalOpen}
+            setOpen={setModalOpen}
+            restart={() => dispatch(getCrossword(storyId))}
+          />
+        )}
       </div>
-      <HelperSidebar>
-        <DictionaryHelp minimized={false} inCrossword />
-      </HelperSidebar>
-      {modalOpen && (
-        <EndModal
-          open={modalOpen}
-          setOpen={setModalOpen}
-          restart={() => dispatch(getCrossword(storyId))}
-        />
-      )}
     </div>
   )
 }

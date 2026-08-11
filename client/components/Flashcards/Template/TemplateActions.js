@@ -3,7 +3,7 @@ import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 
 const TemplateActions = ({ handleSave, handleClear, editing = false }) => (
-  <div className="mb-lg auto-top gap-col-sm flex" style={{ marginTop: '1.5em' }}>
+  <div className="auto-top gap-col-sm flex" style={{ marginTop: '1.5em', marginBottom: 0 }}>
     <AppButton
       onClick={handleClear}
       style={{ flexBasis: '50%' }}

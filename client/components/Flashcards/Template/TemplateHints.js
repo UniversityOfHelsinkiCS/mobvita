@@ -36,8 +36,8 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
 
   return (
     <div className="flex-col pb-lg auto-overflow">
-      <label htmlFor="hints" className="header-3 justify-center">
-        <FormattedMessage id="hints-for-this-flashcard" />
+      <label htmlFor="hints" className="header-2 justify-center bold">
+        <FormattedMessage id="Hints" />
       </label>
       <div className="auto-overflow">
         <ul>
@@ -56,7 +56,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
         />
       </div>
       <AppButton
-        variant="primary"
+        variant="secondary"
         className="flashcard-template-button"
         style={{ marginTop: '0.75em' }}
         onClick={handleHintSave}

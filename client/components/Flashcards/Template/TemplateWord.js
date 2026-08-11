@@ -20,7 +20,7 @@ const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editin
         <span className="header-3 justify-center bold">{word}</span>
       ) : (
         <div>
-          <label htmlFor="newWord" className="header-3 justify-center">
+          <label htmlFor="newWord" className="header-2 justify-center bold">
             <FormattedMessage id="new-word" />
           </label>
           <AppTextField

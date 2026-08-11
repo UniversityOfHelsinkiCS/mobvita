@@ -7,7 +7,7 @@ export const getFlashcardListPage = (inputLanguage, outputLanguage, page, storyI
   const query = {
     story_id: storyId,
     page,
-    page_size: 50,
+    page_size: 20,
   }
   return callBuilder(route, prefix, 'get', null, query)
 }

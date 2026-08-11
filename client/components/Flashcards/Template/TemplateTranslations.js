@@ -41,7 +41,7 @@ const TemplateTranslations = ({
 
   return (
     <div className="flex-col auto-overflow">
-      <label htmlFor="newTranslation" className="header-3 justify-center pt-nm">
+      <label htmlFor="newTranslation" className="header-2 justify-center bold pt-nm">
         <FormattedMessage id="new-translations" />
       </label>
       <div className="auto-overflow mb-sm">
@@ -53,7 +53,6 @@ const TemplateTranslations = ({
               <TemplateListItems
                 values={translations}
                 handleDelete={handleTranslationDelete}
-                italics
                 {...props}
               />
             </ul>
@@ -68,7 +67,7 @@ const TemplateTranslations = ({
         onKeyDown={handleTranslationKeyDown}
       />
       <AppButton
-        variant="primary"
+        variant="secondary"
         className="flashcard-template-button mb-lg"
         style={{ width: '100%', marginTop: '0.75em' }}
         onClick={handleTranslationSave}
