@@ -71,7 +71,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>
-        <div className="overflow-auto bold justify-center align-center grow">
+        <div className="bold justify-center align-center grow" style={{ overflow: 'auto' }}>
           <ul style={{ maxHeight: '90%', maxWidth: '100%', paddingRight: '2em' }}>
             {translations}
           </ul>

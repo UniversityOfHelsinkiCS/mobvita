@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import Spinner from 'Components/Spinner'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const PlayerBar = ({
   snippetsTotal,
@@ -45,28 +47,17 @@ const PlayerBar = ({
         <Spinner />
       ) : (
         <div data-cy="player-bar">
-          <div
-            style={{
-              height: '0.9em',
-              textAlign: 'center',
-              borderRadius: '0px 0px 10px 10px',
+          <AppProgressBar
+            value={getBarWidth()}
+            height="0.9em"
+            trackColor={colors.progressBarTrack}
+            fillColor={colors.progressBarFill}
+            style={{ borderRadius: '0px 0px 10px 10px' }}
+            fillProps={{
+              'data-cy': `progress-${playerProgressTestString}`,
+              style: { borderRadius: 0 },
             }}
-            className="progress"
-          >
-            <div
-              className="progress-bar bg-success"
-              style={{
-                width: `${getBarWidth()}%`,
-                backgroundColor: '#FA6',
-                borderRadius: '0',
-              }}
-              role="progressbar"
-              aria-valuenow={getBarWidth()}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              data-cy={`progress-${playerProgressTestString}`}
-            />
-          </div>
+          />
 
           <div
             className="competition-bar-label"

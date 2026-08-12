@@ -3,6 +3,7 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
+import AppButton from 'Components/AppButton';
 
 
 const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
@@ -54,9 +55,8 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                                 // }}
                             />
                         </h4>
-                        <button
-                            type="confirm"
-                            className="btn btn-primary"
+                        <AppButton
+                            variant="primary"
                             onClick={confirmNextSet}
                             style={{
                                 margin: "5px",
@@ -65,7 +65,7 @@ const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
                             }}
                         >
                             <FormattedMessage id='confirm-next-set' />
-                        </button>
+                        </AppButton>
                     </div>
                 </div>
             </div>

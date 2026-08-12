@@ -290,7 +290,7 @@ const LessonList = () => {
   let lessonStartControls = (
     <Container>
       <div
-        className="row justify-center align-center"
+        className="justify-center align-center wrap"
         style={{
           color: `${lessonReadyColor}`,
           textAlign: 'center',
@@ -298,7 +298,7 @@ const LessonList = () => {
           margin: '18px',
           fontSize: 'large' }}
       >
-        <div className="col col-12">
+        <div className="full-width">
           {!lessonPending && lessonReady ? (
             <FormattedMessage id="lessons-ready-for-practice" />
           ) : (
@@ -321,7 +321,7 @@ const LessonList = () => {
       </div>
 
       {!teacherView && (
-        <Link to={link} className="row justify-center align-center">
+        <Link to={link} className="justify-center align-center wrap">
           <AppButton
             size="big"
             className="lesson-practice"

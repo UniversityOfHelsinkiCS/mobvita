@@ -1,7 +1,6 @@
 @use "sass:map";
 
 @import "semantic-ui-css/semantic.min.css";
-@import "./bootstrap.css";
 @import "./rc-slider.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
@@ -395,53 +394,6 @@ $value in $spacing {
   }
 }
 
-// BOOTSTRAP OVERRIDES FROM REVITA:
-.btn-primary,
-.btn-secondary,
-.btn-outline-primary,
-.btn-outline-danger,
-.btn-outline-secondary {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.btn:hover {
-  color: black;
-  background: $btn-highlight-color-primary;
-  border-color: black;
-}
-
-.btn-link:hover {
-  color: $btn-color-primary;
-  background: none;
-  border-color: white;
-}
-
-.btn-primary {
-  color: #FFF !important;
-  background-color: $btn-color-primary !important;
-  border: $btn-border-primary !important;
-  font-weight: 500;
-  border-color: $btn-border-color-primary !important;
-  border-radius: $btn-border-radius-primary !important;
-}
-
-.btn-outline-primary {
-  border-radius: 10px;
-}
-
-.btn-primary[disabled] {
-  background: $btn-color-primary-disabled;
-  border: 1px solid rgb(112, 114, 120);
-}
-
 .reading-choice-correct {
   background-color: lightgreen !important;
 }
@@ -450,57 +402,8 @@ $value in $spacing {
   background-color: lightcoral !important;
 }
 
-.btn-primary[disabled]:hover {
-  color: white;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  color: darkslateblue !important;
-  background-color: #ddf2ff !important;    // #e4f2fe;
-  border: $btn-border-primary !important;
-  border-color: $btn-border-color-primary !important;
-  border-radius: $btn-border-radius-primary !important;
-}
-
-.btn-sm {
-  border: 1px solid rgb(112, 114, 120);
-}
-
-.btn-outline-danger,
-.btn-outline-secondary {
-  border-radius: 10px;
-}
-
-.btn-outline-danger[disabled]:hover,
-.btn-outline-secondary[disabled]:hover {
-  background: white;
-  cursor: not-allowed;
-}
-
-.btn.active.btn-success {
-  border: none;
-  background: rgb(112, 114, 120) !important;
-  cursor: default;
-}
-
-.disabled.btn.btn-success {
-  cursor: not-allowed;
-}
-
-.btn.btn-success {
-  border: none;
-  background: rgb(189, 202, 212);
-}
-
-.btn-toggle-on {
-  @extend .btn-primary;
-}
-
-.btn-toggle-off {
-  @extend .btn-secondary;
-}
-
+// The app's card box. Bootstrap used to supply the display/flex underneath; these rules are now
+// self-contained (AppButton / MUI Card own their own layout).
 .card {
   border: 1px solid rgb(112, 114, 120);
   border-radius: 10px !important;
@@ -2834,18 +2737,14 @@ label.file-upload-btn {
   }
 }
 
-.progress-bar {
-  border-radius: 1rem;
-  height: 1.5em;
-
-  &-cont {
-    position: sticky;
-    margin-bottom: 1em;
-    background-color: transparent;
-    padding: 0.15em;
-    border-radius: 1em;
-    z-index: 1;
-  }
+// The bar itself is AppProgressBar now; only its sticky container is still a class.
+.progress-bar-cont {
+  position: sticky;
+  margin-bottom: 1em;
+  background-color: transparent;
+  padding: 0.15em;
+  border-radius: 1em;
+  z-index: 1;
 }
 
 .competition-pause-btn {
@@ -2944,19 +2843,6 @@ label.file-upload-btn {
   font-size: 34px;
   font-weight: 500;
   color: rgb(112, 114, 120); 
-}
-
-.xp-wrapper {
-  border: 2px solid #ccc;
-  border-radius: 1rem;
-  height: '1.5em';
-  text-align:center;
-
-& span {
-  position: relative;
-  font-weight: 500;
-  color: #232b2b;
-}
 }
 
 .date-pickers-container {

@@ -179,7 +179,7 @@ const StoryGeneration = () => {
   let lessonStartControls = (
     <Container>
       <div
-        className="row justify-center align-center"
+        className="justify-center align-center wrap"
         style={{
           color: '#0088CB',
           textAlign: 'center',
@@ -188,28 +188,28 @@ const StoryGeneration = () => {
           fontSize: 'large',
         }}
       >
-        <div className="col col-12">
+        <div className="full-width">
           <FormattedMessage id="story-ready-for-generation" />
         </div>
         {canSelectGrammar && lessonInstance.topic_ids.length === 0 && (
-          <div className="col col-12" style={{ color: '#ff0c0c' }}>
+          <div className="full-width" style={{ color: '#ff0c0c' }}>
             <FormattedMessage id="note-no-lessons-topic" />
           </div>
         )}
       </div>
       {canSelectGrammar && (
-        <div className="row justify-center align-center space-between" style={{ display: 'flex' }}>
-          <div className="col col-md-5 offset-md-1" style={{ padding: 0 }}>
+        <div className="justify-center align-center space-between wrap" style={{ display: 'flex' }}>
+          <div style={{ padding: 0, flex: '0 0 41.666667%', maxWidth: '41.666667%', marginLeft: '8.333333%' }}>
             <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
           </div>
         </div>
       )}
       {lessonInstance.learner_ideas && (
         <div
-          className="row justify-center align-center space-between"
+          className="justify-center align-center space-between wrap"
           style={{ display: 'flex', marginTop: '40px' }}
         >
-          <div className="col col-md-8">
+          <div style={{ flex: '0 0 66.666667%', maxWidth: '66.666667%' }}>
             <div className="lesson-topic-box" style={{ width: '100%' }}>
               <Segment style={{ backgroundColor: 'azure' }}>
                 <div
@@ -283,7 +283,7 @@ const StoryGeneration = () => {
                     value={generatedStory}
                     onChange={e => setGeneratedStory(e.target.value)}
                   />
-                  <div className="row justify-center align-center">
+                  <div className="justify-center align-center wrap">
                     <AppButton
                       size="big"
                       className="lesson-practice"
@@ -303,7 +303,7 @@ const StoryGeneration = () => {
                   </div>
                 </>
               )}
-              <div className="row justify-center align-center">
+              <div className="justify-center align-center wrap">
                 {(error || !text?.length) && (
                   <span
                     style={{

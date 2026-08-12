@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
+import AppButton from 'Components/AppButton';
 
 
 const ReadingTestElicationDialog = ({ question, showElication, submitElication }) => {
@@ -73,9 +74,9 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             }}
                         >
                             {Object.keys(question.question_concept_feedbacks).map((key, index) => (
-                                <button
+                                <AppButton
                                     key={index}
-                                    className={`btn ${key === selectedConstruct ? "btn-selected" : ""}`}
+                                    variant={key === selectedConstruct ? 'tan' : 'contrast-outline'}
                                     style={{
                                         margin: "5px",
                                         width: "100%",
@@ -84,11 +85,11 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                                     onClick={() => setSelectedConstruct(key)}
                                 >
                                     {question.question_concept_feedbacks[key].elicitation_message}
-                                </button>
+                                </AppButton>
                             ))}
-                            <button
+                            <AppButton
                                 type="submit"
-                                className="btn btn-primary"
+                                variant="primary"
                                 onClick={submitResponse}
                                 disabled={selectedConstruct == null}
                                 style={{
@@ -98,7 +99,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                                 }}
                             >
                                 <FormattedMessage id='elicitation-submit' />
-                            </button>
+                            </AppButton>
                         </div>
                     </div>
                 </div>
