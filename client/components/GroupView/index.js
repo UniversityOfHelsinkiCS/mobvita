@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Card, Icon, Label, Dropdown, Popup, Modal } from 'semantic-ui-react'
-import { Table } from 'react-bootstrap'
+import { Box, Card, Chip, TableBody } from '@mui/material'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
+import LogoutIcon from '@mui/icons-material/Logout'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTable from 'Components/ui/AppTable'
+import CustomTooltip from 'Components/CustomTooltip'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
   getGroups,
@@ -25,18 +31,25 @@ import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
 
+// The old semantic-ui `Card.Content extra` block: hairline-separated section inside the card.
+const CardSection = ({ children, ...rest }) => (
+  <Box sx={{ padding: '1em', borderTop: `1px solid ${colors.border}` }} {...rest}>
+    {children}
+  </Box>
+)
+
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
   const anyPendingInvitations = !!group.pendingInvitations.length
   const anyFailedInvitations = !!group.failedInvitations.length
 
   return (
-    <Card.Content extra>
+    <CardSection>
       {anyPeopleAdded && (
         <div className="padding-bottom-2">
           <Subheader translationId="added-to-the-group" color="#2CB22C" iconName="checkmark" />
           {group.addedPeople.map(email => (
-            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+            <Chip key={email} label={email} size="small" sx={{ mb: '.5rem', mr: '.5rem' }} />
           ))}
         </div>
       )}
@@ -44,7 +57,7 @@ const GroupInviteInfo = ({ group }) => {
         <div className="padding-bottom-2">
           <Subheader translationId="invitation-email-sent-to" color="#84C3A3" iconName="mail" />
           {group.pendingInvitations.map(email => (
-            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+            <Chip key={email} label={email} size="small" sx={{ mb: '.5rem', mr: '.5rem' }} />
           ))}
         </div>
       )}
@@ -52,14 +65,14 @@ const GroupInviteInfo = ({ group }) => {
         <div>
           <Subheader translationId="invitation-failed-for" color="#dc3545" iconName="ban" />
           {group.failedInvitations.map(email => (
-            <Label key={email} content={email} style={{ marginBottom: '.5rem' }} />
+            <Chip key={email} label={email} size="small" sx={{ mb: '.5rem', mr: '.5rem' }} />
           ))}
           <span style={{ display: 'block', fontSize: '12px', paddingLeft: '.5rem' }}>
             <FormattedMessage id="invitation-failure-explanation" />
           </span>
         </div>
       )}
-    </Card.Content>
+    </CardSection>
   )
 }
 
@@ -74,26 +87,22 @@ const GroupInfoModal = ({
   numOfStudents,
 }) => {
   const intl = useIntl()
+  const [open, setOpen] = useState(false)
+
   return (
-    <Modal
-      dimmer="inverted"
-      closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
-      trigger={trigger}
-    >
-      <Modal.Header className="bold" as="h2">
-        {title}
-      </Modal.Header>
-      <Modal.Content>
+    <>
+      {React.cloneElement(trigger, { onClick: () => setOpen(true) })}
+      <AppDialog open={open} onClose={() => setOpen(false)} title={title}>
         <div className="italics" style={{ marginBottom: '1.5em' }}>
           {description}
           <br />
         </div>
-        <Table striped width="100%" style={{ tableLayout: 'fixed' }}>
+        <AppTable striped sx={{ tableLayout: 'fixed' }}>
           <colgroup>
             <col width="40%" />
             <col width="60%" />
           </colgroup>
-          <tbody>
+          <TableBody>
             <Row translationId="creation-date"> {creationDate}</Row>
             <Row translationId="language"> {intl.formatMessage({ id: language })}</Row>
             <Row translationId="students"> {numOfStudents}</Row>
@@ -106,10 +115,10 @@ const GroupInfoModal = ({
               {' '}
               {numOfStories}
             </Row>
-          </tbody>
-        </Table>
-      </Modal.Content>
-    </Modal>
+          </TableBody>
+        </AppTable>
+      </AppDialog>
+    </>
   )
 }
 
@@ -146,7 +155,12 @@ const GroupCard = ({
   const deadlineHumanFormat = `${deadlineObject.toLocaleString()} (${timezone})`
 
   return (
-    <Card fluid>
+    // `card` carries the app-wide card box (border/radius/margins) from custom.scss, and is not
+    // just cosmetic — the e2e specs scope group actions with `.closest('.card')`.
+    <Card
+      className="card"
+      sx={{ backgroundColor: colors.card, color: colors.ink, fontFamily: font.family }}
+    >
       <GroupInfoModal
         title={groupName}
         id={id}
@@ -156,7 +170,7 @@ const GroupCard = ({
         numOfStudents={students.length}
         numOfStories={stories.length}
         trigger={
-          <Card.Content extra style={{ padding: '15px 15px 5px' }}>
+          <Box sx={{ padding: '15px 15px 5px', cursor: 'pointer' }}>
             <div className="story-item-title space-between">
               <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
               {testEnabled && (
@@ -164,12 +178,12 @@ const GroupCard = ({
                   <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
                 </div>
               )}
-              <Icon name="ellipsis vertical" style={{ marginLeft: '1rem' }} />
+              <MoreVertIcon style={{ marginLeft: '1rem' }} />
             </div>
-          </Card.Content>
+          </Box>
         }
       />
-      <Card.Content extra>
+      <CardSection>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
           <GroupFunctions
             group={group}
@@ -181,34 +195,29 @@ const GroupCard = ({
             setCurrTestDeadline={setCurrTestDeadline}
           />
           <div style={{ marginLeft: '1.5rem' }}>
-            <Popup
-              content={intl.formatMessage({ id: 'Leave' })}
-              position="top right"
-              trigger={
-                <Icon
-                  name="log out"
-                  size="large"
-                  onClick={() => setLeaveGroupId(id)}
-                  data-cy="leave-group"
-                  style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
-                />
-              }
-            />
-            {isTeaching && (
-              <Popup
-                content={intl.formatMessage({ id: 'Delete' })}
-                position="top right"
-                trigger={
-                  <Icon
-                    name="trash alternate"
-                    color="red"
-                    size="large"
-                    onClick={() => setDeleteGroupId(id)}
-                    data-cy="delete-group"
-                    style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
-                  />
-                }
+            <CustomTooltip
+              permanent
+              placement="top-end"
+              title={intl.formatMessage({ id: 'Leave' })}
+            >
+              <LogoutIcon
+                onClick={() => setLeaveGroupId(id)}
+                data-cy="leave-group"
+                style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
               />
+            </CustomTooltip>
+            {isTeaching && (
+              <CustomTooltip
+                permanent
+                placement="top-end"
+                title={intl.formatMessage({ id: 'Delete' })}
+              >
+                <DeleteOutlinedIcon
+                  onClick={() => setDeleteGroupId(id)}
+                  data-cy="delete-group"
+                  style={{ cursor: 'pointer', margin: '0.25em 0.25em', color: colors.error }}
+                />
+              </CustomTooltip>
             )}
           </div>
         </div>
@@ -221,7 +230,7 @@ const GroupCard = ({
             id={id}
           />
         )}
-      </Card.Content>
+      </CardSection>
       {group.peopleInvited && <GroupInviteInfo group={group} />}
     </Card>
   )
@@ -270,21 +279,24 @@ const GroupView = () => {
           <Spinner fullHeight size={60} />
         ) : (
           <>
-            <div className="ps-nm" data-cy="group-list">
-              <GroupActionModal
-                role={role}
-                trigger={
-                  <AppButton
-                    data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-                    size="lg"
-                    style={{ marginTop: '1em', marginBottom: '1em', backgroundColor: '#00B5AD', float: 'right'}}
-                  >
-                    <FormattedMessage
-                      id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
-                    />
-                  </AppButton>
-                }
-              />
+            <Box data-cy="group-list" sx={{ px: '1rem' }}>
+              {/* Its own right-aligned row rather than a float: MUI Card sets `overflow: hidden`,
+                  so a floated button would squeeze the first group card instead of sitting over it. */}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: '1em' }}>
+                <GroupActionModal
+                  role={role}
+                  trigger={
+                    <AppButton
+                      data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
+                      size="lg"
+                    >
+                      <FormattedMessage
+                        id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
+                      />
+                    </AppButton>
+                  }
+                />
+              </Box>
               <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
               <ConfirmationWarning
                 open={!!deleteGroupId}
@@ -314,7 +326,7 @@ const GroupView = () => {
                   setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
                 />
               ))}
-            </div>
+            </Box>
           </>
         )}
       </div>

@@ -1,8 +1,13 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ButtonGroup, ToggleButton, Tabs, Tab } from 'react-bootstrap'
+import { Box, Divider, FormControlLabel, RadioGroup } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import AppButton from 'Components/AppButton'
+import AppRadio from 'Components/ui/AppRadio'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTabs from 'Components/ui/AppTabs'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
@@ -22,7 +27,6 @@ import Spinner from 'Components/Spinner'
 import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import moment from 'moment'
-import { Divider, Dropdown, Icon, Popup } from 'semantic-ui-react'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import StudentCEFRModal from './StudentCEFRModal'
@@ -73,9 +77,6 @@ const GroupAnalytics = ({ role }) => {
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const bigScreen = useWindowDimension().width >= 650
-  const dropDownMenuText = currentStudent
-    ? `${currentStudent?.userName} (${currentStudent?.email})`
-    : '-'
 
   const [currentCEFR, setCurrentCEFR] = useState('-')
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
@@ -87,15 +88,14 @@ const GroupAnalytics = ({ role }) => {
   const showTestEnableMenu = showTestEnableMenuGroupId === currentGroupId
 
   const studentOptions = currentGroup?.students.map(student => ({
-    key: student._id,
-    text: `${student?.userName} (${student?.email})`,
-    value: JSON.stringify(student), // needs to be string
+    value: student._id,
+    label: `${student?.userName} (${student?.email})`,
   }))
 
-  const handleStudentChange = value => {
-    const parsedValue = JSON.parse(value)
-    const studentSummary = summary?.find(student => student.Email === parsedValue.email)
-    setCurrentStudent(parsedValue)
+  const handleStudentChange = studentId => {
+    const student = currentGroup?.students.find(s => s._id === studentId)
+    const studentSummary = summary?.find(s => s.Email === student.email)
+    setCurrentStudent(student)
     setCefrHistory(studentSummary[intl.formatMessage({ id: 'cefr_grade' })])
     setFirstFetch(true)
   }
@@ -189,15 +189,36 @@ const GroupAnalytics = ({ role }) => {
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
 
-  // Styles for the Tabs
-  const tabsStyle = {
-    marginTop: '1em',
-  }
+  const summaryTabs = [
+    'group-exercise-summary',
+    'group-vocab-summary',
+    'group-test-summary',
+    'group-grammar-progress',
+  ].map(id => ({ value: id, label: intl.formatMessage({ id }) }))
 
-  const tabStyle = isActive => ({
-    color: 'black',
-    fontWeight: isActive ? 'bold' : '300',
-  })
+  const chartOptions = [
+    { value: 'timeline', labelId: 'progress-timeline' },
+    { value: 'vocabulary', labelId: 'vocabulary-view' },
+    ...(canSeeHexmap ? [{ value: 'hex-map', labelId: 'hex-map' }] : []),
+    { value: 'exercise', labelId: 'exercise-history' },
+    { value: 'test', labelId: 'Test History' },
+  ]
+
+  // Every summary tab but the grammar one renders the same table, differing only in which columns
+  // the backing summary is sliced down to.
+  const summaryProps = {
+    setStudent: setCurrentStudent,
+    startDate,
+    endDate,
+    group: currentGroup,
+    isTeaching: currentGroup.is_teaching,
+    getSummary: (start, end) => dispatch(getSummary(currentGroupId, start, end)),
+    getInitSummary: () => dispatch(getInitSummary(currentGroupId)),
+    setContent,
+    firstFetch,
+    setCefrHistory,
+    setFirstFetch,
+  }
 
   return (
     <div className="group-container">
@@ -210,16 +231,13 @@ const GroupAnalytics = ({ role }) => {
 
         <div style={{ alignSelf: 'flex-end', marginBottom: '0.5em' }}>
           {currentGroup?.is_teaching && (
-            <ButtonGroup toggle>
-              <ToggleButton
-                type="radio"
-                value="summary"
-                variant="info"
-                checked={content === 'summary'}
-                onChange={() => setContent('summary')}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.5em' }}>
+              <AppButton
+                variant={content === 'summary' ? 'tan' : 'contrast-outline'}
+                onClick={() => setContent('summary')}
               >
                 <FormattedMessage id="summary" />
-              </ToggleButton>
+              </AppButton>
               {currentGroup?.reading_comprehension && (
                 <>
                   <AppButton onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}>
@@ -239,7 +257,7 @@ const GroupAnalytics = ({ role }) => {
                   </AppButton>
                 </>
               )}
-            </ButtonGroup>
+            </Box>
           )}
         </div>
       </div>
@@ -313,14 +331,17 @@ const GroupAnalytics = ({ role }) => {
         <div>
           <div className="group-analytics-student-dropdown">
             <FormattedMessage id="student" />:{' '}
-            <Dropdown
-              text={dropDownMenuText}
-              selection
-              fluid
-              options={studentOptions}
-              onChange={(_, { value }) => handleStudentChange(value)}
-              disabled={!currentStudent}
-            />
+            <Box sx={{ flexGrow: 1 }}>
+              <AppSelect
+                variant="contrast-outline"
+                placeholder="-"
+                value={currentStudent?._id}
+                options={studentOptions}
+                onChange={handleStudentChange}
+                disabled={!currentStudent}
+                matchTriggerWidth
+              />
+            </Box>
           </div>
           {currentCEFR && (
             <div>
@@ -344,172 +365,49 @@ const GroupAnalytics = ({ role }) => {
             </div>
           )}
           <Divider />
-          <div className="space-evenly">
-            <button
-              type="button"
-              onClick={() => setShownChart('timeline')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('timeline')}
-                  checked={shownChart === 'timeline'}
-                />
-                <FormattedMessage id="progress-timeline" />
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShownChart('vocabulary')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('vocabulary')}
-                  checked={shownChart === 'vocabulary'}
-                />
-                <FormattedMessage id="vocabulary-view" />
-              </div>
-            </button>
-            {canSeeHexmap && (
-              <button
-                type="button"
-                onClick={() => setShownChart('hex-map')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => setShownChart('hex-map')}
-                    checked={shownChart === 'hex-map'}
-                  />
-                  <FormattedMessage id="hex-map" />
-                </div>
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => setShownChart('exercise')}
-              style={{ border: 'none' }}
-            >
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('exercise')}
-                  checked={shownChart === 'exercise'}
-                />
-                <FormattedMessage id="exercise-history" />
-              </div>
-            </button>
-            <button type="button" onClick={() => setShownChart('test')} style={{ border: 'none' }}>
-              <div className="flex align-center" style={{ gap: '.5em' }}>
-                <input
-                  type="radio"
-                  onChange={() => setShownChart('test')}
-                  checked={shownChart === 'test'}
-                />
-                <FormattedMessage id="Test History" />
-              </div>
-            </button>
-          </div>
+          <RadioGroup
+            row
+            value={shownChart}
+            onChange={e => setShownChart(e.target.value)}
+            sx={{ justifyContent: 'space-evenly' }}
+          >
+            {chartOptions.map(option => (
+              <FormControlLabel
+                key={option.value}
+                value={option.value}
+                control={<AppRadio />}
+                label={intl.formatMessage({ id: option.labelId })}
+              />
+            ))}
+          </RadioGroup>
           <Divider />
         </div>
       )}
 
       {content === 'summary' && currentGroup.is_teaching ? (
-        <Tabs
-          activeKey={summaryTab}
-          id="group-analytics-tabs"
-          className="mb-3"
-          style={tabsStyle}
-          onSelect={key => setSummaryTab(key)}
-        >
-          <Tab
-            eventKey="group-exercise-summary"
-            title={
-              <span style={tabStyle(summaryTab === 'group-exercise-summary')}>
-                {intl.formatMessage({ id: 'group-exercise-summary' })}
-              </span>
-            }
-          >
-            {summaryTab == 'group-exercise-summary' && (
-              <Summary
-                setStudent={setCurrentStudent}
-                startDate={startDate}
-                endDate={endDate}
-                group={currentGroup}
-                isTeaching={currentGroup.is_teaching}
-                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-                setContent={setContent}
-                firstFetch={firstFetch}
-                setCefrHistory={setCefrHistory}
-                setFirstFetch={setFirstFetch}
-                summaryType="exercise"
-              />
+        <>
+          <div style={{ marginTop: '1em', overflowX: 'auto' }}>
+            {/* fullWidth so the bar spans the container like the bootstrap <Tabs> nav it replaced;
+                sm because these four labels are long enough to overflow at the default size. */}
+            <AppTabs
+              tabs={summaryTabs}
+              value={summaryTab}
+              onChange={setSummaryTab}
+              fullWidth
+              size="xs"
+            />
+          </div>
+          <div style={{ marginTop: '1em' }}>
+            {summaryTab === 'group-exercise-summary' && (
+              <Summary {...summaryProps} summaryType="exercise" />
             )}
-          </Tab>
-          <Tab
-            eventKey="group-vocab-summary"
-            title={
-              <span style={tabStyle(summaryTab === 'group-vocab-summary')}>
-                {intl.formatMessage({ id: 'group-vocab-summary' })}
-              </span>
-            }
-          >
-            {summaryTab == 'group-vocab-summary' && (
-              <Summary
-                setStudent={setCurrentStudent}
-                startDate={startDate}
-                endDate={endDate}
-                group={currentGroup}
-                isTeaching={currentGroup.is_teaching}
-                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-                setContent={setContent}
-                firstFetch={firstFetch}
-                setCefrHistory={setCefrHistory}
-                setFirstFetch={setFirstFetch}
-                summaryType="vocab"
-              />
+            {summaryTab === 'group-vocab-summary' && (
+              <Summary {...summaryProps} summaryType="vocab" />
             )}
-          </Tab>
-          <Tab
-            eventKey="group-test-summary"
-            title={
-              <span style={tabStyle(summaryTab === 'group-test-summary')}>
-                {intl.formatMessage({ id: 'group-test-summary' })}
-              </span>
-            }
-          >
-            {summaryTab == 'group-test-summary' && (
-              <Summary
-                setStudent={setCurrentStudent}
-                startDate={startDate}
-                endDate={endDate}
-                group={currentGroup}
-                isTeaching={currentGroup.is_teaching}
-                getSummary={(start, end) => dispatch(getSummary(currentGroupId, start, end))}
-                getInitSummary={() => dispatch(getInitSummary(currentGroupId))}
-                setContent={setContent}
-                firstFetch={firstFetch}
-                setCefrHistory={setCefrHistory}
-                setFirstFetch={setFirstFetch}
-                summaryType="test"
-              />
+            {summaryTab === 'group-test-summary' && (
+              <Summary {...summaryProps} summaryType="test" />
             )}
-          </Tab>
-          <Tab
-            eventKey="group-grammar-progress"
-            title={
-              <span style={tabStyle(summaryTab === 'group-grammar-progress')}>
-                {intl.formatMessage({ id: 'group-grammar-progress' })}
-              </span>
-            }
-          >
-            {summaryTab == 'group-grammar-progress' && (
+            {summaryTab === 'group-grammar-progress' && (
               <StudentGrammarProgress
                 summaryView
                 startDate={startDate}
@@ -517,25 +415,17 @@ const GroupAnalytics = ({ role }) => {
                 group={currentGroup}
               />
             )}
-          </Tab>
-        </Tabs>
+          </div>
+        </>
       ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
         <div>
           <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedHTMLMessage id="timeline-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
+            <CustomTooltip permanent keyId="timeline-explanation">
+              <InfoOutlinedIcon
+                fontSize="small"
+                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+              />
+            </CustomTooltip>
             <div className="progress-page-header">
               <FormattedMessage id="progress-timeline" />
             </div>
@@ -552,8 +442,9 @@ const GroupAnalytics = ({ role }) => {
       ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
         <div>
           <div className="row-flex align center">
-            <Popup
-              content={
+            <CustomTooltip
+              permanent
+              title={
                 <div>
                   <FormattedHTMLMessage id="vocabulary-view-explanation" />
                   <br />
@@ -578,14 +469,12 @@ const GroupAnalytics = ({ role }) => {
                   <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
                 </div>
               }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
+            >
+              <InfoOutlinedIcon
+                fontSize="small"
+                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+              />
+            </CustomTooltip>
             <div className="progress-page-header">
               <FormattedMessage id="vocabulary-view" />
             </div>
@@ -605,20 +494,12 @@ const GroupAnalytics = ({ role }) => {
       ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
         <div>
           <div className="row-flex align center">
-            <Popup
-              content={
-                <div>
-                  <FormattedMessage id="hex-map-explanation" />
-                </div>
-              }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
+            <CustomTooltip permanent keyId="hex-map-explanation">
+              <InfoOutlinedIcon
+                fontSize="small"
+                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+              />
+            </CustomTooltip>
             <div className="progress-page-header">
               <FormattedMessage id="hex-map" />
             </div>

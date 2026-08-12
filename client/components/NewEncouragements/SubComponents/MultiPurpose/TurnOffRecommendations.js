@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Popup, Icon } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { updateEnableRecmd } from 'Utilities/redux/userReducer'
-import { Form } from 'react-bootstrap'
-
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const TurnOffRecommendations = () => {
   const { pending: userPending } = useSelector(({ user }) => user)
@@ -18,32 +18,23 @@ const TurnOffRecommendations = () => {
 
   return (
     <div className="flex pt-lg">
-      <Form.Group>
-        <Form.Check
-          className="interactable"
-          style={{ marginTop: '0.15em' }}
-          type="checkbox"
-          inline
-          onChange={updatePreferences}
-          checked={!enable_recmd}
-          disabled={userPending}
-        />
-      </Form.Group>
+      <AppCheckbox
+        className="interactable"
+        sx={{ p: 0, mt: '0.15em', mr: '0.5em' }}
+        onChange={updatePreferences}
+        checked={!enable_recmd}
+        disabled={userPending}
+      />
       <span style={{ color: '#708090' }}>
         <FormattedMessage id="never-show-recommendations" />
       </span>
-      <Popup
-        className="interactable"
-        content={intl.formatMessage({ id: 'disable-recmd-tooltip' })}
-        trigger={
-          <Icon
-            className="interactable"
-            style={{ marginLeft: '0.5em' }}
-            name="info circle"
-            color="grey"
-          />
-        }
-      />
+      <CustomTooltip permanent title={intl.formatMessage({ id: 'disable-recmd-tooltip' })}>
+        <InfoOutlinedIcon
+          className="interactable"
+          fontSize="small"
+          sx={{ ml: '0.5em', color: 'grey' }}
+        />
+      </CustomTooltip>
     </div>
   )
 }

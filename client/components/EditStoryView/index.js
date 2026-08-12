@@ -7,10 +7,10 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { FormControl } from 'react-bootstrap'
+import { Divider } from '@mui/material'
 import AppButton from 'Components/AppButton'
+import AppTextField from 'Components/ui/AppTextField'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { Divider } from 'semantic-ui-react'
 import Spinner from 'Components/Spinner'
 
 const EditStoryView = ({ match }) => {
@@ -125,16 +125,15 @@ const EditStoryView = ({ match }) => {
               </AppButton>
             </div>
           </div>
-          <Divider />
+          <Divider sx={{ my: '1em' }} />
           <div className="flex align-center">
             <span style={{ marginRight: '.5rem' }}>
               <FormattedMessage id="story-title" />:
             </span>
-            <FormControl
-              className={bigScreen ? 'story-title-input' : 'story-title-input-mobile'}
-              as="input"
+            <AppTextField
+              fullWidth={false}
               value={title}
-              style={{ marginTop: '1em', marginBottom: '1em' }}
+              sx={{ width: bigScreen ? 500 : 250, my: '1em' }}
               onChange={handleTitleTextChange}
               placeholder={intl.formatMessage({ id: 'story-title' })}
             />
@@ -158,13 +157,22 @@ const EditStoryView = ({ match }) => {
               </div>
             )}
           </div>
-          <FormControl
-            as="textarea"
-            className="story-text-input"
+          <AppTextField
+            multiline
             value={content}
-            rows={story.paragraph?.length * 3}
+            rows={(story.paragraph?.length ?? 4) * 3}
             onChange={handleTextChange}
-            style={{ marginTop: '1em', marginBottom: '1em' }}
+            sx={{
+              my: '1em',
+              // Fixed box that scrolls — 800px with room to spare on a big screen, 20vh on mobile
+              // (what the old `.story-text-input` gave). `rows` only keeps MUI on a plain
+              // <textarea> instead of the auto-sizing one.
+              '& .MuiOutlinedInput-root': {
+                height: bigScreen ? '500px' : '20vh',
+                alignItems: 'flex-start',
+              },
+              '& textarea': { height: '100% !important', overflowY: 'auto !important' },
+            }}
           />
         </div>
       </div>

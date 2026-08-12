@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { Form } from 'react-bootstrap'
+import AppCheckbox from 'Components/ui/AppCheckbox'
 import { updateExerciseSettings as updateUserSettings } from 'Utilities/redux/userReducer'
 import { updateExerciseSettings as updateGroupSettings } from 'Utilities/redux/groupsReducer'
 import { updateExerciseSettings as updateStorySettings } from 'Utilities/redux/storiesReducer'
@@ -57,19 +57,13 @@ const SelectAllCheckbox = ({ showTestConcepts }) => {
 
   return (
     <div style={hidden} className="concept-enable-all">
-      <Form.Group>
-        <Form.Check
-          type="checkbox"
-          inline
-          onChange={handleCheckboxClick}
-          checked={checked && !showTestConcepts}
-          /* eslint-disable no-param-reassign */
-          ref={el => {
-            if (el) el.indeterminate = indeterminateCheck
-          }}
-          disabled={showTestConcepts}
-        />
-      </Form.Group>
+      <AppCheckbox
+        sx={{ p: 0, mr: '0.5em' }}
+        onChange={handleCheckboxClick}
+        checked={checked && !showTestConcepts}
+        indeterminate={Boolean(indeterminateCheck)}
+        disabled={showTestConcepts}
+      />
       <span>
         <FormattedMessage id="select-unselect-all" />
       </span>

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Radio } from 'semantic-ui-react'
+import { FormControlLabel, RadioGroup } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { FormControl, Form } from 'react-bootstrap'
 import AppButton from 'Components/AppButton'
-import { Checkbox } from 'semantic-ui-react'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import AppDialog from 'Components/ui/AppDialog'
+import AppRadio from 'Components/ui/AppRadio'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTextField from 'Components/ui/AppTextField'
 import { shareStory } from 'Utilities/redux/shareReducer'
 import { formatEmailList } from 'Utilities/common'
 
@@ -51,135 +54,145 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     }
   }
 
-  const handleGroupOptionSelect = () => {
-    setShowOption('group')
-    setMessage(intl.formatMessage({ id: 'share-story-with-group-default' }))
+  const handleOptionSelect = option => {
+    setShowOption(option)
+    setMessage(
+      intl.formatMessage({
+        id: option === 'group' ? 'share-story-with-group-default' : 'share-story-with-user-default',
+      })
+    )
   }
 
-  const handleUserOptionSelect = () => {
-    setShowOption('user')
-    setMessage(intl.formatMessage({ id: 'share-story-with-user-default' }))
-  }
-
-  const handleGroupChange = e => setShareTargetGroupId(e.target.value)
+  const groupOptions = groupsUserCanShareWith.map(group => ({
+    value: group.group_id,
+    label: group.groupName,
+  }))
 
   return (
-    <Modal dimmer="inverted" closeIcon open={isOpen} onClose={() => setOpen(false)}>
-      <Modal.Header>
-        <span style={{ color: '#777' }}>
-          <FormattedMessage id="Share" />:{' '}
-        </span>
-        <span style={{ color: '#000', opacity: '.4' }}> {story.shortTitle}</span>
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
-        <div className="space-evenly padding-bottom-2">
-          <Radio
-            name="group"
-            label={intl.formatMessage({ id: 'share-story-with-a-group' })}
-            checked={showOption === 'group'}
-            onClick={handleGroupOptionSelect}
-          />
-          <Radio
-            name="user"
-            label={intl.formatMessage({ id: 'share-story-with-a-user' })}
-            checked={showOption === 'user'}
-            onClick={handleUserOptionSelect}
-          />
-        </div>
-        <Form className="share-story-form" data-cy="share-story-form" onSubmit={share}>
-          <div>
-            {showOption === 'group' && (
-              <>
-                {groupsUserCanShareWith.length > 0 ? (
-                  <div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginTop: '2em',
-                        marginBottom: '2em',
-                      }}
-                    >
-                      <span style={{ paddingRight: '2rem', fontWeight: 'bold' }}>
-                        {intl.formatMessage({ id: 'Group' })}
-                      </span>
-                      <select data-cy="select-group" onChange={e => handleGroupChange(e)}>
-                        {groupsUserCanShareWith.map(group => (
-                          <option value={group.group_id} key={group.group_id}>
-                            {group.groupName}
-                          </option>
-                        ))}
-                      </select>
-                      <Checkbox
-                        label={
-                          !story.flashcardsOnly && intl.formatMessage({ id: 'share-as-a-hidden-story' }) || 
-                          intl.formatMessage({ id: 'share-as-a-hidden-flashcards' })
-                        }
-                        checked={isHiddenStory}
-                        onChange={() => setIsHiddenStory(!isHiddenStory)}
-                        style={{ marginLeft: '2rem' }}
+    <AppDialog
+      open={isOpen}
+      onClose={() => setOpen(false)}
+      title={
+        <>
+          <span style={{ color: '#777' }}>
+            <FormattedMessage id="Share" />:{' '}
+          </span>
+          <span style={{ color: '#000', opacity: '.4' }}> {story.shortTitle}</span>
+        </>
+      }
+    >
+      <RadioGroup
+        row
+        className="space-evenly padding-bottom-2"
+        value={showOption}
+        onChange={e => handleOptionSelect(e.target.value)}
+      >
+        <FormControlLabel
+          value="group"
+          control={<AppRadio />}
+          label={intl.formatMessage({ id: 'share-story-with-a-group' })}
+        />
+        <FormControlLabel
+          value="user"
+          control={<AppRadio />}
+          label={intl.formatMessage({ id: 'share-story-with-a-user' })}
+        />
+      </RadioGroup>
+
+      <form className="share-story-form" data-cy="share-story-form" onSubmit={share}>
+        <div>
+          {showOption === 'group' && (
+            <>
+              {groupsUserCanShareWith.length > 0 ? (
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginTop: '2em',
+                      marginBottom: '2em',
+                    }}
+                  >
+                    <span style={{ paddingRight: '2rem', fontWeight: 'bold' }}>
+                      {intl.formatMessage({ id: 'Group' })}
+                    </span>
+                    <div data-cy="select-group">
+                      <AppSelect
+                        variant="contrast-outline"
+                        value={shareTargetGroupId}
+                        options={groupOptions}
+                        onChange={setShareTargetGroupId}
                       />
                     </div>
-                    <span className="sm-label" style={{ marginTop: '5em' }}>
-                      <FormattedMessage id="write-a-message-for-the-receiver-optional" />
-                    </span>
-                    <FormControl
-                      style={{ marginTop: '0.5em', marginBottom: '2rem' }}
-                      as="input"
-                      value={message}
-                      onChange={e => setMessage(e.target.value)}
+                    <FormControlLabel
+                      sx={{ ml: '2rem' }}
+                      control={
+                        <AppCheckbox
+                          checked={isHiddenStory}
+                          onChange={() => setIsHiddenStory(!isHiddenStory)}
+                        />
+                      }
+                      label={
+                        (!story.flashcardsOnly &&
+                          intl.formatMessage({ id: 'share-as-a-hidden-story' })) ||
+                        intl.formatMessage({ id: 'share-as-a-hidden-flashcards' })
+                      }
                     />
-                    <AppButton disabled={!shareTargetGroupId} type="submit">
-                      <FormattedMessage id="Share" />
-                    </AppButton>
                   </div>
-                ) : (
-                  <div
-                    className="additional-info"
-                    style={{ margin: '2em 0em', textAlign: 'center' }}
-                  >
-                    <FormattedMessage id="need-to-be-teacher-in-group-to-share" />
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </Form>
-
-        {showOption === 'user' && (
-          <>
-            <Form className="group-form" onSubmit={share}>
-              <span className="sm-label">
-                <FormattedMessage id="enter-email-address" />{' '}
-                <FormattedMessage id="multiple-emails-separated-by-space" />
-              </span>
-              <FormControl
-                as="textarea"
-                value={shareTargetUserEmails}
-                onChange={e => setShareTargetUserEmails(e.target.value)}
-              />
-              {showSelfAddWarning && (
-                <div style={{ color: 'red', marginBottom: '1em' }}>
-                  <FormattedMessage id="cant-share-story-with-yourself" />
+                  <span className="sm-label" style={{ marginTop: '5em' }}>
+                    <FormattedMessage id="write-a-message-for-the-receiver-optional" />
+                  </span>
+                  <AppTextField
+                    sx={{ mt: '0.5em', mb: '2rem' }}
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                  />
+                  <AppButton disabled={!shareTargetGroupId} type="submit">
+                    <FormattedMessage id="Share" />
+                  </AppButton>
+                </div>
+              ) : (
+                <div className="additional-info" style={{ margin: '2em 0em', textAlign: 'center' }}>
+                  <FormattedMessage id="need-to-be-teacher-in-group-to-share" />
                 </div>
               )}
-              <span className="sm-label" style={{ marginTop: '5em' }}>
-                <FormattedMessage id="write-a-message-for-the-receiver-optional" />
-              </span>
-              <FormControl
-                style={{ marginTop: '0.5em', marginBottom: '2rem' }}
-                as="input"
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-              />
-              <AppButton disabled={shareTargetUserEmails?.length < EMAIL_MIN_LENGTH} type="submit">
-                <FormattedMessage id="Share" />
-              </AppButton>
-            </Form>
-          </>
-        )}
-      </Modal.Content>
-    </Modal>
+            </>
+          )}
+        </div>
+      </form>
+
+      {showOption === 'user' && (
+        <form className="group-form" onSubmit={share}>
+          <span className="sm-label">
+            <FormattedMessage id="enter-email-address" />{' '}
+            <FormattedMessage id="multiple-emails-separated-by-space" />
+          </span>
+          <AppTextField
+            multiline
+            rows={3}
+            sx={{ mt: '0.5em', mb: '1.5em' }}
+            value={shareTargetUserEmails}
+            onChange={e => setShareTargetUserEmails(e.target.value)}
+          />
+          {showSelfAddWarning && (
+            <div style={{ color: 'red', marginBottom: '1em' }}>
+              <FormattedMessage id="cant-share-story-with-yourself" />
+            </div>
+          )}
+          <span className="sm-label" style={{ marginTop: '5em' }}>
+            <FormattedMessage id="write-a-message-for-the-receiver-optional" />
+          </span>
+          <AppTextField
+            sx={{ mt: '0.5em', mb: '2rem' }}
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+          />
+          <AppButton disabled={shareTargetUserEmails?.length < EMAIL_MIN_LENGTH} type="submit">
+            <FormattedMessage id="Share" />
+          </AppButton>
+        </form>
+      )}
+    </AppDialog>
   )
 }
 

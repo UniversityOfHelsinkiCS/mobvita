@@ -1,10 +1,14 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Icon, Popup, Segment } from 'semantic-ui-react'
-import { Form } from 'react-bootstrap'
+import { Box, Paper } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector, useDispatch } from 'react-redux'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import AppSelect from 'Components/ui/AppSelect'
+import CustomTooltip from 'Components/CustomTooltip'
 import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
 import Spinner from 'Components/Spinner'
 
@@ -17,6 +21,11 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
   const [sortBy, setSortBy] = useState('cefr')
   const {addExerciseByItem, removeExerciseByItem, exerciseCount} = BatchExerciseControl()
 
+  const sortOptions = [
+    { value: 'cefr', label: intl.formatMessage({ id: 'sort-by-concept-cefr-short' }) },
+    { value: 'name', label: intl.formatMessage({ id: 'sort-by-concept-name-short' }) },
+    { value: 'freq', label: intl.formatMessage({ id: 'sort-by-concept-freq-short' }) },
+  ]
 
   const toggleExerciseTopic = (item, freq) => {
     if (exerciseCount[item] && exerciseCount[item] === freq) {
@@ -80,21 +89,19 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
 
   if (width >= 1024 && topTopics.length > 0) {
     return (
-      
+
       <div className="story-topics-box">
-        <Segment>
+        <Paper sx={{ padding: '1em' }}>
         <div style={{ backgroundColor: '#FFFFFF' }}>
           <div className="flex space-between">
             <div style={{ marginBottom: '.5em' }}>
               <div className="header-3" style={{ fontWeight: '500' }}>
-                  <Popup
-                      content={<FormattedHTMLMessage id={'story-top-topics-explain'} />}
-                      trigger={<Icon style={{ paddingRight: '0.5em' }}
-                                     name="info circle"
-                                     size="small"
-                                     color="grey"
-                               />}
-                  />{' '}
+                  <CustomTooltip permanent keyId="story-top-topics-explain">
+                      <InfoOutlinedIcon
+                        fontSize="small"
+                        sx={{ color: 'grey', mr: '0.5em', verticalAlign: 'middle' }}
+                      />
+                  </CustomTooltip>{' '}
                   <FormattedMessage id="topics-header" />
                   {!loadingReady && (
                     <span style={{ marginLeft: '0.5em' }}>
@@ -109,24 +116,24 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
               onKeyDown={() => {handleTopicsBoxClick()}}
               role="button"
               tabIndex={0}
+              style={{ cursor: 'pointer' }}
             >
-              <Icon name={showTopicsBox ? 'angle up' : 'angle down'} size="large" />
+              {showTopicsBox ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </div>
           </div>
           {showTopicsBox && (
-            <>              
+            <>
               <div className="space-between" style={{ alignItems: 'center' }}>
                 <FormattedMessage id="LABEL-sort-by" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  aria-label={intl.formatMessage({ id: 'LABEL-sort-by' })}
-                  style={{ flexGrow: 1, marginLeft: '0.5em' }}
-                >
-                  <option value="cefr">{intl.formatMessage({ id: 'sort-by-concept-cefr-short' })}</option>
-                  <option value="name">{intl.formatMessage({ id: 'sort-by-concept-name-short' })}</option>
-                  <option value="freq">{intl.formatMessage({ id: 'sort-by-concept-freq-short' })}</option>
-                </select>
+                <Box sx={{ flexGrow: 1, ml: '0.5em' }}>
+                  <AppSelect
+                    variant="contrast-outline"
+                    value={sortBy}
+                    options={sortOptions}
+                    onChange={setSortBy}
+                    matchTriggerWidth
+                  />
+                </Box>
               </div>
               <hr />
               <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0, marginBottom: 0 }}>
@@ -137,16 +144,11 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                       style={{ cursor: 'pointer' }}
                       onClick={() => handleFocusedConcept(topic[0])}
                     >
-                      {isControlledStoryEditor && <Form.Check
-                        style={{ verticalAlign: 'middle', marginRight: '0.5em' }}
-                        type="checkbox"
-                        inline
-                        // label={intl.formatMessage({ id: 'teacher-view' })}
+                      {isControlledStoryEditor && <AppCheckbox
+                        sx={{ p: 0, verticalAlign: 'middle', mr: '0.5em' }}
                         checked={exerciseCount[topic[0]] && exerciseCount[topic[0]] === topic[1].freq ? true : false}
-                        ref={el => {
-                          if (el) el.indeterminate = exerciseCount[topic[0]] && (
-                            exerciseCount[topic[0]] / topic[1].freq !== 1 && exerciseCount[topic[0]] / topic[1].freq !== 0) ? true : false
-                        }}
+                        indeterminate={exerciseCount[topic[0]] && (
+                          exerciseCount[topic[0]] / topic[1].freq !== 1 && exerciseCount[topic[0]] / topic[1].freq !== 0) ? true : false}
                         onChange={() => toggleExerciseTopic(topic[0], topic[1].freq)}
                       />}
                         { /* topic[0] */
@@ -163,7 +165,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
             </>
           )}
         </div>
-        </Segment>
+        </Paper>
       </div>
     )
   }

@@ -1,10 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { Collapse } from 'react-collapse'
-import { Icon, Popup } from 'semantic-ui-react'
-import { Form } from 'react-bootstrap'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { FormattedMessage, useIntl } from 'react-intl'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import AppTextField from 'Components/ui/AppTextField'
+import CustomTooltip from 'Components/CustomTooltip'
 import { skillLevels } from 'Utilities/common'
 
 const Concept = ({
@@ -31,7 +33,7 @@ const Concept = ({
 
   const [numberError, setNumberError] = useState(false)
   const intl = useIntl()
-  const caretIconName = open ? 'caret down' : 'caret right'
+  const CaretIcon = open ? ArrowDropDownIcon : ArrowRightIcon
   const isLeaf = concept.children.length === 0
   const renderTestConcepts = isLeaf && showTestConcepts && target === 'groups'
   const renderLevels = showLevels && concept.level !== null && concept.level !== undefined
@@ -76,9 +78,17 @@ const Concept = ({
     const truncatedName = `${name.slice(0, CONCEPT_NAME_MAX_LEN)}...`
 
     if ((maxNumQuestions > 0 && showTestConcepts) || !showTestConcepts) {
-      return <Popup content={name} trigger={<span>{truncatedName}</span>} />
+      return (
+        <CustomTooltip title={name} permanent>
+          <span>{truncatedName}</span>
+        </CustomTooltip>
+      )
     }
-    return <Popup content={name} trigger={<span className="disabled-text">{truncatedName}</span>} />
+    return (
+      <CustomTooltip title={name} permanent>
+        <span className="disabled-text">{truncatedName}</span>
+      </CustomTooltip>
+    )
   }
 
   const indeterminateCheck = conceptTurnedOn && conceptTurnedOn !== 1 && conceptTurnedOn !== 0
@@ -100,22 +110,17 @@ const Concept = ({
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
-            {!isLeaf && <Icon name={caretIconName} onClick={() => setOpen(!open)} />}
+            {!isLeaf && (
+              <CaretIcon sx={{ cursor: 'pointer' }} onClick={() => setOpen(!open)} />
+            )}
           </div>
-          <Form.Group>
-            <Form.Check
-              style={hidden}
-              type="checkbox"
-              inline
-              onChange={handleCheckboxChange}
-              checked={conceptTurnedOn && !showTestConcepts}
-              /* eslint-disable no-param-reassign */
-              ref={el => {
-                if (el) el.indeterminate = indeterminateCheck
-              }}
-              disabled={showTestConcepts}
-            />
-          </Form.Group>
+          <AppCheckbox
+            sx={{ p: 0, mr: '0.5em', ...hidden }}
+            onChange={handleCheckboxChange}
+            checked={Boolean(conceptTurnedOn) && !showTestConcepts}
+            indeterminate={Boolean(indeterminateCheck)}
+            disabled={showTestConcepts}
+          />
           <span
             onClick={() => setOpen(!open)}
             onKeyPress={() => setOpen(!open)}
@@ -153,22 +158,26 @@ const Concept = ({
                   </span>
                 )}
               </span>
-              <Popup
-                content={`max: ${maxNumQuestions}, ${intl.formatMessage({
+              <CustomTooltip
+                permanent
+                title={`max: ${maxNumQuestions}, ${intl.formatMessage({
                   id: 'default',
                 })}: ${defaultNumQuestions}`}
-                trigger={
-                  <Form.Control
+              >
+                {/* Tooltip needs a ref-able child, and a disabled input swallows hover events —
+                    the span gives it both. */}
+                <span style={{ display: 'inline-flex' }}>
+                  <AppTextField
                     type="text"
-                    size="sm"
-                    style={{ width: '4em' }}
+                    fullWidth={false}
+                    sx={{ width: '5em' }}
                     disabled={(testEnabled !== undefined && !testEnabled) || maxNumQuestions === 0}
-                    placeholder={maxNumQuestions > 0 ? testConceptQuestionAmount : ''}
+                    placeholder={maxNumQuestions > 0 ? String(testConceptQuestionAmount) : ''}
                     onBlur={e => validateNumberInput(e)}
-                    isInvalid={numberError}
+                    error={numberError}
                   />
-                }
-              />
+                </span>
+              </CustomTooltip>
             </div>
           )}
         </div>

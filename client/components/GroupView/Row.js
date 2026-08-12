@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import { TableCell, TableRow } from '@mui/material'
 import AppButton from 'Components/AppButton'
 
 export default ({ translationId, id, updateLibrarySelect, updateGroupSelect, children }) => {
@@ -14,11 +15,11 @@ export default ({ translationId, id, updateLibrarySelect, updateGroupSelect, chi
   }
 
   return (
-    <tr>
-      <td>
+    <TableRow>
+      <TableCell>
         <FormattedMessage id={translationId} />
-      </td>
-      <td style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+      </TableCell>
+      <TableCell style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
         {children}
         {id && updateLibrarySelect && updateGroupSelect && (
           <AppButton
@@ -30,7 +31,7 @@ export default ({ translationId, id, updateLibrarySelect, updateGroupSelect, chi
             <FormattedMessage id="Stories" />
           </AppButton>
         )}
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }
