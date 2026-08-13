@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'Components/Spinner'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 import { Icon } from 'semantic-ui-react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { initializeTimer } from 'Utilities/redux/competitionReducer'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const OpponentBar = ({
   botSnippetTimes,
@@ -124,37 +126,15 @@ const OpponentBar = ({
               </div>
             </div>
           </div>
-          <div
-            style={{
-              height: '0.9em',
-              textAlign: 'center',
-              borderRadius: '10px 10px 0px 0px',
-            }}
-            className="progress"
-          >
-            <span
-              data-cy="snippet-progress"
-              style={{
-                marginTop: '0.75em',
-                position: 'absolute',
-                right: 0,
-                left: 0,
-              }}
-            />
-            <div
-              className="progress-bar bg-warning"
-              style={{
-                width: `${getBarWidth()}%`,
-                backgroundColor: '#FA6',
-                borderRadius: '0',
-              }}
-              role="progressbar"
-              aria-valuenow={getBarWidth()}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              height="50%"
-            />
-          </div>
+          <AppProgressBar
+            value={getBarWidth()}
+            height="0.9em"
+            trackColor={colors.progressBarTrack}
+            fillColor={colors.opponent}
+            style={{ borderRadius: '10px 10px 0px 0px' }}
+            fillProps={{ style: { borderRadius: 0 } }}
+            label={<span data-cy="snippet-progress" />}
+          />
         </div>
       )}
     </>

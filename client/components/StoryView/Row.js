@@ -1,13 +1,14 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { TableCell, TableRow } from '@mui/material'
 
 export default ({ translationId, children }) => (
-  <tr>
-    <td>
+  <TableRow>
+    <TableCell>
       <FormattedMessage id={translationId} />
-    </td>
-    <td style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+    </TableCell>
+    <TableCell style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
       {children}
-    </td>
-  </tr>
+    </TableCell>
+  </TableRow>
 )

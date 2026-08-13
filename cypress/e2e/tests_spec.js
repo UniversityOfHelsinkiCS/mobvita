@@ -21,8 +21,8 @@ describe('test view', function() {
     cy.wait('@apiCall', { timeout: 30000 })
     cy.get('[data-cy=create-group-button]', { timeout: 30000 }).click()
     cy.get('[data-cy=group-name]').eq(0).type('my_test_group')
-    cy.get('textarea').eq(1).type(this.teacher.email)
-    cy.get('textarea').eq(2).type(this.teacher.email)
+    cy.get('[data-cy=teacher-emails]').type(this.teacher.email)
+    cy.get('[data-cy=student-emails]').type(this.teacher.email)
     cy.get('[type=submit]').click()
 
     // Close modal with esc

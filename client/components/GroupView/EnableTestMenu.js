@@ -54,12 +54,13 @@ const EnableTestMenu = ({
   return (
     <div>
       <div
-        className="border rounded"
         style={{
           display: 'flex',
           marginTop: '0.5em',
           minHeight: '3em',
           wordBreak: 'break-all',
+          border: '1px solid #dee2e6',
+          borderRadius: '0.25rem',
         }}
       >
         <span style={{ margin: 'auto', padding: '0.5em' }}>

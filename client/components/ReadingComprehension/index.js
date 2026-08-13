@@ -14,6 +14,7 @@ import {
 } from 'semantic-ui-react'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
+import AppButton from 'Components/AppButton'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
 import {
@@ -843,19 +844,19 @@ const ReadingComprehensionView = ({ match }) => {
         <Modal.Actions
           style={{ display: 'flex', justifyContent: 'center', gap: 16, background: 'transparent' }}
         >
-          <button
+          <AppButton
             type="button"
             data-cy="rc-delete-modal-cancel"
-            className="btn btn-secondary"
+            variant="contrast-outline"
             onClick={() => setConfirmDelete({ open: false, idx: null, type: null })}
             style={{ minWidth: 90 }}
           >
             {intl.formatMessage({ id: 'Cancel' })}
-          </button>
-          <button
+          </AppButton>
+          <AppButton
             type="button"
             data-cy="rc-delete-modal-confirm"
-            className="btn btn-outline-danger"
+            variant="danger"
             onClick={() => {
               if (typeof confirmDelete.idx === 'number') {
                 if (confirmDelete.type === 'draft') removeDraftQuestion(confirmDelete.idx)
@@ -866,7 +867,7 @@ const ReadingComprehensionView = ({ match }) => {
             style={{ minWidth: 90 }}
           >
             {intl.formatMessage({ id: 'Delete' })}
-          </button>
+          </AppButton>
         </Modal.Actions>
       </Modal>
       {mcPending ? (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
-import { Table } from 'react-bootstrap'
+import CloseIcon from '@mui/icons-material/Close'
+import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import AppTable from 'Components/ui/AppTable'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
@@ -61,14 +62,12 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
       <Draggable cancel=".interactable">
         <div className="draggable-modal">
           <div className="flex-reverse">
-            <Icon
+            <CloseIcon
               className="interactable"
               style={{
                 cursor: 'pointer',
                 marginBottom: '1em',
               }}
-              size="large"
-              name="close"
               onClick={closeModal}
             />
           </div>
@@ -83,51 +82,43 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
             </div>
           )} */}
           <div style={{  maxHeight: 300 }}> {/*  overflow: 'auto', */}
-            <Table striped bordered hover size="sm">
-              <thead>
-                <tr key="summary-header-row">
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="date-of-CEFR" /></th>
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="source-of-CEFR" /></th>
-                  <th style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="cefr_grade" /></th>
-                </tr>
-              </thead>
-              <tbody>
+            <AppTable striped bordered hover>
+              <TableHead>
+                <TableRow key="summary-header-row">
+                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="date-of-CEFR" /></TableCell>
+                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="source-of-CEFR" /></TableCell>
+                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="cefr_grade" /></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {showForm && (
-                  <tr>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                  <TableRow>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
                       {moment().format('YYYY/MM/DD')}
-                    </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem', width: '100px' }}>
-                    </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem', width: '100px' }}>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
                       <CEFRDropdown
                         addNew
                         updatedCEFRHistory={updatedCEFRHistory}
                         setUpdatedCEFRHistory={setUpdatedCEFRHistory}
                         setModified={setModified}
                       />
-                    </th>
-                  </tr>
-                  // <div style={{ marginBottom: '10px' }}>
-                  //   <CEFRDropdown
-                  //     addNew
-                  //     updatedCEFRHistory={updatedCEFRHistory}
-                  //     setUpdatedCEFRHistory={setUpdatedCEFRHistory}
-                  //     setModified={setModified}
-                  //   />
-                  // </div>
-                )} 
+                    </TableCell>
+                  </TableRow>
+                )}
                 {updatedCEFRHistory.map((estimate, index) => (
-                  <tr>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                  <TableRow key={`${estimate.timestamp}-${estimate.source}`}>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
                       {moment.unix(estimate.timestamp).format('YYYY/MM/DD')}
-                    </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400' , padding: '0.75rem', width: '100px' }}>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem', width: '100px' }}>
                       {estimate.source === 'self_estimation'
                         ? 'Self'
                         : capitalize(estimate.source.replace('_', ' '))}
-                    </th>
-                    <th style={{ verticalAlign: 'middle', fontWeight: '400', padding: '0.75rem' }}>
+                    </TableCell>
+                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
                       {estimate.source === 'teacher' ? (
                         <CEFRDropdown
                           estimate={estimate}
@@ -139,9 +130,9 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                       ) : (
                         skillLevels[estimate.grade]
                       )}
-                    </th>
+                    </TableCell>
                     {/* {estimate.source === 'teacher' && (
-                      <Icon
+                      <CloseIcon
                         className="interactable"
                         style={{
                           cursor: 'pointer',
@@ -150,15 +141,13 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
                           marginRight: '.75em',
                           color: 'red',
                         }}
-                        size="large"
-                        name="close"
                         onClick={() => removeCEFR(index)}
                       />
                     )} */}
-                  </tr>
+                  </TableRow>
                 ))}
-              </tbody>
-            </Table>
+              </TableBody>
+            </AppTable>
           </div>
           <div className="flex space-between" style={{ paddingBottom: '15px' }}>
             <AppButton

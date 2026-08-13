@@ -1,7 +1,9 @@
 import React from 'react'
-import { Table, ProgressBar } from 'react-bootstrap'
+import { TableBody } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import moment from 'moment'
+import AppProgressBar from 'Components/ui/AppProgressBar'
+import AppTable from 'Components/ui/AppTable'
 import DifficultyStars from 'Components/DifficultyStars'
 import Row from './Row'
 
@@ -17,12 +19,12 @@ export default ({
   publicStory,
   date,
 }) => (
-  <Table striped width="100%" style={{ tableLayout: 'fixed' }}>
+  <AppTable striped sx={{ tableLayout: 'fixed' }}>
     <colgroup>
       <col width="40%" />
       <col width="60%" />
     </colgroup>
-    <tbody>
+    <TableBody>
       {UrlString && (
         <Row translationId="Source">
           <a href={UrlString} target="_blank" rel="noopener noreferrer">
@@ -50,23 +52,18 @@ export default ({
         </>
       )}
       <Row translationId="part-of-story-covered">
-        <ProgressBar
-          striped
-          variant="info"
-          now={percentCovered < 10 ? 10 : percentCovered}
+        {/* The bar never drops below 10% so the label stays readable on top of the fill. */}
+        <AppProgressBar
+          value={percentCovered < 10 ? 10 : percentCovered}
           label={`${percentCovered}%`}
-          className="table-progress-bar"
         />
       </Row>
       <Row translationId="exercises-answered-correctly">
-        <ProgressBar
-          striped
-          variant="success"
-          now={percentCorrect < 10 ? 10 : percentCorrect}
+        <AppProgressBar
+          value={percentCorrect < 10 ? 10 : percentCorrect}
           label={`${percentCorrect}%`}
-          className="table-progress-bar"
         />
       </Row>
-    </tbody>
-  </Table>
+    </TableBody>
+  </AppTable>
 )

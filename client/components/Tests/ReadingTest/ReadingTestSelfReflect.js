@@ -3,6 +3,7 @@ import Draggable from 'react-draggable';
 import { Icon } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
+import AppButton from 'Components/AppButton';
 
 import ReactSlider from 'react-slider'
 
@@ -264,9 +265,9 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                             <h3 style={{ textAlign: 'left', margin: 0 }}>
                                 <FormattedMessage id='reading-test-self-reflection-header' />
                             </h3>
-                            <button
+                            <AppButton
                                 type="submit"
-                                className="btn btn-primary"
+                                variant="primary"
                                 onClick={submitResponse}
                                 disabled={
                                     !openEndedQuestionAnswers.every(answer => answer !== null && answer.trim() !== '') ||
@@ -274,7 +275,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                                 }
                             >
                                 <FormattedMessage id='self-reflection-submit' />
-                            </button>
+                            </AppButton>
                         </div>
                         <div
                             className='slide-container'

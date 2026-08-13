@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 
 export const XpBar = () => {
   const user = useSelector(state => state.user.data.user)
@@ -13,15 +14,7 @@ export const XpBar = () => {
   return (
     <div>
       <div className="bold" as="h2">XP</div>
-      <div className="xp-wrapper">
-        <div
-          className="progress-bar progress-bar-striped bg-info"
-          style={{ width: `${progressPercentage * 100}%` }}
-          aria-valuenow={progressPercentage}
-          aria-valuemin="0"
-          aria-valuemax="100"
-        />
-      </div>
+      <AppProgressBar value={progressPercentage * 100} />
       <div className="xp-gathered ps-lg">{`${currentLevelXp} / ${requiredXpToNextLevel}`}</div>
     </div>
   )

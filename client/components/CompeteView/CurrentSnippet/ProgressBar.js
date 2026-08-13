@@ -1,5 +1,6 @@
 import React from 'react'
 import Spinner from 'Components/Spinner'
+import AppProgressBar from 'Components/ui/AppProgressBar'
 
 const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
   const getFontStyle = () => {
@@ -13,38 +14,11 @@ const ProgressBar = ({ snippetProgress, snippetsTotal, progress }) => {
       {!snippetsTotal ? (
         <Spinner />
       ) : (
-        <div
-          style={{
-            height: '1.5em',
-            textAlign: 'center',
-            borderRadius: '1rem',
-            position: 'relative',
-          }}
-          className="progress"
-        >
-          <span
-            data-cy="snippet-progress"
-            style={{
-              ...getFontStyle(),
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              right: 0,
-              left: 0,
-              lineHeight: 1,
-            }}
-          >
-            {`${snippetProgress} / ${snippetsTotal}`}
-          </span>
-          <div
-            className="progress-bar progress-bar-striped bg-info"
-            style={{ width: `${progress * 100}%` }}
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          />
-        </div>
+        <AppProgressBar
+          value={progress * 100}
+          label={`${snippetProgress} / ${snippetsTotal}`}
+          labelProps={{ 'data-cy': 'snippet-progress', style: getFontStyle() }}
+        />
       )}
     </>
   )

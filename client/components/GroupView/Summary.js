@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Table } from 'react-bootstrap'
-import { Icon } from 'semantic-ui-react'
+import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import AppTable from 'Components/ui/AppTable'
 import { CSVLink } from 'react-csv'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
@@ -203,32 +205,37 @@ const Summary = ({
                 </CSVLink>
               </div>
 
-              <Table striped bordered hover responsive size="sm">
-                <thead>
-                  <tr key="summary-header-row">
+              <AppTable striped bordered hover>
+                <TableHead>
+                  <TableRow key="summary-header-row">
                     {columns.map(column => (
-                      <th
+                      <TableCell
+                        key={column}
                         className="clickable"
                         onClick={() => handleSort(column)}
                         style={{
                           textAlign: 'center',
                           verticalAlign: 'middle',
-                          width: column === 'CEFR' && '70px',
+                          width: column === 'CEFR' ? '70px' : undefined,
                         }}
                       >
                         {capitalize(column).replace(/_/g, ' ')}
-                        {sorter.field === column && (
-                          <Icon name={sorter.direction[column] === 1 ? 'caret up' : 'caret down'} />
-                        )}
-                      </th>
+                        {sorter.field === column &&
+                          (sorter.direction[column] === 1 ? (
+                            <ArrowDropUpIcon fontSize="small" sx={{ verticalAlign: 'middle' }} />
+                          ) : (
+                            <ArrowDropDownIcon fontSize="small" sx={{ verticalAlign: 'middle' }} />
+                          ))}
+                      </TableCell>
                     ))}
-                  </tr>
-                </thead>
-                <tbody>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {summary.map(user => (
-                    <tr onClick={() => handleRowClick(user)} key={user.email}>
+                    <TableRow onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <td
+                        <TableCell
+                          key={column}
                           className="clickable"
                           style={{
                             textAlign:
@@ -236,12 +243,12 @@ const Summary = ({
                           }}
                         >
                           {cleanColumnValue(user[column], column)}
-                        </td>
+                        </TableCell>
                       ))}
-                    </tr>
+                    </TableRow>
                   ))}
-                </tbody>
-              </Table>
+                </TableBody>
+              </AppTable>
             </>
           ) : (
             <div className="group-analytics-no-results">

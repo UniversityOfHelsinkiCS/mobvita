@@ -6,18 +6,18 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *
  * `value` is 0–100. Pass `label` (string/node) to overlay a centered caption (e.g. "3 / 6"); it
  * reads well over both the track and the fill. `trackColor` / `fillColor` / `height` are
- * overridable; extra props spread onto the root, and `labelProps` onto the caption span.
+ * overridable; extra props spread onto the root, `labelProps` onto the caption span, and
+ * `fillProps` onto the moving fill itself (for a `data-cy` hook or a squared-off radius).
  */
-const TRACK = '#E5EDE4'
-const FILL = '#A6CDB4'
 
 const AppProgressBar = ({
   value = 0,
   label,
   labelProps,
+  fillProps,
   height = '1.5em',
-  trackColor = TRACK,
-  fillColor = FILL,
+  trackColor = colors.progressBarTrack,
+  fillColor = colors.progressBarFill,
   style,
   ...rest
 }) => {
@@ -40,12 +40,14 @@ const AppProgressBar = ({
         aria-valuenow={pct}
         aria-valuemin={0}
         aria-valuemax={100}
+        {...fillProps}
         style={{
           height: '100%',
           width: `${pct}%`,
           backgroundColor: fillColor,
           borderRadius: 999,
           transition: 'width 0.4s ease',
+          ...(fillProps && fillProps.style),
         }}
       />
       {label != null && (

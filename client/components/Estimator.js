@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Form, Table, Alert, Badge } from 'react-bootstrap'
-import AppButton from 'Components/AppButton'
 import axios from 'axios'
+import { Alert, Box, Chip, Container, TableBody, TableCell, TableRow } from '@mui/material'
+import AppButton from 'Components/AppButton'
+import AppTable from 'Components/ui/AppTable'
+import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 
 const Estimator = () => {
   const [text, setText] = useState('')
@@ -29,89 +32,72 @@ const Estimator = () => {
 
   return (
     <Container>
-      <Row className="justify-content-center my-5">
-        <Col xs="auto">
-          <h3>Estimate the complexity of Finnish text</h3>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col>
-          <Form>
-            <Form.Group>
-              <Form.Control
-                as="textarea"
-                className="overflow-auto"
-                rows={10}
-                size="lg"
-                placeholder="Paste your text here"
-                onChange={e => setText(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Text>
-              Max. 500 words, {text.trim().split(/\s+/).filter(Boolean).length} used
-            </Form.Text>
-          </Form>
-        </Col>
-      </Row>
-      <Row className="justify-content-center my-3">
-        <Col xs="auto">
-          <AppButton
-            type="button"
-            style={{ width: '100px', height: '40px' }}
-            disabled={!text || isLoading}
-            onClick={e => handleClick(e)}
-          >
-            {!isLoading ? (
-              <span>Estimate</span>
-            ) : (
-              <Spinner inline />
-            )}
-          </AppButton>
-        </Col>
-      </Row>
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: '3rem' }}>
+        <h3>Estimate the complexity of Finnish text</h3>
+      </Box>
+      <AppTextField
+        multiline
+        rows={10}
+        placeholder="Paste your text here"
+        onChange={e => setText(e.target.value)}
+      />
+      <Box sx={{ mt: '0.5rem', fontFamily: font.family, fontSize: font.label, color: colors.muted }}>
+        Max. 500 words, {text.trim().split(/\s+/).filter(Boolean).length} used
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: '1rem' }}>
+        <AppButton
+          type="button"
+          style={{ width: '100px', height: '40px' }}
+          disabled={!text || isLoading}
+          onClick={e => handleClick(e)}
+        >
+          {!isLoading ? <span>Estimate</span> : <Spinner inline />}
+        </AppButton>
+      </Box>
       {errorMessage && (
-        <Row className="mt-5">
-          <Col>
-            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
-              {errorMessage}
-            </Alert>
-          </Col>
-        </Row>
+        <Alert severity="error" onClose={() => setErrorMessage('')} sx={{ mt: '3rem' }}>
+          {errorMessage}
+        </Alert>
       )}
       {results && (
-        <Row className="my-5">
-          <Col>
-            <h4 style={{ marginBottom: '20px' }}>Results</h4>
-            <Table bordered>
-              <tbody>
-                <tr>
-                  <td>Score</td>
-                  <td>{results.score.toFixed(1)}</td>
-                </tr>
-                <tr>
-                  <td>CEFR</td>
-                  <td>{results.cefr}</td>
-                </tr>
-                <tr>
-                  <td>Level</td>
-                  <td>{results.level}</td>
-                </tr>
-                <tr>
-                  <td>Top features</td>
-                  <td>
+        <Box sx={{ my: '3rem' }}>
+          <h4 style={{ marginBottom: '20px' }}>Results</h4>
+          <AppTable bordered>
+            <TableBody>
+              <TableRow>
+                <TableCell>Score</TableCell>
+                <TableCell>{results.score.toFixed(1)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>CEFR</TableCell>
+                <TableCell>{results.cefr}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Level</TableCell>
+                <TableCell>{results.level}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Top features</TableCell>
+                <TableCell>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.4em' }}>
                     {results.explanation.slice(0, 10).map(item => (
-                      <>
-                        <Badge variant={item.contribution > 0 ? 'success' : 'danger'} pill>
-                          {item.feature}
-                        </Badge>{' '}
-                      </>
+                      <Chip
+                        key={item.feature}
+                        size="small"
+                        label={item.feature}
+                        sx={{
+                          fontFamily: font.family,
+                          backgroundColor: item.contribution > 0 ? colors.green : colors.error,
+                          color: item.contribution > 0 ? colors.ink : '#fff',
+                        }}
+                      />
                     ))}
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </AppTable>
+        </Box>
       )}
     </Container>
   )

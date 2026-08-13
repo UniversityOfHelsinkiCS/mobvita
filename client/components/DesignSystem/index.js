@@ -8,7 +8,8 @@ import AppTextField from 'Components/ui/AppTextField'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppRadio from 'Components/ui/AppRadio'
-import { RadioGroup, FormControlLabel } from '@mui/material'
+import AppTable from 'Components/ui/AppTable'
+import { RadioGroup, FormControlLabel, TableHead, TableBody, TableRow, TableCell } from '@mui/material'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
@@ -360,16 +361,58 @@ const DesignSystem = () => {
           ]
           return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%' }}>
-              <AppTabs tabs={tabs} value={tab} onChange={setTab} />
+              <div>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  Default — hugs its content, so the bar is only as wide as the segments.
+                </div>
+                <AppTabs tabs={tabs} value={tab} onChange={setTab} />
+              </div>
               <div style={{ maxWidth: 620 }}>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  <code>fullWidth</code> — spans its container and splits the segments evenly.
+                </div>
                 <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth />
               </div>
               <div style={{ maxWidth: 620 }}>
                 <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
                   Inner tab panel (<code>bordered</code>) — a green outline so the bar reads when it
                   sits inside a cream card or modal (e.g. Flashcards, the learning-settings modal).
+                  Shown on a cream surface, which is the only place the outline earns its keep.
                 </div>
-                <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth bordered />
+                <div style={{ backgroundColor: colors.card, borderRadius: 30, padding: 20 }}>
+                  <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth bordered />
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  Sizes — <code>xs</code> / <code>sm</code> / <code>md</code> (default) /{' '}
+                  <code>lg</code>.
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
+                  {['xs', 'sm', 'md', 'lg'].map(s => (
+                    <AppTabs key={s} tabs={tabs} value={tab} onChange={setTab} size={s} />
+                  ))}
+                </div>
+              </div>
+              <div style={{ maxWidth: 620 }}>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  Long labels (<code>fullWidth</code>) — the bar grows past its container rather
+                  than clipping a label, and the cream background always covers every segment. Put
+                  it in an <code>overflow-x: auto</code> wrapper so it scrolls, and reach for{' '}
+                  <code>size=&quot;sm&quot;</code> to buy room before it comes to that.
+                </div>
+                <div style={{ overflowX: 'auto' }}>
+                  <AppTabs
+                    tabs={[
+                      { value: 'public', label: 'Group exercise summary' },
+                      { value: 'private', label: 'Group vocabulary summary' },
+                      { value: 'group', label: 'Group grammar progress' },
+                    ]}
+                    value={tab}
+                    onChange={setTab}
+                    fullWidth
+                  />
+                </div>
               </div>
               <div
                 style={{
@@ -532,6 +575,87 @@ const DesignSystem = () => {
         <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <AppCheckbox /> Unchecked
         </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <AppCheckbox indeterminate /> Indeterminate
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <AppCheckbox disabled checked /> Disabled
+        </label>
+      </Section>
+
+      <Section title="AppTable">
+        {(() => {
+          const rows = [
+            { level: 'A1', correct: 8, total: 10 },
+            { level: 'A2', correct: 6, total: 10 },
+            { level: 'B1', correct: 3, total: 10 },
+          ]
+          const body = rows.map(row => (
+            <TableRow key={row.level}>
+              <TableCell>{row.level}</TableCell>
+              <TableCell align="right">{row.correct}</TableCell>
+              <TableCell align="right">{row.total}</TableCell>
+            </TableRow>
+          ))
+          const head = (
+            <TableHead>
+              <TableRow>
+                <TableCell>Level</TableCell>
+                <TableCell align="right">Correct</TableCell>
+                <TableCell align="right">Total</TableCell>
+              </TableRow>
+            </TableHead>
+          )
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%' }}>
+              {[
+                { title: 'plain', props: {} },
+                { title: 'striped', props: { striped: true } },
+                { title: 'striped + bordered + hover', props: { striped: true, bordered: true, hover: true } },
+                { title: 'density="standard" (taller rows)', props: { striped: true, density: 'standard' } },
+                { title: 'size="auto" (shrinks to content)', props: { bordered: true, size: 'auto' } },
+                { title: 'size={260} (raw width)', props: { bordered: true, size: 260 } },
+              ].map(({ title, props }) => (
+                <div key={title} style={{ maxWidth: 420 }}>
+                  <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>{title}</div>
+                  <AppTable {...props}>
+                    {head}
+                    <TableBody>{body}</TableBody>
+                  </AppTable>
+                </div>
+              ))}
+              <div style={{ maxWidth: 420 }}>
+                <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                  Too many columns — the <code>TableContainer</code> scrolls horizontally
+                  , so a wide table never breaks the page
+                  layout. This is what the group summary table relies on.
+                </div>
+                <AppTable striped bordered>
+                  <TableHead>
+                    <TableRow>
+                      {['Email', 'Username', 'XP', 'Snippets', 'Correct %', 'Exercises', 'CEFR'].map(
+                        col => <TableCell key={col}>{col}</TableCell>
+                      )}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {['aino@example.com', 'väinö@example.com'].map(email => (
+                      <TableRow key={email}>
+                        <TableCell>{email}</TableCell>
+                        <TableCell>{email.split('@')[0]}</TableCell>
+                        <TableCell align="right">1240</TableCell>
+                        <TableCell align="right">86</TableCell>
+                        <TableCell align="right">74.5</TableCell>
+                        <TableCell align="right">302</TableCell>
+                        <TableCell>B1</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </AppTable>
+              </div>
+            </div>
+          )
+        })()}
       </Section>
 
       <Section title="AppMenu (click the burger)">
