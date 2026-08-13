@@ -1,7 +1,11 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon, Divider, Popup } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft'
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
 import AppButton from 'Components/AppButton'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import {
   setHighlightRange,
@@ -52,10 +56,13 @@ const AnnotationSelectionView = ({
 
   return (
     <>
-      <div style={{ margin: '1.5em 0em', fontWeight: '500' }}>
+      <div
+        style={{ margin: '1.5em 0em', fontWeight: '500' }}
+        data-cy="annotation-selection-text"
+      >
         {annotationCandidates.map(c => c.surface).join('')}
       </div>
-      <Divider />
+      <Divider sx={{ my: '1em' }} />
       {!showAnnotationForm && userHasLoggedIn && (
         <>
           <div>
@@ -67,7 +74,7 @@ const AnnotationSelectionView = ({
                   onClick={handleShrink}
                   data-cy="annotation-shrink-btn"
                 >
-                  <Icon name="double angle left" />
+                  <KeyboardDoubleArrowLeftIcon fontSize="small" />
                 </AppButton>{' '}
                 <AppButton
                   size="sm"
@@ -76,7 +83,7 @@ const AnnotationSelectionView = ({
                   }
                   data-cy="annotation-expand-btn"
                 >
-                  <Icon name="double angle right" />
+                  <KeyboardDoubleArrowRightIcon fontSize="small" />
                 </AppButton>
               </div>
               <div>
@@ -88,9 +95,10 @@ const AnnotationSelectionView = ({
                 >
                   <FormattedMessage id="create-a-note" />
                 </AppButton>
-                <Popup
-                  position="bottom right"
-                  content={
+                <CustomTooltip
+                  permanent
+                  placement="bottom-end"
+                  title={
                     <>
                       {annotationCandidates.length > 1 ? (
                         <FormattedMessage id="words-not-in-note-yet" />
@@ -102,8 +110,13 @@ const AnnotationSelectionView = ({
                       <FormattedMessage id="click-arrow-buttons-to-expand-shrink" />
                     </>
                   }
-                  trigger={<Icon name="info circle" color="grey" size="large" />}
-                />
+                >
+                  <InfoOutlinedIcon
+                    fontSize="large"
+                    sx={{ color: 'grey' }}
+                    data-cy="annotation-selection-info-icon"
+                  />
+                </CustomTooltip>
               </div>
             </div>
           </div>

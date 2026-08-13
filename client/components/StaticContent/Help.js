@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Segment } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
 
 const Help = () => {
   const interfaceLanguage = useSelector(({ user }) => user.data && user.data.user.interfaceLanguage)
@@ -15,7 +15,7 @@ const Help = () => {
 
   const HelpEnglish = (
     <div className="cont auto">
-      <Segment>
+      <Paper sx={{ padding: '1em' }}>
         <b>Revita:</b>
         <ul>
           <li>
@@ -182,13 +182,13 @@ const Help = () => {
         </ul>
         <br />
         JavaScript and cookies should be <i>enabled</i> in your browser.
-      </Segment>
+      </Paper>
     </div>
   )
 
   const HelpItalian = (
     <div className="cont auto">
-      <Segment>
+      <Paper sx={{ padding: '1em' }}>
         <b>Revita:</b>
         <ul>
           <li>
@@ -367,7 +367,7 @@ const Help = () => {
         </ul>
         <br />
         Devono inoltre essere<i> abilitati</i> JavaScript e cookies nel tuo browser.
-      </Segment>
+      </Paper>
     </div>
   )
 

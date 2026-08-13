@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import React, { useEffect, useState } from 'react'
-import { Segment, Container } from 'semantic-ui-react'
+import { Paper, Container } from '@mui/material'
 import ScrollArrow from 'Components/ScrollArrow'
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
 import Topics from 'Components/Topics'
@@ -93,6 +93,7 @@ const StoryGeneration = () => {
       <div className="group-buttons sm">
         <div style={{ width: '100%', maxWidth: '500px', margin: 'auto' }}>
           <textarea
+            data-cy="story-generation-ideas-input"
             style={{
               width: '100%',
               height: '100px',
@@ -211,7 +212,7 @@ const StoryGeneration = () => {
         >
           <div style={{ flex: '0 0 66.666667%', maxWidth: '66.666667%' }}>
             <div className="lesson-topic-box" style={{ width: '100%' }}>
-              <Segment style={{ backgroundColor: 'azure' }}>
+              <Paper sx={{ padding: '1em', backgroundColor: 'azure' }}>
                 <div
                   className="lesson-title"
                   style={{
@@ -227,7 +228,7 @@ const StoryGeneration = () => {
                 <span style={{ overflow: 'hidden', width: '100%' }}>
                   {lessonInstance.learner_ideas}
                 </span>
-              </Segment>
+              </Paper>
             </div>
           </div>
         </div>
@@ -271,6 +272,7 @@ const StoryGeneration = () => {
               {!error && text?.length && (
                 <>
                   <textarea
+                    data-cy="story-generation-story-input"
                     style={{
                       width: '100%',
                       height: '600px',
@@ -286,6 +288,7 @@ const StoryGeneration = () => {
                   <div className="justify-center align-center wrap">
                     <AppButton
                       size="big"
+                      data-cy="story-generation-upload-button"
                       className="lesson-practice"
                       disabled={noResults}
                       style={{
@@ -306,6 +309,7 @@ const StoryGeneration = () => {
               <div className="justify-center align-center wrap">
                 {(error || !text?.length) && (
                   <span
+                    data-cy="story-generation-error-message"
                     style={{
                       color: 'red',
                       textAlign: 'center',
@@ -319,6 +323,7 @@ const StoryGeneration = () => {
                 )}
                 <AppButton
                   size="big"
+                  data-cy="story-generation-regenerate-button"
                   className="lesson-practice"
                   style={{
                     fontSize: '1.3em',
@@ -355,7 +360,11 @@ const StoryGeneration = () => {
       {metaPending ? (
         <Spinner fullHeight size={60} />
       ) : noResults ? (
-        <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+        <div
+          className="justify-center mt-lg"
+          data-cy="story-generation-no-lessons-found"
+          style={{ color: 'rgb(112, 114, 120)' }}
+        >
           <FormattedMessage id="no-lessons-found" />
         </div>
       ) : (
@@ -413,6 +422,7 @@ const StoryGeneration = () => {
               </Stepper>
 
               <AppButton
+                data-cy="story-generation-next-step-button"
                 style={{
                   float: 'right',
                   marginBottom: '8%',

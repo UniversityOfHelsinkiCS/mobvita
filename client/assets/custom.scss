@@ -402,8 +402,6 @@ $value in $spacing {
   background-color: lightcoral !important;
 }
 
-// The app's card box. Bootstrap used to supply the display/flex underneath; these rules are now
-// self-contained (AppButton / MUI Card own their own layout).
 .card {
   border: 1px solid rgb(112, 114, 120);
   border-radius: 10px !important;
@@ -3133,7 +3131,6 @@ label.file-upload-btn {
 
 .footer {
   font-size: 0.9rem;
-  padding: 0.5em;
   width: 100%;
   max-width: 1400px;  
   background-color: #f7f7f7;

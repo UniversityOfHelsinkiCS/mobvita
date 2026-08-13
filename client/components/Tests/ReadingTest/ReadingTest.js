@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
-import { Segment } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl';
 
@@ -461,7 +461,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
   return (
     <div className={`cont mt-nm ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-      <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
+      <Paper sx={{ padding: '1em', minHeight: '700px', borderRadius: '20px' }}>
         <div className="align-center justify-center">
           <div className="test-container" style={{ width: '90%' }}>
             <ReadingTestNextSetDialog
@@ -507,6 +507,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                   style={{ marginLeft: 'auto' }}
                   onClick={() => setShowFeedbacks(true)}
                   disabled={showFeedbacks}
+                  data-cy="reading-test-show-feedbacks-button"
                 >
                   <span>
                     <FormattedMessage id="show-feedback" />
@@ -520,6 +521,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                   style={{ marginLeft: '0.5em' }}
                   onClick={() => nextQuestion()}
                   disabled={!questionDone || showFeedbacks}
+                  data-cy="reading-test-next-question-button"
                 >
                   <span>
                     {currentReadingQuestionIndex === readingTestQuestions.length - 1 ? (
@@ -556,6 +558,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
                 style={{ marginRight: 'auto', marginTop: '1rem' }}
                 onClick={() => restartTest()}
                 disabled={showFeedbacks}
+                data-cy="reading-test-restart-button"
               >
                 <span>
                   <FormattedMessage id="restart-reading-test" />
@@ -564,7 +567,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
             </div>
           </div>
         </div>
-      </Segment>
+      </Paper>
       <HelperSidebar>
         <ReadingPracticeChatbot questionDone={questionDone} />
       </HelperSidebar>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -82,14 +82,18 @@ const WrongAnswer = ({ word, snippet }) => {
   }
 
   const tooltip = (
-    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
+    <div
+      className="tooltip-green"
+      data-cy="wrong-answer-tooltip"
+      style={{ cursor: 'pointer' }}
+      onMouseDown={handleTooltipClick}
+    >
       {word.message && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.easy)} />{' '}
           {ref && Object.keys(ref).length && (
-            <Icon
-              name="external"
-              size="small"
+            <OpenInNewIcon
+              fontSize="small"
               style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
             />
           )}
@@ -108,6 +112,7 @@ const WrongAnswer = ({ word, snippet }) => {
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       <span
         className={wordClass}
+        data-cy="wrong-answer-word"
         role="button"
         onClick={handleClick}
         onKeyDown={handleClick}

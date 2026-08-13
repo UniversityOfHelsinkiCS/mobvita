@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon } from 'semantic-ui-react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 
 import './RecommendSliderCss.css';
@@ -60,10 +61,10 @@ const RecommendSlider = ({ slides }) => {
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
                         style={{ height: containerHeight }}
+                        data-cy='recommend-slider-prev-button'
                     >
-                        <Icon
+                        <ChevronLeftIcon
                             className='left-arrow'
-                            name={'chevron left'}
                             style={{ cursor: 'pointer' }}
                         />
                     </button>
@@ -97,10 +98,10 @@ const RecommendSlider = ({ slides }) => {
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
                         style={{ height: containerHeight }}
+                        data-cy='recommend-slider-next-button'
                     >
-                        <Icon
+                        <ChevronRightIcon
                             className='right-arrow'
-                            name={'chevron right'}
                             style={{ cursor: 'pointer' }}
                         />
                     </button>
@@ -112,6 +113,7 @@ const RecommendSlider = ({ slides }) => {
                             className={index === current ? 'dot active' : 'dot'}
                             onClick={() => goToSlide(index)}
                             onTouchEnd={() => goToSlide(index)}
+                            data-cy={`recommend-slider-dot-${index}`}
                         ></span>
                     ))}
                 </div>

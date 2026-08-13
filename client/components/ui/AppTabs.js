@@ -41,10 +41,12 @@ const TabsBar = styled('div', {
   shouldForwardProp: prop => !['fullWidth', 'bordered', 'sizing'].includes(prop),
 })(({ fullWidth, bordered, sizing }) => ({
   display: fullWidth ? 'flex' : 'inline-flex',
-  // fullWidth = *at least* the container, but free to grow past it. A hard `width: 100%` would pin
-  // the cream background to the visible width while the segments (floored at their label width)
-  // overflowed past it — the background ending short of the last tab.
-  ...(fullWidth ? { width: 'max-content', minWidth: '100%' } : { width: 'auto' }),
+  // fullWidth keeps `width: 100%`. A content-derived width (max-content) breaks when the bar is a
+  // flex item: `min-width: 100%` then resolves against a container whose own width depends on the
+  // bar, and it collapses or overflows a clipping ancestor. `min-width: max-content` gets the same
+  // result safely — normally 100%, but never narrower than the tabs, so the cream background still
+  // covers every segment when they overflow.
+  ...(fullWidth ? { width: '100%', minWidth: 'max-content' } : { width: 'auto' }),
   alignItems: 'center',
   gap: sizing.barGap,
   padding: sizing.barPad,

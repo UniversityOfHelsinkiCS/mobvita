@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { throttle } from 'lodash'
-import { Icon } from 'semantic-ui-react'
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 const ScrollArrow = () => {
   const smallWindow = useWindowDimensions().width < 700
-  const iconSize = smallWindow ? 'big' : 'huge'
+  // semantic's size="big" was 2em and size="huge" 4em; keep the same responsive step.
+  const iconFontSize = smallWindow ? 32 : 64
   const [showScroll, setShowScroll] = useState(false)
 
   useEffect(() => {
@@ -36,7 +37,11 @@ const ScrollArrow = () => {
         width: '50%',
       }}
     >
-      <Icon name="arrow circle up" size={iconSize} onClick={scrollTop} />
+      <ArrowCircleUpIcon
+        sx={{ fontSize: iconFontSize, cursor: 'pointer' }}
+        onClick={scrollTop}
+        data-cy="scroll-to-top-arrow"
+      />
     </div>
   )
 }

@@ -2,8 +2,10 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
-import { Icon, Placeholder, PlaceholderLine } from 'semantic-ui-react';
+import { Skeleton } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CheckIcon from '@mui/icons-material/Check';
+import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined';
 import CustomTooltip from 'Components/CustomTooltip';
 
 import {
@@ -13,6 +15,16 @@ import {
 } from 'Utilities/common';
 import { Speaker } from './dictComponents';
 import './Lemma.scss';
+
+// Mirrors the `.translation-lemma-card .right-column i.icon` rules in Lemma.scss, which used to
+// style the semantic-ui <i class="icon"> elements these MUI icons replaced.
+const rightColumnIconSx = {
+  fontSize: '1.25rem',
+  color: '#000000',
+  cursor: 'pointer',
+  transition: 'color 0.2s ease, transform 0.2s ease',
+  '&:hover': { color: '#2563eb', transform: 'scale(1.1)' },
+};
 
 const Lemma = ({
   lemma,
@@ -36,13 +48,17 @@ const Lemma = ({
     <>
       {pending ? (
         <div style={{ height: '10px', width: '80px' }}>
-          <Placeholder>
-            <PlaceholderLine />
-          </Placeholder>
+          <Skeleton variant="text" />
         </div>
       ) : (
         <CustomTooltip title={<FormattedHTMLMessage id="explain-lemma-goto-dictionary" />}>
-          <a href={userUrl} target="_blank" rel="noopener noreferrer" className="lemma-word">
+          <a
+            href={userUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="lemma-word"
+            data-cy="lemma-dictionary-link"
+          >
             {lemma}
           </a>
         </CustomTooltip>
@@ -69,6 +85,7 @@ const Lemma = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '1rem', color: 'inherit' }}
+                data-cy="lemma-inflection-link"
               >
                 <OpenInNewIcon style={{ fontSize: 18 }} />
               </a>
@@ -98,10 +115,10 @@ const Lemma = ({
                 placement="top"
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    name="check"
+                  <CheckIcon
                     onClick={handleKnowningClick}
-                    style={{ cursor: 'pointer' }}
+                    sx={rightColumnIconSx}
+                    data-cy="lemma-know-word-button"
                   />
                 </span>
               </CustomTooltip>
@@ -110,10 +127,10 @@ const Lemma = ({
                 placement="top"
               >
                 <span style={{ display: 'inline-flex' }}>
-                  <Icon
-                    name="question"
+                  <HelpOutlinedIcon
                     onClick={handleNotKnowningClick}
-                    style={{ cursor: 'pointer' }}
+                    sx={rightColumnIconSx}
+                    data-cy="lemma-dont-know-word-button"
                   />
                 </span>
               </CustomTooltip>
@@ -131,6 +148,7 @@ const Lemma = ({
                 className="wordnest-icon-button"
                 aria-label="Word Nest"
                 onClick={handleWordNestClick}
+                data-cy="lemma-word-nest-button"
               >
                 <img src={images.network} alt="word nest" width="28" />
               </button>

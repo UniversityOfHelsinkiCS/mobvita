@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { Container, Message } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl';
+import { Box, Divider } from '@mui/material'
+import { FormattedMessage } from 'react-intl'
 import * as Sentry from '@sentry/react'
+import AppButton from 'Components/AppButton'
+import { images } from 'Utilities/common'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -28,25 +31,62 @@ export default class ErrorBoundary extends Component {
       return children
     }
     return (
-      <Container style={{ margin: 15 }}>
-        <Message color="red" style={{ display: 'block' }}>
-          <Message.Header>
+      <Box
+        sx={{
+          minHeight: '70vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2rem',
+        }}
+      >
+        <Box
+          data-cy="error-boundary-message"
+          sx={{
+            width: '100%',
+            maxWidth: 560,
+            boxSizing: 'border-box',
+            padding: { xs: '32px 24px', sm: '40px' },
+            backgroundColor: colors.card,
+            borderRadius: `${shape.cardRadius}px`,
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
+            fontFamily: font.family,
+            color: colors.ink,
+            textAlign: 'center',
+          }}
+        >
+          <img src={images.alertCircle} alt="" width={44} height={44} />
+
+          <Box
+            component="h2"
+            sx={{ fontSize: 22, fontWeight: 600, lineHeight: 1.35, margin: '16px 0 0' }}
+          >
             <FormattedMessage id="an-error-has-occured" />
-          </Message.Header>
-          <p>
+          </Box>
+
+          <Box sx={{ fontSize: 15, lineHeight: 1.55, margin: '16px 0 24px' }}>
             <FormattedMessage id="you-can-help-us-fix" />
-          </p>
-          <button type="button" onClick={() => Sentry.showReportDialog({ eventId })}>
+          </Box>
+
+          <AppButton
+            variant="primary"
+            data-cy="error-boundary-report-button"
+            onClick={() => Sentry.showReportDialog({ eventId })}
+          >
             <FormattedMessage id="report-error" />
-          </button>
-          <p>
+          </AppButton>
+
+          <Box sx={{ fontSize: 13, color: colors.muted, marginTop: '12px' }}>
             <FormattedMessage id="please-write-in-any-language" />
-          </p>
-          <Message.Header>
+          </Box>
+
+          <Divider sx={{ my: '24px', borderColor: colors.border }} />
+
+          <Box sx={{ fontSize: 15, fontWeight: 500 }}>
             <FormattedMessage id="next-please-refresh-page" />
-          </Message.Header>
-        </Message>
-      </Container>
+          </Box>
+        </Box>
+      </Box>
     )
   }
 }

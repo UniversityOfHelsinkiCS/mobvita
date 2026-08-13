@@ -1,13 +1,8 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { List } from 'semantic-ui-react'
+import { List, ListItem } from '@mui/material'
 import Footer from './Footer'
-// import { Popup } from 'semantic-ui-react'
 
 const ReferenceView = () => {
-  //const dispatch = useDispatch()
-  
-
   return (
     <div className="cont-tall flex-col space-between pt-lg">
       <div className="justify-center">
@@ -19,17 +14,19 @@ const ReferenceView = () => {
           }}
         >
           <h1>References</h1>
-          <List bulleted>
-            <List.Item>A reference</List.Item>
-            <List.Item>A reference</List.Item>
-            <List.Item>
+          <List sx={{ listStyleType: 'disc', pl: '1.5em', py: 0 }}>
+            <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>A reference</ListItem>
+            <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>A reference</ListItem>
+            <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>
             A reference
-              <List.List>
-                <List.Item href='#'>A sub reference with link</List.Item>
-                <List.Item>A sub reference</List.Item>
-                <List.Item>A sub reference</List.Item>
-              </List.List>
-          </List.Item>
+              <List sx={{ listStyleType: 'disc', pl: '1.5em', py: 0 }}>
+                <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>
+                  <a href='#' data-cy="reference-view-sub-link">A sub reference with link</a>
+                </ListItem>
+                <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>A sub reference</ListItem>
+                <ListItem sx={{ display: 'list-item', px: 0, py: '.21428571em' }}>A sub reference</ListItem>
+              </List>
+          </ListItem>
         </List>
         </div>
       </div>

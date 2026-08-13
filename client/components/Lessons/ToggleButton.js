@@ -1,7 +1,7 @@
 import React from 'react'
 import { images, capitalize } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
-import { Icon } from 'semantic-ui-react'
+import CheckIcon from '@mui/icons-material/Check'
 import { FormattedMessage } from 'react-intl'
 
 const ToggleButton = ({
@@ -23,12 +23,13 @@ const ToggleButton = ({
         variant={active ? 'primary' : 'outline-primary'}
         onClick={handleClick}
         style={{ width, height }}
+        data-cy={`lesson-toggle-button-${name?.replace(/\s+/g, '-')}`}
       >
         <div
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
         >
           <div>
-            <Icon name="check" style={{ flex: '0.1', visibility: active ? 'visible' : 'hidden' }} />
+            <CheckIcon style={{ flex: '0.1', visibility: active ? 'visible' : 'hidden' }} />
           </div>
           <div
             style={{
@@ -55,7 +56,7 @@ const ToggleButton = ({
             )}
           </div>
           <div>
-            <Icon name="check" style={{ flex: '0.1', visibility: 'hidden' }} />
+            <CheckIcon style={{ flex: '0.1', visibility: 'hidden' }} />
           </div>
         </div>
       </AppButton>

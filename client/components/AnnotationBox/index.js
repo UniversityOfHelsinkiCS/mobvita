@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Segment } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
 import {
   setAnnotationsVisibility,
   setFocusedSpan,
@@ -46,10 +46,10 @@ const AnnotationBox = () => {
 
   if (width >= 1024) {
     return (
-      <div className="annotations-box">
-        <Segment>
+      <div className="annotations-box" data-cy="annotation-box">
+        <Paper sx={{ padding: '1em' }}>
           <div>{annotationView()}</div>
-        </Segment>
+        </Paper>
       </div>
     )
   }

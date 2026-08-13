@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Segment, Divider } from 'semantic-ui-react'
+import { Paper, Divider } from '@mui/material'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -12,6 +12,7 @@ import { setAnswers, setTouchedIds } from 'Utilities/redux/practiceReducer'
 
 import AnnotationBox from 'Components/AnnotationBox'
 import DictionaryHelp from 'Components/DictionaryHelp'
+import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ProgressBar from '../../PracticeView/CurrentSnippet/ProgressBar'
@@ -76,7 +77,7 @@ const LessonsPracticeView = () => {
       <div className="cont-tall pt-sm flex-col space-between">
         <div className="justify-center">
           <div className="cont">
-            <Segment>
+            <Paper sx={{ padding: '1em' }}>
               <div className="progress-bar-cont" style={{ top: smallScreen ? '.25em' : '3.25em' }}>
                 <ProgressBar
                   snippetProgress={
@@ -88,6 +89,7 @@ const LessonsPracticeView = () => {
               </div>
               <div
                 className="lesson-title"
+                data-cy="lessons-practice-lesson-title"
                 style={{
                   ...getTextStyle(learningLanguage, 'title'),
                   width: `${'100%'}`,
@@ -96,7 +98,7 @@ const LessonsPracticeView = () => {
               >
                 {!pending && `Lesson ${lesson_instance.syllabus.syllabus_id}`}
               </div>
-              <Divider />
+              <Divider sx={{ my: '1em' }} />
               {previous_snippets?.map((snippet, index) => (
                 <div className="pt-nm" style={getTextStyle(learningLanguage)}>
                   <TextWithFeedback
@@ -106,14 +108,14 @@ const LessonsPracticeView = () => {
                     mode="practice"
                     style={' display: block'}
                   />
-                  <Divider />
+                  <Divider sx={{ my: '1em' }} />
                 </div>
               ))}
               <LessonExercise
                 lesson_instance={lesson_instance}
                 handleInputChange={handleAnswerChange}
               />
-            </Segment>
+            </Paper>
           </div>
           <div className="dictionary-and-annotations-cont">
             <DictionaryHelp />

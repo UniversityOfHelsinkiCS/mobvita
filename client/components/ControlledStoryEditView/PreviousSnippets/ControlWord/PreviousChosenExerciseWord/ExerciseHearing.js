@@ -1,6 +1,6 @@
 import React, { createRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
 
 const ExerciseHearing = ({ word }) => {
@@ -32,11 +32,11 @@ const ExerciseHearing = ({ word }) => {
           lineHeight: 'normal',
         }}
       />
-      <Icon
-        name="volume up"
-        link
+      <VolumeUpIcon
+        data-cy="previous-chosen-exercise-hearing-speaker"
+        fontSize="small"
         onClick={() => speakerClickHandler(word)}
-        style={{ marginLeft: '-25px' }}
+        sx={{ cursor: 'pointer', marginLeft: '-25px', verticalAlign: 'middle' }}
       />
       {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
     </span>

@@ -1,7 +1,8 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Icon, Popup } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 
@@ -18,14 +19,16 @@ const AnnotationsHiddenView = () => {
       data-cy="annotations-visibility-button"
     >
       <div className="header-3" style={{ fontWeight: '500' }}>
-        <Popup
-          position="top center"
-          content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
-          trigger={<Icon name="info circle" size="small" color="grey" />}
-        />{' '}
+        <CustomTooltip permanent placement="top" keyId="annotations-popup-info-text">
+          <InfoOutlinedIcon
+            fontSize="small"
+            sx={{ color: 'grey' }}
+            data-cy="annotations-hidden-info-icon"
+          />
+        </CustomTooltip>{' '}
         <FormattedMessage id="notes-header" />
       </div>
-      <Icon name="angle down" size="large" />
+      <KeyboardArrowDownIcon fontSize="large" />
     </div>
   )
 }

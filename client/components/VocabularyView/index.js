@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { getVocabularyData } from 'Utilities/redux/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import VocabularyGraph from './VocabularyGraph'
-// import { Popup } from 'semantic-ui-react'
 
 const VocabularyView = () => {
   const dispatch = useDispatch()
@@ -13,7 +12,6 @@ const VocabularyView = () => {
   }, [])
 
   return (
-    // <div className="cont-tall pt-sm justify-center">
     <div
       className="auto justify-center pt-lg"
       style={{

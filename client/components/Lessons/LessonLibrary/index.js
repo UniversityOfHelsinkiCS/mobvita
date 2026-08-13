@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Container } from 'semantic-ui-react'
+import { Container } from '@mui/material'
 import Stepper from '@keyvaluesystems/react-stepper'
 import ScrollArrow from 'Components/ScrollArrow'
 import AppTabs from 'Components/ui/AppTabs'
@@ -298,7 +298,7 @@ const LessonList = () => {
           margin: '18px',
           fontSize: 'large' }}
       >
-        <div className="full-width">
+        <div className="full-width" data-cy="lessons-ready-status">
           {!lessonPending && lessonReady ? (
             <FormattedMessage id="lessons-ready-for-practice" />
           ) : (
@@ -325,6 +325,7 @@ const LessonList = () => {
           <AppButton
             size="big"
             className="lesson-practice"
+            data-cy="lessons-start-practice-button"
             disabled={
               lessonPending ||
               !selectedTopicIds ||
@@ -408,7 +409,11 @@ const LessonList = () => {
         {metaPending || groupPending ? (
           <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
         ) : noResults ? (
-          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <div
+            className="justify-center mt-lg"
+            style={{ color: 'rgb(112, 114, 120)' }}
+            data-cy="lessons-no-results"
+          >
             <FormattedMessage id="no-lessons-found" />
           </div>
         ) : (
@@ -454,14 +459,18 @@ const LessonList = () => {
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>
                           <FormattedMessage id="Group" />:
                         </span>
-                        <AppSelect
-                          variant="tan-outline"
-                          placeholder={intl.formatMessage({ id: 'select-group' })}
-                          value={savedGroupSelection || ''}
-                          options={groupDropdownOptions.map(o => ({ value: o.value, label: o.text }))}
-                          onChange={value => handleGroupChange(null, { value })}
-                          minWidth={220}
-                        />
+                        <div data-cy="lessons-group-select">
+                          <AppSelect
+                            variant="tan-outline"
+                            placeholder={intl.formatMessage({ id: 'select-group' })}
+                            value={savedGroupSelection || ''}
+                            options={groupDropdownOptions.map(o => ({
+                              value: o.value,
+                              label: o.text }))}
+                            onChange={value => handleGroupChange(null, { value })}
+                            minWidth={220}
+                          />
+                        </div>
                       </div>
                     )}
                     <h1 className="lesson-setup-title">{setupViewTitle()}</h1>
@@ -497,6 +506,7 @@ const LessonList = () => {
                           style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBackClick}
+                          data-cy="lessons-setup-back-button"
                         >
                           <FormattedMessage id="Back" />
                         </AppButton>
@@ -507,6 +517,7 @@ const LessonList = () => {
                           style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleBeginClick}
+                          data-cy="lessons-setup-start-button"
                           disabled={
                             lessonPending ||
                             !lessonReady ||
@@ -525,6 +536,7 @@ const LessonList = () => {
                           style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleContinueClick}
+                          data-cy="lessons-setup-next-button"
                         >
                           <FormattedMessage id="next-step" />
                         </AppButton>

@@ -1,7 +1,6 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { Icon } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,6 +22,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
     const renderElication = () => (
         <Draggable cancel=".interactable">
             <div
+                data-cy="reading-test-elicitation-dialog"
                 style={{
                     position: 'absolute',
                     left: '0%',
@@ -76,6 +76,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             {Object.keys(question.question_concept_feedbacks).map((key, index) => (
                                 <AppButton
                                     key={index}
+                                    data-cy={`reading-test-elicitation-option-${index}`}
                                     variant={key === selectedConstruct ? 'tan' : 'contrast-outline'}
                                     style={{
                                         margin: "5px",
@@ -89,6 +90,7 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                             ))}
                             <AppButton
                                 type="submit"
+                                data-cy="reading-test-elicitation-submit"
                                 variant="primary"
                                 onClick={submitResponse}
                                 disabled={selectedConstruct == null}

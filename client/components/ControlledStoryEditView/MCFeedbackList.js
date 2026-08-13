@@ -1,5 +1,6 @@
 import React from 'react'
-import { Divider, Icon } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 
 const MCFeedbackList = ({ feedbackList, removeFeedback }) => {
   return (
@@ -10,19 +11,19 @@ const MCFeedbackList = ({ feedbackList, removeFeedback }) => {
             <span style={{ marginRight: '.5rem' }}>{index + 1}.</span>
             <span>{item}</span>
           </div>
-          <Icon
+          <CloseIcon
             style={{
               cursor: 'pointer',
               marginBottom: '.25em',
               color: 'red',
             }}
-            size="large"
-            name="close"
+            fontSize="large"
+            data-cy={`mc-feedback-remove-${index}`}
             onClick={() => removeFeedback(index)}
           />
         </div>
       ))}
-      <Divider />
+      <Divider sx={{ my: '1em' }} />
     </div>
   )
 }

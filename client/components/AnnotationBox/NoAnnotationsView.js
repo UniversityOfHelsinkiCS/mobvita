@@ -1,6 +1,7 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
-import { Icon, Popup } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import CustomTooltip from 'Components/CustomTooltip'
 import { useLocation } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl';
 
@@ -17,20 +18,23 @@ const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {
         onKeyDown={handleAnnotationBoxCollapse}
         role="button"
         tabIndex={0}
+        data-cy="no-annotations-collapse-toggle"
       >
         <div>
           <div className="header-3" style={{ fontWeight: '500' }}>
-            <Popup
-                position="top center"
-                content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
-                trigger={<Icon name="info circle" size="small" color="grey" />}
-            />{' '}
+            <CustomTooltip permanent placement="top" keyId="annotations-popup-info-text">
+              <InfoOutlinedIcon fontSize="small" sx={{ color: 'grey' }} />
+            </CustomTooltip>{' '}
             <FormattedMessage id="notes-header" />
           </div>
         </div>
-        <Icon name="angle up" size="large" />
+        <KeyboardArrowUpIcon fontSize="large" />
       </div>
-      <div className="notes-info-text" style={{ marginTop: '1.5em', marginBottom: '1.5em' }}>
+      <div
+        className="notes-info-text"
+        style={{ marginTop: '1.5em', marginBottom: '1.5em' }}
+        data-cy="no-annotations-info-text"
+      >
         <FormattedMessage
           id={isPracticeMode ? 'notes-added-to-history-appear-here' : 'this-story-has-no-notes'}
         />

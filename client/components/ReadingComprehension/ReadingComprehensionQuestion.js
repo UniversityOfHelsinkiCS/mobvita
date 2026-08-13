@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
 
 const ReadingComprehensionQuestion = ({
   title,
@@ -12,7 +12,7 @@ const ReadingComprehensionQuestion = ({
   titleDataCy,
 }) => {
   return (
-    <Segment
+    <Paper
       className={`rc-question ${selected ? 'rc-question--selected' : ''}`}
       data-cy={dataCy}
       role="button"
@@ -22,9 +22,16 @@ const ReadingComprehensionQuestion = ({
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') onToggleSelect?.()
       }}
+      sx={{
+        padding: '1em',
+        margin: '1rem 0',
+        '&:first-of-type': { marginTop: 0 },
+        '&:last-of-type': { marginBottom: 0 },
+      }}
       style={{
-        boxShadow: 'none',
-        border: '1px solid rgba(0,0,0,0.12)',
+        boxShadow: selected ? '0 0 0 1px rgba(33, 186, 69, 0.15)' : 'none',
+        border: selected ? '1px solid #21ba45' : '1px solid rgba(0,0,0,0.12)',
+        backgroundColor: selected ? 'rgba(33, 186, 69, 0.08)' : undefined,
       }}
     >
       <header className="rc-question__header">
@@ -47,7 +54,7 @@ const ReadingComprehensionQuestion = ({
       </header>
 
       <section className="rc-question__body">{children}</section>
-    </Segment>
+    </Paper>
   )
 }
 

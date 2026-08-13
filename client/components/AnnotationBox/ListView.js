@@ -1,7 +1,8 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon, Popup } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import CustomTooltip from 'Components/CustomTooltip'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { setFocusedSpan, setHighlightRange } from 'Utilities/redux/annotationsReducer'
@@ -20,6 +21,7 @@ const ListView = ({ handleAnnotationBoxCollapse }) => {
     <div>
       <div
         className="space-between"
+        data-cy="annotation-list-collapse-toggle"
         onClick={handleAnnotationBoxCollapse}
         onKeyDown={handleAnnotationBoxCollapse}
         role="button"
@@ -27,15 +29,13 @@ const ListView = ({ handleAnnotationBoxCollapse }) => {
       >
         <div>
           <div className="header-3" style={{ fontWeight: '500' }}>
-            <Popup
-              position="top center"
-              content={<FormattedHTMLMessage id={'annotations-popup-info-text'} />}
-              trigger={<Icon name="info circle" size="small" color="grey" />}
-            />{' '}
+            <CustomTooltip permanent placement="top" keyId="annotations-popup-info-text">
+              <InfoOutlinedIcon fontSize="small" sx={{ color: 'grey' }} />
+            </CustomTooltip>{' '}
             <FormattedMessage id="notes-header" />
           </div>
         </div>
-        <Icon name="angle up" size="large" />
+        <KeyboardArrowUpIcon fontSize="large" />
       </div>
       <div style={{ marginTop: '1em' }}>
         {spanAnnotations.map((span, index) => (
@@ -68,6 +68,7 @@ const ListView = ({ handleAnnotationBoxCollapse }) => {
         <AppButton
           size="sm"
           variant="outline-secondary"
+          data-cy="annotation-list-cancel-highlighting"
           onClick={() => dispatch(setHighlightRange(null, null))}
           style={{ marginTop: '1em' }}
         >
