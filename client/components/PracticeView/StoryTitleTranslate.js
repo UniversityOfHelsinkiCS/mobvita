@@ -52,8 +52,8 @@ const StoryTitleTranslate = ({ title }) => {
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        width: '1.8em',
-        height: '1.8em',
+        width: '1em',
+        height: '1em',
         marginLeft: '0.5em',
         padding: 0,
         border: 'none',
@@ -66,7 +66,7 @@ const StoryTitleTranslate = ({ title }) => {
       <img
         src={images.translate}
         alt=""
-        style={{ width: '1em', height: '1em', display: 'block' }}
+        style={{ width: '0.65em', height: '0.65em', display: 'block' }}
       />
     </button>
   )

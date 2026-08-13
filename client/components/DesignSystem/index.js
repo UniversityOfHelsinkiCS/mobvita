@@ -20,6 +20,7 @@ import AppSwitch from 'Components/ui/AppSwitch'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
 import AppTabs from 'Components/ui/AppTabs'
 import AppPagination from 'Components/ui/AppPagination'
+import AppLemma from 'Components/ui/AppLemma'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -385,6 +386,21 @@ const DesignSystem = () => {
             </div>
           )
         })()}
+      </Section>
+
+      <Section title="AppLemma">
+        <div style={{ maxWidth: 420, width: '100%' }}>
+          <AppLemma
+            lemma="painaa"
+            lemmaHref="#"
+            translations={['press', 'push', 'print', 'weigh', 'go', 'run', 'rush']}
+            onSpeak={() => {}}
+            onKnow={() => {}}
+            onDontKnow={() => {}}
+            dictionaryHref="#"
+            onWordNest={() => {}}
+          />
+        </div>
       </Section>
 
       <Section title="AppSelect — variants (active / disabled)">

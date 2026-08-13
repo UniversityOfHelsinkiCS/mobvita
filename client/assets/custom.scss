@@ -2850,12 +2850,12 @@ label.file-upload-btn {
   height: 1.5em;
 
   &-cont {
-    position: sticky;
+    // Scroll together with the content (was `sticky`, which pinned it to the top of the card).
+    position: static;
     margin-bottom: 1em;
     background-color: transparent;
     padding: 0.15em;
     border-radius: 1em;
-    z-index: 1;
   }
 }
 

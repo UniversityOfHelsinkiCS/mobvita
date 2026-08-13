@@ -2,7 +2,12 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import CustomTooltip from 'Components/CustomTooltip';
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
-import { Icon, Placeholder, PlaceholderLine } from 'semantic-ui-react'
+import { Skeleton } from '@mui/material'
+import PeopleIcon from '@mui/icons-material/People'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
@@ -19,8 +24,10 @@ import {
   sanitizeHtml,
   composeExerciseContext,
   hiddenFeatures,
-  getMode
+  getMode,
+  images
 } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestModal from 'Components/WordNestModal'
@@ -30,7 +37,8 @@ import NoteFormModal from './NoteFormModal'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { useParams, useLocation } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
-import Lemma from 'Components/DictionaryHelp/Lemma'
+import AppLemma from 'Components/ui/AppLemma'
+import AppButton from 'Components/AppButton'
 import {
     setFocusedWord,
     mcExerciseTouched,
@@ -121,9 +129,9 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
           <div key={index} className="message message-notes">            
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
               {showInfo && (
-                <Icon
-                  name="info circle"
+                <InfoOutlinedIcon
                   className="hint-info-icon"
+                  fontSize="small"
                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                   onMouseDown={() => handleTooltipClick(note.info)}
                 />
@@ -150,14 +158,14 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
                 )}
                 {note.isOwn && (
                   <span className="note-actions">
-                    <Icon
-                      name="pencil alternate"
+                    <EditOutlinedIcon
                       className="note-action-icon"
+                      fontSize="small"
                       onClick={() => onEdit(note)}
                     />
-                    <Icon
-                      name="trash alternate"
+                    <DeleteOutlinedIcon
                       className="note-action-icon trash"
+                      fontSize="small"
                       onClick={() => onDelete(note)}
                     />
                   </span>
@@ -169,7 +177,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
               {note.isPublic && (
                 <CustomTooltip title={<FormattedMessage id="public-note-checkbox" />}>
                   <span style={{ display: 'inline-flex' }}>
-                    <Icon name="users" className="note-public-icon" />
+                    <PeopleIcon className="note-public-icon" fontSize="small" />
                   </span>
                 </CustomTooltip>
               )}
@@ -884,9 +892,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               permanent
             >
               <button type="button" className="translation-button" onClick={handleGetTranslation}>
-                <div style={{ color: '#1890ff' }}>
-                  <Icon name="language" style={{ padding: 0, border: 'none'}} />
-                </div>
+                {/* Green circular translate icon — same as the story-title translate button. */}
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '1.7rem',
+                    height: '1.7rem',
+                    borderRadius: '50%',
+                    backgroundColor: colors.green,
+                  }}
+                >
+                  <img
+                    src={images.translate}
+                    alt=""
+                    style={{ width: '1rem', height: '1rem', display: 'block' }}
+                  />
+                </span>
               </button>
             </CustomTooltip></div>
             <div style={{flex: 1}}>
@@ -934,7 +957,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                     {!isEmpty(currentWord.frozen_messages) && (
                       <ChatBubble variant="hint" className="message-hint">
                         <div className="hint-item">
-                          <Icon name="lightbulb" className="hint-bulb" />
+                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                           <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />
                         </div>
                       </ChatBubble>
@@ -946,7 +969,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           id="click-to-action-menu" 
                           defaultMessage="{icon} Click the menu for more options"
                           values={{
-                            icon: <Icon name="ellipsis vertical" style={{ verticalAlign: 'middle' }} />
+                            icon: <MoreVertIcon fontSize="small" style={{ verticalAlign: 'middle' }} />
                           }}
                         />
                       </div>
@@ -959,16 +982,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           </div>
                           ) : (
                                 translationState.data?.map((translated, idx) => (
-                                <Lemma
+                                <AppLemma
                                   key={translated.URL || translated.lemma || idx}
                                   lemma={translated.lemma}
-                                  handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-                                  handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-                                  userUrl={translated.user_URL}
-                                  inflectionRef={translated.ref}
-                                  preferred={translated.preferred}
+                                  lemmaHref={translated.user_URL}
                                   translations={translated.glosses}
-                                  handleWordNestClick={
+                                  speaker={<Speaker word={translated.lemma} />}
+                                  onKnow={
+                                    translated.preferred
+                                      ? () => handleKnowningClick(translated.lemma)
+                                      : undefined
+                                  }
+                                  onDontKnow={
+                                    translated.preferred
+                                      ? () => handleNotKnowningClick(translated.lemma)
+                                      : undefined
+                                  }
+                                  dictionaryHref={translated.ref?.url || translated.user_URL}
+                                  onWordNest={
                                     isWordNestAvailableForLemma(translated.lemma)
                                       ? () => {
                                           setWordNestRestoreWord(computeWordNestRestoreWord())
@@ -976,15 +1007,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                           setWordNestModalOpen(true)
                                         }
                                       : undefined
-                                  }                                  
-                                  style={{
-                                    marginBottom: '8px',
-                                    padding: '15px', // Overrides default CSS padding
-                                    borderRadius: '8px',
-                                    backgroundColor: translated.stage !== undefined
-                                        ? `${flashcardColors.background[translated.stage]}4D`
-                                        : '#f9f9f9',
-                                }}
+                                  }
+                                  background={
+                                    translated.stage !== undefined
+                                      ? `${flashcardColors.background[translated.stage]}4D`
+                                      : undefined
+                                  }
+                                  style={{ marginBottom: '8px' }}
                                 />
                               ))
 
@@ -1010,11 +1039,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           {currentWord.hint2penalty && attempt === 0 && (
                             <ChatBubble variant="hint" className="message-hint">
                               <div className="hint-item">
-                                <Icon name="lightbulb" className="hint-bulb" />
+                                <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                 <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
                                 {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                  <Icon
-                                      name="info circle"
+                                  <InfoOutlinedIcon fontSize="small"
                                       className="hint-info-icon"
                                       onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
                                   />
@@ -1026,11 +1054,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                             {preHints?.map((hint, index) => (
                               <ChatBubble key={index} variant="hint" className="message-hint">
                                 <div className="hint-item">
-                                  <Icon name="lightbulb" className="hint-bulb" />
+                                  <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                   <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                                   {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                    <Icon
-                                      name="info circle"
+                                    <InfoOutlinedIcon fontSize="small"
                                       className="hint-info-icon"
                                       onMouseDown={() => handleTooltipClick(hint)}
                                     />
@@ -1062,11 +1089,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                               {currentWord.hint2penalty && attempt === 0 && (
                                   <ChatBubble variant="hint" className="message-hint">
                                       <div className="hint-item">
-                                          <Icon name="lightbulb" className="hint-bulb" />
+                                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                           <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
                                           {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                              <Icon
-                                                  name="info circle"
+                                              <InfoOutlinedIcon fontSize="small"
                                                   className="hint-info-icon"
                                                   onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
                                               />
@@ -1077,11 +1103,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                               {preHints?.map((hint, index) => (
                                 <ChatBubble key={index} variant="hint" className="message-hint">
                                   <div className="hint-item">
-                                    <Icon name="lightbulb" className="hint-bulb" />
+                                    <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                     <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                                     {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                        <Icon
-                                          name="info circle"
+                                        <InfoOutlinedIcon fontSize="small"
                                           className="hint-info-icon"
                                           onMouseDown={() => handleTooltipClick(hint)}
                                         />
@@ -1148,10 +1173,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       }
                       }}>
                       {eloScoreHearts.map(heart => (
-                        <Icon key={`lit-${heart}`} size="small" name="lightbulb" />
+                        <img
+                          key={`lit-${heart}`}
+                          src={images.bulb}
+                          alt=""
+                          width="22"
+                          height="22"
+                          style={{ display: 'block' }}
+                        />
                       ))}
                       {spentHints.map(hint => (
-                        <Icon key={`spent-${hint}`} size="small" name="lightbulb outline" />
+                        <img
+                          key={`spent-${hint}`}
+                          src={images.bulbEmpty}
+                          alt=""
+                          width="22"
+                          height="22"
+                          style={{ display: 'block' }}
+                        />
                       ))}
                     </div>
                 </CustomTooltip>
@@ -1168,11 +1207,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                     placement="top"
                     permanent
                   >
-                      <span className="chat-action-text"
+                      <AppButton
+                        variant="primary"
+                        size="sm"
+                        disabled={showAllHintsUsed}
                         onClick={showAllHintsUsed ? undefined : handleShowHint}
-                        style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}>
+                      >
                         <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
-                      </span>
+                      </AppButton>
                   </CustomTooltip></div>
             )}
           </div>                    
@@ -1186,15 +1228,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <div style={{ padding: '1em' }}>
               <div className="flex space-between" style={{ marginBottom: '1em' }}>
                 <div style={{ height: '10px', width: '80px' }}>
-                  <Placeholder><PlaceholderLine /></Placeholder>
+                  <Skeleton variant="text" />
                 </div>
               </div>
               {[1, 2, 3].map(line => (
                 <div key={line} style={{ marginBottom: '1em' }}>
-                  <Placeholder>
-                    <PlaceholderLine />
-                    <PlaceholderLine width="50%" />
-                  </Placeholder>
+                  <Skeleton variant="text" />
+                  <Skeleton variant="text" width="50%" />
                 </div>
               ))}
             </div>
@@ -1202,18 +1242,18 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <>            
             {translationState.surfaceWord && (
               <div className="chatbot-header" style={{ marginBottom: '1em' }}>
-                <div className="bulbs-container" style={{ opacity: 0, pointerEvents: 'none' }}>
-                    {/* Empty container to maintain alignment */}
-                </div>
-                <h4 className="current-word">
+                <div>
                     {translationState.surfaceWord &&
                         translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <CustomTooltip
                         title={<FormattedHTMLMessage id="explain-speaker-surface" />}
                     >
-                        <span style={{ display: 'inline-flex' }}>
+                        
                           <Speaker word={translationState.surfaceWord} />
-                        </span>
-                    </CustomTooltip>} {translationState.maskSymbol || translationState.surfaceWord}
+                        
+                    </CustomTooltip>}
+                </div>
+                <h4 className="current-word">
+                     {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
                                 <ChatActionMenu mode="dictionary"
                                     onAddNote={canAddNote ? handleAddNote : undefined}
@@ -1242,13 +1282,23 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             {/* Translation Results */}               
 
                 {translationState.data && translationState.data.length > 0 ? (
-    translationState.data.map((translated, idx) => (      
-        <Lemma
+    translationState.data.map((translated, idx) => (
+        <AppLemma
             key={translated.URL || translated.lemma || idx}
             lemma={translated.lemma}
-            handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-            handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-            handleWordNestClick={
+            lemmaHref={translated.user_URL}
+            translations={translated.glosses}
+            speaker={<Speaker word={translated.lemma} />}
+            onKnow={
+                translated.preferred ? () => handleKnowningClick(translated.lemma) : undefined
+            }
+            onDontKnow={
+                translated.preferred
+                    ? () => handleNotKnowningClick(translated.lemma)
+                    : undefined
+            }
+            dictionaryHref={translated.ref?.url || translated.user_URL}
+            onWordNest={
                 isWordNestAvailableForLemma(translated.lemma)
                     ? () => {
                           setWordNestRestoreWord(computeWordNestRestoreWord())
@@ -1257,20 +1307,12 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       }
                     : undefined
             }
-            userUrl={translated.user_URL}
-            inflectionRef={translated.ref}
-            preferred={translated.preferred}
-            translations={translated.glosses} // Pass the glosses array to the bottom row
-            showInflactionLink={translationState.data.length < 3 || idx > 0}
-            // Pass the dynamic styling to the root of the Lemma component
-            style={{
-                marginBottom: '8px',
-                padding: '15px', // Overrides default CSS padding
-                borderRadius: '8px',
-                backgroundColor: translated.stage !== undefined
+            background={
+                translated.stage !== undefined
                     ? `${flashcardColors.background[translated.stage]}4D`
-                    : '#f9f9f9',
-            }}
+                    : undefined
+            }
+            style={{ marginBottom: '8px' }}
         />
     ))
         ) : (

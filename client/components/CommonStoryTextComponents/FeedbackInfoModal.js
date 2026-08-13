@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Divider, Modal } from 'semantic-ui-react'
+import Divider from '@mui/material/Divider'
 import { FormattedMessage } from 'react-intl'
+import AppDialog from 'Components/ui/AppDialog'
 import { clearExplanation, clearReferences, clearExample } from 'Utilities/redux/practiceReducer'
 import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/common'
 
@@ -82,17 +83,19 @@ const FeedbackInfoModal = () => {
   const ExampleList = ({ example }) => (
     <>
       <div className="bold header-3 mx-lg">
-        <FormattedMessage id="additional-information-modal-examples"  />
+        <FormattedMessage id="additional-information-modal-examples" />
       </div>
       {Object.keys(example).map(title => (
         <div className="mb-lg" key={title}>
-          <div className="bold header-3">            
+          <div className="bold header-3">
             <Divider style={{ width: '50%' }} />
           </div>
           <ul>
-            {(Array.isArray(example[title]) ? example[title] : [example[title]]).map((item, index) => (
-              <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
-            ))}
+            {(Array.isArray(example[title]) ? example[title] : [example[title]]).map(
+              (item, index) => (
+                <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
+              ),
+            )}
           </ul>
         </div>
       ))}
@@ -144,30 +147,23 @@ const FeedbackInfoModal = () => {
   }
 
   return (
-    <Modal
+    <AppDialog
       open={isOpen}
       onClose={handleModalClose}
-      onClosed={handleModalClosed}
-      size="tiny"
-      dimmer="inverted"
-      closeOnDimmerClick={false}
-      closeOnDocumentClick={false}
-      closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
+      maxWidth="xs"
+      slotProps={{ transition: { onExited: handleModalClosed } }}
     >
-      <Modal.Content>
-        {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
-        {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
-          <>
-            {explanationSnapshot && <Divider />}
-            <ExampleList example={exampleSnapshot} />
-          </>
-        )}
-        {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && <Divider />}
-        {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
-      </Modal.Content>
-    </Modal>
+      {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
+      {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
+        <>
+          {explanationSnapshot && <Divider sx={{ my: 2 }} />}
+          <ExampleList example={exampleSnapshot} />
+        </>
+      )}
+      {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && <Divider sx={{ my: 2 }} />}
+      {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
+    </AppDialog>
   )
 }
 
 export default React.memo(FeedbackInfoModal)
-

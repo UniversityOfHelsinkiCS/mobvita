@@ -17,7 +17,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import Spinner from 'Components/Spinner'
 import WordNestModal from 'Components/WordNestModal'
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
-import Lemma from 'Components/DictionaryHelp/Lemma'
+import AppLemma from 'Components/ui/AppLemma'
 import 'Components/PracticeView/CombinedChatbot.scss'
 
 const glossCheckLanguage = ['English']
@@ -329,30 +329,32 @@ const WordTranslationPanel = () => {
           <div className="inline-translation" data-cy="translations">
             {data && data.length > 0 ? (
               data.map((translated, idx) => (
-                <Lemma
+                <AppLemma
                   key={translated.URL || translated.lemma || idx}
                   lemma={translated.lemma}
-                  userUrl={translated.user_URL}
-                  inflectionRef={translated.ref}
+                  lemmaHref={translated.user_URL}
                   translations={translated.glosses}
-                  preferred={translated.preferred}
-                  handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-                  handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-                  handleWordNestClick={
+                  speaker={<Speaker word={translated.lemma} />}
+                  onKnow={
+                    translated.preferred ? () => handleKnowningClick(translated.lemma) : undefined
+                  }
+                  onDontKnow={
+                    translated.preferred
+                      ? () => handleNotKnowningClick(translated.lemma)
+                      : undefined
+                  }
+                  dictionaryHref={translated.ref?.url || translated.user_URL}
+                  onWordNest={
                     isWordNestAvailableForLemma(translated.lemma)
                       ? () => openWordNest(translated.lemma)
                       : undefined
                   }
-                  showInflactionLink={data.length < 3 || idx > 0}
-                  style={{
-                    marginBottom: '8px',
-                    padding: '15px',
-                    borderRadius: '8px',
-                    backgroundColor:
-                      translated.stage !== undefined
-                        ? `${flashcardColors.background[translated.stage]}4D`
-                        : '#f9f9f9',
-                  }}
+                  background={
+                    translated.stage !== undefined
+                      ? `${flashcardColors.background[translated.stage]}4D`
+                      : undefined
+                  }
+                  style={{ marginBottom: '8px' }}
                 />
               ))
             ) : (

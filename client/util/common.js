@@ -539,7 +539,7 @@ export function getWordColor(
     user_grade >= word_level ||
     !hiddenFeatures
   ) {
-    return '#FFFFFF' // white background
+    return 'transparent' // no difficulty highlight — let the card/background show through
   }
 
   // const wordDifficulty = skillLevels.findIndex(level => {
