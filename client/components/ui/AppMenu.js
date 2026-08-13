@@ -98,7 +98,15 @@ const AppMenu = ({
 
   return (
     <>
-      {React.cloneElement(trigger, { onClick: openMenu })}
+      {/* Compose rather than replace: a custom trigger may carry its own onClick (e.g. the
+          practice multiple-choice control dispatches "touched" when the learner opens it), and a
+          bare `{ onClick: openMenu }` would silently drop it. */}
+      {React.cloneElement(trigger, {
+        onClick: e => {
+          if (trigger.props.onClick) trigger.props.onClick(e)
+          openMenu(e)
+        },
+      })}
       <AppMenuCloseContext.Provider value={close}>
         <StyledPopover
           open={open}
