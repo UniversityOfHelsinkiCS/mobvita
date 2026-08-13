@@ -213,11 +213,25 @@ const AppLemma = ({
         </div>
       )}
 
-      {/* Translations. */}
+      {/* Translations. `translation-glosses` is kept for the dictionary cypress selectors; inline
+          styles pin AppLemma's look (ink, upright, Geologica) over that legacy class. */}
       {uniqueTranslations.length > 0 && (
-        <ul style={{ margin: '10px 0 0', paddingLeft: '1.2em', lineHeight: 1.6 }}>
+        <ul
+          className="translation-glosses"
+          style={{
+            margin: '10px 0 0',
+            paddingLeft: '1.2em',
+            lineHeight: 1.6,
+            listStyle: 'disc',
+            color: colors.ink,
+            fontStyle: 'normal',
+            fontFamily: font.family,
+          }}
+        >
           {uniqueTranslations.map((t, i) => (
-            <li key={`${t}-${i}`}>{t}</li>
+            <li key={`${t}-${i}`} style={{ color: colors.ink, fontStyle: 'normal' }}>
+              {t}
+            </li>
           ))}
         </ul>
       )}
