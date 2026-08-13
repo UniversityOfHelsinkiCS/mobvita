@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
 import { skillLevels } from 'Utilities/common'
-import { Dropdown } from 'semantic-ui-react'
+import { Box } from '@mui/material'
+import AppSelect from 'Components/ui/AppSelect'
 import { isNumber } from 'lodash'
 
 const CEFRDropdown = ({
@@ -20,7 +21,7 @@ const CEFRDropdown = ({
   )
   const cefrLevelOptions = skillLevels.map((level, ind) => ({
     key: ind,
-    text: level,
+    label: level,
     value: JSON.stringify(ind), // needs to be string
   }))
 
@@ -61,15 +62,21 @@ const CEFRDropdown = ({
   }
 
   return (
-    <Dropdown
+    <Box
       style={{ width: '120px' }}
       className="interactable"
-      text={addNew ? chosenValue : skillLevels[chosenValue]}
-      selection
-      fluid
-      options={cefrLevelOptions}
-      onChange={(_, { value }) => handleCEFRChange(value)}
-    />
+      data-cy={addNew ? 'cefr-dropdown-new' : `cefr-dropdown-${index}`}
+    >
+      <AppSelect
+        variant="contrast-outline"
+        minWidth={120}
+        matchTriggerWidth
+        placeholder={addNew ? chosenValue : skillLevels[chosenValue]}
+        value={chosenValue}
+        options={cefrLevelOptions}
+        onChange={handleCEFRChange}
+      />
+    </Box>
   )
 }
 

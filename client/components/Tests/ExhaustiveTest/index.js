@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import AppSelect from 'Components/ui/AppSelect'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
@@ -112,8 +112,7 @@ const ExhaustiveTestView = () => {
 
   const groupOptions = testEnabledGroups.map(({ group_id: groupId, groupName }) => ({
     value: groupId,
-    text: groupName,
-    key: groupId,
+    label: groupName,
   }))
 
   const filterHistoryByDate = () =>
@@ -131,7 +130,7 @@ const ExhaustiveTestView = () => {
               <FormattedMessage id="start-a-new-test" />
             </AppButton>
             {language && (
-              <AppButton onClick={continueTest} style={{ marginLeft: '1rem' }}>
+              <AppButton onClick={continueTest} style={{ marginLeft: '1rem' }} data-cy="resume-test">
                 <FormattedMessage id="resume-test" />
               </AppButton>
             )}
@@ -140,19 +139,22 @@ const ExhaustiveTestView = () => {
                 <div>
                   <FormattedMessage id="Group" />
                 </div>
-                <Dropdown
-                  selection
-                  options={groupOptions}
-                  value={currentGroup.group_id}
-                  onChange={(_, data) => handleGroupChange(data.value)}
-                  placeholder="Group"
-                />
+                <div data-cy="exhaustive-test-group-select" style={{ display: 'inline-block' }}>
+                  <AppSelect
+                    variant="contrast-outline"
+                    options={groupOptions}
+                    value={currentGroup.group_id}
+                    onChange={handleGroupChange}
+                    placeholder="Group"
+                    minWidth={220}
+                  />
+                </div>
               </div>
             )}
 
             <>
               <hr style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }} />
-              <AppButton onClick={toggleHistory}>
+              <AppButton onClick={toggleHistory} data-cy="exhaustive-test-toggle-history">
                 <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
               </AppButton>
 

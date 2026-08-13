@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import AppDialog from 'Components/ui/AppDialog'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 import MultipleChoiceModal from './MultipleChoicesModal'
@@ -36,50 +36,54 @@ const SelectExerciseTypeModal = ({
         analyticChunkWord={analyticChunkWord}
         showValidationMessage={showValidationMessage}
       />
-      <Modal
-        basic
+      <AppDialog
         open={showExerciseOptionsModal}
-        size="tiny"
-        centered
-        closeIcon={{ style: { top: '2rem', right: '2rem' }, color: 'black', name: 'close' }}
         onClose={closeModal}
+        maxWidth="xs"
+        data-cy="select-exercise-type-modal"
+        closeDataCy="select-exercise-type-modal-close"
       >
-        <Modal.Content>
-          <div className="encouragement">
-            <div className="pt-sm" style={{ color: '#000000', marginLeft: '0.5em' }}>
-              <FormattedMessage id="choose-exercise-type" />
-            </div>
-            <hr />
-            <div style={{ marginBottom: '0.5em' }}>
-              {!noConcepts && (
-                <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
-                  <AppButton
-                    type="submit"
-                    onClick={handleAddClozeExercise}
-                    onKeyDown={handleAddClozeExercise}
-                  >
-                    <FormattedMessage id="choose-cloze-exercise" />
-                  </AppButton>
-                </span>
-              )}
-              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
+        <div className="encouragement">
+          <div className="pt-sm" style={{ color: '#000000', marginLeft: '0.5em' }}>
+            <FormattedMessage id="choose-exercise-type" />
+          </div>
+          <hr />
+          <div style={{ marginBottom: '0.5em' }}>
+            {!noConcepts && (
+              <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
                 <AppButton
                   type="submit"
-                  onClick={handleAddHearingExercise}
-                  onKeyDown={handleAddHearingExercise}
+                  onClick={handleAddClozeExercise}
+                  onKeyDown={handleAddClozeExercise}
+                  data-cy="choose-cloze-exercise-button"
                 >
-                  <FormattedMessage id="choose-listening-exercise" />
+                  <FormattedMessage id="choose-cloze-exercise" />
                 </AppButton>
               </span>
-              <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-                <AppButton type="submit" onClick={handleOpenMCModal} onKeyDown={handleOpenMCModal}>
-                  <FormattedMessage id="choose-multichoice-exercise" />
-                </AppButton>
-              </span>
-            </div>
+            )}
+            <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
+              <AppButton
+                type="submit"
+                onClick={handleAddHearingExercise}
+                onKeyDown={handleAddHearingExercise}
+                data-cy="choose-listening-exercise-button"
+              >
+                <FormattedMessage id="choose-listening-exercise" />
+              </AppButton>
+            </span>
+            <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
+              <AppButton
+                type="submit"
+                onClick={handleOpenMCModal}
+                onKeyDown={handleOpenMCModal}
+                data-cy="choose-multichoice-exercise-button"
+              >
+                <FormattedMessage id="choose-multichoice-exercise" />
+              </AppButton>
+            </span>
           </div>
-        </Modal.Content>
-      </Modal>
+        </div>
+      </AppDialog>
     </>
   )
 }

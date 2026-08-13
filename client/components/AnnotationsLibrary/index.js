@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import React, { useState, useEffect } from 'react'
-import { Card } from 'semantic-ui-react'
+import { Box } from '@mui/material'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, WindowScroller } from 'react-virtualized'
@@ -118,7 +118,11 @@ const AnnotationsLibrary = () => {
         setAnnotationsList={setAnnotationsList}
         activeLibrary={activeLibrary}
       />
-      <Card.Group itemsPerRow={1} doubling data-cy="annotation-items" style={{ marginTop: '.5em' }}>
+      <Box
+        data-cy="annotation-items"
+        sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}
+        style={{ marginTop: '.5em' }}
+      >
         <WindowScroller>
           {({ height, isScrolling, onChildScroll, scrollTop }) => (
             <List
@@ -134,7 +138,7 @@ const AnnotationsLibrary = () => {
             />
           )}
         </WindowScroller>
-      </Card.Group>
+      </Box>
     </div>
   )
 }

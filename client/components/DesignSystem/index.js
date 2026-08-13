@@ -593,12 +593,14 @@ const DesignSystem = () => {
           return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%' }}>
               {[
-                { title: 'plain', props: {} },
-                { title: 'striped', props: { striped: true } },
-                { title: 'striped + bordered + hover', props: { striped: true, bordered: true, hover: true } },
-                { title: 'density="standard" (taller rows)', props: { striped: true, density: 'standard' } },
-                { title: 'size="auto" (shrinks to content)', props: { bordered: true, size: 'auto' } },
-                { title: 'size={260} (raw width)', props: { bordered: true, size: 260 } },
+                { title: 'default — green header, cream body', props: {} },
+                { title: 'default + striped', props: { striped: true } },
+                { title: 'default + hover (pair with a row onClick)', props: { hover: true } },
+                { title: 'plain — no fills, hairline rows only', props: { plain: true } },
+                { title: 'plain + striped + bordered', props: { plain: true, striped: true, bordered: true } },
+                { title: 'density="standard" (taller rows)', props: { density: 'standard' } },
+                { title: 'size="auto" (shrinks to content)', props: { size: 'auto' } },
+                { title: 'size={260} (raw width)', props: { size: 260 } },
               ].map(({ title, props }) => (
                 <div key={title} style={{ maxWidth: 420 }}>
                   <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>{title}</div>

@@ -6,7 +6,11 @@ import {
   setGroupTestDeadline,
 } from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
-import { Icon, Table } from 'semantic-ui-react'
+import { Box, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
+import { colors } from 'Assets/mui_theme/designTokens'
+import AppTable from 'Components/ui/AppTable'
 import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
@@ -90,38 +94,39 @@ const GroupPeople = ({ role }) => {
 
       <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
 
-      <Table size="small" celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell key="teachers-header" colSpan="2">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <AppTable bordered>
+        <TableHead>
+          <TableRow>
+            <TableCell key="teachers-header" colSpan="2">
               <div className="space-between" style={{ fontSize: '1.2em' }}>
                 <FormattedMessage id="Teachers" /> ({currentGroup.teachers?.length})
                 {currentGroup.is_teaching && (
-                  <Icon
+                  <AddIcon
                     data-cy="add-to-group-button"
                     style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
-                    name="plus"
-                    size="large"
+                    fontSize="large"
                     onClick={() => setAddToGroupId(currentGroupId)}
                   />
                 )}
               </div>
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {currentGroup.teachers.map(teacher => (
-            <Table.Row>
-              <Table.Cell key={`teacher-${teacher.userName}`}>{teacher.userName}</Table.Cell>
-            </Table.Row>
+            <TableRow>
+              <TableCell key={`teacher-${teacher.userName}`}>{teacher.userName}</TableCell>
+            </TableRow>
           ))}
           {currentGroup.pending_teachers.map(teacher => (
-            <Table.Row>
-              <Table.Cell key={`teacher-${teacher.userName}`}>
+            <TableRow>
+              <TableCell key={`teacher-${teacher.userName}`}>
                 <div className="flex space-between" style={{ alignItems: 'center' }}>
                   <span style={{ color: 'gray' }}>{teacher.userName}</span>
                   {currentUserIsTeacher && (
                     <AppButton
+                      data-cy={`resend-invitation-teacher-${teacher.userName}`}
                       onClick={() => handleResendInvitationClick(teacher._id)}
                       size="sm"
                       style={{ marginRight: '1em' }}
@@ -130,51 +135,49 @@ const GroupPeople = ({ role }) => {
                     </AppButton>
                   )}
                 </div>
-              </Table.Cell>
-            </Table.Row>
+              </TableCell>
+            </TableRow>
           ))}
-        </Table.Body>
-      </Table>
+        </TableBody>
+      </AppTable>
 
       {currentGroup.is_teaching && (
         <>
-          <Table size="small" celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell key="students-header" colSpan="2">
+          <AppTable bordered>
+            <TableHead>
+              <TableRow>
+                <TableCell key="students-header" colSpan="2">
                   <div className="space-between" style={{ fontSize: '1.2em' }}>
                     <FormattedMessage id="students" /> ({currentGroup.students?.length})
-                    <Icon
+                    <AddIcon
                       data-cy="add-to-group"
                       style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
-                      name="plus"
-                      size="large"
+                      fontSize="large"
                       onClick={() => setAddToGroupId(currentGroupId)}
                     />
                   </div>
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {currentGroup.students.map(student => (
-                <Table.Row>
-                  <Table.Cell key={`student-${student.userName}`}>
+                <TableRow>
+                  <TableCell key={`student-${student.userName}`}>
                     {student.userName} ({student.email}){' '}
                     {currentUserIsTeacher && (
-                      <Icon
+                      <CloseIcon
                         data-cy={`remove-from-group-${student.userName}`}
                         style={{ cursor: 'pointer', color: 'rgb(239, 135, 132)' }}
-                        name="close"
-                        size="large"
+                        fontSize="large"
                         onClick={() => removeUser(student._id, 'student')}
                       />
                     )}
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
               {currentGroup.pending_students.map(student => (
-                <Table.Row>
-                  <Table.Cell key={`student-${student.userName}`}>
+                <TableRow>
+                  <TableCell key={`student-${student.userName}`}>
                     <div className="flex space-between" style={{ alignItems: 'center' }}>
                       <span style={{ color: 'gray' }}>
                         {student.userName} ({student.email}){' '}
@@ -182,29 +185,30 @@ const GroupPeople = ({ role }) => {
                       {currentUserIsTeacher && (
                         <div className="flex" style={{ alignItems: 'center' }}>
                           <AppButton
+                            data-cy={`resend-invitation-student-${student.userName}`}
                             onClick={() => handleResendInvitationClick(student._id)}
                             size="sm"
                             style={{ marginRight: '1em' }}
                           >
                             <FormattedMessage id="resend-invitation" />
                           </AppButton>
-                          <Icon
+                          <CloseIcon
                             data-cy={`remove-from-group-${student.userName}`}
                             style={{ cursor: 'pointer' }}
-                            name="close"
-                            color="red"
+                            sx={{ color: colors.error }}
                             onClick={() => removeUser(student._id, 'pending_student')}
                           />
                         </div>
                       )}
                     </div>
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
-            </Table.Body>
-          </Table>
+            </TableBody>
+          </AppTable>
         </>
       )}
+      </Box>
     </div>
   )
 }

@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Dropdown, Popup, Icon, Input } from 'semantic-ui-react'
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
+import SearchIcon from '@mui/icons-material/Search'
+import CloseIcon from '@mui/icons-material/Close'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTextField from 'Components/ui/AppTextField'
+import CustomTooltip from 'Components/CustomTooltip'
 import { debounce } from 'lodash'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -43,12 +50,6 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
 
   useEffect(() => () => debouncedFilter.cancel(), [debouncedFilter])
 
-  const dropDownMenuText = category ? (
-    <FormattedMessage id={`notes-${category}`} />
-  ) : (
-    <FormattedMessage id="notes-All" />
-  )
-
   const cancelSearch = () => {
     debouncedFilter.cancel()
     setLastQuery(false)
@@ -84,24 +85,20 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
 
   const categoryOptions = [
     {
-      key: '0',
-      text: <FormattedMessage id="notes-All" />,
       value: 'All',
+      label: <FormattedMessage id="notes-All" />,
     },
     {
-      key: '1',
-      text: <FormattedMessage id="notes-Grammar" />,
       value: 'Grammar',
+      label: <FormattedMessage id="notes-Grammar" />,
     },
     {
-      key: '2',
-      text: <FormattedMessage id="notes-Phrases" />,
       value: 'Phrases',
+      label: <FormattedMessage id="notes-Phrases" />,
     },
     {
-      key: '3',
-      text: <FormattedMessage id="notes-Vocabulary" />,
       value: 'Vocabulary',
+      label: <FormattedMessage id="notes-Vocabulary" />,
     },
   ]
 
@@ -113,36 +110,49 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
             <FormattedMessage id="search-by-category" />
           </span>
         )}
-        <Dropdown
-          style={{ width: '150px' }}
-          text={dropDownMenuText}
-          selection
-          fluid
-          options={categoryOptions}
-          onChange={(_, { value }) => setCategory(value)}
-        />
-      </div>
-      <div style={{ position: 'relative' }}>
-        {bigScreen && (
-          <Popup
-            content={<FormattedMessage id="annotations-search-by-text" />}
-            trigger={<Icon style={{ paddingRight: '0.5em' }} name="info circle" color="grey" />}
+        <Box data-cy="annotations-library-category-select" sx={{ width: '150px' }}>
+          <AppSelect
+            variant="contrast-outline"
+            value={category || 'All'}
+            options={categoryOptions}
+            onChange={setCategory}
+            minWidth={150}
+            matchTriggerWidth
           />
+        </Box>
+      </div>
+      <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+        {bigScreen && (
+          <CustomTooltip permanent keyId="annotations-search-by-text">
+            <InfoOutlinedIcon sx={{ paddingRight: '0.5em', color: 'grey' }} />
+          </CustomTooltip>
         )}
-        <Input
-          action={{ icon: 'search', onClick: handleAnnotationsSearch, color: 'grey' }}
+        <AppTextField
+          fullWidth={false}
           placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
           onChange={handleSearchFieldChange}
           onKeyPress={handleSearchFieldKeyPress}
           value={searchString}
+          inputProps={{ 'data-cy': 'annotations-library-search-input' }}
+          endIcon={
+            <IconButton
+              onClick={handleAnnotationsSearch}
+              size="small"
+              aria-label="search"
+              sx={{ color: 'grey' }}
+              data-cy="annotations-library-search-button"
+            >
+              <SearchIcon />
+            </IconButton>
+          }
         />
         {lastQuery && (
-          <Icon
+          <CloseIcon
             className="library-search-cancel"
             onClick={cancelSearch}
-            size="large"
-            color="grey"
-            name="times"
+            fontSize="large"
+            sx={{ color: 'grey' }}
+            data-cy="annotations-library-search-cancel"
           />
         )}
       </div>

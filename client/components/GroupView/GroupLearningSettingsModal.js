@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal } from 'semantic-ui-react'
+import Box from '@mui/material/Box'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
 import { Link } from 'react-router-dom'
 import {
   updateExerciseTemplate,
@@ -51,11 +52,17 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
   }
 
   return (
-    <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open}>
-      <Modal.Header>
-        {groupName}: <FormattedMessage id="learning-settings" />
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column' }}>
+    <AppDialog
+      onClose={() => setOpen(false)}
+      open={open}
+      data-cy="group-learning-settings-modal"
+      title={
+        <>
+          {groupName}: <FormattedMessage id="learning-settings" />
+        </>
+      }
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         {/* 
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <Popup
@@ -79,7 +86,6 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
         <Divider />
         */}
           <>
-              {/* slider */}
               <div>
                   <CERFLevelSlider 
                     sliderValue={cefrSliderValue}
@@ -95,17 +101,23 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
                       as={Link}
                       to={`/groups/teacher/${groupId}/topics`}
                       style={{ color: 'yellow', fontWeight: 600, margin: '0 auto'}}
+                      data-cy="group-learning-settings-customize-button"
                   >
                       <FormattedMessage id="customize-learning-settings" />
                   </AppButton>
               </div>
               {/* save learning settings */}
-              <AppButton variant="primary" size="lg" onClick={submitSettings}>
+              <AppButton
+                  variant="primary"
+                  size="lg"
+                  onClick={submitSettings}
+                  data-cy="group-learning-settings-save-button"
+              >
                   <FormattedMessage id="update-settings" />
               </AppButton>
           </>
-      </Modal.Content>
-    </Modal>
+      </Box>
+    </AppDialog>
   )
 }
 

@@ -1,7 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import Draggable from 'react-draggable'
-import { Icon, Form, Divider } from 'semantic-ui-react'
+import Box from '@mui/material/Box'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import CloseIcon from '@mui/icons-material/Close'
+import AppRadio from 'Components/ui/AppRadio'
 import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimension from 'Utilities/windowDimensions'
@@ -78,6 +81,20 @@ const MultipleChoiceModal = ({
     }
   }
 
+  // semantic-ui's <Form> called preventDefault on submit itself; a plain <form> must do it here.
+  const handleFormSubmit = event => {
+    event.preventDefault()
+    handleSubmitChoices()
+  }
+
+  const radioSx = {
+    p: 0,
+    alignSelf: 'flex-start',
+    marginTop: '0.9em',
+    marginLeft: '0.5em',
+    marginRight: '0.75em',
+  }
+
   if (open) {
     return (
       <Draggable cancel=".interactable">
@@ -85,6 +102,7 @@ const MultipleChoiceModal = ({
           <div>
             <div>
               <CustomTooltip
+                permanent
                 title={
                   <div style={{ padding: '0.75em' }}>
                     <FormattedMessage id="multiple-choice-tooltip" />
@@ -92,33 +110,32 @@ const MultipleChoiceModal = ({
                 }
               >
                 <span className="interactable" style={{ display: 'inline-flex' }}>
-                  <Icon
+                  <InfoOutlinedIcon
                     className="interactable"
-                    style={{
+                    sx={{
+                      color: 'grey',
                       paddingRight: '0.75em',
                       marginBottom: '0.5em',
                       marginLeft: '0.75em',
                       marginTop: '0.75em',
                     }}
-                    name="info circle"
-                    color="grey"
                   />
                 </span>
               </CustomTooltip>
               <span className="pt-sm" style={{ color: '#000000' }}>
                 <FormattedMessage id="pick-choices" />
               </span>
-              <Icon
+              <CloseIcon
                 className="interactable"
-                style={{
+                data-cy="mc-modal-close"
+                sx={{
                   cursor: 'pointer',
                   paddingRight: '0.75em',
                   marginBottom: '0.5em',
                   marginLeft: '0.75em',
                   marginTop: '0.75em',
                 }}
-                size="large"
-                name="close"
+                fontSize="large"
                 onClick={closeModal}
               />
             </div>
@@ -126,22 +143,22 @@ const MultipleChoiceModal = ({
           <hr />
           <div>
             <div style={{ marginRight: '0.5em' }}>
-              <Form
+              <form
                 className="interactable"
                 style={{
                   marginBottom: '0.5em',
                   marginTop: '0.5em',
                 }}
-                onSubmit={handleSubmitChoices}
+                onSubmit={handleFormSubmit}
               >
                 {word.choices && bigScreen ? (
                   Object.keys(word.choices).map(key => (
                     <div>
-                      <Form.Group>
-                        <Form.Input
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <AppRadio
                           className="interactable"
-                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                          type="radio"
+                          slotProps={{ input: { 'data-cy': `mc-modal-choice-set-${key}` } }}
+                          sx={radioSx}
                           onChange={() => setChosenSet(key)}
                           checked={chosenSet === key}
                         />
@@ -158,18 +175,18 @@ const MultipleChoiceModal = ({
                               value={choice}
                             />
                           ))}
-                      </Form.Group>
+                      </Box>
                       <hr />
                     </div>
                   ))
                 ) : word.choices ? (
                   Object.keys(word.choices).map(key => (
                     <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                      <Form.Group>
-                        <Form.Input
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <AppRadio
                           className="interactable"
-                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                          type="radio"
+                          slotProps={{ input: { 'data-cy': `mc-modal-choice-set-${key}` } }}
+                          sx={radioSx}
                           onChange={() => setChosenSet(key)}
                           checked={chosenSet === key}
                         />
@@ -190,7 +207,7 @@ const MultipleChoiceModal = ({
                               />
                             ))}
                         </div>
-                      </Form.Group>
+                      </Box>
                       <hr />
                     </div>
                   ))
@@ -199,11 +216,11 @@ const MultipleChoiceModal = ({
                 )}
                 {word.stress && word.stressed && bigScreen ? (
                   <div>
-                    <Form.Group>
-                      <Form.Input
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                      <AppRadio
                         className="interactable"
-                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                        type="radio"
+                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-stress' } }}
+                        sx={radioSx}
                         onChange={() => setChosenSet('stress')}
                         checked={chosenSet === 'stress'}
                       />
@@ -218,16 +235,16 @@ const MultipleChoiceModal = ({
                           value={choice}
                         />
                       ))}
-                    </Form.Group>
+                    </Box>
                     <hr />
                   </div>
                 ) : word.stress && word.stressed ? (
                   <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                    <Form.Group>
-                      <Form.Input
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                      <AppRadio
                         className="interactable"
-                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                        type="radio"
+                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-stress' } }}
+                        sx={radioSx}
                         onChange={() => setChosenSet('stress')}
                         checked={chosenSet === 'stress'}
                       />
@@ -244,7 +261,7 @@ const MultipleChoiceModal = ({
                           />
                         ))}
                       </div>
-                    </Form.Group>
+                    </Box>
                     <hr />
                   </div>
                 ) : (
@@ -252,11 +269,11 @@ const MultipleChoiceModal = ({
                 )}
                 <div style={{ marginRight: '0.5em' }}>
                   {bigScreen ? (
-                    <Form.Group>
-                      <Form.Input
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                      <AppRadio
                         className="interactable"
-                        style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                        type="radio"
+                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-custom' } }}
+                        sx={radioSx}
                         onChange={() => setChosenSet('custom')}
                         checked={chosenSet === 'custom'}
                       />
@@ -274,6 +291,7 @@ const MultipleChoiceModal = ({
                           containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                         } interactable`}
                         type="text"
+                        data-cy="mc-modal-custom-choice-1"
                         value={customMultiChoice1}
                         onChange={({ target }) => setCustomMultiChoice1(target.value)}
                       />
@@ -282,6 +300,7 @@ const MultipleChoiceModal = ({
                           containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                         } interactable`}
                         type="text"
+                        data-cy="mc-modal-custom-choice-2"
                         value={customMultiChoice2}
                         onChange={({ target }) => setCustomMultiChoice2(target.value)}
                       />
@@ -290,17 +309,18 @@ const MultipleChoiceModal = ({
                           containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                         } interactable`}
                         type="text"
+                        data-cy="mc-modal-custom-choice-3"
                         value={customMultiChoice3}
                         onChange={({ target }) => setCustomMultiChoice3(target.value)}
                       />
-                    </Form.Group>
+                    </Box>
                   ) : (
-                    <Form.Group>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                       <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                        <Form.Input
+                        <AppRadio
                           className="interactable"
-                          style={{ marginTop: '0.9em', marginLeft: '0.5em', marginRight: '0.75em' }}
-                          type="radio"
+                          slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-custom' } }}
+                          sx={radioSx}
                           onChange={() => setChosenSet('custom')}
                           checked={chosenSet === 'custom'}
                         />
@@ -319,6 +339,7 @@ const MultipleChoiceModal = ({
                               containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                             } interactable`}
                             type="text"
+                            data-cy="mc-modal-custom-choice-1"
                             value={customMultiChoice1}
                             onChange={({ target }) => setCustomMultiChoice1(target.value)}
                           />
@@ -327,6 +348,7 @@ const MultipleChoiceModal = ({
                               containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                             } interactable`}
                             type="text"
+                            data-cy="mc-modal-custom-choice-2"
                             value={customMultiChoice2}
                             onChange={({ target }) => setCustomMultiChoice2(target.value)}
                           />
@@ -335,15 +357,19 @@ const MultipleChoiceModal = ({
                               containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
                             } interactable`}
                             type="text"
+                            data-cy="mc-modal-custom-choice-3"
                             value={customMultiChoice3}
                             onChange={({ target }) => setCustomMultiChoice3(target.value)}
                           />
                         </div>
                       </div>
-                    </Form.Group>
+                    </Box>
                   )}
                   {showValidationMessage && (
-                    <div style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}>
+                    <div
+                      style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}
+                      data-cy="mc-modal-validation-message"
+                    >
                       <FormattedMessage id="multiple-choice-validation" />
                     </div>
                   )}
@@ -357,11 +383,12 @@ const MultipleChoiceModal = ({
                     className="interactable"
                     style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
                     type="submit"
+                    data-cy="mc-modal-submit"
                   >
                     Submit
                   </AppButton>
                 </div>
-              </Form>
+              </form>
             </div>
           </div>
         </div>

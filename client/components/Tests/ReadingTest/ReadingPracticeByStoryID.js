@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Segment, Button as SemanticButton, Popup } from 'semantic-ui-react'
+import Paper from '@mui/material/Paper'
+import Popover from '@mui/material/Popover'
 import AppButton from 'Components/AppButton'
 import Switch from '@mui/material/Switch'
 import Spinner from 'Components/Spinner'
@@ -118,30 +119,39 @@ const getQuestionId = question => {
 
 const AnswerLocationSettings = ({ checked, onChange }) => {
   const [open, setOpen] = useState(false)
+  const anchorRef = useRef(null)
 
   return (
-    <Popup
-      open={open}
-      on="click"
-      onOpen={() => setOpen(true)}
-      onClose={() => setOpen(false)}
-      trigger={
-        <span
-          data-cy="rp-settings-popup"
-          style={{ display: 'inline-block', cursor: 'pointer' }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              setOpen(prev => !prev)
-            }
-          }}
-        >
-          <SettingsIcon className="settings-icon" />
-        </span>
-      }
-      content={
+    <>
+      <span
+        ref={anchorRef}
+        data-cy="rp-settings-popup"
+        style={{ display: 'inline-block', cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        onClick={() => setOpen(prev => !prev)}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setOpen(prev => !prev)
+          }
+        }}
+      >
+        <SettingsIcon className="settings-icon" />
+      </span>
+      <Popover
+        open={open}
+        anchorEl={anchorRef.current}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        disableScrollLock
+        slotProps={{
+          paper: {
+            sx: { borderRadius: '10px', padding: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.15)' },
+          },
+        }}
+      >
         <div
           style={{
             padding: '0.4em 0.6em',
@@ -162,16 +172,11 @@ const AnswerLocationSettings = ({ checked, onChange }) => {
             size="small"
             checked={checked}
             onChange={e => onChange(e.target.checked)}
-            inputProps={{ 'data-cy': 'rp-show-answer-button-toggle' }}
+            slotProps={{ input: { 'data-cy': 'rp-show-answer-button-toggle' } }}
           />
         </div>
-      }
-      position="bottom right"
-      basic
-      flowing
-      hideOnScroll
-      style={{ borderRadius: 10, padding: 8, boxShadow: '0 4px 15px rgba(0,0,0,0.15)' }}
-    />
+      </Popover>
+    </>
   )
 }
 
@@ -399,7 +404,8 @@ const ReadingPracticeView = () => {
         flexWrap: 'wrap',
       }}
     >
-      <Segment
+      <Paper
+        sx={{ padding: '1em' }}
         style={{
           ...getTextStyle(learningLanguage),
           flex: '3 1 440px',
@@ -412,7 +418,7 @@ const ReadingPracticeView = () => {
           highlightedSentenceIds={highlightedSentenceIds}
           onWordClick={handleWordTranslate}
         />
-      </Segment>
+      </Paper>
       <section
         style={{
           flex: '2 1 300px',
@@ -422,19 +428,19 @@ const ReadingPracticeView = () => {
         }}
       >
         <div style={{ position: 'sticky', top: 16 }}>
-          <Segment style={{ borderRadius: 14, margin: 0 }}>
+          <Paper sx={{ padding: '1em' }} style={{ borderRadius: 14, margin: 0 }}>
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               {readingQuestionsPending && total === 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: 20 }}>
                   <Spinner inline size={40} />
                 </div>
               ) : total === 0 ? (
-                <div style={{ opacity: 0.85 }}>
+                <div data-cy="rp-no-questions" style={{ opacity: 0.85 }}>
                   <FormattedMessage id="no-questions" />
                 </div>
               ) : (
                 <>
-                  <div style={{ fontSize: 18, marginBottom: 12 }}>
+                  <div data-cy="rp-question-text" style={{ fontSize: 18, marginBottom: 12 }}>
                     {idx + 1}/{total} {current?.question}
                   </div>
 
@@ -461,10 +467,10 @@ const ReadingPracticeView = () => {
                       }
 
                       return (
-                        <SemanticButton
+                        <AppButton
                           key={i}
                           data-cy={`rp-choice-btn-${i}`}
-                          fluid
+                          block
                           onClick={() => handleChoiceClick(c)}
                           style={{
                             textAlign: 'left',
@@ -480,7 +486,7 @@ const ReadingPracticeView = () => {
                           }}
                         >
                           {c}
-                        </SemanticButton>
+                        </AppButton>
                       )
                     })}
                   </div>
@@ -542,7 +548,7 @@ const ReadingPracticeView = () => {
                 </>
               )}
             </div>
-          </Segment>
+          </Paper>
         </div>
       </section>
 

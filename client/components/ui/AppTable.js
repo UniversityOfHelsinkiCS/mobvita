@@ -5,10 +5,17 @@ import { styled } from '@mui/material/styles'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 
 /**
- * AppTable — design-system data table (MUI `Table`, not react-bootstrap's). Replaces the bootstrap
- * `<Table striped bordered hover responsive size="sm">` call sites, so the flags mirror those:
+ * AppTable — design-system data table (MUI `Table`, not react-bootstrap's).
  *
- *   striped  - alternate rows get the cream stripe
+ * BY DEFAULT the table is filled: a sage-green header row (`colors.green`) over cream body rows
+ * (`colors.card`), with the outer corners rounded. Pass `plain` for the old unfilled look —
+ * transparent rows separated only by a hairline — when the table sits on a surface that already
+ * supplies its own colour.
+ *
+ * Flags mirror the bootstrap `<Table striped bordered hover responsive size="sm">` this replaced:
+ *
+ *   plain    - opt out of the filled header/body colours
+ *   striped  - alternate body rows get a slightly deeper cream
  *   bordered - every cell gets a green hairline (otherwise only the row separator)
  *   hover    - rows highlight on hover (pair with a row `onClick`)
  *
@@ -25,8 +32,9 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *
  * Compose with MUI's `TableHead` / `TableBody` / `TableRow` / `TableCell` as children.
  */
-// Derived — no table stripe in designTokens; a cream one notch off the card colour.
-const STRIPE = '#F4F2E7'
+// Derived — no table stripe in designTokens; one notch deeper than the cream card colour.
+const STRIPE = '#F1EEDA'
+const RADIUS = 12
 
 const SIZE_WIDTHS = { full: '100%', auto: 'auto' }
 const DENSITIES = { compact: 'small', standard: 'medium' }
@@ -37,10 +45,12 @@ const resolveWidth = size =>
 
 const StyledTable = styled(Table, {
   shouldForwardProp: prop =>
-    !['striped', 'bordered', 'hoverable', 'tableWidth'].includes(prop),
-})(({ striped, bordered, hoverable, tableWidth }) => ({
+    !['filled', 'striped', 'bordered', 'hoverable', 'tableWidth'].includes(prop),
+})(({ filled, striped, bordered, hoverable, tableWidth }) => ({
   fontFamily: font.family,
   width: tableWidth,
+  borderCollapse: 'separate',
+  borderSpacing: 0,
   '& .MuiTableCell-root': {
     fontFamily: font.family,
     color: colors.ink,
@@ -48,6 +58,25 @@ const StyledTable = styled(Table, {
     ...(bordered && { border: `1px solid ${colors.border}` }),
   },
   '& .MuiTableCell-head': { fontWeight: 600 },
+  // Fills go on the ROW so `striped` and `hover` (declared after) can override the body colour;
+  // MUI's cells are transparent by default, so the row colour shows through.
+  ...(filled && {
+    '& .MuiTableHead-root .MuiTableRow-root': { backgroundColor: colors.green },
+    '& .MuiTableBody-root .MuiTableRow-root': { backgroundColor: colors.card },
+    // Round the outer corners by rounding the corner cells — the table itself can't be clipped
+    // without also clipping a horizontally scrolling body.
+    '& .MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:first-of-type': {
+      borderTopLeftRadius: RADIUS,
+    },
+    '& .MuiTableHead-root .MuiTableRow-root .MuiTableCell-root:last-of-type': {
+      borderTopRightRadius: RADIUS,
+    },
+    '& .MuiTableBody-root .MuiTableRow-root:last-of-type .MuiTableCell-root': {
+      borderBottom: 'none',
+      '&:first-of-type': { borderBottomLeftRadius: RADIUS },
+      '&:last-of-type': { borderBottomRightRadius: RADIUS },
+    },
+  }),
   ...(striped && {
     '& .MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)': { backgroundColor: STRIPE },
   }),
@@ -57,6 +86,7 @@ const StyledTable = styled(Table, {
 }))
 
 const AppTable = ({
+  plain = false,
   size = 'full',
   density = 'compact',
   striped = false,
@@ -68,6 +98,7 @@ const AppTable = ({
 }) => (
   <TableContainer {...containerProps}>
     <StyledTable
+      filled={!plain}
       striped={striped}
       bordered={bordered}
       hoverable={hover}

@@ -144,6 +144,7 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     >
       <Dropdown
         key={word.ID}
+        data-cy={!answersPending && 'exercise-multiple-choice' || 'exercise-multiple-choice-pending'}
         disabled={tested && !isWrong || answersPending}
         options={options}
         placeholder={placeholder}

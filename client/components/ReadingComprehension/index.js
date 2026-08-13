@@ -1,20 +1,19 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import {
-  Button,
-  Divider,
-  Header,
-  Segment,
-  Select,
-  Popup,
-  Icon,
-  Input,
-  Tab,
-  Modal,
-} from 'semantic-ui-react'
+import { Box, Divider, Paper } from '@mui/material'
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
+import EditIcon from '@mui/icons-material/Edit'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTabs from 'Components/ui/AppTabs'
+import AppTextField from 'Components/ui/AppTextField'
+import CustomTooltip from 'Components/CustomTooltip'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
 import {
@@ -506,6 +505,9 @@ const ReadingComprehensionView = ({ match }) => {
 
   const labelTextStyle = { minWidth: 46 }
 
+  // Square, compact footprint for the icon-only buttons (the old `<Button icon size="mini"/>`).
+  const iconButtonSx = { minWidth: 0, padding: '6px 10px' }
+
   const handleEditKeyDown = e => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -540,11 +542,11 @@ const ReadingComprehensionView = ({ match }) => {
           >
             <div style={{ flex: 1, minWidth: 0 }}>
               {isEditing ? (
-                <Input
+                <AppTextField
                   data-cy={`rc-choice-input-${list}-${qIdx}-${cIdx}`}
                   value={editValue}
-                  onChange={(_e, data) => setEditValue(data.value)}
-                  fluid
+                  onChange={e => setEditValue(e.target.value)}
+                  fullWidth
                   size="small"
                   onKeyDown={handleEditKeyDown}
                   onClick={stopPropagation}
@@ -569,9 +571,9 @@ const ReadingComprehensionView = ({ match }) => {
             >
               {isEditing ? (
                 <>
-                  <Button
-                    icon
-                    size="mini"
+                  <AppButton
+                    size="sm"
+                    sx={iconButtonSx}
                     data-cy={`rc-choice-save-${list}-${qIdx}-${cIdx}`}
                     disabled={regenLoading || (editValue || '').trim().length === 0}
                     onClick={e => {
@@ -579,11 +581,11 @@ const ReadingComprehensionView = ({ match }) => {
                       commitEditChoice()
                     }}
                   >
-                    <Icon name="check" />
-                  </Button>
-                  <Button
-                    icon
-                    size="mini"
+                    <CheckIcon fontSize="small" />
+                  </AppButton>
+                  <AppButton
+                    size="sm"
+                    sx={iconButtonSx}
                     data-cy={`rc-choice-cancel-${list}-${qIdx}-${cIdx}`}
                     disabled={regenLoading}
                     onClick={e => {
@@ -591,13 +593,13 @@ const ReadingComprehensionView = ({ match }) => {
                       cancelEditChoice()
                     }}
                   >
-                    <Icon name="close" />
-                  </Button>
+                    <CloseIcon fontSize="small" />
+                  </AppButton>
                 </>
               ) : (
-                <Button
-                  icon
-                  size="mini"
+                <AppButton
+                  size="sm"
+                  sx={iconButtonSx}
                   data-cy={`rc-choice-edit-${list}-${qIdx}-${cIdx}`}
                   disabled={regenLoading}
                   onClick={e => {
@@ -606,8 +608,8 @@ const ReadingComprehensionView = ({ match }) => {
                   }}
                   onMouseDown={stopAll}
                 >
-                  <Icon name="pencil" />
-                </Button>
+                  <EditIcon fontSize="small" />
+                </AppButton>
               )}
             </div>
           </li>
@@ -624,8 +626,7 @@ const ReadingComprehensionView = ({ match }) => {
         'data-cy': 'rc-tab-generate-questions',
       },
       render: () => (
-        <Tab.Pane
-          attached={false}
+        <div
           style={{
             padding: 0,
             margin: 0,
@@ -638,26 +639,30 @@ const ReadingComprehensionView = ({ match }) => {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
               <div style={fieldStyle}>
                 <span style={labelTextStyle}>{intl.formatMessage({ id: 'level' })}:</span>
-                <Select
-                  data-cy="rc-level-select"
-                  value={level}
-                  options={skillLevels.map(cefr => ({ key: cefr, text: cefr, value: cefr }))}
-                  onChange={(_e, option) => setLevel(option.value)}
-                  style={{ width: 100 }}
-                  disabled={disableSaveButton}
-                />
+                <span data-cy="rc-level-select" style={{ display: 'inline-flex' }}>
+                  <AppSelect
+                    variant="contrast-outline"
+                    value={level}
+                    options={skillLevels.map(cefr => ({ value: cefr, label: cefr }))}
+                    onChange={setLevel}
+                    minWidth={100}
+                    disabled={disableSaveButton}
+                  />
+                </span>
               </div>
 
               <div style={fieldStyle}>
                 <span style={labelTextStyle}>{intl.formatMessage({ id: 'size' })}:</span>
-                <Select
-                  data-cy="rc-size-select"
-                  value={size}
-                  options={[1, 2, 3, 4, 5].map(s => ({ key: s, text: s, value: s }))}
-                  onChange={(_e, option) => setSize(option.value)}
-                  style={{ width: 100 }}
-                  disabled={disableSaveButton}
-                />
+                <span data-cy="rc-size-select" style={{ display: 'inline-flex' }}>
+                  <AppSelect
+                    variant="contrast-outline"
+                    value={size}
+                    options={[1, 2, 3, 4, 5].map(s => ({ value: s, label: s }))}
+                    onChange={setSize}
+                    minWidth={100}
+                    disabled={disableSaveButton}
+                  />
+                </span>
               </div>
             </div>
 
@@ -671,39 +676,38 @@ const ReadingComprehensionView = ({ match }) => {
               }}
             >
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                <Button
-                  primary
+                <AppButton
+                  variant="primary"
                   data-cy="rc-generate-btn"
                   onClick={handleGenerate}
                   disabled={disableSaveButton}
                 >
                   {intl.formatMessage({ id: 'generate' })}
-                </Button>
+                </AppButton>
 
-                <Popup
-                  content={saveTooltip}
-                  disabled={!disableSaveButton}
-                  position="top center"
-                  trigger={
-                    <div style={{ display: 'inline-block' }}>
-                      <Button
-                        primary
-                        data-cy="rc-add-questions-to-story-btn"
-                        onClick={saveAllDraftToStory}
-                        disabled={disableSaveButton || draftQuestions.length === 0}
-                      >
-                        {intl.formatMessage({ id: 'add-questions-to-story' })}
-                        {draftQuestions.length > 0 ? ` (${draftQuestions.length})` : ''}
-                      </Button>
-                    </div>
-                  }
-                />
+                <CustomTooltip permanent title={saveTooltip} placement="top">
+                  <div style={{ display: 'inline-block' }}>
+                    <AppButton
+                      variant="primary"
+                      data-cy="rc-add-questions-to-story-btn"
+                      onClick={saveAllDraftToStory}
+                      disabled={disableSaveButton || draftQuestions.length === 0}
+                    >
+                      {intl.formatMessage({ id: 'add-questions-to-story' })}
+                      {draftQuestions.length > 0 ? ` (${draftQuestions.length})` : ''}
+                    </AppButton>
+                  </div>
+                </CustomTooltip>
 
                 {saved ? (
-                  <span style={{ color: 'green' }}>{intl.formatMessage({ id: 'saved' })}</span>
+                  <span data-cy="rc-saved-message" style={{ color: 'green' }}>
+                    {intl.formatMessage({ id: 'saved' })}
+                  </span>
                 ) : null}
                 {error ? (
-                  <span style={{ color: 'crimson' }}>{intl.formatMessage({ id: 'error' })}</span>
+                  <span data-cy="rc-error-message" style={{ color: 'crimson' }}>
+                    {intl.formatMessage({ id: 'error' })}
+                  </span>
                 ) : null}
               </div>
             </div>
@@ -726,10 +730,10 @@ const ReadingComprehensionView = ({ match }) => {
                   cefr={q.level}
                   actions={
                     <>
-                      <Button
-                        icon
-                        basic
-                        size="mini"
+                      <AppButton
+                        variant="contrast-outline"
+                        size="sm"
+                        sx={iconButtonSx}
                         data-cy={`rc-regenerate-question-btn-${qIdx}`}
                         disabled={disableThisQuestionActions}
                         onClick={e => {
@@ -741,13 +745,13 @@ const ReadingComprehensionView = ({ match }) => {
                         {regenLoading ? (
                           <Spinner inline size={24} variant="secondary" />
                         ) : (
-                          <Icon name="refresh" />
+                          <RefreshIcon fontSize="small" />
                         )}
-                      </Button>
-                      <Button
-                        icon
-                        basic
-                        size="mini"
+                      </AppButton>
+                      <AppButton
+                        variant="contrast-outline"
+                        size="sm"
+                        sx={iconButtonSx}
                         data-cy={`rc-delete-draft-question-btn-${qIdx}`}
                         style={{ padding: '9px' }}
                         disabled={disableThisQuestionActions}
@@ -757,8 +761,8 @@ const ReadingComprehensionView = ({ match }) => {
                         }}
                         onMouseDown={stopAll}
                       >
-                        <Icon name="trash" />
-                      </Button>
+                        <DeleteIcon fontSize="small" />
+                      </AppButton>
                     </>
                   }
                 >
@@ -767,7 +771,7 @@ const ReadingComprehensionView = ({ match }) => {
               )
             })
           )}
-        </Tab.Pane>
+        </div>
       ),
     },
     {
@@ -777,8 +781,7 @@ const ReadingComprehensionView = ({ match }) => {
         'data-cy': 'rc-tab-edit-saved-questions',
       },
       render: () => (
-        <Tab.Pane
-          attached={false}
+        <div
           style={{
             padding: 0,
             margin: 0,
@@ -788,7 +791,9 @@ const ReadingComprehensionView = ({ match }) => {
           }}
         >
           {storyQuestions.length === 0 ? (
-            <div style={{ opacity: 0.7 }}>{intl.formatMessage({ id: 'no-saved-questions' })}</div>
+            <div data-cy="rc-no-saved-questions" style={{ opacity: 0.7 }}>
+              {intl.formatMessage({ id: 'no-saved-questions' })}
+            </div>
           ) : (
             storyQuestions.map((q, qIdx) => (
               <ReadingComprehensionQuestion
@@ -802,10 +807,10 @@ const ReadingComprehensionView = ({ match }) => {
                 }
                 cefr={q.level}
                 actions={
-                  <Button
-                    icon
-                    basic
-                    size="mini"
+                  <AppButton
+                    variant="contrast-outline"
+                    size="sm"
+                    sx={iconButtonSx}
                     data-cy={`rc-delete-saved-question-btn-${qIdx}`}
                     style={{ padding: '9px' }}
                     disabled={deletePending}
@@ -815,34 +820,50 @@ const ReadingComprehensionView = ({ match }) => {
                     }}
                     onMouseDown={stopAll}
                   >
-                    <Icon name="trash" />
-                  </Button>
+                    <DeleteIcon fontSize="small" />
+                  </AppButton>
                 }
               >
                 {renderChoices('story', q, qIdx, false)}
               </ReadingComprehensionQuestion>
             ))
           )}
-        </Tab.Pane>
+        </div>
       ),
     },
   ]
 
+  const tabs = panes.map((pane, index) => ({
+    value: index,
+    // The tab's `data-cy` used to live on the semantic menu item; AppTabs has no per-tab attribute
+    // slot, so it rides on the label node inside the segment button (clicks still bubble to it).
+    label: <span data-cy={pane.menuItem['data-cy']}>{pane.menuItem.content}</span>,
+  }))
+
   return (
     <>
-      <Modal
+      <AppDialog
         open={confirmDelete.open}
-        onClose={() => setConfirmDelete({ open: false, idx: null, type: null })}
-        size="mini"
+        onClose={(_e, reason) => {
+          // Preserves the old `closeOnDimmerClick={false}`; Escape still closes (MUI default).
+          if (reason === 'backdropClick') return
+          setConfirmDelete({ open: false, idx: null, type: null })
+        }}
+        maxWidth="xs"
         className="custom-confirm-modal"
-        closeOnDimmerClick={false}
-        closeOnEscape={true}
+        data-cy="rc-delete-modal"
       >
-        <Modal.Content style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
           {intl.formatMessage({ id: 'confirm-delete-question' })}
-        </Modal.Content>
-        <Modal.Actions
-          style={{ display: 'flex', justifyContent: 'center', gap: 16, background: 'transparent' }}
+        </div>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '16px',
+            background: 'transparent',
+            mt: '1.5em',
+          }}
         >
           <AppButton
             type="button"
@@ -868,8 +889,8 @@ const ReadingComprehensionView = ({ match }) => {
           >
             {intl.formatMessage({ id: 'Delete' })}
           </AppButton>
-        </Modal.Actions>
-      </Modal>
+        </Box>
+      </AppDialog>
       {mcPending ? (
         <div className="rc-loading-overlay">
           <Spinner
@@ -893,27 +914,31 @@ const ReadingComprehensionView = ({ match }) => {
           flexWrap: 'wrap',
         }}
       >
-        <Segment
+        <Paper
           className="reading-comp__story"
+          sx={{ padding: '1em' }}
           style={{
             ...getTextStyle(learningLanguage),
             flex: '3 1 600px',
             minWidth: 320,
           }}
         >
-          <Header className="reading-comp__title" style={getTextStyle(learningLanguage, 'title')}>
+          <div
+            className="reading-comp__title header-2"
+            style={getTextStyle(learningLanguage, 'title')}
+          >
             <span className="story-title">
               <span className="pr-sm">{story.title}</span>
             </span>
-          </Header>
+          </div>
 
-          <Divider />
+          <Divider sx={{ my: '1em' }} />
 
           <HighlightedStoryText
             paragraphs={storyParagraphs}
             highlightedSentenceIds={highlightedSentenceIds}
           />
-        </Segment>
+        </Paper>
 
         <section
           className="reading-comp__questions"
@@ -923,18 +948,20 @@ const ReadingComprehensionView = ({ match }) => {
             width: '100%',
           }}
         >
-          <Segment style={{ borderRadius: 12 }}>
-            <Tab
-              menu={{ className: 'rc-tabs' }}
-              panes={panes}
-              activeIndex={activeTabIndex}
-              onTabChange={(_e, data) => {
-                setActiveTabIndex(data.activeIndex)
-                setSelectedStoryQuestionIdx(null)
-                dispatch(clearMcSavedAction())
-              }}
-            />
-          </Segment>
+          <Paper sx={{ padding: '1em' }} style={{ borderRadius: 12 }}>
+            <div className="rc-tabs" style={{ marginBottom: 12 }}>
+              <AppTabs
+                tabs={tabs}
+                value={activeTabIndex}
+                onChange={index => {
+                  setActiveTabIndex(index)
+                  setSelectedStoryQuestionIdx(null)
+                  dispatch(clearMcSavedAction())
+                }}
+              />
+            </div>
+            {panes[activeTabIndex]?.render()}
+          </Paper>
         </section>
       </main>
     </>

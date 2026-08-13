@@ -1,9 +1,11 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Dropdown, Input } from 'semantic-ui-react'
+import { Box, MenuItem, Select } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl';
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTextField from 'Components/ui/AppTextField'
 import { importStoriesFromGroup } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 
@@ -33,29 +35,60 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   }
 
   return (
-    <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open}>
-      <Modal.Header>
-        <FormattedMessage id="import-story" /> : {group.groupName}
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column', height: '260px' }}>
+    <AppDialog
+      onClose={() => setOpen(false)}
+      open={open}
+      data-cy="import-story-modal"
+      title={
+        <>
+          <FormattedMessage id="import-story" /> : {group.groupName}
+        </>
+      }
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '260px' }}>
         <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
           <FormattedMessage id="import-story-label" />
         </h2>
         <FormattedHTMLMessage id="import-story-description" />
-        <Dropdown 
-          placeholder={intl.formatMessage({id: 'import-from'})} 
-          fluid multiple selection 
-          options={options}
-          onChange={(e, { value }) => setSelectedGroups(value)}
+        <Select
+          multiple
+          fullWidth
+          displayEmpty
+          defaultValue={[]}
+          renderValue={selected =>
+            selected.length === 0
+              ? intl.formatMessage({ id: 'import-from' })
+              : options
+                  .filter(option => selected.includes(option.value))
+                  .map(option => option.text)
+                  .join(', ')
+          }
+          onChange={e => setSelectedGroups(e.target.value)}
+          SelectDisplayProps={{ 'data-cy': 'import-story-group-select' }}
           style={{ marginTop: '1em' }}
-        />
-        <span style={{marginTop: '1em'}}>
+        >
+          {options.map(option => (
+            <MenuItem key={option.key} value={option.value}>
+              {option.text}
+            </MenuItem>
+          ))}
+        </Select>
+        <span style={{marginTop: '1em', display: 'flex', alignItems: 'center'}}>
             <label style={{marginRight: '2em', fontWeight: 'bold'}}><FormattedMessage id="import-story-message" /></label>
-            <Input type="text" onChange={(e)=> setMessage(e.target.value)} />
+            <AppTextField
+              type="text"
+              fullWidth={false}
+              inputProps={{ 'data-cy': 'import-story-message-input' }}
+              onChange={(e)=> setMessage(e.target.value)}
+            />
         </span>
-      </Modal.Content>
-      <Modal.Actions>
-        <AppButton onClick={submitGroupImport} disabled={selectedGroups.length === 0}>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75em' }}>
+        <AppButton
+          onClick={submitGroupImport}
+          disabled={selectedGroups.length === 0}
+          data-cy="import-story-confirm-button"
+        >
             <FormattedMessage id="import" />
         </AppButton>
         <AppButton
@@ -64,11 +97,12 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
             setOpen(false)
           }}
           variant="secondary"
+          data-cy="import-story-cancel-button"
         >
           <FormattedMessage id="cancel" />
         </AppButton>
-      </Modal.Actions>
-    </Modal>
+      </Box>
+    </AppDialog>
   )
 }
 

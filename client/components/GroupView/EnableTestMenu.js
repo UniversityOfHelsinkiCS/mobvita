@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown } from 'semantic-ui-react'
 import AppButton from 'Components/AppButton'
+import AppSelect from 'Components/ui/AppSelect'
 
 const EnableTestMenu = ({
   setGroupTestDeadline,
@@ -13,27 +13,26 @@ const EnableTestMenu = ({
   const dispatch = useDispatch()
   const intl = useIntl()
   const [chosenTestDuration, setChosenTestDuration] = useState(Date.now() + 7200000)
+  // AppSelect is controlled (semantic's Dropdown kept its own selection state internally), so the
+  // picked option is mirrored here purely so the trigger shows the chosen label.
+  const [selectedDurationOption, setSelectedDurationOption] = useState(null)
 
   const testTimeOptions = [
     {
-      key: '2-hours',
-      text: intl.formatMessage({ id: '2-hours' }),
       value: 7200000,
+      label: intl.formatMessage({ id: '2-hours' }),
     },
     {
-      key: '3-hours',
-      text: intl.formatMessage({ id: '3-hours' }),
       value: 10800000,
+      label: intl.formatMessage({ id: '3-hours' }),
     },
     {
-      key: '4-hours',
-      text: intl.formatMessage({ id: '4-hours' }),
       value: 14400000,
+      label: intl.formatMessage({ id: '4-hours' }),
     },
     {
-      key: '24-hours',
-      text: intl.formatMessage({ id: '24-hours' }),
       value: 86400000,
+      label: intl.formatMessage({ id: '24-hours' }),
     },
   ]
 
@@ -47,7 +46,8 @@ const EnableTestMenu = ({
     setShowTestEnableMenuGroupId(null)
   }
 
-  const handleTestDurationChange = (e, { value }) => {
+  const handleTestDurationChange = value => {
+    setSelectedDurationOption(value)
     setChosenTestDuration(Date.now() + value)
   }
 
@@ -67,13 +67,16 @@ const EnableTestMenu = ({
           <b>
             <FormattedMessage id="enable-test-for" />
           </b>{' '}
-          <Dropdown
-            onChange={handleTestDurationChange}
-            placeholder={intl.formatMessage({ id: '2-hours' })}
-            selection
-            style={{ minWidth: '120px' }}
-            options={testTimeOptions}
-          />
+          <span style={{ display: 'inline-flex', verticalAlign: 'middle' }}>
+            <AppSelect
+              value={selectedDurationOption}
+              onChange={handleTestDurationChange}
+              placeholder={intl.formatMessage({ id: '2-hours' })}
+              variant="contrast-outline"
+              minWidth={120}
+              options={testTimeOptions}
+            />
+          </span>
           <AppButton
             data-cy="enable-test-ok-button"
             type="button"
@@ -90,7 +93,12 @@ const EnableTestMenu = ({
               alignItems: 'center',
             }}
           >
-            <AppButton onClick={handleTestButtonCancel} variant="danger" style={{ margin: '0.2em' }}>
+            <AppButton
+              onClick={handleTestButtonCancel}
+              variant="danger"
+              data-cy="enable-test-cancel-button"
+              style={{ margin: '0.2em' }}
+            >
               <FormattedMessage id="Cancel" />
             </AppButton>
           </div>

@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Table, Icon, TableRow, Popup } from 'semantic-ui-react'
+import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import AppButton from 'Components/AppButton'
+import AppTable from 'Components/ui/AppTable'
+import CustomTooltip from 'Components/CustomTooltip'
 import moment from 'moment'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { skillLevels } from 'Utilities/common'
 import Concept from './Concept'
+
+// MUI's TableCell hard-codes `text-align: left`, so semantic's row-level `textAlign="center"` has to
+// be re-applied to the cells from the row.
+const CENTERED_ROW = { '& .MuiTableCell-root': { textAlign: 'center' } }
+// Pale green highlight standing in for semantic's `positive` cell.
+const POSITIVE_CELL_BG = '#E9F1EC'
 
 const sumPropertyValues = (items, property) => {
   return items.reduce((a, b) => {
@@ -68,16 +79,16 @@ const TotalRow = ({ history, testView, rootConcepts }) => {
   const firstConceptKey = Object.keys(rootConceptResults[0])[0] ?? 'placeholder'
 
   return (
-    <TableRow textAlign="center">
-      <Table.Cell key="total" positive>
+    <TableRow sx={CENTERED_ROW}>
+      <TableCell key="total" sx={{ backgroundColor: POSITIVE_CELL_BG }}>
         <span className="bold">
           <FormattedMessage id="total" />
         </span>
-      </Table.Cell>
+      </TableCell>
       {rootConceptResults?.map((oneDayCounts, index) => (
-        <Table.Cell
+        <TableCell
           key={`${oneDayCounts[firstConceptKey]?.date}-${oneDayCounts[firstConceptKey]?.id}`}
-          positive
+          sx={{ backgroundColor: POSITIVE_CELL_BG }}
         >
           <TotalRowText
             testView={testView}
@@ -86,7 +97,7 @@ const TotalRow = ({ history, testView, rootConcepts }) => {
             rawOneDayStatistics={history[index]}
             oneDayCounts={oneDayCounts}
           />
-        </Table.Cell>
+        </TableCell>
       ))}
     </TableRow>
   )
@@ -94,14 +105,14 @@ const TotalRow = ({ history, testView, rootConcepts }) => {
 
 const TestTypeRow = ({ history }) => {
   return (
-    <TableRow textAlign="center">
-      <Table.Cell key="total">
+    <TableRow sx={CENTERED_ROW}>
+      <TableCell key="total">
         <span className="bold">
           <FormattedMessage className="bold" id="test-type" />
         </span>
-      </Table.Cell>
+      </TableCell>
       {history.map(resultsObj => (
-        <Table.Cell
+        <TableCell
           key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
             resultsObj.date
           }`}
@@ -118,7 +129,7 @@ const TestTypeRow = ({ history }) => {
               'N/A'
             )}
           </div>
-        </Table.Cell>
+        </TableCell>
       ))}
     </TableRow>
   )
@@ -131,27 +142,26 @@ const StoryNameRow = ({ history }) => {
     return `${name.slice(0, STORY_NAME_MAX_LEN)}...`
   }
   return (
-    <TableRow textAlign="center">
-      <Table.Cell key="total">
+    <TableRow sx={CENTERED_ROW}>
+      <TableCell key="total">
         <span className="bold">
           <FormattedMessage id="story-title" />
         </span>
-      </Table.Cell>
+      </TableCell>
       {history.map(resultsObj => (
-        <Table.Cell
+        <TableCell
           key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
             resultsObj.session_id ?? resultsObj.date
           }`}
         >
           {resultsObj?.story_name?.length > STORY_NAME_MAX_LEN ? (
-            <Popup
-              content={resultsObj.story_name}
-              trigger={<span>{truncateStoryName(resultsObj.story_name)}</span>}
-            />
+            <CustomTooltip title={resultsObj.story_name} permanent>
+              <span>{truncateStoryName(resultsObj.story_name)}</span>
+            </CustomTooltip>
           ) : (
             <div>{resultsObj?.story_name ?? '-'}</div>
           )}
-        </Table.Cell>
+        </TableCell>
       ))}
     </TableRow>
   )
@@ -166,20 +176,20 @@ const convertToCefr = value => {
 
 const CefrLevelRow = ({ history }) => {
   return (
-    <TableRow textAlign="center">
-      <Table.Cell key="total">
+    <TableRow sx={CENTERED_ROW}>
+      <TableCell key="total">
         <b>
           <FormattedMessage id="cefr-level" />
         </b>
-      </Table.Cell>
+      </TableCell>
       {history.map(resultsObj => (
-        <Table.Cell
+        <TableCell
           key={`${resultsObj.type}-${resultsObj.test_session ?? resultsObj.story_id}-${
             resultsObj.date
           }`}
         >
           {convertToCefr(resultsObj?.cefr_level)}
-        </Table.Cell>
+        </TableCell>
       ))}
     </TableRow>
   )
@@ -335,7 +345,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
 
   if (!history || history.length < 1) {
     return (
-      <div className="group-analytics-no-results">
+      <div className="group-analytics-no-results" data-cy="history-no-results">
         <FormattedMessage id="no-results-for-chosen-time-period" />
       </div>
     )
@@ -344,14 +354,22 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
       {maxPage > 1 && (
         <div className="justify-center align-center">
-          <AppButton variant="secondary" onClick={() => switchPage(-1)}>
-            <Icon name="angle left" />
+          <AppButton
+            variant="secondary"
+            onClick={() => switchPage(-1)}
+            data-cy="history-previous-page-button"
+          >
+            <KeyboardArrowLeftIcon />
           </AppButton>
           <span style={{ marginLeft: '1em', marginRight: '1em' }}>
             {page + 1} / {maxPage}
           </span>
-          <AppButton variant="secondary" onClick={() => switchPage(1)}>
-            <Icon name="angle right" />
+          <AppButton
+            variant="secondary"
+            onClick={() => switchPage(1)}
+            data-cy="history-next-page-button"
+          >
+            <KeyboardArrowRightIcon />
           </AppButton>
         </div>
       )}
@@ -382,29 +400,30 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           />
         </>
       )} */}
-      <Table celled fixed unstackable>
-        <Table.Header>
-          <Table.Row textAlign="center">
-            <Table.HeaderCell style={{ width: '250px' }}>
+      <AppTable bordered sx={{ tableLayout: 'fixed' }}>
+        <TableHead>
+          <TableRow sx={CENTERED_ROW}>
+            <TableCell style={{ width: '250px' }}>
               <FormattedMessage id="concepts" />
-            </Table.HeaderCell>
+            </TableCell>
             {calculatePage().map(col => (
-              <Table.HeaderCell key={`${col.date}-${Math.floor(Math.random() * 10000)}`}>
+              <TableCell key={`${col.date}-${Math.floor(Math.random() * 10000)}`}>
                 <span className="justify-center align-center">
                   {moment(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (
-                    <Icon
-                      name="close"
+                    <CloseIcon
+                      fontSize="small"
                       onClick={() => handleDelete(col.test_session)}
-                      style={{ marginLeft: '1em' }}
+                      style={{ marginLeft: '1em', cursor: 'pointer' }}
+                      data-cy="history-delete-session-button"
                     />
                   )}
                 </span>
-              </Table.HeaderCell>
+              </TableCell>
             ))}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {buildConceptTree()?.map(concept => (
             <Concept
               key={concept.id}
@@ -429,8 +448,8 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             rootConcepts={rootConcepts}
             testView={testView}
           />
-        </Table.Body>
-      </Table>
+        </TableBody>
+      </AppTable>
     </div>
   )
 }

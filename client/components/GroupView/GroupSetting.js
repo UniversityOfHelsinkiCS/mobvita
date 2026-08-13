@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Dropdown, Checkbox } from 'semantic-ui-react'
+import { Box, FormControlLabel } from '@mui/material'
+import AppSelect from 'Components/ui/AppSelect'
+import AppSwitch from 'Components/ui/AppSwitch'
 import {
   getTestConcepts,
   getGroup,
@@ -83,12 +85,18 @@ const GroupSetting = () => {
       <div style={{ display: 'flex' }}>
         <h2 className="concept-title">
           <FormattedMessage id="group-learning-settings-for" />: &nbsp;&nbsp;&nbsp;&nbsp;
-          <Dropdown
-            inline
-            options={groupOptions}
-            value={id}
-            onChange={(_, { value }) => navigate(`/groups/teacher/${value}/settings`)}
-          />
+          <Box
+            component="span"
+            data-cy="group-setting-group-select"
+            sx={{ display: 'inline-flex', verticalAlign: 'middle' }}
+          >
+            <AppSelect
+              variant="contrast-outline"
+              value={id}
+              options={groupOptions.map(option => ({ value: option.value, label: option.text }))}
+              onChange={value => navigate(`/groups/teacher/${value}/settings`)}
+            />
+          </Box>
         </h2>
         <br />
         <br />
@@ -98,13 +106,23 @@ const GroupSetting = () => {
         <div className="concept-toggles">
           <div style={{ display: 'flex', fontWeight: 'bold' }}>
             <span style={{ marginRight: '0.5em' }}>
-              <input type="radio" onChange={handleTestConceptToggle} checked={!showTestConcepts} />
+              <input
+                type="radio"
+                data-cy="group-setting-exercise-settings-radio"
+                onChange={handleTestConceptToggle}
+                checked={!showTestConcepts}
+              />
             </span>
             <span style={{ marginRight: '0.5em' }}>
               <FormattedHTMLMessage id="show-exercise-settings" />
             </span>
             <span style={{ marginRight: '0.5em' }}>
-              <input type="radio" onChange={handleTestConceptToggle} checked={showTestConcepts} />
+              <input
+                type="radio"
+                data-cy="group-setting-test-settings-radio"
+                onChange={handleTestConceptToggle}
+                checked={showTestConcepts}
+              />
             </span>
             <span style={{ marginRight: '0.5em' }}>
               <FormattedHTMLMessage id="show-test-settings" />
@@ -113,13 +131,18 @@ const GroupSetting = () => {
           {testConceptsPending && (
             <Spinner inline />
           )}
-          <Checkbox
+          <FormControlLabel
             style={{ marginLeft: '6em' }}
-            toggle
+            control={
+              <AppSwitch
+                checked={showLevels}
+                onChange={() => setShowLevels(!showLevels)}
+                slotProps={{ input: { 'data-cy': 'group-setting-show-levels-toggle' } }}
+              />
+            }
             label={intl.formatMessage({ id: 'show-levels' })}
-            checked={showLevels}
-            onChange={() => setShowLevels(!showLevels)}
             className="concept-toggle"
+            sx={{ '& .MuiFormControlLabel-label': { marginLeft: '0.5em' } }}
           />
         </div>
         {showTestConcepts && (

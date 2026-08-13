@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from 'semantic-ui-react';
+import AppDialog from 'Components/ui/AppDialog';
 import AppButton from 'Components/AppButton';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,9 +52,15 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
 
   if (pending) return null;
 
+  // No `onClose` below: semantic had closeIcon={false} plus closeOnDimmerClick / closeOnDocumentClick
+  // / closeOnEscape all false, so the dialog is dismissable only through its own buttons.
   return (
-    <Modal basic open={open} size="tiny" centered={false} dimmer="blurring" closeIcon={false} closeOnDimmerClick={false} closeOnDocumentClick={false} closeOnEscape={false}>
-      <Modal.Content>
+    <AppDialog
+      open={open}
+      maxWidth="xs"
+      data-cy="set-cefr-reminder-modal"
+      sx={{ '& .MuiDialogTitle-root': { padding: 0 } }}
+    >
         <div className="encouragement" style={{ padding: '1.5rem', textAlign: 'center' }}>
           {step === 1 && (
             <>
@@ -64,12 +70,18 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
               <AppButton
                 variant="primary"
                 size="lg"
+                data-cy="set-cefr-role-student-button"
                 onClick={handleStudentClick}
                 style={{ marginRight: '20px' }}
               >
                 <FormattedMessage id="user-role-select-student" />
               </AppButton>
-              <AppButton variant="primary" size="lg" onClick={handleTeacherClick}>
+              <AppButton
+                variant="primary"
+                size="lg"
+                data-cy="set-cefr-role-teacher-button"
+                onClick={handleTeacherClick}
+              >
                 <FormattedMessage id="user-role-select-teacher" />
               </AppButton>
             </>
@@ -86,11 +98,21 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                   gap: '20px',
                   marginTop: '30px' }}
               >
-                <AppButton variant="primary" size="lg" onClick={() => setStep(3)}>
+                <AppButton
+                  variant="primary"
+                  size="lg"
+                  data-cy="set-cefr-manually-button"
+                  onClick={() => setStep(3)}
+                >
                   <FormattedMessage id="set-cefr-manually" />
                 </AppButton>
                 {hasAdaptiveTests && (
-                  <AppButton variant="primary" size="lg" onClick={startAdaptiveTest}>
+                  <AppButton
+                    variant="primary"
+                    size="lg"
+                    data-cy="set-cefr-adaptive-test-button"
+                    onClick={startAdaptiveTest}
+                  >
                     <FormattedMessage id="adaptive-test-button" />
                   </AppButton>
                 )}
@@ -113,13 +135,17 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
                 paddingTop: '1rem' }}
             >
               {step > 1 && (
-                <AppButton variant="secondary" onClick={() => setStep(step - 1)}>
+                <AppButton
+                  variant="secondary"
+                  data-cy="set-cefr-back-button"
+                  onClick={() => setStep(step - 1)}
+                >
                   <FormattedMessage id="Back" />
                 </AppButton>
               )}
               <div style={{ marginLeft: 'auto' }}>
                 {step === 3 && (
-                  <AppButton variant="primary" onClick={submitSettings}>
+                  <AppButton variant="primary" data-cy="set-cefr-save-button" onClick={submitSettings}>
                     <FormattedMessage id="Save" />
                   </AppButton>
                 )}
@@ -127,8 +153,7 @@ const SetCEFRReminder = ({ open, setOpen, newUser }) => {
             </div>
           )}
         </div>
-      </Modal.Content>
-    </Modal>
+    </AppDialog>
   );
 };
 

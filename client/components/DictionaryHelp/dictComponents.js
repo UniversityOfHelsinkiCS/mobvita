@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Icon } from 'semantic-ui-react'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import AppButton from 'Components/AppButton'
 import {
   useLearningLanguage,
   speak,
@@ -31,11 +33,11 @@ export const Speaker = ({ word }) => {
     if (!voice) return null
   
     return (
-      <Icon
-        name="volume up"
+      <VolumeUpIcon
         style={{ marginRight: '1rem' }}
         className="clickable"
         onClick={handleSpeakerClick}
+        data-cy="dictionary-speaker-icon"
       />
     )
   }
@@ -49,8 +51,14 @@ export const DictionaryButton = ({ setShow }) => {
     }
 
   return (
-    <Button className="dictionary-button" icon basic onClick={handleDictionaryButtonClick}>
-      <Icon size="large" name="book" data-cy="dictionary-icon" />
-    </Button>
+    <AppButton
+      variant="contrast-outline"
+      className="dictionary-button"
+      onClick={handleDictionaryButtonClick}
+      data-cy="dictionary-open-button"
+      sx={{ minWidth: 0, padding: '9px 14px', '& > svg': { width: '1.5em', height: '1.5em' } }}
+    >
+      <MenuBookIcon fontSize="large" data-cy="dictionary-icon" />
+    </AppButton>
   )
 }

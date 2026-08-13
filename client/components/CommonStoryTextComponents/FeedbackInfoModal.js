@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Divider, Modal } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
 import { clearExplanation, clearReferences, clearExample } from 'Utilities/redux/practiceReducer'
 import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/common'
@@ -67,7 +68,7 @@ const FeedbackInfoModal = () => {
         <div className="mb-lg" key={title}>
           <div className="bold header-3">
             {capitalize_first_char_only(title)}
-            <Divider style={{ width: '50%' }} />
+            <Divider sx={{ my: '1em', width: '50%' }} />
           </div>
           <ul>
             {explanation[title].map((item, index) => (
@@ -86,8 +87,8 @@ const FeedbackInfoModal = () => {
       </div>
       {Object.keys(example).map(title => (
         <div className="mb-lg" key={title}>
-          <div className="bold header-3">            
-            <Divider style={{ width: '50%' }} />
+          <div className="bold header-3">
+            <Divider sx={{ my: '1em', width: '50%' }} />
           </div>
           <ul>
             {(Array.isArray(example[title]) ? example[title] : [example[title]]).map((item, index) => (
@@ -107,7 +108,7 @@ const FeedbackInfoModal = () => {
       <div className="mb-lg">
         {Object.keys(references).map(referenceKey => (
           <div key={referenceKey}>
-            <Divider style={{ width: '70%' }} />
+            <Divider sx={{ my: '1em', width: '70%' }} />
             <div style={{ marginBottom: '.5em', fontWeight: '600' }}>
               {capitalize_first_char_only(referenceKey)}:
             </div>
@@ -143,29 +144,35 @@ const FeedbackInfoModal = () => {
     setExampleSnapshot(null)
   }
 
+  // semantic's `closeOnDimmerClick={false}` / `closeOnDocumentClick={false}`: swallow the backdrop
+  // click, still close on Escape and on the X.
+  const handleDialogClose = (event, reason) => {
+    if (reason === 'backdropClick') return
+    handleModalClose()
+  }
+
   return (
-    <Modal
+    <AppDialog
       open={isOpen}
-      onClose={handleModalClose}
-      onClosed={handleModalClosed}
-      size="tiny"
-      dimmer="inverted"
-      closeOnDimmerClick={false}
-      closeOnDocumentClick={false}
-      closeIcon={{ style: { top: '1rem', right: '2rem' }, color: 'black', name: 'close' }}
+      onClose={handleDialogClose}
+      // semantic's `onClosed` — MUI fires the post-transition hook on the transition slot.
+      slotProps={{ transition: { onExited: handleModalClosed } }}
+      maxWidth="xs"
+      data-cy="feedback-info-modal"
+      closeDataCy="feedback-info-modal-close"
     >
-      <Modal.Content>
-        {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
-        {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
-          <>
-            {explanationSnapshot && <Divider />}
-            <ExampleList example={exampleSnapshot} />
-          </>
-        )}
-        {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && <Divider />}
-        {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
-      </Modal.Content>
-    </Modal>
+      {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
+      {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
+        <>
+          {explanationSnapshot && <Divider sx={{ my: '1em' }} />}
+          <ExampleList example={exampleSnapshot} />
+        </>
+      )}
+      {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && (
+        <Divider sx={{ my: '1em' }} />
+      )}
+      {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
+    </AppDialog>
   )
 }
 

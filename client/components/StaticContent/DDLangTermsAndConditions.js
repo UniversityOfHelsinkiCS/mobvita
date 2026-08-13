@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Dropdown, Button } from 'semantic-ui-react'
+import { Box, MenuItem, Select } from '@mui/material'
+import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppSelect from 'Components/ui/AppSelect'
 import Draggable from 'react-draggable'
 import { useDispatch } from 'react-redux'  // Import useDispatch
 import { 
@@ -84,15 +87,18 @@ const DDLangTermsAndConditions = ({ openModal, setOpenModal }) => {
   return (
     <Draggable>
       <div>
-        <Modal
-          dimmer="inverted"
-          closeIcon={false} // Remove the close icon
+        <AppDialog
+          data-cy="ddlang-terms-dialog"
+          closeDataCy="ddlang-terms-dialog-close"
+          maxWidth="md"
           open={openModal}
-          closeOnDimmerClick={false} // Prevent closing on outside click
-          onClose={() => setOpenModal(false)}
+          // Prevent closing on outside click (semantic's closeOnDimmerClick={false})
+          onClose={(event, reason) => {
+            if (reason !== 'backdropClick') setOpenModal(false)
+          }}
+          title="Terms and Conditions, Privacy Policy, and Consent to Participate in Research"
         >
-          <Modal.Header>Terms and Conditions, Privacy Policy, and Consent to Participate in Research</Modal.Header>
-          <Modal.Content data-cy="tc-content">
+          <div data-cy="tc-content">
             <h2>Consent to Participate in Research Study</h2>
             <p>
               By using the DD-LANG activities in Revita, you agree to participate in our research study. You consent to the collection and use of your data for research purposes, as outlined in the privacy notices and information about the study provided below. 
@@ -112,60 +118,98 @@ const DDLangTermsAndConditions = ({ openModal, setOpenModal }) => {
             <h2>Background Questions</h2>
             <p>Before starting the exercises, we ask you to answer some background questions. // Ennen harjoitustehtävien aloittamista pyydämme sinua vastaamaan muutamaan taustakysymykseen.</p>
             
-            <Form onSubmit={handleSubmit}>
-              <Form.Field>
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                handleSubmit()
+              }}
+            >
+              <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
                 <label>Question 1: How many years have you studied in lukio? / Kuinka monta vuotta olet opiskellut lukiossa?</label>
-                <Dropdown
-                  placeholder='Select Year'
-                  fluid
-                  selection
-                  options={yearsOptions}
-                  name="selectedYear"
-                  onChange={handleDropdownChange}
-                />
-              </Form.Field>
-              <Form.Field>
+                <div data-cy="ddlang-year-select">
+                  <AppSelect
+                    placeholder='Select Year'
+                    variant="contrast-outline"
+                    matchTriggerWidth
+                    value={formData.selectedYear}
+                    options={yearsOptions.map(option => ({ value: option.value, label: option.text }))}
+                    onChange={value => handleDropdownChange(null, { name: 'selectedYear', value })}
+                  />
+                </div>
+              </Box>
+              <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
                 <label>Question 2: How many English courses have you taken so far?</label>
                 <label>2a: Which obligatory English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment);  // Mitä pakollisia englannin kursseja olet suorittanut? Merkitse kaikki suorittamasi kurssit (myös se, jota ehkä parhaillaan käyt).</label>
-                <Dropdown
-                  placeholder='Select Courses'
-                  fluid
-                  multiple
-                  selection
-                  options={obligatoryCoursesOptions}
-                  name="selectedObligatoryCourses"
-                  onChange={handleDropdownChange}
-                />
-              </Form.Field>
-              <Form.Field>
+                <div data-cy="ddlang-obligatory-courses-select">
+                  <Select
+                    multiple
+                    displayEmpty
+                    fullWidth
+                    value={formData.selectedObligatoryCourses}
+                    renderValue={selected => (selected.length ? selected.join(', ') : 'Select Courses')}
+                    onChange={e =>
+                      handleDropdownChange(null, {
+                        name: 'selectedObligatoryCourses',
+                        value: e.target.value,
+                      })
+                    }
+                  >
+                    {obligatoryCoursesOptions.map(option => (
+                      <MenuItem key={option.key} value={option.value}>
+                        {option.text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+              </Box>
+              <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
                 <label>2b: Which optional English courses have you taken? Mark all that you have taken (including the one that you may be taking at the moment) // Mitä valinnaisia englannin kursseja olet suorittanut? Merkitse kaikki suorittamasi kurssit (myös se, jota ehkä parhaillaan käyt)</label>
-                <Dropdown
-                  placeholder='Select Courses'
-                  fluid
-                  multiple
-                  selection
-                  options={optionalCoursesOptions}
-                  name="selectedOptionalCourses"
-                  onChange={handleDropdownChange}
-                />
-              </Form.Field>
-              <Form.Field>
+                <div data-cy="ddlang-optional-courses-select">
+                  <Select
+                    multiple
+                    displayEmpty
+                    fullWidth
+                    value={formData.selectedOptionalCourses}
+                    renderValue={selected => (selected.length ? selected.join(', ') : 'Select Courses')}
+                    onChange={e =>
+                      handleDropdownChange(null, {
+                        name: 'selectedOptionalCourses',
+                        value: e.target.value,
+                      })
+                    }
+                  >
+                    {optionalCoursesOptions.map(option => (
+                      <MenuItem key={option.key} value={option.value}>
+                        {option.text}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+              </Box>
+              <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
                 <label>Question 3: What is your latest course grade in English? // Mikä on viimeisin englannin kurssiarvosanasi?</label>
-                <Dropdown
-                  placeholder='Select Grade'
-                  fluid
-                  selection
-                  options={gradesOptions}
-                  name="selectedGrade"
-                  onChange={handleDropdownChange}
-                />
-              </Form.Field>
-              <Button type='submit' primary disabled={!isFormValid()}>
+                <div data-cy="ddlang-grade-select">
+                  <AppSelect
+                    placeholder='Select Grade'
+                    variant="contrast-outline"
+                    matchTriggerWidth
+                    value={formData.selectedGrade}
+                    options={gradesOptions.map(option => ({ value: option.value, label: option.text }))}
+                    onChange={value => handleDropdownChange(null, { name: 'selectedGrade', value })}
+                  />
+                </div>
+              </Box>
+              <AppButton
+                type='submit'
+                variant="primary"
+                data-cy="ddlang-terms-submit-button"
+                disabled={!isFormValid()}
+              >
                 Submit
-              </Button>
-            </Form>
-          </Modal.Content>
-        </Modal>
+              </AppButton>
+            </form>
+          </div>
+        </AppDialog>
       </div>
     </Draggable>
   )
