@@ -136,6 +136,7 @@ import lightbulbIcon from 'Assets/images/light-bulb.png'
 // ---
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
+import testsColored from 'Assets/images/tests.svg'
 import logo from 'Assets/images/logo_transparent.png'
 import navbarLogo from 'Assets/images/logo_navbar_transparent.png'
 import flashcardIcon from 'Assets/images/flashcard_icon.png'
@@ -293,6 +294,7 @@ export const images = {
   flagChinese,
   flagEnglish,
   tests,
+  testsColored,
   addStory,
   addStoriesIcon,
   logo,

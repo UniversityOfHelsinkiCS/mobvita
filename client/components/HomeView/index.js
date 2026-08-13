@@ -233,7 +233,7 @@ const HomeviewButtons = ({
           {hasTests && aTestIsEnabled && (
             <div className="test-btn-cont">
               <HomeviewButton
-                imgSrc={images.exhaustiveTest}
+                imgSrc={images.testsColored}
                 altText="a test form with a clock on it"
                 translationKey="Tests"
                 handleClick={() => navigate('/tests')}
