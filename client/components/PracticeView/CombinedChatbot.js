@@ -520,8 +520,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       handleHintRequest(newHintList)
     }
   }        
-  
-  const targetLangName = intl.formatMessage({ id: dictionaryLanguage, defaultMessage: dictionaryLanguage })
+
+  const targetLangName = dictionaryLanguage
+    ? intl.formatMessage({ id: dictionaryLanguage })
+    : ''
 
   const handleGetTranslation = () => {
     if (currentWord && currentWord.lemmas) {
