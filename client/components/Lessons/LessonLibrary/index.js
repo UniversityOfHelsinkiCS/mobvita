@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Container } from 'semantic-ui-react'
+import { Container } from '@mui/material'
 import AppStepper from 'Components/ui/AppStepper'
 import ScrollArrow from 'Components/ScrollArrow'
 import AppTabs from 'Components/ui/AppTabs'
@@ -298,7 +298,7 @@ const LessonList = () => {
           margin: '18px',
           fontSize: 'large' }}
       >
-        <div className="full-width">
+        <div className="full-width" data-cy="lessons-ready-status">
           {!lessonPending && lessonReady ? (
             <FormattedMessage id="lessons-ready-for-practice" />
           ) : (
@@ -325,6 +325,7 @@ const LessonList = () => {
           <AppButton
             size="big"
             className="lesson-practice"
+            data-cy="lessons-start-practice-button"
             disabled={
               lessonPending ||
               !selectedTopicIds ||
@@ -408,13 +409,17 @@ const LessonList = () => {
         {metaPending || groupPending ? (
           <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
         ) : noResults ? (
-          <div className="justify-center mt-lg" style={{ color: 'rgb(112, 114, 120)' }}>
+          <div
+            className="justify-center mt-lg"
+            style={{ color: 'rgb(112, 114, 120)' }}
+            data-cy="lessons-no-results"
+          >
             <FormattedMessage id="no-lessons-found" />
           </div>
         ) : (
           <>
             {!teacherView && !isAnonymousUser && libraryTabs.length > 0 && (
-              <div style={{ margin: '1.5em 0 20px' }}>
+              <div style={{ margin: '1.5em 0 20px' }} data-cy="lessons-library-tabs">
                 <AppTabs
                   tabs={libraryTabs}
                   value={activeLibrary}
@@ -454,21 +459,27 @@ const LessonList = () => {
                         <span style={{ marginRight: '10px', fontSize: 'medium' }}>
                           <FormattedMessage id="Group" />:
                         </span>
-                        <AppSelect
-                          variant="tan-outline"
-                          placeholder={intl.formatMessage({ id: 'select-group' })}
-                          value={savedGroupSelection || ''}
-                          options={groupDropdownOptions.map(o => ({ value: o.value, label: o.text }))}
-                          onChange={value => handleGroupChange(null, { value })}
-                          minWidth={220}
-                        />
+                        <div data-cy="lessons-group-select">
+                          <AppSelect
+                            variant="tan-outline"
+                            placeholder={intl.formatMessage({ id: 'select-group' })}
+                            value={savedGroupSelection || ''}
+                            options={groupDropdownOptions.map(o => ({
+                              value: o.value,
+                              label: o.text }))}
+                            onChange={value => handleGroupChange(null, { value })}
+                            minWidth={220}
+                          />
+                        </div>
                       </div>
                     )}
                     <div className="lesson-setup-header">
                       <h1 className="lesson-setup-title">
                         <FormattedMessage id="lesson-setup" />
                       </h1>
-                      <p className="lesson-setup-subtitle">{setupViewTitle()}</p>
+                      <p className="lesson-setup-subtitle" data-cy="lessons-setup-subtitle">
+                        {setupViewTitle()}
+                      </p>
                     </div>
                     <div
                       style={{
@@ -502,6 +513,7 @@ const LessonList = () => {
                         type="button"
                         onClick={handleBackClick}
                         disabled={goStep === 0}
+                        data-cy="lessons-setup-back-button"
                         sx={{
                           flex: 1,
                           minHeight: 46,
@@ -518,6 +530,7 @@ const LessonList = () => {
                           variant="primary"
                           type="button"
                           onClick={handleBeginClick}
+                          data-cy="lessons-setup-start-button"
                           sx={{ flex: 1, minHeight: 46 }}
                           disabled={
                             lessonPending ||
@@ -536,6 +549,7 @@ const LessonList = () => {
                           variant="primary"
                           type="button"
                           onClick={handleContinueClick}
+                          data-cy="lessons-setup-next-button"
                           sx={{ flex: 1, minHeight: 46 }}
                         >
                           <FormattedMessage id="next-step" />

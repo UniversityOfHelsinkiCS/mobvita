@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Divider } from '@mui/material'
-import AppDialog from 'Components/ui/AppDialog'
+import Divider from '@mui/material/Divider'
 import { FormattedMessage } from 'react-intl'
 import AppDialog from 'Components/ui/AppDialog'
 import { clearExplanation, clearReferences, clearExample } from 'Utilities/redux/practiceReducer'
@@ -10,7 +9,7 @@ import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/c
 const BookReference = ({ reference }) => (
   <li>
     {reference.url ? (
-      <a href={reference.url}>
+      <a href={reference.url} data-cy="feedback-info-book-reference-link">
         {reference.title && `${reference.title}, `}
         {reference.author && `${reference.author}, `}
         {reference.topic && `${reference.topic}, `}
@@ -33,7 +32,12 @@ const BookReference = ({ reference }) => (
 
 const UrlReference = ({ reference }) => (
   <li>
-    <a href={reference.url} target="_blank" rel="noopener noreferrer">
+    <a
+      href={reference.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-cy="feedback-info-url-reference-link"
+    >
       {reference.title || reference.title}
     </a>
   </li>

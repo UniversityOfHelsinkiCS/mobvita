@@ -1,66 +1,58 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
-import { images, capitalize } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
-import CheckIcon from '@mui/icons-material/Check'
 import { FormattedMessage } from 'react-intl'
+import { colors } from 'Assets/mui_theme/designTokens'
 
+/**
+ * ToggleButton — the grammar-level selector buttons (2026 design). Level buttons are white cards
+ * that fill green when selected; the recommended level gets a dark ink outline. The "Custom"
+ * trigger is a dark ink pill.
+ */
 const ToggleButton = ({
   handleClick,
   name,
-  extraImgSrc,
   width = '100%',
   height = '100%',
   active,
   level,
+  recommended,
   className,
 }) => {
-  const imgSrc = extraImgSrc ?? `${name}1`
-
-  return (
-    <>
+  if (name === 'custom') {
+    return (
       <AppButton
         className={`toggle-button ${className || ''}`}
-        variant={active ? 'primary' : 'outline-primary'}
+        variant={active ? 'primary' : 'secondary'}
         onClick={handleClick}
-        style={{ width, height }}
-        data-cy={`lesson-toggle-button-${name?.replace(/\s+/g, '-')}`}
+        sx={{ width, height, fontSize: 16, fontWeight: 600 }}
+        data-cy="lesson-toggle-button-custom"
       >
-        <div
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
-        >
-          <div>
-            <CheckIcon style={{ flex: '0.1', visibility: active ? 'visible' : 'hidden' }} />
-          </div>
-          <div
-            style={{
-              flex: '1',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {level ? (
-              <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
-                {level}
-              </span>
-            ) : (
-              <span style={{ marginBottom: images[imgSrc] ? '1em' : '0' }}>
-                <FormattedMessage
-                  id={name === 'custom' ? 'open-custom-grammar-topics-modal' : capitalize(name)}
-                />
-              </span>
-            )}
-            {images[imgSrc] && (
-              <img src={images[imgSrc]} alt={name} style={{ maxWidth: '50%', maxHeight: '50%' }} />
-            )}
-          </div>
-          <div>
-            <CheckIcon style={{ flex: '0.1', visibility: 'hidden' }} />
-          </div>
-        </div>
+        <FormattedMessage id="open-custom-grammar-topics-modal" />
       </AppButton>
-    </>
+    )
+  }
+
+  return (
+    <AppButton
+      className={`toggle-button ${className || ''}`}
+      variant={active ? 'primary' : 'card'}
+      onClick={handleClick}
+      sx={{
+        width,
+        height,
+        borderRadius: '12px',
+        fontSize: 18,
+        fontWeight: 700,
+        // The recommended level is outlined in ink (replaces the old caret marker).
+        ...(recommended && !active
+          ? { border: `2px solid ${colors.ink}`, '&:hover': { borderColor: colors.ink } }
+          : {}),
+      }}
+      data-cy={`lesson-toggle-button-${name?.replace(/\s+/g, '-')}`}
+    >
+      {level}
+    </AppButton>
   )
 }
 

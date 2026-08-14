@@ -71,7 +71,10 @@ const ChatActionMenu = ({
         setShowContextTranslation(true)
         let sentence = ''
         const safeSnippet = focused?.practice_snippet ? focused.practice_snippet : []       
-        if (currentWord && currentWord.sentence_id) {
+        // `!= null` rather than a truthiness check: sentence_id is 0 for the first sentence, so a
+        // plain `&& currentWord.sentence_id` skipped this branch for every word in it and fell
+        // through to the surface-match fallback, which returns just the selected word.
+        if (currentWord && currentWord.sentence_id != null) {
           sentence = safeSnippet
             .filter(s => currentWord.sentence_id - 1 <= s.sentence_id && s.sentence_id <= currentWord.sentence_id + 1)
             .map(t => t.surface)
@@ -173,7 +176,12 @@ const ChatActionMenu = ({
       {open && (
         <div className="chat-action-options">
           {mode === 'chatbot' && !showAllHintsUsed && currentWord?.hints?.length > 0 && (currentWord.requested_hints?.length || 0) < currentWord.hints.length && (
-            <button type="button" className="chat-action-item" onClick={handleHintClick}>
+            <button
+              type="button"
+              className="chat-action-item"
+              data-cy="chat-action-hint-button"
+              onClick={handleHintClick}
+            >
               <div className="chat-action-icon">
                 <img src={images.bulb} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>
@@ -214,7 +222,12 @@ const ChatActionMenu = ({
           )}
                 
           {(
-            <button type="button" className="chat-action-item" onClick={handleSentenceTranslation}>
+            <button
+              type="button"
+              className="chat-action-item"
+              data-cy="chat-action-translate-sentence-button"
+              onClick={handleSentenceTranslation}
+            >
               <div className="chat-action-icon">
                 <img src={images.translate01} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>

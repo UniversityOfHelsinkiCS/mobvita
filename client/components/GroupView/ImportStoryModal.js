@@ -39,7 +39,13 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   )
 
   return (
-    <AppDialog open={open} onClose={() => setOpen(false)} title={dialogTitle}>
+    <AppDialog
+      open={open}
+      onClose={() => setOpen(false)}
+      title={dialogTitle}
+      data-cy="import-story-modal"
+      closeDataCy="import-story-modal-close-button"
+    >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
         <div>
           <h2 style={{ fontFamily: font.family, fontSize: 17, fontWeight: 600, margin: 0 }}>
@@ -68,6 +74,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
             )
           }
           MenuProps={{ disableScrollLock: true }}
+          SelectDisplayProps={{ 'data-cy': 'import-story-group-select' }}
           sx={{
             backgroundColor: colors.card,
             borderRadius: '999px',
@@ -79,7 +86,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
           }}
         >
           {options.map(o => (
-            <MenuItem key={o.value} value={o.value}>
+            <MenuItem key={o.value} value={o.value} data-cy="import-story-group-option">
               <AppCheckbox checked={selectedGroups.includes(o.value)} />
               <ListItemText primary={o.label} />
             </MenuItem>
@@ -90,18 +97,24 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
           label={intl.formatMessage({ id: 'import-story-message' })}
           value={message}
           onChange={e => setMessage(e.target.value)}
+          inputProps={{ 'data-cy': 'import-story-message-input' }}
         />
 
         <div
           style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '.5em' }}
         >
-          <AppButton variant="secondary" onClick={() => setOpen(false)}>
+          <AppButton
+            variant="secondary"
+            onClick={() => setOpen(false)}
+            data-cy="import-story-cancel-button"
+          >
             <FormattedMessage id="cancel" />
           </AppButton>
           <AppButton
             variant="primary"
             onClick={submitGroupImport}
             disabled={selectedGroups.length === 0}
+            data-cy="import-story-confirm-button"
           >
             <FormattedMessage id="import" />
           </AppButton>

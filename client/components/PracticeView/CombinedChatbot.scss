@@ -101,7 +101,8 @@
   align-items: center;
   gap: 4px;
 
-  .ui.icon {
+  .ui.icon,
+  .MuiSvgIcon-root {
     margin: 0;
   }
 
@@ -196,7 +197,8 @@
         justify-content: center;
         flex-shrink: 0;
 
-        i.icon {
+        i.icon,
+        .MuiSvgIcon-root {
           margin: 0;
           padding: 0;
           display: flex;
