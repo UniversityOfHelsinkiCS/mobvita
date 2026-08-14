@@ -294,11 +294,11 @@ describe('reading comprehension', function () {
     waitForApiCallAndText(story.title)
 
     cy.get('[data-cy="rc-level-select"]').click()
-    cy.contains('.visible.menu .item', 'B2').click()
+    cy.contains('.app-menu-row', 'B2').click()
     cy.get('[data-cy="rc-level-select"]').should('contain', 'B2')
 
     cy.get('[data-cy="rc-size-select"]').click()
-    cy.contains('.visible.menu .item', '4').click()
+    cy.contains('.app-menu-row', '4').click()
     cy.get('[data-cy="rc-size-select"]').should('contain', '4')
 
     // Edit saved question choice and verify save payload.
