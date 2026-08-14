@@ -4,9 +4,13 @@ import { useSelector } from 'react-redux'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
+import SearchIcon from '@mui/icons-material/Search'
 import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import TopicListItem from './TopicListItem'
+
+const TOPIC_ROW_DIVIDER = '#E4E1D3'
 
 const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) => {
   const intl = useIntl()
@@ -154,9 +158,9 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
 
   return (
     <div style={{ paddingBottom: '2em' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.0rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.0rem' }}>
         <AppButton
-          variant="primary"
+          variant="card"
           disabled={
             topicInstance.instancePending ||
             !topicInstance.topic_ids ||
@@ -166,27 +170,43 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
           style={{
             cursor: topicInstance.instancePending || !editable ? 'not-allowed' : 'pointer',
           }}
+          sx={{ flexShrink: 0, gap: '8px', '& svg': { fontSize: 20 } }}
           onClick={() => excludeAllTopics()}
         >
           <DeleteOutlineIcon />
-          <FormattedMessage id="exclude-all-topics" />
+          <FormattedMessage id="clear-all" defaultMessage="Clear All" />
         </AppButton>
 
-        <input
-          type="text"
-          placeholder={intl.formatMessage({ id: 'Search lessons / topics ...' })}
-          value={searchQuery}
-          onChange={handleSearchChange}
-          style={{
-            marginLeft: '0.5em',
-            flex: '1',
-            padding: '5.5px',
-            borderRadius: '16px',
-            border: '1px solid #ccc',
-            outline: 'none',
-            fontSize: '16px',
-          }}
-        />
+        <div style={{ position: 'relative', flex: 1 }}>
+          <SearchIcon
+            style={{
+              position: 'absolute',
+              left: 14,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: colors.muted,
+              fontSize: 20,
+              pointerEvents: 'none',
+            }}
+          />
+          <input
+            type="text"
+            placeholder={intl.formatMessage({ id: 'Search lessons / topics ...' })}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{
+              width: '100%',
+              padding: '9px 16px 9px 42px',
+              borderRadius: '999px',
+              border: `1px solid ${colors.border}`,
+              outline: 'none',
+              fontSize: '16px',
+              fontFamily: font.family,
+              color: colors.ink,
+              background: 'transparent',
+            }}
+          />
+        </div>
       </div>
 
       {note && (
@@ -207,7 +227,7 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
       )}
 
       {lessonGroups && (
-        <div style={{ background: '#fffaf0', borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ background: 'transparent', borderRadius: 12, overflow: 'hidden' }}>
           {Object.keys(lessonGroups)
             .sort()
             .map((group, index) => (
@@ -220,6 +240,8 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
                 sx={{
                   backgroundColor: 'transparent',
                   '&:before': { display: 'none' },
+                  borderBottom: `1px solid ${TOPIC_ROW_DIVIDER}`,
+                  '&:last-of-type': { borderBottom: 'none' },
                 }}
               >
                 <AccordionSummary className="level-content" expandIcon={<ExpandMoreIcon />}>

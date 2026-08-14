@@ -5,7 +5,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import { Container } from 'semantic-ui-react'
-import Stepper from '@keyvaluesystems/react-stepper'
+import AppStepper from 'Components/ui/AppStepper'
 import ScrollArrow from 'Components/ScrollArrow'
 import AppTabs from 'Components/ui/AppTabs'
 import AppSelect from 'Components/ui/AppSelect'
@@ -464,7 +464,12 @@ const LessonList = () => {
                         />
                       </div>
                     )}
-                    <h1 className="lesson-setup-title">{setupViewTitle()}</h1>
+                    <div className="lesson-setup-header">
+                      <h1 className="lesson-setup-title">
+                        <FormattedMessage id="lesson-setup" />
+                      </h1>
+                      <p className="lesson-setup-subtitle">{setupViewTitle()}</p>
+                    </div>
                     <div
                       style={{
                         flex: '1',
@@ -491,22 +496,29 @@ const LessonList = () => {
                       />
                     </div>
                     <div className="lesson-setup-btn-container">
-                      {goStep !== 0 && (
-                        <AppButton
-                          variant="secondary"
-                          style={{ width: '120px', height: '40px' }}
-                          type="button"
-                          onClick={handleBackClick}
-                        >
-                          <FormattedMessage id="Back" />
-                        </AppButton>
-                      )}
+                      <AppButton
+                        className="lesson-setup-back-btn"
+                        variant="card"
+                        type="button"
+                        onClick={handleBackClick}
+                        disabled={goStep === 0}
+                        sx={{
+                          flex: 1,
+                          minHeight: 46,
+                          // Blend with the cream content card instead of standing out white.
+                          backgroundColor: colors.card,
+                          '&:hover': { backgroundColor: '#EFEADB', borderColor: '#DCD8C8' },
+                        }}
+                      >
+                        <FormattedMessage id="Back" />
+                      </AppButton>
                       {goStep === 2 ? (
                         <AppButton
                           className="lesson-setup-start-btn"
-                          style={{ width: '120px', height: '40px' }}
+                          variant="primary"
                           type="button"
                           onClick={handleBeginClick}
+                          sx={{ flex: 1, minHeight: 46 }}
                           disabled={
                             lessonPending ||
                             !lessonReady ||
@@ -522,9 +534,9 @@ const LessonList = () => {
                         <AppButton
                           className="lesson-setup-next-btn"
                           variant="primary"
-                          style={{ width: '120px', height: '40px' }}
                           type="button"
                           onClick={handleContinueClick}
+                          sx={{ flex: 1, minHeight: 46 }}
                         >
                           <FormattedMessage id="next-step" />
                         </AppButton>
@@ -533,23 +545,17 @@ const LessonList = () => {
                   </div>
                 </div>
                 {bigScreen && (
-                  <div className="lesson-tour-stepper" style={{ flex: 0.3, marginTop: '100px' }}>
-                    <Stepper
+                  <div
+                    className="lesson-tour-stepper"
+                    style={{ flex: 0.3, marginTop: '24px', marginRight: '2.5em' }}
+                  >
+                    <AppStepper
+                      activeIndex={goStep}
                       steps={[
-                        {
-                          stepLabel: intl.formatMessage({ id: 'selected-lesson-themes' }),
-                          stepDescription: '',
-                          completed: goStep > 0 },
-                        {
-                          stepLabel: intl.formatMessage({ id: 'Lesson vocab' }),
-                          stepDescription: '',
-                          completed: goStep > 1 },
-                        {
-                          stepLabel: intl.formatMessage({ id: 'Grammar topics' }),
-                          stepDescription: '',
-                          completed: false },
+                        { label: intl.formatMessage({ id: 'selected-lesson-themes' }) },
+                        { label: intl.formatMessage({ id: 'Lesson vocab' }) },
+                        { label: intl.formatMessage({ id: 'Grammar topics' }) },
                       ]}
-                      currentStepIndex={goStep}
                     />
                   </div>
                 )}

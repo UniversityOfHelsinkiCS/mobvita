@@ -22,6 +22,7 @@ import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
 import AppTabs from 'Components/ui/AppTabs'
 import AppPagination from 'Components/ui/AppPagination'
 import AppLemma from 'Components/ui/AppLemma'
+import AppStepper from 'Components/ui/AppStepper'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -222,7 +223,7 @@ const DesignSystem = () => {
 
       <Section title="AppButton — design variants (active / disabled)">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {['tan', 'contrast', 'contrast-outline', 'tan-outline', 'danger', 'link'].map(v => (
+          {['tan', 'contrast', 'contrast-outline', 'tan-outline', 'card', 'danger', 'link'].map(v => (
             <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               <span style={{ width: 130, color: '#666', fontSize: 13 }}>{v}</span>
               <AppButton variant={v}>
@@ -429,6 +430,19 @@ const DesignSystem = () => {
             </div>
           )
         })()}
+      </Section>
+
+      <Section title="AppStepper">
+        <div style={{ width: 260 }}>
+          <AppStepper
+            activeIndex={0}
+            steps={[
+              { label: 'Lesson Themes' },
+              { label: 'Vocabulary Level' },
+              { label: 'Grammar Topics' },
+            ]}
+          />
+        </div>
       </Section>
 
       <Section title="AppLemma">

@@ -1030,7 +1030,10 @@ $value in $spacing {
 
 .story-title {
   @extend .header-2;
-  font-weight: 500;
+  // .header-2 pulls in $default-font (Rubik); the story title should use the 2026 design font.
+  font-family: 'Geologica', sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
   padding-right: 1em;
   margin-bottom: 0.75em;
   min-height: 1.5em;
@@ -3471,23 +3474,25 @@ label.file-upload-btn {
     z-index: 100;
     width: 1.5em;
     height: 1.5em;
-    background: #f8f8f8;
-    border: 1px solid #8d8d8d;
+    background: #faf8ed; // cream fill
+    border: 2px solid #8fbba6; // sage-green ring
     border-radius: 100%;
-    box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
-    top: 12px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+    top: 11px;
     outline: none;
   }
 
   &-track {
     position: relative;
-    background: #ddd;
+    background: #e5ede4; // pale-green track
     top: 20px;
-    height: 4px;
+    height: 6px;
+    border-radius: 999px;
   }
 
   &-track-0 {
-    background: #83a9ff;
+    background: #a6cdb4; // sage-green fill up to the thumb
+    border-radius: 999px;
   }
 }
 

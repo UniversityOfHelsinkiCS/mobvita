@@ -1,4 +1,4 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Divider, FormControlLabel, RadioGroup } from '@mui/material'
@@ -8,7 +8,8 @@ import AppRadio from 'Components/ui/AppRadio'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import CustomTooltip from 'Components/CustomTooltip'
-import { FormattedMessage, useIntl } from 'react-intl';
+import { colors, font } from 'Assets/mui_theme/designTokens'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
   learningLanguageSelector,
@@ -54,7 +55,7 @@ const GroupAnalytics = ({ role }) => {
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
-    moment().startOf('month').subtract(6, 'month').toDate()
+    moment().startOf('month').subtract(6, 'month').toDate(),
   )
   const [cefrHistory, setCefrHistory] = useState([])
   const [graphType, setGraphType] = useState('column mastered')
@@ -106,8 +107,8 @@ const GroupAnalytics = ({ role }) => {
         getPreviousStudentVocabulary(
           currentStudent._id,
           currentGroup.group_id,
-          startDate.toJSON().slice(0, 10)
-        )
+          startDate.toJSON().slice(0, 10),
+        ),
       )
     }
   }
@@ -118,8 +119,8 @@ const GroupAnalytics = ({ role }) => {
         getStudentVocabulary(
           currentStudent._id,
           currentGroup.group_id,
-          endDate.toJSON().slice(0, 10)
-        )
+          endDate.toJSON().slice(0, 10),
+        ),
       )
     }
   }
@@ -142,15 +143,15 @@ const GroupAnalytics = ({ role }) => {
         getPreviousStudentVocabulary(
           currentStudent._id,
           currentGroup.group_id,
-          startDate.toJSON().slice(0, 10)
-        )
+          startDate.toJSON().slice(0, 10),
+        ),
       )
       dispatch(
         getStudentVocabulary(
           currentStudent._id,
           currentGroup.group_id,
-          endDate.toJSON().slice(0, 10)
-        )
+          endDate.toJSON().slice(0, 10),
+        ),
       )
 
       setFirstFetch(false)
@@ -222,94 +223,88 @@ const GroupAnalytics = ({ role }) => {
 
   return (
     <div className="group-container">
-      <div className="group-analytics-top">
-        <div style={{ margin: '1.5em 0em .75em 0em' }}>
-          <div className="header-2">{currentGroup.groupName}</div>
+      <Box
+        sx={{
+          backgroundColor: colors.card,
+          color: colors.ink,
+          fontFamily: font.family,
+          border: `1px solid ${colors.border}`,
+          borderRadius: '20px',
+          p: { xs: '12px', sm: '20px' },
+          mt: '2rem',
+          mb: '2rem',
+        }}
+      >
+        <div className="group-analytics-top">
+          <div style={{ margin: '1.5em 0em .75em 0em' }}>
+            <div className="header-2">{currentGroup.groupName}</div>
 
-          <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
-        </div>
-
-        <div style={{ alignSelf: 'flex-end', marginBottom: '0.5em' }}>
-          {currentGroup?.is_teaching && (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.5em' }}>
-              <AppButton
-                variant={content === 'summary' ? 'tan' : 'contrast-outline'}
-                onClick={() => setContent('summary')}
-              >
-                <FormattedMessage id="summary" />
-              </AppButton>
-              {currentGroup?.reading_comprehension && (
-                <>
-                  <AppButton onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}>
-                    <FormattedMessage id="download-reading-comprehension-report" />
-                  </AppButton>
-                  <AppButton
-                    onClick={() =>
-                      downloadReadingHistory(
-                        currentGroupId,
-                        currentGroup.groupName,
-                        startDate,
-                        endDate
-                      )
-                    }
-                  >
-                    <FormattedMessage id="download-exercise-history" />
-                  </AppButton>
-                </>
-              )}
-            </Box>
-          )}
-        </div>
-      </div>
-      <GroupFunctions
-        group={currentGroup}
-        showToken={showToken}
-        setShowTokenGroupId={setShowTokenGroupId}
-        showTestEnableMenuGroupId={showTestEnableMenuGroupId}
-        setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-        currTestDeadline={currTestDeadline}
-        setCurrTestDeadline={setCurrTestDeadline}
-      />
-      {showToken && <GroupKey />}
-      {showTestEnableMenu && (
-        <EnableTestMenu
-          setGroupTestDeadline={setGroupTestDeadline}
-          setCurrTestDeadline={setCurrTestDeadline}
-          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-          id={currentGroupId}
-        />
-      )}
-      <hr />
-      <div className="date-pickers-container">
-        {bigScreen ? (
-          <div className="date-pickers gap-col-sm">
-            <span className="bold">
-              <FormattedMessage id="Showing results for" />
-            </span>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-start" />{' '}
-              <PickDate
-                id="start"
-                date={startDate}
-                setDate={setStartDate}
-                onCalendarClose={handlePreviousVocabulary}
-              />
-            </div>
-            <div style={{ marginLeft: '2em' }}>
-              <FormattedMessage id="date-end" />{' '}
-              <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-            </div>
+            <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>
+              {currentGroup?.description}
+            </p>
           </div>
-        ) : (
-          <>
-            <span className="bold" style={{ fontSize: '1.3em' }}>
-              <FormattedMessage id="Showing results for" />
-            </span>
-            <br />
-            <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-              <div>
-                <FormattedMessage id="date-start" />
-                <br />
+
+          <div style={{ alignSelf: 'flex-end', marginBottom: '0.5em' }}>
+            {currentGroup?.is_teaching && (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.5em' }}>
+                <AppButton
+                  variant={content === 'summary' ? 'tan' : 'contrast-outline'}
+                  onClick={() => setContent('summary')}
+                >
+                  <FormattedMessage id="summary" />
+                </AppButton>
+                {currentGroup?.reading_comprehension && (
+                  <>
+                    <AppButton
+                      onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}
+                    >
+                      <FormattedMessage id="download-reading-comprehension-report" />
+                    </AppButton>
+                    <AppButton
+                      onClick={() =>
+                        downloadReadingHistory(
+                          currentGroupId,
+                          currentGroup.groupName,
+                          startDate,
+                          endDate,
+                        )
+                      }
+                    >
+                      <FormattedMessage id="download-exercise-history" />
+                    </AppButton>
+                  </>
+                )}
+              </Box>
+            )}
+          </div>
+        </div>
+        <GroupFunctions
+          group={currentGroup}
+          showToken={showToken}
+          setShowTokenGroupId={setShowTokenGroupId}
+          showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+          setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+          currTestDeadline={currTestDeadline}
+          setCurrTestDeadline={setCurrTestDeadline}
+        />
+        {showToken && <GroupKey />}
+        {showTestEnableMenu && (
+          <EnableTestMenu
+            setGroupTestDeadline={setGroupTestDeadline}
+            setCurrTestDeadline={setCurrTestDeadline}
+            setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+            id={currentGroupId}
+          />
+        )}
+        <hr />
+        <div className="date-pickers-container">
+          {bigScreen ? (
+            <div className="date-pickers gap-col-sm">
+              <span className="bold">
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-start" />{' '}
                 <PickDate
                   id="start"
                   date={startDate}
@@ -317,211 +312,238 @@ const GroupAnalytics = ({ role }) => {
                   onCalendarClose={handlePreviousVocabulary}
                 />
               </div>
-              <div>
-                <FormattedMessage id="date-end" />
-                <br />
+              <div style={{ marginLeft: '2em' }}>
+                <FormattedMessage id="date-end" />{' '}
                 <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
               </div>
             </div>
-          </>
-        )}
-      </div>
-
-      {content !== 'summary' && (
-        <div>
-          <div className="group-analytics-student-dropdown">
-            <FormattedMessage id="student" />:{' '}
-            <Box sx={{ flexGrow: 1 }}>
-              <AppSelect
-                variant="contrast-outline"
-                placeholder="-"
-                value={currentStudent?._id}
-                options={studentOptions}
-                onChange={handleStudentChange}
-                disabled={!currentStudent}
-                matchTriggerWidth
-              />
-            </Box>
-          </div>
-          {currentCEFR && (
-            <div>
-              <StudentCEFRModal
-                open={openEditModal}
-                setOpen={setOpenEditModal}
-                cefrHistory={cefrHistory}
-                setCefrHistory={setCefrHistory}
-                groupId={currentGroupId}
-                sid={currentStudent._id}
-              />
-              <FormattedMessage id="current-cefr-level" />:{' '}
-              <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
-              <AppButton
-                variant="primary"
-                onClick={() => setOpenEditModal(true)}
-                style={{ padding: '5px' }}
-              >
-                <FormattedMessage id="view-previous-and-edit" />
-              </AppButton>
-            </div>
+          ) : (
+            <>
+              <span className="bold" style={{ fontSize: '1.3em' }}>
+                <FormattedMessage id="Showing results for" />
+              </span>
+              <br />
+              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
+                <div>
+                  <FormattedMessage id="date-start" />
+                  <br />
+                  <PickDate
+                    id="start"
+                    date={startDate}
+                    setDate={setStartDate}
+                    onCalendarClose={handlePreviousVocabulary}
+                  />
+                </div>
+                <div>
+                  <FormattedMessage id="date-end" />
+                  <br />
+                  <PickDate
+                    date={endDate}
+                    setDate={setEndDate}
+                    onCalendarClose={handleVocabulary}
+                  />
+                </div>
+              </div>
+            </>
           )}
-          <Divider />
-          <RadioGroup
-            row
-            value={shownChart}
-            onChange={e => setShownChart(e.target.value)}
-            sx={{ justifyContent: 'space-evenly' }}
-          >
-            {chartOptions.map(option => (
-              <FormControlLabel
-                key={option.value}
-                value={option.value}
-                control={<AppRadio />}
-                label={intl.formatMessage({ id: option.labelId })}
-              />
-            ))}
-          </RadioGroup>
-          <Divider />
         </div>
-      )}
 
-      {content === 'summary' && currentGroup.is_teaching ? (
-        <>
-          <div style={{ marginTop: '1em', overflowX: 'auto' }}>
-            {/* fullWidth so the bar spans the container like the bootstrap <Tabs> nav it replaced;
+        {content !== 'summary' && (
+          <div>
+            <div className="group-analytics-student-dropdown">
+              <FormattedMessage id="student" />:{' '}
+              <Box sx={{ flexGrow: 1 }}>
+                <AppSelect
+                  variant="contrast-outline"
+                  placeholder="-"
+                  value={currentStudent?._id}
+                  options={studentOptions}
+                  onChange={handleStudentChange}
+                  disabled={!currentStudent}
+                  matchTriggerWidth
+                />
+              </Box>
+            </div>
+            {currentCEFR && (
+              <div>
+                <StudentCEFRModal
+                  open={openEditModal}
+                  setOpen={setOpenEditModal}
+                  cefrHistory={cefrHistory}
+                  setCefrHistory={setCefrHistory}
+                  groupId={currentGroupId}
+                  sid={currentStudent._id}
+                />
+                <FormattedMessage id="current-cefr-level" />:{' '}
+                <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
+                <AppButton
+                  variant="primary"
+                  onClick={() => setOpenEditModal(true)}
+                  style={{ padding: '5px' }}
+                >
+                  <FormattedMessage id="view-previous-and-edit" />
+                </AppButton>
+              </div>
+            )}
+            <Divider />
+            <RadioGroup
+              row
+              value={shownChart}
+              onChange={e => setShownChart(e.target.value)}
+              sx={{ justifyContent: 'space-evenly' }}
+            >
+              {chartOptions.map(option => (
+                <FormControlLabel
+                  key={option.value}
+                  value={option.value}
+                  control={<AppRadio />}
+                  label={intl.formatMessage({ id: option.labelId })}
+                />
+              ))}
+            </RadioGroup>
+            <Divider />
+          </div>
+        )}
+
+        {content === 'summary' && currentGroup.is_teaching ? (
+          <>
+            <div style={{ marginTop: '1em', overflowX: 'auto' }}>
+              {/* fullWidth so the bar spans the container like the old bootstrap <Tabs> nav;
                 sm because these four labels are long enough to overflow at the default size. */}
-            <AppTabs
-              tabs={summaryTabs}
-              value={summaryTab}
-              onChange={setSummaryTab}
-              fullWidth
-              size="xs"
+              <AppTabs
+                tabs={summaryTabs}
+                value={summaryTab}
+                onChange={setSummaryTab}
+                fullWidth
+                size="xs"
+              />
+            </div>
+            <div style={{ marginTop: '1em' }}>
+              {summaryTab === 'group-exercise-summary' && (
+                <Summary {...summaryProps} summaryType="exercise" />
+              )}
+              {summaryTab === 'group-vocab-summary' && (
+                <Summary {...summaryProps} summaryType="vocab" />
+              )}
+              {summaryTab === 'group-test-summary' && (
+                <Summary {...summaryProps} summaryType="test" />
+              )}
+              {summaryTab === 'group-grammar-progress' && (
+                <StudentGrammarProgress
+                  summaryView
+                  startDate={startDate}
+                  endDate={endDate}
+                  group={currentGroup}
+                />
+              )}
+            </div>
+          </>
+        ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
+          <div>
+            <div className="row-flex align center">
+              <CustomTooltip permanent keyId="timeline-explanation">
+                <InfoOutlinedIcon
+                  fontSize="small"
+                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+                />
+              </CustomTooltip>
+              <div className="progress-page-header">
+                <FormattedMessage id="progress-timeline" />
+              </div>
+            </div>
+            <Divider />
+            <StudentProgress
+              student={currentStudent}
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+              groupId={currentGroupId}
             />
           </div>
-          <div style={{ marginTop: '1em' }}>
-            {summaryTab === 'group-exercise-summary' && (
-              <Summary {...summaryProps} summaryType="exercise" />
-            )}
-            {summaryTab === 'group-vocab-summary' && (
-              <Summary {...summaryProps} summaryType="vocab" />
-            )}
-            {summaryTab === 'group-test-summary' && (
-              <Summary {...summaryProps} summaryType="test" />
-            )}
-            {summaryTab === 'group-grammar-progress' && (
-              <StudentGrammarProgress
-                summaryView
-                startDate={startDate}
-                endDate={endDate}
-                group={currentGroup}
+        ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
+          <div>
+            <div className="row-flex align center">
+              <CustomTooltip
+                permanent
+                title={
+                  <div>
+                    <FormattedHTMLMessage id="vocabulary-view-explanation" />
+                    <br />
+                    <br />
+                    <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+                    {': '}
+                    <FormattedHTMLMessage id="vocabulary-total-explanation" />
+                    <br />
+                    <br />
+                    <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+                    {': '}
+                    <FormattedHTMLMessage id="vocabulary-seen-explanation" />
+                    <br />
+                    <br />
+                    <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+                    {': '}
+                    <FormattedHTMLMessage id="vocabulary-visit-explanation" />
+                    <br />
+                    <br />
+                    <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+                    {': '}
+                    <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
+                  </div>
+                }
+              >
+                <InfoOutlinedIcon
+                  fontSize="small"
+                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+                />
+              </CustomTooltip>
+              <div className="progress-page-header">
+                <FormattedMessage id="vocabulary-view" />
+              </div>
+            </div>
+            <Divider />
+            <div className="progress-page-graph-cont">
+              <StudentVocabularyProgress
+                studentVocabulary={studentVocabulary}
+                vocabularyPending={vocabularyPending}
+                previousStudentVocabulary={previousStudentVocabulary}
+                previousPending={previousPending}
+                graphType={graphType}
+                setGraphType={setGraphType}
               />
-            )}
-          </div>
-        </>
-      ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
-        <div>
-          <div className="row-flex align center">
-            <CustomTooltip permanent keyId="timeline-explanation">
-              <InfoOutlinedIcon
-                fontSize="small"
-                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-              />
-            </CustomTooltip>
-            <div className="progress-page-header">
-              <FormattedMessage id="progress-timeline" />
             </div>
           </div>
-          <Divider />
-          <StudentProgress
+        ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
+          <div>
+            <div className="row-flex align center">
+              <CustomTooltip permanent keyId="hex-map-explanation">
+                <InfoOutlinedIcon
+                  fontSize="small"
+                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
+                />
+              </CustomTooltip>
+              <div className="progress-page-header">
+                <FormattedMessage id="hex-map" />
+              </div>
+            </div>
+            <Divider />
+            <StudentGrammarProgress
+              student={currentStudent}
+              startDate={startDate}
+              endDate={endDate}
+              group={currentGroup}
+            />
+          </div>
+        ) : (
+          <GroupHistory
             student={currentStudent}
             startDate={startDate}
             endDate={endDate}
             group={currentGroup}
             groupId={currentGroupId}
+            view={shownChart}
           />
-        </div>
-      ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
-        <div>
-          <div className="row-flex align center">
-            <CustomTooltip
-              permanent
-              title={
-                <div>
-                  <FormattedHTMLMessage id="vocabulary-view-explanation" />
-                  <br />
-                  <br />
-                  <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
-                  {': '}
-                  <FormattedHTMLMessage id="vocabulary-total-explanation" />
-                  <br />
-                  <br />
-                  <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
-                  {': '}
-                  <FormattedHTMLMessage id="vocabulary-seen-explanation" />
-                  <br />
-                  <br />
-                  <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
-                  {': '}
-                  <FormattedHTMLMessage id="vocabulary-visit-explanation" />
-                  <br />
-                  <br />
-                  <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
-                  {': '}
-                  <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
-                </div>
-              }
-            >
-              <InfoOutlinedIcon
-                fontSize="small"
-                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-              />
-            </CustomTooltip>
-            <div className="progress-page-header">
-              <FormattedMessage id="vocabulary-view" />
-            </div>
-          </div>
-          <Divider />
-          <div className="progress-page-graph-cont">
-            <StudentVocabularyProgress
-              studentVocabulary={studentVocabulary}
-              vocabularyPending={vocabularyPending}
-              previousStudentVocabulary={previousStudentVocabulary}
-              previousPending={previousPending}
-              graphType={graphType}
-              setGraphType={setGraphType}
-            />
-          </div>
-        </div>
-      ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
-        <div>
-          <div className="row-flex align center">
-            <CustomTooltip permanent keyId="hex-map-explanation">
-              <InfoOutlinedIcon
-                fontSize="small"
-                sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-              />
-            </CustomTooltip>
-            <div className="progress-page-header">
-              <FormattedMessage id="hex-map" />
-            </div>
-          </div>
-          <Divider />
-          <StudentGrammarProgress
-            student={currentStudent}
-            startDate={startDate}
-            endDate={endDate}
-            group={currentGroup}
-          />
-        </div>
-      ) : (
-        <GroupHistory
-          student={currentStudent}
-          startDate={startDate}
-          endDate={endDate}
-          group={currentGroup}
-          groupId={currentGroupId}
-          view={shownChart}
-        />
-      )}
+        )}
+      </Box>
     </div>
   )
 }

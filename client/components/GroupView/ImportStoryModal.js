@@ -1,9 +1,14 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Dropdown, Input } from 'semantic-ui-react'
-import { FormattedMessage, useIntl } from 'react-intl';
+import { Select, MenuItem, ListItemText, OutlinedInput } from '@mui/material'
+import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTextField from 'Components/ui/AppTextField'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { importStoriesFromGroup } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 
@@ -13,62 +18,96 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
   const { groups } = useSelector(({ groups }) => groups)
   const [selectedGroups, setSelectedGroups] = useState([])
   const [message, setMessage] = useState('')
-  const group = groups.find(group => group.group_id === groupId)
+  const group = groups.find(g => g.group_id === groupId)
 
-  const options = groups.filter(group => group.group_id !== groupId).map(
-    group => ({key: group.group_id, text: group.groupName, value: group.group_id}))
+  const options = groups
+    .filter(g => g.group_id !== groupId)
+    .map(g => ({ value: g.group_id, label: g.groupName }))
+
   const submitGroupImport = async () => {
-    // console.log(selectedGroups)
-    // console.log(message)
     await dispatch(importStoriesFromGroup(groupId, selectedGroups, message))
-    dispatch(
-      getAllStories(group.language, {
-        sort_by: 'date',
-        order: -1,
-      })
-    )
+    dispatch(getAllStories(group.language, { sort_by: 'date', order: -1 }))
     setOpen(false)
     setSelectedGroups([])
     setMessage('')
   }
 
+  const dialogTitle = (
+    <span>
+      <FormattedMessage id="import-story" /> : {group?.groupName}
+    </span>
+  )
+
   return (
-    <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open={open}>
-      <Modal.Header>
-        <FormattedMessage id="import-story" /> : {group.groupName}
-      </Modal.Header>
-      <Modal.Content style={{ display: 'flex', flexDirection: 'column', height: '260px' }}>
-        <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
-          <FormattedMessage id="import-story-label" />
-        </h2>
-        <FormattedHTMLMessage id="import-story-description" />
-        <Dropdown 
-          placeholder={intl.formatMessage({id: 'import-from'})} 
-          fluid multiple selection 
-          options={options}
-          onChange={(e, { value }) => setSelectedGroups(value)}
-          style={{ marginTop: '1em' }}
-        />
-        <span style={{marginTop: '1em'}}>
-            <label style={{marginRight: '2em', fontWeight: 'bold'}}><FormattedMessage id="import-story-message" /></label>
-            <Input type="text" onChange={(e)=> setMessage(e.target.value)} />
-        </span>
-      </Modal.Content>
-      <Modal.Actions>
-        <AppButton onClick={submitGroupImport} disabled={selectedGroups.length === 0}>
-            <FormattedMessage id="import" />
-        </AppButton>
-        <AppButton
-          style={{ marginLeft: '1em' }}
-          onClick={() => {
-            setOpen(false)
+    <AppDialog open={open} onClose={() => setOpen(false)} title={dialogTitle}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+        <div>
+          <h2 style={{ fontFamily: font.family, fontSize: 17, fontWeight: 600, margin: 0 }}>
+            <FormattedMessage id="import-story-label" />
+          </h2>
+          <FormattedHTMLMessage id="import-story-description" />
+        </div>
+
+        <Select
+          multiple
+          displayEmpty
+          fullWidth
+          value={selectedGroups}
+          onChange={e => setSelectedGroups(e.target.value)}
+          input={<OutlinedInput />}
+          renderValue={selected =>
+            selected.length === 0 ? (
+              <span style={{ color: colors.muted }}>
+                {intl.formatMessage({ id: 'import-from' })}
+              </span>
+            ) : (
+              options
+                .filter(o => selected.includes(o.value))
+                .map(o => o.label)
+                .join(', ')
+            )
+          }
+          MenuProps={{ disableScrollLock: true }}
+          sx={{
+            backgroundColor: colors.card,
+            borderRadius: '999px',
+            fontFamily: font.family,
+            color: colors.ink,
+            '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.border },
+            '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.focus },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: colors.focus },
           }}
-          variant="secondary"
         >
-          <FormattedMessage id="cancel" />
-        </AppButton>
-      </Modal.Actions>
-    </Modal>
+          {options.map(o => (
+            <MenuItem key={o.value} value={o.value}>
+              <AppCheckbox checked={selectedGroups.includes(o.value)} />
+              <ListItemText primary={o.label} />
+            </MenuItem>
+          ))}
+        </Select>
+
+        <AppTextField
+          label={intl.formatMessage({ id: 'import-story-message' })}
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+        />
+
+        <div
+          style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '.5em' }}
+        >
+          <AppButton variant="secondary" onClick={() => setOpen(false)}>
+            <FormattedMessage id="cancel" />
+          </AppButton>
+          <AppButton
+            variant="primary"
+            onClick={submitGroupImport}
+            disabled={selectedGroups.length === 0}
+          >
+            <FormattedMessage id="import" />
+          </AppButton>
+        </div>
+      </div>
+    </AppDialog>
   )
 }
 

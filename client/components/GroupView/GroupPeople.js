@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -6,8 +7,12 @@ import {
   setGroupTestDeadline,
 } from 'Utilities/redux/groupsReducer'
 import { FormattedMessage } from 'react-intl'
-import { Icon, Table } from 'semantic-ui-react'
+import { Box, TableHead, TableBody, TableRow, TableCell, IconButton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
 import AppButton from 'Components/AppButton'
+import AppTable from 'Components/ui/AppTable'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
@@ -15,6 +20,8 @@ import PeopleAddResultModal from './PeopleAddResultModal'
 import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
+
+const ADD_GREEN = '#2E9E6E'
 
 const GroupPeople = ({ role }) => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
@@ -41,18 +48,15 @@ const GroupPeople = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  const removeUser = (userId, role) => {
-    dispatch(removeFromGroup(currentGroupId, userId, role))
+  const removeUser = (userId, userRole) => {
+    dispatch(removeFromGroup(currentGroupId, userId, userRole))
   }
 
   const handleResendInvitationClick = userId => {
     dispatch(resendGroupInvitation(currentGroupId, userId))
   }
 
-  if (pending || (totalGroups.length > 0 && !currentGroup))
-    return (
-      <Spinner fullHeight size={60}/>
-    )
+  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight size={60} />
 
   if (totalGroups.length === 0) {
     return <NoGroupsView role={role} />
@@ -62,149 +66,172 @@ const GroupPeople = ({ role }) => {
 
   return (
     <div className="group-container">
-      <PeopleAddResultModal lastAddInfo={lastAddInfo} />
+      <Box
+        sx={{
+          backgroundColor: colors.card,
+          color: colors.ink,
+          fontFamily: font.family,
+          border: `1px solid ${colors.border}`,
+          borderRadius: '20px',
+          width: '100%',
+          maxWidth: 1024,
+          mx: 'auto',
+          my: '2rem',
+          p: { xs: '16px', sm: '24px' },
+        }}
+      >
+        <PeopleAddResultModal lastAddInfo={lastAddInfo} />
 
-      <div style={{ margin: '1.5em 0em .75em 0em' }}>
-        <div className="header-2">{currentGroup.groupName}</div>
-        <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
-      </div>
-      <GroupFunctions
-        group={currentGroup}
-        showToken={showToken}
-        setShowTokenGroupId={setShowTokenGroupId}
-        showTestEnableMenuGroupId={showTestEnableMenuGroupId}
-        setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-        currTestDeadline={currTestDeadline}
-        setCurrTestDeadline={setCurrTestDeadline}
-      />
-      {showToken && <GroupKey />}
-      {showTestEnableMenu && (
-        <EnableTestMenu
-          setGroupTestDeadline={setGroupTestDeadline}
-          setCurrTestDeadline={setCurrTestDeadline}
+        <div style={{ marginBottom: '.75em' }}>
+          <div className="header-2">{currentGroup.groupName}</div>
+          <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
+        </div>
+        <GroupFunctions
+          group={currentGroup}
+          showToken={showToken}
+          setShowTokenGroupId={setShowTokenGroupId}
+          showTestEnableMenuGroupId={showTestEnableMenuGroupId}
           setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-          id={currentGroupId}
+          currTestDeadline={currTestDeadline}
+          setCurrTestDeadline={setCurrTestDeadline}
         />
-      )}
-      <hr />
+        {showToken && <GroupKey />}
+        {showTestEnableMenu && (
+          <EnableTestMenu
+            setGroupTestDeadline={setGroupTestDeadline}
+            setCurrTestDeadline={setCurrTestDeadline}
+            setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+            id={currentGroupId}
+          />
+        )}
 
-      <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
+        <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
 
-      <Table size="small" celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell key="teachers-header" colSpan="2">
-              <div className="space-between" style={{ fontSize: '1.2em' }}>
-                <FormattedMessage id="Teachers" /> ({currentGroup.teachers?.length})
-                {currentGroup.is_teaching && (
-                  <Icon
-                    data-cy="add-to-group-button"
-                    style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
-                    name="plus"
-                    size="large"
-                    onClick={() => setAddToGroupId(currentGroupId)}
-                  />
-                )}
-              </div>
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {currentGroup.teachers.map(teacher => (
-            <Table.Row>
-              <Table.Cell key={`teacher-${teacher.userName}`}>{teacher.userName}</Table.Cell>
-            </Table.Row>
-          ))}
-          {currentGroup.pending_teachers.map(teacher => (
-            <Table.Row>
-              <Table.Cell key={`teacher-${teacher.userName}`}>
-                <div className="flex space-between" style={{ alignItems: 'center' }}>
-                  <span style={{ color: 'gray' }}>{teacher.userName}</span>
-                  {currentUserIsTeacher && (
-                    <AppButton
-                      onClick={() => handleResendInvitationClick(teacher._id)}
-                      size="sm"
-                      style={{ marginRight: '1em' }}
+        <AppTable bordered containerProps={{ sx: { mt: '1em' } }}>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={2}>
+                <div className="space-between" style={{ fontSize: '1.2em' }}>
+                  <span>
+                    <FormattedMessage id="Teachers" /> ({currentGroup.teachers?.length})
+                  </span>
+                  {currentGroup.is_teaching && (
+                    <IconButton
+                      data-cy="add-to-group-button"
+                      size="small"
+                      sx={{ color: ADD_GREEN }}
+                      onClick={() => setAddToGroupId(currentGroupId)}
                     >
-                      <FormattedMessage id="resend-invitation" />
-                    </AppButton>
+                      <AddIcon />
+                    </IconButton>
                   )}
                 </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-
-      {currentGroup.is_teaching && (
-        <>
-          <Table size="small" celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell key="students-header" colSpan="2">
-                  <div className="space-between" style={{ fontSize: '1.2em' }}>
-                    <FormattedMessage id="students" /> ({currentGroup.students?.length})
-                    <Icon
-                      data-cy="add-to-group"
-                      style={{ cursor: 'pointer', color: 'rgb(0, 214, 126)' }}
-                      name="plus"
-                      size="large"
-                      onClick={() => setAddToGroupId(currentGroupId)}
-                    />
-                  </div>
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {currentGroup.students.map(student => (
-                <Table.Row>
-                  <Table.Cell key={`student-${student.userName}`}>
-                    {student.userName} ({student.email}){' '}
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentGroup.teachers.map(teacher => (
+              <TableRow key={`teacher-${teacher.userName}`}>
+                <TableCell>{teacher.userName}</TableCell>
+              </TableRow>
+            ))}
+            {currentGroup.pending_teachers.map(teacher => (
+              <TableRow key={`pending-teacher-${teacher.userName}`}>
+                <TableCell>
+                  <div className="flex space-between" style={{ alignItems: 'center' }}>
+                    <span style={{ color: colors.muted }}>{teacher.userName}</span>
                     {currentUserIsTeacher && (
-                      <Icon
-                        data-cy={`remove-from-group-${student.userName}`}
-                        style={{ cursor: 'pointer', color: 'rgb(239, 135, 132)' }}
-                        name="close"
-                        size="large"
-                        onClick={() => removeUser(student._id, 'student')}
-                      />
+                      <AppButton
+                        onClick={() => handleResendInvitationClick(teacher._id)}
+                        size="sm"
+                        style={{ marginRight: '1em' }}
+                      >
+                        <FormattedMessage id="resend-invitation" />
+                      </AppButton>
                     )}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-              {currentGroup.pending_students.map(student => (
-                <Table.Row>
-                  <Table.Cell key={`student-${student.userName}`}>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </AppTable>
+
+        {currentGroup.is_teaching && (
+          <AppTable bordered containerProps={{ sx: { mt: '1.5em' } }}>
+            <TableHead>
+              <TableRow>
+                <TableCell colSpan={2}>
+                  <div className="space-between" style={{ fontSize: '1.2em' }}>
+                    <span>
+                      <FormattedMessage id="students" /> ({currentGroup.students?.length})
+                    </span>
+                    <IconButton
+                      data-cy="add-to-group"
+                      size="small"
+                      sx={{ color: ADD_GREEN }}
+                      onClick={() => setAddToGroupId(currentGroupId)}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {currentGroup.students.map(student => (
+                <TableRow key={`student-${student.userName}`}>
+                  <TableCell>
                     <div className="flex space-between" style={{ alignItems: 'center' }}>
-                      <span style={{ color: 'gray' }}>
-                        {student.userName} ({student.email}){' '}
+                      <span>
+                        {student.userName} ({student.email})
                       </span>
                       {currentUserIsTeacher && (
-                        <div className="flex" style={{ alignItems: 'center' }}>
+                        <IconButton
+                          data-cy={`remove-from-group-${student.userName}`}
+                          size="small"
+                          sx={{ color: colors.error }}
+                          onClick={() => removeUser(student._id, 'student')}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {currentGroup.pending_students.map(student => (
+                <TableRow key={`pending-student-${student.userName}`}>
+                  <TableCell>
+                    <div className="flex space-between" style={{ alignItems: 'center' }}>
+                      <span style={{ color: colors.muted }}>
+                        {student.userName} ({student.email})
+                      </span>
+                      {currentUserIsTeacher && (
+                        <div className="flex" style={{ alignItems: 'center', gap: '0.5em' }}>
                           <AppButton
                             onClick={() => handleResendInvitationClick(student._id)}
                             size="sm"
-                            style={{ marginRight: '1em' }}
                           >
                             <FormattedMessage id="resend-invitation" />
                           </AppButton>
-                          <Icon
+                          <IconButton
                             data-cy={`remove-from-group-${student.userName}`}
-                            style={{ cursor: 'pointer' }}
-                            name="close"
-                            color="red"
+                            size="small"
+                            sx={{ color: colors.error }}
                             onClick={() => removeUser(student._id, 'pending_student')}
-                          />
+                          >
+                            <CloseIcon />
+                          </IconButton>
                         </div>
                       )}
                     </div>
-                  </Table.Cell>
-                </Table.Row>
+                  </TableCell>
+                </TableRow>
               ))}
-            </Table.Body>
-          </Table>
-        </>
-      )}
+            </TableBody>
+          </AppTable>
+        )}
+      </Box>
     </div>
   )
 }
