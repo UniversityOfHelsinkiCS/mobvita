@@ -279,23 +279,6 @@ const GroupView = () => {
         ) : (
           <>
             <Box data-cy="group-list" sx={{ px: '1rem' }}>
-              {/* Its own right-aligned row rather than a float: MUI Card sets `overflow: hidden`,
-                  so a floated button would squeeze the first group card instead of sitting over it. */}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: '1em' }}>
-                <GroupActionModal
-                  role={role}
-                  trigger={
-                    <AppButton
-                      data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-                      size="lg"
-                    >
-                      <FormattedMessage
-                        id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
-                      />
-                    </AppButton>
-                  }
-                />
-              </Box>
               <AddToGroup groupId={addToGroupId} setGroupId={setAddToGroupId} />
               <ConfirmationWarning
                 open={!!deleteGroupId}
@@ -311,20 +294,49 @@ const GroupView = () => {
               >
                 <FormattedMessage id="Are you sure you want to leave the group?" />
               </ConfirmationWarning>
-              {groups.map(group => (
-                <GroupCard
-                  key={group.group_id}
-                  group={group}
-                  setAddToGroupId={setAddToGroupId}
-                  setDeleteGroupId={setDeleteGroupId}
-                  setLearningModalGroupId={setLearningModalGroupId}
-                  setLeaveGroupId={setLeaveGroupId}
-                  showTokenGroupId={showTokenGroupId}
-                  setShowTokenGroupId={setShowTokenGroupId}
-                  showTestEnableMenuGroupId={showTestEnableMenuGroupId}
-                  setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
-                />
-              ))}
+              {/* Cream design-system panel behind the group list. */}
+              <Box
+                sx={{
+                  backgroundColor: colors.card,
+                  color: colors.ink,
+                  fontFamily: font.family,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: '20px',
+                  p: { xs: '12px', sm: '20px' },
+                  mt: '2rem',
+                }}
+              >
+                {/* Right-aligned create/join row inside the cream panel. */}
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: '1em' }}>
+                  <GroupActionModal
+                    role={role}
+                    trigger={
+                      <AppButton
+                        data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
+                        size="lg"
+                      >
+                        <FormattedMessage
+                          id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
+                        />
+                      </AppButton>
+                    }
+                  />
+                </Box>
+                {groups.map(group => (
+                  <GroupCard
+                    key={group.group_id}
+                    group={group}
+                    setAddToGroupId={setAddToGroupId}
+                    setDeleteGroupId={setDeleteGroupId}
+                    setLearningModalGroupId={setLearningModalGroupId}
+                    setLeaveGroupId={setLeaveGroupId}
+                    showTokenGroupId={showTokenGroupId}
+                    setShowTokenGroupId={setShowTokenGroupId}
+                    showTestEnableMenuGroupId={showTestEnableMenuGroupId}
+                    setShowTestEnableMenuGroupId={setShowTestEnableMenuGroupId}
+                  />
+                ))}
+              </Box>
             </Box>
           </>
         )}

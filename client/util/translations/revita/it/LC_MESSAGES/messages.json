@@ -1881,5 +1881,10 @@
     "interface-settings": "Interface settings",
     "all-topics-in-text": "All Topics In Text",
     "rename-folder": "Rename folder",
-    "add-stories-assistant-lead": "Learn language by adding new stories to the library"
+    "add-stories-assistant-lead": "Learn language by adding new stories to the library",
+    "customise": "Customise",
+    "start-lesson": "Start Lesson",
+    "setup-lesson": "Setup Lesson",
+    "clear-all": "Clear All",
+    "select-all": "Select All"
 }

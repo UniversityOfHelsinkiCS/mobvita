@@ -1,32 +1,23 @@
 .grammar-buttons-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
+  align-items: stretch;
+  width: 100%;
+  max-width: 480px;
+  /* top space gives the recommended-level pointer headroom above the first row */
+  margin: 24px auto 0;
+  gap: 16px;
 }
 
 .grammar-level-button-group {
   display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  gap: 25px;
-}
-
-@media (max-width: 1330px) {
-  .grammar-level-button-group {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(4, 1fr);
+  /* wider row gap so the pointer has room when the recommended level is in a lower row */
+  row-gap: 28px;
+  column-gap: 12px;
+  width: 100%;
 }
 
 .button-with-marker {
   position: relative;
-}
-
-.button-with-marker > i {
-  position: absolute;
-  top: -24px;
-  left: 50%;
-  transform: translateX(-50%);
 }

@@ -41,14 +41,14 @@ export const Speaker = ({ word }) => {
       />
     )
   }
-  
-export const DictionaryButton = ({ setShow }) => {
-    const dispatch = useDispatch()
 
-    const handleDictionaryButtonClick = () => {
-        setShow(true)
-        dispatch(setAnnotationvisibilityMobile(false))
-    }
+export const DictionaryButton = ({ setShow }) => {
+  const dispatch = useDispatch()
+
+  const handleDictionaryButtonClick = () => {
+    setShow(true)
+    dispatch(setAnnotationvisibilityMobile(false))
+  }
 
   return (
     <AppButton

@@ -2,7 +2,6 @@ import React from 'react'
 import ReactSlider from 'react-slider'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
-import { getSliderThumbColor } from './sliderThumbColor'
 import './SliderStyles.scss'
 
 const StyledMark = localizedMarkString => props => {
@@ -59,7 +58,8 @@ const VocabDiffSlider = ({
   max = 100,
 }) => {
   const intl = useIntl()
-  const thumbClassName = `${getSliderThumbColor(value, min, max)} exercise-density-slider-thumb`
+  // Plain design-system thumb (cream fill, green ring) — no value-based colouring (2026 design).
+  const thumbClassName = 'exercise-density-slider-thumb'
   const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
 
   return (
@@ -80,7 +80,9 @@ const VocabDiffSlider = ({
         disabled={disabled}
       />
       <div className="space-between exercise-density-slider-label-cont bold">
-        {skillLevels.map(level => <span key={level}>{level}</span>)}
+        {skillLevels.map(level => (
+          <span key={level}>{level}</span>
+        ))}
       </div>
     </div>
   )

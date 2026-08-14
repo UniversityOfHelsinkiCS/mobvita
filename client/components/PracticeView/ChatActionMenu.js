@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import CloseIcon from '@mui/icons-material/Close'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import CloseIcon from '@mui/icons-material/Close'
 import HelpOutlinedIcon from '@mui/icons-material/HelpOutlined'
-import MenuBookIcon from '@mui/icons-material/MenuBook'
-import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined'
 import { FormattedMessage } from 'react-intl'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
@@ -170,15 +167,15 @@ const ChatActionMenu = ({
     <div className="chat-action-menu" ref={rootRef}>
       {/* Trigger Button */}
       <button type="button" className="chat-action-trigger" onClick={handleFabClick} data-cy="chat-action-menu-popup">
-        {open ? <CloseIcon fontSize="small" /> : <MoreVertIcon fontSize="small" />}
+        {open ? <CloseIcon /> : <MoreVertIcon />}
       </button>
 
       {open && (
         <div className="chat-action-options">
           {mode === 'chatbot' && !showAllHintsUsed && currentWord?.hints?.length > 0 && (currentWord.requested_hints?.length || 0) < currentWord.hints.length && (
-            <button type="button" className="chat-action-item" data-cy="chat-action-hint-button" onClick={handleHintClick}>
-              <div className="chat-action-icon" style={{ color: '#f2c03b' }}>
-                <LightbulbIcon />
+            <button type="button" className="chat-action-item" onClick={handleHintClick}>
+              <div className="chat-action-icon">
+                <img src={images.bulb} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
@@ -208,7 +205,7 @@ const ChatActionMenu = ({
               data-cy="nest-button"
               onClick={handleWordNestClick}>
               <div className="chat-action-icon">
-                <img src={images.network} alt="network icon" width="32" />
+                <img src={images.wordnest} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />
@@ -217,9 +214,9 @@ const ChatActionMenu = ({
           )}
                 
           {(
-            <button type="button" className="chat-action-item" data-cy="chat-action-translate-sentence-button" onClick={handleSentenceTranslation}>
-              <div className="chat-action-icon" style={{ color: '#17a2b8' }}>
-                <MenuBookIcon />
+            <button type="button" className="chat-action-item" onClick={handleSentenceTranslation}>
+              <div className="chat-action-icon">
+                <img src={images.translate01} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="dictionaryhelp-show-context-translation" defaultMessage="Translate Sentence" />
@@ -233,8 +230,8 @@ const ChatActionMenu = ({
               data-cy="add-note-button"
               onClick={() => { onAddNote(); setOpen(false) }}
             >
-              <div className="chat-action-icon" style={{ color: '#f2c03b' }}>
-                <StickyNote2OutlinedIcon />
+              <div className="chat-action-icon">
+                <img src={images.paste} alt="" width="24" height="24" style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="create-a-note" defaultMessage="Add a note" />

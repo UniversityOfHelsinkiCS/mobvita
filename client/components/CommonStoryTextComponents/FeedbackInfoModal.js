@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Divider } from '@mui/material'
 import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
+import AppDialog from 'Components/ui/AppDialog'
 import { clearExplanation, clearReferences, clearExample } from 'Utilities/redux/practiceReducer'
 import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/common'
 
@@ -83,7 +84,7 @@ const FeedbackInfoModal = () => {
   const ExampleList = ({ example }) => (
     <>
       <div className="bold header-3 mx-lg">
-        <FormattedMessage id="additional-information-modal-examples"  />
+        <FormattedMessage id="additional-information-modal-examples" />
       </div>
       {Object.keys(example).map(title => (
         <div className="mb-lg" key={title}>
@@ -91,9 +92,11 @@ const FeedbackInfoModal = () => {
             <Divider sx={{ my: '1em', width: '50%' }} />
           </div>
           <ul>
-            {(Array.isArray(example[title]) ? example[title] : [example[title]]).map((item, index) => (
-              <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
-            ))}
+            {(Array.isArray(example[title]) ? example[title] : [example[title]]).map(
+              (item, index) => (
+                <li key={index} dangerouslySetInnerHTML={formatGreenFeedbackText(item)} />
+              ),
+            )}
           </ul>
         </div>
       ))}
@@ -131,7 +134,6 @@ const FeedbackInfoModal = () => {
   )
 
   const handleModalClose = () => {
-    // Close immediately and clear redux immediately so it can't reopen.
     setIsOpen(false)
     dispatch(clearReferences())
     dispatch(clearExplanation())
@@ -144,8 +146,6 @@ const FeedbackInfoModal = () => {
     setExampleSnapshot(null)
   }
 
-  // semantic's `closeOnDimmerClick={false}` / `closeOnDocumentClick={false}`: swallow the backdrop
-  // click, still close on Escape and on the X.
   const handleDialogClose = (event, reason) => {
     if (reason === 'backdropClick') return
     handleModalClose()
@@ -155,7 +155,6 @@ const FeedbackInfoModal = () => {
     <AppDialog
       open={isOpen}
       onClose={handleDialogClose}
-      // semantic's `onClosed` — MUI fires the post-transition hook on the transition slot.
       slotProps={{ transition: { onExited: handleModalClosed } }}
       maxWidth="xs"
       data-cy="feedback-info-modal"
@@ -177,4 +176,3 @@ const FeedbackInfoModal = () => {
 }
 
 export default React.memo(FeedbackInfoModal)
-

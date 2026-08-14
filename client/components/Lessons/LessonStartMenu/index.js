@@ -70,50 +70,52 @@ const LessonStartMenu = ({ setOpen }) => {
     setOpen(false)
   }
 
+  // Sizing for the two stacked menu buttons; the white/border/hover look comes from `variant="card"`.
+  const cardSx = {
+    width: '70%',
+    borderRadius: '16px',
+    minHeight: 68,
+    fontSize: 18,
+    fontWeight: 600,
+    gap: '10px',
+    '& img': { width: 28, height: 28 },
+  }
+
   return (
     <div
       className="lesson-start-menu-container"
-      style={{ backgroundColor: colors.card, borderRadius: 30, padding: 24, overflow: 'hidden' }}
+      style={{ backgroundColor: colors.card, borderRadius: 30, padding: 24 }}
     >
       <CustomTooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
         <AppButton
           className="lesson-tour-start-button"
-          variant="primary"
+          variant="card"
           type="button"
           onClick={handleStartClick}
+          sx={cardSx}
         >
-          <div className="lesson-menu-button">
-            <img
-              className="lesson-menu-button-icon"
-              src={images.bookOpen}
-              alt="open book"
-              style={{ width: '26px', height: '26px' }}
-            />
-            <span className="lesson-menu-button-text">
-              <FormattedMessage id="start" />
-            </span>
-          </div>
+          <img src={images.playColored} alt="" />
+          {/* Trailing nbsp so the two labels are equal width and the icons line up vertically. */}
+          <span>
+            <FormattedMessage id="start-lesson" defaultMessage="Start Lesson" />
+            &nbsp;
+            {' '}
+          </span>
         </AppButton>
       </CustomTooltip>
 
       <CustomTooltip title={<FormattedMessage id="lesson-customize-info" />}>
         <AppButton
           className="lesson-tour-setup-button"
-          variant="secondary"
+          variant="card"
           type="button"
           onClick={handleLessonSetupClick}
+          sx={cardSx}
         >
-          <div className="lesson-menu-button">
-            <img
-              className="lesson-menu-button-icon"
-              src={images.settingsContrast}
-              alt="settings"
-              style={{ width: '36px', height: '36px' }}
-            />
-            <span className="lesson-menu-button-text">
-              <FormattedMessage id="lesson-setup" />
-            </span>
-          </div>
+          <img src={images.setupColored} alt="" />
+          <span>
+            <FormattedMessage id="setup-lesson" defaultMessage="Setup Lesson" />
+          </span>
         </AppButton>
       </CustomTooltip>
     </div>

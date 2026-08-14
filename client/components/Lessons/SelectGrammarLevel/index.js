@@ -7,7 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { cefrNumberToLevel } from 'Utilities/common'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTabs from 'Components/ui/AppTabs'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -152,7 +152,32 @@ const SelectGrammarLevel = ({
   // The tabs variant ("Customize learning settings") and the plain variant share one AppDialog;
   // only the title and body differ.
   const dialogTitle = showListeningSettings ? (
-    <FormattedMessage id="custom" />
+    <span style={{ display: 'block' }}>
+      <span
+        style={{
+          display: 'block',
+          fontFamily: font.family,
+          fontWeight: 700,
+          fontSize: 30,
+          lineHeight: 1.2,
+          color: colors.ink,
+        }}
+      >
+        <FormattedMessage id="customise" defaultMessage="Customise" />
+      </span>
+      <span
+        style={{
+          display: 'block',
+          fontFamily: font.family,
+          fontWeight: 400,
+          fontSize: 15,
+          color: colors.ink,
+          marginTop: 4,
+        }}
+      >
+        <FormattedMessage id="learning-settings" />
+      </span>
+    </span>
   ) : (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12 }}>
       <IconButton
@@ -173,7 +198,13 @@ const SelectGrammarLevel = ({
         {showListeningSettings ? (
           <>
             <div style={{ marginBottom: 24 }}>
-              <AppTabs tabs={tabItems} value={activeTab} onChange={setActiveTab} fullWidth bordered />
+              <AppTabs
+                tabs={tabItems}
+                value={activeTab}
+                onChange={setActiveTab}
+                fullWidth
+                bordered
+              />
             </div>
             {activeTab === 'grammar' ? (
               topicsPane
@@ -196,37 +227,54 @@ const SelectGrammarLevel = ({
       </AppDialog>
       <div className="grammar-buttons-container">
         <div className="grammar-level-button-group">
-          {GRAMMAR_LEVELS.map(level => (
-            <div className="button-with-marker" key={level}>
-              {recommendedLevel === level && (
-                <CustomTooltip
-                  title={intl.formatMessage({ id: 'recommended-grammar-topics-level-popup' })}
-                  placement="top"
-                  permanent
-                >
-                  <span style={{ display: 'inline-flex' }}>
-                    <ArrowDropDownIcon fontSize="large" sx={{ color: colors.ink }} />
-                  </span>
-                </CustomTooltip>
-              )}
+          {GRAMMAR_LEVELS.map(level => {
+            const button = (
               <ToggleButton
                 handleClick={() => handleLevelClick(level)}
                 name={`level ${level}`}
-                width="80px"
-                height="55px"
+                width="100%"
+                height="56px"
                 active={activeLevelSet.has(level)}
+                recommended={recommendedLevel === level}
                 level={level}
               />
-            </div>
-          ))}
+            )
+            if (recommendedLevel === level) {
+              const recommendedTip = intl.formatMessage({
+                id: 'recommended-grammar-topics-level-popup',
+              })
+              return (
+                <div className="button-with-marker" key={level}>
+                  {/* Always-visible pointer above the recommended block, sharing its tooltip. */}
+                  <CustomTooltip title={recommendedTip} placement="top" arrow permanent>
+                    <ArrowDropDownIcon
+                      fontSize="large"
+                      sx={{
+                        position: 'absolute',
+                        bottom: '100%',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        mb: '-6px',
+                        color: colors.ink,
+                      }}
+                    />
+                  </CustomTooltip>
+                  <CustomTooltip title={recommendedTip} placement="top" arrow permanent>
+                    {/* span holds the ref MUI Tooltip needs (ToggleButton doesn't forward one). */}
+                    <span style={{ display: 'block', width: '100%' }}>{button}</span>
+                  </CustomTooltip>
+                </div>
+              )
+            }
+            return <React.Fragment key={level}>{button}</React.Fragment>
+          })}
         </div>
-        <hr style={{ color: '#333', width: '320px' }} />
         <ToggleButton
           className="lesson-tour-custom-grammar-button"
           handleClick={() => setModal(true)}
           name="custom"
-          width="130px"
-          height="55px"
+          width="100%"
+          height="56px"
           active={customButtonActive}
         />
       </div>

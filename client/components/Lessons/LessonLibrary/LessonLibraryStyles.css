@@ -5,19 +5,36 @@
   height: 100%;
 }
 
+.lesson-setup-header {
+  width: 100%;
+  max-width: 480px;
+  margin: 24px auto 16px;
+  text-align: left;
+}
+
 .lesson-setup-title {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  margin-top: 40px !important;
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.2;
+  color: #2d2c2a;
+  margin: 0;
+}
+
+.lesson-setup-subtitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 15px;
+  color: #2d2c2a;
+  margin: 4px 0 0;
 }
 
 .lesson-setup-btn-container {
   display: flex;
-  justify-content: center !important;
-  align-items: flex-end;
-  margin-bottom: 20px;
-  gap: 28px;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 24px;
+  gap: 16px;
 }
 
 .lesson-group-row {

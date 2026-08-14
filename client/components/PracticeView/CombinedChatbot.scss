@@ -80,8 +80,9 @@
 }
 
 .inline-translation {
-  width: 80%;
-  margin-left: 15px;
+  width: 100%;
+  margin-left: 0;
+  padding: 10px;
 }
 
 .chatbot-header {
@@ -100,8 +101,7 @@
   align-items: center;
   gap: 4px;
 
-  .ui.icon,
-  .MuiSvgIcon-root {
+  .ui.icon {
     margin: 0;
   }
 
@@ -118,12 +118,12 @@
 
 .current-word {
   margin: 0;
-  text-align: center;
+  text-align: left;
   width: 100%;
   font-size: 1.2rem;
   color: #333;
   font-weight: 600;
-  padding: 0 60px;
+  padding: 0 10px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -150,10 +150,10 @@
       transform: scale(1.18);
     }
 
-    .ui.icon,
-    .MuiSvgIcon-root {
-      margin: 0;
-      font-size: 1.2rem;
+    // MUI icon (MoreVert / Close) — flex-centred by the button; just size the glyph.
+    svg {
+      width: 22px;
+      height: 22px;
     }
   }
 
@@ -196,8 +196,7 @@
         justify-content: center;
         flex-shrink: 0;
 
-        i.icon,
-        .MuiSvgIcon-root {
+        i.icon {
           margin: 0;
           padding: 0;
           display: flex;
@@ -220,11 +219,17 @@
 // Chat Messages Container (Handles all scrolling)
 .chatbot-messages-container {
   flex: 1;
-  padding: 10px 15px;
+  padding: 10px;
   background: transparent;
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  // Lemma cards fill the full width of the exercise panel (not treated like a chat bubble).
+  .app-lemma {
+    align-self: stretch;
+    width: 100%;
+  }
 }
 
     // Chat Input Area (Fixed at bottom)
@@ -447,9 +452,12 @@
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    
-    .hint-bulb { color: #f2c03b; margin-top: 2px; flex-shrink: 0; }        
-    .hint-info-icon { color: #17a2b8; cursor: pointer; flex-shrink: 0; margin-left: 4px; }
+
+    // The text fills the row so the info icon is pushed to the top-right corner.
+    > span { flex: 1; min-width: 0; }
+
+    .hint-bulb { margin-top: 2px; flex-shrink: 0; }
+    .hint-info-icon { color: #2d2c2a; cursor: pointer; flex-shrink: 0; margin-left: 4px; }
   }
 }
 
@@ -561,7 +569,7 @@
 .hint-request-container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 1em;
 
   .chat-action-text {

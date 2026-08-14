@@ -3,14 +3,11 @@ import CustomTooltip from 'Components/CustomTooltip';
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { Skeleton } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import GroupIcon from '@mui/icons-material/Group'
-import LanguageIcon from '@mui/icons-material/Language'
-import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
+import PeopleIcon from '@mui/icons-material/People'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
@@ -27,8 +24,10 @@ import {
   sanitizeHtml,
   composeExerciseContext,
   hiddenFeatures,
-  getMode
+  getMode,
+  images
 } from 'Utilities/common'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestModal from 'Components/WordNestModal'
@@ -38,7 +37,8 @@ import NoteFormModal from './NoteFormModal'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { useParams, useLocation } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
-import Lemma from 'Components/DictionaryHelp/Lemma'
+import AppLemma from 'Components/ui/AppLemma'
+import AppButton from 'Components/AppButton'
 import {
     setFocusedWord,
     mcExerciseTouched,
@@ -131,11 +131,11 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
               {showInfo && (
                 <InfoOutlinedIcon
                   className="hint-info-icon"
+                  fontSize="small"
                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                   onMouseDown={() => handleTooltipClick(note.info)}
-                  data-cy="chatbot-note-hint-info-icon"
                 />
-              )}
+              )}            
           </div>
         )
       })}
@@ -158,15 +158,15 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
                 )}
                 {note.isOwn && (
                   <span className="note-actions">
-                    <EditIcon
+                    <EditOutlinedIcon
                       className="note-action-icon"
+                      fontSize="small"
                       onClick={() => onEdit(note)}
-                      data-cy="chatbot-user-note-edit-icon"
                     />
                     <DeleteOutlinedIcon
                       className="note-action-icon trash"
+                      fontSize="small"
                       onClick={() => onDelete(note)}
-                      data-cy="chatbot-user-note-delete-icon"
                     />
                   </span>
                 )}
@@ -177,7 +177,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
               {note.isPublic && (
                 <CustomTooltip title={<FormattedMessage id="public-note-checkbox" />}>
                   <span style={{ display: 'inline-flex' }}>
-                    <GroupIcon className="note-public-icon" />
+                    <PeopleIcon className="note-public-icon" fontSize="small" />
                   </span>
                 </CustomTooltip>
               )}
@@ -520,10 +520,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       handleHintRequest(newHintList)
     }
   }        
-
-  const targetLangName = dictionaryLanguage
-    ? intl.formatMessage({ id: dictionaryLanguage })
-    : ''
+  
+  const targetLangName = intl.formatMessage({ id: dictionaryLanguage, defaultMessage: dictionaryLanguage })
 
   const handleGetTranslation = () => {
     if (currentWord && currentWord.lemmas) {
@@ -893,10 +891,25 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               placement="top"
               permanent
             >
-              <button type="button" className="translation-button" onClick={handleGetTranslation} data-cy="chatbot-translation-button">
-                <div style={{ color: '#1890ff' }}>
-                  <LanguageIcon style={{ padding: 0, border: 'none', fontSize: '1.8rem' }} />
-                </div>
+              <button type="button" className="translation-button" onClick={handleGetTranslation}>
+                {/* Green circular translate icon — same as the story-title translate button. */}
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '1.7rem',
+                    height: '1.7rem',
+                    borderRadius: '50%',
+                    backgroundColor: colors.green,
+                  }}
+                >
+                  <img
+                    src={images.translate}
+                    alt=""
+                    style={{ width: '1rem', height: '1rem', display: 'block' }}
+                  />
+                </span>
               </button>
             </CustomTooltip></div>
             <div style={{flex: 1}}>
@@ -942,21 +955,21 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             ) : (
                   <>       
                     {!isEmpty(currentWord.frozen_messages) && (
-                      <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-frozen-hint-message">
+                      <ChatBubble variant="hint" className="message-hint">
                         <div className="hint-item">
-                          <LightbulbIcon className="hint-bulb" />
+                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                           <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />
                         </div>
                       </ChatBubble>
                       )}
                             
                     {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
-                      <div className="message message-bot" data-cy="chatbot-action-menu-instruction">
-                        <FormattedMessage
-                          id="click-to-action-menu"
+                      <div className="message message-bot">
+                        <FormattedMessage 
+                          id="click-to-action-menu" 
                           defaultMessage="{icon} Click the menu for more options"
                           values={{
-                            icon: <MoreVertIcon style={{ verticalAlign: 'middle' }} />
+                            icon: <MoreVertIcon fontSize="small" style={{ verticalAlign: 'middle' }} />
                           }}
                         />
                       </div>
@@ -969,16 +982,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                           </div>
                           ) : (
                                 translationState.data?.map((translated, idx) => (
-                                <Lemma
+                                <AppLemma
                                   key={translated.URL || translated.lemma || idx}
                                   lemma={translated.lemma}
-                                  handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-                                  handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-                                  userUrl={translated.user_URL}
-                                  inflectionRef={translated.ref}
-                                  preferred={translated.preferred}
+                                  lemmaHref={translated.user_URL}
                                   translations={translated.glosses}
-                                  handleWordNestClick={
+                                  speaker={<Speaker word={translated.lemma} />}
+                                  onKnow={
+                                    translated.preferred
+                                      ? () => handleKnowningClick(translated.lemma)
+                                      : undefined
+                                  }
+                                  onDontKnow={
+                                    translated.preferred
+                                      ? () => handleNotKnowningClick(translated.lemma)
+                                      : undefined
+                                  }
+                                  dictionaryHref={translated.ref?.url || translated.user_URL}
+                                  onWordNest={
                                     isWordNestAvailableForLemma(translated.lemma)
                                       ? () => {
                                           setWordNestRestoreWord(computeWordNestRestoreWord())
@@ -986,15 +1007,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                           setWordNestModalOpen(true)
                                         }
                                       : undefined
-                                  }                                  
-                                  style={{
-                                    marginBottom: '8px',
-                                    padding: '15px', // Overrides default CSS padding
-                                    borderRadius: '8px',
-                                    backgroundColor: translated.stage !== undefined
-                                        ? `${flashcardColors.background[translated.stage]}4D`
-                                        : '#f9f9f9',
-                                }}
+                                  }
+                                  background={
+                                    translated.stage !== undefined
+                                      ? `${flashcardColors.background[translated.stage]}4D`
+                                      : undefined
+                                  }
+                                  style={{ marginBottom: '8px' }}
                                 />
                               ))
 
@@ -1018,15 +1037,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         <>                          
 
                           {currentWord.hint2penalty && attempt === 0 && (
-                            <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-hint2penalty-message">
+                            <ChatBubble variant="hint" className="message-hint">
                               <div className="hint-item">
-                                <LightbulbIcon className="hint-bulb" />
+                                <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                 <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
                                 {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                  <InfoOutlinedIcon
+                                  <InfoOutlinedIcon fontSize="small"
                                       className="hint-info-icon"
                                       onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
-                                      data-cy="chatbot-hint2penalty-info-icon"
                                   />
                                 )}
                               </div>
@@ -1034,15 +1052,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                             )}
                             
                             {preHints?.map((hint, index) => (
-                              <ChatBubble key={index} variant="hint" className="message-hint" data-cy="chatbot-hint-message">
+                              <ChatBubble key={index} variant="hint" className="message-hint">
                                 <div className="hint-item">
-                                  <LightbulbIcon className="hint-bulb" />
+                                  <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                   <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                                   {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                    <InfoOutlinedIcon
+                                    <InfoOutlinedIcon fontSize="small"
                                       className="hint-info-icon"
                                       onMouseDown={() => handleTooltipClick(hint)}
-                                      data-cy="chatbot-hint-info-icon"
                                     />
                                   )}
                                 </div>
@@ -1070,30 +1087,28 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
                           <>
                               {currentWord.hint2penalty && attempt === 0 && (
-                                  <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-hint2penalty-message-after-chat">
+                                  <ChatBubble variant="hint" className="message-hint">
                                       <div className="hint-item">
-                                          <LightbulbIcon className="hint-bulb" />
+                                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                           <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
                                           {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                              <InfoOutlinedIcon
+                                              <InfoOutlinedIcon fontSize="small"
                                                   className="hint-info-icon"
                                                   onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
-                                                  data-cy="chatbot-hint2penalty-info-icon-after-chat"
                                               />
                                           )}
                                       </div>
                                   </ChatBubble>
                               )}
                               {preHints?.map((hint, index) => (
-                                <ChatBubble key={index} variant="hint" className="message-hint" data-cy="chatbot-hint-message-after-chat">
+                                <ChatBubble key={index} variant="hint" className="message-hint">
                                   <div className="hint-item">
-                                    <LightbulbIcon className="hint-bulb" />
+                                    <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
                                     <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                                     {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                        <InfoOutlinedIcon
+                                        <InfoOutlinedIcon fontSize="small"
                                           className="hint-info-icon"
                                           onMouseDown={() => handleTooltipClick(hint)}
-                                          data-cy="chatbot-hint-info-icon-after-chat"
                                         />
                                     )}
                                   </div>
@@ -1151,7 +1166,6 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
                       role="button"
                       tabIndex={0}
-                      data-cy="chatbot-hint-bulbs"
                       onKeyDown={(e) => {
                       if ((e.key === 'Enter' || e.key === ' ') && !showAllHintsUsed) {
                         e.preventDefault();
@@ -1159,13 +1173,23 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       }
                       }}>
                       {eloScoreHearts.map(heart => (
-                        <LightbulbIcon key={`lit-${heart}`} fontSize="small" sx={{ color: '#f2c03b' }} />
+                        <img
+                          key={`lit-${heart}`}
+                          src={images.bulb}
+                          alt=""
+                          width="22"
+                          height="22"
+                          style={{ display: 'block' }}
+                        />
                       ))}
                       {spentHints.map(hint => (
-                        <LightbulbOutlinedIcon
+                        <img
                           key={`spent-${hint}`}
-                          fontSize="small"
-                          sx={{ color: '#b0b0b0', opacity: 0.6 }}
+                          src={images.bulbEmpty}
+                          alt=""
+                          width="22"
+                          height="22"
+                          style={{ display: 'block' }}
                         />
                       ))}
                     </div>
@@ -1183,12 +1207,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                     placement="top"
                     permanent
                   >
-                      <span className="chat-action-text"
+                      <AppButton
+                        variant="primary"
+                        size="sm"
+                        disabled={showAllHintsUsed}
                         onClick={showAllHintsUsed ? undefined : handleShowHint}
-                        data-cy="chatbot-show-hint-text"
-                        style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}>
+                      >
                         <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
-                      </span>
+                      </AppButton>
                   </CustomTooltip></div>
             )}
           </div>                    
@@ -1216,18 +1242,18 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             <>            
             {translationState.surfaceWord && (
               <div className="chatbot-header" style={{ marginBottom: '1em' }}>
-                <div className="bulbs-container" style={{ opacity: 0, pointerEvents: 'none' }}>
-                    {/* Empty container to maintain alignment */}
-                </div>
-                <h4 className="current-word">
+                <div>
                     {translationState.surfaceWord &&
                         translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <CustomTooltip
                         title={<FormattedHTMLMessage id="explain-speaker-surface" />}
                     >
-                        <span style={{ display: 'inline-flex' }}>
+                        
                           <Speaker word={translationState.surfaceWord} />
-                        </span>
-                    </CustomTooltip>} {translationState.maskSymbol || translationState.surfaceWord}
+                        
+                    </CustomTooltip>}
+                </div>
+                <h4 className="current-word">
+                     {translationState.maskSymbol || translationState.surfaceWord}
                 </h4>
                                 <ChatActionMenu mode="dictionary"
                                     onAddNote={canAddNote ? handleAddNote : undefined}
@@ -1256,13 +1282,23 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
             {/* Translation Results */}               
 
                 {translationState.data && translationState.data.length > 0 ? (
-    translationState.data.map((translated, idx) => (      
-        <Lemma
+    translationState.data.map((translated, idx) => (
+        <AppLemma
             key={translated.URL || translated.lemma || idx}
             lemma={translated.lemma}
-            handleKnowningClick={() => handleKnowningClick(translated.lemma)}
-            handleNotKnowningClick={() => handleNotKnowningClick(translated.lemma)}
-            handleWordNestClick={
+            lemmaHref={translated.user_URL}
+            translations={translated.glosses}
+            speaker={<Speaker word={translated.lemma} />}
+            onKnow={
+                translated.preferred ? () => handleKnowningClick(translated.lemma) : undefined
+            }
+            onDontKnow={
+                translated.preferred
+                    ? () => handleNotKnowningClick(translated.lemma)
+                    : undefined
+            }
+            dictionaryHref={translated.ref?.url || translated.user_URL}
+            onWordNest={
                 isWordNestAvailableForLemma(translated.lemma)
                     ? () => {
                           setWordNestRestoreWord(computeWordNestRestoreWord())
@@ -1271,24 +1307,16 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                       }
                     : undefined
             }
-            userUrl={translated.user_URL}
-            inflectionRef={translated.ref}
-            preferred={translated.preferred}
-            translations={translated.glosses} // Pass the glosses array to the bottom row
-            showInflactionLink={translationState.data.length < 3 || idx > 0}
-            // Pass the dynamic styling to the root of the Lemma component
-            style={{
-                marginBottom: '8px',
-                padding: '15px', // Overrides default CSS padding
-                borderRadius: '8px',
-                backgroundColor: translated.stage !== undefined
+            background={
+                translated.stage !== undefined
                     ? `${flashcardColors.background[translated.stage]}4D`
-                    : '#f9f9f9',
-            }}
+                    : undefined
+            }
+            style={{ marginBottom: '8px' }}
         />
     ))
         ) : (
-            <p className="no-translation-text" data-cy="chatbot-no-translation-text"></p>
+            <p className="no-translation-text"></p>
         )}
             </div>
           <div className="chatbot-messages-container">

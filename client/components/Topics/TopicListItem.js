@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useSelector } from 'react-redux'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import CheckIcon from '@mui/icons-material/Check'
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
 import AppButton from 'Components/AppButton'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import CustomTooltip from 'Components/CustomTooltip'
 
 import { useIntl, FormattedMessage } from 'react-intl'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -175,7 +175,6 @@ const LessonTitle = ({
   return bigScreen ? (
     <div>
       <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-        <MoreVertIcon className="lesson-item-dots" sx={{ color: 'grey' }} />
         <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
           <h5
             className="story-item-title"
@@ -186,7 +185,7 @@ const LessonTitle = ({
         <div className="lesson-card-actions-cont">
           <div className="lesson-actions">
             <AppButton
-              variant={selected ? 'primary' : 'outline-primary'}
+              variant={selected ? 'primary' : 'card'}
               onClick={() => {
                 if (selected) {
                   excludeLesson(lesson.ID)
@@ -195,16 +194,24 @@ const LessonTitle = ({
                 }
               }}
               disabled={disabled}
+              sx={{
+                gap: '8px',
+                '& svg': { fontSize: 20 },
+                // Not-selected: cream fill with an ink border matching the text colour.
+                ...(selected
+                  ? {}
+                  : {
+                      backgroundColor: '#F7F0D5',
+                      border: `1px solid ${colors.ink}`,
+                      '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
+                    }),
+              }}
               style={{
                 cursor: !disabled ? 'pointer' : 'not-allowed',
               }}
             >
-              {(selected && (
-                <>
-                  <CheckIcon />
-                  <FormattedMessage id="included-in-lesson" />
-                </>
-              )) || <FormattedMessage id="include-into-lesson" />}
+              <CheckBoxOutlinedIcon />
+              <FormattedMessage id="select-all" defaultMessage="Select All" />
             </AppButton>
           </div>
         </div>
@@ -224,7 +231,6 @@ const LessonTitle = ({
               ...getTextStyle(learningLanguage),
             }}
           >
-            <MoreVertIcon className="lesson-item-dots" sx={{ color: 'grey' }} />
             <span dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }} />
             {/* {`${intl.formatMessage({ id: 'topic-singular' })} ${lesson.topic_id}`} */}
           </h5>
@@ -234,7 +240,7 @@ const LessonTitle = ({
       <div className="lesson-card-actions-cont">
         <div className="lesson-actions">
           <AppButton
-            variant={selected ? 'primary' : 'outline-primary'}
+            variant={selected ? 'primary' : 'card'}
             onClick={() => {
               if (selected) {
                 excludeLesson(lesson.ID)
@@ -243,17 +249,25 @@ const LessonTitle = ({
               }
             }}
             disabled={disabled}
+            sx={{
+              gap: '8px',
+              '& svg': { fontSize: 20 },
+              // Not-selected: cream fill with an ink border matching the text colour.
+              ...(selected
+                ? {}
+                : {
+                    backgroundColor: '#F7F0D5',
+                    border: `1px solid ${colors.ink}`,
+                    '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
+                  }),
+            }}
             style={{
               width: '100%',
               cursor: !disabled ? 'pointer' : 'not-allowed',
             }}
           >
-            {(selected && (
-              <>
-                <CheckIcon />
-                <FormattedMessage id="included-in-lesson" />
-              </>
-            )) || <FormattedMessage id="include-into-lesson" />}
+            <CheckBoxOutlinedIcon />
+            <FormattedMessage id="select-all" defaultMessage="Select All" />
           </AppButton>
         </div>
       </div>
@@ -272,8 +286,8 @@ const TopicListItem = ({
   showPerf,
 }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
-  // Default cards are transparent so they sit on the cream card; only high-scoring lessons tint green.
-  let backgroundColor = 'transparent'
+  // Cards sit on a soft cream tint; high-scoring lessons get a green tint instead.
+  let backgroundColor = '#F7F0D5'
   if (correct_perc >= 0.8) backgroundColor = '#E2FFE1'
   return (
     <div

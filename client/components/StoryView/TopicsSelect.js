@@ -62,10 +62,13 @@ const SortChip = styled('button', { shouldForwardProp: prop => prop !== 'active'
 const TopicRow = styled('div', { shouldForwardProp: prop => prop !== 'selected' })(
   ({ selected }) => ({
     ...rowStyles({ selected }),
+    // Trim the shared row's wide horizontal padding so the name gets the maximum width.
+    padding: '9px 14px',
     display: 'grid',
+    // Name takes all remaining width; the number column is only as wide as its content.
     gridTemplateColumns: 'minmax(0, 1fr) auto',
     alignItems: 'start',
-    columnGap: 0,
+    columnGap: 12,
     whiteSpace: 'normal',
   }),
 )
@@ -171,17 +174,8 @@ const TopicsSelect = ({ conceptCount = {}, focusedConcept, setFocusedConcept }) 
                 style={{ minWidth: 0, overflowWrap: 'anywhere', wordBreak: 'break-word' }}
                 dangerouslySetInnerHTML={{ __html: stripName(name) }}
               />
-              {/* Frequency — its own right-aligned column. */}
-              <span
-                style={{
-                  width: 52,
-                  textAlign: 'right',
-                  color: colors.muted,
-                  marginLeft: 12,
-                }}
-              >
-                {info.freq}
-              </span>
+              {/* Frequency — only as wide as the number; the column gap provides the spacing. */}
+              <span style={{ color: colors.muted }}>{info.freq}</span>
             </TopicRow>
           ))}
         </div>

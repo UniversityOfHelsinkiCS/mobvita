@@ -79,6 +79,8 @@ import libraryBig from 'Assets/images/library-big.svg'
 import rocket from 'Assets/images/rocket-02.svg'
 import route from 'Assets/images/route.svg'
 import playCircleColored from 'Assets/images/play-circle-colored.svg'
+import playColored from 'Assets/images/play-colored.svg'
+import setupColored from 'Assets/images/setup-colored.svg'
 import wavesColored from 'Assets/images/waves-colored.svg'
 import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
 import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
@@ -136,6 +138,7 @@ import lightbulbIcon from 'Assets/images/light-bulb.png'
 // ---
 import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
+import testsColored from 'Assets/images/tests.svg'
 import logo from 'Assets/images/logo_transparent.png'
 import navbarLogo from 'Assets/images/logo_navbar_transparent.png'
 import flashcardIcon from 'Assets/images/flashcard_icon.png'
@@ -261,6 +264,8 @@ export const images = {
   rocket,
   route,
   playCircleColored,
+  playColored,
+  setupColored,
   wavesColored,
   bookOpenColored,
   layersThreeColored,
@@ -293,6 +298,7 @@ export const images = {
   flagChinese,
   flagEnglish,
   tests,
+  testsColored,
   addStory,
   addStoriesIcon,
   logo,
@@ -539,7 +545,7 @@ export function getWordColor(
     user_grade >= word_level ||
     !hiddenFeatures
   ) {
-    return '#FFFFFF' // white background
+    return 'transparent' // no difficulty highlight — let the card/background show through
   }
 
   // const wordDifficulty = skillLevels.findIndex(level => {

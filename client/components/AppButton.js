@@ -13,6 +13,8 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  *   tan-outline      - pale-green fill, green border; hover fills green
  *   inverse          - for dark backgrounds: transparent, cream border/text; hover fills green
  *   danger           - solid red (not in the button sheet, kept for destructive actions)
+ *   card             - white surface, soft warm border, ink text; hover darkens a shade (menu/action
+ *                      cards, e.g. the lesson-library Start/Setup buttons)
  *   link             - text-only, underlined
  *
  * Legacy bootstrap variant names are aliased onto the above so the ~90 existing call sites re-skin
@@ -28,6 +30,10 @@ const DISABLED_TEXT = '#B7B4A8'
 const INK_HOVER = '#4A4844'
 const TAN_OUTLINE_BG = '#E9F1EC'
 const INVERSE_DISABLED = '#6B6862'
+// `card` variant — white surface with a soft warm border; darkens a shade on hover.
+const CARD_BORDER = '#E4E1D3'
+const CARD_HOVER_BG = '#EDE8D8'
+const CARD_HOVER_BORDER = '#DCD8C8'
 
 const VARIANT_STYLES = {
   tan: {
@@ -80,6 +86,13 @@ const VARIANT_STYLES = {
     minWidth: 0,
     textDecoration: 'underline',
     '&:hover': { backgroundColor: 'transparent', textDecoration: 'none' },
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    color: colors.ink,
+    border: `1px solid ${CARD_BORDER}`,
+    '&:hover': { backgroundColor: CARD_HOVER_BG, borderColor: CARD_HOVER_BORDER },
+    '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
 }
 

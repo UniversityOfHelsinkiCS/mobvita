@@ -23,7 +23,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import FocusedView from 'Components/AnnotationBox/FocusedView'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
-import Lemma from './Lemma'
+import AppLemma from 'Components/ui/AppLemma'
 import ContextTranslation from './ContextTranslation'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -163,36 +163,39 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     sortedTranslation.map(translated => {
         return (
           <div className="space-between" key={translated.URL || translated.lemma}>
-            <div
-              data-cy="translations"
-              style={{
-                color: colors.ink,
-                fontFamily: font.family,
-                marginBottom: '1em',
-                padding: '1em',
-                borderRadius: '15px',
-                backgroundColor: `${
-                  (translated.preferred && background[translated.stage || 0]) || '#FFFFFF'
-                }4D`,
-              }}
-            >
-              {clue ? (
+            {clue ? (
+              <div
+                data-cy="translations"
+                style={{
+                  color: colors.ink,
+                  fontFamily: font.family,
+                  marginBottom: '1em',
+                  padding: '1em',
+                  borderRadius: '15px',
+                  backgroundColor: `${
+                    (translated.preferred && background[translated.stage || 0]) || '#FFFFFF'
+                  }4D`,
+                }}
+              >
                 <div style={{ fontWeight: 'bold', color: '#2185D0' }}>
                   <FormattedMessage id="Your clue" />
                   {`: ${clue.number} ${clue.direction}`}
                 </div>
-              ) : (
-                <Lemma
+              </div>
+            ) : (
+              // AppLemma is its own card — wrapper just carries the data-cy + spacing (no nested card).
+              <div data-cy="translations" style={{ width: '100%', marginBottom: '1em' }}>
+                <AppLemma
                   lemma={translated.lemma}
-                  sourceWord={translated.source_word}
-                  handleSourceWordClick={handleSourceWordClick}
-                  handleKnowningClick={handleKnowningClick(translated.lemma)}
-                  handleNotKnowningClick={handleNotKnowningClick(translated.lemma)}
-                  inflectionRef={translated.ref}
-                  userUrl={translated.user_URL}
-                  preferred={translated.preferred}
+                  lemmaHref={translated.user_URL}
                   translations={pending ? [] : translated.glosses}
-                  handleWordNestClick={
+                  speaker={<Speaker word={translated.lemma} />}
+                  onKnow={translated.preferred ? handleKnowningClick(translated.lemma) : undefined}
+                  onDontKnow={
+                    translated.preferred ? handleNotKnowningClick(translated.lemma) : undefined
+                  }
+                  dictionaryHref={translated.ref?.url || translated.user_URL}
+                  onWordNest={
                     words &&
                     words[translated.lemma]?.length > 0 &&
                     !inWordNestModal &&
@@ -203,9 +206,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                         }
                       : undefined
                   }
+                  background={
+                    translated.stage !== undefined
+                      ? `${background[translated.stage]}4D`
+                      : undefined
+                  }
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )
       })
