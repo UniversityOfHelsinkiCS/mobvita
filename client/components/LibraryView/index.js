@@ -1215,63 +1215,61 @@ const StoryList = () => {
   }
 
   return (
-    <div className="library-page">
-      <Box
-        className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+    <Box
+      className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+    >
+      <ConfirmationWarning
+        open={Boolean(folderDeleteRequest)}
+        setOpen={open => {
+          if (!open) setFolderDeleteRequest(null)
+        }}
+        action={handleConfirmFolderDelete}
       >
-        <ConfirmationWarning
-          open={Boolean(folderDeleteRequest)}
-          setOpen={open => {
-            if (!open) setFolderDeleteRequest(null)
-          }}
-          action={handleConfirmFolderDelete}
-        >
-          <FormattedMessage id="confirm-folder-delete" />
-        </ConfirmationWarning>
-        {libraryControls}
-        <Box
-          data-cy="library-container"
-          sx={{
-            margin: '0 7px',
-            backgroundColor: colors.card,
-            borderRadius: '30px',
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px',
-          }}
-        >
-          {activeLibrary === 'essays' ? (
-            <>
-              {renderEssayFolderSection()}
-              {essaySearchAndSortControls}
-              {renderEssayItems()}
-            </>
-          ) : (
-            <>
-              {renderFolderSection()}
-              <LibrarySearch
-                setDisplayedStories={setDisplayedStories}
-                setDisplaySearchResults={setDisplaySearchResults}
-              />
-              {renderSortAndAddRow(sorter, sortDropdownOptions)}
-              {lastQuery && (
-                <Box>
-                  <Typography component="span">
-                    <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
-                  </Typography>
-                </Box>
-              )}
-              {renderStoriesGrid()}
-            </>
-          )}
-        </Box>
+        <FormattedMessage id="confirm-folder-delete" />
+      </ConfirmationWarning>
+      {libraryControls}
+      <Box
+        data-cy="library-container"
+        sx={{
+          margin: '0 7px',
+          backgroundColor: colors.card,
+          borderRadius: '30px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+        }}
+      >
+        {activeLibrary === 'essays' ? (
+          <>
+            {renderEssayFolderSection()}
+            {essaySearchAndSortControls}
+            {renderEssayItems()}
+          </>
+        ) : (
+          <>
+            {renderFolderSection()}
+            <LibrarySearch
+              setDisplayedStories={setDisplayedStories}
+              setDisplaySearchResults={setDisplaySearchResults}
+            />
+            {renderSortAndAddRow(sorter, sortDropdownOptions)}
+            {lastQuery && (
+              <Box>
+                <Typography component="span">
+                  <FormattedMessage id="showing-results-for" /> &quot;{lastQuery}&quot;:
+                </Typography>
+              </Box>
+            )}
+            {renderStoriesGrid()}
+          </>
+        )}
       </Box>
 
       <HelperSidebar>
         <GeneralChatbot />
       </HelperSidebar>
-    </div>
+    </Box>
   )
 }
 

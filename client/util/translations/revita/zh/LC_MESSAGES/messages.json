@@ -729,7 +729,7 @@
     "beta-language-warning": "请注意：{language} 正在开发中",
     "story-title-validation": "文章标题至少需要包含3个字符",
     "this-text-is-too-short-minimum-50-characters": "文章过短。最少50个字符。",
-    "search-input-placeholder": "Search for titles, texts, or context...",
+    "search-input-placeholder": "Search for titles and descriptions...",
     "group-review-dropdown-placeholder": "Select student to review",
     "sort-by-title-option": "标题",
     "sort-by-difficulty-option": "困难程度",
