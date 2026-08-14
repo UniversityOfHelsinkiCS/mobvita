@@ -1,12 +1,14 @@
 import React from 'react'
-import { Modal, Icon, Divider } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
 
 const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) => {
   const navigate = useNavigate()
-  
+
   const getHeaderText = () => {
     if (playerScore !== botScore)
       return (
@@ -45,51 +47,62 @@ const CompeteEnd = ({ open, setOpen, playerScore, botScore, exercisesTotal }) =>
   const handleRestart = () => window.location.reload()
 
   return (
-    <Modal
+    <AppDialog
       open={open}
       onClose={() => setOpen(false)}
-      size="tiny"
-      closeIcon={{
-        style: { top: '1.0535rem', right: '1rem' },
-        color: 'black',
-        name: 'close' }}
+      maxWidth="xs"
+      title={<div data-cy="competition-end-header">{getHeaderText()}</div>}
+      closeDataCy="competition-end-modal-close"
       data-cy="competition-end-modal"
     >
-      <Modal.Header>{getHeaderText()}</Modal.Header>
-      <Modal.Content>
-        <div className="competition-results-cont">
-          <div className="competition-player-results">
-            <div className="header-2">
-              <FormattedMessage id="you" />
-            </div>
-            <div style={{ ...playerScoreColor('you'), fontSize: '36px' }}>
-              <span>{playerScore}</span>/{exercisesTotal}
-            </div>
+      <div className="competition-results-cont">
+        <div className="competition-player-results">
+          <div className="header-2">
+            <FormattedMessage id="you" />
           </div>
-          <Divider vertical>VS</Divider>
-          <div className="competition-player-results">
-            <div className="header-2">
-              <FormattedMessage id="opponent" />
-            </div>
-            <div style={{ ...playerScoreColor('opponent'), fontSize: '36px' }}>
-              <span>{botScore}</span>/{exercisesTotal}
-            </div>
+          <div
+            style={{ ...playerScoreColor('you'), fontSize: '36px' }}
+            data-cy="competition-end-player-score"
+          >
+            <span>{playerScore}</span>/{exercisesTotal}
           </div>
         </div>
-        <div className="competition-results-buttons-cont">
-          <AppButton onClick={handleRestart} style={{ marginBottom: '.25em' }}>
-            {playerScore > botScore ? (
-              <FormattedMessage id="restart-competition" />
-            ) : (
-              <FormattedMessage id="compete:try-again" />
-            )}
-          </AppButton>
-          <AppButton variant="outline-primary" onClick={handleBackToLibrary}>
-            <Icon name="arrow left" /> <FormattedMessage id="back-to-library" />
-          </AppButton>
+        <Divider orientation="vertical" flexItem>
+          VS
+        </Divider>
+        <div className="competition-player-results">
+          <div className="header-2">
+            <FormattedMessage id="opponent" />
+          </div>
+          <div
+            style={{ ...playerScoreColor('opponent'), fontSize: '36px' }}
+            data-cy="competition-end-opponent-score"
+          >
+            <span>{botScore}</span>/{exercisesTotal}
+          </div>
         </div>
-      </Modal.Content>
-    </Modal>
+      </div>
+      <div className="competition-results-buttons-cont">
+        <AppButton
+          onClick={handleRestart}
+          style={{ marginBottom: '.25em' }}
+          data-cy="competition-end-restart-button"
+        >
+          {playerScore > botScore ? (
+            <FormattedMessage id="restart-competition" />
+          ) : (
+            <FormattedMessage id="compete:try-again" />
+          )}
+        </AppButton>
+        <AppButton
+          variant="outline-primary"
+          onClick={handleBackToLibrary}
+          data-cy="competition-end-back-to-library-button"
+        >
+          <ArrowBackIcon /> <FormattedMessage id="back-to-library" />
+        </AppButton>
+      </div>
+    </AppDialog>
   )
 }
 

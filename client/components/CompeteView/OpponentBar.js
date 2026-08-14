@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'Components/Spinner'
 import AppProgressBar from 'Components/ui/AppProgressBar'
-import { Icon } from 'semantic-ui-react'
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -120,9 +120,11 @@ const OpponentBar = ({
               <FormattedMessage id="opponent" />
             </div>
             <div style={{ backgroundColor: 'white' }}>
-              <div className="justify-center">{botScore}</div>
+              <div className="justify-center" data-cy="opponent-bar-score">
+                {botScore}
+              </div>
               <div className="justify-center">
-                <Icon color="orange" name="thumbs up outline" style={{ marginBottom: '.4em' }} />
+                <ThumbUpOutlinedIcon sx={{ color: 'orange', marginBottom: '.4em' }} />
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
-import { Icon } from 'semantic-ui-react'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import { useLearningLanguage } from 'Utilities/common'
 import { postAnswers, getCurrentSnippet } from 'Utilities/redux/snippetsReducer'
 import { sendActivity } from 'Utilities/redux/competitionReducer'
@@ -243,7 +243,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
               style={{ marginBottom: '0.5em' }}
             >
               <span>
-                <FormattedMessage id="go-to-next-snippet" /> <Icon name="level down alternate" />
+                <FormattedMessage id="go-to-next-snippet" /> <ArrowDownwardIcon fontSize="small" />
               </span>
             </AppButton>
           </div>
@@ -251,6 +251,7 @@ const SnippetActions = ({ storyId, exerciseCount, playerFinished }) => {
       ) : (
         <AppButton
           block
+          data-cy="snippet-actions-retry-button"
           variant="primary"
           disabled={snippets.answersPending || snippets.pending}
           onClick={() => handleRetry()}

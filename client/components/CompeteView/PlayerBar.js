@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Spinner from 'Components/Spinner'
 import AppProgressBar from 'Components/ui/AppProgressBar'
-import { Icon } from 'semantic-ui-react'
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -65,7 +65,7 @@ const PlayerBar = ({
               width: `${getLabelsWidth()}%`,
             }}
           >
-            <div>
+            <div data-cy="player-bar-progress-label">
               <span className="bold">
                 <FormattedMessage id="you" />
               </span>{' '}
@@ -73,9 +73,11 @@ const PlayerBar = ({
             </div>
             <div>
               <div className="justify-center">
-                <Icon color="green" name="thumbs up outline" style={{ marginBottom: '.2em' }} />
+                <ThumbUpOutlinedIcon sx={{ color: 'green', marginBottom: '.2em' }} />
               </div>
-              <div className="justify-center">{playerScore}</div>
+              <div className="justify-center" data-cy="player-bar-score">
+                {playerScore}
+              </div>
             </div>
           </div>
         </div>
