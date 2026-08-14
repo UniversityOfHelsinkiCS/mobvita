@@ -131,21 +131,6 @@ const StyledButton = styled(Button)({
   '&:hover': { boxShadow: 'none' },
   '& img, & > svg': { width: 20, height: 20 },
   '& > svg': { color: 'currentColor' },
-  // Legacy: some call sites drop a semantic-ui <Icon> (<i class="icon">) straight inside the button.
-  // Pin its layout so the glyph renders inline with the label instead of clipped/boxed.
-  '& > i.icon': {
-    fontFamily: 'Icons',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 'auto',
-    height: 'auto',
-    margin: 0,
-    lineHeight: 1,
-    verticalAlign: 'middle',
-    background: 'none',
-  },
-  '& > i.icon::before': { fontFamily: 'Icons', background: 'none' },
 })
 
 const AppButton = ({ variant = 'primary', size, block = false, as, sx, children, ...rest }) => {

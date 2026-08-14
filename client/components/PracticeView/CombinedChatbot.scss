@@ -101,19 +101,8 @@
   align-items: center;
   gap: 4px;
 
-  .ui.icon,
   .MuiSvgIcon-root {
     margin: 0;
-  }
-
-  .lightbulb {
-    color: #f2c03b;
-    margin: 0;
-  }
-
-  .outline.lightbulb {
-    color: #b0b0b0;
-    opacity: 0.6;
   }
 }
 
@@ -197,7 +186,6 @@
         justify-content: center;
         flex-shrink: 0;
 
-        i.icon,
         .MuiSvgIcon-root {
           margin: 0;
           padding: 0;

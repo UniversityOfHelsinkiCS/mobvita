@@ -230,25 +230,6 @@
   height: 40px;
 }
 
-.chatbot-suggestions {
-  .chatbot-suggestion-message {
-    margin-bottom: 0.5em;
-    margin-right: 0.5em;
-    background: none !important;
-    border: none !important;
-    color: rgb(0, 39, 112) !important;
-    text-decoration: underline !important;
-    &:hover {
-      text-decoration: none !important;
-    }
-  }
-}
-
-.chatbot-suggestions > .ui.button:hover {
-  background-color: #c3e7eb !important;
-  color: black !important;
-}
-
 // ── Vita (GeneralChatbot) 2026 redesign ─────────────────────────────────────────────────────────
 // Scoped to .vita-chatbot so the other chatbots (still on the legacy styles above) are untouched.
 .vita-chatbot {

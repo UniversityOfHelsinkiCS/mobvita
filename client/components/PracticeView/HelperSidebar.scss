@@ -59,8 +59,6 @@ $hs-radius: 30px; // card radius
 
     .story-topics-box, .lesson-topic-box {
       margin: 0;
-      // `.ui.segment` is the pre-MUI markup; `> .MuiPaper-root` is what Segment became.
-      .ui.segment,
       > .MuiPaper-root {
           box-shadow: none;
       }
@@ -81,7 +79,6 @@ $hs-radius: 30px; // card radius
       height: auto;
       
 
-      .ui.segment,
       > .MuiPaper-root {
         width: 100%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -101,7 +98,6 @@ $hs-radius: 30px; // card radius
       width: 100%;
       margin-left: 0;
 
-      .ui.segment,
       > .MuiPaper-root {
         width: 100%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

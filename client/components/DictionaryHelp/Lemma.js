@@ -16,8 +16,8 @@ import {
 import { Speaker } from './dictComponents';
 import './Lemma.scss';
 
-// Mirrors the `.translation-lemma-card .right-column i.icon` rules in Lemma.scss, which used to
-// style the semantic-ui <i class="icon"> elements these MUI icons replaced.
+// Mirrors the `.translation-lemma-card .right-column .MuiSvgIcon-root` rules in Lemma.scss, so
+// these icons look the same when rendered outside that container.
 const rightColumnIconSx = {
   fontSize: '1.25rem',
   color: '#000000',

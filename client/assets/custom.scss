@@ -1,6 +1,6 @@
 @use "sass:map";
 
-@import "semantic-ui-css/semantic.min.css";
+@import "./base.scss";
 @import "./rc-slider.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
@@ -227,16 +227,6 @@ $value in $spacing {
   }
 }
 
-.custom-confirm-modal.ui.modal {
-  width: 300px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  background: #fff !important;
-}
-
 .flex {
   display: flex;
 }
@@ -436,61 +426,6 @@ $value in $spacing {
   padding-left: 0.5em;
 }
 
-// SEMANTIC UI OVERRIDES:
-.ui.modal,
-.modal {
-  left: unset;
-  position: relative !important;
-  height: auto;
-}
-
-.ui.modal>.header,
-.modal>.header {
-  font-family: $rubik !important;
-}
-
-.ui.dimmer {
-  background-color: rgb(253,253,253, 0.8) !important;
-}
-
-.ui.input>input {
-  font-family: $default-font
-}
-
-.ui.dropdown .menu {
-  max-height: 13em !important;
-  overflow: auto;
-}
-
-.ui.attached.tabular.menu {
-  max-width: 1024px;
-  margin-bottom: 1em;
-}
-
-.ui.modal>.actions {
-  @media only screen and (max-width: 767px) {
-    padding: 1rem !important;
-  }
-}
-
-.ui.card>.content:after,
-.ui.cards>.card>.content:after {
-  content: none;
-}
-
-.ui.placeholder .line:after,
-.ui.placeholder .line:before {
-  height: 0;
-}
-
-.dictionary-translations .ui.placeholder, .dictionary-translations .ui.placeholder .line {
-  background-color: inherit;
-}
-
-.ui.segment{
-  box-shadow: 6px 11px 10px 0px rgba(0,0,0,.5);
-}
-
 // REACT VIRTUALIZED OVERRIDES:
 .ReactVirtualized__Grid__innerScrollContainer {
   overflow: initial !important;
@@ -567,10 +502,6 @@ $value in $spacing {
 
 .headroom {
   z-index: 99 !important;
-}
-
-.tabular>.active {
-  background: var(--app-bg-color) !important;
 }
 
 .tour-mobile-message {
@@ -1086,11 +1017,6 @@ $value in $spacing {
   border-color: lightgrey !important;
   border-width: thin !important;
 
-  &.dropdown .icon {
-    padding-top: 0.3em !important;
-    padding-right: 0.5em !important;
-  }
-
   &.wrong {
     background-color: $wrong-answer-background-color  !important;
   }
@@ -1177,9 +1103,6 @@ $value in $spacing {
   font-weight: 500;
 }
 
-.ui.sidebar{
-  overflow-y: visible !important;
-}
 .sidebar {
   &-hamburger {
     z-index: 102;
@@ -1608,7 +1531,6 @@ $value in $spacing {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  position: relative;
 }
 
 .competition-player-results {
@@ -3445,18 +3367,6 @@ label.file-upload-btn {
 
   & button {
     flex-grow: 1;
-  }
-}
-
-.semantic-pagination {
-  display: flex;
-  flex-grow: 1;
-  max-width: 500px;
-
-  &>* {
-    flex-basis: 0 !important;
-    flex-grow: 1 !important;
-    justify-content: center !important;
   }
 }
 

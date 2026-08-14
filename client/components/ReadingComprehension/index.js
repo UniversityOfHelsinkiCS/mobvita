@@ -850,7 +850,6 @@ const ReadingComprehensionView = ({ match }) => {
           setConfirmDelete({ open: false, idx: null, type: null })
         }}
         maxWidth="xs"
-        className="custom-confirm-modal"
         data-cy="rc-delete-modal"
       >
         <div style={{ textAlign: 'center' }}>

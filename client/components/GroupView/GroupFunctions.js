@@ -208,7 +208,6 @@ const GroupFunctions = ({
             <AppMenu
               trigger={
                 <AppButton
-                  className="button icon"
                   data-cy="group-functions-menu-button"
                   style={{
                     backgroundColor: 'rgb(50, 170, 248)',
