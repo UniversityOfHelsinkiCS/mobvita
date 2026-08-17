@@ -2,8 +2,10 @@ import { FormattedMessage } from 'react-intl'
 import { localeOptions } from 'Utilities/common'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Modal, Dropdown, Container } from 'semantic-ui-react'
+import { Container } from '@mui/material'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppSelect from 'Components/ui/AppSelect'
 
 import { setLocale } from 'Utilities/redux/localeReducer'
 import { updateLocale } from 'Utilities/redux/userReducer'
@@ -33,32 +35,42 @@ const InterfaceLanguageView = ({ setShowLangModal, showInterfaceModal }) => {
     }
 
     return (
-        <Modal open={showInterfaceModal} onClose={() => setShowLangModal(false)} centered={false} size="tiny" dimmer="blurring" scrolling>
-            <Modal.Content style={{ height: '40vh', overflow: 'auto' }}>
-                <Container textAlign="center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
-                    <div className="header-2 mt-lg bold" data-cy="choose-lang">
-                        <FormattedMessage id="choose-interface-language" />:
-                    </div>
-                    <div className="flex align-center" style={{ marginTop: '2em', marginBottom: '4em' }}>
-                        <Dropdown
-                            fluid
+        <AppDialog
+            open={showInterfaceModal}
+            onClose={() => setShowLangModal(false)}
+            maxWidth="xs"
+            data-cy="interface-language-modal"
+            closeDataCy="interface-language-modal-close"
+            sx={{ '& .MuiDialogContent-root': { height: '40vh', overflow: 'auto' } }}
+        >
+            <Container sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start' }}>
+                <div className="header-2 mt-lg bold" data-cy="choose-lang">
+                    <FormattedMessage id="choose-interface-language" />:
+                </div>
+                <div className="flex align-center" style={{ marginTop: '2em', marginBottom: '4em' }}>
+                    <div data-cy="ui-lang-select">
+                        <AppSelect
+                            variant="contrast-outline"
                             value={language} // Use the state for default locale
-                            options={localeDropdownOptions}
-                            selection
-                            onChange={(e, data) => setLanguage(data.value)}
-                            data-cy="ui-lang-select"
-                            style={{ color: '#777', fontSize: '1.1rem', width: '200px' }}
-                            scrolling
-                            selectOnBlur={false}
-                            menuStyle={{ maxHeight: '200px', overflowY: 'auto' }}
+                            options={localeDropdownOptions.map(option => ({
+                                value: option.value,
+                                label: option.text,
+                            }))}
+                            onChange={setLanguage}
+                            minWidth={200}
+                            matchTriggerWidth
                         />
                     </div>
-                  <AppButton variant="primary" onClick={handleLocaleChange}>
+                </div>
+                <AppButton
+                    variant="primary"
+                    onClick={handleLocaleChange}
+                    data-cy="interface-language-continue-button"
+                >
                     <FormattedMessage id="Continue" />
-                  </AppButton>
-                </Container>
-            </Modal.Content>
-        </Modal>
+                </AppButton>
+            </Container>
+        </AppDialog>
     )
 }
 

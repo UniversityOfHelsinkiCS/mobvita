@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer'
 import { filterOutCachedStory } from 'Utilities/redux/metadataReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { Icon } from 'semantic-ui-react'
+import CloseIcon from '@mui/icons-material/Close'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import { Link, useNavigate } from 'react-router-dom'
@@ -50,14 +50,14 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
             <div style={{ fontSize: '1.25rem', paddingBottom: '.5rem' }}>
               <FormattedMessage id="daily-stories" />
             </div>
-            <Icon
+            <CloseIcon
               className="interactable"
               style={{
                 cursor: 'pointer',
                 marginBottom: '.25em' }}
-              size="large"
-              name="close"
+              fontSize="large"
               onClick={() => setOpen(false)}
+              data-cy="daily-stories-close-button"
             />
           </div>
           <ul>
@@ -75,6 +75,7 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{ fontSize: '1rem', fontWeight: '300' }}
+                          data-cy={`daily-stories-source-link-${index}`}
                         >
                           <FormattedMessage id="daily-story-web-2" />
                         </a>
@@ -83,6 +84,7 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
                         <Link
                           variant="primary"
                           onClick={() => uploadDailyStory(story._id)}
+                          data-cy={`daily-stories-upload-link-${index}`}
                         >
                           <FormattedMessage id="upload-daily-story" />
                         </Link>

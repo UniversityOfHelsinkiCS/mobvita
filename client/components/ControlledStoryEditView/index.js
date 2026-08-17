@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Divider, Segment, Header, Checkbox, Icon } from 'semantic-ui-react'
+import { Divider, Paper, FormControlLabel } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CustomTooltip from 'Components/CustomTooltip'
 import AppButton from 'Components/AppButton'
+import AppSwitch from 'Components/ui/AppSwitch'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
@@ -152,48 +155,69 @@ const ControlledStoryEditView = ({ match }) => {
     <div className="cont-tall flex-col space-between align-center pt-sm">
       <div className="flex mb-nm">
         <div>
-          <Segment data-cy="readmodes-text" className="cont" style={getTextStyle(learningLanguage)}>
-            <Header style={getTextStyle(learningLanguage, 'title')}>
+          <Paper
+            data-cy="readmodes-text"
+            className="cont"
+            sx={{ padding: '1em' }}
+            style={getTextStyle(learningLanguage)}
+          >
+            <div className="header-2" style={getTextStyle(learningLanguage, 'title')}>
               <span className="pr-sm">{story.title}</span>
               <br />
               {story.url && (
-                <a href={story.url} style={{ fontSize: '1rem', fontWeight: '300' }}>
+                <a
+                  href={story.url}
+                  data-cy="controlled-story-editor-source-link"
+                  style={{ fontSize: '1rem', fontWeight: '300' }}
+                >
                   <FormattedMessage id="Source" />
                 </a>
               )}
-            </Header>
+            </div>
             <div className="space-between" style={{ alignItems: 'center' }}>
               <div>
-                <Checkbox
-                  toggle
+                <FormControlLabel
+                  control={
+                    <AppSwitch
+                      checked={!hideFeedback}
+                      onChange={() => setHideFeedback(!hideFeedback)}
+                      slotProps={{
+                        input: { 'data-cy': 'controlled-story-editor-show-preview-toggle' },
+                      }}
+                    />
+                  }
                   label={checkboxLabel()}
-                  checked={!hideFeedback}
-                  onChange={() => setHideFeedback(!hideFeedback)}
                   style={{ paddingTop: '.5em' }}
                 />
                 <CustomTooltip title={infoBoxLabel()}>
                   <span style={{ display: 'inline-flex' }}>
-                    <Icon className="pl-sm" name="info circle" color="grey" />
+                    <InfoOutlinedIcon className="pl-sm" sx={{ color: 'grey' }} />
                   </span>
                 </CustomTooltip>
               </div>
               <div>
-                <Checkbox
-                  toggle
+                <FormControlLabel
+                  control={
+                    <AppSwitch
+                      checked={timedExercise}
+                      onChange={() => setTimedExercise(!timedExercise)}
+                      slotProps={{
+                        input: { 'data-cy': 'controlled-story-editor-timed-toggle' },
+                      }}
+                    />
+                  }
                   label={intl.formatMessage({ id: 'timed-practice-toggle' })}
-                  checked={timedExercise}
-                  onChange={() => setTimedExercise(!timedExercise)}
                   style={{ paddingTop: '.5em' }}
                 />
                 <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
                   <span style={{ display: 'inline-flex' }}>
-                    <Icon className="pl-sm" name="info circle" color="grey" />
+                    <InfoOutlinedIcon className="pl-sm" sx={{ color: 'grey' }} />
                   </span>
                 </CustomTooltip>
               </div>
             </div>
             {progress !== 0 && processingCurrentStory && (
-              <div className="bold">
+              <div className="bold" data-cy="controlled-story-editor-processing-warning">
                 <span style={{ color: 'red' }}>
                   <FormattedMessage id="story-not-yet-processed" />
                 </span>
@@ -201,17 +225,17 @@ const ControlledStoryEditView = ({ match }) => {
             )}
             {showRefreshButton && (
               <div className="flex gap-col-sm align-center">
-                <div className="bold">
+                <div className="bold" data-cy="controlled-story-editor-processing-done">
                   <span style={{ color: 'red' }}>
                     <FormattedMessage id="story-processing-now-finished" />
                   </span>
                 </div>
-                <AppButton onClick={refreshPage}>
+                <AppButton onClick={refreshPage} data-cy="controlled-story-editor-refresh-button">
                   <FormattedMessage id="refresh" />
                 </AppButton>
               </div>
             )}
-            <Divider />
+            <Divider sx={{ my: '1em' }} />
             {story.paragraph.map((paragraph, index) => (
               <>
                 <TextWithFeedback
@@ -228,7 +252,7 @@ const ControlledStoryEditView = ({ match }) => {
             ))}
 
             <ScrollArrow />
-          </Segment>
+          </Paper>
           {width >= 500 ? (
             <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
               <ReportButton />
@@ -241,10 +265,13 @@ const ControlledStoryEditView = ({ match }) => {
         </div>
         <div className="dictionary-and-annotations-cont">
           <div className="save-edited-story-box">
-            <Segment>
+            <Paper sx={{ padding: '1em' }}>
               <div>
                 {emptySnippets() && (
-                  <span style={{ color: '#ff0000', marginBottom: '0.5em' }}>
+                  <span
+                    data-cy="controlled-story-editor-empty-snippets-warning"
+                    style={{ color: '#ff0000', marginBottom: '0.5em' }}
+                  >
                     <b>
                       <FormattedMessage id="empty-snippets-warning" />
                     </b>
@@ -254,6 +281,7 @@ const ControlledStoryEditView = ({ match }) => {
                   variant="primary"
                   onClick={saveControlledStory}
                   type="button"
+                  data-cy="controlled-story-editor-save-button"
                   style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
                 >
                   <FormattedMessage id="save-controlled-story" />
@@ -263,13 +291,14 @@ const ControlledStoryEditView = ({ match }) => {
                 variant="secondary"
                 size="sm"
                 onClick={handleEditorReset}
+                data-cy="controlled-story-editor-start-over-button"
                 style={{ marginBottom: '0.5em' }}
               >
                 <span>
-                  <FormattedMessage id="start-over" /> <Icon name="level up alternate" />
+                  <FormattedMessage id="start-over" /> <ArrowUpwardIcon fontSize="small" />
                 </span>
               </AppButton>
-            </Segment>
+            </Paper>
           </div>
             <StoryTopics
               conceptCount={story.concept_count}

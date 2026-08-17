@@ -112,7 +112,7 @@ const GroupPeople = ({ role }) => {
             <TableRow>
               <TableCell colSpan={2}>
                 <div className="space-between" style={{ fontSize: '1.2em' }}>
-                  <span>
+                  <span data-cy="group-people-teachers-count">
                     <FormattedMessage id="Teachers" /> ({currentGroup.teachers?.length})
                   </span>
                   {currentGroup.is_teaching && (
@@ -142,6 +142,7 @@ const GroupPeople = ({ role }) => {
                     <span style={{ color: colors.muted }}>{teacher.userName}</span>
                     {currentUserIsTeacher && (
                       <AppButton
+                        data-cy={`resend-invitation-teacher-${teacher.userName}`}
                         onClick={() => handleResendInvitationClick(teacher._id)}
                         size="sm"
                         style={{ marginRight: '1em' }}
@@ -162,7 +163,7 @@ const GroupPeople = ({ role }) => {
               <TableRow>
                 <TableCell colSpan={2}>
                   <div className="space-between" style={{ fontSize: '1.2em' }}>
-                    <span>
+                    <span data-cy="group-people-students-count">
                       <FormattedMessage id="students" /> ({currentGroup.students?.length})
                     </span>
                     <IconButton
@@ -209,6 +210,7 @@ const GroupPeople = ({ role }) => {
                       {currentUserIsTeacher && (
                         <div className="flex" style={{ alignItems: 'center', gap: '0.5em' }}>
                           <AppButton
+                            data-cy={`resend-invitation-student-${student.userName}`}
                             onClick={() => handleResendInvitationClick(student._id)}
                             size="sm"
                           >

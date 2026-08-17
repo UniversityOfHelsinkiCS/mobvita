@@ -1,6 +1,7 @@
 import React, { createRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
+import MicIcon from '@mui/icons-material/Mic'
+import MicOffIcon from '@mui/icons-material/MicOff'
 import {
   getTextWidth,
   speak,
@@ -195,6 +196,8 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
       ? textInputWidth + 10
       : textInputWidth
 
+  const MicrophoneIcon = !isRecording ? MicIcon : MicOffIcon
+
   return (
     <Tooltip
       placement="top"
@@ -238,12 +241,15 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
             lineHeight: 'normal',
           }}
         />
-        <Icon
-          name={!isRecording ? 'microphone' : 'microphone slash'}
-          link
+        <MicrophoneIcon
+          data-cy="exercise-speaking-record-button"
           onClick={() => speakerClickHandler(word)}
-          style={{ marginLeft: '-25px', marginRight: '0.5em' }}
-          disabled={iconDisabled}
+          sx={{
+            marginLeft: '-25px',
+            marginRight: '0.5em',
+            cursor: 'pointer',
+            opacity: iconDisabled ? 0.45 : 1,
+          }}
         />
         {word.negation && <sup style={{ marginLeft: '3px', color: '#0000FF' }}>(neg)</sup>}
       </span>

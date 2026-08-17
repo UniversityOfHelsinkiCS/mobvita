@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { Divider, Segment } from 'semantic-ui-react'
+import { Divider, Paper } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -114,11 +114,11 @@ const CompeteView = ({ match }) => {
       <div className="cont-tall pt-sm flex-col space-between">
         <div className="justify-center">
           <div className="cont">
-            <Segment>
+            <Paper sx={{ padding: '1em' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Spinner inline />
               </div>
-            </Segment>
+            </Paper>
           </div>
           <DictionaryHelp />
         </div>
@@ -130,11 +130,12 @@ const CompeteView = ({ match }) => {
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
         <div className="cont">
-          <Segment>
+          <Paper sx={{ padding: '1em' }}>
             <div className="flex space-between">
               <div>
                 <div
                   className="story-title"
+                  data-cy="compete-story-title"
                   style={{
                     ...getTextStyle(learningLanguage, 'title'),
                     width: '100%' }}
@@ -142,14 +143,14 @@ const CompeteView = ({ match }) => {
                   {!pending && story && `${story.title}`}
                 </div>
                 {story?.url && !pending ? (
-                  <a href={story.url}>
+                  <a href={story.url} data-cy="compete-story-source-link">
                     <FormattedMessage id="Source" />
                   </a>
                 ) : null}
               </div>
               <CompetitionPause handlePauseOrResumeClick={handlePauseOrResumeClick} />
             </div>
-            <Divider />
+            <Divider sx={{ my: '1em' }} />
             {!startTime ? (
               <div>
                 <Spinner inline />
@@ -175,12 +176,13 @@ const CompeteView = ({ match }) => {
             {willPause && !isPaused && (
               <div
                 className="justify-center"
+                data-cy="compete-pausing-message"
                 style={{ color: 'rgb(81, 138, 248)', fontWeight: '500' }}
               >
                 <FormattedMessage id="pausing-after-this-snippet" />
               </div>
             )}
-          </Segment>
+          </Paper>
           {showVirtualKeyboard && (
             <div>
               <VirtualKeyboard />

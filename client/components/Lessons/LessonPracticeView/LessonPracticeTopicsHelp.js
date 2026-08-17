@@ -1,7 +1,10 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Segment, Icon, Popup } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import CustomTooltip from 'Components/CustomTooltip'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
@@ -141,7 +144,7 @@ const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
   if (width >= 1024 || always_show) {
     return (
       <div className="lesson-topic-box">
-        <Segment style={segment_style}>
+        <Paper sx={{ padding: '1em' }} style={segment_style}>
           <div
             className="lesson-title"
             style={{
@@ -156,28 +159,35 @@ const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
             }}
           >
             <div>
-              <Popup
-                content={<FormattedHTMLMessage id={'story-top-topics-explain'} />}
-                trigger={
-                  <Icon
-                    style={{ paddingRight: '0.5em' }}
-                    name="info circle"
-                    size="small"
-                    color="grey"
-                  />
-                }
-              />{' '}
+              <CustomTooltip permanent keyId="story-top-topics-explain">
+                <InfoOutlinedIcon
+                  sx={{ paddingRight: '0.5em', color: 'grey' }}
+                  fontSize="small"
+                />
+              </CustomTooltip>{' '}
               <FormattedMessage id={'topics-header'} />
             </div>
-            <Icon
-              name={collapsed ? 'chevron down' : 'chevron up'}
-              onClick={toggleCollapse}
-              style={{ cursor: 'pointer' }}
-            />
+            {collapsed ? (
+              <KeyboardArrowDownIcon
+                data-cy="lesson-practice-topics-toggle"
+                onClick={toggleCollapse}
+                sx={{ cursor: 'pointer' }}
+              />
+            ) : (
+              <KeyboardArrowUpIcon
+                data-cy="lesson-practice-topics-toggle"
+                onClick={toggleCollapse}
+                sx={{ cursor: 'pointer' }}
+              />
+            )}
           </div>
 
-          {!collapsed && <span style={{ overflow: 'auto', width: '100%' }}>{topic_rows}</span>}
-        </Segment>
+          {!collapsed && (
+            <span style={{ overflow: 'auto', width: '100%' }} data-cy="lesson-practice-topics-list">
+              {topic_rows}
+            </span>
+          )}
+        </Paper>
       </div>
     )
   }

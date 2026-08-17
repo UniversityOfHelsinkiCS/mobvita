@@ -1,5 +1,5 @@
 import Draggable from 'react-draggable';
-import { Icon } from 'semantic-ui-react';
+import CloseIcon from '@mui/icons-material/Close';
 import { useIntl } from 'react-intl';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
@@ -52,9 +52,14 @@ const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div
                         className="interactable"
+                        data-cy="reading-test-introductory-text"
                         dangerouslySetInnerHTML={{ __html: introductoryTextHtml }}
                     />
-                    <Icon name='close' style={{ cursor: 'pointer' }} onClick={() => setShowDDLangIntroductory(false)} />
+                    <CloseIcon
+                        data-cy="reading-test-introductory-close"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => setShowDDLangIntroductory(false)}
+                    />
                 </div>
             </div>
         </Draggable>

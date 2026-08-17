@@ -29,7 +29,7 @@ describe("groups", function () {
     })
     
     cy.get('[data-cy=people-add-result-modal]').should('be.visible')
-    cy.get('[data-cy=people-add-result-modal]').find('i.close.icon').click()
+    cy.get('[data-cy=people-add-result-modal-close]').click()
 
     cy.contains('h5', 'my_test_group', { timeout: 30000 })
       .closest('.card')
@@ -115,7 +115,7 @@ describe("groups", function () {
     cy.get('[data-cy=add-to-group-student-emails]').type(this.student.email)
     cy.get('[type=submit]').click()
 
-    cy.get('.modal > .close').click()
+    cy.get('[data-cy=people-add-result-modal-close]').click()
     cy.contains(this.teacher.username)
     cy.contains(this.student.username)
     

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AppButton from 'Components/AppButton'
-import { Select, Segment } from 'semantic-ui-react'
+import Paper from '@mui/material/Paper'
+import AppSelect from 'Components/ui/AppSelect'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { getReadingTestQuestions, resetTests } from 'Utilities/redux/testReducer'
@@ -49,34 +50,40 @@ const ReadingTestView = () => {
         )}
         {showCyclePopup && (
           <div className="cont mt-nm">
-            <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
+            <Paper sx={{ padding: '1em' }} style={{ minHeight: '700px', borderRadius: '20px' }}>
               <div className="align-center justify-center">
                 <div className="test-container" style={{ width: '90%' }}>
                   <div className="cycle-modal-content">
                     <h2>
                       <FormattedMessage id="reading-test-cycle-popup-title" />
                     </h2>
-                    <Select
-                      options={allCycles?.map(cycle => ({
-                        key: cycle,
-                        value: cycle,
-                        text: cycle,
-                      }))}
-                      value={cycle}
-                      onChange={(e, data) => setCycle(data.value)}
-                    />
-                    <AppButton onClick={handleCycleSubmit}>
+                    <div data-cy="reading-test-cycle-select">
+                      <AppSelect
+                        variant="contrast-outline"
+                        options={allCycles?.map(cycle => ({
+                          value: cycle,
+                          label: cycle,
+                        }))}
+                        value={cycle}
+                        onChange={setCycle}
+                      />
+                    </div>
+                    <AppButton
+                      data-cy="reading-test-confirm-cycle-button"
+                      onClick={handleCycleSubmit}
+                    >
                       <FormattedMessage id="confirm-next-set" />
                     </AppButton>
                   </div>
                 </div>
               </div>
-            </Segment>
+            </Paper>
           </div>
         )}
         <div className="test-top-info space-between" style={{ marginBottom: '0.2em' }}>
           <AppButton
             className="show-ddlang-introductory-button btn-secondary"
+            data-cy="reading-test-show-introductory-button"
             style={{ marginRight: 'auto', marginTop: '1rem' }}
             onClick={() => setShowDDLangIntroductory(true)}
           >

@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Button, Icon } from 'semantic-ui-react';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import './Chatbot.scss';
@@ -211,20 +216,21 @@ const PracticeChatbot = () => {
 
   return (
     <div className="chatbot practice-chatbot">
-      <Button
+      <AppButton
         onClick={toggleCollapse}
         className="chatbot-toggle"
+        data-cy="practice-chatbot-toggle"
         style={{ background: 'mistyrose', margin: 0 }}
       >
         <div>
           <FormattedMessage id="chatbot-toggle-label" />
           {isCollapsed ? (
-            <Icon name="angle up" size="large" />
+            <KeyboardArrowUpIcon fontSize="large" />
           ) : (
-            <Icon name="angle down" size="large" />
+            <KeyboardArrowDownIcon fontSize="large" />
           )}
         </div>
-      </Button>
+      </AppButton>
       {!isCollapsed && (
         <>
           {/************ current context BANNER = current exercise LEMMA ************/}
@@ -239,10 +245,10 @@ const PracticeChatbot = () => {
                   Object.keys(currentWord).length > 0 && (
                     <div>
                       {eloScoreHearts.map(heart => (
-                        <Icon size="small" name="lightbulb" style={{ marginLeft: '0.25em' }} />
+                        <LightbulbIcon fontSize="small" style={{ marginLeft: '0.25em' }} />
                       ))}
                       {spentHints.map(hint => (
-                        <Icon size="small" name="lightbulb outline" style={{ marginLeft: '0.25em' }} />
+                        <LightbulbOutlinedIcon fontSize="small" style={{ marginLeft: '0.25em' }} />
                       ))}
                     </div>
                   )
@@ -266,7 +272,7 @@ const PracticeChatbot = () => {
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.easy)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (hintMessage.ref?.length || hintMessage.explanation?.length) && (
-                            <Icon name="info circle" style={info_circle_style} 
+                            <InfoOutlinedIcon style={info_circle_style}
                             onMouseDown={() => handleTooltipClick(hintMessage)}/>
                           )}
                         </span>
@@ -276,7 +282,7 @@ const PracticeChatbot = () => {
                           <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                           {/*show ONLY ONE (i) if either references or explanation exists*/
                             (hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy)
-                              && (<Icon name="info circle" style={info_circle_style} 
+                              && (<InfoOutlinedIcon style={info_circle_style}
                               onMouseDown={() => handleTooltipClick(hint)}/>)}
                         </span>
                       ))}
@@ -312,8 +318,7 @@ const PracticeChatbot = () => {
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hintMessage.easy)} />
                               {/* content to show AFTER message at index hintMessageIdx */}
                               {(hintMessage.ref?.length || hintMessage.explanation?.length) && (
-                                <Icon 
-                                  name="info circle"
+                                <InfoOutlinedIcon
                                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                                   onMouseDown={() => handleTooltipClick(hint)}
                                 />
@@ -325,7 +330,7 @@ const PracticeChatbot = () => {
                             <span key={index} className="flex debug_PreHints debug_nonZERO">
                               <li dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
                               {( hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy)
-                               && (<Icon name="info circle" style={info_circle_style} />)}
+                               && (<InfoOutlinedIcon style={info_circle_style} />)}
                             </span>
                           ))}
                         </ul>
@@ -344,29 +349,39 @@ const PracticeChatbot = () => {
           {/******************* OUT OF feedback: allow CHATTING *******************/}
           {eloScoreHearts == 0 ?
            (<form onSubmit={handleMessageSubmit} className="chatbot-input-form">
-                <input 
-                    type="text" 
-                    name="userInput" 
+                <input
+                    type="text"
+                    name="userInput"
+                    data-cy="practice-chatbot-message-input"
                     placeholder={intl.formatMessage({id: 'enter-question-to-chatbot'})}
-                    value={currentMessage} 
+                    value={currentMessage}
                     disabled={!validToChat || isWaitingForResponse}
-                    onChange={(e) => setCurrentMessage(e.target.value)} 
+                    onChange={(e) => setCurrentMessage(e.target.value)}
                 />
-                <Button type="submit" primary disabled={!validToChat || isWaitingForResponse}>
+                <AppButton
+                  type="submit"
+                  variant="primary"
+                  data-cy="practice-chatbot-send-button"
+                  disabled={!validToChat || isWaitingForResponse}
+                >
                     {/* isWaitingForResponse
                      ? <Spinner animation="border" variant="warning" />
                      : <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
                     */}
                   <FormattedMessage id="submit-chat-message" defaultMessage="Send" />
-                </Button>
+                </AppButton>
               <ChatbotSuggestions
                 predefinedChatbotRequests={predefinedChatbotRequests}
                 disabled={!validToChat || isWaitingForResponse}
               />
             </form>): (
-              <Button primary onMouseDown={handlePreHints}>
+              <AppButton
+                variant="primary"
+                data-cy="practice-chatbot-hint-button"
+                onMouseDown={handlePreHints}
+              >
                 <FormattedMessage id="ask-for-a-hint" />
-              </Button>
+              </AppButton>
             )}
         </>
       )}

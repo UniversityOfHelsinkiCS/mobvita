@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { Popup, Placeholder, PlaceholderLine, Icon } from 'semantic-ui-react'
+import { Skeleton } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
 import { lemmatizer } from 'lemmatizer'
 import {
   flashcardColors,
@@ -13,7 +16,7 @@ import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer
 import { changeTranslationStageAction } from 'Utilities/redux/translationReducer'
 import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import CustomTooltip from 'Components/CustomTooltip'
 import Spinner from 'Components/Spinner'
 import WordNestModal from 'Components/WordNestModal'
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
@@ -273,10 +276,8 @@ const WordTranslationPanel = () => {
         <div style={{ padding: '1em' }}>
           {[1, 2, 3].map(line => (
             <div key={line} style={{ marginBottom: '1em' }}>
-              <Placeholder>
-                <PlaceholderLine />
-                <PlaceholderLine width="50%" />
-              </Placeholder>
+              <Skeleton variant="text" />
+              <Skeleton variant="text" width="50%" />
             </div>
           ))}
         </div>
@@ -291,12 +292,13 @@ const WordTranslationPanel = () => {
         <>
           <div className="chatbot-header" style={{ marginBottom: '1em' }}>
             <div className="bulbs-container" style={{ opacity: 0, pointerEvents: 'none' }} />
-            <h4 className="current-word">
+            <h4 className="current-word" data-cy="word-translation-current-word">
               {surfaceWord && surfaceWord !== data?.[0]?.lemma && (
-                <Popup
-                  content={<FormattedHTMLMessage id="explain-speaker-surface" />}
-                  trigger={<Speaker word={surfaceWord} />}
-                />
+                <CustomTooltip permanent keyId="explain-speaker-surface">
+                  <span style={{ display: 'inline-flex' }}>
+                    <Speaker word={surfaceWord} />
+                  </span>
+                </CustomTooltip>
               )}{' '}
               {maskSymbol || surfaceWord}
             </h4>
@@ -308,14 +310,19 @@ const WordTranslationPanel = () => {
                 onClick={() => setMenuOpen(prev => !prev)}
                 data-cy="chat-action-menu-popup"
               >
-                <Icon name={menuOpen ? 'close' : 'ellipsis vertical'} />
+                {menuOpen ? <CloseIcon /> : <MoreVertIcon />}
               </button>
 
               {menuOpen && (
                 <div className="chat-action-options">
-                  <button type="button" className="chat-action-item" onClick={handleSentenceTranslation}>
+                  <button
+                    type="button"
+                    className="chat-action-item"
+                    onClick={handleSentenceTranslation}
+                    data-cy="word-translation-translate-sentence-button"
+                  >
                     <div className="chat-action-icon" style={{ color: '#17a2b8' }}>
-                      <Icon name="book" />
+                      <MenuBookIcon />
                     </div>
                     <span className="chat-action-text">
                       <FormattedMessage id="dictionaryhelp-show-context-translation" defaultMessage="Translate Sentence" />
@@ -358,14 +365,14 @@ const WordTranslationPanel = () => {
                 />
               ))
             ) : (
-              <p className="no-translation-text">
+              <p className="no-translation-text" data-cy="word-translation-no-translation-text">
                 <FormattedMessage id="no-translation-found" defaultMessage="No translation found." />
               </p>
             )}
           </div>
 
           {showContextTranslation && (
-            <div className="context-translation-box">
+            <div className="context-translation-box" data-cy="word-translation-context-translation">
               {contextTranslationState.pending ? (
                 <Spinner inline />
               ) : contextTranslationState.data ? (

@@ -1,5 +1,9 @@
 import React, { useState, Fragment } from 'react'
-import { Table, Icon, Popup } from 'semantic-ui-react'
+import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const ConceptTitle = ({ title, isParent }) => {
@@ -14,16 +18,13 @@ const ConceptTitle = ({ title, isParent }) => {
   }
 
   return (
-    <Popup
-      content={<div>{title}</div>}
-      trigger={
-        isParent ? (
-          <div className="bold">{getTitleToDisplay()}</div>
-        ) : (
-          <div style={{ marginLeft: '10px' }}>{getTitleToDisplay()}</div>
-        )
-      }
-    />
+    <CustomTooltip permanent title={<div>{title}</div>}>
+      {isParent ? (
+        <div className="bold">{getTitleToDisplay()}</div>
+      ) : (
+        <div style={{ marginLeft: '10px' }}>{getTitleToDisplay()}</div>
+      )}
+    </CustomTooltip>
   )
 }
 
@@ -83,7 +84,7 @@ const StatisticCell = ({
   )
 
   return (
-    <Table.Cell style={{ padding: 0, background: bgColor }}>
+    <TableCell style={{ padding: 0, background: bgColor }}>
       <div
         className="justify-center align-center"
         style={{
@@ -91,23 +92,19 @@ const StatisticCell = ({
           width: '100%',
         }}
       >
-        <Popup
-          {...props}
-          content={tooltip}
-          trigger={
-            <div
-              style={{
-                backgroundColor: calculateColor(statistics),
-                height: `${calculateDiameter()}px`,
-                width: `${calculateDiameter()}px`,
-                borderRadius: '50%',
-                display: 'inline-block',
-              }}
-            />
-          }
-        />
+        <CustomTooltip {...props} permanent title={tooltip}>
+          <div
+            style={{
+              backgroundColor: calculateColor(statistics),
+              height: `${calculateDiameter()}px`,
+              width: `${calculateDiameter()}px`,
+              borderRadius: '50%',
+              display: 'inline-block',
+            }}
+          />
+        </CustomTooltip>
       </div>
-    </Table.Cell>
+    </TableCell>
   )
 }
 
@@ -131,23 +128,21 @@ const Concept = ({
 
   return (
     <Fragment {...props}>
-      <Table.Row onClick={() => setCollapsed(!collapsed)}>
-        <Table.Cell style={{ paddingLeft: '0.1em', background: cellBgColor() }}>
+      <TableRow onClick={() => setCollapsed(!collapsed)} data-cy="history-concept-row">
+        <TableCell style={{ paddingLeft: '0.1em', background: cellBgColor() }}>
           <div
             className="flex"
             style={{ textOverflow: 'ellipsis', marginLeft: `${indentation}px` }}
           >
             {concept.children.length > 0 && (
-              <div>
-                <Icon name={collapsed ? 'angle down' : 'angle right'} />
-              </div>
+              <div>{collapsed ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}</div>
             )}
             <ConceptTitle
               title={getConceptName(concept.id)}
               isParent={concept.children.length > 0}
             />
           </div>
-        </Table.Cell>
+        </TableCell>
         {history.map(test => (
           <StatisticCell
             key={`${test.date}-${concept.id}-${Math.floor(Math.random() * 10000)}`}
@@ -159,7 +154,7 @@ const Concept = ({
             bgColor={cellBgColor()}
           />
         ))}
-      </Table.Row>
+      </TableRow>
       {collapsed &&
         concept.children.map(child => (
           <Concept

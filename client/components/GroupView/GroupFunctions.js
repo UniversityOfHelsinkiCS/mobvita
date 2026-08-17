@@ -2,12 +2,21 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { Icon, Dropdown, Button as SemanticButton } from 'semantic-ui-react'
+import { Box } from '@mui/material'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import SettingsIcon from '@mui/icons-material/Settings'
+import EditIcon from '@mui/icons-material/Edit'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import PersonIcon from '@mui/icons-material/Person'
+import VpnKeyIcon from '@mui/icons-material/VpnKey'
+import ShareIcon from '@mui/icons-material/Share'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGroupTestDeadline, getGroupToken } from 'Utilities/redux/groupsReducer'
 import { updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { getTestQuestions } from 'Utilities/redux/testReducer'
 import AppButton from 'Components/AppButton'
+import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 import ImportStoryModal from './ImportStoryModal'
@@ -103,14 +112,18 @@ const GroupFunctions = ({
             <AppButton
               variant="primary"
               onClick={handleAnalyticsClick}
+              data-cy="group-analytics-button"
               style={{ color: 'white' }}
             >
-              <Icon name="chart line" /> <FormattedMessage id="Analytics" />
+              <ShowChartIcon /> <FormattedMessage id="Analytics" />
             </AppButton>
           )}
           {isTeaching && teacherView && (
-            <AppButton onClick={() => setLearningModalGroupId(groupId)}>
-              <Icon name="settings" /> <FormattedMessage id="learning-settings" />
+            <AppButton
+              onClick={() => setLearningModalGroupId(groupId)}
+              data-cy="group-learning-settings-button"
+            >
+              <SettingsIcon /> <FormattedMessage id="learning-settings" />
             </AppButton>
           )}
           {learningModalGroupId && isTeaching && (
@@ -129,7 +142,7 @@ const GroupFunctions = ({
               onClick={handleTestEnableDisableButtonClick}
               variant={testButtonVariant}
             >
-              <Icon name="pencil alternate" /> <FormattedMessage id={testButtonTextKey} />
+              <EditIcon /> <FormattedMessage id={testButtonTextKey} />
             </AppButton>
           )}
           {!conceptsView && isTeaching && teacherView && (
@@ -137,132 +150,144 @@ const GroupFunctions = ({
               variant="primary"
               as={Link}
               to={`/groups/teacher/${groupId}/settings`}
+              data-cy="group-test-settings-button"
               style={{ color: 'white' }}
             >
-              <Icon name="settings" /> <FormattedMessage id="test-settings" />
+              <SettingsIcon /> <FormattedMessage id="test-settings" />
             </AppButton>
           )}
-          {isTeaching && teacherView && (<AppButton onClick={handleStoriesClick}>
-            <Icon name="book" /> <FormattedMessage id="Stories" />
+          {isTeaching && teacherView && (<AppButton onClick={handleStoriesClick} data-cy="group-stories-button">
+            <MenuBookIcon /> <FormattedMessage id="Stories" />
           </AppButton>)}
           {!peopleView && isTeaching && teacherView && (
             <AppButton data-cy="people-button" onClick={handlePeopleClick}>
-              <Icon name="user" /> <FormattedMessage id="people" />
+              <PersonIcon /> <FormattedMessage id="people" />
             </AppButton>
           )}
           {isTeaching && teacherView && (
-            <AppButton onClick={handleShowTokenClick}>
-              <Icon name="key" /> <FormattedMessage id="show-group-token" />
+            <AppButton onClick={handleShowTokenClick} data-cy="group-show-token-button">
+              <VpnKeyIcon /> <FormattedMessage id="show-group-token" />
             </AppButton>
           )}
           {isTeaching && teacherView && (
-            <AppButton onClick={()=> setImportStoryModalOpen(true)}>
-              <Icon name="share" /> <FormattedMessage id="import-story" />
+            <AppButton onClick={()=> setImportStoryModalOpen(true)} data-cy="group-import-story-button">
+              <ShareIcon /> <FormattedMessage id="import-story" />
             </AppButton>
-            
+
           )}
         </div>
       ) : (
-        <SemanticButton.Group>
+        <Box sx={{ display: 'inline-flex' }}>
           <>
             {isTeaching && !analyticsView ? (
-              <SemanticButton
+              <AppButton
                 onClick={handleAnalyticsClick}
                 style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
               >
                 <FormattedMessage id="Analytics" />
-              </SemanticButton> ? (
+              </AppButton> ? (
                 isTeaching
               ) : (
-                <Dropdown.Item
-                  text={<FormattedMessage id="learning-settings" />}
-                  as={Link}
+                <AppMenuItem
                   onClick={() => setLearningModalGroupId(groupId)}
-                  icon="settings"
-                />
+                  icon={<SettingsIcon />}
+                >
+                  <FormattedMessage id="learning-settings" />
+                </AppMenuItem>
               )
             ) : (
-              <SemanticButton
+              <AppButton
                 as={Link}
                 onClick={handleStoriesClick}
+                data-cy="group-stories-button-mobile"
                 style={{ backgroundColor: 'rgb(50, 170, 248)', color: 'white' }}
               >
                 <FormattedMessage id="Stories" />
-              </SemanticButton>
+              </AppButton>
             )}
-            <Dropdown
-              className="button icon"
-              style={{
-                backgroundColor: 'rgb(50, 170, 248)',
-                color: 'white',
-                borderLeft: '2px solid rgb(81, 138, 248)' }}
-              floating
-              trigger={<React.Fragment />}
+            <AppMenu
+              trigger={
+                <AppButton
+                  data-cy="group-functions-menu-button"
+                  style={{
+                    backgroundColor: 'rgb(50, 170, 248)',
+                    color: 'white',
+                    borderLeft: '2px solid rgb(81, 138, 248)' }}
+                >
+                  <ArrowDropDownIcon />
+                </AppButton>
+              }
             >
               {isTeaching ? (
-                <Dropdown.Menu className="story-item-dropdown">
-                  <Dropdown.Item
-                    text={<FormattedMessage id="learning-settings" />}
-                    as={Link}
+                <div className="story-item-dropdown">
+                  <AppMenuItem
                     onClick={() => setLearningModalGroupId(groupId)}
-                    icon="settings"
-                  />
-                  <Dropdown.Item
-                    text={<FormattedMessage id={testButtonTextKey} />}
-                    as={Link}
+                    data-cy="group-menu-learning-settings"
+                    icon={<SettingsIcon />}
+                  >
+                    <FormattedMessage id="learning-settings" />
+                  </AppMenuItem>
+                  <AppMenuItem
                     onClick={handleTestEnableDisableButtonClick}
-                    icon="pencil alternate"
-                  />
+                    data-cy="group-menu-enable-test"
+                    icon={<EditIcon />}
+                  >
+                    <FormattedMessage id={testButtonTextKey} />
+                  </AppMenuItem>
                   {!conceptsView && (
-                    <Dropdown.Item
-                      text={<FormattedMessage id="test-settings" />}
-                      as={Link}
-                      to={`/groups/teacher/${groupId}/concepts/settings`}
-                      icon="settings"
-                    />
+                    <Link to={`/groups/teacher/${groupId}/concepts/settings`}>
+                      <AppMenuItem data-cy="group-menu-test-settings" icon={<SettingsIcon />}>
+                        <FormattedMessage id="test-settings" />
+                      </AppMenuItem>
+                    </Link>
                   )}
-                  <Dropdown.Item
-                    text={<FormattedMessage id="Stories" />}
-                    as={Link}
+                  <AppMenuItem
                     onClick={handleStoriesClick}
-                    icon="book"
-                  />
+                    data-cy="group-menu-stories"
+                    icon={<MenuBookIcon />}
+                  >
+                    <FormattedMessage id="Stories" />
+                  </AppMenuItem>
                   {!peopleView && (
-                    <Dropdown.Item
-                      text={<FormattedMessage id="people" />}
-                      as={Link}
+                    <AppMenuItem
                       onClick={handlePeopleClick}
-                      icon="user"
-                    />
+                      data-cy="group-menu-people"
+                      icon={<PersonIcon />}
+                    >
+                      <FormattedMessage id="people" />
+                    </AppMenuItem>
                   )}
-                  <Dropdown.Item
-                    text={<FormattedMessage id="show-group-token" />}
-                    as={Link}
+                  <AppMenuItem
                     onClick={handleShowTokenClick}
-                    icon="key"
-                  />
-                </Dropdown.Menu>
+                    data-cy="group-menu-show-token"
+                    icon={<VpnKeyIcon />}
+                  >
+                    <FormattedMessage id="show-group-token" />
+                  </AppMenuItem>
+                </div>
               ) : (
-                <Dropdown.Menu className="story-item-dropdown">
-                  <Dropdown.Item
-                    text={<FormattedMessage id="people" />}
-                    as={Link}
+                <div className="story-item-dropdown">
+                  <AppMenuItem
                     onClick={handlePeopleClick}
-                    icon="user"
-                  />
+                    data-cy="group-menu-people-student"
+                    icon={<PersonIcon />}
+                  >
+                    <FormattedMessage id="people" />
+                  </AppMenuItem>
                   {testEnabled && (
-                    <Dropdown.Item
-                      text={<FormattedMessage id="start-test" />}
-                      as={Link}
+                    <AppMenuItem
                       onClick={handleTestStartClick}
-                      icon="pencil alternate"
-                    />
+                      data-cy="group-menu-start-test"
+                      icon={<EditIcon />}
+                    >
+                      <FormattedMessage id="start-test" />
+                    </AppMenuItem>
                   )}
-                </Dropdown.Menu>
+                </div>
               )}
-            </Dropdown>
+            </AppMenu>
           </>
-        </SemanticButton.Group>
+        </Box>
       )}
     </>
   )

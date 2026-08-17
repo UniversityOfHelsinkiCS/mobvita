@@ -2,10 +2,21 @@
 /* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Segment, Input, Divider, Table, Checkbox } from 'semantic-ui-react'
+import {
+  Paper,
+  Divider,
+  FormControlLabel,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material'
 import { learningLanguageSelector } from 'Utilities/common'
 import { testConstruction, resetConstructionResults } from 'Utilities/redux/constructionTestReducer'
 import Spinner from 'Components/Spinner'
+import AppButton from 'Components/AppButton'
+import AppSwitch from 'Components/ui/AppSwitch'
+import AppTable from 'Components/ui/AppTable'
+import AppTextField from 'Components/ui/AppTextField'
 
 
 const ConstructTestView = () => {
@@ -56,31 +67,35 @@ const ConstructTestView = () => {
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
         <div className="cont">
-          <Segment>
+          <Paper sx={{ padding: '1em' }}>
             <div className="space-between align-center">
               <div style={{ width: '550px' }}>
-                <Input
-                  action={{
-                    content: pending ? (
-                      <Spinner inline />
-                    ) : (
-                      'Send'
-                    ),
-                    onClick: handleClick,
-                  }}
+                <AppTextField
+                  endIcon={
+                    <AppButton
+                      size="sm"
+                      onClick={handleClick}
+                      data-cy="construct-test-send-button"
+                    >
+                      {pending ? <Spinner inline /> : 'Send'}
+                    </AppButton>
+                  }
                   placeholder="Enter a sentence..."
-                  size="large"
-                  fluid
+                  inputProps={{ 'data-cy': 'construct-test-input' }}
                   onChange={e => setText(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
               </div>
               {patternResults && (
-                <Checkbox
-                  toggle
+                <FormControlLabel
+                  control={
+                    <AppSwitch
+                      checked={showAnalyses}
+                      onChange={() => setShowAnalyses(!showAnalyses)}
+                      slotProps={{ input: { 'data-cy': 'construct-test-show-analyses-toggle' } }}
+                    />
+                  }
                   label="Show analyses"
-                  checked={showAnalyses}
-                  onChange={() => setShowAnalyses(!showAnalyses)}
                 />
               )}
             </div>
@@ -88,7 +103,7 @@ const ConstructTestView = () => {
             {patternResults && (
               <>
                 <div className="mt-nm mb-lg">
-                  <Divider />
+                  <Divider sx={{ my: '1em' }} />
                 </div>
 
                 <div className="flex-col" style={{ gap: '1em' }}>
@@ -104,52 +119,52 @@ const ConstructTestView = () => {
                         {resultObj.message}
                       </div>
 
-                      <Table size="small" celled>
-                        <Table.Body>
-                          <Table.Row>
-                            <Table.Cell
+                      <AppTable density="compact" bordered>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell
                               key={`${resultObj.sentence}-${index}`}
                               className="bold"
-                              width={3}
+                              sx={{ width: '18.75%' }}
                             >
                               Sentence
-                            </Table.Cell>
-                            <Table.Cell key={wordHighlight(resultObj.sentence)}>
+                            </TableCell>
+                            <TableCell key={wordHighlight(resultObj.sentence)}>
                               <div
                                 dangerouslySetInnerHTML={{
                                   __html: wordHighlight(resultObj.sentence),
                                 }}
                               />
-                            </Table.Cell>
-                          </Table.Row>
-                        </Table.Body>
-                      </Table>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </AppTable>
 
                       {Object.keys(resultObj.table).length > 0 && (
-                        <Table size="small" celled>
-                          <Table.Body>
+                        <AppTable density="compact" bordered>
+                          <TableBody>
                             {Object.keys(resultObj.table).map(key => (
-                              <Table.Row>
-                                <Table.Cell key={`${key}`} className="bold" width={3}>
+                              <TableRow>
+                                <TableCell key={`${key}`} className="bold" sx={{ width: '18.75%' }}>
                                   {key}
-                                </Table.Cell>
-                                <Table.Cell
+                                </TableCell>
+                                <TableCell
                                   key={`${resultObj.table[key]}`}
                                   style={{ color: 'green' }}
                                 >
                                   {resultObj.table[key]}
-                                </Table.Cell>
-                              </Table.Row>
+                                </TableCell>
+                              </TableRow>
                             ))}
-                          </Table.Body>
-                        </Table>
+                          </TableBody>
+                        </AppTable>
                       )}
                       <div className="ml-sm mb-lg" style={{ whiteSpace: 'pre-line' }}>
                         {resultObj.matches}
                       </div>
                       {showAnalyses && !isNoChunkResult(resultObj) && (
                         <div className="ml-sm">
-                          <Divider />
+                          <Divider sx={{ my: '1em' }} />
                           <div className="bold">Analyses:</div>
                           <div style={{ overflow: 'auto', maxHeight: '500px' }}>
                             <pre
@@ -165,7 +180,7 @@ const ConstructTestView = () => {
                 </div>
               </>
             )}
-          </Segment>
+          </Paper>
         </div>
       </div>
     </div>

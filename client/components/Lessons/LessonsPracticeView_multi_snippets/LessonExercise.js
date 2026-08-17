@@ -15,7 +15,7 @@ import {
   setTouchedIds
 } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { Divider } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
 import PracticeText from './PracticeText'
 import LessonExerciseActions from './LessonExerciseActions'
 
@@ -239,7 +239,7 @@ const LessonExercise = ({ lesson_instance, handleInputChange }) => {
               handleAnswerChange={handleInputChange}
               handleMultiselectChange={handleMultiselectChange}
             />
-            <Divider />
+            <Divider sx={{ my: '1em' }} />
             <LessonExerciseActions lessonId={lesson_instance.lesson_id} exerciseCount={exerciseCount} />
           </div>
         </div>

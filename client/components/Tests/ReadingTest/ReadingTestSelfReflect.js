@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { Icon } from 'semantic-ui-react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
@@ -16,9 +17,10 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
     return (
         <div className="open-ended-question" style={{padding: '0.5em'}}>
             <label style={{ fontWeight: 'bold' }}><FormattedMessage id={question} /></label>
-            <textarea 
-                id={idx} 
-                value={answer} 
+            <textarea
+                id={idx}
+                data-cy="reading-test-self-reflect-open-ended-answer"
+                value={answer}
                 onChange={handleInputChange}
                 style={{
                     width: '100%', 
@@ -53,7 +55,7 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
                 <span style={{ textAlign: 'left' }}><FormattedMessage id='not-useful-at-all' /></span>
                 <span style={{ textAlign: 'right' }}><FormattedMessage id='very-useful' /></span>
             </div>
-            <div className="useful-slider-container" style={{
+            <div className="useful-slider-container" data-cy="reading-test-self-reflect-usefulness-slider" style={{
                 marginBottom: '3em'
             }}>
                 <ReactSlider
@@ -73,10 +75,11 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
                 />
             </div>
             <div style={{ marginTop: '20px' }}>
-                <input 
-                    type="checkbox" 
-                    id="doNotKnowCheckbox" 
-                    className="btn-checkbox" 
+                <input
+                    type="checkbox"
+                    id="doNotKnowCheckbox"
+                    data-cy="reading-test-self-reflect-do-not-know"
+                    className="btn-checkbox"
                     value={doNotKnow}
                     onChange={() => setDoNotKnow(!doNotKnow)}
                     style={{ marginRight: '0.5em' }}
@@ -236,15 +239,16 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                 <div className='slider-content'>
                     <button
                         className='left-arrow'
+                        data-cy="reading-test-self-reflect-prev"
                         onClick={prevSlide}
                         onTouchEnd={prevSlide}
                         disabled={self_reflection_questions.length==0 || current == 0}
                         style={{ fontSize: '2.5em' }}
                     >
-                        <Icon
+                        <ChevronLeftIcon
                             className='left-arrow'
-                            name={'chevron left'}
-                            style={{ cursor: 'pointer' }}
+                            fontSize="inherit"
+                            sx={{ cursor: 'pointer' }}
                         />
                     </button>
 
@@ -268,6 +272,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                             <AppButton
                                 type="submit"
                                 variant="primary"
+                                data-cy="reading-test-self-reflect-submit"
                                 onClick={submitResponse}
                                 disabled={
                                     !openEndedQuestionAnswers.every(answer => answer !== null && answer.trim() !== '') ||
@@ -298,15 +303,16 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
 
                     <button
                         className='right-arrow'
+                        data-cy="reading-test-self-reflect-next"
                         onClick={nextSlide}
                         onTouchEnd={nextSlide}
                         disabled={self_reflection_questions.length==0 || current == self_reflection_questions.length - 1}
                         style={{ fontSize: '2.5em' }}
                     >
-                        <Icon
+                        <ChevronRightIcon
                             className='right-arrow'
-                            name={'chevron right'}
-                            style={{ cursor: 'pointer' }}
+                            fontSize="inherit"
+                            sx={{ cursor: 'pointer' }}
                         />
                     </button>
                 </div>
@@ -314,6 +320,7 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
                     {self_reflection_questions.map((_, index) => (
                         <span
                             key={index}
+                            data-cy={`reading-test-self-reflect-dot-${index}`}
                             className={index === current ? 'dot active' : 'dot'}
                             onClick={() => goToSlide(index)}
                             onTouchEnd={() => goToSlide(index)}

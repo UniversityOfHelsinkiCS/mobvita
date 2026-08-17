@@ -1,12 +1,12 @@
 import React from 'react'
 import AppButton from 'Components/AppButton'
-import { Divider } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 
 const AddFeedbackInput = ({ addFeedback, customFeedback, setCustomFeedback }) => {
   return (
     <div style={{ marginLeft: '0.5em' }}>
-      <Divider />
+      <Divider sx={{ my: '1em' }} />
       <FormattedMessage id="custom-feedback-header" />
       <div className="flex">
         <input
@@ -15,8 +15,9 @@ const AddFeedbackInput = ({ addFeedback, customFeedback, setCustomFeedback }) =>
           type="text"
           value={customFeedback}
           onChange={({ target }) => setCustomFeedback(target.value)}
+          data-cy="add-feedback-input"
         />
-        <AppButton variant="primary" onClick={addFeedback}>
+        <AppButton variant="primary" onClick={addFeedback} data-cy="add-feedback-button">
           <FormattedMessage id="add-lesson-practice-btn" />
         </AppButton>
       </div>

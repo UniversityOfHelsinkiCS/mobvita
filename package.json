@@ -85,8 +85,6 @@
     "regenerator-runtime": "^0.14.1",
     "sanitize-html": "^2.17.3",
     "sass": "^1.99.0",
-    "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1",
     "styled-components": "^6.4.1",

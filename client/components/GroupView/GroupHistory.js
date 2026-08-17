@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
-import { Divider, Icon, Popup } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
@@ -48,46 +50,42 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
       <div>
         {view === 'exercise' ? (
           <div className="row-flex align center">
-            <Popup
-              content={
+            <CustomTooltip
+              permanent
+              title={
                 <div>
                   <FormattedMessage id="exercise-history-explanation" />
                 </div>
               }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
+            >
+              <InfoOutlinedIcon
+                sx={{ paddingRight: '0.75em', marginBottom: '0.35em', color: 'grey' }}
+              />
+            </CustomTooltip>
             <div className="progress-page-header">
               <FormattedMessage id="exercise-history" />
             </div>
           </div>
         ) : (
           <div className="row-flex align center">
-            <Popup
-              content={
+            <CustomTooltip
+              permanent
+              title={
                 <div>
                   <FormattedMessage id="test-history-explanation" />
                 </div>
               }
-              trigger={
-                <Icon
-                  style={{ paddingRight: '0.75em', marginBottom: '0.35em' }}
-                  name="info circle"
-                  color="grey"
-                />
-              }
-            />
+            >
+              <InfoOutlinedIcon
+                sx={{ paddingRight: '0.75em', marginBottom: '0.35em', color: 'grey' }}
+              />
+            </CustomTooltip>
             <div className="progress-page-header">
               <FormattedMessage id="Test History" />
             </div>
           </div>
         )}
-        <Divider />
+        <Divider sx={{ my: '1em' }} />
       </div>
 
       {student ? (
@@ -103,7 +101,7 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
           )}
         </div>
       ) : (
-        <div className="group-analytics-no-results">
+        <div className="group-analytics-no-results" data-cy="group-history-no-students">
           <FormattedMessage id="no-students-in-group" />
         </div>
       )}

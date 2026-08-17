@@ -31,7 +31,6 @@ import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
 
-// The old semantic-ui `Card.Content extra` block: hairline-separated section inside the card.
 const CardSection = ({ children, ...rest }) => (
   <Box sx={{ padding: '1em', borderTop: `1px solid ${colors.border}` }} {...rest}>
     {children}

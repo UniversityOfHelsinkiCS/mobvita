@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Dropdown } from 'semantic-ui-react'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import AppSelect from 'Components/ui/AppSelect'
 import { getTextWidth, formatGreenFeedbackText, getWordColor, getMode, skillLevels } from 'Utilities/common'
 import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
@@ -46,9 +47,8 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
 
   useEffect(() => {
     const temp = word.choices.map(choice => ({
-      key: `${word.ID}_${choice}`,
       value: choice,
-      text: choice,
+      label: choice,
     }))
     setOptions(temp)
   }, [word])
@@ -142,26 +142,47 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
       tooltip={tooltip}
       additionalClassnames="clickable"
     >
-      <Dropdown
-        key={word.ID}
-        disabled={tested && !isWrong || answersPending}
+      {/* AppSelect drives the option list (cream AppMenu popover), but the trigger stays a bespoke
+          inline control: the design-system pill would be wrong mid-sentence, and `.exercise-multiple`
+          already supplies the box plus the wrong/correct tints. onFocus/onBlur/onClick live on the
+          trigger — AppMenu composes its own open handler with this onClick rather than replacing it. */}
+      <AppSelect
         options={options}
-        placeholder={placeholder}
         value={value}
-        onChange={(e, data) => handle(e, word, data)}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        onClick={() => dispatch(mcExerciseTouched(word))}
-        selection
-        floating
-        style={{
-          font: '400 1.15rem Rubik',
-          width: getInputWidth(),
-          minWidth: 80,
-          backgroundColor: getWordColor(
-            word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode),
-        }}
-        className={`${className}`}
+        onChange={choice => handle(null, word, { value: choice })}
+        minWidth={getInputWidth()}
+        trigger={
+          <button
+            type="button"
+            data-cy={!answersPending && 'exercise-multiple-choice' || 'exercise-multiple-choice-pending'}
+            disabled={tested && !isWrong || answersPending}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            onClick={() => dispatch(mcExerciseTouched(word))}
+            className={`${className}`}
+            style={{
+              font: '400 1.15rem Rubik',
+              width: getInputWidth(),
+              minWidth: 80,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 2,
+              textAlign: 'left',
+              color: 'rgb(49, 49, 49)',
+              cursor: tested && !isWrong || answersPending ? 'default' : 'pointer',
+              backgroundColor: getWordColor(
+                word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode),
+            }}
+          >
+            <span
+              style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            >
+              {value || placeholder}
+            </span>
+            <ArrowDropDownIcon style={{ fontSize: '1.1em', flexShrink: 0 }} />
+          </button>
+        }
       />
     </Tooltip>
   )

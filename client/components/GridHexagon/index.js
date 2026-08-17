@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
-import { Popup } from 'semantic-ui-react'
+import CustomTooltip from 'Components/CustomTooltip'
 import './App.css'
 import GridText from './GridText'
 
@@ -92,23 +92,19 @@ const ConstructionHexagon = ({ name, position, statistics, overallTotal, general
   )
 
   return (
-    <Popup
-      position="top center"
-      content={hexagonTooltip}
-      trigger={
-        <g className="hexagon" transform={`translate(${x},${y})`}>
-          <g className="hexagon">
-            <polygon points={OUTER_HEX_POINTS} />
-          </g>
-          <g className={colorClass}>
-            <g className="hexagon">
-              <polygon points={innerPoints} />
-            </g>
-          </g>
-          <GridText className="hexagon-text">{name}</GridText>
+    <CustomTooltip permanent placement="top" title={hexagonTooltip}>
+      <g className="hexagon" data-cy="grid-hexagon" transform={`translate(${x},${y})`}>
+        <g className="hexagon">
+          <polygon points={OUTER_HEX_POINTS} />
         </g>
-      }
-    />
+        <g className={colorClass}>
+          <g className="hexagon">
+            <polygon points={innerPoints} />
+          </g>
+        </g>
+        <GridText className="hexagon-text">{name}</GridText>
+      </g>
+    </CustomTooltip>
   )
 }
 
@@ -120,7 +116,7 @@ const HexagonTest = props => {
   if (props.conceptsPending || !props.concepts || props.pending) return <Spinner />
 
   if (!props.root_hex_coord || props.exerciseHistory?.length < 1 || !props.exerciseHistory)
-    return <div>Not available</div>
+    return <div data-cy="grid-hexagon-not-available">Not available</div>
 
   const no_outliner_max = 20 // props.exerciseHistory[0].no_oultiner_max
   const accumulatedConcepts = props.exerciseHistory.reduce((acc, elem) => {

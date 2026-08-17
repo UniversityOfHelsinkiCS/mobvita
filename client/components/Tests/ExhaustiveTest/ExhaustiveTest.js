@@ -2,8 +2,11 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
-import { Icon, Segment } from 'semantic-ui-react'
-import { 
+import { Paper } from '@mui/material'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
+import StopIcon from '@mui/icons-material/Stop'
+import {
   sendExhaustiveTestAnswer, 
   finishExhaustiveTest, 
   updateTestFeedbacks, 
@@ -171,32 +174,33 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
   const testContainerOverflow = displaySpinner ? { overflow: "hidden" } : { overflowY: "auto" };
 
+  const PlayPauseIcon = paused ? PlayArrowIcon : PauseIcon
+
   return (
     <div className="cont mt-nm">
-      <Segment style={{ minHeight: '700px', borderRadius: '20px' }}>
+      <Paper sx={{ padding: '1em', minHeight: '700px', borderRadius: '20px', position: 'relative' }}>
         <div className="align-center justify-center">
           <div
             className="flex align-start"
             style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
           >
             <div className="test-controls">
-              <Icon
-                size="large"
-                color={willPause ? 'grey' : 'black'}
-                name={paused ? 'play' : 'pause'}
+              <PlayPauseIcon
+                fontSize="large"
+                data-cy="exhaustive-test-pause-button"
                 onClick={paused ? resumeTimer : pauseTimer}
-                style={{ margin: '0.25em' }}
+                sx={{ margin: '0.25em', color: willPause ? 'grey' : 'black' }}
               />
-              <Icon
-                size="large"
-                color={willStop ? 'grey' : 'black'}
-                name="stop"
+              <StopIcon
+                fontSize="large"
+                data-cy="exhaustive-test-stop-button"
                 onClick={stop}
-                style={{ margin: '0.25em' }}
+                sx={{ margin: '0.25em', color: willStop ? 'grey' : 'black' }}
               />
             </div>
             <div
               className="test-counter"
+              data-cy="exhaustive-test-timer"
               style={{
                 fontSize: '2em',
                 fontWeight: 'bold',
@@ -210,24 +214,24 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
           <div className="test-container">
             <div className="test-top-info space-between">
-              <div>
+              <div data-cy="exhaustive-test-question-counter">
                 <FormattedHTMLMessage id="question" />: {currentExhaustiveQuestionIndex + 1} /{' '}
                 {exhaustiveTestQuestions.length}
               </div>
             </div>
             <div className="test-question-container" style={testContainerOverflow}>
               {willPause && !willStop && (
-                <span className="test-info">
+                <span className="test-info" data-cy="exhaustive-test-pause-notice">
                   <FormattedMessage id="pause-after-you-answer-this-question" />
                 </span>
               )}
               {willStop && (
-                <span className="test-info">
+                <span className="test-info" data-cy="exhaustive-test-stop-notice">
                   <FormattedMessage id="quitting-after-this-question" />
                 </span>
               )}
               {paused && (
-                <div className="test-paused-text-cont">
+                <div className="test-paused-text-cont" data-cy="exhaustive-test-paused-text">
                   <FormattedHTMLMessage id="paused-click-to-resume" />
                 </div>
               )}
@@ -248,7 +252,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
             </div>
           </div>
         </div>
-      </Segment>
+      </Paper>
     </div>
   )
 }

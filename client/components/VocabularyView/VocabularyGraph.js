@@ -3,7 +3,8 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useIntl } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
-import { Checkbox } from 'semantic-ui-react'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import AppSwitch from 'Components/ui/AppSwitch'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
@@ -459,10 +460,14 @@ const VocabularyGraph = ({
       <div className="flex-reverse">
         {graphType === 'column mastered' && (
           <span>
-            <Checkbox
-              toggle
-              checked={toggleOn}
-              onChange={handleToggle}
+            <FormControlLabel
+              control={
+                <AppSwitch
+                  checked={toggleOn}
+                  onChange={handleToggle}
+                  slotProps={{ input: { 'data-cy': 'vocabulary-graph-mastered-toggle' } }}
+                />
+              }
               label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
               style={{ marginRight: '.5em' }}
             />
@@ -470,10 +475,14 @@ const VocabularyGraph = ({
         )}
         {graphType === 'column' && (
           <span>
-            <Checkbox
-              toggle
-              checked={toggleOn}
-              onChange={handlePercentageToggle}
+            <FormControlLabel
+              control={
+                <AppSwitch
+                  checked={toggleOn}
+                  onChange={handlePercentageToggle}
+                  slotProps={{ input: { 'data-cy': 'vocabulary-graph-percentage-toggle' } }}
+                />
+              }
               label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
               style={{ marginRight: '.5em' }}
             />

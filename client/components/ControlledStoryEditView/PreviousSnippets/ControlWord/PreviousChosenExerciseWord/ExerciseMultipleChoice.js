@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import AppSelect from 'Components/ui/AppSelect'
 import { getTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word }) => {
@@ -8,9 +9,8 @@ const ExerciseMultipleChoice = ({ word }) => {
   useEffect(() => {
     if (Array.isArray(word.choices)) {
       const temp = word.choices.map(choice => ({
-        key: `${word.ID}_${choice}`,
         value: choice,
-        text: choice,
+        label: choice,
       }))
       setOptions(temp)
     } else {
@@ -20,9 +20,8 @@ const ExerciseMultipleChoice = ({ word }) => {
           temp = [
             ...temp,
             {
-              key: `${word.ID}_${choice}`,
               value: choice,
-              text: choice,
+              label: choice,
             },
           ]
         })
@@ -53,19 +52,32 @@ const ExerciseMultipleChoice = ({ word }) => {
   }
 
   return (
-    <Dropdown
+    <AppSelect
       key={word.ID}
-      options={options}
-      placeholder={word.choices[0] || options[0].value}
       value=""
-      selection
-      floating
-      style={{
-        width: getTextWidth(testString),
-        minWidth: getTextWidth(testString),
-        height: '1.5em',
-      }}
-      className="exercise-multiple control-mode control-mode-chosen"
+      options={options}
+      onChange={() => {}}
+      minWidth={120}
+      trigger={
+        <button
+          type="button"
+          data-cy="previous-chosen-multiple-choice"
+          className="exercise-multiple control-mode control-mode-chosen"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            font: 'inherit',
+            cursor: 'pointer',
+            width: getTextWidth(testString),
+            minWidth: getTextWidth(testString),
+            height: '1.5em',
+          }}
+        >
+          {word.choices[0] || options[0].value}
+          <KeyboardArrowDownIcon fontSize="small" />
+        </button>
+      }
     />
   )
 }

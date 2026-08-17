@@ -5,7 +5,7 @@ import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import { useParams, useLocation } from 'react-router-dom'
-import { Divider } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
 
 const PreviousSnippets = props => {
   const isLesson = props.isLesson
@@ -73,7 +73,7 @@ const PreviousSnippets = props => {
                   mode="practice"
                   style={' display: block'}
                 />
-                <Divider />
+                <Divider sx={{ my: '1em' }} />
               </div>
             )
           } else {

@@ -118,15 +118,15 @@
    Right Column: Action Icons (Check, Question, Word Nest)
    ========================================= */
 
-/* Check & Question Icons (Semantic UI) */
-.translation-lemma-card .right-column i.icon {
+/* Check & Question Icons */
+.translation-lemma-card .right-column .MuiSvgIcon-root {
   font-size: 1.25rem;
   color: #000000;
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.translation-lemma-card .right-column i.icon:hover {
+.translation-lemma-card .right-column .MuiSvgIcon-root:hover {
   color: #2563eb;
   transform: scale(1.1);
 }
@@ -179,7 +179,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  .translation-lemma-card .right-column i.icon,
+  .translation-lemma-card .right-column .MuiSvgIcon-root,
   .translation-lemma-card .wordnest-icon-button {
     margin: 0; /* Reset any leftover margins */
   }
@@ -190,8 +190,7 @@
    ========================================= */
 
 .translation-lemma-card a:focus,
-.translation-lemma-card button:focus,
-.translation-lemma-card .icon:focus {
+.translation-lemma-card button:focus {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
   border-radius: 4px;

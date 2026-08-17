@@ -9,7 +9,7 @@ import { capitalize_first_char_only, formatGreenFeedbackText } from 'Utilities/c
 const BookReference = ({ reference }) => (
   <li>
     {reference.url ? (
-      <a href={reference.url}>
+      <a href={reference.url} data-cy="feedback-info-book-reference-link">
         {reference.title && `${reference.title}, `}
         {reference.author && `${reference.author}, `}
         {reference.topic && `${reference.topic}, `}
@@ -32,7 +32,12 @@ const BookReference = ({ reference }) => (
 
 const UrlReference = ({ reference }) => (
   <li>
-    <a href={reference.url} target="_blank" rel="noopener noreferrer">
+    <a
+      href={reference.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-cy="feedback-info-url-reference-link"
+    >
       {reference.title || reference.title}
     </a>
   </li>
@@ -68,7 +73,7 @@ const FeedbackInfoModal = () => {
         <div className="mb-lg" key={title}>
           <div className="bold header-3">
             {capitalize_first_char_only(title)}
-            <Divider style={{ width: '50%' }} />
+            <Divider sx={{ my: '1em', width: '50%' }} />
           </div>
           <ul>
             {explanation[title].map((item, index) => (
@@ -88,7 +93,7 @@ const FeedbackInfoModal = () => {
       {Object.keys(example).map(title => (
         <div className="mb-lg" key={title}>
           <div className="bold header-3">
-            <Divider style={{ width: '50%' }} />
+            <Divider sx={{ my: '1em', width: '50%' }} />
           </div>
           <ul>
             {(Array.isArray(example[title]) ? example[title] : [example[title]]).map(
@@ -110,7 +115,7 @@ const FeedbackInfoModal = () => {
       <div className="mb-lg">
         {Object.keys(references).map(referenceKey => (
           <div key={referenceKey}>
-            <Divider style={{ width: '70%' }} />
+            <Divider sx={{ my: '1em', width: '70%' }} />
             <div style={{ marginBottom: '.5em', fontWeight: '600' }}>
               {capitalize_first_char_only(referenceKey)}:
             </div>
@@ -133,7 +138,6 @@ const FeedbackInfoModal = () => {
   )
 
   const handleModalClose = () => {
-    // Close immediately and clear redux immediately so it can't reopen.
     setIsOpen(false)
     dispatch(clearReferences())
     dispatch(clearExplanation())
@@ -146,21 +150,30 @@ const FeedbackInfoModal = () => {
     setExampleSnapshot(null)
   }
 
+  const handleDialogClose = (event, reason) => {
+    if (reason === 'backdropClick') return
+    handleModalClose()
+  }
+
   return (
     <AppDialog
       open={isOpen}
-      onClose={handleModalClose}
-      maxWidth="xs"
+      onClose={handleDialogClose}
       slotProps={{ transition: { onExited: handleModalClosed } }}
+      maxWidth="xs"
+      data-cy="feedback-info-modal"
+      closeDataCy="feedback-info-modal-close"
     >
       {explanationSnapshot && <ExplanationList explanation={explanationSnapshot} />}
       {exampleSnapshot && Object.keys(exampleSnapshot).length > 0 && (
         <>
-          {explanationSnapshot && <Divider sx={{ my: 2 }} />}
+          {explanationSnapshot && <Divider sx={{ my: '1em' }} />}
           <ExampleList example={exampleSnapshot} />
         </>
       )}
-      {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && <Divider sx={{ my: 2 }} />}
+      {(explanationSnapshot || exampleSnapshot) && referencesSnapshot && (
+        <Divider sx={{ my: '1em' }} />
+      )}
       {referencesSnapshot && <ReferenceList references={referencesSnapshot} />}
     </AppDialog>
   )

@@ -1,8 +1,9 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Icon, Popup } from 'semantic-ui-react'
+import AddIcon from '@mui/icons-material/Add'
+import AppButton from 'Components/AppButton'
+import CustomTooltip from 'Components/CustomTooltip'
 import { lemmatizer } from 'lemmatizer'
 import {
   useDictionaryLanguage,
@@ -117,20 +118,23 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
 
     if (!translatable || !pending && !data) return null
     if (!show && translatable) return (
-        <Popup
-            position="top center"
-            content={<FormattedHTMLMessage id="dictionaryhelp-show-context-translation" />}
-            trigger={
-                <Button 
-                    primary
-                    circular
-                    style={{ float: 'right', padding: '1em' }}
+        <CustomTooltip
+            placement="top"
+            keyId="dictionaryhelp-show-context-translation"
+            permanent
+        >
+            <span style={{ float: 'right', display: 'inline-flex' }}>
+                <AppButton
+                    variant="primary"
+                    style={{ padding: '1em' }}
+                    sx={{ minWidth: 0, borderRadius: '50%' }}
                     onClick={() => setShow(true)}
+                    data-cy="context-translation-show-button"
                 >
-                    <Icon name="plus" style={{ margin: 0, fontSize: 'small' }} />
-                </Button>
-            }
-        />
+                    <AddIcon fontSize="small" sx={{ margin: 0 }} />
+                </AppButton>
+            </span>
+        </CustomTooltip>
     )
 
     return (
@@ -144,7 +148,8 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                     borderRadius: '15px',
                     backgroundColor: 'rgb(126 222 249 / 30%)'
                     }}
-                    dangerouslySetInnerHTML={{__html: highlightTarget(data)}} 
+                    data-cy="context-translation-text"
+                    dangerouslySetInnerHTML={{__html: highlightTarget(data)}}
                 />
             ): (
                 <div>

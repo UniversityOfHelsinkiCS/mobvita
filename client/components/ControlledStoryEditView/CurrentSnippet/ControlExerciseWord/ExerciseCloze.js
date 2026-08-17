@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
 import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 

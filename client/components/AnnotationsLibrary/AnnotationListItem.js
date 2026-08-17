@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Card, Button as SemanticButton, Popup } from 'semantic-ui-react'
+import { Card, CardContent } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import { useDispatch } from 'react-redux'
 import { getCategoryColor } from 'Utilities/common'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
+import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import AnnotationActions from './AnnotationActions'
 
@@ -44,27 +45,24 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
 
   return (
     <>
-      <Card fluid key={uid}>
-        <Card.Content extra className="story-card-title-cont">
-          <Popup
-            content={<div style={{ margin: '0.25em' }}>{annotation}</div>}
-            trigger={
-              <div className="flex space-between" style={{ alignItems: 'center' }}>
-                <Link to={`/stories/${story_id}/${storyMode}`}>
-                  <h5 className="story-item-title">{name}</h5>
-                </Link>
-                {category && category !== 'None' && (
-                  <div className={getCategoryColor(category)} style={{ marginRight: '.5em', marginBottom: '.5em' }}>
-                    <FormattedMessage id={`notes-${category}`} />
-                  </div>
-                )}
-              </div>
-            }
-          />
-        </Card.Content>
-        <Card.Content extra className="story-card-actions-cont">
+      <Card key={uid} className="annotation-list-item" data-cy="annotation-list-item">
+        <CardContent className="story-card-title-cont">
+          <CustomTooltip permanent title={<div style={{ margin: '0.25em' }}>{annotation}</div>}>
+            <div className="flex space-between" style={{ alignItems: 'center' }}>
+              <Link to={`/stories/${story_id}/${storyMode}`} data-cy="annotation-item-name-link">
+                <h5 className="story-item-title">{name}</h5>
+              </Link>
+              {category && category !== 'None' && (
+                <div className={getCategoryColor(category)} style={{ marginRight: '.5em', marginBottom: '.5em' }}>
+                  <FormattedMessage id={`notes-${category}`} />
+                </div>
+              )}
+            </div>
+          </CustomTooltip>
+        </CardContent>
+        <CardContent className="story-card-actions-cont">
           <div className="flex" style={{ alignItems: 'center' }}>
-            {/* 
+            {/*
             <AnnotationActions
               storyId={story_id}
               percentCov={precent_cov}
@@ -73,14 +71,20 @@ const AnnotationListItem = ({ annotationItem, annotationsList, setAnnotationsLis
             */}
             <Link to={`/stories/${story_id}/${storyMode}`}>
               <h5 className="annotation-item-text" style={{ color: 'gray', marginLeft: '.5em' }} data-cy="annotation-item-link">
-                {story_title.length > maxLength ? <Popup
-                content={<div style={{ margin: '0.25em' }}>{story_title}</div>}
-                trigger={truncateStoryTitle(story_title)}
-              /> : story_title}
+                {story_title.length > maxLength ? (
+                  <CustomTooltip
+                    permanent
+                    title={<div style={{ margin: '0.25em' }}>{story_title}</div>}
+                  >
+                    {truncateStoryTitle(story_title)}
+                  </CustomTooltip>
+                ) : (
+                  story_title
+                )}
               </h5>
             </Link>
           </div>
-        </Card.Content>
+        </CardContent>
         <ConfirmationWarning open={openWarning} setOpen={setOpenWarning} action={handleDelete}>
           <FormattedMessage id="annotation-remove-confirm" />
         </ConfirmationWarning>

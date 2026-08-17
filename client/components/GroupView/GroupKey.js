@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FormattedMessage } from 'react-intl'
-import { Icon, Popup } from 'semantic-ui-react'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import AppButton from 'Components/AppButton'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const GroupKey = () => {
   const dispatch = useDispatch()
@@ -26,18 +27,23 @@ const GroupKey = () => {
           borderRadius: '0.25rem',
         }}
       >
-        <Popup
-          position="top center"
-          content={<FormattedMessage id="copy-key" />}
-          trigger={
+        <CustomTooltip permanent placement="top" title={<FormattedMessage id="copy-key" />}>
+          <span style={{ display: 'inline-flex' }}>
             <CopyToClipboard text={token}>
-              <AppButton type="button" onClick={handleTokenCopy} disabled={!token}>
-                <Icon name="copy" size="large" />
+              <AppButton
+                type="button"
+                onClick={handleTokenCopy}
+                disabled={!token}
+                data-cy="group-key-copy-button"
+              >
+                <ContentCopyIcon fontSize="large" />
               </AppButton>
             </CopyToClipboard>
-          }
-        />
-        <span style={{ margin: 'auto', padding: '0.5em' }}>{token}</span>
+          </span>
+        </CustomTooltip>
+        <span style={{ margin: 'auto', padding: '0.5em' }} data-cy="group-key-token">
+          {token}
+        </span>
       </div>
       <div
         style={{

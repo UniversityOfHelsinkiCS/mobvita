@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import AppButton from 'Components/AppButton'
-import { Icon } from 'semantic-ui-react'
+import CloseIcon from '@mui/icons-material/Close'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import DifficultyStars from 'Components/DifficultyStars'
 
@@ -20,13 +20,18 @@ export default function RecommendedSites() {
     return (
       <div className="suggestedSources-row" key={url}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Icon
-            name="close"
-            color="grey"
-            style={{ cursor: 'pointer' }}
+          <CloseIcon
+            sx={{ color: 'grey', cursor: 'pointer' }}
             onClick={() => handleSiteDelete(url)}
+            data-cy="recommended-site-delete-button"
           />
-          <AppButton variant="link" style={{ padding: 0 }} href={url} target="_blank">
+          <AppButton
+            variant="link"
+            style={{ padding: 0 }}
+            href={url}
+            target="_blank"
+            data-cy="recommended-site-link"
+          >
             {name || url}
           </AppButton>
         </div>

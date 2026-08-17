@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Draggable from 'react-draggable'
-import { Icon } from 'semantic-ui-react'
+import CloseIcon from '@mui/icons-material/Close'
 import { closeEncouragement, closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
@@ -161,13 +161,13 @@ const Recommender = ({ continueAction }) => {
             >
               <div className="col-flex">
                 <div className="flex-reverse">
-                  <Icon
+                  <CloseIcon
                     className="interactable"
+                    data-cy="recommender-close-button"
                     style={{
                       cursor: 'pointer',
                       marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
+                    fontSize="large"
                     onClick={handleCloseClick}
                   />
                 </div>

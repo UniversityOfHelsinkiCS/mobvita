@@ -1,0 +1,560 @@
+//
+// base.scss — adopted global reset / normalize layer
+//
+// PROVENANCE
+// These rules were ported verbatim out of `semantic-ui-css` 2.5.0
+// (node_modules/semantic-ui-css/semantic.min.css) at the point where the
+// dependency was dropped from the app. Nothing in client/ imports
+// `semantic-ui-react` any more and no hand-written className in our JSX
+// contains the `ui` token, so every `.ui.*` component rule in that stylesheet
+// was unreachable dead weight. The only things the app still genuinely
+// depended on were semantic's three GLOBAL sections — Reset, normalize.css
+// v7.0.0 and Site — which is exactly what lives in this file.
+//
+// It is imported from custom.scss in the SAME position the semantic import
+// used to occupy (first), so the cascade is unchanged: every rule in our own
+// stylesheets still comes later and still wins.
+//
+// WHAT A FUTURE READER MAY SAFELY REVISIT
+// This is a compatibility shim, not a design decision. Most of it can be
+// retired once the app is checked against a modern reset:
+//   - the normalize.css v7.0.0 block is from 2017; a lot of it is now browser
+//     default behaviour and could be pruned rule by rule with visual checks.
+//   - the Site block encodes semantic's *visual* defaults (heading sizes, link
+//     blue, selection colours, scrollbar styling). Those are real design
+//     choices we inherited by accident and are free to replace with our own.
+// The one line that must NOT be casually changed is `html { font-size: 14px }`
+// — see the loud comment on it below.
+//
+// NOT ported: `body .ui.inverted::-webkit-scrollbar*`, which needs a `.ui`
+// ancestor and is therefore unreachable in our DOM.
+//
+
+// Lato, requested by semantic.min.css's very first line:
+//   @import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin);
+// Kept because Lato is still actually rendered:
+//   - the `h1..h5` rule in the Site section below names it, and the app has
+//     ~94 real <h1>-<h5> elements, many of them (ReferenceView, Estimator,
+//     StaticContent/TermsAndConditions, Help, ...) with no font-family of
+//     their own. An element-level rule beats the inherited Rubik from `body`,
+//     so those headings resolve to Lato today.
+//   - client/components/SidebarNavButton.js asks for Lato by name.
+// index.html loads Geologica and custom.scss loads Rubik, but neither loads
+// Lato — this import is its only source. Dropping it would silently reflow
+// every bare heading to Helvetica Neue/Arial.
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin);
+
+// ==========================================================================
+// Reset  (Semantic UI 2.5.0)
+// ==========================================================================
+
+// Border-box everywhere. Load-bearing: all of our own sizing (padding + width
+// on the same element, the sidebar/navbar em widths, MUI's own box model)
+// assumes this. Both halves are required — `html` seeds `border-box` and the
+// universal rule inherits it down; drop either one and the whole app silently
+// reverts to `content-box`.
+//
+// Order matches the original (universal rule first, `html` second). It cannot
+// matter — `html` is a type selector and outranks `*` whichever comes first —
+// but there is no reason to deviate.
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+// Strips the native iOS/Safari inner shadow and the Firefox spinner chrome on
+// plain text-ish inputs so they look the same across browsers.
+input[type='text'],
+input[type='email'],
+input[type='search'],
+input[type='password'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+// ==========================================================================
+// normalize.css v7.0.0  (bundled inside Semantic UI 2.5.0) | MIT
+// github.com/necolas/normalize.css
+// ==========================================================================
+
+// Document
+// --------
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  // omitted: -ms-text-size-adjust — IE10/11 + Edge Legacy only.
+}
+
+// Sections
+// --------
+
+// Removes the ~8px UA margin on <body>. Non-negotiable here: the app's shell
+// is a full-viewport flex layout and an 8px gutter would show on every page.
+body {
+  margin: 0;
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+// <h1> nested in sectioning content gets a smaller UA size; this pins it.
+// (The Site section further down overrides font-size with 2rem.)
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+// Grouping content
+// ----------------
+
+figcaption,
+figure,
+main {
+  display: block;
+}
+
+figure {
+  margin: 1em 40px;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+// Text-level semantics
+// --------------------
+
+a {
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+dfn {
+  font-style: italic;
+}
+
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+// Load-bearing. The app renders <sup> for annotation numbers and the "(neg)"
+// marker; UA defaults for sup/sub size and offset differ between engines and
+// the raised marker would otherwise change the line box height of the text it
+// annotates.
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+// Embedded content
+// ----------------
+
+// omitted: audio,video{display:inline-block} — no <audio>/<video> element is
+// ever put in the document (all playback goes through howler, which keeps its
+// media objects detached), and for a replaced element `inline-block` and the
+// UA's `inline` produce the same atomic inline-level box anyway.
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+img {
+  border-style: none;
+}
+
+// omitted: svg:not(:root){overflow:hidden} — normalize added it for IE; the
+// identical rule is in the UA stylesheet of every evergreen engine, so nested
+// <svg> (all of our MUI icons) already clips.
+
+// Forms
+// -----
+
+// Load-bearing. Form controls do NOT inherit font from their ancestors in any
+// browser; without this they fall back to the UA's own control font at ~13px.
+// It is also what makes MUI's own typography land consistently on top.
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+// Makes clickable types stylable in iOS/Safari.
+// The `html ` prefix on the first selector is normalize's, kept verbatim: it
+// raises that one selector to (0,1,1) and dropping it would silently lower the
+// specificity of the rule. Nothing of ours sets `appearance`, so it makes no
+// difference today — but it costs nothing to stay byte-faithful.
+html [type='button'],
+[type='reset'],
+[type='submit'],
+button {
+  -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type='button']:-moz-focusring,
+[type='reset']:-moz-focusring,
+[type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+progress {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+textarea {
+  overflow: auto;
+}
+
+[type='checkbox'],
+[type='radio'] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type='search']::-webkit-search-cancel-button,
+[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+// Interactive
+// -----------
+
+details,
+menu {
+  display: block;
+}
+
+summary {
+  display: list-item;
+}
+
+// Scripting
+// ---------
+
+canvas {
+  display: inline-block;
+}
+
+// omitted: template{display:none} — UA default everywhere we support.
+
+// Hidden
+// ------
+
+// Load-bearing: without it the `hidden` attribute does nothing.
+[hidden] {
+  display: none;
+}
+
+// ==========================================================================
+// Site  (Semantic UI 2.5.0)
+// ==========================================================================
+
+html,
+body {
+  height: 100%;
+}
+
+// ############################################################################
+// #                                                                          #
+// #   DO NOT CHANGE THIS VALUE.                                              #
+// #                                                                          #
+// #   Every `rem` in this application is calibrated to a 14px root: every    #
+// #   MUI `fontSize`, every `theme.spacing()` step, every rem in            #
+// #   custom.scss and in the mui_theme/ files. They were all authored and    #
+// #   eyeballed against this line.                                           #
+// #                                                                          #
+// #   "Modernising" it to 16px would scale the ENTIRE UI up by ~14% in one   #
+// #   step. Setting MUI's `typography.htmlFontSize` instead would do the     #
+// #   same thing to the MUI half of the app only, which is worse.            #
+// #                                                                          #
+// #   If you ever do want a 16px root, it is a deliberate, app-wide          #
+// #   retypesetting job — not a one-line change.                             #
+// #                                                                          #
+// ############################################################################
+html {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-width: 320px;
+  background: #fff;
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.4285em;
+  color: rgba(0, 0, 0, 0.87);
+  // Not a real CSS property (the real one is -webkit-font-smoothing) and
+  // therefore inert. Kept verbatim so this file is a faithful copy of what
+  // shipped; safe to delete.
+  font-smoothing: antialiased;
+}
+
+// Headings
+// --------
+// This is an element-level rule, so it beats the Rubik that <body> hands down
+// by inheritance — which is why bare headings across the app render in Lato.
+// See the note on the @import at the top of this file before touching it.
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 1.28571429em;
+  margin: calc(2rem - 0.14285714em) 0 1rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+h1 {
+  min-height: 1rem;
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.71428571rem;
+}
+
+h3 {
+  font-size: 1.28571429rem;
+}
+
+h4 {
+  font-size: 1.07142857rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child {
+  margin-top: 0;
+}
+
+h1:last-child,
+h2:last-child,
+h3:last-child,
+h4:last-child,
+h5:last-child {
+  margin-bottom: 0;
+}
+
+// Paragraph
+// ---------
+
+p {
+  margin: 0 0 1em;
+  line-height: 1.4285em;
+}
+
+p:first-child {
+  margin-top: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+// Links
+// -----
+// Semantic's link blue, and no underline. Inherited by accident rather than
+// chosen, but plenty of unstyled <a> in the app look the way they do today
+// because of these two rules.
+
+a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1e70bf;
+  text-decoration: none;
+}
+
+// Selection
+// ---------
+// Each vendor spelling stays in its own rule: an unknown pseudo-element in a
+// selector list invalidates the whole list, so these must not be merged.
+
+::-webkit-selection {
+  background-color: #cce2ff;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+::-moz-selection {
+  background-color: #cce2ff;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+::selection {
+  background-color: #cce2ff;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+input::-webkit-selection,
+textarea::-webkit-selection {
+  background-color: rgba(100, 100, 100, 0.4);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+input::-moz-selection,
+textarea::-moz-selection {
+  background-color: rgba(100, 100, 100, 0.4);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+input::selection,
+textarea::selection {
+  background-color: rgba(100, 100, 100, 0.4);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+// Scrollbars (WebKit/Blink only)
+// ------------------------------
+// The thin translucent scrollbars used throughout the app's scrolling panes.
+// Descendants of <body> only — the document scrollbar keeps its native look,
+// exactly as before.
+
+body ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+}
+
+body ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+}
+
+body ::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.25);
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+body ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 135, 139, 0.8);
+}

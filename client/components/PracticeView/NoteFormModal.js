@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, TextArea, Checkbox } from 'semantic-ui-react'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import AppDialog from 'Components/ui/AppDialog'
+import AppTextField from 'Components/ui/AppTextField'
+import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { consistsOfOnlyWhitespace } from 'Utilities/common'
@@ -31,55 +34,66 @@ const NoteFormModal = ({ open, onClose, onSubmit, initialText = '', initialPubli
   }
 
   return (
-    <Modal
-      dimmer="inverted"
-      closeIcon={{ style: { top: '1.0535rem', right: '1rem' }, color: 'black', name: 'close' }}
+    <AppDialog
       open={open}
       onClose={handleClose}
-    >
-      <Modal.Header className="bold" as="h2">
-        <FormattedMessage
-          id={isEdit ? 'edit-note' : 'create-a-note'}
-          defaultMessage={isEdit ? 'Edit note' : 'Add a note'}
-        />
-      </Modal.Header>
-      <Modal.Content>
-        <Form>
-          <TextArea
-            value={text}
-            onChange={e => setText(e.target.value)}
-            placeholder={intl.formatMessage({ id: 'write-your-note-here' })}
-            maxLength={maxCharacters}
-            style={{ marginTop: 0, minHeight: '10em', marginBottom: '.5rem' }}
-            autoFocus
-            data-cy="note-text-field"
+      data-cy="note-form-modal"
+      title={
+        <span className="bold">
+          <FormattedMessage
+            id={isEdit ? 'edit-note' : 'create-a-note'}
+            defaultMessage={isEdit ? 'Edit note' : 'Add a note'}
           />
-          {canMakePublic && (
-            <div style={{ marginTop: '.25rem', marginBottom: '.75rem' }}>
-              <Checkbox
-                label={intl.formatMessage({ id: 'public-note-checkbox' })}
-                checked={isPublic}
-                onChange={() => setIsPublic(prev => !prev)}
-                data-cy="note-public-checkbox"
-              />
-            </div>
-          )}
-        </Form>
-        <AppButton variant="outline-secondary" size="sm" onClick={handleClose} disabled={loading}>
-          <FormattedMessage id="Cancel" />
-        </AppButton>
-        <AppButton
-          variant="primary"
-          size="sm"
-          onClick={handleSave}
-          style={{ marginLeft: '1em', minWidth: '4.5em' }}
-          disabled={saveDisabled || loading}
-          data-cy="save-note-button"
-        >
-          {loading ? <Spinner inline /> : <FormattedMessage id="Save" />}
-        </AppButton>
-      </Modal.Content>
-    </Modal>
+        </span>
+      }
+    >
+      <form>
+        <AppTextField
+          multiline
+          rows={7}
+          value={text}
+          onChange={e => setText(e.target.value)}
+          placeholder={intl.formatMessage({ id: 'write-your-note-here' })}
+          autoFocus
+          inputProps={{ maxLength: maxCharacters, 'data-cy': 'note-text-field' }}
+          sx={{ marginTop: 0, marginBottom: '.5rem' }}
+        />
+        {canMakePublic && (
+          <div style={{ marginTop: '.25rem', marginBottom: '.75rem' }}>
+            <FormControlLabel
+              label={intl.formatMessage({ id: 'public-note-checkbox' })}
+              control={
+                <AppCheckbox
+                  checked={isPublic}
+                  onChange={() => setIsPublic(prev => !prev)}
+                  sx={{ p: 0, mr: '0.5em' }}
+                  slotProps={{ input: { 'data-cy': 'note-public-checkbox' } }}
+                />
+              }
+            />
+          </div>
+        )}
+      </form>
+      <AppButton
+        variant="outline-secondary"
+        size="sm"
+        onClick={handleClose}
+        disabled={loading}
+        data-cy="note-cancel-button"
+      >
+        <FormattedMessage id="Cancel" />
+      </AppButton>
+      <AppButton
+        variant="primary"
+        size="sm"
+        onClick={handleSave}
+        style={{ marginLeft: '1em', minWidth: '4.5em' }}
+        disabled={saveDisabled || loading}
+        data-cy="save-note-button"
+      >
+        {loading ? <Spinner inline /> : <FormattedMessage id="Save" />}
+      </AppButton>
+    </AppDialog>
   )
 }
 

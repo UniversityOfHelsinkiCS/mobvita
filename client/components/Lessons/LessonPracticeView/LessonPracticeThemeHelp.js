@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Segment, Icon } from 'semantic-ui-react'
+import { Paper } from '@mui/material'
+import CheckIcon from '@mui/icons-material/Check'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
@@ -25,7 +26,7 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
             >
                 <div style={{ width: '6%', textAlign: 'right', marginRight: '5px', maxWidth: '25px', minWidth: '25px' }}></div>
                 <div style={{ width: '3%', textAlign: 'center', maxWidth: '20px', minWidth: '10px', marginRight: '15px' }}>
-                    <Icon name="check" />
+                    <CheckIcon fontSize="small" />
                 </div>
                 <div style={{ width: '88%' }}>
                     { /* why capitalize? 
@@ -49,7 +50,7 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
     if (width >= 900 || always_show) {
         return (
             <div className="lesson-topic-box">
-                <Segment style={segment_style}>
+                <Paper sx={{ padding: '1em' }} style={segment_style}>
                     <div
                         className="lesson-title"
                         style={{
@@ -62,10 +63,13 @@ const LessonPracticeThemeHelp = ({selectedThemes, always_show=false, }) => {
                     >
                         <FormattedMessage id={'selected-lesson-themes'} />
                     </div>
-                    <span style={{ overflow: 'hidden', width: '100%' }}>
+                    <span
+                        style={{ overflow: 'hidden', width: '100%' }}
+                        data-cy="lesson-practice-themes-list"
+                    >
                         {theme_rows}
                     </span>
-                </Segment>
+                </Paper>
             </div>
         )
     }

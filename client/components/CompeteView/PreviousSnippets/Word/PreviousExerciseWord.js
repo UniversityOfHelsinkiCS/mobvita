@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useIntl } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import {
   getTextStyle,
   learningLanguageSelector,
@@ -95,15 +95,26 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   const youAnsweredTooltip = answer || tiedAnswer
 
   const tooltip = (
-    <div className="tooltip-green" style={{ cursor: 'pointer' }} onMouseDown={handleTooltipClick}>
+    <div
+      className="tooltip-green"
+      data-cy="previous-exercise-word-tooltip"
+      style={{ cursor: 'pointer' }}
+      onMouseDown={handleTooltipClick}
+    >
       {word.message && (
         <div className="flex">
           <span dangerouslySetInnerHTML={formatGreenFeedbackText(word?.message.easy)} />{' '}
           {ref && Object.keys(ref).length && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+            <InfoOutlinedIcon
+              fontSize="small"
+              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+            />
           )}
           {explanation && Object.keys(explanation).length && (
-            <Icon name="info circle" style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }} />
+            <InfoOutlinedIcon
+              fontSize="small"
+              style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+            />
           )}
         </div>
       )}
@@ -133,6 +144,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
     <Tooltip placement="top" tooltipShown={show} trigger="none" tooltip={tooltip}>
       <span
         className={wordClass}
+        data-cy="previous-exercise-word"
         role="button"
         onClick={handleClick}
         onKeyDown={handleClick}

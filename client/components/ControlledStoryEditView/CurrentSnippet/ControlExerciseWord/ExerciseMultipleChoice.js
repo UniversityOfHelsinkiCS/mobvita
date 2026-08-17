@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'semantic-ui-react'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import AppSelect from 'Components/ui/AppSelect'
 import { getTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
@@ -10,7 +11,7 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
     const temp = choices && Array.isArray(choices) ? choices.sort().map(choice => ({
       key: `${word.ID}_${choice}`,
       value: choice,
-      text: choice,
+      label: choice,
     })) : []
     setOptions(temp)
   }, [word])
@@ -34,20 +35,42 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
     return width + 20 || 80
   }
 
-  const longestChoice = getLongestChoice()
-
   return (
-    <Dropdown
+    // The click handler lives on the wrapper (AppSelect's trigger gets its own open handler), so a
+    // click anywhere on the control still flags the remove tooltip, as the semantic Dropdown did.
+    <span
       key={word.ID}
-      options={options}
-      placeholder={longestChoice || (choices && choices[0])}
-      value={choices && choices[0]}
       onClick={handle}
-      selection
-      floating
-      style={{ width: getInputWidth(), minWidth: getInputWidth() }}
-      className="exercise-multiple control-mode control-mode-chosen"
-    />
+      data-cy={`control-exercise-multiple-choice-${wordId}`}
+      style={{ display: 'inline-flex' }}
+    >
+      <AppSelect
+        options={options}
+        value={choices && choices[0]}
+        // The semantic Dropdown had no onChange either — the value is fixed, picking a row is a no-op.
+        onChange={() => {}}
+        minWidth={120}
+        trigger={
+          <button
+            type="button"
+            className="exercise-multiple control-mode control-mode-chosen"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              font: 'inherit',
+              width: getInputWidth(),
+              minWidth: getInputWidth(),
+              textAlign: 'left',
+              cursor: 'pointer',
+            }}
+          >
+            {choices && choices[0]}
+            <KeyboardArrowDownIcon fontSize="small" style={{ flexShrink: 0 }} />
+          </button>
+        }
+      />
+    </span>
   )
 }
 

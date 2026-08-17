@@ -38,8 +38,14 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
   )
 
   return (
-    <AppDialog open={open} onClose={() => setOpen(false)} title={dialogTitle}>
-      <div style={{ marginTop: '0.5em' }}>
+    <AppDialog
+      open={open}
+      onClose={() => setOpen(false)}
+      title={dialogTitle}
+      data-cy="group-learning-settings-modal"
+      closeDataCy="group-learning-settings-modal-close"
+    >
+      <div style={{ marginTop: '0.5em' }} data-cy="group-learning-settings-cefr-slider">
         <CERFLevelSlider
           sliderValue={cefrSliderValue}
           setSliderValue={setCefrSliderValue}
@@ -54,10 +60,21 @@ const GroupLearningSettingsModal = ({ open, setOpen, groupId }) => {
           marginTop: '2.5em',
         }}
       >
-        <AppButton variant="card" size="lg" as={Link} to={`/groups/teacher/${groupId}/topics`}>
+        <AppButton
+          variant="card"
+          size="lg"
+          as={Link}
+          to={`/groups/teacher/${groupId}/topics`}
+          data-cy="group-learning-settings-customize-button"
+        >
           <FormattedMessage id="customize-learning-settings" />
         </AppButton>
-        <AppButton variant="primary" size="lg" onClick={submitSettings}>
+        <AppButton
+          variant="primary"
+          size="lg"
+          onClick={submitSettings}
+          data-cy="group-learning-settings-save-button"
+        >
           <FormattedMessage id="update-settings" />
         </AppButton>
       </div>

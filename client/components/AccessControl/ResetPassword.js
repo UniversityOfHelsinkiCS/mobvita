@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
-import { Form } from 'semantic-ui-react'
+import AppTextField from 'Components/ui/AppTextField'
+import { Box } from '@mui/material'
 import { resetPassword } from 'Utilities/redux/passwordResetReducer'
 
 const ResetPassword = () => {
@@ -29,31 +30,33 @@ const ResetPassword = () => {
 
   return (
     <div className="cont-narrow auto pt-xl">
-      <Form onSubmit={handleSubmit}>
-        <Form.Field>
-          <Form.Input
+      <form onSubmit={handleSubmit} data-cy="reset-password-form">
+        <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
+          <AppTextField
             label={intl.formatMessage({ id: 'new-password' })}
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             error={error}
+            inputProps={{ 'data-cy': 'reset-password-new-password-input' }}
           />
-        </Form.Field>
-        <Form.Field>
-          <Form.Input
+        </Box>
+        <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
+          <AppTextField
             label={intl.formatMessage({ id: 'repeat-password' })}
             type="password"
             value={repeat}
             onChange={e => setRepeat(e.target.value)}
             error={error}
+            inputProps={{ 'data-cy': 'reset-password-repeat-password-input' }}
           />
-        </Form.Field>
-        <Form.Field>
-          <AppButton variant="primary" type="submit">
+        </Box>
+        <Box sx={{ mt: '0.5em', mb: '1.5em' }}>
+          <AppButton variant="primary" type="submit" data-cy="reset-password-submit-button">
             <FormattedMessage id="Confirm-Password" />
           </AppButton>
-        </Form.Field>
-      </Form>
+        </Box>
+      </form>
     </div>
   )
 }

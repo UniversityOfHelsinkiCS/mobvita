@@ -23,7 +23,7 @@ export const AppMenuCloseContext = createContext(null)
 const StyledPopover = styled(Popover, {
   shouldForwardProp: prop => prop !== 'radius' && prop !== 'menuMinWidth',
 })(({ radius, menuMinWidth }) => ({
-  // Sit above semantic-ui Popup/Modal (z-index ~1900) so the menu isn't hidden behind them.
+  // Sit above the app's other overlay layers (tooltips/dialogs) so the menu isn't hidden.
   zIndex: 3000,
   '& .MuiPopover-paper': {
     backgroundColor: colors.card,
@@ -49,7 +49,7 @@ const CloseButton = styled('button')({
 })
 
 // AppMenuItem = the shared MenuRow + auto-close-on-click behavior. forwardRef so consumers that
-// need the DOM node (e.g. a semantic-ui `Modal` trigger) can attach a ref rather than findDOMNode.
+// need the DOM node (e.g. a modal trigger) can attach a ref.
 export const AppMenuItem = React.forwardRef(({ onClick, ...rest }, ref) => {
   const close = useContext(AppMenuCloseContext)
 
@@ -98,7 +98,15 @@ const AppMenu = ({
 
   return (
     <>
-      {React.cloneElement(trigger, { onClick: openMenu })}
+      {/* Compose rather than replace: a custom trigger may carry its own onClick (e.g. the
+          practice multiple-choice control dispatches "touched" when the learner opens it), and a
+          bare `{ onClick: openMenu }` would silently drop it. */}
+      {React.cloneElement(trigger, {
+        onClick: e => {
+          if (trigger.props.onClick) trigger.props.onClick(e)
+          openMenu(e)
+        },
+      })}
       <AppMenuCloseContext.Provider value={close}>
         <StyledPopover
           open={open}

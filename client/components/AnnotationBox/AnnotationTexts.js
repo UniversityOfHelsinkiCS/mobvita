@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Icon } from 'semantic-ui-react'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import AppButton from 'Components/AppButton'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -66,8 +67,9 @@ const AnnotationTexts = ({
                     variant="outline-secondary"
                     onClick={() => handleEditButtonClick(a.text, a.name, a.thread_id)}
                     style={{ marginRight: '1em' }}
+                    data-cy="edit-annotation-button"
                   >
-                    <Icon name="pencil alternate" />
+                    <EditIcon />
                     <FormattedMessage id="edit" />
                   </AppButton>
                   <AppButton
@@ -76,7 +78,7 @@ const AnnotationTexts = ({
                     onClick={() => handleDeleteButtonClick(a.thread_id)}
                     data-cy="delete-annotation-button"
                   >
-                    <Icon name="trash alternate" />
+                    <DeleteOutlinedIcon />
                     <FormattedMessage id="Delete" />
                   </AppButton>
                 </div>
@@ -92,6 +94,7 @@ const AnnotationTexts = ({
           style={{ marginTop: '.75em' }}
           size="sm"
           onClick={() => setShowAnswerForm(!showAnswerForm)}
+          data-cy="reply-annotation-button"
         >
           <FormattedMessage id={showAnswerForm ? 'Cancel' : 'reply-note'} />
         </AppButton>

@@ -26,6 +26,7 @@ const ToggleButton = ({
         variant={active ? 'primary' : 'secondary'}
         onClick={handleClick}
         sx={{ width, height, fontSize: 16, fontWeight: 600 }}
+        data-cy="lesson-toggle-button-custom"
       >
         <FormattedMessage id="open-custom-grammar-topics-modal" />
       </AppButton>
@@ -48,6 +49,7 @@ const ToggleButton = ({
           ? { border: `2px solid ${colors.ink}`, '&:hover': { borderColor: colors.ink } }
           : {}),
       }}
+      data-cy={`lesson-toggle-button-${name?.replace(/\s+/g, '-')}`}
     >
       {level}
     </AppButton>

@@ -4,59 +4,30 @@ $menu-hover: #ece3be;
 .library-dashboard {
   width: 100%;
   max-width: 838px;
-  max-height: 100%;
+  margin: 0 auto;
   display: flow-root;
 }
 
-// Below 1400px: unchanged — the dashboard flows on its own and the assistant is the fixed right rail
-// (see HelperSidebar.scss). At 1400px+ the page becomes a centered band holding both side by side
-// (Figma "MAIN": width 1400, padding 0 40, gap 32, justify-content center).
-.library-page {
-  @media (min-width: 1400px) {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 32px;
-    max-height: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
-    box-sizing: border-box;
+// The assistant is a fixed 380px rail pinned to the right (HelperSidebar.scss), so a
+// viewport-centred dashboard slides under it as soon as the rail opens. Clear it by the same
+// 400px (380 + 20px gap) that `.cont.sidebar-pushed` uses for every other view.
+.library-dashboard.sidebar-pushed {
+  margin-right: 400px;
+  transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  // The rail becomes a bottom sheet here, so there is nothing to clear.
+  .library-dashboard.sidebar-pushed {
+    margin-right: 0;
   }
 }
 
-@media (min-width: 1400px) {
-  .library-page .library-dashboard {
-    flex: 1 1 auto;
-    max-width: 838px;
-  }
-
-  // The assistant leaves the fixed right rail and sits in-flow beside the dashboard: 450px wide, fully
-  // rounded (Figma "Chat 2"), stretched to the dashboard's height, always open (toggle hidden).
-  .library-page .helper-sidebar {
-    position: sticky;
-    inset: auto;
-    top: calc(3em + 20px);
-    align-self: flex-start;
-    flex: 0 0 450px;
-    margin: 20px 0;
-    height: calc(100vh - 3em - 40px);
-    max-height: 1014px;
-    width: 450px;
-    max-width: 450px;
-    border-radius: 30px;
-    overflow: hidden;
-    transform: none;
-    transition: none;
-
-    &.collapsed {
-      transform: none;
-    }
-
-    .sidebar-toggle {
-      display: none;
-    }
+@media (min-width: 1638px) {
+  // 838 + 2 x 400: from this width a viewport-centred dashboard already clears the rail on its
+  // own, so drop the offset and let it centre properly again.
+  .library-dashboard.sidebar-pushed {
+    margin-right: auto;
   }
 }
 

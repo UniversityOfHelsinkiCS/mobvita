@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Form, TextArea, Dropdown, Checkbox } from 'semantic-ui-react'
+import { Box, FormControlLabel } from '@mui/material'
 import AppButton from 'Components/AppButton'
+import AppCheckbox from 'Components/ui/AppCheckbox'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTextField from 'Components/ui/AppTextField'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationFormVisibility } from 'Utilities/redux/annotationsReducer'
 import { consistsOfOnlyWhitespace } from 'Utilities/common'
@@ -39,61 +42,68 @@ const AnnotationForm = ({
 
   const categoryOptions = [
     {
-      key: '0',
-      text: <FormattedMessage id="notes-None" />,
+      label: <FormattedMessage id="notes-None" />,
       value: 'None' },
     {
-      key: '1',
-      text: <FormattedMessage id="notes-Grammar" />,
+      label: <FormattedMessage id="notes-Grammar" />,
       value: 'Grammar' },
     {
-      key: '2',
-      text: <FormattedMessage id="notes-Phrases" />,
+      label: <FormattedMessage id="notes-Phrases" />,
       value: 'Phrases' },
     {
-      key: '3',
-      text: <FormattedMessage id="notes-Vocabulary" />,
+      label: <FormattedMessage id="notes-Vocabulary" />,
       value: 'Vocabulary' },
   ]
 
   return (
     <div>
-      <Form>
+      <form>
         <div className="row-flex" style={{ marginBottom: '.5em' }}>
           <span style={{ marginRight: '.5em' }}>
             <FormattedMessage id="Category" />:{' '}
           </span>
-          <Dropdown
-            text={dropDownMenuText}
-            selection
-            fluid
-            options={categoryOptions}
-            onChange={(_, { value }) => setCategory(value)}
-          />
+          <Box sx={{ flexGrow: 1 }} data-cy="annotation-category-select">
+            <AppSelect
+              variant="contrast-outline"
+              value={category}
+              placeholder={dropDownMenuText}
+              options={categoryOptions}
+              onChange={setCategory}
+              matchTriggerWidth
+            />
+          </Box>
         </div>
         {((inGroupStory && is_teacher) || sharedStory || (!publicStory && is_teacher )) && (
           <div style={{ marginTop: '.25rem', marginBottom: '.25rem' }}>
-            <Checkbox
+            <FormControlLabel
+              control={
+                <AppCheckbox
+                  sx={{ p: 0, mr: '0.5em' }}
+                  checked={publicNote}
+                  onChange={() => setPublicNote(!publicNote)}
+                  inputProps={{ 'data-cy': 'annotation-public-note-checkbox' }}
+                />
+              }
               label={intl.formatMessage({ id: 'public-note-checkbox' })}
-              checked={publicNote}
-              onChange={() => setPublicNote(!publicNote)}
             />
           </div>
         )}
-        <TextArea
+        <AppTextField
+          multiline
+          rows={6}
           value={annotationText}
           onChange={handleTextChange}
           placeholder={intl.formatMessage({ id: 'write-your-note-here' })}
-          maxLength={maxCharacters}
-          style={{ marginTop: '0rem', minHeight: '10em', marginBottom: '.5rem' }}
           autoFocus
-          data-cy="annotation-text-field"
+          inputProps={{ maxLength: maxCharacters, 'data-cy': 'annotation-text-field' }}
+          sx={{ marginTop: '0rem', marginBottom: '.5rem' }}
         />
-      </Form>
+      </form>
       <AppButton
         variant="outline-secondary"
         size="sm"
         onClick={() => dispatch(setAnnotationFormVisibility(false))}
+        data-cy="cancel-annotation-button"
       >
         <FormattedMessage id="Cancel" />
       </AppButton>

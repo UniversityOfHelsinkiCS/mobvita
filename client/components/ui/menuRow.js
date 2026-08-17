@@ -37,7 +37,7 @@ const MenuRowLink = styled('a', forwardOptions)(rowStyles)
 
 /**
  * MenuRow — presentational row shared by AppMenu and AppSidebar. Renders <a> when `href` is set,
- * else <div>. forwardRef so a consumer (e.g. a semantic-ui Modal trigger) can attach a ref.
+ * else <div>. forwardRef so a consumer (e.g. a modal trigger) can attach a ref.
  */
 export const MenuRow = React.forwardRef(
   ({ icon, children, href, selected = false, className = '', ...rest }, ref) => {

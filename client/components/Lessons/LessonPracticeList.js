@@ -1,53 +1,55 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Icon } from 'semantic-ui-react'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CloseIcon from '@mui/icons-material/Close'
 
 const ChangePracticeOrderArrows = ({ index, pracLength, swapPracticeOrder }) => {
   // console.log(index, ' and  ', pracLength - 1)
   return index === 0 ? (
-    <Icon
+    <KeyboardArrowDownIcon
       style={{
         cursor: 'pointer',
         marginBottom: '.25em',
         color: 'black',
       }}
-      size="large"
-      name="angle down"
+      fontSize="large"
+      data-cy={`lesson-practice-move-down-${index}`}
       onClick={() => swapPracticeOrder(index, index + 1)}
     />
   ) : index < pracLength - 1 ? (
     <>
-      <Icon
+      <KeyboardArrowUpIcon
         style={{
           cursor: 'pointer',
           marginBottom: '.25em',
           color: 'black',
         }}
-        size="large"
-        name="angle up"
+        fontSize="large"
+        data-cy={`lesson-practice-move-up-${index}`}
         onClick={() => swapPracticeOrder(index, index - 1)}
       />
-      <Icon
+      <KeyboardArrowDownIcon
         style={{
           cursor: 'pointer',
           marginBottom: '.25em',
           color: 'black',
         }}
-        size="large"
-        name="angle down"
+        fontSize="large"
+        data-cy={`lesson-practice-move-down-${index}`}
         onClick={() => swapPracticeOrder(index, index + 1)}
       />
     </>
   ) : (
-    <Icon
+    <KeyboardArrowUpIcon
       style={{
         cursor: 'pointer',
         marginBottom: '.25em',
         color: 'black',
       }}
-      size="large"
-      name="angle up"
+      fontSize="large"
+      data-cy={`lesson-practice-move-up-${index}`}
       onClick={() => swapPracticeOrder(index, index - 1)}
     />
   )
@@ -70,14 +72,14 @@ const LessonPracticeList = ({ lessonsPractices, removePractice, swapPracticeOrde
                 swapPracticeOrder={swapPracticeOrder}
               />
             )}
-            <Icon
+            <CloseIcon
               style={{
                 cursor: 'pointer',
                 marginBottom: '.25em',
                 color: 'red',
               }}
-              size="large"
-              name="close"
+              fontSize="large"
+              data-cy={`lesson-practice-remove-${index}`}
               onClick={() => removePractice(index)}
             />
           </div>

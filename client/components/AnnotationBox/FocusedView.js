@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Icon, Divider, Popup } from 'semantic-ui-react'
+import { Divider } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage } from 'react-intl'
 import { getMode } from 'Utilities/common'
@@ -21,21 +23,18 @@ const BackToAllNotes = ({ resetAndGoToListView, annotationString }) => {
   return (
     <>
       <div className="flex" style={{ margin: '.5rem 0em', fontWeight: '500' }}>
-        <Popup
-          content={<FormattedMessage id="back-to-all-notes" />}
-          trigger={
-            <Icon
-              name="arrow left"
-              style={{ cursor: 'pointer', marginRight: '.5rem' }}
-              onClick={resetAndGoToListView}
-              onKeyDown={resetAndGoToListView}
-              tabIndex={0}
-            />
-          }
-        />
+        <CustomTooltip title={<FormattedMessage id="back-to-all-notes" />} permanent>
+          <ArrowBackIcon
+            data-cy="annotation-back-to-all-notes-button"
+            style={{ cursor: 'pointer', marginRight: '.5rem' }}
+            onClick={resetAndGoToListView}
+            onKeyDown={resetAndGoToListView}
+            tabIndex={0}
+          />
+        </CustomTooltip>
         <div>{annotationString}</div>
       </div>
-      <Divider />
+      <Divider sx={{ my: '1em' }} />
     </>
   )
 }

@@ -1,7 +1,9 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { Icon } from 'semantic-ui-react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -76,10 +78,11 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         onTouchEnd={prevSlide}
                         disabled={filteredSlides.length == 0}
                         style={{ fontSize: '2.5em' }}
+                        data-cy="reading-test-feedbacks-prev-button"
                     >
-                        <Icon
+                        <ChevronLeftIcon
                             className='left-arrow'
-                            name={'chevron left'}
+                            fontSize="inherit"
                             style={{ cursor: 'pointer' }}
                         />
                     </button>
@@ -102,7 +105,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                                 alignItems: "center"
                             }}
                         >
-                            <div className='slide active' key={current}>
+                            <div className='slide active' key={current} data-cy="reading-test-feedbacks-slide">
                                 {current === 0 && filteredSlides[current] !== "correct-answer-to-question" && (
                                     <div style={{ marginBottom: "0.5em", fontStyle: "italic", color: "gray" }}>
                                         <FormattedHTMLMessage
@@ -124,10 +127,11 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         onTouchEnd={nextSlide}
                         disabled={filteredSlides.length == 0}
                         style={{ fontSize: '2.5em' }}
+                        data-cy="reading-test-feedbacks-next-button"
                     >
-                        <Icon
+                        <ChevronRightIcon
                             className='right-arrow'
-                            name={'chevron right'}
+                            fontSize="inherit"
                             style={{ cursor: 'pointer' }}
                         />
                     </button>
@@ -139,6 +143,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                             className={index === current ? 'dot active' : 'dot'}
                             onClick={() => goToSlide(index)}
                             onTouchEnd={() => goToSlide(index)}
+                            data-cy="reading-test-feedbacks-dot"
                         ></span>
                     ))}
                 </div>
@@ -153,8 +158,9 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
                         zIndex: 1001, // Place it above the feedback
                     }}
                     onClick={closeFeedbacks}
+                    data-cy="reading-test-feedbacks-close-button"
                 >
-                    <Icon name="close" color="black" size="large" />
+                    <CloseIcon fontSize="large" sx={{ color: 'black' }} />
                 </div>
             </div>
         </Draggable>

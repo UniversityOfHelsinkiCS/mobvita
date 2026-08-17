@@ -117,13 +117,19 @@ const GroupSetting = () => {
           >
             <FormattedMessage id="group-learning-settings-for" />
           </h2>
-          <AppSelect
-            variant="contrast-outline"
-            value={id}
-            options={groupOptions}
-            onChange={value => navigate(`/groups/teacher/${value}/settings`)}
-            minWidth={200}
-          />
+          <Box
+            component="span"
+            data-cy="group-setting-group-select"
+            sx={{ display: 'inline-flex', verticalAlign: 'middle' }}
+          >
+            <AppSelect
+              variant="contrast-outline"
+              value={id}
+              options={groupOptions}
+              onChange={value => navigate(`/groups/teacher/${value}/settings`)}
+              minWidth={200}
+            />
+          </Box>
         </div>
 
         <div
@@ -142,17 +148,31 @@ const GroupSetting = () => {
           >
             <FormControlLabel
               value="exercise"
-              control={<AppRadio />}
+              control={
+                <AppRadio
+                  slotProps={{ input: { 'data-cy': 'group-setting-exercise-settings-radio' } }}
+                />
+              }
               label={<FormattedHTMLMessage id="show-exercise-settings" />}
             />
             <FormControlLabel
               value="test"
-              control={<AppRadio />}
+              control={
+                <AppRadio
+                  slotProps={{ input: { 'data-cy': 'group-setting-test-settings-radio' } }}
+                />
+              }
               label={<FormattedHTMLMessage id="show-test-settings" />}
             />
           </RadioGroup>
           <FormControlLabel
-            control={<AppSwitch checked={showLevels} onChange={() => setShowLevels(!showLevels)} />}
+            control={
+              <AppSwitch
+                checked={showLevels}
+                onChange={() => setShowLevels(!showLevels)}
+                slotProps={{ input: { 'data-cy': 'group-setting-show-levels-toggle' } }}
+              />
+            }
             label={intl.formatMessage({ id: 'show-levels' })}
             sx={{ ml: 0, gap: '8px' }}
           />

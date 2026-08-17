@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Button } from 'semantic-ui-react'
+import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl'
 
 const ChatActionMenuSuggetions = ({ predefinedChatbotRequests, disabled, onClose }) => {
@@ -11,19 +11,20 @@ const ChatActionMenuSuggetions = ({ predefinedChatbotRequests, disabled, onClose
   return (
     <div className="chatbot-suggestions" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       {predefinedChatbotRequests.map(({ msgId, func }, index) => (
-        <Button
+        <AppButton
           key={index}
           type="button"
-          basic
+          variant="contrast-outline"
           disabled={disabled}
+          data-cy={`chatbot-suggestion-${msgId}`}
           onClick={(e) => {
-            e.stopPropagation() 
+            e.stopPropagation()
             if (func) dispatch(func)
-            if (onClose) onClose() 
+            if (onClose) onClose()
           }}
         >
           <FormattedMessage id={msgId} />
-        </Button>
+        </AppButton>
       ))}
     </div>
   )
