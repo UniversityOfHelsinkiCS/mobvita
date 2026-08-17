@@ -15,7 +15,11 @@ const FlashcardListEdit = ({
 
   const dispatch = useDispatch()
 
-  useEffect(() => window.scrollTo(0, 0), [])
+  // Block body (not a concise arrow) so the effect returns undefined — window.scrollTo may be
+  // patched by a smooth-scroll polyfill to return a value, which React would mistake for a cleanup.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const getRemovedHints = () => originalHints.filter(h => !hints.includes(h.hint))
   const getNewHints = unSavedHint => {

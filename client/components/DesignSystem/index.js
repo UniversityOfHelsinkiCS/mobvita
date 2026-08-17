@@ -23,6 +23,7 @@ import AppTabs from 'Components/ui/AppTabs'
 import AppPagination from 'Components/ui/AppPagination'
 import AppLemma from 'Components/ui/AppLemma'
 import AppStepper from 'Components/ui/AppStepper'
+import AppTooltip from 'Components/ui/AppTooltip'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -443,6 +444,61 @@ const DesignSystem = () => {
             ]}
           />
         </div>
+      </Section>
+
+      <Section title="AppTooltip">
+        {(() => {
+          // Every demo uses the alertCircle (i-in-a-circle) icon as the trigger.
+          const iconStyle = { width: 26, height: 26, cursor: 'pointer' }
+          const cell = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }
+          const label = { fontSize: 12, color: '#666', textAlign: 'center' }
+          // forwardRef + prop spread so MUI Tooltip can anchor to (and drive) the icon.
+          const Icon = React.forwardRef((props, ref) => (
+            <img ref={ref} src={images.alertCircle} alt="info" style={iconStyle} {...props} />
+          ))
+
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 72, padding: '64px 48px' }}>
+              {/* Content: single row */}
+              <div style={cell}>
+                <AppTooltip title="Your answers will be timed" placement="top">
+                  <Icon />
+                </AppTooltip>
+                <span style={label}>Single row</span>
+              </div>
+
+              {/* Content: multiple rows */}
+              <div style={cell}>
+                <AppTooltip
+                  title={
+                    <span>
+                      This exercise is timed.
+                      <ul>
+                        <li>Answer before the timer ends</li>
+                        <li>Unanswered items are marked wrong</li>
+                        <li>You can restart at any time</li>
+                      </ul>
+                    </span>
+                  }
+                  placement="top"
+                >
+                  <Icon />
+                </AppTooltip>
+                <span style={label}>Multiple rows</span>
+              </div>
+
+              {/* Placement: arrow position (top / bottom / left / right) */}
+              {['top', 'bottom', 'left', 'right'].map(placement => (
+                <div key={placement} style={cell}>
+                  <AppTooltip title="Your answers will be timed" placement={placement}>
+                    <Icon />
+                  </AppTooltip>
+                  <span style={label}>Arrow: {placement}</span>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
       </Section>
 
       <Section title="AppLemma">

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import { useIntl } from 'react-intl'
@@ -17,18 +17,26 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
 
   const answerInput = useRef()
 
+  // Focus the answer field when this card becomes the active one — but skip while a MUI overlay is
+  // open. Dialog/Menu/Popover set aria-hidden on #root, so pulling focus back to this background
+  // input triggers the "aria-hidden on an element that retained focus" warning. Runs in an effect
+  // (keyed on the card being active) instead of the render body, so it doesn't spawn a timer per
+  // render.
+  useEffect(() => {
+    if (answerChecked || !focusedAndBigScreen) return undefined
+    const timer = setTimeout(() => {
+      if (document.querySelector('.MuiModal-root')) return
+      if (answerInput.current) answerInput.current.focus()
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [answerChecked, focusedAndBigScreen])
+
   if (answerChecked) return null
 
   const handleSubmit = e => {
     e.preventDefault()
     checkAnswer(answer, displayedHints)
     setAnswer('')
-  }
-
-  if (focusedAndBigScreen) {
-    setTimeout(() => {
-      if (answerInput.current) answerInput.current.focus()
-    }, 500)
   }
 
   return (
