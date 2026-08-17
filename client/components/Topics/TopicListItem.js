@@ -174,15 +174,27 @@ const LessonTitle = ({
 
   return bigScreen ? (
     <div>
-      <span className="space-between" style={{ overflow: 'hidden', width: '100%' }}>
-        <div style={{ marginBottom: '.5rem', marginRight: 'auto' }}>
+      <span
+        className="space-between"
+        style={{ overflow: 'hidden', width: '100%', alignItems: 'flex-start', gap: '1rem' }}
+      >
+        <div style={{ marginBottom: '.5rem', flex: 1, minWidth: 0 }}>
           <h5
             className="story-item-title"
-            style={{ marginBottom: '.5rem', ...getTextStyle(learningLanguage) }}
+            style={{
+              marginBottom: '.5rem',
+              // Override the ellipsis truncation from `.story-item-title` so long names wrap.
+              whiteSpace: 'normal',
+              overflow: 'visible',
+              textOverflow: 'clip',
+              overflowWrap: 'anywhere',
+              wordBreak: 'break-word',
+              ...getTextStyle(learningLanguage),
+            }}
             dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
           />
         </div>
-        <div className="lesson-card-actions-cont">
+        <div className="lesson-card-actions-cont" style={{ flexShrink: 0 }}>
           <div className="lesson-actions">
             <AppButton
               variant={selected ? 'primary' : 'card'}
@@ -196,6 +208,8 @@ const LessonTitle = ({
               disabled={disabled}
               sx={{
                 gap: '8px',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
                 '& svg': { fontSize: 20 },
                 // Not-selected: cream fill with an ink border matching the text colour.
                 ...(selected

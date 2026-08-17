@@ -429,6 +429,28 @@ export default function NavBar() {
                 />
               )}
             />
+            {isTeacher && (
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  mr: '10px',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: font.family,
+                    fontSize: 14,
+                    color: colors.ink,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {intl.formatMessage({ id: 'student-view' })}
+                </span>
+                <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} />
+              </Box>
+            )}
             <AppMenu
               minWidth={240}
               borderRadius="30px"
