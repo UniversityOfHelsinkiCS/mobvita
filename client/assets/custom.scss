@@ -796,8 +796,7 @@ $value in $spacing {
 }
 
 .homeview-btn:hover,
-.practice-now-modal-btn:hover,
-.attempt-bar:hover {
+.practice-now-modal-btn:hover {
   background-color: $btn-highlight-color-primary !important;
 }
 
@@ -1216,7 +1215,8 @@ $value in $spacing {
   letter-spacing: 0;
   font-family: 'Geologica', sans-serif;
   font-weight: 600;
-  font-size: 1rem;
+  // Match AppButton's fixed 16px (root font-size is 14px, so 1rem would be too small).
+  font-size: 16px;
   color: #2d2c2a;
   width: 100%;
   padding: 0;
@@ -1229,11 +1229,12 @@ $value in $spacing {
   text-align: center;
   overflow: hidden;
 
+  // Design-system hover: the green fill deepens to greenHover (matches AppButton tan/green).
   &:hover {
     border: 1px solid #9cc6b2;
 
     &>div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.08) !important;
+      background-color: #9cc6b2;
     }
   }
 
@@ -1241,7 +1242,7 @@ $value in $spacing {
     outline: 0;
 
     &>div {
-      box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.08) !important;
+      background-color: #9cc6b2;
     }
   }
 

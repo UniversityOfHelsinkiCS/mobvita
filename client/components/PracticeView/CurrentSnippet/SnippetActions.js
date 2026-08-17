@@ -258,40 +258,48 @@ const SnippetActions = ({
     <div>
       <div
         className="snippet-actions"
-        style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '0.75em' }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '0.75em' }}
       >
-        {/* Check Answers is twice the width of Next / Start Over; all share the same big height. */}
-        <div style={{ flex: '2 1 200px' }}>
-          <CheckAnswersButton
-            handleClick={checkAnswers}
-            checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
-          />
-        </div>
-        <AppButton
-          variant="contrast-outline"
-          disabled={
-            snippets.answersPending ||
-            snippets.pending ||
-            !snippets.focused ||
-            snippets.cacheSize === 0
-          }
-          onClick={submitAnswers}
-          sx={{ flex: '1 1 100px', height: 46 }}
+        {/* Check Answers spans the full width on its own row. */}
+        <CheckAnswersButton
+          handleClick={checkAnswers}
+          checkAnswersButtonTempDisable={checkAnswersButtonTempDisable}
+        />
+        {/* Next Snippet / Start Over sit on the next row, aligned to the right. */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+            gap: '0.75em',
+          }}
         >
-          <img src={images.arrowRight} alt="" style={{ width: 18, height: 18 }} />
-          <FormattedMessage id="go-to-next-snippet" />
-        </AppButton>
-        {!isControlledStory && (
           <AppButton
             variant="contrast-outline"
-            onClick={handleRestart}
-            disabled={snippets.answersPending || snippets.pending}
-            sx={{ flex: '1 1 100px', height: 46 }}
+            disabled={
+              snippets.answersPending ||
+              snippets.pending ||
+              !snippets.focused ||
+              snippets.cacheSize === 0
+            }
+            onClick={submitAnswers}
+            sx={{ height: 46 }}
           >
-            <img src={images.flipBackward} alt="" style={{ width: 18, height: 18 }} />
-            <FormattedMessage id="start-over" />
+            <img src={images.arrowRight} alt="" style={{ width: 18, height: 18 }} />
+            <FormattedMessage id="go-to-next-snippet" />
           </AppButton>
-        )}
+          {!isControlledStory && (
+            <AppButton
+              variant="contrast-outline"
+              onClick={handleRestart}
+              disabled={snippets.answersPending || snippets.pending}
+              sx={{ height: 46 }}
+            >
+              <img src={images.flipBackward} alt="" style={{ width: 18, height: 18 }} />
+              <FormattedMessage id="start-over" />
+            </AppButton>
+          )}
+        </div>
       </div>
     </div>
   )

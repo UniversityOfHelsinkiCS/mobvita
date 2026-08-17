@@ -5,6 +5,90 @@
   height: 100%;
 }
 
+/* "Lesson Ready!" card (group lesson library) */
+.lesson-ready-card {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.lesson-ready-title {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.2;
+  color: #2d2c2a;
+  margin: 4px 0 20px;
+}
+
+.lesson-ready-section {
+  background: #ffffff;
+  border: 1px solid #e4e1d3;
+  border-radius: 16px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+}
+
+.lesson-ready-section-title {
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #2d2c2a;
+  margin-bottom: 6px;
+}
+
+.lesson-ready-list {
+  margin: 0;
+  padding-left: 1.3em;
+  font-family: 'Geologica', sans-serif;
+  color: #2d2c2a;
+}
+
+.lesson-ready-list li {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+
+/* Topics can be many — keep the block short and scroll inside it. */
+.lesson-ready-list--scroll {
+  max-height: 232px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Name on the left, performance % on the right of each topic row. */
+.lesson-ready-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  transition: background-color 0.15s ease;
+}
+
+/* Same hover pill as the lesson-practice "All topics" list. */
+.lesson-ready-list-row:hover {
+  background-color: #ece3be;
+}
+
+.lesson-ready-list-pct {
+  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.lesson-ready-list:empty::after {
+  content: '—';
+  color: #9d9b92;
+}
+
+.lesson-ready-cta {
+  display: block;
+  margin-top: 8px;
+}
+
 .lesson-setup-header {
   width: 100%;
   max-width: 480px;

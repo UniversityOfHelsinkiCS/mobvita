@@ -5,6 +5,8 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { Box, FormControlLabel } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import AppSwitch from 'Components/ui/AppSwitch'
+import AppDialog from 'Components/ui/AppDialog'
+import CustomTooltip from 'Components/CustomTooltip'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
@@ -33,6 +35,7 @@ import {
   getMode,
   hiddenFeatures,
   dictionaryLanguageSelector,
+  images,
 } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import ReportButton from 'Components/ReportButton'
@@ -72,6 +75,7 @@ const PracticeView = () => {
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showMessageDialog, setShowMessageDialog] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const smallScreen = width < 700
   const snippetsTotalNum = snippets?.focused?.total_num
   const controlledPractice = mode === 'controlled-practice'
@@ -226,7 +230,9 @@ const PracticeView = () => {
   return (
     <div className="cont-tall flex-col space-between">
       <div className="justify-center">
-        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+        {/* flex: 1 fills the centered row's definite width so the card stays full width even
+            before content loads (rather than collapsing to its min-width). */}
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
           <Box
             className="practice-card"
             sx={{
@@ -273,20 +279,17 @@ const PracticeView = () => {
                 />
               </div>
               {hiddenFeatures && (
-                <FormControlLabel
-                  labelPlacement="start"
-                  control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
-                  label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                  sx={{
-                    m: 0,
-                    flexShrink: 0,
-                    '& .MuiFormControlLabel-label': {
-                      marginRight: '0.5em',
-                      fontFamily: font.family,
-                      color: colors.ink,
-                    },
-                  }}
-                />
+                <CustomTooltip
+                  title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+                >
+                  <span
+                    onClick={() => setSettingsOpen(true)}
+                    data-cy="practice-settings"
+                    style={{ display: 'inline-flex', cursor: 'pointer', flexShrink: 0 }}
+                  >
+                    <img src={images.circleSettings} alt="" style={{ width: 28, height: 28 }} />
+                  </span>
+                </CustomTooltip>
               )}
             </div>
             {timedExercise && (
@@ -392,6 +395,26 @@ const PracticeView = () => {
         <FeedbackInfoModal />
       </div>
       {showFooter && <Footer />}
+      <AppDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        title={<FormattedMessage id="practice-settings" />}
+      >
+        <div className="flex-col gap-row-nm">
+          <FormControlLabel
+            control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
+            label={intl.formatMessage({ id: 'show-difficulty-level' })}
+            sx={{
+              m: 0,
+              '& .MuiFormControlLabel-label': {
+                marginLeft: '0.5em',
+                fontFamily: font.family,
+                color: colors.ink,
+              },
+            }}
+          />
+        </div>
+      </AppDialog>
     </div>
   )
 }

@@ -4,6 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { Box, FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
+import AppDialog from 'Components/ui/AppDialog'
+import CustomTooltip from 'Components/CustomTooltip'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import {
   clearFocusedSnippet,
@@ -23,7 +25,7 @@ import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
-import { learningLanguageSelector, getMode, hiddenFeatures } from 'Utilities/common'
+import { learningLanguageSelector, getMode, hiddenFeatures, images } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
@@ -61,6 +63,7 @@ const LessonPracticeView = () => {
     ({ practice }) => practice,
   )
   const [startModalOpen, setStartModalOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
     useState(false)
   const [currentSnippetNum, setCurrentSnippetNum] = useState(1)
@@ -180,7 +183,9 @@ const LessonPracticeView = () => {
       <div>
         <div className="cont-tall flex-col space-between">
           <div className="justify-center">
-            <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+            {/* flex: 1 fills the centered row's definite width so the card stays full width even
+                before content loads (rather than collapsing to its min-width). */}
+            <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
               <Box
                 className="lesson-practice-card"
                 sx={{
@@ -196,31 +201,50 @@ const LessonPracticeView = () => {
               >
                 <div
                   className="progress-bar-cont"
-                  style={{ top: smallScreen ? '.25em' : '3.25em' }}
+                  style={{
+                    top: smallScreen ? '.25em' : '3.25em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1em',
+                  }}
                 >
-                  <ProgressBar
-                    snippetProgress={currentSnippetNum}
-                    snippetsTotal={snippetsTotalNum}
-                    progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
-                  />
-                </div>
-                {hiddenFeatures && (
-                  <FormControlLabel
-                    control={
-                      <AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />
-                    }
-                    label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                    sx={{
-                      mt: '1.5em',
-                      ml: '.5em',
-                      '& .MuiFormControlLabel-label': {
-                        marginLeft: '0.5em',
+                  {snippetsTotalNum ? (
+                    <span
+                      data-cy="snippet-progress"
+                      style={{
+                        flexShrink: 0,
+                        whiteSpace: 'nowrap',
                         fontFamily: font.family,
+                        fontWeight: 600,
+                        fontSize: '0.95em',
                         color: colors.ink,
-                      },
-                    }}
-                  />
-                )}
+                      }}
+                    >
+                      {currentSnippetNum} / {snippetsTotalNum}
+                    </span>
+                  ) : null}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <ProgressBar
+                      hideLabel
+                      snippetProgress={currentSnippetNum}
+                      snippetsTotal={snippetsTotalNum}
+                      progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
+                    />
+                  </div>
+                  {hiddenFeatures && (
+                    <CustomTooltip
+                      title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+                    >
+                      <span
+                        onClick={() => setSettingsOpen(true)}
+                        data-cy="practice-settings"
+                        style={{ display: 'inline-flex', cursor: 'pointer', flexShrink: 0 }}
+                      >
+                        <img src={images.circleSettings} alt="" style={{ width: 28, height: 28 }} />
+                      </span>
+                    </CustomTooltip>
+                  )}
+                </div>
                 <PreviousSnippets showDifficulty={showDifficulty} isLesson={true} />
                 <hr />
                 <CurrentSnippet
@@ -296,6 +320,26 @@ const LessonPracticeView = () => {
           </div>
           {showFooter && <Footer />}
         </div>
+        <AppDialog
+          open={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          title={<FormattedMessage id="practice-settings" />}
+        >
+          <div className="flex-col gap-row-nm">
+            <FormControlLabel
+              control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
+              label={intl.formatMessage({ id: 'show-difficulty-level' })}
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  fontFamily: font.family,
+                  color: colors.ink,
+                },
+              }}
+            />
+          </div>
+        </AppDialog>
       </div>
     )
   } else {

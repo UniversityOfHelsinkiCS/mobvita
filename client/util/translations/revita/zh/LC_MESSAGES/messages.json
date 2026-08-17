@@ -1267,5 +1267,7 @@
     "start-lesson": "Start Lesson",
     "setup-lesson": "Setup Lesson",
     "clear-all": "Clear All",
-    "select-all": "Select All"
+    "select-all": "Select All",
+    "lesson-ready": "Lesson Ready!",
+    "selected-lesson-topics": "Lesson Topics"
 }

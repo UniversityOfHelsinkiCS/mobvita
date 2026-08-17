@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
-import { Container } from '@mui/material'
 import AppStepper from 'Components/ui/AppStepper'
 import ScrollArrow from 'Components/ScrollArrow'
 import AppTabs from 'Components/ui/AppTabs'
@@ -12,8 +11,6 @@ import AppSelect from 'Components/ui/AppSelect'
 import { colors } from 'Assets/mui_theme/designTokens'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
-import LessonPracticeTopicsHelp from '../LessonPracticeView/LessonPracticeTopicsHelp'
-import LessonPracticeThemeHelp from '../LessonPracticeView/LessonPracticeThemeHelp'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import AppButton from 'Components/AppButton'
 import { Link, useNavigate } from 'react-router-dom'
@@ -284,46 +281,78 @@ const LessonList = () => {
     overflow: 'hidden',
   }
 
-  const lessonReadyColor = lessonReady ? '#0088CB' : '#DB2828'
+  // Lesson Group View — the "Lesson Ready!" card: title + Themes/Topics lists + a Begin Practice CTA.
+  // Topics render as a plain bulleted list (like the themes list), not the assistant's dropdown.
+  const lessonTopicPercentColor = percent => {
+    if (percent >= 75) return 'green'
+    if (percent >= 50) return 'limegreen'
+    if (percent >= 25) return 'orange'
+    if (percent > 0) return 'red'
+    return colors.muted
+  }
 
-  // Lesson Group View
+  // One row per concept; the performance % shows on the first concept of each topic, coloured by score.
+  const selectedLessonTopicRows = (topics || [])
+    .filter(topic => (selectedTopicIds || []).includes(topic.topic_id))
+    .flatMap(topic => {
+      const percent = topic.total ? Math.round((topic.correct / topic.total) * 100) : 0
+      return topic.topic.split(';').map((concept, conceptIndex) => ({
+        name: concept.charAt(0).toUpperCase() + concept.slice(1),
+        percent: conceptIndex === 0 ? percent : null,
+        color: conceptIndex === 0 ? lessonTopicPercentColor(percent) : null,
+      }))
+    })
+
   let lessonStartControls = (
-    <Container>
-      <div
-        className="justify-center align-center wrap"
-        style={{
-          color: `${lessonReadyColor}`,
-          textAlign: 'center',
-          fontWeight: 500,
-          margin: '18px',
-          fontSize: 'large' }}
-      >
-        <div className="full-width" data-cy="lessons-ready-status">
-          {!lessonPending && lessonReady ? (
-            <FormattedMessage id="lessons-ready-for-practice" />
-          ) : (
-            <FormattedMessage id="lessons-not-ready-for-practice" />
-          )}
+    <div className="lesson-ready-card">
+      <h1 className="lesson-ready-title" data-cy="lessons-ready-status">
+        {!lessonPending && lessonReady ? (
+          <FormattedMessage id="lesson-ready" defaultMessage="Lesson Ready!" />
+        ) : (
+          <FormattedMessage id="lessons-not-ready-for-practice" />
+        )}
+      </h1>
+
+      <div className="lesson-ready-section">
+        <div className="lesson-ready-section-title">
+          <FormattedMessage id="selected-lesson-themes" />:
         </div>
+        <ul className="lesson-ready-list" data-cy="lesson-practice-themes-list">
+          {(selectedSemantics || []).map(theme => (
+            <li key={theme}>
+              <FormattedMessage id={theme} />
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="lesson-group-row">
-        <div className="lesson-group-col lesson-group-col-theme">
-          <LessonPracticeThemeHelp
-            selectedThemes={selectedSemantics ? selectedSemantics : []}
-            always_show={true}
-          />
+      <div className="lesson-ready-section">
+        <div className="lesson-ready-section-title">
+          <FormattedMessage id="selected-lesson-topics" defaultMessage="Lesson Topics" />:
         </div>
-
-        <div className="lesson-group-col lesson-group-col-topics">
-          <LessonPracticeTopicsHelp selectedTopics={selectedTopicIds} always_show={true} />
-        </div>
+        <ul
+          className="lesson-ready-list lesson-ready-list--scroll"
+          data-cy="lesson-practice-topics-list"
+        >
+          {selectedLessonTopicRows.map((row, index) => (
+            <li key={`${index}-${row.name}`}>
+              <span className="lesson-ready-list-row">
+                <span dangerouslySetInnerHTML={{ __html: row.name }} />
+                {row.percent !== null && (
+                  <span className="lesson-ready-list-pct" style={{ color: row.color }}>
+                    {row.percent}%
+                  </span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {!teacherView && (
-        <Link to={link} className="justify-center align-center wrap">
+        <Link to={link} className="lesson-ready-cta">
           <AppButton
-            size="big"
+            variant="primary"
             className="lesson-practice"
             data-cy="lessons-start-practice-button"
             disabled={
@@ -334,19 +363,13 @@ const LessonList = () => {
               selectedSemantics.length === 0 ||
               noResults
             }
-            style={{
-              fontSize: '1.3em',
-              fontWeight: 500,
-              margin: '3em 0',
-              padding: '1rem 0',
-              width: '400px',
-              border: '2px solid #000' }}
+            sx={{ width: '100%', minHeight: 52, fontSize: 18, fontWeight: 600 }}
           >
             <FormattedMessage id="start-practice-lesson" />
           </AppButton>
         </Link>
       )}
-    </Container>
+    </div>
   )
 
   topics.sort((a, b) => {
@@ -436,7 +459,15 @@ const LessonList = () => {
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />
             ) : (
-              <div style={{ ...creamBlock, display: 'flex', height: '80vh', margin: 0 }}>
+              <div
+                style={{
+                  ...creamBlock,
+                  display: 'flex',
+                  height: '80vh',
+                  // Teacher view has no tabs above the block, so give it its own top space.
+                  margin: teacherView ? '20px 0 0' : 0,
+                }}
+              >
                 <div
                   style={{
                     flex: 1,

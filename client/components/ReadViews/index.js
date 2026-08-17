@@ -456,21 +456,6 @@ const ReadViews = ({ match }) => {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75em' }}>
           {practiceCta}
-          {mode === 'preview' && (
-            <FormControlLabel
-              className="highlight-exercises"
-              control={<AppSwitch checked={previewToggleOn} onChange={updateUserPreviewExer} />}
-              label={intl.formatMessage({ id: 'show preview' })}
-              sx={{
-                m: 0,
-                '& .MuiFormControlLabel-label': {
-                  marginLeft: '0.5em',
-                  fontFamily: font.family,
-                  color: colors.ink,
-                },
-              }}
-            />
-          )}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
           {!routeStory?.control_story && (
@@ -501,8 +486,14 @@ const ReadViews = ({ match }) => {
 
   return (
     <div className="cont-tall flex-col space-between align-center"> 
-      <div className="flex mb-nm">
-        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
+      {/* align-self: stretch fills the outer column's definite width (the parent centers its
+          children, so a percentage width can't resolve and the empty card would otherwise
+          collapse to its min-width until the story text loads). */}
+      <div
+        className="flex mb-nm"
+        style={{ alignSelf: 'stretch', justifyContent: 'center' }}
+      >
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
           <Box
             data-cy="readmodes-text"
             className="cont"
@@ -657,6 +648,13 @@ const ReadViews = ({ match }) => {
         title={<FormattedMessage id="practice-settings" />}
       >
         <div className="flex-col gap-row-nm">
+            {mode === 'preview' && (
+              <SettingToggle
+                translationId="show preview"
+                checked={previewToggleOn}
+                onChange={updateUserPreviewExer}
+              />
+            )}
             <SettingToggle
               translationId="practice-grammar-cloze-exercises"
               checked={user?.user.blank_filling}

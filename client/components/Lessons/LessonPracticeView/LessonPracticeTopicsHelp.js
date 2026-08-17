@@ -1,18 +1,73 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react'
-import useWindowDimensions from 'Utilities/windowDimensions'
-import { Paper } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { styled } from '@mui/material/styles'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import CustomTooltip from 'Components/CustomTooltip'
 import { useSelector, useDispatch } from 'react-redux'
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
+import useWindowDimensions from 'Utilities/windowDimensions'
+import AppMenu from 'Components/ui/AppMenu'
+import CustomTooltip from 'Components/CustomTooltip'
+import { rowStyles } from 'Components/ui/menuRow'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
+import { colors, font } from 'Assets/mui_theme/designTokens'
+
+// Outline pill trigger — same look as the story preview's "All Topics In Text" control.
+const Trigger = styled('button')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 10,
+  padding: '7px 16px',
+  width: '100%',
+  boxSizing: 'border-box',
+  borderRadius: 999,
+  fontFamily: font.family,
+  fontWeight: 600,
+  fontSize: 15,
+  cursor: 'pointer',
+  backgroundColor: 'transparent',
+  color: colors.ink,
+  border: `1px solid ${colors.ink}`,
+  transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
+  '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
+  '& .topics-chevron': { fontSize: 20, flexShrink: 0 },
+})
+
+// A topic row laid out as a 2-column table (name | performance %). `whiteSpace: normal` +
+// `minmax(0, 1fr)` let the name wrap to the next line so nothing overflows horizontally.
+const TopicRow = styled('div')({
+  ...rowStyles({ selected: false }),
+  cursor: 'default',
+  // Softer, smaller corners on the hover pill than the shared row's full pill.
+  borderRadius: 12,
+  padding: '9px 14px',
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr) auto',
+  alignItems: 'start',
+  columnGap: 12,
+  whiteSpace: 'normal',
+})
+
+const getLessonPerformance = (correct, total) => {
+  if (!total) return 0
+  return correct / total
+}
+
+const getPerformanceColor = (correct, total) => {
+  const perc = getLessonPerformance(correct, total)
+  if (perc >= 0.75) return 'green'
+  if (perc >= 0.5) return 'limegreen'
+  if (perc >= 0.25) return 'orange'
+  if (perc > 0) return 'red'
+  return colors.muted
+}
 
 const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
   const dispatch = useDispatch()
   const { width } = useWindowDimensions()
+  const [open, setOpen] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { topics: lessonTopics } = useSelector(({ lessons }) => lessons)
   const snippets = useSelector(({ snippets }) => snippets)
@@ -21,178 +76,65 @@ const LessonPracticeTopicsHelp = ({ selectedTopics, always_show = false }) => {
       ? lessonTopics.filter(l => selectedTopics.includes(l.topic_id))
       : []
 
-  const [collapsed, setCollapsed] = useState(true)
-
   useEffect(() => {
     dispatch(getLessonTopics())
   }, [snippets.focused])
 
-  const toggleCollapse = () => {
-    setCollapsed(!collapsed)
-  }
+  // Flatten each topic's semicolon-separated concepts into rows; the performance % shows on the
+  // first concept of a topic only (the number column), coloured by score.
+  const topicRows = []
+  topics.forEach((topic, i) => {
+    const concepts = topic.topic.split(';')
+    const percent = Math.round(getLessonPerformance(topic.correct, topic.total) * 100)
+    const color = getPerformanceColor(topic.correct, topic.total)
+    concepts.forEach((concept, k) => {
+      const name = concept.charAt(0).toUpperCase() + concept.slice(1)
+      topicRows.push({ key: `${i}-${k}`, name, percent: k === 0 ? percent : null, color })
+    })
+  })
 
-  const get_lesson_performance = (correct_count, total_count) => {
-    let correct_perc = 0.0
-    if (total_count && total_count !== 0) {
-      correct_perc = correct_count / total_count
-    }
-    return parseFloat(correct_perc).toFixed(2) // * 100
-  }
+  if (width < 1024 && !always_show) return null
 
-  const get_lesson_performance_style = (correct_count, total_count) => {
-    let correct_perc = get_lesson_performance(correct_count, total_count)
-    if (correct_perc >= 0.75) return { color: 'green' }
-    if (correct_perc < 0.75 && correct_perc >= 0.5) return { color: 'limegreen' }
-    if (correct_perc < 0.5 && correct_perc >= 0.25) return { color: 'orange' }
-    if (correct_perc < 0.25) return { color: 'red' }
-    return { color: 'black' }
-  }
+  const trigger = (
+    // The whole trigger carries the explanation tooltip (moved off the old info icon). `permanent`
+    // so it always shows and AppMenu's injected onClick still reaches the button.
+    <CustomTooltip keyId="story-top-topics-explain" placement="top" permanent>
+      <Trigger type="button" data-cy="lesson-practice-topics-toggle">
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <FormattedMessage id="topics-header" />
+        </span>
+        {/* Same button opens and closes the menu; the arrow flips to reflect the state. */}
+        {open ? (
+          <KeyboardArrowUpIcon className="topics-chevron" />
+        ) : (
+          <KeyboardArrowDownIcon className="topics-chevron" />
+        )}
+      </Trigger>
+    </CustomTooltip>
+  )
 
-  let topic_rows = []
-  for (let i = 0; i < topics.length; i++) {
-    let topic_concepts = topics[i].topic.split(';')
-
-    for (let k = 0; k < topic_concepts.length; k++) {
-      const name = topic_concepts[k].charAt(0).toUpperCase() + topic_concepts[k].slice(1) //.split('—')[0].trim()
-      if (k === 0) {
-        topic_rows.push(
-          <h6
-            key={`${i}-${k}`}
-            className="lesson-item-topics"
-            style={{
-              marginBottom: '.5rem',
-              display: 'inline-flex',
-              width: '100%',
-              color: '#4a5b6c',
-              ...getTextStyle(learningLanguage),
-            }}
-          >
-            <div
-              style={{
-                width: '6%',
-                textAlign: 'right',
-                marginRight: '5px',
-                maxWidth: '25px',
-                minWidth: '25px',
-                ...get_lesson_performance_style(topics[i].correct, topics[i].total),
-              }}
-            >
-              {String(
-                Math.round(get_lesson_performance(topics[i].correct, topics[i].total) * 100)
-              ).padEnd(3, ' ')}
-            </div>
-            <div
-              style={{
-                width: '3%',
-                textAlign: 'center',
-                maxWidth: '20px',
-                minWidth: '10px',
-                marginRight: '15px',
-                ...get_lesson_performance_style(topics[i].correct, topics[i].total),
-              }}
-            >
-              {'%'}
-            </div>
-            <div style={{ width: '88%' }} dangerouslySetInnerHTML={{ __html: name }} />
-          </h6>
-        )
-      } else {
-        topic_rows.push(
-          <h6
-            key={`${i}-${k}`}
-            className="lesson-item-topics"
-            style={{
-              marginBottom: '.5rem',
-              display: 'inline-flex',
-              width: '100%',
-              color: '#4a5b6c',
-              ...getTextStyle(learningLanguage),
-            }}
-          >
-            <div
-              style={{
-                width: '6%',
-                textAlign: 'right',
-                marginRight: '5px',
-                maxWidth: '25px',
-                minWidth: '25px',
-              }}
-            ></div>
-            <div
-              style={{
-                width: '3%',
-                textAlign: 'center',
-                maxWidth: '20px',
-                minWidth: '10px',
-                marginRight: '15px',
-              }}
-            ></div>
-            <div style={{ width: '88%' }} dangerouslySetInnerHTML={{ __html: name }} />
-          </h6>
-        )
-      }
-    }
-  }
-
-  let segment_style = {
-    backgroundColor: 'azure',
-  }
-  if (always_show) {
-    segment_style['height'] = '100%'
-  }
-
-  if (width >= 1024 || always_show) {
-    return (
-      <div className="lesson-topic-box">
-        <Paper sx={{ padding: '1em' }} style={segment_style}>
-          <div
-            className="lesson-title"
-            style={{
-              ...getTextStyle(learningLanguage, 'title'),
-              width: `${'100%'}`,
-              fontWeight: 'bold',
-              fontSize: 'large',
-              marginBottom: '15px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <div>
-              <CustomTooltip permanent keyId="story-top-topics-explain">
-                <InfoOutlinedIcon
-                  sx={{ paddingRight: '0.5em', color: 'grey' }}
-                  fontSize="small"
-                />
-              </CustomTooltip>{' '}
-              <FormattedMessage id={'topics-header'} />
-            </div>
-            {collapsed ? (
-              <KeyboardArrowDownIcon
-                data-cy="lesson-practice-topics-toggle"
-                onClick={toggleCollapse}
-                sx={{ cursor: 'pointer' }}
+  return (
+    <div className="lesson-topic-box">
+      <AppMenu trigger={trigger} matchTriggerWidth disableScrollLock onOpenChange={setOpen}>
+        <div
+          data-cy="lesson-practice-topics-list"
+          style={{ width: '100%', maxHeight: 260, overflowY: 'auto', overflowX: 'hidden' }}
+        >
+          {topicRows.map(row => (
+            <TopicRow key={row.key} style={getTextStyle(learningLanguage)}>
+              <span
+                style={{ minWidth: 0, overflowWrap: 'anywhere', wordBreak: 'break-word' }}
+                dangerouslySetInnerHTML={{ __html: row.name }}
               />
-            ) : (
-              <KeyboardArrowUpIcon
-                data-cy="lesson-practice-topics-toggle"
-                onClick={toggleCollapse}
-                sx={{ cursor: 'pointer' }}
-              />
-            )}
-          </div>
-
-          {!collapsed && (
-            <span style={{ overflow: 'auto', width: '100%' }} data-cy="lesson-practice-topics-list">
-              {topic_rows}
-            </span>
-          )}
-        </Paper>
-      </div>
-    )
-  }
-
-  return null
+              <span style={{ color: row.color, fontWeight: 600 }}>
+                {row.percent !== null ? `${row.percent}%` : ''}
+              </span>
+            </TopicRow>
+          ))}
+        </div>
+      </AppMenu>
+    </div>
+  )
 }
 
 export default LessonPracticeTopicsHelp
