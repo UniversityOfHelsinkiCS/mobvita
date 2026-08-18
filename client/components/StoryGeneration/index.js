@@ -1,28 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
-import { Paper, Container } from '@mui/material'
+import { Box } from '@mui/material'
 import ScrollArrow from 'Components/ScrollArrow'
+// eslint-disable-next-line max-len
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
 import Topics from 'Components/Topics'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import CountSlider from 'Components/Sliders/CountSlider'
 import AppButton from 'Components/AppButton'
+import AppTextField from 'Components/ui/AppTextField'
+import AppStepper from 'Components/ui/AppStepper'
 import { useNavigate } from 'react-router-dom'
-import { Stepper, Step } from 'react-form-stepper'
-import { useLearningLanguage, getTextStyle, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
+import { useLearningLanguage, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
 
 const StoryGeneration = () => {
   const MAX_GRAMMAR_TOPICS = 5
-  const { width } = useWindowDimensions()
-  const bigScreen = width >= 700
+  const intl = useIntl()
   const learningLanguage = useLearningLanguage()
   const navigate = useNavigate()
   // Grammar-topics step is high-access only; access <= 1 skips it (step 0 -> step 2).
@@ -85,51 +87,44 @@ const StoryGeneration = () => {
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
+  // Step section heading — the base Geologica font, left-aligned, smaller than the page title.
+  const stepHeadingStyle = {
+    fontFamily: font.family,
+    fontSize: 18,
+    fontWeight: 600,
+    color: colors.ink,
+    textAlign: 'left',
+    margin: '0 0 10px',
+  }
+
   const generationComment = (
-    <div className="align-center">
-      <h5>
+    <div className="flex-col">
+      <h5 style={stepHeadingStyle}>
         <FormattedMessage id="input-story-generation-comment" />:
       </h5>
-      <div className="group-buttons sm">
-        <div style={{ width: '100%', maxWidth: '500px', margin: 'auto' }}>
-          <textarea
-            data-cy="story-generation-ideas-input"
-            style={{
-              width: '100%',
-              height: '100px',
-              padding: '10px',
-              borderRadius: '5px',
-              border: '1px solid #ccc',
-              outline: 'none',
-              fontSize: '16px',
-            }}
-            maxLength={240}
-            value={lessonInstance.learner_ideas}
-            onChange={e =>
-              setLessonInstance(currentLessonInstance => ({
-                ...currentLessonInstance,
-                learner_ideas: e.target.value,
-              }))
-            }
-          />
-          <div
-            style={{
-              marginTop: '6px',
-              textAlign: 'right',
-              color: '#6c757d',
-              fontSize: '13px',
-            }}
-          >
-            {lessonInstance.learner_ideas.length}/240
-          </div>
+      <div style={{ width: '100%' }}>
+        <AppTextField
+          multiline
+          minRows={4}
+          value={lessonInstance.learner_ideas}
+          onChange={e =>
+            setLessonInstance(currentLessonInstance => ({
+              ...currentLessonInstance,
+              learner_ideas: e.target.value,
+            }))
+          }
+          inputProps={{ maxLength: 240, 'data-cy': 'story-generation-ideas-input' }}
+        />
+        <div style={{ marginTop: 6, textAlign: 'right', color: colors.muted, fontSize: 13 }}>
+          {lessonInstance.learner_ideas.length}/240
         </div>
       </div>
     </div>
   )
 
   const lessonVocabularyControls = (
-    <div className="align-center">
-      <h5>
+    <div className="flex-col">
+      <h5 style={stepHeadingStyle}>
         <FormattedMessage id="select-story-vocab-diff" />:
       </h5>
       <VocabDiffSlider
@@ -139,19 +134,14 @@ const StoryGeneration = () => {
         skillLevels={['A2', 'A2/B1', 'B1', 'B1/B2', 'B2', 'B2/C1', 'C1']}
         min={30}
         max={79}
-        style={{
-          width: bigScreen ? '80%' : '90%',
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
+        style={{ width: '100%', marginTop: '20px' }}
       />
     </div>
   )
 
   const lessonCountControls = (
-    <div className="align-center">
-      <h5>
+    <div className="flex-col">
+      <h5 style={stepHeadingStyle}>
         <FormattedMessage id="select-story-length" />:
       </h5>
       <CountSlider
@@ -167,73 +157,60 @@ const StoryGeneration = () => {
         maxValue={25}
         step={1}
         sliderMarks={['10', '15', '20', '25']}
-        style={{
-          width: bigScreen ? '80%' : '90%',
-          marginTop: '30px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
+        style={{ width: '100%', marginTop: '20px' }}
       />
     </div>
   )
 
-  let lessonStartControls = (
-    <Container>
-      <div
-        className="justify-center align-center wrap"
-        style={{
-          color: '#0088CB',
-          textAlign: 'center',
-          fontWeight: 500,
-          margin: '18px',
-          fontSize: 'large',
-        }}
-      >
-        <div className="full-width">
+  const lessonStartControls = (
+    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ marginBottom: '1.5em', textAlign: 'center' }}>
+        <h5 style={{ ...stepHeadingStyle, textAlign: 'center' }}>
           <FormattedMessage id="story-ready-for-generation" />
-        </div>
+        </h5>
         {canSelectGrammar && lessonInstance.topic_ids.length === 0 && (
-          <div className="full-width" style={{ color: '#ff0c0c' }}>
+          <div style={{ fontFamily: font.family, color: colors.error, marginTop: 4 }}>
             <FormattedMessage id="note-no-lessons-topic" />
           </div>
         )}
       </div>
       {canSelectGrammar && (
-        <div className="justify-center align-center space-between wrap" style={{ display: 'flex' }}>
-          <div style={{ padding: 0, flex: '0 0 41.666667%', maxWidth: '41.666667%', marginLeft: '8.333333%' }}>
-            <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show={true} />
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1em' }}>
+          <div style={{ width: '100%', maxWidth: 420 }}>
+            <LessonPracticeTopicsHelp selectedTopics={lessonInstance.topic_ids} always_show />
           </div>
         </div>
       )}
       {lessonInstance.learner_ideas && (
-        <div
-          className="justify-center align-center space-between wrap"
-          style={{ display: 'flex', marginTop: '40px' }}
-        >
-          <div style={{ flex: '0 0 66.666667%', maxWidth: '66.666667%' }}>
-            <div className="lesson-topic-box" style={{ width: '100%' }}>
-              <Paper sx={{ padding: '1em', backgroundColor: 'azure' }}>
-                <div
-                  className="lesson-title"
-                  style={{
-                    ...getTextStyle(learningLanguage, 'title'),
-                    width: `${'100%'}`,
-                    fontWeight: 'bold',
-                    fontSize: 'large',
-                    marginBottom: '15px',
-                  }}
-                >
-                  <FormattedMessage id={'additional-comment'} />
-                </div>
-                <span style={{ overflow: 'hidden', width: '100%' }}>
-                  {lessonInstance.learner_ideas}
-                </span>
-              </Paper>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2em' }}>
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: 600,
+              backgroundColor: colors.card,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '16px',
+              padding: '1em',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: font.family,
+                fontWeight: 700,
+                fontSize: 18,
+                color: colors.ink,
+                marginBottom: 12,
+              }}
+            >
+              <FormattedMessage id="additional-comment" />
             </div>
-          </div>
+            <div style={{ color: colors.ink, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+              {lessonInstance.learner_ideas}
+            </div>
+          </Box>
         </div>
       )}
-    </Container>
+    </div>
   )
 
   const uploadStory = async () => {
@@ -254,93 +231,70 @@ const StoryGeneration = () => {
   }
 
   const generatedStoryControl = (
-    <div className="align-center">
-      <div className="group-buttons sm">
-        <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
-          {generationPending ? (
-            <Spinner
-              fullHeight
-              size={60}
-              text={<FormattedMessage id="story-generating" />}
-              delayedMessage={[
-                <FormattedMessage id="spinner-text-long-generation" />,
-                <FormattedMessage id="spinner-text-long-task" />,
-              ]}
-            />
-          ) : (
-            <>
-              {!error && text?.length && (
-                <>
-                  <textarea
-                    data-cy="story-generation-story-input"
-                    style={{
-                      width: '100%',
-                      height: '600px',
-                      padding: '10px',
-                      borderRadius: '5px',
-                      border: '1px solid #ccc',
-                      outline: 'none',
-                      fontSize: '16px',
-                    }}
-                    value={generatedStory}
-                    onChange={e => setGeneratedStory(e.target.value)}
-                  />
-                  <div className="justify-center align-center wrap">
-                    <AppButton
-                      size="big"
-                      data-cy="story-generation-upload-button"
-                      className="lesson-practice"
-                      disabled={noResults}
-                      style={{
-                        fontSize: '1.3em',
-                        fontWeight: 500,
-                        margin: '0.5em 0',
-                        padding: '1rem 0',
-                        width: '100%',
-                        border: '2px solid #000',
-                      }}
-                      onClick={() => uploadStory()}
-                    >
-                      <FormattedMessage id="upload-generated-story" />
-                    </AppButton>
-                  </div>
-                </>
-              )}
-              <div className="justify-center align-center wrap">
-                {(error || !text?.length) && (
-                  <span
-                    data-cy="story-generation-error-message"
-                    style={{
-                      color: 'red',
-                      textAlign: 'center',
-                      fontWeight: 500,
-                      margin: '18px',
-                      fontSize: 'large',
-                    }}
+    <div className="flex-col align-center">
+      <div style={{ width: '100%', maxWidth: '800px', margin: 'auto' }}>
+        {generationPending ? (
+          <Spinner
+            fullHeight
+            size={60}
+            text={<FormattedMessage id="story-generating" />}
+            delayedMessage={[
+              <FormattedMessage id="spinner-text-long-generation" />,
+              <FormattedMessage id="spinner-text-long-task" />,
+            ]}
+          />
+        ) : (
+          <>
+            {!error && text?.length && (
+              <>
+                <AppTextField
+                  multiline
+                  minRows={18}
+                  value={generatedStory}
+                  onChange={e => setGeneratedStory(e.target.value)}
+                  inputProps={{ 'data-cy': 'story-generation-story-input' }}
+                />
+                <div className="justify-center align-center wrap" style={{ marginTop: '1em' }}>
+                  <AppButton
+                    variant="primary"
+                    size="lg"
+                    data-cy="story-generation-upload-button"
+                    disabled={noResults}
+                    sx={{ width: '100%' }}
+                    onClick={() => uploadStory()}
                   >
-                    <FormattedMessage id="story-generation-error" />
-                  </span>
-                )}
-                <AppButton
-                  size="big"
-                  data-cy="story-generation-regenerate-button"
-                  className="lesson-practice"
+                    <FormattedMessage id="upload-generated-story" />
+                  </AppButton>
+                </div>
+              </>
+            )}
+            <div className="justify-center align-center wrap" style={{ marginTop: '0.75em' }}>
+              {(error || !text?.length) && (
+                <span
+                  data-cy="story-generation-error-message"
                   style={{
-                    fontSize: '1.3em',
+                    color: colors.error,
+                    textAlign: 'center',
                     fontWeight: 500,
-                    margin: '0.5em 0',
-                    padding: '1rem 0',
-                    width: '100%',
-                    border: '2px solid #000',
+                    margin: '18px',
+                    fontSize: 'large',
                   }}
-                  onClick={() => dispatch(generateStory(getStoryGenerationPayload()))}
                 >
-                  <FormattedMessage id="regenerate-story" />
-                </AppButton>
-              </div>
-            </>
-          )}
-        </div>
+                  <FormattedMessage id="story-generation-error" />
+                </span>
+              )}
+              <AppButton
+                variant="secondary"
+                size="lg"
+                data-cy="story-generation-regenerate-button"
+                sx={{ width: '100%' }}
+                onClick={() => dispatch(generateStory(getStoryGenerationPayload()))}
+              >
+                <FormattedMessage id="regenerate-story" />
+              </AppButton>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
@@ -355,115 +309,70 @@ const StoryGeneration = () => {
     }))
   }
 
+  // AppStepper is display-only and keys by label, so labels are plain strings. When the grammar
+  // step is hidden (low access), the array skips it and activeIndex is shifted to match goStep.
+  const stepItems = [
+    { label: intl.formatMessage({ id: 'select-story-themes-and-vocabulary' }) },
+    ...(canSelectGrammar ? [{ label: intl.formatMessage({ id: 'select-lesson-grammar' }) }] : []),
+    { label: intl.formatMessage({ id: 'story-generation-summary' }) },
+    { label: intl.formatMessage({ id: 'story-generated' }) },
+  ]
+  const activeStepIndex = canSelectGrammar ? goStep : Math.max(0, goStep - 1)
+
   return (
-    <div className="cont-tall pt-lg cont flex-col auto gap-row-sm ">
+    <div className="cont-tall cont flex-col auto">
       {metaPending ? (
         <Spinner fullHeight size={60} />
       ) : noResults ? (
         <div
-          className="justify-center mt-lg"
+          className="justify-center"
           data-cy="story-generation-no-lessons-found"
-          style={{ color: 'rgb(112, 114, 120)' }}
+          style={{ color: 'rgb(112, 114, 120)', marginTop: '2rem' }}
         >
           <FormattedMessage id="no-lessons-found" />
         </div>
       ) : (
         <>
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                alignSelf: 'center',
-              }}
-            >
-              <Stepper
-                styleConfig={{
-                  completedBgColor: '#c6e2ff',
-                  activeBgColor: '#003366',
-                  inactiveBgColor: '#d2d3d6',
-                }}
-              >
-                <Step
-                  label={<FormattedMessage id="select-story-themes-and-vocabulary" />}
-                  active={goStep == 0}
-                  completed={goStep > 0}
-                  onClick={() => {
-                    setGoStep(0)
-                  }}
-                />
-                {canSelectGrammar && (
-                  <Step
-                    label={<FormattedMessage id="select-lesson-grammar" />}
-                    active={goStep == 1}
-                    completed={goStep > 1}
-                    onClick={() => {
-                      setGoStep(1)
-                    }}
-                  />
-                )}
-                <Step
-                  label={<FormattedMessage id="story-generation-summary" />}
-                  active={goStep == 2}
-                  completed={goStep > 2}
-                  onClick={() => {
-                    setGoStep(2)
-                  }}
-                />
-                <Step
-                  label={<FormattedMessage id="story-generated" />}
-                  active={goStep == 3}
-                  completed={goStep > 3}
-                  onClick={() => {
-                    setGoStep(3)
-                  }}
-                />
-              </Stepper>
-
-              <AppButton
-                data-cy="story-generation-next-step-button"
-                style={{
-                  float: 'right',
-                  marginBottom: '8%',
-                  cursor: 'pointer',
-                }}
-                disabled={
-                  goStep >= 3 ||
-                  (lessonInstance.topic_ids &&
-                    lessonInstance.topic_ids.length === 0 &&
-                    goStep == 1 &&
-                    lessonInstance.learner_ideas === '')
-                }
-                onClick={() => {
-                  // Low-access users have no grammar step (1), so jump 0 -> 2.
-                  const nextStep = !canSelectGrammar && goStep === 0 ? 2 : goStep + 1
-                  setGoStep(nextStep)
-                  if (goStep === 2 && generatedStory === '') {
-                    dispatch(generateStory(lessonInstance))
-                  }
-                }}
-              >
-                <FormattedMessage id="next-step" />
-              </AppButton>
+          <Box
+            sx={{
+              backgroundColor: colors.card,
+              color: colors.ink,
+              fontFamily: font.family,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '20px',
+              width: '100%',
+              maxWidth: 1024,
+              mx: 'auto',
+              my: '2rem',
+              p: { xs: '16px', sm: '24px' },
+            }}
+          >
+            {/* Space kept below the stepper (the "Story generation" title used to sit here). */}
+            <div style={{ marginBottom: '3em' }}>
+              <AppStepper
+                orientation="horizontal"
+                steps={stepItems}
+                activeIndex={activeStepIndex}
+              />
             </div>
             {goStep === -1 && <Spinner fullHeight size={60} />}
             {(goStep === 0 || goStep === -1) && (
-              <>
-                <div style={{ marginTop: '40px' }}>{lessonVocabularyControls}</div>
-                <hr />
+              <div
+                className="story-generation-controls"
+                style={{ maxWidth: 560, margin: '0 auto' }}
+              >
+                {lessonVocabularyControls}
                 <div style={{ marginTop: '40px' }}>{lessonCountControls}</div>
-                <hr />
                 <div style={{ marginTop: '40px' }}>{generationComment}</div>
-              </>
+              </div>
             )}
             {goStep === 1 && canSelectGrammar && (
               <div>
                 <Topics
                   topicInstance={lessonInstance}
-                  editable={true}
+                  editable
                   setSelectedTopics={setSelectedTopics}
-                  showPerf={true}
+                  showPerf
                   note={
                     lessonInstance.topic_ids.length === 0 ? (
                       <FormattedMessage id="note-no-lessons-topic" />
@@ -484,7 +393,33 @@ const StoryGeneration = () => {
             )}
             {goStep === 2 && <div>{lessonStartControls}</div>}
             {goStep === 3 && <div>{generatedStoryControl}</div>}
-          </div>
+
+            {/* Hidden on the last step (Result) — there's nothing to advance to. */}
+            {goStep < 3 && (
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2.5em' }}>
+                <AppButton
+                  variant="primary"
+                  data-cy="story-generation-next-step-button"
+                  disabled={
+                    lessonInstance.topic_ids &&
+                    lessonInstance.topic_ids.length === 0 &&
+                    goStep == 1 &&
+                    lessonInstance.learner_ideas === ''
+                  }
+                  onClick={() => {
+                    // Low-access users have no grammar step (1), so jump 0 -> 2.
+                    const nextStep = !canSelectGrammar && goStep === 0 ? 2 : goStep + 1
+                    setGoStep(nextStep)
+                    if (goStep === 2 && generatedStory === '') {
+                      dispatch(generateStory(lessonInstance))
+                    }
+                  }}
+                >
+                  <FormattedMessage id="next-step" />
+                </AppButton>
+              </div>
+            )}
+          </Box>
           <ScrollArrow />
         </>
       )}

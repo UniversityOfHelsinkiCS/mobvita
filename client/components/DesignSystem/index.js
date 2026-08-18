@@ -434,16 +434,30 @@ const DesignSystem = () => {
       </Section>
 
       <Section title="AppStepper">
-        <div style={{ width: 260 }}>
-          <AppStepper
-            activeIndex={0}
-            steps={[
-              { label: 'Lesson Themes' },
-              { label: 'Vocabulary Level' },
-              { label: 'Grammar Topics' },
-            ]}
-          />
-        </div>
+        {(() => {
+          const steps = [
+            { label: 'Lesson Themes' },
+            { label: 'Vocabulary Level' },
+            { label: 'Grammar Topics' },
+          ]
+          const label = { fontSize: 12, color: '#666', marginBottom: 10 }
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
+              <div>
+                <div style={label}>vertical</div>
+                <div style={{ width: 260 }}>
+                  <AppStepper activeIndex={1} steps={steps} />
+                </div>
+              </div>
+              <div>
+                <div style={label}>horizontal</div>
+                <div style={{ maxWidth: 520 }}>
+                  <AppStepper orientation="horizontal" activeIndex={1} steps={steps} />
+                </div>
+              </div>
+            </div>
+          )
+        })()}
       </Section>
 
       <Section title="AppTooltip">

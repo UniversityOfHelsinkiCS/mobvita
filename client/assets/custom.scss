@@ -3387,6 +3387,11 @@ label.file-upload-btn {
   height: 3em;
   margin: auto;
 
+  // On story generation the sliders fill the full content column (no 500px cap / side gaps).
+  .story-generation-controls & {
+    max-width: none;
+  }
+
   &-thumb {
     cursor: pointer;
     position: absolute;

@@ -75,7 +75,9 @@ $essay-font: 'Geologica', sans-serif;
   margin-top: 1.5em;
   padding: 1.5rem;
   background: $essay-card !important;
-  border-radius: 30px;
+  // !important so it beats MUI Paper's default 4px radius (equal-specificity emotion class) — the
+  // background/box-shadow above do the same. Without it the tie is lost in the prod build order.
+  border-radius: 30px !important;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
   @media (min-width: 700px) {
@@ -124,7 +126,9 @@ $essay-font: 'Geologica', sans-serif;
   margin-top: 1.5em;
   padding: 1.5rem;
   background: $essay-card !important;
-  border-radius: 30px;
+  // !important so it beats MUI Paper's default 4px radius (equal-specificity emotion class) — the
+  // background/box-shadow above do the same. Without it the tie is lost in the prod build order.
+  border-radius: 30px !important;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
   @media (max-width: 768px) {
