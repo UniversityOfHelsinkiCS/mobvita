@@ -7,9 +7,10 @@ import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { Divider } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppTextField from 'Components/ui/AppTextField'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
@@ -103,11 +104,24 @@ const EditStoryView = ({ match }) => {
   }
 
   return (
-    <div className="cont-tall pt-sm flex-col space-between">
+    <div className="cont-tall flex-col space-between">
       <div className="justify-center">
-        <div className="cont borders-light-grey">
+        <Box
+          sx={{
+            backgroundColor: colors.card,
+            color: colors.ink,
+            fontFamily: font.family,
+            border: `1px solid ${colors.border}`,
+            borderRadius: '20px',
+            width: '100%',
+            maxWidth: 1024,
+            mx: 'auto',
+            my: '2rem',
+            p: { xs: '16px', sm: '24px' },
+          }}
+        >
           <div className="flex space-between">
-            <AppButton variant="primary" onClick={() => navigate('/library')}>
+            <AppButton variant="card" onClick={() => navigate('/library')}>
               <FormattedMessage id="return-to-library" />
             </AppButton>
 
@@ -125,9 +139,9 @@ const EditStoryView = ({ match }) => {
               </AppButton>
             </div>
           </div>
-          <Divider sx={{ my: '1em' }} />
+          <Divider sx={{ my: '1em', borderColor: colors.border }} />
           <div className="flex align-center">
-            <span style={{ marginRight: '.5rem' }}>
+            <span style={{ marginRight: '.5rem', fontFamily: font.family, color: colors.ink }}>
               <FormattedMessage id="story-title" />:
             </span>
             <AppTextField
@@ -140,17 +154,17 @@ const EditStoryView = ({ match }) => {
             {submitDisabled && (
               <div>
                 {titleMissing && (
-                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
                     <FormattedMessage id="story-title-validation" />
                   </div>
                 )}
                 {textTooLong && (
-                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
                     <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
                   </div>
                 )}
                 {charactersLeft > 49950 && (
-                  <div style={{ color: '#ff0000', marginLeft: '.5rem' }}>
+                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
                     <FormattedMessage id="this-text-is-too-short-minimum-50-characters" />
                   </div>
                 )}
@@ -174,7 +188,7 @@ const EditStoryView = ({ match }) => {
               '& textarea': { height: '100% !important', overflowY: 'auto !important' },
             }}
           />
-        </div>
+        </Box>
       </div>
     </div>
   )
