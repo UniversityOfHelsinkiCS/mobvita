@@ -11,8 +11,8 @@ const LANGUAGE = 'Finnish'
 
 // #fdea3b -> rgb(253, 234, 59) is the sentence-highlight colour used by HighlightedStoryText.
 const HIGHLIGHT_BG = 'rgb(253, 234, 59)'
-// Correct-answer background in reading practice.
-const CORRECT_BG = 'rgba(10, 248, 66, 0.35)'
+// Correct-answer background in reading practice — design-system green (colors.green #B1D3C2).
+const CORRECT_BG = 'rgb(177, 211, 194)'
 
 const storiesListUrl = /\/api\/stories(?:\?.*)?$/
 const storyDetailsUrl = /\/api\/stories\/[^/?]+(?:\?.*)?$/
