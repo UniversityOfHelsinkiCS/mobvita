@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { Box, Divider, Paper } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
@@ -14,6 +14,7 @@ import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import AppTextField from 'Components/ui/AppTextField'
 import CustomTooltip from 'Components/CustomTooltip'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import ReadingComprehensionQuestion from './ReadingComprehensionQuestion'
 import {
@@ -902,10 +903,10 @@ const ReadingComprehensionView = ({ match }) => {
       ) : null}
 
       <main
-        className="reading-comp pt-lg auto gap-row-sm"
+        className="reading-comp auto"
         style={{
           maxWidth: 1250,
-          margin: '0 auto',
+          margin: '1.5em auto',
           width: '100%',
           display: 'flex',
           gap: 16,
@@ -913,9 +914,16 @@ const ReadingComprehensionView = ({ match }) => {
           flexWrap: 'wrap',
         }}
       >
-        <Paper
+        <Box
           className="reading-comp__story"
-          sx={{ padding: '1em' }}
+          sx={{
+            backgroundColor: colors.card,
+            color: colors.ink,
+            fontFamily: font.family,
+            border: `1px solid ${colors.border}`,
+            borderRadius: '20px',
+            padding: '1.25em',
+          }}
           style={{
             ...getTextStyle(learningLanguage),
             flex: '3 1 600px',
@@ -931,13 +939,13 @@ const ReadingComprehensionView = ({ match }) => {
             </span>
           </div>
 
-          <Divider sx={{ my: '1em' }} />
+          <Divider sx={{ my: '1em', borderColor: colors.border }} />
 
           <HighlightedStoryText
             paragraphs={storyParagraphs}
             highlightedSentenceIds={highlightedSentenceIds}
           />
-        </Paper>
+        </Box>
 
         <section
           className="reading-comp__questions"
@@ -947,7 +955,16 @@ const ReadingComprehensionView = ({ match }) => {
             width: '100%',
           }}
         >
-          <Paper sx={{ padding: '1em' }} style={{ borderRadius: 12 }}>
+          <Box
+            sx={{
+              backgroundColor: colors.card,
+              color: colors.ink,
+              fontFamily: font.family,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '20px',
+              padding: '1.25em',
+            }}
+          >
             <div className="rc-tabs" style={{ marginBottom: 12 }}>
               <AppTabs
                 tabs={tabs}
@@ -960,7 +977,7 @@ const ReadingComprehensionView = ({ match }) => {
               />
             </div>
             {panes[activeTabIndex]?.render()}
-          </Paper>
+          </Box>
         </section>
       </main>
     </>

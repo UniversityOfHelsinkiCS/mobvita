@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import Paper from '@mui/material/Paper'
-import Popover from '@mui/material/Popover'
+import Box from '@mui/material/Box'
+import AppMenu from 'Components/ui/AppMenu'
 import AppButton from 'Components/AppButton'
-import Switch from '@mui/material/Switch'
+import AppSwitch from 'Components/ui/AppSwitch'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
-import SettingsIcon from 'Components/PracticeView/SettingsIcon'
 import { getStoryAction, answerStoryQuestionAction, getStoryReadingQuestionsAction } from 'Utilities/redux/storiesReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
@@ -26,6 +26,7 @@ import {
   getTextStyle,
   useMTAvailableLanguage,
   learningLanguageLocaleCodes,
+  images,
 } from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
@@ -117,68 +118,51 @@ const getQuestionId = question => {
   return String(question.question_id || '')
 }
 
-const AnswerLocationSettings = ({ checked, onChange }) => {
-  const [open, setOpen] = useState(false)
-  const anchorRef = useRef(null)
-
-  return (
-    <>
+const AnswerLocationSettings = ({ checked, onChange }) => (
+  <AppMenu
+    minWidth={260}
+    borderRadius="16px"
+    disableScrollLock
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    trigger={
       <span
-        ref={anchorRef}
         data-cy="rp-settings-popup"
-        style={{ display: 'inline-block', cursor: 'pointer' }}
         role="button"
         tabIndex={0}
-        onClick={() => setOpen(prev => !prev)}
-        onKeyDown={e => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            setOpen(prev => !prev)
-          }
-        }}
+        style={{ display: 'inline-flex', cursor: 'pointer' }}
       >
-        <SettingsIcon className="settings-icon" />
+        <img
+          src={images.circleSettings}
+          alt=""
+          style={{ width: 26, height: 26, display: 'block' }}
+        />
       </span>
-      <Popover
-        open={open}
-        anchorEl={anchorRef.current}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        disableScrollLock
-        slotProps={{
-          paper: {
-            sx: { borderRadius: '10px', padding: '8px', boxShadow: '0 4px 15px rgba(0,0,0,0.15)' },
-          },
-        }}
-      >
-        <div
-          style={{
-            padding: '0.4em 0.6em',
-            minWidth: 240,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 8,
-          }}
-        >
-          <span style={{ fontSize: '0.9rem', color: '#333' }}>
-            <FormattedMessage
-              id="rp-show-answer-button-setting"
-              defaultMessage="Show button “Show answer in text”"
-            />
-          </span>
-          <Switch
-            size="small"
-            checked={checked}
-            onChange={e => onChange(e.target.checked)}
-            slotProps={{ input: { 'data-cy': 'rp-show-answer-button-toggle' } }}
-          />
-        </div>
-      </Popover>
-    </>
-  )
-}
+    }
+  >
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+        minWidth: 220,
+      }}
+    >
+      <span style={{ fontFamily: font.family, fontSize: 14, color: colors.ink }}>
+        <FormattedMessage
+          id="rp-show-answer-button-setting"
+          defaultMessage="Show button “Show answer in text”"
+        />
+      </span>
+      <AppSwitch
+        checked={checked}
+        onChange={e => onChange(e.target.checked)}
+        slotProps={{ input: { 'data-cy': 'rp-show-answer-button-toggle' } }}
+      />
+    </div>
+  </AppMenu>
+)
 
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
@@ -393,10 +377,12 @@ const ReadingPracticeView = () => {
 
   return (
     <main
-      className={`reading-comp auto gap-row-sm ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+      className={`reading-comp auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
       style={{
         maxWidth: 1108,
-        margin: '0 auto',
+        // 1.5em top aligns the card with the assistant panel (HelperSidebar top: 4.5em, 1.5em below
+        // the 3em navbar).
+        margin: '1.5em auto',
         width: '100%',
         display: 'flex',
         gap: 16,
@@ -404,21 +390,30 @@ const ReadingPracticeView = () => {
         flexWrap: 'wrap',
       }}
     >
-      <Paper
-        sx={{ padding: '1em' }}
+      <Box
+        sx={{
+          backgroundColor: colors.card,
+          color: colors.ink,
+          fontFamily: font.family,
+          border: `1px solid ${colors.border}`,
+          borderRadius: '20px',
+          padding: '1.25em',
+        }}
         style={{
           ...getTextStyle(learningLanguage),
           flex: '3 1 440px',
           minWidth: 300,
         }}
       >
-        <div style={{ fontWeight: 800, fontSize: 20, marginBottom: 10 }}>{story.title}</div>
+        <div style={{ fontFamily: font.family, fontWeight: 700, fontSize: 22, marginBottom: 12 }}>
+          {story.title}
+        </div>
         <HighlightedStoryText
           paragraphs={story.paragraph || []}
           highlightedSentenceIds={highlightedSentenceIds}
           onWordClick={handleWordTranslate}
         />
-      </Paper>
+      </Box>
       <section
         style={{
           flex: '2 1 300px',
@@ -428,7 +423,16 @@ const ReadingPracticeView = () => {
         }}
       >
         <div style={{ position: 'sticky', top: 16 }}>
-          <Paper sx={{ padding: '1em' }} style={{ borderRadius: 14, margin: 0 }}>
+          <Box
+            sx={{
+              backgroundColor: colors.card,
+              color: colors.ink,
+              fontFamily: font.family,
+              border: `1px solid ${colors.border}`,
+              borderRadius: '20px',
+              padding: '1.25em',
+            }}
+          >
             <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
               {readingQuestionsPending && total === 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: 20 }}>
@@ -440,8 +444,23 @@ const ReadingPracticeView = () => {
                 </div>
               ) : (
                 <>
-                  <div data-cy="rp-question-text" style={{ fontSize: 18, marginBottom: 12 }}>
-                    {idx + 1}/{total} {current?.question}
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      gap: 8,
+                      marginBottom: 12,
+                    }}
+                  >
+                    <div data-cy="rp-question-text" style={{ fontSize: 18 }}>
+                      {idx + 1}/{total} {current?.question}
+                    </div>
+                    {/* Settings (circle gear) to the right of the question. */}
+                    <AnswerLocationSettings
+                      checked={showAnswerLocationButtonEnabled}
+                      onChange={setShowAnswerLocationButtonEnabled}
+                    />
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -450,20 +469,22 @@ const ReadingPracticeView = () => {
                       const isWrongTried = attemptedWrongChoices.has(String(c))
                       const isCorrect = showCorrectAnswer && isAnswer
 
-                      let border = '1px solid rgba(0,0,0,0.18)'
-                      let bg = '#fff'
-                      let color = 'rgba(0,0,0,0.82)'
+                      // Design-system answer states: white by default, green when correct, blue
+                      // when a wrong choice was tried.
+                      let border = `1px solid ${colors.border}`
+                      let bg = '#ffffff'
+                      let color = colors.ink
 
                       if (isCorrect) {
-                        border = '1px solid rgba(1, 203, 48, 0.63)'
-                        bg = 'rgba(10, 248, 66, 0.35)'
-                        color = 'rgba(0,0,0,0.95)'
+                        border = `1px solid ${colors.greenHover}`
+                        bg = colors.green
+                        color = colors.ink
                       }
 
                       if (isWrongTried) {
-                        border = '1px solid rgba(12, 159, 250, 0.63)'
-                        bg = 'rgba(12, 159, 250, 0.39)'
-                        color = 'rgba(0,0,0,0.95)'
+                        border = '1px solid #8FBBD0'
+                        bg = colors.panel
+                        color = colors.ink
                       }
 
                       return (
@@ -500,14 +521,10 @@ const ReadingPracticeView = () => {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <AnswerLocationSettings
-                        checked={showAnswerLocationButtonEnabled}
-                        onChange={setShowAnswerLocationButtonEnabled}
-                      />
                       {showAnswerLocationButtonEnabled && showCorrectAnswer && (
                         <AppButton
                           data-cy="rp-show-answer-location-btn"
-                          className="btn-secondary"
+                          variant="secondary"
                           onClick={handleShowAnswerLocation}
                         >
                           <FormattedMessage id="show-where-answer-is" />
@@ -548,7 +565,7 @@ const ReadingPracticeView = () => {
                 </>
               )}
             </div>
-          </Paper>
+          </Box>
         </div>
       </section>
 
