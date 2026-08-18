@@ -8,7 +8,6 @@ import { getAllStories } from 'Utilities/redux/storiesReducer'
 import CustomTooltip from 'Components/CustomTooltip'
 import AppActionCard from 'Components/ui/AppActionCard'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import Footer from 'Components/Footer'
 import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import SetCEFRReminder from 'Components/SetCEFRReminder'
 import BetaLanguageModal from 'Components/BetaLanguageModal'
@@ -263,7 +262,6 @@ const HomeviewButtons = ({
 const HomeView = () => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
-  const showFooter = width > 700
   const dispatch = useDispatch()
   const location = useLocation()
 
@@ -441,7 +439,6 @@ const HomeView = () => {
         <HelperSidebar>
           <GeneralChatbot />
         </HelperSidebar>
-        {showFooter && <Footer />}
       </div>
     </div>
   )

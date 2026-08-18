@@ -47,7 +47,6 @@ import FeedbackInfoModal from '../CommonStoryTextComponents/FeedbackInfoModal'
 import { keyboardLayouts } from './KeyboardLayouts'
 import ProgressBar from './CurrentSnippet/ProgressBar'
 import PracticeTimer from './PracticeTimer'
-import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import Spinner from 'Components/Spinner'
 import HelperSidebar from './HelperSidebar'
@@ -218,7 +217,6 @@ const PracticeView = () => {
   }
 
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
-  const showFooter = width > 640
 
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime()) return <Spinner inline size={60} />
@@ -394,7 +392,6 @@ const PracticeView = () => {
         </HelperSidebar>
         <FeedbackInfoModal />
       </div>
-      {showFooter && <Footer />}
       <AppDialog
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}

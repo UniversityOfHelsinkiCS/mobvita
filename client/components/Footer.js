@@ -24,10 +24,8 @@ const Footer = () => {
             alt="University of Helsinki"
             style={{ height: 36 }}
           />
-          <div style={{ fontSize: 12, lineHeight: 1.4, color: colors.ink }}>
-            © 2020–{new Date().getFullYear()}
-            <br />
-            University of Helsinki
+          <div style={{ fontSize: 12, lineHeight: 1.4, color: colors.ink, whiteSpace: 'nowrap' }}>
+            © 2020–{new Date().getFullYear()} University of Helsinki
           </div>
         </div>
         {showResonsiveVoiceMention && (

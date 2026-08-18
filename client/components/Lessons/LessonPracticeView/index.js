@@ -35,7 +35,6 @@ import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
 import ProgressBar from 'Components/PracticeView/CurrentSnippet/ProgressBar'
-import Footer from 'Components/Footer'
 import ScrollArrow from 'Components/ScrollArrow'
 import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import LessonPracticeTopicsHelp from './LessonPracticeTopicsHelp'
@@ -176,7 +175,6 @@ const LessonPracticeView = () => {
   }
 
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
-  const showFooter = width > 640
 
   if (!lesson_instance_pending && lesson_instance && lesson_instance?.lesson_id) {
     return (
@@ -318,7 +316,6 @@ const LessonPracticeView = () => {
 
             <FeedbackInfoModal />
           </div>
-          {showFooter && <Footer />}
         </div>
         <AppDialog
           open={settingsOpen}

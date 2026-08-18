@@ -26,7 +26,6 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
-import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 
@@ -114,7 +113,6 @@ const ControlledStoryEditView = ({ match }) => {
 
   if (!story || pending || !user) return <Spinner fullHeight size={60} text="" />
 
-  const showFooter = width > 640
   const url = location.pathname
   const processingCurrentStory = id === storyId
 
@@ -311,7 +309,6 @@ const ControlledStoryEditView = ({ match }) => {
         </div>
         <FeedbackInfoModal />
       </div>
-      {showFooter && <Footer />}
     </div>
   )
 }

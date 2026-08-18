@@ -108,3 +108,127 @@
   justify-content: center;
   padding-top: 1rem;
 }
+
+// ── Add / edit card template (Flashcards/Template/*) ──────────────────────────
+// Unifies the template classes and replaces the old ad-hoc utilities that never existed
+// (pt-nm / pb-xl / pb-lg / mt-sm / ml-lg / auto-top / gap-col-sm / mb-sm / mb-lg / pb-sm / pb-nm /
+// pr-sm / flashcard-template-button* / flashcard-mobile-template) plus the per-view inline card
+// styling. Generic utilities that DO exist (flex, flex-col, auto-overflow, full-width, italics,
+// space-between, align-center) are left in place.
+
+// Desktop: two cards side by side; mobile: a single stacked card.
+.flashcard-template {
+  display: flex;
+}
+
+// The template cards reuse the .flashcard box; these set the 2026 colours/rounding
+// (compound selector so they win over the base .flashcard without needing inline styles).
+.flashcard.flashcard-template-card {
+  border-radius: 30px;
+  color: #2d2c2a;
+}
+
+.flashcard.flashcard-template-card--word {
+  background-color: #dad9ef;
+  border: 8px solid #dad9ef;
+}
+
+.flashcard.flashcard-template-card--translations {
+  margin-left: 1em;
+  background-color: #f6efcf;
+  border: 8px solid #dad9ef;
+}
+
+.flashcard.flashcard-template-card--mobile {
+  background-color: #f6efcf;
+}
+
+// A form section (word / hints / translations) inside a card.
+.flashcard-template-section {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+// The word block (title + input), with breathing room above and below.
+.flashcard-word-field {
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+
+// Shared section title ("New word", "New translations", "Hints").
+.flashcard-form-title,
+.flashcard-word {
+  display: flex;
+  justify-content: center;
+  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
+  color: #2d2c2a;
+}
+
+.flashcard-form-title {
+  font-size: 22px;
+  margin: 1rem 0 0.5rem 0;
+}
+
+// The word itself, shown in edit mode instead of the title.
+.flashcard-word {
+  font-size: 20px;
+}
+
+// Scrollable list of already-added hints / translations, above the input.
+.flashcard-form-list {
+  overflow: auto;
+  margin-bottom: 1rem;
+}
+
+// The input row keeps its height while the list above scrolls.
+.flashcard-template-input {
+  flex: 0 0 auto;
+  margin-top: 0.5rem;
+}
+
+// Full-width "add" button under a hint / translation input.
+.flashcard-form-button {
+  width: 100%;
+  margin-top: 0.75em;
+}
+
+// Save / Clear action row at the bottom of the template.
+.flashcard-template-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5em;
+}
+
+.flashcard-template-action {
+  flex: 1 1 0;
+}
+
+// One item in a hints / translations list.
+.flashcard-template-list-item {
+  padding-bottom: 0.5rem;
+}
+
+.flashcard-template-list-text {
+  width: 100%;
+  padding-right: 0.5rem;
+}
+
+// Desktop only: keep "Save hint" (left card) and "Save translation" (right card) on the same level.
+// Each section grows to fill its card and pushes the input + Save button to the bottom; the left
+// card has no Clear/Save row, so its Save button is lifted by that row's height so both line up.
+.flashcard-template-card--word .flashcard-template-section,
+.flashcard-template-card--translations .flashcard-template-section {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.flashcard-template-card--word .flashcard-template-input,
+.flashcard-template-card--translations .flashcard-template-input {
+  margin-top: auto;
+}
+
+.flashcard-template-card--word .flashcard-form-button {
+  margin-bottom: 3.6em; // ≈ height of the translations card's Clear / Save row
+}

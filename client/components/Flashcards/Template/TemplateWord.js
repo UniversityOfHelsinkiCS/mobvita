@@ -15,12 +15,12 @@ const TemplateWord = ({ word, setWord, getTranslations, hintRef, wordRef, editin
   }
 
   return (
-    <div className="pt-nm pb-xl">
+    <div className="flashcard-word-field">
       {editing ? (
-        <span className="header-3 justify-center bold">{word}</span>
+        <span className="flashcard-word">{word}</span>
       ) : (
         <div>
-          <label htmlFor="newWord" className="header-2 justify-center bold">
+          <label htmlFor="newWord" className="flashcard-form-title">
             <FormattedMessage id="new-word" />
           </label>
           <AppTextField

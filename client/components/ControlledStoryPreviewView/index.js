@@ -10,7 +10,6 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 import ReportButton from 'Components/ReportButton'
 import PreviousSnippets from '../ControlledStoryEditView/PreviousSnippets'
-import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 
 const ControlledStoryEditView = () => {
@@ -33,7 +32,6 @@ const ControlledStoryEditView = () => {
 
   if (!story) return null
 
-  const showFooter = width > 640
 
   return (
     <div className="cont-tall pt-sm flex-col space-between">
@@ -71,7 +69,6 @@ const ControlledStoryEditView = () => {
           )}
         </div>
       </div>
-      {showFooter && <Footer />}
     </div>
   )
 }

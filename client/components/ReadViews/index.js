@@ -50,7 +50,6 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import Footer from '../Footer'
 import ScrollArrow from '../ScrollArrow'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import SelectGrammarLevel from 'Components/Lessons/SelectGrammarLevel'
@@ -361,7 +360,6 @@ const ReadViews = ({ match }) => {
     )
   if (!routeStory && !isStudentPreview) return <Spinner fullHeight size={60} />
 
-  const showFooter = width > 640
   const underProcessing = isStudentPreview
     ? !loadingReady || storyProgress !== 1
     : (progress !== 0 && processingCurrentStory) || storyProgress !== 1
@@ -641,7 +639,6 @@ const ReadViews = ({ match }) => {
         
         <FeedbackInfoModal />
       </div>
-      {showFooter && <Footer />}
       <AppDialog
         open={open}
         onClose={() => setOpen(false)}

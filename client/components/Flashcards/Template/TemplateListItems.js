@@ -2,9 +2,11 @@ import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { sanitizeHtml } from 'Utilities/common'
 
-const TemplateListItems = ({ values, handleDelete, bigScreen = false, italics = false }) => {
-  const itemClass = bigScreen ? 'pb-sm' : 'pb-nm'
-  const textClass = italics ? 'pr-sm full-width italics' : 'pr-sm full-width'
+const TemplateListItems = ({ values, handleDelete, italics = false }) => {
+  const itemClass = 'flashcard-template-list-item'
+  const textClass = italics
+    ? 'flashcard-template-list-text italics'
+    : 'flashcard-template-list-text'
 
   return (
     <>

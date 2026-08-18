@@ -20,7 +20,6 @@ import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/commo
 
 import ReportButton from 'Components/ReportButton'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
-import Footer from 'Components/Footer'
 import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
 import PreviousSnippets from 'Components/CompeteView/PreviousSnippets'
 import CurrentSnippet from 'Components/CompeteView/CurrentSnippet'
@@ -52,7 +51,6 @@ const CompeteView = ({ match }) => {
   const [youWon, setYouWon] = useState(false)
 
   const mode = getMode()
-  const showFooter = width > 640
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
 
   const initializeCompetition = async () => {
@@ -207,7 +205,6 @@ const CompeteView = ({ match }) => {
         <DictionaryHelp />
         <FeedbackInfoModal />
       </div>
-      {showFooter && <Footer />}
     </div>
   )
 }

@@ -6,7 +6,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
 import {
   buildWritingEssaySentences,
@@ -22,7 +21,6 @@ import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { saveSelfIntermediate, updateLibrarySelect } from 'Utilities/redux/userReducer'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import Spinner from 'Components/Spinner'
-import Footer from '../Footer'
 import EssayChatbot from 'Components/ChatBot/EssayChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EssayTextInput from './EssayTextInput'
@@ -33,7 +31,6 @@ import { clearStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
-  const { width } = useWindowDimensions()
   const intl = useIntl()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -65,7 +62,6 @@ const EssayWritingView = () => {
   const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
   const savePending = useSelector(state => state.writingCorrection.savePending)
   const saveError = useSelector(state => state.writingCorrection.saveError)
-  const showFooter = width > 640
 
   // Don't let the user upload while a sentence's correction is still in flight — its payload entry
   // would be empty.
@@ -312,7 +308,6 @@ const EssayWritingView = () => {
             </HelperSidebar>
           </Box>
         </Box>
-        {showFooter && <Footer />}
       </Box>
     )
   }
@@ -373,7 +368,6 @@ const EssayWritingView = () => {
           <FeedbackInfoModal />
         </Box>
       </Box>
-      {showFooter && <Footer />}
 
       <AppDialog
         open={topicDialogOpen}

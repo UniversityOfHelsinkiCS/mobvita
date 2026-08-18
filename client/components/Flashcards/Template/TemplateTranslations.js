@@ -40,36 +40,35 @@ const TemplateTranslations = ({
   }
 
   return (
-    <div className="flex-col auto-overflow">
-      <label htmlFor="newTranslation" className="header-2 justify-center bold pt-nm">
+    <div className="flashcard-template-section">
+      <label htmlFor="newTranslation" className="flashcard-form-title">
         <FormattedMessage id="new-translations" />
       </label>
-      <div className="auto-overflow mb-sm">
-        <div className="auto-overflow">
-          {pending ? (
-            <Spinner size={60} />
-          ) : (
-            <ul>
-              <TemplateListItems
-                values={translations}
-                handleDelete={handleTranslationDelete}
-                {...props}
-              />
-            </ul>
-          )}
-        </div>
+      <div className="flashcard-form-list">
+        {pending ? (
+          <Spinner size={60} />
+        ) : (
+          <ul>
+            <TemplateListItems
+              values={translations}
+              handleDelete={handleTranslationDelete}
+              {...props}
+            />
+          </ul>
+        )}
       </div>
-      <AppTextField
-        id="newTranslation"
-        placeholder={intl.formatMessage({ id: 'type-new-translation' })}
-        value={translation}
-        onChange={handleTranslationChange}
-        onKeyDown={handleTranslationKeyDown}
-      />
+      <div className="flashcard-template-input">
+        <AppTextField
+          id="newTranslation"
+          placeholder={intl.formatMessage({ id: 'type-new-translation' })}
+          value={translation}
+          onChange={handleTranslationChange}
+          onKeyDown={handleTranslationKeyDown}
+        />
+      </div>
       <AppButton
         variant="secondary"
-        className="flashcard-template-button mb-lg"
-        style={{ width: '100%', marginTop: '0.75em' }}
+        className="flashcard-form-button"
         onClick={handleTranslationSave}
       >
         <FormattedMessage id="save-the-translation" />

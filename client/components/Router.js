@@ -7,6 +7,7 @@ import { colors } from 'Assets/mui_theme/designTokens'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import NavBar from './NavBar'
 import LandingPage from './LandingPage'
+import Footer from './Footer'
 import Spinner from 'Components/Spinner'
 import ErrorBoundary from './ErrorBoundary'
 import {
@@ -363,6 +364,8 @@ export default () => {
                 </Suspense>
               </ErrorBoundary>
             </main>
+            {/* Global footer — rendered once here instead of per-view. */}
+            <Footer />
           </>
         }
       />

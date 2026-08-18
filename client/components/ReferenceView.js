@@ -1,6 +1,5 @@
 import React from 'react'
 import { List, ListItem } from '@mui/material'
-import Footer from './Footer'
 
 const ReferenceView = () => {
   return (
@@ -30,7 +29,6 @@ const ReferenceView = () => {
         </List>
         </div>
       </div>
-    <Footer />
     </div>
   )
 }

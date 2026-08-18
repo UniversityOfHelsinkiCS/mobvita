@@ -35,18 +35,17 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
   }
 
   return (
-    <div className="flex-col pb-lg auto-overflow">
-      <label htmlFor="hints" className="header-2 justify-center bold">
+    <div className="flashcard-template-section">
+      <label htmlFor="hints" className="flashcard-form-title">
         <FormattedMessage id="Hints" />
       </label>
-      <div className="auto-overflow">
+      <div className="flashcard-form-list">
         <ul>
           <TemplateListItems values={hints} handleDelete={handleHintDelete} />
         </ul>
       </div>
-      <div className="flex-static-size mt-sm">
+      <div className="flashcard-template-input">
         <AppTextField
-          multiline
           id="hints"
           placeholder={intl.formatMessage({ id: 'type-new-hint' })}
           value={hint}
@@ -55,12 +54,7 @@ const TemplateHints = ({ hints, setHints, hint, setHint, hintRef }) => {
           inputRef={hintRef}
         />
       </div>
-      <AppButton
-        variant="secondary"
-        className="flashcard-template-button"
-        style={{ marginTop: '0.75em' }}
-        onClick={handleHintSave}
-      >
+      <AppButton variant="secondary" className="flashcard-form-button" onClick={handleHintSave}>
         <FormattedMessage id="save-the-hint" />
       </AppButton>
     </div>

@@ -3,19 +3,11 @@ import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
 
 const TemplateActions = ({ handleSave, handleClear, editing = false }) => (
-  <div className="auto-top gap-col-sm flex" style={{ marginTop: '1.5em', marginBottom: 0 }}>
-    <AppButton
-      onClick={handleClear}
-      style={{ flexBasis: '50%' }}
-      className="flashcard-template-button-clear"
-    >
+  <div className="flashcard-template-actions">
+    <AppButton onClick={handleClear} className="flashcard-template-action">
       <FormattedMessage id={editing ? 'Cancel' : 'Clear'} />
     </AppButton>
-    <AppButton
-      onClick={handleSave}
-      style={{ flexBasis: '50%' }}
-      className="flashcard-template-button-save"
-    >
+    <AppButton onClick={handleSave} className="flashcard-template-action">
       <FormattedMessage id="Save" />
     </AppButton>
   </div>

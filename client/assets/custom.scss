@@ -66,6 +66,10 @@ $default-font: $rubik;
 
 $sidebar-swipeable-width: 1em;
 $navbar-height: 3em;
+// The global footer (rendered once after the main content). The full-height calcs below subtract
+// it so short pages fill exactly one viewport instead of overflowing by the footer's height.
+// A px value (not em) is used so the subtraction is unit-exact; the footer is pinned to it below.
+$footer-height: 50px;
 $application-content-top-padding: map.get($spacing, "sm");
 
 body {
@@ -470,7 +474,7 @@ $value in $spacing {
 
 // SEMANTIC CLASSES:
 .application-content {
-  min-height: calc(100vh - #{$navbar-height});
+  min-height: calc(100vh - #{$navbar-height} - #{$footer-height});
   width: 100%;
   padding-right: map.get($spacing, "xs");
   padding-left: map.get($spacing, "xs");
@@ -491,7 +495,7 @@ $value in $spacing {
   }
 
   &-tall {
-    min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding});
+    min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding} - #{$footer-height});
   }
 
   &-narrow {
@@ -3072,18 +3076,21 @@ label.file-upload-btn {
 .footer {
   font-size: 0.9rem;
   width: 100%;
-  max-width: 1400px;  
+  min-height: $footer-height;
+  box-sizing: border-box;
   background-color: #f7f7f7;
   border-radius: 5px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   color: rgb(112, 114, 120);
   flex-wrap: wrap;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 
+  // Not pinned to the bottom of the viewport — sits in normal flow, full screen width.
   &-wrapper {
     width: 100%;
-    position: sticky;
-    bottom: 0;
   }
 
   &-item {
