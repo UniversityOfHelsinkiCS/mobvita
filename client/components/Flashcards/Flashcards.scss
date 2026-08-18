@@ -188,8 +188,11 @@
   margin-top: 0.5rem;
 }
 
-// Full-width "add" button under a hint / translation input.
-.flashcard-form-button {
+// Full-width "add" button under a hint / translation input. Scoped under the card (two classes,
+// specificity 0,2,0) so the top margin beats MUI's ButtonBase `margin: 0` — otherwise the plain
+// `.flashcard-form-button` (0,1,0) ties MUI and loses to it in the production build (extracted CSS
+// vs emotion injection order), which is why the input and button touched on prod but not locally.
+.flashcard-template-card .flashcard-form-button {
   width: 100%;
   margin-top: 0.75em;
 }
