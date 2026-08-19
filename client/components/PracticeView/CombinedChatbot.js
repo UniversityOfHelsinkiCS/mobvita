@@ -1254,21 +1254,45 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           ) : (
             <>            
             {translationState.surfaceWord && (
-              <div className="chatbot-header" style={{ marginBottom: '1em' }}>
-                <div>
-                    {translationState.surfaceWord &&
-                        translationState.surfaceWord !== (translationState.data?.[0]?.lemma) && <CustomTooltip
-                        title={<FormattedHTMLMessage id="explain-speaker-surface" />}
-                    >
-                        <span style={{ display: 'inline-flex' }}>
+              <div
+                className="chatbot-header"
+                style={{
+                  marginBottom: '1em',
+                  paddingBottom: 0,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '8px',
+                }}
+              >
+                <h4
+                  className="current-word"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    flex: 1,
+                    minWidth: 0,
+                    width: 'auto',
+                  }}
+                >
+                  {translationState.surfaceWord &&
+                    translationState.surfaceWord !== translationState.data?.[0]?.lemma && (
+                      <CustomTooltip title={<FormattedHTMLMessage id="explain-speaker-surface" />}>
+                        <span style={{ display: 'inline-flex', flexShrink: 0 }}>
                           <Speaker word={translationState.surfaceWord} />
                         </span>
-                    </CustomTooltip>}
-                </div>
-                <h4 className="current-word">
-                     {translationState.maskSymbol || translationState.surfaceWord}
+                      </CustomTooltip>
+                    )}
+                  <span
+                    style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                  >
+                    {translationState.maskSymbol || translationState.surfaceWord}
+                  </span>
                 </h4>
-                                <ChatActionMenu mode="dictionary"
+                <ChatActionMenu
+                  mode="dictionary"
                                     onAddNote={canAddNote ? handleAddNote : undefined}
                                     handleShowWordNest={() => {
                       setWordNestRestoreWord(computeWordNestRestoreWord())

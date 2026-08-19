@@ -114,6 +114,8 @@ const DesignSystem = () => {
             'sendInactive',
             'circleSettings',
             'settingsContrast',
+            'folderEmpty',
+            'folderFull',
             'helpCircle',
             'asterisk02',
             'mail05',

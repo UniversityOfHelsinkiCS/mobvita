@@ -4,13 +4,13 @@ import { FormattedMessage } from 'react-intl'
 import { Skeleton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import MenuBookIcon from '@mui/icons-material/MenuBook'
 import { lemmatizer } from 'lemmatizer'
 import {
   flashcardColors,
   useLearningLanguage,
   useDictionaryLanguage,
   learningLanguageLocaleCodes,
+  images,
 } from 'Utilities/common'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { changeTranslationStageAction } from 'Utilities/redux/translationReducer'
@@ -262,7 +262,7 @@ const WordTranslationPanel = () => {
   }
 
   return (
-    <div className="dictionary-content" data-cy="dictionary-help" style={{ padding: '0.5em' }}>
+    <div className="dictionary-content" data-cy="dictionary-help">
       {(learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
         <WordNestModal
           wordToCheck={wordNestChosenWord}
@@ -290,20 +290,43 @@ const WordTranslationPanel = () => {
         </div>
       ) : (
         <>
-          <div className="chatbot-header" style={{ marginBottom: '1em' }}>
-            <div className="bulbs-container" style={{ opacity: 0, pointerEvents: 'none' }} />
-            <h4 className="current-word" data-cy="word-translation-current-word">
+          <div
+            className="chatbot-header"
+            style={{
+              marginBottom: '1em',
+              paddingBottom: 0,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px',
+            }}
+          >
+            <h4
+              className="current-word"
+              data-cy="word-translation-current-word"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                flex: 1,
+                minWidth: 0,
+                width: 'auto',
+              }}
+            >
               {surfaceWord && surfaceWord !== data?.[0]?.lemma && (
                 <CustomTooltip permanent keyId="explain-speaker-surface">
-                  <span style={{ display: 'inline-flex' }}>
+                  <span style={{ display: 'inline-flex', flexShrink: 0 }}>
                     <Speaker word={surfaceWord} />
                   </span>
                 </CustomTooltip>
-              )}{' '}
-              {maskSymbol || surfaceWord}
+              )}
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {maskSymbol || surfaceWord}
+              </span>
             </h4>
 
-            <div className="chat-action-menu" ref={menuRef}>
+            <div className="chat-action-menu" ref={menuRef} style={{ flexShrink: 0 }}>
               <button
                 type="button"
                 className="chat-action-trigger"
@@ -321,8 +344,14 @@ const WordTranslationPanel = () => {
                     onClick={handleSentenceTranslation}
                     data-cy="word-translation-translate-sentence-button"
                   >
-                    <div className="chat-action-icon" style={{ color: '#17a2b8' }}>
-                      <MenuBookIcon />
+                    <div className="chat-action-icon">
+                      <img
+                        src={images.translate01}
+                        alt=""
+                        width="24"
+                        height="24"
+                        style={{ display: 'block' }}
+                      />
                     </div>
                     <span className="chat-action-text">
                       <FormattedMessage id="dictionaryhelp-show-context-translation" defaultMessage="Translate Sentence" />

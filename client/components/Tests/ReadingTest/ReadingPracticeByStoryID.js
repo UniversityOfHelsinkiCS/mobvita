@@ -385,7 +385,7 @@ const ReadingPracticeView = () => {
         margin: '1.5em auto',
         width: '100%',
         display: 'flex',
-        gap: 16,
+        gap: 20,
         alignItems: 'flex-start',
         flexWrap: 'wrap',
       }}
@@ -454,7 +454,10 @@ const ReadingPracticeView = () => {
                     }}
                   >
                     <div data-cy="rp-question-text" style={{ fontSize: 18 }}>
-                      {idx + 1}/{total} {current?.question}
+                      <span style={{ color: colors.muted, marginRight: 6 }}>
+                        {idx + 1}/{total}
+                      </span>
+                      {current?.question}
                     </div>
                     {/* Settings (circle gear) to the right of the question. */}
                     <AnswerLocationSettings

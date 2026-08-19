@@ -209,7 +209,8 @@
 // Chat Messages Container (Handles all scrolling)
 .chatbot-messages-container {
   flex: 1;
-  padding: 10px;
+  // No left/right padding so lemma cards / messages span the full panel width.
+  padding: 10px 0;
   background: transparent;
   display: flex;
   flex-direction: column;
