@@ -1,9 +1,9 @@
-import React, { createRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import MicIcon from '@mui/icons-material/Mic'
 import MicOffIcon from '@mui/icons-material/MicOff'
 import {
-  getTextWidth,
+  useTextWidth,
   speak,
   learningLanguageSelector,
   voiceLanguages,
@@ -27,7 +27,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const [focusTimeout, setFocusTimeout] = useState(false)
   const [count, setCount] = useState(0)
   const [lastWord, setLastWord] = useState('')
-  const inputRef = createRef(null)
+  const inputRef = useRef(null)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const { answersPending } = useSelector(({ snippets }) => snippets)
   const currentAnswer = useSelector(
@@ -186,7 +186,8 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
     </div>
   )
 
-  const textInputWidth = getTextWidth(word.surface, '400 1.15rem Rubik') * 1.25
+  // Measured off the input itself, so the blank is sized in the font it actually renders in.
+  const textInputWidth = useTextWidth(word.surface, inputRef) * 1.25
   const textWidth =
     textInputWidth < 70
       ? textInputWidth + 30
@@ -222,7 +223,6 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
           onMouseDown={handleMouseDown}
           className={className}
           style={{
-            fontFamily: '400 1.15rem Rubik',
             width: textWidth,
             backgroundColor:
               (recorded && 'rgba(152, 255, 0, 0.71)') ||

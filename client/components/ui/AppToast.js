@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppToast — the 2026 design-system toast content: an optional icon beside the message, rendered inside
@@ -13,7 +13,6 @@ const AppToast = ({ message, icon, iconAlt = '' }) => (
     )}
     <div
       style={{
-        fontFamily: font.family,
         fontSize: 14,
         fontWeight: 500,
         lineHeight: 1.4,

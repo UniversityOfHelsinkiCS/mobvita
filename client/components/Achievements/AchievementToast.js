@@ -33,7 +33,7 @@ const AchievementToast = ({ achievement }) => {
     <div className="flex">
       <Medal medal={medal} />
       <div className="flex-col pl-nm">
-        <span style={{ fontSize: '11px', fontWeight: 550 }}>{medalEarnedText}</span>
+        <span style={{ fontSize: '11px', fontWeight: 600 }}>{medalEarnedText}</span>
         <div>
           <b>
             <span style={{ fontSize: '16px' }}>{Math.floor(current)}</span>

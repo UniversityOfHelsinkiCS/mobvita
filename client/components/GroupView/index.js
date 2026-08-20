@@ -10,7 +10,7 @@ import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTable from 'Components/ui/AppTable'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
   getGroups,
@@ -158,7 +158,7 @@ const GroupCard = ({
     // just cosmetic — the e2e specs scope group actions with `.closest('.card')`.
     <Card
       className="card"
-      sx={{ backgroundColor: colors.card, color: colors.ink, fontFamily: font.family }}
+      sx={{ backgroundColor: colors.card, color: colors.ink }}
     >
       <GroupInfoModal
         title={groupName}
@@ -299,7 +299,6 @@ const GroupView = () => {
                 sx={{
                   backgroundColor: colors.card,
                   color: colors.ink,
-                  fontFamily: font.family,
                   border: `1px solid ${colors.border}`,
                   borderRadius: '20px',
                   p: { xs: '12px', sm: '20px' },

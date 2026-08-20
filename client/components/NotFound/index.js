@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * NotFound (/404) — standalone 404 page in the 2026 design (cream card).
@@ -26,17 +26,16 @@ const NotFound = () => (
         textAlign: 'center',
         maxWidth: 460,
         marginTop: '1.5em',
-        fontFamily: font.family,
         color: colors.ink,
       }}
     >
-      <div style={{ fontFamily: font.family, fontSize: 84, fontWeight: 600, color: colors.green, lineHeight: 1 }}>
+      <div style={{ fontSize: 84, fontWeight: 600, color: colors.green, lineHeight: 1 }}>
         404
       </div>
-      <h1 style={{ fontFamily: font.family, fontSize: 24, fontWeight: 500, color: colors.ink, margin: '0.6em 0 0.3em' }}>
+      <h1 style={{ fontSize: 24, fontWeight: 500, color: colors.ink, margin: '0.6em 0 0.3em' }}>
         <FormattedMessage id="page-not-found-title" defaultMessage="Page not found" />
       </h1>
-      <p style={{ fontFamily: font.family, color: colors.muted, lineHeight: 1.5, margin: '0 0 1.75em' }}>
+      <p style={{ color: colors.muted, lineHeight: 1.5, margin: '0 0 1.75em' }}>
         <FormattedMessage
           id="page-not-found-text"
           defaultMessage="The page you're looking for doesn't exist or isn't available."

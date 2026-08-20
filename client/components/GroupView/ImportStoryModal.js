@@ -8,7 +8,7 @@ import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
 import AppCheckbox from 'Components/ui/AppCheckbox'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { importStoriesFromGroup } from 'Utilities/redux/groupsReducer'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 
@@ -48,7 +48,7 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
         <div>
-          <h2 style={{ fontFamily: font.family, fontSize: 17, fontWeight: 600, margin: 0 }}>
+          <h2 style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>
             <FormattedMessage id="import-story-label" />
           </h2>
           <FormattedHTMLMessage id="import-story-description" />
@@ -78,7 +78,6 @@ const ImportStoryModal = ({ open, setOpen, groupId }) => {
           sx={{
             backgroundColor: colors.card,
             borderRadius: '999px',
-            fontFamily: font.family,
             color: colors.ink,
             '& .MuiOutlinedInput-notchedOutline': { borderColor: colors.border },
             '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: colors.focus },

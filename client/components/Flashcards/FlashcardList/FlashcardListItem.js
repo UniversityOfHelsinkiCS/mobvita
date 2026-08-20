@@ -156,7 +156,8 @@ const FlashcardListItem = ({ card, handleEdit }) => {
             textAlign: 'center',
             padding: '0 0.5rem',
             minWidth: 0,
-            fontFamily: font.family,
+            // The lemma is learning-language text and Flashcards has no getTextStyle() container.
+            fontFamily: font.languageContent,
             fontWeight: 600,
             color: colors.ink,
           }}
@@ -185,7 +186,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         </div>
       </AccordionSummary>
 
-      <AccordionDetails sx={{ fontFamily: font.family, color: colors.ink, padding: '10px 20px 4px' }}>
+      <AccordionDetails sx={{ color: colors.ink, padding: '10px 20px 4px' }}>
         <span className="bold">
           <FormattedMessage id="Translations" />
         </span>

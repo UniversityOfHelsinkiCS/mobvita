@@ -3,7 +3,7 @@ import React from 'react'
 import { Tooltip, tooltipClasses } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppTooltip — the design-system tooltip (2026). A white, softly-rounded bubble with an arrow,
@@ -35,7 +35,6 @@ const StyledTooltip = styled(
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: '#ffffff',
     color: colors.ink,
-    fontFamily: font.family,
     fontSize: 14,
     fontWeight: 500,
     lineHeight: 1.45,

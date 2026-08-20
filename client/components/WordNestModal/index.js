@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Collapse } from 'react-collapse'
 import AppDialog from 'Components/ui/AppDialog'
 import AppSwitch from 'Components/ui/AppSwitch'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
@@ -308,7 +308,7 @@ const WordNestModal = ({
       closeDataCy="wordnest-close"
       title={
         <span
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4em', fontFamily: font.family }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4em' }}
         >
           <CustomTooltip title={intl.formatMessage({ id: 'wordnest-info-text' })}>
             <span style={{ display: 'inline-flex' }}>
@@ -337,7 +337,6 @@ const WordNestModal = ({
                 m: 0,
                 '& .MuiFormControlLabel-label': {
                   marginLeft: '0.5em',
-                  fontFamily: font.family,
                   color: colors.ink,
                 },
               }}

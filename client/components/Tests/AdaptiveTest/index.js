@@ -6,7 +6,7 @@ import { InitAdaptiveTest, resetTests, updateTimed } from 'Utilities/redux/testR
 import { useLearningLanguage } from 'Utilities/common'
 import { Box, FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
@@ -72,7 +72,6 @@ const AdaptiveTestView = () => {
               sx={{
                 '& .MuiFormControlLabel-label': {
                   marginLeft: '0.5em',
-                  fontFamily: font.family,
                   color: colors.ink,
                 },
               }}

@@ -42,7 +42,7 @@ const Dashboard = () => {
       style={{ width: '100%', maxWidth: 720, margin: '0 auto' }}
       data-cy="admin-dashboard"
     >
-      <h1 style={{ fontWeight: 800, marginBottom: '0.25em' }}>Admin dashboard</h1>
+      <h1 style={{ fontWeight: 700, marginBottom: '0.25em' }}>Admin dashboard</h1>
       <p style={{ opacity: 0.7, marginBottom: '1.5em' }}>
         Restricted area — developers with full language scope only. Not linked anywhere in the app.
       </p>

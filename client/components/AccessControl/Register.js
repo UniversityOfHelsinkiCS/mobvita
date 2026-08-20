@@ -7,7 +7,7 @@ import { getSelf } from 'Utilities//redux/userReducer'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import AppButton from 'Components/AppButton'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import SignUpForm from './SignUpForm'
 
 /**
@@ -97,7 +97,6 @@ const Register = ({ onSwitchToLogin }) => {
                 p: 0,
                 minWidth: 0,
                 color: colors.ink,
-                fontFamily: font.family,
                 fontSize: '0.85rem',
                 fontWeight: 500,
                 textTransform: 'none',

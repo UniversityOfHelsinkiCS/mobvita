@@ -11,7 +11,6 @@ const primaryButtonSx = {
   backgroundColor: colors.green,
   color: colors.ink,
   borderRadius: `${shape.buttonRadius}px`,
-  fontFamily: font.family,
   fontSize: font.button,
   fontWeight: 500,
   textTransform: 'none',

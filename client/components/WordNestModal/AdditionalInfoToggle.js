@@ -2,7 +2,7 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 import { FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const AdditionalInfoToggle = ({ showMoreInfo, setShowMoreInfo }) => {
   const intl = useIntl()
@@ -16,7 +16,6 @@ const AdditionalInfoToggle = ({ showMoreInfo, setShowMoreInfo }) => {
           m: 0,
           '& .MuiFormControlLabel-label': {
             marginLeft: '0.5em',
-            fontFamily: font.family,
             color: colors.ink,
           },
         }}

@@ -122,7 +122,6 @@ const resolveVariant = variant =>
 const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: shape.buttonRadius,
-  fontFamily: font.family,
   fontWeight: 600,
   lineHeight: 1.2,
   boxShadow: 'none',

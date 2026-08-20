@@ -22,7 +22,6 @@ const LANG_BUTTON_STYLE = {
   border: 'none',
   borderRadius: '999px',
   padding: '4px 8px 4px 16px',
-  fontFamily: font.family,
   fontWeight: 500,
   fontSize: '16px',
   display: 'inline-flex',
@@ -237,7 +236,6 @@ const LandingPage = () => {
               <div>
                 <h1
                   style={{
-                    fontFamily: font.family,
                     fontSize: font.brand,
                     fontWeight: 500,
                     margin: 0,
@@ -248,7 +246,6 @@ const LandingPage = () => {
                 </h1>
                 <p
                   style={{
-                    fontFamily: font.family,
                     fontSize: '15px',
                     marginTop: '1em',
                     maxWidth: '20em',
@@ -264,7 +261,6 @@ const LandingPage = () => {
                   alignItems: 'center',
                   gap: '12px',
                   marginTop: '2em',
-                  fontFamily: font.family,
                   fontSize: '12px',
                   color: colors.ink,
                 }}

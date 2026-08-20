@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Card, Collapse } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const CollapsingList = ({ header, children }) => {
   const [open, setOpen] = useState(false)
   const CaretIcon = open ? ArrowDropDownIcon : ArrowRightIcon
 
   return (
-    <Card sx={{ mb: '0.2rem', backgroundColor: colors.card, fontFamily: font.family }}>
+    <Card sx={{ mb: '0.2rem', backgroundColor: colors.card }}>
       <div
         style={{
           cursor: 'pointer',

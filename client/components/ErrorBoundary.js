@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import * as Sentry from '@sentry/react'
 import AppButton from 'Components/AppButton'
 import { images } from 'Utilities/common'
-import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+import { colors, shape } from 'Assets/mui_theme/designTokens'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -50,7 +50,6 @@ export default class ErrorBoundary extends Component {
             backgroundColor: colors.card,
             borderRadius: `${shape.cardRadius}px`,
             boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)',
-            fontFamily: font.family,
             color: colors.ink,
             textAlign: 'center',
           }}

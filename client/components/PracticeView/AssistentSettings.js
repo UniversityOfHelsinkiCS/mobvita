@@ -24,7 +24,6 @@ const DictionaryLanguageSelect = ({ value, options, disabled, onChange }) => {
       }}
       style={{
         width: '100%',
-        fontFamily: font.family,
         fontSize: font.input,
         color: colors.ink,
         backgroundColor: colors.card,
@@ -97,7 +96,6 @@ const AssistentSettings = ({ className = '' }) => {
       <div style={{ padding: '2px 6px 6px' }}>
         <div
           style={{
-            fontFamily: font.family,
             fontSize: 13,
             fontWeight: 600,
             color: colors.muted,

@@ -1,23 +1,19 @@
 @use "sass:map";
+@use "sass:meta";
 
 @import "./base.scss";
 @import "./rc-slider.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
-
+// The family alias comes from `bundledTypefaces` in designTokens.js so it cannot drift from the
+// inline family `getTextStyle()` hands to Syriac surfaces. The `local()` name is deliberately
+// different: that is the name the face is installed under on the user's machine.
 @font-face {
-  font-family: 'EastSyriacCtesiphon';
-  src: local('East Syriac Ctesiphon');
-  src: url('./fonts/syrcomctesiphon.eot');
-  src: url('./fonts/syrcomctesiphon.eot?#iefix') format('embedded-opentype'), url('./fonts/syrcomctesiphon.woff') format('woff'), url('./fonts/syrcomctesiphon.ttf') format('truetype'), url('./fonts/syrcomctesiphon.svg#syrcomctesiphon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'NotoSansSyriacEastern';
-  src: local('Noto Sans Syriac Eastern');
-  src: url('./fonts/NotoSansSyriacEastern-Regular.ttf') format('truetype');
+  font-family: #{meta.inspect($font-syriac)};
+  // ONE `src` with a comma list, not two: a second `src:` would override the first, not fall back.
+  src:
+    local('Noto Sans Syriac Eastern'),
+    url('./fonts/NotoSansSyriacEastern-Regular.ttf') format('truetype');
+  font-display: swap;
   font-weight: normal;
   font-style: normal;
 }
@@ -52,6 +48,14 @@ $app-bg-color: #c1dce6; // 2026 redesign panel blue (colors.panel); matches the 
   --app-bg-color: #{$app-bg-color};
 }
 
+// Fonts come from the design tokens (`mui_theme/designTokens.js`), republished as custom properties
+// so the plain `.css` files in `client/components` can read them too. `meta.inspect` rather than
+// bare `#{}`: interpolation strips the token's quotes and breaks any multi-word family name.
+:root {
+  --font-ui: #{meta.inspect($font-ui)};
+  --font-content: #{meta.inspect($font-content)};
+}
+
 // button-related colors
 $btn-color-primary: rgb(50, 170, 248);
 $btn-color-primary-disabled: rgb(142, 187, 249);
@@ -61,19 +65,16 @@ $btn-border-color-primary: rgb(112, 114, 120);
 $btn-border-radius-primary: 10px;
 $button-border-color: #76c8d4; // Currently only 'Check answers' button
 
-$rubik: 'Rubik', sans-serif;
-$default-font: $rubik;
-
 $sidebar-swipeable-width: 1em;
 $navbar-height: 3em;
-// The global footer (rendered once after the main content). The full-height calcs below subtract
-// it so short pages fill exactly one viewport instead of overflowing by the footer's height.
-// A px value (not em) is used so the subtraction is unit-exact; the footer is pinned to it below.
+// Subtracted from the full-height calcs below, in px so the subtraction is unit-exact.
 $footer-height: 50px;
 $application-content-top-padding: map.get($spacing, "sm");
 
 body {
-  font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  // The one place the application font is applied; everything else inherits it. Reading surfaces
+  // override it with --font-content. The emoji faces stay last so emoji still resolve.
+  font-family: var(--font-ui), Apple Color Emoji, Segoe UI Emoji;
   background-color: var(--app-bg-color);
 }
 
@@ -311,7 +312,6 @@ $value in $spacing {
 
 .header-2 {
   font-size: 22px;
-  font-family: $default-font;
 }
 
 .header-3 {
@@ -320,17 +320,25 @@ $value in $spacing {
 
 .header-4 {
   font-size: 22px;
-  font-family: $default-font;
   text-align: center;
+}
+
+// Class-based opt-in to the content font. Nothing carries it today; it is kept as the documented
+// route for new markup. Prefer `getTextStyle()`, which also applies the per-language face and RTL.
+.content-text {
+  font-family: var(--font-content);
 }
 
 .bold-italics {
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 600;
   font-style: italic;
 }
 
+// Reads `--font-language` first on purpose: this class sits on a descendant of the getTextStyle()
+// container, so a bare `--font-content` would outrank the inherited per-language face.
 .practice-text {
+  font-family: var(--font-language, var(--font-content));
   font-size: 1.3rem;
 }
 
@@ -345,7 +353,7 @@ $value in $spacing {
 }
 
 .bold {
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .italics {
@@ -360,16 +368,15 @@ $value in $spacing {
   width: 100%;
 }
 
-// 2026 design-system toasts — EVERY toast is a cream card with ink text (pair with the AppToast content
-// component for the icon + message layout). We override toastify's own CSS variables so the card wins no
-// matter the stylesheet load order; the old centred, per-type coloured toasts are gone.
+// 2026 design-system toasts: every toast is a cream card with ink text. Overriding toastify's own
+// variables makes the card win regardless of stylesheet load order.
 .Toastify__toast {
   --toastify-color-light: #faf8ed;
   --toastify-text-color-light: #2d2c2a;
   --toastify-toast-bd-radius: 16px;
   --toastify-toast-shadow: 0 8px 24px rgba(45, 44, 42, 0.14);
   --toastify-toast-padding: 14px 16px;
-  --toastify-font-family: 'Geologica', 'Rubik', sans-serif;
+  --toastify-font-family: var(--font-ui);
   border: 1px solid #b1d3c2;
   text-align: left;
   font-weight: 500;
@@ -428,6 +435,14 @@ $value in $spacing {
   border: 1px solid rgba(34, 36, 38, .15);
   border-radius: 0.25em;
   padding-left: 0.5em;
+}
+
+// react-datepicker and react-simple-keyboard hardcode their own Helvetica stack, so they have to be
+// named. The `body` prefix is load-bearing: their sheets land after this file in the bundle, so the
+// extra specificity is what wins the tie without `!important`.
+body .react-datepicker,
+body .hg-theme-default {
+  font-family: var(--font-ui);
 }
 
 // REACT VIRTUALIZED OVERRIDES:
@@ -964,10 +979,11 @@ $value in $spacing {
   }
 }
 
+// A title is language content, so it takes the reading font. `--font-language` first, for the same
+// reason as `.practice-text`: the class can sit on a child of the getTextStyle() element.
 .story-title {
   @extend .header-2;
-  // .header-2 pulls in $default-font (Rubik); the story title should use the 2026 design font.
-  font-family: 'Geologica', sans-serif;
+  font-family: var(--font-language, var(--font-content));
   font-weight: 600;
   line-height: 1.3;
   padding-right: 1em;
@@ -998,7 +1014,11 @@ $value in $spacing {
   cursor: pointer;
 }
 
+// The answer blank should look like the sentence it sits in, so it takes the reading font.
+// `--font-language` (published by getTextStyle()) carries the per-script face; `--font-content` is
+// the default for every other language.
 .exercise {
+  font-family: var(--font-language, var(--font-content));
   border-style: solid;
   border-color: lightgrey;
   border-radius: 4px;
@@ -1011,7 +1031,10 @@ $value in $spacing {
   }
 }
 
+// The multiple-choice trigger shows a candidate answer, so it is content, not chrome — same
+// reasoning as `.exercise`.
 .exercise-multiple {
+  font-family: var(--font-language, var(--font-content));
   min-height: 0 !important;
   height: 1.5em !important;
   padding: 2px 0 1px 4px !important;
@@ -1208,16 +1231,21 @@ $value in $spacing {
   }
 }
 
+// `--font-language` first, for the same reason as `.exercise`. Every call site happens to put this
+// class on the getTextStyle() element itself, but move it up one wrapper and a bare
+// `--font-content` would outrank the inherited per-language face.
 .practice-container {
   margin-bottom: 2em;
   word-spacing: 1px;
   line-height: 2em;
-  font-family: $default-font;
+  font-family: var(--font-language, var(--font-content));
 }
 
 .check-answers-button {
   letter-spacing: 0;
-  font-family: 'Geologica', sans-serif;
+  // Chrome, but in the lesson view it renders inside `.practice-container`, so it must name the
+  // UI font rather than inherit.
+  font-family: var(--font-ui);
   font-weight: 600;
   // Match AppButton's fixed 16px (root font-size is 14px, so 1rem would be too small).
   font-size: 16px;
@@ -1233,7 +1261,6 @@ $value in $spacing {
   text-align: center;
   overflow: hidden;
 
-  // Design-system hover: the green fill deepens to greenHover (matches AppButton tan/green).
   &:hover {
     border: 1px solid #9cc6b2;
 
@@ -1561,17 +1588,14 @@ $value in $spacing {
 }
 
 .add-story-accordion-item {
-  font-family: $default-font;
   margin: 1rem;
 
   &-title {
-    font-family: $default-font;
     font-size: 1.2rem !important;
     padding-left: 1em;
   }
 
   &-title-focused {
-    font-family: $default-font;
     font-weight: 500;
     font-size: 1.3rem !important;
     padding-left: .75em;
@@ -1620,8 +1644,7 @@ label.file-upload-btn {
   padding-top: 1em;
   padding-bottom: 1em;
 
-  // Settings accordions: flat on the cream — no white paper / shadow / MUI divider line, and a
-  // constant margin so expanding is a clean slide-down instead of the default scale/shift jump.
+  // Flat on the cream, with a constant margin so expanding is a clean slide-down.
   .add-story-accordion-item {
     margin: 0.5rem 0 !important;
     background-color: transparent;
@@ -1657,7 +1680,6 @@ label.file-upload-btn {
 }
 
 .annotation-item-text {
-  font-family: $rubik;
   font-weight: 500;
   white-space: nowrap;
   width: 100%;
@@ -1675,7 +1697,6 @@ label.file-upload-btn {
 }
 
 .story-item-title {
-  font-family: $rubik;
   font-weight: 500;
   white-space: nowrap;
   color: black;
@@ -1816,9 +1837,7 @@ label.file-upload-btn {
   margin: 0 auto 40px auto;
   padding: 1em 1.5em 1.5em 1em;
   border-radius: 0.8em;
-  // Neutral base for the placeholder cards (loading spinner / no-cards / end view). Real practice
-  // cards override this per knowledge stage (see flashcardColors); this is what shows when there's
-  // no stage colour.
+  // Neutral base for the placeholder cards; real cards override it per stage (see flashcardColors).
   background-color: #f1eede;
   color: #2d2c2a;
 
@@ -1826,8 +1845,7 @@ label.file-upload-btn {
     outline: none;
   }
 
-  // Placeholder card (loading / empty): centre its single element (spinner or message) instead of
-  // top-aligning it.
+  // Placeholder card (loading / empty): centre its single element instead of top-aligning it.
   &--placeholder {
     align-items: center;
     justify-content: center;
@@ -1897,7 +1915,7 @@ label.file-upload-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-weight: 550;
+    font-weight: 600;
   }
 
   &-text-container {
@@ -1956,7 +1974,7 @@ label.file-upload-btn {
   &-no-cards {
     flex: 1;
     font-size: 1em;
-    font-weight: 550;
+    font-weight: 600;
     display: flex;
     align-items: center;
     overflow: auto;
@@ -1985,7 +2003,7 @@ label.file-upload-btn {
   }
 
   &-hint-button {
-    font-weight: 550;
+    font-weight: 600;
     font-size: 1.1em;
     color: white;
   }
@@ -2007,7 +2025,7 @@ label.file-upload-btn {
 
     &>button {
       color: white;
-      font-weight: 550;
+      font-weight: 600;
       padding-right: 0;
     }
 
@@ -2015,7 +2033,7 @@ label.file-upload-btn {
       background-color: inherit;
       border: none;
       color: white;
-      font-weight: 550;
+      font-weight: 600;
       width: 7em;
 
       &:focus {
@@ -2617,7 +2635,6 @@ label.file-upload-btn {
   &-setting-header {
     margin-bottom: 1em;
     font-size: 22px;
-    font-family: $default-font;
     font-weight: 500;
   }
 
@@ -2680,7 +2697,7 @@ label.file-upload-btn {
   height: 1.5em;
 
   &-cont {
-    // Scroll together with the content (was `sticky`, which pinned it to the top of the card).
+    // Scrolls with the content instead of pinning to the top of the card.
     position: static;
     margin-bottom: 1em;
     background-color: transparent;
@@ -2811,7 +2828,7 @@ label.file-upload-btn {
 
 .medal-amount {
   font-size: 20px;
-  font-weight: 650;
+  font-weight: 700;
 }
 
 .medal-name {
@@ -2852,14 +2869,14 @@ label.file-upload-btn {
   display: inline-block;
   padding: 0 2px;
   margin-left: 1.5rem;
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .medal-title {
   background: white none repeat scroll 0 0;
   display: inline-block;
   padding: 0 2px;
-  font-weight: 550;
+  font-weight: 600;
 }
 
 .achievement-content {
@@ -2879,7 +2896,7 @@ label.file-upload-btn {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-weight: 650;
+    font-weight: 700;
     color: #232b2b;
   }
 }
@@ -2913,14 +2930,12 @@ label.file-upload-btn {
   align-items: center;
   font-size: .72rem;
   font-weight: 600;
-  font-family: 'Geologica', sans-serif;
   line-height: 1;
   color: #2d2c2a; // ink number — readable on all three medal fills
   align-self: center;
 }
 
-// Flat medal fills that echo the trophy SVG palette (place1/2/3). No border — the solid
-// circle + ink number reads cleanly at this small size.
+// Flat medal fills echoing the trophy SVG palette; no border needed at this size.
 .position {
   &-gold {
     background-color: #f2ce4b;
@@ -2976,8 +2991,7 @@ label.file-upload-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  // Allow the flex column to shrink below its content width so long names wrap inside the
-  // column instead of pushing it wider than its third (and overflowing the card).
+  // Lets the column shrink so long names wrap instead of widening it past its third.
   min-width: 0;
 }
 
@@ -3000,14 +3014,12 @@ label.file-upload-btn {
   word-break: break-word;
   font-weight: 500;
   font-size: 13px;
-  font-family: 'Geologica', sans-serif;
   color: #2d2c2a; // ink
 }
 
 .leaderboard-winner-record {
   font-size: 12px;
-  font-weight: 650;
-  font-family: 'Geologica', sans-serif;
+  font-weight: 700;
   color: #6f8f7f; // muted green
 }
 
@@ -3266,7 +3278,6 @@ label.file-upload-btn {
   padding: 0.45rem 1.1rem;
   background-color: transparent;
   color: #9d9b92; // muted
-  font-family: 'Geologica', sans-serif;
   font-weight: 600;
   border: 1px solid #9d9b92; // muted, visible on the blue page
   cursor: pointer;
@@ -3666,8 +3677,7 @@ label.file-upload-btn {
 }
 
 .cont.sidebar-pushed {
-  // Sidebar is 380px wide (fixed, right:0); the extra 20px keeps a constant gap between the
-  // content card and the helper sidebar.
+  // 380px sidebar plus a 20px gap.
   margin-right: 400px !important;
   width: auto !important;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3702,8 +3712,7 @@ label.file-upload-btn {
 
 .reading-comp.sidebar-pushed {
   margin-left: 0 !important;
-  // Sidebar is 380px wide (fixed, right:0); the extra 20px keeps the same constant gap between
-  // the content and the assistant that .cont.sidebar-pushed uses everywhere else.
+  // Same 380px sidebar plus 20px gap as `.cont.sidebar-pushed`.
   margin-right: 400px !important;
   width: auto !important;
   box-sizing: border-box;

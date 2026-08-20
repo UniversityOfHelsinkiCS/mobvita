@@ -19,7 +19,7 @@ import ReportButton from 'Components/ReportButton'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppRadio from 'Components/ui/AppRadio'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 import TotalTestQuestions from 'Components/Concepts/TotalTestQuestions'
 import Concepts from 'Components/Concepts'
@@ -87,7 +87,6 @@ const GroupSetting = () => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          fontFamily: font.family,
           border: `1px solid ${colors.border}`,
           borderRadius: '20px',
           width: '100%',
@@ -108,7 +107,6 @@ const GroupSetting = () => {
         >
           <h2
             style={{
-              fontFamily: font.family,
               fontWeight: 700,
               fontSize: 26,
               color: colors.ink,

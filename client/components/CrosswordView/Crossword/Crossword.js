@@ -11,6 +11,7 @@ import React, {
 import { produce } from 'immer'
 import styled, { ThemeContext, ThemeProvider } from 'styled-components'
 import { confettiRain } from 'Utilities/common'
+import { font } from 'Assets/mui_theme/designTokens'
 
 import Cell from './Cell'
 import DirectionClues from './DirectionClues'
@@ -798,6 +799,9 @@ const Crossword = React.forwardRef(
                       maxHeight: '80vh',
                       flex: '0 0 auto',
                       width: '100%',
+                      // Set once here: the SVG <text> cells inherit it, and without it the grid
+                      // would sit on the UI font from <body> instead of the reading font.
+                      fontFamily: font.languageContent,
                     }}
                   >
                     <rect x={0} y={0} width="100%" fill={finalTheme.gridBackground} />

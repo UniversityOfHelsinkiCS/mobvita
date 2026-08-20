@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { images } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
 import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
@@ -17,7 +17,6 @@ export const WORDNEST_PILL_STYLE = {
   boxShadow: 'none',
   borderRadius: 999,
   padding: '7px 16px',
-  fontFamily: font.family,
   fontWeight: 600,
   fontSize: 14,
 }
@@ -60,7 +59,7 @@ const FlashcardBack = ({
         style={{
           display: 'block',
           textAlign: 'center',
-          fontWeight: 550,
+          fontWeight: 600,
           fontSize: '20px',
           paddingBottom: '1em',
           paddingTop: '1em',

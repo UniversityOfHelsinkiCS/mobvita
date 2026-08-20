@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
-  getTextWidth,
+  useTextWidth,
   dictionaryLanguageSelector,
   rightAlignedLanguages,
   learningLanguageSelector,
@@ -245,6 +245,9 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
 
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
+  // Measured off the input itself, so the blank is sized in the font it actually renders in.
+  const inputWidth = useTextWidth(word.surface, target) + 40
+
   return (
     <Tooltip
       placement="top"
@@ -273,7 +276,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
       onFocus={handleFocus}
       className={className}
       style={{
-        width: getTextWidth(word.surface, '400 1.15rem monospace') + 40,
+        width: inputWidth,
         backgroundColor:
           isActiveExercise || isInFocusedAnalyticChunk
             ? 'rgba(255, 255, 36, 0.7)'

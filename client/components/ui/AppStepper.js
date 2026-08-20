@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppStepper — progress stepper (2026 design).
@@ -38,7 +38,7 @@ const StepCircle = ({ index, active }) => (
 const AppStepper = ({ steps = [], activeIndex = 0, orientation = 'vertical' }) => {
   if (orientation === 'horizontal') {
     return (
-      <div style={{ display: 'flex', alignItems: 'flex-start', fontFamily: font.family }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         {steps.map((step, i) => (
           <div
             key={step.label}
@@ -71,7 +71,7 @@ const AppStepper = ({ steps = [], activeIndex = 0, orientation = 'vertical' }) =
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', fontFamily: font.family }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {steps.map((step, i) => (
         <div key={step.label} style={{ display: 'flex', alignItems: 'center', height: ROW_H }}>
           <span

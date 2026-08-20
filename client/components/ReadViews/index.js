@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 const EMPTY_LOADING_PROGRESS = {}
 import { FormControlLabel, Box } from '@mui/material'
 import { images } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppSelect from 'Components/ui/AppSelect'
 import TopicsSelect from 'Components/StoryView/TopicsSelect'
@@ -64,7 +64,7 @@ const SettingToggle = ({ translationId, ...props }) => {
     <FormControlLabel
       control={<AppSwitch {...props} />}
       label={<FormattedHTMLMessage id={translationId} />}
-      sx={{ '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
+      sx={{ '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink } }}
     />
   )
 }
@@ -541,7 +541,7 @@ const ReadViews = ({ match }) => {
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
                     sx={{
                       paddingTop: '.5em',
-                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', fontFamily: font.family, color: colors.ink } }}
+                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink } }}
                   />
                 )}
               </div>

@@ -16,7 +16,7 @@ import {
 import ContactUs from './StaticContent/ContactUs'
 import PracticeModal from './HomeView/PracticeModal'
 import { MenuRow } from 'Components/ui/menuRow'
-import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+import { colors, shape } from 'Assets/mui_theme/designTokens'
 
 /**
  * Sidebar — the left "system" menu (Revita features + info), overlay drawer styled like AppMenu.
@@ -124,7 +124,6 @@ export default function Sidebar() {
           display: 'flex',
           flexDirection: 'column',
           padding: '16px 12px',
-          fontFamily: font.family,
           color: colors.ink,
           transform: open ? 'translateX(0)' : `translateX(-${DRAWER_WIDTH + 40}px)`,
           transition: 'transform 0.25s ease-in-out',
@@ -140,7 +139,7 @@ export default function Sidebar() {
             style={{ width: 22, height: 22, cursor: 'pointer' }}
           />
           <span
-            style={{ fontFamily: font.family, fontSize: 24, fontWeight: 500, color: colors.ink }}
+            style={{ fontSize: 24, fontWeight: 500, color: colors.ink }}
           >
             Revita
           </span>
@@ -286,7 +285,6 @@ export default function Sidebar() {
             mt: 1,
             textAlign: 'center',
             color: colors.muted,
-            fontFamily: font.family,
             fontSize: 11,
             lineHeight: 1.4,
           }}

@@ -1,10 +1,10 @@
-import React, { createRef } from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
+import { useTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
 
 const ExerciseHearing = ({ word }) => {
-  const inputRef = createRef(null)
+  const inputRef = useRef(null)
   const learningLanguage = useSelector(learningLanguageSelector)
   const voice = voiceLanguages[learningLanguage]
   const { resource_usage } = useSelector(state => state.user.data.user)
@@ -13,6 +13,9 @@ const ExerciseHearing = ({ word }) => {
     speak(word.audio, voice, 'exercise', resource_usage)
     inputRef.current.focus()
   }
+
+  // Measured off the input, so the blank is sized in the font `.exercise` actually renders it in.
+  const inputWidth = useTextWidth(word.surface, inputRef)
 
   return (
     <span>
@@ -25,8 +28,8 @@ const ExerciseHearing = ({ word }) => {
         value=""
         className="exercise control-mode control-mode-chosen"
         style={{
-          width: getTextWidth(word.surface),
-          minWidth: getTextWidth(word.surface),
+          width: inputWidth,
+          minWidth: inputWidth,
           marginRight: '2px',
           height: '1.5em',
           lineHeight: 'normal',

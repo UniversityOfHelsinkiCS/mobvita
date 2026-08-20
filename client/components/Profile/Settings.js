@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AppRadio from 'Components/ui/AppRadio'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
 import AppSwitch from 'Components/ui/AppSwitch'
@@ -45,7 +45,6 @@ const SettingToggle = ({ translationId, ...props }) => {
       sx={{
         '& .MuiFormControlLabel-label': {
           marginLeft: '0.5em',
-          fontFamily: font.family,
           color: colors.ink,
         },
       }}

@@ -4,7 +4,7 @@ import { FormControlLabel } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppCheckbox from 'Components/ui/AppCheckbox'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import {
   updateWordAudio,
   updateChunkAudio,
@@ -12,7 +12,7 @@ import {
   updateAudioTask,
 } from 'Utilities/redux/userReducer'
 
-const labelSx = { fontFamily: font.family, color: colors.ink }
+const labelSx = { color: colors.ink }
 
 const ListeningExerciseSettings = () => {
   const dispatch = useDispatch()
