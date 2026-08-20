@@ -15,7 +15,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
   const tabs = [
     {
       value: 'fillin',
-      label: <FormattedMessage id="translate-cards" defaultMessage="Translate Cards" />,
+      label: <FormattedMessage id="fill-in" />,
       icon: tabIcon(images.translate01),
       tooltip: 'flashcards-translate-cards-EXPLANATION',
     },
