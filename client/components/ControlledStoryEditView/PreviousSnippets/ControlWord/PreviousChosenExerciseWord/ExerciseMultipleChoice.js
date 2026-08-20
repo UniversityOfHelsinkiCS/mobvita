@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import AppSelect from 'Components/ui/AppSelect'
-import { getTextWidth } from 'Utilities/common'
+import { useTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word }) => {
   const [options, setOptions] = useState([])
+  const triggerRef = useRef(null)
 
   useEffect(() => {
     if (Array.isArray(word.choices)) {
@@ -47,6 +48,10 @@ const ExerciseMultipleChoice = ({ word }) => {
     )
   }
 
+  // Measured off the trigger button, which `.exercise-multiple` puts on the reading font. Called
+  // before the early return below, so the hook order stays fixed however many choices arrive.
+  const buttonWidth = useTextWidth(testString, triggerRef)
+
   if (options.length < 2) {
     return null
   }
@@ -60,6 +65,7 @@ const ExerciseMultipleChoice = ({ word }) => {
       minWidth={120}
       trigger={
         <button
+          ref={triggerRef}
           type="button"
           data-cy="previous-chosen-multiple-choice"
           className="exercise-multiple control-mode control-mode-chosen"
@@ -69,8 +75,8 @@ const ExerciseMultipleChoice = ({ word }) => {
             justifyContent: 'space-between',
             font: 'inherit',
             cursor: 'pointer',
-            width: getTextWidth(testString),
-            minWidth: getTextWidth(testString),
+            width: buttonWidth,
+            minWidth: buttonWidth,
             height: '1.5em',
           }}
         >

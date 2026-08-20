@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
-import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+import { colors, shape } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppDialog — design-system modal (MUI `Dialog`, not semantic-ui `Modal`).
@@ -19,7 +19,6 @@ const StyledDialog = styled(Dialog)({
     backgroundColor: colors.card,
     borderRadius: shape.cardRadius,
     color: colors.ink,
-    fontFamily: font.family,
     boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
   },
   '& .MuiBackdrop-root': {
@@ -38,9 +37,7 @@ const AppDialog = ({
   ...rest
 }) => (
   <StyledDialog open={open} onClose={onClose} maxWidth={maxWidth} fullWidth={fullWidth} {...rest}>
-    <DialogTitle
-      sx={{ fontFamily: font.family, fontSize: '24px', fontWeight: 500, color: colors.ink, pr: 6 }}
-    >
+    <DialogTitle sx={{ fontSize: '24px', fontWeight: 500, color: colors.ink, pr: 6 }}>
       {title}
       {onClose && (
         <IconButton
@@ -53,7 +50,7 @@ const AppDialog = ({
         </IconButton>
       )}
     </DialogTitle>
-    <DialogContent sx={{ fontFamily: font.family, color: colors.ink }}>{children}</DialogContent>
+    <DialogContent sx={{ color: colors.ink }}>{children}</DialogContent>
   </StyledDialog>
 )
 

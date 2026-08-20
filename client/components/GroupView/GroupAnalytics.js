@@ -8,7 +8,7 @@ import AppRadio from 'Components/ui/AppRadio'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
@@ -227,7 +227,6 @@ const GroupAnalytics = ({ role }) => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          fontFamily: font.family,
           border: `1px solid ${colors.border}`,
           borderRadius: '20px',
           p: { xs: '12px', sm: '20px' },

@@ -2,6 +2,7 @@
  * Insert common items here
  */
 import DOMPurify from 'dompurify'
+import { font } from 'Assets/mui_theme/designTokens'
 import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
 import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
 import menu2 from 'Assets/images/menu-02.svg'
@@ -176,6 +177,7 @@ import heartbeat from 'Assets/images/heartbeat.png'
 import uhLogo from 'Assets/images/uh_logo.png'
 import network from 'Assets/images/network.svg'
 
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Howler } from 'howler'
@@ -817,39 +819,150 @@ export const formatEmailList = emailListAsString => {
 
 export const rightAlignedLanguages = ['Syriac']
 
-export const specialFonts = { Syriac: { fontFamily: 'NotoSansSyriacEastern', fontSize: '1.7rem' } }
+// Re-export of the design-token faces; add new scripts to `font.perLanguage`, not here.
+export const specialFonts = font.perLanguage
 export const titleFontSizes = { Syriac: '2rem' }
 export const tooltipFontSizes = { Syriac: '1rem' }
 
+/**
+ * Inline style for any surface that renders the learning language. Keep it inline: the inline
+ * origin is what lets the per-language face beat class rules and MUI `sx`.
+ */
 export const getTextStyle = (language, type) => {
-  let style = {}
+  let style = { fontFamily: font.content }
 
   if (type !== 'title') {
-    style = { fontSize: '1.15rem' }
+    style = { ...style, fontSize: font.contentSize }
   }
 
-  if (rightAlignedLanguages.includes(language)) style = { textAlign: 'right', direction: 'rtl' }
-  if (specialFonts[language]) style = { ...style, ...specialFonts[language] }
+  // Spread, don't reassign: reassigning here used to throw away the fontSize set above.
+  if (rightAlignedLanguages.includes(language)) {
+    style = { ...style, textAlign: 'right', direction: 'rtl' }
+  }
+  // Last, so a script's own face wins. `href` is deliberately left out of the style object.
+  if (specialFonts[language]) {
+    const { fontFamily, fontSize } = specialFonts[language]
+    style = { ...style, fontFamily, ...(fontSize ? { fontSize } : {}) }
+  }
   if (type === 'title' && titleFontSizes[language]) {
     style = { ...style, fontSize: titleFontSizes[language] }
   }
   if (type === 'tooltip' && tooltipFontSizes[language]) {
     style = { ...style, fontSize: tooltipFontSizes[language] }
   }
-  return style
+
+  // Publish the settled face so class-styled descendants can read `var(--font-language, ...)`.
+  return { ...style, '--font-language': style.fontFamily }
+}
+
+/**
+ * Loads the learner's script-specific webfont and publishes it as `--font-language` on <html>, so
+ * surfaces outside `getTextStyle` can opt in via `var()`. Languages with no face of their own leave
+ * the property unset.
+ */
+export const useLanguageFont = () => {
+  const learningLanguage = useSelector(learningLanguageSelector)
+
+  useEffect(() => {
+    const face = specialFonts[learningLanguage]
+
+    if (face?.fontFamily) {
+      document.documentElement.style.setProperty('--font-language', face.fontFamily)
+    } else {
+      document.documentElement.style.removeProperty('--font-language')
+    }
+
+    if (!face?.href) return
+    if (document.querySelector(`link[data-lang-font="${learningLanguage}"]`)) return
+
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = face.href
+    link.setAttribute('data-lang-font', learningLanguage)
+    document.head.appendChild(link)
+  }, [learningLanguage])
 }
 
 export const getBackgroundColor = () => {
   return 'blue-bg'
 }
 
-export const getTextWidth = (text, font = '400 18px Rubik') => {
+// --- Text measurement --------------------------------------------------------------------------
+// Widths feed the pixel width of exercise inputs, so measure in the font the element actually
+// paints in and read it back with `getComputedStyle`: canvas resolves rem against 16px, not the
+// app's `html { font-size: 14px }`.
+
+const remToPx = rem => {
+  const rootFontSize = parseFloat(window.getComputedStyle(document.documentElement).fontSize)
+  return parseFloat(rem) * (rootFontSize || 16)
+}
+
+// Used until there is an element to read, i.e. the first render, before refs are attached.
+const fallbackMeasurementFont = () => `400 ${remToPx(font.contentSize)}px ${font.content}`
+
+// Canvas `font` shorthand for `element`, assembled from the resolved longhands because not every
+// browser fills in `style.font`.
+const measurementFontOf = element => {
+  if (!element) return fallbackMeasurementFont()
+  const style = window.getComputedStyle(element)
+  if (!style?.fontSize || !style?.fontFamily) return fallbackMeasurementFont()
+  return `${style.fontStyle || 'normal'} ${style.fontWeight || 400} ${style.fontSize} ${
+    style.fontFamily
+  }`
+}
+
+/**
+ * Width in px that `text` takes up when painted by `element`. Without an element it falls back to
+ * the reading tokens; prefer `useTextWidth` below, which waits for the real node.
+ */
+export const getTextWidth = (text, element = null) => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return 0
   const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'))
   const context = canvas.getContext('2d')
 
-  context.font = font
+  context.font = measurementFontOf(element)
 
-  return context.measureText(text).width
+  return context.measureText(text ?? '').width
+}
+
+// The app is on `box-sizing: border-box`, so a width must also cover padding and border or the
+// text is clipped by exactly that much.
+const horizontalBoxWidth = element => {
+  if (!element) return 0
+  const style = window.getComputedStyle(element)
+  if (style.boxSizing !== 'border-box') return 0
+
+  return ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce(
+    (total, property) => total + (parseFloat(style[property]) || 0),
+    0,
+  )
+}
+
+/**
+ * The px width to give `ref`'s element so `text` fits inside it, padding and border included. The
+ * first render has no node, so it starts from the token fallback and re-measures in a layout
+ * effect, then once more when `document.fonts` is ready and the real metrics are known.
+ */
+export const useTextWidth = (text, ref) => {
+  const [width, setWidth] = useState(() => getTextWidth(text))
+  const element = ref?.current
+
+  useLayoutEffect(() => {
+    let cancelled = false
+    const measure = () => {
+      const node = ref?.current
+      if (!cancelled) setWidth(getTextWidth(text, node) + horizontalBoxWidth(node))
+    }
+
+    measure()
+    document.fonts?.ready.then(measure)
+
+    return () => {
+      cancelled = true
+    }
+  }, [text, element])
+
+  return width
 }
 
 export const consistsOfOnlyWhitespace = text => {

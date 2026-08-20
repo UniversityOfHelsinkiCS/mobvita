@@ -23,7 +23,6 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 const Label = styled('label')({
   display: 'block',
   marginBottom: 6,
-  fontFamily: font.family,
   fontSize: font.label,
   fontWeight: 500,
   color: colors.ink,
@@ -41,7 +40,6 @@ const StyledTextField = styled(TextField, {
     ...(hasEnd && { paddingRight: shape.inputPaddingX }),
     backgroundColor: colors.card,
     borderRadius: multiline ? '18px' : shape.inputRadius,
-    fontFamily: font.family,
     fontSize: font.input,
     color: colors.ink,
     '& fieldset': { borderColor: colors.border },

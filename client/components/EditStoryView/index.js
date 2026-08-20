@@ -10,7 +10,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import { Box, Divider } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppTextField from 'Components/ui/AppTextField'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
@@ -110,7 +110,6 @@ const EditStoryView = ({ match }) => {
           sx={{
             backgroundColor: colors.card,
             color: colors.ink,
-            fontFamily: font.family,
             border: `1px solid ${colors.border}`,
             borderRadius: '20px',
             width: '100%',
@@ -141,7 +140,7 @@ const EditStoryView = ({ match }) => {
           </div>
           <Divider sx={{ my: '1em', borderColor: colors.border }} />
           <div className="flex align-center">
-            <span style={{ marginRight: '.5rem', fontFamily: font.family, color: colors.ink }}>
+            <span style={{ marginRight: '.5rem', color: colors.ink }}>
               <FormattedMessage id="story-title" />:
             </span>
             <AppTextField

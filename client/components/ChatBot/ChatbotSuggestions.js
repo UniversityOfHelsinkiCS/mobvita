@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { styled } from '@mui/material/styles'
 import { FormattedMessage } from 'react-intl'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const Pill = styled('button', {
   shouldForwardProp: prop => prop !== 'disabled',
@@ -13,7 +13,6 @@ const Pill = styled('button', {
   border: 'none',
   backgroundColor: colors.green,
   color: colors.ink,
-  fontFamily: font.family,
   fontWeight: 600,
   fontSize: 15,
   textAlign: 'left',

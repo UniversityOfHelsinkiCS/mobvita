@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { font } from 'Assets/mui_theme/designTokens'
 
 // Full-width sidebar nav button (MUI). Encapsulates the
 // router Link, the leading icon (MUI `startIcon`), the i18n label, and the shared sidebar styling,
@@ -22,7 +23,7 @@ const StyledSidebarButton = styled(Button)({
   textTransform: 'none', // MUI uppercases by default; keep the original casing
   fontWeight: 'bold',
   fontSize: 'larger',
-  fontFamily: 'Lato, "Helvetica Neue", Arial, Helvetica, sans-serif',
+  fontFamily: font.family,
   borderRadius: '10px',
   // Default look: outlined with the sidebar accent colours.
   '&.MuiButton-outlined': {

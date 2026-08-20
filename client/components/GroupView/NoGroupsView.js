@@ -3,7 +3,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import AppButton from 'Components/AppButton'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { useCurrentUser } from 'Utilities/common'
 import { useNavigate } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
@@ -19,7 +19,6 @@ const NoGroupsView = ({ role }) => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          fontFamily: font.family,
           border: `1px solid ${colors.border}`,
           borderRadius: '20px',
           p: { xs: '20px', sm: '32px' },

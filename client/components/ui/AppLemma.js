@@ -5,27 +5,6 @@ import CustomTooltip from 'Components/CustomTooltip'
 import { images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 
-/**
- * AppLemma — pure, presentational lemma card (2026 design; see reference mockup).
- *
- * A green card showing one dictionary lemma: a speaker + the word on the left with the know /
- * don't-know icons on the right, a row of action pills (Dictionary / Word Nest), and the list of
- * translations. Props-only — every action is a callback and there is no redux/audio logic inside,
- * so it renders standalone on /design. The consumer (practice assistant) wires up the handlers.
- *
- * Props:
- *   lemma           the headword (string)
- *   lemmaHref       optional dictionary link for the headword
- *   translations    array of gloss strings (deduped + bulleted)
- *   speaker         optional node rendered before the word (e.g. the real <Speaker/>); when absent
- *                     and `onSpeak` is given, a plain speaker-icon button is rendered instead
- *   onSpeak         fallback speaker handler when no `speaker` node is passed
- *   onKnow          shows the green check (I-know) icon when provided
- *   onDontKnow      shows the question (I-don't-know) icon when provided
- *   onDictionary / dictionaryHref   the bookmark "Dictionary" pill (button or link)
- *   onWordNest      the "Word Nest" pill
- *   background      card colour (default: the mockup's light green)
- */
 const DEFAULT_BG = '#C9E7C0'
 const DICTIONARY_PILL_BG = '#C1DCE6'
 const WORDNEST_PILL_BG = '#CACAE0'
@@ -73,6 +52,7 @@ const Pill = ({ icon, children, onClick, href, bg, tooltip }) => {
     width: 'auto',
     backgroundColor: bg,
     color: colors.ink,
+    // Names the UI token back: pill labels are chrome, but would inherit the card's content font.
     fontFamily: font.family,
     fontWeight: 600,
     fontSize: 12,
@@ -97,6 +77,8 @@ const Pill = ({ icon, children, onClick, href, bg, tooltip }) => {
   return withTooltip(pill, tooltip)
 }
 
+// Presentational lemma card: speaker + headword, action pills and translations. Props-only, so it
+// renders standalone on /design; the consumer wires up every handler.
 const AppLemma = ({
   lemma,
   lemmaHref,
@@ -124,16 +106,16 @@ const AppLemma = ({
         backgroundColor: background,
         borderRadius: 16,
         padding: '14px 18px',
-        fontFamily: font.family,
+        // `languageContent`, not `content`: no call site wraps this card in a getTextStyle()
+        // container, so the headword needs a face that follows the learner's script on its own.
+        fontFamily: font.languageContent,
         color: colors.ink,
         ...style,
       }}
     >
-      {/* Header: speaker + word (left, wraps), know / don't-know (right). */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
         {speaker ||
           (onSpeak && <IconButton src={images.speaker} label="listen" onClick={onSpeak} />)}
-        {/* flex:1 + min-width:0 + break rules let long compound words wrap, not overflow. */}
         {lemmaHref ? (
           <CustomTooltip keyId="explain-lemma-goto-dictionary" placement="top">
             <a
@@ -186,7 +168,6 @@ const AppLemma = ({
         )}
       </div>
 
-      {/* Action pills. */}
       {hasPills && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
           {(onDictionary || dictionaryHref) && (
@@ -213,8 +194,8 @@ const AppLemma = ({
         </div>
       )}
 
-      {/* Translations. `translation-glosses` is kept for the dictionary cypress selectors; inline
-          styles pin AppLemma's look (ink, upright, Geologica) over that legacy class. */}
+      {/* `translation-glosses` is kept for the dictionary cypress selectors; the inline styles
+          deliberately override that legacy class. */}
       {uniqueTranslations.length > 0 && (
         <ul
           className="translation-glosses"
@@ -225,7 +206,7 @@ const AppLemma = ({
             listStyle: 'disc',
             color: colors.ink,
             fontStyle: 'normal',
-            fontFamily: font.family,
+            fontFamily: font.content,
           }}
         >
           {uniqueTranslations.map((t, i) => (

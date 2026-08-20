@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
+import { useTextWidth, rightAlignedLanguages, learningLanguageSelector } from 'Utilities/common'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 
 const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
@@ -38,6 +38,12 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
   */
   const direction = rightAlignedLanguages.includes(learningLanguage) ? 'bidi-override' : ''
 
+  // Measured off the input, so the blank is sized in the font `.exercise` actually renders it in.
+  // (The surface/base pick is a lexicographic `>` on two strings, not a length comparison — kept as
+  // it was, since fixing it would change which word the widths are taken from.)
+  const widest = word.surface > word.base ? word.surface : word.base
+  const inputWidth = useTextWidth(widest, target) + 10
+
   return (
     <span>
       <input
@@ -50,7 +56,7 @@ const ExerciseCloze = ({ word, isListeningExercise, isMultiChoice }) => {
         placeholder={`${word.surface}`}
         className={`exercise control-mode ${bgColorClassName}`}
         style={{
-          width: word.surface > word.base ? getTextWidth(word.surface) + 10 : getTextWidth(word.base) + 10,
+          width: inputWidth,
           marginRight: '4px',
           height: '1.5em',
           lineHeight: 'normal',

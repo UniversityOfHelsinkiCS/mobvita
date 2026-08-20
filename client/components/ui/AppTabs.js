@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppTabs — the 2026 segmented tab bar: a cream rounded container of pill segments. The active
@@ -73,7 +73,6 @@ const Tab = styled('button', {
   border: 'none',
   borderRadius: 999,
   cursor: 'pointer',
-  fontFamily: font.family,
   fontSize: sizing.fontSize,
   fontWeight: 600,
   color: colors.ink,

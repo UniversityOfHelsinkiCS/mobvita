@@ -25,7 +25,6 @@
 
 .ai-header-title {
   margin: 0;
-  font-family: 'Geologica', sans-serif;
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -106,8 +105,10 @@
   }
 }
 
+// The word being practised: `--font-language` so a learner's script gets a face with its glyphs.
 .current-word {
   margin: 0;
+  font-family: var(--font-language, var(--font-content));
   text-align: left;
   width: 100%;
   font-size: 1.2rem;
@@ -195,7 +196,6 @@
       }
 
       .chat-action-text {
-        font-family: 'Geologica', sans-serif;
         font-size: 15px;
         font-weight: 500;
         color: #2d2c2a;
@@ -364,7 +364,7 @@
 
   .translation-glosses {   
    
-    font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;     
+    font-family: var(--font-content);
     font-weight: 400;
     line-height: 1.5;
     text-align: left;    
@@ -398,8 +398,7 @@
     }
   }
 
-  /* Translation Lemma Card styles moved to DictionaryHelp/Lemma.scss
-     (co-located with the Lemma component so they load wherever it renders). */
+  /* Translation Lemma Card styles moved to DictionaryHelp/Lemma.scss. */
 
 // Message Bubbles (General)
 .message {
@@ -471,8 +470,7 @@
   }
 }
 
-// User-created word notes (reuse the .message-notes bubble, slightly tinted to distinguish
-// them from read-only feedback notes; relative-positioned for the top-right action icons).
+// User-created word notes: the .message-notes bubble, tinted to set it apart from feedback notes.
 .message-user-note {
   position: relative;
   flex-direction: column; // stack header (author / actions) above the body (text)
@@ -481,8 +479,7 @@
   background-color: #fff6da;
   border: 1px solid #e3c878;
 
-  // Header row: author on the left (others' notes), edit/delete on the right (own notes).
-  // Kept separate from the text so the action icons never overlap / overflow long notes.
+  // Header row: author on the left, edit/delete on the right, kept out of the note text's way.
   .note-header {
     display: flex;
     align-items: center;

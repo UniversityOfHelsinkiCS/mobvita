@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import AppSelect from 'Components/ui/AppSelect'
-import { getTextWidth, formatGreenFeedbackText, getWordColor, getMode, skillLevels } from 'Utilities/common'
+import { useTextWidth, formatGreenFeedbackText, getWordColor, getMode, skillLevels } from 'Utilities/common'
 import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 import { composeExerciseContext } from 'Utilities/common'
+import { font } from 'Assets/mui_theme/designTokens'
 
 const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
   const dispatch = useDispatch()
@@ -33,6 +34,9 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     hint2penalty } = word
   
   
+  // `ref` above is one of the word's own fields, hence the explicit name for the DOM ref.
+  const triggerRef = useRef(null)
+
   const value = currentAnswer ? currentAnswer.users_answer : ''
   
   const getExerciseClass = (tested, isWrong) => {
@@ -108,10 +112,9 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
     dispatch(setCurrentContext(composeExerciseContext(snippet, word)))
   }
 
-  const getInputWidth = () => {
-    const width = getTextWidth(longestWord, '400 1.15rem Rubik')
-    return width > 150 ? width * 1.2 : width + 34
-  }
+  // Measured off the trigger button itself, so it is sized in the font it actually renders in.
+  const longestWordWidth = useTextWidth(longestWord, triggerRef)
+  const inputWidth = longestWordWidth > 150 ? longestWordWidth * 1.2 : longestWordWidth + 34
 
   const tooltip = (
     <div onBlur={handleTooltipBlur}>
@@ -142,17 +145,16 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
       tooltip={tooltip}
       additionalClassnames="clickable"
     >
-      {/* AppSelect drives the option list (cream AppMenu popover), but the trigger stays a bespoke
-          inline control: the design-system pill would be wrong mid-sentence, and `.exercise-multiple`
-          already supplies the box plus the wrong/correct tints. onFocus/onBlur/onClick live on the
-          trigger — AppMenu composes its own open handler with this onClick rather than replacing it. */}
+      {/* AppSelect drives the option list, but the trigger stays a bespoke inline control: a
+          design-system pill would be wrong mid-sentence. */}
       <AppSelect
         options={options}
         value={value}
         onChange={choice => handle(null, word, { value: choice })}
-        minWidth={getInputWidth()}
+        minWidth={inputWidth}
         trigger={
           <button
+            ref={triggerRef}
             type="button"
             data-cy={!answersPending && 'exercise-multiple-choice' || 'exercise-multiple-choice-pending'}
             disabled={tested && !isWrong || answersPending}
@@ -161,8 +163,9 @@ const ExerciseMultipleChoice = ({ word, snippet, handleChange }) => {
             onClick={() => dispatch(mcExerciseTouched(word))}
             className={`${className}`}
             style={{
-              font: '400 1.15rem Rubik',
-              width: getInputWidth(),
+              // Must stay: a <button> resets to `font-size: 100%`, so it would grow to 1.3rem.
+              fontSize: font.contentSize,
+              width: inputWidth,
               minWidth: 80,
               display: 'inline-flex',
               alignItems: 'center',

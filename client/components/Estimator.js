@@ -41,7 +41,7 @@ const Estimator = () => {
         placeholder="Paste your text here"
         onChange={e => setText(e.target.value)}
       />
-      <Box sx={{ mt: '0.5rem', fontFamily: font.family, fontSize: font.label, color: colors.muted }}>
+      <Box sx={{ mt: '0.5rem', fontSize: font.label, color: colors.muted }}>
         Max. 500 words, {text.trim().split(/\s+/).filter(Boolean).length} used
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: '1rem' }}>
@@ -86,7 +86,6 @@ const Estimator = () => {
                         size="small"
                         label={item.feature}
                         sx={{
-                          fontFamily: font.family,
                           backgroundColor: item.contribution > 0 ? colors.green : colors.error,
                           color: item.contribution > 0 ? colors.ink : '#fff',
                         }}

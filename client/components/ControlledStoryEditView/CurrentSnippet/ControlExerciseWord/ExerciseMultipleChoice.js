@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import AppSelect from 'Components/ui/AppSelect'
-import { getTextWidth } from 'Utilities/common'
+import { useTextWidth } from 'Utilities/common'
 
 const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
   const [options, setOptions] = useState([])
+  const triggerRef = useRef(null)
   const { ID: wordId } = word
 
   useEffect(() => {
@@ -25,15 +26,11 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
     return choices.reduce((longest, c) => (c && c.length > (longest.length || 0) ? c : longest), '')
   }
 
-  const getInputWidth = () => {
-    const longest = getLongestChoice()
-    const width = getTextWidth(longest, '400 18px Rubik') || 0
-    if (width >= 150) {
-      return width + 20
-    }
-
-    return width + 20 || 80
-  }
+  // Measured off the trigger button, which `.exercise-multiple` puts on the reading font — the
+  // control is sized in the face and size it actually shows the choice in, instead of the `18px`
+  // guess that used to stand in for it.
+  const longestChoiceWidth = useTextWidth(getLongestChoice(), triggerRef)
+  const inputWidth = longestChoiceWidth + 20 || 80
 
   return (
     // The click handler lives on the wrapper (AppSelect's trigger gets its own open handler), so a
@@ -52,6 +49,7 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
         minWidth={120}
         trigger={
           <button
+            ref={triggerRef}
             type="button"
             className="exercise-multiple control-mode control-mode-chosen"
             style={{
@@ -59,8 +57,8 @@ const ExerciseMultipleChoice = ({ word, choices, setShowRemoveTooltip }) => {
               alignItems: 'center',
               justifyContent: 'space-between',
               font: 'inherit',
-              width: getInputWidth(),
-              minWidth: getInputWidth(),
+              width: inputWidth,
+              minWidth: inputWidth,
               textAlign: 'left',
               cursor: 'pointer',
             }}

@@ -7,7 +7,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import {
   clearFocusedSnippet,
@@ -259,7 +259,6 @@ const PracticeView = () => {
                   style={{
                     flexShrink: 0,
                     whiteSpace: 'nowrap',
-                    fontFamily: font.family,
                     fontWeight: 600,
                     fontSize: '0.95em',
                     color: colors.ink,
@@ -322,7 +321,6 @@ const PracticeView = () => {
                   padding: '4px 16px',
                   borderRadius: 999,
                   border: `1px solid ${colors.border}`,
-                  fontFamily: font.family,
                   fontWeight: 500,
                   fontSize: 14,
                   color: colors.ink,
@@ -405,7 +403,6 @@ const PracticeView = () => {
               m: 0,
               '& .MuiFormControlLabel-label': {
                 marginLeft: '0.5em',
-                fontFamily: font.family,
                 color: colors.ink,
               },
             }}

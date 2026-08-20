@@ -32,7 +32,7 @@ import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
 import { images } from 'Utilities/common'
-import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+import { colors, shape } from 'Assets/mui_theme/designTokens'
 
 /**
  * DesignSystem (/design) — dev-only live gallery of the design system.
@@ -180,9 +180,9 @@ const DesignSystem = () => {
         </ul>
       </nav>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <h1>Design System</h1>
-        <p style={{ color: '#666' }}>
+    <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem' }}>
+      <h1>Design System</h1>
+      <p style={{ color: '#666' }}>
         Live gallery of <code>ui/</code> primitives and pure presentational components. Dev-only —
         this is where we review new components and token changes against the Figma.
       </p>
@@ -883,8 +883,8 @@ const DesignSystem = () => {
         </AppButton>
         <AppDialog open={dialogOpen} onClose={() => setDialogOpen(false)} title="Example dialog">
           <p style={{ color: colors.ink }}>
-            This is an AppDialog — cream card, ink text, Geologica, rounded corners, close button.
-            Long content scrolls inside while the title stays fixed.
+            This is an AppDialog — cream card, ink text, rounded corners, close button. Long content
+            scrolls inside while the title stays fixed.
           </p>
         </AppDialog>
       </Section>

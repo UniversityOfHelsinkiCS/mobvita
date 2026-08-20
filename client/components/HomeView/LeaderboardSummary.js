@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import LeaderboardList from 'Components/LeaderboardView/LeaderboardList'
 import LastWeeksWinners from 'Components/LeaderboardView/LastWeeksWinners'
@@ -23,7 +23,6 @@ const LeaderboardSummary = () => {
           backgroundColor: colors.card,
           borderRadius: 30,
           padding: '24px 28px',
-          fontFamily: font.family,
           color: colors.ink,
         }}
       >

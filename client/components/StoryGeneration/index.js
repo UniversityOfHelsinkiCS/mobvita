@@ -14,7 +14,7 @@ import AppTextField from 'Components/ui/AppTextField'
 import AppStepper from 'Components/ui/AppStepper'
 import { useNavigate } from 'react-router-dom'
 import { useLearningLanguage, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -87,9 +87,8 @@ const StoryGeneration = () => {
 
   const noResults = !metaPending && lesson_topics && lesson_topics.length === 0
 
-  // Step section heading — the base Geologica font, left-aligned, smaller than the page title.
+  // Step section heading — inherits the UI font, left-aligned, smaller than the page title.
   const stepHeadingStyle = {
-    fontFamily: font.family,
     fontSize: 18,
     fontWeight: 600,
     color: colors.ink,
@@ -169,7 +168,7 @@ const StoryGeneration = () => {
           <FormattedMessage id="story-ready-for-generation" />
         </h5>
         {canSelectGrammar && lessonInstance.topic_ids.length === 0 && (
-          <div style={{ fontFamily: font.family, color: colors.error, marginTop: 4 }}>
+          <div style={{ color: colors.error, marginTop: 4 }}>
             <FormattedMessage id="note-no-lessons-topic" />
           </div>
         )}
@@ -195,7 +194,6 @@ const StoryGeneration = () => {
           >
             <div
               style={{
-                fontFamily: font.family,
                 fontWeight: 700,
                 fontSize: 18,
                 color: colors.ink,
@@ -337,7 +335,6 @@ const StoryGeneration = () => {
             sx={{
               backgroundColor: colors.card,
               color: colors.ink,
-              fontFamily: font.family,
               border: `1px solid ${colors.border}`,
               borderRadius: '20px',
               width: '100%',

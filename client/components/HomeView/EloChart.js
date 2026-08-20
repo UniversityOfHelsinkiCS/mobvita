@@ -8,7 +8,7 @@ import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { cefrNum2Cefr } from 'Utilities/common'
 import CustomTooltip from 'Components/CustomTooltip'
 import Medal from 'Components/Achievements/Medal'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const CARD_BG = colors.card
 const TRACK = '#E4E1D3' // ring / gridline track
@@ -52,7 +52,6 @@ const CefrRing = ({ cefr, progress }) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: font.family,
           fontWeight: 600,
           fontSize: 15,
           color: colors.ink,
@@ -88,7 +87,6 @@ const HoursBars = ({ weeks }) => {
                 top: -9,
                 fontSize: 12,
                 color: colors.muted,
-                fontFamily: font.family,
               }}
             >
               {h} h
@@ -184,13 +182,12 @@ const EloChart = ({ width }) => {
         backgroundColor: CARD_BG,
         borderRadius: 30,
         padding: '24px 28px',
-        fontFamily: font.family,
         color: colors.ink,
       }}
     >
       {/* Header: title + CEFR ring */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h2 style={{ margin: 0, fontFamily: font.family, fontSize: 28, fontWeight: 500 }}>
+        <h2 style={{ margin: 0, fontSize: 28, fontWeight: 500 }}>
           <FormattedMessage id="Progress" />
         </h2>
         <CefrRing cefr={cefr} progress={xpProgress} />
@@ -290,7 +287,6 @@ const EloChart = ({ width }) => {
           borderRadius: 999,
           backgroundColor: 'transparent',
           color: colors.ink,
-          fontFamily: font.family,
           fontWeight: 600,
           fontSize: 16,
           cursor: 'pointer',

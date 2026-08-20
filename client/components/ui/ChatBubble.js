@@ -41,7 +41,9 @@ const Bubble = styled('div', {
   maxWidth: '85%',
   padding: '10px 14px',
   borderRadius: 18,
-  fontFamily: font.family,
+  // A bubble holds what the user is reading or wrote themselves — language content, not chrome —
+  // so it names the content token rather than inheriting the UI font from <body>.
+  fontFamily: font.content,
   fontSize: 15,
   lineHeight: 1.5,
   wordBreak: 'break-word',

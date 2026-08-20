@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppProgressBar — the 2026 progress bar: a pill with a pale-green track and a sage-green fill.
@@ -61,7 +61,6 @@ const AppProgressBar = ({
             transform: 'translateY(-50%)',
             textAlign: 'center',
             lineHeight: 1,
-            fontFamily: font.family,
             fontWeight: 600,
             fontSize: '0.85em',
             color: colors.ink,

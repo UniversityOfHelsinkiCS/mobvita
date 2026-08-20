@@ -168,7 +168,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                 data-cy="translations"
                 style={{
                   color: colors.ink,
-                  fontFamily: font.family,
                   marginBottom: '1em',
                   padding: '1em',
                   borderRadius: '15px',
@@ -284,7 +283,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       )
     if (!translation) {
       return (
-        <div style={{ color: colors.ink, fontFamily: font.family }}>
+        <div style={{ color: colors.ink, fontFamily: font.content }}>
           {!clue && !inWordNestModal && (
             <div style={{ width: '100%', ...getTextStyle(learningLanguage) }}>
                 <CustomTooltip title={intl.formatMessage({ id: 'explain-speaker-lemma' })}>
@@ -318,7 +317,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           borderRadius: '20px',
           padding: '1em',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-          fontFamily: font.family,
           color: colors.ink,
         }}
       >
@@ -327,7 +325,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             <div style={{ marginBottom: '.5em' }}>
               <div
                 className="header-3"
-                style={{ fontWeight: '500', fontFamily: font.family, color: colors.ink, display: 'flex', alignItems: 'center' }}
+                style={{ fontWeight: '500', color: colors.ink, display: 'flex', alignItems: 'center' }}
               >
                 <CustomTooltip
                   keyId="click-on-words-near-the-exercises-to-explore-their-meaning"
@@ -369,7 +367,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               marginBottom: '1em',
             }}
           >
-            <span style={{ fontFamily: font.family, color: colors.muted }}>
+            <span style={{ color: colors.muted }}>
               <FormattedMessage id="translation-target-language" />
             </span>
             {/* Kept as a native <select> (not AppSelect) so Cypress `.select()` in
@@ -379,7 +377,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
               defaultValue={translationLanguageCode}
               data-cy="dictionary-dropdown"
               style={{
-                fontFamily: font.family,
                 fontSize: font.input,
                 color: colors.ink,
                 backgroundColor: colors.card,

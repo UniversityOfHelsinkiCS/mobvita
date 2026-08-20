@@ -31,7 +31,7 @@ const StreakToast = () => {
     <div className="flex">
       <img src={images.flame} alt="flame" width="30px" height="30px" />
       <div className="flex-col pl-nm">
-        <span style={{ fontSize: '11px', fontWeight: 550 }}>{practiceText}</span>
+        <span style={{ fontSize: '11px', fontWeight: 600 }}>{practiceText}</span>
         <div>
           <b>
             {'  '}

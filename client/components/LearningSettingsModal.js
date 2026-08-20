@@ -6,7 +6,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import { FormattedMessage, useIntl } from 'react-intl';
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import {
   updateExerciseTemplate,
@@ -161,7 +161,7 @@ const LearningSettingsModal = ({ trigger }) => {
         title={<FormattedMessage id="learning-settings" />}
       >
         {/* <div className="space-between" style={{ marginBottom: '0.5em' }}>
-          <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
+          <h2 style={{ fontSize: '17px', fontWeight: '600' }}>
             <CustomTooltip
               permanent
               placement="top"
@@ -229,7 +229,7 @@ const LearningSettingsModal = ({ trigger }) => {
         </div> */}
         {/* 
         <Divider />
-        <h2 style={{ fontSize: '17px', fontWeight: '550' }}>
+        <h2 style={{ fontSize: '17px', fontWeight: '600' }}>
           <CustomTooltip
             permanent
             placement="top"
@@ -257,7 +257,6 @@ const LearningSettingsModal = ({ trigger }) => {
           {/* <Divider /> */}
           <h2
             style={{
-              fontFamily: font.family,
               fontSize: '17px',
               fontWeight: 600,
               color: colors.ink,

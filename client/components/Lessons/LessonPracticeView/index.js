@@ -6,7 +6,7 @@ import { Box, FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import {
   clearFocusedSnippet,
   resetSnippets,
@@ -212,7 +212,6 @@ const LessonPracticeView = () => {
                       style={{
                         flexShrink: 0,
                         whiteSpace: 'nowrap',
-                        fontFamily: font.family,
                         fontWeight: 600,
                         fontSize: '0.95em',
                         color: colors.ink,
@@ -330,7 +329,6 @@ const LessonPracticeView = () => {
                 m: 0,
                 '& .MuiFormControlLabel-label': {
                   marginLeft: '0.5em',
-                  fontFamily: font.family,
                   color: colors.ink,
                 },
               }}

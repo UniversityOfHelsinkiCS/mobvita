@@ -42,7 +42,7 @@ import {
   supportedLearningLanguages,
   getHelpLink,
 } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { Detector } from 'react-detect-offline'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
@@ -329,7 +329,6 @@ export default function NavBar() {
                   data-cy="revita-logo"
                   className="navbar-revita-logo tour-start-finish"
                   sx={{
-                    fontFamily: font.family,
                     fontSize: '24px',
                     fontWeight: 500,
                     color: colors.ink,
@@ -358,7 +357,6 @@ export default function NavBar() {
                         alignItems: 'center',
                         gap: '8px',
                         color: colors.ink,
-                        fontFamily: font.family,
                         fontWeight: 600,
                         fontSize: '18px',
                         cursor: 'pointer',
@@ -440,7 +438,6 @@ export default function NavBar() {
               >
                 <span
                   style={{
-                    fontFamily: font.family,
                     fontSize: 14,
                     color: colors.ink,
                     whiteSpace: 'nowrap',
@@ -469,7 +466,6 @@ export default function NavBar() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontFamily: font.family,
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',

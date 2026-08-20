@@ -167,7 +167,7 @@ const CrosswordView = () => {
           <PlainWord
             style={{
               color: clue.show ? 'green' : '',
-              fontWeight: clue.show ? '650' : '500',
+              fontWeight: clue.show ? '700' : '500',
             }}
             key={clue.ID}
             word={clue}
@@ -263,7 +263,7 @@ const CrosswordView = () => {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontWeight: 550, fontSize: '26px', fontFamily: font.family, color: colors.ink }}>
+        <h1 style={{ fontWeight: 600, fontSize: '26px', color: colors.ink }}>
           <FormattedMessage id="building-your-crossword" />
         </h1>
         <Spinner inline size={60} />
@@ -283,7 +283,6 @@ const CrosswordView = () => {
             borderRadius: '30px',
             padding: '1.5em',
             boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-            fontFamily: font.family,
             color: colors.ink,
           }}
         >
@@ -336,14 +335,16 @@ const CrosswordView = () => {
               style={{
                 maxWidth: '600px',
                 lineHeight: '2em',
-                fontFamily: font.family,
+                // Clues are learning-language text and this view has no getTextStyle() container,
+                // so it takes the script-following reading token.
+                fontFamily: font.languageContent,
                 color: colors.ink,
                 // Override CluesWrapper's `> div { background: #fff }` so the clue
                 // list shares the cream card behind it instead of a white panel.
                 background: 'transparent',
               }}
             >
-              <h1 style={{ fontWeight: 550, fontSize: '22px', fontFamily: font.family, color: colors.ink }}>
+              <h1 style={{ fontWeight: 600, fontSize: '22px', color: colors.ink }}>
                 {title}
               </h1>
               <hr />

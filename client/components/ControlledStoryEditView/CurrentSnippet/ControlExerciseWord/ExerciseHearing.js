@@ -1,7 +1,7 @@
-import React, { createRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-import { getTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
+import { useTextWidth, speak, learningLanguageSelector, voiceLanguages } from 'Utilities/common'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 
 const ExerciseHearing = ({ word }) => {
@@ -15,7 +15,7 @@ const ExerciseHearing = ({ word }) => {
   const { resource_usage } = useSelector(state => state.user.data.user)
 
   const voice = voiceLanguages[learningLanguage]
-  const inputRef = createRef(null)
+  const inputRef = useRef(null)
   const { voiceSampleOnCooldown } = useSelector(({ practice }) => practice)
 
   const dispatch = useDispatch()
@@ -58,6 +58,10 @@ const ExerciseHearing = ({ word }) => {
     }
   }
 
+  // Measured off the input, so the blank is sized in the font `.exercise` actually renders it in
+  // rather than in a face named in a string here.
+  const inputWidth = useTextWidth(word.surface, inputRef)
+
   return (
     <span>
       <input
@@ -69,8 +73,8 @@ const ExerciseHearing = ({ word }) => {
         onFocus={handleInputFocus}
         className="exercise control-mode control-mode-chosen"
         style={{
-          width: getTextWidth(word.surface),
-          minWidth: getTextWidth(word.surface),
+          width: inputWidth,
+          minWidth: inputWidth,
           height: '1.5em',
           lineHeight: 'normal',
         }}

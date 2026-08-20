@@ -6,7 +6,7 @@ import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import AppDialog from 'Components/ui/AppDialog'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const extractFilters = object =>
   Object.entries(object)
@@ -40,7 +40,6 @@ const PickButton = ({ handleClick, name, iconKey, storyNum }) => (
       backgroundColor: '#fff',
       cursor: 'pointer',
       textAlign: 'left',
-      fontFamily: font.family,
       transition: 'background-color 0.15s ease, border-color 0.15s ease',
       '&:hover': { backgroundColor: colors.card, borderColor: colors.focus },
     }}
@@ -219,7 +218,7 @@ const PracticeModal = ({ open, setOpen }) => {
       [category]: true })
   }
 
-  const sectionLabel = { fontFamily: font.family, fontSize: 14, color: colors.ink, marginBottom: '0.9em' }
+  const sectionLabel = { fontSize: 14, color: colors.ink, marginBottom: '0.9em' }
   const gridStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75em' }
 
   return (

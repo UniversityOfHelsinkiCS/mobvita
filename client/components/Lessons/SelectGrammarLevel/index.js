@@ -7,7 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import { cefrNumberToLevel } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTabs from 'Components/ui/AppTabs'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -156,7 +156,6 @@ const SelectGrammarLevel = ({
       <span
         style={{
           display: 'block',
-          fontFamily: font.family,
           fontWeight: 700,
           fontSize: 30,
           lineHeight: 1.2,
@@ -168,7 +167,6 @@ const SelectGrammarLevel = ({
       <span
         style={{
           display: 'block',
-          fontFamily: font.family,
           fontWeight: 400,
           fontSize: 15,
           color: colors.ink,
