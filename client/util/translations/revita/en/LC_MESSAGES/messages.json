@@ -1889,5 +1889,6 @@
     "progress-ability-explanation": "Your grammar ability score, estimated from the exercises you complete.",
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "rename-folder": "Rename folder",
-    "add-stories-assistant-lead": "Learn language by adding new stories to the library"
+    "add-stories-assistant-lead": "Learn language by adding new stories to the library",
+    "translate-cards": "Translate Cards"
 }
