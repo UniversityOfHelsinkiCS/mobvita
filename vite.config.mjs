@@ -4,7 +4,7 @@ import moment from 'moment-timezone'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
-import { bundledTypography, font, typography } from './client/assets/mui_theme/designTokens.js'
+import { bundledTypography, colors, font, typography } from './client/assets/mui_theme/designTokens.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm')
@@ -130,7 +130,12 @@ export default defineConfig(({ mode }) => {
         scss: {
           // Publish the design token font families so any stylesheet can use `$font-ui` /
           // `$font-content` without importing; `$font-syriac` is the bundled face's @font-face alias.
+          // Every colour token as `$color-<kebab-case>`, so stylesheets use the same values as JS
+          // instead of re-typing hexes. designTokens.js stays the single source of truth.
           additionalData:
+            Object.entries(colors)
+              .map(([k, v]) => `$color-${k.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}: ${v};\n`)
+              .join('') +
             `$font-ui: ${font.family};\n` +
             `$font-content: ${font.content};\n` +
             `$font-syriac: '${bundledTypography.syriac.name}';\n`,

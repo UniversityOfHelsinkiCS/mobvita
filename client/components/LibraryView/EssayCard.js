@@ -15,7 +15,7 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 
 // A single essay in the "My Essays" library: title (styled like a story) + save date + delete.
 // Clicking the card opens the essay detail dialog (original + current versions).
-const EssayListItem = ({
+const EssayCard = ({
   essay,
   onOpen,
   draggable = false,
@@ -126,4 +126,4 @@ const EssayListItem = ({
   )
 }
 
-export default EssayListItem
+export default EssayCard

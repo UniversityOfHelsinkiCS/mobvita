@@ -1,5 +1,5 @@
-// Mirrors colors.menuHover in designTokens.js — the shared tan used for EVERY hover in the library.
-$menu-hover: #ece3be;
+// Mirrors colors.menuHover, now sourced from the token injected by vite rather than hand-copied.
+$menu-hover: $color-menu-hover;
 
 .library-dashboard {
   width: 100%;
@@ -29,12 +29,17 @@ $menu-hover: #ece3be;
 }
 
 // Figma "Frame 2087326746": library items stack full-width in a single column.
+// Same two-column grid as the folders above, so story/essay cards line up with them. 20px between
+// columns, 4px between rows (Figma "Frame 2087326746"). Cards in a row stretch to match the tallest,
+// which reads tidier than the mock's ragged independent columns now that descriptions vary in length.
 .library-story-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 4px;
 
   @media (max-width: 699px) {
+    grid-template-columns: minmax(0, 1fr);
     margin-bottom: 5.5em;
   }
 }
@@ -52,12 +57,20 @@ $menu-hover: #ece3be;
 }
 
 // Figma "Frame 2087326861": folder pills wrap into rows, each growing to share the row (min 300px).
+// Figma "Library Directory": two equal columns, 20px between them and 6px between rows. Grid fills
+// row-wise rather than column-wise like the mock, which looks the same for equal-height cards and
+// reflows to one column on narrow screens for free.
 .library-folder-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  column-gap: 20px;
+  row-gap: 6px;
   width: 100%;
+
+  @media (max-width: 699px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .library-folder-breadcrumb {
@@ -87,28 +100,31 @@ $menu-hover: #ece3be;
   opacity: 0.55;
 }
 
-// Figma "Library Folder": a pill row (icon + bold name), grows to share the row, min 300px.
+// Figma "Library Item" (folder): a white card, 2px resting border, 12px radius.
 .library-folder-card {
   position: relative;
   box-sizing: border-box;
   display: flex;
-  flex: 1 1 300px;
-  max-width: 393px;
   align-items: center;
-  gap: 12px;
-  height: 40px;
-  padding: 2px 12px;
-  border: none;
-  border-radius: 360px;
+  gap: 6px;
+  min-height: 68px;
+  padding: 16px 20px;
+  background: $color-surface;
+  // 2px at rest, 4px when selected — the extra 2px is absorbed by border-box, so the card does not
+  // change size between states.
+  border: 2px solid $color-card-border;
+  border-radius: 12px;
   cursor: pointer;
   text-align: left;
   transition:
     background 0.12s ease,
+    border-color 0.12s ease,
     transform 0.12s ease;
 
-  // Hover = shared menuHover tan, selected = green (see .library-folder-card-selected below).
+  // The mock defines no hover, and the old pill's tan fill fights the white card. Tint the border
+  // instead — same cue, same palette, and it cannot be confused with the selected state's fill.
   &:hover {
-    background: $menu-hover;
+    border-color: $color-card-border-active;
   }
 
   // Hidden until hover or selection; hover is the only way to reach it on folders with subfolders.
@@ -128,7 +144,10 @@ $menu-hover: #ece3be;
 // A tapped leaf folder stays green even while hovered (must win over the :hover tan above).
 .library-folder-card-selected,
 .library-folder-card-selected:hover {
-  background: #b1d3c2;
+  background: $color-card-border-active;
+  border-width: 4px;
+  border-color: $color-card-border-active;
+  padding: 14px 18px; // 2px less all round, so the thicker border does not grow the card
 }
 
 // A selected folder keeps its three-dots menu visible even when not hovered.
@@ -143,36 +162,32 @@ $menu-hover: #ece3be;
   align-items: center;
 }
 
-// The old paper-folder "tab" is gone in the pill layout.
+// The old paper-folder "tab" is gone in the card layout.
 .library-folder-tab {
   display: none;
 }
 
 .library-folder-card-drop-target {
-  background: #cfe6d6;
+  background: $color-card-border-active;
+  border-color: $color-folder-icon-stroke;
   transform: translateY(-1px);
 }
 
-.library-folder-card-empty {
-  background: #f1f0f0;
-
-  &:hover {
-    background: $menu-hover;
-  }
-}
+// An empty folder is styled exactly like any other — the only cue is the hollow icon in FolderCard.
+// The class stays as a hook for tests; it deliberately carries no visual override.
 
 .library-folder-content {
   display: flex;
   flex: 1;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
 .library-folder-icon {
   flex-shrink: 0;
-  width: 30px;
-  height: 27px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   transition:
     filter 0.12s ease,
@@ -189,7 +204,7 @@ $menu-hover: #ece3be;
   font-size: 16px;
   font-weight: 700;
   line-height: 18px;
-  color: #2d2c2a;
+  color: $color-ink;
   padding: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -226,9 +241,18 @@ $menu-hover: #ece3be;
   padding: 8px 10px 8px 12px !important;
 }
 
-// The library search input overrides the AppTextField cream default to a white background.
+// The library search input overrides the AppTextField cream default: white fill, 2px pill border.
 .library-search-field .MuiOutlinedInput-root {
-  background-color: #fff !important;
+  background-color: $color-surface !important;
+
+  .MuiOutlinedInput-notchedOutline {
+    border: 2px solid $color-input-border;
+  }
+
+  &:hover .MuiOutlinedInput-notchedOutline,
+  &.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: $color-card-border-active;
+  }
 }
 
 // Library AppSelect menus: the chosen option is green, hover uses the shared menuHover tan.
@@ -244,23 +268,64 @@ $menu-hover: #ece3be;
 }
 
 // Figma "Library Item": a full-width row, used by both story and essay cards.
+// Figma "Library Item" (story): white card, 4px active border, 12px radius.
 .library-item-card {
   box-sizing: border-box;
   width: 100%;
-  background: #fff !important;
-  border: 4px solid #c6e0d7 !important;
-  border-radius: 30px !important;
+  background: $color-surface !important;
+  border: 4px solid $color-card-border-active !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
   padding: 16px 20px;
+  // Fixed, not a floor: the content lands at 103px on its own, so a min-height never bites.
+  height: 100px;
   cursor: pointer;
   overflow: hidden;
 }
 
+// Teacher's blurb, or the story's opening line. Two lines, then ellipsis.
+// Teacher's blurb, or the story's opening line. One line, then ellipsis — same as the title.
+.library-item-description {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  color: $color-muted;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Figma "Library Item": a column of two rows — icon+text, then progress+status icons.
 .library-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.library-item-head {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   width: 100%;
+}
+
+// Figma "Frame 2087326980": progress grows on the left, status icons sit right.
+.library-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+.library-item-meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: $color-muted;
 }
 
 .library-item-icon {
@@ -270,12 +335,15 @@ $menu-hover: #ece3be;
   object-fit: contain;
 }
 
+// 35px = title 18 + gap 2 + description 15. Reserved rather than hugged: most stories carry no
+// description, and without the floor those cards render ~11px shorter than the ones that do.
 .library-item-main {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
   flex: 1;
   min-width: 0;
+  min-height: 35px;
 }
 
 .library-item-toprow {
@@ -311,14 +379,26 @@ $menu-hover: #ece3be;
   height: 24px;
 }
 
+// A row, not a column: a stacked label would push the bar off the icons' centre line. Sized from
+// the mock's 145px but allowed to shrink, so `space-between` on the footer actually separates the
+// two groups instead of the progress eating the free space.
 .library-item-progress {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 145px;
+  min-width: 0;
+
+  > *:last-child {
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .library-item-progress-label {
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
@@ -341,5 +421,28 @@ $menu-hover: #ece3be;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+// Back-to-parent control. Lives beside the breadcrumbs rather than as a card in the folder grid,
+// so the grid holds only real folders.
+.library-folder-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover img {
+    opacity: 0.7;
   }
 }

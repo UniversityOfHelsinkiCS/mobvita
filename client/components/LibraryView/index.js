@@ -4,7 +4,7 @@ import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import AppButton from 'Components/AppButton'
-import StoryListItem from 'Components/LibraryView/StoryListItem'
+import StoryCard from 'Components/LibraryView/StoryCard'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
 import AppSearchField from 'Components/ui/AppSearchField'
@@ -46,8 +46,9 @@ import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
+import FlipBackward from 'Assets/images/flip-backward.svg'
 import AddFolder from './AddFolder'
-import EssayListItem from './EssayListItem'
+import EssayCard from './EssayCard'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import {
@@ -891,7 +892,9 @@ const StoryList = () => {
   // The folder section (breadcrumbs + the folder pills) sits at the TOP of the library card, above the
   // search/sort row. The stories that live in the current folder render separately, BELOW that row (see
   // renderStoriesGrid), per the 2026 library layout.
-  const renderFolderSection = () => {
+  // `controls` renders between the breadcrumb header and the folder grid — the search field and
+  // the sort/add row sit there, per the Figma directory order.
+  const renderFolderSection = controls => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
       currentLibraryPath,
@@ -908,6 +911,16 @@ const StoryList = () => {
     return (
       <>
         <Box className="library-folder-header">
+          {libraryPathParts.length > 0 && (
+            <button
+              type="button"
+              className="library-folder-back"
+              aria-label="Back to parent folder"
+              onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+            >
+              <img src={FlipBackward} alt="" />
+            </button>
+          )}
           {renderLibraryPathBreadcrumbs()}
           {renderGroupDropdown()}
           {libraryIsMutable && (
@@ -925,14 +938,9 @@ const StoryList = () => {
             />
           )}
         </Box>
+        {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="library-folders" className="library-folder-grid">
-            {libraryPathParts.length > 0 && (
-              <FolderCard
-                isBack
-                onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
-              />
-            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -1029,7 +1037,7 @@ const StoryList = () => {
     return (
       <Box data-cy="story-items" className="library-story-grid">
         {storiesInCurrentPath.map(story => (
-          <StoryListItem
+          <StoryCard
             key={story._id}
             draggable={libraryIsMutable}
             isDragging={draggedStoryIds.includes(story._id)}
@@ -1079,7 +1087,7 @@ const StoryList = () => {
   }
 
   // Breadcrumbs + essay folder pills — rendered at the TOP of the essay card.
-  const renderEssayFolderSection = () => {
+  const renderEssayFolderSection = controls => {
     const sortedEssays = getSortedEssaysInView()
     const foldersInCurrentPath = getFoldersForPath(
       sortedEssays,
@@ -1097,6 +1105,16 @@ const StoryList = () => {
     return (
       <>
         <Box className="library-folder-header">
+          {libraryPathParts.length > 0 && (
+            <button
+              type="button"
+              className="library-folder-back"
+              aria-label="Back to parent folder"
+              onClick={() => handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+            >
+              <img src={FlipBackward} alt="" />
+            </button>
+          )}
           {renderEssayPathBreadcrumbs()}
           <AddFolder
             existingFolderNames={
@@ -1107,16 +1125,9 @@ const StoryList = () => {
             onAddFolder={handleAddFolder}
           />
         </Box>
+        {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="essay-folders" className="library-folder-grid">
-            {libraryPathParts.length > 0 && (
-              <FolderCard
-                isBack
-                onClick={() =>
-                  handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))
-                }
-              />
-            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -1199,7 +1210,7 @@ const StoryList = () => {
         {essaysInCurrentPath.map((essay, index) => {
           const essayId = getWritingEssayId(essay)
           return (
-            <EssayListItem
+            <EssayCard
               key={essayId || index}
               essay={essay}
               draggable={essaysLibraryActive && Boolean(essayId)}
@@ -1242,18 +1253,20 @@ const StoryList = () => {
       >
         {activeLibrary === 'essays' ? (
           <>
-            {renderEssayFolderSection()}
-            {essaySearchAndSortControls}
+            {renderEssayFolderSection(essaySearchAndSortControls)}
             {renderEssayItems()}
           </>
         ) : (
           <>
-            {renderFolderSection()}
-            <LibrarySearch
-              setDisplayedStories={setDisplayedStories}
-              setDisplaySearchResults={setDisplaySearchResults}
-            />
-            {renderSortAndAddRow(sorter, sortDropdownOptions)}
+            {renderFolderSection(
+              <>
+                <LibrarySearch
+                  setDisplayedStories={setDisplayedStories}
+                  setDisplaySearchResults={setDisplaySearchResults}
+                />
+                {renderSortAndAddRow(sorter, sortDropdownOptions)}
+              </>,
+            )}
             {lastQuery && (
               <Box>
                 <Typography component="span">

@@ -24,6 +24,7 @@ import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyStars from 'Components/DifficultyStars'
 import AppProgressBar from 'Components/ui/AppProgressBar'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import './LibraryView.scss'
 
@@ -112,7 +113,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
-const StoryListItem = ({
+const StoryCard = ({
   story,
   libraryShown,
   selectedGroup,
@@ -236,62 +237,71 @@ const StoryListItem = ({
         savedLibrarySelection={savedLibrarySelection}
         triggerContent={
           <div className="library-item-body library-tour-open-story-modal" role="button" tabIndex={0}>
-            <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
-            <div className="library-item-main">
-              <div className="library-item-toprow">
-                <span className="library-item-title" style={getTextStyle(learningLanguage)}>
-                  {story.title}
-                </span>
-                <div className="library-item-badges library-tour-difficulty-stars">
-                  {story.flashcardsOnly && <ContentCopyIcon fontSize="small" />}
-                  {showGroupNames && <GroupsSharedTo groups={story.groups} />}
-                  {uploadUnfinished && (
-                    <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
-                      <HourglassBottomIcon color="warning" fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  {libraryShown.group && storyGroupShareInfo?.hidden && (
-                    <CustomTooltip title={<FormattedMessage id="group-hidden-story" />}>
-                      <VisibilityOffIcon color="error" fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  {timedExercise && (
-                    <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
-                      <TimerOutlinedIcon color="error" fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  {commentsOnStory && (
-                    <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
-                      <CommentsIcon fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  {libraryShown.group && (
-                    <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
-                      <MailOutlineIcon fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
-                    <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
-                      <MailOutlineIcon fontSize="small" />
-                    </CustomTooltip>
-                  )}
-                  <img
-                    src={story?.has_questions ? images.bulb : images.bulbEmpty}
-                    alt=""
-                    className="library-item-bulb"
-                  />
-                  <DifficultyStars difficulty={story.difficulty} />
+            <div className="library-item-head">
+              <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+              <div className="library-item-main">
+                <div className="library-item-toprow">
+                  <span className="library-item-title" style={getTextStyle(learningLanguage)}>
+                    {story.title}
+                  </span>
+                  <div className="library-item-badges library-tour-difficulty-stars">
+                    <DifficultyStars difficulty={story.difficulty} />
+                  </div>
                 </div>
+                {story.description && (
+                  <div className="library-item-description">{story.description}</div>
+                )}
               </div>
+            </div>
+
+            {/* Progress left, status icons right — Figma "Frame 2087326980". */}
+            <div className="library-item-footer">
               <div className="library-item-progress">
-                <span className="library-item-progress-label">
-                  <FormattedMessage id="Progress" /> {story?.percent_cov}%
-                </span>
                 <AppProgressBar
                   value={story?.percent_cov}
                   height="10px"
-                  fillColor="#b1d3c2"
-                  trackColor="#dbe9df"
+                  fillColor={colors.green}
+                  trackColor={colors.progressEmpty}
+                />
+              </div>
+
+              <div className="library-item-meta">
+                {story.flashcardsOnly && <ContentCopyIcon fontSize="small" />}
+                {showGroupNames && <GroupsSharedTo groups={story.groups} />}
+                {uploadUnfinished && (
+                  <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
+                    <HourglassBottomIcon color="warning" fontSize="small" />
+                  </CustomTooltip>
+                )}
+                {libraryShown.group && storyGroupShareInfo?.hidden && (
+                  <CustomTooltip title={<FormattedMessage id="group-hidden-story" />}>
+                    <VisibilityOffIcon color="error" fontSize="small" />
+                  </CustomTooltip>
+                )}
+                {timedExercise && (
+                  <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
+                    <TimerOutlinedIcon color="error" fontSize="small" />
+                  </CustomTooltip>
+                )}
+                {commentsOnStory && (
+                  <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
+                    <CommentsIcon fontSize="small" />
+                  </CustomTooltip>
+                )}
+                {libraryShown.group && (
+                  <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
+                    <MailOutlineIcon fontSize="small" />
+                  </CustomTooltip>
+                )}
+                {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
+                  <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
+                    <MailOutlineIcon fontSize="small" />
+                  </CustomTooltip>
+                )}
+                <img
+                  src={story?.has_questions ? images.bulb : images.bulbEmpty}
+                  alt=""
+                  className="library-item-bulb"
                 />
               </div>
             </div>
@@ -319,4 +329,4 @@ const StoryListItem = ({
   )
 }
 
-export default StoryListItem
+export default StoryCard
