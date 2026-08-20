@@ -1,6 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
+import AppSpinner from 'Components/ui/AppSpinner'
 
-// Shared loading spinner component
+// Shared loading spinner (renders the design-system AppSpinner ring). Keeps the container / text /
+// delayedMessage / size / inline / fullHeight behaviour every call site relies on.
 // Props:
 // - fullHeight: stretch the container to near full viewport height.
 // - variant: spinner theme class, e.g. primary, secondary.
@@ -57,8 +60,6 @@ const Spinner = ({
   const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
   const displayText = messageIndex === 0 ? text : messages[messageIndex - 1]
 
-  const scale = size / 80
-
   return (
     <div
       className={[
@@ -69,42 +70,12 @@ const Spinner = ({
       style={{
         height: inline ? 'auto' : fullHeight ? '90vh' : '100%',
         width: inline ? 'auto' : '100%',
-        ...(spinnerColor ? { '--spinner-color': spinnerColor } : {}),
       }}
       role="status"
       aria-live="polite"
       aria-label={typeof displayText === 'string' ? displayText : 'Loading'}
     >
-      <div
-        className="spinner-roller-box"
-        style={{
-          width: size,
-          height: size,
-          position: 'relative',
-          display: 'inline-block',
-          flex: '0 0 auto',
-        }}
-      >
-        <div
-          className="lds-roller"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            transform: `scale(${scale})`,
-            transformOrigin: '0 0',
-          }}
-        >
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
+      <AppSpinner size={size} {...(spinnerColor ? { color: spinnerColor } : {})} />
 
       {displayText ? (
         <div

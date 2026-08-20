@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import MicNoneIcon from '@mui/icons-material/MicNone'
@@ -24,6 +24,7 @@ import AppPagination from 'Components/ui/AppPagination'
 import AppLemma from 'Components/ui/AppLemma'
 import AppStepper from 'Components/ui/AppStepper'
 import AppTooltip from 'Components/ui/AppTooltip'
+import AppSpinner from 'Components/ui/AppSpinner'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -40,16 +41,47 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * the real app (real MUI theme, IntlProvider, CSS). Replaces Storybook. Add a row here whenever a
  * new primitive or presentational component lands.
  */
-const Section = ({ title, children }) => (
-  <section style={{ marginBottom: '2.5rem' }}>
-    <h2 style={{ borderBottom: '1px solid #ddd', paddingBottom: '0.3em', marginBottom: '1em' }}>
-      {title}
-    </h2>
+// Slug used both for the section's anchor id and the left-nav links.
+const slugify = title =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+
+// `noCard` skips the cream card wrapper (e.g. AppTabs already renders its own background).
+const Section = ({ title, children, noCard = false }) => {
+  const content = (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-start' }}>
       {children}
     </div>
-  </section>
-)
+  )
+  return (
+    <section
+      id={slugify(title)}
+      data-ds-section={title}
+      // Keep the heading clear of the sticky app navbar when jumped to via an anchor.
+      style={{ marginBottom: '2.5rem', scrollMarginTop: '4rem' }}
+    >
+      <h2 style={{ borderBottom: '1px solid #ddd', paddingBottom: '0.3em', marginBottom: '1em' }}>
+        {title}
+      </h2>
+      {noCard ? (
+        content
+      ) : (
+        // Cream card so each component is reviewed against the real app surface colour.
+        <div
+          style={{
+            backgroundColor: colors.card,
+            borderRadius: shape.cardRadius,
+            padding: '24px 28px',
+          }}
+        >
+          {content}
+        </div>
+      )}
+    </section>
+  )
+}
 
 const Card = ({ children }) => (
   <div
@@ -80,18 +112,77 @@ const DesignSystem = () => {
   const [darkMode, setDarkMode] = useState(false)
   const [radioValue, setRadioValue] = useState('a')
   const [pageDemo, setPageDemo] = useState(3)
+  // Left-nav entries, collected from the rendered <Section> anchors after the gallery mounts.
+  const [sections, setSections] = useState([])
 
   // /design is a dev-only tool. Hide it behind a 404 for anyone without full developer scope
   // (same gate as the /dashboard admin page). Wait for the user fetch so we don't flash a 404.
   const developerScope = useSelector(state => state.user?.data?.user?.developer_of_language)
   const userPending = useSelector(state => state.user?.pending)
+
+  // Build the nav from the section anchors once the gallery is actually rendered (i.e. once the
+  // dev-scope gate below has passed) — deps re-run the query when that state resolves.
+  useEffect(() => {
+    if (userPending || developerScope !== 'all') return
+    const found = Array.from(document.querySelectorAll('[data-ds-section]')).map(el => ({
+      id: el.id,
+      title: el.getAttribute('data-ds-section'),
+    }))
+    setSections(found)
+  }, [userPending, developerScope])
   if (userPending) return null
   if (developerScope !== 'all') return <Navigate to="/404" replace />
 
   return (
-    <div style={{ maxWidth: 1040, margin: '0 auto', padding: '2rem', fontFamily: font.family }}>
-      <h1>Design System</h1>
-      <p style={{ color: '#666' }}>
+    <div
+      style={{
+        maxWidth: 1320,
+        margin: '0 auto',
+        padding: '2rem',
+        fontFamily: font.family,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '2.5rem',
+      }}
+    >
+      {/* Sticky left nav — jump links to each component section. */}
+      <nav
+        style={{
+          position: 'sticky',
+          top: '4rem',
+          flexShrink: 0,
+          width: 200,
+          maxHeight: 'calc(100vh - 5rem)',
+          overflowY: 'auto',
+        }}
+      >
+        <div style={{ fontWeight: 700, fontSize: 13, color: colors.muted, marginBottom: 10 }}>
+          COMPONENTS
+        </div>
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 1 }}>
+          {sections.map(s => (
+            <li key={s.id}>
+              <a
+                href={`#${s.id}`}
+                style={{
+                  display: 'block',
+                  padding: '6px 10px',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  color: colors.ink,
+                  textDecoration: 'none',
+                }}
+              >
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h1>Design System</h1>
+        <p style={{ color: '#666' }}>
         Live gallery of <code>ui/</code> primitives and pure presentational components. Dev-only —
         this is where we review new components and token changes against the Figma.
       </p>
@@ -105,7 +196,7 @@ const DesignSystem = () => {
         </AppButton>
       </div>
 
-      <Section title="Icons — custom SVGs (new)">
+      <Section title="Icons — custom SVGs (new)" noCard>
         {(() => {
           const newIcons = [
             'menu2',
@@ -250,7 +341,7 @@ const DesignSystem = () => {
         </div>
       </Section>
 
-      <Section title="AppButton — inverse (dark background)">
+      <Section title="AppButton — inverse (dark background)" noCard>
         <div
           style={{
             display: 'flex',
@@ -356,7 +447,7 @@ const DesignSystem = () => {
         </div>
       </Section>
 
-      <Section title="AppTabs">
+      <Section title="AppTabs" noCard>
         {(() => {
           const tabs = [
             { value: 'public', label: 'Public', icon: <PublicOutlinedIcon /> },
@@ -433,6 +524,14 @@ const DesignSystem = () => {
             </div>
           )
         })()}
+      </Section>
+
+      <Section title="AppSpinner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 40, padding: '4px 12px' }}>
+          <AppSpinner size={24} />
+          <AppSpinner size={48} />
+          <AppSpinner size={72} />
+        </div>
       </Section>
 
       <Section title="AppStepper">
@@ -562,7 +661,7 @@ const DesignSystem = () => {
         })()}
       </Section>
 
-      <Section title="AppSelect — inverse (dark background)">
+      <Section title="AppSelect — inverse (dark background)" noCard>
         <div style={{ padding: 24, borderRadius: 16, backgroundColor: colors.ink, width: 300 }}>
           <AppSelect
             variant="inverse"
@@ -799,7 +898,7 @@ const DesignSystem = () => {
         </div>
       </Section>
 
-      <Section title="LoginForm (presentational)">
+      <Section title="LoginForm (presentational)" noCard>
         <Card>
           <LoginForm
             email={login.email}
@@ -819,7 +918,7 @@ const DesignSystem = () => {
         </Card>
       </Section>
 
-      <Section title="SignUpForm (presentational)">
+      <Section title="SignUpForm (presentational)" noCard>
         <Card>
           <SignUpForm
             email={signup.email}
@@ -837,6 +936,7 @@ const DesignSystem = () => {
           />
         </Card>
       </Section>
+      </div>
     </div>
   )
 }
