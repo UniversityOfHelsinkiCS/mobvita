@@ -17,7 +17,6 @@ const primaryButtonSx = {
   backgroundColor: colors.green,
   color: colors.ink,
   borderRadius: `${shape.buttonRadius}px`,
-  fontFamily: font.family,
   fontSize: font.button,
   fontWeight: 500,
   textTransform: 'none',
@@ -32,7 +31,6 @@ const ghostButtonSx = {
   color: colors.ink,
   border: `1px solid ${colors.green}`,
   borderRadius: `${shape.buttonRadius}px`,
-  fontFamily: font.family,
   fontSize: font.button,
   fontWeight: 500,
   textTransform: 'none',
@@ -43,7 +41,6 @@ const ghostButtonSx = {
 
 const linkStyle = {
   color: colors.ink,
-  fontFamily: font.family,
   fontSize: '0.85rem',
   fontWeight: 500,
   textDecoration: 'underline',
@@ -78,8 +75,8 @@ const LoginForm = ({
   }
 
   return (
-    <div style={{ fontFamily: font.family, color: colors.ink }}>
-      <h1 style={{ fontFamily: font.family, fontSize: font.title, fontWeight: 400, margin: 0 }}>
+    <div style={{ color: colors.ink }}>
+      <h1 style={{ fontSize: font.title, fontWeight: 400, margin: 0 }}>
         <FormattedMessage id="Login" />
       </h1>
       <div style={{ fontSize: '0.85rem', color: colors.ink, margin: '0.35em 0 1.5em' }}>

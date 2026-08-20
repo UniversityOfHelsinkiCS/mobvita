@@ -2,7 +2,7 @@ import React from 'react'
 import { styled } from '@mui/material/styles'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import AppMenu, { AppMenuItem } from './AppMenu'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppSelect — design-system select/dropdown. The trigger is a pill styled with the same variants as
@@ -65,7 +65,6 @@ const Trigger = styled('button', { shouldForwardProp: prop => prop !== 'variant'
   width: '100%',
   padding: '9px 18px',
   borderRadius: 999,
-  fontFamily: font.family,
   fontWeight: 600,
   fontSize: 16,
   textAlign: 'left',

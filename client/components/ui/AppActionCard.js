@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppActionCard — a full-width cream "action" button (icon + label) used for the HomeView activity
@@ -17,7 +17,6 @@ const StyledCard = styled('button')({
   borderRadius: '999px',
   cursor: 'pointer',
   textAlign: 'left',
-  fontFamily: font.family,
   fontSize: '24px',
   fontWeight: 600,
   color: colors.ink,

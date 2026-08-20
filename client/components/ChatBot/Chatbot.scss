@@ -243,8 +243,8 @@
     padding: 1.1rem 1.4rem;
   }
 
+  // An <h3>: base.scss sizes headings but sets no family, so this inherits --font-ui from <body>.
   .ai-header-title {
-    font-family: 'Geologica', sans-serif;
     font-size: 1.4rem;
     font-weight: 600;
     letter-spacing: 0;
@@ -267,10 +267,10 @@
     gap: 12px;
   }
 
+  // The assistant's own prose, written in the interface language — chrome, so it inherits --font-ui.
   .chatbot-intro {
     margin: 0;
     color: #2d2c2a;
-    font-family: 'Geologica', sans-serif;
     font-size: 0.95rem;
     line-height: 1.5;
   }

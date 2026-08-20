@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * Shared row styling for the design-system menu surfaces (AppMenu dropdown, AppSidebar drawer).
@@ -11,7 +11,6 @@ export const rowStyles = ({ selected }) => ({
   alignItems: 'center',
   gap: 14,
   padding: '11px 20px',
-  fontFamily: font.family,
   fontWeight: 500,
   fontSize: 16,
   color: colors.ink,

@@ -7,7 +7,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import AppMenu from 'Components/ui/AppMenu'
 import CustomTooltip from 'Components/CustomTooltip'
 import { rowStyles } from 'Components/ui/menuRow'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * TopicsSelect — the header "All Topics In Text" control on the story preview (2026 design).
@@ -27,7 +27,6 @@ const Trigger = styled('button')({
   width: '100%',
   boxSizing: 'border-box',
   borderRadius: 999,
-  fontFamily: font.family,
   fontWeight: 600,
   fontSize: 15,
   cursor: 'pointer',
@@ -46,7 +45,6 @@ const SortChip = styled('button', { shouldForwardProp: prop => prop !== 'active'
     cursor: 'pointer',
     padding: '3px 10px',
     borderRadius: 999,
-    fontFamily: font.family,
     fontSize: 12,
     fontWeight: 600,
     color: colors.ink,
@@ -137,7 +135,7 @@ const TopicsSelect = ({ conceptCount = {}, focusedConcept, setFocusedConcept }) 
             padding: '2px 8px 8px',
           }}
         >
-          <span style={{ fontFamily: font.family, fontSize: 12, color: colors.muted }}>
+          <span style={{ fontSize: 12, color: colors.muted }}>
             <FormattedMessage id="LABEL-sort-by" />
           </span>
           <div style={{ display: 'flex', gap: 4 }}>

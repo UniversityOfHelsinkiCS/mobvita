@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import AppButton from 'Components/AppButton'
 import AppTable from 'Components/ui/AppTable'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
 import AddToGroup from './AddToGroup'
@@ -70,7 +70,6 @@ const GroupPeople = ({ role }) => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          fontFamily: font.family,
           border: `1px solid ${colors.border}`,
           borderRadius: '20px',
           width: '100%',

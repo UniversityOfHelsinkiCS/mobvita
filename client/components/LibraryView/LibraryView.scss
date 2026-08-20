@@ -8,9 +8,7 @@ $menu-hover: #ece3be;
   display: flow-root;
 }
 
-// The assistant is a fixed 380px rail pinned to the right (HelperSidebar.scss), so a
-// viewport-centred dashboard slides under it as soon as the rail opens. Clear it by the same
-// 400px (380 + 20px gap) that `.cont.sidebar-pushed` uses for every other view.
+// Clear the fixed 380px assistant rail by the same 400px `.cont.sidebar-pushed` uses elsewhere.
 .library-dashboard.sidebar-pushed {
   margin-right: 400px;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -24,8 +22,7 @@ $menu-hover: #ece3be;
 }
 
 @media (min-width: 1638px) {
-  // 838 + 2 x 400: from this width a viewport-centred dashboard already clears the rail on its
-  // own, so drop the offset and let it centre properly again.
+  // 838 + 2 x 400: from here a centred dashboard clears the rail on its own, so drop the offset.
   .library-dashboard.sidebar-pushed {
     margin-right: auto;
   }
@@ -54,8 +51,7 @@ $menu-hover: #ece3be;
   gap: 1rem;
 }
 
-// Folder pills wrap into rows at the top of the library (Figma "Frame 2087326861"): each folder grows to
-// share the row, min 300px, so up to two sit side by side and a lone folder spans the full width.
+// Figma "Frame 2087326861": folder pills wrap into rows, each growing to share the row (min 300px).
 .library-folder-grid {
   display: flex;
   flex-wrap: wrap;
@@ -69,7 +65,6 @@ $menu-hover: #ece3be;
   background: transparent;
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
-  font-family: 'Rubik', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   padding: 0;
@@ -78,7 +73,6 @@ $menu-hover: #ece3be;
 
 .library-folder-breadcrumb-current {
   color: rgba(0, 0, 0, 0.55);
-  font-family: 'Rubik', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
 }
@@ -117,9 +111,7 @@ $menu-hover: #ece3be;
     background: $menu-hover;
   }
 
-  // The three-dots menu is hidden by default, revealed on hover (or when selected — see below). Hover is
-  // what makes it reachable for folders WITH subfolders: tapping those navigates in instead of selecting,
-  // so they'd otherwise never expose their rename/delete options.
+  // Hidden until hover or selection; hover is the only way to reach it on folders with subfolders.
   .library-folder-menu {
     position: static !important;
     top: auto;
@@ -144,8 +136,7 @@ $menu-hover: #ece3be;
   display: inline-flex;
 }
 
-// Transparent wrapper around the folder's AppMenu trigger — it swallows clicks so opening the menu
-// doesn't also navigate/select the card, and collapses to nothing while the (hidden) button isn't shown.
+// Wraps the folder's AppMenu trigger and swallows clicks so opening the menu doesn't select the card.
 .library-folder-menu-wrap {
   display: inline-flex;
   flex-shrink: 0;
@@ -195,7 +186,6 @@ $menu-hover: #ece3be;
 .library-folder-name {
   flex: 1;
   min-width: 0;
-  font-family: 'Geologica', 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 18px;
@@ -241,8 +231,7 @@ $menu-hover: #ece3be;
   background-color: #fff !important;
 }
 
-// Library dropdowns (sort + group AppSelect menus): the chosen option is green; hovering uses the shared
-// menuHover tan (same as the AppMenu default). Scoped so only the selected-green is library-specific.
+// Library AppSelect menus: the chosen option is green, hover uses the shared menuHover tan.
 .library-menu {
   .app-menu-row:hover {
     background-color: $menu-hover !important;
@@ -254,8 +243,7 @@ $menu-hover: #ece3be;
   }
 }
 
-// Figma "Library Item": a full-width row — a green book icon beside a column of (title + badges) and a
-// 10-segment progress bar. Used by both story and essay cards.
+// Figma "Library Item": a full-width row, used by both story and essay cards.
 .library-item-card {
   box-sizing: border-box;
   width: 100%;
@@ -300,7 +288,6 @@ $menu-hover: #ece3be;
 .library-item-title {
   flex: 1;
   min-width: 0;
-  font-family: 'Geologica', 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 18px;
@@ -332,7 +319,6 @@ $menu-hover: #ece3be;
 }
 
 .library-item-progress-label {
-  font-family: 'Geologica', 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
@@ -345,12 +331,10 @@ $menu-hover: #ece3be;
   justify-content: flex-end;
   max-width: 225px;
   max-height: 36px;
-  // The header is `justify-content: space-between`; this auto left-margin eats the free space so the
-  // dropdown (and the Add-folder button after it) hug the right instead of centering.
+  // Eats the free space in the space-between header so the dropdown hugs the right.
   margin-left: auto;
 
-  // Keep the selected group name on one line, ellipsising when too long. The AppSelect trigger is a flex
-  // button, so its label span needs `min-width: 0` before overflow/ellipsis can take effect.
+  // Ellipsise the selected group name; the flex label span needs `min-width: 0` for that to work.
   button > span {
     flex: 1;
     min-width: 0;

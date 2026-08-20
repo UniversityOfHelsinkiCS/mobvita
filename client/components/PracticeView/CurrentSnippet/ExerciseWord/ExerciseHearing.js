@@ -1,8 +1,8 @@
-import React, { createRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import {
-  getTextWidth,
+  useTextWidth,
   speak,
   learningLanguageSelector,
   voiceLanguages,
@@ -23,7 +23,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [focusTimeout, setFocusTimeout] = useState(false)
   const [count, setCount] = useState(0)
   const [lastWord, setLastWord] = useState('')
-  const inputRef = createRef(null)
+  const inputRef = useRef(null)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const { answersPending } = useSelector(({ snippets }) => snippets)
@@ -136,6 +136,9 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }
 
+  // Measured off the input itself, so the blank is sized in the font it actually renders in.
+  const inputWidth = useTextWidth(word.surface, inputRef) + 30
+
   const tooltip = (
     <div>
       {word.message && (
@@ -171,7 +174,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
           className={className}
           disabled={answersPending}
           style={{
-            width: getTextWidth(word.surface, '400 1.15rem monospace') + 30,
+            width: inputWidth,
             minWidth: 120,
             backgroundColor: !listeningHighlighting && getWordColor(
               word.level, grade, skillLevels, show_review_diff, show_preview_exer, mode) || 'rgba(255, 152, 0, 0.71)',

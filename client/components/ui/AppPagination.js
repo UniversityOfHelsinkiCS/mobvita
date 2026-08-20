@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppPagination — the 2026 numbered pagination: round page "coins". The active page is filled with
@@ -19,7 +19,6 @@ const Coin = styled('button', {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontFamily: font.family,
   fontSize: 15,
   fontWeight: 600,
   color: colors.ink,

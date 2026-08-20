@@ -28,7 +28,6 @@
 .add-story-options-lead {
   flex: 1;
   margin: 0;
-  font-family: 'Geologica', 'Rubik', sans-serif;
   font-size: 22px;
   font-weight: 500;
   line-height: 22px;
@@ -40,6 +39,7 @@
   color: #2d2c2a !important;
 }
 
+// A <button>: base.scss's form reset gives it `font-family: inherit`, so it too rides --font-ui.
 .add-story-options-back {
   display: inline-flex;
   align-items: center;
@@ -48,7 +48,6 @@
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-family: 'Geologica', 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #2d2c2a;

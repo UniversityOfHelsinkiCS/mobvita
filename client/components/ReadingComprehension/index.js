@@ -836,8 +836,7 @@ const ReadingComprehensionView = ({ match }) => {
 
   const tabs = panes.map((pane, index) => ({
     value: index,
-    // The tab's `data-cy` used to live on the semantic menu item; AppTabs has no per-tab attribute
-    // slot, so it rides on the label node inside the segment button (clicks still bubble to it).
+    // AppTabs has no per-tab attribute slot, so the `data-cy` rides on the label node.
     label: <span data-cy={pane.menuItem['data-cy']}>{pane.menuItem.content}</span>,
   }))
 
@@ -919,7 +918,8 @@ const ReadingComprehensionView = ({ match }) => {
           sx={{
             backgroundColor: colors.card,
             color: colors.ink,
-            fontFamily: font.family,
+            // Reading surface — the reading token, not the chrome one.
+            fontFamily: font.content,
             border: `1px solid ${colors.border}`,
             borderRadius: '20px',
             padding: '1.25em',
@@ -959,7 +959,9 @@ const ReadingComprehensionView = ({ match }) => {
             sx={{
               backgroundColor: colors.card,
               color: colors.ink,
-              fontFamily: font.family,
+              // Sibling of the story Box, so it inherits no per-language face from getTextStyle();
+              // `languageContent` follows the learner's script on its own.
+              fontFamily: font.languageContent,
               border: `1px solid ${colors.border}`,
               borderRadius: '20px',
               padding: '1.25em',

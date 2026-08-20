@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
 import { useLocation } from 'react-router-dom'
-import { checkRevitaStatus } from 'Utilities/common'
+import { checkRevitaStatus, useLanguageFont } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
 import { getMTAvailableLanguage } from 'Utilities/redux/contextTranslationReducer'  
@@ -32,6 +32,10 @@ const RouteEffects = () => {
 
 const App = () => {
   const dispatch = useDispatch()
+
+  // Loads the learner's script-specific webfont; mounted at the root so it survives route changes.
+  useLanguageFont()
+
   const [revitaStatus, setRevitaStatus] = useState('OK')
 
   useEffect(() => {

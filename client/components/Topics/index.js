@@ -7,7 +7,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 import AppButton from 'Components/AppButton'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import TopicListItem from './TopicListItem'
 
 const TOPIC_ROW_DIVIDER = '#E4E1D3'
@@ -201,7 +201,6 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
               border: `1px solid ${colors.border}`,
               outline: 'none',
               fontSize: '16px',
-              fontFamily: font.family,
               color: colors.ink,
               background: 'transparent',
             }}

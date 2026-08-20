@@ -1,12 +1,7 @@
 /**
- * Design tokens for the 2026 redesign (starting with the Login / auth screens).
- *
- * Single source of truth for the new look. Values come from the Figma "Revita 2026" auth mockups.
- * As the redesign spreads across the app, promote the shared ones into the MUI theme
- * (`muiTheme.js`) so global MUI components pick them up automatically; for now the auth components
- * import these directly so we can redesign in isolation without recolouring not-yet-touched pages.
- *
- * Values marked "derived" were not supplied in Figma Dev Mode — refine them on /design.
+ * Design tokens for the 2026 redesign, from the Figma "Revita 2026" auth mockups.
+ * Promote shared values into the MUI theme (`muiTheme.js`) as the redesign spreads.
+ * Values marked "derived" were not supplied in Figma — refine them on /design.
  */
 
 export const colors = {
@@ -26,8 +21,56 @@ export const colors = {
   opponent: '#FF5900', // derived — opponent bar fill
 }
 
+// Typefaces fetched from Google Fonts. `name` drives both the stylesheet URL injected into
+// index.html (`fontLinkPlugin` in vite.config.mjs) and the CSS stack below. Each weight is served
+// as a separate static face, so a weight that is not on this ladder will not render.
+const typefaces = {
+  ui: { name: 'Geologica', weights: [300, 400, 500, 600, 700], fallback: 'sans-serif' },
+
+  content: { name: 'Rubik', weights: [300, 400, 500, 600, 700], fallback: 'sans-serif' },
+}
+
+// Quote the family name, then append the fallback, so CSS and JS consumers cannot disagree.
+const stack = t => `'${t.name}', ${t.fallback}`
+
+// Typefaces the app ships itself rather than fetching. `name` is the `@font-face` family alias,
+// which vite also injects into SCSS as `$font-syriac`, so the alias is written exactly once.
+const bundledTypefaces = {
+  syriac: { name: 'NotoSansSyriacEastern', fallback: 'sans-serif' },
+}
+
+// Consumed only by vite.config.mjs, to build the Google Fonts <link> and the SCSS variables.
+export const typography = typefaces
+export const bundledTypography = bundledTypefaces
+
+// The three font axes: `family` for chrome, `content` for reading surfaces, and `languageContent`
+// / `perLanguage` for learning languages whose script `content` cannot draw.
 export const font = {
-  family: "'Geologica', sans-serif",
+  // UI / chrome font, applied globally via the MUI theme and the `--font-ui` CSS variable.
+  family: stack(typefaces.ui),
+
+  // Reading font, also published as the `--font-content` CSS variable by custom.scss.
+  content: stack(typefaces.content),
+
+  // Reading font that follows the learner's script. Use this instead of `content` on surfaces that
+  // paint learning-language text outside a `getTextStyle()` container; it swaps only the family.
+  languageContent: `var(--font-language, ${stack(typefaces.content)})`,
+
+  // Faces for scripts `content` cannot draw. `getTextStyle()` spreads the style keys into an inline
+  // `style` — that inline origin beats class rules and MUI `sx`, so they must not move into a
+  // class. `href` is not a style key: it is the on-demand stylesheet `useLanguageFont()` injects.
+  perLanguage: {
+    Syriac: { fontFamily: stack(bundledTypefaces.syriac), fontSize: '1.7rem' },
+
+    Chinese: {
+      fontFamily: "'Noto Sans SC', sans-serif",
+      href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap',
+    },
+  },
+
+  // Base size for reading surfaces, in rem against the `html { font-size: 14px }` in base.scss.
+  contentSize: '1.15rem',
+
   brand: 76, // "Revita" wordmark
   title: 28, // derived — card title ("Login"/"Sign Up"), not supplied
   label: 12,

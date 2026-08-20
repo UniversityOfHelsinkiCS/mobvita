@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import { images } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import LeaderboardList from './LeaderboardList'
 import LastWeeksWinners from './LastWeeksWinners'
@@ -20,7 +20,6 @@ const SectionTitle = ({ imgSource, imgAlt, translationId }) => (
           color: colors.muted,
           fontSize: 12,
           fontWeight: 600,
-          fontFamily: font.family,
           textTransform: 'uppercase',
           letterSpacing: 0.5,
         }}
@@ -50,18 +49,17 @@ const Leaderboard = () => {
           borderRadius: '30px',
           padding: { xs: '1.25em', sm: '1.75em' },
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-          fontFamily: font.family,
           color: colors.ink,
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontFamily: font.family, fontSize: 22, fontWeight: 600, color: colors.ink }}>
+          <span style={{ fontSize: 22, fontWeight: 600, color: colors.ink }}>
             <FormattedMessage id="Hours practiced" />
           </span>
           {pending && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
               <Spinner inline size={24} />
-              <span style={{ color: colors.muted, fontSize: 12, fontWeight: 550 }}>
+              <span style={{ color: colors.muted, fontSize: 12, fontWeight: 600 }}>
                 <FormattedMessage id="Updating" />
               </span>
             </Box>

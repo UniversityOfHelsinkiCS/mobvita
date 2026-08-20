@@ -1,3 +1,9 @@
+/* FONTS: this is a plain .css file, so it cannot see the `$font-ui` / `$font-content` SCSS
+   variables vite injects into every .scss file — only the `--font-ui` / `--font-content` custom
+   properties custom.scss publishes on `:root`. Nothing here needs either: every string on this
+   screen is interface copy (headings, section titles, translated topic names), so it inherits
+   --font-ui from <body>. A reading surface added here opts in with `var(--font-content)`. */
+
 .lesson-setup-body {
   display: flex;
   flex-direction: column;
@@ -13,7 +19,6 @@
 }
 
 .lesson-ready-title {
-  font-family: 'Geologica', sans-serif;
   font-weight: 700;
   font-size: 30px;
   line-height: 1.2;
@@ -30,7 +35,6 @@
 }
 
 .lesson-ready-section-title {
-  font-family: 'Geologica', sans-serif;
   font-weight: 700;
   font-size: 20px;
   color: #2d2c2a;
@@ -40,7 +44,6 @@
 .lesson-ready-list {
   margin: 0;
   padding-left: 1.3em;
-  font-family: 'Geologica', sans-serif;
   color: #2d2c2a;
 }
 
@@ -97,7 +100,6 @@
 }
 
 .lesson-setup-title {
-  font-family: 'Geologica', sans-serif;
   font-weight: 700;
   font-size: 30px;
   line-height: 1.2;
@@ -106,7 +108,6 @@
 }
 
 .lesson-setup-subtitle {
-  font-family: 'Geologica', sans-serif;
   font-size: 15px;
   color: #2d2c2a;
   margin: 4px 0 0;

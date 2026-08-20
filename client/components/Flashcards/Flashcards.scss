@@ -1,5 +1,15 @@
-// Styles for the Flashcards page (client/components/Flashcards).
-// Layout-level rules live here; card-face styling still lives in the shared custom.scss for now.
+// Styles for the Flashcards page; card-face styling still lives in custom.scss.
+
+// The lemma being drilled: `--font-language` so a learner's script gets a face with its glyphs.
+.flashcard-title,
+.flashcard-title-small {
+  font-family: var(--font-language, var(--font-content));
+}
+
+// A Latin transliteration, not the learnt script, so it deliberately stays on `--font-content`.
+.flashcard-phonetics {
+  font-family: var(--font-content);
+}
 
 .flashcard-body {
   display: flex;
@@ -8,17 +18,14 @@
   margin: 0;
 }
 
-// First row inside the cream card: the practice-mode menu (Translate / Quick) on the left and the
-// settings gear on the right.
 .flashcard-top-bar {
   display: flex;
   align-items: center;
   gap: 1em;
   padding: 1.25em 1.5em 0;
 
+  // Definite width so the fullWidth AppTabs inside resolves its 100%.
   &-menu {
-    // flex item with a definite width so the fullWidth AppTabs inside resolves its 100% correctly
-    // (a plain width:100% flex item would collapse to min-content).
     flex: 1;
     min-width: 0;
   }
@@ -41,9 +48,7 @@
   justify-content: center;
 }
 
-// The "next" arrow floats to the right of the (centred) card. It's absolutely positioned so it does
-// NOT take flow space — the card stays centred instead of being pushed left. Anchored just past the
-// right edge of the ~21em card (10.5em from centre + a small gap).
+// Absolutely positioned so the card stays centred; z-index lifts it over the card's z-index: 2.
 .flashcard-arrow-button {
   position: absolute;
   top: 50%;
@@ -51,12 +56,9 @@
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-  // The centred card (.react-card-front) is up to 40em wide with an inline z-index:2, so it paints
-  // over this absolutely-positioned arrow. Lift the arrow above it so it stays clickable/visible.
   z-index: 10;
 
-  // On narrow screens the card shrinks / the container is tighter, so the arrow ends up off-screen.
-  // Pull it 100px back to the left to keep it visible.
+  // Narrow screens: pull it back left so it stays on-screen.
   @media (max-width: 800px) {
     left: calc(50% + 11em - 50px);
   }
@@ -64,14 +66,11 @@
 
 // ── All-cards list ────────────────────────────────────────────────────────────
 
-// The list view has no separate top bar on this page (the gear moved into the header row), so give
-// the whole view breathing room from the cream card's rounded top edge.
+// No top bar in this view, so keep clear of the cream card's rounded top edge.
 .flashcard-list-view {
   padding-top: 1.25em;
 }
 
-// Header row: "N Cards" on the left, pagination centred, and the settings gear right-aligned so it
-// shares this line with the pagination.
 .flashcard-list-header {
   display: flex;
   align-items: center;
@@ -88,7 +87,6 @@
     flex: 1;
   }
 
-  // Settings gear shares the pagination line, right-aligned.
   &-settings {
     display: flex;
     justify-content: flex-end;
@@ -97,7 +95,6 @@
 }
 
 .flashcard-list-count {
-  font-family: 'Geologica', sans-serif;
   font-weight: 600;
   color: #2d2c2a;
   white-space: nowrap;
@@ -110,19 +107,13 @@
 }
 
 // ── Add / edit card template (Flashcards/Template/*) ──────────────────────────
-// Unifies the template classes and replaces the old ad-hoc utilities that never existed
-// (pt-nm / pb-xl / pb-lg / mt-sm / ml-lg / auto-top / gap-col-sm / mb-sm / mb-lg / pb-sm / pb-nm /
-// pr-sm / flashcard-template-button* / flashcard-mobile-template) plus the per-view inline card
-// styling. Generic utilities that DO exist (flex, flex-col, auto-overflow, full-width, italics,
-// space-between, align-center) are left in place.
 
 // Desktop: two cards side by side; mobile: a single stacked card.
 .flashcard-template {
   display: flex;
 }
 
-// The template cards reuse the .flashcard box; these set the 2026 colours/rounding
-// (compound selector so they win over the base .flashcard without needing inline styles).
+// Template cards reuse the .flashcard box; compound selector so these win over the base rule.
 .flashcard.flashcard-template-card {
   border-radius: 30px;
   color: #2d2c2a;
@@ -161,7 +152,6 @@
 .flashcard-word {
   display: flex;
   justify-content: center;
-  font-family: 'Geologica', sans-serif;
   font-weight: 700;
   color: #2d2c2a;
 }
@@ -171,8 +161,9 @@
   margin: 1rem 0 0.5rem 0;
 }
 
-// The word itself, shown in edit mode instead of the title.
+// The card's own term, in the language being learnt: `--font-language` for script-specific faces.
 .flashcard-word {
+  font-family: var(--font-language, var(--font-content));
   font-size: 20px;
 }
 
@@ -188,10 +179,7 @@
   margin-top: 0.5rem;
 }
 
-// Full-width "add" button under a hint / translation input. Scoped under the card (two classes,
-// specificity 0,2,0) so the top margin beats MUI's ButtonBase `margin: 0` — otherwise the plain
-// `.flashcard-form-button` (0,1,0) ties MUI and loses to it in the production build (extracted CSS
-// vs emotion injection order), which is why the input and button touched on prod but not locally.
+// Scoped under the card so the top margin beats MUI ButtonBase's `margin: 0` in the prod build.
 .flashcard-template-card .flashcard-form-button {
   width: 100%;
   margin-top: 0.75em;
@@ -218,9 +206,7 @@
   padding-right: 0.5rem;
 }
 
-// Desktop only: keep "Save hint" (left card) and "Save translation" (right card) on the same level.
-// Each section grows to fill its card and pushes the input + Save button to the bottom; the left
-// card has no Clear/Save row, so its Save button is lifted by that row's height so both line up.
+// Desktop only: keep "Save hint" and "Save translation" on the same level across the two cards.
 .flashcard-template-card--word .flashcard-template-section,
 .flashcard-template-card--translations .flashcard-template-section {
   flex: 1 1 auto;

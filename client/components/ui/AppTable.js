@@ -2,7 +2,7 @@ import React from 'react'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppTable — design-system data table (MUI `Table`, not react-bootstrap's).
@@ -47,12 +47,10 @@ const StyledTable = styled(Table, {
   shouldForwardProp: prop =>
     !['filled', 'striped', 'bordered', 'hoverable', 'tableWidth'].includes(prop),
 })(({ filled, striped, bordered, hoverable, tableWidth }) => ({
-  fontFamily: font.family,
   width: tableWidth,
   borderCollapse: 'separate',
   borderSpacing: 0,
   '& .MuiTableCell-root': {
-    fontFamily: font.family,
     color: colors.ink,
     borderBottom: `1px solid ${colors.border}`,
     ...(bordered && { border: `1px solid ${colors.border}` }),

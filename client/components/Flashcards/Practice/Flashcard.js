@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { flashcardColors, images } from 'Utilities/common'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardDelete from './FlashcardDelete'
 
 const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit }) => {
@@ -45,7 +45,6 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
             cursor: 'pointer',
             backgroundColor: colors.ink,
             color: colors.card,
-            fontFamily: font.family,
             fontWeight: 600,
             fontSize: 15,
           }}

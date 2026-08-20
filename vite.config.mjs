@@ -4,6 +4,7 @@ import moment from 'moment-timezone'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
+import { bundledTypography, font, typography } from './client/assets/mui_theme/designTokens.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm')
@@ -18,6 +19,54 @@ const jsxInJsPlugin = {
       lang: 'jsx',
       jsx: { runtime: 'classic' },
     })
+  },
+}
+
+/**
+ * Builds the webfont stylesheet URL from `typography` in designTokens.js, so the tokens decide both
+ * the families and the fetch. Families are de-duplicated, and a face with no weights omits the
+ * `:wght@` axis because an empty one 400s the whole stylesheet.
+ */
+const buildFontHref = () => {
+  const byFamily = new Map()
+  for (const face of Object.values(typography)) {
+    const weights = byFamily.get(face.name) || new Set()
+    face.weights.forEach(w => weights.add(w))
+    byFamily.set(face.name, weights)
+  }
+
+  const families = [...byFamily.entries()].map(([name, weights]) => {
+    const family = `family=${name.replace(/ /g, '+')}`
+    if (!weights.size) return family
+    return `${family}:wght@${[...weights].sort((a, b) => a - b).join(';')}`
+  })
+
+  return `https://fonts.googleapis.com/css2?${families.join('&')}&display=swap`
+}
+
+const FONT_LINK_PLACEHOLDER = '<!--FONT_LINK-->'
+
+/**
+ * Replaces the index.html placeholder with the generated font <link>. Throws when the placeholder
+ * is missing, because a silent no-op would ship the app with no webfont at all.
+ */
+const fontLinkPlugin = {
+  name: 'mobvita-font-link',
+  transformIndexHtml: {
+    order: 'pre',
+    handler: html => {
+      if (!html.includes(FONT_LINK_PLACEHOLDER)) {
+        throw new Error(
+          `index.html is missing the ${FONT_LINK_PLACEHOLDER} placeholder, so no webfont <link> ` +
+            'can be injected. Put it back in <head> (see the comment beside it).',
+        )
+      }
+
+      return html.replace(
+        FONT_LINK_PLACEHOLDER,
+        `<link href="${buildFontHref()}" rel="stylesheet" />`,
+      )
+    },
   },
 }
 
@@ -51,7 +100,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: BASE_PATH,
-    plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ })],
+    plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ }), fontLinkPlugin],
     optimizeDeps: {
       include: [
         'react-router-dom',
@@ -74,6 +123,18 @@ export default defineConfig(({ mode }) => {
             },
           },
         ],
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Publish the design token font families so any stylesheet can use `$font-ui` /
+          // `$font-content` without importing; `$font-syriac` is the bundled face's @font-face alias.
+          additionalData:
+            `$font-ui: ${font.family};\n` +
+            `$font-content: ${font.content};\n` +
+            `$font-syriac: '${bundledTypography.syriac.name}';\n`,
+        },
       },
     },
     resolve: {

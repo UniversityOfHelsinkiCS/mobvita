@@ -1,11 +1,10 @@
 import React from 'react'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const LeaderboardItem = ({ position, username, value, rankingHistory, highlighted = false }) => (
   <div
     className="leaderboard-item-container"
     style={{
-      fontFamily: font.family,
       color: colors.ink,
       borderRadius: highlighted ? '14px' : 0,
       backgroundColor: highlighted ? colors.green : 'transparent',

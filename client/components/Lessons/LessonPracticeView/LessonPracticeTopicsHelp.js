@@ -11,7 +11,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import { rowStyles } from 'Components/ui/menuRow'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 // Outline pill trigger — same look as the story preview's "All Topics In Text" control.
 const Trigger = styled('button')({
@@ -23,7 +23,6 @@ const Trigger = styled('button')({
   width: '100%',
   boxSizing: 'border-box',
   borderRadius: 999,
-  fontFamily: font.family,
   fontWeight: 600,
   fontSize: 15,
   cursor: 'pointer',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import { colors, font } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
 
 /**
@@ -27,7 +27,6 @@ const Field = styled('input')({
   borderRadius: 999,
   border: `1px solid ${SOFT_BORDER}`,
   backgroundColor: '#FFFFFF',
-  fontFamily: font.family,
   fontSize: 15,
   color: colors.ink,
   outline: 'none',

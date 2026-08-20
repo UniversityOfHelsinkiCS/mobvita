@@ -380,8 +380,7 @@ const ReadingPracticeView = () => {
       className={`reading-comp auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
       style={{
         maxWidth: 1108,
-        // 1.5em top aligns the card with the assistant panel (HelperSidebar top: 4.5em, 1.5em below
-        // the 3em navbar).
+        // 1.5em top aligns the card with the assistant panel (HelperSidebar sits at top: 4.5em).
         margin: '1.5em auto',
         width: '100%',
         display: 'flex',
@@ -394,7 +393,8 @@ const ReadingPracticeView = () => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          fontFamily: font.family,
+          // Reading surface — the reading token, not the chrome one.
+          fontFamily: font.content,
           border: `1px solid ${colors.border}`,
           borderRadius: '20px',
           padding: '1.25em',
@@ -405,9 +405,9 @@ const ReadingPracticeView = () => {
           minWidth: 300,
         }}
       >
-        <div style={{ fontFamily: font.family, fontWeight: 700, fontSize: 22, marginBottom: 12 }}>
-          {story.title}
-        </div>
+        {/* No fontFamily on purpose: naming one here would beat the per-language face the title
+            inherits from the getTextStyle() Box above. */}
+        <div style={{ fontWeight: 700, fontSize: 22, marginBottom: 12 }}>{story.title}</div>
         <HighlightedStoryText
           paragraphs={story.paragraph || []}
           highlightedSentenceIds={highlightedSentenceIds}
@@ -427,7 +427,9 @@ const ReadingPracticeView = () => {
             sx={{
               backgroundColor: colors.card,
               color: colors.ink,
-              fontFamily: font.family,
+              // Sibling of the story Box, so it inherits no per-language face from getTextStyle();
+              // `languageContent` follows the learner's script on its own.
+              fontFamily: font.languageContent,
               border: `1px solid ${colors.border}`,
               borderRadius: '20px',
               padding: '1.25em',
@@ -459,7 +461,6 @@ const ReadingPracticeView = () => {
                       </span>
                       {current?.question}
                     </div>
-                    {/* Settings (circle gear) to the right of the question. */}
                     <AnswerLocationSettings
                       checked={showAnswerLocationButtonEnabled}
                       onChange={setShowAnswerLocationButtonEnabled}
@@ -472,8 +473,7 @@ const ReadingPracticeView = () => {
                       const isWrongTried = attemptedWrongChoices.has(String(c))
                       const isCorrect = showCorrectAnswer && isAnswer
 
-                      // Design-system answer states: white by default, green when correct, blue
-                      // when a wrong choice was tried.
+                      // Answer states: white by default, green when correct, blue when tried wrong.
                       let border = `1px solid ${colors.border}`
                       let bg = '#ffffff'
                       let color = colors.ink

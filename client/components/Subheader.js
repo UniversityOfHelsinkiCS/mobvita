@@ -24,7 +24,7 @@ const Subheader = ({ imgSource, imgAlt, iconName, translationId, color = '#777' 
         />
       )}
       <span
-        style={{ color, fontSize: '12px', fontWeight: 550, paddingLeft: IconComponent ? 0 : '.5rem' }}
+        style={{ color, fontSize: '12px', fontWeight: 600, paddingLeft: IconComponent ? 0 : '.5rem' }}
       >
         <FormattedMessage id={translationId} />
       </span>
