@@ -138,6 +138,8 @@ const StoryCard = ({
     story.description.trim().toLowerCase().includes('under processing')
   const shouldPollForLiveDescription =
     uploadUnfinished || (isUnderProcessingDescription && !processingDescription)
+  const showProcessingLabel = shouldPollForLiveDescription && !processingDescription
+  const description = processingDescription || story.description
   const timedExercise = story?.timed_exercise
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
@@ -232,7 +234,11 @@ const StoryCard = ({
         setSharedStoryVisibility={setSharedStoryVisibility}
         savedLibrarySelection={savedLibrarySelection}
         triggerContent={
-          <div className="library-story-card-body library-tour-open-story-modal" role="button" tabIndex={0}>
+          <div
+            className="library-story-card-body library-tour-open-story-modal"
+            role="button"
+            tabIndex={0}
+          >
             <div className="library-story-card-head">
               <AppIcon
                 src={story.flashcardsOnly ? images.cardsIcon : images.bookOpen}
@@ -245,8 +251,10 @@ const StoryCard = ({
                     {story.title}
                   </span>
                 </div>
-                {story.description && (
-                  <div className="library-story-card-description">{story.description}</div>
+                {(showProcessingLabel || description) && (
+                  <div className="library-story-card-description">
+                    {showProcessingLabel ? <FormattedMessage id="processing-story" /> : description}
+                  </div>
                 )}
               </div>
             </div>
@@ -304,9 +312,7 @@ const StoryCard = ({
                 )}
                 {hasDifficultyLevel(story.difficulty) && (
                   <span className="library-tour-difficulty-stars">
-                    <CustomTooltip
-                      title={<FormattedMessage id="difficulty-level-tooltip" />}
-                    >
+                    <CustomTooltip title={<FormattedMessage id="difficulty-level-tooltip" />}>
                       <DifficultyLevel difficulty={story.difficulty} />
                     </CustomTooltip>
                   </span>
