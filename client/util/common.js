@@ -74,6 +74,16 @@ import dotpoints01 from 'Assets/images/dotpoints-01.svg'
 import playCircle from 'Assets/images/play-circle.svg'
 import arrowRight from 'Assets/images/arrow-right.svg'
 import checkCircle from 'Assets/images/check-circle.svg'
+import clock from 'Assets/images/clock.svg'
+import note from 'Assets/images/note.svg'
+import group from 'Assets/images/group.svg'
+import envelope from 'Assets/images/envelope.svg'
+import openBook from 'Assets/images/open-book.svg'
+import letter from 'Assets/images/letter.svg'
+import letterGreen from 'Assets/images/letter-green.svg'
+import level1 from 'Assets/images/level1.svg'
+import level2 from 'Assets/images/level2.svg'
+import level3 from 'Assets/images/level3.svg'
 import checkIcon from 'Assets/images/check-icon.svg'
 import question from 'Assets/images/question.svg'
 import iconHome from 'Assets/images/icon-home.svg'
@@ -263,6 +273,16 @@ export const images = {
   arrowRight,
   checkCircle,
   checkIcon,
+  clock,
+  note,
+  group,
+  envelope,
+  openBook,
+  letter,
+  letterGreen,
+  level1,
+  level2,
+  level3,
   question,
   iconHome,
   layersThree,

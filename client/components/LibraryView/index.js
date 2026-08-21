@@ -4,7 +4,7 @@ import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
 import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
 import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
 import AppButton from 'Components/AppButton'
-import StoryListItem from 'Components/LibraryView/StoryListItem'
+import StoryCard from 'Components/LibraryView/StoryCard'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
 import AppSearchField from 'Components/ui/AppSearchField'
@@ -14,7 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
-import star06Icon from 'Assets/images/star-06.svg'
 import { capitalize, images, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -47,7 +46,7 @@ import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
-import EssayListItem from './EssayListItem'
+import EssayCard from './EssayCard'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import {
@@ -378,12 +377,12 @@ const StoryList = () => {
 
   const addStoryButton = (
     <AppButton
-      className="tour-add-new-stories library-add-story-button"
+      className="tour-add-new-stories library-action-button"
       variant="contrast"
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
     >
-      <img src={star06Icon} alt="" />
+      <img src={images.star06} alt="" />
       {intl.formatMessage({ id: 'add-your-stories' })}
     </AppButton>
   )
@@ -429,7 +428,7 @@ const StoryList = () => {
   )
 
   if (pending || !refreshed) {
-    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
+    return <Spinner fullHeight size={60} spinnerColor={colors.ink} textColor={colors.ink} text={intl.formatMessage({ id: 'loading' })} />
   }
 
   const storyIsInActiveLibrary = story => {
@@ -475,6 +474,8 @@ const StoryList = () => {
   }
 
   const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
+  // One level up from where we are — the back card's click target and its drop target.
+  const parentLibraryPath = libraryPathParts.slice(0, -1).join('/')
   const localFolderPathsForLibrary = getLocalFolderPathsForLibrary(
     localFolders,
     libraryIsMutable,
@@ -516,14 +517,11 @@ const StoryList = () => {
     clearEssayDragState()
   }
 
-  // Tapping a folder: navigate into it when it has sub-folders, otherwise just preview it (highlighted
-  // green) and show its stories below via selectedFolderPath. Tapping the same leaf again clears it.
-  const handleFolderTap = (folderPath, hasSubfolders, navigateInto) => {
-    if (hasSubfolders) {
-      navigateInto(folderPath)
-      return
-    }
-    setSelectedFolderPath(previous => (previous === folderPath ? null : folderPath))
+  // Tapping any folder opens it: the path moves, so the folder you are in is named by the
+  // breadcrumbs and its stories fill the grid.
+  const handleFolderTap = (folderPath, navigateInto) => {
+    setSelectedFolderPath(null)
+    navigateInto(folderPath)
   }
 
   function handleMoveStoriesToPath(storyIds, targetPath) {
@@ -531,9 +529,6 @@ const StoryList = () => {
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
 
-    // Don't let the folder you're viewing be emptied of its direct stories by moving ALL of them into one
-    // of its own subfolders — that leaves a folder with subfolders but no stories, which we don't handle
-    // yet. Prevent it for now.
     if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
       const directStories = getStoriesForPath(allStoriesInActiveLibrary, currentLibraryPath)
       const movingIds = new Set(storyIds.map(String))
@@ -562,8 +557,6 @@ const StoryList = () => {
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
 
-    // Same guard as stories: don't empty the folder you're viewing by moving all its essays into one of
-    // its own subfolders (see handleMoveStoriesToPath).
     if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
       const directEssays = getStoriesForPath(uploadedEssays, currentLibraryPath)
       const movingIds = new Set(essayIds.map(String))
@@ -663,12 +656,18 @@ const StoryList = () => {
   const folderIsLocalOnly = folderPath =>
     localFolderPathsForLibrary.includes(normalizeLibraryPath(folderPath))
 
+  // At the top level the root crumb IS the current folder, so it takes the ink "current" styling.
+  // It stays a <button> either way, to keep the drop target for dragging stories back to the root.
   const renderLibraryPathBreadcrumbs = () => (
     <Box className="library-folder-breadcrumbs">
       <Breadcrumbs aria-label="Library folder path">
         <button
           type="button"
-          className="library-folder-breadcrumb"
+          className={
+            libraryPathParts.length === 0
+              ? 'library-folder-breadcrumb-current'
+              : 'library-folder-breadcrumb'
+          }
           onClick={() => handleLibraryPathChange('')}
           onDragLeave={e => handleFolderDragLeave('', e)}
           onDragOver={e => handleFolderDragOver('', e)}
@@ -850,7 +849,11 @@ const StoryList = () => {
       <Breadcrumbs aria-label="Essay folder path">
         <button
           type="button"
-          className="library-folder-breadcrumb"
+          className={
+            libraryPathParts.length === 0
+              ? 'library-folder-breadcrumb-current'
+              : 'library-folder-breadcrumb'
+          }
           onClick={() => handleEssayLibraryPathChange('')}
           onDragLeave={e => handleEssayFolderDragLeave('', e)}
           onDragOver={e => handleEssayFolderDragOver('', e)}
@@ -891,7 +894,9 @@ const StoryList = () => {
   // The folder section (breadcrumbs + the folder pills) sits at the TOP of the library card, above the
   // search/sort row. The stories that live in the current folder render separately, BELOW that row (see
   // renderStoriesGrid), per the 2026 library layout.
-  const renderFolderSection = () => {
+  // `controls` renders between the breadcrumb header and the folder grid — the search field and
+  // the sort/add row sit there, per the Figma directory order.
+  const renderFolderSection = controls => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
       currentLibraryPath,
@@ -925,12 +930,17 @@ const StoryList = () => {
             />
           )}
         </Box>
+        {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="library-folders" className="library-folder-grid">
             {libraryPathParts.length > 0 && (
               <FolderCard
                 isBack
-                onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
+                isDropTarget={libraryIsMutable && dragOverFolderPath === parentLibraryPath}
+                onClick={() => handleLibraryPathChange(parentLibraryPath)}
+                onDragLeave={e => handleFolderDragLeave(parentLibraryPath, e)}
+                onDragOver={e => handleFolderDragOver(parentLibraryPath, e)}
+                onDrop={e => handleFolderDrop(parentLibraryPath, e)}
               />
             )}
             {foldersInCurrentPath.map(folderName => {
@@ -944,12 +954,6 @@ const StoryList = () => {
               )
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
-              const hasSubfolders =
-                getFoldersForPath(
-                  libraryFilteredStories,
-                  normalizedFolderPath,
-                  localFolderPathsForLibrary,
-                ).length > 0
 
               return (
                 <FolderCard
@@ -961,7 +965,7 @@ const StoryList = () => {
                   isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
                   onClick={() =>
-                    handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
+                    handleFolderTap(normalizedFolderPath, handleLibraryPathChange)
                   }
                   onDragStart={
                     libraryIsMutable
@@ -1020,8 +1024,13 @@ const StoryList = () => {
 
     if (foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0) {
       return (
-        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-stories-found" />
+        <Box className="no-stories-found">
+          <div className="no-stories-found-inner">
+            <img src={images.openBook} alt="" className="no-stories-found-icon" />
+            <span className="no-stories-found-text">
+              <FormattedMessage id="no-stories-found" />
+            </span>
+          </div>
         </Box>
       )
     }
@@ -1029,7 +1038,7 @@ const StoryList = () => {
     return (
       <Box data-cy="story-items" className="library-story-grid">
         {storiesInCurrentPath.map(story => (
-          <StoryListItem
+          <StoryCard
             key={story._id}
             draggable={libraryIsMutable}
             isDragging={draggedStoryIds.includes(story._id)}
@@ -1079,7 +1088,7 @@ const StoryList = () => {
   }
 
   // Breadcrumbs + essay folder pills — rendered at the TOP of the essay card.
-  const renderEssayFolderSection = () => {
+  const renderEssayFolderSection = controls => {
     const sortedEssays = getSortedEssaysInView()
     const foldersInCurrentPath = getFoldersForPath(
       sortedEssays,
@@ -1107,14 +1116,17 @@ const StoryList = () => {
             onAddFolder={handleAddFolder}
           />
         </Box>
+        {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="essay-folders" className="library-folder-grid">
             {libraryPathParts.length > 0 && (
               <FolderCard
                 isBack
-                onClick={() =>
-                  handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))
-                }
+                isDropTarget={essayDragOverFolderPath === parentLibraryPath}
+                onClick={() => handleEssayLibraryPathChange(parentLibraryPath)}
+                onDragLeave={e => handleEssayFolderDragLeave(parentLibraryPath, e)}
+                onDragOver={e => handleEssayFolderDragOver(parentLibraryPath, e)}
+                onDrop={e => handleEssayFolderDrop(parentLibraryPath, e)}
               />
             )}
             {foldersInCurrentPath.map(folderName => {
@@ -1125,9 +1137,6 @@ const StoryList = () => {
               const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
-              const hasSubfolders =
-                getFoldersForPath(sortedEssays, normalizedFolderPath, localFolderPathsForLibrary)
-                  .length > 0
 
               return (
                 <FolderCard
@@ -1139,11 +1148,7 @@ const StoryList = () => {
                   isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
                   onClick={() =>
-                    handleFolderTap(
-                      normalizedFolderPath,
-                      hasSubfolders,
-                      handleEssayLibraryPathChange,
-                    )
+                    handleFolderTap(normalizedFolderPath, handleEssayLibraryPathChange)
                   }
                   onDragStart={e => handleEssayFolderDragStart(normalizedFolderPath, e)}
                   onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
@@ -1186,8 +1191,13 @@ const StoryList = () => {
     if (foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0) {
       if (essaysPending && !query) return null
       return (
-        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-essays-found" />
+        <Box className="no-stories-found">
+          <div className="no-stories-found-inner">
+            <img src={images.letter} alt="" className="no-stories-found-icon" />
+            <span className="no-stories-found-text">
+              <FormattedMessage id="no-essays-found" />
+            </span>
+          </div>
         </Box>
       )
     }
@@ -1199,7 +1209,7 @@ const StoryList = () => {
         {essaysInCurrentPath.map((essay, index) => {
           const essayId = getWritingEssayId(essay)
           return (
-            <EssayListItem
+            <EssayCard
               key={essayId || index}
               essay={essay}
               draggable={essaysLibraryActive && Boolean(essayId)}
@@ -1242,18 +1252,20 @@ const StoryList = () => {
       >
         {activeLibrary === 'essays' ? (
           <>
-            {renderEssayFolderSection()}
-            {essaySearchAndSortControls}
+            {renderEssayFolderSection(essaySearchAndSortControls)}
             {renderEssayItems()}
           </>
         ) : (
           <>
-            {renderFolderSection()}
-            <LibrarySearch
-              setDisplayedStories={setDisplayedStories}
-              setDisplaySearchResults={setDisplaySearchResults}
-            />
-            {renderSortAndAddRow(sorter, sortDropdownOptions)}
+            {renderFolderSection(
+              <>
+                <LibrarySearch
+                  setDisplayedStories={setDisplayedStories}
+                  setDisplaySearchResults={setDisplaySearchResults}
+                />
+                {renderSortAndAddRow(sorter, sortDropdownOptions)}
+              </>,
+            )}
             {lastQuery && (
               <Box>
                 <Typography component="span">

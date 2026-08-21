@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { useIntl } from 'react-intl'
-import { IconButton } from '@mui/material'
-import addFolderIcon from '../../assets/images/folder-plus.svg'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
-import CustomTooltip from 'Components/CustomTooltip'
+import { images } from 'Utilities/common'
 
 const AddFolder = ({ existingFolderNames, onAddFolder }) => {
   const intl = useIntl()
@@ -45,11 +43,15 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
 
   return (
     <>
-      <CustomTooltip title={intl.formatMessage({ id: 'add-folder' })}>
-        <IconButton aria-label={intl.formatMessage({ id: 'add-folder' })} onClick={openDialog}>
-          <img src={addFolderIcon} alt="" style={{ width: 24, height: 24 }} />
-        </IconButton>
-      </CustomTooltip>
+      <AppButton
+        variant="tan"
+        className="library-action-button"
+        onClick={openDialog}
+        data-cy="add-folder-button"
+      >
+        <img src={images.folderPlus} alt="" />
+        {intl.formatMessage({ id: 'add-folder' })}
+      </AppButton>
 
       <AppDialog
         open={open}

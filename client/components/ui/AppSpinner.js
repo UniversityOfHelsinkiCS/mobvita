@@ -7,8 +7,10 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * AppSpinner — the 2026 design-system loading spinner: a rotating ring that draws itself in with a
  * clip-path sweep (sage green by default).
  *
- *   size  – diameter in px (default 48). The ring thickness scales with it (5/48 of the diameter).
- *   color – ring colour (default the brand green).
+ *   size      – diameter in px (default 48). Ring thickness scales with it (5/48 of the diameter).
+ *   color     – ring colour (default the brand green).
+ *   text      – optional caption under the ring.
+ *   textColor – caption colour (default the brand green).
  *
  * Pure/presentational. For a full-page/centred loader keep using `Spinner`; use AppSpinner as the
  * raw design-system spinner element.
@@ -45,8 +47,31 @@ const Ring = styled('span', {
   },
 }))
 
-const AppSpinner = ({ size = 48, color = colors.green, ...rest }) => (
-  <Ring size={size} ringColor={color} role="status" aria-label="loading" {...rest} />
-)
+const AppSpinner = ({
+  size = 48,
+  color = colors.green,
+  text,
+  textColor = colors.green,
+  textProps,
+  ...rest
+}) => {
+  if (text == null || text === '') {
+    return <Ring size={size} ringColor={color} role="status" aria-label="loading" {...rest} />
+  }
+
+  return (
+    <span
+      role="status"
+      aria-label={typeof text === 'string' ? text : 'loading'}
+      style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
+      {...rest}
+    >
+      <Ring size={size} ringColor={color} aria-hidden />
+      <span {...textProps} style={{ color: textColor, ...textProps?.style }}>
+        {text}
+      </span>
+    </span>
+  )
+}
 
 export default AppSpinner

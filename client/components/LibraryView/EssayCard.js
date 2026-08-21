@@ -15,7 +15,7 @@ import ConfirmationWarning from 'Components/ConfirmationWarning'
 
 // A single essay in the "My Essays" library: title (styled like a story) + save date + delete.
 // Clicking the card opens the essay detail dialog (original + current versions).
-const EssayListItem = ({
+const EssayCard = ({
   essay,
   onOpen,
   draggable = false,
@@ -77,7 +77,7 @@ const EssayListItem = ({
         sx={clickable ? { cursor: 'pointer' } : undefined}
       >
         <div className="library-item-body">
-          <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+          <img src={images.letterGreen} alt="" className="library-item-icon" />
           <div className="library-item-main">
             <div className="library-item-toprow">
               <span className="library-item-title" style={getTextStyle(learningLanguage)}>
@@ -126,4 +126,4 @@ const EssayListItem = ({
   )
 }
 
-export default EssayListItem
+export default EssayCard

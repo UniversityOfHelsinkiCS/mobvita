@@ -19,6 +19,16 @@ export const colors = {
   progressBarTrack: '#E5EDE4', // derived — progress bar track
   progressBarFill: '#A6CDB4', // derived — progress bar fill
   opponent: '#FF5900', // derived — opponent bar fill
+
+  // Library directory (Figma "Library Directory")
+  surface: '#FFFFFF', // folder / story item background
+  cardBorder: '#E8E5DC', // item border at rest (2px)
+  inputBorder: '#E9E5DC', // search field border — a shade off cardBorder, per the design
+  cardBorderActive: '#C6E0D7', // item border when active (4px); also the selected-folder fill
+  progressEmpty: '#DBE9DF', // unfilled progress segment; also the folder icon fill
+  folderIconStroke: '#8DB19F', // folder icon outline
+  progressLabel: '#7C9562', // percentage label inside the progress bar
+  emptyState: '#BFBBB0', // icon + text of an empty library folder
 }
 
 // Typefaces fetched from Google Fonts. `name` drives both the stylesheet URL injected into
