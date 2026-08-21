@@ -25,6 +25,7 @@ import AppLemma from 'Components/ui/AppLemma'
 import AppStepper from 'Components/ui/AppStepper'
 import AppTooltip from 'Components/ui/AppTooltip'
 import AppSpinner from 'Components/ui/AppSpinner'
+import DifficultyLevel from 'Components/DifficultyLevel'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -275,6 +276,9 @@ const DesignSystem = () => {
             'envelope',
             'openBook',
             'letter',
+            'level1',
+            'level2',
+            'level3',
             'question',
             'iconHome',
             'layersThree',
@@ -319,6 +323,25 @@ const DesignSystem = () => {
             </div>
           )
         })()}
+      </Section>
+
+      <Section title="DifficultyLevel — story difficulty (swap the art in LEVEL_ICONS)">
+        <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+          {[
+            { difficulty: 1, label: '1 / low' },
+            { difficulty: 2, label: '2 / average' },
+            { difficulty: 3, label: '3 / high' },
+            { difficulty: undefined, label: 'unrated — renders nothing' },
+          ].map(({ difficulty, label }) => (
+            <div
+              key={label}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
+            >
+              <DifficultyLevel difficulty={difficulty} size={24} />
+              <span style={{ fontSize: 12, color: colors.muted }}>{label}</span>
+            </div>
+          ))}
+        </div>
       </Section>
 
       <Section title="AppButton — design variants (active / disabled)">
@@ -537,6 +560,8 @@ const DesignSystem = () => {
           <AppSpinner size={24} />
           <AppSpinner size={48} />
           <AppSpinner size={72} />
+          <AppSpinner size={48} text="Loading stories…" />
+          <AppSpinner size={48} text="Custom colour" color={colors.ink} textColor={colors.muted} />
         </div>
       </Section>
 

@@ -14,7 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
-import star06Icon from 'Assets/images/star-06.svg'
 import { capitalize, images, useLearningLanguage } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -383,7 +382,7 @@ const StoryList = () => {
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
     >
-      <img src={star06Icon} alt="" />
+      <img src={images.star06} alt="" />
       {intl.formatMessage({ id: 'add-your-stories' })}
     </AppButton>
   )

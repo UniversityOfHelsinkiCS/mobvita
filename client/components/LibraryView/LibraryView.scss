@@ -351,6 +351,23 @@ $menu-hover: $color-menu-hover;
   gap: 8px;
   flex-shrink: 0;
   color: $color-muted;
+
+  // Children are a mix of <img>, MUI <svg> and a <span> wrapper. `line-height: 0` collapses the
+  // inline text box a wrapper would otherwise get (25px around a 20px icon), which is what pushes
+  // it off the shared centre line.
+  > * {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  // MUI's `fontSize="small"` is 1.25rem = 17.5px against the 14px root, so those icons come out
+  // smaller than the 20px SVGs beside them. Pin them to the same box.
+  .MuiSvgIcon-root {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+  }
 }
 
 .library-item-icon {

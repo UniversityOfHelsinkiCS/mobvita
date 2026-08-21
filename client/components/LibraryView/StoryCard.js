@@ -18,7 +18,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
-import DifficultyStars from 'Components/DifficultyStars'
+import DifficultyLevel from 'Components/DifficultyLevel'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
@@ -240,9 +240,6 @@ const StoryCard = ({
                   <span className="library-item-title" style={getTextStyle(learningLanguage)}>
                     {story.title}
                   </span>
-                  <div className="library-item-badges library-tour-difficulty-stars">
-                    <DifficultyStars difficulty={story.difficulty} />
-                  </div>
                 </div>
                 {story.description && (
                   <div className="library-story-card-description">{story.description}</div>
@@ -305,6 +302,9 @@ const StoryCard = ({
                     <img src={images.openBook} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
+                <span className="library-tour-difficulty-stars">
+                  <DifficultyLevel difficulty={story.difficulty} />
+                </span>
               </div>
             </div>
           </div>

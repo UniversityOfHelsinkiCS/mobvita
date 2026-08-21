@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
 import AppSpinner from 'Components/ui/AppSpinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 // Shared loading spinner (renders the design-system AppSpinner ring). Keeps the container / text /
 // delayedMessage / size / inline / fullHeight behaviour every call site relies on.
@@ -25,7 +26,7 @@ const Spinner = ({
   delayedMessage = [],
   textSize = 20,
   textVariant = 'primary',
-  textColor,
+  textColor = colors.green,
 }) => {
   const [messageIndex, setMessageIndex] = useState(0)
 
@@ -55,8 +56,9 @@ const Spinner = ({
   }, [text, delayedMessage?.join('||')])
 
   const variantClass = `spinner--${variant}`
-  const resolvedTextVariant = textVariant ?? textColor ?? variant
-  const textVariantClass = `spinner--${resolvedTextVariant}`
+  // `textColor` is applied directly rather than through a `spinner--*` class: those classes still
+  // resolve to bootstrap variables (`--bs-primary`) left over from the bootstrap removal.
+  const textVariantClass = `spinner--${textVariant}`
   const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
   const displayText = messageIndex === 0 ? text : messages[messageIndex - 1]
 
@@ -80,7 +82,7 @@ const Spinner = ({
       {displayText ? (
         <div
           className={`spinner-text ${textVariantClass}`}
-          style={{ fontSize: textSize, margin: '8px' }}
+          style={{ fontSize: textSize, margin: '8px', color: textColor }}
         >
           {displayText}
         </div>
