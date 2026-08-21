@@ -584,6 +584,22 @@ const DesignSystem = () => {
           <AppSpinner size={48} />
           <AppSpinner size={72} />
         </div>
+        {/* On a blue surface the default sage-green reads weakly — use cream for contrast. */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 40,
+            padding: '20px 12px',
+            marginTop: 16,
+            background: colors.panel,
+            borderRadius: shape.cardRadius,
+          }}
+        >
+          <AppSpinner size={24} color={colors.card} />
+          <AppSpinner size={48} color={colors.card} />
+          <AppSpinner size={72} color={colors.card} />
+        </div>
       </Section>
 
       <Section title="AppStepper">
