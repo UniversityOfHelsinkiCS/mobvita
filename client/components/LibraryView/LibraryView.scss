@@ -241,7 +241,8 @@ $menu-hover: $color-menu-hover;
   flex-shrink: 0;
 }
 
-.library-add-story-button {
+// Figma "Button M IconText" — shared by the add-story and add-folder actions.
+.library-action-button {
   width: 250px;
   height: 36px;
   flex-shrink: 0;

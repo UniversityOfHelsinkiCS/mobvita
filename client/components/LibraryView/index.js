@@ -377,7 +377,7 @@ const StoryList = () => {
 
   const addStoryButton = (
     <AppButton
-      className="tour-add-new-stories library-add-story-button"
+      className="tour-add-new-stories library-action-button"
       variant="contrast"
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
