@@ -14,6 +14,7 @@ import {
   markAnsweredChoice
 } from 'Utilities/redux/testReducer'
 import { learningLanguageSelector } from 'Utilities/common'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage } from 'react-intl';
 import MultipleChoice from '../MultipleChoice'
 import Spinner from 'Components/Spinner'
@@ -178,7 +179,20 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
   return (
     <div className="cont mt-nm">
-      <Paper sx={{ padding: '1em', minHeight: '700px', borderRadius: '20px', position: 'relative' }}>
+      <Paper
+        elevation={0}
+        sx={{
+          padding: '1em',
+          minHeight: '700px',
+          borderRadius: '20px',
+          position: 'relative',
+          backgroundColor: colors.card,
+          color: colors.ink,
+          fontFamily: font.family,
+          border: 'none',
+          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.10)',
+        }}
+      >
         <div className="align-center justify-center">
           <div
             className="flex align-start"
@@ -189,13 +203,13 @@ const ExhaustiveTest = ({ showingInfo }) => {
                 fontSize="large"
                 data-cy="exhaustive-test-pause-button"
                 onClick={paused ? resumeTimer : pauseTimer}
-                sx={{ margin: '0.25em', color: willPause ? 'grey' : 'black' }}
+                sx={{ margin: '0.25em', color: willPause ? colors.muted : colors.ink }}
               />
               <StopIcon
                 fontSize="large"
                 data-cy="exhaustive-test-stop-button"
                 onClick={stop}
-                sx={{ margin: '0.25em', color: willStop ? 'grey' : 'black' }}
+                sx={{ margin: '0.25em', color: willStop ? colors.muted : colors.ink }}
               />
             </div>
             <div
@@ -204,7 +218,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
               style={{
                 fontSize: '2em',
                 fontWeight: 'bold',
-                color: '#212529',
+                color: colors.ink,
                 padding: 0,
               }}
             >
