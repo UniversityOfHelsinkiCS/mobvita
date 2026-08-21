@@ -351,6 +351,7 @@ $menu-hover: $color-menu-hover;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
+  margin-left: auto;
   color: $color-muted;
 
   // Children are a mix of <img>, MUI <svg> and a <span> wrapper. `line-height: 0` collapses the

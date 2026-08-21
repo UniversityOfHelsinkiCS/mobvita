@@ -10,6 +10,20 @@ import callBuilder from '../apiConnection'
  * Actions and reducers are in the same file for readability
  */
 
+/**
+ * Refetch ONE story to pick up progress changed elsewhere (see `staleStoryId`). Its own prefix
+ * rather than `getStoryAction`: that one drives `focused` and the request-id guard, which the
+ * library has no business touching just to refresh a progress bar.
+ */
+export const refreshStoryProgress = storyId => {
+  const route = `/stories/${storyId}`
+  const prefix = 'REFRESH_STORY_PROGRESS'
+  // `query` rides along to the SUCCESS action, so the reducer knows which list entry to patch
+  // without depending on the payload carrying `_id` (GET_STORY_SUCCESS already normalises around
+  // responses that don't).
+  return callBuilder(route, prefix, 'get', undefined, { storyId })
+}
+
 export const getStoryAction = (storyId, mode) => {
   const route = `/stories/${storyId}?user_mode=${mode}`
   const prefix = 'GET_STORY'
@@ -209,6 +223,11 @@ const initialState = {
   loadingProgress: {}, // { [storyId]: progressData }
   readingQuestions: null, // response of /get_questions: { questions, session_id, ... }
   readingQuestionsPending: false,
+  // Id of the story whose progress changed elsewhere, or null. StoryFetcher refreshes just that one
+  // story in the background, so neither browsing nor practising costs a full list request.
+  staleStoryId: null,
+  // Set while an answer POST is in flight; promoted to `staleStoryId` once it succeeds.
+  answeringStoryId: null,
 }
 
 const getStoryIdFromRoute = route => route?.match(/^\/stories\/([^/?]+)/)?.[1]
@@ -268,9 +287,44 @@ export default (state = initialState, action) => {
         error: true,
       }
 
+    // Practice / review / compete all post answers through GET_SNIPPET_ANSWERS. Take the story id
+    // from the ATTEMPT's route, not the response: only ATTEMPT carries `requestSettings`, and the
+    // answer payload is a snippet whose shape we should not depend on.
+    case 'GET_SNIPPET_ANSWERS_ATTEMPT': {
+      const answeredId = action.requestSettings?.route?.match(
+        /^\/stories\/([^/]+)\/snippets\/answer/,
+      )?.[1]
+      return answeredId ? { ...state, answeringStoryId: answeredId } : state
+    }
+
+    // Promote only once the answer is actually persisted, so the refresh cannot race the POST.
+    case 'GET_SNIPPET_ANSWERS_SUCCESS':
+      return { ...state, staleStoryId: state.answeringStoryId, answeringStoryId: null }
+
+    case 'GET_SNIPPET_ANSWERS_FAILURE':
+      return { ...state, answeringStoryId: null }
+
+    case 'REFRESH_STORY_PROGRESS_SUCCESS': {
+      const fresh = action.response
+      const id = action.query?.storyId ?? fresh?._id
+      if (!id || !fresh) return { ...state, staleStoryId: null }
+
+      return {
+        ...state,
+        staleStoryId: null,
+        // Merge, don't replace: the list entry has fields the single-story payload may not.
+        data: state.data.map(story =>
+          String(story._id) === String(id) ? { ...story, ...fresh } : story,
+        ),
+      }
+    }
+
+    case 'REFRESH_STORY_PROGRESS_FAILURE':
+      return { ...state, staleStoryId: null }
     case 'GET_STORIES_SUCCESS':
       return {
         ...state,
+        staleStoryId: null,
         data: action.response.stories,
         totalNum: action.response.total_num,
         pending: false,

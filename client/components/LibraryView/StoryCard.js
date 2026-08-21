@@ -253,14 +253,16 @@ const StoryCard = ({
 
             {/* Progress left, status icons right — Figma "Frame 2087326980". */}
             <div className="library-story-card-footer">
-              <div className="library-story-card-progress">
-                <AppProgressBar
-                  value={story?.percent_cov}
-                  height="10px"
-                  fillColor={colors.green}
-                  trackColor={colors.progressEmpty}
-                />
-              </div>
+              {story?.percent_cov > 0 && (
+                <div className="library-story-card-progress">
+                  <AppProgressBar
+                    value={story?.percent_cov}
+                    height="10px"
+                    fillColor={colors.green}
+                    trackColor={colors.progressEmpty}
+                  />
+                </div>
+              )}
 
               <div className="library-story-card-meta">
                 {uploadUnfinished && (
