@@ -23,10 +23,15 @@ const LEVELS = {
   high: 'high',
 }
 
+// True when `difficulty` maps to a real level, so a caller can skip the wrapper as well — an empty
+// wrapper is still a flex item and would eat the icon row's gap.
+export const hasDifficultyLevel = difficulty => Boolean(LEVELS[difficulty])
+
 // forwardRef so it can sit directly inside a Tooltip/Popper: MUI hands the ref to the component,
 // not to the element it returns, and a plain function component would drop it.
 const DifficultyLevel = forwardRef(({ difficulty, size = 20, style, ...props }, ref) => {
   const level = LEVELS[difficulty]
+  if (!level) return null
 
   return (
     <img

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Card } from '@mui/material'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { FormattedMessage } from 'react-intl'
@@ -18,8 +17,9 @@ import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
-import DifficultyLevel from 'Components/DifficultyLevel'
+import DifficultyLevel, { hasDifficultyLevel } from 'Components/DifficultyLevel'
 import AppProgressBar from 'Components/ui/AppProgressBar'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
 import './LibraryView.scss'
@@ -234,7 +234,11 @@ const StoryCard = ({
         triggerContent={
           <div className="library-story-card-body library-tour-open-story-modal" role="button" tabIndex={0}>
             <div className="library-story-card-head">
-              <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+              <AppIcon
+                src={story.flashcardsOnly ? images.cardsIcon : images.bookOpen}
+                color={colors.green}
+                className="library-item-icon"
+              />
               <div className="library-item-main">
                 <div className="library-item-toprow">
                   <span className="library-item-title" style={getTextStyle(learningLanguage)}>
@@ -259,13 +263,6 @@ const StoryCard = ({
               </div>
 
               <div className="library-story-card-meta">
-                {story.flashcardsOnly && (
-                  <CustomTooltip
-                    title={<FormattedMessage id="story-card-flashcards-only" />}
-                  >
-                    <ContentCopyIcon fontSize="small" />
-                  </CustomTooltip>
-                )}
                 {uploadUnfinished && (
                   <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
                     <HourglassBottomIcon color="warning" fontSize="small" />
@@ -302,13 +299,15 @@ const StoryCard = ({
                     <img src={images.openBook} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
-                <span className="library-tour-difficulty-stars">
-                  <CustomTooltip
-                    title={<FormattedMessage id="difficulty-level-tooltip" />}
-                  >
-                    <DifficultyLevel difficulty={story.difficulty} />
-                  </CustomTooltip>
-                </span>
+                {hasDifficultyLevel(story.difficulty) && (
+                  <span className="library-tour-difficulty-stars">
+                    <CustomTooltip
+                      title={<FormattedMessage id="difficulty-level-tooltip" />}
+                    >
+                      <DifficultyLevel difficulty={story.difficulty} />
+                    </CustomTooltip>
+                  </span>
+                )}
               </div>
             </div>
           </div>
