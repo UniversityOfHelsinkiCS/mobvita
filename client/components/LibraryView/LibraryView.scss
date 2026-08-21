@@ -1,4 +1,3 @@
-// Mirrors colors.menuHover, now sourced from the token injected by vite rather than hand-copied.
 $menu-hover: $color-menu-hover;
 
 .library-dashboard {
@@ -15,23 +14,17 @@ $menu-hover: $color-menu-hover;
 }
 
 @media (max-width: 768px) {
-  // The rail becomes a bottom sheet here, so there is nothing to clear.
   .library-dashboard.sidebar-pushed {
     margin-right: 0;
   }
 }
 
 @media (min-width: 1638px) {
-  // 838 + 2 x 400: from here a centred dashboard clears the rail on its own, so drop the offset.
   .library-dashboard.sidebar-pushed {
     margin-right: auto;
   }
 }
 
-// Figma "Frame 2087326746": library items stack full-width in a single column.
-// Same two-column grid as the folders above, so story/essay cards line up with them. 20px between
-// columns, 4px between rows (Figma "Frame 2087326746"). Cards in a row stretch to match the tallest,
-// which reads tidier than the mock's ragged independent columns now that descriptions vary in length.
 .library-story-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -56,10 +49,6 @@ $menu-hover: $color-menu-hover;
   gap: 1rem;
 }
 
-// Figma "Frame 2087326861": folder pills wrap into rows, each growing to share the row (min 300px).
-// Figma "Library Directory": two equal columns, 20px between them and 6px between rows. Grid fills
-// row-wise rather than column-wise like the mock, which looks the same for equal-height cards and
-// reflows to one column on narrow screens for free.
 .library-folder-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -76,18 +65,37 @@ $menu-hover: $color-menu-hover;
 .library-folder-breadcrumb {
   border: 0;
   background: transparent;
-  color: rgba(0, 0, 0, 0.75);
+  color: $color-muted;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 12px;
   font-weight: 500;
+  line-height: 15px;
   padding: 0;
   text-decoration: underline;
+
+  &:hover {
+    color: $color-ink;
+  }
 }
 
+// Applied to a <p> for nested folders and to the root <button> at top level, so it has to strip
+// the browser's button chrome too — otherwise the root crumb renders with a grey fill and border.
 .library-folder-breadcrumb-current {
-  color: rgba(0, 0, 0, 0.55);
-  font-size: 1rem !important;
-  font-weight: 600 !important;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: default;
+  color: $color-ink !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 15px !important;
+  text-decoration: none;
+}
+
+.library-folder-breadcrumbs .MuiBreadcrumbs-separator {
+  color: $color-muted;
+  font-size: 12px;
+  line-height: 15px;
 }
 
 // A card being dragged dims (the cards are now .library-item-card, not the old .mui-story-card).
@@ -423,26 +431,22 @@ $menu-hover: $color-menu-hover;
     white-space: nowrap;
   }
 }
-// Back-to-parent control. Lives beside the breadcrumbs rather than as a card in the folder grid,
-// so the grid holds only real folders.
-.library-folder-back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
 
-  img {
-    width: 20px;
-    height: 20px;
+// The back-to-parent card keeps the grid slot and hit area of a real folder, but paints no card:
+// no fill, no border, no hover tint. Only the arrow is visible.
+.library-folder-card-back {
+  background: transparent;
+  border-color: transparent;
+
+  &:hover {
+    background: transparent;
+    border-color: transparent;
   }
 
-  &:hover img {
-    opacity: 0.7;
+  // ...except while a story is being dragged onto it, where the usual drop tint is the only
+  // feedback that this is a valid target.
+  &.library-folder-card-drop-target {
+    background: $color-card-border-active;
+    border-color: $color-folder-icon-stroke;
   }
 }

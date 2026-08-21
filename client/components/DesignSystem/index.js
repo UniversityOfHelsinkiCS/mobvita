@@ -32,7 +32,7 @@ import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
 import { images } from 'Utilities/common'
-import { colors, shape } from 'Assets/mui_theme/designTokens'
+import { colors, shape, font } from 'Assets/mui_theme/designTokens'
 
 /**
  * DesignSystem (/design) — dev-only live gallery of the design system.

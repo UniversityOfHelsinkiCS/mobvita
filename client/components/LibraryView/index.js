@@ -46,7 +46,6 @@ import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import FolderCard from './FolderCard'
-import FlipBackward from 'Assets/images/flip-backward.svg'
 import AddFolder from './AddFolder'
 import EssayCard from './EssayCard'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
@@ -476,6 +475,8 @@ const StoryList = () => {
   }
 
   const libraryPathParts = currentLibraryPath ? currentLibraryPath.split('/') : []
+  // One level up from where we are — the back card's click target and its drop target.
+  const parentLibraryPath = libraryPathParts.slice(0, -1).join('/')
   const localFolderPathsForLibrary = getLocalFolderPathsForLibrary(
     localFolders,
     libraryIsMutable,
@@ -517,14 +518,11 @@ const StoryList = () => {
     clearEssayDragState()
   }
 
-  // Tapping a folder: navigate into it when it has sub-folders, otherwise just preview it (highlighted
-  // green) and show its stories below via selectedFolderPath. Tapping the same leaf again clears it.
-  const handleFolderTap = (folderPath, hasSubfolders, navigateInto) => {
-    if (hasSubfolders) {
-      navigateInto(folderPath)
-      return
-    }
-    setSelectedFolderPath(previous => (previous === folderPath ? null : folderPath))
+  // Tapping any folder opens it: the path moves, so the folder you are in is named by the
+  // breadcrumbs and its stories fill the grid.
+  const handleFolderTap = (folderPath, navigateInto) => {
+    setSelectedFolderPath(null)
+    navigateInto(folderPath)
   }
 
   function handleMoveStoriesToPath(storyIds, targetPath) {
@@ -532,9 +530,6 @@ const StoryList = () => {
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
 
-    // Don't let the folder you're viewing be emptied of its direct stories by moving ALL of them into one
-    // of its own subfolders — that leaves a folder with subfolders but no stories, which we don't handle
-    // yet. Prevent it for now.
     if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
       const directStories = getStoriesForPath(allStoriesInActiveLibrary, currentLibraryPath)
       const movingIds = new Set(storyIds.map(String))
@@ -563,8 +558,6 @@ const StoryList = () => {
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
 
-    // Same guard as stories: don't empty the folder you're viewing by moving all its essays into one of
-    // its own subfolders (see handleMoveStoriesToPath).
     if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
       const directEssays = getStoriesForPath(uploadedEssays, currentLibraryPath)
       const movingIds = new Set(essayIds.map(String))
@@ -664,12 +657,18 @@ const StoryList = () => {
   const folderIsLocalOnly = folderPath =>
     localFolderPathsForLibrary.includes(normalizeLibraryPath(folderPath))
 
+  // At the top level the root crumb IS the current folder, so it takes the ink "current" styling.
+  // It stays a <button> either way, to keep the drop target for dragging stories back to the root.
   const renderLibraryPathBreadcrumbs = () => (
     <Box className="library-folder-breadcrumbs">
       <Breadcrumbs aria-label="Library folder path">
         <button
           type="button"
-          className="library-folder-breadcrumb"
+          className={
+            libraryPathParts.length === 0
+              ? 'library-folder-breadcrumb-current'
+              : 'library-folder-breadcrumb'
+          }
           onClick={() => handleLibraryPathChange('')}
           onDragLeave={e => handleFolderDragLeave('', e)}
           onDragOver={e => handleFolderDragOver('', e)}
@@ -851,7 +850,11 @@ const StoryList = () => {
       <Breadcrumbs aria-label="Essay folder path">
         <button
           type="button"
-          className="library-folder-breadcrumb"
+          className={
+            libraryPathParts.length === 0
+              ? 'library-folder-breadcrumb-current'
+              : 'library-folder-breadcrumb'
+          }
           onClick={() => handleEssayLibraryPathChange('')}
           onDragLeave={e => handleEssayFolderDragLeave('', e)}
           onDragOver={e => handleEssayFolderDragOver('', e)}
@@ -911,16 +914,6 @@ const StoryList = () => {
     return (
       <>
         <Box className="library-folder-header">
-          {libraryPathParts.length > 0 && (
-            <button
-              type="button"
-              className="library-folder-back"
-              aria-label="Back to parent folder"
-              onClick={() => handleLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
-            >
-              <img src={FlipBackward} alt="" />
-            </button>
-          )}
           {renderLibraryPathBreadcrumbs()}
           {renderGroupDropdown()}
           {libraryIsMutable && (
@@ -941,6 +934,16 @@ const StoryList = () => {
         {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="library-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                isDropTarget={libraryIsMutable && dragOverFolderPath === parentLibraryPath}
+                onClick={() => handleLibraryPathChange(parentLibraryPath)}
+                onDragLeave={e => handleFolderDragLeave(parentLibraryPath, e)}
+                onDragOver={e => handleFolderDragOver(parentLibraryPath, e)}
+                onDrop={e => handleFolderDrop(parentLibraryPath, e)}
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -952,12 +955,6 @@ const StoryList = () => {
               )
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
-              const hasSubfolders =
-                getFoldersForPath(
-                  libraryFilteredStories,
-                  normalizedFolderPath,
-                  localFolderPathsForLibrary,
-                ).length > 0
 
               return (
                 <FolderCard
@@ -969,7 +966,7 @@ const StoryList = () => {
                   isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
                   onClick={() =>
-                    handleFolderTap(normalizedFolderPath, hasSubfolders, handleLibraryPathChange)
+                    handleFolderTap(normalizedFolderPath, handleLibraryPathChange)
                   }
                   onDragStart={
                     libraryIsMutable
@@ -1105,16 +1102,6 @@ const StoryList = () => {
     return (
       <>
         <Box className="library-folder-header">
-          {libraryPathParts.length > 0 && (
-            <button
-              type="button"
-              className="library-folder-back"
-              aria-label="Back to parent folder"
-              onClick={() => handleEssayLibraryPathChange(libraryPathParts.slice(0, -1).join('/'))}
-            >
-              <img src={FlipBackward} alt="" />
-            </button>
-          )}
           {renderEssayPathBreadcrumbs()}
           <AddFolder
             existingFolderNames={
@@ -1128,6 +1115,16 @@ const StoryList = () => {
         {controls}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="essay-folders" className="library-folder-grid">
+            {libraryPathParts.length > 0 && (
+              <FolderCard
+                isBack
+                isDropTarget={essayDragOverFolderPath === parentLibraryPath}
+                onClick={() => handleEssayLibraryPathChange(parentLibraryPath)}
+                onDragLeave={e => handleEssayFolderDragLeave(parentLibraryPath, e)}
+                onDragOver={e => handleEssayFolderDragOver(parentLibraryPath, e)}
+                onDrop={e => handleEssayFolderDrop(parentLibraryPath, e)}
+              />
+            )}
             {foldersInCurrentPath.map(folderName => {
               const folderPath = currentLibraryPath
                 ? `${currentLibraryPath}/${folderName}`
@@ -1136,9 +1133,6 @@ const StoryList = () => {
               const essaysInFolder = getStoriesInFolder(uploadedEssays, normalizedFolderPath)
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && essaysInFolder.length === 0
-              const hasSubfolders =
-                getFoldersForPath(sortedEssays, normalizedFolderPath, localFolderPathsForLibrary)
-                  .length > 0
 
               return (
                 <FolderCard
@@ -1150,11 +1144,7 @@ const StoryList = () => {
                   isSelected={selectedFolderPath === normalizedFolderPath}
                   name={folderName}
                   onClick={() =>
-                    handleFolderTap(
-                      normalizedFolderPath,
-                      hasSubfolders,
-                      handleEssayLibraryPathChange,
-                    )
+                    handleFolderTap(normalizedFolderPath, handleEssayLibraryPathChange)
                   }
                   onDragStart={e => handleEssayFolderDragStart(normalizedFolderPath, e)}
                   onDragLeave={e => handleEssayFolderDragLeave(normalizedFolderPath, e)}
