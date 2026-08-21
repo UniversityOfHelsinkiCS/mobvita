@@ -243,6 +243,7 @@ const DesignSystem = () => {
             'bulb',
             'bulbEmpty',
             'star06',
+            'starBlack',
             'globe',
             'upload',
             'paste',

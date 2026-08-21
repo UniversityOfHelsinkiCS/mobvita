@@ -48,6 +48,7 @@ import folderPlus from 'Assets/images/folder-plus.svg'
 import folderEmpty from 'Assets/images/folder-empty.svg'
 import folderFull from 'Assets/images/folder-full.svg'
 import star06 from 'Assets/images/star-06.svg'
+import starBlack from 'Assets/images/star-black.svg'
 import globe from 'Assets/images/globe.svg'
 import upload from 'Assets/images/upload.svg'
 import paste from 'Assets/images/paste.svg'
@@ -246,6 +247,7 @@ export const images = {
   folderEmpty,
   folderFull,
   star06,
+  starBlack,
   globe,
   upload,
   paste,
