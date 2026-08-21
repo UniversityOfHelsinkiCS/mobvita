@@ -77,7 +77,7 @@ const EssayCard = ({
         sx={clickable ? { cursor: 'pointer' } : undefined}
       >
         <div className="library-item-body">
-          <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
+          <img src={images.letterGreen} alt="" className="library-item-icon" />
           <div className="library-item-main">
             <div className="library-item-toprow">
               <span className="library-item-title" style={getTextStyle(learningLanguage)}>

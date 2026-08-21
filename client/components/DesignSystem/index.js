@@ -276,6 +276,7 @@ const DesignSystem = () => {
             'envelope',
             'openBook',
             'letter',
+            'letterGreen',
             'level1',
             'level2',
             'level3',

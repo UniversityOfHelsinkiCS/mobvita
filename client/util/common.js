@@ -80,6 +80,7 @@ import group from 'Assets/images/group.svg'
 import envelope from 'Assets/images/envelope.svg'
 import openBook from 'Assets/images/open-book.svg'
 import letter from 'Assets/images/letter.svg'
+import letterGreen from 'Assets/images/letter-green.svg'
 import level1 from 'Assets/images/level1.svg'
 import level2 from 'Assets/images/level2.svg'
 import level3 from 'Assets/images/level3.svg'
@@ -278,6 +279,7 @@ export const images = {
   envelope,
   openBook,
   letter,
+  letterGreen,
   level1,
   level2,
   level3,
