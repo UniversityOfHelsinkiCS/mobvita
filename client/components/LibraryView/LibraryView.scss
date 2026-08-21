@@ -327,6 +327,14 @@ $menu-hover: $color-menu-hover;
   width: 100%;
 }
 
+// Figma "Frame 2087326911": the status icons are a uniform 20px.
+.library-item-meta-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
 .library-item-meta {
   display: flex;
   justify-content: flex-end;
@@ -381,11 +389,6 @@ $menu-hover: $color-menu-hover;
   color: #2d2c2a;
 }
 
-.library-item-bulb {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-}
 
 // A row, not a column: a stacked label would push the bar off the icons' centre line. Sized from
 // the mock's 145px but allowed to shrink, so `space-between` on the footer actually separates the

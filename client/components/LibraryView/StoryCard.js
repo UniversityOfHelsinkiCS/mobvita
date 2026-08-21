@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Card } from '@mui/material'
-import CommentsIcon from '@mui/icons-material/ModeComment'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import GroupsIcon from '@mui/icons-material/Groups'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
-import MailOutlineIcon from '@mui/icons-material/MailOutlined'
-import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -108,7 +104,7 @@ const GroupsSharedTo = ({ groups }) => {
         </Box>
       }
     >
-      <GroupsIcon color="primary" sx={{ mr: '15px' }} />
+      <img src={images.group} alt="" className="library-item-meta-icon" />
     </CustomTooltip>
   )
 }
@@ -267,7 +263,6 @@ const StoryCard = ({
 
               <div className="library-item-meta">
                 {story.flashcardsOnly && <ContentCopyIcon fontSize="small" />}
-                {showGroupNames && <GroupsSharedTo groups={story.groups} />}
                 {uploadUnfinished && (
                   <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
                     <HourglassBottomIcon color="warning" fontSize="small" />
@@ -280,29 +275,32 @@ const StoryCard = ({
                 )}
                 {timedExercise && (
                   <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
-                    <TimerOutlinedIcon color="error" fontSize="small" />
+                    <img src={images.clock} alt="" className="library-item-meta-icon" />
                   </CustomTooltip>
                 )}
+                {showGroupNames && <GroupsSharedTo groups={story.groups} />}
                 {commentsOnStory && (
                   <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
-                    <CommentsIcon fontSize="small" />
+                    <img src={images.note} alt="" className="library-item-meta-icon" />
                   </CustomTooltip>
                 )}
                 {libraryShown.group && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
-                    <MailOutlineIcon fontSize="small" />
+                    <img src={images.envelope} alt="" className="library-item-meta-icon" />
                   </CustomTooltip>
                 )}
                 {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
-                    <MailOutlineIcon fontSize="small" />
+                    <img src={images.envelope} alt="" className="library-item-meta-icon" />
                   </CustomTooltip>
                 )}
-                <img
-                  src={story?.has_questions ? images.bulb : images.bulbEmpty}
-                  alt=""
-                  className="library-item-bulb"
-                />
+                {story?.has_questions && (
+                  <img
+                    src={images.readingComprehension}
+                    alt=""
+                    className="library-item-meta-icon"
+                  />
+                )}
               </div>
             </div>
           </div>
