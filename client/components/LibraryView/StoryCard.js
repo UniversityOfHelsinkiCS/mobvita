@@ -262,7 +262,13 @@ const StoryCard = ({
               </div>
 
               <div className="library-item-meta">
-                {story.flashcardsOnly && <ContentCopyIcon fontSize="small" />}
+                {story.flashcardsOnly && (
+                  <CustomTooltip
+                    title={<FormattedMessage id="story-card-flashcards-only" />}
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </CustomTooltip>
+                )}
                 {uploadUnfinished && (
                   <CustomTooltip title={<FormattedMessage id="story-not-yet-processed" />}>
                     <HourglassBottomIcon color="warning" fontSize="small" />
@@ -295,11 +301,13 @@ const StoryCard = ({
                   </CustomTooltip>
                 )}
                 {story?.has_questions && (
-                  <img
-                    src={images.readingComprehension}
-                    alt=""
-                    className="library-item-meta-icon"
-                  />
+                  <CustomTooltip title={<FormattedMessage id="story-card-has-rc-questions" />}>
+                    <img
+                      src={images.readingComprehension}
+                      alt=""
+                      className="library-item-meta-icon"
+                    />
+                  </CustomTooltip>
                 )}
               </div>
             </div>
