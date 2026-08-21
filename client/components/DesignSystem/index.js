@@ -32,7 +32,7 @@ import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
 import { images } from 'Utilities/common'
-import { colors, shape } from 'Assets/mui_theme/designTokens'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
 /**
  * DesignSystem (/design) — dev-only live gallery of the design system.
@@ -315,6 +315,58 @@ const DesignSystem = () => {
         })()}
       </Section>
 
+      <Section title="Flags — language icons (new SVGs)" noCard>
+        {(() => {
+          const flags = [
+            'flagFinnish',
+            'flagErzya',
+            'flagKomizyrian',
+            'flagSakha',
+            'flagTatar',
+            'flagTatarnew',
+            'flagUdmurt',
+            'flagUdmurtarch',
+            'flagLivvi',
+            'flagMeadowmari',
+            'flagNorthsaami',
+            'flagCatalan',
+            'flagGerman',
+            'flagKazakh',
+            'flagPortuguese',
+            'flagRussian',
+            'flagSpanish',
+            'flagSwedish',
+            'flagFrench',
+            'flagTurkish',
+            'flagItalian',
+            'flagSyriac',
+            'flagChinese',
+            'flagEnglish',
+          ]
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+              {flags.map(name => (
+                <div
+                  key={name}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 6,
+                    width: 96,
+                  }}
+                >
+                  <img src={images[name]} alt={name} style={{ width: 40, height: 40 }} />
+                  <span style={{ fontSize: 11, color: '#666', textAlign: 'center' }}>
+                    {name.replace(/^flag/, '')}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
+      </Section>
+
       <Section title="AppButton — design variants (active / disabled)">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {['tan', 'contrast', 'contrast-outline', 'tan-outline', 'card', 'danger', 'link'].map(v => (
@@ -531,6 +583,22 @@ const DesignSystem = () => {
           <AppSpinner size={24} />
           <AppSpinner size={48} />
           <AppSpinner size={72} />
+        </div>
+        {/* On a blue surface the default sage-green reads weakly — use cream for contrast. */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 40,
+            padding: '20px 12px',
+            marginTop: 16,
+            background: colors.panel,
+            borderRadius: shape.cardRadius,
+          }}
+        >
+          <AppSpinner size={24} color={colors.card} />
+          <AppSpinner size={48} color={colors.card} />
+          <AppSpinner size={72} color={colors.card} />
         </div>
       </Section>
 

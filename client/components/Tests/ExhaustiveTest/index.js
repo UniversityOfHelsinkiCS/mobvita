@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 import AppSelect from 'Components/ui/AppSelect'
 import AppButton from 'Components/AppButton'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -23,6 +26,8 @@ import StartModal from 'Components/TimedActivityStartModal'
 import ExhaustiveTest from './ExhaustiveTest'
 import TestReport from './TestReport'
 import History from '../../History'
+
+const linkStyle = { color: colors.ink, textDecoration: 'underline', fontWeight: 600 }
 
 const PickDate = ({ date, setDate }) => (
   <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
@@ -125,12 +130,27 @@ const ExhaustiveTestView = () => {
     <div className="cont-tall cont flex-col auto gap-row-sm">
       <div className="grow ps-nm flex-col gap-row-sm">
         {!exhaustiveTestSessionId && (
-          <div className="pl-nm pt-nm">
-            <AppButton onClick={startTest} data-cy="start-test">
+          <Box
+            sx={{
+              backgroundColor: colors.card,
+              color: colors.ink,
+              fontFamily: font.family,
+              borderRadius: '20px',
+              p: { xs: '16px', sm: '24px' },
+              mt: '1.5rem',
+            }}
+          >
+            <AppButton onClick={startTest} size="lg" data-cy="start-test">
               <FormattedMessage id="start-a-new-test" />
             </AppButton>
             {language && (
-              <AppButton onClick={continueTest} style={{ marginLeft: '1rem' }} data-cy="resume-test">
+              <AppButton
+                variant="secondary"
+                size="lg"
+                onClick={continueTest}
+                style={{ marginLeft: '1rem' }}
+                data-cy="resume-test"
+              >
                 <FormattedMessage id="resume-test" />
               </AppButton>
             )}
@@ -139,57 +159,91 @@ const ExhaustiveTestView = () => {
                 <div>
                   <FormattedMessage id="Group" />
                 </div>
-                <div data-cy="exhaustive-test-group-select" style={{ display: 'inline-block' }}>
-                  <AppSelect
-                    variant="contrast-outline"
-                    options={groupOptions}
-                    value={currentGroup.group_id}
-                    onChange={handleGroupChange}
-                    placeholder="Group"
-                    minWidth={220}
-                  />
-                </div>
+                {groupOptions.length > 0 ? (
+                  <div data-cy="exhaustive-test-group-select" style={{ display: 'inline-block' }}>
+                    <AppSelect
+                      variant="contrast-outline"
+                      options={groupOptions}
+                      value={currentGroup.group_id}
+                      onChange={handleGroupChange}
+                      placeholder="Group"
+                      minWidth={220}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    data-cy="exhaustive-test-no-groups"
+                    style={{ marginTop: '0.25em', color: colors.muted }}
+                  >
+                    <FormattedMessage
+                      id="no-test-enabled-groups"
+                      values={{
+                        link: chunks => (
+                          <Link to="/groups/teacher" style={linkStyle}>
+                            {chunks}
+                          </Link>
+                        ),
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             )}
 
             <>
-              <hr style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }} />
-              <AppButton onClick={toggleHistory} data-cy="exhaustive-test-toggle-history">
+              <Box sx={{ borderTop: `1px solid ${colors.border}`, my: '1.5rem' }} />
+              <AppButton
+                variant="contrast-outline"
+                onClick={toggleHistory}
+                data-cy="exhaustive-test-toggle-history"
+              >
                 <FormattedMessage id={showHistory ? 'Hide history' : 'Show history'} />
               </AppButton>
 
               {showHistory && history && (
                 <>
-                  <div className="date-pickers-container">
+                  <div className="date-pickers-container" style={{ marginTop: '1.5rem' }}>
                     {bigScreen ? (
-                      <div className="date-pickers gap-col-sm">
-                        <span className="bold">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '2em' }}>
+                        <span style={{ fontWeight: 600, color: colors.ink }}>
                           <FormattedMessage id="Showing results for" />
                         </span>
-                        <div style={{ marginLeft: '2em' }}>
-                          <FormattedMessage id="date-start" />{' '}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
+                          <span style={{ color: colors.muted }}>
+                            <FormattedMessage id="date-start" />
+                          </span>
                           <PickDate id="start" date={startDate} setDate={setStartDate} />
                         </div>
-                        <div style={{ marginLeft: '2em' }}>
-                          <FormattedMessage id="date-end" />{' '}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
+                          <span style={{ color: colors.muted }}>
+                            <FormattedMessage id="date-end" />
+                          </span>
                           <PickDate date={endDate} setDate={setEndDate} />
                         </div>
                       </div>
                     ) : (
                       <>
-                        <span className="bold" style={{ fontSize: '1.3em' }}>
+                        <div style={{ fontWeight: 600, fontSize: '1.2em', color: colors.ink }}>
                           <FormattedMessage id="Showing results for" />
-                        </span>
-                        <br />
-                        <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-                          <div>
-                            <FormattedMessage id="date-start" />
-                            <br />
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '1.5em',
+                            marginTop: '0.75em',
+                            flexWrap: 'wrap',
+                          }}
+                        >
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35em' }}>
+                            <span style={{ color: colors.muted }}>
+                              <FormattedMessage id="date-start" />
+                            </span>
                             <PickDate id="start" date={startDate} setDate={setStartDate} />
                           </div>
-                          <div>
-                            <FormattedMessage id="date-end" />
-                            <br />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35em' }}>
+                            <span style={{ color: colors.muted }}>
+                              <FormattedMessage id="date-end" />
+                            </span>
                             <PickDate date={endDate} setDate={setEndDate} />
                           </div>
                         </div>
@@ -211,7 +265,7 @@ const ExhaustiveTestView = () => {
                 </>
               )}
             </>
-          </div>
+          </Box>
         )}
         {report && <TestReport />}
         {exhaustiveTestSessionId && <ExhaustiveTest showingInfo={startModalOpen} />}

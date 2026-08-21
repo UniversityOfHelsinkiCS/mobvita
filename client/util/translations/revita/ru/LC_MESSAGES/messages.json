@@ -1869,7 +1869,7 @@
     "landing-page-sign-up": "Sign Up",
     "my-essays": "My Essays",
     "essay-sentence-count": "sentences",
-    "no-essays-found": "No essays yet.",
+    "no-essays-found": "No essays yet",
     "essay-original-version": "Original version",
     "essay-current-version": "Current version",
     "essay-remove-confirm": "This will permanently delete this essay, are you sure you want to proceed?",
@@ -1881,7 +1881,7 @@
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "connection-online": "Connected",
     "connection-offline": "No connection",
-    "interface-settings": "Interface settings",
+    "interface-settings": "Настройки интерфейса",
     "all-topics-in-text": "All Topics In Text",
     "rename-folder": "Rename folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
@@ -1892,5 +1892,10 @@
     "select-all": "Select All",
     "lesson-ready": "Lesson Ready!",
     "selected-lesson-topics": "Lesson Topics",
-    "translate-cards": "Перевод карточек"
+    "translate-cards": "Перевод карточек",
+    "beta-versions": "Бета-версия",
+    "endangered-languages": "Исчезающие языки",
+    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
+    "story-card-has-rc-questions": "This story has reading comprehension questions",
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
 }

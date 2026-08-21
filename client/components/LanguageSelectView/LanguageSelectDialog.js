@@ -66,7 +66,11 @@ const LanguageSelectDialog = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
         maxWidth="md"
-        title={<FormattedMessage id="what-language-would-you-like-to-learn" />}
+        title={
+          <span style={{ display: 'block', fontSize: 34, fontWeight: 700, lineHeight: 1.15 }}>
+            <FormattedMessage id="what-language-would-you-like-to-learn" />
+          </span>
+        }
       >
         {pending ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '2em' }}>

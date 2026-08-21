@@ -1867,7 +1867,7 @@
     "landing-page-sign-up": "Sign Up",
     "my-essays": "Omat Esseet",
     "essay-sentence-count": "lauseet",
-    "no-essays-found": "Ei esseitä vielä.",
+    "no-essays-found": "Ei esseitä vielä",
     "essay-original-version": "Alkuperäinen versio",
     "essay-current-version": "Nykyinen version",
     "essay-remove-confirm": "Tämä poistaa esseen pysyvästi. Oletko varma?",
@@ -1890,5 +1890,10 @@
     "select-all": "Select All",
     "lesson-ready": "Lesson Ready!",
     "selected-lesson-topics": "Lesson Topics",
-    "translate-cards": "Translate Cards"
+    "translate-cards": "Translate Cards",
+    "beta-versions": "Beta versions",
+    "endangered-languages": "",
+    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
+    "story-card-has-rc-questions": "Tässä tekstissä on luetun ymmärtämisen kysymyksiä",
+    "story-card-flashcards-only": "Pelkkiä kysymyskortteja harjoiteltavaksi - ei tekstiä"
 }

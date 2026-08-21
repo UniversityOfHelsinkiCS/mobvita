@@ -366,7 +366,13 @@ export default function NavBar() {
                       <img
                         src={getLearningLanguageFlag()}
                         alt=""
-                        style={{ width: 26, height: 26, borderRadius: '50%', objectFit: 'cover' }}
+                        style={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          border: '1px solid rgba(45, 44, 42, 0.12)',
+                        }}
                       />
                       {user.user.last_used_language}
                     </span>

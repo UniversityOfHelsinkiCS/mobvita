@@ -24,15 +24,15 @@ const TimedActivityStartModal = ({ open, setOpen, activity, onBackClick, onStart
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'stretch',
           gap: '0.75em',
           marginTop: '1em',
         }}
       >
-        <AppButton data-cy="start-timed-activity" size="lg" onClick={handleStartClick}>
+        <AppButton data-cy="start-timed-activity" size="lg" block onClick={handleStartClick}>
           <FormattedMessage id="start" />
         </AppButton>
-        <AppButton variant="secondary" onClick={handleBackClick}>
+        <AppButton variant="secondary" size="lg" block onClick={handleBackClick}>
           <FormattedMessage id="go-back" />
         </AppButton>
       </div>

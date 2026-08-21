@@ -933,6 +933,7 @@
     "paste-a-text": "Paste A Text",
     "test-results-remove-confirmation": "This will permanently remove these test results, are you sure you want to proceed?",
     "enable-test-for": "Enable test for",
+    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
     "multiple-chances-when-practicing": "Allow multiple attempts when I practice with exercises in stories",
     "paste-text-upload-instructions": "The title must contain at least three characters.  Paste the text of the story.  Allowed length for the story: 50 - 50 000 characters.",
     "recommended-sites": "Recommended sites",
@@ -1179,6 +1180,8 @@
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get extra time for additional attempts.",
     "what-language-would-you-like-to-learn": "Which language would you like to learn?",
+    "beta-versions": "",
+    "endangered-languages": "",
     "network-error-click-to-resume": "Problems with the server or network...\n<br/>Please click to resume test",
     "pay-attention-to-diacritics": "Pay attention to diacritics! You wrote \"{answer}\", the correct form is \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\", the correct form is \"{levenshteinCorrect}\".",
@@ -1878,7 +1881,7 @@
     "essay-upload-topic-taken": "This topic is already taken. Please choose a different one.",
     "my-essays": "My Essays",
     "essay-sentence-count": "sentences",
-    "no-essays-found": "No essays yet.",
+    "no-essays-found": "No essays yet",
     "essay-original-version": "Original version",
     "essay-current-version": "Current version",
     "essay-remove-confirm": "This will permanently delete this essay, are you sure you want to proceed?",
@@ -1890,5 +1893,7 @@
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "rename-folder": "Rename folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
-    "translate-cards": "Translate Cards"
+    "translate-cards": "Translate Cards",
+    "story-card-has-rc-questions": "This story has reading comprehension questions",
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
 }

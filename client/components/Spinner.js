@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
 import AppSpinner from 'Components/ui/AppSpinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 // Shared loading spinner (renders the design-system AppSpinner ring). Keeps the container / text /
 // delayedMessage / size / inline / fullHeight behaviour every call site relies on.
@@ -54,6 +55,10 @@ const Spinner = ({
     }
   }, [text, delayedMessage?.join('||')])
 
+  // Full-height spinners are route loaders over the app's blue application content (colors.panel),
+  // where the default sage-green washes out — default them to cream.
+  const resolvedSpinnerColor = spinnerColor || (fullHeight ? colors.card : undefined)
+
   const variantClass = `spinner--${variant}`
   const resolvedTextVariant = textVariant ?? textColor ?? variant
   const textVariantClass = `spinner--${resolvedTextVariant}`
@@ -75,7 +80,7 @@ const Spinner = ({
       aria-live="polite"
       aria-label={typeof displayText === 'string' ? displayText : 'Loading'}
     >
-      <AppSpinner size={size} {...(spinnerColor ? { color: spinnerColor } : {})} />
+      <AppSpinner size={size} {...(resolvedSpinnerColor ? { color: resolvedSpinnerColor } : {})} />
 
       {displayText ? (
         <div
