@@ -1025,8 +1025,13 @@ const StoryList = () => {
 
     if (foldersInCurrentPath.length === 0 && storiesInCurrentPath.length === 0) {
       return (
-        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-stories-found" />
+        <Box className="no-stories-found">
+          <div className="no-stories-found-inner">
+            <img src={images.openBook} alt="" className="no-stories-found-icon" />
+            <span className="no-stories-found-text">
+              <FormattedMessage id="no-stories-found" />
+            </span>
+          </div>
         </Box>
       )
     }
@@ -1187,8 +1192,13 @@ const StoryList = () => {
     if (foldersInCurrentPath.length === 0 && essaysInCurrentPath.length === 0) {
       if (essaysPending && !query) return null
       return (
-        <Box className="justify-center mt-lg" sx={{ color: 'rgb(112, 114, 120)' }}>
-          <FormattedMessage id="no-essays-found" />
+        <Box className="no-stories-found">
+          <div className="no-stories-found-inner">
+            <img src={images.letter} alt="" className="no-stories-found-icon" />
+            <span className="no-stories-found-text">
+              <FormattedMessage id="no-essays-found" />
+            </span>
+          </div>
         </Box>
       )
     }

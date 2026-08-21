@@ -78,7 +78,8 @@ import clock from 'Assets/images/clock.svg'
 import note from 'Assets/images/note.svg'
 import group from 'Assets/images/group.svg'
 import envelope from 'Assets/images/envelope.svg'
-import readingComprehension from 'Assets/images/reading-comprehension.svg'
+import openBook from 'Assets/images/open-book.svg'
+import letter from 'Assets/images/letter.svg'
 import checkIcon from 'Assets/images/check-icon.svg'
 import question from 'Assets/images/question.svg'
 import iconHome from 'Assets/images/icon-home.svg'
@@ -272,7 +273,8 @@ export const images = {
   note,
   group,
   envelope,
-  readingComprehension,
+  openBook,
+  letter,
   question,
   iconHome,
   layersThree,

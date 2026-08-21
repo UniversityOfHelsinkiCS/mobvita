@@ -28,6 +28,7 @@ export const colors = {
   progressEmpty: '#DBE9DF', // unfilled progress segment; also the folder icon fill
   folderIconStroke: '#8DB19F', // folder icon outline
   progressLabel: '#7C9562', // percentage label inside the progress bar
+  emptyState: '#BFBBB0', // icon + text of an empty library folder
 }
 
 // Typefaces fetched from Google Fonts. `name` drives both the stylesheet URL injected into

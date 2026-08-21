@@ -104,7 +104,7 @@ const GroupsSharedTo = ({ groups }) => {
         </Box>
       }
     >
-      <img src={images.group} alt="" className="library-item-meta-icon" />
+      <img src={images.group} alt="" className="library-story-card-meta-icon" />
     </CustomTooltip>
   )
 }
@@ -232,8 +232,8 @@ const StoryCard = ({
         setSharedStoryVisibility={setSharedStoryVisibility}
         savedLibrarySelection={savedLibrarySelection}
         triggerContent={
-          <div className="library-item-body library-tour-open-story-modal" role="button" tabIndex={0}>
-            <div className="library-item-head">
+          <div className="library-story-card-body library-tour-open-story-modal" role="button" tabIndex={0}>
+            <div className="library-story-card-head">
               <img src={images.bookOpenGreen} alt="" className="library-item-icon" />
               <div className="library-item-main">
                 <div className="library-item-toprow">
@@ -245,14 +245,14 @@ const StoryCard = ({
                   </div>
                 </div>
                 {story.description && (
-                  <div className="library-item-description">{story.description}</div>
+                  <div className="library-story-card-description">{story.description}</div>
                 )}
               </div>
             </div>
 
             {/* Progress left, status icons right — Figma "Frame 2087326980". */}
-            <div className="library-item-footer">
-              <div className="library-item-progress">
+            <div className="library-story-card-footer">
+              <div className="library-story-card-progress">
                 <AppProgressBar
                   value={story?.percent_cov}
                   height="10px"
@@ -261,7 +261,7 @@ const StoryCard = ({
                 />
               </div>
 
-              <div className="library-item-meta">
+              <div className="library-story-card-meta">
                 {story.flashcardsOnly && (
                   <CustomTooltip
                     title={<FormattedMessage id="story-card-flashcards-only" />}
@@ -281,32 +281,28 @@ const StoryCard = ({
                 )}
                 {timedExercise && (
                   <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
-                    <img src={images.clock} alt="" className="library-item-meta-icon" />
+                    <img src={images.clock} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
                 {showGroupNames && <GroupsSharedTo groups={story.groups} />}
                 {commentsOnStory && (
                   <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
-                    <img src={images.note} alt="" className="library-item-meta-icon" />
+                    <img src={images.note} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
                 {libraryShown.group && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
-                    <img src={images.envelope} alt="" className="library-item-meta-icon" />
+                    <img src={images.envelope} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
                 {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
-                    <img src={images.envelope} alt="" className="library-item-meta-icon" />
+                    <img src={images.envelope} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
                 {story?.has_questions && (
                   <CustomTooltip title={<FormattedMessage id="story-card-has-rc-questions" />}>
-                    <img
-                      src={images.readingComprehension}
-                      alt=""
-                      className="library-item-meta-icon"
-                    />
+                    <img src={images.openBook} alt="" className="library-story-card-meta-icon" />
                   </CustomTooltip>
                 )}
               </div>

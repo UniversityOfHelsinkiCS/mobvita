@@ -293,7 +293,7 @@ $menu-hover: $color-menu-hover;
 
 // Teacher's blurb, or the story's opening line. Two lines, then ellipsis.
 // Teacher's blurb, or the story's opening line. One line, then ellipsis — same as the title.
-.library-item-description {
+.library-story-card-description {
   font-size: 12px;
   font-weight: 500;
   line-height: 15px;
@@ -303,15 +303,23 @@ $menu-hover: $color-menu-hover;
   white-space: nowrap;
 }
 
-// Figma "Library Item": a column of two rows — icon+text, then progress+status icons.
-.library-item-body {
+// Story card: a column of two rows — icon+text, then progress+status icons.
+.library-story-card-body {
   display: flex;
   flex-direction: column;
   gap: 3px;
   width: 100%;
 }
 
-.library-item-head {
+// Essay card keeps the original single row: icon beside the text column.
+.library-item-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+
+.library-story-card-head {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -319,23 +327,24 @@ $menu-hover: $color-menu-hover;
 }
 
 // Figma "Frame 2087326980": progress grows on the left, status icons sit right.
-.library-item-footer {
+.library-story-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   width: 100%;
+  min-height: 30px;
 }
 
 // Figma "Frame 2087326911": the status icons are a uniform 20px.
-.library-item-meta-icon {
+.library-story-card-meta-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
   object-fit: contain;
 }
 
-.library-item-meta {
+.library-story-card-meta {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -393,7 +402,7 @@ $menu-hover: $color-menu-hover;
 // A row, not a column: a stacked label would push the bar off the icons' centre line. Sized from
 // the mock's 145px but allowed to shrink, so `space-between` on the footer actually separates the
 // two groups instead of the progress eating the free space.
-.library-item-progress {
+.library-story-card-progress {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -407,7 +416,7 @@ $menu-hover: $color-menu-hover;
   }
 }
 
-.library-item-progress-label {
+.library-story-card-progress-label {
   flex-shrink: 0;
   white-space: nowrap;
   font-size: 12px;
@@ -451,5 +460,37 @@ $menu-hover: $color-menu-hover;
   &.library-folder-card-drop-target {
     background: $color-card-border-active;
     border-color: $color-folder-icon-stroke;
+  }
+}
+
+// Figma "Frame 2087326725": empty folder — a centred icon above a single line of muted text.
+.no-stories-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  min-height: 233px;
+
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
+
+  &-text {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22px;
+    color: $color-empty-state;
+    text-align: center;
   }
 }
