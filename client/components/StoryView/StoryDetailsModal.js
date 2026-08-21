@@ -167,9 +167,10 @@ const StoryDetailsModal = ({
         maxWidth="xs"
         title={title}
         sx={{
-          // 420px content + 60px padding on each side = 540px paper, so the bottom
-          // Share/Edit/Delete row fits on one line.
-          '& .MuiDialog-paper': { width: 540, maxWidth: 540 },
+          // 530px content + 60px padding on each side = 650px paper, so the bottom
+          // Share/Edit/Delete row fits on one line even with the longer Russian labels; anything
+          // still too long wraps via the row's flexWrap rather than overflowing.
+          '& .MuiDialog-paper': { width: 650, maxWidth: 650 },
           // 30px between the header and the first button group. MUI zeroes DialogContent's
           // top padding after a DialogTitle, so the gap lives on the title's bottom padding.
           '& .MuiDialogTitle-root': { padding: '40px 60px 20px 60px' },
@@ -286,8 +287,14 @@ const StoryDetailsModal = ({
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                flexWrap: 'nowrap',
+                // Wrap (not nowrap) and never shrink the pills, so longer labels (e.g. Russian
+                // "Поделиться / Редактировать / Удалить") keep their padding and move to the next
+                // line instead of overflowing the buttons.
+                flexWrap: 'wrap',
                 gap: '0.75em',
+                '& > *': { flexShrink: 0 },
+                // Tighter left/right padding than the default pill so the three fit more compactly.
+                '& button': { paddingLeft: '1em', paddingRight: '1em' },
               }}
             >
               {showShareButton && (

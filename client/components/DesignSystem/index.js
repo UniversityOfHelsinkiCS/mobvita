@@ -32,7 +32,7 @@ import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
 import { images } from 'Utilities/common'
-import { colors, shape } from 'Assets/mui_theme/designTokens'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
 /**
  * DesignSystem (/design) — dev-only live gallery of the design system.
@@ -307,6 +307,58 @@ const DesignSystem = () => {
                     style={{ fontSize: 11, color: '#666', textAlign: 'center', wordBreak: 'break-word' }}
                   >
                     {name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
+      </Section>
+
+      <Section title="Flags — language icons (new SVGs)" noCard>
+        {(() => {
+          const flags = [
+            'flagFinnish',
+            'flagErzya',
+            'flagKomizyrian',
+            'flagSakha',
+            'flagTatar',
+            'flagTatarnew',
+            'flagUdmurt',
+            'flagUdmurtarch',
+            'flagLivvi',
+            'flagMeadowmari',
+            'flagNorthsaami',
+            'flagCatalan',
+            'flagGerman',
+            'flagKazakh',
+            'flagPortuguese',
+            'flagRussian',
+            'flagSpanish',
+            'flagSwedish',
+            'flagFrench',
+            'flagTurkish',
+            'flagItalian',
+            'flagSyriac',
+            'flagChinese',
+            'flagEnglish',
+          ]
+          return (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20 }}>
+              {flags.map(name => (
+                <div
+                  key={name}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 6,
+                    width: 96,
+                  }}
+                >
+                  <img src={images[name]} alt={name} style={{ width: 40, height: 40 }} />
+                  <span style={{ fontSize: 11, color: '#666', textAlign: 'center' }}>
+                    {name.replace(/^flag/, '')}
                   </span>
                 </div>
               ))}

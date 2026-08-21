@@ -1179,6 +1179,8 @@
     "controlled-story-info-text": "Controlled. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
     "control-story-info-text": "The exercises in this story are chosen by the teacher. Try to answer the exercises in each snippet before the timer reaches zero! In case of incorrect answers, you'll get extra time for additional attempts.",
     "what-language-would-you-like-to-learn": "Which language would you like to learn?",
+    "beta-versions": "",
+    "endangered-languages": "",
     "network-error-click-to-resume": "Problems with the server or network...\n<br/>Please click to resume test",
     "pay-attention-to-diacritics": "Pay attention to diacritics! You wrote \"{answer}\", the correct form is \"{normalizedCorrect}\".",
     "pay-attention-to-spelling": "Pay attention to spelling! You wrote \"{answer}\", the correct form is \"{levenshteinCorrect}\".",

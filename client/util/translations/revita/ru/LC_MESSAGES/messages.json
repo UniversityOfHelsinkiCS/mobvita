@@ -1892,5 +1892,7 @@
     "select-all": "Select All",
     "lesson-ready": "Lesson Ready!",
     "selected-lesson-topics": "Lesson Topics",
-    "translate-cards": "Перевод карточек"
+    "translate-cards": "Перевод карточек",
+    "beta-versions": "Бета-версия",
+    "endangered-languages": "Исчезающие языки"
 }

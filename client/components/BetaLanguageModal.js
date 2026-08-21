@@ -1,7 +1,10 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { dismissBetaLanWarning } from 'Utilities/redux/userReducer'
 import AppDialog from 'Components/ui/AppDialog'
+import AppButton from 'Components/AppButton'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
 
 import { FormattedMessage } from 'react-intl'
@@ -21,19 +24,42 @@ const BetaLanguageModal = ({ open, setOpen, language }) => {
       maxWidth="xs"
       data-cy="beta-language-modal"
       closeDataCy="beta-language-modal-close"
+      sx={{
+        '& .MuiDialog-paper': { minHeight: 320 },
+        '& .MuiDialogContent-root': {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        },
+      }}
     >
-      <div className="encouragement" style={{ padding: '1.5rem' }}>
-        <div
-          className="flex"
-          style={{ alignItems: 'center', marginTop: '1.5rem', fontSize: '18px' }}
+      <div style={{ textAlign: 'center', padding: '0.5rem 0.5rem 0' }}>
+        <img
+          src={images.exclamationMark}
+          alt="exclamation mark"
+          style={{ width: 48, height: 48, marginBottom: '1.25rem' }}
+        />
+        <p
+          style={{
+            fontFamily: font.family,
+            fontWeight: 500,
+            fontSize: 18,
+            lineHeight: 1.4,
+            color: colors.ink,
+            margin: '0 0 28px',
+          }}
         >
-          <img
-            src={images.exclamationMark}
-            alt="exclamation mark"
-            style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
-          />
           <FormattedMessage id="beta-language-warning" values={{ language }} />
-        </div>
+        </p>
+        <AppButton
+          variant="primary"
+          size="lg"
+          sx={{ fontSize: 16 }}
+          data-cy="beta-language-modal-continue"
+          onClick={closeModal}
+        >
+          <FormattedMessage id="Continue" />
+        </AppButton>
       </div>
     </AppDialog>
   )
