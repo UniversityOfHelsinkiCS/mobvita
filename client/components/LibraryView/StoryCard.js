@@ -303,7 +303,11 @@ const StoryCard = ({
                   </CustomTooltip>
                 )}
                 <span className="library-tour-difficulty-stars">
-                  <DifficultyLevel difficulty={story.difficulty} />
+                  <CustomTooltip
+                    title={<FormattedMessage id="difficulty-level-tooltip" />}
+                  >
+                    <DifficultyLevel difficulty={story.difficulty} />
+                  </CustomTooltip>
                 </span>
               </div>
             </div>

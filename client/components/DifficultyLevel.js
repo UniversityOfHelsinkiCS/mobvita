@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { images } from 'Utilities/common'
 
 /**
@@ -23,11 +23,14 @@ const LEVELS = {
   high: 'high',
 }
 
-const DifficultyLevel = ({ difficulty, size = 20, style, ...props }) => {
+// forwardRef so it can sit directly inside a Tooltip/Popper: MUI hands the ref to the component,
+// not to the element it returns, and a plain function component would drop it.
+const DifficultyLevel = forwardRef(({ difficulty, size = 20, style, ...props }, ref) => {
   const level = LEVELS[difficulty]
 
   return (
     <img
+      ref={ref}
       src={LEVEL_ICONS[level]}
       alt=""
       data-cy={`difficulty-level-${level}`}
@@ -35,6 +38,8 @@ const DifficultyLevel = ({ difficulty, size = 20, style, ...props }) => {
       {...props}
     />
   )
-}
+})
+
+DifficultyLevel.displayName = 'DifficultyLevel'
 
 export default DifficultyLevel

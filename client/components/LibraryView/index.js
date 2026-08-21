@@ -428,7 +428,7 @@ const StoryList = () => {
   )
 
   if (pending || !refreshed) {
-    return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
+    return <Spinner fullHeight size={60} spinnerColor={colors.ink} textColor={colors.ink} text={intl.formatMessage({ id: 'loading' })} />
   }
 
   const storyIsInActiveLibrary = story => {

@@ -1750,5 +1750,7 @@
     "beta-versions": "",
     "endangered-languages": "",
     "story-card-has-rc-questions": "This story has reading comprehension questions",
-    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text",
+    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
+    "difficulty-level-tooltip": "Story difficulty level: Easy / Average / Difficult"
 }
