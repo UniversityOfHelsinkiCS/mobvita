@@ -1890,5 +1890,9 @@
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "rename-folder": "Rename folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
-    "translate-cards": "Translate Cards"
+    "translate-cards": "Translate Cards",
+    "beta-versions": "",
+    "endangered-languages": "",
+    "story-card-has-rc-questions": "This story has reading comprehension questions",
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
 }

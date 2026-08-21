@@ -1746,5 +1746,9 @@
     "select-all": "Select All",
     "lesson-ready": "Lesson Ready!",
     "selected-lesson-topics": "Lesson Topics",
-    "translate-cards": "Translate Cards"
+    "translate-cards": "Translate Cards",
+    "beta-versions": "",
+    "endangered-languages": "",
+    "story-card-has-rc-questions": "This story has reading comprehension questions",
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
 }

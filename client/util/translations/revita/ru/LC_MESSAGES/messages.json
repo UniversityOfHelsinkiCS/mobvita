@@ -1881,7 +1881,7 @@
     "progress-flashcard-explanation": "Your flashcard rating — an estimate of how well you know your vocabulary.",
     "connection-online": "Connected",
     "connection-offline": "No connection",
-    "interface-settings": "Interface settings",
+    "interface-settings": "Настройки интерфейса",
     "all-topics-in-text": "All Topics In Text",
     "rename-folder": "Rename folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
@@ -1892,5 +1892,9 @@
     "select-all": "Select All",
     "lesson-ready": "Lesson Ready!",
     "selected-lesson-topics": "Lesson Topics",
-    "translate-cards": "Перевод карточек"
+    "translate-cards": "Перевод карточек",
+    "beta-versions": "Бета-версия",
+    "endangered-languages": "Исчезающие языки",
+    "story-card-has-rc-questions": "This story has reading comprehension questions",
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
 }
