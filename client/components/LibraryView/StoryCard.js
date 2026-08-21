@@ -256,6 +256,7 @@ const StoryCard = ({
               {story?.percent_cov > 0 && (
                 <div className="library-story-card-progress">
                   <AppProgressBar
+                    data-cy="story-progress-bar"
                     value={story?.percent_cov}
                     height="10px"
                     fillColor={colors.green}
