@@ -19,7 +19,7 @@ const VocabularyGraph = ({
   setGraphType,
   xAxisLength,
   element,
-}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight size={60} />
+}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   if (
     !vocabularyData ||

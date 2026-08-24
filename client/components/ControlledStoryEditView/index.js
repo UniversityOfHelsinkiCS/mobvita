@@ -111,7 +111,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight size={60} text="" />
+  if (!story || pending || !user) return <Spinner fullHeight spinnerColor={colors.ink} size={60} text="" />
 
   const url = location.pathname
   const processingCurrentStory = id === storyId

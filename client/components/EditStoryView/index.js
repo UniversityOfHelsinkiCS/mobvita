@@ -100,7 +100,7 @@ const EditStoryView = ({ match }) => {
     !content || textTooLong || charactersLeft > 49950 || titleMissing || !modified
 
   if (!story || pending) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   return (

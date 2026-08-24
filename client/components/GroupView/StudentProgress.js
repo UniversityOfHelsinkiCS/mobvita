@@ -38,7 +38,7 @@ const StudentProgress = ({ student, startDate, endDate, group }) => {
   }, [])
 
   if (pending) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   return (

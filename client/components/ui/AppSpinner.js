@@ -51,7 +51,7 @@ const AppSpinner = ({
   size = 48,
   color = colors.green,
   text,
-  textColor = colors.green,
+  textColor = colors.ink,
   textProps,
   ...rest
 }) => {

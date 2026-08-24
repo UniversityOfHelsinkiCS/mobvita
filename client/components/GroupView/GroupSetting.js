@@ -66,7 +66,7 @@ const GroupSetting = () => {
   }, [isTeaching, navigate])
 
   if (pending || !group) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   // Switches between the exercise-settings and test-settings views; fetches concepts on demand.

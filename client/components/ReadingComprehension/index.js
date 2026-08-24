@@ -487,7 +487,7 @@ const ReadingComprehensionView = ({ match }) => {
 
   if (focusedPending || !story)
     return (
-      <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
+      <Spinner fullHeight spinnerColor={colors.ink} textColor={colors.ink} size={60} text={intl.formatMessage({ id: 'loading' })} textSize={20} />
     )
 
   const saveTooltip = mcPending
@@ -894,6 +894,8 @@ const ReadingComprehensionView = ({ match }) => {
         <div className="rc-loading-overlay">
           <Spinner
             fullHeight
+            spinnerColor={colors.ink}
+            textColor={colors.ink}
             size={60}
             text={intl.formatMessage({ id: 'regenerating' })}
             textSize={20}

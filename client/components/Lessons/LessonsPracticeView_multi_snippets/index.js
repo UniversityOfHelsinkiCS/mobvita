@@ -127,7 +127,7 @@ const LessonsPracticeView = () => {
     )
   } else {
     return (
-      <Spinner fullHeight size={60} />
+      <Spinner fullHeight spinnerColor={colors.ink} size={60} />
     )
   }
 }

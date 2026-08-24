@@ -194,7 +194,7 @@ const Summary = ({
   return (
     <>
       {pending ? (
-        <Spinner fullHeight size={60} />
+        <Spinner fullHeight spinnerColor={colors.ink} size={60} />
       ) : (
         <>
           {summary?.length > 0 ? (

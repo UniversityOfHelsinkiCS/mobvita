@@ -372,7 +372,7 @@ const ReadingPracticeView = () => {
     }
   }
 
-  if (pending) return <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
+  if (pending) return <Spinner fullHeight spinnerColor={colors.ink} textColor={colors.ink} size={60} text={intl.formatMessage({ id: 'loading' })} />
   if (!story) return null
 
   return (

@@ -56,7 +56,7 @@ const GroupPeople = ({ role }) => {
     dispatch(resendGroupInvitation(currentGroupId, userId))
   }
 
-  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight size={60} />
+  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   if (totalGroups.length === 0) {
     return <NoGroupsView role={role} />

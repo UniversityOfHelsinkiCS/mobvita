@@ -43,7 +43,7 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
     dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
   }, [student, view, startDate, endDate])
 
-  if (pending) return <Spinner fullHeight size={60} />
+  if (pending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   return (
     <div>
