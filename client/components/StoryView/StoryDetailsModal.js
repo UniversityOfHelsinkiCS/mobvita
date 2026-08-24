@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/material'
 import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import { colors } from 'Assets/mui_theme/designTokens'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -12,10 +13,6 @@ import { images } from 'Utilities/common'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 
 const EMPTY_LOADING_PROGRESS = {}
-
-// Deep orange used for the destructive Delete action (matches the 2026 mockup).
-const DELETE_ORANGE = '#F26419'
-const DELETE_ORANGE_HOVER = '#D9550F'
 
 // A full-width green "pill" action row: left-aligned icon + label, optionally wrapped in a router
 // Link and/or a permanent tooltip (shown when the action is disabled to explain why).
@@ -137,11 +134,10 @@ const StoryDetailsModal = ({
       sx={{
         gap: '0.5em',
         whiteSpace: 'nowrap',
-        backgroundColor: DELETE_ORANGE,
+        backgroundColor: colors.alert,
         color: '#fff',
-        // The trash SVG is ink-stroked; invert it to white so it reads on the orange fill.
         '& img': { flexShrink: 0, filter: 'brightness(0) invert(1)' },
-        '&:hover': { backgroundColor: DELETE_ORANGE_HOVER },
+        '&:hover': { backgroundColor: colors.alertHover },
       }}
     >
       <img src={images.trash03} alt="" />

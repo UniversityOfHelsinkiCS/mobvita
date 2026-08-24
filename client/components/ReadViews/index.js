@@ -17,6 +17,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
+  getAllStories,
   getStoryAction,
   getStoryLoadingProgress,
   getStudentStoryAction,
@@ -289,7 +290,7 @@ const ReadViews = ({ match }) => {
 
     loadingPollRef.current = setInterval(() => {
       dispatch(getStoryLoadingProgress(id))
-    }, 10000)
+    }, 3000)
 
     return () => {
       if (loadingPollRef.current) {
@@ -312,7 +313,7 @@ const ReadViews = ({ match }) => {
 
       storyPollRef.current = setInterval(() => {
         dispatch(getStoryAction(id, mode))
-      }, 10000)
+      }, 3000)
 
       return () => {
         if (storyPollRef.current) {
@@ -346,19 +347,26 @@ const ReadViews = ({ match }) => {
     teacherProcessingComplete,
   ])
 
-  if (!user || groupsPending) return <Spinner fullHeight size={60} />
+  if (!user || groupsPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   if (isTeacherPreviewProcessing)
     return (
       <Spinner
         fullHeight
+        spinnerColor={colors.ink}
+        textColor={colors.ink}
         size={60}
-        text={intl.formatMessage(
-          { id: 'processing-story-with-percent' },
-          { progress: processingPercent }
-        )}
+        textDelay={1000}
+        text={
+          Number.isFinite(teacherLoadingProgress)
+            ? intl.formatMessage(
+                { id: 'processing-story-with-percent' },
+                { progress: processingPercent }
+              )
+            : ''
+        }
       />
     )
-  if (!routeStory && !isStudentPreview) return <Spinner fullHeight size={60} />
+  if (!routeStory && !isStudentPreview) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   const underProcessing = isStudentPreview
     ? !loadingReady || storyProgress !== 1
@@ -384,8 +392,11 @@ const ReadViews = ({ match }) => {
     setOpen(true)
   }
 
-  const handleDeleteStory = () => {
-    dispatch(removeStory(id))
+  // Awaited, then refetched: navigating straight away lets the library's list request race the
+  // delete, and GET_STORIES_SUCCESS replaces the list wholesale — putting the story back.
+  const handleDeleteStory = async () => {
+    await dispatch(removeStory(id))
+    await dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }))
     navigate('/library', { replace: true })
   }
 
@@ -400,7 +411,11 @@ const ReadViews = ({ match }) => {
         <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
           <FormattedMessage id="edit" />
         </AppButton>
-        <AppButton variant="danger" onClick={() => setConfirmationOpen(true)}>
+        <AppButton
+          variant="danger"
+          data-cy="story-delete-button"
+          onClick={() => setConfirmationOpen(true)}
+        >
           <FormattedMessage id="Delete" />
         </AppButton>
       </div>

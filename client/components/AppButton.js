@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
@@ -132,24 +132,31 @@ const StyledButton = styled(Button)({
   '& > svg': { color: 'currentColor' },
 })
 
-const AppButton = ({ variant = 'primary', size, block = false, as, sx, children, ...rest }) => {
-  const variantSx = VARIANT_STYLES[resolveVariant(variant)]
-  const sizeSx = SIZE_STYLES[SIZE_KEYS[size] || 'medium']
-  const userSx = Array.isArray(sx) ? sx : [sx]
+// forwardRef so it can sit directly inside a Tooltip/Popper: MUI hands the ref to the component,
+// not to the element it renders, and a plain function component would drop it.
+const AppButton = forwardRef(
+  ({ variant = 'primary', size, block = false, as, sx, children, ...rest }, ref) => {
+    const variantSx = VARIANT_STYLES[resolveVariant(variant)]
+    const sizeSx = SIZE_STYLES[SIZE_KEYS[size] || 'medium']
+    const userSx = Array.isArray(sx) ? sx : [sx]
 
-  return (
-    <StyledButton
-      variant="text"
-      disableElevation
-      size="medium"
-      fullWidth={block}
-      component={as}
-      sx={[sizeSx, variantSx, ...userSx]}
-      {...rest}
-    >
-      {children}
-    </StyledButton>
-  )
-}
+    return (
+      <StyledButton
+        ref={ref}
+        variant="text"
+        disableElevation
+        size="medium"
+        fullWidth={block}
+        component={as}
+        sx={[sizeSx, variantSx, ...userSx]}
+        {...rest}
+      >
+        {children}
+      </StyledButton>
+    )
+  },
+)
+
+AppButton.displayName = 'AppButton'
 
 export default AppButton

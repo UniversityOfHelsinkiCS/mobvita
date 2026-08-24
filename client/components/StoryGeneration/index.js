@@ -234,6 +234,8 @@ const StoryGeneration = () => {
         {generationPending ? (
           <Spinner
             fullHeight
+            spinnerColor={colors.ink}
+            textColor={colors.ink}
             size={60}
             text={<FormattedMessage id="story-generating" />}
             delayedMessage={[
@@ -320,7 +322,7 @@ const StoryGeneration = () => {
   return (
     <div className="cont-tall cont flex-col auto">
       {metaPending ? (
-        <Spinner fullHeight size={60} />
+        <Spinner fullHeight spinnerColor={colors.ink} size={60} />
       ) : noResults ? (
         <div
           className="justify-center"
@@ -352,7 +354,7 @@ const StoryGeneration = () => {
                 activeIndex={activeStepIndex}
               />
             </div>
-            {goStep === -1 && <Spinner fullHeight size={60} />}
+            {goStep === -1 && <Spinner fullHeight spinnerColor={colors.ink} size={60} />}
             {(goStep === 0 || goStep === -1) && (
               <div
                 className="story-generation-controls"

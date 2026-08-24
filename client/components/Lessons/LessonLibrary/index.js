@@ -430,7 +430,7 @@ const LessonList = () => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
         {metaPending || groupPending ? (
-          <Spinner fullHeight size={60} text={intl.formatMessage({ id: 'loading' })} />
+          <Spinner fullHeight size={60} spinnerColor={colors.ink} textColor={colors.ink} text={intl.formatMessage({ id: 'loading' })} />
         ) : noResults ? (
           <div
             className="justify-center mt-lg"
@@ -453,8 +453,8 @@ const LessonList = () => {
             )}
             {libraries.group && !teacherView ? (
               <div className="lesson-group-container" style={{ ...creamBlock, margin: 0 }}>
-                {lessonPending && <Spinner size={60} />}
                 {lessonStartControls}
+                {lessonPending && <Spinner size={60} />}
               </div>
             ) : showStartMenu && !teacherView ? (
               <LessonStartMenu setOpen={setShowStartMenu} />

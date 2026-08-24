@@ -11,6 +11,7 @@ import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashc
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)
@@ -58,7 +59,7 @@ const FlashcardList = () => {
   const isSomePageLoaded = cardsInCurrentPage.length !== 0
   const nextPagePending = cardsInCurrentPage.length !== 0 && pending
 
-  if (!isSomePageLoaded && pending) return <Spinner fullHeight size={60} variant='primary' />
+  if (!isSomePageLoaded && pending) return <Spinner fullHeight size={60} spinnerColor={colors.ink} />
 
   if (editableCard) {
     return (
@@ -92,7 +93,7 @@ const FlashcardList = () => {
         </div>
       </div>
       {nextPagePending ? (
-        <Spinner fullHeight size={60} variant="primary" />
+        <Spinner fullHeight size={60} spinnerColor={colors.ink} />
       ) : (
         <div>
           <div className="flashcard-list-rows">

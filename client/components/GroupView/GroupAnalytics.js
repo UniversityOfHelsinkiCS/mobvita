@@ -186,7 +186,7 @@ const GroupAnalytics = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight size={60} />
+  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
 

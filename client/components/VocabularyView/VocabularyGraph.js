@@ -9,6 +9,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const VocabularyGraph = ({
   vocabularyData,
@@ -19,7 +20,7 @@ const VocabularyGraph = ({
   setGraphType,
   xAxisLength,
   element,
-}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight size={60} />
+}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   if (
     !vocabularyData ||

@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
 import moment from 'moment'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentHistory = ({ student, startDate, endDate, group, view }) => {
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)
@@ -43,7 +44,7 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
     dispatch(getStudentHistory(student._id, group.group_id, startDate, endDate, view))
   }, [student, view, startDate, endDate])
 
-  if (pending) return <Spinner fullHeight size={60} />
+  if (pending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   return (
     <div>

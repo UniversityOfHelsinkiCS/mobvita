@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getStudentHistory, getGroupHistory } from 'Utilities/redux/groupHistoryReducer'
 import HexagonTest from 'Components/GridHexagon'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDate, group }) => {
   const [view, setView] = useState('exercise')
@@ -26,7 +27,7 @@ const StudentGrammarProgress = ({ summaryView = false, student, startDate, endDa
   }, [student, startDate, endDate])
 
   if (pending) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   if (!history) {

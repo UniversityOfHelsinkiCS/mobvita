@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentVocabularyProgress = ({
   studentVocabulary,
@@ -33,7 +34,7 @@ const StudentVocabularyProgress = ({
 
   if (vocabularyPending || previousPending) {
     return (
-      <Spinner fullHeight size={60} />
+      <Spinner fullHeight spinnerColor={colors.ink} size={60} />
     )
   }
 
@@ -49,7 +50,7 @@ const StudentVocabularyProgress = ({
       element={element}
     />
   ) : (
-    <Spinner fullHeight size={60} />
+    <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   )
 }
 

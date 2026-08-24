@@ -28,6 +28,7 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import ReportButton from 'Components/ReportButton'
 import ScrollArrow from '../ScrollArrow'
 import StoryTopics from 'Components/StoryView/StoryTopics'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const ControlledStoryEditView = ({ match }) => {
   const dispatch = useDispatch()
@@ -111,7 +112,7 @@ const ControlledStoryEditView = ({ match }) => {
     }
   }, [progress])
 
-  if (!story || pending || !user) return <Spinner fullHeight size={60} text="" />
+  if (!story || pending || !user) return <Spinner fullHeight spinnerColor={colors.ink} size={60} text="" />
 
   const url = location.pathname
   const processingCurrentStory = id === storyId

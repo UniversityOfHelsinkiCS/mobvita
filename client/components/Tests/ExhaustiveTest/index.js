@@ -110,7 +110,7 @@ const ExhaustiveTestView = () => {
   }, [learningLanguage])
 
   if (pending) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   const testEnabledGroups = groups.filter(group => group.test_deadline - Date.now() > 0)

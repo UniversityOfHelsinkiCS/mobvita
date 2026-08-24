@@ -25,7 +25,7 @@ import AppLemma from 'Components/ui/AppLemma'
 import AppStepper from 'Components/ui/AppStepper'
 import AppTooltip from 'Components/ui/AppTooltip'
 import AppSpinner from 'Components/ui/AppSpinner'
-import DifficultyLevel from 'Components/DifficultyLevel'
+import AppIcon from 'Components/ui/AppIcon'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
@@ -381,24 +381,27 @@ const DesignSystem = () => {
         })()}
       </Section>
 
-      <Section title="DifficultyLevel — story difficulty (swap the art in LEVEL_ICONS)">
-        <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+      <Section title="AppIcon — one asset, any token colour (ready for a dark theme)">
+        <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
           {[
-            { difficulty: 1, label: '1 / low' },
-            { difficulty: 2, label: '2 / average' },
-            { difficulty: 3, label: '3 / high' },
-            { difficulty: undefined, label: 'unrated — renders nothing' },
-          ].map(({ difficulty, label }) => (
+            { color: colors.ink, label: 'ink' },
+            { color: colors.green, label: 'green' },
+            { color: colors.muted, label: 'muted' },
+            { color: colors.error, label: 'error' },
+          ].map(({ color, label }) => (
             <div
               key={label}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
             >
-              <DifficultyLevel difficulty={difficulty} size={24} />
+              <AppIcon src={images.cardsIcon} color={color} size={28} />
               <span style={{ fontSize: 12, color: colors.muted }}>{label}</span>
             </div>
           ))}
+          <div style={{ fontSize: 12, color: colors.muted, maxWidth: 260 }}>
+            The same <code>cards.svg</code> in four colours. An <code>&lt;img&gt;</code> would need
+            four files and could not follow a theme.
+          </div>
         </div>
-
       </Section>
 
       <Section title="AppButton — design variants (active / disabled)">

@@ -120,6 +120,7 @@ const AppTabs = ({
             role="tab"
             aria-selected={tab.value === value}
             active={tab.value === value}
+            data-cy={`tab-${tab.value}`}
             fullWidth={fullWidth}
             sizing={sizing}
             onClick={() => onChange(tab.value)}

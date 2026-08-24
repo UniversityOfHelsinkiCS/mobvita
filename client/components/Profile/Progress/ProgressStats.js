@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl'
 import { getPersonalSummary, getPersonalOverallSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { useLocation } from 'react-router-dom'
 
 const ProgressStats = ({ startDate, endDate }) => {
@@ -28,7 +29,7 @@ const ProgressStats = ({ startDate, endDate }) => {
     }
   }, [startDate, endDate, learningLanguage])
 
-  if (!summary || pending) return <Spinner fullHeight size={60} />
+  if (!summary || pending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   const getLearningLanguageFlag = () => {
     if (learningLanguage) {

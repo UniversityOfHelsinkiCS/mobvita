@@ -23,24 +23,25 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
             Website.
           </p>
           <p>
-            By accessing this website we assume you accept these terms and conditions in full. Do
-            not continue to use Revita's website if you do not accept all of the terms and
-            conditions stated on this page.
+            By accessing this website we assume you accept these terms and conditions in full.  Do not
+            continue to use Revita's website if you do not accept all of the terms and conditions stated
+            on this page.
           </p>
           <p>
-            The following terminology applies to these Terms and Conditions, Privacy Statement and
-            Disclaimer Notice and any or all Agreements: "Client", "You" and "Your" refers to you,
-            the person accessing this website and accepting the Provider's terms and conditions.
-            "The Provider", "Ourselves", "We", "Our" and "Us", refers to the Provider. "Party",
-            "Parties", or "Us", refers to both the Client and ourselves, or either the Client or
-            ourselves. All terms refer to the offer, acceptance and consideration of payment
-            necessary to undertake the process of our assistance to the Client in the most
-            appropriate manner, whether by formal meetings of a fixed duration, or any other means,
-            for the express purpose of meeting the Client's needs in respect of provision of the
-            Provider's stated services/products, in accordance with and subject to, prevailing law
-            of Finland. Any use of the above terminology or other words in the singular, plural,
-            capitalisation and/or he/she or they, are taken as interchangeable and therefore as
-            referring to same.
+              The following terminology applies to these Terms and Conditions, Privacy Statement and
+              Disclaimer Notice and any or all Agreements:
+              <ul>
+                  <li/>"Client", "You" and "Your" refers to you, the person accessing this website and accepting the Provider's terms and conditions.
+                  <li/>"The Provider", "Ourselves", "We", "Our" and "Us", refers to the Provider.
+                  <li/>"Party", "Parties", or "Us", refers to both the Client and ourselves, or either the Client or ourselves.
+              </ul>
+              All terms refer to the offer, acceptance and consideration of payment necessary to undertake the
+            process of our assistance to the Client in the most appropriate manner, whether by formal
+            meetings of a fixed duration, or any other means, for the express purpose of meeting the
+            Client's needs in respect of provision of the Provider's stated services/products, in
+            accordance with and subject to, prevailing law of Finland. Any use of the above terminology
+            or other words in the singular, plural, capitalisation and/or he/she or they, are taken as
+            interchangeable and therefore as referring to same.
           </p>
           <h2>Cookies</h2>
           <p>
@@ -48,7 +49,7 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
             cookies in accordance with Revita's privacy policy.
           </p>
           <p>
-            Most of the modern day interactive web sites use cookies to enable us to retrieve user
+            Most of the modern-day interactive web sites use cookies to enable us to retrieve user
             details for each visit. Cookies are used in some areas of our site to enable the
             functionality of this area and ease of use for those people visiting. Some of our
             affiliate / advertising partners may also use cookies.
@@ -65,11 +66,8 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
             <li>Republish material from https://revita.helsinki.fi/</li>
             <li>Sell, rent or sub-license material from https://revita.helsinki.fi/</li>
             <li>Reproduce, duplicate or copy material from https://revita.helsinki.fi/</li>
+            <li>Redistribute content from Revita (unless content is specifically made for redistribution).</li>
           </ol>
-          <p>
-            Redistribute content from Revita (unless content is specifically made for
-            redistribution).
-          </p>
           <h2>Hyperlinking to our Content</h2>
           <ol>
             <li>
@@ -172,7 +170,7 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
             and conditions and its linking policy at any time. By continuing to link to our Web
             site, you agree to be bound to and abide by these linking terms and conditions.
           </p>
-          <h2>Removal of links from our website</h2>
+          <h2>Removal of Links from Our Website</h2>
           <p>
             If you find any link on our Web site or any linked web site objectionable for any
             reason, you may contact us about this. We will consider requests to remove links but
@@ -278,7 +276,7 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
             secure. While we strive to use commercially acceptable means to protect your Personal
             Information, we cannot guarantee its absolute security.
           </p>
-          <h2>Links To External Sites</h2>
+          <h2>Links to External Sites</h2>
           <p>
             Our Service may contain links to external sites that are not operated by us. If you
             click on a third party link, you will be directed to that third party's site. We
@@ -320,11 +318,23 @@ const TermsAndConditions = ({ trigger, open: controlledOpen, setOpen: setControl
           <h2>Aggregated Statistics</h2>
           <p>
             Revita may collect statistics about the behavior of visitors to its website. Revita may
-            display this information publicly or provide it to others. However, Revita does not
-            disclose your personally-identifying information. If you do not wish your name to appear
-            in the LeaderBoards, please choose a user name that obscures your identity. If you wish
-            to be removed from the LeaderBoards, please select that option from your Profile -
-            Settings page.
+            display this information publicly or provide it to others. However, Revita does not disclose
+            your personally-identifying information. If you do not wish your name to appear in the
+            LeaderBoards, please choose a user name that obscures your identity. If you wish to be
+            removed from the LeaderBoards, please select that option from your Profile - Settings page.
+          </p>
+          <h2>AI Usage and Prevention of Data Leakage</h2>
+          <p>
+              All interaction between the user (teacher or student) and the system is stored on our secure servers,
+              and is not accessible to any outside party or service.  The only exceptions to this may be circumstances
+              in which a piece of the user's input is sent for processing to an external (currently, commercial) large language model (LLM) / generative AI agent:
+              <ul>
+                  <li/>A user's request for help or assistance: for example, a request for an explanation of
+                  the current exercise context, its content/meaning, or its structure.
+                  <li/>When the student is writing an original essay, parts of the essay will be sent for analysis
+                  to the LLM, only one sentence at a time (possibly the original or in scrambled order).
+              </ul>
+              No other user data is shown / presented to external LLMs. 
           </p>
           <h2>Cookies</h2>
           <p>

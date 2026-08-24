@@ -9,6 +9,7 @@ import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
 import ReadingTest from './ReadingTest'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 
 const ReadingTestView = () => {
@@ -36,7 +37,7 @@ const ReadingTestView = () => {
   }
 
   if (pending) {
-    return <Spinner fullHeight size={60} />
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   return (

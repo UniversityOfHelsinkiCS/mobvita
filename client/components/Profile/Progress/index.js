@@ -36,6 +36,7 @@ import Recommender from 'Components/NewEncouragements/Recommender'
 import XpProgressGraph from 'Components/XpProgressGraph'
 import ProgressStats from './ProgressStats'
 import HoursProgressChart from 'Components/HoursProgressChart'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -253,7 +254,7 @@ const Progress = () => {
     setGraphType('column mastered')
   }
 
-  if (pending || pending === undefined || testPending) return <Spinner fullHeight size={60} />
+  if (pending || pending === undefined || testPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   // console.log('num of words at end ', endWords)
   return (
@@ -468,7 +469,7 @@ const Progress = () => {
                     />
                   </div>
                 ) : (
-                  <Spinner fullHeight size={60} />
+                  <Spinner fullHeight spinnerColor={colors.ink} size={60} />
                 )}
               </div>
             </div>

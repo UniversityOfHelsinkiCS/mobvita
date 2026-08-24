@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize, skillLevels } from 'Utilities/common'
 import { produce } from 'immer'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const Summary = ({
   setStudent,
@@ -194,7 +195,7 @@ const Summary = ({
   return (
     <>
       {pending ? (
-        <Spinner fullHeight size={60} />
+        <Spinner fullHeight spinnerColor={colors.ink} size={60} />
       ) : (
         <>
           {summary?.length > 0 ? (

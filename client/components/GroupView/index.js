@@ -275,7 +275,7 @@ const GroupView = () => {
         )}
         <PeopleAddResultModal lastAddInfo={lastAddInfo} />
         {pending ? (
-          <Spinner fullHeight size={60} />
+          <Spinner fullHeight spinnerColor={colors.ink} size={60} />
         ) : (
           <>
             <Box data-cy="group-list" sx={{ px: '1rem' }}>
