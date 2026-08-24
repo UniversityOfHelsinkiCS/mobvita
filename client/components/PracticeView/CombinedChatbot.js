@@ -629,10 +629,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   const getNestListForLemma = (lemma) => {
     if (!lemma) return []
-    // Expected shape: wordNest.data = { [lemma]: WordNestEntry[] }
-    // (be defensive in case API returns an array)
-    if (Array.isArray(words)) return words
-    return words?.[lemma] || []
+    // Word Nest buttons must be backed by data for this exact lemma. An array can
+    // be stale data from a different modal context, so it must not enable a button.
+    const nest = Array.isArray(words) ? undefined : words?.[lemma]
+    return Array.isArray(nest) ? nest : []
   }
 
   const isWordNestAvailableForLemma = lemmaOrLemmas => {
@@ -1008,7 +1008,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                     isWordNestAvailableForLemma(translated.lemma)
                                       ? () => {
                                           setWordNestRestoreWord(computeWordNestRestoreWord())
-                                          setWordNestChosenWord(translated.lemma)
+                                          setWordNestChosenWord(bestWordNestLemma(translated.lemma))
                                           setWordNestModalOpen(true)
                                         }
                                       : undefined
@@ -1339,7 +1339,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 isWordNestAvailableForLemma(translated.lemma)
                     ? () => {
                           setWordNestRestoreWord(computeWordNestRestoreWord())
-                          setWordNestChosenWord(translated.lemma)
+                          setWordNestChosenWord(bestWordNestLemma(translated.lemma))
                           setWordNestModalOpen(true)
                       }
                     : undefined

@@ -43,7 +43,7 @@ const Pill = ({ icon, children, onClick, href, bg, tooltip }) => {
   const style = {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 6,
+    gap: 0,
     padding: '5px 11px',
     borderRadius: 999,
     border: 'none',
@@ -172,13 +172,12 @@ const AppLemma = ({
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
           {(onDictionary || dictionaryHref) && (
             <Pill
-              icon={images.bookmark}
+              icon={images.external}
               onClick={onDictionary}
               href={dictionaryHref}
               bg={DICTIONARY_PILL_BG}
               tooltip="explain-goto-inflection-table"
-            >
-              <FormattedMessage id="Dictionary" defaultMessage="Dictionary" />
+            >              
             </Pill>
           )}
           {onWordNest && (
@@ -187,8 +186,7 @@ const AppLemma = ({
               onClick={onWordNest}
               bg={WORDNEST_PILL_BG}
               tooltip="display-word-nest"
-            >
-              <FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />
+            >              
             </Pill>
           )}
         </div>
