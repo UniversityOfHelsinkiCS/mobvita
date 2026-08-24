@@ -186,6 +186,7 @@ export default function Sidebar() {
                 <FormattedMessage id="add-your-stories" />
               </MenuRow>
               <MenuRow
+                data-cy="sidebar-library"
                 icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
                 selected={isActive('/library')}
                 onClick={() => go('/library')}
@@ -223,6 +224,7 @@ export default function Sidebar() {
                 <FormattedMessage id="practice-now" />
               </MenuRow>
               <MenuRow
+                data-cy="sidebar-library"
                 icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
                 selected={isActive('/library')}
                 onClick={() => go('/library')}

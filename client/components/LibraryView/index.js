@@ -81,7 +81,12 @@ const StoryList = () => {
   const refreshed = useSelector(({ user }) => user.refreshed)
   const { groups, deleteSuccessful } = useSelector(({ groups }) => groups)
   const currentGroup = groups.find(g => g.group_id === savedGroupSelection)
-  const { pending, data: stories, searchResults, lastQuery } = useSelector(({ stories }) => stories)
+  const {
+    pending,
+    data: stories,
+    searchResults,
+    lastQuery,
+  } = useSelector(({ stories }) => stories)
   const essays = useSelector(state => state.writingCorrection.essays)
   const essaysPending = useSelector(state => state.writingCorrection.essaysPending)
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)

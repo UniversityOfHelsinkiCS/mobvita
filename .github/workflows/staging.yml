@@ -60,6 +60,17 @@ jobs:
         with:
           spec: cypress/e2e/groups_spec.js
           context: groups
+  
+  test_library:
+    name: "Test library"
+    runs-on: ubuntu-latest  
+    steps:
+      - uses: actions/checkout@v6
+      - name: 'Run tests'
+        uses: ./.github/actions/run_test
+        with:
+          spec: cypress/e2e/library_spec.js
+          context: library
 
   test_mobvita:
     name: "Test mobvita"
@@ -135,6 +146,7 @@ jobs:
       - test_flashcards
       - test_follow_and_block
       - test_groups
+      - test_library
       - test_mobvita
       - test_practice
       - test_reading_comprehension
