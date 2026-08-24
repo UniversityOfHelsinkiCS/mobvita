@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentVocabularyProgress = ({
   studentVocabulary,

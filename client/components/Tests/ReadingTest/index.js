@@ -9,6 +9,7 @@ import { useLearningLanguage } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
 import ReadingTest from './ReadingTest'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 
 const ReadingTestView = () => {

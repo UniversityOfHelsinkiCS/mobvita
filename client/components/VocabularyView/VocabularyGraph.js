@@ -9,6 +9,7 @@ import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
 import VocabularyTooltips from './VocabularyTooltips'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const VocabularyGraph = ({
   vocabularyData,

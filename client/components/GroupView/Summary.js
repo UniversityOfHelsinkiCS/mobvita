@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize, skillLevels } from 'Utilities/common'
 import { produce } from 'immer'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const Summary = ({
   setStudent,

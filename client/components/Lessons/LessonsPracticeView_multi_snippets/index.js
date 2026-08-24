@@ -18,6 +18,7 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import ProgressBar from '../../PracticeView/CurrentSnippet/ProgressBar'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import LessonExercise from './LessonExercise'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const LessonsPracticeView = () => {
   const dispatch = useDispatch()

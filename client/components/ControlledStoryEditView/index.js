@@ -28,6 +28,7 @@ import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfo
 import ReportButton from 'Components/ReportButton'
 import ScrollArrow from '../ScrollArrow'
 import StoryTopics from 'Components/StoryView/StoryTopics'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const ControlledStoryEditView = ({ match }) => {
   const dispatch = useDispatch()

@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl'
 import { getPersonalSummary, getPersonalOverallSummary } from 'Utilities/redux/groupSummaryReducer'
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { useLocation } from 'react-router-dom'
 
 const ProgressStats = ({ startDate, endDate }) => {

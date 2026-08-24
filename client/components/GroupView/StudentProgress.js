@@ -8,6 +8,7 @@ import ProgressGraph from 'Components/ProgressGraph'
 import Spinner from 'Components/Spinner'
 import XpProgressGraph from 'Components/XpProgressGraph'
 import HoursProgressChart from 'Components/HoursProgressChart'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentProgress = ({ student, startDate, endDate, group }) => {
   // const practiceHistory = useSelector(state => state.practiceHistory)

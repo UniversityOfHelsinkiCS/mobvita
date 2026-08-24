@@ -11,6 +11,7 @@ import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashc
 import Spinner from 'Components/Spinner'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)

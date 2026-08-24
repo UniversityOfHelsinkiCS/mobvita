@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
 import moment from 'moment'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentHistory = ({ student, startDate, endDate, group, view }) => {
   const { pending, history } = useSelector(({ studentHistory }) => studentHistory)

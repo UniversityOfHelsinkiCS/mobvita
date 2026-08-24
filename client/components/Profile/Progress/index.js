@@ -36,6 +36,7 @@ import Recommender from 'Components/NewEncouragements/Recommender'
 import XpProgressGraph from 'Components/XpProgressGraph'
 import ProgressStats from './ProgressStats'
 import HoursProgressChart from 'Components/HoursProgressChart'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
