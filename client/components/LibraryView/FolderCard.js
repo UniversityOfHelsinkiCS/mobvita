@@ -81,14 +81,27 @@ const FolderCard = ({
   // A leading "go up one level" pill shown inside a subfolder: same size as a folder card, but a green
   // flip-backward icon and "..." in place of the name (Figma "Library Folder" back variant).
   if (isBack) {
+    // Also a drop target: dragging a story onto it moves the story to the parent folder, the same
+    // way dropping onto a breadcrumb does.
+    const backClassName = [
+      'library-folder-card',
+      'library-folder-card-back',
+      isDropTarget ? 'library-folder-card-drop-target' : '',
+    ]
+      .filter(Boolean)
+      .join(' ')
+
     return (
       <div
-        className="library-folder-card library-folder-card-back"
+        className={backClassName}
         role="button"
         tabIndex={0}
         aria-label={'Back to parent folder'}
         onClick={onClick}
         onKeyDown={handleKeyDown}
+        onDragLeave={onDragLeave}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
       >
         <span className="library-folder-content">
           <img src={FlipBackward} alt="" className="library-folder-icon" />

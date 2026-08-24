@@ -19,6 +19,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import MedalSummary from './MedalSummary'
 import PracticeModal from './PracticeModal'
+import { assembleActivityLink } from 'Utilities/activityLink'
 import EloChart from './EloChart'
 import LeaderboardSummary from './LeaderboardSummary'
 import DDLangIntroductory from 'Components/Tests/ReadingTest/ReadingTestIntroductory'
@@ -75,40 +76,11 @@ const HomeviewButtons = ({
   const learningLanguage = useSelector(state => state.user.data.user?.last_used_language)
   const hasTeacherRole = Boolean(teacherAccess)
 
-  const assembleActivityLink = lastActivity => {
-    switch (lastActivity && lastActivity.type) {
-      case 'flashcard':
-        return '/flashcards'
-      case 'preview':
-        if (stories?.find(x => x._id === lastActivity.story_id))
-          return `/stories/${lastActivity.story_id}/preview/`
-        else return null
-      case 'review':
-        if (stories?.find(x => x._id === lastActivity.story_id))
-          return `/stories/${lastActivity.story_id}/review/`
-        else return null
-      case 'practice':
-        const story = stories?.find(x => x._id === lastActivity.story_id)
-        if (story?.control_story) return `/stories/${lastActivity.story_id}/controlled-practice/`
-        else if (story) return `/stories/${lastActivity.story_id}/practice/`
-        else return null
-
-      case 'lesson':
-        if (lastActivity.group_id) return `/lesson/group/${lastActivity.group_id}/practice`
-        else return '/lesson/practice'
-
-      case 'crossword':
-        return `/crossword/${lastActivity.story_id}`
-
-      case 'reading-test':
-        if (learningLanguage === lastActivity.language && aReadingComprehensionEnabled)
-          return '/reading-test'
-        else return null
-      default:
-        return null
-    }
-  }
-  const activityLink = assembleActivityLink(lastActivity)
+  const activityLink = assembleActivityLink(lastActivity, {
+    stories,
+    learningLanguage,
+    readingComprehensionEnabled: aReadingComprehensionEnabled,
+  })
   return (
     <div className="service-cards">
       {hasTeacherRole && isTeacherView && (
@@ -123,15 +95,6 @@ const HomeviewButtons = ({
             margin: '0 auto',
           }}
         >
-          <div className="add-new-stories-btn-cont tour-add-new-stories">
-            <HomeviewButton
-              imgSrc={images.star06Colored}
-              altText="Add stories"
-              translationKey="add-your-stories"
-              handleClick={() => dispatch(openAddStoryOptions())}
-              dataCy="add-story-button"
-            />
-          </div>
           <div className="groups-btn-cont tour-groups">
             <HomeviewButton
               imgSrc={images.users01Colored}
@@ -139,6 +102,15 @@ const HomeviewButtons = ({
               translationKey="Groups"
               handleClick={() => navigate('/groups/teacher')}
               dataCy="groups-button"
+            />
+          </div>
+          <div className="add-new-stories-btn-cont tour-add-new-stories">
+            <HomeviewButton
+              imgSrc={images.star06Colored}
+              altText="Add stories"
+              translationKey="add-your-stories"
+              handleClick={() => dispatch(openAddStoryOptions())}
+              dataCy="add-story-button"
             />
           </div>
           <div className="library-btn-cont tour-library">
@@ -199,6 +171,25 @@ const HomeviewButtons = ({
               content="Home-Dive-In-EXPLANATION"
             />
           </div>
+          <div className="library-btn-cont tour-library">
+            <HomeviewButton
+              imgSrc={images.libraryBigColored}
+              altText="two books in a pile"
+              translationKey="Library"
+              handleClick={() => navigate('/library')}
+              dataCy="library-button"
+              content="Home-Library-EXPLANATION"
+            />
+          </div>
+          <div className="flashcards-btn-cont tour-flashcards">
+            <HomeviewButton
+              imgSrc={images.flashcardsColored}
+              altText="three playing cards"
+              translationKey="Flashcards"
+              handleClick={() => navigate('/flashcards/fillin')}
+              content="Home-Flashcards-EXPLANATION"
+            />
+          </div>
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
@@ -210,25 +201,6 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          <div className="flashcards-btn-cont tour-flashcards">
-            <HomeviewButton
-              imgSrc={images.flashcardsColored}
-              altText="three playing cards"
-              translationKey="Flashcards"
-              handleClick={() => navigate('/flashcards/fillin')}
-              content="Home-Flashcards-EXPLANATION"
-            />
-          </div>
-          <div className="library-btn-cont tour-library">
-            <HomeviewButton
-              imgSrc={images.libraryBigColored}
-              altText="two books in a pile"
-              translationKey="Library"
-              handleClick={() => navigate('/library')}
-              dataCy="library-button"
-              content="Home-Library-EXPLANATION"
-            />
-          </div>
           {hasTests && aTestIsEnabled && (
             <div className="test-btn-cont">
               <HomeviewButton

@@ -1893,7 +1893,8 @@
     "translate-cards": "Translate Cards",
     "beta-versions": "Beta versions",
     "endangered-languages": "",
-    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
     "story-card-has-rc-questions": "Tässä tekstissä on luetun ymmärtämisen kysymyksiä",
-    "story-card-flashcards-only": "Pelkkiä kysymyskortteja harjoiteltavaksi - ei tekstiä"
+    "story-card-flashcards-only": "Pelkkiä kysymyskortteja harjoiteltavaksi - ei tekstiä",
+    "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
+    "difficulty-level-tooltip": "Tekstin vaikeustaso: Helppo / Keskitaso / Vaikea"
 }

@@ -8,10 +8,14 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * reads well over both the track and the fill. `trackColor` / `fillColor` / `height` are
  * overridable; extra props spread onto the root, `labelProps` onto the caption span, and
  * `fillProps` onto the moving fill itself (for a `data-cy` hook or a squared-off radius).
+ *
+ * Pass `segments` (a count) for the discrete variant: the bar becomes that many equal blocks and
+ * `value` fills them by rounding to the nearest whole block. Omit it for the continuous bar.
  */
 
 const AppProgressBar = ({
   value = 0,
+  segments,
   label,
   labelProps,
   fillProps,
@@ -22,6 +26,25 @@ const AppProgressBar = ({
   ...rest
 }) => {
   const pct = Math.min(100, Math.max(0, value))
+
+  if (segments > 0) {
+    const filled = Math.round((pct / 100) * segments)
+
+    return (
+      <div
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        {...rest}
+        style={{ display: 'flex', height, borderRadius: 999, overflow: 'hidden', ...style }}
+      >
+        {Array.from({ length: segments }, (_, i) => (
+          <div key={i} style={{ flex: 1, backgroundColor: i < filled ? fillColor : trackColor }} />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div

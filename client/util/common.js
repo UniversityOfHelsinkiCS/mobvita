@@ -48,6 +48,7 @@ import folderPlus from 'Assets/images/folder-plus.svg'
 import folderEmpty from 'Assets/images/folder-empty.svg'
 import folderFull from 'Assets/images/folder-full.svg'
 import star06 from 'Assets/images/star-06.svg'
+import starBlack from 'Assets/images/star-black.svg'
 import globe from 'Assets/images/globe.svg'
 import upload from 'Assets/images/upload.svg'
 import paste from 'Assets/images/paste.svg'
@@ -74,6 +75,16 @@ import dotpoints01 from 'Assets/images/dotpoints-01.svg'
 import playCircle from 'Assets/images/play-circle.svg'
 import arrowRight from 'Assets/images/arrow-right.svg'
 import checkCircle from 'Assets/images/check-circle.svg'
+import clock from 'Assets/images/clock.svg'
+import note from 'Assets/images/note.svg'
+import group from 'Assets/images/group.svg'
+import envelope from 'Assets/images/envelope.svg'
+import openBook from 'Assets/images/open-book.svg'
+import letter from 'Assets/images/letter.svg'
+import letterGreen from 'Assets/images/letter-green.svg'
+import level1 from 'Assets/images/level1.svg'
+import level2 from 'Assets/images/level2.svg'
+import level3 from 'Assets/images/level3.svg'
 import checkIcon from 'Assets/images/check-icon.svg'
 import question from 'Assets/images/question.svg'
 import iconHome from 'Assets/images/icon-home.svg'
@@ -238,6 +249,7 @@ export const images = {
   folderEmpty,
   folderFull,
   star06,
+  starBlack,
   globe,
   upload,
   paste,
@@ -265,6 +277,16 @@ export const images = {
   arrowRight,
   checkCircle,
   checkIcon,
+  clock,
+  note,
+  group,
+  envelope,
+  openBook,
+  letter,
+  letterGreen,
+  level1,
+  level2,
+  level3,
   question,
   iconHome,
   layersThree,

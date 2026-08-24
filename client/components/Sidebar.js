@@ -15,6 +15,8 @@ import {
 } from 'Utilities/redux/tourReducer'
 import ContactUs from './StaticContent/ContactUs'
 import PracticeModal from './HomeView/PracticeModal'
+import { assembleActivityLink } from 'Utilities/activityLink'
+import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { MenuRow } from 'Components/ui/menuRow'
 import { colors, shape } from 'Assets/mui_theme/designTokens'
 
@@ -33,11 +35,20 @@ export default function Sidebar() {
 
   const user = useSelector(({ user }) => user.data)
   const open = useSelector(({ sidebar }) => sidebar.open)
-  const { hasAdaptiveTests } = useSelector(({ metadata }) => metadata)
+  const { hasAdaptiveTests, aReadingComprehensionEnabled } = useSelector(({ metadata }) => metadata)
+  const stories = useSelector(({ stories }) => stories.data)
+  const lastActivity = useSelector(({ activity }) => activity.lastActivity)
   const { locale } = useSelector(({ locale }) => locale)
   const canAccessLessons = useHasAccess(ACCESS.HIGH)
   const learningLanguage = user?.user?.last_used_language
   const isTeacher = user?.user?.is_teacher
+  const activityLink = assembleActivityLink(lastActivity, {
+    stories,
+    learningLanguage,
+    readingComprehensionEnabled: aReadingComprehensionEnabled,
+  })
+  // A teacher can toggle into the student view, so the menu follows the view, not the role.
+  const inTeacherView = isTeacher && user?.teacherView
 
   const [practiceModalOpen, setPracticeModalOpen] = useState(false)
   const [contactUsOpen, setContactUsOpen] = useState(false)
@@ -154,51 +165,98 @@ export default function Sidebar() {
           >
             <FormattedMessage id="Home" defaultMessage="Home" />
           </MenuRow>
-          {/* <MenuRow
-            icon={<img src={images.bookmark} alt="" style={imgIconStyle} />}
-            onClick={() => go('/home')}
-          >
-            <FormattedMessage id="homework" defaultMessage="Homework" />
-          </MenuRow> */}
-          {canAccessLessons && (
-            <MenuRow
-              icon={<img src={images.bookOpen} alt="" style={imgIconStyle} />}
-              selected={isActive('/lessons')}
-              onClick={() => go('/lessons/library')}
-            >
-              <FormattedMessage id="Lessons" />
-            </MenuRow>
-          )}
-          <MenuRow
-            icon={<img src={images.cardsIcon} alt="" style={imgIconStyle} />}
-            selected={isActive('/flashcards')}
-            onClick={() => go('/flashcards/fillin')}
-          >
-            <FormattedMessage id="Flashcards" />
-          </MenuRow>
-          <MenuRow
-            icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
-            selected={isActive('/library')}
-            onClick={() => go('/library')}
-          >
-            <FormattedMessage id="Library" />
-          </MenuRow>
-          <MenuRow
-            icon={<img src={images.rocket} alt="" style={imgIconStyle} />}
-            selected={isActive('/profile/progress')}
-            onClick={() => go('/profile/progress')}
-          >
-            <FormattedMessage id="Progress" defaultMessage="Progress" />
-          </MenuRow>
 
-          <MenuRow
-            icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
-            selected={isActive('/essay-writing')}
-            onClick={() => go('/essay-writing')}
-          >
-            <FormattedMessage id="essay-writing" />
-          </MenuRow>
-          {hasAdaptiveTests && (
+          {inTeacherView ? (
+            <>
+              {/* Teacher view: Groups - Add new stories - Library - Lessons - Progress */}
+              <MenuRow
+                icon={<img src={images.users01} alt="" style={imgIconStyle} />}
+                selected={isActive('/groups')}
+                onClick={() => go('/groups/teacher')}
+              >
+                <FormattedMessage id="Groups" />
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.starBlack} alt="" style={imgIconStyle} />}
+                onClick={() => {
+                  dispatch(openAddStoryOptions())
+                  closeSidebar()
+                }}
+              >
+                <FormattedMessage id="add-your-stories" />
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
+                selected={isActive('/library')}
+                onClick={() => go('/library')}
+              >
+                <FormattedMessage id="Library" />
+              </MenuRow>
+              {canAccessLessons && (
+                <MenuRow
+                  icon={<img src={images.bookOpen} alt="" style={imgIconStyle} />}
+                  selected={isActive('/lessons')}
+                  onClick={() => go('/lessons/library')}
+                >
+                  <FormattedMessage id="Lessons" />
+                </MenuRow>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Student view: Continue - Dive In! - Library - Flashcards - Lessons - Essay */}
+              {activityLink && (
+                <MenuRow
+                  icon={<img src={images.playCircle} alt="" style={imgIconStyle} />}
+                  onClick={() => go(activityLink)}
+                >
+                  <FormattedMessage id="continue-activity" />
+                </MenuRow>
+              )}
+              <MenuRow
+                icon={<img src={images.waves} alt="" style={imgIconStyle} />}
+                onClick={() => {
+                  setPracticeModalOpen(true)
+                  closeSidebar()
+                }}
+              >
+                <FormattedMessage id="practice-now" />
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
+                selected={isActive('/library')}
+                onClick={() => go('/library')}
+              >
+                <FormattedMessage id="Library" />
+              </MenuRow>
+              <MenuRow
+                icon={<img src={images.cardsIcon} alt="" style={imgIconStyle} />}
+                selected={isActive('/flashcards')}
+                onClick={() => go('/flashcards/fillin')}
+              >
+                <FormattedMessage id="Flashcards" />
+              </MenuRow>
+              {canAccessLessons && (
+                <MenuRow
+                  icon={<img src={images.bookOpen} alt="" style={imgIconStyle} />}
+                  selected={isActive('/lessons')}
+                  onClick={() => go('/lessons/library')}
+                >
+                  <FormattedMessage id="Lessons" />
+                </MenuRow>
+              )}
+              <MenuRow
+                icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
+                selected={isActive('/essay-writing')}
+                onClick={() => go('/essay-writing')}
+              >
+                <FormattedMessage id="essay-writing" />
+              </MenuRow>
+            </>
+          )}
+
+          {/* Quick test is student-only; Progress closes both menus. */}
+          {!inTeacherView && hasAdaptiveTests && (
             <MenuRow
               icon={<img src={images.trophy01} alt="" style={imgIconStyle} />}
               selected={isActive('/adaptive-test')}
@@ -207,6 +265,13 @@ export default function Sidebar() {
               <FormattedMessage id="adaptive-test" />
             </MenuRow>
           )}
+          <MenuRow
+            icon={<img src={images.rocket} alt="" style={imgIconStyle} />}
+            selected={isActive('/profile/progress')}
+            onClick={() => go('/profile/progress')}
+          >
+            <FormattedMessage id="Progress" defaultMessage="Progress" />
+          </MenuRow>
           {hiddenFeatures && (
             <>
               <MenuRow
