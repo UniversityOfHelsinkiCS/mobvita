@@ -346,19 +346,26 @@ const ReadViews = ({ match }) => {
     teacherProcessingComplete,
   ])
 
-  if (!user || groupsPending) return <Spinner fullHeight size={60} />
+  if (!user || groupsPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   if (isTeacherPreviewProcessing)
     return (
       <Spinner
         fullHeight
+        spinnerColor={colors.ink}
+        textColor={colors.ink}
         size={60}
-        text={intl.formatMessage(
-          { id: 'processing-story-with-percent' },
-          { progress: processingPercent }
-        )}
+        textDelay={1000}
+        text={
+          Number.isFinite(teacherLoadingProgress)
+            ? intl.formatMessage(
+                { id: 'processing-story-with-percent' },
+                { progress: processingPercent }
+              )
+            : ''
+        }
       />
     )
-  if (!routeStory && !isStudentPreview) return <Spinner fullHeight size={60} />
+  if (!routeStory && !isStudentPreview) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   const underProcessing = isStudentPreview
     ? !loadingReady || storyProgress !== 1

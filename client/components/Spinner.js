@@ -11,7 +11,9 @@ import { colors } from 'Assets/mui_theme/designTokens'
 // - spinnerColor: optional custom spinner color override.
 // - inline: render without taking full width/height.
 // - size: spinner size in pixels.
-// - text: message shown immediately under the spinner.
+// - text: message shown under the spinner.
+// - textDelay: ms to withhold `text` for, so a brief load shows a bare ring instead of a flash of
+//   text. Delayed messages are unaffected.
 // - delayedMessage: optional messages shown later if loading is slow.
 // - textSize: font size for the spinner text.
 // - textVariant: theme class for the text.
@@ -23,12 +25,26 @@ const Spinner = ({
   inline = false,
   size = 24,
   text = '',
+  textDelay = 0,
   delayedMessage = [],
   textSize = 20,
   textVariant = 'primary',
   textColor = colors.green,
 }) => {
   const [messageIndex, setMessageIndex] = useState(0)
+  const [textDelayElapsed, setTextDelayElapsed] = useState(textDelay <= 0)
+
+  // Deliberately keyed on `textDelay` alone: callers update `text` while the spinner is up (a
+  // percentage, say), and restarting the timer on every change would withhold it forever.
+  useEffect(() => {
+    if (textDelay <= 0) {
+      setTextDelayElapsed(true)
+      return undefined
+    }
+    setTextDelayElapsed(false)
+    const timeoutId = window.setTimeout(() => setTextDelayElapsed(true), textDelay)
+    return () => window.clearTimeout(timeoutId)
+  }, [textDelay])
 
   useEffect(() => {
     const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
@@ -64,7 +80,8 @@ const Spinner = ({
   // resolve to bootstrap variables (`--bs-primary`) left over from the bootstrap removal.
   const textVariantClass = `spinner--${textVariant}`
   const messages = Array.isArray(delayedMessage) ? delayedMessage.filter(Boolean) : []
-  const displayText = messageIndex === 0 ? text : messages[messageIndex - 1]
+  const primaryText = textDelayElapsed ? text : ''
+  const displayText = messageIndex === 0 ? primaryText : messages[messageIndex - 1]
 
   return (
     <div
