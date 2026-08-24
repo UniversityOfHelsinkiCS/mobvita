@@ -70,7 +70,9 @@ const StyledTable = styled(Table, {
       borderTopRightRadius: RADIUS,
     },
     '& .MuiTableBody-root .MuiTableRow-root:last-of-type .MuiTableCell-root': {
-      borderBottom: 'none',
+      // Drop the closing border for a clean rounded edge — but keep it when `bordered`, otherwise
+      // the full grid is left open along the bottom.
+      ...(bordered ? {} : { borderBottom: 'none' }),
       '&:first-of-type': { borderBottomLeftRadius: RADIUS },
       '&:last-of-type': { borderBottomRightRadius: RADIUS },
     },

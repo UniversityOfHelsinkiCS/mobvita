@@ -154,7 +154,7 @@ const HomeviewButtons = ({
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
-                imgSrc={images.bookOpenColored}
+                imgSrc={images.lessonsColored}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 handleClick={() => navigate('/lessons/library')}
@@ -202,7 +202,7 @@ const HomeviewButtons = ({
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
-                imgSrc={images.bookOpenColored}
+                imgSrc={images.lessonsColored}
                 altText="reading a book"
                 translationKey="lesson-home-btn"
                 handleClick={() => navigate('/lessons/library')}
@@ -212,7 +212,7 @@ const HomeviewButtons = ({
           )}
           <div className="flashcards-btn-cont tour-flashcards">
             <HomeviewButton
-              imgSrc={images.layersThreeColored}
+              imgSrc={images.flashcardsColored}
               altText="three playing cards"
               translationKey="Flashcards"
               handleClick={() => navigate('/flashcards/fillin')}

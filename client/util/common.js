@@ -87,6 +87,8 @@ import setupColored from 'Assets/images/setup-colored.svg'
 import wavesColored from 'Assets/images/waves-colored.svg'
 import bookOpenColored from 'Assets/images/book-open-01-colored.svg'
 import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
+import flashcardsColored from 'Assets/images/flashcards-colored.svg'
+import lessonsColored from 'Assets/images/lessons-colored.svg'
 import libraryBigColored from 'Assets/images/library-big-colored.svg'
 import searchTextfield from 'Assets/images/search-textfield.svg'
 import star06Colored from 'Assets/images/star-06-colored.svg'
@@ -275,6 +277,8 @@ export const images = {
   wavesColored,
   bookOpenColored,
   layersThreeColored,
+  flashcardsColored,
+  lessonsColored,
   libraryBigColored,
   searchTextfield,
   star06Colored,

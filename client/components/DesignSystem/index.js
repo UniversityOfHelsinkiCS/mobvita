@@ -280,6 +280,8 @@ const DesignSystem = () => {
             'wavesColored',
             'bookOpenColored',
             'layersThreeColored',
+            'flashcardsColored',
+            'lessonsColored',
             'libraryBigColored',
             'searchTextfield',
             'star06Colored',

@@ -11,6 +11,7 @@ import {
   TableCell,
 } from '@mui/material'
 import { learningLanguageSelector } from 'Utilities/common'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 import { testConstruction, resetConstructionResults } from 'Utilities/redux/constructionTestReducer'
 import Spinner from 'Components/Spinner'
 import AppButton from 'Components/AppButton'
@@ -67,27 +68,40 @@ const ConstructTestView = () => {
     <div className="cont-tall pt-sm flex-col space-between">
       <div className="justify-center">
         <div className="cont">
-          <Paper sx={{ padding: '1em' }}>
+          <Paper
+            elevation={0}
+            sx={{
+              padding: '1.5em',
+              mt: '1.5rem',
+              backgroundColor: colors.card,
+              color: colors.ink,
+              fontFamily: font.family,
+              border: 'none',
+              borderRadius: '20px',
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.10)',
+            }}
+          >
             <div className="space-between align-center">
-              <div style={{ width: '550px' }}>
-                <AppTextField
-                  endIcon={
-                    <AppButton
-                      size="sm"
-                      onClick={handleClick}
-                      data-cy="construct-test-send-button"
-                    >
-                      {pending ? <Spinner inline /> : 'Send'}
-                    </AppButton>
-                  }
-                  placeholder="Enter a sentence..."
-                  inputProps={{ 'data-cy': 'construct-test-input' }}
-                  onChange={e => setText(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75em', width: '550px' }}>
+                <div style={{ flex: 1 }}>
+                  <AppTextField
+                    placeholder="Enter a sentence..."
+                    inputProps={{ 'data-cy': 'construct-test-input' }}
+                    onChange={e => setText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                  />
+                </div>
+                <AppButton
+                  onClick={handleClick}
+                  data-cy="construct-test-send-button"
+                  sx={{ height: shape.inputHeight, py: 0, flexShrink: 0 }}
+                >
+                  {pending ? <Spinner inline size={20} /> : 'Send'}
+                </AppButton>
               </div>
               {patternResults && (
                 <FormControlLabel
+                  sx={{ '& .MuiFormControlLabel-label': { ml: '0.75em' } }}
                   control={
                     <AppSwitch
                       checked={showAnalyses}
@@ -109,23 +123,24 @@ const ConstructTestView = () => {
                 <div className="flex-col" style={{ gap: '1em' }}>
                   {patternResults.map((resultObj, index) => (
                     <div
+                      key={index}
                       style={{
-                        borderRadius: '7px',
+                        borderRadius: '12px',
                         padding: '1em',
-                        background: 'rgb(239, 239, 239)',
+                        background: '#fff',
+                        border: `1px solid ${colors.border}`,
                       }}
                     >
-                      <div className="bold ml-sm" style={{ fontSize: '1.2em' }}>
+                      <div style={{ fontWeight: 600, fontSize: '1.2em', marginBottom: '0.5em' }}>
                         {resultObj.message}
                       </div>
 
-                      <AppTable density="compact" bordered>
+                      <AppTable density="compact" plain>
                         <TableBody>
                           <TableRow>
                             <TableCell
                               key={`${resultObj.sentence}-${index}`}
-                              className="bold"
-                              sx={{ width: '18.75%' }}
+                              sx={{ width: '18.75%', fontWeight: 600, color: colors.ink }}
                             >
                               Sentence
                             </TableCell>
@@ -141,16 +156,19 @@ const ConstructTestView = () => {
                       </AppTable>
 
                       {Object.keys(resultObj.table).length > 0 && (
-                        <AppTable density="compact" bordered>
+                        <AppTable density="compact" plain>
                           <TableBody>
                             {Object.keys(resultObj.table).map(key => (
                               <TableRow>
-                                <TableCell key={`${key}`} className="bold" sx={{ width: '18.75%' }}>
+                                <TableCell
+                                  key={`${key}`}
+                                  sx={{ width: '18.75%', fontWeight: 600, color: colors.ink }}
+                                >
                                   {key}
                                 </TableCell>
                                 <TableCell
                                   key={`${resultObj.table[key]}`}
-                                  style={{ color: 'green' }}
+                                  style={{ color: colors.ink }}
                                 >
                                   {resultObj.table[key]}
                                 </TableCell>
@@ -159,13 +177,13 @@ const ConstructTestView = () => {
                           </TableBody>
                         </AppTable>
                       )}
-                      <div className="ml-sm mb-lg" style={{ whiteSpace: 'pre-line' }}>
+                      <div className="mb-lg" style={{ whiteSpace: 'pre-line' }}>
                         {resultObj.matches}
                       </div>
                       {showAnalyses && !isNoChunkResult(resultObj) && (
-                        <div className="ml-sm">
+                        <div>
                           <Divider sx={{ my: '1em' }} />
-                          <div className="bold">Analyses:</div>
+                          <div style={{ fontWeight: 600 }}>Analyses:</div>
                           <div style={{ overflow: 'auto', maxHeight: '500px' }}>
                             <pre
                               dangerouslySetInnerHTML={{
