@@ -19,6 +19,8 @@ export const colors = {
   progressBarTrack: '#E5EDE4', // derived — progress bar track
   progressBarFill: '#A6CDB4', // derived — progress bar fill
   opponent: '#FF5900', // derived — opponent bar fill
+  alert: '#FF7700', // derived — alert background
+  alertHover: '#FF5800', // derived — alert hover background
 
   // Library directory (Figma "Library Directory")
   surface: '#FFFFFF', // folder / story item background
