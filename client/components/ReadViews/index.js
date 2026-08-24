@@ -17,6 +17,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
+  getAllStories,
   getStoryAction,
   getStoryLoadingProgress,
   getStudentStoryAction,
@@ -289,7 +290,7 @@ const ReadViews = ({ match }) => {
 
     loadingPollRef.current = setInterval(() => {
       dispatch(getStoryLoadingProgress(id))
-    }, 10000)
+    }, 3000)
 
     return () => {
       if (loadingPollRef.current) {
@@ -312,7 +313,7 @@ const ReadViews = ({ match }) => {
 
       storyPollRef.current = setInterval(() => {
         dispatch(getStoryAction(id, mode))
-      }, 10000)
+      }, 3000)
 
       return () => {
         if (storyPollRef.current) {
@@ -391,8 +392,11 @@ const ReadViews = ({ match }) => {
     setOpen(true)
   }
 
-  const handleDeleteStory = () => {
-    dispatch(removeStory(id))
+  // Awaited, then refetched: navigating straight away lets the library's list request race the
+  // delete, and GET_STORIES_SUCCESS replaces the list wholesale — putting the story back.
+  const handleDeleteStory = async () => {
+    await dispatch(removeStory(id))
+    await dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }))
     navigate('/library', { replace: true })
   }
 
@@ -407,7 +411,11 @@ const ReadViews = ({ match }) => {
         <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
           <FormattedMessage id="edit" />
         </AppButton>
-        <AppButton variant="danger" onClick={() => setConfirmationOpen(true)}>
+        <AppButton
+          variant="danger"
+          data-cy="story-delete-button"
+          onClick={() => setConfirmationOpen(true)}
+        >
           <FormattedMessage id="Delete" />
         </AppButton>
       </div>

@@ -1,9 +1,11 @@
 /**
- * Answering an exercise must refresh the library's progress bar WITHOUT a page reload.
+ * Library behaviour that depends on the story list staying current:
+ *   - answering an exercise refreshes the progress bar WITHOUT a page reload
+ *   - deleting from the teacher's story view leaves the library without that story
  *
- * The story is created by pasting plain text into the private library. The backend builds the
- * exercises with deterministic NLP, not AI, so nothing here triggers generation and the spec owns a
- * story guaranteed to exist with zero progress. Same approach reading_comprehension_spec.js uses.
+ * Stories are created by pasting plain text into the private library. The backend builds the
+ * exercises with deterministic NLP, not AI, so nothing here triggers generation and each suite owns
+ * a story guaranteed to exist. Same approach reading_comprehension_spec.js uses.
  */
 const BASE = 'http://localhost:8000'
 const API_BASE = 'localhost:8000/api'
@@ -131,6 +133,51 @@ describe('library progress', function () {
 
     cy.window().its('__noReloadSentinel').should('eq', true)
     cy.get(card(), { timeout: 60000 }).find('[data-cy=story-progress-bar]').should('exist')
+  })
+
+  this.afterAll(function () {
+    cy.cleanUsers()
+  })
+})
+
+describe('deleting a story from the teacher view', function () {
+  let owner
+  let story
+
+  this.beforeAll(function () {
+    // A teacher: the edit/delete controls in the story view are behind teacherView.
+    cy.login(LANGUAGE, true, 'English').then(user => {
+      owner = user
+    })
+
+    const title = `Delete Me ${Date.now()}`
+    cy.visit(`${BASE}/library/private`)
+    createStoryViaPaste(title, STORY_BODY)
+    cy.then(() => fetchCreatedStory(owner.token, title)).then(created => {
+      story = created
+    })
+  })
+
+  this.beforeEach(function () {
+    cy.loginExisting()
+  })
+
+  it('removes the story from the library without a page reload', function () {
+    cy.visit(`${BASE}/stories/${story.id}/preview/`)
+
+    // The teacher preview holds a spinner until processing reports 100%, which lands a moment after
+    // exercise_ready, so the controls appear slightly later than the story becomes practisable.
+    cy.get('[data-cy=story-delete-button]', { timeout: 60000 }).click()
+    cy.get('[data-cy=confirm-warning-dialog]').click()
+
+    cy.location('pathname', { timeout: 30000 }).should('include', '/library')
+    cy.get('[data-cy=tab-private]', { timeout: 30000 }).click()
+    cy.get(`[data-cy="library-story-card-${story.id}"]`).should('not.exist')
+  })
+
+  it('stays deleted after a reload', function () {
+    cy.visit(`${BASE}/library/private`)
+    cy.get(`[data-cy="library-story-card-${story.id}"]`).should('not.exist')
   })
 
   this.afterAll(function () {
