@@ -322,15 +322,17 @@ $essay-green: #b1d3c2; // border / accent
   box-sizing: border-box;
   width: 90%;
   max-width: min(520px, calc(100vw - 32px));
-  // Auto side margins centre it both as a flex item — they win over the suggestion list's
-  // align-items: flex-start — and as a plain block inside the focused-suggestion panel, which
-  // isn't a flex container. Vertical spacing is the column's gap, not a margin here, so bubbles
-  // sit the same distance apart as everything else stacked in the conversation.
   margin: 0 auto;
   padding: 0.75rem 1rem;
-  border: 1px solid $essay-green;
   border-radius: 16px;
   background: $essay-card;
+  // A trimmed-down MUI elevation-3 shadow: roughly half the blur and spread, on whole pixels.
+  // !important because Paper's elevation class is emotion, injected after this stylesheet (the
+  // same reason .essay-writing-panel above needs it).
+  box-shadow:
+    0 2px 2px -1px rgba(0, 0, 0, 0.2),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 4px 0 rgba(0, 0, 0, 0.12) !important;
   transition: background 0.2s, filter 0.2s;
 
   &:hover {

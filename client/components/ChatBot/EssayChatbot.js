@@ -12,7 +12,7 @@ import {
 } from 'Components/EssayWritingView/utils/correctionTokens'
 import SanitizedHTML from 'Components/SanitizedHTML'
 import ChatInput from 'Components/ui/ChatInput'
-import ChatBubble from 'Components/ui/ChatBubble'
+import ChatBubble, { CORRECTION_COLORS } from 'Components/ui/ChatBubble'
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
 import Spinner from 'Components/Spinner'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
@@ -24,30 +24,32 @@ import './Chatbot.scss'
 
 const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
 
-// When the panel flips to a focused suggestion it takes on that correction type's colour.
-// Mirrors the $essay-bubble-*-bg-color values in EssayWritingView/EssayWritingStyles.scss.
+// The title bar of the flipped panel takes the selected bubble's own colour, so the two read as the
+// same thing. Read straight from the bubble colours instead of copied: the three maps below used to
+// hold their own hexes and had silently drifted out of step with the bubbles.
 const CORRECTION_TYPE_COLORS = {
-  replacement: '#88cefb',
-  multi: '#88cefb',
-  insertion: '#92f294',
-  deletion: '#f6b3b3',
+  replacement: CORRECTION_COLORS.replacement,
+  multi: CORRECTION_COLORS.replacement,
+  insertion: CORRECTION_COLORS.insertion,
+  deletion: CORRECTION_COLORS.deletion,
 }
 
-// When the panel flips to a focused suggestion it shows these as bg colors behind the conversation and focused suggestion.
+// The conversation and the pinned suggestion sit on a light wash of the same hue — the title colour
+// at L94, so it reads as the same colour family without competing with the message bubbles on it.
 const CORRECTION_TYPE_BG_COLORS = {
-  replacement: '#c5e5f8',
-  multi: '#c5e5f8',
-  insertion: '#ccf7cc',
-  deletion: '#fff0f0',
+  replacement: '#E9F3F6',
+  multi: '#E9F3F6',
+  insertion: '#F2F7E8',
+  deletion: '#FFEBE0',
 }
 
-// Strong version of each correction colour for the "back to list" arrow, so it stays readable on the
-// tinted title bar and matches its hue (blue/green/red) instead of always being blue.
+// The "back to list" arrow, in the same hue as its title bar. Each is the lightest shade of that hue
+// that still clears 4.5:1 against the bar it sits on, so the arrow stays legible on all three.
 const CORRECTION_TYPE_ACCENT_COLORS = {
-  replacement: '#0d6efd',
-  multi: '#0d6efd',
-  insertion: '#198754',
-  deletion: '#dc3545',
+  replacement: '#196480',
+  multi: '#196480',
+  insertion: '#496B0F',
+  deletion: '#AE4109',
 }
 
 const rangesMatch = (firstRange, secondRange) =>
@@ -249,13 +251,18 @@ const EssayChatbot = ({
 
   // The conversation (bot/user messages) lives on both flip faces, but only the visible face pins the
   // scroll-to-latest ref so auto-scroll targets the face the user is actually looking at.
-  const renderConversationMessages = isActiveFace =>
-    essayMessages.map((message, index) =>
+  // Every message is stamped with the focus key it was sent under, so each thread renders only its
+  // own: '' is the general conversation on the suggestion-list face, and a suggestion's key is the
+  // conversation belonging to that bubble alone.
+  const renderConversationMessages = (focusKey, isActiveFace) => {
+    const messages = essayMessages.filter(message => (message.focusKey ?? '') === focusKey)
+
+    return messages.map((message, index) =>
       message.messageId === FOLLOW_UP_MESSAGE_ID && hasActiveSelection ? null : (
         <ChatBubble
           variant={message.type === 'user' ? 'user' : 'bot'}
           key={`${message.type}-${index}`}
-          ref={isActiveFace && index === essayMessages.length - 1 ? latestMessageRef : null}
+          ref={isActiveFace && index === messages.length - 1 ? latestMessageRef : null}
         >
           {message.messageId ? (
             <FormattedMessage
@@ -270,6 +277,7 @@ const EssayChatbot = ({
         </ChatBubble>
       ),
     )
+  }
 
   const renderWaitingSpinner = () =>
     isWaitingForEssayResponse ? (
@@ -319,8 +327,8 @@ const EssayChatbot = ({
                 {renderSuggestion(suggestion)}
               </div>
             ))}
-            {renderConversationMessages(!isFocused)}
-            {renderWaitingSpinner()}
+            {renderConversationMessages('', !isFocused)}
+            {!isFocused && renderWaitingSpinner()}
           </div>
         </SwiperSlide>
 
@@ -344,8 +352,8 @@ const EssayChatbot = ({
                 <SanitizedHTML html={hint} />
               </ChatBubble>
             ))}
-            {renderConversationMessages(isFocused)}
-            {renderWaitingSpinner()}
+            {renderConversationMessages(activeFocusKey, isFocused)}
+            {isFocused && renderWaitingSpinner()}
           </div>
         </SwiperSlide>
       </Swiper>
