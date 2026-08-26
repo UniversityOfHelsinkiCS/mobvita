@@ -31,14 +31,12 @@ $essay-textarea-highlight-deletion-bg-color: #f6b3b3;
 // Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
 // vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
 // colour with the token's own hover shade rather than a generic brightness filter.
-$essay-bubble-multi-bg-color: $color-blue;
-$essay-bubble-multi-hover-bg-color: $color-blue-hover;
-$essay-bubble-replacement-bg-color: $color-blue;
-$essay-bubble-replacement-hover-bg-color: $color-blue-hover;
-$essay-bubble-insertion-bg-color: $color-green;
-$essay-bubble-insertion-hover-bg-color: $color-green-hover;
-$essay-bubble-deletion-bg-color: $color-alert-soft;
-$essay-bubble-deletion-hover-bg-color: $color-alert-soft-hover;
+// Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js — the ChatBubble correction-* variants
+// and these bubbles have to show the same colour per type. Keep the two in step when either moves.
+$essay-bubble-multi-bg-color: #c1dce6;
+$essay-bubble-replacement-bg-color: #c1dce6;
+$essay-bubble-insertion-bg-color: #d1e5b0;
+$essay-bubble-deletion-bg-color: #ffdcca;
 
 // 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
 $essay-card: #faf8ed; // cream panel
@@ -326,8 +324,9 @@ $essay-green: #b1d3c2; // border / accent
   max-width: min(520px, calc(100vw - 32px));
   // Auto side margins centre it both as a flex item — they win over the suggestion list's
   // align-items: flex-start — and as a plain block inside the focused-suggestion panel, which
-  // isn't a flex container.
-  margin: 0 auto 8px;
+  // isn't a flex container. Vertical spacing is the column's gap, not a margin here, so bubbles
+  // sit the same distance apart as everything else stacked in the conversation.
+  margin: 0 auto;
   padding: 0.75rem 1rem;
   border: 1px solid $essay-green;
   border-radius: 16px;
@@ -350,38 +349,18 @@ $essay-green: #b1d3c2; // border / accent
 
 .essay-writing-correction-bubble-multi {
   background: $essay-bubble-multi-bg-color !important;
-
-  &:hover,
-  &.essay-writing-correction-bubble-active {
-    background: $essay-bubble-multi-hover-bg-color !important;
-  }
 }
 
 .essay-writing-correction-bubble-replacement {
   background: $essay-bubble-replacement-bg-color !important;
-
-  &:hover,
-  &.essay-writing-correction-bubble-active {
-    background: $essay-bubble-replacement-hover-bg-color !important;
-  }
 }
 
 .essay-writing-correction-bubble-insertion {
   background: $essay-bubble-insertion-bg-color !important;
-
-  &:hover,
-  &.essay-writing-correction-bubble-active {
-    background: $essay-bubble-insertion-hover-bg-color !important;
-  }
 }
 
 .essay-writing-correction-bubble-deletion {
   background: $essay-bubble-deletion-bg-color !important;
-
-  &:hover,
-  &.essay-writing-correction-bubble-active {
-    background: $essay-bubble-deletion-hover-bg-color !important;
-  }
 }
 
 .essay-writing-correction-content {

@@ -311,7 +311,11 @@ const EssayChatbot = ({
         <SwiperSlide className="essay-chatbot-face">
           <div className="chatbot-messages" ref={messagesContainerRef}>
             {correctionSuggestions.map(suggestion => (
-              <div key={suggestion.sentenceId} data-suggestion-id={suggestion.sentenceId}>
+              <div
+                key={suggestion.sentenceId}
+                className="essay-chatbot-suggestion-group"
+                data-suggestion-id={suggestion.sentenceId}
+              >
                 {renderSuggestion(suggestion)}
               </div>
             ))}

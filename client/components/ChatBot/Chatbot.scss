@@ -1,3 +1,5 @@
+$chatbot-message-gap: 12px;
+
 .chatbot {
   display: flex;
   flex-direction: column;
@@ -19,10 +21,6 @@
 
   // "Back to the full list" control, shown only in the focused view.
   .essay-chatbot-back {
-    position: absolute;
-    left: calc(0.6rem - 6px);
-    top: 50%;
-    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -37,19 +35,12 @@
     &:hover {
       background: rgba(0, 0, 0, 0.06);
     }
-
-    // On narrow panels keep just the arrow so the label can't overlap the centred title.
-    @media (max-width: 480px) {
-      .essay-chatbot-back-label {
-        display: none;
-      }
-    }
   }
 
   // The single selected suggestion, pinned above the conversation in the focused view.
   .essay-chatbot-focused-suggestion {
     flex-shrink: 0;
-    padding: 12px 15px 4px;
+    padding: 12px 15px;
     background: #fafafa;
     border-bottom: 1px solid #e0e0e0;
   }
@@ -254,9 +245,17 @@
   .chatbot-messages {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $chatbot-message-gap;
     // No left/right padding so lemma cards / messages span the full panel width.
     padding: 16px 0;
+  }
+
+  // One sentence can produce several correction bubbles, and they share a wrapper. Without this the
+  // wrapper is a plain block, so those siblings ignore the column's gap and bunch up.
+  .essay-chatbot-suggestion-group {
+    display: flex;
+    flex-direction: column;
+    gap: $chatbot-message-gap;
   }
 
   .chatbot-footer {
