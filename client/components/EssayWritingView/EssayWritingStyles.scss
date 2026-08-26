@@ -24,9 +24,12 @@ $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
 // Correction colours: per type, one for the textarea highlight and one for the suggestion bubble.
-$essay-textarea-highlight-replacement-bg-color: #88cefb;
-$essay-textarea-highlight-insertion-bg-color: #92f294;
-$essay-textarea-highlight-deletion-bg-color: #f6b3b3;
+// The word highlighted in the essay text and the bubble describing it are the same correction, so
+// they carry the same colour. Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js, same as the
+// $essay-bubble-*-bg-color values below.
+$essay-textarea-highlight-replacement-bg-color: #c1dce6;
+$essay-textarea-highlight-insertion-bg-color: #d1e5b0;
+$essay-textarea-highlight-deletion-bg-color: #ffdcca;
 
 // Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
 // vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
