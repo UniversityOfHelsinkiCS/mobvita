@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v15'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v16'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 // FNV-1a hash of a string, returned base-36.
@@ -27,12 +27,15 @@ export const getWritingCorrectionSession = (language = DEFAULT_LANGUAGE) =>
 
 const SAVE_PREFIX = 'WRITING_ESSAY_SAVE'
 
-// Build the essay's current sentences for saving: each sentence's text, the backend sentence id of
-// that current version, the ids of its earlier versions (oldest first) and its cached corrections.
-// The backend resolves the ids, so the first id of each sentence gives the essay's original version
-// and the last one its current version. Lineage is read from the sentence-id map rather than the
-// correction cache: a cache entry is keyed by text + context, so it is lost whenever an earlier
-// sentence is inserted or removed, while the sentence id survives.
+// Build the essay's current sentences for saving: each sentence's text, the roots it descends from,
+// and its cached corrections. history carries the roots — the versions the student first wrote the
+// sentence as. They are set by its first correction and inherited from then on, so they are right
+// even when the last edit was never corrected, and a split's halves share a root while a merge
+// carries both, which is what lets the original be rebuilt across a moved sentence boundary.
+// Lineage comes from the sentence-id map rather than the correction cache: a cache entry is keyed
+// by text + context, so it is lost whenever a sentence around it changes, while the id survives.
+// No sentence_id is sent: the API documents the field, but sending it is what broke saving on this
+// branch, and the backend reads the current version off original_text anyway.
 export const buildWritingEssaySentences = (
   sentences,
   correctionsByKey = {},
@@ -41,12 +44,10 @@ export const buildWritingEssaySentences = (
   sentences.map(sentence => {
     const entry = correctionsByKey[getWritingCorrectionKey(sentence)]
     const lineage = sentenceHistoryBySentenceId[sentence.sentenceId]
-    const history = lineage?.history ?? []
-    const savedTextIsNewer = Boolean(lineage?.beSentenceId) && lineage.text !== sentence.text
 
     return {
       original_text: sentence.text,
-      history: savedTextIsNewer ? [...history, lineage.beSentenceId] : history,
+      history: lineage?.roots ?? [],
       corrections: entry?.responseCorrections ?? [],
     }
   })
@@ -88,11 +89,11 @@ export const restoreWritingSentenceLineage = lineageBySentenceId => ({
 export const writingEssaySaveFailedOnTitle = message =>
   typeof message === 'string' && /taken|already exist|duplicate/i.test(message)
 
-// Drop the edit history of sentences that came out of a split or a merge: per the essay-writing
-// spec they are not later versions of what they replaced, so they are their own original.
-export const markWritingSentencesNotOriginal = sentenceIds => ({
-  type: 'WRITING_CORRECTION_SENTENCES_NOT_ORIGINAL',
-  sentenceIds,
+// Record which sentences an edit produced from which, so the ones that come out of a split or a
+// merge inherit the roots of the ones that went in instead of losing them.
+export const setWritingSentenceAncestry = ancestryBySentenceId => ({
+  type: 'WRITING_CORRECTION_SENTENCE_ANCESTRY',
+  ancestryBySentenceId,
 })
 
 // Fetch all the user's saved essays (backend limits these to the owner + assigned teachers).
@@ -166,28 +167,82 @@ export const writingEssayHasContent = essay =>
 // A saved essay's current text per sentence.
 const getEssaySentenceCurrentText = sentence => sentence?.original_text ?? sentence?.text ?? ''
 
-// A saved essay's earliest recorded text per sentence: the backend expands each history id into
-// the sentence it points at, so the first entry is the sentence as it was first written. A sentence
-// with no history is its own original — it was never edited, or it came out of a split/merge.
-const getEssaySentenceOriginalText = sentence => {
-  const history = Array.isArray(sentence?.history) ? sentence.history : []
-  const firstVersion = history[0]
+// The essay's original version, as an ordered list of sentences. Each saved sentence names the
+// roots it came from, and the backend expands them to the text it recorded, so walking the current
+// sentences in order and emitting each root once rebuilds what the student first wrote — including
+// across a moved sentence boundary, where the halves of a split share one root (emitted once) and a
+// merged sentence carries both of its parents' (emitted in turn). A sentence with no roots was
+// never corrected, so it stands as its own original.
+// Where a root's text sits inside the sentence it was merged into, or -1 if it can't be found —
+// the student may have reworded it since. Matched without case or trailing sentence punctuation,
+// since merging is exactly what turns a full stop into a comma.
+const getRootTextPosition = (rootText, currentText) => {
+  const needle = String(rootText || '')
+    .trim()
+    .replace(/[.!?]+$/, '')
+    .toLowerCase()
 
-  if (firstVersion && typeof firstVersion === 'object') {
-    return firstVersion.original_text ?? firstVersion.text ?? getEssaySentenceCurrentText(sentence)
-  }
+  if (!needle) return -1
 
-  return getEssaySentenceCurrentText(sentence)
+  const haystack = currentText.toLowerCase()
+  const position = haystack.indexOf(needle)
+
+  // A reworded root still anchors on its opening words, which merging leaves alone.
+  return position === -1 ? haystack.indexOf(needle.slice(0, 12)) : position
 }
 
-// Extract the title + original/current version text from a fetched essay. The backend returns the
-// current full text (essay_text) plus per-sentence edit history; the original version is
-// reconstructed from each sentence's earliest history entry.
+// A sentence carries more than one root only where the student merged sentences together, and the
+// backend does not promise to return them in the order they were sent — a Mongo $in lookup answers
+// in index order, not argument order. Their real order is written in the merged sentence itself:
+// the text of the sentence that came first appears first. Ordering by id would not do, because the
+// ids are minted when each correction finishes and a short sentence overtakes a long one whenever
+// the editor corrects a burst of them at once. If any root can no longer be located, the order the
+// backend gave is left alone rather than half-sorted.
+const orderRootsByPosition = (versions, currentText) => {
+  if (versions.length < 2) return versions
+
+  const positioned = versions.map((version, index) => ({
+    version,
+    index,
+    position: getRootTextPosition(version?.original_text, currentText),
+  }))
+
+  if (positioned.some(entry => entry.position === -1)) return versions
+
+  return positioned
+    .sort((first, second) => first.position - second.position || first.index - second.index)
+    .map(entry => entry.version)
+}
+
+export const getWritingEssayOriginalSentences = essay => {
+  const emittedRoots = new Set()
+
+  return (Array.isArray(essay?.sentences) ? essay.sentences : []).reduce((originals, sentence) => {
+    const history = Array.isArray(sentence?.history) ? sentence.history : []
+
+    if (!history.length) return originals.concat(getEssaySentenceCurrentText(sentence))
+
+    const roots = orderRootsByPosition(history, getEssaySentenceCurrentText(sentence))
+
+    return originals.concat(
+      roots.reduce((texts, version) => {
+        const rootId = version && typeof version === 'object' ? version.sentence_id : version
+        const text = version && typeof version === 'object' ? version.original_text : null
+
+        if (!text || (rootId && emittedRoots.has(rootId))) return texts
+        if (rootId) emittedRoots.add(rootId)
+        return texts.concat(text)
+      }, []),
+    )
+  }, [])
+}
+
+// Extract the title + original/current version text from a fetched essay.
 export const getWritingEssayVersions = essay => {
   const sentences = Array.isArray(essay?.sentences) ? essay.sentences : []
 
   const currentFromSentences = sentences.map(getEssaySentenceCurrentText).join(' ').trim()
-  const original = sentences.map(getEssaySentenceOriginalText).join(' ').trim()
+  const original = getWritingEssayOriginalSentences(essay).join(' ').trim()
   const current =
     (typeof essay?.essay_text === 'string' && essay.essay_text.trim()) || currentFromSentences
 
@@ -203,22 +258,23 @@ export const getWritingEssayVersions = essay => {
 export const getWritingEssaySentenceVersions = essay => {
   const sentences = Array.isArray(essay?.sentences) ? essay.sentences : []
   return {
-    original: sentences.map(getEssaySentenceOriginalText),
+    // The two versions can differ in length wherever the student moved a sentence boundary, so
+    // these line up by index only for an essay whose sentences were edited in place.
+    original: getWritingEssayOriginalSentences(essay),
     current: sentences.map(getEssaySentenceCurrentText),
   }
 }
 
 // A saved essay's per-sentence lineage in essay order: the backend id and text of each sentence's
-// current version plus the ids of its earlier versions. GET returns each history entry expanded to
-// { sentence_id, original_text }, while the save payload wants bare ids, so map back down to ids.
+// current version plus the roots it descends from. GET expands each stored history entry to
+// { sentence_id, original_text }, so map back down to the bare ids the editor tracks.
 export const getWritingEssaySentenceLineage = essay =>
   (Array.isArray(essay?.sentences) ? essay.sentences : []).map(sentence => ({
     beSentenceId: sentence?.sentence_id ?? null,
     text: getEssaySentenceCurrentText(sentence),
-    history: (Array.isArray(sentence?.history) ? sentence.history : [])
+    roots: (Array.isArray(sentence?.history) ? sentence.history : [])
       .map(version => (version && typeof version === 'object' ? version.sentence_id : version))
       .filter(Boolean),
-    isOriginal: true,
   }))
 
 // Request a correction for a sentence (POST), carrying the session id that groups this writing
@@ -455,7 +511,7 @@ const createSuccessEntry = action => {
     correctedText: getWritingCorrectionCorrectedText(action.response),
     beSentenceId: getCorrectionResponseSentenceId(action.response),
     responseCorrections: action.response?.corrections ?? [],
-    history: [],
+    roots: [],
     requestId: action.requestId,
   }
 }
@@ -480,33 +536,33 @@ const createFailureEntry = action => {
 // The entry's local sentence id (falls back to its cache key).
 const getSentenceId = entry => entry.sentenceId || entry.key
 
-// The sentence's lineage after a correction came back for it: the backend id and text of this
-// version, plus every earlier backend id, oldest first — Sentence A edited to A' and then to A''
-// has the history [id(A), id(A')]. A sentence that came out of a split or a merge is not a later
-// version of anything: it keeps an empty history for good, so it is reported as its own original.
+// The sentence's lineage after a correction came back: the backend id and text of this version,
+// plus the roots it descends from — the backend ids of the sentences it was first written as. Roots
+// are what the essay's original version is rebuilt from, so the first correction a sentence ever
+// gets sets them and everything after only inherits: an edit keeps them, a split gives both halves
+// the same root, a merge gives the result both of its parents'.
 const getNextSentenceLineage = (previousLineage, beSentenceId, text) => {
   if (!beSentenceId) {
-    return previousLineage ?? { beSentenceId: null, text, history: [], isOriginal: true }
+    return previousLineage ?? { beSentenceId: null, text, roots: [] }
   }
 
-  if (previousLineage?.isOriginal === false) {
-    return { beSentenceId, text, history: [], isOriginal: false }
-  }
-
-  const previousBeSentenceId = previousLineage?.beSentenceId ?? null
-  const previousHistory = previousLineage?.history ?? []
-  const isNewVersion =
-    Boolean(previousBeSentenceId) &&
-    previousBeSentenceId !== beSentenceId &&
-    previousLineage?.text !== text
+  const previousRoots = previousLineage?.roots ?? []
 
   return {
     beSentenceId,
     text,
-    history: isNewVersion ? [...previousHistory, previousBeSentenceId] : previousHistory,
-    isOriginal: true,
+    // The first correction records the sentence as the student wrote it; that version is its root.
+    roots: previousRoots.length ? previousRoots : [beSentenceId],
   }
 }
+
+// The roots of a set of ancestor sentences, in order and without repeats — the halves of a split
+// share one, and the essay's original must not gain a copy per half.
+const getInheritedRoots = (lineages, ancestorSentenceIds) =>
+  ancestorSentenceIds.reduce((roots, ancestorSentenceId) => {
+    const ancestorRoots = lineages[ancestorSentenceId]?.roots ?? []
+    return roots.concat(ancestorRoots.filter(root => !roots.includes(root)))
+  }, [])
 
 // Mark this entry's key as the sentence's latest correction.
 const updateLatestCorrectionKey = (state, entry) => ({
@@ -790,22 +846,23 @@ export default (state = initialState, action) => {
       })
     }
 
-    case 'WRITING_CORRECTION_SENTENCES_NOT_ORIGINAL': {
-      const sentenceIds = (action.sentenceIds || []).filter(Boolean)
+    case 'WRITING_CORRECTION_SENTENCE_ANCESTRY': {
+      const ancestry = Object.entries(action.ancestryBySentenceId || {})
 
-      if (!sentenceIds.length) return state
+      if (!ancestry.length) return state
 
-      const sentenceHistoryBySentenceId = sentenceIds.reduce(
-        (lineages, sentenceId) => ({
-          ...lineages,
-          [sentenceId]: {
-            beSentenceId: lineages[sentenceId]?.beSentenceId ?? null,
-            text: lineages[sentenceId]?.text,
-            history: [],
-            isOriginal: false,
-          },
-        }),
-        { ...(state.sentenceHistoryBySentenceId || {}) },
+      // Resolved against the lineages as they were before this edit: a split reuses its parent's
+      // sentence id for one of its halves, so resolving them one at a time would read its own result.
+      const lineages = state.sentenceHistoryBySentenceId || {}
+      const sentenceHistoryBySentenceId = ancestry.reduce(
+        (next, [sentenceId, ancestorSentenceIds]) => {
+          const roots = getInheritedRoots(lineages, ancestorSentenceIds)
+
+          return roots.length
+            ? { ...next, [sentenceId]: { ...(lineages[sentenceId] ?? {}), roots } }
+            : next
+        },
+        { ...lineages },
       )
 
       return persistWritingCorrectionState({ ...state, sentenceHistoryBySentenceId })
@@ -831,7 +888,7 @@ export default (state = initialState, action) => {
         baseEntry.beSentenceId,
         baseEntry.text,
       )
-      const entry = { ...baseEntry, history: lineage.history }
+      const entry = { ...baseEntry, roots: lineage.roots }
 
       const nextState = persistWritingCorrectionState({
         ...state,
@@ -915,8 +972,7 @@ export default (state = initialState, action) => {
         : {
             beSentenceId: entry.beSentenceId ?? null,
             text: entry.text,
-            history: entry.history || [],
-            isOriginal: true,
+            roots: entry.roots?.length ? entry.roots : [entry.beSentenceId].filter(Boolean),
           }
 
       const nextState = persistWritingCorrectionState({

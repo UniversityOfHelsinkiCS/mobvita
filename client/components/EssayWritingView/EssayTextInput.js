@@ -7,7 +7,7 @@ import {
   getWritingCorrectionKey,
   getWritingCorrectionSession,
   getWritingCorrectionWords,
-  markWritingSentencesNotOriginal,
+  setWritingSentenceAncestry,
   restoreWritingSentenceLineage,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
@@ -22,7 +22,7 @@ import {
   getEssayFocusFromSelection,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
-  getSplitOrMergedSentenceIds,
+  getSentenceAncestry,
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
@@ -338,16 +338,13 @@ const EssayTextInput = ({
       syncWritingCorrectionSuggestions(nextCompletedSentences.map(sentence => sentence.sentenceId)),
     )
 
-    // Splitting or merging replaces sentences rather than editing one, so the sentences that come out
-    // of it stop being versions of what was there before. Drop their edit history now, before their
-    // corrections come back, so they can't claim the pre-split sentence as their original.
-    const splitOrMergedSentenceIds = getSplitOrMergedSentenceIds(
-      previousCompletedSentences,
-      nextCompletedSentences,
-    )
+    // Splitting or merging replaces sentences rather than editing one, so the sentences that come
+    // out of it inherit the roots of the ones that went in. Recorded now, before their corrections
+    // come back, so a first correction can't mistake a split half for a brand-new sentence.
+    const ancestry = getSentenceAncestry(previousCompletedSentences, nextCompletedSentences)
 
-    if (splitOrMergedSentenceIds.length) {
-      dispatch(markWritingSentencesNotOriginal(splitOrMergedSentenceIds))
+    if (Object.keys(ancestry).length) {
+      dispatch(setWritingSentenceAncestry(ancestry))
     }
 
     return nextCompletedSentences

@@ -171,39 +171,45 @@ const getUnchangedSuffixLength = (previousSentences, nextSentences, prefixLength
   return length
 }
 
-// The ids of the sentences this edit produced by splitting or merging. Narrow the change down to
-// the window between the unchanged prefix and suffix, then count what went in and what came out:
-// one in / many out is a split, many in / one out is a merge, many in / many out is a rewrite that
-// moved sentence boundaries. All three replace sentences instead of editing one, so what comes out
-// is not a later version of what went in and must not inherit its edit history. Nothing in (an
-// insertion), nothing out (a deletion) and one-to-one (a plain in-place edit) leave lineages alone.
-export const getSplitOrMergedSentenceIds = (previousSentences, nextSentences) => {
+// Which previous sentences each sentence in this edit came out of, for the edits that move a
+// sentence boundary. Narrow the change to the window between the unchanged prefix and suffix, drop
+// the sentences inside it whose text never changed (two edits far apart put untouched sentences
+// between them), then read what is left: one in / many out is a split, many in / one out a merge,
+// many in / many out a rewrite across boundaries. In every case each sentence that came out
+// descends from all of the ones that went in, which is what lets a split share its parent's
+// original and a merge keep both of its parents'. Nothing in (an insertion), nothing out (a
+// deletion) and one-to-one (a plain edit, where the sentence keeps its id) produce no ancestry.
+export const getSentenceAncestry = (previousSentences, nextSentences) => {
   const prefixLength = getUnchangedPrefixLength(previousSentences, nextSentences)
   const suffixLength = getUnchangedSuffixLength(previousSentences, nextSentences, prefixLength)
-  const previousChangedCount = previousSentences.length - prefixLength - suffixLength
-  const nextChangedSentences = nextSentences.slice(
+  const previousWindow = previousSentences.slice(
     prefixLength,
-    nextSentences.length - suffixLength,
+    previousSentences.length - suffixLength,
   )
+  const nextWindow = nextSentences.slice(prefixLength, nextSentences.length - suffixLength)
 
-  if (previousChangedCount < 1 || nextChangedSentences.length < 1) return []
-  if (previousChangedCount === 1 && nextChangedSentences.length === 1) return []
+  // Pair off sentences that merely sit between two edits, so neither side counts them.
+  const unchanged = previousWindow.reduce(
+    (counts, sentence) => counts.set(sentence.text, (counts.get(sentence.text) ?? 0) + 1),
+    new Map(),
+  )
+  const changedNext = nextWindow.filter(sentence => {
+    const remaining = unchanged.get(sentence.text) ?? 0
+    if (!remaining) return true
+    unchanged.set(sentence.text, remaining - 1)
+    return false
+  })
+  const changedPreviousCount = previousWindow.length - (nextWindow.length - changedNext.length)
 
-  const unchangedTexts = previousSentences
-    .slice(prefixLength, previousSentences.length - suffixLength)
-    .reduce(
-      (counts, sentence) => counts.set(sentence.text, (counts.get(sentence.text) ?? 0) + 1),
-      new Map(),
-    )
+  if (changedPreviousCount < 1 || changedNext.length < 1) return {}
+  if (changedPreviousCount === 1 && changedNext.length === 1) return {}
 
-  return nextChangedSentences
-    .filter(sentence => {
-      const remaining = unchangedTexts.get(sentence.text) ?? 0
-      if (!remaining) return true
-      unchangedTexts.set(sentence.text, remaining - 1)
-      return false
-    })
-    .map(sentence => sentence.sentenceId)
+  const ancestorSentenceIds = previousWindow.map(sentence => sentence.sentenceId)
+
+  return changedNext.reduce(
+    (ancestry, sentence) => ({ ...ancestry, [sentence.sentenceId]: ancestorSentenceIds }),
+    {},
+  )
 }
 
 export const getSentencesWithNewCorrectionKeys = (
