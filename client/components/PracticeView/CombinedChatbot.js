@@ -1,29 +1,39 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import CustomTooltip from 'Components/CustomTooltip';
+import CustomTooltip from 'Components/CustomTooltip'
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { isEmpty } from 'lodash'
 import { Skeleton } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl'
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTranslationAction, setWords, changeTranslationStageAction, clearTranslationAction } from 'Utilities/redux/translationReducer'
-import { incrementHintRequests, setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
+import {
+  getTranslationAction,
+  setWords,
+  changeTranslationStageAction,
+  clearTranslationAction,
+} from 'Utilities/redux/translationReducer'
+import {
+  incrementHintRequests,
+  setReferences,
+  setExplanation,
+  setExample,
+} from 'Utilities/redux/practiceReducer'
 import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   useLearningLanguage,
   useDictionaryLanguage,
   flashcardColors,
-    formatGreenFeedbackText,
+  formatGreenFeedbackText,
   sanitizeHtml,
   composeExerciseContext,
   hiddenFeatures,
   getMode,
-  images
+  images,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 
@@ -37,19 +47,18 @@ import { useParams, useLocation } from 'react-router-dom'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import AppLemma from 'Components/ui/AppLemma'
 import AppButton from 'Components/AppButton'
+import { setFocusedWord, mcExerciseTouched } from 'Utilities/redux/practiceReducer'
 import {
-    setFocusedWord,
-    mcExerciseTouched,
-} from 'Utilities/redux/practiceReducer'
-import {
-    getPracticeChatbotResponse,
-    setConversationHistory,
-    setCurrentContext,
+  getPracticeChatbotResponse,
+  setConversationHistory,
+  setCurrentContext,
 } from 'Utilities/redux/chatbotReducer'
+import { setSnippetChatHistory } from 'Utilities/redux/snippetsReducer'
 import {
-    setSnippetChatHistory
-} from 'Utilities/redux/snippetsReducer'
-import { setHelperSidebarOpen, toggleHelperSidebar, setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+  setHelperSidebarOpen,
+  toggleHelperSidebar,
+  setHelperSidebarTab,
+} from 'Utilities/redux/helperSidebarReducer'
 import { clearNotes } from 'Utilities/redux/notesReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
@@ -65,7 +74,6 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
   return (
     <>
       {notes.map((note, index) => {
-
         if (note.kind === 'no-topics') {
           return (
             <ChatBubble variant="note" key={index}>
@@ -80,36 +88,37 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
               {note.concepts?.length > 0 && (
                 <ul>
                   {note.concepts.map((concept, i) => (
-                      <li key={i}>
-                        <span dangerouslySetInnerHTML={sanitizeHtml(concept)} />
-                      </li>
-                    ))}
-                  </ul>
-                )}              
+                    <li key={i}>
+                      <span dangerouslySetInnerHTML={sanitizeHtml(concept)} />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </ChatBubble>
           )
         }
         if (note.kind === 'your-answer') {
           return (
             <ChatBubble variant="note" key={index}>
-              <FormattedMessage id="you-used" />:&nbsp;
+              <FormattedMessage id="you-used" />
+              :&nbsp;
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
             </ChatBubble>
           )
         }
         if (note.kind === 'mc') {
           return (
-            <ChatBubble variant="note" key={index}>              
-                <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-                {note.choices?.length > 0 && (
-                  <ul>
-                    {note.choices.map((choice, i) => (
-                      <li key={i}>
-                        <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
-                      </li>
-                    ))}
-                  </ul>
-                )}              
+            <ChatBubble variant="note" key={index}>
+              <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+              {note.choices?.length > 0 && (
+                <ul>
+                  {note.choices.map((choice, i) => (
+                    <li key={i}>
+                      <span dangerouslySetInnerHTML={formatGreenFeedbackText(choice)} />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </ChatBubble>
           )
         }
@@ -126,11 +135,11 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
               <InfoOutlinedIcon
                 className="hint-info-icon"
                 fontSize="small"
-                  style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
-                  onMouseDown={() => handleTooltipClick(note.info)}
-                  data-cy="chatbot-note-hint-info-icon"
-                />
-              )}            
+                style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
+                onMouseDown={() => handleTooltipClick(note.info)}
+                data-cy="chatbot-note-hint-info-icon"
+              />
+            )}
           </ChatBubble>
         )
       })}
@@ -159,7 +168,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
                   <span className="note-author">{note.username}</span>
                 )}
               </div>
-            )}            
+            )}
             <div className="note-body">
               <span className="user-note-text">{note.text}</span>
               {note.isPublic && (
@@ -182,25 +191,34 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
   )
 }
 
-const CombinedChatbot = ({inWordNestModal, clue}) => {
-
+const CombinedChatbot = ({ inWordNestModal, clue }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
   const { focusedWord } = useSelector(({ practice }) => practice)
 
-  const { attempt, currentAnswers, focusedWord: currentWord } = useSelector(({ practice }) => practice)
-  const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot) 
-  
+  const {
+    attempt,
+    currentAnswers,
+    focusedWord: currentWord,
+  } = useSelector(({ practice }) => practice)
+  const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
+
   const translationState = useSelector(({ translation }) => translation)
-  const {data: translationData} = useSelector(({translation}) => translation)
+  const { data: translationData } = useSelector(({ translation }) => translation)
   const translation = Array.isArray(translationData) ? translationData[0] : translationData
   const contextTranslationState = useSelector(({ contextTranslation }) => contextTranslation)
-  const snippets = useSelector(({ snippets }) => snippets)  
+  const snippets = useSelector(({ snippets }) => snippets)
   const chat_history = snippets.focused_snippet_chat_history
   const storyFocused = useSelector(({ stories }) => stories.focused)
-  const session_id = (snippets.focused && snippets.focused.session_id) || snippets.sessionId || snippets.session_id || storyFocused && storyFocused.session_id || null
-  const storyid = (snippets.focused && snippets.focused.storyid) || translationState?.storyid || null
+  const session_id =
+    (snippets.focused && snippets.focused.session_id) ||
+    snippets.sessionId ||
+    snippets.session_id ||
+    (storyFocused && storyFocused.session_id) ||
+    null
+  const storyid =
+    (snippets.focused && snippets.focused.storyid) || translationState?.storyid || null
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
@@ -211,7 +229,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const [preHints, setPreHints] = useState([])
   const [filteredHintsList, setFilteredHintsList] = useState([])
   const [emptyHintsList, setEmptyHintsList] = useState(false)
-  const [currentMessage, setCurrentMessage] = useState("")
+  const [currentMessage, setCurrentMessage] = useState('')
   const [hintMessageIdx, setHintMessageIdx] = useState(0)
   const [predefinedChatbotRequests, setPredefinedChatbotRequests] = useState([])
 
@@ -232,7 +250,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const helperSidebarState = useSelector(({ helperSidebar }) => helperSidebar)
   const { activeTab: helperActiveTab, isOpen: helperIsOpen } = helperSidebarState || {}
   const notes = useSelector(({ notes }) => notes.items)
-  const modalOpen = useSelector(({ practice }) => Boolean(practice.references || practice.explanation))
+  const modalOpen = useSelector(({ practice }) =>
+    Boolean(practice.references || practice.explanation),
+  )
 
   // --- Word notes (reuse the story-annotation API) ---
   const { id: routeStoryId } = useParams()
@@ -258,7 +278,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       noteWordId != null
         ? storyFocused?.paragraph?.flat(1)?.find(w => w.ID === noteWordId)
         : undefined,
-    [storyFocused, noteWordId]
+    [storyFocused, noteWordId],
   )
   const wordNotesList = useMemo(
     () =>
@@ -271,8 +291,8 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         startId: wordToken.ID,
         endId: a.end_token_id,
       })),
-    [wordToken, myUid]
-  )  
+    [wordToken, myUid],
+  )
   const canAddNote = Boolean(noteWordId != null && noteStoryId && !isLessonContext)
 
   const [noteModalOpen, setNoteModalOpen] = useState(false)
@@ -313,9 +333,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         noteMode,
         'None',
         '',
-        editingNote?.threadId
-      )
-    )    
+        editingNote?.threadId,
+      ),
+    )
   }
   const requestDeleteNote = note => {
     setNoteToDelete(note)
@@ -329,26 +349,26 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         noteToDelete.startId,
         noteToDelete.endId,
         noteMode,
-        noteToDelete.threadId
-      )
+        noteToDelete.threadId,
+      ),
     )
     setNoteToDelete(null)
   }
 
   useEffect(() => {
     dispatch(setHelperSidebarOpen(true))
-  }, [helperActiveTab, currentWord, translationState ])
+  }, [helperActiveTab, currentWord, translationState])
 
   useEffect(() => {
     dispatch(setHelperSidebarTab(null))
     dispatch(clearNotes())
   }, [dispatch, snippets.focused])
-  
+
   useEffect(() => {
     dispatch(clearNotes())
   }, [dispatch, currentWord?.ID])
 
-  useEffect(() => {    
+  useEffect(() => {
     if (inWordNestModal || wordNestModalOpen) return
 
     if (focusedWord && focusedWord.lemmas && learningLanguage) {
@@ -356,15 +376,18 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         getWordNestAction({
           words: focusedWord.lemmas,
           language: learningLanguage,
-        })
+        }),
       )
     }
   }, [focusedWord, dispatch, learningLanguage, inWordNestModal, wordNestModalOpen])
 
-  useEffect(() => {      
-    if (inWordNestModal || wordNestModalOpen) return      
+  useEffect(() => {
+    if (inWordNestModal || wordNestModalOpen) return
     const lemmasForNest = Array.isArray(translationState?.data)
-      ? translationState.data.map(t => t?.lemma).filter(Boolean).join('+')
+      ? translationState.data
+          .map(t => t?.lemma)
+          .filter(Boolean)
+          .join('+')
       : translation?.lemma
 
     if (lemmasForNest && learningLanguage) {
@@ -372,48 +395,58 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         getWordNestAction({
           words: lemmasForNest,
           language: learningLanguage,
-        })
+        }),
       )
     }
-  }, [translationState?.data, translation, dispatch, learningLanguage, inWordNestModal, wordNestModalOpen])
+  }, [
+    translationState?.data,
+    translation,
+    dispatch,
+    learningLanguage,
+    inWordNestModal,
+    wordNestModalOpen,
+  ])
 
   useEffect(() => {
-    const surface = translationState.surface || translationState.surfaceWord;
-    const exerciseSurface = currentWord?.surface || currentWord?.base;
+    const surface = translationState.surface || translationState.surfaceWord
+    const exerciseSurface = currentWord?.surface || currentWord?.base
 
-    if (isValidExercise) {                
-      setValidToChat(true);                               
-    } 
-  
-    else if (surface && surface !== exerciseSurface) {                
-      setValidToChat(false);                
+    if (isValidExercise) {
+      setValidToChat(true)
+    } else if (surface && surface !== exerciseSurface) {
+      setValidToChat(false)
     }
   }, [translationState.surface, translationState.surfaceWord, currentWord, isValidExercise])
 
   useEffect(() => {
-    const { listen, speak, hints, requested_hints: requestedBEHints } = currentWord || {}        
+    const { listen, speak, hints, requested_hints: requestedBEHints } = currentWord || {}
 
     if (currentWord && Object.keys(currentWord).length && !listen && !speak) {
       let totalRequestedHints = []
       const { requestedHintsList } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
 
-      totalRequestedHints = (requestedBEHints || [])
+      totalRequestedHints = requestedBEHints || []
       totalRequestedHints = totalRequestedHints.concat(
-        (requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint))
+        (requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint)),
       )
 
       setEloScoreHearts(
-        Array.from({ length: hints ? hints.filter(hint => !totalRequestedHints.includes(hint)).length : 0 }, (_, i) => i + 1)
+        Array.from(
+          { length: hints ? hints.filter(hint => !totalRequestedHints.includes(hint)).length : 0 },
+          (_, i) => i + 1,
+        ),
       )
       setSpentHints(
-        Array.from({ length: requestedHintsList ? requestedHintsList.length : 0 }, (_, i) => i + 1)
+        Array.from({ length: requestedHintsList ? requestedHintsList.length : 0 }, (_, i) => i + 1),
       )
 
       if (attempt !== 0) {
         setFilteredHintsList(hints || [])
         setPreHints(totalRequestedHints)
       } else {
-        setFilteredHintsList(hints?.filter(hint => !hints[0]?.message || hint.easy !== hints[0].message.easy))
+        setFilteredHintsList(
+          hints?.filter(hint => !hints[0]?.message || hint.easy !== hints[0].message.easy),
+        )
         setPreHints(totalRequestedHints)
       }
     } else {
@@ -426,18 +459,20 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
-
       const { ID: wordId } = currentWord
       let word_chat_history = []
-      if (chat_history && typeof wordId !== 'undefined' && chat_history.hasOwnProperty(wordId.toString())) {
-          word_chat_history = chat_history[wordId.toString()]
+      if (
+        chat_history &&
+        typeof wordId !== 'undefined' &&
+        chat_history.hasOwnProperty(wordId.toString())
+      ) {
+        word_chat_history = chat_history[wordId.toString()]
       }
       dispatch(setConversationHistory(word_chat_history))
     }
   }, [currentWord, chat_history, dispatch])
-  
-  useEffect(() => {    
 
+  useEffect(() => {
     const wordId = translationState?.word_id || translationState?.wordId || null
     if (typeof wordId === 'undefined' || wordId === null) {
       // No translation word id — clear conversation
@@ -453,9 +488,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   useEffect(() => {
     latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])  
+  }, [messages])
 
-  const handleKnowningClick = (lemma) => {
+  const handleKnowningClick = lemma => {
     const answerDetails = {
       correct: true,
       answer: null,
@@ -468,7 +503,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 4))
   }
 
-  const handleNotKnowningClick = (lemma) => {
+  const handleNotKnowningClick = lemma => {
     const answerDetails = {
       correct: false,
       answer: null,
@@ -481,12 +516,17 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
-  const handleHintRequest = (newHintList) => {
+  const handleHintRequest = newHintList => {
     const newRequestNum = preHints.length + 1
-    const penalties = newHintList
-        ?.filter(hint => hint.penalty)
-        .map(hint => hint.penalty)
-    dispatch(incrementHintRequests(`${currentWord.ID}-${currentWord.id}`, newRequestNum, newHintList, penalties))
+    const penalties = newHintList?.filter(hint => hint.penalty).map(hint => hint.penalty)
+    dispatch(
+      incrementHintRequests(
+        `${currentWord.ID}-${currentWord.id}`,
+        newRequestNum,
+        newHintList,
+        penalties,
+      ),
+    )
     setSpentHints(prev => [...prev, prev.length + 1])
     setEloScoreHearts(prev => prev.slice(0, -1))
     setHintMessageIdx(messages.length > 0 ? messages.length : 0)
@@ -494,47 +534,57 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   const handleShowHint = () => {
     const { hints, requested_hints: requestedBEHints } = currentWord || {}
-    let totalRequestedHints = (requestedBEHints || [])
+    let totalRequestedHints = requestedBEHints || []
     const { requestedHintsList } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
     totalRequestedHints = totalRequestedHints.concat(
-      (requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint))
+      (requestedHintsList || []).filter(hint => !totalRequestedHints.includes(hint)),
     )
 
-    if ((!hints && !preHints) || (filteredHintsList.length < 1 && preHints.length < 1) || hints?.length < 1) {
+    if (
+      (!hints && !preHints) ||
+      (filteredHintsList.length < 1 && preHints.length < 1) ||
+      hints?.length < 1
+    ) {
       setEmptyHintsList(true)
       handleHintRequest()
     } else {
-      const newHintList = preHints.concat(filteredHintsList[preHints.length - (requestedBEHints || []).length])
+      const newHintList = preHints.concat(
+        filteredHintsList[preHints.length - (requestedBEHints || []).length],
+      )
       setPreHints(newHintList)
       handleHintRequest(newHintList)
     }
-  }        
-  
+  }
+
   const targetLangName = dictionaryLanguage
     ? intl.formatMessage({ id: dictionaryLanguage, defaultMessage: dictionaryLanguage })
     : ''
 
   const handleGetTranslation = () => {
     if (currentWord && currentWord.lemmas) {
-      dispatch(setWords({
-        surface: currentWord.surface,
-        lemmas: currentWord.lemmas,
-      }))
+      dispatch(
+        setWords({
+          surface: currentWord.surface,
+          lemmas: currentWord.lemmas,
+        }),
+      )
 
-      dispatch(getTranslationAction({
-        learningLanguage,
-        wordLemmas: currentWord.translation_lemmas || currentWord.lemmas,
-        bases: currentWord.bases,
-        dictionaryLanguage,
-        storyId: currentWord.story_id,
-        wordId: currentWord.ID,
-        inflectionRef: currentWord.inflection_ref,
-        prefLemma: currentWord.pref_lemma,
-      }))
+      dispatch(
+        getTranslationAction({
+          learningLanguage,
+          wordLemmas: currentWord.translation_lemmas || currentWord.lemmas,
+          bases: currentWord.bases,
+          dictionaryLanguage,
+          storyId: currentWord.story_id,
+          wordId: currentWord.ID,
+          inflectionRef: currentWord.inflection_ref,
+          prefLemma: currentWord.pref_lemma,
+        }),
+      )
     }
   }
 
-  const handleTooltipClick = (hint) => {
+  const handleTooltipClick = hint => {
     if (!hint) return
 
     if (hint.ref?.length) {
@@ -544,9 +594,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     if (hint.explanation?.length || hint.meta !== hint.easy) {
       dispatch(
         setExplanation({
-          [hint.keyword || hint.easy]:
-            (hint.easy === hint.meta && hint.explanation) || [hint.meta, ...(hint.explanation || [])],
-        })
+          [hint.keyword || hint.easy]: (hint.easy === hint.meta && hint.explanation) || [
+            hint.meta,
+            ...(hint.explanation || []),
+          ],
+        }),
       )
     }
 
@@ -555,18 +607,19 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     }
   }
 
-  const handleMessageSubmit = (event) => {
+  const handleMessageSubmit = event => {
     event?.preventDefault()
-    const source = (helperActiveTab === 'exercise' && currentWord && Object.keys(currentWord).length > 0)
-      ? currentWord
-      : translationState || {};
-    
-    const wordId = source.ID ?? source.word_id ?? null;
-    const sentence_id = source.sentence_id ?? null;
-    const snippet_id = source.snippet_id ?? null;
-    const choices = source.choices || [];
-    const wordHints = source.hints || [];
-    
+    const source =
+      helperActiveTab === 'exercise' && currentWord && Object.keys(currentWord).length > 0
+        ? currentWord
+        : translationState || {}
+
+    const wordId = source.ID ?? source.word_id ?? null
+    const sentence_id = source.sentence_id ?? null
+    const snippet_id = source.snippet_id ?? null
+    const choices = source.choices || []
+    const wordHints = source.hints || []
+
     if ((!wordId || !snippet_id || !sentence_id) && currentMessage.trim() === '') {
       return
     }
@@ -579,27 +632,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         sentence_id,
         wordId,
         currentMessage.trim(),
-        "",
-        composeExerciseContext(
-            snippets.focused?.practice_snippet || [],
-            currentWord
-        ),
-        (wordHints || []).map(hint => hint.easy)
-      )
+        '',
+        composeExerciseContext(snippets.focused?.practice_snippet || [], currentWord),
+        (wordHints || []).map(hint => hint.easy),
+      ),
     )
-    setCurrentMessage("")
+    setCurrentMessage('')
   }
- 
+
   const hasHints = currentWord?.hints?.length > 0 && validToChat
   const showAllHintsUsed = eloScoreHearts.length === 0 && spentHints.length > 0
 
-  const currentLemmas = currentWord?.lemmas?.split('|') || [];
-  const isCurrentWordTranslated = 
-      (translationState.surfaceWord || translationState.surface) === currentWord?.surface &&
-      !translationState.pending &&
-      translationState.data?.some(item => currentLemmas.includes(item.lemma));
+  const currentLemmas = currentWord?.lemmas?.split('|') || []
+  const isCurrentWordTranslated =
+    (translationState.surfaceWord || translationState.surface) === currentWord?.surface &&
+    !translationState.pending &&
+    translationState.data?.some(item => currentLemmas.includes(item.lemma))
 
-  const getLemmaCandidates = (lemmaOrLemmas) => {
+  const getLemmaCandidates = lemmaOrLemmas => {
     if (!lemmaOrLemmas || typeof lemmaOrLemmas !== 'string') return []
 
     const raw = lemmaOrLemmas.trim()
@@ -613,7 +663,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     return [...new Set([raw, ...split])]
   }
 
-  const getNestListForLemma = (lemma) => {
+  const getNestListForLemma = lemma => {
     if (!lemma) return []
     // Word Nest buttons must be backed by data for this exact lemma. An array can
     // be stale data from a different modal context, so it must not enable a button.
@@ -631,7 +681,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     return candidates.some(lemma => getNestListForLemma(lemma).length > 0)
   }
 
-  const bestWordNestLemma = (lemmaOrLemmas) => {
+  const bestWordNestLemma = lemmaOrLemmas => {
     const candidates = getLemmaCandidates(lemmaOrLemmas)
     if (!candidates.length) return ''
 
@@ -640,9 +690,11 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     return withData || candidates[0]
   }
 
-  const exerciseWordNestLemma = bestWordNestLemma(currentWord?.translation_lemmas || currentWord?.lemmas)
+  const exerciseWordNestLemma = bestWordNestLemma(
+    currentWord?.translation_lemmas || currentWord?.lemmas,
+  )
   const dictionaryWordNestLemma = bestWordNestLemma(
-    translation?.lemma || translationState.data?.[0]?.lemma || translationState.surfaceWord
+    translation?.lemma || translationState.data?.[0]?.lemma || translationState.surfaceWord,
   )
 
   const showWordNestOption = isWordNestAvailableForLemma(exerciseWordNestLemma)
@@ -652,7 +704,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     // Prefer restoring from the currently displayed translation cards.
     const data = translationState?.data
     if (Array.isArray(data) && data.length > 0) {
-      const joined = data.map(t => t?.lemma).filter(Boolean).join('+')
+      const joined = data
+        .map(t => t?.lemma)
+        .filter(Boolean)
+        .join('+')
       if (joined) return joined
     }
 
@@ -669,20 +724,21 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const openWordNest = lemma => {
     setWordNestRestoreWord(computeWordNestRestoreWord())
     setWordNestRestorePrefLemma(
-      translationState?.data?.find(translated => translated?.preferred)?.lemma || ''
+      translationState?.data?.find(translated => translated?.preferred)?.lemma || '',
     )
     setWordNestChosenWord(lemma)
     setWordNestModalOpen(true)
   }
 
-  const prevId = useRef(currentWord?.ID);
-  const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '');
+  const prevId = useRef(currentWord?.ID)
+  const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '')
 
   useEffect(() => {
     const currentId = currentWord?.ID
     const transKey = translationState?.surfaceWord || translationState?.lemmas || ''
     const idChanged = typeof prevId.current !== 'undefined' && currentId !== prevId.current
-    const transChanged = typeof prevTransKey.current !== 'undefined' && transKey !== prevTransKey.current
+    const transChanged =
+      typeof prevTransKey.current !== 'undefined' && transKey !== prevTransKey.current
     if (idChanged || transChanged) {
       dispatch({ type: 'CLEAR_CONTEXT_TRANSLATION' })
       setShowContextTranslation(false)
@@ -694,12 +750,12 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
       const { users_answer } = currentAnswers[`${currentWord.ID}-${currentWord.id}`] || {}
-      
+
       const predefinedChatbotMsg = [
-        "chatbot-message-suggestion-answer-wrong-reason",
-        "chatbot-message-suggestion-analyze-context"
+        'chatbot-message-suggestion-answer-wrong-reason',
+        'chatbot-message-suggestion-analyze-context',
       ]
-      
+
       const requests = predefinedChatbotMsg.map(id => ({
         msgId: id,
         func: getPracticeChatbotResponse(
@@ -709,13 +765,13 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           currentWord.sentence_id,
           currentWord.ID,
           intl.formatMessage({ id }).trim(),
-          users_answer?.trim() || "",
+          users_answer?.trim() || '',
           composeExerciseContext(snippets.focused?.practice_snippet || [], currentWord),
-          (currentWord.hints || []).map(hint => hint.easy)
-        )
+          (currentWord.hints || []).map(hint => hint.easy),
+        ),
       }))
-      
-            setPredefinedChatbotRequests(requests)
+
+      setPredefinedChatbotRequests(requests)
     } else {
       setPredefinedChatbotRequests([])
     }
@@ -723,23 +779,46 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
 
   const glossCheckLanguage = ['English']
 
-  const highlightTarget = (translation) => {
-    if (!translation || !translation['source-segments'] || !translation['target-segments'] || !translation['alignment']) return ''
+  const highlightTarget = translation => {
+    if (
+      !translation ||
+      !translation['source-segments'] ||
+      !translation['target-segments'] ||
+      !translation['alignment']
+    )
+      return ''
     const surface = translationState.surfaceWord || currentWord?.surface || ''
 
-    const translated_glosses = (translationState.data || []).map(t => t.glosses || []).flat().map(g => g.toLowerCase())
-    const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
-      ...translated_glosses,
-      ...translated_glosses.map(gloss => gloss.includes(' ') && [gloss, ...gloss.split(' '), ...gloss.split(' ').map(g => lemmatizer(g))] || [lemmatizer(gloss)]).flat(),
-    ] : [
-      ...translated_glosses,
-      ...translated_glosses.filter(gloss => gloss.includes(' ')).map(gloss => gloss.split(' ')).flat(),
-    ]
+    const translated_glosses = (translationState.data || [])
+      .map(t => t.glosses || [])
+      .flat()
+      .map(g => g.toLowerCase())
+    const glosses = glossCheckLanguage.includes(dictionaryLanguage)
+      ? [
+          ...translated_glosses,
+          ...translated_glosses
+            .map(
+              gloss =>
+                (gloss.includes(' ') && [
+                  gloss,
+                  ...gloss.split(' '),
+                  ...gloss.split(' ').map(g => lemmatizer(g)),
+                ]) || [lemmatizer(gloss)],
+            )
+            .flat(),
+        ]
+      : [
+          ...translated_glosses,
+          ...translated_glosses
+            .filter(gloss => gloss.includes(' '))
+            .map(gloss => gloss.split(' '))
+            .flat(),
+        ]
 
-    const glossCheck = (p) => (
+    const glossCheck = p =>
       !glossCheckLanguage.includes(dictionaryLanguage) ||
-      glosses.includes(p.trim().toLowerCase()) || glosses.includes(lemmatizer(p.trim().toLowerCase()))
-    )
+      glosses.includes(p.trim().toLowerCase()) ||
+      glosses.includes(lemmatizer(p.trim().toLowerCase()))
 
     const targetSents = []
     const targetSentIds = new Set()
@@ -755,7 +834,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         const segment = srcSegments[s]
         if (!segment) continue
         const first = segment[0]
-        if (first === '▁' || (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())) {
+        if (
+          first === '▁' ||
+          (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())
+        ) {
           if (p.length && p === surface) sourceIds.push(...q)
           p = segment.replace('▁', '')
           q = [s]
@@ -769,7 +851,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
       // get target ids
       let targetIds = []
       try {
-        targetIds = sourceIds.map(s => translation['alignment'][sentId] && translation['alignment'][sentId][s]).flat().filter(x => typeof x !== 'undefined')
+        targetIds = sourceIds
+          .map(s => translation['alignment'][sentId] && translation['alignment'][sentId][s])
+          .flat()
+          .filter(x => typeof x !== 'undefined')
       } catch (e) {
         targetIds = []
       }
@@ -782,12 +867,14 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         const segment = tgtSegments[s]
         if (!segment) continue
         const first = segment[0]
-        if (first === '▁' || (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())) {
+        if (
+          first === '▁' ||
+          (typeof first === 'string' && first.toLowerCase() === first.toUpperCase())
+        ) {
           if (p.trim().length && targetIds.filter(x => q.includes(x)).length && glossCheck(p)) {
             target += '<b>' + p + '</b>'
             targetSentIds.add(sentId)
-          } else
-            target += p
+          } else target += p
           p = segment.replace('▁', ' ')
           q = [s]
         } else {
@@ -805,7 +892,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     }
 
     if (targetSentIds.size) {
-      return [...targetSentIds].sort().map(sentId => targetSents[sentId]).join(' ')
+      return [...targetSentIds]
+        .sort()
+        .map(sentId => targetSents[sentId])
+        .join(' ')
     }
     return targetSents.join(' ')
   }
@@ -813,45 +903,59 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const renderContextTranslationContent = () => {
     const d = contextTranslationState.data
     if (!d) return null
-    if (typeof d === 'string') return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: d }}></ChatBubble>
+    const renderHtml = html => (
+      <ChatBubble variant="note">
+        <div dangerouslySetInnerHTML={{ __html: html }} />
+      </ChatBubble>
+    )
+
+    if (typeof d === 'string') return renderHtml(d)
     // Prefer alignment-based highlight when available
     if (d['alignment'] && d['source-segments'] && d['target-segments']) {
       const html = highlightTarget(d)
-      return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: html }}></ChatBubble>
+      return renderHtml(html)
     }
-    if (d.translation) return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: d.translation }} />
-    if (d['target-sentences']) return (
-      <ChatBubble variant="note">
-        {d['target-sentences'].map((s, i) => (
-          <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
-        ))}
-      </ChatBubble>
-    )
+    if (d.translation) return renderHtml(d.translation)
+    if (d['target-sentences'])
+      return (
+        <ChatBubble variant="note">
+          {d['target-sentences'].map((s, i) => (
+            <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
+          ))}
+        </ChatBubble>
+      )
     return (
       <ChatBubble variant="note">
         <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(d, null, 2)}</pre>
-       </ChatBubble>
+      </ChatBubble>
     )
   }
 
   return (
-    <div className="combined-chatbot">      
+    <div className="combined-chatbot">
       {(learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
         <WordNestModal
           wordToCheck={wordNestChosenWord}
           setWordToCheck={setWordNestChosenWord}
           open={wordNestModalOpen}
           setOpen={setWordNestModalOpen}
-          storyWord={wordNestRestoreWord || translationState.lemmas || translationState.surfaceWord || currentWord?.lemmas || currentWord?.surface}
+          storyWord={
+            wordNestRestoreWord ||
+            translationState.lemmas ||
+            translationState.surfaceWord ||
+            currentWord?.lemmas ||
+            currentWord?.surface
+          }
           prefLemma={wordNestRestorePrefLemma}
         />
-
-
       )}
 
       <NoteFormModal
         open={noteModalOpen}
-        onClose={() => { setNoteModalOpen(false); setEditingNote(null) }}
+        onClose={() => {
+          setNoteModalOpen(false)
+          setEditingNote(null)
+        }}
         onSubmit={handleSubmitNote}
         initialText={editingNote?.text || ''}
         initialPublic={editingNote?.isPublic || false}
@@ -871,267 +975,345 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
         <h3 className="ai-header-title">Vita - AI Assistant</h3>
         <AssistentSettings className="settings-icon" />
       </div>
-      
-      { currentWord && isEmpty(currentWord) && translationState && isEmpty(translationState.data) && isEmpty(translationState.surfaceWord) && (
-        <div className="first-message">
-          <ChatBubble variant="bot" data-cy="dictionary-info">
-            <FormattedMessage id="chatbox-initial-instruction" />
-          </ChatBubble>
-        </div>          
-      )}
+
+      {currentWord &&
+        isEmpty(currentWord) &&
+        translationState &&
+        isEmpty(translationState.data) &&
+        isEmpty(translationState.surfaceWord) && (
+          <div className="first-message">
+            <ChatBubble variant="bot" data-cy="dictionary-info">
+              <FormattedMessage id="chatbox-initial-instruction" />
+            </ChatBubble>
+          </div>
+        )}
       {/* Exercise block */}
-      { helperActiveTab === 'exercise' && (            
+      {helperActiveTab === 'exercise' && (
         <div className="chatbot-content">
-          <div className="chatbot-header">                 
-            <div><CustomTooltip
-              title={
-                <span style={{ whiteSpace: 'nowrap' }}>
-                  <FormattedMessage id="translation-to" defaultMessage="Translation to" /> {targetLangName}
-                </span>
-              }
-              placement="top"
-              permanent
-            >
-              <button type="button" className="translation-button" onClick={handleGetTranslation} data-cy="chatbot-translation-button">
-                {/* Green circular translate icon — same as the story-title translate button. */}
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '1.7rem',
-                    height: '1.7rem',
-                    borderRadius: '50%',
-                    backgroundColor: colors.green,
-                  }}
+          <div className="chatbot-header">
+            <div>
+              <CustomTooltip
+                title={
+                  <span style={{ whiteSpace: 'nowrap' }}>
+                    <FormattedMessage id="translation-to" defaultMessage="Translation to" />{' '}
+                    {targetLangName}
+                  </span>
+                }
+                placement="top"
+                permanent
+              >
+                <button
+                  type="button"
+                  className="translation-button"
+                  onClick={handleGetTranslation}
+                  data-cy="chatbot-translation-button"
                 >
-                  <img
-                    src={images.translate}
-                    alt=""
-                    style={{ width: '1rem', height: '1rem', display: 'block' }}
-                  />
-                </span>
-              </button>
-            </CustomTooltip></div>
-            <div style={{flex: 1}}>
-               <h4 className="current-word">
+                  {/* Green circular translate icon — same as the story-title translate button. */}
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '1.7rem',
+                      height: '1.7rem',
+                      borderRadius: '50%',
+                      backgroundColor: colors.green,
+                    }}
+                  >
+                    <img
+                      src={images.translate}
+                      alt=""
+                      style={{ width: '1rem', height: '1rem', display: 'block' }}
+                    />
+                  </span>
+                </button>
+              </CustomTooltip>
+            </div>
+            <div style={{ flex: 1 }}>
+              <h4 className="current-word">
                 {currentWord.choices?.length ? currentWord.choices.join('/') : currentWord.base}
               </h4>
             </div>
             <div>
               <ChatActionMenu
-              handleShowHint={handleShowHint}
-              onAddNote={canAddNote ? handleAddNote : undefined}
-              hasHints={hasHints}
-              showAllHintsUsed={showAllHintsUsed}
-                            handleShowWordNest={() => openWordNest(exerciseWordNestLemma)}
-
-              showWordNestOption={showWordNestOption}
-              lemma={exerciseWordNestLemma}
-
-              wordNestChosenWord={wordNestChosenWord}
-              setWordNestChosenWord={setWordNestChosenWord}
-              wordNestModalOpen={wordNestModalOpen}
-              setWordNestModalOpen={setWordNestModalOpen}
-              storyWord={translationState.surfaceWord || currentWord?.surface}
-              popupMessageId="explain-wordnest-modal"
-              setShowContextTranslation={setShowContextTranslation}
-              showContexTranslation={showContexTranslation}
-              predefinedChatbotRequests={predefinedChatbotRequests}
-              validToChat={validToChat}
-            />
+                handleShowHint={handleShowHint}
+                onAddNote={canAddNote ? handleAddNote : undefined}
+                hasHints={hasHints}
+                showAllHintsUsed={showAllHintsUsed}
+                handleShowWordNest={() => openWordNest(exerciseWordNestLemma)}
+                showWordNestOption={showWordNestOption}
+                lemma={exerciseWordNestLemma}
+                wordNestChosenWord={wordNestChosenWord}
+                setWordNestChosenWord={setWordNestChosenWord}
+                wordNestModalOpen={wordNestModalOpen}
+                setWordNestModalOpen={setWordNestModalOpen}
+                storyWord={translationState.surfaceWord || currentWord?.surface}
+                popupMessageId="explain-wordnest-modal"
+                setShowContextTranslation={setShowContextTranslation}
+                showContexTranslation={showContexTranslation}
+                predefinedChatbotRequests={predefinedChatbotRequests}
+                validToChat={validToChat}
+              />
             </div>
-            
           </div>
-          
+
           <div className="chatbot-messages-container">
             {isLoadingHistory ? (
               <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-                  <Spinner inline />
+                <Spinner inline />
               </div>
             ) : (
-                  <>       
-                    {!isEmpty(currentWord.frozen_messages) && (
-                      <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-frozen-hint-message">
+              <>
+                {!isEmpty(currentWord.frozen_messages) && (
+                  <ChatBubble
+                    variant="hint"
+                    className="message-hint"
+                    data-cy="chatbot-frozen-hint-message"
+                  >
+                    <div className="hint-item">
+                      <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
+                      <span
+                        dangerouslySetInnerHTML={formatGreenFeedbackText(
+                          currentWord.frozen_messages[0],
+                        )}
+                      />
+                    </div>
+                  </ChatBubble>
+                )}
+
+                {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
+                  <div className="message message-bot" data-cy="chatbot-action-menu-instruction">
+                    <FormattedMessage
+                      id="click-to-action-menu"
+                      defaultMessage="{icon} Click the menu for more options"
+                      values={{
+                        icon: <MoreVertIcon fontSize="small" style={{ verticalAlign: 'middle' }} />,
+                      }}
+                    />
+                  </div>
+                )}
+                {isCurrentWordTranslated && (
+                  <>
+                    {translationState.pending ? (
+                      <div className="message message-bot">
+                        <span className="loading-text">Loading translation...</span>
+                      </div>
+                    ) : (
+                      translationState.data?.map((translated, idx) => (
+                        <AppLemma
+                          key={translated.URL || translated.lemma || idx}
+                          lemma={translated.lemma}
+                          lemmaHref={translated.user_URL}
+                          translations={translated.glosses}
+                          speaker={<Speaker word={translated.lemma} />}
+                          onKnow={
+                            translated.preferred
+                              ? () => handleKnowningClick(translated.lemma)
+                              : undefined
+                          }
+                          onDontKnow={
+                            translated.preferred
+                              ? () => handleNotKnowningClick(translated.lemma)
+                              : undefined
+                          }
+                          dictionaryHref={translated.ref?.url || translated.user_URL}
+                          showInflactionLink={translationState.data.length < 3 || idx > 0}
+                          onWordNest={
+                            isWordNestAvailableForLemma(translated.lemma)
+                              ? () => openWordNest(bestWordNestLemma(translated.lemma))
+                              : undefined
+                          }
+                          background={
+                            translated.stage !== undefined
+                              ? `${flashcardColors.background[translated.stage]}4D`
+                              : undefined
+                          }
+                          style={{ marginBottom: '8px' }}
+                        />
+                      ))
+                    )}
+                  </>
+                )}
+                {(showContexTranslation || contextTranslationState.visible) && (
+                  <div className="context-translation-box">
+                    {contextTranslationState.pending ? (
+                      <Spinner inline />
+                    ) : contextTranslationState.data ? (
+                      renderContextTranslationContent()
+                    ) : window?.location?.hostname === 'localhost' ||
+                      window?.location?.hostname === '127.0.0.1' ? (
+                      <ChatBubble variant="note">
+                        <p>
+                          {contextTranslationState.lastTrans || translationState.surfaceWord || ''}
+                        </p>
+                      </ChatBubble>
+                    ) : null}
+                  </div>
+                )}
+
+                {hintMessageIdx === 0 && (spentHints.length > 0 || emptyHintsList) && (
+                  <>
+                    {currentWord.hint2penalty && attempt === 0 && (
+                      <ChatBubble
+                        variant="hint"
+                        className="message-hint"
+                        data-cy="chatbot-hint2penalty-message"
+                      >
                         <div className="hint-item">
-                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
-                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.frozen_messages[0])} />
+                          <img
+                            src={images.bulb}
+                            className="hint-bulb"
+                            alt=""
+                            width="20"
+                            height="20"
+                          />
+                          <span
+                            dangerouslySetInnerHTML={formatGreenFeedbackText(
+                              currentWord.hint2penalty.easy,
+                            )}
+                          />
+                          {(currentWord.hint2penalty.ref?.length ||
+                            currentWord.hint2penalty.explanation?.length) && (
+                            <InfoOutlinedIcon
+                              fontSize="small"
+                              className="hint-info-icon"
+                              onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
+                              data-cy="chatbot-hint2penalty-info-icon"
+                            />
+                          )}
                         </div>
                       </ChatBubble>
-                      )}
-                            
-                    {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
-                      <div className="message message-bot" data-cy="chatbot-action-menu-instruction">
-                        <FormattedMessage
-                          id="click-to-action-menu"
-                          defaultMessage="{icon} Click the menu for more options"
-                          values={{
-                            icon: <MoreVertIcon fontSize="small" style={{ verticalAlign: 'middle' }} />
-                          }}
-                        />
-                      </div>
-                    )}              
-                    {isCurrentWordTranslated && (
-                      <>
-                        {translationState.pending ? (
-                          <div className="message message-bot">
-                            <span className="loading-text">Loading translation...</span>
-                          </div>
-                          ) : (
-                                translationState.data?.map((translated, idx) => (
-                                <AppLemma
-                                  key={translated.URL || translated.lemma || idx}
-                                  lemma={translated.lemma}
-                                  lemmaHref={translated.user_URL}
-                                  translations={translated.glosses}
-                                  speaker={<Speaker word={translated.lemma} />}
-                                  onKnow={
-                                    translated.preferred
-                                      ? () => handleKnowningClick(translated.lemma)
-                                      : undefined
-                                  }
-                                  onDontKnow={
-                                    translated.preferred
-                                      ? () => handleNotKnowningClick(translated.lemma)
-                                      : undefined
-                                  }
-                                  dictionaryHref={translated.ref?.url || translated.user_URL}
-                                  showInflactionLink={translationState.data.length < 3 || idx > 0}
-                                  onWordNest={
-                                    isWordNestAvailableForLemma(translated.lemma)
-                                      ? () => openWordNest(bestWordNestLemma(translated.lemma))
-                                      : undefined
-                                  }
-                                  background={
-                                    translated.stage !== undefined
-                                      ? `${flashcardColors.background[translated.stage]}4D`
-                                      : undefined
-                                  }
-                                  style={{ marginBottom: '8px' }}
-                                />
-                              ))
+                    )}
 
+                    {preHints?.map((hint, index) => (
+                      <ChatBubble
+                        key={index}
+                        variant="hint"
+                        className="message-hint"
+                        data-cy="chatbot-hint-message"
+                      >
+                        <div className="hint-item">
+                          <img
+                            src={images.bulb}
+                            className="hint-bulb"
+                            alt=""
+                            width="20"
+                            height="20"
+                          />
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
+                          {(hint.ref?.length ||
+                            hint.explanation?.length ||
+                            hint.meta !== hint.easy) && (
+                            <InfoOutlinedIcon
+                              fontSize="small"
+                              className="hint-info-icon"
+                              onMouseDown={() => handleTooltipClick(hint)}
+                              data-cy="chatbot-hint-info-icon"
+                            />
                           )}
-                        </>
-                      )} 
-                      { (showContexTranslation || contextTranslationState.visible) && (
-                        <div className="context-translation-box">
-                          {contextTranslationState.pending ? <Spinner inline /> : (
-                            (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
-                              <ChatBubble variant="note">
-                                <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
-                              </ChatBubble>
-                            ) : null)
-                          )}                          
                         </div>
-                      )}
-                      
-                      {hintMessageIdx === 0 && (spentHints.length > 0 || emptyHintsList) && (
-
-                        <>                          
-
-                          {currentWord.hint2penalty && attempt === 0 && (
-                            <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-hint2penalty-message">
-                              <div className="hint-item">
-                                <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
-                                <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
-                                {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                  <InfoOutlinedIcon fontSize="small"
-                                      className="hint-info-icon"
-                                      onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
-                                      data-cy="chatbot-hint2penalty-info-icon"
-                                  />
-                                )}
-                              </div>
-                            </ChatBubble>
-                            )}
-                            
-                            {preHints?.map((hint, index) => (
-                              <ChatBubble key={index} variant="hint" className="message-hint" data-cy="chatbot-hint-message">
-                                <div className="hint-item">
-                                  <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
-                                  <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
-                                  {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                    <InfoOutlinedIcon fontSize="small"
-                                      className="hint-info-icon"
-                                      onMouseDown={() => handleTooltipClick(hint)}
-                                      data-cy="chatbot-hint-info-icon"
-                                    />
-                                  )}
-                                </div>
-                              </ChatBubble>
-                            ))}
-                        </>
-                      )}
-
-                      {/* Chat Messages */}
-                      {messages.map((message, index) => (
-                          <ChatBubble
-                              ref={index === messages.length - 1 ? latestMessageRef : null}
-                              key={index}
-                              variant={message.type === 'user' ? 'user' : 'bot'}
-                          >
-                              {message.text ? (
-                                  <ReactMarkdown children={message.text} />
-                              ) : (
-                                  <FormattedMessage id="Error rendering message" />
-                              )}
-                          </ChatBubble>
-                      ))}
-
-                      {/* Hint Messages (after first attempt) */}
-                        {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
-                          <>
-                              {currentWord.hint2penalty && attempt === 0 && (
-                                  <ChatBubble variant="hint" className="message-hint" data-cy="chatbot-hint2penalty-message-after-chat">
-                                      <div className="hint-item">
-                                          <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
-                                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(currentWord.hint2penalty.easy)} />
-                                          {(currentWord.hint2penalty.ref?.length || currentWord.hint2penalty.explanation?.length) && (
-                                              <InfoOutlinedIcon fontSize="small"
-                                                  className="hint-info-icon"
-                                                  onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
-                                                  data-cy="chatbot-hint2penalty-info-icon-after-chat"
-                                              />
-                                          )}
-                                      </div>
-                                  </ChatBubble>
-                              )}
-                              {preHints?.map((hint, index) => (
-                                <ChatBubble key={index} variant="hint" className="message-hint" data-cy="chatbot-hint-message-after-chat">
-                                  <div className="hint-item">
-                                    <img src={images.bulb} className="hint-bulb" alt="" width="20" height="20" />
-                                    <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
-                                    {(hint.ref?.length || hint.explanation?.length || hint.meta !== hint.easy) && (
-                                        <InfoOutlinedIcon fontSize="small"
-                                          className="hint-info-icon"
-                                          onMouseDown={() => handleTooltipClick(hint)}
-                                          data-cy="chatbot-hint-info-icon-after-chat"
-                                        />
-                                    )}
-                                  </div>
-                                </ChatBubble>
-                              ))}
-                          </>
-                      )}
-
-                      {isWaitingForResponse && (
-                        <div className="message message-bot">
-                          <Spinner inline />
-                        </div>
-                      )}                     
-                      
+                      </ChatBubble>
+                    ))}
                   </>
-              )}
-          <UserNotes
-            notes={wordNotesList}
-            onEdit={handleEditNote}
-            onDelete={requestDeleteNote}
-            busy={annotationPending && !noteModalOpen}
-          />
+                )}
+
+                {/* Chat Messages */}
+                {messages.map((message, index) => (
+                  <ChatBubble
+                    ref={index === messages.length - 1 ? latestMessageRef : null}
+                    key={index}
+                    variant={message.type === 'user' ? 'user' : 'bot'}
+                  >
+                    {message.text ? (
+                      <ReactMarkdown children={message.text} />
+                    ) : (
+                      <FormattedMessage id="Error rendering message" />
+                    )}
+                  </ChatBubble>
+                ))}
+
+                {/* Hint Messages (after first attempt) */}
+                {hintMessageIdx > 0 && (spentHints.length > 0 || emptyHintsList) && (
+                  <>
+                    {currentWord.hint2penalty && attempt === 0 && (
+                      <ChatBubble
+                        variant="hint"
+                        className="message-hint"
+                        data-cy="chatbot-hint2penalty-message-after-chat"
+                      >
+                        <div className="hint-item">
+                          <img
+                            src={images.bulb}
+                            className="hint-bulb"
+                            alt=""
+                            width="20"
+                            height="20"
+                          />
+                          <span
+                            dangerouslySetInnerHTML={formatGreenFeedbackText(
+                              currentWord.hint2penalty.easy,
+                            )}
+                          />
+                          {(currentWord.hint2penalty.ref?.length ||
+                            currentWord.hint2penalty.explanation?.length) && (
+                            <InfoOutlinedIcon
+                              fontSize="small"
+                              className="hint-info-icon"
+                              onMouseDown={() => handleTooltipClick(currentWord.hint2penalty)}
+                              data-cy="chatbot-hint2penalty-info-icon-after-chat"
+                            />
+                          )}
+                        </div>
+                      </ChatBubble>
+                    )}
+                    {preHints?.map((hint, index) => (
+                      <ChatBubble
+                        key={index}
+                        variant="hint"
+                        className="message-hint"
+                        data-cy="chatbot-hint-message-after-chat"
+                      >
+                        <div className="hint-item">
+                          <img
+                            src={images.bulb}
+                            className="hint-bulb"
+                            alt=""
+                            width="20"
+                            height="20"
+                          />
+                          <span dangerouslySetInnerHTML={formatGreenFeedbackText(hint.easy)} />
+                          {(hint.ref?.length ||
+                            hint.explanation?.length ||
+                            hint.meta !== hint.easy) && (
+                            <InfoOutlinedIcon
+                              fontSize="small"
+                              className="hint-info-icon"
+                              onMouseDown={() => handleTooltipClick(hint)}
+                              data-cy="chatbot-hint-info-icon-after-chat"
+                            />
+                          )}
+                        </div>
+                      </ChatBubble>
+                    ))}
+                  </>
+                )}
+
+                {isWaitingForResponse && (
+                  <div className="message message-bot">
+                    <Spinner inline />
+                  </div>
+                )}
+              </>
+            )}
+            <UserNotes
+              notes={wordNotesList}
+              onEdit={handleEditNote}
+              onDelete={requestDeleteNote}
+              busy={annotationPending && !noteModalOpen}
+            />
           </div>
           <div className="chatbot-input-area">
-            {(showAllHintsUsed || !hasHints) ? (
+            {showAllHintsUsed || !hasHints ? (
               <>
                 <ChatInput
                   value={currentMessage}
@@ -1145,87 +1327,90 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                   disabled={!validToChat || isWaitingForResponse}
                 />
               </>
-            ) : (<div className="hint-request-container">
-                  <CustomTooltip
+            ) : (
+              <div className="hint-request-container">
+                <CustomTooltip
                   title={
                     <span style={{ whiteSpace: 'nowrap' }}>
-                        <FormattedMessage
-                            id="you-have-N-hints-left"
-                            defaultMessage="You have {count} hints left."
-                            values={{ count: eloScoreHearts.length }}
-                        />
+                      <FormattedMessage
+                        id="you-have-N-hints-left"
+                        defaultMessage="You have {count} hints left."
+                        values={{ count: eloScoreHearts.length }}
+                      />
                     </span>
                   }
                   placement="top"
                   permanent
                 >
-                    <div className="bulbs-container"
-                      onClick={showAllHintsUsed ? undefined : handleShowHint}
-                      style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
-                      role="button"
-                      tabIndex={0}
-                      data-cy="chatbot-hint-bulbs"
-                      onKeyDown={(e) => {
+                  <div
+                    className="bulbs-container"
+                    onClick={showAllHintsUsed ? undefined : handleShowHint}
+                    style={{ cursor: showAllHintsUsed ? 'default' : 'pointer' }}
+                    role="button"
+                    tabIndex={0}
+                    data-cy="chatbot-hint-bulbs"
+                    onKeyDown={e => {
                       if ((e.key === 'Enter' || e.key === ' ') && !showAllHintsUsed) {
-                        e.preventDefault();
-                        handleShowHint();
+                        e.preventDefault()
+                        handleShowHint()
                       }
-                      }}>
-                      {eloScoreHearts.map(heart => (
-                        <img
-                          key={`lit-${heart}`}
-                          src={images.bulb}
-                          alt=""
-                          width="22"
-                          height="22"
-                          style={{ display: 'block' }}
-                        />
-                      ))}
-                      {spentHints.map(hint => (
-                        <img
-                          key={`spent-${hint}`}
-                          src={images.bulbEmpty}
-                          alt=""
-                          width="22"
-                          height="22"
-                          style={{ display: 'block' }}
-                        />
-                      ))}
-                    </div>
-                </CustomTooltip>
-                  <CustomTooltip
-                    title={
-                      <span style={{ whiteSpace: 'nowrap' }}>
-                        <FormattedMessage
-                          id="you-have-N-hints-left"
-                          defaultMessage="You have {count} hints left."
-                          values={{ count: eloScoreHearts.length }}
-                        />
-                      </span>
-                    }
-                    placement="top"
-                    permanent
+                    }}
                   >
-                      <span style={{ display: 'inline-flex' }}>
-                        <AppButton
-                          variant="primary"
-                          size="sm"
-                          disabled={showAllHintsUsed}
-                          onClick={showAllHintsUsed ? undefined : handleShowHint}
-                          data-cy="chatbot-show-hint-text"
-                        >
-                          <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
-                        </AppButton>
-                      </span>
-                  </CustomTooltip></div>
+                    {eloScoreHearts.map(heart => (
+                      <img
+                        key={`lit-${heart}`}
+                        src={images.bulb}
+                        alt=""
+                        width="22"
+                        height="22"
+                        style={{ display: 'block' }}
+                      />
+                    ))}
+                    {spentHints.map(hint => (
+                      <img
+                        key={`spent-${hint}`}
+                        src={images.bulbEmpty}
+                        alt=""
+                        width="22"
+                        height="22"
+                        style={{ display: 'block' }}
+                      />
+                    ))}
+                  </div>
+                </CustomTooltip>
+                <CustomTooltip
+                  title={
+                    <span style={{ whiteSpace: 'nowrap' }}>
+                      <FormattedMessage
+                        id="you-have-N-hints-left"
+                        defaultMessage="You have {count} hints left."
+                        values={{ count: eloScoreHearts.length }}
+                      />
+                    </span>
+                  }
+                  placement="top"
+                  permanent
+                >
+                  <span style={{ display: 'inline-flex' }}>
+                    <AppButton
+                      variant="primary"
+                      size="sm"
+                      disabled={showAllHintsUsed}
+                      onClick={showAllHintsUsed ? undefined : handleShowHint}
+                      data-cy="chatbot-show-hint-text"
+                    >
+                      <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
+                    </AppButton>
+                  </span>
+                </CustomTooltip>
+              </div>
             )}
-          </div>                    
-        </div>                 
+          </div>
+        </div>
       )}
-            
-      { helperActiveTab ===  'translation' &&  (          
+
+      {helperActiveTab === 'translation' && (
         <div className="dictionary-content" data-cy="dictionary-help">
-          
           {translationState.pending ? (
             <div style={{ padding: '1em' }}>
               <div className="flex space-between" style={{ marginBottom: '1em' }}>
@@ -1241,176 +1426,179 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               ))}
             </div>
           ) : (
-            <>            
-            {translationState.surfaceWord && (
-              <div
-                className="chatbot-header"
-                style={{
-                  marginBottom: '1em',
-                  paddingBottom: 0,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '8px',
-                }}
-              >
-                <h4
-                  className="current-word"
+            <>
+              {translationState.surfaceWord && (
+                <div
+                  className="chatbot-header"
                   style={{
+                    marginBottom: '1em',
+                    paddingBottom: 0,
                     display: 'flex',
+                    flexDirection: 'row',
                     alignItems: 'center',
+                    justifyContent: 'space-between',
                     gap: '8px',
-                    flex: 1,
-                    minWidth: 0,
-                    width: 'auto',
                   }}
                 >
-                  {translationState.surfaceWord &&
-                    translationState.surfaceWord !== translationState.data?.[0]?.lemma && (
-                      <CustomTooltip title={<FormattedHTMLMessage id="explain-speaker-surface" />}>
-                        <span style={{ display: 'inline-flex', flexShrink: 0 }}>
-                          <Speaker word={translationState.surfaceWord} />
-                        </span>
-                      </CustomTooltip>
-                    )}
-                  <span
-                    style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                  <h4
+                    className="current-word"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      flex: 1,
+                      minWidth: 0,
+                      width: 'auto',
+                    }}
                   >
-                    {translationState.maskSymbol || translationState.surfaceWord}
-                  </span>
-                </h4>
-                <ChatActionMenu
-                  mode="dictionary"
-                                    onAddNote={canAddNote ? handleAddNote : undefined}
-                                    handleShowWordNest={() => openWordNest(dictionaryWordNestLemma)}
-
-                  showWordNestOption={showWordNestOptionDictionary}
-                  lemma={dictionaryWordNestLemma}
-
-                  wordNestChosenWord={wordNestChosenWord}
-                  setWordNestChosenWord={setWordNestChosenWord}
-                  wordNestModalOpen={wordNestModalOpen}
-                  setWordNestModalOpen={setWordNestModalOpen}
-                  storyWord={translationState.surfaceWord || currentWord?.surface}
-                  popupMessageId="explain-wordnest-modal"
-                  buttonStyle={{ background: 'none', marginTop: '0.5rem' }}
-                  setShowContextTranslation={setShowContextTranslation}
-                />
-              </div>
-            )}
-            <div className="inline-translation" data-cy="translations">            
-
-            {/* Translation Results */}               
+                    {translationState.surfaceWord &&
+                      translationState.surfaceWord !== translationState.data?.[0]?.lemma && (
+                        <CustomTooltip
+                          title={<FormattedHTMLMessage id="explain-speaker-surface" />}
+                        >
+                          <span style={{ display: 'inline-flex', flexShrink: 0 }}>
+                            <Speaker word={translationState.surfaceWord} />
+                          </span>
+                        </CustomTooltip>
+                      )}
+                    <span
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                      {translationState.maskSymbol || translationState.surfaceWord}
+                    </span>
+                  </h4>
+                  <ChatActionMenu
+                    mode="dictionary"
+                    onAddNote={canAddNote ? handleAddNote : undefined}
+                    handleShowWordNest={() => openWordNest(dictionaryWordNestLemma)}
+                    showWordNestOption={showWordNestOptionDictionary}
+                    lemma={dictionaryWordNestLemma}
+                    wordNestChosenWord={wordNestChosenWord}
+                    setWordNestChosenWord={setWordNestChosenWord}
+                    wordNestModalOpen={wordNestModalOpen}
+                    setWordNestModalOpen={setWordNestModalOpen}
+                    storyWord={translationState.surfaceWord || currentWord?.surface}
+                    popupMessageId="explain-wordnest-modal"
+                    buttonStyle={{ background: 'none', marginTop: '0.5rem' }}
+                    setShowContextTranslation={setShowContextTranslation}
+                  />
+                </div>
+              )}
+              <div className="inline-translation" data-cy="translations">
+                {/* Translation Results */}
 
                 {translationState.data && translationState.data.length > 0 ? (
-    translationState.data.map((translated, idx) => (
-        <AppLemma
-            key={translated.URL || translated.lemma || idx}
-            lemma={translated.lemma}
-            lemmaHref={translated.user_URL}
-            translations={translated.glosses}
-            speaker={<Speaker word={translated.lemma} />}
-            onKnow={
-                translated.preferred ? () => handleKnowningClick(translated.lemma) : undefined
-            }
-            onDontKnow={
-                translated.preferred
-                    ? () => handleNotKnowningClick(translated.lemma)
-                    : undefined
-            }
-            dictionaryHref={translated.ref?.url || translated.user_URL}
-            showInflactionLink={translationState.data.length < 3 || idx > 0}
-            onWordNest={
-                isWordNestAvailableForLemma(translated.lemma)
-                ? () => openWordNest(bestWordNestLemma(translated.lemma))
-                    : undefined
-            }
-            background={
-                translated.stage !== undefined
-                    ? `${flashcardColors.background[translated.stage]}4D`
-                    : undefined
-            }
-            style={{ marginBottom: '8px' }}
-        />
-    ))
-        ) : (
-            <p className="no-translation-text" data-cy="chatbot-no-translation-text"></p>
-        )}
-            </div>
-          <div className="chatbot-messages-container">
-            <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
-            <UserNotes
-              notes={wordNotesList}
-              onEdit={handleEditNote}
-              onDelete={requestDeleteNote}
-              busy={annotationPending && !noteModalOpen}
-            />
-            {isLoadingHistory ? (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-                  <Spinner inline />
+                  translationState.data.map((translated, idx) => (
+                    <AppLemma
+                      key={translated.URL || translated.lemma || idx}
+                      lemma={translated.lemma}
+                      lemmaHref={translated.user_URL}
+                      translations={translated.glosses}
+                      speaker={<Speaker word={translated.lemma} />}
+                      onKnow={
+                        translated.preferred
+                          ? () => handleKnowningClick(translated.lemma)
+                          : undefined
+                      }
+                      onDontKnow={
+                        translated.preferred
+                          ? () => handleNotKnowningClick(translated.lemma)
+                          : undefined
+                      }
+                      dictionaryHref={translated.ref?.url || translated.user_URL}
+                      showInflactionLink={translationState.data.length < 3 || idx > 0}
+                      onWordNest={
+                        isWordNestAvailableForLemma(translated.lemma)
+                          ? () => openWordNest(bestWordNestLemma(translated.lemma))
+                          : undefined
+                      }
+                      background={
+                        translated.stage !== undefined
+                          ? `${flashcardColors.background[translated.stage]}4D`
+                          : undefined
+                      }
+                      style={{ marginBottom: '8px' }}
+                    />
+                  ))
+                ) : (
+                  <p className="no-translation-text" data-cy="chatbot-no-translation-text"></p>
+                )}
               </div>
-            ) : (
+              <div className="chatbot-messages-container">
+                <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
+                <UserNotes
+                  notes={wordNotesList}
+                  onEdit={handleEditNote}
+                  onDelete={requestDeleteNote}
+                  busy={annotationPending && !noteModalOpen}
+                />
+                {isLoadingHistory ? (
+                  <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+                    <Spinner inline />
+                  </div>
+                ) : (
                   <>
                     {/* Chat Messages */}
-                      {messages.map((message, index) => (
-                          <ChatBubble
-                              ref={index === messages.length - 1 ? latestMessageRef : null}
-                              key={index}
-                              variant={message.type === 'user' ? 'user' : 'bot'}
-                          >
-                              {message.text ? (
-                                  <ReactMarkdown children={message.text} />
-                              ) : (
-                                  <FormattedMessage id="Error rendering message" />
-                              )}
-                          </ChatBubble>
-                      ))}                     
+                    {messages.map((message, index) => (
+                      <ChatBubble
+                        ref={index === messages.length - 1 ? latestMessageRef : null}
+                        key={index}
+                        variant={message.type === 'user' ? 'user' : 'bot'}
+                      >
+                        {message.text ? (
+                          <ReactMarkdown children={message.text} />
+                        ) : (
+                          <FormattedMessage id="Error rendering message" />
+                        )}
+                      </ChatBubble>
+                    ))}
 
-                      {isWaitingForResponse && (
-                        <div className="message message-bot">
-                          <Spinner inline />
-                        </div>
-                      )}                     
-                      
+                    {isWaitingForResponse && (
+                      <div className="message message-bot">
+                        <Spinner inline />
+                      </div>
+                    )}
                   </>
-              )}
-              { (showContexTranslation || contextTranslationState.visible) && (
-          <div className="context-translation-box">
-                {contextTranslationState.pending ? <Spinner inline /> : (
-                (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
-                  <ChatBubble variant="note">
-                    <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
-                  </ChatBubble>
-                ) : null)
-              )}                
-          </div>
-          )}
+                )}
+                {(showContexTranslation || contextTranslationState.visible) && (
+                  <div className="context-translation-box">
+                    {contextTranslationState.pending ? (
+                      <Spinner inline />
+                    ) : contextTranslationState.data ? (
+                      renderContextTranslationContent()
+                    ) : window?.location?.hostname === 'localhost' ||
+                      window?.location?.hostname === '127.0.0.1' ? (
+                      <ChatBubble variant="note">
+                        <p>
+                          {contextTranslationState.lastTrans || translationState.surfaceWord || ''}
+                        </p>
+                      </ChatBubble>
+                    ) : null}
+                  </div>
+                )}
+              </div>
 
-          </div>
-          
-          <div className="chatbot-input-area">
-            {(typeof helperActiveTab !== 'undefined') && (
-              <>
-                <ChatInput
-                  value={currentMessage}
-                  onChange={setCurrentMessage}
-                  onSubmit={handleMessageSubmit}
-                  placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-                  disabled={isWaitingForResponse}
-                />
-                <ChatbotSuggestions
-                  predefinedChatbotRequests={[]}
-                  disabled={!validToChat || isWaitingForResponse}
-                />
-              </>
-            )}
-          </div>          
-        </>
-        )}              
+              <div className="chatbot-input-area">
+                {typeof helperActiveTab !== 'undefined' && (
+                  <>
+                    <ChatInput
+                      value={currentMessage}
+                      onChange={setCurrentMessage}
+                      onSubmit={handleMessageSubmit}
+                      placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
+                      disabled={isWaitingForResponse}
+                    />
+                    <ChatbotSuggestions
+                      predefinedChatbotRequests={[]}
+                      disabled={!validToChat || isWaitingForResponse}
+                    />
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </div>
-        )}
-                            
+      )}
     </div>
   )
 }
