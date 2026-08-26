@@ -9,6 +9,8 @@ export const colors = {
   card: '#FAF8ED', // form card background (cream)
   green: '#B1D3C2', // primary button
   greenHover: '#9CC6B2', // derived — Figma hover not provided
+  blue: '#9AC8EA', // derived — accent blue; the brand hue at green's lightness so they read as a pair
+  blueHover: '#7FB9E3', // derived — same lightness step as green -> greenHover
   ink: '#2D2C2A', // body text / button text
   muted: '#9D9B92', // labels / secondary text
   border: '#B1D3C2', // input border (same as green)
