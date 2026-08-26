@@ -14,8 +14,9 @@ import AppDialog from 'Components/ui/AppDialog'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 
 // A single essay in the "My Essays" library: icon + title + sentence count. Clicking the card opens
-// a details dialog with Edit (opens the essay in writing mode) and Delete, mirroring how a story
-// card opens StoryDetailsModal rather than jumping straight into the text.
+// a details dialog with Edit and Delete, mirroring how a story card opens StoryDetailsModal rather
+// than jumping straight into the text. A teacher gets Review instead of Edit, because opening an
+// essay in teacher view lands on the read-only original/current split, not the writing editor.
 const EssayCard = ({
   essay,
   onOpen,
@@ -27,13 +28,10 @@ const EssayCard = ({
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const userId = useSelector(({ user }) => user.data?.user?.oid)
+  const teacherView = useSelector(({ user }) => user.data?.teacherView)
   const [detailsOpen, setDetailsOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
-
-  // Only the owner can delete an essay (the backend /remove is scoped to the authenticated user),
-  // so hide Delete on essays a teacher is only viewing (e.g. a student's essay).
   const isOwnEssay = Boolean(userId) && essay.user === userId
-
   const essayId = getWritingEssayId(essay)
   const title = essay.title || essay.sentences?.[0]?.original_text || null
   const sentenceCount = Array.isArray(essay.sentences) ? essay.sentences.length : 0
@@ -109,8 +107,6 @@ const EssayCard = ({
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            // Wrap rather than shrink, so longer translated labels move to the next line instead of
-            // squeezing the buttons — same rule as the story dialog's manage row.
             flexWrap: 'wrap',
             gap: '0.75em',
             '& > *': { flexShrink: 0 },
@@ -124,7 +120,7 @@ const EssayCard = ({
               sx={{ gap: '0.5em', whiteSpace: 'nowrap', '& img': { flexShrink: 0 } }}
             >
               <img src={images.iconEdit} alt="" />
-              <FormattedMessage id="edit" />
+              <FormattedMessage id={teacherView ? 'review' : 'edit'} />
             </AppButton>
           )}
           {isOwnEssay && (
@@ -137,7 +133,6 @@ const EssayCard = ({
                 whiteSpace: 'nowrap',
                 backgroundColor: colors.alert,
                 color: '#fff',
-                // The trash SVG is ink-stroked; invert it to white so it reads on the orange fill.
                 '& img': { flexShrink: 0, filter: 'brightness(0) invert(1)' },
                 '&:hover': { backgroundColor: colors.alertHover },
               }}

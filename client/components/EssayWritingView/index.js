@@ -40,16 +40,9 @@ const EssayWritingView = () => {
   const learningLanguage = useLearningLanguage()
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
-  // The editor owns sentence splitting, so it hands its current sentences up with the text. Their
-  // stable ids are what the saved edit history is keyed by, so the save can't re-derive them here.
   const [essaySentences, setEssaySentences] = useState([])
-  // Set when a student opens a saved essay to continue it: the id to save back into, and that
-  // essay's stored per-sentence lineage, so re-saving updates the essay instead of duplicating it
-  // and keeps the original version it already recorded.
   const [continuedEssayId, setContinuedEssayId] = useState(null)
   const [restoredSentenceLineage, setRestoredSentenceLineage] = useState(null)
-  // Teacher review cross-highlight: the sentence currently hovered { index, side } and the word
-  // currently selected { index, word, side }.
   const [hoveredSentence, setHoveredSentence] = useState(null)
   const [selectedWord, setSelectedWord] = useState(null)
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
@@ -57,8 +50,6 @@ const EssayWritingView = () => {
   const [topicDialogOpen, setTopicDialogOpen] = useState(false)
   const [topic, setTopic] = useState('')
   const [topicTaken, setTopicTaken] = useState(false)
-  // A save that failed for any reason other than a duplicate topic — reported as itself rather than
-  // blamed on the topic, which is what used to happen to every failure.
   const [uploadFailed, setUploadFailed] = useState(false)
   const selectedSelectionRef = useRef(null)
   const uploadInFlightRef = useRef(false)
@@ -142,8 +133,6 @@ const EssayWritingView = () => {
     setEssaySentences([])
     setContinuedEssayId(loadEssayId)
     setRestoredSentenceLineage(getWritingEssaySentenceLineage(openedEssay))
-    // Saving sends the topic as the essay's title, and continuing an essay never opens the topic
-    // dialog — so seed it from the essay, or the first Save would wipe the title it already has.
     setTopic(openedEssay.title || '')
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
@@ -161,8 +150,6 @@ const EssayWritingView = () => {
   // Save the essay as its current list of sentences, each with the backend-id edit history + cached
   // corrections, under the topic the user entered.
   const handleConfirmUpload = () => {
-    // A save replaces the stored essay wholesale. Sending an empty sentence list would erase both
-    // the current text and the original recorded alongside it, so refuse rather than destroy it.
     if (!essaySentences.length) {
       setUploadFailed(true)
       return
@@ -215,11 +202,8 @@ const EssayWritingView = () => {
     setTopicTaken(false)
     setUploadFailed(false)
 
-    // Continuing an essay: it stays open, the topic stays put (every save sends it as the title),
-    // and the student can keep writing and press Save again.
     if (continuedEssayId) return
 
-    // First upload: the essay now lives in the library, so go there and start the editor clean.
     dispatch(clearWritingCorrectionData())
     resetEssayDraft()
     dispatch(saveSelfIntermediate({ last_selected_library: 'essays' }))
@@ -298,7 +282,6 @@ const EssayWritingView = () => {
     const { original: originalSentences, current: currentSentences } =
       getWritingEssaySentenceVersions(essayLoaded ? openedEssay : null)
     const { current } = getWritingEssayVersions(essayLoaded ? openedEssay : null)
-    // Which side's pointer drives the cross-side sentence highlight (hover takes priority).
     const pointer = hoveredSentence || selectedWord
 
     return (
@@ -311,7 +294,10 @@ const EssayWritingView = () => {
           >
             {openedEssayError && !openedEssayPending ? (
               <Typography color="error" sx={{ mt: 4 }}>
-                <FormattedMessage id="something-went-wrong" defaultMessage="Something went wrong." />
+                <FormattedMessage
+                  id="something-went-wrong"
+                  defaultMessage="Something went wrong."
+                />
               </Typography>
             ) : !essayLoaded || openedEssayPending ? (
               <Spinner size={60} />
