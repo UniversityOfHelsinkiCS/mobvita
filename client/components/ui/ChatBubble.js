@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
-import CloseIcon from '@mui/icons-material/Close'
 import { colors, font } from 'Assets/mui_theme/designTokens'
+import { images } from 'Utilities/common'
 
 /**
  * ChatBubble — a single chat message bubble, shared across the chatbots.
@@ -15,13 +15,14 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
  *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
  *                 left-aligned like a bot reply but no background, shadow, or padding
  *
- * Pass `onRemove` to show a small close button (top-right) for removable messages.
+ * Pass `onEdit` and/or `onRemove` to show Design System edit/delete actions in the top-right.
  */
 const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: '#FFFFFF', color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: colors.green, color: colors.ink },
   note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink },
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
+  'controlled-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   hint: { alignSelf: 'flex-start', backgroundColor: '#FFEECE', color: colors.ink },
   options: {
     alignSelf: 'flex-start',
@@ -35,11 +36,12 @@ const VARIANT_STYLES = {
 }
 
 const Bubble = styled('div', {
-  shouldForwardProp: prop => prop !== 'variant',
-})(({ variant }) => ({
+  shouldForwardProp: prop => prop !== 'variant' && prop !== 'hasActions',
+})(({ variant, hasActions }) => ({
   position: 'relative',
   maxWidth: '85%',
   padding: '10px 14px',
+  ...(hasActions && { paddingRight: '58px' }),
   borderRadius: 18,
   // A bubble holds what the user is reading or wrote themselves — language content, not chrome —
   // so it names the content token rather than inheriting the UI font from <body>.
@@ -54,11 +56,15 @@ const Bubble = styled('div', {
   '& p:last-of-type': { marginBottom: 0 },
 }))
 
-const RemoveButton = styled('button')({
+const BubbleActions = styled('div')({
   position: 'absolute',
   top: 4,
   right: 6,
   display: 'inline-flex',
+  gap: 4,
+})
+
+const ActionButton = styled('button')({
   alignItems: 'center',
   justifyContent: 'center',
   padding: 0,
@@ -69,19 +75,40 @@ const RemoveButton = styled('button')({
   opacity: 0.6,
   transition: 'opacity 0.15s ease',
   '&:hover': { opacity: 1 },
-  '& svg': { fontSize: 16 },
+  '& img': { display: 'block', width: 16, height: 16 },
 })
 
-const ChatBubble = React.forwardRef(({ variant = 'bot', onRemove, children, ...rest }, ref) => (
-  <Bubble ref={ref} variant={variant} {...rest}>
-    {onRemove && (
-      <RemoveButton type="button" aria-label="Remove message" onClick={onRemove}>
-        <CloseIcon />
-      </RemoveButton>
-    )}
-    {children}
-  </Bubble>
-))
+const ChatBubble = React.forwardRef(
+  ({ variant = 'bot', onEdit, onRemove, editDataCy, removeDataCy, children, ...rest }, ref) => (
+    <Bubble ref={ref} variant={variant} hasActions={Boolean(onEdit || onRemove)} {...rest}>
+      {(onEdit || onRemove) && (
+        <BubbleActions>
+          {onEdit && (
+            <ActionButton
+              type="button"
+              aria-label="Edit message"
+              onClick={onEdit}
+              data-cy={editDataCy}
+            >
+              <img src={images.edit03} alt="" />
+            </ActionButton>
+          )}
+          {onRemove && (
+            <ActionButton
+              type="button"
+              aria-label="Remove message"
+              onClick={onRemove}
+              data-cy={removeDataCy}
+            >
+              <img src={images.xClose} alt="" />
+            </ActionButton>
+          )}
+        </BubbleActions>
+      )}
+      {children}
+    </Bubble>
+  ),
+)
 
 ChatBubble.displayName = 'ChatBubble'
 

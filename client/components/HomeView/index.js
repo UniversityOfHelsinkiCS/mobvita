@@ -347,7 +347,7 @@ const HomeView = () => {
 
   return (
     <div
-      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm pt-lg`}
+      className={`cont-tall cont ${isSidebarOpen ? 'sidebar-pushed' : ''} flex-col auto gap-row-sm`}     
     >
       {showDDLangIntroductory && (
         <DDLangIntroductory setShowDDLangIntroductory={setShowDDLangIntroductory} />

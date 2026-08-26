@@ -209,6 +209,7 @@ const WordNestModal = ({
   wordToCheck,
   setWordToCheck,
   restoreTranslationOnClose = true,
+  prefLemma,
   ...props
 }) => {
 
@@ -249,6 +250,7 @@ const WordNestModal = ({
           learningLanguage,
           wordLemmas: restoreWord,
           dictionaryLanguage,
+          prefLemma,
         })
       )
     }

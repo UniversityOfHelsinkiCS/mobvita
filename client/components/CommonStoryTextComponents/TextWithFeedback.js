@@ -11,6 +11,7 @@ const TextWithFeedback = ({
   answers,
   mode,
   hideFeedback,
+  showPreviewExercises,
   focusedConcept,
   ...props
 }) => {
@@ -160,6 +161,7 @@ const TextWithFeedback = ({
         word={word}
         snippet={snippet}
         focusedConcept={focusedConcept}
+        showPreviewExercises={showPreviewExercises}
         {...props}
       />
     ) 

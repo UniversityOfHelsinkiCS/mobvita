@@ -89,13 +89,15 @@ const AppLemma = ({
   onDontKnow,
   onDictionary,
   dictionaryHref,
+  showInflactionLink = true,
   onWordNest,
   background = DEFAULT_BG,
   style,
   className = '',
 }) => {
   const uniqueTranslations = [...new Set(translations || [])]
-  const hasPills = onDictionary || dictionaryHref || onWordNest
+  const showDictionaryPill = showInflactionLink && (onDictionary || dictionaryHref)
+  const hasPills = showDictionaryPill || onWordNest
 
   return (
     <div
@@ -170,7 +172,7 @@ const AppLemma = ({
 
       {hasPills && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
-          {(onDictionary || dictionaryHref) && (
+          {showDictionaryPill && (
             <Pill
               icon={images.external}
               onClick={onDictionary}

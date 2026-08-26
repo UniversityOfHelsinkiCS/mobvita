@@ -801,6 +801,9 @@ const DesignSystem = () => {
           <ChatBubble variant="user-note" onRemove={() => {}}>
             My own note (removable).
           </ChatBubble>
+          <ChatBubble variant="controlled-note" onEdit={() => {}} onRemove={() => {}}>
+            My controlled note (editable and removable).
+          </ChatBubble>
           <ChatBubble variant="options">
             See-through bubble that holds action content (no background/shadow/padding).
           </ChatBubble>

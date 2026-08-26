@@ -155,7 +155,7 @@ const Flashcards = () => {
 
   return (
     <div className={`cont-tall cont pb-nm flex-col auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-      <div data-cy="library-controls" style={{ margin: '1.5em 0 20px' }}>
+      <div data-cy="library-controls" style={{ margin: '0 0 1.7em 0' }}>
         <AppTabs tabs={flashcardTabs} value={activeTab} onChange={handleTabChange} fullWidth />
       </div>
 

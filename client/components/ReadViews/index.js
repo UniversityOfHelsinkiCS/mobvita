@@ -1,10 +1,10 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const EMPTY_LOADING_PROGRESS = {}
-import { FormControlLabel, Box } from '@mui/material'
+import { FormControlLabel, Box, Divider } from '@mui/material'
 import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppSwitch from 'Components/ui/AppSwitch'
@@ -13,7 +13,7 @@ import TopicsSelect from 'Components/StoryView/TopicsSelect'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTabs from 'Components/ui/AppTabs'
 import AppButton from 'Components/AppButton'
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl'
 import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -23,19 +23,22 @@ import {
   getStudentStoryAction,
   removeStory,
   updateExerciseTopics,
-  updateTempExerciseTopics } from 'Utilities/redux/storiesReducer'
+  updateTempExerciseTopics,
+} from 'Utilities/redux/storiesReducer'
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
+  saveSelfIntermediate,
   updateShowReviewDiff,
   updatePreviewExer,
   practiceTourViewed,
   updateBlankFilling,
   updateAudioTask,
   updateSpeechTask,
-  updateMultiChoice } from 'Utilities/redux/userReducer'
+  updateMultiChoice,
+} from 'Utilities/redux/userReducer'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
 import {
   learningLanguageSelector,
@@ -44,7 +47,8 @@ import {
   hiddenFeatures,
   cefrNum2Cefr,
   ACCESS,
-  useHasAccess } from 'Utilities/common'
+  useHasAccess,
+} from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
@@ -89,7 +93,9 @@ const ReadViews = ({ match }) => {
   const story = useSelector(state => state.stories.focused)
   const pending = useSelector(state => state.stories.focusedPending)
   const focusedStudentId = useSelector(state => state.stories.focusedStudentId)
-  const studentPending = useSelector(state => !!(state.stories.focusedPending && state.stories.focusedStudentId))
+  const studentPending = useSelector(
+    state => !!(state.stories.focusedPending && state.stories.focusedStudentId),
+  )
   const error = useSelector(state => state.stories.error)
   const focusedRequestId = useSelector(state => state.stories.focusedRequestId)
   const locale = useSelector(state => state.locale)
@@ -113,7 +119,9 @@ const ReadViews = ({ match }) => {
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
-  const loadingProgressByStory = useSelector(({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS)
+  const loadingProgressByStory = useSelector(
+    ({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS,
+  )
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
@@ -136,7 +144,8 @@ const ReadViews = ({ match }) => {
     .map(student => ({
       key: student._id,
       text: truncateStudentName(`${student?.userName} (${student?.email})`),
-      value: JSON.stringify(student) }))
+      value: JSON.stringify(student),
+    }))
     .sort(function (a, b) {
       const textA = a.text.toUpperCase()
       const textB = b.text.toUpperCase()
@@ -191,9 +200,9 @@ const ReadViews = ({ match }) => {
       0,
       Math.min(
         100,
-        rawProcessingProgress <= 1 ? rawProcessingProgress * 100 : rawProcessingProgress
-      )
-    )
+        rawProcessingProgress <= 1 ? rawProcessingProgress * 100 : rawProcessingProgress,
+      ),
+    ),
   )
   const difficultyValueDisplay =
     routeStory?.difficulty_value === null ||
@@ -360,13 +369,14 @@ const ReadViews = ({ match }) => {
           Number.isFinite(teacherLoadingProgress)
             ? intl.formatMessage(
                 { id: 'processing-story-with-percent' },
-                { progress: processingPercent }
+                { progress: processingPercent },
               )
             : ''
         }
       />
     )
-  if (!routeStory && !isStudentPreview) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
+  if (!routeStory && !isStudentPreview)
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   const underProcessing = isStudentPreview
     ? !loadingReady || storyProgress !== 1
@@ -378,9 +388,11 @@ const ReadViews = ({ match }) => {
   }
 
   const updateUserPreviewExer = () => {
-    dispatch(updatePreviewExer(!previewToggleOn))
-    setPreviewToggleOn(!previewToggleOn)
-    setHideFeedback(!hideFeedback)
+    const nextValue = !previewToggleOn
+    dispatch(saveSelfIntermediate({ show_preview_exer: nextValue }))
+    dispatch(updatePreviewExer(nextValue))
+    setPreviewToggleOn(nextValue)
+    setHideFeedback(!nextValue)
   }
 
   const handlePracticeButtonClick = () => {
@@ -498,14 +510,11 @@ const ReadViews = ({ match }) => {
   ]
 
   return (
-    <div className="cont-tall flex-col space-between align-center"> 
+    <div className="cont-tall flex-col space-between align-center">
       {/* align-self: stretch fills the outer column's definite width (the parent centers its
           children, so a percentage width can't resolve and the empty card would otherwise
           collapse to its min-width until the story text loads). */}
-      <div
-        className="flex mb-nm"
-        style={{ alignSelf: 'stretch', justifyContent: 'center' }}
-      >
+      <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
         <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
           <Box
             data-cy="readmodes-text"
@@ -514,15 +523,14 @@ const ReadViews = ({ match }) => {
               backgroundColor: colors.card,
               borderRadius: '30px',
               padding: { xs: '1em', sm: '1.5em' },
-              marginTop: '1.5em',
-              marginBottom: '1em' }}
+              marginBottom: '1em',
+            }}
             style={getTextStyle(learningLanguage)}
           >
             {PreviewToolbar()}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
-
                   {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
                     <span className="header-text practice-tour-start">
                       {routeStory?.title || ''}
@@ -541,7 +549,9 @@ const ReadViews = ({ match }) => {
             {underProcessing && preProcessingReady && !processingComplete && (
               <div className="story-not-processed">
                 <div className="story-not-processed-text">
-                  {intl.formatMessage({ id: 'story-not-yet-processed-yellow-box' }).replace(/\\n/g, '\n')}
+                  {intl
+                    .formatMessage({ id: 'story-not-yet-processed-yellow-box' })
+                    .replace(/\\n/g, '\n')}
                 </div>
               </div>
             )}
@@ -550,13 +560,12 @@ const ReadViews = ({ match }) => {
                 {mode === 'practice-preview' && <div />}
                 {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
                   <FormControlLabel
-                    control={
-                      <AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />
-                    }
+                    control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
                     label={intl.formatMessage({ id: 'show-difficulty-level' })}
                     sx={{
                       paddingTop: '.5em',
-                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink } }}
+                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
+                    }}
                   />
                 )}
               </div>
@@ -616,7 +625,8 @@ const ReadViews = ({ match }) => {
               (routeStory?.paragraph || []).map((paragraph, index) => (
                 <Fragment key={index}>
                   <TextWithFeedback
-                    hideFeedback={!show_preview_exer}
+                    hideFeedback={!previewToggleOn}
+                    showPreviewExercises={previewToggleOn}
                     showDifficulty={showDifficulty}
                     mode={mode}
                     snippet={paragraph}
@@ -640,18 +650,18 @@ const ReadViews = ({ match }) => {
               <ReportButton />
             </div>
           )}
-        </div>         
-          <HelperSidebar>
-            {canSeeTopics && !routeStory?.control_story && (
-              <TopicsSelect
-                conceptCount={routeStory?.concept_count || {}}
-                focusedConcept={focusedConcept}
-                setFocusedConcept={setFocusedConcept}
-              />
-            )}
-            <CombinedChatbot />
-          </HelperSidebar>
-        
+        </div>
+        <HelperSidebar>
+          {canSeeTopics && !routeStory?.control_story && (
+            <TopicsSelect
+              conceptCount={routeStory?.concept_count || {}}
+              focusedConcept={focusedConcept}
+              setFocusedConcept={setFocusedConcept}
+            />
+          )}
+          <CombinedChatbot />
+        </HelperSidebar>
+
         <FeedbackInfoModal />
       </div>
       <AppDialog
@@ -660,40 +670,43 @@ const ReadViews = ({ match }) => {
         title={<FormattedMessage id="practice-settings" />}
       >
         <div className="flex-col gap-row-nm">
-            {mode === 'preview' && (
+          {mode === 'preview' && (
+            <>
               <SettingToggle
                 translationId="show preview"
                 checked={previewToggleOn}
                 onChange={updateUserPreviewExer}
               />
-            )}
+              <Divider />
+            </>
+          )}
+          <SettingToggle
+            translationId="practice-grammar-cloze-exercises"
+            checked={user?.user.blank_filling}
+            onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}
+            disabled={disableOtherPracticeToggles}
+          />
+          <SettingToggle
+            translationId="practice-grammar-MC-exercises"
+            checked={user?.user.multi_choice}
+            onChange={() => dispatch(updateMultiChoice(!user?.user.multi_choice))}
+            disabled={disableOtherPracticeToggles}
+          />
+          <SettingToggle
+            translationId="practice-listening-cloze-exercises"
+            checked={user?.user.task_audio}
+            onChange={() => dispatch(updateAudioTask(!user?.user.task_audio))}
+            disabled={disableOtherPracticeToggles}
+          />
+          {hiddenFeatures && (
             <SettingToggle
-              translationId="practice-grammar-cloze-exercises"
-              checked={user?.user.blank_filling}
-              onChange={() => dispatch(updateBlankFilling(!user?.user.blank_filling))}
+              translationId="practice-pronunciation-exercises"
+              checked={user?.user.task_speech}
+              onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
               disabled={disableOtherPracticeToggles}
             />
-            <SettingToggle
-              translationId="practice-grammar-MC-exercises"
-              checked={user?.user.multi_choice}
-              onChange={() => dispatch(updateMultiChoice(!user?.user.multi_choice))}
-              disabled={disableOtherPracticeToggles}
-            />
-            <SettingToggle
-              translationId="practice-listening-cloze-exercises"
-              checked={user?.user.task_audio}
-              onChange={() => dispatch(updateAudioTask(!user?.user.task_audio))}
-              disabled={disableOtherPracticeToggles}
-            />
-            {hiddenFeatures && (
-              <SettingToggle
-                translationId="practice-pronunciation-exercises"
-                checked={user?.user.task_speech}
-                onChange={() => dispatch(updateSpeechTask(!user?.user.task_speech))}
-                disabled={disableOtherPracticeToggles}
-              />
-            )}
-          </div>
+          )}
+        </div>
       </AppDialog>
       <AppDialog
         open={topicsModal}
@@ -709,7 +722,8 @@ const ReadViews = ({ match }) => {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '500px' }}
+              height: '500px',
+            }}
           >
             <h1 style={{ marginBottom: '100px' }}>
               <FormattedMessage id="select-lesson-grammar" />
@@ -717,7 +731,8 @@ const ReadViews = ({ match }) => {
             <SelectGrammarLevel
               topicInstance={{
                 topic_ids: routeStory?.topics || [],
-                instancePending: pending || !routeStory }}
+                instancePending: pending || !routeStory,
+              }}
               editable
               setSelectedTopics={setSelectedTopics}
               selectedTopicIds={routeStory?.topics || []}
@@ -734,7 +749,8 @@ const ReadViews = ({ match }) => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '500px' }}
+              height: '500px',
+            }}
           >
             <ListeningExerciseSettings />
           </div>

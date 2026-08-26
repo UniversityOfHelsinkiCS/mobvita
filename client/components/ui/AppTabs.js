@@ -74,7 +74,7 @@ const Tab = styled('button', {
   borderRadius: 999,
   cursor: 'pointer',
   fontSize: sizing.fontSize,
-  fontWeight: 600,
+  fontWeight: 500,
   color: colors.ink,
   whiteSpace: 'nowrap',
   backgroundColor: active ? colors.green : 'transparent',

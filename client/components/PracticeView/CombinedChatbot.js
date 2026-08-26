@@ -6,8 +6,6 @@ import { Skeleton } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useIntl, FormattedMessage } from 'react-intl';
 import ReactMarkdown from 'react-markdown'
 import { lemmatizer } from 'lemmatizer'
@@ -70,41 +68,38 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
 
         if (note.kind === 'no-topics') {
           return (
-            <div key={index} className="message message-notes">
+            <ChatBubble variant="note" key={index}>
               <FormattedMessage id="no-topics-available" />
-            </div>
+            </ChatBubble>
           )
         }
         if (note.kind === 'topics') {
           return (
-            <div key={index} className="message message-notes">
-              <div>
-                <FormattedMessage id="topics-header" />:
-                {note.concepts?.length > 0 && (
-                  <ul>
-                    {note.concepts.map((concept, i) => (
+            <ChatBubble variant="note" key={index}>
+              <FormattedMessage id="topics-header" />:
+              {note.concepts?.length > 0 && (
+                <ul>
+                  {note.concepts.map((concept, i) => (
                       <li key={i}>
                         <span dangerouslySetInnerHTML={sanitizeHtml(concept)} />
                       </li>
                     ))}
                   </ul>
-                )}
-              </div>
-            </div>
+                )}              
+            </ChatBubble>
           )
         }
         if (note.kind === 'your-answer') {
           return (
-            <div key={index} className="message message-notes">              
+            <ChatBubble variant="note" key={index}>
               <FormattedMessage id="you-used" />:&nbsp;
               <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-            </div>
+            </ChatBubble>
           )
         }
         if (note.kind === 'mc') {
           return (
-            <div key={index} className="message message-notes">              
-              <div>
+            <ChatBubble variant="note" key={index}>              
                 <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
                 {note.choices?.length > 0 && (
                   <ul>
@@ -114,9 +109,8 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
                       </li>
                     ))}
                   </ul>
-                )}
-              </div>
-            </div>
+                )}              
+            </ChatBubble>
           )
         }
         const showInfo =
@@ -126,18 +120,18 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
             note.info.meta !== note.info.easy ||
             note.info.ref?.length)
         return (
-          <div key={index} className="message message-notes">            
-              <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
-              {showInfo && (
-                <InfoOutlinedIcon
-                  className="hint-info-icon"
-                  fontSize="small"
+          <ChatBubble variant="note" key={index}>
+            <span dangerouslySetInnerHTML={formatGreenFeedbackText(note.text)} />
+            {showInfo && (
+              <InfoOutlinedIcon
+                className="hint-info-icon"
+                fontSize="small"
                   style={{ alignSelf: 'flex-start', marginLeft: '0.5rem' }}
                   onMouseDown={() => handleTooltipClick(note.info)}
                   data-cy="chatbot-note-hint-info-icon"
                 />
               )}            
-          </div>
+          </ChatBubble>
         )
       })}
     </>
@@ -151,27 +145,18 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
       {notes.map((note, index) => {
         const showHeader = note.isOwn || (!note.isOwn && !!note.username)
         return (
-          <div key={note.threadId || index} className="message message-notes message-user-note">            
-            {showHeader && (
+          <ChatBubble
+            key={note.threadId || index}
+            variant="controlled-note"
+            onEdit={note.isOwn ? () => onEdit(note) : undefined}
+            onRemove={note.isOwn ? () => onDelete(note) : undefined}
+            editDataCy="chatbot-user-note-edit-icon"
+            removeDataCy="chatbot-user-note-delete-icon"
+          >
+            {showHeader && !note.isOwn && (
               <div className="note-header">
                 {!note.isOwn && note.username && (
                   <span className="note-author">{note.username}</span>
-                )}
-                {note.isOwn && (
-                  <span className="note-actions">
-                    <EditOutlinedIcon
-                      className="note-action-icon"
-                      fontSize="small"
-                      onClick={() => onEdit(note)}
-                      data-cy="chatbot-user-note-edit-icon"
-                    />
-                    <DeleteOutlinedIcon
-                      className="note-action-icon trash"
-                      fontSize="small"
-                      onClick={() => onDelete(note)}
-                      data-cy="chatbot-user-note-delete-icon"
-                    />
-                  </span>
                 )}
               </div>
             )}            
@@ -185,7 +170,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
                 </CustomTooltip>
               )}
             </div>
-          </div>
+          </ChatBubble>
         )
       })}
       {busy && (
@@ -235,6 +220,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   // When opening WordNestModal, capture the current translation lemmas so we can restore
   // all translation cards (important for compound words).
   const [wordNestRestoreWord, setWordNestRestoreWord] = useState('')
+  const [wordNestRestorePrefLemma, setWordNestRestorePrefLemma] = useState('')
   const [showContexTranslation, setShowContextTranslation] = useState(false)
 
   const wordNest = useSelector(({ wordNest }) => wordNest)
@@ -680,6 +666,15 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
     )
   }
 
+  const openWordNest = lemma => {
+    setWordNestRestoreWord(computeWordNestRestoreWord())
+    setWordNestRestorePrefLemma(
+      translationState?.data?.find(translated => translated?.preferred)?.lemma || ''
+    )
+    setWordNestChosenWord(lemma)
+    setWordNestModalOpen(true)
+  }
+
   const prevId = useRef(currentWord?.ID);
   const prevTransKey = useRef(translationState?.surfaceWord || translationState?.lemmas || '');
 
@@ -818,24 +813,24 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
   const renderContextTranslationContent = () => {
     const d = contextTranslationState.data
     if (!d) return null
-    if (typeof d === 'string') return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d }} />
+    if (typeof d === 'string') return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: d }}></ChatBubble>
     // Prefer alignment-based highlight when available
     if (d['alignment'] && d['source-segments'] && d['target-segments']) {
       const html = highlightTarget(d)
-      return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: html }} />
+      return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: html }}></ChatBubble>
     }
-    if (d.translation) return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d.translation }} />
+    if (d.translation) return <ChatBubble variant="note" dangerouslySetInnerHTML={{ __html: d.translation }} />
     if (d['target-sentences']) return (
-      <div className="context-translation-content">
+      <ChatBubble variant="note">
         {d['target-sentences'].map((s, i) => (
           <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
         ))}
-      </div>
+      </ChatBubble>
     )
     return (
-      <div className="context-translation-content">
+      <ChatBubble variant="note">
         <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(d, null, 2)}</pre>
-      </div>
+       </ChatBubble>
     )
   }
 
@@ -848,6 +843,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           open={wordNestModalOpen}
           setOpen={setWordNestModalOpen}
           storyWord={wordNestRestoreWord || translationState.lemmas || translationState.surfaceWord || currentWord?.lemmas || currentWord?.surface}
+          prefLemma={wordNestRestorePrefLemma}
         />
 
 
@@ -928,11 +924,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
               onAddNote={canAddNote ? handleAddNote : undefined}
               hasHints={hasHints}
               showAllHintsUsed={showAllHintsUsed}
-                            handleShowWordNest={() => {
-                  setWordNestRestoreWord(computeWordNestRestoreWord())
-                  setWordNestChosenWord(exerciseWordNestLemma);
-                  setWordNestModalOpen(true);
-              }}
+                            handleShowWordNest={() => openWordNest(exerciseWordNestLemma)}
 
               showWordNestOption={showWordNestOption}
               lemma={exerciseWordNestLemma}
@@ -1004,13 +996,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                                       : undefined
                                   }
                                   dictionaryHref={translated.ref?.url || translated.user_URL}
+                                  showInflactionLink={translationState.data.length < 3 || idx > 0}
                                   onWordNest={
                                     isWordNestAvailableForLemma(translated.lemma)
-                                      ? () => {
-                                          setWordNestRestoreWord(computeWordNestRestoreWord())
-                                          setWordNestChosenWord(bestWordNestLemma(translated.lemma))
-                                          setWordNestModalOpen(true)
-                                        }
+                                      ? () => openWordNest(bestWordNestLemma(translated.lemma))
                                       : undefined
                                   }
                                   background={
@@ -1029,9 +1018,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                         <div className="context-translation-box">
                           {contextTranslationState.pending ? <Spinner inline /> : (
                             (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
-                              <div className="context-translation-content">
+                              <ChatBubble variant="note">
                                 <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
-                              </div>
+                              </ChatBubble>
                             ) : null)
                           )}                          
                         </div>
@@ -1294,11 +1283,7 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                 <ChatActionMenu
                   mode="dictionary"
                                     onAddNote={canAddNote ? handleAddNote : undefined}
-                                    handleShowWordNest={() => {
-                      setWordNestRestoreWord(computeWordNestRestoreWord())
-                      setWordNestChosenWord(dictionaryWordNestLemma);
-                      setWordNestModalOpen(true);
-                  }}
+                                    handleShowWordNest={() => openWordNest(dictionaryWordNestLemma)}
 
                   showWordNestOption={showWordNestOptionDictionary}
                   lemma={dictionaryWordNestLemma}
@@ -1335,13 +1320,10 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
                     : undefined
             }
             dictionaryHref={translated.ref?.url || translated.user_URL}
+            showInflactionLink={translationState.data.length < 3 || idx > 0}
             onWordNest={
                 isWordNestAvailableForLemma(translated.lemma)
-                    ? () => {
-                          setWordNestRestoreWord(computeWordNestRestoreWord())
-                          setWordNestChosenWord(bestWordNestLemma(translated.lemma))
-                          setWordNestModalOpen(true)
-                      }
+                ? () => openWordNest(bestWordNestLemma(translated.lemma))
                     : undefined
             }
             background={
@@ -1397,9 +1379,9 @@ const CombinedChatbot = ({inWordNestModal, clue}) => {
           <div className="context-translation-box">
                 {contextTranslationState.pending ? <Spinner inline /> : (
                 (contextTranslationState.data ? renderContextTranslationContent() : (window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1') ? (
-                  <div className="context-translation-content">
+                  <ChatBubble variant="note">
                     <p>{contextTranslationState.lastTrans || translationState.surfaceWord || ''}</p>
-                  </div>
+                  </ChatBubble>
                 ) : null)
               )}                
           </div>

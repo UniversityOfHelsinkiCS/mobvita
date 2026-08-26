@@ -91,7 +91,7 @@ export default function Profile({ location }) {
 
   return (
     <main className={`cont-tall cont pb-xl auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-      <div style={{ margin: '1.5em 0 20px' }}>
+      <div style={{ margin: '0 0 1.7em 0' }}>
         <AppTabs tabs={tabDefs} value={activeValue} onChange={handleTabChange} fullWidth />
       </div>
 

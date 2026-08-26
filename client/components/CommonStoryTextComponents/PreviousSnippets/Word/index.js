@@ -6,7 +6,16 @@ import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
 import ControlledStoryWord from 'Components/ControlledStoryEditView/ControlledStoryWord'
 import PreviousExerciseWord from './PreviousExerciseWord'
 
-const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback, focusedConcept }) => {
+const Word = ({
+  word,
+  answer,
+  tiedAnswer,
+  snippet,
+  hideDifficulty,
+  hideFeedback,
+  focusedConcept,
+  showPreviewExercises,
+}) => {
   const [shouldBeHidden, setShouldBeHidden] = useState(false)
   const location = useLocation()
   const { correctAnswerIDs } = useSelector(({ practice }) => practice)
@@ -14,6 +23,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback,
   const { hiddenWordIds } = useSelector(({ controlledPractice }) => controlledPractice)
   const controlledStory = location.pathname.includes('controlled-story')
   const isPreviewMode = location.pathname.includes('preview')
+  const displayPreviewExercises = showPreviewExercises ?? show_preview_exer
 
   useEffect(() => {
     if (controlledStory && hiddenWordIds?.find(hidden => hidden === word.ID)) {
@@ -36,7 +46,7 @@ const Word = ({ word, answer, tiedAnswer, snippet, hideDifficulty, hideFeedback,
   }
 
   // "Display feedback" toggle is off
-  if (!show_preview_exer && isPreviewMode) {
+  if (!displayPreviewExercises && isPreviewMode) {
     return <PlainWord word={word} snippet={snippet} annotatingAllowed focusedConcept={focusedConcept} />
   }
 

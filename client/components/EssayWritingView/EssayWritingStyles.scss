@@ -70,7 +70,7 @@ $essay-green: #b1d3c2; // border / accent
   max-width: $essay-content-width;
   height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
   min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  margin-top: 1.5em;
+  margin-top: 0;
   padding: 1.5rem;
   background: $essay-card !important;
   // !important so these beat MUI Paper's equal-specificity emotion class in the prod build order.

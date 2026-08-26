@@ -69,7 +69,7 @@ $sidebar-swipeable-width: 1em;
 $navbar-height: 3em;
 // Subtracted from the full-height calcs below, in px so the subtraction is unit-exact.
 $footer-height: 50px;
-$application-content-top-padding: map.get($spacing, "sm");
+$application-content-top-padding: 1.7em;
 
 body {
   // The one place the application font is applied; everything else inherits it. Reading surfaces
@@ -493,8 +493,8 @@ body .hg-theme-default {
   width: 100%;
   padding-right: map.get($spacing, "xs");
   padding-left: map.get($spacing, "xs");
-  padding-top: 0;
-  background-color: var(--app-bg-color);
+  padding-top: 1.7em;
+  background-color: var(--app-bg-color);  
 }
 
 .blue-bg {

@@ -442,7 +442,7 @@ const LessonList = () => {
         ) : (
           <>
             {!teacherView && !isAnonymousUser && libraryTabs.length > 0 && (
-              <div style={{ margin: '1.5em 0 20px' }} data-cy="lessons-library-tabs">
+              <div style={{ margin: '0 0 1.7em 0' }} data-cy="lessons-library-tabs">
                 <AppTabs
                   tabs={libraryTabs}
                   value={activeLibrary}

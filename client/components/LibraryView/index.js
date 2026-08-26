@@ -372,7 +372,7 @@ const StoryList = () => {
           .filter(key => key in libraries)
           .map(key => ({ value: key, ...meta[key] }))
         return (
-          <div style={{ margin: '1.5em 0 12px' }}>
+          <div style={{ margin: '0 0 1.7em 0' }}>
             <AppTabs tabs={tabs} value={activeLibrary} onChange={handleLibraryChange} fullWidth />
           </div>
         )
