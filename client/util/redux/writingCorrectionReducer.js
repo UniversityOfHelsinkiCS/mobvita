@@ -41,13 +41,12 @@ export const buildWritingEssaySentences = (
   sentences.map(sentence => {
     const entry = correctionsByKey[getWritingCorrectionKey(sentence)]
     const lineage = sentenceHistoryBySentenceId[sentence.sentenceId]
+    const history = lineage?.history ?? []
+    const savedTextIsNewer = Boolean(lineage?.beSentenceId) && lineage.text !== sentence.text
 
-    // Deliberately no sentence_id. The API documents the field, but sending it is what broke saving
-    // on this branch — it is the only thing this payload adds over the version that saves fine. The
-    // backend can read the current version off original_text; history is what it needs the ids for.
     return {
       original_text: sentence.text,
-      history: lineage?.history ?? [],
+      history: savedTextIsNewer ? [...history, lineage.beSentenceId] : history,
       corrections: entry?.responseCorrections ?? [],
     }
   })
@@ -67,9 +66,6 @@ export const saveWritingEssay = ({
         `/writing/${language}/essays/${essayId}`,
         SAVE_PREFIX,
         'post',
-        // An update replaces what it is given, so only send a title we actually have. Sending an
-        // empty one blanks the stored title, and an essay with neither title nor sentences is
-        // filtered out of the library entirely (writingEssayHasContent) — it looks deleted.
         { sentences, ...(title ? { title } : {}) },
         { essayId },
       )
@@ -359,9 +355,6 @@ const initialState = {
   correctionSuggestionsBySentenceId: {},
   correctionsByKey: storedWritingCorrectionState.correctionsByKey || {},
   latestCorrectionKeyBySentenceId: {},
-  // Per stable sentence id: { beSentenceId, text, history, isOriginal } — the backend id and text
-  // of this sentence's current version, the ids of its earlier versions (oldest first), and whether
-  // it is still a version of something the student wrote (false once it came out of a split/merge).
   sentenceHistoryBySentenceId: storedWritingCorrectionState.sentenceHistoryBySentenceId || {},
   sessionId: '',
   sessionPending: false,
@@ -502,9 +495,6 @@ const getNextSentenceLineage = (previousLineage, beSentenceId, text) => {
 
   const previousBeSentenceId = previousLineage?.beSentenceId ?? null
   const previousHistory = previousLineage?.history ?? []
-  // Only an actual rewrite is a new version. Re-correcting a sentence whose own text didn't change
-  // (its context moved when a sentence around it was added or removed) mints a fresh backend id for
-  // the same words, and recording that would fill the history with duplicates of one version.
   const isNewVersion =
     Boolean(previousBeSentenceId) &&
     previousBeSentenceId !== beSentenceId &&
@@ -702,8 +692,6 @@ export default (state = initialState, action) => {
         savePending: false,
         saveError: false,
         saveErrorMessage: null,
-        // A create echoes the new id; an update answers with the essay it updated, so fall back to
-        // the id we posted to.
         savedEssayId:
           getWritingEssayId(action.response?.essay ?? action.response) ??
           getActionQuery(action).essayId ??
@@ -731,7 +719,6 @@ export default (state = initialState, action) => {
         : action.response?.essays ?? []
       return {
         ...state,
-        // Drop essays deleted this session so an in-flight/late list fetch can't re-add them.
         essays: fetched.filter(essay => !state.deletedEssayIds.includes(getWritingEssayId(essay))),
         essaysPending: false,
         essaysError: false,
@@ -844,8 +831,6 @@ export default (state = initialState, action) => {
         baseEntry.beSentenceId,
         baseEntry.text,
       )
-      // Stamp the history on the cache entry as well: a cache hit on the same text + context is how
-      // the lineage is recovered for a sentence the sentence-id map has lost track of.
       const entry = { ...baseEntry, history: lineage.history }
 
       const nextState = persistWritingCorrectionState({
@@ -854,7 +839,6 @@ export default (state = initialState, action) => {
           ...state.correctionsByKey,
           [entry.key]: entry,
         },
-        // A stale response (the sentence was edited again since) must not roll the lineage back.
         ...(isLatest && {
           sentenceHistoryBySentenceId: {
             ...(state.sentenceHistoryBySentenceId || {}),
@@ -922,9 +906,6 @@ export default (state = initialState, action) => {
       }
       const cachedLocalSentenceId = getSentenceId(suggestionEntry)
       const previousLineage = state.sentenceHistoryBySentenceId?.[cachedLocalSentenceId]
-      // A cache hit on a sentence we already track is just another version of it. On one we don't
-      // (a restored draft, or a sentence re-completed after its terminator was deleted and retyped)
-      // the cached entry's own recorded history is what the lineage is restored from.
       const lineage = previousLineage
         ? getNextSentenceLineage(
             previousLineage,

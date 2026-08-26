@@ -189,7 +189,21 @@ export const getSplitOrMergedSentenceIds = (previousSentences, nextSentences) =>
   if (previousChangedCount < 1 || nextChangedSentences.length < 1) return []
   if (previousChangedCount === 1 && nextChangedSentences.length === 1) return []
 
-  return nextChangedSentences.map(sentence => sentence.sentenceId)
+  const unchangedTexts = previousSentences
+    .slice(prefixLength, previousSentences.length - suffixLength)
+    .reduce(
+      (counts, sentence) => counts.set(sentence.text, (counts.get(sentence.text) ?? 0) + 1),
+      new Map(),
+    )
+
+  return nextChangedSentences
+    .filter(sentence => {
+      const remaining = unchangedTexts.get(sentence.text) ?? 0
+      if (!remaining) return true
+      unchangedTexts.set(sentence.text, remaining - 1)
+      return false
+    })
+    .map(sentence => sentence.sentenceId)
 }
 
 export const getSentencesWithNewCorrectionKeys = (

@@ -29,6 +29,7 @@ import EssayTextInput from './EssayTextInput'
 import EssayVersionText from './EssayVersionText'
 import { getCompletedSentences } from './utils/essaySentences'
 import { clearStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 import './EssayWritingStyles.scss'
 
@@ -300,7 +301,7 @@ const EssayWritingView = () => {
                 />
               </Typography>
             ) : !essayLoaded || openedEssayPending ? (
-              <Spinner size={60} />
+              <Spinner size={60} spinnerColor={colors.ink} />
             ) : (
               <Box className="essay-teacher-split">
                 <Paper className="essay-teacher-panel" elevation={1}>
