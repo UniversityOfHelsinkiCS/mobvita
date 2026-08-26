@@ -142,6 +142,9 @@ const EssayWritingView = () => {
     setEssaySentences([])
     setContinuedEssayId(loadEssayId)
     setRestoredSentenceLineage(getWritingEssaySentenceLineage(openedEssay))
+    // Saving sends the topic as the essay's title, and continuing an essay never opens the topic
+    // dialog — so seed it from the essay, or the first Save would wipe the title it already has.
+    setTopic(openedEssay.title || '')
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
     selectedSelectionRef.current = null
@@ -158,6 +161,13 @@ const EssayWritingView = () => {
   // Save the essay as its current list of sentences, each with the backend-id edit history + cached
   // corrections, under the topic the user entered.
   const handleConfirmUpload = () => {
+    // A save replaces the stored essay wholesale. Sending an empty sentence list would erase both
+    // the current text and the original recorded alongside it, so refuse rather than destroy it.
+    if (!essaySentences.length) {
+      setUploadFailed(true)
+      return
+    }
+
     setTopicTaken(false)
     setUploadFailed(false)
     uploadInFlightRef.current = true
@@ -182,8 +192,13 @@ const EssayWritingView = () => {
     resetEssayDraft()
   }
 
-  // When the save settles: on success close the dialog and clear the cache/session + draft; on failure
-  // keep the dialog open with a message so the user can retry.
+  // The essay exists on the backend once it has an id — either it was opened from the library, or
+  // this session's first upload created it. From then on the button saves into that essay directly.
+  const essayIsSaved = Boolean(continuedEssayId)
+
+  // When the save settles: on failure keep the dialog open with a message so the user can retry.
+  // On success the two cases part ways — the first upload creates the essay and hands the student
+  // over to the library, while saving an essay they are continuing leaves them writing.
   useEffect(() => {
     if (!uploadInFlightRef.current || savePending) return
 
@@ -197,9 +212,14 @@ const EssayWritingView = () => {
     }
 
     setTopicDialogOpen(false)
-    setTopic('')
     setTopicTaken(false)
     setUploadFailed(false)
+
+    // Continuing an essay: it stays open, the topic stays put (every save sends it as the title),
+    // and the student can keep writing and press Save again.
+    if (continuedEssayId) return
+
+    // First upload: the essay now lives in the library, so go there and start the editor clean.
     dispatch(clearWritingCorrectionData())
     resetEssayDraft()
     dispatch(saveSelfIntermediate({ last_selected_library: 'essays' }))
@@ -373,13 +393,17 @@ const EssayWritingView = () => {
                   </AppButton>
                 )}
                 <AppButton
-                  onClick={() => setTopicDialogOpen(true)}
+                  onClick={essayIsSaved ? handleConfirmUpload : () => setTopicDialogOpen(true)}
                   disabled={
-                    savePending || hasPendingCorrection || !essayText.trim() || !writingSessionId
+                    savePending ||
+                    hasPendingCorrection ||
+                    !essaySentences.length ||
+                    !essayText.trim() ||
+                    !writingSessionId
                   }
                   data-cy="submit-essay"
                 >
-                  <FormattedMessage id="upload-to-my-essays" />
+                  <FormattedMessage id={essayIsSaved ? 'Save' : 'upload-to-my-essays'} />
                 </AppButton>
               </Box>
             </Box>

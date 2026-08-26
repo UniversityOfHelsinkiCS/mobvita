@@ -41,14 +41,12 @@ export const buildWritingEssaySentences = (
   sentences.map(sentence => {
     const entry = correctionsByKey[getWritingCorrectionKey(sentence)]
     const lineage = sentenceHistoryBySentenceId[sentence.sentenceId]
-    const beSentenceId = lineage?.beSentenceId ?? entry?.beSentenceId ?? null
 
+    // Deliberately no sentence_id. The API documents the field, but sending it is what broke saving
+    // on this branch — it is the only thing this payload adds over the version that saves fine. The
+    // backend can read the current version off original_text; history is what it needs the ids for.
     return {
       original_text: sentence.text,
-      // Only send sentence_id when the backend actually recorded one. The API types it as a string,
-      // and a sentence whose correction never came back — a failed or still-pending request — has
-      // none; sending null there fails the whole save, not just that sentence.
-      ...(beSentenceId ? { sentence_id: beSentenceId } : {}),
       history: lineage?.history ?? [],
       corrections: entry?.responseCorrections ?? [],
     }
@@ -69,7 +67,10 @@ export const saveWritingEssay = ({
         `/writing/${language}/essays/${essayId}`,
         SAVE_PREFIX,
         'post',
-        { sentences, title },
+        // An update replaces what it is given, so only send a title we actually have. Sending an
+        // empty one blanks the stored title, and an essay with neither title nor sentences is
+        // filtered out of the library entirely (writingEssayHasContent) — it looks deleted.
+        { sentences, ...(title ? { title } : {}) },
         { essayId },
       )
     : callBuilder(`/writing/${language}/essays`, SAVE_PREFIX, 'post', {
