@@ -23,6 +23,10 @@ export const colors = {
   opponent: '#FF5900', // derived — opponent bar fill
   alert: '#FF7700', // derived — alert background
   alertHover: '#FF5800', // derived — alert hover background
+  // Alert's hue at the correction-bubble lightness, so it sits with blue and green as one set.
+  // `alert` itself stays vivid: it fills the delete buttons, which carry white text.
+  alertSoft: '#F0BF94', // derived — soft alert surface
+  alertSoftHover: '#EBAD77', // derived — same lightness step as green -> greenHover
 
   // Library directory (Figma "Library Directory")
   surface: '#FFFFFF', // folder / story item background

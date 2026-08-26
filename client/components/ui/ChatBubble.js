@@ -17,6 +17,12 @@ import { images } from 'Utilities/common'
  *
  * Pass `onEdit` and/or `onRemove` to show Design System edit/delete actions in the top-right.
  */
+// The conversation column deliberately has no left/right padding, so lemma cards can span the full
+// panel width (see .chatbot-messages). Bubbles therefore carry their own gutter, or a bot reply
+// would sit flush against the left edge and the user's own message flush against the right. It
+// matches the bubble's horizontal padding, so the inset reads as one consistent rhythm.
+const BUBBLE_GUTTER = 14
+
 const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: '#FFFFFF', color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: colors.green, color: colors.ink },
@@ -32,6 +38,9 @@ const VARIANT_STYLES = {
     maxWidth: '100%',
     width: '100%',
     padding: 0,
+    // Full-bleed by design — it holds action content, not a message, so it keeps no gutter.
+    marginLeft: 0,
+    marginRight: 0,
   },
 }
 
@@ -40,6 +49,8 @@ const Bubble = styled('div', {
 })(({ variant, hasActions }) => ({
   position: 'relative',
   maxWidth: '85%',
+  marginLeft: BUBBLE_GUTTER,
+  marginRight: BUBBLE_GUTTER,
   padding: '10px 14px',
   ...(hasActions && { paddingRight: '58px' }),
   borderRadius: 18,
