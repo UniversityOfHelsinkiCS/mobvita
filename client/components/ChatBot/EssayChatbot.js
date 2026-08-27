@@ -89,12 +89,11 @@ const EssayChatbot = ({
   const latestMessageRef = useRef(null)
   const messagesContainerRef = useRef(null)
   const swiperRef = useRef(null)
-  // Where the current focus was entered from, and the list's scroll position when a list bubble was
-  // pressed — so returning to the list restores that position (list) or jumps to the top (textarea).
   const savedListScrollRef = useRef(0)
   const pendingListClickRef = useRef(false)
   const focusOriginRef = useRef('textarea')
   const lastFocusedSentenceIdRef = useRef(null)
+  const focusedCorrectionRef = useRef({ correctionKeys: null, focusKey: '' })
   const {
     correctionSuggestionSentenceIds,
     correctionSuggestionsBySentenceId,
@@ -110,6 +109,7 @@ const EssayChatbot = ({
         .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
         .filter(Boolean)
   const hasActiveSelection = Boolean(essayFocus?.selection)
+  const correctionKeys = correctionSuggestions.map(suggestion => suggestion.key).join('|')
 
   // When a suggestion is selected the panel switches from the full list to a focused view: just that
   // one suggestion pinned on top, with the conversation below it.
@@ -158,6 +158,22 @@ const EssayChatbot = ({
   useEffect(() => {
     swiperRef.current?.slideTo(isFocused ? 1 : 0)
   }, [isFocused])
+
+  useEffect(() => {
+    if (!isFocused) {
+      focusedCorrectionRef.current = { correctionKeys: null, focusKey: '' }
+      return
+    }
+
+    const tracked = focusedCorrectionRef.current
+
+    if (tracked.focusKey !== activeFocusKey) {
+      focusedCorrectionRef.current = { correctionKeys, focusKey: activeFocusKey }
+      return
+    }
+
+    if (tracked.correctionKeys !== correctionKeys) onClearFocus?.()
+  }, [activeFocusKey, correctionKeys, isFocused])
 
   // Position the list when returning to it: a selection made from the list restores the exact scroll
   // position it had (bubble stays put); a selection made from the text scrolls that suggestion to the
