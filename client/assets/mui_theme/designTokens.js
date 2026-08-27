@@ -9,6 +9,8 @@ export const colors = {
   card: '#FAF8ED', // form card background (cream)
   green: '#B1D3C2', // primary button
   greenHover: '#9CC6B2', // derived — Figma hover not provided
+  blue: '#9AC8EA', // derived — accent blue; the brand hue at green's lightness so they read as a pair
+  blueHover: '#7FB9E3', // derived — same lightness step as green -> greenHover
   ink: '#2D2C2A', // body text / button text
   muted: '#9D9B92', // labels / secondary text
   border: '#B1D3C2', // input border (same as green)
@@ -21,6 +23,10 @@ export const colors = {
   opponent: '#FF5900', // derived — opponent bar fill
   alert: '#FF7700', // derived — alert background
   alertHover: '#FF5800', // derived — alert hover background
+  // Alert's hue at the correction-bubble lightness, so it sits with blue and green as one set.
+  // `alert` itself stays vivid: it fills the delete buttons, which carry white text.
+  alertSoft: '#F0BF94', // derived — soft alert surface
+  alertSoftHover: '#EBAD77', // derived — same lightness step as green -> greenHover
 
   // Library directory (Figma "Library Directory")
   surface: '#FFFFFF', // folder / story item background
@@ -31,6 +37,9 @@ export const colors = {
   folderIconStroke: '#8DB19F', // folder icon outline
   progressLabel: '#7C9562', // percentage label inside the progress bar
   emptyState: '#BFBBB0', // icon + text of an empty library folder
+
+  scrollbar: 'rgba(45, 44, 42, 0.15)',
+  scrollbarHover: 'rgba(45, 44, 42, 0.3)', // derived — Figma gives no hover state
 }
 
 // Typefaces fetched from Google Fonts. `name` drives both the stylesheet URL injected into

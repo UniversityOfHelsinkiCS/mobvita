@@ -7,6 +7,9 @@ import {
   getWritingCorrectionKey,
   getWritingCorrectionSession,
   getWritingCorrectionWords,
+  inheritWritingSentenceHistory,
+  recordWritingRemovedSentences,
+  restoreWritingSentenceLineage,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
 } from 'Utilities/redux/writingCorrectionReducer'
@@ -20,6 +23,8 @@ import {
   getEssayFocusFromSelection,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
+  getDeletedSentences,
+  getSentenceRestructure,
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
@@ -76,6 +81,8 @@ const EssayTextInput = ({
   focusLocked,
   onEssayFocusChange,
   onEssayTextChange,
+  restoredRemovedSentences,
+  restoredSentenceLineage,
   sentenceSelectionRequest,
 }) => {
   const intl = useIntl()
@@ -94,7 +101,6 @@ const EssayTextInput = ({
   const deferredCorrectionsRef = useRef([])
   const sessionAttemptsRef = useRef(0)
   const pendingEditedSentenceRef = useRef(null)
-  const pendingEditIsInPlaceRef = useRef(false)
   const completedSentencesRef = useRef([])
   const sentenceIdCounterRef = useRef(0)
   const textRef = useRef(text)
@@ -258,7 +264,7 @@ const EssayTextInput = ({
   }, [sentenceSelectionRequest])
 
   useEffect(() => {
-    onEssayTextChange?.(textRef.current)
+    onEssayTextChange?.(textRef.current, completedSentencesRef.current)
   }, [])
 
   // Fetch a backend session id for this writing session (to track correction + chatbot history).
@@ -322,10 +328,11 @@ const EssayTextInput = ({
   }
 
   const updateCompletedSentences = (nextText, editIndex) => {
+    const previousCompletedSentences = completedSentencesRef.current
     const nextCompletedSentences = addStableSentenceIds({
       createSentenceId,
       editIndex,
-      previousSentences: completedSentencesRef.current,
+      previousSentences: previousCompletedSentences,
       sentences: getCompletedSentences(nextText),
     })
 
@@ -333,6 +340,29 @@ const EssayTextInput = ({
     dispatch(
       syncWritingCorrectionSuggestions(nextCompletedSentences.map(sentence => sentence.sentenceId)),
     )
+
+    // Splitting or merging replaces sentences rather than editing one. What comes out inherits the
+    // history of the first sentence that went in, and any others that went in are kept as removed
+    // — between them the essay's original still holds every sentence that was written.
+    const restructure = getSentenceRestructure(previousCompletedSentences, nextCompletedSentences)
+
+    if (restructure.sentenceIds.length) {
+      dispatch(
+        inheritWritingSentenceHistory(restructure.sentenceIds, restructure.inheritedFromSentenceId),
+      )
+    }
+
+    if (restructure.removedSentences.length) {
+      dispatch(recordWritingRemovedSentences(restructure.removedSentences))
+    }
+
+    // A deleted sentence leaves the editor but not the essay: it is kept, anchored to whatever now
+    // stands after it, so the save can put it back in place flagged removed.
+    const deletedSentences = getDeletedSentences(previousCompletedSentences, nextCompletedSentences)
+
+    if (deletedSentences.length) {
+      dispatch(recordWritingRemovedSentences(deletedSentences))
+    }
 
     return nextCompletedSentences
   }
@@ -347,7 +377,7 @@ const EssayTextInput = ({
     dispatch(getWritingCorrectionSession(capitalize(learningLanguage)))
   }
 
-  const dispatchWritingCorrection = (sentence, isEdit) => {
+  const dispatchWritingCorrection = sentence => {
     dispatch(
       checkWritingCorrection({
         language: capitalize(learningLanguage),
@@ -355,7 +385,6 @@ const EssayTextInput = ({
         text: sentence.text,
         context: sentence.context,
         sessionId: writingSessionIdRef.current,
-        isEdit,
       }),
     )
   }
@@ -364,12 +393,12 @@ const EssayTextInput = ({
   const flushDeferredCorrections = () => {
     const deferred = deferredCorrectionsRef.current
     deferredCorrectionsRef.current = []
-    deferred.forEach(({ sentence, isEdit }) => dispatchWritingCorrection(sentence, isEdit))
+    deferred.forEach(sentence => dispatchWritingCorrection(sentence))
   }
 
-  // isEdit = this correction is an in-place edit of the same sentence (its backend-id history carries
-  // forward); a split/merge/new sentence passes false and starts a fresh history.
-  const openCorrectionForSentence = (sentence, isEdit = false) => {
+  // Ask for this sentence's correction. Whether the response continues the sentence's backend-id
+  // history or starts a new one is decided in the reducer from the sentence id's own lineage.
+  const openCorrectionForSentence = sentence => {
     const nextCorrectionKey = getWritingCorrectionKey(sentence)
 
     if (correctionsByKey[nextCorrectionKey]) {
@@ -384,7 +413,7 @@ const EssayTextInput = ({
     }
 
     if (writingSessionIdRef.current) {
-      dispatchWritingCorrection(sentence, isEdit)
+      dispatchWritingCorrection(sentence)
       return
     }
 
@@ -393,9 +422,9 @@ const EssayTextInput = ({
     ensureWritingSession()
     deferredCorrectionsRef.current = [
       ...deferredCorrectionsRef.current.filter(
-        deferred => getWritingCorrectionKey(deferred.sentence) !== nextCorrectionKey,
+        deferred => getWritingCorrectionKey(deferred) !== nextCorrectionKey,
       ),
-      { sentence, isEdit },
+      sentence,
     ]
   }
 
@@ -408,12 +437,35 @@ const EssayTextInput = ({
       textRef.current.length,
     )
 
-    restoredCompletedSentences.forEach(sentence => openCorrectionForSentence(sentence, false))
+    // Continuing a saved essay: pair its stored lineage with the sentence ids just minted for the
+    // restored text, before any correction comes back. Skipped when the counts disagree — the essay
+    // would then be re-split differently and pairing by position would attach the wrong histories.
+    if (restoredSentenceLineage?.length === restoredCompletedSentences.length) {
+      dispatch(
+        restoreWritingSentenceLineage(
+          Object.fromEntries(
+            restoredCompletedSentences.map((sentence, index) => [
+              sentence.sentenceId,
+              restoredSentenceLineage[index],
+            ]),
+          ),
+          // Sentences already deleted in an earlier session: anchor each to the sentence it sits in
+          // front of, now that the editor has minted ids for the surviving ones.
+          (restoredRemovedSentences ?? []).map(removed => ({
+            ...removed,
+            anchorSentenceId:
+              restoredCompletedSentences[removed.followingIndex]?.sentenceId ?? null,
+          })),
+        ),
+      )
+    }
+
+    onEssayTextChange?.(textRef.current, restoredCompletedSentences)
+    restoredCompletedSentences.forEach(sentence => openCorrectionForSentence(sentence))
   }, [])
 
-  const queueEditedSentence = (sentence, isEdit = false) => {
+  const queueEditedSentence = sentence => {
     pendingEditedSentenceRef.current = sentence
-    pendingEditIsInPlaceRef.current = isEdit
   }
 
   const commitPendingEditedSentence = () => {
@@ -431,7 +483,7 @@ const EssayTextInput = ({
       return false
     }
 
-    openCorrectionForSentence(updatedSentence, pendingEditIsInPlaceRef.current)
+    openCorrectionForSentence(updatedSentence)
     return true
   }
 
@@ -469,11 +521,10 @@ const EssayTextInput = ({
     const editIndex = getFirstChangedIndex(previousText, nextText)
     const previousCompletedSentences = completedSentencesRef.current
     const nextCompletedSentences = updateCompletedSentences(nextText, editIndex)
-    const isInPlaceEdit = previousCompletedSentences.length === nextCompletedSentences.length
 
     setText(nextText)
     textRef.current = nextText
-    onEssayTextChange?.(nextText)
+    onEssayTextChange?.(nextText, nextCompletedSentences)
 
     if (completedSentencesChanged(previousCompletedSentences, nextCompletedSentences)) {
       saveEssayText(nextText)
@@ -488,7 +539,7 @@ const EssayTextInput = ({
 
       if (sentencesToCorrect.length) {
         pendingEditedSentenceRef.current = null
-        sentencesToCorrect.forEach(sentence => openCorrectionForSentence(sentence, false))
+        sentencesToCorrect.forEach(sentence => openCorrectionForSentence(sentence))
         return
       }
     }
@@ -505,16 +556,13 @@ const EssayTextInput = ({
       }
 
       if (cursorIsInsideSentence(updatedPendingSentence, cursorIndex)) {
-        queueEditedSentence(updatedPendingSentence, isInPlaceEdit)
+        queueEditedSentence(updatedPendingSentence)
         return
       }
 
       pendingEditedSentenceRef.current = null
 
-      openCorrectionForSentence(
-        updatedPendingSentence,
-        pendingEditIsInPlaceRef.current && isInPlaceEdit,
-      )
+      openCorrectionForSentence(updatedPendingSentence)
       return
     }
 
@@ -544,7 +592,7 @@ const EssayTextInput = ({
 
     if (!completedSentence) {
       if (previousCompletedSentence) {
-        queueEditedSentence(previousCompletedSentence, isInPlaceEdit)
+        queueEditedSentence(previousCompletedSentence)
       }
 
       return
@@ -559,7 +607,7 @@ const EssayTextInput = ({
         previousCompletedSentences,
       })
     ) {
-      openCorrectionForSentence(completedSentence, isInPlaceEdit)
+      openCorrectionForSentence(completedSentence)
       return
     }
 
@@ -568,7 +616,7 @@ const EssayTextInput = ({
         getWritingCorrectionKey(previousCompletedSentence) !==
         getWritingCorrectionKey(completedSentence)
       ) {
-        queueEditedSentence(completedSentence, isInPlaceEdit)
+        queueEditedSentence(completedSentence)
         return
       }
 
@@ -576,16 +624,16 @@ const EssayTextInput = ({
         return
       }
 
-      openCorrectionForSentence(completedSentence, isInPlaceEdit)
+      openCorrectionForSentence(completedSentence)
       return
     }
 
     if (cursorIsInsideSentence(completedSentence, cursorIndex)) {
-      queueEditedSentence(completedSentence, isInPlaceEdit)
+      queueEditedSentence(completedSentence)
       return
     }
 
-    openCorrectionForSentence(completedSentence, isInPlaceEdit)
+    openCorrectionForSentence(completedSentence)
   }
 
   const handleSelect = e => {

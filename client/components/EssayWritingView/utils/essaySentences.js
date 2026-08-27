@@ -139,6 +139,112 @@ export const completedSentencesChanged = (previousSentences, nextSentences) => (
   })
 )
 
+// The number of leading sentences whose text is unchanged between the two lists.
+const getUnchangedPrefixLength = (previousSentences, nextSentences) => {
+  const maxLength = Math.min(previousSentences.length, nextSentences.length)
+  let length = 0
+
+  while (length < maxLength && previousSentences[length].text === nextSentences[length].text) {
+    length += 1
+  }
+
+  return length
+}
+
+// The number of trailing sentences whose text is unchanged between the two lists, ignoring the ones
+// already covered by the unchanged prefix.
+const getUnchangedSuffixLength = (previousSentences, nextSentences, prefixLength) => {
+  const maxLength = Math.min(
+    previousSentences.length - prefixLength,
+    nextSentences.length - prefixLength,
+  )
+  let length = 0
+
+  while (
+    length < maxLength &&
+    previousSentences[previousSentences.length - 1 - length].text ===
+      nextSentences[nextSentences.length - 1 - length].text
+  ) {
+    length += 1
+  }
+
+  return length
+}
+
+// Narrow an edit down to the sentences it actually touched: the window between the unchanged
+// prefix and suffix, with the sentences inside it that never changed paired off (two edits far
+// apart put untouched sentences between them). What is left on each side is what went in and what
+// came out.
+const getSentenceEditWindow = (previousSentences, nextSentences) => {
+  const prefixLength = getUnchangedPrefixLength(previousSentences, nextSentences)
+  const suffixLength = getUnchangedSuffixLength(previousSentences, nextSentences, prefixLength)
+  const previousWindow = previousSentences.slice(
+    prefixLength,
+    previousSentences.length - suffixLength,
+  )
+  const nextWindow = nextSentences.slice(prefixLength, nextSentences.length - suffixLength)
+  const unchanged = previousWindow.reduce(
+    (counts, sentence) => counts.set(sentence.text, (counts.get(sentence.text) ?? 0) + 1),
+    new Map(),
+  )
+  const changedNext = nextWindow.filter(sentence => {
+    const remaining = unchanged.get(sentence.text) ?? 0
+    if (!remaining) return true
+    unchanged.set(sentence.text, remaining - 1)
+    return false
+  })
+  // How many of the sentences that went in were actually replaced: the window's own count, less the
+  // ones that came back out untouched.
+  const changedPreviousCount = previousWindow.length - (nextWindow.length - changedNext.length)
+
+  return { prefixLength, previousWindow, changedPreviousCount, changedNext }
+}
+
+// What an edit that moved a sentence boundary did: which sentences came out of it, and which of
+// the ones that went in have no successor. One in / many out is a split, many in / one out a merge,
+// many in / many out a rewrite across boundaries. Everything that comes out descends from the first
+// sentence that went in, so it carries that sentence's history and the essay's original keeps it.
+// The remaining sentences that went in are gone from the current version but were still written, so
+// they are handed back as removed, anchored after the block that replaced them.
+export const getSentenceRestructure = (previousSentences, nextSentences) => {
+  const { prefixLength, previousWindow, changedPreviousCount, changedNext } = getSentenceEditWindow(
+    previousSentences,
+    nextSentences,
+  )
+  const none = { inheritedFromSentenceId: null, sentenceIds: [], removedSentences: [] }
+
+  if (changedPreviousCount < 1 || changedNext.length < 1) return none
+  if (changedPreviousCount === 1 && changedNext.length === 1) return none
+
+  // Whatever follows the sentences that replaced this block — where the parents that no longer
+  // exist are put back, so they sit after their replacement rather than in front of it.
+  const anchor = nextSentences[prefixLength + changedNext.length] ?? null
+
+  return {
+    inheritedFromSentenceId: previousWindow[0]?.sentenceId ?? null,
+    sentenceIds: changedNext.map(sentence => sentence.sentenceId),
+    removedSentences: previousWindow
+      .slice(1)
+      .map(sentence => ({ sentence, anchorSentenceId: anchor?.sentenceId ?? null })),
+  }
+}
+
+// The sentences this edit deleted outright, each anchored to the sentence that now stands after
+// it — the place the save payload puts it back. A deletion at the very end of the essay has no
+// following sentence, so its anchor is null and it is appended.
+export const getDeletedSentences = (previousSentences, nextSentences) => {
+  const { prefixLength, previousWindow, changedPreviousCount, changedNext } = getSentenceEditWindow(
+    previousSentences,
+    nextSentences,
+  )
+
+  if (changedNext.length || changedPreviousCount < 1) return []
+
+  const anchorSentenceId = nextSentences[prefixLength]?.sentenceId ?? null
+
+  return previousWindow.map(sentence => ({ sentence, anchorSentenceId }))
+}
+
 export const getSentencesWithNewCorrectionKeys = (
   previousSentences,
   nextSentences,

@@ -1,17 +1,45 @@
+// Mirrors of the global layout constants in client/assets/custom.scss. This is a component
+// stylesheet, so it can't @use that file without pulling the whole global sheet into the bundle a
+// second time — keep these in sync with $navbar-height, $application-content-top-padding and
+// $footer-height there.
 $essay-navbar-height: 3em;
-$essay-content-top-padding: 0.5rem;
+$essay-content-top-padding: 1.7em;
+$essay-footer-height: 50px;
+// Gaps between a panel and the space it sits in: .essay-writing-main's bottom margin, and
+// .essay-teacher-panel's own top margin on top of it.
+$essay-main-gap: 1rem;
+$essay-teacher-panel-gap: 1.5em;
+// What's left of the viewport once the global chrome is taken out — the navbar, <main>'s top
+// padding, and the global footer rendered after <main> in Router. A panel that ignores any of the
+// three overflows the page by exactly that much, leaving an outer scrollbar with nowhere to go.
+$essay-available-height: calc(
+  100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - #{$essay-footer-height}
+);
+$essay-panel-height: calc(#{$essay-available-height} - #{$essay-main-gap});
+$essay-teacher-panel-height: calc(#{$essay-panel-height} - #{$essay-teacher-panel-gap});
+// A collapsed HelperSidebar leaves a 10px sliver plus its 28px toggle chevron pinned to the right
+// edge of the viewport. Reserve that strip so the chevron can't sit on top of the essay text.
+$essay-collapsed-sidebar-reserve: 38px;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
 // Correction colours: per type, one for the textarea highlight and one for the suggestion bubble.
-$essay-textarea-highlight-replacement-bg-color: #88cefb;
-$essay-textarea-highlight-insertion-bg-color: #92f294;
-$essay-textarea-highlight-deletion-bg-color: #f6b3b3;
+// The word highlighted in the essay text and the bubble describing it are the same correction, so
+// they carry the same colour. Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js, same as the
+// $essay-bubble-*-bg-color values below.
+$essay-textarea-highlight-replacement-bg-color: #c1dce6;
+$essay-textarea-highlight-insertion-bg-color: #d1e5b0;
+$essay-textarea-highlight-deletion-bg-color: #ffdcca;
 
-$essay-bubble-multi-bg-color: #88cefb;
-$essay-bubble-replacement-bg-color: #88cefb;
-$essay-bubble-insertion-bg-color: #92f294;
-$essay-bubble-deletion-bg-color: #f6b3b3;
+// Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
+// vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
+// colour with the token's own hover shade rather than a generic brightness filter.
+// Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js — the ChatBubble correction-* variants
+// and these bubbles have to show the same colour per type. Keep the two in step when either moves.
+$essay-bubble-multi-bg-color: #c1dce6;
+$essay-bubble-replacement-bg-color: #c1dce6;
+$essay-bubble-insertion-bg-color: #d1e5b0;
+$essay-bubble-deletion-bg-color: #ffdcca;
 
 // 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
 $essay-card: #faf8ed; // cream panel
@@ -23,7 +51,7 @@ $essay-green: #b1d3c2; // border / accent
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 80px);
+  min-height: $essay-available-height;
   margin: 0 12px;
 
   @media (max-width: 768px) {
@@ -68,8 +96,8 @@ $essay-green: #b1d3c2; // border / accent
   box-sizing: border-box;
   width: 100%;
   max-width: $essay-content-width;
-  height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
+  height: $essay-panel-height;
+  min-height: $essay-panel-height;
   margin-top: 0;
   padding: 1.5rem;
   background: $essay-card !important;
@@ -117,9 +145,9 @@ $essay-green: #b1d3c2; // border / accent
   flex: 1 1 0;
   min-width: 0;
   box-sizing: border-box;
-  height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  min-height: calc(100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - 40px);
-  margin-top: 1.5em;
+  height: $essay-teacher-panel-height;
+  min-height: $essay-teacher-panel-height;
+  margin-top: $essay-teacher-panel-gap;
   padding: 1.5rem;
   background: $essay-card !important;
   // !important so these beat MUI Paper's equal-specificity emotion class in the prod build order.
@@ -295,22 +323,32 @@ $essay-green: #b1d3c2; // border / accent
   gap: 0.5rem;
   z-index: 1300;
   box-sizing: border-box;
-  width: 100%;
+  width: 90%;
   max-width: min(520px, calc(100vw - 32px));
-  margin-bottom: 8px;
+  margin: 0 auto;
   padding: 0.75rem 1rem;
-  border: 1px solid $essay-green;
   border-radius: 16px;
   background: $essay-card;
-  transition: filter 0.2s;
+  // A trimmed-down MUI elevation-3 shadow: roughly half the blur and spread, on whole pixels.
+  // !important because Paper's elevation class is emotion, injected after this stylesheet (the
+  // same reason .essay-writing-panel above needs it).
+  box-shadow:
+    0 2px 2px -1px rgba(0, 0, 0, 0.2),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 4px 0 rgba(0, 0, 0, 0.12) !important;
+  transition: background 0.2s, filter 0.2s;
 
   &:hover {
     transform: scale(1.02);
-    filter: brightness(1.05);
   }
   &.essay-writing-correction-bubble-active {
     transform: scale(1.03);
-    filter: brightness(1.1);
+  }
+
+  // Untyped bubbles (pending / error) have no correction colour of their own, so they keep the
+  // generic lift. Typed ones below swap to their token's hover shade instead.
+  &:not([class*='essay-writing-correction-bubble-']):hover {
+    filter: brightness(1.05);
   }
 }
 
@@ -434,5 +472,15 @@ $essay-green: #b1d3c2; // border / accent
 @media (min-width: 1856px) {
   .essay-writing-container-sidebar-pushed {
     max-width: $essay-content-width;
+  }
+}
+
+// Keep the collapsed sidebar's toggle chevron off the text. Below 769px the sidebar is a bottom
+// sheet with its toggle at the top centre, so it can't overlap; above ~1100px the centred 1024px
+// column already clears the chevron on its own. In between, inset the column — but not while the
+// sidebar is open, which already reserves 380px for it.
+@media (min-width: 769px) and (max-width: 1100px) {
+  .essay-writing-container:not(.essay-writing-container-sidebar-pushed) {
+    padding-right: $essay-collapsed-sidebar-reserve;
   }
 }

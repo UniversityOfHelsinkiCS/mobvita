@@ -809,6 +809,11 @@ const DesignSystem = () => {
           <ChatBubble variant="options">
             See-through bubble that holds action content (no background/shadow/padding).
           </ChatBubble>
+          <ChatBubble variant="correction-replacement">
+            Correction: a word swapped for another (also multi-token corrections).
+          </ChatBubble>
+          <ChatBubble variant="correction-insertion">Correction: a missing word/punctuation to add.</ChatBubble>
+          <ChatBubble variant="correction-deletion">Correction: a word to remove.</ChatBubble>
         </div>
       </Section>
 

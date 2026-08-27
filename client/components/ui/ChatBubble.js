@@ -15,8 +15,26 @@ import { images } from 'Utilities/common'
  *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
  *                 left-aligned like a bot reply but no background, shadow, or padding
  *
+ * Correction variants carry an essay correction type's colour, so a bubble about a correction reads
+ * as the same thing as the correction. A multi-token correction uses 'correction-replacement'.
+ *   'correction-replacement' - a word swapped for another (also multi-token corrections)
+ *   'correction-insertion'   - a missing word to add
+ *   'correction-deletion'    - a word to remove
+ *
  * Pass `onEdit` and/or `onRemove` to show Design System edit/delete actions in the top-right.
  */
+// The conversation column deliberately has no left/right padding, so lemma cards can span the full
+// panel width (see .chatbot-messages). Bubbles therefore carry their own gutter, or a bot reply
+// would sit flush against the left edge and the user's own message flush against the right. It
+// matches the bubble's horizontal padding, so the inset reads as one consistent rhythm.
+const BUBBLE_GUTTER = 14
+
+export const CORRECTION_COLORS = {
+  replacement: '#C1DCE6',
+  insertion: '#D1E5B0',
+  deletion: '#FFDCCA',
+}
+
 const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: '#FFFFFF', color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: colors.green, color: colors.ink },
@@ -24,6 +42,21 @@ const VARIANT_STYLES = {
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   'controlled-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   hint: { alignSelf: 'flex-start', backgroundColor: '#FFEECE', color: colors.ink },
+  'correction-replacement': {
+    alignSelf: 'flex-start',
+    backgroundColor: CORRECTION_COLORS.replacement,
+    color: colors.ink,
+  },
+  'correction-insertion': {
+    alignSelf: 'flex-start',
+    backgroundColor: CORRECTION_COLORS.insertion,
+    color: colors.ink,
+  },
+  'correction-deletion': {
+    alignSelf: 'flex-start',
+    backgroundColor: CORRECTION_COLORS.deletion,
+    color: colors.ink,
+  },
   options: {
     alignSelf: 'flex-start',
     backgroundColor: 'transparent',
@@ -32,6 +65,9 @@ const VARIANT_STYLES = {
     maxWidth: '100%',
     width: '100%',
     padding: 0,
+    // Full-bleed by design — it holds action content, not a message, so it keeps no gutter.
+    marginLeft: 0,
+    marginRight: 0,
   },
 }
 
@@ -40,6 +76,8 @@ const Bubble = styled('div', {
 })(({ variant, hasActions }) => ({
   position: 'relative',
   maxWidth: '85%',
+  marginLeft: BUBBLE_GUTTER,
+  marginRight: BUBBLE_GUTTER,
   padding: '10px 14px',
   ...(hasActions && { paddingRight: '58px' }),
   borderRadius: 18,

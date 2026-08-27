@@ -14,8 +14,11 @@ import {
   getWritingCorrectionKey,
   getWritingEssayId,
   getWritingEssayVersions,
+  getWritingEssayRemovedSentences,
+  getWritingEssaySentenceLineage,
   getWritingEssaySentenceVersions,
   saveWritingEssay,
+  writingEssaySaveFailedOnTitle,
 } from 'Utilities/redux/writingCorrectionReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { saveSelfIntermediate, updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -27,6 +30,7 @@ import EssayTextInput from './EssayTextInput'
 import EssayVersionText from './EssayVersionText'
 import { getCompletedSentences } from './utils/essaySentences'
 import { clearStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 import './EssayWritingStyles.scss'
 
@@ -38,8 +42,10 @@ const EssayWritingView = () => {
   const learningLanguage = useLearningLanguage()
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
-  // Teacher review cross-highlight: the sentence currently hovered { index, side } and the word
-  // currently selected { index, word, side }.
+  const [essaySentences, setEssaySentences] = useState([])
+  const [continuedEssayId, setContinuedEssayId] = useState(null)
+  const [restoredSentenceLineage, setRestoredSentenceLineage] = useState(null)
+  const [restoredRemovedSentences, setRestoredRemovedSentences] = useState(null)
   const [hoveredSentence, setHoveredSentence] = useState(null)
   const [selectedWord, setSelectedWord] = useState(null)
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
@@ -47,6 +53,7 @@ const EssayWritingView = () => {
   const [topicDialogOpen, setTopicDialogOpen] = useState(false)
   const [topic, setTopic] = useState('')
   const [topicTaken, setTopicTaken] = useState(false)
+  const [uploadFailed, setUploadFailed] = useState(false)
   const selectedSelectionRef = useRef(null)
   const uploadInFlightRef = useRef(false)
   const handledLoadIdRef = useRef(null)
@@ -59,9 +66,14 @@ const EssayWritingView = () => {
   const isTeacherEssayView = Boolean(teacherView && loadEssayId)
   const isHelperSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const correctionsByKey = useSelector(state => state.writingCorrection.correctionsByKey)
+  const sentenceHistoryBySentenceId = useSelector(
+    state => state.writingCorrection.sentenceHistoryBySentenceId,
+  )
+  const removedSentences = useSelector(state => state.writingCorrection.removedSentences)
   const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
   const savePending = useSelector(state => state.writingCorrection.savePending)
   const saveError = useSelector(state => state.writingCorrection.saveError)
+  const saveErrorMessage = useSelector(state => state.writingCorrection.saveErrorMessage)
 
   // Don't let the user upload while a sentence's correction is still in flight — its payload entry
   // would be empty.
@@ -72,6 +84,11 @@ const EssayWritingView = () => {
       ),
     [essayText, correctionsByKey],
   )
+
+  const handleEssayTextChange = (nextText, nextSentences = []) => {
+    setEssayText(nextText)
+    setEssaySentences(nextSentences)
+  }
 
   const clearEssaySelection = () => {
     selectedSelectionRef.current = null
@@ -96,6 +113,10 @@ const EssayWritingView = () => {
   const resetEssayDraft = () => {
     clearStoredEssayText()
     setEssayText('')
+    setEssaySentences([])
+    setContinuedEssayId(null)
+    setRestoredSentenceLineage(null)
+    setRestoredRemovedSentences(null)
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
     selectedSelectionRef.current = null
@@ -114,6 +135,11 @@ const EssayWritingView = () => {
     const nextText = getWritingEssayVersions(openedEssay).current || ''
     saveEssayText(nextText)
     setEssayText(nextText)
+    setEssaySentences([])
+    setContinuedEssayId(loadEssayId)
+    setRestoredSentenceLineage(getWritingEssaySentenceLineage(openedEssay))
+    setRestoredRemovedSentences(getWritingEssayRemovedSentences(openedEssay))
+    setTopic(openedEssay.title || '')
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
     selectedSelectionRef.current = null
@@ -130,13 +156,25 @@ const EssayWritingView = () => {
   // Save the essay as its current list of sentences, each with the backend-id edit history + cached
   // corrections, under the topic the user entered.
   const handleConfirmUpload = () => {
+    if (!essaySentences.length) {
+      setUploadFailed(true)
+      return
+    }
+
     setTopicTaken(false)
+    setUploadFailed(false)
     uploadInFlightRef.current = true
     dispatch(
       saveWritingEssay({
         language: capitalize(learningLanguage),
+        essayId: continuedEssayId,
         sessionId: writingSessionId,
-        sentences: buildWritingEssaySentences(getCompletedSentences(essayText), correctionsByKey),
+        sentences: buildWritingEssaySentences(
+          essaySentences,
+          correctionsByKey,
+          sentenceHistoryBySentenceId,
+          removedSentences,
+        ),
         title: topic.trim(),
       }),
     )
@@ -148,21 +186,31 @@ const EssayWritingView = () => {
     resetEssayDraft()
   }
 
-  // When the save settles: on success close the dialog and clear the cache/session + draft; on failure
-  // keep the dialog open with a message so the user can retry.
+  // The essay exists on the backend once it has an id — either it was opened from the library, or
+  // this session's first upload created it. From then on the button saves into that essay directly.
+  const essayIsSaved = Boolean(continuedEssayId)
+
+  // When the save settles: on failure keep the dialog open with a message so the user can retry.
+  // On success the two cases part ways — the first upload creates the essay and hands the student
+  // over to the library, while saving an essay they are continuing leaves them writing.
   useEffect(() => {
     if (!uploadInFlightRef.current || savePending) return
 
     uploadInFlightRef.current = false
 
     if (saveError) {
-      setTopicTaken(true)
+      const isTopicTaken = writingEssaySaveFailedOnTitle(saveErrorMessage)
+      setTopicTaken(isTopicTaken)
+      setUploadFailed(!isTopicTaken)
       return
     }
 
     setTopicDialogOpen(false)
-    setTopic('')
     setTopicTaken(false)
+    setUploadFailed(false)
+
+    if (continuedEssayId) return
+
     dispatch(clearWritingCorrectionData())
     resetEssayDraft()
     dispatch(saveSelfIntermediate({ last_selected_library: 'essays' }))
@@ -241,7 +289,6 @@ const EssayWritingView = () => {
     const { original: originalSentences, current: currentSentences } =
       getWritingEssaySentenceVersions(essayLoaded ? openedEssay : null)
     const { current } = getWritingEssayVersions(essayLoaded ? openedEssay : null)
-    // Which side's pointer drives the cross-side sentence highlight (hover takes priority).
     const pointer = hoveredSentence || selectedWord
 
     return (
@@ -254,10 +301,13 @@ const EssayWritingView = () => {
           >
             {openedEssayError && !openedEssayPending ? (
               <Typography color="error" sx={{ mt: 4 }}>
-                <FormattedMessage id="something-went-wrong" defaultMessage="Something went wrong." />
+                <FormattedMessage
+                  id="something-went-wrong"
+                  defaultMessage="Something went wrong."
+                />
               </Typography>
             ) : !essayLoaded || openedEssayPending ? (
-              <Spinner size={60} />
+              <Spinner size={60} spinnerColor={colors.ink} />
             ) : (
               <Box className="essay-teacher-split">
                 <Paper className="essay-teacher-panel" elevation={1}>
@@ -336,13 +386,17 @@ const EssayWritingView = () => {
                   </AppButton>
                 )}
                 <AppButton
-                  onClick={() => setTopicDialogOpen(true)}
+                  onClick={essayIsSaved ? handleConfirmUpload : () => setTopicDialogOpen(true)}
                   disabled={
-                    savePending || hasPendingCorrection || !essayText.trim() || !writingSessionId
+                    savePending ||
+                    hasPendingCorrection ||
+                    !essaySentences.length ||
+                    !essayText.trim() ||
+                    !writingSessionId
                   }
                   data-cy="submit-essay"
                 >
-                  <FormattedMessage id="upload-to-my-essays" />
+                  <FormattedMessage id={essayIsSaved ? 'Save' : 'upload-to-my-essays'} />
                 </AppButton>
               </Box>
             </Box>
@@ -351,7 +405,9 @@ const EssayWritingView = () => {
               key={essayResetKey}
               focusLocked={Boolean(essayFocus?.selection)}
               onEssayFocusChange={handleEssayTextFocusChange}
-              onEssayTextChange={setEssayText}
+              onEssayTextChange={handleEssayTextChange}
+              restoredRemovedSentences={restoredRemovedSentences}
+              restoredSentenceLineage={restoredSentenceLineage}
               sentenceSelectionRequest={sentenceSelectionRequest}
             />
           </Paper>
@@ -378,10 +434,11 @@ const EssayWritingView = () => {
         <AppTextField
           autoFocus
           value={topic}
-          error={topicTaken}
+          error={topicTaken || uploadFailed}
           onChange={event => {
             setTopic(event.target.value)
             setTopicTaken(false)
+            setUploadFailed(false)
           }}
           onKeyDown={event => {
             if (event.key === 'Enter' && topic.trim() && !savePending) {
@@ -397,12 +454,19 @@ const EssayWritingView = () => {
             <FormattedMessage id="essay-upload-topic-taken" />
           </Typography>
         )}
+        {uploadFailed && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }} data-cy="essay-upload-failed">
+            <FormattedMessage id="something-went-wrong" defaultMessage="Something went wrong." />
+            {hiddenFeatures && saveErrorMessage ? ` (${saveErrorMessage})` : ''}
+          </Typography>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 3 }}>
           <AppButton
             variant="contrast-outline"
             onClick={() => {
               setTopicDialogOpen(false)
               setTopicTaken(false)
+              setUploadFailed(false)
             }}
           >
             <FormattedMessage id="cancel" defaultMessage="Cancel" />

@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v14'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v19'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 // FNV-1a hash of a string, returned base-36.
@@ -27,30 +27,129 @@ export const getWritingCorrectionSession = (language = DEFAULT_LANGUAGE) =>
 
 const SAVE_PREFIX = 'WRITING_ESSAY_SAVE'
 
-// Build the essay's current sentences (each with edit history + cached corrections) for saving.
-export const buildWritingEssaySentences = (sentences, correctionsByKey = {}) =>
-  sentences.map(sentence => {
-    const entry = correctionsByKey[getWritingCorrectionKey(sentence)]
+// One saved sentence: its text, the backend id of its current version, the ids of its earlier
+// versions oldest first, and its cached corrections. Lineage comes from the sentence-id map rather
+// than the correction cache, because a cache entry is keyed by text + context and is lost whenever
+// a sentence around it changes, while the id survives.
+const buildWritingEssaySentence = (sentence, entry, lineage) => {
+  const beSentenceId = lineage?.beSentenceId ?? entry?.beSentenceId ?? null
+  const history = lineage?.history ?? []
+  // A correction is only requested once the caret leaves a sentence, so the text being saved can be
+  // one edit ahead of the last corrected version. That version is an earlier version of what is
+  // being saved, so it belongs in the history even though no newer correction has named it.
+  const savedTextIsNewer =
+    Boolean(beSentenceId) &&
+    lineage?.isOriginal !== false &&
+    lineage?.text !== sentence.text &&
+    !history.includes(beSentenceId)
 
-    return {
-      original_text: sentence.text,
-      history: entry?.history ?? [],
-      corrections: entry?.responseCorrections ?? [],
-    }
+  return {
+    original_text: sentence.text,
+    ...(beSentenceId ? { sentence_id: beSentenceId } : {}),
+    history: savedTextIsNewer ? [...history, beSentenceId] : history,
+    corrections: entry?.responseCorrections ?? [],
+  }
+}
+
+// Build the essay for saving: every sentence that was written, in order. The ones still in the
+// editor come through as they are; the ones the student deleted are spliced back in at the place
+// they were anchored to and flagged removed, so the essay keeps its original version whole while
+// its current version is just the sentences not flagged.
+export const buildWritingEssaySentences = (
+  sentences,
+  correctionsByKey = {},
+  sentenceHistoryBySentenceId = {},
+  removedSentences = [],
+) => {
+  const removedByAnchor = removedSentences.reduce(
+    (byAnchor, removed) => ({
+      ...byAnchor,
+      [removed.anchorSentenceId ?? '']: (byAnchor[removed.anchorSentenceId ?? ''] ?? []).concat(
+        removed,
+      ),
+    }),
+    {},
+  )
+  const buildRemoved = removed => ({
+    original_text: removed.text,
+    ...(removed.beSentenceId ? { sentence_id: removed.beSentenceId } : {}),
+    history: removed.history ?? [],
+    corrections: [],
+    removed: true,
   })
 
-// Save the current essay (sentences + per-sentence history + cached suggestions) to the backend.
+  const saved = sentences.flatMap(sentence => {
+    const before = (removedByAnchor[sentence.sentenceId] ?? []).map(buildRemoved)
+    const entry = correctionsByKey[getWritingCorrectionKey(sentence)]
+
+    return before.concat({
+      ...buildWritingEssaySentence(
+        sentence,
+        entry,
+        sentenceHistoryBySentenceId[sentence.sentenceId],
+      ),
+      removed: false,
+    })
+  })
+
+  // Anything deleted from the end of the essay has no sentence left to sit in front of.
+  return saved.concat((removedByAnchor[''] ?? []).map(buildRemoved))
+}
+
+// Save the essay (sentences + per-sentence history + cached suggestions). With an essayId this
+// updates that essay in place via POST /essays/{essay_id}; without one it creates a new essay. The
+// update endpoint takes title + sentences only — session_id belongs to the original creation.
 export const saveWritingEssay = ({
   language = DEFAULT_LANGUAGE,
+  essayId = null,
   sessionId = '',
   sentences = [],
   title = '',
 }) =>
-  callBuilder(`/writing/${language}/essays`, SAVE_PREFIX, 'post', {
-    session_id: sessionId,
-    sentences,
-    title,
-  })
+  essayId
+    ? callBuilder(
+        `/writing/${language}/essays/${essayId}`,
+        SAVE_PREFIX,
+        'post',
+        { sentences, ...(title ? { title } : {}) },
+        { essayId },
+      )
+    : callBuilder(`/writing/${language}/essays`, SAVE_PREFIX, 'post', {
+        session_id: sessionId,
+        sentences,
+        title,
+      })
+
+// Restore the sentence lineage of an essay opened to continue editing, keyed by the editor's local
+// sentence ids. Without this the reopened sentences look brand new, and the next save would
+// overwrite the essay's recorded original version with an empty history.
+export const restoreWritingSentenceLineage = (lineageBySentenceId, removedSentences = []) => ({
+  type: 'WRITING_CORRECTION_RESTORE_LINEAGE',
+  lineageBySentenceId,
+  removedSentences,
+})
+
+// Whether a failed essay save was actually a duplicate-title rejection. Anything else is a real
+// failure and must not be reported to the user as a name collision.
+export const writingEssaySaveFailedOnTitle = message =>
+  typeof message === 'string' && /taken|already exist|duplicate/i.test(message)
+
+// Hand the sentences that came out of a split or a merge the history of the sentence they replaced,
+// so the essay's original still holds it. The halves of a split share one history and the reader
+// emits it once; a merge keeps its first parent this way and the rest arrive as removed.
+export const inheritWritingSentenceHistory = (sentenceIds, inheritedFromSentenceId) => ({
+  type: 'WRITING_CORRECTION_SENTENCES_INHERIT_HISTORY',
+  sentenceIds,
+  inheritedFromSentenceId,
+})
+
+// Keep the sentences an edit deleted. They leave the editor but stay in the essay: the save sends
+// them in place, flagged removed, so the original version still contains everything that was
+// written. Each is anchored to the sentence that now stands after it, or to the end of the essay.
+export const recordWritingRemovedSentences = removedSentences => ({
+  type: 'WRITING_CORRECTION_SENTENCES_REMOVED',
+  removedSentences,
+})
 
 // Fetch all the user's saved essays (backend limits these to the owner + assigned teachers).
 export const getWritingEssays = (language = DEFAULT_LANGUAGE) =>
@@ -123,49 +222,128 @@ export const writingEssayHasContent = essay =>
 // A saved essay's current text per sentence.
 const getEssaySentenceCurrentText = sentence => sentence?.original_text ?? sentence?.text ?? ''
 
-// A saved essay's earliest recorded text per sentence: the first history entry if it was ever
-// edited, otherwise its current text (unedited sentences have no history).
+// The essay's original version, as an ordered list of sentences. Each saved sentence names the
+// roots it came from, and the backend expands them to the text it recorded, so walking the current
+// sentences in order and emitting each root once rebuilds what the student first wrote — including
+// across a moved sentence boundary, where the halves of a split share one root (emitted once) and a
+// merged sentence carries both of its parents' (emitted in turn). A sentence with no roots was
+// never corrected, so it stands as its own original.
+// A saved essay's earliest recorded text per sentence: the backend expands each history id into
+// the sentence it points at, so the first entry is the sentence as it was first written. A sentence
+// with no history is its own original — it was never edited, or it came out of a split/merge.
 const getEssaySentenceOriginalText = sentence => {
   const history = Array.isArray(sentence?.history) ? sentence.history : []
-  return history[0]?.original_text ?? getEssaySentenceCurrentText(sentence)
+  const firstVersion = history[0]
+
+  if (firstVersion && typeof firstVersion === 'object') {
+    return firstVersion.original_text ?? firstVersion.text ?? getEssaySentenceCurrentText(sentence)
+  }
+
+  return getEssaySentenceCurrentText(sentence)
 }
 
-// Extract the title + original/current version text from a fetched essay. The backend returns the
-// current full text (essay_text) plus per-sentence edit history; the original version is
-// reconstructed from each sentence's earliest history entry.
+// A sentence the student deleted. It stays in the saved essay so the original version keeps it, but
+// it is no longer part of the current one.
+export const essaySentenceWasRemoved = sentence => sentence?.removed === true
+
+const getEssaySentences = essay => (Array.isArray(essay?.sentences) ? essay.sentences : [])
+
+// The id of the version a sentence was first written as, when the backend recorded one.
+const getEssaySentenceOriginalId = sentence => {
+  const first = (Array.isArray(sentence?.history) ? sentence.history : [])[0]
+
+  return first && typeof first === 'object' ? first.sentence_id : first
+}
+
+// The essay's original version: every sentence that was written, deleted ones included, each shown
+// as it was first written. The halves of a split share the sentence they came out of, so a first
+// version already emitted is skipped rather than repeated once per half.
+export const getWritingEssayOriginalSentences = essay => {
+  const emitted = new Set()
+
+  return getEssaySentences(essay).reduce((originals, sentence) => {
+    const originalId = getEssaySentenceOriginalId(sentence)
+
+    if (originalId && emitted.has(originalId)) return originals
+    if (originalId) emitted.add(originalId)
+
+    return originals.concat(getEssaySentenceOriginalText(sentence))
+  }, [])
+}
+
+// The essay's current version: the sentences that have not been deleted.
+export const getWritingEssayCurrentSentences = essay =>
+  getEssaySentences(essay)
+    .filter(sentence => !essaySentenceWasRemoved(sentence))
+    .map(getEssaySentenceCurrentText)
+
+// Extract the title + original/current version text from a fetched essay.
 export const getWritingEssayVersions = essay => {
-  const sentences = Array.isArray(essay?.sentences) ? essay.sentences : []
-
-  const currentFromSentences = sentences.map(getEssaySentenceCurrentText).join(' ').trim()
-  const original = sentences.map(getEssaySentenceOriginalText).join(' ').trim()
-  const current =
-    (typeof essay?.essay_text === 'string' && essay.essay_text.trim()) || currentFromSentences
+  const currentSentences = getWritingEssayCurrentSentences(essay)
 
   return {
-    title: essay?.title || getEssaySentenceCurrentText(sentences[0]) || '',
-    original,
-    current,
+    title: essay?.title || currentSentences[0] || '',
+    original: getWritingEssayOriginalSentences(essay).join(' ').trim(),
+    current: currentSentences.join(' ').trim(),
   }
 }
 
-// The essay's original + current text as index-aligned per-sentence arrays (sentence i is the same
-// sentence in both versions), so a UI can align/highlight the matching sentence across the versions.
-export const getWritingEssaySentenceVersions = essay => {
-  const sentences = Array.isArray(essay?.sentences) ? essay.sentences : []
-  return {
-    original: sentences.map(getEssaySentenceOriginalText),
-    current: sentences.map(getEssaySentenceCurrentText),
-  }
+// The two versions as per-sentence arrays, for a UI that shows them side by side. The original
+// holds every sentence that was written; the current one leaves out the deleted ones.
+export const getWritingEssaySentenceVersions = essay => ({
+  // The original holds every sentence that was written; the current one drops the deleted ones, so
+  // the two sides differ in length by exactly the sentences the student removed.
+  original: getWritingEssayOriginalSentences(essay),
+  current: getWritingEssayCurrentSentences(essay),
+})
+
+// A saved essay's per-sentence lineage in essay order: the backend id and text of each sentence's
+// current version plus the roots it descends from. GET expands each stored history entry to
+// { sentence_id, original_text }, so map back down to the bare ids the editor tracks.
+export const getWritingEssaySentenceLineage = essay =>
+  getEssaySentences(essay)
+    .filter(sentence => !essaySentenceWasRemoved(sentence))
+    .map(sentence => ({
+      beSentenceId: sentence?.sentence_id ?? null,
+      text: getEssaySentenceCurrentText(sentence),
+      history: getSentenceHistoryIds(sentence),
+      isOriginal: true,
+    }))
+
+// The bare history ids of a saved sentence — GET expands each to { sentence_id, original_text }.
+const getSentenceHistoryIds = sentence =>
+  (Array.isArray(sentence?.history) ? sentence.history : [])
+    .map(version => (version && typeof version === 'object' ? version.sentence_id : version))
+    .filter(Boolean)
+
+// The sentences a saved essay already has flagged removed, each with the position of the surviving
+// sentence it sits in front of, so the editor can anchor them again to its own sentence ids.
+export const getWritingEssayRemovedSentences = essay => {
+  let survivingIndex = 0
+
+  return getEssaySentences(essay).reduce((removed, sentence) => {
+    if (!essaySentenceWasRemoved(sentence)) {
+      survivingIndex += 1
+      return removed
+    }
+
+    return removed.concat({
+      text: getEssaySentenceCurrentText(sentence),
+      beSentenceId: sentence?.sentence_id ?? null,
+      history: getSentenceHistoryIds(sentence),
+      followingIndex: survivingIndex,
+    })
+  }, [])
 }
 
-// Request a correction for a sentence (POST), carrying the session id and in-place-edit flag.
+// Request a correction for a sentence (POST), carrying the session id that groups this writing
+// session's requests. The response's sentence_id is what the sentence's edit history is built from.
 export const checkWritingCorrection = ({
   language = DEFAULT_LANGUAGE,
   sentenceId,
   text,
   context = '',
   sessionId = '',
-  isEdit = false,
 }) => {
   const normalizedText = text.trim()
   const normalizedContext = context.trim()
@@ -189,7 +367,6 @@ export const checkWritingCorrection = ({
       language,
       text: normalizedText,
       context: normalizedContext,
-      isEdit,
     },
   )
 }
@@ -217,8 +394,10 @@ export const useCachedWritingCorrection = ({ key, sentence = '', sentenceId }) =
   sentenceId,
 })
 
-// Read the persisted corrections cache from localStorage.
-const getStoredWritingCorrectionCache = () => {
+// Read the persisted corrections cache + sentence lineage map from localStorage. The lineage has to
+// survive a reload too: without it every restored sentence would look brand new and start a fresh
+// history, which would make the saved original version identical to the current one.
+const getStoredWritingCorrectionState = () => {
   try {
     if (typeof window === 'undefined') return {}
 
@@ -226,14 +405,19 @@ const getStoredWritingCorrectionCache = () => {
       window.localStorage.getItem(WRITING_CORRECTION_CACHE_STORAGE_KEY) || '{}',
     )
 
-    return cache.correctionsByKey || {}
+    return {
+      correctionsByKey: cache.correctionsByKey || {},
+      sentenceHistoryBySentenceId: cache.sentenceHistoryBySentenceId || {},
+    }
   } catch {
     return {}
   }
 }
 
-// Persist the newest resolved corrections (capped) to localStorage; storage errors are ignored.
-const saveStoredWritingCorrectionCache = correctionsByKey => {
+// Persist the newest resolved corrections (capped) + the whole sentence lineage map to
+// localStorage; storage errors are ignored. The lineage map is a few ids per sentence, so it isn't
+// capped.
+const saveStoredWritingCorrectionState = (correctionsByKey, sentenceHistoryBySentenceId) => {
   try {
     if (typeof window === 'undefined') return
 
@@ -251,11 +435,21 @@ const saveStoredWritingCorrectionCache = correctionsByKey => {
 
     window.localStorage.setItem(
       WRITING_CORRECTION_CACHE_STORAGE_KEY,
-      JSON.stringify({ correctionsByKey: cachedCorrectionsByKey }),
+      JSON.stringify({
+        correctionsByKey: cachedCorrectionsByKey,
+        sentenceHistoryBySentenceId: sentenceHistoryBySentenceId || {},
+      }),
     )
   } catch {
     return
   }
+}
+
+// Persist the parts of the state that must survive a reload and return it unchanged, so a reducer
+// case can wrap the state it is about to return.
+const persistWritingCorrectionState = state => {
+  saveStoredWritingCorrectionState(state.correctionsByKey, state.sentenceHistoryBySentenceId)
+  return state
 }
 
 // Remove the persisted corrections cache from localStorage; storage errors are ignored.
@@ -268,17 +462,23 @@ const clearStoredWritingCorrectionCache = () => {
   }
 }
 
+const storedWritingCorrectionState = getStoredWritingCorrectionState()
+
 const initialState = {
   correctionSuggestionSentenceIds: [],
   correctionSuggestionSentenceOrder: [],
   correctionSuggestionsBySentenceId: {},
-  correctionsByKey: getStoredWritingCorrectionCache(),
+  correctionsByKey: storedWritingCorrectionState.correctionsByKey || {},
   latestCorrectionKeyBySentenceId: {},
-  sentenceHistoryBySentenceId: {},
+  sentenceHistoryBySentenceId: storedWritingCorrectionState.sentenceHistoryBySentenceId || {},
+  // Sentences the student deleted. They keep their place in the saved essay, flagged removed, so
+  // the original version still holds every sentence that was written.
+  removedSentences: storedWritingCorrectionState.removedSentences || [],
   sessionId: '',
   sessionPending: false,
   savePending: false,
   saveError: false,
+  saveErrorMessage: null,
   savedEssayId: null,
   essays: [],
   essaysPending: false,
@@ -334,7 +534,7 @@ export const getCorrectionResponseSentenceId = res =>
 export const writingCorrectionHasChanges = corrections =>
   getWritingCorrectionWords(corrections).some(word => Boolean(word.corrected))
 
-// The FE metadata (key, sentenceId, isEdit, ...) attached to a correction action.
+// The FE metadata (key, sentenceId, language, ...) attached to a correction action.
 const getActionQuery = action => action.query || action.requestSettings?.query || {}
 
 // Build the in-flight (pending) correction entry from a request.
@@ -397,6 +597,41 @@ const createFailureEntry = action => {
 
 // The entry's local sentence id (falls back to its cache key).
 const getSentenceId = entry => entry.sentenceId || entry.key
+
+// The sentence's lineage after a correction came back: the backend id and text of this version,
+// plus the roots it descends from — the backend ids of the sentences it was first written as. Roots
+// are what the essay's original version is rebuilt from, so the first correction a sentence ever
+// gets sets them and everything after only inherits: an edit keeps them, a split gives both halves
+// the same root, a merge gives the result both of its parents'.
+const getNextSentenceLineage = (previousLineage, beSentenceId, text) => {
+  if (!beSentenceId) {
+    return previousLineage ?? { beSentenceId: null, text, history: [], isOriginal: true }
+  }
+
+  if (previousLineage?.isOriginal === false) {
+    return { beSentenceId, text, history: [], isOriginal: false }
+  }
+
+  const previousBeSentenceId = previousLineage?.beSentenceId ?? null
+  const previousHistory = previousLineage?.history ?? []
+  // Only an actual rewrite is a new version. Re-correcting a sentence whose own text didn't change
+  // (its context moved when a sentence around it was added or removed) mints a fresh backend id for
+  // the same words, and recording that would fill the history with duplicates of one version.
+  // A sentence that inherited its history from the one it replaced already names that version, so
+  // correcting it afterwards must not record the same id a second time.
+  const isNewVersion =
+    Boolean(previousBeSentenceId) &&
+    previousBeSentenceId !== beSentenceId &&
+    previousLineage?.text !== text &&
+    !previousHistory.includes(previousBeSentenceId)
+
+  return {
+    beSentenceId,
+    text,
+    history: isNewVersion ? [...previousHistory, previousBeSentenceId] : previousHistory,
+    isOriginal: true,
+  }
+}
 
 // Mark this entry's key as the sentence's latest correction.
 const updateLatestCorrectionKey = (state, entry) => ({
@@ -573,6 +808,7 @@ export default (state = initialState, action) => {
         ...state,
         savePending: true,
         saveError: false,
+        saveErrorMessage: null,
       }
 
     case `${SAVE_PREFIX}_SUCCESS`:
@@ -580,7 +816,11 @@ export default (state = initialState, action) => {
         ...state,
         savePending: false,
         saveError: false,
-        savedEssayId: action.response?.essay_id ?? null,
+        saveErrorMessage: null,
+        savedEssayId:
+          getWritingEssayId(action.response?.essay ?? action.response) ??
+          getActionQuery(action).essayId ??
+          null,
       }
 
     case `${SAVE_PREFIX}_FAILURE`:
@@ -588,6 +828,7 @@ export default (state = initialState, action) => {
         ...state,
         savePending: false,
         saveError: true,
+        saveErrorMessage: action.response?.message || null,
       }
 
     case 'WRITING_GET_ESSAYS_ATTEMPT':
@@ -603,7 +844,6 @@ export default (state = initialState, action) => {
         : action.response?.essays ?? []
       return {
         ...state,
-        // Drop essays deleted this session so an in-flight/late list fetch can't re-add them.
         essays: fetched.filter(essay => !state.deletedEssayIds.includes(getWritingEssayId(essay))),
         essaysPending: false,
         essaysError: false,
@@ -661,6 +901,83 @@ export default (state = initialState, action) => {
       }
     }
 
+    case 'WRITING_CORRECTION_RESTORE_LINEAGE': {
+      const lineageBySentenceId = action.lineageBySentenceId || {}
+      const hasRemoved = Boolean(action.removedSentences?.length)
+
+      if (!Object.keys(lineageBySentenceId).length && !hasRemoved) return state
+
+      return persistWritingCorrectionState({
+        ...state,
+        sentenceHistoryBySentenceId: {
+          ...(state.sentenceHistoryBySentenceId || {}),
+          ...lineageBySentenceId,
+        },
+        removedSentences: action.removedSentences?.length
+          ? action.removedSentences
+          : state.removedSentences,
+      })
+    }
+
+    case 'WRITING_CORRECTION_SENTENCES_INHERIT_HISTORY': {
+      const sentenceIds = (action.sentenceIds || []).filter(Boolean)
+      const lineages = state.sentenceHistoryBySentenceId || {}
+      const parent = lineages[action.inheritedFromSentenceId]
+      // The version the replaced sentence was first written as: the start of its own history, or
+      // the sentence itself when it was never edited.
+      const inherited = parent?.history?.length
+        ? parent.history
+        : [parent?.beSentenceId].filter(Boolean)
+
+      if (!sentenceIds.length || !inherited.length) return state
+
+      const sentenceHistoryBySentenceId = sentenceIds.reduce(
+        (next, sentenceId) => ({
+          ...next,
+          [sentenceId]: {
+            beSentenceId: next[sentenceId]?.beSentenceId ?? null,
+            text: next[sentenceId]?.text,
+            history: inherited,
+            isOriginal: true,
+          },
+        }),
+        { ...lineages },
+      )
+
+      return persistWritingCorrectionState({ ...state, sentenceHistoryBySentenceId })
+    }
+
+    case 'WRITING_CORRECTION_SENTENCES_REMOVED': {
+      const removed = (action.removedSentences || []).filter(entry => entry?.sentence?.sentenceId)
+
+      if (!removed.length) return state
+
+      const lineages = state.sentenceHistoryBySentenceId || {}
+      const deletedIds = new Set(removed.map(entry => entry.sentence.sentenceId))
+      // A sentence that was itself anchoring earlier deletions is now gone too, so those move on to
+      // whatever this one was anchored to — otherwise they would have nothing to sit in front of.
+      const inheritedAnchor = removed[removed.length - 1].anchorSentenceId ?? null
+
+      return persistWritingCorrectionState({
+        ...state,
+        removedSentences: state.removedSentences
+          .map(entry =>
+            deletedIds.has(entry.anchorSentenceId)
+              ? { ...entry, anchorSentenceId: inheritedAnchor }
+              : entry,
+          )
+          .concat(
+            removed.map(({ sentence, anchorSentenceId }) => ({
+              sentenceId: sentence.sentenceId,
+              text: sentence.text,
+              anchorSentenceId: anchorSentenceId ?? null,
+              beSentenceId: lineages[sentence.sentenceId]?.beSentenceId ?? null,
+              history: lineages[sentence.sentenceId]?.history ?? [],
+            })),
+          ),
+      })
+    }
+
     case 'WRITING_ESSAY_UPDATE_PATH_ATTEMPT': {
       const { essayId, path } = getActionQuery(action)
       return {
@@ -676,30 +993,26 @@ export default (state = initialState, action) => {
       const localSentenceId = getSentenceId(baseEntry)
       const isLatest = state.latestCorrectionKeyBySentenceId?.[localSentenceId] === baseEntry.key
 
-      const previous = state.sentenceHistoryBySentenceId?.[localSentenceId]
-      const history =
-        isLatest && getActionQuery(action).isEdit && previous?.beSentenceId
-          ? [...previous.history, previous.beSentenceId]
-          : []
-      const entry = { ...baseEntry, history }
+      const lineage = getNextSentenceLineage(
+        state.sentenceHistoryBySentenceId?.[localSentenceId],
+        baseEntry.beSentenceId,
+        baseEntry.text,
+      )
+      const entry = { ...baseEntry, history: lineage.history }
 
-      const correctionsByKey = {
-        ...state.correctionsByKey,
-        [entry.key]: entry,
-      }
-
-      saveStoredWritingCorrectionCache(correctionsByKey)
-
-      const nextState = {
+      const nextState = persistWritingCorrectionState({
         ...state,
-        correctionsByKey,
+        correctionsByKey: {
+          ...state.correctionsByKey,
+          [entry.key]: entry,
+        },
         ...(isLatest && {
           sentenceHistoryBySentenceId: {
             ...(state.sentenceHistoryBySentenceId || {}),
-            [localSentenceId]: { beSentenceId: entry.beSentenceId, history },
+            [localSentenceId]: lineage,
           },
         }),
-      }
+      })
 
       if (!isLatest) {
         return nextState
@@ -727,17 +1040,16 @@ export default (state = initialState, action) => {
 
     case 'WRITING_CORRECTION_CLEAR_ALL':
       clearStoredWritingCorrectionCache()
-      return { ...initialState, correctionsByKey: {} }
+      return { ...initialState, correctionsByKey: {}, sentenceHistoryBySentenceId: {} }
 
     case 'WRITING_CORRECTION_CLEAR': {
       const nextCorrectionsByKey = { ...state.correctionsByKey }
       delete nextCorrectionsByKey[action.key]
-      saveStoredWritingCorrectionCache(nextCorrectionsByKey)
 
-      const nextState = {
+      const nextState = persistWritingCorrectionState({
         ...state,
         correctionsByKey: nextCorrectionsByKey,
-      }
+      })
 
       const suggestion = Object.values(state.correctionSuggestionsBySentenceId).find(
         correctionSuggestion => correctionSuggestion.key === action.key,
@@ -760,16 +1072,27 @@ export default (state = initialState, action) => {
         text: action.sentence || entry.text,
       }
       const cachedLocalSentenceId = getSentenceId(suggestionEntry)
-      const nextState = {
+      const previousLineage = state.sentenceHistoryBySentenceId?.[cachedLocalSentenceId]
+      const lineage = previousLineage
+        ? getNextSentenceLineage(
+            previousLineage,
+            entry.beSentenceId ?? previousLineage.beSentenceId,
+            entry.text,
+          )
+        : {
+            beSentenceId: entry.beSentenceId ?? null,
+            text: entry.text,
+            history: entry.history || [],
+            isOriginal: true,
+          }
+
+      const nextState = persistWritingCorrectionState({
         ...updateLatestCorrectionKey(state, suggestionEntry),
         sentenceHistoryBySentenceId: {
           ...(state.sentenceHistoryBySentenceId || {}),
-          [cachedLocalSentenceId]: {
-            beSentenceId: entry.beSentenceId ?? null,
-            history: entry.history || [],
-          },
+          [cachedLocalSentenceId]: lineage,
         },
-      }
+      })
 
       if (entry.pending || entry.error || writingCorrectionHasChanges(entry.corrections)) {
         return upsertCorrectionSuggestion(nextState, suggestionEntry)
