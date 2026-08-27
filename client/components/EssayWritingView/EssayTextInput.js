@@ -7,7 +7,7 @@ import {
   getWritingCorrectionKey,
   getWritingCorrectionSession,
   getWritingCorrectionWords,
-  markWritingSentencesNotOriginal,
+  inheritWritingSentenceHistory,
   recordWritingRemovedSentences,
   restoreWritingSentenceLineage,
   syncWritingCorrectionSuggestions,
@@ -24,7 +24,7 @@ import {
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
   getDeletedSentences,
-  getSplitOrMergedSentenceIds,
+  getSentenceRestructure,
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
@@ -341,15 +341,19 @@ const EssayTextInput = ({
       syncWritingCorrectionSuggestions(nextCompletedSentences.map(sentence => sentence.sentenceId)),
     )
 
-    // Splitting or merging replaces sentences rather than editing one, so the sentences that come
-    // out of it stop being versions of what was there before, and their history is dropped.
-    const splitOrMergedSentenceIds = getSplitOrMergedSentenceIds(
-      previousCompletedSentences,
-      nextCompletedSentences,
-    )
+    // Splitting or merging replaces sentences rather than editing one. What comes out inherits the
+    // history of the first sentence that went in, and any others that went in are kept as removed
+    // — between them the essay's original still holds every sentence that was written.
+    const restructure = getSentenceRestructure(previousCompletedSentences, nextCompletedSentences)
 
-    if (splitOrMergedSentenceIds.length) {
-      dispatch(markWritingSentencesNotOriginal(splitOrMergedSentenceIds))
+    if (restructure.sentenceIds.length) {
+      dispatch(
+        inheritWritingSentenceHistory(restructure.sentenceIds, restructure.inheritedFromSentenceId),
+      )
+    }
+
+    if (restructure.removedSentences.length) {
+      dispatch(recordWritingRemovedSentences(restructure.removedSentences))
     }
 
     // A deleted sentence leaves the editor but not the essay: it is kept, anchored to whatever now

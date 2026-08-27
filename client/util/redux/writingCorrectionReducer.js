@@ -2,7 +2,7 @@ import callBuilder from '../apiConnection'
 
 const PREFIX = 'WRITING_CORRECTION_CHECK'
 const DEFAULT_LANGUAGE = 'Finnish'
-const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v18'
+const WRITING_CORRECTION_CACHE_STORAGE_KEY = 'writing-correction-cache-v19'
 const WRITING_CORRECTION_CACHE_MAX_ENTRIES = 200
 
 // FNV-1a hash of a string, returned base-36.
@@ -38,7 +38,10 @@ const buildWritingEssaySentence = (sentence, entry, lineage) => {
   // one edit ahead of the last corrected version. That version is an earlier version of what is
   // being saved, so it belongs in the history even though no newer correction has named it.
   const savedTextIsNewer =
-    Boolean(beSentenceId) && lineage?.isOriginal !== false && lineage?.text !== sentence.text
+    Boolean(beSentenceId) &&
+    lineage?.isOriginal !== false &&
+    lineage?.text !== sentence.text &&
+    !history.includes(beSentenceId)
 
   return {
     original_text: sentence.text,
@@ -131,11 +134,13 @@ export const restoreWritingSentenceLineage = (lineageBySentenceId, removedSenten
 export const writingEssaySaveFailedOnTitle = message =>
   typeof message === 'string' && /taken|already exist|duplicate/i.test(message)
 
-// Drop the edit history of sentences that came out of a split or a merge: per the agreed contract
-// they are not later versions of what they replaced, so they count as their own original.
-export const markWritingSentencesNotOriginal = sentenceIds => ({
-  type: 'WRITING_CORRECTION_SENTENCES_NOT_ORIGINAL',
+// Hand the sentences that came out of a split or a merge the history of the sentence they replaced,
+// so the essay's original still holds it. The halves of a split share one history and the reader
+// emits it once; a merge keeps its first parent this way and the rest arrive as removed.
+export const inheritWritingSentenceHistory = (sentenceIds, inheritedFromSentenceId) => ({
+  type: 'WRITING_CORRECTION_SENTENCES_INHERIT_HISTORY',
   sentenceIds,
+  inheritedFromSentenceId,
 })
 
 // Keep the sentences an edit deleted. They leave the editor but stay in the essay: the save sends
@@ -243,10 +248,28 @@ export const essaySentenceWasRemoved = sentence => sentence?.removed === true
 
 const getEssaySentences = essay => (Array.isArray(essay?.sentences) ? essay.sentences : [])
 
+// The id of the version a sentence was first written as, when the backend recorded one.
+const getEssaySentenceOriginalId = sentence => {
+  const first = (Array.isArray(sentence?.history) ? sentence.history : [])[0]
+
+  return first && typeof first === 'object' ? first.sentence_id : first
+}
+
 // The essay's original version: every sentence that was written, deleted ones included, each shown
-// as it was first written.
-export const getWritingEssayOriginalSentences = essay =>
-  getEssaySentences(essay).map(getEssaySentenceOriginalText)
+// as it was first written. The halves of a split share the sentence they came out of, so a first
+// version already emitted is skipped rather than repeated once per half.
+export const getWritingEssayOriginalSentences = essay => {
+  const emitted = new Set()
+
+  return getEssaySentences(essay).reduce((originals, sentence) => {
+    const originalId = getEssaySentenceOriginalId(sentence)
+
+    if (originalId && emitted.has(originalId)) return originals
+    if (originalId) emitted.add(originalId)
+
+    return originals.concat(getEssaySentenceOriginalText(sentence))
+  }, [])
+}
 
 // The essay's current version: the sentences that have not been deleted.
 export const getWritingEssayCurrentSentences = essay =>
@@ -594,10 +617,13 @@ const getNextSentenceLineage = (previousLineage, beSentenceId, text) => {
   // Only an actual rewrite is a new version. Re-correcting a sentence whose own text didn't change
   // (its context moved when a sentence around it was added or removed) mints a fresh backend id for
   // the same words, and recording that would fill the history with duplicates of one version.
+  // A sentence that inherited its history from the one it replaced already names that version, so
+  // correcting it afterwards must not record the same id a second time.
   const isNewVersion =
     Boolean(previousBeSentenceId) &&
     previousBeSentenceId !== beSentenceId &&
-    previousLineage?.text !== text
+    previousLineage?.text !== text &&
+    !previousHistory.includes(previousBeSentenceId)
 
   return {
     beSentenceId,
@@ -893,22 +919,29 @@ export default (state = initialState, action) => {
       })
     }
 
-    case 'WRITING_CORRECTION_SENTENCES_NOT_ORIGINAL': {
+    case 'WRITING_CORRECTION_SENTENCES_INHERIT_HISTORY': {
       const sentenceIds = (action.sentenceIds || []).filter(Boolean)
+      const lineages = state.sentenceHistoryBySentenceId || {}
+      const parent = lineages[action.inheritedFromSentenceId]
+      // The version the replaced sentence was first written as: the start of its own history, or
+      // the sentence itself when it was never edited.
+      const inherited = parent?.history?.length
+        ? parent.history
+        : [parent?.beSentenceId].filter(Boolean)
 
-      if (!sentenceIds.length) return state
+      if (!sentenceIds.length || !inherited.length) return state
 
       const sentenceHistoryBySentenceId = sentenceIds.reduce(
-        (lineages, sentenceId) => ({
-          ...lineages,
+        (next, sentenceId) => ({
+          ...next,
           [sentenceId]: {
-            beSentenceId: lineages[sentenceId]?.beSentenceId ?? null,
-            text: lineages[sentenceId]?.text,
-            history: [],
-            isOriginal: false,
+            beSentenceId: next[sentenceId]?.beSentenceId ?? null,
+            text: next[sentenceId]?.text,
+            history: inherited,
+            isOriginal: true,
           },
         }),
-        { ...(state.sentenceHistoryBySentenceId || {}) },
+        { ...lineages },
       )
 
       return persistWritingCorrectionState({ ...state, sentenceHistoryBySentenceId })

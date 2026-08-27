@@ -200,25 +200,38 @@ const getSentenceEditWindow = (previousSentences, nextSentences) => {
   return { prefixLength, previousWindow, changedPreviousCount, changedNext }
 }
 
-// The ids of the sentences this edit produced by splitting or merging. One in / many out is a
-// split, many in / one out a merge, many in / many out a rewrite across boundaries. Per the agreed
-// contract the sentences that come out of any of those are not versions of what they replaced, so
-// they stop being original. An insertion, a deletion and a plain in-place edit leave history alone.
-export const getSplitOrMergedSentenceIds = (previousSentences, nextSentences) => {
-  const { changedPreviousCount, changedNext } = getSentenceEditWindow(
+// What an edit that moved a sentence boundary did: which sentences came out of it, and which of
+// the ones that went in have no successor. One in / many out is a split, many in / one out a merge,
+// many in / many out a rewrite across boundaries. Everything that comes out descends from the first
+// sentence that went in, so it carries that sentence's history and the essay's original keeps it.
+// The remaining sentences that went in are gone from the current version but were still written, so
+// they are handed back as removed, anchored after the block that replaced them.
+export const getSentenceRestructure = (previousSentences, nextSentences) => {
+  const { prefixLength, previousWindow, changedPreviousCount, changedNext } = getSentenceEditWindow(
     previousSentences,
     nextSentences,
   )
+  const none = { inheritedFromSentenceId: null, sentenceIds: [], removedSentences: [] }
 
-  if (changedPreviousCount < 1 || changedNext.length < 1) return []
-  if (changedPreviousCount === 1 && changedNext.length === 1) return []
+  if (changedPreviousCount < 1 || changedNext.length < 1) return none
+  if (changedPreviousCount === 1 && changedNext.length === 1) return none
 
-  return changedNext.map(sentence => sentence.sentenceId)
+  // Whatever follows the sentences that replaced this block — where the parents that no longer
+  // exist are put back, so they sit after their replacement rather than in front of it.
+  const anchor = nextSentences[prefixLength + changedNext.length] ?? null
+
+  return {
+    inheritedFromSentenceId: previousWindow[0]?.sentenceId ?? null,
+    sentenceIds: changedNext.map(sentence => sentence.sentenceId),
+    removedSentences: previousWindow
+      .slice(1)
+      .map(sentence => ({ sentence, anchorSentenceId: anchor?.sentenceId ?? null })),
+  }
 }
 
-// The sentences this edit deleted outright, each with the sentence that now stands after it — the
-// anchor the save payload uses to put it back in its place. A deletion at the very end of the essay
-// has no following sentence, so its anchor is null and it is appended.
+// The sentences this edit deleted outright, each anchored to the sentence that now stands after
+// it — the place the save payload puts it back. A deletion at the very end of the essay has no
+// following sentence, so its anchor is null and it is appended.
 export const getDeletedSentences = (previousSentences, nextSentences) => {
   const { prefixLength, previousWindow, changedPreviousCount, changedNext } = getSentenceEditWindow(
     previousSentences,
