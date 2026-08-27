@@ -298,6 +298,8 @@ const DesignSystem = () => {
             'searchTextfield',
             'star06Colored',
             'users01Colored',
+            'sequre',
+            'globe5'
           ]
           return (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>

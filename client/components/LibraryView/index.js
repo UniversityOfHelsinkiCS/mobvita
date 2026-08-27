@@ -7,6 +7,7 @@ import AppButton from 'Components/AppButton'
 import StoryCard from 'Components/LibraryView/StoryCard'
 import { useIntl, FormattedMessage } from 'react-intl'
 import AppTabs from 'Components/ui/AppTabs'
+import AppIcon from 'Components/ui/AppIcon'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppSelect from 'Components/ui/AppSelect'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
@@ -363,10 +364,10 @@ const StoryList = () => {
     <Box data-cy="library-controls" className="library-control">
       {(() => {
         const meta = {
-          public: { label: <FormattedMessage id="Public" />, icon: <PublicOutlinedIcon /> },
-          private: { label: <FormattedMessage id="Private" />, icon: <LockOutlinedIcon /> },
-          essays: { label: <FormattedMessage id="my-essays" />, icon: <ArticleOutlinedIcon /> },
-          group: { label: <FormattedMessage id="Group" />, icon: <GroupsOutlinedIcon /> },
+          public: { label: <FormattedMessage id="Public" />, icon: <AppIcon src={images.globe5} size={24} /> },
+          private: { label: <FormattedMessage id="Private" />, icon: <AppIcon src={images.sequre} size={24} /> },
+          essays: { label: <FormattedMessage id="my-essays" />, icon: <AppIcon src={images.paste} size={24} /> },
+          group: { label: <FormattedMessage id="Group" />, icon: <AppIcon src={images.users01} size={24} /> },
         }
         const tabs = ['public', 'private', 'essays', 'group']
           .filter(key => key in libraries)

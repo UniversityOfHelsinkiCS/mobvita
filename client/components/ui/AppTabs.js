@@ -31,7 +31,7 @@ const BADGE_ORANGE = '#FF7A45'
 const SIZES = {
   tiny: { barGap: 2, barPad: 3, pad: '4px 10px', fontSize: 12, gap: 6, icon: 14, badge: 16, badgeFont: 10 },
   small: { barGap: 3, barPad: 4, pad: '6px 14px', fontSize: 14, gap: 8, icon: 16, badge: 18, badgeFont: 11 },
-  medium: { barGap: 4, barPad: 6, pad: '10px 22px', fontSize: 16, gap: 10, icon: 20, badge: 22, badgeFont: 13 },
+  medium: { barGap: 4, barPad: 10, pad: '10px 22px', fontSize: 16, gap: 10, icon: 20, badge: 22, badgeFont: 13 },
   large: { barGap: 6, barPad: 8, pad: '14px 30px', fontSize: 18, gap: 12, icon: 24, badge: 26, badgeFont: 15 },
 }
 const SIZE_KEYS = { xs: 'tiny', sm: 'small', md: 'medium', lg: 'large' }

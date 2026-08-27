@@ -190,6 +190,9 @@ import heartbeat from 'Assets/images/heartbeat.png'
 import uhLogo from 'Assets/images/uh_logo.png'
 import network from 'Assets/images/network.svg'
 import external from 'Assets/images/external.svg'
+import sequre from 'Assets/images/sequre.svg'
+import globe5 from 'Assets/images/globe-5.svg'
+
 
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -389,6 +392,8 @@ export const images = {
   uhLogo,
   network,
   external,
+  sequre,
+  globe5,
 }
 
 export const backgroundColors = [
