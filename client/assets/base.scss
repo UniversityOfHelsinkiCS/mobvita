@@ -436,33 +436,44 @@ textarea::selection {
   color: rgba(0, 0, 0, 0.87);
 }
 
-// Scrollbars (WebKit/Blink only)
-// ------------------------------
-// Descendants of <body> only, so the document scrollbar keeps its native look.
+// Scrollbars
+// -----------
+// Descendants of <body> only, so the document scrollbar keeps its native look. The thumb is inset
+// inside the gutter by a transparent border that `background-clip: content-box` keeps unpainted, so
+// it sits inside a rounded container's shape instead of riding its edge; the track stays
+// transparent for the same reason. The colour lives in designTokens.js as `$color-scrollbar`, so
+// every scrolling surface in the app picks it up from one place.
+
+// Firefox has no ::-webkit pseudo-elements; both of these inherit, hence the descendant selector
+// rather than `body` itself, which some engines propagate to the viewport.
+body * {
+  scrollbar-width: thin;
+  scrollbar-color: $color-scrollbar transparent;
+}
 
 body ::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
-body ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 0;
+body ::-webkit-scrollbar-track,
+body ::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
+// The 3px transparent border is what insets the thumb: it widens the box to fill the gutter while
+// `content-box` clipping keeps the paint 3px clear of every edge, leaving a 6px pill.
 body ::-webkit-scrollbar-thumb {
   cursor: pointer;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.25);
-  -webkit-transition: color 0.2s ease;
-  transition: color 0.2s ease;
-}
-
-body ::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(0, 0, 0, 0.15);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: $color-scrollbar;
+  background-clip: content-box;
+  transition: background-color 0.2s ease;
 }
 
 body ::-webkit-scrollbar-thumb:hover {
-  background: rgba(128, 135, 139, 0.8);
+  background: $color-scrollbar-hover;
+  background-clip: content-box;
 }

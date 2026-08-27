@@ -37,6 +37,9 @@ export const colors = {
   folderIconStroke: '#8DB19F', // folder icon outline
   progressLabel: '#7C9562', // percentage label inside the progress bar
   emptyState: '#BFBBB0', // icon + text of an empty library folder
+
+  scrollbar: 'rgba(45, 44, 42, 0.15)',
+  scrollbarHover: 'rgba(45, 44, 42, 0.3)', // derived — Figma gives no hover state
 }
 
 // Typefaces fetched from Google Fonts. `name` drives both the stylesheet URL injected into
