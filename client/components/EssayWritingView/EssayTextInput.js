@@ -7,7 +7,8 @@ import {
   getWritingCorrectionKey,
   getWritingCorrectionSession,
   getWritingCorrectionWords,
-  setWritingSentenceAncestry,
+  markWritingSentencesNotOriginal,
+  recordWritingRemovedSentences,
   restoreWritingSentenceLineage,
   syncWritingCorrectionSuggestions,
   useCachedWritingCorrection,
@@ -22,7 +23,8 @@ import {
   getEssayFocusFromSelection,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
-  getSentenceAncestry,
+  getDeletedSentences,
+  getSplitOrMergedSentenceIds,
   getUpdatedPendingSentence,
   sentenceWasCompletedByCurrentInput,
 } from './utils/essaySentences'
@@ -79,6 +81,7 @@ const EssayTextInput = ({
   focusLocked,
   onEssayFocusChange,
   onEssayTextChange,
+  restoredRemovedSentences,
   restoredSentenceLineage,
   sentenceSelectionRequest,
 }) => {
@@ -339,12 +342,22 @@ const EssayTextInput = ({
     )
 
     // Splitting or merging replaces sentences rather than editing one, so the sentences that come
-    // out of it inherit the roots of the ones that went in. Recorded now, before their corrections
-    // come back, so a first correction can't mistake a split half for a brand-new sentence.
-    const ancestry = getSentenceAncestry(previousCompletedSentences, nextCompletedSentences)
+    // out of it stop being versions of what was there before, and their history is dropped.
+    const splitOrMergedSentenceIds = getSplitOrMergedSentenceIds(
+      previousCompletedSentences,
+      nextCompletedSentences,
+    )
 
-    if (Object.keys(ancestry).length) {
-      dispatch(setWritingSentenceAncestry(ancestry))
+    if (splitOrMergedSentenceIds.length) {
+      dispatch(markWritingSentencesNotOriginal(splitOrMergedSentenceIds))
+    }
+
+    // A deleted sentence leaves the editor but not the essay: it is kept, anchored to whatever now
+    // stands after it, so the save can put it back in place flagged removed.
+    const deletedSentences = getDeletedSentences(previousCompletedSentences, nextCompletedSentences)
+
+    if (deletedSentences.length) {
+      dispatch(recordWritingRemovedSentences(deletedSentences))
     }
 
     return nextCompletedSentences
@@ -432,6 +445,13 @@ const EssayTextInput = ({
               restoredSentenceLineage[index],
             ]),
           ),
+          // Sentences already deleted in an earlier session: anchor each to the sentence it sits in
+          // front of, now that the editor has minted ids for the surviving ones.
+          (restoredRemovedSentences ?? []).map(removed => ({
+            ...removed,
+            anchorSentenceId:
+              restoredCompletedSentences[removed.followingIndex]?.sentenceId ?? null,
+          })),
         ),
       )
     }

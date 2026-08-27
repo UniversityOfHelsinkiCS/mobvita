@@ -14,6 +14,7 @@ import {
   getWritingCorrectionKey,
   getWritingEssayId,
   getWritingEssayVersions,
+  getWritingEssayRemovedSentences,
   getWritingEssaySentenceLineage,
   getWritingEssaySentenceVersions,
   saveWritingEssay,
@@ -44,6 +45,7 @@ const EssayWritingView = () => {
   const [essaySentences, setEssaySentences] = useState([])
   const [continuedEssayId, setContinuedEssayId] = useState(null)
   const [restoredSentenceLineage, setRestoredSentenceLineage] = useState(null)
+  const [restoredRemovedSentences, setRestoredRemovedSentences] = useState(null)
   const [hoveredSentence, setHoveredSentence] = useState(null)
   const [selectedWord, setSelectedWord] = useState(null)
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
@@ -67,6 +69,7 @@ const EssayWritingView = () => {
   const sentenceHistoryBySentenceId = useSelector(
     state => state.writingCorrection.sentenceHistoryBySentenceId,
   )
+  const removedSentences = useSelector(state => state.writingCorrection.removedSentences)
   const writingSessionId = useSelector(state => state.writingCorrection.sessionId)
   const savePending = useSelector(state => state.writingCorrection.savePending)
   const saveError = useSelector(state => state.writingCorrection.saveError)
@@ -113,6 +116,7 @@ const EssayWritingView = () => {
     setEssaySentences([])
     setContinuedEssayId(null)
     setRestoredSentenceLineage(null)
+    setRestoredRemovedSentences(null)
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
     selectedSelectionRef.current = null
@@ -134,6 +138,7 @@ const EssayWritingView = () => {
     setEssaySentences([])
     setContinuedEssayId(loadEssayId)
     setRestoredSentenceLineage(getWritingEssaySentenceLineage(openedEssay))
+    setRestoredRemovedSentences(getWritingEssayRemovedSentences(openedEssay))
     setTopic(openedEssay.title || '')
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
@@ -168,6 +173,7 @@ const EssayWritingView = () => {
           essaySentences,
           correctionsByKey,
           sentenceHistoryBySentenceId,
+          removedSentences,
         ),
         title: topic.trim(),
       }),
@@ -400,6 +406,7 @@ const EssayWritingView = () => {
               focusLocked={Boolean(essayFocus?.selection)}
               onEssayFocusChange={handleEssayTextFocusChange}
               onEssayTextChange={handleEssayTextChange}
+              restoredRemovedSentences={restoredRemovedSentences}
               restoredSentenceLineage={restoredSentenceLineage}
               sentenceSelectionRequest={sentenceSelectionRequest}
             />
