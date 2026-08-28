@@ -37,7 +37,7 @@ const VARIANT_STYLES = {
   'contrast-outline': {
     backgroundColor: 'transparent',
     color: colors.ink,
-    border: `1px solid ${colors.ink}`,
+    border: `2px solid ${colors.ink}`,
     '&:hover': { backgroundColor: colors.green, borderColor: colors.green },
     '&:disabled': { backgroundColor: 'transparent', color: DISABLED_TEXT, borderColor: DISABLED_BG, cursor: 'default' },
   },
@@ -67,6 +67,7 @@ const Trigger = styled('button', { shouldForwardProp: prop => prop !== 'variant'
   borderRadius: 999,
   fontWeight: 600,
   fontSize: 16,
+  height: 36,
   textAlign: 'left',
   cursor: 'pointer',
   transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',

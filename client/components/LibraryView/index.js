@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
-import ArrowDropDownSharpIcon from '@mui/icons-material/ArrowDropDownSharp'
-import ArrowDropUpSharpIcon from '@mui/icons-material/ArrowDropUpSharp'
+import { Box, Breadcrumbs, Typography } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import StoryCard from 'Components/LibraryView/StoryCard'
 import { useIntl, FormattedMessage } from 'react-intl'
@@ -320,10 +318,36 @@ const StoryList = () => {
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
   ]
-  // sorter is shared per-library state; coerce to a valid essay option so the Select never warns.
+  const sortDirectionLabels = {
+    title: { asc: 'A-Z', desc: 'Z-A' },
+    progress: { asc: 'Less First', desc: 'More First' },
+    difficulty: { asc: 'Easy First', desc: 'Hard First' },
+    date: { asc: 'Newer First', desc: 'Older First' },
+  }
+  const sortDirectionOrder = {
+    title: ['asc', 'desc'],
+    progress: ['desc', 'asc'],
+    difficulty: ['desc', 'asc'],
+    date: ['asc', 'desc'],
+  }
+
+  const buildSortOptions = options =>
+    options.flatMap(option => {
+      const directionLabels = sortDirectionLabels[option.value] || sortDirectionLabels.title
+      return (sortDirectionOrder[option.value] || ['asc', 'desc']).map(direction => ({
+        key: `${option.value}-${direction}`,
+        value: `${option.value}:${direction}`,
+        label: `${option.text} (${directionLabels[direction]})`,
+      }))
+    })
+
+  // Keep the select value in sync with both the field and the direction.
   const essaySorter = essaySortDropdownOptions.some(option => option.value === sorter)
-    ? sorter
-    : 'title'
+    ? `${sorter}:${sortDirection}`
+    : 'title:asc'
+  const storySorter = sortDropdownOptions.some(option => option.value === sorter)
+    ? `${sorter}:${sortDirection}`
+    : `${sortDropdownOptions[0].value}:asc`
 
   const groupDropdownOptions = groups.map(group => ({
     key: group.group_id,
@@ -334,27 +358,15 @@ const StoryList = () => {
   // Persist under activeLibrary (synchronous local state that sorter/sortDirection track), not the
   // async-lagging Redux savedLibrarySelection, so the preference is saved for the displayed library.
   const handleSortChange = newSorter => {
-    setSorter(newSorter)
+    const [nextSorter, nextDirection = 'asc'] = String(newSorter).split(':')
+    setSorter(nextSorter)
+    setSortDirection(nextDirection)
     dispatch(
       updateSortCriterion({
         ...savedSortCriterion,
         [activeLibrary]: {
-          sort_by: newSorter,
-          direction: sortDirection,
-        },
-      }),
-    )
-  }
-
-  const handleDirectionChange = () => {
-    const newDirection = sortDirection === 'asc' ? 'desc' : 'asc'
-    setSortDirection(newDirection)
-    dispatch(
-      updateSortCriterion({
-        ...savedSortCriterion,
-        [activeLibrary]: {
-          sort_by: sorter,
-          direction: newDirection,
+          sort_by: nextSorter,
+          direction: nextDirection,
         },
       }),
     )
@@ -385,6 +397,7 @@ const StoryList = () => {
     <AppButton
       className="tour-add-new-stories library-action-button"
       variant="contrast"
+      block
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
     >
@@ -402,21 +415,11 @@ const StoryList = () => {
           variant="contrast-outline"
           value={sortValue}
           onChange={handleSortChange}
-          options={options.map(option => ({ value: option.value, label: option.text }))}
+          options={buildSortOptions(options)}
+          minWidth={0}
         />
       </div>
-      <IconButton
-        aria-label="Toggle sort direction"
-        onClick={handleDirectionChange}
-        className="library-sort-direction"
-      >
-        {sortDirection === 'asc' ? (
-          <ArrowDropUpSharpIcon fontSize="large" />
-        ) : (
-          <ArrowDropDownSharpIcon fontSize="large" />
-        )}
-      </IconButton>
-      {addStoryButton}
+      <div className="library-sort-action">{addStoryButton}</div>
     </div>
   )
 
@@ -1082,7 +1085,7 @@ const StoryList = () => {
 
     return [...searchedEssays].sort((a, b) => {
       let dir = 0
-      if (essaySorter === 'date') {
+      if (sorter === 'date') {
         const dateA = getWritingEssaySavedDate(a)
         const dateB = getWritingEssaySavedDate(b)
         dir = (dateB ? dateB.getTime() : 0) - (dateA ? dateA.getTime() : 0)
@@ -1269,7 +1272,7 @@ const StoryList = () => {
                   setDisplayedStories={setDisplayedStories}
                   setDisplaySearchResults={setDisplaySearchResults}
                 />
-                {renderSortAndAddRow(sorter, sortDropdownOptions)}
+                {renderSortAndAddRow(storySorter, sortDropdownOptions)}
               </>,
             )}
             {lastQuery && (

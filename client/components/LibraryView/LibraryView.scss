@@ -228,17 +228,21 @@ $menu-hover: $color-menu-hover;
 .library-sort-add-row {
   display: flex;
   align-items: center;
-  gap: 20px;
-  max-width: 798px;
+  gap: 20px;  
 }
 
 .library-sort-select {
-  flex: 1;
+  flex: 2 1 0;
   min-width: 0;
 }
 
-.library-sort-direction {
-  flex-shrink: 0;
+.library-sort-action {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.library-sort-action .library-action-button {
+  width: 100%;
 }
 
 // Figma "Button M IconText" — shared by the add-story and add-folder actions.

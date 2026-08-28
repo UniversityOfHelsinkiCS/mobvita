@@ -128,7 +128,7 @@ const StyledButton = styled(Button)({
   gap: 8,
   transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
   '&:hover': { boxShadow: 'none' },
-  '& img, & > svg': { width: 20, height: 20 },
+  '& img, & > svg': { width: 24, height: 24 },
   '& > svg': { color: 'currentColor' },
 })
 
