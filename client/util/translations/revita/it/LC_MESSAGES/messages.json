@@ -1364,7 +1364,7 @@
     "daily-story-web-2": "sul web",
     "upload-daily-story": "Carica nella mia biblioteca privata",
     "show-daily-stories-button": "Mostra",
-    "edit-story": "Modifica",
+    "edit-story": "Modifica la storia",
     "submit-changes": "Accettare le modifiche",
     "undo-changes": "Annullare le modifiche",
     "return-to-library": "Ritorna al biblioteca",
@@ -1895,5 +1895,14 @@
     "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
     "difficulty-level-tooltip": "Story difficulty level: Easy / Average / Difficult",
     "story-card-has-rc-questions": "This story has reading comprehension questions",
-    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text"
+    "story-card-flashcards-only": "A set of flashcards to practice - this item has no text",
+    "library-delete-story": "Cancellare la storia",
+    "library-sort-title-asc": "A-Z",
+    "library-sort-title-desc": "Z-A",
+    "library-sort-progress-asc": "Less First",
+    "library-sort-progress-desc": "More First",
+    "library-sort-difficulty-asc": "Easy First",
+    "library-sort-difficulty-desc": "Hard First",
+    "library-sort-date-asc": "Newer First",
+    "library-sort-date-desc": "Older First"
 }

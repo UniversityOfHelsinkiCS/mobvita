@@ -1363,7 +1363,7 @@
     "daily-story-web-2": "netissä",
     "upload-daily-story": "Lataa omaan kirjastoon",
     "show-daily-stories-button": "Näytä",
-    "edit-story": "Muokkaa",
+    "edit-story": "Muokkaa tekstiä",
     "submit-changes": "Tallenna muutokset",
     "undo-changes": "Peruuta",
     "return-to-library": "Palaa kirjastoon",
@@ -1896,5 +1896,14 @@
     "story-card-has-rc-questions": "Tässä tekstissä on luetun ymmärtämisen kysymyksiä",
     "story-card-flashcards-only": "Pelkkiä kysymyskortteja harjoiteltavaksi - ei tekstiä",
     "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable one from the Groups page.",
-    "difficulty-level-tooltip": "Tekstin vaikeustaso: Helppo / Keskitaso / Vaikea"
+    "difficulty-level-tooltip": "Tekstin vaikeustaso: Helppo / Keskitaso / Vaikea",
+    "library-delete-story": "Poista teksti",
+    "library-sort-title-asc": "A-Z",
+    "library-sort-title-desc": "Z-A",
+    "library-sort-progress-asc": "Less First",
+    "library-sort-progress-desc": "More First",
+    "library-sort-difficulty-asc": "Easy First",
+    "library-sort-difficulty-desc": "Hard First",
+    "library-sort-date-asc": "Newer First",
+    "library-sort-date-desc": "Older First"
 }

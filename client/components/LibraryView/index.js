@@ -319,10 +319,22 @@ const StoryList = () => {
     { key: 'date', text: intl.formatMessage({ id: 'date-added' }), value: 'date' },
   ]
   const sortDirectionLabels = {
-    title: { asc: 'A-Z', desc: 'Z-A' },
-    progress: { asc: 'Less First', desc: 'More First' },
-    difficulty: { asc: 'Easy First', desc: 'Hard First' },
-    date: { asc: 'Newer First', desc: 'Older First' },
+    title: {
+      asc: intl.formatMessage({ id: 'library-sort-title-asc', defaultMessage: 'A-Z' }),
+      desc: intl.formatMessage({ id: 'library-sort-title-desc', defaultMessage: 'Z-A' }),
+    },
+    progress: {
+      asc: intl.formatMessage({ id: 'library-sort-progress-asc', defaultMessage: 'Less First' }),
+      desc: intl.formatMessage({ id: 'library-sort-progress-desc', defaultMessage: 'More First' }),
+    },
+    difficulty: {
+      asc: intl.formatMessage({ id: 'library-sort-difficulty-asc', defaultMessage: 'Easy First' }),
+      desc: intl.formatMessage({ id: 'library-sort-difficulty-desc', defaultMessage: 'Hard First' }),
+    },
+    date: {
+      asc: intl.formatMessage({ id: 'library-sort-date-asc', defaultMessage: 'Newer First' }),
+      desc: intl.formatMessage({ id: 'library-sort-date-desc', defaultMessage: 'Older First' }),
+    },
   }
   const sortDirectionOrder = {
     title: ['asc', 'desc'],

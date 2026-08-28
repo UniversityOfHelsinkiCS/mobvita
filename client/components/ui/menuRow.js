@@ -17,7 +17,7 @@ export const rowStyles = ({ selected }) => ({
   borderRadius: 999,
   cursor: 'pointer',
   textDecoration: 'none',
-  whiteSpace: 'nowrap',
+  whiteSpace: 'none',
   backgroundColor: selected ? colors.green : 'transparent',
   // Link rows render as <a>; override global anchor styles (blue, underline, :visited).
   '&:visited, &:focus, &:active': { color: colors.ink, textDecoration: 'none' },

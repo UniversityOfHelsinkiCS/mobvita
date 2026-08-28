@@ -1896,5 +1896,14 @@
     "translate-cards": "Translate Cards",
     "story-card-has-rc-questions": "This story has reading comprehension questions",
     "story-card-flashcards-only": "A set of flashcards to practice - this item has no text",
-    "difficulty-level-tooltip": "Story difficulty level: Easy / Average / Difficult"
+    "difficulty-level-tooltip": "Story difficulty level: Easy / Average / Difficult",
+    "library-delete-story": "Delete story",
+    "library-sort-title-asc": "A-Z",
+    "library-sort-title-desc": "Z-A",
+    "library-sort-progress-asc": "Less First",
+    "library-sort-progress-desc": "More First",
+    "library-sort-difficulty-asc": "Easy First",
+    "library-sort-difficulty-desc": "Hard First",
+    "library-sort-date-asc": "Newer First",
+    "library-sort-date-desc": "Older First"
 }
