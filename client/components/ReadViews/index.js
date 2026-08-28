@@ -517,8 +517,7 @@ const ReadViews = ({ match }) => {
       <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
         <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
           <Box
-            data-cy="readmodes-text"
-            className="cont"
+            data-cy="readmodes-text"            
             sx={{
               backgroundColor: colors.card,
               borderRadius: '30px',
