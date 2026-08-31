@@ -154,58 +154,62 @@ const Flashcards = () => {
   }
 
   return (
-    <div className={`cont-tall cont pb-nm flex-col auto ${isSidebarOpen ? 'sidebar-pushed' : ''}`}>
-      <div data-cy="library-controls" style={{ margin: '0 0 1.7em 0' }}>
-        <AppTabs tabs={flashcardTabs} value={activeTab} onChange={handleTabChange} fullWidth />
-      </div>
-
-      
-
-      <div className="flashcard-body" style={{ backgroundColor: colors.card, borderRadius: 30 }}>
-        {/* First item: a row with the practice-mode menu (Translate/Quick) + the settings gear.
-            On the "All cards" list page the gear moves into the pagination header row instead
-            (see FlashcardList), so the top bar is skipped there. */}
-        {width >= 840 && mode !== 'list' && (
-          <div className="flashcard-top-bar">
-            <div className="flashcard-top-bar-menu">
-              {mode !== 'new' && <FlashcardMenu />}
-            </div>
-            <SettingButton style={{ position: 'static', margin: 0 }} />
+    <div className="cont-tall flex-col space-between align-center">
+      {/* Match ReadViews: stretch the row, center the content block, and let the main card fill it. */}
+      <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
+        <div className={`cont pb-nm flex-col ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
+          <div data-cy="library-controls" style={{ margin: '0 0 1.7em 0' }}>
+            <AppTabs tabs={flashcardTabs} value={activeTab} onChange={handleTabChange} fullWidth />
           </div>
-        )}
-        {/* Only render the story-info column/icon when there's actually story info to show. */}
-        {shouldShowStoryInfo &&
-          (width >= 840 ? (
-            <div className="flashcard-side-column">
-              <FlashcardStoryInfo
-                title={title}
-                type={type}
-                numOfRewardableWords={numOfRewardableWords}
-              />
+
+          <div className="flashcard-body" style={{ backgroundColor: colors.card, borderRadius: 30 }}>
+            {/* First item: a row with the practice-mode menu (Translate/Quick) + the settings gear.
+                On the "All cards" list page the gear moves into the pagination header row instead
+                (see FlashcardList), so the top bar is skipped there. */}
+            {width >= 840 && mode !== 'list' && (
+              <div className="flashcard-top-bar">
+                <div className="flashcard-top-bar-menu">
+                  {mode !== 'new' && <FlashcardMenu />}
+                </div>
+                <SettingButton style={{ position: 'static', margin: 0 }} />
+              </div>
+            )}
+            {/* Only render the story-info column/icon when there's actually story info to show. */}
+            {shouldShowStoryInfo &&
+              (width >= 840 ? (
+                <div className="flashcard-side-column">
+                  <FlashcardStoryInfo
+                    title={title}
+                    type={type}
+                    numOfRewardableWords={numOfRewardableWords}
+                  />
+                </div>
+              ) : (
+                <div className="flashcard-story-info-icon-slot">
+                  <FlashcardStoryInfoIcon
+                    title={title}
+                    type={type}
+                    numOfRewardableWords={numOfRewardableWords}
+                  />
+                </div>
+              ))}
+
+            <AppDialog
+              open={showBlueCardsTestEncouragement}
+              onClose={() => handleBlueCardsPromptVisibility(false)}
+              maxWidth="xs"
+            >
+              <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
+            </AppDialog>
+
+            {width < 840 ? <FloatMenu /> : null}
+
+            <div className="flashcard-main-row">
+              <div className="flashcard-main">{content()}</div>
+              <div className="flashcard-arrow-button" id="flashcard-arrow-slot" />
             </div>
-          ) : (
-            <div className="flashcard-story-info-icon-slot">
-              <FlashcardStoryInfoIcon
-                title={title}
-                type={type}
-                numOfRewardableWords={numOfRewardableWords}
-              />
-            </div>
-          ))}
+          </div>
 
-        <AppDialog
-          open={showBlueCardsTestEncouragement}
-          onClose={() => handleBlueCardsPromptVisibility(false)}
-          maxWidth="xs"
-        >
-          <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
-        </AppDialog>
-
-        {width < 840 ? <FloatMenu /> : null}
-
-        <div className="flashcard-main-row">
-          <div className="flashcard-main">{content()}</div>
-          <div className="flashcard-arrow-button" id="flashcard-arrow-slot" />
         </div>
       </div>
 

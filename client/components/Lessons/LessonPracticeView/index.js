@@ -190,7 +190,7 @@ const LessonPracticeView = () => {
                   position: 'relative',
                   // Align the card's top with the assistant panel (HelperSidebar top: 4.5em; the
                   // content starts at the 3em navbar, so 1.5em brings them to the same level).
-                  marginTop: '1.5em',
+                  marginTop: '0',
                   backgroundColor: colors.card,
                   borderRadius: '30px',
                   padding: '1.5em',
