@@ -44,6 +44,7 @@ const CorrectionBubble = ({
     ]
       .filter(Boolean)
       .join(' ')}
+    data-cy="essay-correction-bubble"
     data-sentence={sentence}
     // The shadow is set in EssayWritingStyles.scss (half of elevation 3), so MUI contributes none.
     elevation={0}

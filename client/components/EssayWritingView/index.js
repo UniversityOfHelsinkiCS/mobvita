@@ -271,19 +271,22 @@ const EssayWritingView = () => {
     setSentenceSelectionRequest(selectionRequest)
   }
 
-  const handleHoverSentence = (index, side) => setHoveredSentence({ index, side })
+  // Both carry the sentence's alignment key as well as its position: the key is what finds the same
+  // sentence on the other side, while the position is what picks out the word on this one.
+  const handleHoverSentence = (index, key, side) => setHoveredSentence({ index, key, side })
   const handleLeaveSentence = () => setHoveredSentence(null)
-  // Toggle the selected word (click the same word again to clear).
-  const handleSelectWord = (index, word, side) =>
+  const handleSelectWord = (index, key, word, side) =>
     setSelectedWord(previous =>
       previous && previous.index === index && previous.word === word && previous.side === side
         ? null
-        : { index, word, side },
+        : { index, key, word, side },
     )
 
   // Teacher view: the same page split into two read-only panels — the essay's original and current
   // versions side by side — instead of the writing editor + chatbot. Hovering a word highlights the
-  // aligned sentence on the other side; clicking a word also highlights that word here.
+  // sentence it is paired with on the other side; clicking a word also highlights that word here.
+  // The pairing is by lineage key, not by position: a deleted sentence is in the original only, and
+  // a split puts two current sentences against one original, so the sides do not line up by index.
   if (isTeacherEssayView) {
     const essayLoaded = openedEssay && getWritingEssayId(openedEssay) === loadEssayId
     const { original: originalSentences, current: currentSentences } =
@@ -321,9 +324,11 @@ const EssayWritingView = () => {
                       side="original"
                       pointer={pointer}
                       selection={selectedWord}
-                      onHover={index => handleHoverSentence(index, 'original')}
+                      onHover={(index, key) => handleHoverSentence(index, key, 'original')}
                       onLeave={handleLeaveSentence}
-                      onSelect={(index, word) => handleSelectWord(index, word, 'original')}
+                      onSelect={(index, key, word) =>
+                        handleSelectWord(index, key, word, 'original')
+                      }
                     />
                   </Box>
                 </Paper>
@@ -338,9 +343,9 @@ const EssayWritingView = () => {
                       side="current"
                       pointer={pointer}
                       selection={selectedWord}
-                      onHover={index => handleHoverSentence(index, 'current')}
+                      onHover={(index, key) => handleHoverSentence(index, key, 'current')}
                       onLeave={handleLeaveSentence}
-                      onSelect={(index, word) => handleSelectWord(index, word, 'current')}
+                      onSelect={(index, key, word) => handleSelectWord(index, key, word, 'current')}
                     />
                   </Box>
                 </Paper>

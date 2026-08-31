@@ -312,6 +312,7 @@ const EssayChatbot = ({
           <button
             type="button"
             className="essay-chatbot-back"
+            data-cy="essay-chatbot-back"
             style={focusedAccentColor ? { color: focusedAccentColor } : undefined}
             onClick={() => onClearFocus?.()}
           >
@@ -354,6 +355,7 @@ const EssayChatbot = ({
           {isFocused && (
             <div
               className="essay-chatbot-focused-suggestion"
+              data-cy="essay-chatbot-focused"
               style={focusedBgColor ? { background: focusedBgColor } : undefined}
             >
               {renderSuggestion(focusedSuggestion, true)}
