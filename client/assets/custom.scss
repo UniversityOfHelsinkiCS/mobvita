@@ -66,7 +66,7 @@ $btn-border-radius-primary: 10px;
 $button-border-color: #76c8d4; // Currently only 'Check answers' button
 
 $sidebar-swipeable-width: 1em;
-$navbar-height: 3em;
+$navbar-height: 4.125em;
 // Subtracted from the full-height calcs below, in px so the subtraction is unit-exact.
 $footer-height: 50px;
 $application-content-top-padding: 1.7em;
@@ -492,7 +492,7 @@ body .hg-theme-default {
   min-height: calc(100vh - #{$navbar-height} - #{$footer-height});
   width: 100%;
   padding-right: map.get($spacing, "xs");
-  padding-left: map.get($spacing, "xs");
+  padding-left: 43px;
   padding-top: 1.7em;
   background-color: var(--app-bg-color);  
 }
@@ -3756,7 +3756,7 @@ label.file-upload-btn {
   margin-right: 400px !important;
   width: auto !important;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  max-width: 100%;
+  max-width: 1024px;
   box-sizing: border-box;
 }
 

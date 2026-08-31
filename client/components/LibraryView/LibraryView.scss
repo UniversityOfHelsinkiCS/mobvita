@@ -11,17 +11,12 @@ $menu-hover: $color-menu-hover;
 .library-dashboard.sidebar-pushed {
   margin-right: 400px;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: auto !important;
 }
 
 @media (max-width: 768px) {
   .library-dashboard.sidebar-pushed {
     margin-right: 0;
-  }
-}
-
-@media (min-width: 1638px) {
-  .library-dashboard.sidebar-pushed {
-    margin-right: auto;
   }
 }
 

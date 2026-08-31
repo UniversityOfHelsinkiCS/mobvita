@@ -314,7 +314,7 @@ export default function NavBar() {
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger"
           data-cy="hamburger"
-          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block' }}
+          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block', marginLeft: '35px' }}
         />
         <NavCollapse>
           {/********************************* HAMBURGER *********************************/}
@@ -323,19 +323,22 @@ export default function NavBar() {
               className="navbar-container"
               style={{ display: 'flex', alignItems: 'center', gap: '20px' }}
             >
-              <Link to="/home" style={{ textDecoration: 'none' }}>
+              <Link to="/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                 <Box
                   component="span"
                   data-cy="revita-logo"
                   className="navbar-revita-logo tour-start-finish"
                   sx={{
-                    fontSize: '24px',
-                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    fontSize: '42px',
+                    fontWeight: 400,
+                    lineHeight: 1,
                     color: colors.ink,
                   }}
                 >
                   Revita
-                  {hiddenFeatures && <sup> &beta;</sup>}
+                  {hiddenFeatures && <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>}
                 </Box>
               </Link>
               {user.user.last_used_language && (
@@ -371,7 +374,7 @@ export default function NavBar() {
                           height: 28,
                           borderRadius: '50%',
                           objectFit: 'cover',
-                          border: '1px solid rgba(45, 44, 42, 0.12)',
+                          border: 'none',
                         }}
                       />
                       {user.user.last_used_language}
