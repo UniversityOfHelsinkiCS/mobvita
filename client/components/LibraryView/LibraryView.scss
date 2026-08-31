@@ -3,8 +3,7 @@ $menu-hover: $color-menu-hover;
 .library-dashboard {
   width: 100%;
   max-width: 1024px;
-  margin: 0 auto;
-  display: flow-root;
+  display: block;
 }
 
 // Clear the fixed 380px assistant rail by the same 400px `.cont.sidebar-pushed` uses elsewhere.
@@ -12,11 +11,20 @@ $menu-hover: $color-menu-hover;
   margin-right: 400px;
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: auto !important;
+  box-sizing: border-box;
+  max-width: 1024px;
 }
 
 @media (max-width: 768px) {
   .library-dashboard.sidebar-pushed {
     margin-right: 0;
+  }
+}
+
+@media (min-width: 1856px) {
+  .library-dashboard.sidebar-pushed {
+    margin-right: 0;
+    max-width: 1024px;
   }
 }
 
