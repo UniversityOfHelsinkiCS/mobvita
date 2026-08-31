@@ -255,27 +255,45 @@ const getEssaySentenceOriginalId = sentence => {
   return first && typeof first === 'object' ? first.sentence_id : first
 }
 
+// What pairs a sentence with the original it came from: the id of the version it was first written
+// as, so both versions carry the same key for the same sentence — the two halves of a split
+// included, since they share one root. A sentence with no recorded version was never corrected, so
+// it stands alone and falls back to its own position, which both versions walk in the same order.
+const getEssaySentenceAlignmentKey = (sentence, index) =>
+  getEssaySentenceOriginalId(sentence) ?? `essay-sentence-index-${index}`
+
+// The saved sentences with that key attached, in essay order — what both versions are built from.
+const getKeyedEssaySentences = essay =>
+  getEssaySentences(essay).map((sentence, index) => ({
+    key: getEssaySentenceAlignmentKey(sentence, index),
+    sentence,
+  }))
+
 // The essay's original version: every sentence that was written, deleted ones included, each shown
 // as it was first written. The halves of a split share the sentence they came out of, so a first
 // version already emitted is skipped rather than repeated once per half.
-export const getWritingEssayOriginalSentences = essay => {
+const getKeyedOriginalSentences = essay => {
   const emitted = new Set()
 
-  return getEssaySentences(essay).reduce((originals, sentence) => {
-    const originalId = getEssaySentenceOriginalId(sentence)
+  return getKeyedEssaySentences(essay).reduce((originals, { key, sentence }) => {
+    if (emitted.has(key)) return originals
 
-    if (originalId && emitted.has(originalId)) return originals
-    if (originalId) emitted.add(originalId)
-
-    return originals.concat(getEssaySentenceOriginalText(sentence))
+    emitted.add(key)
+    return originals.concat({ key, text: getEssaySentenceOriginalText(sentence) })
   }, [])
 }
 
 // The essay's current version: the sentences that have not been deleted.
+const getKeyedCurrentSentences = essay =>
+  getKeyedEssaySentences(essay)
+    .filter(({ sentence }) => !essaySentenceWasRemoved(sentence))
+    .map(({ key, sentence }) => ({ key, text: getEssaySentenceCurrentText(sentence) }))
+
+export const getWritingEssayOriginalSentences = essay =>
+  getKeyedOriginalSentences(essay).map(({ text }) => text)
+
 export const getWritingEssayCurrentSentences = essay =>
-  getEssaySentences(essay)
-    .filter(sentence => !essaySentenceWasRemoved(sentence))
-    .map(getEssaySentenceCurrentText)
+  getKeyedCurrentSentences(essay).map(({ text }) => text)
 
 // Extract the title + original/current version text from a fetched essay.
 export const getWritingEssayVersions = essay => {
@@ -288,13 +306,15 @@ export const getWritingEssayVersions = essay => {
   }
 }
 
-// The two versions as per-sentence arrays, for a UI that shows them side by side. The original
-// holds every sentence that was written; the current one leaves out the deleted ones.
+// The two versions as per-sentence arrays, for a UI that shows them side by side. Each sentence
+// comes through as { key, text }: the original holds every sentence that was written and the
+// current one leaves out the deleted ones, so the two sides can differ in length — and in what sits
+// at any given position. The key is what pairs them: a sentence and the original it came from carry
+// the same one, both halves of a split carry their parent's, and a deleted sentence carries a key
+// that only the original side has.
 export const getWritingEssaySentenceVersions = essay => ({
-  // The original holds every sentence that was written; the current one drops the deleted ones, so
-  // the two sides differ in length by exactly the sentences the student removed.
-  original: getWritingEssayOriginalSentences(essay),
-  current: getWritingEssayCurrentSentences(essay),
+  original: getKeyedOriginalSentences(essay),
+  current: getKeyedCurrentSentences(essay),
 })
 
 // A saved essay's per-sentence lineage in essay order: the backend id and text of each sentence's

@@ -6,24 +6,26 @@ const WORD_TOKEN_RE = /\p{L}[\p{L}\p{M}’'-]*|[^\p{L}]+/gu
 const normalizeWord = word => (word || '').normalize('NFC').toLowerCase()
 const isWordToken = token => /\p{L}/u.test(token?.[0] || '')
 
-// Renders one essay version (a list of sentences) with per-word interaction. Hovering anywhere in a
-// sentence reports its index+side (parent highlights the aligned sentence on the OTHER side);
-// clicking a word reports its index+word+side (parent highlights that word here + the sentence on the
-// other side). A sentence is highlighted when the active pointer comes from the other side; a word is
-// highlighted when it is the current selection on this side.
+// Renders one essay version — a list of { key, text } sentences — with per-word interaction.
+// Hovering anywhere in a sentence reports its key+index+side (parent highlights the sentence the key
+// pairs it with on the OTHER side); clicking a word also reports the word (parent highlights it
+// here + the paired sentence on the other side). Sentences are matched by key rather than by
+// position: the two versions hold different sentences wherever one was deleted, split or merged, so
+// the same index is not the same sentence.
 const EssayVersionText = ({ sentences = [], side, pointer, selection, onHover, onLeave, onSelect }) => (
   <>
     {sentences.map((sentence, sentenceIndex) => {
       const sentenceHighlighted =
-        Boolean(pointer) && pointer.side !== side && pointer.index === sentenceIndex
-      const tokens = (sentence || '').match(WORD_TOKEN_RE) || []
+        Boolean(pointer) && pointer.side !== side && pointer.key === sentence.key
+      const tokens = (sentence?.text || '').match(WORD_TOKEN_RE) || []
 
       return (
         // eslint-disable-next-line react/no-array-index-key
         <React.Fragment key={sentenceIndex}>
           <span
             className={`essay-sentence${sentenceHighlighted ? ' essay-sentence-highlighted' : ''}`}
-            onMouseEnter={() => onHover?.(sentenceIndex)}
+            data-cy="essay-version-sentence"
+            onMouseEnter={() => onHover?.(sentenceIndex, sentence.key)}
             onMouseLeave={() => onLeave?.()}
           >
             {tokens.map((token, tokenIndex) => {
@@ -46,11 +48,11 @@ const EssayVersionText = ({ sentences = [], side, pointer, selection, onHover, o
                   className={`essay-word${wordHighlighted ? ' essay-word-highlighted' : ''}`}
                   role="button"
                   tabIndex={-1}
-                  onClick={() => onSelect?.(sentenceIndex, wordNorm)}
+                  onClick={() => onSelect?.(sentenceIndex, sentence.key, wordNorm)}
                   onKeyDown={event => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault()
-                      onSelect?.(sentenceIndex, wordNorm)
+                      onSelect?.(sentenceIndex, sentence.key, wordNorm)
                     }
                   }}
                 >

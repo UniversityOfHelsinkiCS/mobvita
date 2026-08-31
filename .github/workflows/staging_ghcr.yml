@@ -27,6 +27,17 @@ jobs:
         with:
           spec: cypress/e2e/dictionary_spec.js
           context: dictionary
+  
+  test_essay_writing:
+    name: "Test essay writing"
+    runs-on: ubuntu-latest  
+    steps:
+      - uses: actions/checkout@v6
+      - name: 'Run tests'
+        uses: ./.github/actions/run_test
+        with:
+          spec: cypress/e2e/essay_writing_spec.js
+          context: essay_writing
 
   test_flashcards:
     name: "Test flashcards"
@@ -132,6 +143,7 @@ jobs:
     needs: 
       - test_competition
       - test_dictionary
+      - test_essay_writing
       - test_flashcards
       - test_follow_and_block
       - test_groups
