@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
@@ -36,8 +36,8 @@ export const CORRECTION_COLORS = {
 }
 
 const VARIANT_STYLES = {
-  bot: { alignSelf: 'flex-start', backgroundColor: '#FFFFFF', color: colors.ink },
-  user: { alignSelf: 'flex-end', backgroundColor: colors.green, color: colors.ink },
+  bot: { alignSelf: 'flex-start', backgroundColor: colors.card, color: colors.ink },
+  user: { alignSelf: 'flex-end', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopRightRadius: 2, paddingRight: 16 },
   note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink },
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   'controlled-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
@@ -83,16 +83,61 @@ const Bubble = styled('div', {
   borderRadius: 18,
   // A bubble holds what the user is reading or wrote themselves — language content, not chrome —
   // so it names the content token rather than inheriting the UI font from <body>.
-  fontFamily: font.content,
+  fontFamily: font.ui,
   fontSize: 15,
-  lineHeight: 1.5,
+  lineHeight: 1.2,
+  '& p': {
+    margin: '4px 0',
+  },
+
+  '& blockquote': {
+    margin: '6px 0',
+    paddingLeft: 10,
+  },
+
+  '& h3': {
+    margin: '8px 0 4px',
+  },
+
+  '& ul': {
+    margin: '4px 0',
+    paddingLeft: 28,
+  },
+
+  '& li': {
+    margin: '2px 0',
+  },
   wordBreak: 'break-word',
-  boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
+  //boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
   ...(VARIANT_STYLES[variant] || VARIANT_STYLES.bot),
   // markdown children shouldn't add outer margins inside the bubble
   '& p:first-of-type': { marginTop: 0 },
   '& p:last-of-type': { marginBottom: 0 },
+  '& a': {
+    color: '#2A68DD',
+  },
 }))
+
+const BubbleContent = styled('div', {
+  shouldForwardProp: prop => prop !== 'collapsed',
+})(({ collapsed }) => ({
+  position: 'relative',
+
+  ...(collapsed && {
+    maxHeight: '6em', // 4 lines × 1.5 line-height
+    overflow: 'hidden',
+  }),
+}))
+
+const BubbleFade = styled('div')({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  bottom: 0,
+  height: '2.5em',
+  pointerEvents: 'none',
+  background: 'linear-gradient(to bottom, transparent, #E8E5DC)',
+})
 
 const BubbleActions = styled('div')({
   position: 'absolute',
@@ -117,35 +162,89 @@ const ActionButton = styled('button')({
 })
 
 const ChatBubble = React.forwardRef(
-  ({ variant = 'bot', onEdit, onRemove, editDataCy, removeDataCy, children, ...rest }, ref) => (
-    <Bubble ref={ref} variant={variant} hasActions={Boolean(onEdit || onRemove)} {...rest}>
-      {(onEdit || onRemove) && (
-        <BubbleActions>
-          {onEdit && (
-            <ActionButton
-              type="button"
-              aria-label="Edit message"
-              onClick={onEdit}
-              data-cy={editDataCy}
-            >
-              <img src={images.edit03} alt="" />
-            </ActionButton>
-          )}
-          {onRemove && (
-            <ActionButton
-              type="button"
-              aria-label="Remove message"
-              onClick={onRemove}
-              data-cy={removeDataCy}
-            >
-              <img src={images.xClose} alt="" />
-            </ActionButton>
-          )}
-        </BubbleActions>
-      )}
-      {children}
-    </Bubble>
-  ),
+  (
+    {
+      variant = 'bot',
+      onEdit,
+      onRemove,
+      editDataCy,
+      removeDataCy,
+      children,
+      ...rest
+    },
+    ref,
+  ) => {
+    const contentRef = useRef(null)
+    const [expanded, setExpanded] = useState(false)
+    const [isLong, setIsLong] = useState(false)
+
+    useEffect(() => {
+      if (variant !== 'user') return
+
+      const element = contentRef.current
+
+      if (!element) return
+
+      const lineHeight = parseFloat(getComputedStyle(element).lineHeight)
+      const maxHeight = lineHeight * 4
+
+      setIsLong(element.scrollHeight > maxHeight + 1)
+    }, [children, variant])
+
+    const collapsed = variant === 'user' && isLong && !expanded
+
+    return (
+      <Bubble
+        ref={ref}
+        variant={variant}
+        hasActions={Boolean(onEdit || onRemove)}
+        {...rest}
+      >
+        {(onEdit || onRemove) && (
+          <BubbleActions>
+            {onEdit && (
+              <ActionButton
+                type="button"
+                aria-label="Edit message"
+                onClick={onEdit}
+                data-cy={editDataCy}
+              >
+                <img src={images.edit03} alt="" />
+              </ActionButton>
+            )}
+
+            {onRemove && (
+              <ActionButton
+                type="button"
+                aria-label="Remove message"
+                onClick={onRemove}
+                data-cy={removeDataCy}
+              >
+                <img src={images.xClose} alt="" />
+              </ActionButton>
+            )}
+          </BubbleActions>
+        )}
+
+        <BubbleContent
+          ref={contentRef}
+          collapsed={collapsed}
+          onClick={
+            variant === 'user' && isLong
+              ? () => setExpanded(value => !value)
+              : undefined
+          }
+          style={{
+            cursor: variant === 'user' && isLong ? 'pointer' : 'default',
+          }}
+        >
+          {children}
+
+          {collapsed && <BubbleFade />}
+        </BubbleContent>
+      </Bubble>
+    )
+  },
 )
 
 ChatBubble.displayName = 'ChatBubble'
