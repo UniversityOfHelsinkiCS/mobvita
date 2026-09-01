@@ -694,7 +694,8 @@ const StoryList = () => {
           onDragOver={e => handleFolderDragOver('', e)}
           onDrop={e => handleFolderDrop('', e)}
         >
-          <FormattedMessage id={capitalize(activeLibrary)} />
+          <FormattedMessage id={capitalize(activeLibrary)} />&nbsp;
+          <FormattedMessage id="Library" />
         </button>
         {libraryPathParts.map((part, index) => {
           const path = libraryPathParts.slice(0, index + 1).join('/')
