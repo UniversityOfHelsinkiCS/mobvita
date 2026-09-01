@@ -94,15 +94,7 @@ const seedStoryQuestions = (token, storyId, questions) =>
 
 // ---- UI helpers ----
 
-const createStoryViaPaste = (title, body) => {
-  // The AI assistant sidebar overlaps the add-story button on narrow viewports, so close it first.
-  // (Clicking the button re-opens the assistant with the add-story options rendered inside it.)
-  cy.get('.helper-sidebar').then($sidebar => {
-    if ($sidebar.hasClass('open')) {
-      cy.get('[data-cy=helper-sidebar-toggle]').click()
-      cy.get('.helper-sidebar').should('have.class', 'collapsed')
-    }
-  })
+const createStoryViaPaste = (title, body) => {  
   cy.get('[data-cy=add-story-button]').click()
   cy.get('[data-cy=add-story-paste]').click()
   cy.get('[data-cy=paste-story-title-input] input').clear().type(title)
@@ -186,6 +178,14 @@ describe('reading comprehension', function () {
       // Fresh visit resets uploadProgress redux so each Confirm button is enabled.
       cy.visit(`${BASE}/library/private`)
       createStoryViaPaste(spec.title, spec.body)
+      // The AI assistant sidebar overlaps the add-story button on narrow viewports, so close it first.
+      // (Clicking the button re-opens the assistant with the add-story options rendered inside it.)
+      cy.get('.helper-sidebar').then($sidebar => {
+        if ($sidebar.hasClass('open')) {
+          cy.get('[data-cy=helper-sidebar-toggle]').click()
+          cy.get('.helper-sidebar').should('have.class', 'collapsed')
+        }
+      })
       cy.then(() => fetchCreatedStory(owner.token, spec.title)).then(s => stories.push(s))
     })
   })
