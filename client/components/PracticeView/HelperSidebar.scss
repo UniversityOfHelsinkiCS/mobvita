@@ -52,10 +52,9 @@ $hs-radius: 30px; // card radius
   .helper-sidebar-content {
     flex: 1;
     overflow-y: auto;
-    padding: 1em;
+    padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 1em;
+    flex-direction: column;    
 
     .story-topics-box, .lesson-topic-box {
       margin: 0;

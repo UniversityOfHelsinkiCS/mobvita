@@ -1082,7 +1082,8 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                 )}
 
                 {messages.length === 0 && spentHints.length === 0 && !emptyHintsList && (
-                  <div className="message message-bot" data-cy="chatbot-action-menu-instruction">
+                  <ChatBubble
+                    variant="bot" data-cy="chatbot-action-menu-instruction">
                     <FormattedMessage
                       id="click-to-action-menu"
                       defaultMessage="{icon} Click the menu for more options"
@@ -1090,7 +1091,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                         icon: <MoreVertIcon fontSize="small" style={{ verticalAlign: 'middle' }} />,
                       }}
                     />
-                  </div>
+                  </ChatBubble>
                 )}
                 {isCurrentWordTranslated && (
                   <>

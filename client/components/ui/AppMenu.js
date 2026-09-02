@@ -74,7 +74,7 @@ const AppMenu = ({
   // When true the panel is sized to the trigger's width (e.g. a full-width trigger in a sidebar),
   // so the dropdown spans the same width as the control that opened it, ignoring `minWidth`.
   matchTriggerWidth = false,
-  borderRadius = '0 0 30px 30px',
+  borderRadius = '30px',
   anchorOrigin = { vertical: 'bottom', horizontal: 'left' },
   transformOrigin = { vertical: 'top', horizontal: 'left' },
   ...popoverProps

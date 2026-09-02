@@ -5,7 +5,7 @@ $chatbot-message-gap: 12px;
   flex-direction: column;
   height: 100%;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 30px;
   overflow: hidden;
 
   .ai-assistant-header {
@@ -13,10 +13,13 @@ $chatbot-message-gap: 12px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 1.2rem;
+    padding: 20px;
     background: #f1f1f1;
     color: rgb(0, 0, 0);
     border-bottom: 1px solid #e0e0e0;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: var(--font-ui);
   }
 
   // "Back to the full list" control, shown only in the focused view.
@@ -231,15 +234,17 @@ $chatbot-message-gap: 12px;
     justify-content: space-between;
     background: transparent;
     border-bottom: 1px solid rgba(45, 44, 42, 0.12);
-    padding: 1.1rem 1.4rem;
+    padding: 20px;
+    
   }
 
   // An <h3>: base.scss sizes headings but sets no family, so this inherits --font-ui from <body>.
   .ai-header-title {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 500;
     letter-spacing: 0;
     color: #2d2c2a;
+    font-family: var(--font-ui);
   }
 
   .chatbot-messages {

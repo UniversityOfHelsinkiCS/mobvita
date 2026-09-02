@@ -652,11 +652,13 @@ const ReadViews = ({ match }) => {
         </div>
         <HelperSidebar>
           {canSeeTopics && !routeStory?.control_story && (
+            <div style={{ margin: '20px 20px 0 20px' }}>
             <TopicsSelect
               conceptCount={routeStory?.concept_count || {}}
               focusedConcept={focusedConcept}
-              setFocusedConcept={setFocusedConcept}
+              setFocusedConcept={setFocusedConcept}              
             />
+            </div>
           )}
           <CombinedChatbot />
         </HelperSidebar>

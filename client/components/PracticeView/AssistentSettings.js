@@ -81,7 +81,7 @@ const AssistentSettings = ({ className = '' }) => {
       alt="settings"
       data-cy="ai-assistant-settings-popup"
       className={className}
-      style={{ width: 28, height: 28, cursor: 'pointer', display: 'block' }}
+      style={{ width: 36, height: 36, cursor: 'pointer', display: 'block' }}
     />
   )
 

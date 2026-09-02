@@ -38,10 +38,10 @@ export const CORRECTION_COLORS = {
 const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: colors.card, color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopRightRadius: 2, paddingRight: 16 },
-  note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink },
+  note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
   'controlled-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
-  hint: { alignSelf: 'flex-start', backgroundColor: '#FFEECE', color: colors.ink },
+  hint: { alignSelf: 'flex-start', backgroundColor: '#ECE3BE', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   'correction-replacement': {
     alignSelf: 'flex-start',
     backgroundColor: CORRECTION_COLORS.replacement,

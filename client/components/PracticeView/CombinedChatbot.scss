@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100%;
   background: #faf8ed; // cream
-  border-radius: 8px;
+  border-radius: 30px;
   overflow: hidden;
 }
 
@@ -40,10 +40,12 @@
       justify-content: center;
       transform-origin: center;
       margin-left: auto;
+      width: 36px;
+      height: 36px;
 
       &:hover {
         color: #333;
-        transform: scale(1.18);
+        opacity: 0.8;        
       }
 }
 
@@ -80,8 +82,8 @@
 
 .inline-translation {
   width: 100%;
-  margin-left: 0;
-  padding: 0px;
+  margin: 0;
+  padding: 0 14px;
 }
 
 .chatbot-header {

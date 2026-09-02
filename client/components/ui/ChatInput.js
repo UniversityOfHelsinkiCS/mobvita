@@ -17,15 +17,15 @@ const Form = styled('form')({
 })
 
 // Resting/empty border is soft; it firms up (and the field brightens) once the user is typing.
-const SOFT_BORDER = '#D3E2D9'
+const SOFT_BORDER = '#B1D3C2'
 
 const Field = styled('input')({
   flex: 1,
   minWidth: 0,
-  height: 44,
-  padding: '0 20px',
+  height: 36,
+  padding: '9px 10px',
   borderRadius: 999,
-  border: `1px solid ${SOFT_BORDER}`,
+  border: `2px solid ${SOFT_BORDER}`,
   backgroundColor: '#FFFFFF',
   fontSize: 15,
   color: colors.ink,
