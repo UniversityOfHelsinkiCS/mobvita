@@ -492,7 +492,7 @@ body .hg-theme-default {
   min-height: calc(100vh - #{$navbar-height} - #{$footer-height});
   width: 100%;
   padding-right: map.get($spacing, "xs");
-  padding-left: 43px;
+  padding-left: 1.7em;
   padding-top: 1.7em;
   background-color: var(--app-bg-color);  
 }
@@ -505,9 +505,9 @@ body .hg-theme-default {
   width: 100%;
   max-width: 1024px;
 
-  @media (min-width: 700px) {
-    min-width: 650px;
-  }
+  // @media (min-width: 700px) {
+  //   min-width: 650px;
+  // }
 
   &-tall {
     min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding} - #{$footer-height});
@@ -1474,8 +1474,7 @@ body .hg-theme-default {
 
 .library-control {
   display: flex;
-  flex-direction: column;
-  padding: 0 0.5em 0 0.5em;
+  flex-direction: column;  
   gap: 0.5em; 
 }
 

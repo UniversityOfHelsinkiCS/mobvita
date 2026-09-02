@@ -1266,8 +1266,7 @@ const StoryList = () => {
           {libraryControls}
           <Box
             data-cy="library-container"
-            sx={{
-              margin: '0 7px',
+            sx={{              
               backgroundColor: colors.card,
               borderRadius: '30px',
               padding: '20px',

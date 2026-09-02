@@ -314,7 +314,7 @@ export default function NavBar() {
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger"
           data-cy="hamburger"
-          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block', marginLeft: '35px' }}
+          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block', marginLeft: '16px' }}
         />
         <NavCollapse>
           {/********************************* HAMBURGER *********************************/}
