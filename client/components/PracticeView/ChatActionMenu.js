@@ -189,22 +189,7 @@ const ChatActionMenu = ({
                 <FormattedMessage id="ask-for-a-hint" defaultMessage="Show Hint" />
               </span>
             </button>
-          )}
-
-          {mode === 'chatbot' && (showAllHintsUsed || !hasHints) && (
-            <div className="chat-action-item">
-              <div className="chat-action-icon" style={{ color: '#1890ff' }}>
-                <HelpOutlinedIcon />
-              </div>
-              <span className="chat-action-text">
-                <ChatActionMenuSuggestions
-                predefinedChatbotRequests={predefinedChatbotRequests}
-                disabled={!validToChat || isWaitingForResponse}
-                onClose={() => setOpen(false)}
-              />
-              </span>
-            </div>
-          )}
+          )}          
 
           {showWordNestOption && (             
             <button

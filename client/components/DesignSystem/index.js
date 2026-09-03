@@ -299,7 +299,8 @@ const DesignSystem = () => {
             'star06Colored',
             'users01Colored',
             'sequre',
-            'globe5'
+            'globe5',
+            'menu3',
           ]
           return (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>

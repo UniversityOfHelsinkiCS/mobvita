@@ -192,6 +192,7 @@ import network from 'Assets/images/network.svg'
 import external from 'Assets/images/external.svg'
 import sequre from 'Assets/images/sequre.svg'
 import globe5 from 'Assets/images/globe-5.svg'
+import menu3 from 'Assets/images/menu-03.svg'
 
 
 import { useEffect, useLayoutEffect, useState } from 'react'
@@ -394,6 +395,7 @@ export const images = {
   external,
   sequre,
   globe5,
+  menu3,
 }
 
 export const backgroundColors = [

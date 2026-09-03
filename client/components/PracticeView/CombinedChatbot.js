@@ -1050,8 +1050,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                 storyWord={translationState.surfaceWord || currentWord?.surface}
                 popupMessageId="explain-wordnest-modal"
                 setShowContextTranslation={setShowContextTranslation}
-                showContexTranslation={showContexTranslation}
-                predefinedChatbotRequests={predefinedChatbotRequests}
+                showContexTranslation={showContexTranslation}                
                 validToChat={validToChat}
               />
             </div>
@@ -1322,6 +1321,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                   onSubmit={handleMessageSubmit}
                   placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
                   disabled={!validToChat || isWaitingForResponse}
+                  predefinedChatbotRequests={predefinedChatbotRequests}
                 />
                 <ChatbotSuggestions
                   predefinedChatbotRequests={[]}

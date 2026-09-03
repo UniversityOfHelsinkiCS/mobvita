@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import AppButton from 'Components/AppButton'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
+import { AppMenuCloseContext } from 'Components/ui/AppMenu'
 
 const ChatActionMenuSuggetions = ({ predefinedChatbotRequests, disabled, onClose }) => {
-  const intl = useIntl()
   const dispatch = useDispatch()
-
+  const closeMenu = useContext(AppMenuCloseContext)
 
   return (
-    <div className="chatbot-suggestions" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+    <div
+      className="chatbot-suggestions"
+      style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+    >
       {predefinedChatbotRequests.map(({ msgId, func }, index) => (
         <AppButton
           key={index}
@@ -17,10 +20,11 @@ const ChatActionMenuSuggetions = ({ predefinedChatbotRequests, disabled, onClose
           variant="contrast-outline"
           disabled={disabled}
           data-cy={`chatbot-suggestion-${msgId}`}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             if (func) dispatch(func)
             if (onClose) onClose()
+            if (closeMenu) closeMenu()
           }}
         >
           <FormattedMessage id={msgId} />
