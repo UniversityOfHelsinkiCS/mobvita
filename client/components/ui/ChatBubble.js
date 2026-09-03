@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { styled } from '@mui/material/styles'
+import { useIntl } from 'react-intl'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
+import AppMenu, { AppMenuItem } from './AppMenu'
 
 /**
  * ChatBubble — a single chat message bubble, shared across the chatbots.
@@ -40,7 +43,15 @@ const VARIANT_STYLES = {
   user: { alignSelf: 'flex-end', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopRightRadius: 2, paddingRight: 16 },
   note: { alignSelf: 'flex-start', backgroundColor: colors.panel, color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   'user-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
-  'controlled-note': { alignSelf: 'flex-end', backgroundColor: '#FFF6DA', color: colors.ink },
+  'controlled-note': {
+    alignSelf: 'flex-end',
+    backgroundColor: '#ECE3BE',
+    color: colors.ink,
+    borderRadius: 18,
+    borderTopRightRadius: 2,
+    paddingLeft: 42,
+    paddingRight: 16,
+  },
   hint: { alignSelf: 'flex-start', backgroundColor: '#ECE3BE', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   'correction-replacement': {
     alignSelf: 'flex-start',
@@ -147,6 +158,24 @@ const BubbleActions = styled('div')({
   gap: 4,
 })
 
+const BubbleMenu = styled('div')({
+  position: 'absolute',
+  top: 4,
+  right: 6,
+})
+
+const BubbleLeftIcon = styled('div')({
+  position: 'absolute',
+  left: 16,
+  top: 16,
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 18,
+  height: 18,
+  '& img': { display: 'block', width: 18, height: 18 },
+})
+
 const ActionButton = styled('button')({
   alignItems: 'center',
   justifyContent: 'center',
@@ -159,6 +188,20 @@ const ActionButton = styled('button')({
   transition: 'opacity 0.15s ease',
   '&:hover': { opacity: 1 },
   '& img': { display: 'block', width: 16, height: 16 },
+})
+
+const BubbleMenuTrigger = styled('button')({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 0,
+  border: 'none',
+  background: 'none',
+  cursor: 'pointer',
+  color: colors.muted,
+  opacity: 0.7,
+  transition: 'opacity 0.15s ease',
+  '&:hover': { opacity: 1 },
 })
 
 const ChatBubble = React.forwardRef(
@@ -175,6 +218,7 @@ const ChatBubble = React.forwardRef(
     ref,
   ) => {
     const contentRef = useRef(null)
+    const intl = useIntl()
     const [expanded, setExpanded] = useState(false)
     const [isLong, setIsLong] = useState(false)
 
@@ -200,7 +244,49 @@ const ChatBubble = React.forwardRef(
         hasActions={Boolean(onEdit || onRemove)}
         {...rest}
       >
-        {(onEdit || onRemove) && (
+        {variant === 'controlled-note' && (
+          <BubbleLeftIcon aria-hidden="true">
+            <img src={images.paste} alt="" />
+          </BubbleLeftIcon>
+        )}
+
+        {variant === 'controlled-note' && (onEdit || onRemove) && (
+          <BubbleMenu>
+            <AppMenu
+              trigger={
+                <BubbleMenuTrigger type="button" aria-label="More actions">
+                  <MoreVertIcon fontSize="small" />
+                </BubbleMenuTrigger>
+              }
+              minWidth={180}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              disableScrollLock
+            >
+              {onEdit && (
+                <AppMenuItem
+                  icon={<img src={images.edit03} alt="" style={{ width: 24, height: 24 }} />}
+                  onClick={onEdit}
+                  data-cy={editDataCy}
+                >
+                  {intl.formatMessage({ id: 'edit', defaultMessage: 'Edit' })}
+                </AppMenuItem>
+              )}
+
+              {onRemove && (
+                <AppMenuItem
+                  icon={<img src={images.trash03} alt="" style={{ width: 24, height: 24 }} />}
+                  onClick={onRemove}
+                  data-cy={removeDataCy}
+                >
+                  {intl.formatMessage({ id: 'Delete', defaultMessage: 'Delete' })}
+                </AppMenuItem>
+              )}
+            </AppMenu>
+          </BubbleMenu>
+        )}
+
+        {variant !== 'controlled-note' && (onEdit || onRemove) && (
           <BubbleActions>
             {onEdit && (
               <ActionButton
