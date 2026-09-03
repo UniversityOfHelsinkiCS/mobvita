@@ -88,11 +88,7 @@ const GeneralChatbot = () => {
           <>
             <p className="chatbot-intro">
               <FormattedMessage id="general-chatbot-init-mess" values={{ language: intl.locale }} />
-            </p>
-            <ChatbotSuggestions
-              predefinedChatbotRequests={predefinedChatbotRequests}
-              disabled={isWaitingForResponse}
-            />
+            </p>            
           </>
         )}
         <ChatInput
@@ -101,6 +97,7 @@ const GeneralChatbot = () => {
           onSubmit={handleMessageSubmit}
           placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
           disabled={isWaitingForResponse}
+          predefinedChatbotRequests={predefinedChatbotRequests}
         />
       </div>
     </div>
