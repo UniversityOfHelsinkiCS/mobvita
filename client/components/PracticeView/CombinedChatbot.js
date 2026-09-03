@@ -1094,7 +1094,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                   </ChatBubble>
                 )}
                 {isCurrentWordTranslated && (
-                  <>
+                  <div className="inline-translation" data-cy="translations">
                     {translationState.pending ? (
                       <div className="message message-bot">
                         <span className="loading-text">Loading translation...</span>
@@ -1133,7 +1133,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
                         />
                       ))
                     )}
-                  </>
+                  </div>
                 )}
                 {(showContexTranslation || contextTranslationState.visible) && (
                   <div className="context-translation-box">
