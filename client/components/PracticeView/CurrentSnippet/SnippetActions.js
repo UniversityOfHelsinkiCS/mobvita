@@ -71,7 +71,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         type="button"
         onClick={() => handleClick()}
         className="check-answers-button"
-        style={{ marginBottom: 0, height: 46 }}
+        style={{ marginBottom: 0, height: 36 }}
         disabled={
           answersPending || snippetPending || !focusedSnippet || checkAnswersButtonTempDisable
         }
@@ -283,7 +283,7 @@ const SnippetActions = ({
               snippets.cacheSize === 0
             }
             onClick={submitAnswers}
-            sx={{ height: 46 }}
+            sx={{ height: 36 }}
           >
             <img src={images.arrowRight} alt="" style={{ width: 18, height: 18 }} />
             <FormattedMessage id="go-to-next-snippet" />
@@ -293,7 +293,7 @@ const SnippetActions = ({
               variant="contrast-outline"
               onClick={handleRestart}
               disabled={snippets.answersPending || snippets.pending}
-              sx={{ height: 46 }}
+              sx={{ height: 36 }}
             >
               <img src={images.flipBackward} alt="" style={{ width: 18, height: 18 }} />
               <FormattedMessage id="start-over" />

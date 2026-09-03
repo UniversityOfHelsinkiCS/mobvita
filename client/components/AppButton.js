@@ -110,9 +110,9 @@ const ALIASES = {
 
 // Sizes per the Figma "Button M" (medium) and "Button Small" sheets; large is derived.
 const SIZE_STYLES = {
-  small: { padding: '5px 16px', fontSize: 14 },
-  medium: { padding: '9px 26px', fontSize: font.button },
-  large: { padding: '12px 34px', fontSize: 18 },
+  small: { padding: '5px 16px', fontSize: 14, height: 36 },
+  medium: { padding: '9px 26px', fontSize: font.button, height: 48 },
+  large: { padding: '12px 34px', fontSize: 18, height: 56 },
 }
 const SIZE_KEYS = { sm: 'small', lg: 'large' }
 
