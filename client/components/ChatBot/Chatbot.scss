@@ -126,7 +126,7 @@ $chatbot-message-gap: 12px;
   width: 100%;
 }
 
-.essay-chatbot-face {
+.essay-chatbot-face.swiper-slide {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -304,7 +304,7 @@ $chatbot-message-gap: 12px;
 .chatbot-input-area {
   flex-shrink: 0;
   padding: 15px 15px 0 15px;
-  background: white;
+  background: transparent;
   border-top: 1px solid #e0e0e0;
   z-index: 5;
   display: flex;
