@@ -7,6 +7,10 @@ const upload = multer({ storage })
 const { checkRevitaStatus } = require('@controllers/healthCheckController')
 const proxyController = require('@controllers/proxyController')
 const { getYandexTTS, getFinTTS, getEngTTS } = require('@controllers/ttsController')
+const {
+  getWritingClinicMeta,
+  analyzeWritingClinicText,
+} = require('@controllers/writingClinicController')
 // const { estimate } = require('@controllers/estimateController')
 
 const router = Router()
@@ -19,6 +23,9 @@ router.get('/yandex_tts', getYandexTTS)
 router.post('/ctxTranslate', proxyController.mtProxyPost)
 router.get('/mtStatus', proxyController.mtStatus)
 
+router.get('/writing-clinic/meta', getWritingClinicMeta)
+router.post('/writing-clinic/analyze', analyzeWritingClinicText)
+
 // router.post('/estimate', estimate)
 
 router.get('/', (_req, res) => res.send('welcome to root'))
@@ -27,6 +34,5 @@ router.post('/file/*path', upload.single('file'), proxyController.proxyFilePost)
 
 router.get('/*path', proxyController.proxyGet)
 router.post('/*path', proxyController.proxyPost)
-
 
 module.exports = router

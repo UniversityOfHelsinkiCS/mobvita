@@ -1,0 +1,292 @@
+.writing-clinic-page {
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 0 18px 50px;
+  color: $color-ink;
+
+  .writing-clinic-heading {
+    margin: 0 0 18px;
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  .writing-clinic-card {
+    margin-bottom: 16px;
+    padding: 22px 26px;
+    border-radius: 24px;
+    background: $color-card;
+    box-shadow: 0 2px 12px rgba(45, 44, 42, 0.06);
+  }
+
+  .writing-clinic-card-title {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .writing-clinic-subtitle {
+    margin: 0 0 18px;
+    color: $color-muted;
+  }
+
+  .writing-clinic-actions,
+  .writing-clinic-selection-actions,
+  .writing-clinic-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .writing-clinic-actions {
+    margin-top: 14px;
+  }
+  .writing-clinic-selection-actions {
+    margin-bottom: 14px;
+  }
+
+  .writing-clinic-levels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+    gap: 6px;
+  }
+
+  .writing-clinic-level {
+    padding: 12px 5px 10px;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: #f1eeda;
+
+    strong {
+      display: block;
+      font-size: 19px;
+      font-weight: 500;
+    }
+    small {
+      color: $color-muted;
+    }
+
+    &.current,
+    &.straddle {
+      color: #fff;
+      background: #3f7358;
+      small {
+        color: #fff;
+      }
+    }
+
+    &.straddle {
+      background: repeating-linear-gradient(
+        135deg,
+        #3f7358,
+        #3f7358 7px,
+        #4b8266 7px,
+        #4b8266 14px
+      );
+    }
+
+    &.target {
+      color: #3f7358;
+      border-color: $color-green;
+      border-style: dashed;
+      background: $color-progress-bar-track;
+    }
+  }
+
+  .writing-clinic-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .writing-clinic-fact {
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: #fff;
+
+    span {
+      display: block;
+      color: $color-muted;
+      font-size: 12px;
+    }
+    strong {
+      font-size: 23px;
+      font-weight: 500;
+    }
+  }
+
+  .writing-clinic-meter {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid $color-card-border;
+  }
+  .writing-clinic-meter-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 9px;
+  }
+  .writing-clinic-meter-value {
+    white-space: nowrap;
+    font-size: 25px;
+    font-weight: 500;
+  }
+  .writing-clinic-meter-track {
+    position: relative;
+    height: 24px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #f1efe5;
+  }
+  .writing-clinic-meter-current,
+  .writing-clinic-meter-selection {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transition: width 0.25s ease;
+  }
+  .writing-clinic-meter-current {
+    background: #3f7358;
+  }
+  .writing-clinic-meter-selection {
+    background: $color-green;
+    opacity: 0.65;
+  }
+  .writing-clinic-meter-ceiling {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: $color-ink;
+    opacity: 0.5;
+  }
+
+  .writing-clinic-note {
+    margin-top: 14px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: $color-progress-bar-track;
+    color: #2c5240;
+  }
+  .writing-clinic-note.warning {
+    background: #faebdf;
+    color: #7a4425;
+  }
+
+  .writing-clinic-fix {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 9px;
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid $color-card-border;
+    border-radius: 14px;
+    background: #fff;
+    cursor: pointer;
+
+    &:hover {
+      border-color: $color-focus;
+    }
+    &.selected {
+      border-color: $color-focus;
+      background: $color-progress-bar-track;
+    }
+  }
+
+  .writing-clinic-fix-copy {
+    min-width: 0;
+  }
+  .writing-clinic-fix-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    color: #fff;
+    border: 2px solid $color-ink;
+    border-radius: 5px;
+  }
+  .writing-clinic-fix.selected .writing-clinic-fix-check {
+    background: #3f7358;
+    border-color: #3f7358;
+  }
+  .writing-clinic-fix-name {
+    display: block;
+    font-weight: 500;
+  }
+  .writing-clinic-fix-detail {
+    display: block;
+    color: $color-muted;
+    font-size: 12px;
+  }
+  .writing-clinic-fix-gain {
+    color: #3f7358;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .writing-clinic-negative {
+    color: $color-error;
+  }
+  .writing-clinic-bar {
+    display: block;
+    width: 70px;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: $color-page-bg;
+  }
+  .writing-clinic-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #3f7358;
+  }
+  .writing-clinic-bar.negative > span {
+    background: $color-error;
+  }
+
+  .writing-clinic-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .writing-clinic-peer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .writing-clinic-peer-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid $color-card-border;
+  }
+  .writing-clinic-peer-meta {
+    color: $color-muted;
+    font-size: 12px;
+    text-align: right;
+  }
+
+  @media (max-width: 700px) {
+    padding-inline: 8px;
+    .writing-clinic-card {
+      padding: 18px 14px;
+    }
+    .writing-clinic-two-column {
+      grid-template-columns: 1fr;
+    }
+    .writing-clinic-fix {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .writing-clinic-fix-gain {
+      grid-column: 2;
+    }
+  }
+}
