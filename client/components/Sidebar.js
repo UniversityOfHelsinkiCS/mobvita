@@ -254,13 +254,13 @@ export default function Sidebar() {
               >
                 <FormattedMessage id="essay-writing" />
               </MenuRow>
-              {/* <MenuRow
+              <MenuRow
                 icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
                 selected={isActive('/writing-clinic')}
                 onClick={() => go('/writing-clinic')}
               >
                 <FormattedMessage id="writing-clinic-title" defaultMessage="Writing Clinic" />
-              </MenuRow> */}
+              </MenuRow>
             </>
           )}
 
