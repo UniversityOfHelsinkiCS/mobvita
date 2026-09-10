@@ -5,41 +5,25 @@
 $essay-navbar-height: 3em;
 $essay-content-top-padding: 1.7em;
 $essay-footer-height: 50px;
-// Gaps between a panel and the space it sits in: .essay-writing-main's bottom margin, and
-// .essay-teacher-panel's own top margin on top of it.
 $essay-main-gap: 1rem;
 $essay-teacher-panel-gap: 1.5em;
-// What's left of the viewport once the global chrome is taken out — the navbar, <main>'s top
-// padding, and the global footer rendered after <main> in Router. A panel that ignores any of the
-// three overflows the page by exactly that much, leaving an outer scrollbar with nowhere to go.
+
 $essay-available-height: calc(
   100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - #{$essay-footer-height}
 );
 $essay-panel-height: calc(#{$essay-available-height} - #{$essay-main-gap});
 $essay-teacher-panel-height: calc(#{$essay-panel-height} - #{$essay-teacher-panel-gap});
-// A collapsed HelperSidebar leaves a 10px sliver plus its 28px toggle chevron pinned to the right
-// edge of the viewport. Reserve that strip so the chevron can't sit on top of the essay text.
+
 $essay-collapsed-sidebar-reserve: 38px;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
-// Correction colours: per type, one for the textarea highlight and one for the suggestion bubble.
-// The word highlighted in the essay text and the bubble describing it are the same correction, so
-// they carry the same colour. Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js, same as the
-// $essay-bubble-*-bg-color values below.
+
 $essay-textarea-highlight-replacement-bg-color: #c1dce6;
 $essay-textarea-highlight-insertion-bg-color: #d1e5b0;
-$essay-textarea-highlight-deletion-bg-color: #ffdcca;
-// A word the user clicked that has no correction on it. Nothing is wrong with it, so it takes a
-// neutral sand rather than one of the three correction colours. Mirrors TEXT_SELECTION_COLOR in
-// Components/ChatBot/EssayChatbot.js, which tints the focused panel to match.
-$essay-textarea-highlight-selection-bg-color: #ece3be;
+$essay-textarea-highlight-deletion-bg-color: #fcceb8;
+$essay-textarea-highlight-selection-bg-color: #d2c9a7;
 
-// Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
-// vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
-// colour with the token's own hover shade rather than a generic brightness filter.
-// Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js — the ChatBubble correction-* variants
-// and these bubbles have to show the same colour per type. Keep the two in step when either moves.
 $essay-bubble-multi-bg-color: #c1dce6;
 $essay-bubble-replacement-bg-color: #c1dce6;
 $essay-bubble-insertion-bg-color: #d1e5b0;
@@ -309,7 +293,7 @@ $essay-green: #b1d3c2; // border / accent
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 32px;
+    line-height: 28px;
     color: $essay-ink;
 
     &::selection {
@@ -490,10 +474,6 @@ $essay-green: #b1d3c2; // border / accent
   }
 }
 
-// Keep the collapsed sidebar's toggle chevron off the text. Below 769px the sidebar is a bottom
-// sheet with its toggle at the top centre, so it can't overlap; above ~1100px the centred 1024px
-// column already clears the chevron on its own. In between, inset the column — but not while the
-// sidebar is open, which already reserves 380px for it.
 @media (min-width: 769px) and (max-width: 1100px) {
   .essay-writing-container:not(.essay-writing-container-sidebar-pushed) {
     padding-right: $essay-collapsed-sidebar-reserve;
