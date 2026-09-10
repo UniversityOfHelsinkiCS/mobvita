@@ -30,12 +30,13 @@ import {
 } from './utils/essaySentences'
 import {
   findCorrectionGroupAtOffset,
-  findInsertionGroupInRegion,
+  findInsertionGroupAtOffset,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupChatFeedbackText,
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
+  getInsertionSurroundingSpan,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaRangeRects } from './utils/textareaCaret'
@@ -47,22 +48,6 @@ const MIN_INSERTION_UNDERLINE_WIDTH = 12
 // How many times to re-fetch the writing session before giving up and correcting without it, so a
 // failing session endpoint can't block corrections forever.
 const MAX_SESSION_ATTEMPTS = 2
-
-// The character span covering the word before + the word after an insertion point (the gap between
-// them included), so the insertion highlight can mark the two words it should be inserted between.
-const getInsertionSurroundingSpan = (text, offset) => {
-  const isSpace = index => index >= 0 && index < text.length && /\s/.test(text[index])
-
-  let start = Math.max(0, Math.min(offset, text.length))
-  while (start > 0 && isSpace(start - 1)) start -= 1
-  while (start > 0 && !isSpace(start - 1)) start -= 1
-
-  let end = Math.max(0, Math.min(offset, text.length))
-  while (end < text.length && isSpace(end)) end += 1
-  while (end < text.length && !isSpace(end)) end += 1
-
-  return { start, end }
-}
 
 // The whitespace gap around an insertion point — the actual "missing spot" the underline marks.
 const getInsertionGapSpan = (text, offset) => {
@@ -172,7 +157,7 @@ const EssayTextInput = ({
 
     const group =
       findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
-      findInsertionGroupInRegion(sentence.text, corrections, offset)
+      findInsertionGroupAtOffset(sentence.text, corrections, offset)
 
     if (!group) return null
 
