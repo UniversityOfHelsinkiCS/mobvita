@@ -30,6 +30,10 @@ $essay-sidebar-offset: 380px;
 $essay-textarea-highlight-replacement-bg-color: #c1dce6;
 $essay-textarea-highlight-insertion-bg-color: #d1e5b0;
 $essay-textarea-highlight-deletion-bg-color: #ffdcca;
+// A word the user clicked that has no correction on it. Nothing is wrong with it, so it takes a
+// neutral sand rather than one of the three correction colours. Mirrors TEXT_SELECTION_COLOR in
+// Components/ChatBot/EssayChatbot.js, which tints the focused panel to match.
+$essay-textarea-highlight-selection-bg-color: #ece3be;
 
 // Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
 // vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
@@ -40,6 +44,7 @@ $essay-bubble-multi-bg-color: #c1dce6;
 $essay-bubble-replacement-bg-color: #c1dce6;
 $essay-bubble-insertion-bg-color: #d1e5b0;
 $essay-bubble-deletion-bg-color: #ffdcca;
+$essay-bubble-selection-bg-color: #ece3be;
 
 // 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
 $essay-card: #faf8ed; // cream panel
@@ -254,6 +259,10 @@ $essay-green: #b1d3c2; // border / accent
   background-color: $essay-textarea-highlight-deletion-bg-color;
 }
 
+.essay-writing-word-highlight-selection {
+  background-color: $essay-textarea-highlight-selection-bg-color;
+}
+
 .essay-writing-word-highlight-selected {
   filter: brightness(1.1);
 }
@@ -361,6 +370,17 @@ $essay-green: #b1d3c2; // border / accent
 
 .essay-writing-correction-bubble-deletion {
   background: $essay-bubble-deletion-bg-color !important;
+}
+
+// The pinned bubble for a selected word. It stands for one of the user's own words rather than a
+// correction, and there is nothing behind it to open, so it drops the clickable bubble's lift.
+.essay-writing-correction-bubble-selection {
+  background: $essay-bubble-selection-bg-color !important;
+  cursor: default;
+
+  &:hover {
+    transform: none;
+  }
 }
 
 .essay-writing-correction-content {

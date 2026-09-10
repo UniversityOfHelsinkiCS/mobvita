@@ -34,6 +34,28 @@ export const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
   getCompletedSentenceAtIndex(sentences, cursorIndex) ||
   getCompletedSentenceAtIndex(sentences, Math.max(cursorIndex - 1, 0))
 
+const wordCharacterRegex = /[\p{L}\p{N}'\u2019-]/u
+
+// The word the index sits in, as absolute [start, end) text offsets. The character under the index
+// decides, falling back to the one before it so a click at a word's trailing edge still lands on
+// it. Null when neither is part of a word (whitespace, or the far side of punctuation).
+const getWordSpanAtIndex = (text, index) => {
+  const isWordCharacter = position =>
+    position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
+
+  const anchor = [index, index - 1].find(position => isWordCharacter(position))
+
+  if (anchor === undefined) return null
+
+  let start = anchor
+  while (isWordCharacter(start - 1)) start -= 1
+
+  let end = anchor + 1
+  while (isWordCharacter(end)) end += 1
+
+  return { start, end }
+}
+
 // Build the essay focus for a text selection: the sentence it lands in and the selected word/range
 // inside it. Null for a collapsed caret or a selection outside a completed sentence.
 export const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
@@ -74,6 +96,44 @@ export const getEssayFocusFromSelection = (sentences, text, selectionStart, sele
   }
 
   return null
+}
+
+// Build the essay focus for a plain click: the whole word the caret landed on, so clicking a word
+// with nothing wrong with it selects that word the way clicking a corrected one selects its
+// correction. It stands for no correction, so `isTextSelection` marks it — that is what tells the
+// chatbot to pin the word itself instead of a correction bubble. Null when the click missed a word,
+// or the word is outside a completed sentence (nothing has been said about it yet).
+export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) => {
+  const wordSpan = getWordSpanAtIndex(text, caretIndex)
+
+  if (!wordSpan) return null
+
+  const sentence = getCompletedSentenceNearIndex(sentences, wordSpan.start)
+
+  if (!sentence) return null
+  if (sentence.startIndex > wordSpan.start || sentence.endIndex < wordSpan.end) return null
+
+  const startOffset = wordSpan.start - sentence.startIndex
+  const endOffset = wordSpan.end - sentence.startIndex
+  const selectedText = text.slice(wordSpan.start, wordSpan.end)
+
+  return {
+    correctedText: null,
+    feedbackText: '',
+    focusedSentence: sentence.text,
+    focusedWord: selectedText,
+    focusedWordId: null,
+    focusedWordIds: [],
+    originalText: sentence.text,
+    sentenceId: sentence.sentenceId,
+    selection: {
+      endOffset,
+      isTextSelection: true,
+      selectedText,
+      sentenceId: sentence.sentenceId,
+      startOffset,
+    },
+  }
 }
 
 export const getFirstChangedIndex = (previousText, nextText) => {
