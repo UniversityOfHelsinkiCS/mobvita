@@ -416,21 +416,29 @@ export const getCorrectionGroupFocus = correctionGroup => {
   }
 }
 
-// The correction group the caret sits strictly inside — a caret at a word's edge is next to it,
-// not in it. Zero-width insertions are skipped: an inserted word has no original text to be in.
-export const findCorrectionGroupAtOffset = (sentence, corrections, offset) => {
+// The correction group at a sentence-relative offset: the one whose text holds the character there
+// (`glyph`, a click on a letter), or the one a caret sits strictly inside (a caret at a word's edge
+// is next to it, not in it). Zero-width insertions are skipped: nothing of theirs is in the text.
+export const findCorrectionGroupAtOffset = (
+  sentence,
+  corrections,
+  offset,
+  { glyph = false } = {},
+) => {
   if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
   if (!Number.isInteger(offset)) return null
 
   const groups = getCorrectionGroups(sentence, corrections)
 
-  const offsetIsInsideGroup = group => {
+  const offsetIsInGroup = group => {
     const range = group?.range
     if (!range || range.endOffset <= range.startOffset) return false
-    return range.startOffset < offset && offset < range.endOffset
+    return glyph
+      ? range.startOffset <= offset && offset < range.endOffset
+      : range.startOffset < offset && offset < range.endOffset
   }
 
-  return groups.find(offsetIsInsideGroup) || null
+  return groups.find(offsetIsInGroup) || null
 }
 
 // The character span covering the word before + the word after an insertion point (the gap between
@@ -449,9 +457,14 @@ export const getInsertionSurroundingSpan = (text, offset) => {
   return { start, end }
 }
 
-// The insertion whose highlight (word before + gap + word after) the caret sits strictly inside;
-// its outer edges don't count. With several candidates the nearest wins.
-export const findInsertionGroupAtOffset = (sentence, corrections, offset) => {
+// The insertion whose highlight (word before + gap + word after) holds the character at the offset
+// (`glyph`), or that a caret sits strictly inside — its outer edges don't count. Nearest wins.
+export const findInsertionGroupAtOffset = (
+  sentence,
+  corrections,
+  offset,
+  { glyph = false } = {},
+) => {
   if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
   if (!Number.isInteger(offset)) return null
 
@@ -464,7 +477,10 @@ export const findInsertionGroupAtOffset = (sentence, corrections, offset) => {
   const offsetIsInsideHighlight = group => {
     const span = getInsertionSurroundingSpan(sentence, group.range.startOffset)
 
-    return span.end > span.start && offset > span.start && offset < span.end
+    if (span.end <= span.start) return false
+    return glyph
+      ? span.start <= offset && offset < span.end
+      : span.start < offset && offset < span.end
   }
 
   const distanceToOffset = group => Math.abs(group.range.startOffset - offset)

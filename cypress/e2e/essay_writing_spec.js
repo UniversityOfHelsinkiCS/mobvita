@@ -289,6 +289,36 @@ describe('essay writing', function () {
         .should('contain', CHATBOT_REPLY)
     })
 
+    it('keeps a word selected while its sentence is being corrected', function () {
+      visitEditor()
+      essayInput().type(S1)
+      cy.wait('@correction')
+
+      // Fix the flagged word in place ("olen" -> "olin"), then leave the sentence, which sends it
+      // for correction. That reply is slow, like a real one.
+      essayInput().type(`${caretLeft(8)}{backspace}i`)
+      cy.intercept({ method: 'POST', url: CORRECTION_ROUTE }, request => {
+        request.reply({
+          delay: 1500,
+          statusCode: 200,
+          body: buildCorrectionResponse(request.body.text),
+        })
+      }).as('slowCorrection')
+      essayInput().type('{end}')
+
+      // Click into the fixed word while the reply is in flight, then let the reply land.
+      essayInput()
+        .then($textarea => {
+          $textarea[0].setSelectionRange(7, 7)
+        })
+        .trigger('click')
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'olin')
+
+      cy.wait('@slowCorrection')
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'olin')
+      cy.get('.essay-writing-word-highlight-selected').should('exist')
+    })
+
     it('pins a dragged passage, across sentences, and asks about that passage', function () {
       const text = `${S1} ${S2}`
       const passage = text.slice(10, 22)

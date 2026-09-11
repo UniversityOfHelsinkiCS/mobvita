@@ -176,11 +176,16 @@ const EssayChatbot = ({
     swiperRef.current?.slideTo(isFocused ? 1 : 0)
   }, [isFocused])
 
+  // A correction focus lives and dies with the suggestion list: it is dropped when the list changes
+  // under it, or when its own suggestion is gone. A selected passage is the user's text and stays.
   useEffect(() => {
     if (!isFocused) {
       focusedCorrectionRef.current = { correctionKeys: null, focusKey: '' }
+      if (hasActiveSelection) onClearFocus?.(essayFocus)
       return
     }
+
+    if (focusedTextSelection) return
 
     const tracked = focusedCorrectionRef.current
 
@@ -189,8 +194,8 @@ const EssayChatbot = ({
       return
     }
 
-    if (tracked.correctionKeys !== correctionKeys) onClearFocus?.()
-  }, [activeFocusKey, correctionKeys, isFocused])
+    if (tracked.correctionKeys !== correctionKeys) onClearFocus?.(essayFocus)
+  }, [activeFocusKey, correctionKeys, isFocused, hasActiveSelection, focusedTextSelection])
 
   // Position the list when returning to it: a selection made from the list restores the exact scroll
   // position it had (bubble stays put); a selection made from the text scrolls that suggestion to the

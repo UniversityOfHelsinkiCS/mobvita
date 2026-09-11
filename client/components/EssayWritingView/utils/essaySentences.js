@@ -36,22 +36,26 @@ export const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
 
 const wordCharacterRegex = /[\p{L}\p{N}'\u2019-]/u
 
-// The word the index sits strictly inside (a word character on both sides), as absolute offsets.
-// A caret at a word's edge is next to it, not in it, so it selects nothing.
-const getWordSpanAtIndex = (text, index) => {
-  const isWordCharacter = position =>
-    position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
+const isWordCharacterAt = (text, position) =>
+  position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
 
-  if (!isWordCharacter(index - 1) || !isWordCharacter(index)) return null
+// The word the character at `index` belongs to, as absolute [start, end) offsets; null on a space.
+const getWordSpanContaining = (text, index) => {
+  if (!isWordCharacterAt(text, index)) return null
 
-  let start = index - 1
-  while (isWordCharacter(start - 1)) start -= 1
+  let start = index
+  while (isWordCharacterAt(text, start - 1)) start -= 1
 
   let end = index + 1
-  while (isWordCharacter(end)) end += 1
+  while (isWordCharacterAt(text, end)) end += 1
 
   return { start, end }
 }
+
+// The word a caret sits strictly inside (a word character on both sides); a caret at a word's edge
+// is next to it, not in it.
+const getWordSpanInside = (text, caretIndex) =>
+  isWordCharacterAt(text, caretIndex - 1) ? getWordSpanContaining(text, caretIndex) : null
 
 const whitespaceRegex = /\s/
 
@@ -102,14 +106,9 @@ export const getEssayFocusFromTextRange = (sentences, text, selectionStart, sele
   }
 }
 
-// Build the essay focus for a plain click: the whole word the caret landed on, so clicking a word
-// with nothing wrong with it selects that word the way clicking a corrected one selects its
-// correction. It stands for no correction, so `isTextSelection` marks it — that is what tells the
-// chatbot to pin the word itself instead of a correction bubble. Null when the click missed a word,
-// or the word is outside a completed sentence (nothing has been said about it yet).
-export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) => {
-  const wordSpan = getWordSpanAtIndex(text, caretIndex)
-
+// The essay focus for a word of the user's own: `isTextSelection` has the chatbot pin the word
+// itself. Null off a word, or outside a completed sentence (nothing has been said about it yet).
+const getEssayFocusFromWordSpan = (sentences, text, wordSpan) => {
   if (!wordSpan) return null
 
   const sentence = getCompletedSentenceNearIndex(sentences, wordSpan.start)
@@ -140,6 +139,14 @@ export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) => {
   }
 }
 
+// A click: the word whose letter is under the pointer.
+export const getEssayFocusFromGlyph = (sentences, text, glyphIndex) =>
+  getEssayFocusFromWordSpan(sentences, text, getWordSpanContaining(text, glyphIndex))
+
+// A caret with no pointer to go by: the word it sits strictly inside.
+export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) =>
+  getEssayFocusFromWordSpan(sentences, text, getWordSpanInside(text, caretIndex))
+
 export const getFirstChangedIndex = (previousText, nextText) => {
   const maxSharedLength = Math.min(previousText.length, nextText.length)
 
@@ -152,10 +159,10 @@ export const getFirstChangedIndex = (previousText, nextText) => {
   return maxSharedLength
 }
 
-// The stretch an edit replaced: old [start, previousEnd) became new [start, nextEnd), i.e. what
-// lies between the unchanged prefix and suffix.
-export const getEditSpan = (previousText, nextText) => {
-  const start = getFirstChangedIndex(previousText, nextText)
+// The stretch an edit replaced: old [start, previousEnd) became new [start, nextEnd). Repeated
+// letters make it ambiguous ("o" before "olen" = "o" after its first letter); the caret settles it.
+export const getEditSpan = (previousText, nextText, caretIndex = nextText.length) => {
+  let start = getFirstChangedIndex(previousText, nextText)
   const maxSuffixLength = Math.min(previousText.length, nextText.length) - start
   let suffixLength = 0
 
@@ -167,11 +174,20 @@ export const getEditSpan = (previousText, nextText) => {
     suffixLength += 1
   }
 
-  return {
-    start,
-    previousEnd: previousText.length - suffixLength,
-    nextEnd: nextText.length - suffixLength,
+  let previousEnd = previousText.length - suffixLength
+  let nextEnd = nextText.length - suffixLength
+
+  while (
+    nextEnd > caretIndex &&
+    start > 0 &&
+    previousText[previousEnd - 1] === nextText[nextEnd - 1]
+  ) {
+    start -= 1
+    previousEnd -= 1
+    nextEnd -= 1
   }
+
+  return { start, previousEnd, nextEnd }
 }
 
 export const getCompletedSentenceFromIndexes = (sentences, indexes, textLength) => {

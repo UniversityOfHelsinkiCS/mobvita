@@ -97,9 +97,11 @@ const EssayWritingView = () => {
     setEssaySentences(nextSentences)
   }
 
-  const clearEssaySelection = () => {
+  // Clear the focus — or, given the focus the caller meant, only if it is still the current one: a
+  // clear decided against a focus that a click has since replaced must not take the new one down.
+  const clearEssaySelection = staleFocus => {
     selectedSelectionRef.current = null
-    setEssayFocus(null)
+    setEssayFocus(current => (staleFocus && current !== staleFocus ? current : null))
     setSentenceSelectionRequest({
       action: 'clear',
       requestId: Date.now(),
