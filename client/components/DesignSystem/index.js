@@ -426,21 +426,28 @@ const DesignSystem = () => {
 
         <Section title="AppButton — design variants (active / disabled)">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {['tan', 'contrast', 'contrast-outline', 'tan-outline', 'card', 'danger', 'link'].map(
-              v => (
-                <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <span style={{ width: 130, color: '#666', fontSize: 13 }}>{v}</span>
-                  <AppButton variant={v}>
-                    <MicNoneIcon />
-                    Button L
-                  </AppButton>
-                  <AppButton variant={v} disabled>
-                    <MicNoneIcon />
-                    Button L
-                  </AppButton>
-                </div>
-              ),
-            )}
+            {[
+              'tan',
+              'contrast',
+              'contrast-outline',
+              'tan-outline',
+              'card',
+              'danger',
+              'alert',
+              'link',
+            ].map(v => (
+              <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <span style={{ width: 130, color: '#666', fontSize: 13 }}>{v}</span>
+                <AppButton variant={v}>
+                  <MicNoneIcon />
+                  Button L
+                </AppButton>
+                <AppButton variant={v} disabled>
+                  <MicNoneIcon />
+                  Button L
+                </AppButton>
+              </div>
+            ))}
           </div>
         </Section>
 

@@ -383,11 +383,11 @@ const EssayWritingView = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {hiddenFeatures && (
                   <AppButton
-                    variant="outline"
+                    variant="alert"
                     onClick={handleClearCache}
                     data-cy="essay-clear-cache"
                   >
-                    Clear cache
+                    {intl.formatMessage({ id: 'Clear' })}
                   </AppButton>
                 )}
                 <AppButton

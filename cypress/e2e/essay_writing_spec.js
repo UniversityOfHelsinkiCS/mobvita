@@ -436,6 +436,14 @@ describe('essay writing', function () {
       })
       cy.get('[data-cy=essay-topic-input]').should('not.exist')
     })
+
+    it('opens the editor from the "Write new essay" button in the essays tab', function () {
+      openEssaysLibrary()
+
+      cy.get('[data-cy=write-essay-button]').should('be.visible').click()
+      cy.location('pathname', { timeout: 60000 }).should('include', '/essay-writing')
+      essayInput().should('exist')
+    })
   })
 })
 
@@ -571,5 +579,15 @@ describe('essay writing — teacher review', function () {
     panel('current').find('.essay-word-highlighted').should('have.length', 1)
     highlighted().should('have.length', 1)
     highlighted().should('have.text', CORRECTED_ORIGINAL)
+  })
+
+  // A teacher gets the same "Write new essay" button as a student — the essays tab has no story
+  // sources to add from, so the button opens the editor for both roles. The setup already walked
+  // into an essay, so come back out to the tab it opened on.
+  it('opens the editor from the "Write new essay" button in the essays tab', function () {
+    cy.visit(`${BASE}/library`)
+    cy.get('[data-cy=write-essay-button]', { timeout: 60000 }).should('be.visible').click()
+
+    cy.location('pathname', { timeout: 60000 }).should('include', '/essay-writing')
   })
 })

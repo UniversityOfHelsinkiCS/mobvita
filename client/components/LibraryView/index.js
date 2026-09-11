@@ -418,7 +418,20 @@ const StoryList = () => {
     </AppButton>
   )
 
-  const renderSortAndAddRow = (sortValue, options) => (
+  const writeEssayButton = (
+    <AppButton
+      className="library-action-button"
+      variant="contrast"
+      block
+      onClick={() => navigate('/essay-writing')}
+      data-cy="write-essay-button"
+    >
+      <img src={images.edit03} alt="" style={{ filter: 'brightness(0) invert(1)' }} />
+      {intl.formatMessage({ id: 'write-new-essay' })}
+    </AppButton>
+  )
+
+  const renderSortAndAddRow = (sortValue, options, actionButton = addStoryButton) => (
     <div className="library-sort-add-row">
       <div className="library-sort-select">
         <AppSelect
@@ -431,7 +444,7 @@ const StoryList = () => {
           minWidth={0}
         />
       </div>
-      <div className="library-sort-action">{addStoryButton}</div>
+      <div className="library-sort-action">{actionButton}</div>
     </div>
   )
 
@@ -444,7 +457,7 @@ const StoryList = () => {
         value={essaySearchQuery}
         onChange={setEssaySearchQuery}
       />
-      {renderSortAndAddRow(essaySorter, essaySortDropdownOptions)}
+      {renderSortAndAddRow(essaySorter, essaySortDropdownOptions, writeEssayButton)}
     </>
   )
 
