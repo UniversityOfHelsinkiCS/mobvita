@@ -1,9 +1,11 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import 'Utilities/chartTheme'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
   const intl = useIntl()
@@ -22,8 +24,7 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
     accessibility: { enabled: false },
     title: { text: intl.formatMessage({ id: 'xp-timeline-chart' }) },
     series,
-    chart: { height },
-    credits: { enabled: false },
+    chart: { height, spacingBottom: 8 },
     allowDecimals: false,
     alignTicks: false,
     yAxis: {
@@ -33,7 +34,6 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
     },
     xAxis: {
       type: 'datetime',
-      labels: { format: '{value:%Y/%m/%d}' },
       allowDecimals: false,
       min: moment(startDate).valueOf(),
       max: moment(endDate).valueOf(),
@@ -42,7 +42,7 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
       series: {
         allowPointSelect: true,
         marker: { enabled: true },
-        color: '#FF530D',
+        color: colors.alert,
       },
     },
   }

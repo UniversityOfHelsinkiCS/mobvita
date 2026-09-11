@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import CloseIcon from '@mui/icons-material/Close'
-import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Box, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import AppTable from 'Components/ui/AppTable'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
-import Draggable from 'react-draggable'
 import { capitalize, isToday, skillLevels } from 'Utilities/common'
 import moment from 'moment'
 import CEFRDropdown from './CEFRDropdown'
 
 const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
-  const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory)
+  const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory ?? [])
   const [modified, setModified] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
@@ -37,7 +36,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
   }
 
   const undoChanges = () => {
-    setUpdatedCEFRHistory(cefrHistory)
+    setUpdatedCEFRHistory(cefrHistory ?? [])
     setModified(false)
   }
 
@@ -57,123 +56,87 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
     undoChanges()
   }, [cefrHistory])
 
-  if (open) {
-    return (
-      <Draggable cancel=".interactable">
-        <div className="draggable-modal">
-          <div className="flex-reverse">
-            <CloseIcon
-              className="interactable"
-              style={{
-                cursor: 'pointer',
-                marginBottom: '1em',
-              }}
-              onClick={closeModal}
-            />
-          </div>
-          {/* {showForm && (
-            <div style={{ marginBottom: '10px' }}>
-              <CEFRDropdown
-                addNew
-                updatedCEFRHistory={updatedCEFRHistory}
-                setUpdatedCEFRHistory={setUpdatedCEFRHistory}
-                setModified={setModified}
-              />
-            </div>
-          )} */}
-          <div style={{  maxHeight: 300 }}> {/*  overflow: 'auto', */}
-            <AppTable striped bordered hover>
-              <TableHead>
-                <TableRow key="summary-header-row">
-                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="date-of-CEFR" /></TableCell>
-                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="source-of-CEFR" /></TableCell>
-                  <TableCell style={{ textAlign: 'center', verticalAlign: 'middle' }}><FormattedMessage id="cefr_grade" /></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {showForm && (
-                  <TableRow>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
-                      {moment().format('YYYY/MM/DD')}
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem', width: '100px' }}>
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
-                      <CEFRDropdown
-                        addNew
-                        updatedCEFRHistory={updatedCEFRHistory}
-                        setUpdatedCEFRHistory={setUpdatedCEFRHistory}
-                        setModified={setModified}
-                      />
-                    </TableCell>
-                  </TableRow>
-                )}
-                {updatedCEFRHistory.map((estimate, index) => (
-                  <TableRow key={`${estimate.timestamp}-${estimate.source}`}>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
-                      {moment.unix(estimate.timestamp).format('YYYY/MM/DD')}
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem', width: '100px' }}>
-                      {estimate.source === 'self_estimation'
-                        ? 'Self'
-                        : capitalize(estimate.source.replace('_', ' '))}
-                    </TableCell>
-                    <TableCell style={{ verticalAlign: 'middle', padding: '0.75rem' }}>
-                      {estimate.source === 'teacher' ? (
-                        <CEFRDropdown
-                          estimate={estimate}
-                          index={index}
-                          updatedCEFRHistory={updatedCEFRHistory}
-                          setUpdatedCEFRHistory={setUpdatedCEFRHistory}
-                          setModified={setModified}
-                        />
-                      ) : (
-                        skillLevels[estimate.grade]
-                      )}
-                    </TableCell>
-                    {/* {estimate.source === 'teacher' && (
-                      <CloseIcon
-                        className="interactable"
-                        style={{
-                          cursor: 'pointer',
-                          marginTop: '.6em',
-                          marginLeft: '.25em',
-                          marginRight: '.75em',
-                          color: 'red',
-                        }}
-                        onClick={() => removeCEFR(index)}
-                      />
-                    )} */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </AppTable>
-          </div>
-          <div className="flex space-between" style={{ paddingBottom: '15px' }}>
-            <AppButton
-              className="interactable"
-              variant="primary"
-              onClick={handleSubmit}
-              disabled={!modified}
-            >
-              <FormattedMessage id="submit-changes-CEFR" />
-            </AppButton>
-            <AppButton
-              className="interactable"
-              style={{ marginLeft: '.5rem' }}
-              variant="secondary"
-              onClick={undoChanges}
-              disabled={!modified}
-            >
-              <FormattedMessage id="undo-changes-CEFR" />
-            </AppButton>
-          </div>
+  return (
+    <AppDialog
+      open={open}
+      onClose={closeModal}
+      title={<FormattedMessage id="view-previous-and-edit" />}
+      closeDataCy="close-cefr-modal"
+    >
+      {/* {showForm && (
+        <div style={{ marginBottom: '10px' }}>
+          <CEFRDropdown
+            addNew
+            updatedCEFRHistory={updatedCEFRHistory}
+            setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+            setModified={setModified}
+          />
         </div>
-      </Draggable>
-    )
-  }
-
-  return null
+      )} */}
+      <AppTable striped hover density="standard">
+        <TableHead>
+          <TableRow key="summary-header-row">
+            <TableCell>
+              <FormattedMessage id="date-of-CEFR" />
+            </TableCell>
+            <TableCell>
+              <FormattedMessage id="source-of-CEFR" />
+            </TableCell>
+            <TableCell>
+              <FormattedMessage id="cefr_grade" />
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {showForm && (
+            <TableRow>
+              <TableCell>{moment().format('YYYY/MM/DD')}</TableCell>
+              <TableCell sx={{ width: '100px' }} />
+              <TableCell>
+                <CEFRDropdown
+                  addNew
+                  updatedCEFRHistory={updatedCEFRHistory}
+                  setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                  setModified={setModified}
+                />
+              </TableCell>
+            </TableRow>
+          )}
+          {updatedCEFRHistory.map((estimate, index) => (
+            <TableRow key={`${estimate.timestamp}-${estimate.source}`}>
+              <TableCell>{moment.unix(estimate.timestamp).format('YYYY/MM/DD')}</TableCell>
+              <TableCell sx={{ width: '100px' }}>
+                {estimate.source === 'self_estimation'
+                  ? 'Self'
+                  : capitalize(estimate.source.replace('_', ' '))}
+              </TableCell>
+              <TableCell>
+                {estimate.source === 'teacher' ? (
+                  <CEFRDropdown
+                    estimate={estimate}
+                    index={index}
+                    updatedCEFRHistory={updatedCEFRHistory}
+                    setUpdatedCEFRHistory={setUpdatedCEFRHistory}
+                    setModified={setModified}
+                  />
+                ) : (
+                  skillLevels[estimate.grade]
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </AppTable>
+      <Box sx={{ display: 'flex', gap: '12px', mt: '1.5rem', mb: '0.5rem' }}>
+        <AppButton size="sm" variant="primary" onClick={handleSubmit} disabled={!modified}>
+          <FormattedMessage id="submit-changes-CEFR" />
+        </AppButton>
+        <AppButton size="sm" variant="secondary" onClick={undoChanges} disabled={!modified}>
+          <FormattedMessage id="undo-changes-CEFR" />
+        </AppButton>
+      </Box>
+    </AppDialog>
+  )
 }
 
 export default StudentCEFRModal

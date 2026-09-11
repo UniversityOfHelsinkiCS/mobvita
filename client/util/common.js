@@ -17,6 +17,9 @@ import mail05 from 'Assets/images/mail-05.svg'
 import alertCircle from 'Assets/images/alert-circle.svg'
 import xClose from 'Assets/images/x-close.svg'
 import activityHeart from 'Assets/images/activity-heart.svg'
+import analytics from 'Assets/images/analytics.svg'
+import inherit from 'Assets/images/inherit.svg'
+import key from 'Assets/images/key.svg'
 import bookmark from 'Assets/images/bookmark.svg'
 import bookOpen from 'Assets/images/book-open-01.svg'
 import bookOpenGreen from 'Assets/images/book-open-green.svg'
@@ -73,6 +76,7 @@ import translate01 from 'Assets/images/translate-01.svg'
 import translate from 'Assets/images/translate.svg'
 import dotpoints01 from 'Assets/images/dotpoints-01.svg'
 import playCircle from 'Assets/images/play-circle.svg'
+import arrowLeft from 'Assets/images/arrow-left.svg'
 import arrowRight from 'Assets/images/arrow-right.svg'
 import checkCircle from 'Assets/images/check-circle.svg'
 import clock from 'Assets/images/clock.svg'
@@ -148,7 +152,6 @@ import exhaustiveTest from 'Assets/images/exhaustive_test.png'
 import help from 'Assets/images/help.png'
 import settingsIcon from 'Assets/images/settings_icon.png'
 import bellIcon from 'Assets/images/bell_icon.png'
-import infoIcon from 'Assets/images/info_icon.png'
 import notesIcon from 'Assets/images/notes.png'
 import lightbulbIcon from 'Assets/images/light-bulb.png'
 // ---
@@ -193,7 +196,7 @@ import external from 'Assets/images/external.svg'
 import sequre from 'Assets/images/sequre.svg'
 import globe5 from 'Assets/images/globe-5.svg'
 import menu3 from 'Assets/images/menu-03.svg'
-
+import infoIcon from 'Assets/images/info-icon.svg'
 
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -223,6 +226,9 @@ export const images = {
   alertCircle,
   xClose,
   activityHeart,
+  analytics,
+  inherit,
+  key,
   bookmark,
   bookOpen,
   bookOpenGreen,
@@ -279,6 +285,7 @@ export const images = {
   translate,
   dotpoints01,
   playCircle,
+  arrowLeft,
   arrowRight,
   checkCircle,
   checkIcon,
@@ -369,7 +376,7 @@ export const images = {
   adaptiveTest,
   exhaustiveTest,
   help,
-  infoIcon, // icons -->
+  // icons -->
   bellIcon,
   settingsIcon,
   nestIcon,
@@ -396,6 +403,7 @@ export const images = {
   sequre,
   globe5,
   menu3,
+  infoIcon,
 }
 
 export const backgroundColors = [
@@ -740,7 +748,7 @@ export const exerciseMaskedLanguages = ['Chinese']
 export const colors = {}
 
 export const flashcardColors = {
-  background: ['#E5BDAA','#F1D0AA' , '#F2DF9A', '#D9E499', '#B4D2AF'],
+  background: ['#E5BDAA', '#F1D0AA', '#F2DF9A', '#D9E499', '#B4D2AF'],
   foreground: ['#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A'],
 }
 

@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStudentHistory } from 'Utilities/redux/groupHistoryReducer'
-import { Divider } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import CustomTooltip from 'Components/CustomTooltip'
+import { Box } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
+import ChartHeading from 'Components/ChartHeading'
 import moment from 'moment'
 import { colors } from 'Assets/mui_theme/designTokens'
 
@@ -50,43 +49,17 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
     <div>
       <div>
         {view === 'exercise' ? (
-          <div className="row-flex align center">
-            <CustomTooltip
-              permanent
-              title={
-                <div>
-                  <FormattedMessage id="exercise-history-explanation" />
-                </div>
-              }
-            >
-              <InfoOutlinedIcon
-                sx={{ paddingRight: '0.75em', marginBottom: '0.35em', color: 'grey' }}
-              />
-            </CustomTooltip>
-            <div className="progress-page-header">
-              <FormattedMessage id="exercise-history" />
-            </div>
-          </div>
+          <ChartHeading
+            titleId="exercise-history"
+            tooltip={<FormattedMessage id="exercise-history-explanation" />}
+          />
         ) : (
-          <div className="row-flex align center">
-            <CustomTooltip
-              permanent
-              title={
-                <div>
-                  <FormattedMessage id="test-history-explanation" />
-                </div>
-              }
-            >
-              <InfoOutlinedIcon
-                sx={{ paddingRight: '0.75em', marginBottom: '0.35em', color: 'grey' }}
-              />
-            </CustomTooltip>
-            <div className="progress-page-header">
-              <FormattedMessage id="Test History" />
-            </div>
-          </div>
+          <ChartHeading
+            titleId="Test History"
+            tooltip={<FormattedMessage id="test-history-explanation" />}
+          />
         )}
-        <Divider sx={{ my: '1em' }} />
+        <Box sx={{ height: '2em' }} />
       </div>
 
       {student ? (

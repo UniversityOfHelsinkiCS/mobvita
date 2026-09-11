@@ -1,8 +1,8 @@
-@use "sass:map";
-@use "sass:meta";
+@use 'sass:map';
+@use 'sass:meta';
 
-@import "./base.scss";
-@import "./rc-slider.css";
+@import './base.scss';
+@import './rc-slider.css';
 
 // The family alias comes from `bundledTypefaces` in designTokens.js so it cannot drift from the
 // inline family `getTextStyle()` hands to Syriac surfaces. The `local()` name is deliberately
@@ -19,19 +19,19 @@
 }
 
 $spacing: (
-  "xs": .2rem,
-  "sm": .5rem,
-  "nm": 1rem,
-  "lg": 2rem,
-  "xl": 3rem
+  'xs': 0.2rem,
+  'sm': 0.5rem,
+  'nm': 1rem,
+  'lg': 2rem,
+  'xl': 3rem,
 );
 
-$wrong-answer-background-color: #FFDADA;
+$wrong-answer-background-color: #ffdada;
 $secondary-text-color: #777;
 $action-text-hover-color: rgb(81, 138, 248);
 $tooltip-blue: rgba(30, 120, 225, 1);
 // was: green
-$tooltip-green:  #0b869a; //  #0890a6; //   #098fa5; // was: #17a2b8;
+$tooltip-green: #0b869a; //  #0890a6; //   #098fa5; // was: #17a2b8;
 $tooltip-blue: #cde3ff;
 
 // universal background color
@@ -74,7 +74,10 @@ $application-content-top-padding: 1.7em;
 body {
   // The one place the application font is applied; everything else inherits it. Reading surfaces
   // override it with --font-content. The emoji faces stay last so emoji still resolve.
-  font-family: var(--font-ui), Apple Color Emoji, Segoe UI Emoji;
+  font-family:
+    var(--font-ui),
+    Apple Color Emoji,
+    Segoe UI Emoji;
   background-color: var(--app-bg-color);
 }
 
@@ -90,72 +93,62 @@ body,
 }
 
 // HELPERS
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .pt-#{$size} {
     padding-top: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .pb-#{$size} {
     padding-bottom: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .pr-#{$size} {
     padding-right: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .pl-#{$size} {
     padding-left: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .ps-#{$size} {
     padding-left: $value;
     padding-right: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .mt-#{$size} {
     margin-top: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .mb-#{$size} {
     margin-bottom: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .mr-#{$size} {
     margin-right: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .ml-#{$size} {
     margin-left: $value;
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .my-#{$size} {
     margin-top: $value;
     margin-bottom: $value;
@@ -214,19 +207,17 @@ $value in $spacing {
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .gap-row-#{$size} {
-    &> :not(:last-child) {
+    & > :not(:last-child) {
       margin-bottom: $value;
     }
   }
 }
 
-@each $size,
-$value in $spacing {
+@each $size, $value in $spacing {
   .gap-col-#{$size} {
-    &> :not(:last-child) {
+    & > :not(:last-child) {
       margin-right: $value;
     }
   }
@@ -246,7 +237,7 @@ $value in $spacing {
 }
 
 .align-self-end {
-  align-self: flex-end
+  align-self: flex-end;
 }
 
 .flex-reverse {
@@ -292,7 +283,7 @@ $value in $spacing {
 }
 
 .grow-children {
-  &>* {
+  & > * {
     flex-basis: 0;
     flex-grow: 1;
   }
@@ -430,9 +421,9 @@ $value in $spacing {
   justify-content: space-between;
 }
 
-.react-datepicker__input-container>input {
+.react-datepicker__input-container > input {
   width: 120px;
-  border: 1px solid rgba(34, 36, 38, .15);
+  border: 1px solid rgba(34, 36, 38, 0.15);
   border-radius: 0.25em;
   padding-left: 0.5em;
 }
@@ -445,6 +436,144 @@ body .hg-theme-default {
   font-family: var(--font-ui);
 }
 
+// Themed calendar, applied via `calendarClassName="app-datepicker"` in ResponsiveDatePicker.
+// The vendor sheet loads after this file, so every rule here needs the `body` prefix to outrank it
+// (see the note above) — that is the only reason for the repetition.
+$dp-line: #E8E5DC;
+$dp-ink: #2d2c2a;
+$dp-muted: #9d9b92;
+$dp-outside: #c9c6bc;
+$dp-selected: #4e6e59;
+$dp-hover: #eef4f0;
+
+body .app-datepicker.react-datepicker {
+  border: 2px solid $dp-line;
+  border-radius: 15px;
+  background-color: #ffffff;
+  color: $dp-ink;
+  box-shadow: 0 8px 24px rgba(45, 44, 42, 0.12);
+  // Clip the grid's own hairlines to the rounded outline.
+  overflow: hidden;
+
+  .react-datepicker__header {
+    padding: 0;
+    border-bottom: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #ffffff;
+  }
+
+  .react-datepicker__current-month {
+    padding: 12px 40px;
+    font-size: 15px;
+    font-weight: 600;
+    color: $dp-ink;
+  }
+
+  .react-datepicker__navigation {
+    top: 10px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .react-datepicker__navigation--previous {
+    left: 6px;
+  }
+
+  .react-datepicker__navigation--next {
+    right: 6px;
+  }
+
+  .react-datepicker__navigation-icon::before {
+    border-color: $dp-muted;
+    border-width: 2px 2px 0 0;
+    width: 7px;
+    height: 7px;
+  }
+
+  .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+    border-color: $dp-ink;
+  }
+
+  // Weekday strip and day grid share one cell metric so the hairlines line up column by column.
+  .react-datepicker__day-names,
+  .react-datepicker__week {
+    display: flex;
+    margin: 0;
+  }
+
+  // Fixed 40px cells rather than flex-sized ones: the popper shrinks to its content, so the cells
+  // are what give the calendar its 280px width.
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border-right: 1px solid $dp-line;
+    border-bottom: 1px solid $dp-line;
+    border-radius: 0;
+    line-height: 40px;
+    font-size: 14px;
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+
+  .react-datepicker__day-name {
+    border-top: 1px solid $dp-line;
+    color: $dp-muted;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .react-datepicker__month {
+    margin: 0;
+  }
+
+  .react-datepicker__week:last-child .react-datepicker__day {
+    border-bottom: 0;
+  }
+
+  .react-datepicker__day {
+    color: $dp-ink;
+
+    &:hover {
+      border-radius: 0;
+      background-color: $dp-hover;
+    }
+  }
+
+  .react-datepicker__day--outside-month {
+    color: $dp-outside;
+  }
+
+  .react-datepicker__day--today {
+    font-weight: 700;
+  }
+
+  // The vendor sheet colours these too, so both states are restated here.
+  .react-datepicker__day--selected,
+  .react-datepicker__day--keyboard-selected {
+    border-radius: 0;
+    background-color: $dp-selected;
+    color: #ffffff;
+
+    &:hover {
+      background-color: $dp-selected;
+    }
+  }
+
+  .react-datepicker__day--disabled {
+    color: $dp-outside;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
 // REACT VIRTUALIZED OVERRIDES:
 .ReactVirtualized__Grid__innerScrollContainer {
   overflow: initial !important;
@@ -455,7 +584,7 @@ body .hg-theme-default {
 }
 
 //Custom filepicker
-[type="file"] {
+[type='file'] {
   border: 0;
   clip: rect(0, 0, 0, 0);
   height: 1px;
@@ -466,7 +595,7 @@ body .hg-theme-default {
   width: 1px;
 }
 
-[type="file"]+label {
+[type='file'] + label {
   background-color: #17a2b8;
   border-radius: 0.25rem;
   color: #fff;
@@ -478,12 +607,12 @@ body .hg-theme-default {
   justify-content: center;
 }
 
-[type="file"]:focus+label,
-[type="file"]+label:hover {
+[type='file']:focus + label,
+[type='file'] + label:hover {
   background-color: #138496;
 }
 
-[type="file"]:focus+label {
+[type='file']:focus + label {
   outline: 1px dotted #000;
 }
 
@@ -491,10 +620,10 @@ body .hg-theme-default {
 .application-content {
   min-height: calc(100vh - #{$navbar-height} - #{$footer-height});
   width: 100%;
-  padding-right: map.get($spacing, "xs");
+  padding-right: map.get($spacing, 'xs');
   padding-left: 1.7em;
   padding-top: 1.7em;
-  background-color: var(--app-bg-color);  
+  background-color: var(--app-bg-color);
 }
 
 .blue-bg {
@@ -510,7 +639,9 @@ body .hg-theme-default {
   // }
 
   &-tall {
-    min-height: calc(100vh - #{$navbar-height} - #{$application-content-top-padding} - #{$footer-height});
+    min-height: calc(
+      100vh - #{$navbar-height} - #{$application-content-top-padding} - #{$footer-height}
+    );
   }
 
   &-narrow {
@@ -544,32 +675,31 @@ body .hg-theme-default {
 
   &-student {
     grid-template-areas:
-      "continue-activity"
-      "exhaustive-test"
-      "practice"
-      "library"
-      "lesson"
-      "flashcards"
-      "adaptive-test"
-      "reading-test"
-      ".";
+      'continue-activity'
+      'exhaustive-test'
+      'practice'
+      'library'
+      'lesson'
+      'flashcards'
+      'adaptive-test'
+      'reading-test'
+      '.';
   }
-  
+
   &-teacher {
     grid-template-areas:
-      "add-new-stories"
-      "groups"
-      "library"
-      "lesson"
-      ".";
+      'add-new-stories'
+      'groups'
+      'library'
+      'lesson'
+      '.';
   }
 }
-
 
 .borders-light-grey {
   border: 2px solid lightgrey;
   border-radius: 12px;
-  background: #FFF;
+  background: #fff;
   padding: 1rem;
 }
 
@@ -620,8 +750,8 @@ body .hg-theme-default {
 .encouragement {
   border: 2px solid lightgrey;
   border-radius: 12px;
-  background: #FFF;
-  color: #000000
+  background: #fff;
+  color: #000000;
 }
 
 .enc-picture {
@@ -630,7 +760,7 @@ body .hg-theme-default {
   max-height: 112px;
   width: auto;
   height: auto;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   margin-left: auto;
 }
 
@@ -640,25 +770,33 @@ body .hg-theme-default {
   max-height: 86px;
   width: auto;
   height: auto;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   margin-left: auto;
 }
 
 .encouragement-button {
-  background-color: transparent; 
+  background-color: transparent;
   border: 2px solid !important;
-  border-radius:12px !important;
-  margin-left: .5rem;
-  padding: 0.1rem; 
+  border-radius: 12px !important;
+  margin-left: 0.5rem;
+  padding: 0.1rem;
   border-color: black !important;
   animation-name: flashButton !important;
   animation-duration: 3s !important;
 
   @keyframes flashButton {
-    0% {background-color: rgb(255, 209, 80);}
-    33% {background-color: transparent;}
-    66% {background-color: rgb(255, 209, 80);}
-    100% {background-color: transparent;}
+    0% {
+      background-color: rgb(255, 209, 80);
+    }
+    33% {
+      background-color: transparent;
+    }
+    66% {
+      background-color: rgb(255, 209, 80);
+    }
+    100% {
+      background-color: transparent;
+    }
   }
 }
 
@@ -667,7 +805,7 @@ body .hg-theme-default {
   border-radius: 12px;
   padding: 20px;
   position: absolute;
-  background: #FFF;
+  background: #fff;
   z-index: 103;
 }
 
@@ -679,10 +817,10 @@ body .hg-theme-default {
   top: 50%;
   left: 50%;
   margin-left: -226px;
-  background: #FFF;
+  background: #fff;
   z-index: 103;
   width: 452px;
-  color: #000000
+  color: #000000;
 }
 
 .draggable-ex-encouragement-mobile {
@@ -693,10 +831,10 @@ body .hg-theme-default {
   top: 50%;
   left: 50%;
   margin-left: -176px;
-  background: #FFF;
+  background: #fff;
   z-index: 103;
   width: 352px;
-  color: #000000
+  color: #000000;
 }
 
 .draggable-encouragement {
@@ -708,10 +846,10 @@ body .hg-theme-default {
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 2.5em 2.5em 1.6em #6e6c6c;
-  background: #FFF;
+  background: #fff;
   z-index: 1103;
   width: 600px;
-  color: #000000
+  color: #000000;
 }
 
 .draggable-encouragement-mobile {
@@ -722,10 +860,10 @@ body .hg-theme-default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #FFF;
+  background: #fff;
   z-index: 1103;
   width: 352px;
-  color: #000000
+  color: #000000;
 }
 
 .row-flex {
@@ -754,7 +892,7 @@ body .hg-theme-default {
 }
 
 .decline {
-  color: #FF0000;
+  color: #ff0000;
   margin-top: 0.5rem;
 }
 
@@ -765,7 +903,7 @@ body .hg-theme-default {
 .homeview-item {
   border: 2px solid #000;
   border-radius: 12px;
-  background: #FFF;
+  background: #fff;
 }
 
 .annotation-name-input {
@@ -796,7 +934,6 @@ body .hg-theme-default {
 
   &-narrow {
     padding: 15px 5px 20px 25px;
-
   }
 
   &-wide {
@@ -820,7 +957,6 @@ body .hg-theme-default {
 }
 
 .practice-now-modal {
-
   &-group-cont {
     display: flex;
     justify-content: space-evenly;
@@ -854,7 +990,6 @@ body .hg-theme-default {
       margin: 4px;
     }
   }
-
 }
 
 // Navbar
@@ -885,20 +1020,20 @@ body .hg-theme-default {
     align-items: center;
     justify-content: center;
   }
-  
+
   &-revita-logo {
     color: black !important;
     margin-left: 1.5em;
     margin-right: 3em;
 
     @media (max-width: 850px) {
-      margin-left: .5em;
+      margin-left: 0.5em;
       margin-right: 1em;
     }
 
     @media (max-width: 1050px) {
-      margin-left: .3em;
-      margin-right: .5em;
+      margin-left: 0.3em;
+      margin-right: 0.5em;
     }
   }
 
@@ -914,7 +1049,7 @@ body .hg-theme-default {
   }
 
   &-text-item {
-    margin-top: .4em;
+    margin-top: 0.4em;
     font-weight: 400;
     color: black !important;
     margin-right: 2em;
@@ -925,8 +1060,8 @@ body .hg-theme-default {
   }
 
   &-dropdown-text {
-    margin-left: -.4em;
-    margin-top: .4em;
+    margin-left: -0.4em;
+    margin-top: 0.4em;
     color: black !important;
     margin-right: 0em;
   }
@@ -951,11 +1086,10 @@ body .hg-theme-default {
     text-decoration: underline;
   }
 
-
   &-external-link {
     &:visited {
       color: #212529;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
     }
 
     &:hover {
@@ -1044,7 +1178,7 @@ body .hg-theme-default {
   border-width: thin !important;
 
   &.wrong {
-    background-color: $wrong-answer-background-color  !important;
+    background-color: $wrong-answer-background-color !important;
   }
 
   &.correct {
@@ -1056,7 +1190,7 @@ body .hg-theme-default {
   }
 
   &.touched {
-    background-color: lightyellow !important
+    background-color: lightyellow !important;
   }
 }
 
@@ -1086,12 +1220,12 @@ body .hg-theme-default {
   }
 }
 
-.control-mode>.default.text {
+.control-mode > .default.text {
   color: rgb(49, 49, 49) !important;
 }
 
 .hearing-untouched {
-  background-color: #DCF6FF;
+  background-color: #dcf6ff;
 }
 
 .hearing-touched {
@@ -1107,7 +1241,7 @@ body .hg-theme-default {
 }
 
 .wrong-text {
-  color: #0000FF;
+  color: #0000ff;
 }
 
 .wrong-text-background {
@@ -1256,7 +1390,7 @@ body .hg-theme-default {
   border-radius: 999px;
   border: 1px solid #b1d3c2;
   background: #faf8ed; // cream base; the green attempt-bar fills over it
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   position: relative;
   outline: 0;
   text-align: center;
@@ -1265,7 +1399,7 @@ body .hg-theme-default {
   &:hover {
     border: 1px solid #9cc6b2;
 
-    &>div {
+    & > div {
       background-color: #9cc6b2;
     }
   }
@@ -1273,18 +1407,18 @@ body .hg-theme-default {
   &:focus {
     outline: 0;
 
-    &>div {
+    & > div {
       background-color: #9cc6b2;
     }
   }
 
-  &>div {
+  & > div {
     height: 2.5rem;
     border-radius: 999px;
     transition: width 500ms ease-in-out;
   }
 
-  &>span {
+  & > span {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1294,12 +1428,11 @@ body .hg-theme-default {
   &:disabled {
     opacity: 0.6;
 
-    &>div {
+    & > div {
       background-color: #c9ded2;
     }
   }
 }
-
 
 .virtual-keyboard {
   &-ctrl-alt {
@@ -1309,7 +1442,7 @@ body .hg-theme-default {
   }
 
   &-active-key {
-    background-color: $btn-color-primary  !important;
+    background-color: $btn-color-primary !important;
     color: white !important;
   }
 }
@@ -1360,7 +1493,7 @@ body .hg-theme-default {
     top: auto;
     right: 1em;
     bottom: 3em;
-    width: calc(100vw - 2em)
+    width: calc(100vw - 2em);
   }
 
   @media (max-width: 639px) {
@@ -1398,7 +1531,7 @@ body .hg-theme-default {
 
 .notes-superscript {
   color: green;
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .notes-info-text {
@@ -1407,8 +1540,8 @@ body .hg-theme-default {
 }
 
 .annotation-item {
-  border-radius: .2rem;
-  padding: .3em;
+  border-radius: 0.2rem;
+  padding: 0.3em;
 
   &-editing {
     background-color: white;
@@ -1417,7 +1550,7 @@ body .hg-theme-default {
 
   &-listed {
     background-color: #f5f5f5;
-    margin: .5rem 0rem;
+    margin: 0.5rem 0rem;
 
     &-reply {
       margin-left: 1rem;
@@ -1430,12 +1563,12 @@ body .hg-theme-default {
   word-wrap: break-word;
   font-style: italic;
   background-color: lightyellow;
-  padding: .25rem;
+  padding: 0.25rem;
 }
 
 .dictionary-translations {
-  &>* {
-    padding-top: 1rem
+  & > * {
+    padding-top: 1rem;
   }
 
   &-overlay {
@@ -1443,15 +1576,15 @@ body .hg-theme-default {
     flex-wrap: wrap;
     margin-left: -2rem;
 
-    &>* {
-      margin-left: 2rem
+    & > * {
+      margin-left: 2rem;
     }
   }
 }
 
 .source-word {
   cursor: pointer;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   color: slategray;
 
   &:hover {
@@ -1463,7 +1596,7 @@ body .hg-theme-default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: .5em;
+  gap: 0.5em;
 }
 
 .story-description {
@@ -1475,8 +1608,8 @@ body .hg-theme-default {
 
 .library-control {
   display: flex;
-  flex-direction: column;  
-  gap: 0.5em; 
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .library-selection {
@@ -1543,7 +1676,6 @@ body .hg-theme-default {
   @media (max-width: 700px) {
     left: 65%;
   }
-
 }
 
 .checkbox-group {
@@ -1582,7 +1714,7 @@ body .hg-theme-default {
 }
 
 .competition-bar-label {
-  transition: width .6s ease;
+  transition: width 0.6s ease;
   display: flex;
   justify-content: space-between;
 }
@@ -1598,7 +1730,7 @@ body .hg-theme-default {
   &-title-focused {
     font-weight: 500;
     font-size: 1.3rem !important;
-    padding-left: .75em;
+    padding-left: 0.75em;
   }
 
   &-content {
@@ -1674,8 +1806,8 @@ label.file-upload-btn {
 }
 
 .story-item-dropdown {
-  &>a {
-    color: rgba(0, 0, 0, .87) !important;
+  & > a {
+    color: rgba(0, 0, 0, 0.87) !important;
   }
 }
 
@@ -1716,6 +1848,37 @@ label.file-upload-btn {
   }
 }
 
+// Group cards reuse `.story-item-title` for layout, but the details dialog opens from the info
+// icon next to the name. Keep the header neutral and give the icon/actions buttons their own cue.
+.story-item-title.group-card-header:hover {
+  color: black;
+  cursor: default;
+}
+
+// The icon is a mask painted with `currentColor`, so recolouring the button recolours the glyph.
+// Green, not the blue link hover — nothing on this card should read as a plain <a>.
+.group-card-info-trigger {
+  color: #2d2c2a;
+  transition: color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    cursor: pointer;
+    color: #8db19f;
+  }
+}
+
+.group-card-more-button {
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #e8f3ed !important;
+  }
+}
+
 .story-item-dots {
   @media (min-width: 640px) {
     &:hover {
@@ -1736,23 +1899,21 @@ label.file-upload-btn {
   padding-bottom: 1em;
 
   &.nogroups {
-    margin-top: 2em;
+    margin-top: 0;
     display: flex;
     flex-direction: column;
 
     #title {
       padding-bottom: 1em;
     }
-
   }
-
 }
 
 .group-form {
   margin-top: 1.5em;
 }
 
-.group-form>.form-control {
+.group-form > .form-control {
   margin-top: 0.5em;
   margin-bottom: 1.5em;
 }
@@ -1764,7 +1925,7 @@ label.file-upload-btn {
 
 .sm-label {
   font-weight: 700;
-  font-size: .92857143em;
+  font-size: 0.92857143em;
 }
 
 .additional-info {
@@ -1780,28 +1941,27 @@ label.file-upload-btn {
   margin-left: 1em;
   margin-right: 1em;
   display: inline-block;
-  opacity: 0.5
+  opacity: 0.5;
 }
 
 .enc-message-body {
   border: 2px solid cyan;
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: .5em;
-  margin-right: .5em;
-  margin-top: .5em;
+  margin-bottom: 0.5em;
+  margin-right: 0.5em;
+  margin-top: 0.5em;
 }
 
-
 .blue-flashcard-intro {
-    background-color: white;
-    margin-bottom: 2em;
-    border-color: aqua;
-    /* border-style: outset; */
-    border-radius: 10px;
-    padding: 10px;
-    color: darkslategray;
-    box-shadow: .5em .5em .6em grey;
+  background-color: white;
+  margin-bottom: 2em;
+  border-color: aqua;
+  /* border-style: outset; */
+  border-radius: 10px;
+  padding: 10px;
+  color: darkslategray;
+  box-shadow: 0.5em 0.5em 0.6em grey;
 }
 
 .flashcard-story-info-body {
@@ -1814,7 +1974,7 @@ label.file-upload-btn {
   border-radius: 12px;
   box-shadow: 0.5em 0.5em 0.6em grey;
   padding: 20px;
-  background: #FFF;
+  background: #fff;
   color: #000000;
   margin-top: 12px;
 }
@@ -1827,7 +1987,6 @@ label.file-upload-btn {
   min-height: 100%;
   margin-left: 12px;
 }
-
 
 .flashcard {
   display: flex;
@@ -1965,7 +2124,7 @@ label.file-upload-btn {
     align-items: center;
     padding-top: 1rem;
 
-    &>ul {
+    & > ul {
       max-height: 16em;
       padding-left: 0;
     }
@@ -1983,7 +2142,7 @@ label.file-upload-btn {
   &-input-and-result-container {
     height: 25%;
     display: flex;
-    padding-top: .2em;
+    padding-top: 0.2em;
     margin-bottom: 3em;
   }
 
@@ -2023,13 +2182,13 @@ label.file-upload-btn {
     display: flex;
     flex-direction: row;
 
-    &>button {
+    & > button {
       color: white;
       font-weight: 600;
       padding-right: 0;
     }
 
-    &>select {
+    & > select {
       background-color: inherit;
       border: none;
       color: white;
@@ -2040,7 +2199,7 @@ label.file-upload-btn {
         outline: none;
       }
 
-      &>option {
+      & > option {
         color: black;
       }
     }
@@ -2067,7 +2226,7 @@ label.file-upload-btn {
     }
 
     &:disabled {
-      color: grey
+      color: grey;
     }
 
     @media (max-width: 900px) {
@@ -2134,7 +2293,7 @@ label.file-upload-btn {
 
   &-fab {
     align-self: flex-start;
-    background-color: #00AFDC;
+    background-color: #00afdc;
     border-radius: 500px;
     border: none;
     width: 3.5em;
@@ -2304,7 +2463,7 @@ label.file-upload-btn {
     font-size: 1.5em;
     color: rgb(112, 114, 120);
     margin-top: 3em;
-    text-align: center
+    text-align: center;
   }
 
   &-top-info {
@@ -2314,7 +2473,7 @@ label.file-upload-btn {
   &-counter {
     font-size: 2.5em;
     border-radius: 7px;
-    background: #FFD970;
+    background: #ffd970;
     height: 65px;
     width: 65px;
     display: flex;
@@ -2354,7 +2513,7 @@ label.file-upload-btn {
 }
 
 // No blurring/dimming for popups inside modal elements.
-.blurring.dimmed.dimmable> :not(.dimmer).popup {
+.blurring.dimmed.dimmable > :not(.dimmer).popup {
   filter: none;
 }
 
@@ -2362,7 +2521,7 @@ label.file-upload-btn {
   text-align: center !important;
   color: white !important;
   background-color: $tooltip-green !important;
-  padding: .25rem .5rem .75rem .5rem !important;
+  padding: 0.25rem 0.5rem 0.75rem 0.5rem !important;
 }
 
 .white-tooltip .tooltip-inner {
@@ -2376,14 +2535,13 @@ label.file-upload-btn {
 
   &-container {
     padding: 0.3em !important;
-    z-index: 102;    
+    z-index: 102;
 
     &.clickable {
       &:hover {
         cursor: pointer;
       }
     }
-
   }
 
   &-diff {
@@ -2395,12 +2553,12 @@ label.file-upload-btn {
   &-blue {
     text-align: center;
     background-color: $tooltip-blue;
-    color: rgb(0, 0, 0) !important;    
+    color: rgb(0, 0, 0) !important;
     font-size: 0.8em !important;
-    padding: 0.1em 10px 0.1em 30px !important;  
-    border:none !important;  
+    padding: 0.1em 10px 0.1em 30px !important;
+    border: none !important;
     margin: 0 !important;
-    border-color: $tooltip-blue !important;    
+    border-color: $tooltip-blue !important;
   }
 
   &-green {
@@ -2408,20 +2566,20 @@ label.file-upload-btn {
     background-color: $tooltip-green;
     color: white;
     padding: 0.3em;
-    font-size: 0.9em;    
+    font-size: 0.9em;
   }
 
   &-hint {
     background-color: $tooltip-green;
     color: white;
-    padding: .5em;
+    padding: 0.5em;
     text-align: 'left';
     margin: 0;
   }
   &-blue {
     background-color: $tooltip-blue;
     color: white;
-    padding: .5em;
+    padding: 0.5em;
     text-align: 'left';
     margin: 0;
   }
@@ -2449,7 +2607,6 @@ label.file-upload-btn {
   h3 {
     margin: 1em;
   }
-
 }
 
 .concept-setting-cont {
@@ -2458,8 +2615,8 @@ label.file-upload-btn {
   align-items: center;
   padding: 1em;
   border: 1px solid black;
-  border-color: #DEE2E6;
-  background-color: #F9FAFB;
+  border-color: #dee2e6;
+  background-color: #f9fafb;
   border-radius: 7.5px;
 }
 
@@ -2558,11 +2715,11 @@ label.file-upload-btn {
   }
 
   &-chosen-word {
-    color: #388A3D;
+    color: #388a3d;
     padding: 0.15em;
-    border: 1.8px solid #388A3D;
+    border: 1.8px solid #388a3d;
     border-radius: 10px;
-    background-color: #E6FCE7;
+    background-color: #e6fce7;
   }
 
   &-additional-info {
@@ -2593,8 +2750,6 @@ label.file-upload-btn {
     }
   }
 
-
-
   @media (max-width: 760px) {
     padding-left: 2em;
 
@@ -2602,7 +2757,6 @@ label.file-upload-btn {
       display: flex;
       justify-content: space-between;
       font-size: 14px;
-
     }
   }
 }
@@ -2616,7 +2770,6 @@ label.file-upload-btn {
 }
 
 .suggestedSources {
-
   &-container {
     padding-top: 1em;
   }
@@ -2631,7 +2784,6 @@ label.file-upload-btn {
 }
 
 .profile-page {
-
   &-setting-header {
     margin-bottom: 1em;
     font-size: 22px;
@@ -2640,12 +2792,12 @@ label.file-upload-btn {
 
   &-radio-button-group {
     display: flex;
-    margin-top: .75em;
+    margin-top: 0.75em;
     gap: 1em;
 
     @media (max-width: 720px) {
       flex-direction: column;
-      gap: .5em;
+      gap: 0.5em;
     }
   }
 }
@@ -2659,7 +2811,7 @@ label.file-upload-btn {
   &-graph-cont {
     border-radius: 7.5px;
     background: white;
-    padding: 2em .5em .5em .5em;
+    padding: 2em 0.5em 0.5em 0.5em;
   }
 }
 
@@ -2673,7 +2825,6 @@ label.file-upload-btn {
     display: flex;
     flex-direction: column;
   }
-
 }
 
 .learning-settings-radio-button-item {
@@ -2715,11 +2866,11 @@ label.file-upload-btn {
   background: rgb(239, 239, 239);
   margin-left: 1em;
 
-  &>.unclicked:hover {
+  & > .unclicked:hover {
     cursor: pointer;
   }
 
-  &>.clicked:hover {
+  & > .clicked:hover {
     cursor: auto;
   }
 }
@@ -2748,33 +2899,33 @@ label.file-upload-btn {
     @extend .align-center;
     font-size: 1.5em;
     position: absolute;
-    right: .2em;
+    right: 0.2em;
     font-weight: 700;
-    gap: .5em;
+    gap: 0.5em;
   }
 
   &-pause-btn {
     @extend .practice-timer;
     background: rgb(239, 239, 239);
 
-    &>.unclicked:hover {
+    & > .unclicked:hover {
       cursor: pointer;
     }
 
-    &>.clicked:hover {
+    & > .clicked:hover {
       cursor: auto;
     }
   }
 
   &-value {
     @extend .practice-timer;
-    background: #FFD970;
+    background: #ffd970;
   }
 }
 
 .competition-progress {
   position: sticky;
-  background-color: #FFF;
+  background-color: #fff;
   z-index: 98;
 }
 
@@ -2801,15 +2952,85 @@ label.file-upload-btn {
   margin-bottom: 0;
   font-size: 34px;
   font-weight: 500;
-  color: rgb(112, 114, 120); 
+  color: rgb(112, 114, 120);
 }
 
+// Group analytics "Showing results" row: label, the two date pills, and the CSV export, flat on
+// the cream panel rather than in its own coloured box.
 .date-pickers-container {
-  padding: 1em;
-  border: 1px solid rgb(189, 202, 212);
-  background: rgb(255, 239, 213);
-  border-radius: 7.5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
   margin-top: 1.5em;
+
+  .group-analytics-daterow-label {
+    font-weight: 600;
+  }
+
+  .group-analytics-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+
+  .group-analytics-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    font-weight: 400;
+  }
+
+  // The pill owns the border; the react-datepicker input inside it goes borderless.
+  .group-analytics-date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 12px;
+    border: 1px solid #b1d3c2;
+    border-radius: 999px;
+    background: #ffffff;
+
+    .group-analytics-date-icon {
+      font-size: 13px;
+      color: #2d2c2a;
+      flex-shrink: 0;
+    }
+
+    .react-datepicker__input-container > input {
+      width: 78px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      font-size: 12px;
+      line-height: 1;
+      color: #2d2c2a;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .group-analytics-csv {
+    margin-left: auto;
+    text-decoration: none;
+  }
+
+  // Student view: "Latest CEFR" + its edit button sit at the left of this row, pushing the dates
+  // over to the right.
+  .group-analytics-cefr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &.has-cefr .group-analytics-daterow-label {
+    margin-left: auto;
+  }
 }
 
 .date-pickers {
@@ -2818,10 +3039,60 @@ label.file-upload-btn {
   align-items: center;
 }
 
+// "All students" heading + the summary-view dropdown beside it.
+.group-analytics-summary-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 1.5em;
+
+  .group-analytics-summary-title {
+    flex: 0 0 auto;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2d2c2a;
+  }
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+// Summary table: left-aligned headers that wrap, and the per-row actions column.
+.summary-header-cell {
+  vertical-align: bottom;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.summary-row-menu-cell {
+  width: 44px;
+  text-align: right;
+}
+
+.summary-row-more-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #2d2c2a;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #e8f3ed;
+  }
+}
+
 .medal-info {
   border: 2px solid #ccc;
   border-radius: 1rem;
-  padding: .5rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
 }
@@ -2885,11 +3156,11 @@ label.file-upload-btn {
 
 .achievement-progress {
   height: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   position: relative;
 
-  &>div {
-    border-radius: .5rem;
+  & > div {
+    border-radius: 0.5rem;
   }
 
   & span {
@@ -2923,12 +3194,12 @@ label.file-upload-btn {
 .leaderboard-reward {
   height: 1.45rem;
   width: 1.45rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: .72rem;
+  font-size: 0.72rem;
   font-weight: 600;
   line-height: 1;
   color: #2d2c2a; // ink number — readable on all three medal fills
@@ -2957,7 +3228,7 @@ label.file-upload-btn {
   max-width: 512px;
   margin: auto;
 
-  &>* {
+  & > * {
     flex: 1 1 0px;
   }
 }
@@ -2983,7 +3254,7 @@ label.file-upload-btn {
   }
 
   &.third {
-    border-color: #F3A960;
+    border-color: #f3a960;
   }
 }
 
@@ -3008,7 +3279,7 @@ label.file-upload-btn {
 
 .leaderboard-winner-name {
   text-align: center;
-  padding: .5rem .25rem 0;
+  padding: 0.5rem 0.25rem 0;
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -3044,7 +3315,7 @@ label.file-upload-btn {
 .crosswords-clue {
   white-space: nowrap;
   border: 1px solid #ccc;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   padding: 0.1em;
   border-radius: 0.3em;
   cursor: pointer;
@@ -3063,25 +3334,25 @@ label.file-upload-btn {
 
 .note-grammar {
   color: #000000;
-  background-color: #C1E1C1;
+  background-color: #c1e1c1;
   padding: 0.2em;
-  border: 2px solid #C1E1C1;
+  border: 2px solid #c1e1c1;
   border-radius: 9px;
 }
 
 .note-vocabulary {
   color: #000000;
-  background-color: #A7C7E7;
+  background-color: #a7c7e7;
   padding: 0.2em;
-  border: 2px solid #A7C7E7;
+  border: 2px solid #a7c7e7;
   border-radius: 9px;
 }
 
 .note-phrases {
   color: #000000;
-  background-color: #FDFD96;
+  background-color: #fdfd96;
   padding: 0.2em;
-  border: 2px solid #FDFD96;
+  border: 2px solid #fdfd96;
   border-radius: 9px;
 }
 
@@ -3106,11 +3377,11 @@ label.file-upload-btn {
   }
 
   &-item {
-    margin: .375rem 1rem;
+    margin: 0.375rem 1rem;
   }
 
   &-button {
-    margin: .375rem 1rem;
+    margin: 0.375rem 1rem;
     color: inherit;
     background-color: inherit;
     border: none;
@@ -3226,7 +3497,7 @@ label.file-upload-btn {
     width: 60px;
     border-radius: 8px;
     margin-bottom: 8px;
-    transition: transform .2s;
+    transition: transform 0.2s;
     border: 2px solid black;
 
     &:hover {
@@ -3295,8 +3566,8 @@ label.file-upload-btn {
     z-index: -1;
   }
 
-  background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-  url('./images/bookstack.jpg');
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('./images/bookstack.jpg');
   background-size: cover;
   height: 100%;
   min-height: 100vh;
@@ -3356,7 +3627,10 @@ label.file-upload-btn {
   font-weight: 600;
   border: 1px solid #9d9b92; // muted, visible on the blue page
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 
   &:hover {
     background-color: #f1eeda;
@@ -3373,25 +3647,34 @@ label.file-upload-btn {
   @media (max-width: 700px) {
     flex-direction: column;
 
-    &>button {
-      margin-bottom: map.get($spacing, "sm");
+    & > button {
+      margin-bottom: map.get($spacing, 'sm');
     }
 
-    &> :not(:last-child) {
+    & > :not(:last-child) {
       margin-right: 0;
     }
   }
 }
 
 .group-buttons {
-  &>button {
+  & > button {
     align-self: flex-start;
+  }
+
+  // Green is the default hover for these buttons (see `.group-function-button`), but on the group
+  // list they sit on a white card rather than the cream panel, so they keep the warm hover.
+  .group-function-button {
+    &:hover,
+    &:focus-visible {
+      background-color: #ece3be !important;
+    }
   }
 
   @media (max-width: 400px) {
     flex-direction: column;
 
-    &>button {
+    & > button {
       align-self: stretch;
       margin-top: 0.5em;
       margin-left: 0;
@@ -3399,31 +3682,295 @@ label.file-upload-btn {
   }
 }
 
+.group-function-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    'analytics stories key'
+    'people test-toggle inherit'
+    'learning test-settings .';
+  gap: 4px 16px;
+  width: 100%;
+}
+
+.group-function-button {
+  justify-content: flex-start !important;
+  height: 36px !important;
+  padding: 6px 10px !important;
+  border-radius: 18px !important;
+  text-decoration: none !important;
+  // Some of these render as <a> (react-router Link), which would otherwise pick up the global
+  // link blue — and `a:hover` outranks MUI's own class. Pin ink so the hover cue is the pill
+  // background alone.
+  color: #2d2c2a !important;
+
+  &:hover,
+  &:focus-visible {
+    background-color: #b1d3c2 !important;
+    color: #2d2c2a !important;
+    text-decoration: none !important;
+  }
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  span:last-child {
+    color: #9d9b92;
+  }
+}
+
+.group-function-analytics {
+  grid-area: analytics;
+}
+.group-function-stories {
+  grid-area: stories;
+}
+.group-function-key {
+  grid-area: key;
+}
+.group-function-people {
+  grid-area: people;
+}
+.group-function-test-toggle {
+  grid-area: test-toggle;
+}
+.group-function-inherit {
+  grid-area: inherit;
+}
+.group-function-learning {
+  grid-area: learning;
+}
+.group-function-test-settings {
+  grid-area: test-settings;
+}
+
 .group-analytics-top {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  // Headers whose heading is a single line with nothing stacked under it: centre the arrow and the
+  // trailing control against the title, and let the control sit straight after the text rather than
+  // being pushed to the far edge by the heading's `flex: 1`.
+  &.single-line {
+    align-items: center;
+
+    .group-analytics-back {
+      margin-top: 0;
+    }
+
+    .group-analytics-heading {
+      flex: 0 1 auto;
+    }
+  }
+
+  .group-analytics-back {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-top: 4px;
+
+    img {
+      display: block;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .group-analytics-heading {
+    min-width: 0;
+    flex: 1;
+
+    .header-2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    & > :last-child:not(:first-child) {
+      color: #9d9b92;
+      font-size: 14px;
+    }
+  }
 
   @media (max-width: 640px) {
-    flex-direction: column;
-    margin-top: -0.5em;
+    align-items: flex-start;
+    flex-wrap: wrap;
 
-    &>* {
-      flex-grow: 1;
-      margin-top: 0.5em;
+    .group-analytics-heading {
+      flex-basis: calc(100% - 34px);
     }
+
   }
 }
 
 .group-analytics-student-dropdown {
   display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 1.5em;
+
+  .group-analytics-student-label {
+    flex: 0 0 auto;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2d2c2a;
+  }
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+// Profile stats row: the learning-language flag next to the two count tiles.
+.progress-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 2rem 0;
+}
+
+// No border or frame — the flag artwork carries its own edges.
+.progress-stats-flag {
+  display: block;
+  height: 72px;
+  border-radius: 8px;
+}
+
+// Value first, label under it: the number is what the tile is for.
+.progress-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 190px;
+  padding: 14px 24px;
+  background-color: #ffffff;
+  border: 1px solid #e8e5dc;
+  border-radius: 16px;
+
+  .progress-stat-value {
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #2d2c2a;
+  }
+
+  .progress-stat-label {
+    font-size: 14px;
+    color: #9d9b92;
+    text-align: center;
+  }
+}
+
+// Exercise / test history: the pager above the concept grid, and the grid itself.
+.history-container {
+  max-width: 100%;
   margin-top: 1em;
   margin-bottom: 2em;
-  font-weight: bold;
-  text-align: bottom;
-  padding-left: 0.2rem;
+  overflow-x: auto;
+}
+
+.history-pagination {
+  display: flex;
+  width: 100%;
   align-items: center;
-  gap: 2em;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 2em;
+
+  .history-pagination-count {
+    min-width: 3.5em;
+    text-align: center;
+    font-weight: 500;
+    color: #2d2c2a;
+  }
+}
+
+// AppTable's `bordered` draws every cell edge in the green border token, which is loud on a grid
+// this dense. `table.` outranks the emotion class, which is injected after this stylesheet.
+table.history-table .MuiTableCell-root {
+  border-color: #e8e5dc;
+}
+
+// Legend labels the vocabulary graph hands to React so they can carry an app tooltip.
+.vocabulary-legend-label {
+  cursor: help;
+}
+
+// The row under the vocabulary graph. It holds only the compare switch now that the series
+// explanations live on the legend entries themselves.
+.vocabulary-graph-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 24px;
+  // The chart's legend now sits along its bottom edge, so the switch needs clearance from it
+  // rather than sitting straight underneath, and a little inset from the container edge.
+  margin-top: 1.5em;
+  padding-right: 4px;
+
+  .MuiFormControlLabel-label {
+    margin-left: 4px;
+    font-size: 14px;
+  }
+}
+
+// Chart heading: the view's name with its explanation on an info icon, matching the group card's
+// name-then-icon order. `.progress-page-header` had no rule of its own before, so it rendered at
+// body size — it is a section heading, sized like "All students" and "Student".
+.progress-page-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75em;
+}
+
+.progress-page-header {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d2c2a;
+}
+
+.progress-page-info {
+  display: inline-flex;
+  align-items: center;
+  color: #2d2c2a;
+  cursor: pointer;
+  transition: color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #8db19f;
+  }
+}
+
+// Graph wrappers on the analytics and progress pages. The cream panel behind them supplies the
+// colour, so neither the wrapper nor the chart paints its own. `fill` is what actually clears the
+// white: Highcharts draws its background as an SVG <rect>, and a CSS `fill` outranks the `fill`
+// presentation attribute it sets there — so this holds even if the JS theme has not been applied.
+.progress-page-graph-cont {
+  background-color: transparent;
+
+  .highcharts-container {
+    background-color: transparent;
+  }
+
+  .highcharts-background {
+    fill: transparent;
+  }
+}
+
+.chart-tabs {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  overflow-x: auto;
 }
 
 .group-analytics-no-results {
@@ -3513,7 +4060,6 @@ label.file-upload-btn {
   height: 4px;
 }
 
-
 // General classes
 
 // ANIMATIONS
@@ -3582,22 +4128,21 @@ label.file-upload-btn {
   }
 }
 
-  .xp-bar {
-    width: 300px;
-  }
+.xp-bar {
+  width: 300px;
+}
 
-  .xp-gathered {
-    display: flex;
-    justify-content: center;
-  }
-
+.xp-gathered {
+  display: flex;
+  justify-content: center;
+}
 
 .spinner-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  --spinner-color: currentColor; 
+  --spinner-color: currentColor;
 }
 
 .spinner-container .lds-roller div:after {
@@ -3624,7 +4169,6 @@ label.file-upload-btn {
   vertical-align: middle !important;
 }
 
-
 .spinner-container.spinner-container--inline .spinner-roller-box {
   margin: 0 !important;
   padding: 0 !important;
@@ -3642,16 +4186,36 @@ label.file-upload-btn {
   opacity: 0.8;
 }
 
-.spinner--primary { color: var(--bs-primary, #017bff); }
-.spinner--secondary { color: var(--bs-secondary, #6c757d); }
-.spinner--success { color: var(--bs-success, #28a745); }
-.spinner--danger { color: var(--bs-danger, #dc3444); }
-.spinner--warning { color: var(--bs-warning, #ffc106); }
-.spinner--info { color: var(--bs-info, #18a2b8); }
-.spinner--light { color: var(--bs-light, #f8f9fa); }
-.spinner--dark { color: var(--bs-dark, #343a40); }
-.spinner--white { color: var(--bs-white, #fefefe); }
-.spinner--universal { color: var(--bs-universal, #77c8d4); }
+.spinner--primary {
+  color: var(--bs-primary, #017bff);
+}
+.spinner--secondary {
+  color: var(--bs-secondary, #6c757d);
+}
+.spinner--success {
+  color: var(--bs-success, #28a745);
+}
+.spinner--danger {
+  color: var(--bs-danger, #dc3444);
+}
+.spinner--warning {
+  color: var(--bs-warning, #ffc106);
+}
+.spinner--info {
+  color: var(--bs-info, #18a2b8);
+}
+.spinner--light {
+  color: var(--bs-light, #f8f9fa);
+}
+.spinner--dark {
+  color: var(--bs-dark, #343a40);
+}
+.spinner--white {
+  color: var(--bs-white, #fefefe);
+}
+.spinner--universal {
+  color: var(--bs-universal, #77c8d4);
+}
 
 .lds-roller,
 .lds-roller div,
@@ -3672,7 +4236,7 @@ label.file-upload-btn {
 }
 
 .lds-roller div:after {
-  content: " ";
+  content: ' ';
   display: block;
   position: absolute;
   width: 7.2px;
@@ -3682,33 +4246,77 @@ label.file-upload-btn {
   margin: -3.6px 0 0 -3.6px;
 }
 
-.lds-roller div:nth-child(1) { animation-delay: -0.036s; }
-.lds-roller div:nth-child(1):after { top: 62.62742px; left: 62.62742px; }
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 62.62742px;
+  left: 62.62742px;
+}
 
-.lds-roller div:nth-child(2) { animation-delay: -0.072s; }
-.lds-roller div:nth-child(2):after { top: 67.71281px; left: 56px; }
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 67.71281px;
+  left: 56px;
+}
 
-.lds-roller div:nth-child(3) { animation-delay: -0.108s; }
-.lds-roller div:nth-child(3):after { top: 70.90963px; left: 48.28221px; }
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 70.90963px;
+  left: 48.28221px;
+}
 
-.lds-roller div:nth-child(4) { animation-delay: -0.144s; }
-.lds-roller div:nth-child(4):after { top: 72px; left: 40px; }
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
 
-.lds-roller div:nth-child(5) { animation-delay: -0.18s; }
-.lds-roller div:nth-child(5):after { top: 70.90963px; left: 31.71779px; }
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 70.90963px;
+  left: 31.71779px;
+}
 
-.lds-roller div:nth-child(6) { animation-delay: -0.216s; }
-.lds-roller div:nth-child(6):after { top: 67.71281px; left: 24px; }
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 67.71281px;
+  left: 24px;
+}
 
-.lds-roller div:nth-child(7) { animation-delay: -0.252s; }
-.lds-roller div:nth-child(7):after { top: 62.62742px; left: 17.37258px; }
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 62.62742px;
+  left: 17.37258px;
+}
 
-.lds-roller div:nth-child(8) { animation-delay: -0.288s; }
-.lds-roller div:nth-child(8):after { top: 56px; left: 12.28719px; }
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12.28719px;
+}
 
 @keyframes lds-roller {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 :root {
@@ -3794,8 +4402,7 @@ label.file-upload-btn {
   transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (max-width: 768px) {  
-
+@media (max-width: 768px) {
   .reading-comp:not(.sidebar-pushed) {
     padding-bottom: 60px;
   }
@@ -3822,4 +4429,3 @@ label.file-upload-btn {
   max-width: 650px;
   margin: 0 auto;
 }
-

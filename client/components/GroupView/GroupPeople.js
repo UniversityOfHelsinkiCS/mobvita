@@ -6,7 +6,6 @@ import {
   resendGroupInvitation,
   setGroupTestDeadline,
 } from 'Utilities/redux/groupsReducer'
-import { FormattedMessage } from 'react-intl'
 import { Box, TableHead, TableBody, TableRow, TableCell, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
@@ -20,6 +19,9 @@ import PeopleAddResultModal from './PeopleAddResultModal'
 import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
+import { Link } from 'react-router-dom'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { images } from 'Utilities/common'
 
 const ADD_GREEN = '#2E9E6E'
 
@@ -64,24 +66,33 @@ const GroupPeople = ({ role }) => {
 
   const currentUserIsTeacher = currentGroup.is_teaching
 
+  const groupRole = role || (currentGroup?.is_teaching ? 'teacher' : 'student')
+  const intl = useIntl()
+
   return (
     <div className="group-container">
       <Box
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          border: `1px solid ${colors.border}`,
+          border: `none`,
           borderRadius: '20px',
           width: '100%',
           maxWidth: 1024,
-          mx: 'auto',
-          my: '2rem',
+          mx: 'auto',          
           p: { xs: '16px', sm: '24px' },
         }}
       >
         <PeopleAddResultModal lastAddInfo={lastAddInfo} />
 
-        <div style={{ marginBottom: '.75em' }}>
+        <div style={{ marginBottom: '.75em', display: 'flex', flexDirection: 'row', gap: '.5em' }}>
+          <Link
+            className="group-analytics-back"
+            to={`/groups/${groupRole}`}
+            aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
+          >
+            <img src={images.arrowLeft} alt="" />
+          </Link>
           <div className="header-2">{currentGroup.groupName}</div>
           <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>
         </div>

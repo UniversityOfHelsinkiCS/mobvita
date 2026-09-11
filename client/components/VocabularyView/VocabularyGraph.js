@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useIntl } from 'react-intl'
@@ -7,9 +8,19 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import AppSwitch from 'Components/ui/AppSwitch'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import MasteredLegends from './MasteredLegends'
-import VocabularyTooltips from './VocabularyTooltips'
 import Spinner from 'Components/Spinner'
+import CustomTooltip from 'Components/CustomTooltip'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { colors } from 'Assets/mui_theme/designTokens'
+import { vocabularySeries, LEGEND_HINT_ATTR } from 'Utilities/chartTheme'
+
+// The legend label that belongs to each explanation, so the portal can restore the text Highcharts
+// measured the item with.
+const LEGEND_LABEL_IDS = {
+  'overview-vocabulary-explanation': 'mastered-words',
+  'vocabulary-total-explanation': 'vocabulary-total',
+  'vocabulary-flashcard-explanation': 'vocabulary-flashcard',
+}
 
 const VocabularyGraph = ({
   vocabularyData,
@@ -91,7 +102,7 @@ const VocabularyGraph = ({
             linkedTo: 'Mastered',
             visible: false,
             stack: 'before',
-            color: '#FAA0A0',
+            color: vocabularySeries.notMastered.barBefore,
           },
           {
             name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
@@ -101,7 +112,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.rewardable),
             linkedTo: 'Mastered',
             visible: false,
-            color: '#5FBDC2',
+            color: vocabularySeries.rewardable.barBefore,
             stack: 'before',
           },
           {
@@ -112,7 +123,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.mastered),
             linkedTo: 'Mastered',
             visible: false,
-            color: '#90EE90',
+            color: vocabularySeries.mastered.barBefore,
             stack: 'before',
           },
           {
@@ -120,7 +131,7 @@ const VocabularyGraph = ({
             id: 'Overview (not mastered)',
             data: notMastered,
             linkedTo: 'Mastered',
-            color: '#DC143C',
+            color: vocabularySeries.notMastered.bar,
             stack: 'present',
           },
           {
@@ -128,14 +139,14 @@ const VocabularyGraph = ({
             id: 'Overview (rewardable)',
             data: currentPerc?.vocab_bins?.map(v => v.rewardable),
             linkedTo: 'Mastered',
-            color: '#4169e1',
+            color: vocabularySeries.rewardable.bar,
             stack: 'present',
           },
           {
             name: `${intl.formatMessage({ id: 'mastered-words' })}`,
             id: 'Overview',
             data: currentPerc?.vocab_bins?.map(v => v.mastered),
-            color: '#228B22',
+            color: vocabularySeries.mastered.bar,
             stack: 'present',
           },
           {
@@ -175,7 +186,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
             id: 'Percentage (before)',
             linkedTo: 'Percentage',
-            color: '#90EE90',
+            color: vocabularySeries.mastered.barBefore,
             visible: false,
             stack: 'before',
           },
@@ -183,7 +194,7 @@ const VocabularyGraph = ({
             name: `${intl.formatMessage({ id: 'percent-graph' })}`,
             id: 'Curr Percentage',
             data: currentPerc.vocab_bins.map(v => v.mastering_percentage),
-            color: '#228B22',
+            color: vocabularySeries.mastered.bar,
             visible: false,
             stack: 'present',
           },
@@ -206,7 +217,7 @@ const VocabularyGraph = ({
             linkedTo: 'Mastered',
             visible: false,
             stack: 'before',
-            color: '#FAA0A0',
+            color: vocabularySeries.notMastered.barBefore,
           },
           {
             name: `${intl.formatMessage({ id: 'rewardable-words' })} ${intl.formatMessage({
@@ -216,7 +227,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.rewardable),
             linkedTo: 'Mastered',
             visible: false,
-            color: '#5FBDC2',
+            color: vocabularySeries.rewardable.barBefore,
             stack: 'before',
           },
           {
@@ -227,7 +238,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.mastered),
             linkedTo: 'Mastered',
             visible: false,
-            color: '#90EE90',
+            color: vocabularySeries.mastered.barBefore,
             stack: 'before',
           },
           {
@@ -235,7 +246,7 @@ const VocabularyGraph = ({
             id: 'Overview (not mastered)',
             data: notMastered,
             linkedTo: 'Mastered',
-            color: '#DC143C',
+            color: vocabularySeries.notMastered.bar,
             stack: 'present',
           },
           {
@@ -243,14 +254,14 @@ const VocabularyGraph = ({
             id: 'Overview (rewardable)',
             data: currentPerc?.vocab_bins?.map(v => v.rewardable),
             linkedTo: 'Mastered',
-            color: '#4169e1',
+            color: vocabularySeries.rewardable.bar,
             stack: 'present',
           },
           {
             name: `${intl.formatMessage({ id: 'mastered-words' })}`,
             id: 'Overview',
             data: currentPerc?.vocab_bins?.map(v => v.mastered),
-            color: '#228B22',
+            color: vocabularySeries.mastered.bar,
             stack: 'present',
           },
           {
@@ -290,7 +301,7 @@ const VocabularyGraph = ({
             data: previousPerc?.vocab_bins?.map(v => v.mastering_percentage),
             id: 'Percentage (before)',
             linkedTo: 'Percentage',
-            color: '#90EE90',
+            color: vocabularySeries.mastered.barBefore,
             visible: false,
             stack: 'before',
           },
@@ -340,10 +351,67 @@ const VocabularyGraph = ({
     }
   }
 
+  // Each explanation hangs off the legend entry it describes, rather than a separate row of icons
+  // repeating the same three labels below the chart.
+  //
+  // Highcharts owns the legend markup, so the hint cannot simply wrap a React element. With
+  // `useHTML` the labels are real DOM nodes, which lets us render CustomTooltip into them through a
+  // portal — that keeps Highcharts in charge of what the legend shows and how it is laid out, while
+  // the hint itself is the app's own tooltip: styled like every other one, and obeying the user's
+  // "show tooltips" setting (and the new-user default) instead of a bare browser `title`.
+  const legendExplanations = {
+    Overview: 'overview-vocabulary-explanation',
+    Total: 'vocabulary-total-explanation',
+    Flashcard: 'vocabulary-flashcard-explanation',
+  }
+
+  const [legendHints, setLegendHints] = useState([])
+
+  const syncLegendHints = useCallback(chart => {
+    const found = Array.from(
+      chart.container.querySelectorAll(`[${LEGEND_HINT_ATTR}]`)
+    ).map(node => ({ node, explanationId: node.dataset.legendExplanation }))
+
+    setLegendHints(prev => {
+      const unchanged =
+        prev.length === found.length && prev.every((p, i) => p.node === found[i].node)
+      if (unchanged) return prev
+      // Highcharts sized the item from the text it rendered; hand the node over to React now that
+      // the measuring is done, so the label is not printed twice.
+      found.forEach(({ node }) => {
+        node.textContent = ''
+      })
+      return found
+    })
+  }, [])
+
+  const chartBase = {
+    // Reused by every `setOptions` below: a legend click replaces `chart` wholesale, so both the
+    // transparent background and the render hook that finds the legend labels have to travel with
+    // it or they are silently lost after the first switch.
+    type: 'column',
+    backgroundColor: 'transparent',
+    events: {
+      render() {
+        syncLegendHints(this)
+      },
+    },
+  }
+
   const [options, setOptions] = useState({
     accessibility: { enabled: false },
     title: '',
     series,
+    legend: {
+      useHTML: true,
+      labelFormatter() {
+        const explanationId = legendExplanations[this.userOptions.id]
+        if (!explanationId) return this.name
+        // The text is emitted so Highcharts can measure the item; React replaces it on the next
+        // commit with the same text wrapped in a tooltip.
+        return `<span ${LEGEND_HINT_ATTR}="${explanationId}">${this.name}</span>`
+      },
+    },
     tooltip: {
       formatter() {
         return (
@@ -353,19 +421,26 @@ const VocabularyGraph = ({
               : this.y
           } ${this.series.userOptions.name}</b>` +
           '<br /> ' +
-          `${intl.formatMessage({ id: 'word-group-tooltip' }, { binNum: this.key })}`
+          // `ignoreTag` for the same reason FormattedHTMLMessage passes it: the message contains
+          // literal <b> markup, and without it react-intl treats that as a rich-text element,
+          // fails to find a `b` formatter, and returns the raw pattern — braces and all.
+          `${intl.formatMessage(
+            { id: 'word-group-tooltip' },
+            { binNum: this.key },
+            { ignoreTag: true }
+          )}`
         )
       },
     },
-    chart: {
-      type: 'column',
-    },
-    credits: { enabled: false },
+    chart: chartBase,
     allowDecimals: false,
     alignTicks: false,
 
     xAxis: {
       type: 'category',
+      // Opt out of the shared theme's vertical gridlines: this axis has one tick per word bin, so
+      // a gridline per tick would draw ~100 lines across the plot.
+      gridLineWidth: 0,
       labels: {
         rotation: 0,
         overflow: true,
@@ -406,25 +481,19 @@ const VocabularyGraph = ({
               setGraphType('column mastered')
               setOptions({
                 ...options,
-                chart: {
-                  type: 'column',
-                },
+                chart: chartBase,
               })
             } else if (this.userOptions.id === 'Curr Percentage') {
               setGraphType('column')
               setOptions({
                 ...options,
-                chart: {
-                  type: 'column',
-                },
+                chart: chartBase,
               })
             } else {
               setGraphType('area')
               setOptions({
                 ...options,
-                chart: {
-                  type: 'area',
-                },
+                chart: { ...chartBase, type: 'area' },
               })
             }
             const copySeries = [...series]
@@ -458,40 +527,43 @@ const VocabularyGraph = ({
         </div>
       )}
       <HighchartsReact ref={element} highcharts={Highcharts} options={options} />
-      <div className="flex-reverse">
-        {graphType === 'column mastered' && (
-          <span>
-            <FormControlLabel
-              control={
-                <AppSwitch
-                  checked={toggleOn}
-                  onChange={handleToggle}
-                  slotProps={{ input: { 'data-cy': 'vocabulary-graph-mastered-toggle' } }}
-                />
-              }
-              label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
-              style={{ marginRight: '.5em' }}
-            />
-          </span>
+      {/* CustomTooltip rendered into the legend labels Highcharts drew. When the user has tooltips
+          switched off it returns the label bare, so the legend is unaffected. */}
+      {legendHints.map(({ node, explanationId }) =>
+        createPortal(
+          <CustomTooltip
+            title={<FormattedHTMLMessage id={explanationId} tagName="div" />}
+            placement="top"
+          >
+            <span className="vocabulary-legend-label">
+              {intl.formatMessage({ id: LEGEND_LABEL_IDS[explanationId] })}
+            </span>
+          </CustomTooltip>,
+          node,
+          explanationId
+        )
+      )}
+      <div className="vocabulary-graph-footer">
+        {(graphType === 'column mastered' || graphType === 'column') && (
+          <FormControlLabel
+            control={
+              <AppSwitch
+                checked={toggleOn}
+                onChange={graphType === 'column' ? handlePercentageToggle : handleToggle}
+                slotProps={{
+                  input: {
+                    'data-cy':
+                      graphType === 'column'
+                        ? 'vocabulary-graph-percentage-toggle'
+                        : 'vocabulary-graph-mastered-toggle',
+                  },
+                }}
+              />
+            }
+            label={intl.formatMessage({ id: 'vocab-master-toggle' })}
+            sx={{ flexShrink: 0, mr: 0 }}
+          />
         )}
-        {graphType === 'column' && (
-          <span>
-            <FormControlLabel
-              control={
-                <AppSwitch
-                  checked={toggleOn}
-                  onChange={handlePercentageToggle}
-                  slotProps={{ input: { 'data-cy': 'vocabulary-graph-percentage-toggle' } }}
-                />
-              }
-              label={`${intl.formatMessage({ id: 'vocab-master-toggle' })}`}
-              style={{ marginRight: '.5em' }}
-            />
-          </span>
-        )}
-        <span style={{ marginRight: graphType === 'column mastered' ? '.1em' : '10em' }}>
-          <VocabularyTooltips graphType={graphType} />
-        </span>
       </div>
     </div>
   )

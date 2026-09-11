@@ -18,6 +18,8 @@ import Concept from './Concept'
 const CENTERED_ROW = { '& .MuiTableCell-root': { textAlign: 'center' } }
 // Pale green highlight standing in for semantic's `positive` cell.
 const POSITIVE_CELL_BG = '#E9F1EC'
+// Icon-only pagination buttons: the DS small height, without the wide text-button padding.
+const PAGE_BUTTON_SX = { minWidth: 36, width: 36, px: 0, '& > svg': { width: 20, height: 20 } }
 
 const sumPropertyValues = (items, property) => {
   return items.reduce((a, b) => {
@@ -65,7 +67,6 @@ const TotalRow = ({ history, testView, rootConcepts }) => {
         .reduce((obj, key) => {
           obj[key] = {
             ...oneDayResults.concept_statistics[key],
-            id: Math.floor(Math.random() * 10000),
             date: oneDayResults.date,
           }
 
@@ -87,7 +88,7 @@ const TotalRow = ({ history, testView, rootConcepts }) => {
       </TableCell>
       {rootConceptResults?.map((oneDayCounts, index) => (
         <TableCell
-          key={`${oneDayCounts[firstConceptKey]?.date}-${oneDayCounts[firstConceptKey]?.id}`}
+          key={`${oneDayCounts[firstConceptKey]?.date}-${index}`}
           sx={{ backgroundColor: POSITIVE_CELL_BG }}
         >
           <TotalRowText
@@ -351,21 +352,25 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
     )
   }
   return (
-    <div style={{ overflowX: 'scroll', maxWidth: '100%', marginTop: '1em' }}>
+    <div className="history-container">
       {maxPage > 1 && (
-        <div className="justify-center align-center">
+        <div className="history-pagination">
           <AppButton
             variant="secondary"
+            size="sm"
+            sx={PAGE_BUTTON_SX}
             onClick={() => switchPage(-1)}
             data-cy="history-previous-page-button"
           >
             <KeyboardArrowLeftIcon />
           </AppButton>
-          <span style={{ marginLeft: '1em', marginRight: '1em' }}>
+          <span className="history-pagination-count">
             {page + 1} / {maxPage}
           </span>
           <AppButton
             variant="secondary"
+            size="sm"
+            sx={PAGE_BUTTON_SX}
             onClick={() => switchPage(1)}
             data-cy="history-next-page-button"
           >
@@ -400,14 +405,14 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
           />
         </>
       )} */}
-      <AppTable bordered sx={{ tableLayout: 'fixed' }}>
+      <AppTable bordered className="history-table" sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow sx={CENTERED_ROW}>
             <TableCell style={{ width: '250px' }}>
               <FormattedMessage id="concepts" />
             </TableCell>
-            {calculatePage().map(col => (
-              <TableCell key={`${col.date}-${Math.floor(Math.random() * 10000)}`}>
+            {calculatePage().map((col, colIndex) => (
+              <TableCell key={`${col.date}-${col.test_session ?? col.story_id ?? colIndex}`}>
                 <span className="justify-center align-center">
                   {moment(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (

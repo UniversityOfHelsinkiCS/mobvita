@@ -1,22 +1,21 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Divider, FormControlLabel, RadioGroup } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box } from '@mui/material'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import AppButton from 'Components/AppButton'
-import AppRadio from 'Components/ui/AppRadio'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
-import CustomTooltip from 'Components/CustomTooltip'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import { CSVLink } from 'react-csv'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
   learningLanguageSelector,
   skillLevels,
-  downloadReadingReport,
-  downloadReadingHistory,
   ACCESS,
+  images,
   useHasAccess,
 } from 'Utilities/common'
 import {
@@ -25,7 +24,6 @@ import {
 } from 'Utilities/redux/groupVocabularyReducer'
 import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
-import useWindowDimension from 'Utilities/windowDimensions'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import moment from 'moment'
 import Summary from './Summary'
@@ -38,6 +36,7 @@ import GroupHistory from './GroupHistory'
 import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
+import ChartHeading from 'Components/ChartHeading'
 
 const PickDate = ({ date, setDate, onCalendarClose }) => (
   <ResponsiveDatePicker
@@ -77,7 +76,6 @@ const GroupAnalytics = ({ role }) => {
   } = useSelector(({ studentVocabulary }) => studentVocabulary)
   const { groups: totalGroups, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
-  const bigScreen = useWindowDimension().width >= 650
 
   const [currentCEFR, setCurrentCEFR] = useState('-')
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)
@@ -87,6 +85,7 @@ const GroupAnalytics = ({ role }) => {
   const [currTestDeadline, setCurrTestDeadline] = useState(currentGroup?.test_deadline)
   const showToken = showTokenGroupId === currentGroupId
   const showTestEnableMenu = showTestEnableMenuGroupId === currentGroupId
+  const groupRole = role || (currentGroup?.is_teaching ? 'teacher' : 'student')
 
   const studentOptions = currentGroup?.students.map(student => ({
     value: student._id,
@@ -186,7 +185,8 @@ const GroupAnalytics = ({ role }) => {
     currentGroup.students.sort(compare)
   }
 
-  if (pending || (totalGroups.length > 0 && !currentGroup)) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
+  if (pending || (totalGroups.length > 0 && !currentGroup))
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
 
   if (totalGroups.length === 0) return <NoGroupsView role={role} />
 
@@ -197,6 +197,16 @@ const GroupAnalytics = ({ role }) => {
     'group-grammar-progress',
   ].map(id => ({ value: id, label: intl.formatMessage({ id }) }))
 
+  // The CSV export sits in the date row, so it lives here rather than inside <Summary/>.
+  const showSummaryTable = content === 'summary' && currentGroup.is_teaching
+  const csvFilename = `${currentGroup.groupName
+    .toLowerCase()
+    .split(' ')
+    .join('_')
+    .replace(/[^\w\s-]/gi, '')}_summary.csv`
+
+  const showCefrRow = content !== 'summary' && !!currentCEFR && !!currentStudent
+
   const chartOptions = [
     { value: 'timeline', labelId: 'progress-timeline' },
     { value: 'vocabulary', labelId: 'vocabulary-view' },
@@ -204,6 +214,11 @@ const GroupAnalytics = ({ role }) => {
     { value: 'exercise', labelId: 'exercise-history' },
     { value: 'test', labelId: 'Test History' },
   ]
+
+  const chartTabs = chartOptions.map(({ value, labelId }) => ({
+    value,
+    label: intl.formatMessage({ id: labelId }),
+  }))
 
   // Every summary tab but the grammar one renders the same table, differing only in which columns
   // the backing summary is sliced down to.
@@ -219,6 +234,10 @@ const GroupAnalytics = ({ role }) => {
     firstFetch,
     setCefrHistory,
     setFirstFetch,
+    // Per-row ⋮ menu: jump straight to one chart for that student instead of clicking the row and
+    // then picking from the radio group.
+    chartOptions,
+    setShownChart,
   }
 
   return (
@@ -227,54 +246,22 @@ const GroupAnalytics = ({ role }) => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          border: `1px solid ${colors.border}`,
+          border: `none`,
           borderRadius: '20px',
-          p: { xs: '12px', sm: '20px' },
-          mt: '2rem',
-          mb: '2rem',
+          p: { xs: '12px', sm: '20px' },          
         }}
       >
         <div className="group-analytics-top">
-          <div style={{ margin: '1.5em 0em .75em 0em' }}>
+          <Link
+            className="group-analytics-back"
+            to={`/groups/${groupRole}`}
+            aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
+          >
+            <img src={images.arrowLeft} alt="" />
+          </Link>
+          <div className="group-analytics-heading">
             <div className="header-2">{currentGroup.groupName}</div>
-
-            <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>
-              {currentGroup?.description}
-            </p>
-          </div>
-
-          <div style={{ alignSelf: 'flex-end', marginBottom: '0.5em' }}>
-            {currentGroup?.is_teaching && (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.5em' }}>
-                <AppButton
-                  variant={content === 'summary' ? 'tan' : 'contrast-outline'}
-                  onClick={() => setContent('summary')}
-                >
-                  <FormattedMessage id="summary" />
-                </AppButton>
-                {currentGroup?.reading_comprehension && (
-                  <>
-                    <AppButton
-                      onClick={() => downloadReadingReport(currentGroupId, startDate, endDate)}
-                    >
-                      <FormattedMessage id="download-reading-comprehension-report" />
-                    </AppButton>
-                    <AppButton
-                      onClick={() =>
-                        downloadReadingHistory(
-                          currentGroupId,
-                          currentGroup.groupName,
-                          startDate,
-                          endDate,
-                        )
-                      }
-                    >
-                      <FormattedMessage id="download-exercise-history" />
-                    </AppButton>
-                  </>
-                )}
-              </Box>
-            )}
+            {currentGroup?.description && <div>{currentGroup.description}</div>}
           </div>
         </div>
         <GroupFunctions
@@ -295,63 +282,31 @@ const GroupAnalytics = ({ role }) => {
             id={currentGroupId}
           />
         )}
-        <hr />
-        <div className="date-pickers-container">
-          {bigScreen ? (
-            <div className="date-pickers gap-col-sm">
-              <span className="bold">
-                <FormattedMessage id="Showing results for" />
-              </span>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-start" />{' '}
-                <PickDate
-                  id="start"
-                  date={startDate}
-                  setDate={setStartDate}
-                  onCalendarClose={handlePreviousVocabulary}
-                />
-              </div>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-end" />{' '}
-                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-              </div>
-            </div>
-          ) : (
-            <>
-              <span className="bold" style={{ fontSize: '1.3em' }}>
-                <FormattedMessage id="Showing results for" />
-              </span>
-              <br />
-              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-                <div>
-                  <FormattedMessage id="date-start" />
-                  <br />
-                  <PickDate
-                    id="start"
-                    date={startDate}
-                    setDate={setStartDate}
-                    onCalendarClose={handlePreviousVocabulary}
-                  />
-                </div>
-                <div>
-                  <FormattedMessage id="date-end" />
-                  <br />
-                  <PickDate
-                    date={endDate}
-                    setDate={setEndDate}
-                    onCalendarClose={handleVocabulary}
-                  />
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-
+        {/* The four summary views used to be a tab bar; they are long labels, so they now sit in a
+            single wide dropdown next to the section heading. */}
+        {showSummaryTable && (
+          <div className="group-analytics-summary-head">
+            <span className="group-analytics-summary-title">
+              <FormattedMessage id="summary" />
+            </span>
+            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+              <AppSelect
+                variant="contrast-outline"
+                value={summaryTab}
+                options={summaryTabs}
+                onChange={setSummaryTab}
+                matchTriggerWidth
+              />
+            </Box>
+          </div>
+        )}
         {content !== 'summary' && (
           <div>
             <div className="group-analytics-student-dropdown">
-              <FormattedMessage id="student" />:{' '}
-              <Box sx={{ flexGrow: 1 }}>
+              <span className="group-analytics-student-label">
+                <FormattedMessage id="student" />
+              </span>
+              <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                 <AppSelect
                   variant="contrast-outline"
                   placeholder="-"
@@ -362,61 +317,96 @@ const GroupAnalytics = ({ role }) => {
                   matchTriggerWidth
                 />
               </Box>
+              {/* Same destination as the "All students" item in the ⋮ menu, promoted to the row. */}
+              <AppButton
+                size="sm"
+                onClick={() => setContent('summary')}
+                data-cy="show-all-students-button"
+                sx={{ flexShrink: 0, fontSize: 16 }}
+              >
+                <img src={images.users01} alt="" />
+                <FormattedMessage id="show-all-students" />
+              </AppButton>
             </div>
-            {currentCEFR && (
-              <div>
-                <StudentCEFRModal
-                  open={openEditModal}
-                  setOpen={setOpenEditModal}
-                  cefrHistory={cefrHistory}
-                  setCefrHistory={setCefrHistory}
-                  groupId={currentGroupId}
-                  sid={currentStudent._id}
-                />
-                <FormattedMessage id="current-cefr-level" />:{' '}
-                <b style={{ marginRight: '1em' }}>{currentCEFR}</b>
-                <AppButton
-                  variant="primary"
-                  onClick={() => setOpenEditModal(true)}
-                  style={{ padding: '5px' }}
-                >
-                  <FormattedMessage id="view-previous-and-edit" />
-                </AppButton>
-              </div>
+            {showCefrRow && (
+              <StudentCEFRModal
+                open={openEditModal}
+                setOpen={setOpenEditModal}
+                cefrHistory={cefrHistory}
+                setCefrHistory={setCefrHistory}
+                groupId={currentGroupId}
+                sid={currentStudent._id}
+              />
             )}
-            <Divider />
-            <RadioGroup
-              row
-              value={shownChart}
-              onChange={e => setShownChart(e.target.value)}
-              sx={{ justifyContent: 'space-evenly' }}
-            >
-              {chartOptions.map(option => (
-                <FormControlLabel
-                  key={option.value}
-                  value={option.value}
-                  control={<AppRadio />}
-                  label={intl.formatMessage({ id: option.labelId })}
+          </div>
+        )}
+
+        {/* One responsive row: label, the two date pills, and the CSV export on the right. */}
+        <div className={`date-pickers-container${showCefrRow ? ' has-cefr' : ''}`}>
+          {showCefrRow && (
+            <div className="group-analytics-cefr">
+              <span>
+                <FormattedMessage id="current-cefr-level" />: <b>{currentCEFR}</b>
+              </span>
+              {/* Sized to the date pills beside it rather than the default 36px small button. */}
+              <AppButton
+                size="sm"
+                onClick={() => setOpenEditModal(true)}
+                sx={{ height: 24, padding: '0 12px', fontSize: 12 }}
+              >
+                <FormattedMessage id="view-previous-and-edit" />
+              </AppButton>
+            </div>
+          )}
+          <span className="group-analytics-daterow-label">
+            <FormattedMessage id="Showing results for" />
+          </span>
+          <div className="group-analytics-dates">
+            <label className="group-analytics-date">
+              <FormattedMessage id="date-from" />
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
+                <PickDate
+                  id="start"
+                  date={startDate}
+                  setDate={setStartDate}
+                  onCalendarClose={handlePreviousVocabulary}
                 />
-              ))}
-            </RadioGroup>
-            <Divider />
+              </span>
+            </label>
+            <label className="group-analytics-date">
+              <FormattedMessage id="date-to" />
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
+                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
+              </span>
+            </label>
+          </div>
+          {showSummaryTable && summary?.length > 0 && (
+            <CSVLink className="group-analytics-csv" filename={csvFilename} data={summary}>
+              {/* Sized to the date pills beside it rather than the default 36px small button. */}
+              <AppButton size="sm" sx={{ height: 24, padding: '0 12px', fontSize: 12 }}>
+                <FormattedMessage id="download-csv" />
+              </AppButton>
+            </CSVLink>
+          )}
+        </div>
+
+        {/* Chart picker. The tab labels name the view, so the charts below no longer repeat it. */}
+        {content !== 'summary' && (
+          <div className="chart-tabs">
+            <AppTabs
+              tabs={chartTabs}
+              value={shownChart}
+              onChange={setShownChart}
+              fullWidth
+              bordered
+            />
           </div>
         )}
 
         {content === 'summary' && currentGroup.is_teaching ? (
           <>
-            <div style={{ marginTop: '1em', overflowX: 'auto' }}>
-              {/* fullWidth so the bar spans the container like the old bootstrap <Tabs> nav;
-                sm because these four labels are long enough to overflow at the default size. */}
-              <AppTabs
-                tabs={summaryTabs}
-                value={summaryTab}
-                onChange={setSummaryTab}
-                fullWidth
-                size="xs"
-              />
-            </div>
             <div style={{ marginTop: '1em' }}>
               {summaryTab === 'group-exercise-summary' && (
                 <Summary {...summaryProps} summaryType="exercise" />
@@ -439,18 +429,7 @@ const GroupAnalytics = ({ role }) => {
           </>
         ) : content === 'progress' && shownChart === 'timeline' && currentGroup.is_teaching ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip permanent keyId="timeline-explanation">
-                <InfoOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-                />
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="progress-timeline" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading titleId="progress-timeline" tooltip={<FormattedHTMLMessage id="timeline-explanation" tagName="div" />} />
             <StudentProgress
               student={currentStudent}
               startDate={startDate}
@@ -461,45 +440,34 @@ const GroupAnalytics = ({ role }) => {
           </div>
         ) : content === 'progress' && shownChart === 'vocabulary' && currentGroup.is_teaching ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                permanent
-                title={
-                  <div>
-                    <FormattedHTMLMessage id="vocabulary-view-explanation" />
-                    <br />
-                    <br />
-                    <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
-                    {': '}
-                    <FormattedHTMLMessage id="vocabulary-total-explanation" />
-                    <br />
-                    <br />
-                    <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
-                    {': '}
-                    <FormattedHTMLMessage id="vocabulary-seen-explanation" />
-                    <br />
-                    <br />
-                    <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
-                    {': '}
-                    <FormattedHTMLMessage id="vocabulary-visit-explanation" />
-                    <br />
-                    <br />
-                    <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
-                    {': '}
-                    <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
-                  </div>
-                }
-              >
-                <InfoOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-                />
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="vocabulary-view" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading
+              titleId="vocabulary-view"
+              tooltip={
+                <div>
+                  <FormattedHTMLMessage id="vocabulary-view-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-total' })}</b>
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-total-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-seen' })}</b>
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-seen-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-visit' })}</b>
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-visit-explanation" />
+                  <br />
+                  <br />
+                  <b>{intl.formatMessage({ id: 'vocabulary-flashcard' })}</b>
+                  {': '}
+                  <FormattedHTMLMessage id="vocabulary-flashcard-explanation" />
+                </div>
+              }
+            />
             <div className="progress-page-graph-cont">
               <StudentVocabularyProgress
                 studentVocabulary={studentVocabulary}
@@ -513,18 +481,7 @@ const GroupAnalytics = ({ role }) => {
           </div>
         ) : content === 'progress' && shownChart === 'hex-map' && currentGroup.is_teaching ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip permanent keyId="hex-map-explanation">
-                <InfoOutlinedIcon
-                  fontSize="small"
-                  sx={{ color: 'grey', mr: '0.75em', mb: '0.35em' }}
-                />
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="hex-map" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading titleId="hex-map" tooltip={<FormattedHTMLMessage id="hex-map-explanation" tagName="div" />} />
             <StudentGrammarProgress
               student={currentStudent}
               startDate={startDate}

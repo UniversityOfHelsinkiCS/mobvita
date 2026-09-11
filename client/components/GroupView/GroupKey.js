@@ -35,6 +35,7 @@ const GroupKey = () => {
                 onClick={handleTokenCopy}
                 disabled={!token}
                 data-cy="group-key-copy-button"
+                style={{ margin: '0.5em', height: '36px' }}
               >
                 <ContentCopyIcon fontSize="large" />
               </AppButton>

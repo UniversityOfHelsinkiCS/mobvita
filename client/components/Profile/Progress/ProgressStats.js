@@ -39,21 +39,21 @@ const ProgressStats = ({ startDate, endDate }) => {
   }
 
   return (
-    <div className="justify-center gap-col-nm pt-lg pb-lg">
+    <div className="progress-stats">
       <img
+        className="progress-stats-flag"
         src={getLearningLanguageFlag()}
         alt="learning language flag"
-        height="72px"
-        style={{ border: '1px solid rgb(189, 202, 212)', borderRadius: '7px' }}
       />
-      <div className="stat">
-        <span>{intl.formatMessage({ id: 'completed-exercises' })}: </span>
-        <span>{summary[0] && summary[0].number_of_exercises}</span>
-      </div>
-      <div className="stat">
-        <span>{intl.formatMessage({ id: 'completed-snippets' })}: </span>
-        <span>{summary[0] && summary[0].number_of_snippets}</span>
-      </div>
+      {[
+        { labelId: 'completed-exercises', value: summary[0]?.number_of_exercises },
+        { labelId: 'completed-snippets', value: summary[0]?.number_of_snippets },
+      ].map(({ labelId, value }) => (
+        <div key={labelId} className="progress-stat">
+          <span className="progress-stat-value">{value}</span>
+          <span className="progress-stat-label">{intl.formatMessage({ id: labelId })}</span>
+        </div>
+      ))}
     </div>
   )
 }

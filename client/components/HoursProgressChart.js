@@ -1,6 +1,7 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import 'Utilities/chartTheme'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -42,7 +43,6 @@ const HoursProgressChart = ({ practiceTimeHistory, startDate, endDate }) => {
     series,
     chart: { height },
     legend: { enabled: false },
-    credits: { enabled: false },
     tooltip: {
       formatter() {
         // eslint-disable-next-line react/no-this-in-sfc

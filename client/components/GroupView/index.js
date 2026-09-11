@@ -1,15 +1,16 @@
+// React must remain in scope because Vite compiles this project's JSX with the classic runtime.
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Box, Card, Chip, TableBody } from '@mui/material'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppTable from 'Components/ui/AppTable'
-import CustomTooltip from 'Components/CustomTooltip'
+import AppTooltip from 'Components/ui/AppTooltip'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { updateLibrarySelect, updateGroupSelect } from 'Utilities/redux/userReducer'
 import {
@@ -30,12 +31,25 @@ import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
+import { images } from 'Utilities/common'
+import AppIcon from 'Components/ui/AppIcon'
 
 const CardSection = ({ children, ...rest }) => (
   <Box sx={{ padding: '1em', borderTop: `1px solid ${colors.border}` }} {...rest}>
     {children}
   </Box>
 )
+
+const formatCreationDate = value => {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+}
 
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
@@ -87,10 +101,11 @@ const GroupInfoModal = ({
 }) => {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
+  const formattedCreationDate = formatCreationDate(creationDate)
 
   return (
     <>
-      {React.cloneElement(trigger, { onClick: () => setOpen(true) })}
+      {trigger({ onClick: () => setOpen(true) })}
       <AppDialog open={open} onClose={() => setOpen(false)} title={title}>
         <div className="italics" style={{ marginBottom: '1.5em' }}>
           {description}
@@ -102,7 +117,7 @@ const GroupInfoModal = ({
             <col width="60%" />
           </colgroup>
           <TableBody>
-            <Row translationId="creation-date"> {creationDate}</Row>
+            <Row translationId="creation-date"> {formattedCreationDate}</Row>
             <Row translationId="language"> {intl.formatMessage({ id: language })}</Row>
             <Row translationId="students"> {numOfStudents}</Row>
             <Row
@@ -158,31 +173,118 @@ const GroupCard = ({
     // just cosmetic — the e2e specs scope group actions with `.closest('.card')`.
     <Card
       className="card"
-      sx={{ backgroundColor: colors.card, color: colors.ink }}
+      sx={{ backgroundColor: 'white', color: colors.ink, border: `4px solid #E8E5DC`, borderRadius: '12px', padding: '16px 20px', marginBottom: '6px', boxShadow: 'none' }}
     >
-      <GroupInfoModal
-        title={groupName}
-        id={id}
-        description={description}
-        creationDate={creationDate}
-        language={language}
-        numOfStudents={students.length}
-        numOfStories={stories.length}
-        trigger={
-          <Box sx={{ padding: '15px 15px 5px', cursor: 'pointer' }}>
-            <div className="story-item-title space-between">
-              <h5 style={{ fontWeight: 'bold' }}>{groupName}</h5>
-              {testEnabled && (
-                <div style={{ marginLeft: '0.5em' }}>
-                  <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
-                </div>
-              )}
-              <MoreVertIcon style={{ marginLeft: '1rem' }} />
+      <Box sx={{ padding: 0 }}>
+        <div
+          className="story-item-title group-card-header"
+          style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}
+        >
+          {/* Top-aligned, so the icon sits on the group-name line rather than centring against the
+              whole block once a description or test deadline is stacked underneath. */}
+          <AppIcon
+            src={images.group}
+            size={24}
+            color="#B1D3C2"
+            style={{ alignSelf: 'flex-start', marginTop: '1px' }}
+          />
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h5 style={{ fontWeight: 'normal', fontSize: '22px', padding: 0, margin: 0 }}>
+                {groupName}
+              </h5>
+              {/* The details dialog now opens from this info icon only, not from the name. */}
+              <GroupInfoModal
+                title={groupName}
+                id={id}
+                description={description}
+                creationDate={creationDate}
+                language={language}
+                numOfStudents={students.length}
+                numOfStories={stories.length}
+                trigger={triggerProps => (
+                  <AppTooltip keyId="group-info" placement="top">
+                    <button
+                      {...triggerProps}
+                      className="group-card-info-trigger"
+                      type="button"
+                      data-cy="group-info-button"
+                      aria-label={intl.formatMessage({
+                        id: 'group-info',
+                        defaultMessage: 'Group info',
+                      })}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        padding: 0,
+                        border: 0,
+                        background: 'transparent',
+                      }}
+                    >
+                      {/* Masked and painted with `currentColor`, so the `.group-card-info-trigger`
+                          rule in custom.scss owns both the rest and hover colour — an inline
+                          `color` here would outrank it and freeze the hover. */}
+                      <AppIcon src={images.infoIcon} size={16} color="currentColor" />
+                    </button>
+                  </AppTooltip>
+                )}
+              />
             </div>
-          </Box>
-        }
-      />
-      <CardSection>
+            {description && <div style={{ fontSize: '12px', color: '#9D9B92' }}>{description}</div>}
+            {testEnabled && (
+              <div style={{ fontSize: '12px', color: '#9D9B92' }}>
+                <FormattedMessage id="test-deadline" /> {deadlineHumanFormat}
+              </div>
+            )}
+          </div>
+
+          <AppMenu
+                minWidth={200}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                disableScrollLock
+                trigger={
+                  <button
+                    className="group-card-more-button"
+                    type="button"
+                    aria-label={intl.formatMessage({ id: 'actions', defaultMessage: 'Actions' })}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '6px',
+                      border: 0,
+                      background: 'transparent',
+                      color: colors.ink,
+                    }}
+                  >
+                    <MoreVertIcon />
+                  </button>
+                }
+              >
+                <AppMenuItem
+                  data-cy="leave-group"
+                  onClick={() => setLeaveGroupId(id)}
+                  icon={<img src={images.logOut01} alt="" style={{ width: 22, height: 22 }} />}
+                >
+                  <FormattedMessage id="leave-group" defaultMessage="Leave Group" />
+                </AppMenuItem>
+                {isTeaching && (
+                  <AppMenuItem
+                    data-cy="delete-group"
+                    onClick={() => setDeleteGroupId(id)}
+                    icon={<img src={images.trash03} alt="" style={{ width: 22, height: 22 }} />}
+                  >
+                    <FormattedMessage id="delete-group" defaultMessage="Delete Group" />
+                  </AppMenuItem>
+                )}
+          </AppMenu>
+        </div>
+      </Box>
+
+      <CardSection sx={{ borderTop: 'none', paddingTop: '20px' }}>
         <div className="space-between group-buttons sm" style={{ whiteSpace: 'nowrap' }}>
           <GroupFunctions
             group={group}
@@ -193,32 +295,6 @@ const GroupCard = ({
             currTestDeadline={currTestDeadline}
             setCurrTestDeadline={setCurrTestDeadline}
           />
-          <div style={{ marginLeft: '1.5rem' }}>
-            <CustomTooltip
-              permanent
-              placement="top-end"
-              title={intl.formatMessage({ id: 'Leave' })}
-            >
-              <LogoutIcon
-                onClick={() => setLeaveGroupId(id)}
-                data-cy="leave-group"
-                style={{ cursor: 'pointer', margin: '0.25em 0.25em' }}
-              />
-            </CustomTooltip>
-            {isTeaching && (
-              <CustomTooltip
-                permanent
-                placement="top-end"
-                title={intl.formatMessage({ id: 'Delete' })}
-              >
-                <DeleteOutlinedIcon
-                  onClick={() => setDeleteGroupId(id)}
-                  data-cy="delete-group"
-                  style={{ cursor: 'pointer', margin: '0.25em 0.25em', color: colors.error }}
-                />
-              </CustomTooltip>
-            )}
-          </div>
         </div>
         {showToken && <GroupKey />}
         {showTestEnableMenu && (
@@ -284,6 +360,23 @@ const GroupView = () => {
                 open={!!deleteGroupId}
                 setOpen={setDeleteGroupId}
                 action={handleGroupDelete}
+                title={<FormattedMessage id="delete-group" defaultMessage="Delete Group" />}
+                acceptLabel={<FormattedMessage id="Delete" />}
+                actionsSx={{ justifyContent: 'space-between' }}
+                cancelButtonProps={{
+                  size: 'sm',
+                  sx: { flex: 1, height: '36px' },
+                }}
+                acceptButtonProps={{
+                  variant: 'primary',
+                  size: 'sm',
+                  sx: {
+                    flex: 1,
+                    height: '36px',
+                    backgroundColor: '#FF7700',
+                    '&:hover': { backgroundColor: colors.alertHover },
+                  },
+                }}
               >
                 <FormattedMessage id="this-will-remove-the-group-are-you-sure-you-want-to-proceed" />
               </ConfirmationWarning>
@@ -299,21 +392,41 @@ const GroupView = () => {
                 sx={{
                   backgroundColor: colors.card,
                   color: colors.ink,
-                  border: `1px solid ${colors.border}`,
+                  border: `none`,
                   borderRadius: '20px',
-                  p: { xs: '12px', sm: '20px' },
-                  mt: '2rem',
+                  p: { xs: '12px', sm: '20px' },                  
                 }}
               >
-                {/* Right-aligned create/join row inside the cream panel. */}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: '1em' }}>
+                {/* Panel heading on the left, create/join action on the right. */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '1em',
+                    mb: '1em',
+                  }}
+                >
+                  <h2
+                    style={{
+                      fontSize: '22px',
+                      fontWeight: 'normal',
+                      color: colors.ink,
+                      margin: 0,
+                      padding: 0,
+                    }}
+                  >
+                    <FormattedMessage id="groups" />
+                  </h2>
                   <GroupActionModal
                     role={role}
                     trigger={
                       <AppButton
                         data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
-                        size="lg"
+                        size={role === 'teacher' ? 'sm' : 'lg'}
+                        sx={role === 'teacher' ? { '& img': { width: 20, height: 20 } } : undefined}
                       >
+                        {role === 'teacher' && <img src={images.plusOutline} alt="" />}
                         <FormattedMessage
                           id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
                         />

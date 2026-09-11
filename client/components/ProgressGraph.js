@@ -1,6 +1,7 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import 'Utilities/chartTheme'
 import moment from 'moment'
 import { useIntl } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
@@ -15,7 +16,9 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
   //   flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
 
   const series = []
-  series.push({ name: intl.formatMessage({ id: 'Stories' }), data: storyData })
+  // Set explicitly rather than taken from the shared palette in chartTheme: this is the timeline's
+  // own blue.
+  series.push({ name: intl.formatMessage({ id: 'Stories' }), data: storyData, color: '#92BECF' })
 
   // if (hiddenFeatures) {
   //   series.push({
@@ -62,13 +65,13 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     accessibility: { enabled: false },
     title: { text: intl.formatMessage({ id: 'language-level-timeline-chart' }) },
     series,
-    chart: { height },
-    credits: { enabled: false },
+    chart: { height, spacingBottom: 8 },
     allowDecimals: false,
     alignTicks: false,
     yAxis: [
       {
-        title: { text: intl.formatMessage({ id: 'score' }) },
+        // No axis title: the 0–100 scale reads on its own and the design leaves the gutter clear.
+        title: { text: null },
         min: 0,
         max: 100,
       },
@@ -81,17 +84,12 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
           formatter: function () {
             return levels[this.value]
           },
-          style: {
-            fontSize: '16px',
-            color: 'slateGrey',
-          },
         },
         title: { enabled: false },
       },
     ],
     xAxis: {
       type: 'datetime',
-      labels: { format: '{value:%Y/%m/%d}' },
       allowDecimals: false,
       min: moment(startDate).valueOf(),
       max: moment(endDate).valueOf(),

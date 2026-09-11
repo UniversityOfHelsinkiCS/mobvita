@@ -1074,5 +1074,10 @@
     "writing-clinic-corrections-description": "What the correction model changed, sentence by sentence.",
     "writing-clinic-you-wrote": "You wrote",
     "writing-clinic-corrected": "Corrected",
-    "writing-clinic-no-change": "No change"
+    "writing-clinic-no-change": "No change",
+    "leave-group": "Leave Group",
+    "date-to": "to:",
+    "date-from": "from:",
+    "show-all-students": "Show All Students",
+    "group-info": "Group info"
 }

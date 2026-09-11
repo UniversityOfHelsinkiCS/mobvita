@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { useCurrentUser } from 'Utilities/common'
+import { images, useCurrentUser } from 'Utilities/common'
 import { useNavigate } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
 
@@ -19,7 +19,7 @@ const NoGroupsView = ({ role }) => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          border: `1px solid ${colors.border}`,
+          border: `none`,
           borderRadius: '20px',
           p: { xs: '20px', sm: '32px' },
         }}
@@ -53,10 +53,12 @@ const NoGroupsView = ({ role }) => {
                 <div>
                   <AppButton
                     variant="primary"
-                    size="lg"
+                    size={role === 'teacher' ? 'sm' : 'lg'}
                     data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
                     style={{ float: 'right' }}
+                    sx={role === 'teacher' ? { '& img': { width: 20, height: 20 } } : undefined}
                   >
+                    {role === 'teacher' && <img src={images.plusOutline} alt="" />}
                     <FormattedMessage
                       id={role === 'student' ? 'join-a-group' : 'create-new-group'}
                     />

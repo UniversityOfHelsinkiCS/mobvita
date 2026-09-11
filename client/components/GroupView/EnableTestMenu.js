@@ -82,26 +82,18 @@ const EnableTestMenu = ({
             type="button"
             onClick={handleTestEnableClick}
             variant="success"
-            style={{ margin: '0.5em' }}
+            style={{ margin: '0.5em', height: '36px' }}
           >
             OK
           </AppButton>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <AppButton
+          <AppButton
               onClick={handleTestButtonCancel}
               variant="danger"
               data-cy="enable-test-cancel-button"
-              style={{ margin: '0.2em' }}
+              style={{ margin: '0.2em', height: '36px' }}
             >
               <FormattedMessage id="Cancel" />
-            </AppButton>
-          </div>
+            </AppButton>          
         </span>
       </div>
     </div>

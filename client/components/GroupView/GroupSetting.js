@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Box, RadioGroup, FormControlLabel } from '@mui/material'
 import {
@@ -13,7 +13,7 @@ import {
   updateTempExerciseTopics,
 } from 'Utilities/redux/groupsReducer'
 
-import { learningLanguageSelector } from 'Utilities/common'
+import { images, learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import ReportButton from 'Components/ReportButton'
 import AppSelect from 'Components/ui/AppSelect'
@@ -87,38 +87,32 @@ const GroupSetting = () => {
         sx={{
           backgroundColor: colors.card,
           color: colors.ink,
-          border: `1px solid ${colors.border}`,
+          border: `none`,
           borderRadius: '20px',
           width: '100%',
           maxWidth: 1024,
-          mx: 'auto',
-          my: '2rem',
+          mx: 'auto',          
           p: { xs: '16px', sm: '24px' },
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '12px',
-            marginBottom: '1.5em',
-          }}
-        >
-          <h2
-            style={{
-              fontWeight: 700,
-              fontSize: 26,
-              color: colors.ink,
-              margin: 0,
-            }}
+        {/* Same header as the group analytics page: back arrow, title, action on the right. */}
+        <div className="group-analytics-top single-line">
+          <Link
+            className="group-analytics-back"
+            to="/groups/teacher"
+            aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
           >
-            <FormattedMessage id="group-learning-settings-for" />
-          </h2>
+            <img src={images.arrowLeft} alt="" />
+          </Link>
+          <div className="group-analytics-heading">
+            <div className="header-2">
+              <FormattedMessage id="group-learning-settings-for" />
+            </div>
+          </div>
           <Box
             component="span"
             data-cy="group-setting-group-select"
-            sx={{ display: 'inline-flex', verticalAlign: 'middle' }}
+            sx={{ display: 'inline-flex', flex: '0 0 auto' }}
           >
             <AppSelect
               variant="contrast-outline"

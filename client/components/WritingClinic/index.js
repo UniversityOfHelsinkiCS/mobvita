@@ -1,3 +1,5 @@
+// React must remain in scope because Vite compiles this project's JSX with the classic runtime.
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useIntl } from 'react-intl'

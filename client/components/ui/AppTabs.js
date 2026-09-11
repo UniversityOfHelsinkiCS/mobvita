@@ -6,7 +6,8 @@ import { colors } from 'Assets/mui_theme/designTokens'
 /**
  * AppTabs — the 2026 segmented tab bar: a cream rounded container of pill segments. The active
  * segment gets the sage-green fill; inactive segments are transparent with a tan hover. Each tab is
- * `{ value, label, icon?, badge? }`; pass `badge` (a number/string) to show the orange count pill.
+ * `{ value, label, icon?, badge?, className? }`; pass `badge` (a number/string) to show the orange
+ * count pill, and `className` to hang an external hook (e.g. a tour target) on one segment.
  *
  * Controlled: `value` + `onChange(value)`. Set `fullWidth` to stretch the bar and split the segments
  * evenly across it.
@@ -120,6 +121,9 @@ const AppTabs = ({
             role="tab"
             aria-selected={tab.value === value}
             active={tab.value === value}
+            // Lets a caller hang an external hook on one segment — the progress tour spotlights
+            // individual tabs by class.
+            className={tab.className}
             data-cy={`tab-${tab.value}`}
             fullWidth={fullWidth}
             sizing={sizing}

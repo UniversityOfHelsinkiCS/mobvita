@@ -19,16 +19,15 @@ import {
 } from 'Utilities/redux/encouragementsReducer'
 import { startProgressTour } from 'Utilities/redux/tourReducer'
 import ProgressGraph from 'Components/ProgressGraph'
+import AppTabs from 'Components/ui/AppTabs'
+import ChartHeading from 'Components/ChartHeading'
 import Spinner from 'Components/Spinner'
-import { Divider } from '@mui/material'
-import InfoOutlined from '@mui/icons-material/InfoOutlined'
-import CustomTooltip from 'Components/CustomTooltip'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
 import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures, ACCESS, useHasAccess } from 'Utilities/common'
-import useWindowDimension from 'Utilities/windowDimensions'
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
@@ -129,7 +128,6 @@ const Progress = () => {
   // const [notMastered, setNotMastered] = useState([])
   // const [notMasteredBefore, setNotMasteredBefore] = useState([])
   const [firstFetch, setFirstFetch] = useState(true)
-  const bigScreen = useWindowDimension().width >= 700
   // const [targetCurve, setTargetCurve] = useState([])
   const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
@@ -249,6 +247,54 @@ const Progress = () => {
     }
   }, [newerVocabularyData, vocabularyData])
 
+  // Tab values are the chart keys `shownChart` holds; each carries the reducer action that selects
+  // it. The classes are the progress tour's spotlight targets.
+  const CHART_TABS = [
+    {
+      value: 'progress',
+      labelId: 'progress-timeline',
+      action: 'SET_TIMELINE_CHART',
+      className: 'progress-tour-timeline-button',
+    },
+    {
+      value: 'vocabulary',
+      labelId: 'vocabulary-view',
+      action: 'SET_VOCABULARY_CHART',
+      className: 'progress-tour-vocabulary-button',
+    },
+    ...(canSeeHexmap
+      ? [
+          {
+            value: 'hex-map',
+            labelId: 'hex-map',
+            action: 'SET_GRAMMAR_CHART',
+            className: 'progress-tour-grammar-button',
+          },
+        ]
+      : []),
+    {
+      value: 'exercise-history',
+      labelId: 'exercise-history',
+      action: 'SET_EXERCISE_HISTORY_CHART',
+      className: 'progress-tour-exercise-history-button',
+    },
+    {
+      value: 'test-history',
+      labelId: 'Test History',
+      action: 'SET_TEST_HISTORY_CHART',
+      className: 'progress-tour-test-history-button',
+    },
+  ]
+
+  const chartTabs = CHART_TABS.map(({ labelId, value, className }) => ({
+    value,
+    className,
+    label: intl.formatMessage({ id: labelId }),
+  }))
+
+  const handleChartSelect = value =>
+    handleChartChange(CHART_TABS.find(tab => tab.value === value).action)
+
   const handleChartChange = newChart => {
     dispatch({ type: newChart })
     setGraphType('column mastered')
@@ -261,154 +307,50 @@ const Progress = () => {
     <div>
       {/* <Recommender /> */}
       <div className="cont ps-nm">
+        {/* One responsive row, matching the group analytics page. */}
         <div className="date-pickers-container">
-          {bigScreen ? (
-            <div className="date-pickers gap-col-sm">
-              <span className="bold">
-                <FormattedMessage id="Showing results for" />
-              </span>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-start" />{' '}
+          <span className="group-analytics-daterow-label">
+            <FormattedMessage id="Showing results for" />
+          </span>
+          <div className="group-analytics-dates">
+            <label className="group-analytics-date">
+              <FormattedMessage id="date-from" />
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
                 <PickDate
                   id="start"
                   date={startDate}
                   setDate={setStartDate}
                   onCalendarClose={handlePreviousVocabulary}
                 />
-              </div>
-              <div style={{ marginLeft: '2em' }}>
-                <FormattedMessage id="date-end" />{' '}
-                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
-              </div>
-            </div>
-          ) : (
-            <>
-              <span className="bold" style={{ fontSize: '1.3em' }}>
-                <FormattedMessage id="Showing results for" />
               </span>
-              <br />
-              <div className="date-pickers gap-col-sm" style={{ marginTop: '0.5em' }}>
-                <div>
-                  <FormattedMessage id="date-start" />
-                  <br />
-                  <PickDate id="start" date={startDate} setDate={setStartDate} />
-                </div>
-                <div>
-                  <FormattedMessage id="date-end" />
-                  <br />
-                  <PickDate date={endDate} setDate={setEndDate} />
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-        <br />
-        {bigScreen && (
-          <div>
-            <div className="space-evenly">
-              <button
-                className="progress-tour-timeline-button"
-                type="button"
-                onClick={() => handleChartChange('SET_TIMELINE_CHART')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => handleChartChange('SET_TIMELINE_CHART')}
-                    checked={shownChart === 'progress'}
-                  />
-                  <FormattedMessage id="progress-timeline" />
-                </div>
-              </button>
-              <button
-                className="progress-tour-vocabulary-button"
-                type="button"
-                onClick={() => handleChartChange('SET_VOCABULARY_CHART')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => handleChartChange('SET_VOCABULARY_CHART')}
-                    checked={shownChart === 'vocabulary'}
-                  />
-                  <FormattedMessage id="vocabulary-view" />
-                </div>
-              </button>
-              {canSeeHexmap && (
-                <button
-                  className="progress-tour-grammar-button"
-                  type="button"
-                  onClick={() => handleChartChange('SET_GRAMMAR_CHART')}
-                  style={{ border: 'none' }}
-                >
-                  <div className="flex align-center" style={{ gap: '.5em' }}>
-                    <input
-                      type="radio"
-                      onChange={() => handleChartChange('SET_GRAMMAR_CHART')}
-                      checked={shownChart === 'hex-map'}
-                    />
-                    <FormattedMessage id="hex-map" />
-                  </div>
-                </button>
-              )}
-              <button
-                className="progress-tour-exercise-history-button"
-                type="button"
-                onClick={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => handleChartChange('SET_EXERCISE_HISTORY_CHART')}
-                    checked={shownChart === 'exercise-history'}
-                  />
-                  <FormattedMessage id="exercise-history" />
-                </div>
-              </button>
-              <button
-                className="progress-tour-test-history-button"
-                type="button"
-                onClick={() => handleChartChange('SET_TEST_HISTORY_CHART')}
-                style={{ border: 'none' }}
-              >
-                <div className="flex align-center" style={{ gap: '.5em' }}>
-                  <input
-                    type="radio"
-                    onChange={() => handleChartChange('SET_TEST_HISTORY_CHART')}
-                    checked={shownChart === 'test-history'}
-                  />
-                  <FormattedMessage id="Test History" />
-                </div>
-              </button>
-            </div>
-            <Divider />
+            </label>
+            <label className="group-analytics-date">
+              <FormattedMessage id="date-to" />
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
+                <PickDate date={endDate} setDate={setEndDate} onCalendarClose={handleVocabulary} />
+              </span>
+            </label>
           </div>
-        )}
+        </div>
+        {/* Same segmented bar as the group analytics page. It replaces a row of radio buttons that
+            only rendered above 700px, so the chart switcher now exists on small screens too. */}
+        <div className="chart-tabs">
+          <AppTabs
+            tabs={chartTabs}
+            value={shownChart}
+            onChange={handleChartSelect}
+            fullWidth
+            bordered
+          />
+        </div>
         {shownChart === 'progress' ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                title={
-                  <div>
-                    <FormattedHTMLMessage id="timeline-explanation" />
-                  </div>
-                }
-                permanent
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <InfoOutlined
-                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
-                  />
-                </span>
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="progress-timeline" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading
+              titleId="progress-timeline"
+              tooltip={<FormattedHTMLMessage id="timeline-explanation" />}
+            />
             <ProgressStats startDate={startDate} endDate={endDate} />
             <div className="progress-page-graph-cont">
               <ProgressGraph
@@ -433,28 +375,12 @@ const Progress = () => {
           </div>
         ) : shownChart === 'vocabulary' ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                title={
-                  <div>
-                    <FormattedHTMLMessage id="vocabulary-view-explanation" />
-                  </div>
-                }
-                permanent
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <InfoOutlined
-                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
-                  />
-                </span>
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="vocabulary-view" />
-              </div>
-            </div>
+            <ChartHeading
+              titleId="vocabulary-view"
+              tooltip={<FormattedHTMLMessage id="vocabulary-view-explanation" />}
+            />
             <div>
               <div>
-                <Divider />
                 {initComplete ? (
                   <div className="progress-page-graph-cont">
                     <VocabularyGraph
@@ -476,74 +402,26 @@ const Progress = () => {
           </div>
         ) : shownChart === 'exercise-history' ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                title={
-                  <div>
-                    <FormattedMessage id="exercise-history-explanation" />
-                  </div>
-                }
-                permanent
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <InfoOutlined
-                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
-                  />
-                </span>
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="exercise-history" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading
+              titleId="exercise-history"
+              tooltip={<FormattedMessage id="exercise-history-explanation" />}
+            />
             <History history={exerciseHistory} dateFormat="YYYY.MM" />
           </div>
         ) : shownChart === 'test-history' ? (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                title={
-                  <div>
-                    <FormattedMessage id="test-history-explanation" />
-                  </div>
-                }
-                permanent
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <InfoOutlined
-                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
-                  />
-                </span>
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="Test History" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading
+              titleId="Test History"
+              tooltip={<FormattedMessage id="test-history-explanation" />}
+            />
             <History history={filterTestHistoryByDate()} testView dateFormat="YYYY.MM.DD HH:mm" />
           </div>
         ) : (
           <div>
-            <div className="row-flex align center">
-              <CustomTooltip
-                title={
-                  <div>
-                    <FormattedMessage id="hex-map-explanation" />
-                  </div>
-                }
-                permanent
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <InfoOutlined
-                    sx={{ pr: '0.75em', mb: '0.35em', color: 'grey.600' }}
-                  />
-                </span>
-              </CustomTooltip>
-              <div className="progress-page-header">
-                <FormattedMessage id="hex-map" />
-              </div>
-            </div>
-            <Divider />
+            <ChartHeading
+              titleId="hex-map"
+              tooltip={<FormattedMessage id="hex-map-explanation" />}
+            />
             <HexagonTest
               exerciseHistory={exerciseHistory}
               pending={historyPending}

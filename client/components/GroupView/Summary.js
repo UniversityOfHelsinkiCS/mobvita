@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux'
 import { TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AppTable from 'Components/ui/AppTable'
-import { CSVLink } from 'react-csv'
+import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Spinner from 'Components/Spinner'
 import { capitalize, skillLevels } from 'Utilities/common'
@@ -23,13 +24,13 @@ const Summary = ({
   firstFetch,
   setCefrHistory,
   setFirstFetch,
+  chartOptions = [],
+  setShownChart,
   summaryType = 'all',
 }) => {
   const intl = useIntl()
   const [sorter, setSorter] = useState({})
   const [columns, setColumns] = useState([])
-
-  const groupName = group?.groupName
 
   const convertCellValue = (value, field) => {
     if (
@@ -147,6 +148,8 @@ const Summary = ({
 
   if (!summary) return <Spinner />
 
+  const showRowMenu = chartOptions.length > 0 && !!setShownChart
+
   const handleSort = field => {
     setSorter(
       produce(draft => {
@@ -168,21 +171,13 @@ const Summary = ({
     setFirstFetch(true)
   }
 
-  const cleanGroupName = groupName
-    .toLowerCase()
-    .split(' ')
-    .join('_')
-    .replace(/[^\w\s-]/gi, '') // only allow letters, undescore and dash
-
-  const filename = `${cleanGroupName}_summary.csv`
-
   const cleanColumnValue = (value, column) => {
     if (column === intl.formatMessage({ id: 'cefr_grade' }) && value?.length > 0) {
       return `${String(skillLevels[value[0].grade])}`
     }
 
     if (value === -Number.MAX_VALUE) {
-      return '-'
+      return '—'
     }
 
     if (String(value).length > 25) {
@@ -200,52 +195,74 @@ const Summary = ({
         <>
           {summary?.length > 0 ? (
             <>
-              <div className="justify-end" style={{ marginTop: '2em' }}>
-                <CSVLink filename={filename} data={summary}>
-                  <FormattedMessage id="download-csv" />
-                </CSVLink>
-              </div>
-
-              <AppTable striped bordered hover>
+              <AppTable striped hover>
                 <TableHead>
                   <TableRow key="summary-header-row">
                     {columns.map(column => (
                       <TableCell
                         key={column}
-                        className="clickable"
+                        className="clickable summary-header-cell"
                         onClick={() => handleSort(column)}
-                        style={{
-                          textAlign: 'center',
-                          verticalAlign: 'middle',
-                          width: column === 'CEFR' ? '70px' : undefined,
-                        }}
+                        style={{ width: column === 'CEFR' ? '70px' : undefined }}
                       >
-                        {capitalize(column).replace(/_/g, ' ')}
                         {sorter.field === column &&
                           (sorter.direction[column] === 1 ? (
                             <ArrowDropUpIcon fontSize="small" sx={{ verticalAlign: 'middle' }} />
                           ) : (
                             <ArrowDropDownIcon fontSize="small" sx={{ verticalAlign: 'middle' }} />
                           ))}
+                        {capitalize(column).replace(/_/g, ' ')}
                       </TableCell>
                     ))}
+                    {showRowMenu && <TableCell className="summary-row-menu-cell" />}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {summary.map(user => (
                     <TableRow onClick={() => handleRowClick(user)} key={user.email}>
                       {columns.map(column => (
-                        <TableCell
-                          key={column}
-                          className="clickable"
-                          style={{
-                            textAlign:
-                              column === 'Email' || column === 'Username' ? 'left' : 'right',
-                          }}
-                        >
+                        <TableCell key={column} className="clickable">
                           {cleanColumnValue(user[column], column)}
                         </TableCell>
                       ))}
+                      {showRowMenu && (
+                        // Its own click target: the row underneath navigates to the student.
+                        <TableCell
+                          className="summary-row-menu-cell"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <AppMenu
+                            minWidth={220}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            disableScrollLock
+                            trigger={
+                              <button
+                                className="summary-row-more-button"
+                                type="button"
+                                aria-label={intl.formatMessage({
+                                  id: 'actions',
+                                  defaultMessage: 'Actions',
+                                })}
+                              >
+                                <MoreVertIcon fontSize="small" />
+                              </button>
+                            }
+                          >
+                            {chartOptions.map(option => (
+                              <AppMenuItem
+                                key={option.value}
+                                onClick={() => {
+                                  setShownChart(option.value)
+                                  handleRowClick(user)
+                                }}
+                              >
+                                {intl.formatMessage({ id: option.labelId })}
+                              </AppMenuItem>
+                            ))}
+                          </AppMenu>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>

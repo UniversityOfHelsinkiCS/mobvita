@@ -1,15 +1,14 @@
-/* eslint-disable no-nested-ternary */
+// React must remain in scope because Vite compiles this project's JSX with the classic runtime.
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
-import ShowChartIcon from '@mui/icons-material/ShowChart'
 import SettingsIcon from '@mui/icons-material/Settings'
 import EditIcon from '@mui/icons-material/Edit'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import PersonIcon from '@mui/icons-material/Person'
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
-import ShareIcon from '@mui/icons-material/Share'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGroupTestDeadline, getGroupToken } from 'Utilities/redux/groupsReducer'
@@ -17,6 +16,8 @@ import { updateGroupSelect, updateLibrarySelect } from 'Utilities/redux/userRedu
 import { getTestQuestions } from 'Utilities/redux/testReducer'
 import AppButton from 'Components/AppButton'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
+import AppIcon from 'Components/ui/AppIcon'
+import { images } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 import ImportStoryModal from './ImportStoryModal'
@@ -28,22 +29,18 @@ const GroupFunctions = ({
   showTestEnableMenuGroupId,
   setShowTestEnableMenuGroupId,
   currTestDeadline,
-  setCurrTestDeadline }) => {
+  setCurrTestDeadline,
+}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
 
-
-  const {
-    is_teaching: isTeaching,
-    group_id: groupId,
-    language } = group
+  const { is_teaching: isTeaching, group_id: groupId, language } = group
   const teacherView = useSelector(({ user }) => user.data.user.is_teacher)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const [importStoryModalOpen, setImportStoryModalOpen] = useState(false)
   const { width } = useWindowDimensions()
   const testEnabled = currTestDeadline - Date.now() > 0
-  const testButtonVariant = testEnabled ? 'danger' : 'primary'
   const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
   const peopleView = location.pathname.includes('people')
   const analyticsView = location.pathname.includes('analytics')
@@ -101,31 +98,109 @@ const GroupFunctions = ({
     dispatch(getTestQuestions(language, groupId, true))
   }
 
-  
-
-
   return (
     <>
       {width >= 640 ? (
-        <div className="flex" style={{ gap: '.25em', flexWrap: 'wrap' }}>
-          {isTeaching && !analyticsView && teacherView && (
-            <AppButton
-              variant="primary"
-              onClick={handleAnalyticsClick}
-              data-cy="group-analytics-button"
-              style={{ color: 'white' }}
-            >
-              <ShowChartIcon /> <FormattedMessage id="Analytics" />
-            </AppButton>
-          )}
-          {isTeaching && teacherView && (
-            <AppButton
-              onClick={() => setLearningModalGroupId(groupId)}
-              data-cy="group-learning-settings-button"
-            >
-              <SettingsIcon /> <FormattedMessage id="learning-settings" />
-            </AppButton>
-          )}
+        <>
+          <div className="group-function-grid">
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-analytics"
+                variant="link"
+                size="sm"
+                onClick={handleAnalyticsClick}
+                data-cy="group-analytics-button"
+              >
+                <AppIcon src={images.analytics} size={20} />
+                <FormattedMessage id="Analytics" />
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-learning"
+                variant="link"
+                size="sm"
+                onClick={() => setLearningModalGroupId(groupId)}
+                data-cy="group-learning-settings-button"
+              >
+                <AppIcon src={images.settings02} size={20} />
+                <FormattedMessage id="learning-settings" />
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-test-toggle"
+                variant="link"
+                size="sm"
+                data-cy="enable-test-button"
+                onClick={handleTestEnableDisableButtonClick}
+              >
+                <AppIcon src={images.edit03} size={20} />
+                <FormattedMessage id={testButtonTextKey} />
+              </AppButton>
+            )}
+            {!conceptsView && isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-test-settings"
+                variant="link"
+                size="sm"
+                as={Link}
+                to={`/groups/teacher/${groupId}/settings`}
+                data-cy="group-test-settings-button"
+              >
+                <AppIcon src={images.settings02} size={20} />
+                <FormattedMessage id="test-settings" />
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-stories"
+                variant="link"
+                size="sm"
+                onClick={handleStoriesClick}
+                data-cy="group-stories-button"
+              >
+                <AppIcon src={images.bookOpen} size={20} />
+                <FormattedMessage id="Stories" /> <span>({group.stories.length})</span>
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-people"
+                variant="link"
+                size="sm"
+                data-cy="people-button"
+                onClick={handlePeopleClick}
+              >
+                <AppIcon src={images.users01} size={20} />
+                <FormattedMessage id="people" /> <span>({group.students.length})</span>
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-key"
+                variant="link"
+                size="sm"
+                onClick={handleShowTokenClick}
+                data-cy="group-show-token-button"
+              >
+                <AppIcon src={images.key} size={20} />
+                <FormattedMessage id="show-group-token" />
+              </AppButton>
+            )}
+            {isTeaching && teacherView && (
+              <AppButton
+                className="group-function-button group-function-inherit"
+                variant="link"
+                size="sm"
+                onClick={() => setImportStoryModalOpen(true)}
+                data-cy="group-import-story-button"
+              >
+                <AppIcon src={images.inherit} size={20} />
+                <FormattedMessage id="import-story" />
+              </AppButton>
+            )}
+          </div>
           {learningModalGroupId && isTeaching && (
             <GroupLearningSettingsModal
               open={!!learningModalGroupId}
@@ -134,48 +209,13 @@ const GroupFunctions = ({
             />
           )}
           {isTeaching && teacherView && (
-            <ImportStoryModal open={importStoryModalOpen} setOpen={setImportStoryModalOpen} groupId={groupId} />
+            <ImportStoryModal
+              open={importStoryModalOpen}
+              setOpen={setImportStoryModalOpen}
+              groupId={groupId}
+            />
           )}
-          {isTeaching && teacherView && (
-            <AppButton
-              data-cy="enable-test-button"
-              onClick={handleTestEnableDisableButtonClick}
-              variant={testButtonVariant}
-            >
-              <EditIcon /> <FormattedMessage id={testButtonTextKey} />
-            </AppButton>
-          )}
-          {!conceptsView && isTeaching && teacherView && (
-            <AppButton
-              variant="primary"
-              as={Link}
-              to={`/groups/teacher/${groupId}/settings`}
-              data-cy="group-test-settings-button"
-              style={{ color: 'white' }}
-            >
-              <SettingsIcon /> <FormattedMessage id="test-settings" />
-            </AppButton>
-          )}
-          {isTeaching && teacherView && (<AppButton onClick={handleStoriesClick} data-cy="group-stories-button">
-            <MenuBookIcon /> <FormattedMessage id="Stories" />
-          </AppButton>)}
-          {!peopleView && isTeaching && teacherView && (
-            <AppButton data-cy="people-button" onClick={handlePeopleClick}>
-              <PersonIcon /> <FormattedMessage id="people" />
-            </AppButton>
-          )}
-          {isTeaching && teacherView && (
-            <AppButton onClick={handleShowTokenClick} data-cy="group-show-token-button">
-              <VpnKeyIcon /> <FormattedMessage id="show-group-token" />
-            </AppButton>
-          )}
-          {isTeaching && teacherView && (
-            <AppButton onClick={()=> setImportStoryModalOpen(true)} data-cy="group-import-story-button">
-              <ShareIcon /> <FormattedMessage id="import-story" />
-            </AppButton>
-
-          )}
-        </div>
+        </>
       ) : (
         <Box sx={{ display: 'inline-flex' }}>
           <>
@@ -212,7 +252,8 @@ const GroupFunctions = ({
                   style={{
                     backgroundColor: 'rgb(50, 170, 248)',
                     color: 'white',
-                    borderLeft: '2px solid rgb(81, 138, 248)' }}
+                    borderLeft: '2px solid rgb(81, 138, 248)',
+                  }}
                 >
                   <ArrowDropDownIcon />
                 </AppButton>
