@@ -43,8 +43,10 @@ describe("groups", function () {
     cy.contains('h5', 'my_test_group', { timeout: 30000 })
       .closest('.card')
       .within(() => {
-        cy.get('[data-cy=delete-group]').click()
+        cy.get('[data-cy=group-card-actions]').click()
       })
+    // The menu renders in a portal on <body>, so it is outside the card's `within` scope.
+    cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
   })
 
@@ -63,8 +65,10 @@ describe("groups", function () {
     cy.contains('h5', 'destroyed', { timeout: 30000 })
       .closest('.card')
       .within(() => {
-        cy.get('[data-cy=delete-group]').click()
+        cy.get('[data-cy=group-card-actions]').click()
       })
+    // The menu renders in a portal on <body>, so it is outside the card's `within` scope.
+    cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
     cy.get('body', { timeout: 30000 }).should('not.contain', 'destroyed')
   })
@@ -127,8 +131,10 @@ describe("groups", function () {
     cy.contains('h5', groupName, { timeout: 30000 })
       .closest('.card')
       .within(() => {
-        cy.get('[data-cy=delete-group]').click()
+        cy.get('[data-cy=group-card-actions]').click()
       })
+    // The menu renders in a portal on <body>, so it is outside the card's `within` scope.
+    cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
   })
 })

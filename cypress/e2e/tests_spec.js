@@ -26,7 +26,7 @@ describe('test view', function() {
     cy.get('[type=submit]').click()
 
     // Close modal with esc
-    cy.get('[data-cy=people-add-result-modal').trigger('keydown', { keyCode: 27});
+    cy.get('[data-cy=people-add-result-modal]').trigger('keydown', { keyCode: 27});
     cy.wait(200);
     cy.get('body').trigger('keyup', { keyCode: 27});
 
@@ -41,8 +41,12 @@ describe('test view', function() {
     cy.visit('http://localhost:8000/groups/teacher')
     cy.wait('@apiCall', { timeout: 30000 })
 
-    cy.get('[data-cy=enable-test-button]', { timeout: 30000 }).click()
-    cy.get('[data-cy=enable-test-ok-button', { timeout: 30000 }).click()
+    cy.contains('my_test_group', { timeout: 30000 })
+      .closest('.card')
+      .within(() => {
+        cy.get('[data-cy=enable-test-button]', { timeout: 30000 }).click()
+        cy.get('[data-cy=enable-test-ok-button]', { timeout: 30000 }).click()
+      })
 
     cy.visit('http://localhost:8000/home')
     cy.wait('@apiCall', { timeout: 30000 })
@@ -58,8 +62,10 @@ describe('test view', function() {
     cy.visit('http://localhost:8000/groups/teacher')
     cy.wait('@apiCall', { timeout: 30000 })
     cy.contains('my_test_group').closest('.card').within(() => {
-      cy.get('[data-cy=delete-group]').click()
+      cy.get('[data-cy=group-card-actions]').click()
     })
+    // The menu renders in a portal on <body>, so it is outside the card's `within` scope.
+    cy.get('[data-cy=delete-group]').click()
     cy.get('[data-cy=confirm-warning-dialog]').click()
     cy.get('body', { timeout: 30000 }).should('not.contain', 'my_test_group')
   })
