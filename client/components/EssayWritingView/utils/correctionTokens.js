@@ -438,38 +438,46 @@ export const findCorrectionGroupAtOffset = (sentence, corrections, offset) => {
   )
 }
 
-// Find the insertion (zero-width) group whose region contains the offset. A region is the run of
-// words around an insertion point, bounded by the nearest replacement/deletion on each side (or a
-// sentence edge). So clicking any plain word by a missing-word gap selects that insertion, not just
-// the gap. When a region holds several insertions, the nearest to the offset wins.
-export const findInsertionGroupInRegion = (sentence, corrections, offset) => {
+// The character span covering the word before + the word after an insertion point (the gap between
+// them included) — exactly the span the insertion highlight paints in the textarea.
+export const getInsertionSurroundingSpan = (text, offset) => {
+  const isSpace = index => index >= 0 && index < text.length && /\s/.test(text[index])
+
+  let start = Math.max(0, Math.min(offset, text.length))
+  while (start > 0 && isSpace(start - 1)) start -= 1
+  while (start > 0 && !isSpace(start - 1)) start -= 1
+
+  let end = Math.max(0, Math.min(offset, text.length))
+  while (end < text.length && isSpace(end)) end += 1
+  while (end < text.length && !isSpace(end)) end += 1
+
+  return { start, end }
+}
+
+// Find the insertion (zero-width) group the offset lands on: the caret has to sit inside the span
+// the insertion highlight covers — the word before and the word after the missing-word gap. A plain
+// word further along the sentence is not part of that highlight, so clicking it selects nothing.
+// When several insertions cover the offset, the nearest one wins.
+export const findInsertionGroupAtOffset = (sentence, corrections, offset) => {
   if (!sentence || !Array.isArray(corrections) || !corrections.length) return null
   if (!Number.isInteger(offset)) return null
 
-  const groups = getCorrectionGroups(sentence, corrections)
-  const wordRanges = groups
-    .map(group => group.range)
-    .filter(range => range && range.endOffset > range.startOffset)
-  const insertions = groups.filter(
+  const insertions = getCorrectionGroups(sentence, corrections).filter(
     group => group.range && group.range.endOffset === group.range.startOffset,
   )
 
   if (!insertions.length) return null
 
-  // The correction-free region around the offset, bounded by replacement/deletion words.
-  const leftBound = wordRanges
-    .filter(range => range.endOffset <= offset)
-    .reduce((bound, range) => Math.max(bound, range.endOffset), 0)
-  const rightBound = wordRanges
-    .filter(range => range.startOffset >= offset)
-    .reduce((bound, range) => Math.min(bound, range.startOffset), sentence.length)
+  const offsetIsInsideHighlight = group => {
+    const span = getInsertionSurroundingSpan(sentence, group.range.startOffset)
+
+    return span.end > span.start && offset >= span.start && offset <= span.end
+  }
 
   const distanceToOffset = group => Math.abs(group.range.startOffset - offset)
 
-  return insertions
-    .filter(group => group.range.startOffset >= leftBound && group.range.startOffset <= rightBound)
-    .reduce((nearest, group) => {
-      if (!nearest) return group
-      return distanceToOffset(group) < distanceToOffset(nearest) ? group : nearest
-    }, null)
+  return insertions.filter(offsetIsInsideHighlight).reduce((nearest, group) => {
+    if (!nearest) return group
+    return distanceToOffset(group) < distanceToOffset(nearest) ? group : nearest
+  }, null)
 }

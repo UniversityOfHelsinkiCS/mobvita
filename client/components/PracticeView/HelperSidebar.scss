@@ -2,6 +2,7 @@
 $hs-card: #faf8ed; // cream panel
 $hs-ink: #2d2c2a; // text / chevron
 $hs-radius: 30px; // card radius
+$hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
 
 .helper-sidebar {
   position: fixed;
@@ -119,6 +120,11 @@ $hs-radius: 30px; // card radius
       max-height: none;
       height: 100%;
     }
+
+    .chatbot,
+    .combined-chatbot {
+      border-radius: $hs-radius 0 0 $hs-radius;
+    }
   }
 }
 
@@ -152,8 +158,8 @@ $hs-radius: 30px; // card radius
     height: 40vh;
     max-width: 100%;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: $hs-sheet-radius;
+    border-top-right-radius: $hs-sheet-radius;
         transform: translateY(calc(100% - 30px));
     &.open {
       transform: translateY(0);
@@ -195,6 +201,13 @@ $hs-radius: 30px; // card radius
     }
     .helper-sidebar.open .sidebar-toggle svg {
       transform: rotate(-90deg);
+    }
+
+    .helper-sidebar-content {
+      .chatbot,
+      .combined-chatbot {
+        border-radius: $hs-sheet-radius $hs-sheet-radius 0 0;
+      }
     }
   }   
 

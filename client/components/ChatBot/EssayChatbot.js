@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { Box, Paper } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFlip } from 'swiper/modules'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
@@ -51,6 +52,13 @@ const CORRECTION_TYPE_ACCENT_COLORS = {
   insertion: '#496B0F',
   deletion: '#AE4109',
 }
+
+// A word the user clicked is one of their own, not a correction, so the focused view takes a
+// neutral sand instead of one of the three correction hues. Same three roles as the maps above:
+// title bar, panel wash, back arrow.
+const TEXT_SELECTION_COLOR = '#ECE3BE'
+const TEXT_SELECTION_BG_COLOR = '#F7F2DF'
+const TEXT_SELECTION_ACCENT_COLOR = '#6B5B2A'
 
 const rangesMatch = (firstRange, secondRange) =>
   Boolean(firstRange) &&
@@ -109,6 +117,9 @@ const EssayChatbot = ({
         .map(sentenceId => correctionSuggestionsBySentenceId[sentenceId])
         .filter(Boolean)
   const hasActiveSelection = Boolean(essayFocus?.selection)
+  // A selected word focuses the panel just like a correction does, but it has no bubble of its own
+  // — the focused view pins the word itself.
+  const focusedTextSelection = essayFocus?.selection?.isTextSelection ? essayFocus.selection : null
   const correctionKeys = correctionSuggestions.map(suggestion => suggestion.key).join('|')
 
   // When a suggestion is selected the panel switches from the full list to a focused view: just that
@@ -118,7 +129,7 @@ const EssayChatbot = ({
     (focusedSentenceId &&
       correctionSuggestions.find(suggestion => suggestion.sentenceId === focusedSentenceId)) ||
     null
-  const isFocused = Boolean(focusedSuggestion)
+  const isFocused = Boolean(focusedSuggestion) || Boolean(focusedTextSelection)
   // Each bubble has its own conversation thread; the list view uses the general ('') thread.
   const activeFocusKey = isFocused ? buildFocusKey(essayFocus?.selection) : ''
   // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) as bot bubbles
@@ -130,18 +141,23 @@ const EssayChatbot = ({
         .filter(Boolean)
     : []
   // In the focused view the whole panel is tinted with the selected suggestion's correction colour.
-  const focusedCorrectionType = isFocused
-    ? getFocusedCorrectionType(
-        correctionsByKey[focusedSuggestion.key],
-        focusedSuggestion.sentence,
-        essayFocus?.selection,
-      )
-    : null
-  const focusedColor = focusedCorrectionType ? CORRECTION_TYPE_COLORS[focusedCorrectionType] : null
-  const focusedBgColor = focusedCorrectionType ? CORRECTION_TYPE_BG_COLORS[focusedCorrectionType] : null
-  const focusedAccentColor = focusedCorrectionType
-    ? CORRECTION_TYPE_ACCENT_COLORS[focusedCorrectionType]
-    : null
+  const focusedCorrectionType =
+    focusedSuggestion && !focusedTextSelection
+      ? getFocusedCorrectionType(
+          correctionsByKey[focusedSuggestion.key],
+          focusedSuggestion.sentence,
+          essayFocus?.selection,
+        )
+      : null
+  const focusedColor = focusedTextSelection
+    ? TEXT_SELECTION_COLOR
+    : (focusedCorrectionType && CORRECTION_TYPE_COLORS[focusedCorrectionType]) || null
+  const focusedBgColor = focusedTextSelection
+    ? TEXT_SELECTION_BG_COLOR
+    : (focusedCorrectionType && CORRECTION_TYPE_BG_COLORS[focusedCorrectionType]) || null
+  const focusedAccentColor = focusedTextSelection
+    ? TEXT_SELECTION_ACCENT_COLOR
+    : (focusedCorrectionType && CORRECTION_TYPE_ACCENT_COLORS[focusedCorrectionType]) || null
 
   // Scroll to the latest message when the conversation grows (a new message in either view).
   useEffect(() => {
@@ -235,6 +251,21 @@ const EssayChatbot = ({
       sentence={suggestion.sentence}
       onSentenceSelect={buildSentenceSelectHandler(suggestion)}
     />
+  )
+
+  // The pinned "bubble" for a selected word: the word the user clicked, in the same shape as a
+  // correction bubble so the focused view reads the same either way. Nothing to click — no
+  // correction sits behind it — so it carries no select handlers.
+  const renderSelectedText = () => (
+    <Paper
+      className="essay-writing-correction-bubble essay-writing-correction-bubble-selection"
+      data-cy="essay-selected-text-bubble"
+      elevation={0}
+    >
+      <Box className="essay-writing-correction-content">
+        <span className="essay-writing-corrected-word">{essayFocus?.focusedWord}</span>
+      </Box>
+    </Paper>
   )
 
   const handleMessageSubmit = event => {
@@ -358,7 +389,9 @@ const EssayChatbot = ({
               data-cy="essay-chatbot-focused"
               style={focusedBgColor ? { background: focusedBgColor } : undefined}
             >
-              {renderSuggestion(focusedSuggestion, true)}
+              {focusedTextSelection
+                ? renderSelectedText()
+                : renderSuggestion(focusedSuggestion, true)}
             </div>
           )}
           <div

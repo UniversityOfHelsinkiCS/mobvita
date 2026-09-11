@@ -20,6 +20,7 @@ import {
   getCompletedSentenceFromIndexes,
   getCompletedSentenceNearIndex,
   getCompletedSentences,
+  getEssayFocusFromCaretWord,
   getEssayFocusFromSelection,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
@@ -30,12 +31,13 @@ import {
 } from './utils/essaySentences'
 import {
   findCorrectionGroupAtOffset,
-  findInsertionGroupInRegion,
+  findInsertionGroupAtOffset,
   getCorrectedTextFromCorrectionEntry,
   getCorrectionGroupChatFeedbackText,
   getCorrectionGroupFocus,
   getCorrectionGroups,
   getCorrectionGroupType,
+  getInsertionSurroundingSpan,
 } from './utils/correctionTokens'
 import { getStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
 import { getTextareaRangeRects } from './utils/textareaCaret'
@@ -47,22 +49,6 @@ const MIN_INSERTION_UNDERLINE_WIDTH = 12
 // How many times to re-fetch the writing session before giving up and correcting without it, so a
 // failing session endpoint can't block corrections forever.
 const MAX_SESSION_ATTEMPTS = 2
-
-// The character span covering the word before + the word after an insertion point (the gap between
-// them included), so the insertion highlight can mark the two words it should be inserted between.
-const getInsertionSurroundingSpan = (text, offset) => {
-  const isSpace = index => index >= 0 && index < text.length && /\s/.test(text[index])
-
-  let start = Math.max(0, Math.min(offset, text.length))
-  while (start > 0 && isSpace(start - 1)) start -= 1
-  while (start > 0 && !isSpace(start - 1)) start -= 1
-
-  let end = Math.max(0, Math.min(offset, text.length))
-  while (end < text.length && isSpace(end)) end += 1
-  while (end < text.length && !isSpace(end)) end += 1
-
-  return { start, end }
-}
 
 // The whitespace gap around an insertion point — the actual "missing spot" the underline marks.
 const getInsertionGapSpan = (text, offset) => {
@@ -94,6 +80,7 @@ const EssayTextInput = ({
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
   const selectedGroupKeyRef = useRef(null)
+  const selectedTextRangeRef = useRef(null)
   const scrollContentRef = useRef(null)
   const correctionsByKeyRef = useRef(null)
   const writingSessionIdRef = useRef('')
@@ -172,7 +159,7 @@ const EssayTextInput = ({
 
     const group =
       findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
-      findInsertionGroupInRegion(sentence.text, corrections, offset)
+      findInsertionGroupAtOffset(sentence.text, corrections, offset)
 
     if (!group) return null
 
@@ -196,7 +183,24 @@ const EssayTextInput = ({
     }
   }
 
-  const updateEssayFocus = input => {
+  const findSentenceById = sentenceId =>
+    completedSentencesRef.current.find(sentence => sentence.sentenceId === sentenceId) || null
+
+  // Paint the persistent highlight over a clicked word. It belongs to no correction group, so it is
+  // kept as its own range and re-measured whenever the highlights are refreshed.
+  const setSelectedTextHighlight = (sentence, startOffset, endOffset) => {
+    selectedGroupKeyRef.current = null
+    selectedTextRangeRef.current = {
+      key: `${sentence.sentenceId}:${startOffset}:${endOffset}`,
+      start: sentence.startIndex + startOffset,
+      end: sentence.startIndex + endOffset,
+    }
+    refreshSelectedHighlight()
+  }
+
+  // `fromPointer` marks a click: only then does the caret select the word it landed on, so typing
+  // and arrow-key navigation don't keep flipping the chatbot to whatever word they cross.
+  const updateEssayFocus = (input, { fromPointer = false } = {}) => {
     const correctionFocus = getCorrectionFocusAtCaret(input)
 
     if (correctionFocus) {
@@ -204,9 +208,37 @@ const EssayTextInput = ({
       const { startOffset, endOffset } = focus.selection
 
       if (correctionRectsStaleRef.current) computeCorrectionRects()
+      selectedTextRangeRef.current = null
       selectedGroupKeyRef.current = `${sentence.sentenceId}:${startOffset}:${endOffset}`
       refreshSelectedHighlight()
       onEssayFocusChange?.(focus)
+      return
+    }
+
+    // Clicking a word with nothing wrong with it selects that word, the way clicking a corrected
+    // one selects its correction. A click only: a dragged range is left to the selection focus
+    // below, which is what the trailing click of a drag still carries.
+    const wordFocus =
+      fromPointer && input.selectionStart === input.selectionEnd
+        ? getEssayFocusFromCaretWord(
+            completedSentencesRef.current,
+            textRef.current,
+            input.selectionStart,
+          )
+        : null
+
+    if (wordFocus) {
+      const sentence = findSentenceById(wordFocus.sentenceId)
+
+      if (sentence) {
+        setSelectedTextHighlight(
+          sentence,
+          wordFocus.selection.startOffset,
+          wordFocus.selection.endOffset,
+        )
+      }
+
+      onEssayFocusChange?.(wordFocus)
       return
     }
 
@@ -259,6 +291,7 @@ const EssayTextInput = ({
     }
 
     setHoveredWordHighlight(null)
+    selectedTextRangeRef.current = null
     selectedGroupKeyRef.current = key
     refreshSelectedHighlight()
   }, [sentenceSelectionRequest])
@@ -311,7 +344,7 @@ const EssayTextInput = ({
       correctionRectsStaleRef.current = true
       setHoveredWordHighlight(null)
 
-      if (selectedGroupKeyRef.current) {
+      if (selectedGroupKeyRef.current || selectedTextRangeRef.current) {
         computeCorrectionRects()
         refreshSelectedHighlight()
       }
@@ -636,12 +669,12 @@ const EssayTextInput = ({
     openCorrectionForSentence(completedSentence)
   }
 
-  const handleSelect = e => {
+  const handleSelect = (e, { fromPointer = false } = {}) => {
     if (applyingCorrectionSelectionRef.current) return
 
     clearCorrectionHighlight()
     saveUserSelection(e.target)
-    updateEssayFocus(e.target)
+    updateEssayFocus(e.target, { fromPointer })
 
     const pendingSentence = pendingEditedSentenceRef.current
 
@@ -662,6 +695,8 @@ const EssayTextInput = ({
 
     commitPendingEditedSentence()
   }
+
+  const handleClick = e => handleSelect(e, { fromPointer: true })
 
   const handleBlur = () => {
     commitPendingEditedSentence()
@@ -797,9 +832,44 @@ const EssayTextInput = ({
         y <= rect.top + rect.height,
     )
 
-  // Re-derive the persistent selected highlight from the freshly measured rects, keyed by the
-  // selected group.
+  // A selected word has no correction group to look up its rects in, so measure the range itself.
+  const measureTextRangeHighlight = ({ key, start, end }) => {
+    const input = inputRef.current
+    const scrollContent = scrollContentRef.current
+
+    if (!input || !scrollContent) return null
+
+    const measured = getTextareaRangeRects(input, [{ key, type: 'selection', start, end }])[0]
+
+    if (!measured?.rects.length) return null
+
+    const inputRect = input.getBoundingClientRect()
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+    const originLeft = inputRect.left - scrollContentRect.left
+    const originTop = inputRect.top - scrollContentRect.top
+
+    return {
+      key,
+      type: 'selection',
+      rects: measured.rects.map(rect => ({
+        left: originLeft + rect.left,
+        top: originTop + rect.top,
+        width: rect.width,
+        height: rect.height,
+      })),
+    }
+  }
+
+  // Re-derive the persistent selected highlight from the freshly measured rects — a correction by
+  // its group key, a selected word by re-measuring the range it covers.
   const refreshSelectedHighlight = () => {
+    const textRange = selectedTextRangeRef.current
+
+    if (textRange) {
+      setSelectedWordHighlight(measureTextRangeHighlight(textRange))
+      return
+    }
+
     const key = selectedGroupKeyRef.current
     const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
 
@@ -808,6 +878,7 @@ const EssayTextInput = ({
 
   const clearSelectedHighlight = () => {
     selectedGroupKeyRef.current = null
+    selectedTextRangeRef.current = null
     setSelectedWordHighlight(null)
   }
 
@@ -889,7 +960,7 @@ const EssayTextInput = ({
           inputRef={inputRef}
           onBlur={handleBlur}
           onChange={handleChange}
-          onClick={handleSelect}
+          onClick={handleClick}
           onKeyUp={handleSelect}
           onMouseLeave={handleTextMouseLeave}
           onMouseMove={handleTextMouseMove}

@@ -164,7 +164,7 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       sourcemap: mode !== 'production',
       cssMinify: false,
-      cssCodeSplit: false,
+      cssCodeSplit: true, // Keep this ON!!!
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
         output: {

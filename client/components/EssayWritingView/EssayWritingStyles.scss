@@ -5,41 +5,30 @@
 $essay-navbar-height: 3em;
 $essay-content-top-padding: 1.7em;
 $essay-footer-height: 50px;
-// Gaps between a panel and the space it sits in: .essay-writing-main's bottom margin, and
-// .essay-teacher-panel's own top margin on top of it.
 $essay-main-gap: 1rem;
 $essay-teacher-panel-gap: 1.5em;
-// What's left of the viewport once the global chrome is taken out — the navbar, <main>'s top
-// padding, and the global footer rendered after <main> in Router. A panel that ignores any of the
-// three overflows the page by exactly that much, leaving an outer scrollbar with nowhere to go.
+
 $essay-available-height: calc(
   100vh - #{$essay-navbar-height} - #{$essay-content-top-padding} - #{$essay-footer-height}
 );
 $essay-panel-height: calc(#{$essay-available-height} - #{$essay-main-gap});
 $essay-teacher-panel-height: calc(#{$essay-panel-height} - #{$essay-teacher-panel-gap});
-// A collapsed HelperSidebar leaves a 10px sliver plus its 28px toggle chevron pinned to the right
-// edge of the viewport. Reserve that strip so the chevron can't sit on top of the essay text.
+
 $essay-collapsed-sidebar-reserve: 38px;
 $essay-content-width: 1024px;
 $essay-content-min-width: 650px;
 $essay-sidebar-offset: 380px;
-// Correction colours: per type, one for the textarea highlight and one for the suggestion bubble.
-// The word highlighted in the essay text and the bubble describing it are the same correction, so
-// they carry the same colour. Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js, same as the
-// $essay-bubble-*-bg-color values below.
+
 $essay-textarea-highlight-replacement-bg-color: #c1dce6;
 $essay-textarea-highlight-insertion-bg-color: #d1e5b0;
-$essay-textarea-highlight-deletion-bg-color: #ffdcca;
+$essay-textarea-highlight-deletion-bg-color: #fcceb8;
+$essay-textarea-highlight-selection-bg-color: #d2c9a7;
 
-// Correction bubbles, from the design tokens ($color-* is injected into every stylesheet by
-// vite.config.mjs, so designTokens.js stays the one source of truth). Each type pairs its resting
-// colour with the token's own hover shade rather than a generic brightness filter.
-// Mirrors CORRECTION_COLORS in Components/ui/ChatBubble.js — the ChatBubble correction-* variants
-// and these bubbles have to show the same colour per type. Keep the two in step when either moves.
 $essay-bubble-multi-bg-color: #c1dce6;
 $essay-bubble-replacement-bg-color: #c1dce6;
 $essay-bubble-insertion-bg-color: #d1e5b0;
 $essay-bubble-deletion-bg-color: #ffdcca;
+$essay-bubble-selection-bg-color: #ece3be;
 
 // 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
 $essay-card: #faf8ed; // cream panel
@@ -101,7 +90,6 @@ $essay-green: #b1d3c2; // border / accent
   margin-top: 0;
   padding: 1.5rem;
   background: $essay-card !important;
-  // !important so these beat MUI Paper's equal-specificity emotion class in the prod build order.
   border-radius: 30px !important;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
@@ -150,7 +138,6 @@ $essay-green: #b1d3c2; // border / accent
   margin-top: $essay-teacher-panel-gap;
   padding: 1.5rem;
   background: $essay-card !important;
-  // !important so these beat MUI Paper's equal-specificity emotion class in the prod build order.
   border-radius: 30px !important;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
 
@@ -256,6 +243,10 @@ $essay-green: #b1d3c2; // border / accent
   background-color: $essay-textarea-highlight-deletion-bg-color;
 }
 
+.essay-writing-word-highlight-selection {
+  background-color: $essay-textarea-highlight-selection-bg-color;
+}
+
 .essay-writing-word-highlight-selected {
   filter: brightness(1.1);
 }
@@ -302,7 +293,7 @@ $essay-green: #b1d3c2; // border / accent
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 32px;
+    line-height: 28px;
     color: $essay-ink;
 
     &::selection {
@@ -329,9 +320,6 @@ $essay-green: #b1d3c2; // border / accent
   padding: 0.75rem 1rem;
   border-radius: 16px;
   background: $essay-card;
-  // A trimmed-down MUI elevation-3 shadow: roughly half the blur and spread, on whole pixels.
-  // !important because Paper's elevation class is emotion, injected after this stylesheet (the
-  // same reason .essay-writing-panel above needs it).
   box-shadow:
     0 2px 2px -1px rgba(0, 0, 0, 0.2),
     0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -366,6 +354,17 @@ $essay-green: #b1d3c2; // border / accent
 
 .essay-writing-correction-bubble-deletion {
   background: $essay-bubble-deletion-bg-color !important;
+}
+
+// The pinned bubble for a selected word. It stands for one of the user's own words rather than a
+// correction, and there is nothing behind it to open, so it drops the clickable bubble's lift.
+.essay-writing-correction-bubble-selection {
+  background: $essay-bubble-selection-bg-color !important;
+  cursor: default;
+
+  &:hover {
+    transform: none;
+  }
 }
 
 .essay-writing-correction-content {
@@ -475,10 +474,6 @@ $essay-green: #b1d3c2; // border / accent
   }
 }
 
-// Keep the collapsed sidebar's toggle chevron off the text. Below 769px the sidebar is a bottom
-// sheet with its toggle at the top centre, so it can't overlap; above ~1100px the centred 1024px
-// column already clears the chevron on its own. In between, inset the column — but not while the
-// sidebar is open, which already reserves 380px for it.
 @media (min-width: 769px) and (max-width: 1100px) {
   .essay-writing-container:not(.essay-writing-container-sidebar-pushed) {
     padding-right: $essay-collapsed-sidebar-reserve;
