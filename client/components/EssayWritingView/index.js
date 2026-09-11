@@ -29,7 +29,14 @@ import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EssayTextInput from './EssayTextInput'
 import EssayVersionText from './EssayVersionText'
 import { getCompletedSentences } from './utils/essaySentences'
-import { clearStoredEssayText, saveEssayText } from './utils/essayDraftStorage'
+import {
+  clearEssayDraft,
+  getStoredEssayId,
+  getStoredEssayTitle,
+  saveEssayId,
+  saveEssayText,
+  saveEssayTitle,
+} from './utils/essayDraftStorage'
 import { colors } from 'Assets/mui_theme/designTokens'
 
 import './EssayWritingStyles.scss'
@@ -43,7 +50,7 @@ const EssayWritingView = () => {
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
   const [essaySentences, setEssaySentences] = useState([])
-  const [continuedEssayId, setContinuedEssayId] = useState(null)
+  const [continuedEssayId, setContinuedEssayId] = useState(getStoredEssayId)
   const [restoredSentenceLineage, setRestoredSentenceLineage] = useState(null)
   const [restoredRemovedSentences, setRestoredRemovedSentences] = useState(null)
   const [hoveredSentence, setHoveredSentence] = useState(null)
@@ -51,7 +58,7 @@ const EssayWritingView = () => {
   const [sentenceSelectionRequest, setSentenceSelectionRequest] = useState(null)
   const [essayResetKey, setEssayResetKey] = useState(0)
   const [topicDialogOpen, setTopicDialogOpen] = useState(false)
-  const [topic, setTopic] = useState('')
+  const [topic, setTopic] = useState(getStoredEssayTitle)
   const [topicTaken, setTopicTaken] = useState(false)
   const [uploadFailed, setUploadFailed] = useState(false)
   const selectedSelectionRef = useRef(null)
@@ -111,7 +118,8 @@ const EssayWritingView = () => {
 
   // Drop the saved draft and remount the editor so it starts empty (after upload / clear cache).
   const resetEssayDraft = () => {
-    clearStoredEssayText()
+    clearEssayDraft()
+    setTopic('')
     setEssayText('')
     setEssaySentences([])
     setContinuedEssayId(null)
@@ -137,9 +145,11 @@ const EssayWritingView = () => {
     setEssayText(nextText)
     setEssaySentences([])
     setContinuedEssayId(loadEssayId)
+    saveEssayId(loadEssayId)
     setRestoredSentenceLineage(getWritingEssaySentenceLineage(openedEssay))
     setRestoredRemovedSentences(getWritingEssayRemovedSentences(openedEssay))
     setTopic(openedEssay.title || '')
+    saveEssayTitle(openedEssay.title || '')
     setEssayFocus(null)
     setSentenceSelectionRequest(null)
     selectedSelectionRef.current = null
@@ -152,6 +162,13 @@ const EssayWritingView = () => {
     if (!isTeacherEssayView) return undefined
     return () => dispatch(clearWritingEssay())
   }, [isTeacherEssayView])
+
+  const handleTitleChange = nextTitle => {
+    setTopic(nextTitle)
+    saveEssayTitle(nextTitle)
+    setTopicTaken(false)
+    setUploadFailed(false)
+  }
 
   // Save the essay as its current list of sentences, each with the backend-id edit history + cached
   // corrections, under the topic the user entered.
@@ -190,6 +207,11 @@ const EssayWritingView = () => {
   // this session's first upload created it. From then on the button saves into that essay directly.
   const essayIsSaved = Boolean(continuedEssayId)
 
+  const handleUploadClick = () => {
+    if (topic.trim()) handleConfirmUpload()
+    else setTopicDialogOpen(true)
+  }
+
   // When the save settles: on failure keep the dialog open with a message so the user can retry.
   // On success the two cases part ways — the first upload creates the essay and hands the student
   // over to the library, while saving an essay they are continuing leaves them writing.
@@ -202,6 +224,7 @@ const EssayWritingView = () => {
       const isTopicTaken = writingEssaySaveFailedOnTitle(saveErrorMessage)
       setTopicTaken(isTopicTaken)
       setUploadFailed(!isTopicTaken)
+      if (!essayIsSaved) setTopicDialogOpen(true)
       return
     }
 
@@ -377,13 +400,24 @@ const EssayWritingView = () => {
         >
           <Paper data-cy="essay-writing-text" className="essay-writing-panel" elevation={1}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography component="h1" variant="h5" className="essay-writing-title">
-                <FormattedMessage id="essay-writing-title" />
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {/* The heading is the essay's title, edited in place; empty reads as "Untitled". */}
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <AppTextField
+                  className="essay-writing-title essay-writing-title-input"
+                  seamless
+                  value={topic}
+                  onChange={event => handleTitleChange(event.target.value)}
+                  placeholder={intl.formatMessage({ id: 'essay-untitled' })}
+                  inputProps={{
+                    'data-cy': 'essay-title-input',
+                    'aria-label': intl.formatMessage({ id: 'topic-singular' }),
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
                 {hiddenFeatures && (
                   <AppButton
-                    variant="alert"
+                    variant="contrast-outline"
                     onClick={handleClearCache}
                     data-cy="essay-clear-cache"
                   >
@@ -391,7 +425,7 @@ const EssayWritingView = () => {
                   </AppButton>
                 )}
                 <AppButton
-                  onClick={essayIsSaved ? handleConfirmUpload : () => setTopicDialogOpen(true)}
+                  onClick={handleUploadClick}
                   disabled={
                     savePending ||
                     hasPendingCorrection ||
@@ -440,11 +474,7 @@ const EssayWritingView = () => {
           autoFocus
           value={topic}
           error={topicTaken || uploadFailed}
-          onChange={event => {
-            setTopic(event.target.value)
-            setTopicTaken(false)
-            setUploadFailed(false)
-          }}
+          onChange={event => handleTitleChange(event.target.value)}
           onKeyDown={event => {
             if (event.key === 'Enter' && topic.trim() && !savePending) {
               event.preventDefault()

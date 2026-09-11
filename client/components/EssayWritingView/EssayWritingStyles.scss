@@ -110,6 +110,18 @@ $essay-green: #b1d3c2; // border / accent
   font-size: 26px;
 }
 
+.essay-writing-title-input {
+  display: block;
+
+  .MuiOutlinedInput-root {
+    width: 100%;
+  }
+
+  .MuiOutlinedInput-input {
+    text-overflow: ellipsis;
+  }
+}
+
 // Teacher read-only view: the page split into two panels (original vs current version).
 .essay-teacher-split {
   display: flex;

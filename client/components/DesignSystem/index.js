@@ -115,6 +115,7 @@ const DesignSystem = () => {
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
   const [searchDemo, setSearchDemo] = useState('Kalevala')
+  const [titleDemo, setTitleDemo] = useState('My summer in Helsinki')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
   const [darkMode, setDarkMode] = useState(false)
@@ -503,6 +504,20 @@ const DesignSystem = () => {
           </div>
           <div style={{ width: 240 }}>
             <AppTextField label="Disabled" disabled placeholder="Disabled" />
+          </div>
+        </Section>
+
+        <Section title="AppTextField — seamless (editable text in place of a heading)">
+          <div style={{ width: 420, fontSize: 26, fontWeight: 500, color: colors.ink }}>
+            <AppTextField
+              seamless
+              value={titleDemo}
+              onChange={e => setTitleDemo(e.target.value)}
+              placeholder="Untitled"
+            />
+          </div>
+          <div style={{ width: 420, fontSize: 26, fontWeight: 500, color: colors.ink }}>
+            <AppTextField seamless value="" onChange={() => {}} placeholder="Untitled" />
           </div>
         </Section>
 

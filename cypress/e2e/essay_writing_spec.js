@@ -298,6 +298,16 @@ describe('essay writing', function () {
       correctionBubbles().should('have.length', 1)
       cy.get('@correction.all').should('have.length', 1)
     })
+
+    it('keeps the title typed into the heading across a reload', function () {
+      const title = `Cypress draft title ${Date.now()}`
+
+      visitEditor()
+      cy.get('[data-cy=essay-title-input]').should('have.value', '').type(title)
+
+      cy.reload()
+      cy.get('[data-cy=essay-title-input]').should('have.value', title)
+    })
   })
 
   // What the editor makes of a deletion, a split and a merge, read off the save it builds. The save
@@ -407,6 +417,25 @@ describe('essay writing', function () {
       cy.get('[data-cy=essay-detail-modal-delete-button]').click()
       cy.get('[data-cy=confirm-warning-dialog]').click()
       cy.contains('[data-cy=essay-item]', title).should('not.exist')
+    })
+
+    it('uploads without asking for a topic when the heading is already titled', function () {
+      const title = `Cypress titled ${Date.now()}`
+
+      visitEditor()
+      cy.get('[data-cy=essay-title-input]').type(title)
+      essayInput().type(S1)
+      cy.wait('@correction')
+
+      cy.get('[data-cy=submit-essay]').should('not.be.disabled').click()
+      cy.get('[data-cy=essay-topic-input]').should('not.exist')
+
+      cy.location('pathname', { timeout: 60000 }).should('include', '/library')
+      cy.contains('[data-cy=essay-item]', title, { timeout: 60000 }).should('exist')
+
+      cy.contains('[data-cy=essay-item]', title).click()
+      cy.get('[data-cy=essay-detail-modal-delete-button]').click()
+      cy.get('[data-cy=confirm-warning-dialog]').click()
     })
 
     it('saves a reopened essay back into itself instead of creating a second one', function () {
