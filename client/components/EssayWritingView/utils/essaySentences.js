@@ -36,21 +36,18 @@ export const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
 
 const wordCharacterRegex = /[\p{L}\p{N}'\u2019-]/u
 
-// The word the index sits in, as absolute [start, end) text offsets. The character under the index
-// decides, falling back to the one before it so a click at a word's trailing edge still lands on
-// it. Null when neither is part of a word (whitespace, or the far side of punctuation).
+// The word the index sits strictly inside (a word character on both sides), as absolute offsets.
+// A caret at a word's edge is next to it, not in it, so it selects nothing.
 const getWordSpanAtIndex = (text, index) => {
   const isWordCharacter = position =>
     position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
 
-  const anchor = [index, index - 1].find(position => isWordCharacter(position))
+  if (!isWordCharacter(index - 1) || !isWordCharacter(index)) return null
 
-  if (anchor === undefined) return null
-
-  let start = anchor
+  let start = index - 1
   while (isWordCharacter(start - 1)) start -= 1
 
-  let end = anchor + 1
+  let end = index + 1
   while (isWordCharacter(end)) end += 1
 
   return { start, end }
@@ -153,6 +150,28 @@ export const getFirstChangedIndex = (previousText, nextText) => {
   }
 
   return maxSharedLength
+}
+
+// The stretch an edit replaced: old [start, previousEnd) became new [start, nextEnd), i.e. what
+// lies between the unchanged prefix and suffix.
+export const getEditSpan = (previousText, nextText) => {
+  const start = getFirstChangedIndex(previousText, nextText)
+  const maxSuffixLength = Math.min(previousText.length, nextText.length) - start
+  let suffixLength = 0
+
+  while (
+    suffixLength < maxSuffixLength &&
+    previousText[previousText.length - 1 - suffixLength] ===
+      nextText[nextText.length - 1 - suffixLength]
+  ) {
+    suffixLength += 1
+  }
+
+  return {
+    start,
+    previousEnd: previousText.length - suffixLength,
+    nextEnd: nextText.length - suffixLength,
+  }
 }
 
 export const getCompletedSentenceFromIndexes = (sentences, indexes, textLength) => {

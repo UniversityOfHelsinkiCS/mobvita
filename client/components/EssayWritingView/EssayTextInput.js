@@ -21,6 +21,7 @@ import {
   getCompletedSentenceNearIndex,
   getCompletedSentences,
   getEssayFocusFromCaretWord,
+  getEditSpan,
   getEssayFocusFromTextRange,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
@@ -548,19 +549,19 @@ const EssayTextInput = ({
     }
 
     clearCorrectionHighlight()
-
-    if (!focusLocked) onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
     correctionRectsStaleRef.current = true
     setHoveredWordHighlight(null)
-    clearSelectedHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
 
     const previousText = textRef.current
     const nextText = e.target.value
+    const selectionEnded = carrySelectedRangeThroughEdit(previousText, nextText)
+
+    if (selectionEnded || !focusLocked) onEssayFocusChange?.(null)
     const cursorIndex = e.target.selectionStart
     const pendingSentence = pendingEditedSentenceRef.current
     const editIndex = getFirstChangedIndex(previousText, nextText)
@@ -907,6 +908,35 @@ const EssayTextInput = ({
     selectedTextRangeRef.current = null
     setSelectedWordHighlight(null)
     setIsPassagePinned(false)
+  }
+
+  const carrySelectedRangeThroughEdit = (previousText, nextText) => {
+    const range = selectedTextRangeRef.current
+
+    if (!range) {
+      clearSelectedHighlight()
+      return false
+    }
+
+    const edit = getEditSpan(previousText, nextText)
+
+    // After any edit the browser's selection is a bare caret, so there is nothing of it to hide.
+    setIsPassagePinned(false)
+
+    if (edit.start >= range.end) return false
+
+    if (edit.previousEnd <= range.start) {
+      const shift = edit.nextEnd - edit.previousEnd
+      const start = range.start + shift
+      const end = range.end + shift
+
+      selectedTextRangeRef.current = { key: `selection:${start}:${end}`, start, end }
+      refreshSelectedHighlight()
+      return false
+    }
+
+    clearSelectedHighlight()
+    return true
   }
 
   const handleTextMouseMove = event => {

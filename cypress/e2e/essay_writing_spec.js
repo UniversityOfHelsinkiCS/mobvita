@@ -236,13 +236,15 @@ describe('essay writing', function () {
       cy.get('[data-cy=essay-chatbot-focused]').should('not.exist')
     })
 
-    it('opens the suggestion for the corrected word the caret is put on', function () {
+    it('opens the suggestion for the corrected word the caret is put inside', function () {
       visitEditor()
       essayInput().type(S1)
       cy.wait('@correction')
 
-      // "olen" sits at offsets 5-9; the caret starts at the end of the sentence.
-      essayInput().type(caretLeft(S1.length - 7))
+      essayInput().type(caretLeft(S1.length - 9))
+      cy.get('[data-cy=essay-chatbot-focused]').should('not.exist')
+
+      essayInput().type(caretLeft(1))
       cy.get('[data-cy=essay-chatbot-focused]').should('exist')
       cy.get('[data-cy=essay-chatbot-focused]').should('contain', CORRECTIONS[S1].word)
     })
