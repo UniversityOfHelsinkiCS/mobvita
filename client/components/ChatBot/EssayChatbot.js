@@ -77,11 +77,12 @@ const getFocusedCorrectionType = (correctionEntry, sentence, selection) => {
 }
 
 // A stable id for one correction bubble (sentence + range), used to keep a separate conversation
-// thread per bubble. The empty string is the "general" thread shown in the list view.
+// thread per bubble. The empty string is the "general" thread shown in the list view. A passage
+// selected past the last full stop has no sentence, so its key is its position in the essay.
 const buildFocusKey = selection => {
   if (!selection) return ''
-  const { sentenceId = '', startOffset = '', endOffset = '' } = selection
-  return `${sentenceId}::${startOffset}::${endOffset}`
+  const { sentenceId, startOffset = '', endOffset = '' } = selection
+  return `${sentenceId ?? ''}::${startOffset}::${endOffset}`
 }
 
 const EssayChatbot = ({
@@ -253,9 +254,10 @@ const EssayChatbot = ({
     />
   )
 
-  // The pinned "bubble" for a selected word: the word the user clicked, in the same shape as a
-  // correction bubble so the focused view reads the same either way. Nothing to click — no
-  // correction sits behind it — so it carries no select handlers.
+  // The pinned "bubble" for selected text: the word the user clicked or the passage they dragged
+  // over — a few words or several sentences — in the same shape as a correction bubble so the
+  // focused view reads the same either way. Nothing to click — no correction sits behind it — so
+  // it carries no select handlers.
   const renderSelectedText = () => (
     <Paper
       className="essay-writing-correction-bubble essay-writing-correction-bubble-selection"
@@ -263,7 +265,9 @@ const EssayChatbot = ({
       elevation={0}
     >
       <Box className="essay-writing-correction-content">
-        <span className="essay-writing-corrected-word">{essayFocus?.focusedWord}</span>
+        <span className="essay-writing-corrected-word essay-writing-selected-passage">
+          {essayFocus?.focusedWord}
+        </span>
       </Box>
     </Paper>
   )

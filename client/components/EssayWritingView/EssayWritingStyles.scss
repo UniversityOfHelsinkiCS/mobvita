@@ -227,6 +227,10 @@ $essay-green: #b1d3c2; // border / accent
   --essay-writing-selection-bg-color: #{$essay-textarea-highlight-deletion-bg-color};
 }
 
+.essay-writing-input-area-passage-pinned {
+  --essay-writing-selection-bg-color: transparent;
+}
+
 // Covers the scrolled content; not an isolated group, so the boxes' mix-blend-mode tints the text.
 .essay-writing-highlight-layer {
   position: absolute;
@@ -403,6 +407,12 @@ $essay-green: #b1d3c2; // border / accent
 .essay-writing-corrected-word {
   font-family: var(--font-content);
   font-size: large;
+}
+
+.essay-writing-selected-passage {
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .essay-writing-corrected-word-deletion {

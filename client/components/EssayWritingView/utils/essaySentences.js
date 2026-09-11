@@ -56,46 +56,53 @@ const getWordSpanAtIndex = (text, index) => {
   return { start, end }
 }
 
-// Build the essay focus for a text selection: the sentence it lands in and the selected word/range
-// inside it. Null for a collapsed caret or a selection outside a completed sentence.
-export const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
-  const startIndex = Math.min(selectionStart, selectionEnd)
-  const endIndex = Math.max(selectionStart, selectionEnd)
-  const focusedSentence = getCompletedSentenceNearIndex(sentences, startIndex)
+const whitespaceRegex = /\s/
 
-  if (!focusedSentence) return null
+// The essay focus for a dragged passage of any length: the trimmed selection as a text selection,
+// with every sentence it touches as context. Keyed to the first, or to its position past the last.
+export const getEssayFocusFromTextRange = (sentences, text, selectionStart, selectionEnd) => {
+  let start = Math.min(selectionStart, selectionEnd)
+  let end = Math.max(selectionStart, selectionEnd)
 
-  if (startIndex !== endIndex) {
-    const selectionOverlapsSentence =
-      focusedSentence.startIndex < endIndex && focusedSentence.endIndex > startIndex
+  while (start < end && whitespaceRegex.test(text[start])) start += 1
+  while (end > start && whitespaceRegex.test(text[end - 1])) end -= 1
 
-    if (!selectionOverlapsSentence) return null
+  if (start === end) return null
 
-    const startOffset =
-      Math.max(startIndex, focusedSentence.startIndex) - focusedSentence.startIndex
-    const endOffset = Math.min(endIndex, focusedSentence.endIndex) - focusedSentence.startIndex
-    const selectedText = text.slice(
-      focusedSentence.startIndex + startOffset,
-      focusedSentence.startIndex + endOffset,
+  const touchedSentences = sentences.filter(
+    sentence => sentence.startIndex < end && sentence.endIndex > start,
+  )
+  const firstSentence = touchedSentences[0] || null
+  const lastSentence = touchedSentences[touchedSentences.length - 1] || null
+  const contextText = text
+    .slice(
+      Math.min(start, firstSentence ? firstSentence.startIndex : start),
+      Math.max(end, lastSentence ? lastSentence.endIndex : end),
     )
+    .trim()
+  const anchorIndex = firstSentence ? firstSentence.startIndex : 0
+  const selectedText = text.slice(start, end)
+  const sentenceId = firstSentence?.sentenceId ?? null
 
-    return {
-      correctedText: null,
-      focusedSentence: focusedSentence.text,
-      focusedWord: selectedText.trim() || null,
-      focusedWordId: null,
-      originalText: focusedSentence.text,
-      sentenceId: focusedSentence.sentenceId,
-      selection: {
-        endOffset,
-        sentenceId: focusedSentence.sentenceId,
-        selectedText,
-        startOffset,
-      },
-    }
+  return {
+    correctedText: null,
+    feedbackText: '',
+    focusedSentence: contextText,
+    focusedWord: selectedText,
+    focusedWordId: null,
+    focusedWordIds: [],
+    originalText: contextText,
+    sentenceId,
+    selection: {
+      end,
+      endOffset: end - anchorIndex,
+      isTextSelection: true,
+      selectedText,
+      sentenceId,
+      start,
+      startOffset: start - anchorIndex,
+    },
   }
-
-  return null
 }
 
 // Build the essay focus for a plain click: the whole word the caret landed on, so clicking a word

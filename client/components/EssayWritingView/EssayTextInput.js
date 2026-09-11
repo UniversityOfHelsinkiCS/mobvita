@@ -21,7 +21,7 @@ import {
   getCompletedSentenceNearIndex,
   getCompletedSentences,
   getEssayFocusFromCaretWord,
-  getEssayFocusFromSelection,
+  getEssayFocusFromTextRange,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
   getDeletedSentences,
@@ -75,6 +75,7 @@ const EssayTextInput = ({
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
+  const [isPassagePinned, setIsPassagePinned] = useState(false)
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
   const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
   const correctionRectsRef = useRef([])
@@ -186,21 +187,41 @@ const EssayTextInput = ({
   const findSentenceById = sentenceId =>
     completedSentencesRef.current.find(sentence => sentence.sentenceId === sentenceId) || null
 
-  // Paint the persistent highlight over a clicked word. It belongs to no correction group, so it is
-  // kept as its own range and re-measured whenever the highlights are refreshed.
-  const setSelectedTextHighlight = (sentence, startOffset, endOffset) => {
+  // Paint the persistent highlight over a selected passage — a clicked word or a dragged range,
+  // as absolute [start, end) text offsets. It belongs to no correction group, so it is kept as its
+  // own range and re-measured whenever the highlights are refreshed.
+  const setSelectedRangeHighlight = (start, end) => {
     selectedGroupKeyRef.current = null
-    selectedTextRangeRef.current = {
-      key: `${sentence.sentenceId}:${startOffset}:${endOffset}`,
-      start: sentence.startIndex + startOffset,
-      end: sentence.startIndex + endOffset,
-    }
+    selectedTextRangeRef.current = { key: `selection:${start}:${end}`, start, end }
     refreshSelectedHighlight()
   }
 
   // `fromPointer` marks a click: only then does the caret select the word it landed on, so typing
   // and arrow-key navigation don't keep flipping the chatbot to whatever word they cross.
-  const updateEssayFocus = (input, { fromPointer = false } = {}) => {
+  // `commitRange` marks the end of a selecting gesture (the click a drag ends on, a key-up): only
+  // then is a dragged range taken, not on each `select` event fired while it is still growing.
+  const updateEssayFocus = (input, { fromPointer = false, commitRange = false } = {}) => {
+    if (input.selectionStart !== input.selectionEnd) {
+      if (!commitRange) return
+
+      const rangeFocus = getEssayFocusFromTextRange(
+        completedSentencesRef.current,
+        textRef.current,
+        input.selectionStart,
+        input.selectionEnd,
+      )
+
+      if (!rangeFocus) return
+
+      if (fromPointer) {
+        setInputSelection(input, rangeFocus.selection.start, rangeFocus.selection.end)
+      }
+
+      setSelectedRangeHighlight(rangeFocus.selection.start, rangeFocus.selection.end)
+      onEssayFocusChange?.(rangeFocus)
+      return
+    }
+
     const correctionFocus = getCorrectionFocusAtCaret(input)
 
     if (correctionFocus) {
@@ -216,25 +237,22 @@ const EssayTextInput = ({
     }
 
     // Clicking a word with nothing wrong with it selects that word, the way clicking a corrected
-    // one selects its correction. A click only: a dragged range is left to the selection focus
-    // below, which is what the trailing click of a drag still carries.
-    const wordFocus =
-      fromPointer && input.selectionStart === input.selectionEnd
-        ? getEssayFocusFromCaretWord(
-            completedSentencesRef.current,
-            textRef.current,
-            input.selectionStart,
-          )
-        : null
+    // one selects its correction. A click only, so the caret's own travel doesn't select.
+    const wordFocus = fromPointer
+      ? getEssayFocusFromCaretWord(
+          completedSentencesRef.current,
+          textRef.current,
+          input.selectionStart,
+        )
+      : null
 
     if (wordFocus) {
       const sentence = findSentenceById(wordFocus.sentenceId)
 
       if (sentence) {
-        setSelectedTextHighlight(
-          sentence,
-          wordFocus.selection.startOffset,
-          wordFocus.selection.endOffset,
+        setSelectedRangeHighlight(
+          sentence.startIndex + wordFocus.selection.startOffset,
+          sentence.startIndex + wordFocus.selection.endOffset,
         )
       }
 
@@ -242,17 +260,11 @@ const EssayTextInput = ({
       return
     }
 
+    // A bare caret elsewhere: leave a pinned focus alone, otherwise there is nothing to focus.
     if (focusLocked) return
 
     clearSelectedHighlight()
-    onEssayFocusChange?.(
-      getEssayFocusFromSelection(
-        completedSentencesRef.current,
-        textRef.current,
-        input.selectionStart,
-        input.selectionEnd,
-      ),
-    )
+    onEssayFocusChange?.(null)
   }
 
   // Bubble interactions (click/hover/leave/clear) drive the same overlays used when a word is
@@ -669,12 +681,23 @@ const EssayTextInput = ({
     openCorrectionForSentence(completedSentence)
   }
 
-  const handleSelect = (e, { fromPointer = false } = {}) => {
+  // While the browser's selection is exactly the passage the overlay shows, hide the browser's own
+  // highlight — otherwise the passage is painted twice, once in each colour.
+  const syncNativeSelectionHighlight = input => {
+    const range = selectedTextRangeRef.current
+
+    setIsPassagePinned(
+      Boolean(range) && input.selectionStart === range.start && input.selectionEnd === range.end,
+    )
+  }
+
+  const handleSelect = (e, { fromPointer = false, commitRange = false } = {}) => {
     if (applyingCorrectionSelectionRef.current) return
 
     clearCorrectionHighlight()
     saveUserSelection(e.target)
-    updateEssayFocus(e.target, { fromPointer })
+    updateEssayFocus(e.target, { fromPointer, commitRange })
+    syncNativeSelectionHighlight(e.target)
 
     const pendingSentence = pendingEditedSentenceRef.current
 
@@ -696,7 +719,10 @@ const EssayTextInput = ({
     commitPendingEditedSentence()
   }
 
-  const handleClick = e => handleSelect(e, { fromPointer: true })
+  // The click a drag ends on still carries the dragged range, and a key-up is where a shift+arrow
+  // (or select-all) selection has settled — both end a selecting gesture.
+  const handleClick = e => handleSelect(e, { fromPointer: true, commitRange: true })
+  const handleKeyUp = e => handleSelect(e, { commitRange: true })
 
   const handleBlur = () => {
     commitPendingEditedSentence()
@@ -880,6 +906,7 @@ const EssayTextInput = ({
     selectedGroupKeyRef.current = null
     selectedTextRangeRef.current = null
     setSelectedWordHighlight(null)
+    setIsPassagePinned(false)
   }
 
   const handleTextMouseMove = event => {
@@ -942,9 +969,13 @@ const EssayTextInput = ({
 
   return (
     <Box
-      className={`essay-writing-input-area ${
-        isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : ''
-      }`}
+      className={[
+        'essay-writing-input-area',
+        isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : '',
+        isPassagePinned ? 'essay-writing-input-area-passage-pinned' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       ref={inputAreaRef}
     >
       <div className="essay-writing-scroll-content" ref={scrollContentRef}>
@@ -961,7 +992,7 @@ const EssayTextInput = ({
           onBlur={handleBlur}
           onChange={handleChange}
           onClick={handleClick}
-          onKeyUp={handleSelect}
+          onKeyUp={handleKeyUp}
           onMouseLeave={handleTextMouseLeave}
           onMouseMove={handleTextMouseMove}
           onPaste={handlePaste}

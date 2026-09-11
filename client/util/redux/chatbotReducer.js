@@ -102,18 +102,18 @@ export const getEssayChatbotResponse = ({
 }) => {
   const route = `/chatbot/essay`
   const prefix = 'GET_ESSAY_CHATBOT_RESPONSE'
+  const isFocused = Boolean(sentenceId || focusedWord)
   const payload = {
     session_id: sessionId,
     message,
     original_text: originalText || '',
     corrected_text: correctedText || '',
     sentence_id: sentenceId || '',
-    // No focused sentence means no focused word.
-    focused_word: sentenceId ? focusedWord || '' : '',
+    focused_word: focusedWord || '',
   }
 
   return callBuilder(route, prefix, 'post', payload, {
-    showFollowUpQuestion: !sentenceId,
+    showFollowUpQuestion: !isFocused,
     focusKey,
   })
 }

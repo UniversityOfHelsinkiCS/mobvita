@@ -127,17 +127,20 @@ const essayInput = () => cy.get('[data-cy=essay-writing-input] textarea:visible'
 const correctionBubbles = () => cy.get('[data-cy=essay-correction-bubble]')
 const caretLeft = steps => '{leftarrow}'.repeat(steps)
 
+// Mark a passage the way a drag does: the range lands in the textarea, and the click the drag ends
+// on is what the editor takes it from.
+const selectPassage = (start, end) =>
+  essayInput()
+    .then($textarea => {
+      $textarea[0].setSelectionRange(start, end)
+    })
+    .trigger('click')
+
 const visitEditor = () => {
   cy.visit(`${BASE}/essay-writing`)
   essayInput().should('exist')
 }
 
-// Which library opens is a property of the account rather than of the URL — there is no /library
-// path for the essays tab, and the tab itself cannot be clicked: the assistant sidebar is open on
-// this viewport and covers the tab row, which the story grid is pushed clear of but the tabs are
-// not. So save the selection the way the app does after an upload, and then log in again before
-// visiting: the store is seeded from the session blob in localStorage, and the library reads the
-// saved selection once on mount, so a stale blob decides the tab no matter what the account says.
 const openEssaysLibrary = () =>
   cy
     .loginExisting()
@@ -277,13 +280,60 @@ describe('essay writing', function () {
         expect(request.body.sentence_id, 'the selected sentence is named').to.eq(
           backendSentenceId(S1),
         )
-        // The focus names what the word should be, not what was typed — the chatbot is being asked
-        // about the correction, not about the mistake.
         expect(request.body.focused_word).to.eq(CORRECTIONS[S1].corrected)
       })
       cy.get('[data-cy=essay-chatbot-focused]')
         .parent()
         .should('contain', CHATBOT_REPLY)
+    })
+
+    it('pins a dragged passage, across sentences, and asks about that passage', function () {
+      const text = `${S1} ${S2}`
+      const passage = text.slice(10, 22)
+
+      visitEditor()
+      essayInput().type(text)
+      cy.wait('@correction')
+      cy.wait('@correction')
+
+      selectPassage(10, 22)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', passage)
+
+      cy.get('input[name=essayChatbotInput]').type('Mitä tämä tarkoittaa?{enter}')
+      cy.wait('@chatbot').then(({ request }) => {
+        expect(request.body.focused_word).to.eq(passage)
+        expect(request.body.original_text).to.eq(text)
+        expect(request.body.sentence_id, 'keyed to the first sentence').to.eq(backendSentenceId(S1))
+      })
+      cy.get('[data-cy=essay-chatbot-focused]').parent().should('contain', CHATBOT_REPLY)
+    })
+
+    it('replaces a pinned suggestion with the passage dragged over next', function () {
+      visitEditor()
+      essayInput().type(S1)
+      cy.wait('@correction')
+      correctionBubbles().first().click()
+      cy.get('[data-cy=essay-chatbot-focused]').should('contain', CORRECTIONS[S1].word)
+
+      selectPassage(0, 10)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'Minä olen')
+    })
+
+    it('pins a passage past the last full stop, which belongs to no sentence yet', function () {
+      const unfinished = 'Koira juoksee'
+
+      visitEditor()
+      essayInput().type(`${S1} ${unfinished}`)
+      cy.wait('@correction')
+
+      selectPassage(S1.length + 1, S1.length + 1 + unfinished.length)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', unfinished)
+
+      cy.get('input[name=essayChatbotInput]').type('Onko tämä oikein?{enter}')
+      cy.wait('@chatbot').then(({ request }) => {
+        expect(request.body.focused_word).to.eq(unfinished)
+        expect(request.body.sentence_id).to.eq('')
+      })
     })
   })
 
