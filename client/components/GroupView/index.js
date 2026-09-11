@@ -249,6 +249,7 @@ const GroupCard = ({
                   <button
                     className="group-card-more-button"
                     type="button"
+                    data-cy="group-card-actions"
                     aria-label={intl.formatMessage({ id: 'actions', defaultMessage: 'Actions' })}
                     style={{
                       display: 'inline-flex',
