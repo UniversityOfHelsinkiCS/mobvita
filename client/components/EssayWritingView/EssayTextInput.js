@@ -21,7 +21,9 @@ import {
   getCompletedSentenceNearIndex,
   getCompletedSentences,
   getEssayFocusFromCaretWord,
-  getEssayFocusFromSelection,
+  getEssayFocusFromGlyph,
+  getEditSpan,
+  getEssayFocusFromTextRange,
   getFirstChangedIndex,
   getSentencesWithNewCorrectionKeys,
   getDeletedSentences,
@@ -75,12 +77,14 @@ const EssayTextInput = ({
   const dispatch = useDispatch()
   const [text, setText] = useState(getStoredEssayText)
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
+  const [isPassagePinned, setIsPassagePinned] = useState(false)
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
   const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
-  const selectedGroupKeyRef = useRef(null)
-  const selectedTextRangeRef = useRef(null)
+  // What the overlay keeps highlighted: { key, type, start, end } in absolute text offsets (an
+  // insertion is zero-width). Held by position, not by correction entry, so edits can move it.
+  const pinnedHighlightRef = useRef(null)
   const scrollContentRef = useRef(null)
   const correctionsByKeyRef = useRef(null)
   const writingSessionIdRef = useRef('')
@@ -139,14 +143,16 @@ const EssayTextInput = ({
     setDeletionSelectionHighlight(false)
   }
 
-  // For a plain caret click, resolve the correction the caret lands on (if any) so that clicking a
+  // The correction at the caret (or, for a click, under the pointer's glyph), so that clicking a
   // corrected word focuses it and activates its bubble (the mirror of clicking a bubble).
-  const getCorrectionFocusAtCaret = input => {
+  const getCorrectionFocusAtCaret = (input, glyphIndex = null) => {
     const caret = input.selectionStart
 
     if (caret !== input.selectionEnd) return null
 
-    const sentence = getCompletedSentenceNearIndex(completedSentencesRef.current, caret)
+    const glyph = glyphIndex !== null
+    const index = glyph ? glyphIndex : caret
+    const sentence = getCompletedSentenceNearIndex(completedSentencesRef.current, index)
 
     if (!sentence) return null
 
@@ -155,15 +161,16 @@ const EssayTextInput = ({
     if (!correctionEntry || correctionEntry.pending || correctionEntry.error) return null
 
     const corrections = getWritingCorrectionWords(correctionEntry.corrections)
-    const offset = caret - sentence.startIndex
+    const offset = index - sentence.startIndex
 
     const group =
-      findCorrectionGroupAtOffset(sentence.text, corrections, offset) ||
-      findInsertionGroupAtOffset(sentence.text, corrections, offset)
+      findCorrectionGroupAtOffset(sentence.text, corrections, offset, { glyph }) ||
+      findInsertionGroupAtOffset(sentence.text, corrections, offset, { glyph })
 
     if (!group) return null
 
     return {
+      group,
       sentence,
       focus: {
         correctedText: getCorrectedTextFromCorrectionEntry(correctionEntry),
@@ -186,55 +193,100 @@ const EssayTextInput = ({
   const findSentenceById = sentenceId =>
     completedSentencesRef.current.find(sentence => sentence.sentenceId === sentenceId) || null
 
-  // Paint the persistent highlight over a clicked word. It belongs to no correction group, so it is
-  // kept as its own range and re-measured whenever the highlights are refreshed.
-  const setSelectedTextHighlight = (sentence, startOffset, endOffset) => {
-    selectedGroupKeyRef.current = null
-    selectedTextRangeRef.current = {
-      key: `${sentence.sentenceId}:${startOffset}:${endOffset}`,
-      start: sentence.startIndex + startOffset,
-      end: sentence.startIndex + endOffset,
+  // Pin the highlight over a selected passage — a clicked word or a dragged range.
+  const setSelectedRangeHighlight = (start, end) => {
+    pinnedHighlightRef.current = { key: `selection:${start}:${end}`, type: 'selection', start, end }
+    refreshSelectedHighlight()
+  }
+
+  // Pin a correction's highlight by where it sits in the text. Keyed like the hover groups so the
+  // hover overlay knows when it is over the pinned one.
+  const pinCorrectionHighlight = (sentence, { startOffset, endOffset }, type) => {
+    const key = `${sentence.sentenceId}:${startOffset}:${endOffset}`
+    const start = sentence.startIndex + startOffset
+    const end = sentence.startIndex + endOffset
+
+    if (type === 'insertion') {
+      const text = textRef.current
+      const span = getInsertionSurroundingSpan(text, start)
+      const gap = getInsertionGapSpan(text, start)
+      const before = { start: span.start, end: gap.start }
+      const after = { start: gap.end, end: span.end }
+
+      pinnedHighlightRef.current = { key, type, before, after, start: before.start, end: after.end }
+    } else {
+      pinnedHighlightRef.current = { key, type, start, end }
     }
+
     refreshSelectedHighlight()
   }
 
   // `fromPointer` marks a click: only then does the caret select the word it landed on, so typing
   // and arrow-key navigation don't keep flipping the chatbot to whatever word they cross.
-  const updateEssayFocus = (input, { fromPointer = false } = {}) => {
-    const correctionFocus = getCorrectionFocusAtCaret(input)
+  // `commitRange` marks the end of a selecting gesture (the click a drag ends on, a key-up): only
+  // then is a dragged range taken, not on each `select` event fired while it is still growing.
+  const updateEssayFocus = (
+    input,
+    { fromPointer = false, commitRange = false, glyphIndex = null } = {},
+  ) => {
+    if (input.selectionStart !== input.selectionEnd) {
+      if (!commitRange) return
+
+      const rangeFocus = getEssayFocusFromTextRange(
+        completedSentencesRef.current,
+        textRef.current,
+        input.selectionStart,
+        input.selectionEnd,
+      )
+
+      if (!rangeFocus) return
+
+      if (fromPointer) {
+        setInputSelection(input, rangeFocus.selection.start, rangeFocus.selection.end)
+      }
+
+      setSelectedRangeHighlight(rangeFocus.selection.start, rangeFocus.selection.end)
+      onEssayFocusChange?.(rangeFocus)
+      return
+    }
+
+    const correctionFocus = getCorrectionFocusAtCaret(input, glyphIndex)
 
     if (correctionFocus) {
-      const { focus, sentence } = correctionFocus
-      const { startOffset, endOffset } = focus.selection
+      const { focus, group, sentence } = correctionFocus
 
-      if (correctionRectsStaleRef.current) computeCorrectionRects()
-      selectedTextRangeRef.current = null
-      selectedGroupKeyRef.current = `${sentence.sentenceId}:${startOffset}:${endOffset}`
-      refreshSelectedHighlight()
+      pinCorrectionHighlight(
+        sentence,
+        focus.selection,
+        focus.selection.isInsertion ? 'insertion' : getCorrectionGroupType(group) || 'replacement',
+      )
       onEssayFocusChange?.(focus)
       return
     }
 
     // Clicking a word with nothing wrong with it selects that word, the way clicking a corrected
-    // one selects its correction. A click only: a dragged range is left to the selection focus
-    // below, which is what the trailing click of a drag still carries.
-    const wordFocus =
-      fromPointer && input.selectionStart === input.selectionEnd
-        ? getEssayFocusFromCaretWord(
-            completedSentencesRef.current,
-            textRef.current,
-            input.selectionStart,
-          )
-        : null
+    // one selects its correction. By the letter under the pointer when there is one: the caret
+    // lands at the word's edge for a click on its first letter and for one in the space before it.
+    let wordFocus = null
+
+    if (fromPointer) {
+      wordFocus =
+        glyphIndex !== null
+          ? getEssayFocusFromGlyph(completedSentencesRef.current, textRef.current, glyphIndex)
+          : getEssayFocusFromCaretWord(
+              completedSentencesRef.current,
+              textRef.current,
+              input.selectionStart,
+            )
+    }
 
     if (wordFocus) {
       const sentence = findSentenceById(wordFocus.sentenceId)
 
       if (sentence) {
-        setSelectedTextHighlight(
-          sentence,
-          wordFocus.selection.startOffset,
-          wordFocus.selection.endOffset,
+        setSelectedRangeHighlight(
+          sentence.startIndex + wordFocus.selection.startOffset,
+          sentence.startIndex + wordFocus.selection.endOffset,
         )
       }
 
@@ -242,17 +294,11 @@ const EssayTextInput = ({
       return
     }
 
+    // A bare caret elsewhere: leave a pinned focus alone, otherwise there is nothing to focus.
     if (focusLocked) return
 
     clearSelectedHighlight()
-    onEssayFocusChange?.(
-      getEssayFocusFromSelection(
-        completedSentencesRef.current,
-        textRef.current,
-        input.selectionStart,
-        input.selectionEnd,
-      ),
-    )
+    onEssayFocusChange?.(null)
   }
 
   // Bubble interactions (click/hover/leave/clear) drive the same overlays used when a word is
@@ -267,8 +313,9 @@ const EssayTextInput = ({
       startOffset,
     } = sentenceSelectionRequest || {}
 
+    // The pinned highlight is not cleared here: it follows the focus (below), so a clear aimed at a
+    // focus that has since been replaced cannot wipe the replacement's highlight.
     if (action === 'clear') {
-      clearSelectedHighlight()
       setHoveredWordHighlight(null)
       return
     }
@@ -291,9 +338,19 @@ const EssayTextInput = ({
     }
 
     setHoveredWordHighlight(null)
-    selectedTextRangeRef.current = null
-    selectedGroupKeyRef.current = key
-    refreshSelectedHighlight()
+
+    const sentence = findSentenceById(sentenceIdToSelect)
+
+    if (!sentence) {
+      clearSelectedHighlight()
+      return
+    }
+
+    pinCorrectionHighlight(
+      sentence,
+      { startOffset, endOffset },
+      group?.type || (startOffset === endOffset ? 'insertion' : 'replacement'),
+    )
   }, [sentenceSelectionRequest])
 
   useEffect(() => {
@@ -335,6 +392,11 @@ const EssayTextInput = ({
     correctionRectsStaleRef.current = true
   }, [text, correctionsByKey])
 
+  // The pinned highlight lives exactly as long as the focus it belongs to.
+  useEffect(() => {
+    if (!focusLocked) clearSelectedHighlight()
+  }, [focusLocked])
+
   useEffect(() => {
     const input = inputRef.current
 
@@ -344,7 +406,7 @@ const EssayTextInput = ({
       correctionRectsStaleRef.current = true
       setHoveredWordHighlight(null)
 
-      if (selectedGroupKeyRef.current || selectedTextRangeRef.current) {
+      if (pinnedHighlightRef.current) {
         computeCorrectionRects()
         refreshSelectedHighlight()
       }
@@ -536,19 +598,23 @@ const EssayTextInput = ({
     }
 
     clearCorrectionHighlight()
-
-    if (!focusLocked) onEssayFocusChange?.(null)
     saveUserSelection(e.target)
 
     correctionRectsStaleRef.current = true
     setHoveredWordHighlight(null)
-    clearSelectedHighlight()
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
 
     const previousText = textRef.current
     const nextText = e.target.value
+    const selectionEnded = carrySelectedRangeThroughEdit(
+      previousText,
+      nextText,
+      e.target.selectionStart,
+    )
+
+    if (selectionEnded || !focusLocked) onEssayFocusChange?.(null)
     const cursorIndex = e.target.selectionStart
     const pendingSentence = pendingEditedSentenceRef.current
     const editIndex = getFirstChangedIndex(previousText, nextText)
@@ -669,12 +735,30 @@ const EssayTextInput = ({
     openCorrectionForSentence(completedSentence)
   }
 
-  const handleSelect = (e, { fromPointer = false } = {}) => {
+  // While the browser's selection is exactly the passage the overlay shows, hide the browser's own
+  // highlight — otherwise the passage is painted twice, once in each colour.
+  const syncNativeSelectionHighlight = input => {
+    const pinned = pinnedHighlightRef.current
+
+    setIsPassagePinned(
+      Boolean(pinned) &&
+        pinned.start !== pinned.end &&
+        input.selectionStart === pinned.start &&
+        input.selectionEnd === pinned.end,
+    )
+  }
+
+  const handleSelect = (e, { fromPointer = false, commitRange = false, pointer = null } = {}) => {
     if (applyingCorrectionSelectionRef.current) return
 
     clearCorrectionHighlight()
     saveUserSelection(e.target)
-    updateEssayFocus(e.target, { fromPointer })
+    updateEssayFocus(e.target, {
+      fromPointer,
+      commitRange,
+      glyphIndex: pointer ? getGlyphIndexAtPointer(e.target, pointer) : null,
+    })
+    syncNativeSelectionHighlight(e.target)
 
     const pendingSentence = pendingEditedSentenceRef.current
 
@@ -696,7 +780,15 @@ const EssayTextInput = ({
     commitPendingEditedSentence()
   }
 
-  const handleClick = e => handleSelect(e, { fromPointer: true })
+  // The click a drag ends on still carries the dragged range, and a key-up is where a shift+arrow
+  // (or select-all) selection has settled — both end a selecting gesture.
+  const handleClick = e =>
+    handleSelect(e, {
+      fromPointer: true,
+      commitRange: true,
+      pointer: { x: e.clientX, y: e.clientY },
+    })
+  const handleKeyUp = e => handleSelect(e, { commitRange: true })
 
   const handleBlur = () => {
     commitPendingEditedSentence()
@@ -710,16 +802,122 @@ const EssayTextInput = ({
     }, 0)
   }
 
+  // Where the textarea's top-left sits inside the scroll content — the overlay's coordinate origin.
+  const getHighlightOrigin = () => {
+    const input = inputRef.current
+    const scrollContent = scrollContentRef.current
+
+    if (!input || !scrollContent) return null
+
+    const inputRect = input.getBoundingClientRect()
+    const scrollContentRect = scrollContent.getBoundingClientRect()
+
+    return {
+      input,
+      left: inputRect.left - scrollContentRect.left,
+      top: inputRect.top - scrollContentRect.top,
+    }
+  }
+
+  // A measured word range → overlay boxes, widened to a minimum so a one-letter word is hittable.
+  const toWordHighlight = (measured, origin) => ({
+    key: measured.key,
+    type: measured.type,
+    rects: measured.rects.map(rect => {
+      const width = Math.max(rect.width, MIN_WORD_HIGHLIGHT_WIDTH)
+
+      return {
+        left: origin.left + rect.left - (width - rect.width) / 2,
+        top: origin.top + rect.top,
+        width,
+        height: rect.height,
+      }
+    }),
+  })
+
+  const measureWordHighlight = ({ key, type, start, end }, origin) => {
+    const measured = getTextareaRangeRects(origin.input, [{ key, type, start, end }])[0]
+
+    return measured?.rects.length ? toWordHighlight(measured, origin) : null
+  }
+
+  // An insertion is drawn as boxes over the given word ranges and a double rule in the whitespace
+  // gap at `gapOffset`.
+  const measureInsertionBoxes = ({ key, ranges, gapOffset }, origin) => {
+    const { input } = origin
+    const measured = getTextareaRangeRects(
+      input,
+      ranges
+        .filter(range => range.end > range.start)
+        .map((range, index) => ({ key: `${key}:${index}`, type: 'insertion', ...range })),
+    )
+    const rects = measured.flatMap(group =>
+      group.rects.map(rect => ({
+        left: origin.left + rect.left,
+        top: origin.top + rect.top,
+        width: rect.width,
+        height: rect.height,
+      })),
+    )
+
+    if (!rects.length) return null
+
+    const gap = getInsertionGapSpan(input.value, gapOffset)
+    const gapMeasured =
+      gap.end > gap.start
+        ? getTextareaRangeRects(input, [
+            { key, type: 'insertion', start: gap.start, end: gap.end },
+          ])[0]
+        : null
+
+    return {
+      key,
+      type: 'insertion',
+      rects,
+      underlineRects: (gapMeasured?.rects || []).map(rect => {
+        const width = Math.max(rect.width, MIN_INSERTION_UNDERLINE_WIDTH)
+
+        return {
+          left: origin.left + rect.left - (width - rect.width) / 2,
+          top: origin.top + rect.glyphBottom - 3,
+          width,
+        }
+      }),
+    }
+  }
+
+  // A live insertion covers whatever words surround its point right now.
+  const measureInsertionHighlight = ({ key, offset }, origin) =>
+    measureInsertionBoxes(
+      { key, ranges: [getInsertionSurroundingSpan(origin.input.value, offset)], gapOffset: offset },
+      origin,
+    )
+
+  // A pinned insertion keeps the two words it was pinned with. One box while only whitespace
+  // separates them; once something is typed into the gap, a box per word so the typed text is bare.
+  const measurePinnedInsertion = ({ key, before, after }, origin) => {
+    const gap = getInsertionGapSpan(origin.input.value, before.end)
+    const untouched = gap.end === after.start
+
+    return measureInsertionBoxes(
+      {
+        key,
+        ranges: untouched ? [{ start: before.start, end: after.end }] : [before, after],
+        gapOffset: before.end,
+      },
+      origin,
+    )
+  }
+
   // Measure a pixel rectangle for every corrected word (offset → pixels via the caret mirror) so
   // hovering is a cheap geometric hit-test, not the unreliable point → offset APIs. Recomputed
   // lazily (only when marked stale) to avoid measuring on every mouse move.
   const computeCorrectionRects = () => {
     correctionRectsStaleRef.current = false
 
-    const input = inputRef.current
-    const scrollContent = scrollContentRef.current
+    const origin = getHighlightOrigin()
 
-    if (!input || !scrollContent) {
+    if (!origin) {
       correctionRectsRef.current = []
       return
     }
@@ -758,66 +956,12 @@ const EssayTextInput = ({
       })
     })
 
-    const inputRect = input.getBoundingClientRect()
-    const scrollContentRect = scrollContent.getBoundingClientRect()
-    const originLeft = inputRect.left - scrollContentRect.left
-    const originTop = inputRect.top - scrollContentRect.top
-
-    const wordGroups = getTextareaRangeRects(input, wordRanges).map(group => ({
-      key: group.key,
-      type: group.type,
-      rects: group.rects.map(rect => {
-        const width = Math.max(rect.width, MIN_WORD_HIGHLIGHT_WIDTH)
-
-        return {
-          left: originLeft + rect.left - (width - rect.width) / 2,
-          top: originTop + rect.top,
-          width,
-          height: rect.height,
-        }
-      }),
-    }))
-
+    // Word ranges go through one mirror together; insertions each need their own span lookup.
+    const wordGroups = getTextareaRangeRects(origin.input, wordRanges).map(measured =>
+      toWordHighlight(measured, origin),
+    )
     const insertionGroups = insertionPoints
-      .map(({ key, offset }) => {
-        const span = getInsertionSurroundingSpan(input.value, offset)
-
-        if (span.end <= span.start) return null
-
-        const measured = getTextareaRangeRects(input, [
-          { key, type: 'insertion', start: span.start, end: span.end },
-        ])[0]
-
-        if (!measured || !measured.rects.length) return null
-
-        const gap = getInsertionGapSpan(input.value, offset)
-        const gapMeasured =
-          gap.end > gap.start
-            ? getTextareaRangeRects(input, [
-                { key, type: 'insertion', start: gap.start, end: gap.end },
-              ])[0]
-            : null
-
-        return {
-          key,
-          type: 'insertion',
-          rects: measured.rects.map(rect => ({
-            left: originLeft + rect.left,
-            top: originTop + rect.top,
-            width: rect.width,
-            height: rect.height,
-          })),
-          underlineRects: (gapMeasured?.rects || []).map(rect => {
-            const width = Math.max(rect.width, MIN_INSERTION_UNDERLINE_WIDTH)
-
-            return {
-              left: originLeft + rect.left - (width - rect.width) / 2,
-              top: originTop + rect.glyphBottom - 3,
-              width,
-            }
-          }),
-        }
-      })
+      .map(point => measureInsertionHighlight(point, origin))
       .filter(Boolean)
 
     correctionRectsRef.current = [...wordGroups, ...insertionGroups]
@@ -832,54 +976,113 @@ const EssayTextInput = ({
         y <= rect.top + rect.height,
     )
 
-  // A selected word has no correction group to look up its rects in, so measure the range itself.
-  const measureTextRangeHighlight = ({ key, start, end }) => {
-    const input = inputRef.current
+  // The character a click landed on. The browser puts the caret at the nearest boundary, so it is
+  // one of the two characters around the caret — whichever's box holds the pointer; null off both.
+  const getGlyphIndexAtPointer = (input, pointer) => {
+    const origin = getHighlightOrigin()
     const scrollContent = scrollContentRef.current
 
-    if (!input || !scrollContent) return null
+    if (!origin || !scrollContent || typeof input.selectionStart !== 'number') return null
 
-    const measured = getTextareaRangeRects(input, [{ key, type: 'selection', start, end }])[0]
-
-    if (!measured?.rects.length) return null
-
-    const inputRect = input.getBoundingClientRect()
     const scrollContentRect = scrollContent.getBoundingClientRect()
-    const originLeft = inputRect.left - scrollContentRect.left
-    const originTop = inputRect.top - scrollContentRect.top
+    const x = pointer.x - scrollContentRect.left
+    const y = pointer.y - scrollContentRect.top
+    const caret = input.selectionStart
+    const candidates = [caret - 1, caret].filter(index => index >= 0 && index < input.value.length)
+    const hit = getTextareaRangeRects(
+      input,
+      candidates.map(index => ({ key: index, type: 'glyph', start: index, end: index + 1 })),
+    ).find(measured =>
+      rectsContainPoint(
+        measured.rects.map(rect => ({
+          left: origin.left + rect.left,
+          top: origin.top + rect.top,
+          width: rect.width,
+          height: rect.height,
+        })),
+        x,
+        y,
+      ),
+    )
 
-    return {
-      key,
-      type: 'selection',
-      rects: measured.rects.map(rect => ({
-        left: originLeft + rect.left,
-        top: originTop + rect.top,
-        width: rect.width,
-        height: rect.height,
-      })),
-    }
+    return hit ? hit.key : null
   }
 
-  // Re-derive the persistent selected highlight from the freshly measured rects — a correction by
-  // its group key, a selected word by re-measuring the range it covers.
+  // Re-measure whatever is pinned from its text position, in its own colour.
   const refreshSelectedHighlight = () => {
-    const textRange = selectedTextRangeRef.current
+    const pinned = pinnedHighlightRef.current
+    const origin = pinned && getHighlightOrigin()
 
-    if (textRange) {
-      setSelectedWordHighlight(measureTextRangeHighlight(textRange))
+    if (!pinned || !origin) {
+      setSelectedWordHighlight(null)
       return
     }
 
-    const key = selectedGroupKeyRef.current
-    const group = key && correctionRectsRef.current.find(candidate => candidate.key === key)
-
-    setSelectedWordHighlight(group || null)
+    setSelectedWordHighlight(
+      pinned.type === 'insertion'
+        ? measurePinnedInsertion(pinned, origin)
+        : measureWordHighlight(pinned, origin),
+    )
   }
 
   const clearSelectedHighlight = () => {
-    selectedGroupKeyRef.current = null
-    selectedTextRangeRef.current = null
+    pinnedHighlightRef.current = null
     setSelectedWordHighlight(null)
+    setIsPassagePinned(false)
+  }
+
+  // Move a word range with an edit: shifted by one before it (typing at its front included),
+  // resized by one inside it, left alone by one after. Null once nothing of it is left.
+  const carryRange = (range, edit) => {
+    const delta = edit.nextEnd - edit.previousEnd
+
+    if (edit.start >= range.end) return range
+
+    if (edit.previousEnd <= range.start) {
+      return { start: range.start + delta, end: range.end + delta }
+    }
+
+    const start = edit.start < range.start ? edit.nextEnd : range.start
+    const end = edit.previousEnd >= range.end ? edit.start : range.end + delta
+
+    return end > start ? { start, end } : null
+  }
+
+  // Keep the pinned highlight on its text through an edit; true when the edit wiped it out.
+  // An insertion is its two words, each carried on its own — the gap between them is never marked.
+  const carrySelectedRangeThroughEdit = (previousText, nextText, caretIndex) => {
+    const pinned = pinnedHighlightRef.current
+
+    if (!pinned) return false
+
+    const edit = getEditSpan(previousText, nextText, caretIndex)
+
+    // After any edit the browser's selection is a bare caret, so there is nothing of it to hide.
+    setIsPassagePinned(false)
+
+    let next = null
+
+    if (pinned.type === 'insertion') {
+      const before = carryRange(pinned.before, edit)
+      const after = carryRange(pinned.after, edit)
+
+      if (before && after) {
+        next = { ...pinned, before, after, start: before.start, end: after.end }
+      }
+    } else {
+      const range = carryRange(pinned, edit)
+
+      if (range) next = { ...pinned, ...range }
+    }
+
+    if (!next) {
+      clearSelectedHighlight()
+      return true
+    }
+
+    pinnedHighlightRef.current = next
+    refreshSelectedHighlight()
+    return false
   }
 
   const handleTextMouseMove = event => {
@@ -942,9 +1145,13 @@ const EssayTextInput = ({
 
   return (
     <Box
-      className={`essay-writing-input-area ${
-        isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : ''
-      }`}
+      className={[
+        'essay-writing-input-area',
+        isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : '',
+        isPassagePinned ? 'essay-writing-input-area-passage-pinned' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       ref={inputAreaRef}
     >
       <div className="essay-writing-scroll-content" ref={scrollContentRef}>
@@ -961,7 +1168,7 @@ const EssayTextInput = ({
           onBlur={handleBlur}
           onChange={handleChange}
           onClick={handleClick}
-          onKeyUp={handleSelect}
+          onKeyUp={handleKeyUp}
           onMouseLeave={handleTextMouseLeave}
           onMouseMove={handleTextMouseMove}
           onPaste={handlePaste}

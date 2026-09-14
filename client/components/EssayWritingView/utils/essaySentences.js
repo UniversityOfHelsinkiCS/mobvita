@@ -36,76 +36,79 @@ export const getCompletedSentenceNearIndex = (sentences, cursorIndex) =>
 
 const wordCharacterRegex = /[\p{L}\p{N}'\u2019-]/u
 
-// The word the index sits in, as absolute [start, end) text offsets. The character under the index
-// decides, falling back to the one before it so a click at a word's trailing edge still lands on
-// it. Null when neither is part of a word (whitespace, or the far side of punctuation).
-const getWordSpanAtIndex = (text, index) => {
-  const isWordCharacter = position =>
-    position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
+const isWordCharacterAt = (text, position) =>
+  position >= 0 && position < text.length && wordCharacterRegex.test(text[position])
 
-  const anchor = [index, index - 1].find(position => isWordCharacter(position))
+// The word the character at `index` belongs to, as absolute [start, end) offsets; null on a space.
+const getWordSpanContaining = (text, index) => {
+  if (!isWordCharacterAt(text, index)) return null
 
-  if (anchor === undefined) return null
+  let start = index
+  while (isWordCharacterAt(text, start - 1)) start -= 1
 
-  let start = anchor
-  while (isWordCharacter(start - 1)) start -= 1
-
-  let end = anchor + 1
-  while (isWordCharacter(end)) end += 1
+  let end = index + 1
+  while (isWordCharacterAt(text, end)) end += 1
 
   return { start, end }
 }
 
-// Build the essay focus for a text selection: the sentence it lands in and the selected word/range
-// inside it. Null for a collapsed caret or a selection outside a completed sentence.
-export const getEssayFocusFromSelection = (sentences, text, selectionStart, selectionEnd) => {
-  const startIndex = Math.min(selectionStart, selectionEnd)
-  const endIndex = Math.max(selectionStart, selectionEnd)
-  const focusedSentence = getCompletedSentenceNearIndex(sentences, startIndex)
+// The word a caret sits strictly inside (a word character on both sides); a caret at a word's edge
+// is next to it, not in it.
+const getWordSpanInside = (text, caretIndex) =>
+  isWordCharacterAt(text, caretIndex - 1) ? getWordSpanContaining(text, caretIndex) : null
 
-  if (!focusedSentence) return null
+const whitespaceRegex = /\s/
 
-  if (startIndex !== endIndex) {
-    const selectionOverlapsSentence =
-      focusedSentence.startIndex < endIndex && focusedSentence.endIndex > startIndex
+// The essay focus for a dragged passage of any length: the trimmed selection as a text selection,
+// with every sentence it touches as context. Keyed to the first, or to its position past the last.
+export const getEssayFocusFromTextRange = (sentences, text, selectionStart, selectionEnd) => {
+  let start = Math.min(selectionStart, selectionEnd)
+  let end = Math.max(selectionStart, selectionEnd)
 
-    if (!selectionOverlapsSentence) return null
+  while (start < end && whitespaceRegex.test(text[start])) start += 1
+  while (end > start && whitespaceRegex.test(text[end - 1])) end -= 1
 
-    const startOffset =
-      Math.max(startIndex, focusedSentence.startIndex) - focusedSentence.startIndex
-    const endOffset = Math.min(endIndex, focusedSentence.endIndex) - focusedSentence.startIndex
-    const selectedText = text.slice(
-      focusedSentence.startIndex + startOffset,
-      focusedSentence.startIndex + endOffset,
+  if (start === end) return null
+
+  const touchedSentences = sentences.filter(
+    sentence => sentence.startIndex < end && sentence.endIndex > start,
+  )
+  const firstSentence = touchedSentences[0] || null
+  const lastSentence = touchedSentences[touchedSentences.length - 1] || null
+  const contextText = text
+    .slice(
+      Math.min(start, firstSentence ? firstSentence.startIndex : start),
+      Math.max(end, lastSentence ? lastSentence.endIndex : end),
     )
+    .trim()
+  const anchorIndex = firstSentence ? firstSentence.startIndex : 0
+  const selectedText = text.slice(start, end)
+  const sentenceId = firstSentence?.sentenceId ?? null
 
-    return {
-      correctedText: null,
-      focusedSentence: focusedSentence.text,
-      focusedWord: selectedText.trim() || null,
-      focusedWordId: null,
-      originalText: focusedSentence.text,
-      sentenceId: focusedSentence.sentenceId,
-      selection: {
-        endOffset,
-        sentenceId: focusedSentence.sentenceId,
-        selectedText,
-        startOffset,
-      },
-    }
+  return {
+    correctedText: null,
+    feedbackText: '',
+    focusedSentence: contextText,
+    focusedWord: selectedText,
+    focusedWordId: null,
+    focusedWordIds: [],
+    originalText: contextText,
+    sentenceId,
+    selection: {
+      end,
+      endOffset: end - anchorIndex,
+      isTextSelection: true,
+      selectedText,
+      sentenceId,
+      start,
+      startOffset: start - anchorIndex,
+    },
   }
-
-  return null
 }
 
-// Build the essay focus for a plain click: the whole word the caret landed on, so clicking a word
-// with nothing wrong with it selects that word the way clicking a corrected one selects its
-// correction. It stands for no correction, so `isTextSelection` marks it — that is what tells the
-// chatbot to pin the word itself instead of a correction bubble. Null when the click missed a word,
-// or the word is outside a completed sentence (nothing has been said about it yet).
-export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) => {
-  const wordSpan = getWordSpanAtIndex(text, caretIndex)
-
+// The essay focus for a word of the user's own: `isTextSelection` has the chatbot pin the word
+// itself. Null off a word, or outside a completed sentence (nothing has been said about it yet).
+const getEssayFocusFromWordSpan = (sentences, text, wordSpan) => {
   if (!wordSpan) return null
 
   const sentence = getCompletedSentenceNearIndex(sentences, wordSpan.start)
@@ -136,6 +139,14 @@ export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) => {
   }
 }
 
+// A click: the word whose letter is under the pointer.
+export const getEssayFocusFromGlyph = (sentences, text, glyphIndex) =>
+  getEssayFocusFromWordSpan(sentences, text, getWordSpanContaining(text, glyphIndex))
+
+// A caret with no pointer to go by: the word it sits strictly inside.
+export const getEssayFocusFromCaretWord = (sentences, text, caretIndex) =>
+  getEssayFocusFromWordSpan(sentences, text, getWordSpanInside(text, caretIndex))
+
 export const getFirstChangedIndex = (previousText, nextText) => {
   const maxSharedLength = Math.min(previousText.length, nextText.length)
 
@@ -146,6 +157,37 @@ export const getFirstChangedIndex = (previousText, nextText) => {
   }
 
   return maxSharedLength
+}
+
+// The stretch an edit replaced: old [start, previousEnd) became new [start, nextEnd). Repeated
+// letters make it ambiguous ("o" before "olen" = "o" after its first letter); the caret settles it.
+export const getEditSpan = (previousText, nextText, caretIndex = nextText.length) => {
+  let start = getFirstChangedIndex(previousText, nextText)
+  const maxSuffixLength = Math.min(previousText.length, nextText.length) - start
+  let suffixLength = 0
+
+  while (
+    suffixLength < maxSuffixLength &&
+    previousText[previousText.length - 1 - suffixLength] ===
+      nextText[nextText.length - 1 - suffixLength]
+  ) {
+    suffixLength += 1
+  }
+
+  let previousEnd = previousText.length - suffixLength
+  let nextEnd = nextText.length - suffixLength
+
+  while (
+    nextEnd > caretIndex &&
+    start > 0 &&
+    previousText[previousEnd - 1] === nextText[nextEnd - 1]
+  ) {
+    start -= 1
+    previousEnd -= 1
+    nextEnd -= 1
+  }
+
+  return { start, previousEnd, nextEnd }
 }
 
 export const getCompletedSentenceFromIndexes = (sentences, indexes, textLength) => {

@@ -127,17 +127,20 @@ const essayInput = () => cy.get('[data-cy=essay-writing-input] textarea:visible'
 const correctionBubbles = () => cy.get('[data-cy=essay-correction-bubble]')
 const caretLeft = steps => '{leftarrow}'.repeat(steps)
 
+// Mark a passage the way a drag does: the range lands in the textarea, and the click the drag ends
+// on is what the editor takes it from.
+const selectPassage = (start, end) =>
+  essayInput()
+    .then($textarea => {
+      $textarea[0].setSelectionRange(start, end)
+    })
+    .trigger('click')
+
 const visitEditor = () => {
   cy.visit(`${BASE}/essay-writing`)
   essayInput().should('exist')
 }
 
-// Which library opens is a property of the account rather than of the URL — there is no /library
-// path for the essays tab, and the tab itself cannot be clicked: the assistant sidebar is open on
-// this viewport and covers the tab row, which the story grid is pushed clear of but the tabs are
-// not. So save the selection the way the app does after an upload, and then log in again before
-// visiting: the store is seeded from the session blob in localStorage, and the library reads the
-// saved selection once on mount, so a stale blob decides the tab no matter what the account says.
 const openEssaysLibrary = () =>
   cy
     .loginExisting()
@@ -233,13 +236,15 @@ describe('essay writing', function () {
       cy.get('[data-cy=essay-chatbot-focused]').should('not.exist')
     })
 
-    it('opens the suggestion for the corrected word the caret is put on', function () {
+    it('opens the suggestion for the corrected word the caret is put inside', function () {
       visitEditor()
       essayInput().type(S1)
       cy.wait('@correction')
 
-      // "olen" sits at offsets 5-9; the caret starts at the end of the sentence.
-      essayInput().type(caretLeft(S1.length - 7))
+      essayInput().type(caretLeft(S1.length - 9))
+      cy.get('[data-cy=essay-chatbot-focused]').should('not.exist')
+
+      essayInput().type(caretLeft(1))
       cy.get('[data-cy=essay-chatbot-focused]').should('exist')
       cy.get('[data-cy=essay-chatbot-focused]').should('contain', CORRECTIONS[S1].word)
     })
@@ -277,13 +282,90 @@ describe('essay writing', function () {
         expect(request.body.sentence_id, 'the selected sentence is named').to.eq(
           backendSentenceId(S1),
         )
-        // The focus names what the word should be, not what was typed — the chatbot is being asked
-        // about the correction, not about the mistake.
         expect(request.body.focused_word).to.eq(CORRECTIONS[S1].corrected)
       })
       cy.get('[data-cy=essay-chatbot-focused]')
         .parent()
         .should('contain', CHATBOT_REPLY)
+    })
+
+    it('keeps a word selected while its sentence is being corrected', function () {
+      visitEditor()
+      essayInput().type(S1)
+      cy.wait('@correction')
+
+      // Fix the flagged word in place ("olen" -> "olin"), then leave the sentence, which sends it
+      // for correction. That reply is slow, like a real one.
+      essayInput().type(`${caretLeft(8)}{backspace}i`)
+      cy.intercept({ method: 'POST', url: CORRECTION_ROUTE }, request => {
+        request.reply({
+          delay: 1500,
+          statusCode: 200,
+          body: buildCorrectionResponse(request.body.text),
+        })
+      }).as('slowCorrection')
+      essayInput().type('{end}')
+
+      // Click into the fixed word while the reply is in flight, then let the reply land.
+      essayInput()
+        .then($textarea => {
+          $textarea[0].setSelectionRange(7, 7)
+        })
+        .trigger('click')
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'olin')
+
+      cy.wait('@slowCorrection')
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'olin')
+      cy.get('.essay-writing-word-highlight-selected').should('exist')
+    })
+
+    it('pins a dragged passage, across sentences, and asks about that passage', function () {
+      const text = `${S1} ${S2}`
+      const passage = text.slice(10, 22)
+
+      visitEditor()
+      essayInput().type(text)
+      cy.wait('@correction')
+      cy.wait('@correction')
+
+      selectPassage(10, 22)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', passage)
+
+      cy.get('input[name=essayChatbotInput]').type('Mitä tämä tarkoittaa?{enter}')
+      cy.wait('@chatbot').then(({ request }) => {
+        expect(request.body.focused_word).to.eq(passage)
+        expect(request.body.original_text).to.eq(text)
+        expect(request.body.sentence_id, 'keyed to the first sentence').to.eq(backendSentenceId(S1))
+      })
+      cy.get('[data-cy=essay-chatbot-focused]').parent().should('contain', CHATBOT_REPLY)
+    })
+
+    it('replaces a pinned suggestion with the passage dragged over next', function () {
+      visitEditor()
+      essayInput().type(S1)
+      cy.wait('@correction')
+      correctionBubbles().first().click()
+      cy.get('[data-cy=essay-chatbot-focused]').should('contain', CORRECTIONS[S1].word)
+
+      selectPassage(0, 10)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', 'Minä olen')
+    })
+
+    it('pins a passage past the last full stop, which belongs to no sentence yet', function () {
+      const unfinished = 'Koira juoksee'
+
+      visitEditor()
+      essayInput().type(`${S1} ${unfinished}`)
+      cy.wait('@correction')
+
+      selectPassage(S1.length + 1, S1.length + 1 + unfinished.length)
+      cy.get('[data-cy=essay-selected-text-bubble]').should('have.text', unfinished)
+
+      cy.get('input[name=essayChatbotInput]').type('Onko tämä oikein?{enter}')
+      cy.wait('@chatbot').then(({ request }) => {
+        expect(request.body.focused_word).to.eq(unfinished)
+        expect(request.body.sentence_id).to.eq('')
+      })
     })
   })
 
@@ -297,6 +379,16 @@ describe('essay writing', function () {
       essayInput().should('have.value', S1)
       correctionBubbles().should('have.length', 1)
       cy.get('@correction.all').should('have.length', 1)
+    })
+
+    it('keeps the title typed into the heading across a reload', function () {
+      const title = `Cypress draft title ${Date.now()}`
+
+      visitEditor()
+      cy.get('[data-cy=essay-title-input]').should('have.value', '').type(title)
+
+      cy.reload()
+      cy.get('[data-cy=essay-title-input]').should('have.value', title)
     })
   })
 
@@ -409,6 +501,25 @@ describe('essay writing', function () {
       cy.contains('[data-cy=essay-item]', title).should('not.exist')
     })
 
+    it('uploads without asking for a topic when the heading is already titled', function () {
+      const title = `Cypress titled ${Date.now()}`
+
+      visitEditor()
+      cy.get('[data-cy=essay-title-input]').type(title)
+      essayInput().type(S1)
+      cy.wait('@correction')
+
+      cy.get('[data-cy=submit-essay]').should('not.be.disabled').click()
+      cy.get('[data-cy=essay-topic-input]').should('not.exist')
+
+      cy.location('pathname', { timeout: 60000 }).should('include', '/library')
+      cy.contains('[data-cy=essay-item]', title, { timeout: 60000 }).should('exist')
+
+      cy.contains('[data-cy=essay-item]', title).click()
+      cy.get('[data-cy=essay-detail-modal-delete-button]').click()
+      cy.get('[data-cy=confirm-warning-dialog]').click()
+    })
+
     it('saves a reopened essay back into itself instead of creating a second one', function () {
       const title = `Cypress reopened ${Date.now()}`
 
@@ -435,6 +546,14 @@ describe('essay writing', function () {
         expect(request.body.sentences.map(sentence => sentence.original_text)).to.deep.eq([S1, S2])
       })
       cy.get('[data-cy=essay-topic-input]').should('not.exist')
+    })
+
+    it('opens the editor from the "Write new essay" button in the essays tab', function () {
+      openEssaysLibrary()
+
+      cy.get('[data-cy=write-essay-button]').should('be.visible').click()
+      cy.location('pathname', { timeout: 60000 }).should('include', '/essay-writing')
+      essayInput().should('exist')
     })
   })
 })
@@ -571,5 +690,15 @@ describe('essay writing — teacher review', function () {
     panel('current').find('.essay-word-highlighted').should('have.length', 1)
     highlighted().should('have.length', 1)
     highlighted().should('have.text', CORRECTED_ORIGINAL)
+  })
+
+  // A teacher gets the same "Write new essay" button as a student — the essays tab has no story
+  // sources to add from, so the button opens the editor for both roles. The setup already walked
+  // into an essay, so come back out to the tab it opened on.
+  it('opens the editor from the "Write new essay" button in the essays tab', function () {
+    cy.visit(`${BASE}/library`)
+    cy.get('[data-cy=write-essay-button]', { timeout: 60000 }).should('be.visible').click()
+
+    cy.location('pathname', { timeout: 60000 }).should('include', '/essay-writing')
   })
 })

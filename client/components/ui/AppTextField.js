@@ -18,6 +18,10 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * presentation only — behaviour built on them lives in a wrapper (see AppSearchField). The password
  * toggle owns the end slot, so `endIcon` is ignored when `type="password"`.
  *
+ * `seamless` drops the pill entirely — no fill, no border or underline in any state, no padding,
+ * and the type inherited from whatever the caller styled the wrapper with — so a field can sit in
+ * the page as editable text (e.g. a document title in a heading), unchanged on hover or focus.
+ *
  * onChange receives the native MUI event (use `e.target.value`).
  */
 const Label = styled('label')({
@@ -32,8 +36,8 @@ const Label = styled('label')({
 // to TextField so it renders a textarea. `hasStart`/`hasEnd` are styling-only, so they are held
 // back from the DOM — they shift padding from the text onto the pill to fit the adornments.
 const StyledTextField = styled(TextField, {
-  shouldForwardProp: prop => prop !== 'hasStart' && prop !== 'hasEnd',
-})(({ multiline, hasStart, hasEnd }) => ({
+  shouldForwardProp: prop => prop !== 'hasStart' && prop !== 'hasEnd' && prop !== 'seamless',
+})(({ multiline, hasStart, hasEnd, seamless }) => ({
   '& .MuiOutlinedInput-root': {
     ...(multiline ? { padding: '10px 18px' } : { height: shape.inputHeight }),
     ...(hasStart && { paddingLeft: shape.inputPaddingX }),
@@ -64,6 +68,24 @@ const StyledTextField = styled(TextField, {
       transition: 'background-color 9999s ease-in-out 0s',
     },
   },
+  // Unstyle the pill last so it wins over the rules above; the caller's own type shows through.
+  // Nothing is drawn around the field in any state, hover and focus included — it is meant to be
+  // indistinguishable from the text it stands in for, so only the caret marks it as an input.
+  ...(seamless && {
+    '& .MuiOutlinedInput-root': {
+      height: 'auto',
+      padding: 0,
+      backgroundColor: 'transparent',
+      borderRadius: 0,
+      font: 'inherit',
+      color: 'inherit',
+      '& fieldset': { border: 'none' },
+    },
+    '& .MuiOutlinedInput-input': {
+      padding: 0,
+      '&::placeholder': { color: colors.muted, opacity: 1 },
+    },
+  }),
 }))
 
 const AppTextField = ({
@@ -72,6 +94,7 @@ const AppTextField = ({
   fullWidth = true,
   startIcon,
   endIcon,
+  seamless = false,
   inputProps,
   slotProps,
   ...rest
@@ -123,6 +146,7 @@ const AppTextField = ({
         variant="outlined"
         hasStart={!!startIcon}
         hasEnd={!!endNode}
+        seamless={seamless}
         slotProps={mergedSlotProps}
         {...rest}
       />
