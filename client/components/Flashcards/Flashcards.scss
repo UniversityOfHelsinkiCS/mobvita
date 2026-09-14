@@ -109,8 +109,11 @@
 // ── Add / edit card template (Flashcards/Template/*) ──────────────────────────
 
 // Desktop: two cards side by side; mobile: a single stacked card.
+// The template replaces the whole list when a card is opened for editing, so it needs its own
+// clearance from the header above — the list's `padding-top` is not in play then.
 .flashcard-template {
   display: flex;
+  margin-top: 1.5rem;
 }
 
 // Template cards reuse the .flashcard box; compound selector so these win over the base rule.
