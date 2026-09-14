@@ -561,6 +561,8 @@ const DesignSystem = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <AppPagination page={pageDemo} count={5} onChange={setPageDemo} />
             <AppPagination page={pageDemo} count={12} onChange={setPageDemo} />
+            {/* Long range: the ellipsis coins halve the distance to each end. */}
+            <AppPagination page={pageDemo} count={100} onChange={setPageDemo} />
           </div>
         </Section>
 
