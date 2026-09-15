@@ -284,7 +284,7 @@ const PracticeView = () => {
                     data-cy="practice-settings"
                     style={{ display: 'inline-flex', cursor: 'pointer', flexShrink: 0 }}
                   >
-                    <img src={images.circleSettings} alt="" style={{ width: 28, height: 28 }} />
+                    <img src={images.circleSettings} alt="" style={{ width: 36, height: 36 }} />
                   </span>
                 </CustomTooltip>
               )}
@@ -308,7 +308,7 @@ const PracticeView = () => {
               }}
             >
               {!pending && <span>{story.title}</span>}
-              {!pending && <StoryTitleTranslate title={story.title} />}
+              {!pending && <StoryTitleTranslate title={story.title} size={36} />}
             </div>
             {story.url && !pending && (
               <a
