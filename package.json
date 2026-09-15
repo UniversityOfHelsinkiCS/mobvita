@@ -15,6 +15,9 @@
     "lint:fix": "eslint . --fix",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "design:screenshots": "cypress run --browser chrome --config-file cypress.design.config.js",
+    "design:screenshots:teacher": "cypress run --browser chrome --config-file cypress.design.config.js --env mode=teacher",
+    "design:screenshots:open": "cypress open --browser chrome --config-file cypress.design.config.js",
     "sentry-cli": "sentry-cli",
     "add-translation": "node addTranslation.js"
   },
