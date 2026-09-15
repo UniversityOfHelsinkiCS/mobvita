@@ -23,6 +23,9 @@ const LEVELS = {
   high: 'high',
 }
 
+// The normalised level name ('low' | 'average' | 'high'), or null when the value is not a level.
+export const difficultyLevelName = difficulty => LEVELS[difficulty] || null
+
 // True when `difficulty` maps to a real level, so a caller can skip the wrapper as well — an empty
 // wrapper is still a flex item and would eat the icon row's gap.
 export const hasDifficultyLevel = difficulty => Boolean(LEVELS[difficulty])
