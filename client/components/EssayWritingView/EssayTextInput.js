@@ -22,6 +22,7 @@ import {
   getCompletedSentences,
   getEssayFocusFromCaretWord,
   getEssayFocusFromGlyph,
+  getSelectableWordSpans,
   getEditSpan,
   getEssayFocusFromTextRange,
   getFirstChangedIndex,
@@ -79,9 +80,11 @@ const EssayTextInput = ({
   const [isDeletionSelectionHighlighted, setIsDeletionSelectionHighlighted] = useState(false)
   const [isPassagePinned, setIsPassagePinned] = useState(false)
   const [hoveredWordHighlight, setHoveredWordHighlight] = useState(null)
+  const [isPointerOverWord, setIsPointerOverWord] = useState(false)
   const [selectedWordHighlight, setSelectedWordHighlight] = useState(null)
   const correctionRectsRef = useRef([])
   const correctionRectsStaleRef = useRef(true)
+  const wordRectsRef = useRef([])
   // What the overlay keeps highlighted: { key, type, start, end } in absolute text offsets (an
   // insertion is zero-width). Held by position, not by correction entry, so edits can move it.
   const pinnedHighlightRef = useRef(null)
@@ -402,9 +405,11 @@ const EssayTextInput = ({
 
     if (!input || !window.ResizeObserver) return undefined
 
+    // A resized textarea reflows the text, so every cached rect is stale.
     const observer = new window.ResizeObserver(() => {
       correctionRectsStaleRef.current = true
       setHoveredWordHighlight(null)
+      setIsPointerOverWord(false)
 
       if (pinnedHighlightRef.current) {
         computeCorrectionRects()
@@ -582,6 +587,8 @@ const EssayTextInput = ({
     return true
   }
 
+  // Normalize the typed text, re-parse its sentences, persist the draft and route the sentence the
+  // edit touched (or every pasted one) to correction.
   const handleChange = e => {
     const input = e.target
     const rawValue = input.value
@@ -602,6 +609,7 @@ const EssayTextInput = ({
 
     correctionRectsStaleRef.current = true
     setHoveredWordHighlight(null)
+    setIsPointerOverWord(false)
 
     const inputWasPasted = pastedTextRef.current || e.nativeEvent?.inputType === 'insertFromPaste'
     pastedTextRef.current = false
@@ -909,9 +917,8 @@ const EssayTextInput = ({
     )
   }
 
-  // Measure a pixel rectangle for every corrected word (offset → pixels via the caret mirror) so
-  // hovering is a cheap geometric hit-test, not the unreliable point → offset APIs. Recomputed
-  // lazily (only when marked stale) to avoid measuring on every mouse move.
+  // Measure a pixel rectangle for every corrected and every selectable word (offset → pixels via
+  // the caret mirror) so hovering is a cheap geometric hit-test. Recomputed lazily, once stale.
   const computeCorrectionRects = () => {
     correctionRectsStaleRef.current = false
 
@@ -919,6 +926,7 @@ const EssayTextInput = ({
 
     if (!origin) {
       correctionRectsRef.current = []
+      wordRectsRef.current = []
       return
     }
 
@@ -965,6 +973,14 @@ const EssayTextInput = ({
       .filter(Boolean)
 
     correctionRectsRef.current = [...wordGroups, ...insertionGroups]
+    wordRectsRef.current = getTextareaRangeRects(
+      origin.input,
+      getSelectableWordSpans(completedSentencesRef.current).map(span => ({
+        ...span,
+        key: span.start,
+        type: 'word',
+      })),
+    ).map(measured => toWordHighlight(measured, origin))
   }
 
   const rectsContainPoint = (rects, x, y) =>
@@ -1085,6 +1101,8 @@ const EssayTextInput = ({
     return false
   }
 
+  // Hit-test the pointer against the cached rects: a hovered correction lights up, and any
+  // selectable word under it turns the cursor into a pointer.
   const handleTextMouseMove = event => {
     const scrollContent = scrollContentRef.current
 
@@ -1108,10 +1126,16 @@ const EssayTextInput = ({
 
       return hoveredGroup
     })
+    setIsPointerOverWord(
+      Boolean(hoveredGroup) ||
+        wordRectsRef.current.some(word => rectsContainPoint(word.rects, x, y)),
+    )
   }
 
+  // Nothing is under a pointer that has left the text.
   const handleTextMouseLeave = () => {
     setHoveredWordHighlight(null)
+    setIsPointerOverWord(false)
   }
 
   const renderWordHighlights = (highlight, variant) => {
@@ -1149,6 +1173,7 @@ const EssayTextInput = ({
         'essay-writing-input-area',
         isDeletionSelectionHighlighted ? 'essay-writing-input-area-deletion' : '',
         isPassagePinned ? 'essay-writing-input-area-passage-pinned' : '',
+        isPointerOverWord ? 'essay-writing-input-area-word-hover' : '',
       ]
         .filter(Boolean)
         .join(' ')}
