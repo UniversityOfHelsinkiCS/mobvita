@@ -1,0 +1,41 @@
+// The upload-form view: a back link above the chosen source's form.
+.add-story-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// A <button>: base.scss's form reset gives it `font-family: inherit`, so it too rides --font-ui.
+.add-story-dialog-back {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d2c2a;
+}
+
+.story-input-options-root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.story-input-options-anon-warning {
+  color: #c0392b;
+  font-size: 0.9em;
+}
+
+// Figma "Frame 2087326754": the source pills stack with a 10px gap.
+.story-input-options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
