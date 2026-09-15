@@ -26,16 +26,19 @@
   padding-top: 4px;
 }
 
+/* Reads as a label beside the title, not a chip: no fill of its own, muted ink. */
 .cefr-level {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #000000a8;
-  font-size: large;
+  color: #9d9b92;
+  background: transparent;
+  font-size: 26px;
   font-weight: 500;
   white-space: nowrap;
-  margin: 0;
+  /* Matches .story-title's bottom margin so both centre against the same box. */
+  margin: 0 0 0.75em;
   padding: 0 6px;
-  height: 30px;
+  height: 36px;
 }

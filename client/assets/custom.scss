@@ -1118,7 +1118,7 @@ body .app-datepicker.react-datepicker {
 .story-title {
   @extend .header-2;
   font-family: var(--font-language, var(--font-content));
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
   padding-right: 1em;
   margin-bottom: 0.75em;
@@ -1254,7 +1254,7 @@ body .app-datepicker.react-datepicker {
 }
 
 .preview-text {
-  color: rgb(107, 6, 153);
+  color: #003cff;
   font-weight: 400;
 }
 
