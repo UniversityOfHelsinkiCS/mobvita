@@ -13,6 +13,7 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  *   tan-outline      - pale-green fill, green border; hover fills green
  *   inverse          - for dark backgrounds: transparent, cream border/text; hover fills green
  *   danger           - solid red (not in the button sheet, kept for destructive actions)
+ *   alert            - solid alert orange; the 2026 delete colour
  *   alert            - solid alert-orange fill, white text (delete/leave actions that want more
  *                      urgency than danger's red — matches the alert token pair)
  *   card             - white surface, soft warm border, ink text; hover darkens a shade (menu/action
@@ -78,6 +79,14 @@ const VARIANT_STYLES = {
     color: '#fff',
     border: '1px solid transparent',
     '&:hover': { backgroundColor: '#B83A3A' },
+    '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
+  },
+  // Destructive actions in the 2026 design use the alert orange rather than `danger`'s red.
+  alert: {
+    backgroundColor: colors.alert,
+    color: '#fff',
+    border: '1px solid transparent',
+    '&:hover': { backgroundColor: colors.alertHover },
     '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
   alert: {

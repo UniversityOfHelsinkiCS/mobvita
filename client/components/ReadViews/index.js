@@ -64,6 +64,10 @@ import StoryTitleTranslate from 'Components/PracticeView/StoryTitleTranslate'
 
 import './ReadViewsStyles.css'
 
+// Toolbar buttons are the DS small size (36px); their leading glyph is 20px rather than the
+// button's default 24 so the label stays the dominant element.
+const ICON_BUTTON_SX = { gap: '0.5em', '& img': { width: 20, height: 20 } }
+
 const SettingToggle = ({ translationId, ...props }) => {
   return (
     <FormControlLabel
@@ -412,22 +416,26 @@ const ReadViews = ({ match }) => {
     navigate('/library', { replace: true })
   }
 
-  // The practice CTA + settings gear + topics select now live in the card's top toolbar (see
-  // PreviewToolbar below); this only renders the teacher's edit/delete controls.
+  // Teacher edit/delete controls. They sit in the card's top toolbar now (see PreviewToolbar), in a
+  // row rather than the old stacked column.
   const StoryFunctionsDropdown = () =>
     preProcessingReady && teacherView && !routeStory?.control_story ? (
       <div
         className="practice-tour-edit-delete-story"
-        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
       >
-        <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`}>
+        <AppButton variant="primary" size="sm" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
+          <img src={images.iconEdit} alt="" />
           <FormattedMessage id="edit" />
         </AppButton>
         <AppButton
-          variant="danger"
+          variant="alert"
+          size="sm"
           data-cy="story-delete-button"
           onClick={() => setConfirmationOpen(true)}
+          sx={ICON_BUTTON_SX}
         >
+          <img src={images.trash03} alt="" />
           <FormattedMessage id="Delete" />
         </AppButton>
       </div>
@@ -480,9 +488,19 @@ const ReadViews = ({ match }) => {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75em' }}>
+          <Link
+            to="/library"
+            data-cy="story-preview-back"
+            aria-label={intl.formatMessage({ id: 'back-to-library' })}
+            style={{ display: 'inline-flex' }}
+          >
+            {/* The asset draws its own ring, so this is the circled arrow from the design. */}
+            <img src={images.arrowLeft} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+          </Link>
           {practiceCta}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
+          <StoryFunctionsDropdown />
           {!routeStory?.control_story && (
             <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
               <span
@@ -490,7 +508,7 @@ const ReadViews = ({ match }) => {
                 data-cy="story-preview-settings"
                 style={{ display: 'inline-flex', cursor: 'pointer' }}
               >
-                <img src={images.circleSettings} alt="" style={{ width: 28, height: 28 }} />
+                <img src={images.circleSettings} alt="" style={{ width: 36, height: 36 }} />
               </span>
             </CustomTooltip>
           )}
@@ -527,7 +545,9 @@ const ReadViews = ({ match }) => {
             style={getTextStyle(learningLanguage)}
           >
             {PreviewToolbar()}
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {/* Centred, so the level label sits on the same line as the translate button rather
+                than hanging from the top of a title that has wrapped. */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
                   {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
@@ -535,12 +555,12 @@ const ReadViews = ({ match }) => {
                       {routeStory?.title || ''}
                     </span>
                   )}
-                  <StoryTitleTranslate title={routeStory?.title} />
+                  <StoryTitleTranslate title={routeStory?.title} size={36} />
                 </div>
               </div>
               {(preProcessingReady || processingFinished) &&
                 String(difficultyValueDisplay).trim() !== '' && (
-                  <div className="cefr-level" style={{ background: colors.green }}>
+                  <div className="cefr-level">
                     {difficultyValueDisplay}
                   </div>
                 )}
@@ -585,11 +605,6 @@ const ReadViews = ({ match }) => {
                       />
                     </div>
                   )}
-                  {!isGroupPreview && !isGroupReview && (
-                    <div className="row-flex" style={{ marginLeft: '3em' }}>
-                      <StoryFunctionsDropdown />
-                    </div>
-                  )}
                 </>
               ) : (
                 <div>
@@ -608,7 +623,6 @@ const ReadViews = ({ match }) => {
                       />
                     </div>
                   )}
-                  {!isGroupPreview && !isGroupReview && <StoryFunctionsDropdown />}
                 </div>
               )}
             </div>

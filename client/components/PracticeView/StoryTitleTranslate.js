@@ -16,7 +16,8 @@ import { setHelperSidebarOpen, setHelperSidebarTab } from 'Utilities/redux/helpe
 // Small translate icon shown next to the story title. Context-translates the title (same
 // ctxTranslate call as the "Translate Sentence" action-menu item) and shows it in the
 // CombinedChatbot's context-translation bubble. Used in both PracticeView and ReadViews.
-const StoryTitleTranslate = ({ title }) => {
+// `size` in px pins the button; left unset it scales with the title's font size.
+const StoryTitleTranslate = ({ title, size }) => {
   const dispatch = useDispatch()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -52,8 +53,8 @@ const StoryTitleTranslate = ({ title }) => {
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        width: '1em',
-        height: '1em',
+        width: size ? `${size}px` : '1em',
+        height: size ? `${size}px` : '1em',
         marginLeft: '0.5em',
         padding: 0,
         border: 'none',
@@ -66,7 +67,11 @@ const StoryTitleTranslate = ({ title }) => {
       <img
         src={images.translate}
         alt=""
-        style={{ width: '0.65em', height: '0.65em', display: 'block' }}
+        style={{
+          width: size ? `${Math.round(size * 0.55)}px` : '0.65em',
+          height: size ? `${Math.round(size * 0.55)}px` : '0.65em',
+          display: 'block',
+        }}
       />
     </button>
   )
