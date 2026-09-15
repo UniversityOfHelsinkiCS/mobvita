@@ -173,6 +173,9 @@ export default defineConfig(({ mode }) => {
           assetFileNames: 'assets/[hash][extname]',
           manualChunks(id) {
             if (!id.includes('node_modules')) return undefined
+            // Vendor CSS stays with its importer: a vendor chunk's CSS would be linked ahead of the
+            // importer's own stylesheets, putting it before custom.scss instead of after as in dev.
+            if (/\.(css|scss|sass|less)(\?|$)/.test(id)) return undefined
             return getPackageChunkName(id)
           },
         },
