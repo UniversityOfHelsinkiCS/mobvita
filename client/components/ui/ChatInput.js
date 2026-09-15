@@ -11,6 +11,10 @@ import ChatActionMenuSuggestions from 'Components/PracticeView/ChatActionMenuSug
  * Controlled: pass `value` / `onChange(value)` and `onSubmit()`
  * (fired on Enter or the send button).
  * `disabled` blocks typing and sending (e.g. while awaiting a reply).
+ *
+ * Pass `predefinedChatbotRequests` — `[{ msgId, func }]` — to add the burger button on the left,
+ * which opens those canned requests as a menu above the field. Each one renders as a
+ * `PredefinedRequestButton`.
  */
 const Form = styled('form')({
   display: 'flex',
@@ -53,6 +57,28 @@ const SendButton = styled('button')({
   cursor: 'pointer',
   '& img': { width: 36, height: 36, display: 'block' },
   '&:disabled': { cursor: 'not-allowed' },
+})
+
+/**
+ * PredefinedRequestButton — one canned request in the burger menu. A green speech bubble whose
+ * top-right corner is squared off, pointing back at the trigger the menu opened from.
+ */
+export const PredefinedRequestButton = styled('button')({
+  display: 'block',
+  width: '100%',
+  padding: '10px 18px',
+  border: 'none',
+  borderRadius: '18px 2px 18px 18px',
+  backgroundColor: colors.green,
+  color: colors.ink,
+  fontFamily: 'inherit',
+  fontSize: 15,
+  fontWeight: 600,
+  textAlign: 'left',
+  cursor: 'pointer',
+  transition: 'background-color 0.15s ease',
+  '&:hover': { backgroundColor: colors.greenHover },
+  '&:disabled': { cursor: 'not-allowed', opacity: 0.6 },
 })
 
 const SuggestionButton = styled('button')({

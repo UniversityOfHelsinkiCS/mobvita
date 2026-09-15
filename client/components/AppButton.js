@@ -163,7 +163,7 @@ const AppButton = forwardRef(
         ref={ref}
         variant="text"
         disableElevation
-        size="medium"
+        size="small"
         fullWidth={block}
         component={as}
         sx={[sizeSx, variantSx, ...userSx]}

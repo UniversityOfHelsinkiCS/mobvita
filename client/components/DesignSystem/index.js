@@ -21,7 +21,7 @@ import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import AppActionCard from 'Components/ui/AppActionCard'
 import ChatBubble from 'Components/ui/ChatBubble'
-import ChatInput from 'Components/ui/ChatInput'
+import ChatInput, { PredefinedRequestButton } from 'Components/ui/ChatInput'
 import AppToast from 'Components/ui/AppToast'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
@@ -907,14 +907,61 @@ const DesignSystem = () => {
         </Section>
 
         <Section title="ChatInput">
-          <div style={{ width: 340, padding: 16, backgroundColor: colors.card, borderRadius: 16 }}>
-            <ChatInput
-              value={chatMessage}
-              onChange={setChatMessage}
-              onSubmit={() => setChatMessage('')}
-              placeholder="Ask Assistant…"
-            />
-          </div>
+          {(() => {
+            const label = { fontSize: 12, color: '#666', marginBottom: 10 }
+            const panel = {
+              width: 340,
+              padding: 16,
+              backgroundColor: colors.card,
+              borderRadius: 16,
+            }
+            // `func` is dispatched on click, so the demo leaves it out — the rows are inert here.
+            const requests = [
+              { msgId: 'What Should I Do Next?' },
+              { msgId: 'Explain This Sentence' },
+              { msgId: 'Give Me A Hint' },
+            ]
+
+            return (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 36 }}>
+                <div>
+                  <div style={label}>default</div>
+                  <div style={panel}>
+                    <ChatInput
+                      value={chatMessage}
+                      onChange={setChatMessage}
+                      onSubmit={() => setChatMessage('')}
+                      placeholder="Ask Assistant…"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div style={label}>with predefined requests (burger opens the menu)</div>
+                  <div style={panel}>
+                    <ChatInput
+                      value={chatMessage}
+                      onChange={setChatMessage}
+                      onSubmit={() => setChatMessage('')}
+                      placeholder="Ask Assistant…"
+                      predefinedChatbotRequests={requests}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div style={label}>PredefinedRequestButton</div>
+                  <div style={{ ...panel, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {requests.map(r => (
+                      <PredefinedRequestButton key={r.msgId} type="button">
+                        {r.msgId}
+                      </PredefinedRequestButton>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          })()}
         </Section>
 
         <Section title="Progress card (EloChart — connected)">
