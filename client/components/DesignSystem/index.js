@@ -33,12 +33,14 @@ import AppStepper from 'Components/ui/AppStepper'
 import AppTooltip from 'Components/ui/AppTooltip'
 import AppSpinner from 'Components/ui/AppSpinner'
 import AppIcon from 'Components/ui/AppIcon'
+import AppDescriptionList from 'Components/ui/AppDescriptionList'
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
+import StoryInfoDialog from 'Components/LibraryView/StoryInfoDialog'
 import { images } from 'Utilities/common'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
@@ -105,6 +107,22 @@ const Card = ({ children }) => (
   </div>
 )
 
+// Only the fields the dialog reads; the description has two paragraphs to check wrapping.
+const SAMPLE_STORY = {
+  title: 'Vierailuun valmistautumista',
+  description:
+    'Päiväkahvin jälkeen opiskelija menee rouva Mäen huoneeseen.\n\n' +
+    'Rouva Mäki on 84-vuotias ja hän odottaa tyttärensä vierailua.',
+  author: null,
+  URL: 'https://www.kielibuusti.fi/fi/opi-suomea',
+  date: 'Fri, 22 May 2026 00:00:00 GMT',
+  category: 'Science',
+  difficulty: 'low',
+  percent_cov: 40,
+  percent_perf: 75,
+}
+
+// The gallery page: one <Section> per primitive or presentational component, in all its states.
 const DesignSystem = () => {
   const [login, setLogin] = useState({ email: '', password: '', remember: false })
   const [signup, setSignup] = useState({ email: '', username: '', password: '', passwordAgain: '' })
@@ -112,6 +130,7 @@ const DesignSystem = () => {
   const [pending, setPending] = useState(false)
   const [error, setError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [storyInfoOpen, setStoryInfoOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
   const [searchDemo, setSearchDemo] = useState('Kalevala')
@@ -1080,6 +1099,36 @@ const DesignSystem = () => {
               content scrolls inside while the title stays fixed.
             </p>
           </AppDialog>
+        </Section>
+
+        <Section title="AppDescriptionList">
+          <div style={{ width: 420 }}>
+            <AppDescriptionList
+              caption="Story"
+              items={[
+                { id: 'author', label: 'Author', value: 'Aleksis Kivi' },
+                { id: 'language', label: 'Language', value: 'Finnish' },
+                { id: 'copyright', label: 'Copyright (null — row hidden)', value: null },
+                { id: 'flashcards', label: 'Flashcards (0 — row shown)', value: 0 },
+                {
+                  id: 'long',
+                  label: 'Long value',
+                  value: 'Wraps onto several lines while the label stays on the first line.',
+                },
+              ]}
+            />
+          </div>
+        </Section>
+
+        <Section title="StoryInfoDialog (story card “i” button)">
+          <AppButton variant="primary" onClick={() => setStoryInfoOpen(true)}>
+            Open story info
+          </AppButton>
+          <StoryInfoDialog
+            story={SAMPLE_STORY}
+            open={storyInfoOpen}
+            onClose={() => setStoryInfoOpen(false)}
+          />
         </Section>
 
         <Section title="AppProgressBar">
