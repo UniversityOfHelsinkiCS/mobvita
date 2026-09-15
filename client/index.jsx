@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material/styles'
+import { CacheProvider } from '@emotion/react'
+import createCache from '@emotion/cache'
 import * as Sentry from '@sentry/react'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
@@ -72,27 +74,36 @@ if (window.responsiveVoice) {
   }
 }
 
+// Pin MUI's styles right after the entry stylesheets (the last thing in <head> here), so lazily
+// loaded route CSS always lands after them like in dev; a prod cold load used to put it before.
+const emotionCache = createCache({
+  key: 'css',
+  insertionPoint: document.head.lastElementChild,
+})
+
 const root = createRoot(document.getElementById('root'))
 
 const refresh = () =>
   root.render(
-    <ThemeProvider theme={muiTheme}>
-      <Provider store={store}>
-        <ConnectedIntlProvider>
-          <BrowserRouter
-            basename={basePath}
-            future={{
-              v7_relativeSplatPath: true,
-              v7_startTransition: true,
-            }}
-          >
-            <ErrorBoundary>
-              <App />
-            </ErrorBoundary>
-          </BrowserRouter>
-        </ConnectedIntlProvider>
-      </Provider>
-    </ThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={muiTheme}>
+        <Provider store={store}>
+          <ConnectedIntlProvider>
+            <BrowserRouter
+              basename={basePath}
+              future={{
+                v7_relativeSplatPath: true,
+                v7_startTransition: true,
+              }}
+            >
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
+            </BrowserRouter>
+          </ConnectedIntlProvider>
+        </Provider>
+      </ThemeProvider>
+    </CacheProvider>,
   )
 
 refresh()
