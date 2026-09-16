@@ -1,118 +1,109 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { FormattedMessage, useIntl } from 'react-intl';
-import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { FormattedMessage, useIntl } from 'react-intl'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import AppButton from 'Components/AppButton'
-import TextField from '@mui/material/TextField'
-import CustomTooltip from 'Components/CustomTooltip'
-import IconButton from '@mui/material/IconButton'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
+import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
+import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import { fieldLabelSx, pillButtonSx } from './styles'
 
+// Backend limits (also stated in the info tooltip): 3+ character title, 50–50 000 character text.
+const MAX_CHARACTERS = 50000
+const MIN_CHARACTERS = 50
+const MIN_TITLE_LENGTH = 3
+
+// Figma "Paste Text": labelled title and text fields with a character counter, then Submit.
 const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
-  const maxCharacters = 50000
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
-  const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [titleTaken, setTitleTaken] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { pending, storyId, progress } = useSelector(({ uploadProgress }) => uploadProgress)
-  const { data } = useSelector(({ stories }) => stories)
-  const dispatch = useDispatch()
+  const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const stories = useSelector(({ stories }) => stories.data)
 
-  const handleTextChange = e => {
-    setCharactersLeft(maxCharacters - e.target.value.length)
-    setText(e.target.value)
-  }
-
-  const addText = async () => {
-    const storyWithSameTitle = data.find(story => story.title === title)
-    if (!storyWithSameTitle) {
-      const combineTitleAndText = `${title}\n\n${text}`
-      const newStory = {
-        language: capitalize(learningLanguage),
-        text: combineTitleAndText,
-      }
-
-      dispatch(setCustomUpload(true))
-      await dispatch(postStory(newStory))
-      setActiveComponent()
-      closeModal()
-    } else {
-      setTitleTaken(true)
-    }
-  }
-
-  useEffect(() => {
-    if (progress) {
-      if (progress === 1) setText('')
-    }
-  }, [progress])
-
-  const textTooLong = charactersLeft < 0
+  const uploading = Boolean(pending || storyId)
+  const textTooLong = text.length > MAX_CHARACTERS
   const submitDisabled =
-    !text || pending || storyId || textTooLong || charactersLeft > 49950 || title.length < 3
+    uploading ||
+    textTooLong ||
+    text.length < MIN_CHARACTERS ||
+    title.trim().length < MIN_TITLE_LENGTH
+
+  const handleTitleChange = event => {
+    setTitle(event.target.value)
+    setTitleTaken(false)
+  }
+
+  // The title becomes the story's first line; a title already in the library is refused.
+  const submit = async () => {
+    if (submitDisabled) return
+    if (stories.some(story => story.title === title)) {
+      setTitleTaken(true)
+      return
+    }
+    dispatch(setCustomUpload(true))
+    await dispatch(
+      postStory({ language: capitalize(learningLanguage), text: `${title}\n\n${text}` }),
+    )
+    setActiveComponent()
+    closeModal()
+  }
 
   return (
-    <div>
-      <CustomTooltip permanent title={<FormattedHTMLMessage id="paste-text-upload-instructions" />}>
-        <IconButton size="small">
-          <InfoOutlinedIcon fontSize="small" />
-        </IconButton>
-      </CustomTooltip>
-      <TextField
-        fullWidth
-        size="small"
-        value={title}
-        data-cy="paste-story-title-input"
-        sx={{ mt: 1.5, mb: 1.5 }}
-        onChange={({ target }) => setTitle(target.value)}
-        placeholder={intl.formatMessage({ id: 'story-title' })}
-      />
-      <TextField
-        fullWidth
-        multiline
-        rows={10}
-        value={text}
-        data-cy="paste-story-text-input"
-        onChange={handleTextChange}
-        sx={{ mt: 1.5, mb: 1.5 }}
-      />
-      <div style={{ marginTop: '4px' }}>
-        <div className="bold">
-          <FormattedMessage id="characters-left" />
-          {` ${charactersLeft}`}
-        </div>
-        <div className="row-flex">
-          <AppButton
-            onClick={addText}
-            disabled={submitDisabled}
-            data-cy="paste-story-confirm"
-            style={{ marginTop: '12px' }}
-          >
-            {pending || storyId ? (
-              <Spinner inline />
-            ) : (
-              <span>
-                <FormattedMessage id="Confirm" />
-              </span>
-            )}
-          </AppButton>
+    <div className="paste-text">
+      <div className="paste-text-fields">
+        <div>
+          <AppTextField
+            label={intl.formatMessage({ id: 'Title' })}
+            labelSx={fieldLabelSx}
+            placeholder={intl.formatMessage({ id: 'paste-title-placeholder' })}
+            value={title}
+            onChange={handleTitleChange}
+            error={titleTaken}
+            data-cy="paste-story-title-input"
+          />
           {titleTaken && (
-            <span style={{ marginLeft: '.5em', marginTop: '12px', color: '#FF0000' }}>
+            <div className="add-story-dialog-error">
               <FormattedHTMLMessage id="story-title-already-taken" />
-            </span>
+            </div>
+          )}
+        </div>
+        <div>
+          <AppTextField
+            label={intl.formatMessage({ id: 'paste-text-label' })}
+            labelSx={fieldLabelSx}
+            placeholder={intl.formatMessage({ id: 'paste-text-placeholder' })}
+            multiline
+            minRows={6}
+            value={text}
+            onChange={event => setText(event.target.value)}
+            error={textTooLong}
+            data-cy="paste-story-text-input"
+          />
+          <div className="add-story-dialog-counter">
+            {text.length}/{MAX_CHARACTERS}
+          </div>
+          {textTooLong && (
+            <div className="add-story-dialog-error">
+              <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
+            </div>
           )}
         </div>
       </div>
-      {textTooLong && (
-        <span className="additional-info" style={{ marginTop: '12px' }}>
-          <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
-        </span>
-      )}
+
+      <AppButton
+        block
+        sx={pillButtonSx()}
+        disabled={submitDisabled}
+        onClick={submit}
+        data-cy="paste-story-confirm"
+      >
+        {uploading ? <Spinner inline size={20} /> : <FormattedMessage id="paste-submit" />}
+      </AppButton>
     </div>
   )
 }

@@ -13,7 +13,7 @@ import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, images, learningLanguageSelector } from 'Utilities/common'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { pillButtonSx } from './styles'
+import { fieldLabelSx, pillButtonSx } from './styles'
 
 const EMPTY_SITES = []
 
@@ -106,6 +106,7 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
       <Box component="form" id="url-upload" onSubmit={handleStorySubmit}>
         <AppTextField
           label={intl.formatMessage({ id: 'new-url' })}
+          labelSx={fieldLabelSx}
           placeholder={intl.formatMessage({ id: 'enter-web-address' })}
           value={storyUrl}
           onChange={event => setStoryUrl(event.target.value)}

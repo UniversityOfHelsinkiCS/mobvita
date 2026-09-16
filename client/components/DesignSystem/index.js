@@ -522,6 +522,13 @@ const DesignSystem = () => {
           <div style={{ width: 240 }}>
             <AppTextField label="Disabled" disabled placeholder="Disabled" />
           </div>
+          <div style={{ width: 240 }}>
+            <AppTextField
+              label="Muted label (labelSx)"
+              labelSx={{ color: colors.muted }}
+              placeholder="Enter story title..."
+            />
+          </div>
         </Section>
 
         <Section title="AppTextField — seamless (editable text in place of a heading)">

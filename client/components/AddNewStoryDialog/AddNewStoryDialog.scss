@@ -1,10 +1,10 @@
-// Figma back row inside the title block: muted flip-backward icon + "Back", 16px above the H2.
+// Back row inside the title block: muted flip-backward icon + "Back", 32px above the H2.
 // A <button>: base.scss's form reset gives it `font-family: inherit`, so it rides --font-ui.
 .add-story-dialog-back {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -138,6 +138,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+  flex: 1;
 
   @media (min-width: 900px) {
     padding-right: 225px; // 195px stepper + 30px gap
@@ -160,7 +161,8 @@
   color: #2d2c2a;
 }
 
-.generate-story-counter {
+// Character counter under a text field, right-aligned and muted (Figma "0/250", "0/50000").
+.add-story-dialog-counter {
   margin-top: 6px;
   text-align: right;
   font-size: 16px;
@@ -212,8 +214,30 @@
   gap: 6px;
 }
 
+// Takes the view's free height so the spinner sits in the middle of the card.
 .generate-story-spinner {
   display: flex;
+  flex: 1;
+  align-items: center;
   justify-content: center;
-  padding: 40px 0;
+}
+
+// Figma "Paste Text": the two fields (gap 12), then Submit with the card's 30px gap.
+.paste-text {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.paste-text-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Validation message under a field.
+.add-story-dialog-error {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #d64545;
 }

@@ -24,3 +24,6 @@ export const pillOutlineSx = () => ({
   border: `2px solid ${colors.green}`,
   '&:hover': { backgroundColor: '#E9F1EC', borderColor: colors.green },
 })
+
+// Figma field label: muted, inset 10px from the pill's edge, and 2px above the pill.
+export const fieldLabelSx = { color: colors.muted, pl: '10px', mb: '2px' }

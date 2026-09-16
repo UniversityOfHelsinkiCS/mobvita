@@ -17,7 +17,12 @@ import './AddNewStoryDialog.scss'
 const SOURCES = {
   web: { Form: UploadFromWeb, titleId: 'upload-from-web', infoId: 'upload-from-web-instructions' },
   file: { Form: UploadFromFile, titleId: 'upload-stories', lead: false },
-  paste: { Form: UploadPastedText, titleId: 'paste-a-text' },
+  paste: {
+    Form: UploadPastedText,
+    titleId: 'paste-a-text',
+    infoId: 'paste-text-upload-instructions',
+    lead: false,
+  },
   generate: {
     Form: GenerateStory,
     titleId: 'generate-story-title',
@@ -25,6 +30,8 @@ const SOURCES = {
     lead: false,
     // Figma: a wider card whose steps all share one height (capped to the viewport).
     paperSx: { width: 839, minHeight: 'min(734px, calc(100vh - 64px))' },
+    // A flex column so the view can fill the card and centre its spinner in the free space.
+    contentSx: { display: 'flex', flexDirection: 'column' },
   },
 }
 
@@ -104,6 +111,7 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
       slotProps={{ transition: { onExited: backToMain } }}
       {...FIGMA_DIALOG_SX}
       paperSx={{ ...FIGMA_DIALOG_SX.paperSx, ...source?.paperSx }}
+      contentSx={{ ...FIGMA_DIALOG_SX.contentSx, ...source?.contentSx }}
       {...rest}
     >
       {UploadForm ? (

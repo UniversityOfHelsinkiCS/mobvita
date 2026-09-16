@@ -1978,5 +1978,9 @@
     "generate-story-info": "Valitse taso ja pituus, kuvaile aihe ja anna tekoälyn kirjoittaa teksti. Voit muokata tulosta ennen kirjastoon tallentamista.",
     "step-themes-and-level": "Teemat ja taso",
     "generate-story-description": "Tekstin kuvaus",
-    "grammar-topics": "Kielioppiaiheet"
+    "grammar-topics": "Kielioppiaiheet",
+    "paste-text-label": "Teksti",
+    "paste-title-placeholder": "Syötä tekstin otsikko...",
+    "paste-text-placeholder": "Liitä teksti tähän...",
+    "paste-submit": "Lähetä"
 }

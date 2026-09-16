@@ -178,7 +178,7 @@ const GenerateStory = ({ closeModal }) => {
                 'data-cy': 'story-generation-ideas-input',
               }}
             />
-            <div className="generate-story-counter">
+            <div className="add-story-dialog-counter">
               {instance.learner_ideas.length}/{MAX_IDEAS_LENGTH}
             </div>
           </div>
@@ -269,8 +269,8 @@ const GenerateStory = ({ closeModal }) => {
       return (
         <div className="generate-story-spinner">
           <Spinner
-            spinnerColor={colors.ink}
-            textColor={colors.ink}
+            spinnerColor={colors.green}
+            textColor={colors.green}
             size={60}
             text={<FormattedMessage id="story-generating" />}
             delayedMessage={[
@@ -330,7 +330,7 @@ const GenerateStory = ({ closeModal }) => {
   if (metaPending) {
     return (
       <div className="generate-story-spinner">
-        <Spinner spinnerColor={colors.ink} size={60} />
+        <Spinner spinnerColor={colors.green} size={60} />
       </div>
     )
   }

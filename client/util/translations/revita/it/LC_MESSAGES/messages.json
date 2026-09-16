@@ -1977,5 +1977,9 @@
     "generate-story-info": "Choose the level and length, describe the subject, then let the AI write a story. You can edit the result before saving it to your library.",
     "step-themes-and-level": "Themes and level",
     "generate-story-description": "Story description",
-    "grammar-topics": "Grammar topics"
+    "grammar-topics": "Grammar topics",
+    "paste-text-label": "Text",
+    "paste-title-placeholder": "Enter story title...",
+    "paste-text-placeholder": "Paste text here...",
+    "paste-submit": "Submit"
 }
