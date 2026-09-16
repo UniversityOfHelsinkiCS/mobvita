@@ -10,6 +10,7 @@ import NewStoryInputOptions from './NewStoryInputOptions'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
+import GenerateStory from './GenerateStory'
 import './AddNewStoryDialog.scss'
 
 // Each story source: its upload form, dialog title, optional info tooltip, and lead-line flag.
@@ -17,6 +18,14 @@ const SOURCES = {
   web: { Form: UploadFromWeb, titleId: 'upload-from-web', infoId: 'upload-from-web-instructions' },
   file: { Form: UploadFromFile, titleId: 'upload-stories', lead: false },
   paste: { Form: UploadPastedText, titleId: 'paste-a-text' },
+  generate: {
+    Form: GenerateStory,
+    titleId: 'generate-story-title',
+    infoId: 'generate-story-info',
+    lead: false,
+    // Figma: a wider card whose steps all share one height (capped to the viewport).
+    paperSx: { width: 839, minHeight: 'min(734px, calc(100vh - 64px))' },
+  },
 }
 
 // Card padding per Figma "40px 60px" (sm and up); the phone-width values are derived.
@@ -87,13 +96,14 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
     <AppDialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="md"
       title={title}
       subtitle={showLead && <FormattedMessage id="add-stories-assistant-lead" />}
       closeDataCy="add-story-dialog-close"
       data-cy="add-story-dialog"
       slotProps={{ transition: { onExited: backToMain } }}
       {...FIGMA_DIALOG_SX}
+      paperSx={{ ...FIGMA_DIALOG_SX.paperSx, ...source?.paperSx }}
       {...rest}
     >
       {UploadForm ? (
@@ -104,7 +114,6 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
         />
       ) : (
         <NewStoryInputOptions
-          closeModal={onClose}
           lesson_topics={lesson_topics}
           userIsAnonymous={userIsAnonymous}
           setActiveComponent={showView}

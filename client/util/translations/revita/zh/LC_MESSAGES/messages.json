@@ -1353,5 +1353,10 @@
     "add-new-story": "Add New Story",
     "new-url": "New URL",
     "bookmarks-recommended": "Bookmarks (Recommended)",
-    "upload-drop-hint": "<u>Click</u> to choose file or drop it here"
+    "upload-drop-hint": "<u>Click</u> to choose file or drop it here",
+    "generate-story-title": "Generate Story with AI",
+    "generate-story-info": "Choose the level and length, describe the subject, then let the AI write a story. You can edit the result before saving it to your library.",
+    "step-themes-and-level": "Themes and level",
+    "generate-story-description": "Story description",
+    "grammar-topics": "Grammar topics"
 }

@@ -3997,8 +3997,8 @@ table.history-table .MuiTableCell-root {
   height: 3em;
   margin: auto;
 
-  // On story generation the sliders fill the full content column (no 500px cap / side gaps).
-  .story-generation-controls & {
+  // In the generate-story dialog the sliders fill the content column (no 500px cap / side gaps).
+  .generate-story & {
     max-width: none;
   }
 

@@ -2,7 +2,6 @@ import React from 'react'
 import AppButton from 'Components/AppButton'
 import AppIcon from 'Components/ui/AppIcon'
 import { FormattedMessage } from 'react-intl'
-import { useNavigate } from 'react-router-dom'
 import { ACCESS, images, useHasAccess } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { pillButtonSx } from './styles'
@@ -15,20 +14,9 @@ const optionButtonSx = background => ({
 })
 
 // The story-source pills (web, file, paste, AI); AI needs lesson topics and a registered user.
-const NewStoryInputOptions = ({
-  closeModal,
-  lesson_topics,
-  userIsAnonymous,
-  setActiveComponent,
-}) => {
-  const navigate = useNavigate()
+const NewStoryInputOptions = ({ lesson_topics, userIsAnonymous, setActiveComponent }) => {
   // Generate-story button is for registered+ users (hidden for access <= 0).
   const canGenerate = useHasAccess(ACCESS.REGISTERED)
-
-  const goToGeneratePage = () => {
-    if (typeof closeModal === 'function') closeModal()
-    navigate('/story-generation')
-  }
 
   return (
     <div className="story-input-options-root">
@@ -67,7 +55,7 @@ const NewStoryInputOptions = ({
           <AppButton
             sx={optionButtonSx(colors.lavender)}
             data-cy="add-story-generate"
-            onClick={goToGeneratePage}
+            onClick={() => setActiveComponent('generate')}
           >
             <AppIcon src={images.star06} />
             <FormattedMessage id="go-generating" />

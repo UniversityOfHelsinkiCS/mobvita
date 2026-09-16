@@ -1973,5 +1973,10 @@
     "add-new-story": "Lisää uusi teksti",
     "new-url": "Uusi osoite",
     "bookmarks-recommended": "Kirjanmerkit (suositellut)",
-    "upload-drop-hint": "<u>Klikkaa</u> valitaksesi tiedoston tai pudota se tähän"
+    "upload-drop-hint": "<u>Klikkaa</u> valitaksesi tiedoston tai pudota se tähän",
+    "generate-story-title": "Luo teksti tekoälyllä",
+    "generate-story-info": "Valitse taso ja pituus, kuvaile aihe ja anna tekoälyn kirjoittaa teksti. Voit muokata tulosta ennen kirjastoon tallentamista.",
+    "step-themes-and-level": "Teemat ja taso",
+    "generate-story-description": "Tekstin kuvaus",
+    "grammar-topics": "Kielioppiaiheet"
 }
