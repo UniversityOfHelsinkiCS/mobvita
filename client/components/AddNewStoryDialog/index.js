@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useSelector } from 'react-redux'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import AppDialog from 'Components/ui/AppDialog'
-import { useIsAnonymous } from 'Utilities/common'
+import AppIcon from 'Components/ui/AppIcon'
+import CustomTooltip from 'Components/CustomTooltip'
+import { images, useIsAnonymous } from 'Utilities/common'
 import { colors, font, shadow } from 'Assets/mui_theme/designTokens'
 import NewStoryInputOptions from './NewStoryInputOptions'
 import UploadFromWeb from './UploadFromWeb'
@@ -11,9 +12,9 @@ import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
 import './AddNewStoryDialog.scss'
 
-// Each story source's upload form, and the dialog title shown while that form is open.
+// Each story source's upload form, its dialog title, and optionally an info tooltip by the title.
 const SOURCES = {
-  web: { Form: UploadFromWeb, titleId: 'upload-from-web' },
+  web: { Form: UploadFromWeb, titleId: 'upload-from-web', infoId: 'upload-from-web-instructions' },
   file: { Form: UploadFromFile, titleId: 'upload-stories' },
   paste: { Form: UploadPastedText, titleId: 'paste-a-text' },
 }
@@ -41,8 +42,8 @@ const FIGMA_DIALOG_SX = {
   closeSx: { right: 12, top: 12, color: colors.ink },
 }
 
-// AddNewStoryDialog — Figma "pick a story": the story-source pills, or the chosen upload form.
-// Controlled via `open`/`onClose`; the view returns to the pills once the close transition ends.
+// AddNewStoryDialog — Figma "pick a story": the story-source pills, or the chosen upload form under
+// a Back row. Controlled via `open`/`onClose`; the view returns to the pills after the close fades.
 const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
   const { lesson_topics } = useSelector(({ metadata }) => metadata)
   const userIsAnonymous = useIsAnonymous()
@@ -52,13 +53,35 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
 
   const backToMain = () => setView('main')
 
+  // Figma header: a muted Back row above the H2 (sub-views only) and an info icon by the title.
+  const title = (
+    <>
+      {source && (
+        <button type="button" className="add-story-dialog-back" onClick={backToMain}>
+          <AppIcon src={images.flipBackward} size={24} color={colors.muted} />
+          <FormattedMessage id="Back" />
+        </button>
+      )}
+      <span className="add-story-dialog-title">
+        <FormattedMessage id={source ? source.titleId : 'add-new-story'} />
+        {source?.infoId && (
+          <CustomTooltip keyId={source.infoId} permanent>
+            <span className="add-story-dialog-info">
+              <AppIcon src={images.alertCircle} size={20} />
+            </span>
+          </CustomTooltip>
+        )}
+      </span>
+    </>
+  )
+
   return (
     <AppDialog
       open={open}
       onClose={onClose}
       maxWidth="sm"
-      title={<FormattedMessage id={source ? source.titleId : 'add-new-story'} />}
-      subtitle={!source && <FormattedMessage id="add-stories-assistant-lead" />}
+      title={title}
+      subtitle={<FormattedMessage id="add-stories-assistant-lead" />}
       closeDataCy="add-story-dialog-close"
       data-cy="add-story-dialog"
       slotProps={{ transition: { onExited: backToMain } }}
@@ -66,13 +89,7 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
       {...rest}
     >
       {UploadForm ? (
-        <div className="add-story-dialog-form">
-          <button type="button" className="add-story-dialog-back" onClick={backToMain}>
-            <ChevronLeftIcon fontSize="small" />
-            <FormattedMessage id="Back" />
-          </button>
-          <UploadForm closeModal={onClose} setActiveComponent={backToMain} />
-        </div>
+        <UploadForm closeModal={onClose} setActiveComponent={backToMain} />
       ) : (
         <NewStoryInputOptions
           closeModal={onClose}

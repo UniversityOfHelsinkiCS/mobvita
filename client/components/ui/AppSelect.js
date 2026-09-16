@@ -9,7 +9,8 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * AppButton (tan / contrast / contrast-outline / tan-outline / inverse); the option list opens in the
  * cream AppMenu popover with AppMenuItem rows (the selected row is highlighted).
  *
- * Controlled: `value` + `onChange(value)`, `options` = [{ value, label }].
+ * Controlled: `value` + `onChange(value)`, `options` = [{ value, label, icon?, endIcon? }];
+ * `icon` sits left of the label, `endIcon` right-aligned (a remove button should stop propagation).
  * Pass a custom `trigger` element (e.g. an icon button) to open the same list from something other
  * than the default pill.
  */
@@ -75,6 +76,7 @@ const Trigger = styled('button', { shouldForwardProp: prop => prop !== 'variant'
   ...(VARIANT_STYLES[variant] || VARIANT_STYLES.tan),
 }))
 
+// Pill trigger showing the selected label (or `placeholder`); the option rows open in an AppMenu.
 const AppSelect = ({
   value,
   onChange,
@@ -103,6 +105,8 @@ const AppSelect = ({
       {options.map(option => (
         <AppMenuItem
           key={option.value}
+          icon={option.icon}
+          endIcon={option.endIcon}
           selected={String(option.value) === String(value)}
           onClick={() => onChange(option.value)}
         >

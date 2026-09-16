@@ -1,25 +1,35 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useIntl, FormattedMessage } from 'react-intl';
-import AppButton from 'Components/AppButton'
+import { useIntl, FormattedMessage } from 'react-intl'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import CustomTooltip from 'Components/CustomTooltip'
 import IconButton from '@mui/material/IconButton'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
+import AppSelect from 'Components/ui/AppSelect'
+import AppTextField from 'Components/ui/AppTextField'
+import DifficultyLevel from 'Components/DifficultyLevel'
+import Spinner from 'Components/Spinner'
+import { postStory } from 'Utilities/redux/uploadProgressReducer'
+import { capitalize, images, learningLanguageSelector } from 'Utilities/common'
+import { updateFavouriteSites } from 'Utilities/redux/userReducer'
+import { colors } from 'Assets/mui_theme/designTokens'
+import { pillButtonSx } from './styles'
 
 const EMPTY_SITES = []
-import { postStory } from 'Utilities/redux/uploadProgressReducer'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { updateFavouriteSites } from 'Utilities/redux/userReducer'
-import RecommendedSites from './RecommendedSites'
-import Spinner from 'Components/Spinner'
 
+// Lower-cased https origin of the typed address (a missing scheme is taken as https), else null.
+const toBookmarkUrl = raw => {
+  const address = raw.trim()
+  if (!address) return null
+  try {
+    const parsed = new URL(/^[a-z]+:\/\//i.test(address) ? address : `https://${address}`)
+    return parsed.protocol === 'https:' && parsed.hostname ? parsed.origin.toLowerCase() : null
+  } catch {
+    return null
+  }
+}
+
+// Figma "Get from Web": bookmark selector, URL field, then Upload To Library / Add To Bookmarks.
 const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -27,110 +37,105 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
   const favouriteSites = useSelector(({ user }) => user?.data?.user?.favourite_sites ?? EMPTY_SITES)
-  const [accordionState, setAccordionState] = useState(-1)
 
   const storyUploading = pending || storyId
+  // The selector mirrors the field: the bookmark whose URL is in the field, else the placeholder.
+  const selectedBookmark = favouriteSites.find(site => site.url === storyUrl)
+  const bookmarkUrl = toBookmarkUrl(storyUrl)
+  const canBookmark =
+    Boolean(bookmarkUrl) &&
+    !selectedBookmark &&
+    !favouriteSites.some(site => site.url.toLowerCase() === bookmarkUrl)
 
   const handleStorySubmit = event => {
     event.preventDefault()
-
-    const newStory = {
-      language: capitalize(learningLanguage),
-      url: storyUrl,
-    }
-
-    if (storyUrl) {
-      dispatch(postStory(newStory))
-      setStoryUrl('')
-      setActiveComponent()
-      closeModal()
-    }
+    if (!storyUrl.trim() || storyUploading) return
+    dispatch(postStory({ language: capitalize(learningLanguage), url: storyUrl }))
+    setStoryUrl('')
+    setActiveComponent()
+    closeModal()
   }
 
-  const handleAccordionChange = useCallback((_, expanded) => {
-    setAccordionState(expanded ? 0 : -1)
-  }, [])
-
-const AddToRecommendedSites = useCallback(
-  event => {
-    event.preventDefault()
-
-    const raw = storyUrl.trim()
-    let parsed
-
-    try {
-      parsed = new URL(raw)
-    } catch {
-      return
-    }
-
-    if (parsed.protocol !== 'https:') return
-    if (!parsed.hostname) return
-    if (!parsed.origin) return
-
-    const normalizedUrl = parsed.origin.toLowerCase()
-
-    if (favouriteSites.some(site => site.url.toLowerCase() === normalizedUrl)) return
-
-    const nextSites = [...favouriteSites, { url: normalizedUrl, difficulty: 0 }]
-    dispatch(updateFavouriteSites(nextSites))
+  const addToBookmarks = () => {
+    if (!canBookmark) return
+    dispatch(updateFavouriteSites([...favouriteSites, { url: bookmarkUrl, difficulty: 0 }]))
     setStoryUrl('')
-  },
-  [storyUrl, favouriteSites, dispatch]
-)
+  }
+
+  const removeBookmark = url => {
+    dispatch(updateFavouriteSites(favouriteSites.filter(site => site.url !== url)))
+  }
+
+  // One dropdown row per bookmark: level icon, name, and a remove X that must not select the row.
+  const bookmarkOptions = favouriteSites.map(site => ({
+    value: site.url,
+    label: site.name || site.url,
+    icon: (
+      <span style={{ display: 'inline-flex', width: 20, height: 20 }}>
+        <DifficultyLevel difficulty={site.difficulty} size={20} />
+      </span>
+    ),
+    endIcon: (
+      <IconButton
+        size="small"
+        aria-label="remove bookmark"
+        data-cy="recommended-site-delete-button"
+        sx={{ p: '2px' }}
+        onClick={event => {
+          event.stopPropagation()
+          removeBookmark(site.url)
+        }}
+      >
+        <AppIcon src={images.xClose} size={18} color={colors.muted} />
+      </IconButton>
+    ),
+  }))
 
   return (
-    <div>
-      <CustomTooltip title={<FormattedHTMLMessage id="upload-from-web-instructions" />}>
-        <IconButton size="small">
-          <InfoOutlinedIcon fontSize="small" />
-        </IconButton>
-      </CustomTooltip>
-      <div style={{ marginTop: '20px' }}>
-        <Box component="form" id="url-upload" onSubmit={handleStorySubmit}>
-          <TextField
-            fullWidth
-            size="small"
-            placeholder={intl.formatMessage({ id: 'enter-web-address' })}
-            value={storyUrl}
-            onChange={event => setStoryUrl(event.target.value)}
-            data-cy="new-story-input"
-          />
-        </Box>
-      </div>
+    <div className="upload-from-web">
+      <AppSelect
+        variant="contrast-outline"
+        value={selectedBookmark?.url ?? ''}
+        onChange={setStoryUrl}
+        options={bookmarkOptions}
+        placeholder={intl.formatMessage({ id: 'bookmarks-recommended' })}
+        matchTriggerWidth
+        minWidth={0}
+      />
 
-      <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'space-between' }}>
-        <AppButton form="url-upload" type="submit" onClick={handleStorySubmit} data-cy="submit-story">
+      <Box component="form" id="url-upload" onSubmit={handleStorySubmit}>
+        <AppTextField
+          label={intl.formatMessage({ id: 'new-url' })}
+          placeholder={intl.formatMessage({ id: 'enter-web-address' })}
+          value={storyUrl}
+          onChange={event => setStoryUrl(event.target.value)}
+          inputProps={{ 'data-cy': 'new-story-input' }}
+        />
+      </Box>
+
+      <div className="upload-from-web-actions">
+        <AppButton
+          type="submit"
+          form="url-upload"
+          sx={pillButtonSx()}
+          disabled={!storyUrl.trim() || Boolean(storyUploading)}
+          data-cy="submit-story"
+        >
           {storyUploading ? (
-            <Spinner inline size={28} />
+            <Spinner inline size={20} />
           ) : (
             <FormattedMessage id="upload-from-web-button" />
           )}
         </AppButton>
-
-        <CustomTooltip title={<FormattedMessage id="explain-recommended-sites" />}>
-          <AppButton
-            type="button"
-            form="url-upload"
-            onClick={AddToRecommendedSites}
-            data-cy="add-to-recommended-sites-button"
-          >
-            <FormattedMessage id="add-recommended-sites-button" />
-          </AppButton>
-        </CustomTooltip>
-      </div>
-
-      <div style={{ marginTop: '24px' }}>
-        <Accordion expanded={accordionState === 0} onChange={handleAccordionChange}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <FormattedMessage id="recommended-sites" />
-          </AccordionSummary>
-          <AccordionDetails>
-            <div style={{ maxHeight: 170, overflowY: 'auto' }}>
-              <RecommendedSites />
-            </div>
-          </AccordionDetails>
-        </Accordion>
+        <AppButton
+          type="button"
+          sx={pillButtonSx()}
+          disabled={!canBookmark}
+          onClick={addToBookmarks}
+          data-cy="add-to-recommended-sites-button"
+        >
+          <FormattedMessage id="add-recommended-sites-button" />
+        </AppButton>
       </div>
     </div>
   )

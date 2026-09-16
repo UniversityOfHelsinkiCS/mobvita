@@ -5,23 +5,22 @@ import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import { ACCESS, images, useHasAccess } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
+import { pillButtonSx } from './styles'
 
-// Figma "Button M IconText": a 36px full-width pill in its own pastel, icon left, label left-aligned.
+// A story-source pill: the shared Figma pill, full width, icon and label left-aligned.
 const optionButtonSx = background => ({
+  ...pillButtonSx(background),
   width: '100%',
-  height: 36,
   justifyContent: 'flex-start',
-  gap: '10px',
-  padding: '8px 10px 8px 12px',
-  fontSize: 16,
-  fontWeight: 500,
-  color: colors.ink,
-  backgroundColor: background,
-  '&:hover': { backgroundColor: background, filter: 'brightness(0.96)' },
 })
 
 // The story-source pills (web, file, paste, AI); AI needs lesson topics and a registered user.
-const NewStoryInputOptions = ({ closeModal, lesson_topics, userIsAnonymous, setActiveComponent }) => {
+const NewStoryInputOptions = ({
+  closeModal,
+  lesson_topics,
+  userIsAnonymous,
+  setActiveComponent,
+}) => {
   const navigate = useNavigate()
   // Generate-story button is for registered+ users (hidden for access <= 0).
   const canGenerate = useHasAccess(ACCESS.REGISTERED)

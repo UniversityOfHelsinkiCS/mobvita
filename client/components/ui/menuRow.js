@@ -34,12 +34,10 @@ const forwardOptions = { shouldForwardProp: prop => prop !== 'selected' }
 const MenuRowDiv = styled('div', forwardOptions)(rowStyles)
 const MenuRowLink = styled('a', forwardOptions)(rowStyles)
 
-/**
- * MenuRow — presentational row shared by AppMenu and AppSidebar. Renders <a> when `href` is set,
- * else <div>. forwardRef so a consumer (e.g. a modal trigger) can attach a ref.
- */
+// MenuRow — row shared by AppMenu and AppSidebar: icon, label, optional right-aligned `endIcon`.
+// Renders <a> when `href` is set, else <div>; forwardRef for modal triggers.
 export const MenuRow = React.forwardRef(
-  ({ icon, children, href, selected = false, className = '', ...rest }, ref) => {
+  ({ icon, endIcon, children, href, selected = false, className = '', ...rest }, ref) => {
     const Row = href ? MenuRowLink : MenuRowDiv
     // Stable classes (in addition to the emotion styles) so a specific menu can re-skin its rows —
     // e.g. the library sort dropdown scopes selected/hover colours via `.app-menu-row(-selected)`.
@@ -50,6 +48,11 @@ export const MenuRow = React.forwardRef(
       <Row ref={ref} href={href} selected={selected} className={rowClassName} {...rest}>
         {icon && <span style={{ display: 'inline-flex', flexShrink: 0 }}>{icon}</span>}
         <span>{children}</span>
+        {endIcon && (
+          <span style={{ display: 'inline-flex', flexShrink: 0, marginLeft: 'auto' }}>
+            {endIcon}
+          </span>
+        )}
       </Row>
     )
   },

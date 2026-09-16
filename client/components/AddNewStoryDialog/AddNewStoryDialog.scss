@@ -1,23 +1,31 @@
-// The upload-form view: a back link above the chosen source's form.
-.add-story-dialog-form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-// A <button>: base.scss's form reset gives it `font-family: inherit`, so it too rides --font-ui.
+// Figma back row inside the title block: muted flip-backward icon + "Back", 16px above the H2.
+// A <button>: base.scss's form reset gives it `font-family: inherit`, so it rides --font-ui.
 .add-story-dialog-back {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  align-self: flex-start;
-  gap: 4px;
+  gap: 8px;
+  margin-bottom: 16px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: #2d2c2a;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #9d9b92;
+}
+
+// The H2 text with the optional info icon beside it (Figma gap 12, icon top-aligned).
+.add-story-dialog-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.add-story-dialog-info {
+  display: inline-flex;
+  margin-top: 2px;
+  cursor: help;
 }
 
 .story-input-options-root {
@@ -38,4 +46,21 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
+}
+
+// Figma "Get from Web": selector, URL field, and the actions row, stacked with the card's 30px gap.
+.upload-from-web {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+// The two actions share the row equally (Figma gap 20).
+.upload-from-web-actions {
+  display: flex;
+  gap: 20px;
+
+  > * {
+    flex: 1;
+  }
 }

@@ -1793,8 +1793,8 @@
     "loading-story": "Tekstiä ladataan...",
     "practice-reading-comprehension": "Harjoittele luetun ymmärtämistä",
     "explain-recommended-sites": "Tässä on joitakin sivustoja, joita suosittelemme.\nVoit myös lisätä omia sivustoja tähän listaan!\nNäin se tehdään: syötä URL-osoite ja klikkaa “Lisää suositeltuihin sivustoihin”",
-    "upload-from-web-button": "Lataa yksityiseen kirjastoon",
-    "add-recommended-sites-button": "Lisää sivustosuosituksiin",
+    "upload-from-web-button": "Lataa kirjastoon",
+    "add-recommended-sites-button": "Lisää kirjanmerkkeihin",
     "library-tour-preview-text": "Täällä voit esikatsella tarinaa.\nEsikatselun jälkeen opiskelija voi siirtyä tekemään tekstiin liittyviä harjoituksia.",
     "no-saved-questions": "Ei tallennettuja kysymyksiä",
     "error": "Virhe",
@@ -1970,5 +1970,7 @@
     "essay-untitled": "Nimetön",
     "story-info-button": "Tekstin tiedot",
     "story-info-covered": "Tekstistä käsitelty",
-    "add-new-story": "Lisää uusi teksti"
+    "add-new-story": "Lisää uusi teksti",
+    "new-url": "Uusi osoite",
+    "bookmarks-recommended": "Kirjanmerkit (suositellut)"
 }
