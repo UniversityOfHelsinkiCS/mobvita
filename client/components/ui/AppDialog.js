@@ -1,19 +1,14 @@
 import React from 'react'
+import Box from '@mui/material/Box'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
 import { styled } from '@mui/material/styles'
-import { colors, shape } from 'Assets/mui_theme/designTokens'
+import xClose from 'Assets/images/x-close.svg'
+import { colors, font, shape } from 'Assets/mui_theme/designTokens'
+import AppIcon from './AppIcon'
 
-/**
- * AppDialog — design-system modal (MUI `Dialog`, not semantic-ui `Modal`).
- *
- * Pure/controlled: `open` + `onClose`. Styled to match the login card — cream paper, ink text,
- * Geologica, rounded corners, soft shadow — with a title row and a close (X) button. Long content
- * scrolls inside `DialogContent` while the title stays put.
- */
 const StyledDialog = styled(Dialog)({
   '& .MuiDialog-paper': {
     backgroundColor: colors.card,
@@ -26,31 +21,64 @@ const StyledDialog = styled(Dialog)({
   },
 })
 
+// Puts the caller's sx (object or array) after the defaults so it wins; MUI skips falsy entries.
+const withSx = (defaults, sx) => [defaults, ...(Array.isArray(sx) ? sx : [sx])]
+
+// AppDialog — design-system modal (MUI Dialog): cream card, ink text, title row with an optional
+// `subtitle` line and an SVG close (X); the `*Sx` props override each part (see AddNewStoryDialog).
 const AppDialog = ({
   open,
   onClose,
   title,
+  subtitle,
   children,
   maxWidth = 'sm',
   fullWidth = true,
   closeDataCy,
+  paperSx,
+  titleSx,
+  subtitleSx,
+  contentSx,
+  closeSx,
+  sx,
   ...rest
 }) => (
-  <StyledDialog open={open} onClose={onClose} maxWidth={maxWidth} fullWidth={fullWidth} {...rest}>
-    <DialogTitle sx={{ fontSize: '24px', fontWeight: 500, color: colors.ink, pr: 6 }}>
+  <StyledDialog
+    open={open}
+    onClose={onClose}
+    maxWidth={maxWidth}
+    fullWidth={fullWidth}
+    sx={withSx({ '& .MuiDialog-paper': paperSx }, sx)}
+    {...rest}
+  >
+    <DialogTitle
+      sx={withSx({ fontSize: '24px', fontWeight: 500, color: colors.ink, pr: 6 }, titleSx)}
+    >
       {title}
+      {subtitle && (
+        <Box
+          component="span"
+          sx={withSx(
+            { display: 'block', mt: 1, fontSize: font.lead, fontWeight: 400, lineHeight: '18px' },
+            subtitleSx,
+          )}
+        >
+          {subtitle}
+        </Box>
+      )}
       {onClose && (
         <IconButton
           onClick={onClose}
           aria-label="close"
           data-cy={closeDataCy}
-          sx={{ position: 'absolute', right: 16, top: 16, color: colors.ink }}
+          sx={withSx({ position: 'absolute', right: 16, top: 16, color: colors.ink }, closeSx)}
         >
-          <CloseIcon />
+          {/* The Figma x-close asset; a 24px box draws the same 12px X the MUI CloseIcon did. */}
+          <AppIcon src={xClose} size={24} color="currentColor" />
         </IconButton>
       )}
     </DialogTitle>
-    <DialogContent sx={{ color: colors.ink }}>{children}</DialogContent>
+    <DialogContent sx={withSx({ color: colors.ink }, contentSx)}>{children}</DialogContent>
   </StyledDialog>
 )
 

@@ -9,11 +9,14 @@ import { bundledTypography, colors, font, typography } from './client/assets/mui
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm')
 
+// Hot-update ids carry a `?t=` query; match the bare path, or HMR of JSX inside .js files fails.
+const isClientJs = id => /\/client\/.*\.js$/.test(id.split('?')[0])
+
 const jsxInJsPlugin = {
   name: 'mobvita-jsx-in-js',
   enforce: 'pre',
   async transform(code, id) {
-    if (!/\/client\/.*\.js$/.test(id)) return null
+    if (!isClientJs(id)) return null
 
     return transformWithOxc(code, id, {
       lang: 'jsx',
@@ -115,7 +118,7 @@ export default defineConfig(({ mode }) => {
           {
             name: 'mobvita-scan-jsx-in-js',
             async transform(code, id) {
-              if (!/\/client\/.*\.js$/.test(id)) return null
+              if (!isClientJs(id)) return null
               return transformWithOxc(code, id, {
                 lang: 'jsx',
                 jsx: { runtime: 'classic' },

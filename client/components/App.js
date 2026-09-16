@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Router from 'Components/Router'
 import { useLocation } from 'react-router-dom'
 import { checkRevitaStatus, useLanguageFont } from 'Utilities/common'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setServerError } from 'Utilities/redux/serverErrorReducer'
 import { getMTAvailableLanguage } from 'Utilities/redux/contextTranslationReducer'  
 import Toaster from './Toaster'
 import Sidebar from './Sidebar'
 import StoryFetcher from './StoryFetcher'
+import AddNewStoryDialog from 'Components/AddNewStoryDialog'
+import { closeAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 // import Chatbot from './ChatBot'
 
 import { hiddenFeatures } from 'Utilities/common'
@@ -30,8 +32,10 @@ const RouteEffects = () => {
   return null
 }
 
+// Root: route effects, story polling, nav sidebar, routed page, app-wide dialogs, and toasts.
 const App = () => {
   const dispatch = useDispatch()
+  const addStoryOpen = useSelector(({ helperSidebar }) => helperSidebar.addStoryOptionsOpen)
 
   // Loads the learner's script-specific webfont; mounted at the root so it survives route changes.
   useLanguageFont()
@@ -62,6 +66,7 @@ const App = () => {
       <StoryFetcher />
       <Sidebar />
       <Router />
+      <AddNewStoryDialog open={addStoryOpen} onClose={() => dispatch(closeAddStoryOptions())} />
       {/* {hiddenFeatures && location.pathname.includes('practice') && (
         <Chatbot />
       )} */}

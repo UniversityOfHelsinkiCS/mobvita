@@ -1659,15 +1659,6 @@ body .app-datepicker.react-datepicker {
   }
 }
 
-.library-tabs-white-bg {
-  .library-toggle-button {
-    background-color: #ffffff !important;
-  }
-  .library-toggle-button-chosen {
-    background-color: #ffffff !important;
-  }
-}
-
 .practice-now-overlay-icon {
   position: absolute;
   top: -10%;
@@ -2736,20 +2727,6 @@ label.file-upload-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.suggestedSources {
-  &-container {
-    padding-top: 1em;
-  }
-
-  &-row {
-    display: flex;
-    align-items: baseline;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0.5em 0;
-  }
 }
 
 .profile-page {
@@ -3989,8 +3966,8 @@ table.history-table .MuiTableCell-root {
   height: 3em;
   margin: auto;
 
-  // On story generation the sliders fill the full content column (no 500px cap / side gaps).
-  .story-generation-controls & {
+  // In the generate-story dialog the sliders fill the content column (no 500px cap / side gaps).
+  .generate-story & {
     max-width: none;
   }
 

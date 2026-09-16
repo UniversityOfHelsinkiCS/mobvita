@@ -18,6 +18,7 @@ export const colors = {
   error: '#D64545', // derived — error red not provided
   pageBg: '#EDEBE2', // derived — neutral behind the split card
   menuHover: '#ECE3BE', // hover used for menus, folders, etc.
+  lavender: '#CACAE0', // Figma "Add New Story" — the Generate-with-AI pill
   progressBarTrack: '#E5EDE4', // derived — progress bar track
   progressBarFill: '#A6CDB4', // derived — progress bar fill
   opponent: '#FF5900', // derived — opponent bar fill
@@ -94,6 +95,8 @@ export const font = {
 
   brand: 76, // "Revita" wordmark
   title: 28, // derived — card title ("Login"/"Sign Up"), not supplied
+  h2: 36, // Figma "H2" — dialog title
+  lead: 16, // Figma "text 1 Reg" — dialog lead line under the title
   label: 12,
   input: 16,
   button: 16,
@@ -108,4 +111,9 @@ export const shape = {
   inputIconGap: 8, // derived — Figma gives no icon↔text gap
   fieldGap: 30,
   cardPadding: '40px 60px', // Figma "40,60" — assumed vertical/horizontal; confirm
+}
+
+// Figma shadow styles.
+export const shadow = {
+  mid: '0px 13px 60px 6px rgba(0, 49, 79, 0.35)', // Figma "Shadow Mid" — dialogs
 }

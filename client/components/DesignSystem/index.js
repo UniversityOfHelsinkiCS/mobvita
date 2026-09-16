@@ -40,7 +40,6 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import EloChart from 'Components/HomeView/EloChart'
 import LoginForm from 'Components/AccessControl/LoginForm'
 import SignUpForm from 'Components/AccessControl/SignUpForm'
-import StoryInfoDialog from 'Components/LibraryView/StoryInfoDialog'
 import { images } from 'Utilities/common'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
@@ -130,7 +129,6 @@ const DesignSystem = () => {
   const [pending, setPending] = useState(false)
   const [error, setError] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [storyInfoOpen, setStoryInfoOpen] = useState(false)
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
   const [searchDemo, setSearchDemo] = useState('Kalevala')
@@ -523,6 +521,13 @@ const DesignSystem = () => {
           </div>
           <div style={{ width: 240 }}>
             <AppTextField label="Disabled" disabled placeholder="Disabled" />
+          </div>
+          <div style={{ width: 240 }}>
+            <AppTextField
+              label="Muted label (labelSx)"
+              labelSx={{ color: colors.muted }}
+              placeholder="Enter story title..."
+            />
           </div>
         </Section>
 
@@ -1254,16 +1259,6 @@ const DesignSystem = () => {
           </div>
         </Section>
 
-        <Section title="StoryInfoDialog (story card “i” button)">
-          <AppButton variant="primary" onClick={() => setStoryInfoOpen(true)}>
-            Open story info
-          </AppButton>
-          <StoryInfoDialog
-            story={SAMPLE_STORY}
-            open={storyInfoOpen}
-            onClose={() => setStoryInfoOpen(false)}
-          />
-        </Section>
 
         <Section title="AppProgressBar">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 420 }}>

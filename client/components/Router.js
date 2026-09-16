@@ -2,13 +2,10 @@ import React, { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { colors } from 'Assets/mui_theme/designTokens'
-// Eagerly loaded: always present (NavBar), wrapper (ProtectedRoute),
-// initial public route (LandingPage), and Suspense fallback (Spinner).
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
 import NavBar from './NavBar'
 import LandingPage from './LandingPage'
 import Footer from './Footer'
-import Spinner from 'Components/Spinner'
 import ErrorBoundary from './ErrorBoundary'
 import {
   closeEncouragement,
@@ -59,7 +56,6 @@ const EditStoryView = lazy(() => import('./EditStoryView'))
 const LessonPracticeView = lazy(() => import('./Lessons/LessonPracticeView'))
 const LessonLibrary = lazy(() => import('./Lessons/LessonLibrary'))
 const GecView = lazy(() => import('./GecView'))
-const StoryGeneration = lazy(() => import('./StoryGeneration'))
 const ReadingComprehensionView = lazy(() => import('./ReadingComprehension'))
 const ReadingPracticeView = lazy(
   () => import('Components/Tests/ReadingTest/ReadingPracticeByStoryID'),
@@ -343,10 +339,6 @@ export default () => {
                     <Route
                       path="/reference"
                       element={<ProtectedRoute component={ReferenceView} />}
-                    />
-                    <Route
-                      path="/story-generation"
-                      element={<ProtectedRoute component={StoryGeneration} />}
                     />
                     <Route
                       path="/essay-writing"

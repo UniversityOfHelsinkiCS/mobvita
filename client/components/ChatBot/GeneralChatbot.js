@@ -8,10 +8,9 @@ import { sendGeneralDialogue, removeDialogue } from 'Utilities/redux/dialoguesRe
 import Spinner from 'Components/Spinner'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
-import AddNewStoryOptions from 'Components/AddNewStoryOptions'
-import { closeAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import ChatbotSuggestions from './ChatbotSuggestions'
 
+// The assistant sidebar's general chat: a per-route message thread over the input and suggestions.
 const GeneralChatbot = () => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -23,7 +22,6 @@ const GeneralChatbot = () => {
   const items = useSelector(({ dialogues }) => dialogues.items)
   const isWaitingForResponse = useSelector(({ dialogues }) => !!dialogues.pending[scope])
   const messages = items.filter(i => i.scope === scope && i.type === 'chatbot-message')
-  const addStoryOptionsOpen = useSelector(({ helperSidebar }) => helperSidebar?.addStoryOptionsOpen)
 
   const latestMessageRef = useRef(null)
   const predefinedChatbotRequests = [
@@ -75,21 +73,11 @@ const GeneralChatbot = () => {
         )}
       </div>
 
-      {addStoryOptionsOpen && (
-        <div className="chatbot-add-story-dock">
-          <ChatBubble variant="options">
-            <AddNewStoryOptions onClose={() => dispatch(closeAddStoryOptions())} />
-          </ChatBubble>
-        </div>
-      )}
-
       <div className="chatbot-footer">
-        {messages.length === 0 && !addStoryOptionsOpen && (
-          <>
-            <p className="chatbot-intro">
-              <FormattedMessage id="general-chatbot-init-mess" values={{ language: intl.locale }} />
-            </p>            
-          </>
+        {messages.length === 0 && (
+          <p className="chatbot-intro">
+            <FormattedMessage id="general-chatbot-init-mess" values={{ language: intl.locale }} />
+          </p>
         )}
         <ChatInput
           value={currentMessage}
