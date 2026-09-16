@@ -231,6 +231,11 @@ $essay-green: #b1d3c2; // border / accent
   --essay-writing-selection-bg-color: transparent;
 }
 
+// The pointer is on a word a click would hand to the assistant.
+.essay-writing-input-area-word-hover textarea {
+  cursor: pointer;
+}
+
 // Covers the scrolled content; not an isolated group, so the boxes' mix-blend-mode tints the text.
 .essay-writing-highlight-layer {
   position: absolute;

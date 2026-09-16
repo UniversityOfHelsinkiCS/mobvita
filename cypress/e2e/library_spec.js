@@ -102,6 +102,16 @@ describe('library progress', function () {
     cy.get(card()).find('[data-cy=story-progress-bar]').should('not.exist')
   })
 
+  it('opens the story info dialog from the card without opening the actions modal', function () {
+    visitPrivateLibrary()
+    cy.get(card(), { timeout: 60000 }).find('[data-cy=library-story-card-info-button]').click()
+    cy.get('[data-cy=story-info-dialog]').should('be.visible').and('contain', story.title)
+    // The private-library actions modal would show Delete; the info click must not reach it.
+    cy.get('[data-cy=story-detail-modal-delete-button]').should('not.exist')
+    cy.get('[data-cy=story-info-dialog-close]').click()
+    cy.get('[data-cy=story-info-dialog]').should('not.exist')
+  })
+
   it('refetches the story list in the background as soon as an answer is submitted', function () {
     cy.visit(`${BASE}/stories/${story.id}/practice`)
     answerCurrentSnippet()

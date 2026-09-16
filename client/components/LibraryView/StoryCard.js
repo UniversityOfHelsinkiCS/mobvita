@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Card } from '@mui/material'
+import { Box, Card, IconButton } from '@mui/material'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   removeStory,
   getAllStories,
@@ -20,8 +20,10 @@ import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
 import DifficultyLevel, { hasDifficultyLevel } from 'Components/DifficultyLevel'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppIcon from 'Components/ui/AppIcon'
+import AppTooltip from 'Components/ui/AppTooltip'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { cancelControlledStory } from 'Utilities/redux/controlledPracticeReducer'
+import StoryInfoDialog from './StoryInfoDialog'
 import './LibraryView.scss'
 
 const liveDescriptionCache = {}
@@ -109,6 +111,7 @@ const GroupsSharedTo = ({ groups }) => {
   )
 }
 
+// One library story: the body opens the actions modal, the corner "i" opens the metadata dialog.
 const StoryCard = ({
   story,
   libraryShown,
@@ -120,8 +123,10 @@ const StoryCard = ({
   onDragStart = () => {},
 }) => {
   const dispatch = useDispatch()
+  const intl = useIntl()
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [confirmationOpen, setConfirmationOpen] = useState(false)
+  const [infoOpen, setInfoOpen] = useState(false)
   const [processingDescription, setProcessingDescription] = useState(
     () => liveDescriptionCache[story._id] || null,
   )
@@ -322,6 +327,19 @@ const StoryCard = ({
           </div>
         }
       />
+
+      {/* A sibling of the clickable body, so this click never reaches the actions modal. */}
+      <AppTooltip keyId="story-info-button" placement="top">
+        <IconButton
+          className="library-story-card-info-button"
+          aria-label={intl.formatMessage({ id: 'story-info-button' })}
+          data-cy="library-story-card-info-button"
+          onClick={() => setInfoOpen(true)}
+        >
+          <AppIcon src={images.infoIcon} size={16} color="currentColor" />
+        </IconButton>
+      </AppTooltip>
+      <StoryInfoDialog story={story} open={infoOpen} onClose={() => setInfoOpen(false)} />
 
       <ShareStory story={story} isOpen={shareModalOpen} setOpen={setShareModalOpen} />
       <ConfirmationWarning

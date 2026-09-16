@@ -282,6 +282,8 @@ $menu-hover: $color-menu-hover;
 // Figma "Library Item": a full-width row, used by both story and essay cards.
 // Figma "Library Item" (story): white card, 4px active border, 12px radius.
 .library-item-card {
+  // Anchors the story card's absolutely positioned corner info button.
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   background: $color-surface !important;
@@ -328,6 +330,31 @@ $menu-hover: $color-menu-hover;
   align-items: flex-start;
   gap: 10px;
   width: 100%;
+
+  // Keeps the title and description clear of the corner info button (24px + 8px gap).
+  .library-item-main {
+    padding-right: 32px;
+  }
+}
+
+// Corner "i" button, centred on the title line: muted at rest, ink on a pale-green disc on hover.
+.library-story-card-info-button.MuiIconButton-root {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  color: $color-muted;
+  transition:
+    color 0.12s ease,
+    background-color 0.12s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-ink;
+    background-color: $color-progress-empty;
+  }
 }
 
 // Figma "Frame 2087326980": progress grows on the left, status icons sit right.

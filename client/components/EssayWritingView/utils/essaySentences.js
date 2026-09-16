@@ -57,6 +57,17 @@ const getWordSpanContaining = (text, index) => {
 const getWordSpanInside = (text, caretIndex) =>
   isWordCharacterAt(text, caretIndex - 1) ? getWordSpanContaining(text, caretIndex) : null
 
+const wordRunRegex = new RegExp(`${wordCharacterRegex.source}+`, 'gu')
+
+// Every word of a completed sentence as absolute [start, end) offsets — the spans a click selects.
+export const getSelectableWordSpans = sentences =>
+  sentences.flatMap(sentence =>
+    Array.from(sentence.text.matchAll(wordRunRegex), match => ({
+      start: sentence.startIndex + match.index,
+      end: sentence.startIndex + match.index + match[0].length,
+    })),
+  )
+
 const whitespaceRegex = /\s/
 
 // The essay focus for a dragged passage of any length: the trimmed selection as a text selection,
