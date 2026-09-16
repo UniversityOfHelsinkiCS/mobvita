@@ -12,10 +12,10 @@ import UploadFromFile from './UploadFromFile'
 import UploadPastedText from './UploadPastedText'
 import './AddNewStoryDialog.scss'
 
-// Each story source's upload form, its dialog title, and optionally an info tooltip by the title.
+// Each story source: its upload form, dialog title, optional info tooltip, and lead-line flag.
 const SOURCES = {
   web: { Form: UploadFromWeb, titleId: 'upload-from-web', infoId: 'upload-from-web-instructions' },
-  file: { Form: UploadFromFile, titleId: 'upload-stories' },
+  file: { Form: UploadFromFile, titleId: 'upload-stories', lead: false },
   paste: { Form: UploadPastedText, titleId: 'paste-a-text' },
 }
 
@@ -48,10 +48,18 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
   const { lesson_topics } = useSelector(({ metadata }) => metadata)
   const userIsAnonymous = useIsAnonymous()
   const [view, setView] = useState('main')
+  // A form may swap the title's info tooltip (Upload File explains the active tab's format).
+  const [infoOverride, setInfoOverride] = useState(null)
   const source = SOURCES[view]
   const UploadForm = source?.Form
+  const infoId = infoOverride ?? source?.infoId
+  const showLead = !source || source.lead !== false
 
-  const backToMain = () => setView('main')
+  const showView = nextView => {
+    setInfoOverride(null)
+    setView(nextView)
+  }
+  const backToMain = () => showView('main')
 
   // Figma header: a muted Back row above the H2 (sub-views only) and an info icon by the title.
   const title = (
@@ -64,8 +72,8 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
       )}
       <span className="add-story-dialog-title">
         <FormattedMessage id={source ? source.titleId : 'add-new-story'} />
-        {source?.infoId && (
-          <CustomTooltip keyId={source.infoId} permanent>
+        {infoId && (
+          <CustomTooltip keyId={infoId} permanent>
             <span className="add-story-dialog-info">
               <AppIcon src={images.alertCircle} size={20} />
             </span>
@@ -81,7 +89,7 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
       onClose={onClose}
       maxWidth="sm"
       title={title}
-      subtitle={<FormattedMessage id="add-stories-assistant-lead" />}
+      subtitle={showLead && <FormattedMessage id="add-stories-assistant-lead" />}
       closeDataCy="add-story-dialog-close"
       data-cy="add-story-dialog"
       slotProps={{ transition: { onExited: backToMain } }}
@@ -89,13 +97,17 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
       {...rest}
     >
       {UploadForm ? (
-        <UploadForm closeModal={onClose} setActiveComponent={backToMain} />
+        <UploadForm
+          closeModal={onClose}
+          setActiveComponent={backToMain}
+          setInfoId={setInfoOverride}
+        />
       ) : (
         <NewStoryInputOptions
           closeModal={onClose}
           lesson_topics={lesson_topics}
           userIsAnonymous={userIsAnonymous}
-          setActiveComponent={setView}
+          setActiveComponent={showView}
         />
       )}
     </AppDialog>

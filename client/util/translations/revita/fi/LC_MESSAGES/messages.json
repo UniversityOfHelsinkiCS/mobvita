@@ -1972,5 +1972,6 @@
     "story-info-covered": "Tekstistä käsitelty",
     "add-new-story": "Lisää uusi teksti",
     "new-url": "Uusi osoite",
-    "bookmarks-recommended": "Kirjanmerkit (suositellut)"
+    "bookmarks-recommended": "Kirjanmerkit (suositellut)",
+    "upload-drop-hint": "<u>Klikkaa</u> valitaksesi tiedoston tai pudota se tähän"
 }

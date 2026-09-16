@@ -1972,5 +1972,6 @@
     "story-info-covered": "Story covered",
     "add-new-story": "Add New Story",
     "new-url": "New URL",
-    "bookmarks-recommended": "Bookmarks (Recommended)"
+    "bookmarks-recommended": "Bookmarks (Recommended)",
+    "upload-drop-hint": "<u>Click</u> to choose file or drop it here"
 }

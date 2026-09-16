@@ -64,3 +64,70 @@
     flex: 1;
   }
 }
+
+// Figma "Upload File": tabs, drop zone, flashcard language row, and Submit with the card's 30px gap.
+.upload-from-file {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.upload-drop-zone-wrap {
+  position: relative;
+}
+
+// Figma drop zone: a 110px dashed green box with the upload arrow over the underlined hint.
+// A <label> so a click opens the picker; base.scss's label styles are reset here.
+.upload-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+  min-height: 110px;
+  margin: 0;
+  padding: 30px 10px;
+  border: 2px dashed #b1d3c2;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
+  color: #2d2c2a;
+  cursor: pointer;
+
+  &-active {
+    background: #e9f1ec;
+  }
+}
+
+.upload-drop-zone-formats {
+  font-size: 14px;
+}
+
+// Clears the chosen file; outside the label so the click does not reopen the picker.
+.upload-drop-zone-clear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+// "Translation target language:" beside the selector, which takes the remaining width (Figma gap 30).
+.upload-target-language {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #2d2c2a;
+
+  > button {
+    flex: 1;
+  }
+}
