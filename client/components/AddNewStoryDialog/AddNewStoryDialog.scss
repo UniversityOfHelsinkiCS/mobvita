@@ -76,7 +76,7 @@
   position: relative;
 }
 
-// Figma drop zone: a 110px dashed green box with the upload arrow over the underlined hint.
+// Figma drop zone: a 448x128 dashed green box with the upload arrow over the underlined hint.
 // A <label> so a click opens the picker; base.scss's label styles are reset here.
 .upload-drop-zone {
   display: flex;
@@ -85,9 +85,9 @@
   justify-content: center;
   gap: 4px;
   box-sizing: border-box;
-  min-height: 110px;
+  height: 128px;
   margin: 0;
-  padding: 30px 10px;
+  padding: 0 10px;
   border: 2px dashed #b1d3c2;
   border-radius: 12px;
   font-size: 16px;

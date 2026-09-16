@@ -81,18 +81,18 @@ const UploadFromFile = ({ closeModal, setActiveComponent, setInfoId }) => {
     {
       value: 'story',
       label: <FormattedMessage id="Story" />,
-      icon: <AppIcon src={images.paste} size={18} />,
+      icon: <AppIcon src={images.paste} size={20} />,
     },
     {
       value: 'flashcard',
       label: <FormattedMessage id="Flashcards" />,
-      icon: <AppIcon src={images.cardsIcon} size={18} />,
+      icon: <AppIcon src={images.cardsIcon} size={20} />,
     },
   ]
 
   return (
     <div className="upload-from-file">
-      <AppTabs tabs={tabs} value={mode} onChange={switchMode} fullWidth bordered size="sm" />
+      <AppTabs tabs={tabs} value={mode} onChange={switchMode} fullWidth variant="inner" />
 
       <div className="upload-drop-zone-wrap">
         <label
