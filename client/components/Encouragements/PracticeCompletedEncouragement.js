@@ -6,11 +6,18 @@ import AppButton from 'Components/AppButton'
 
 import './Encouragements.css'
 
+/**
+ * `layout` picks the surface it is drawn for:
+ *   'dialog' (default) - the centred modal: large art, fixed height, side-by-side buttons
+ *   'chat'             - inside an assistant bubble: no frame of its own, narrow-column sizing
+ */
 const PracticeCompletedEncouragement = ({
   continueAction,
   practiceType,
   setMessageIndex,
-  setShow }) => {
+  setShow,
+  layout = 'dialog',
+}) => {
   const navigate = useNavigate()
 
   const handlePrimaryButtonClick = () => {
@@ -23,29 +30,54 @@ const PracticeCompletedEncouragement = ({
     navigate('/home')
   }
 
+  const inChat = layout === 'chat'
+
+  const title = <FormattedMessage id={`${practiceType}-completed-title`} />
+  const message = <FormattedMessage id={`${practiceType}-completed-message`} />
+
+  const actions = (
+    <>
+      <AppButton
+        variant="primary"
+        size={inChat ? 'sm' : undefined}
+        type="button"
+        onClick={handlePrimaryButtonClick}
+      >
+        <FormattedMessage id={practiceType === 'story' ? 'restart-story' : 'Continue'} />
+      </AppButton>
+      <AppButton
+        variant="secondary"
+        size={inChat ? 'sm' : undefined}
+        type="button"
+        onClick={practiceType === 'story' ? () => setMessageIndex(1) : handleHomeClick}
+      >
+        <FormattedMessage id={practiceType === 'story' ? 'Continue' : 'Home'} />
+      </AppButton>
+    </>
+  )
+
+  // In the assistant the bubble is the surface, so this renders bare.
+  if (inChat) {
+    return (
+      <div className="encouragement-chat">
+        <div className="encouragement-chat-head">
+          <img src={images.encTrophy} alt="" />
+          <strong>{title}</strong>
+        </div>
+        <p className="encouragement-chat-message">{message}</p>
+        <div className="encouragement-chat-actions">{actions}</div>
+      </div>
+    )
+  }
+
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
         <img src={images.encTrophy} alt="encouraging trophy" />
-        <h2>
-          <FormattedMessage id={`${practiceType}-completed-title`} />
-        </h2>
-        <h5>
-          <FormattedMessage id={`${practiceType}-completed-message`} />
-        </h5>
+        <h2>{title}</h2>
+        <h5>{message}</h5>
       </div>
-      <div className="encouragement-button-group">
-        <AppButton variant="primary" type="button" onClick={handlePrimaryButtonClick}>
-          <FormattedMessage id={practiceType === 'story' ? 'restart-story' : 'Continue'} />
-        </AppButton>
-        <AppButton
-          variant="secondary"
-          type="button"
-          onClick={practiceType === 'story' ? () => setMessageIndex(1) : handleHomeClick}
-        >
-          <FormattedMessage id={practiceType === 'story' ? 'Continue' : 'Home'} />
-        </AppButton>
-      </div>
+      <div className="encouragement-button-group">{actions}</div>
     </div>
   )
 }

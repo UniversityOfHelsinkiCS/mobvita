@@ -62,6 +62,22 @@ export const addToCorrectAnswers = () => ({ type: 'ADD_TO_CORRECT_ANSWERS' })
 
 export const addToTotal = () => ({ type: 'ADD_TO_TOTAL_ANSWERS' })
 
+// Which card the practice deck is showing. The deck tracks its position in local state, so this is
+// how anything outside it (the flashcards assistant) learns what the learner is looking at.
+export const setCurrentFlashcard = card => ({ type: 'SET_CURRENT_FLASHCARD', card })
+
+// Which of the current card's hints the learner has revealed. It lives here rather than in the
+// card because the assistant reveals them too, and the answer payload reports the count as
+// `hints_shown` — so both surfaces have to agree on one list. Selecting a new card clears it.
+export const revealFlashcardHint = index => ({ type: 'REVEAL_FLASHCARD_HINT', index })
+
+// The deck reports that it ran out of cards; the assistant raises the "Deck completed!" message and
+// asks for the next deck from there. `newDeckRequestId` is a counter rather than a flag so the deck
+// can tell a fresh request from the one it already handled.
+export const setDeckCompleted = value => ({ type: 'SET_DECK_COMPLETED', value })
+
+export const requestNewFlashcardDeck = () => ({ type: 'REQUEST_NEW_FLASHCARD_DECK' })
+
 // Reducer
 
 const initialState = {
@@ -71,6 +87,10 @@ const initialState = {
   correctAnswers: 0,
   totalAnswers: 0,
   creditableWordsNum: 0,
+  currentCard: null,
+  revealedHints: [],
+  deckCompleted: false,
+  newDeckRequestId: 0,
 }
 
 const isCurrentCardsRequest = (state, action) => action.requestId && action.requestId === state.activeCardsRequestId
@@ -79,6 +99,25 @@ const deleteCard = (cards, response) => cards?.filter(card => card._id !== respo
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_CURRENT_FLASHCARD':
+      return {
+        ...state,
+        currentCard: action.card,
+        // A different card means a fresh hint tally.
+        revealedHints: action.card?._id === state.currentCard?._id ? state.revealedHints : [],
+      }
+
+    case 'SET_DECK_COMPLETED':
+      return { ...state, deckCompleted: action.value }
+
+    case 'REQUEST_NEW_FLASHCARD_DECK':
+      return { ...state, deckCompleted: false, newDeckRequestId: state.newDeckRequestId + 1 }
+
+    case 'REVEAL_FLASHCARD_HINT':
+      return state.revealedHints.includes(action.index)
+        ? state
+        : { ...state, revealedHints: [...state.revealedHints, action.index] }
+
     case 'ADD_TO_CORRECT_ANSWERS':
       return {
         ...state,

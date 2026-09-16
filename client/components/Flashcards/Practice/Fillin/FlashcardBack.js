@@ -1,10 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
-import { FormattedMessage } from 'react-intl'
-import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
-import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 
 // The green "Word Nest" pill used on the flashcard (design-only styling passed to the shared launcher).
 export const WORDNEST_PILL_STYLE = {
@@ -30,7 +27,6 @@ const FlashcardBack = ({
   infoMessage,
   lemma,
   handleIndexChange,
-  translation,
   ...props
 }) => {
   const handleEnter = useCallback(event => {
@@ -54,7 +50,7 @@ const FlashcardBack = ({
     : glosses
 
   return (
-    <Flashcard {...props}>
+    <Flashcard showActions {...props}>
       <span
         style={{
           display: 'block',
@@ -69,16 +65,6 @@ const FlashcardBack = ({
         {lemma}
       </span>
       {infoMessage && <div className="justify-center">{infoMessage}</div>}
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75em' }}>
-        <WordNestLauncher
-          lemma={lemma}
-          translation={translation}
-          icon={images.wordnest}
-          label={<FormattedMessage id="word-nest" defaultMessage="Word Nest" />}
-          buttonStyle={WORDNEST_PILL_STYLE}
-          divStyle={{ display: 'inline-flex' }}
-        />
-      </div>
       <div className="flashcard-text-container">
         <div className="flashcard-translations">
           <ul>{translations}</ul>

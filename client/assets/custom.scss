@@ -1964,29 +1964,6 @@ label.file-upload-btn {
   box-shadow: 0.5em 0.5em 0.6em grey;
 }
 
-.flashcard-story-info-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  max-width: 250px;
-  max-height: 300px;
-  border-radius: 12px;
-  box-shadow: 0.5em 0.5em 0.6em grey;
-  padding: 20px;
-  background: #fff;
-  color: #000000;
-  margin-top: 12px;
-}
-
-.flashcard-side-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-self: stretch;
-  min-height: 100%;
-  margin-left: 12px;
-}
 
 .flashcard {
   display: flex;
@@ -2382,14 +2359,6 @@ label.file-upload-btn {
   }
 }
 
-.flashcard-story-info-icon-slot {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 2;
-  width: 28px;
-  height: 28px;
-}
 
 .flashcard-settings-menu {
   min-width: 200px;

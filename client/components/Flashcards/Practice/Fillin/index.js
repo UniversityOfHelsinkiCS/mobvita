@@ -139,8 +139,8 @@ const Fillin = ({
     id,
     answerCorrect,
     flipCard,
-    focusedAndBigScreen,
     handleEdit,
+    focusedAndBigScreen,
     lemma,
     phonetics,
   }
@@ -160,15 +160,11 @@ const Fillin = ({
     )
   }
 
-  const translationForWordNest = lemma ? [{ lemma }] : null
-
   return (
     <ReactCardFlip isFlipped={flipped}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
-        hints={hints}
-        translation={translationForWordNest}
         {...cardProps}
       />
       <FlashcardBack
@@ -177,7 +173,6 @@ const Fillin = ({
         swipeIndex={swipeIndex}
         handleIndexChange={handleIndexChange}
         infoMessage={infoMessage}
-        translation={translationForWordNest}
         {...cardProps}
       />
     </ReactCardFlip>

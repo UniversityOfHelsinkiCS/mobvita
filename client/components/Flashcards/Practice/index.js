@@ -11,13 +11,14 @@ import {
   addToTotal,
   answerBluecards,
   getStoriesBlueFlashcards,
+  setCurrentFlashcard,
+  setDeckCompleted,
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
-import PracticeCompletedEncouragement from '../../Encouragements/PracticeCompletedEncouragement'
 import FlashcardEndView from './FlashcardEndView'
 import FlashcardNoCards from './FlashCardNoCards'
 import ArrowButton from './ArrowButton'
@@ -30,8 +31,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
   const [amountAnswered, setAmountAnswered] = useState(0)
-  const [showPracticeCompletedEncouragement, setShowPracticeCompletedEncouragement] =
-    useState(false)
   const location = useLocation()
   const { enable_recmd, vocabulary_seen } = useSelector(({ user }) => user.data.user)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -40,7 +39,9 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [latestStories, setLatestStories] = useState([])
   // const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
-  const { totalAnswers, storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+  const { totalAnswers, storyBlueCards, newDeckRequestId } = useSelector(
+    ({ flashcards }) => flashcards
+  )
   const incomplete = useSelector(({ incomplete }) => incomplete.data)
   const loading = useSelector(({ incomplete }) => incomplete.pending)
   const { pending, deletePending, sessionId } = useSelector(
@@ -98,6 +99,14 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     swipeIndexRef.current = swipeIndex
   }, [swipeIndex])
 
+  // Publish the visible card so the assistant can show its word, speak it and offer its hints.
+  // Cleared on unmount, so leaving practice does not leave a stale word in the sidebar.
+  useEffect(() => {
+    dispatch(setCurrentFlashcard(cards[swipeIndex] || null))
+  }, [swipeIndex, cards])
+
+  useEffect(() => () => dispatch(setCurrentFlashcard(null)), [])
+
   useEffect(() => {
     if (!swiperRef.current) return
     if (swiperRef.current.activeIndex !== swipeIndex) {
@@ -105,12 +114,15 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     }
   }, [swipeIndex])
 
+  // The assistant raises the "Deck completed!" message; this just reports that the deck ran out.
   useEffect(() => {
     if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
-      setShowPracticeCompletedEncouragement(true)
+      dispatch(setDeckCompleted(true))
       setAmountAnswered(0)
     }
   }, [swipeIndex, pending, cards.length])
+
+  useEffect(() => () => dispatch(setDeckCompleted(false)), [])
 
   useEffect(() => {
     setSwipeIndex(0)
@@ -199,6 +211,15 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       if (index < oldIndex) setSwipeIndex(oldIndex)
     }, 1)
   }
+
+  // The assistant asks for the next deck by bumping the request counter; only a new value is acted
+  // on, so the initial render does not fetch twice.
+  const handledDeckRequest = useRef(newDeckRequestId)
+  useEffect(() => {
+    if (newDeckRequestId === handledDeckRequest.current) return
+    handledDeckRequest.current = newDeckRequestId
+    handleNewDeck()
+  }, [newDeckRequestId])
 
   const handleNewDeck = () => {
     setSwipeIndex(0)
@@ -308,17 +329,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   }
   return (
     <div>
-      {showPracticeCompletedEncouragement && (
-        <div className={width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}>
-          <div className="col-flex">
-            <PracticeCompletedEncouragement
-              practiceType="flashcard"
-              setShow={setShowPracticeCompletedEncouragement}
-              continueAction={handleNewDeck}
-            />
-          </div>
-        </div>
-      )}
       <Swiper
         onSwiper={instance => {
           swiperRef.current = instance

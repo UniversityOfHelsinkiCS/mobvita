@@ -31,7 +31,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
   ]
 
   // 1px green outline around the whole bar so it reads against the cream card.
-  return <AppTabs tabs={tabs} value={mode} onChange={handleOptionClick} fullWidth bordered />
+  return <AppTabs tabs={tabs} value={mode} onChange={handleOptionClick} fullWidth bordered variant='inner' />
 }
 
 const FlashcardMenu = () => {

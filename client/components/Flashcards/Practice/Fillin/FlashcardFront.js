@@ -1,31 +1,27 @@
-import React, { useState } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React from 'react'
 import { useSelector } from 'react-redux'
-import { FormattedMessage } from 'react-intl'
-import { learningLanguageSelector, dictionaryLanguageSelector, images } from 'Utilities/common'
+import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
-import FlashcardHint from './FlashcardHint'
 import Flashcard from '../Flashcard'
-import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
-import { WORDNEST_PILL_STYLE } from './FlashcardBack'
 
 const FlashcardFront = ({
   answerChecked,
   answerCorrect,
   checkAnswer,
-  hints,
   lemma,
   phonetics,
   focusedAndBigScreen,
   stage,
-  translation,
   ...props
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const sameLanguage = learningLanguage === dictionaryLanguage
   const fontClass = lemma.length < 15 ? 'flashcard-title' : 'flashcard-title-small'
-  const [displayedHints, setDisplayedHints] = useState([])
+  // Shared with the assistant, which reveals the same hints — see revealFlashcardHint.
+  const displayedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
 
   return (
     <Flashcard stage={stage} {...props}>
@@ -35,13 +31,6 @@ const FlashcardFront = ({
         </h2>
         <h3 className="flashcard-phonetics">{phonetics && phonetics}</h3>
       </div>
-      <FlashcardHint
-        lemma={lemma}
-        hints={hints}
-        stage={stage}
-        displayedHints={displayedHints}
-        setDisplayedHints={setDisplayedHints}
-      />
       {!sameLanguage && (
         <div className="flashcard-input-and-result-container">
           <FlashcardInput
@@ -51,19 +40,6 @@ const FlashcardFront = ({
             displayedHints={displayedHints}
           />
           <FlashcardResult answerCorrect={answerCorrect} />
-        </div>
-      )}
-      {answerChecked && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.75em' }}>
-          <WordNestLauncher
-            lemma={lemma}
-            translation={translation}
-            className="pop-in-word-nest"
-            icon={images.wordnest}
-            label={<FormattedMessage id="word-nest" defaultMessage="Word Nest" />}
-            buttonStyle={WORDNEST_PILL_STYLE}
-            divStyle={{ display: 'inline-flex' }}
-          />
         </div>
       )}
     </Flashcard>

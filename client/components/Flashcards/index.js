@@ -3,20 +3,17 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
-import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import FlashcardMenu from './FlashcardMenu'
 import FlashcardCreation from './FlashcardCreation'
 import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
-import { FlashcardStoryInfo, FlashcardStoryInfoIcon } from './FlashcardStoryInfo'
 import AppTabs from 'Components/ui/AppTabs'
-import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
 import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import SettingButton from 'Components/SettingsButton'
-import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
+import FlashcardsChatbot from 'Components/ChatBot/FlashcardsChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 import './Flashcards.scss'
@@ -36,21 +33,7 @@ const Flashcards = () => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
-  const blueCardStory = useSelector(({ flashcards }) =>
-    flashcards.storyBlueCards?.find(story => story.story_id === storyId)
-  )
-  const regularStory = useSelector(({ stories }) =>
-    stories.data?.find(story => story._id === storyId)
-  )
-  const selectedStory = type === 'test' ? blueCardStory : regularStory
-  const { num_of_rewardable_words: numOfRewardableWords, title } = selectedStory || {}
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
-  const shouldShowStoryInfo =
-    mode !== 'list' &&
-    mode !== 'new' &&
-    Boolean(storyId) &&
-    (type === 'story' || type === 'test') &&
-    Boolean(title)
 
   const inBlueCardsTest = location.pathname.includes('test')
 
@@ -174,34 +157,6 @@ const Flashcards = () => {
                 <SettingButton style={{ position: 'static', margin: 0 }} />
               </div>
             )}
-            {/* Only render the story-info column/icon when there's actually story info to show. */}
-            {shouldShowStoryInfo &&
-              (width >= 840 ? (
-                <div className="flashcard-side-column">
-                  <FlashcardStoryInfo
-                    title={title}
-                    type={type}
-                    numOfRewardableWords={numOfRewardableWords}
-                  />
-                </div>
-              ) : (
-                <div className="flashcard-story-info-icon-slot">
-                  <FlashcardStoryInfoIcon
-                    title={title}
-                    type={type}
-                    numOfRewardableWords={numOfRewardableWords}
-                  />
-                </div>
-              ))}
-
-            <AppDialog
-              open={showBlueCardsTestEncouragement}
-              onClose={() => handleBlueCardsPromptVisibility(false)}
-              maxWidth="xs"
-            >
-              <BlueCardsTestEncouragement setShow={handleBlueCardsPromptVisibility} />
-            </AppDialog>
-
             {width < 840 ? <FloatMenu /> : null}
 
             <div className="flashcard-main-row">
@@ -214,7 +169,12 @@ const Flashcards = () => {
       </div>
 
       <HelperSidebar>
-        <GeneralChatbot />
+        {/* The blue-cards prompt is raised by the assistant rather than a modal, but its timing
+            still lives here — this is where the practice view reports back. */}
+        <FlashcardsChatbot
+          showBlueCardsPrompt={showBlueCardsTestEncouragement}
+          onDismissBlueCardsPrompt={handleBlueCardsPromptVisibility}
+        />
       </HelperSidebar>
     </div>
   )

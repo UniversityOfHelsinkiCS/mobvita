@@ -22,7 +22,9 @@
   display: flex;
   align-items: center;
   gap: 1em;
-  padding: 1.25em 1.5em 0;
+  // The gap under the bar lives here, not on the menu inside it: a margin on a flex child is part
+  // of the box `align-items: center` centres, so it would push the tabs off the gear's centre line.
+  padding: 1.25em 1.5em 1.7em;
 
   // Definite width so the fullWidth AppTabs inside resolves its 100%.
   &-menu {
@@ -35,7 +37,11 @@
 .flashcard-menu {
   width: 100%;
   padding: 0;
-  margin: 0 0 1.7em 0;
+  margin: 0;
+}
+
+.flashcard-main {
+  padding: 20px;
 }
 
 // The card area: takes the remaining height and centres the card both vertically and horizontally.

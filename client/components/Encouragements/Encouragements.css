@@ -37,3 +37,38 @@
 .encouragement-button-group button {
   width: 150px;
 }
+
+/* Chat layout (`layout="chat"`): the assistant bubble is the surface, so this adds no frame of its
+   own — no background, no fixed height, and art sized for the sidebar's narrow column. */
+.encouragement-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.encouragement-chat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.encouragement-chat-head img {
+  /* Overrides the 30% cap the dialog art uses. */
+  width: 32px;
+  height: 32px;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.encouragement-chat-message {
+  margin: 0;
+  color: #2d2c2a;
+}
+
+.encouragement-chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

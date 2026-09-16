@@ -56,7 +56,12 @@ const SettingButton = ({ style }) => {
   )
 
   return (
-    <div data-cy="flashcards-dictionary-language">
+    // inline-flex, not the default block: a block wrapper's line box is taller than the 32px icon,
+    // which left the gear off the centre line of whatever it sits beside.
+    <div
+      data-cy="flashcards-dictionary-language"
+      style={{ display: 'inline-flex', alignItems: 'center', flexShrink: 0 }}
+    >
       <AppMenu trigger={gear} minWidth={220}>
         <div style={headingStyle}>
           <FormattedMessage id="translate-into" defaultMessage="Translate into" />

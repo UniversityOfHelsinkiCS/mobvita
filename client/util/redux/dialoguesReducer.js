@@ -36,6 +36,16 @@ export const sendGeneralDialogue = (message, scope) => {
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
 }
 
+// The flashcards assistant. It shares the general endpoint for now; this is the single place to
+// point it at a flashcards-specific assistant-api agent, and every reducer case is keyed on the
+// shared GET_DIALOGUE_RESPONSE prefix, so only the route has to change.
+export const sendFlashcardsDialogue = (message, scope) => {
+  const route = `/chatbot/general`
+  const prefix = 'GET_DIALOGUE_RESPONSE'
+  const payload = { message }
+  return { ...callBuilder(route, prefix, 'post', payload), scope, message }
+}
+
 const initialState = {
   items: [],
   nextId: 1,

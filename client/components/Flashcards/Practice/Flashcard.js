@@ -4,7 +4,10 @@ import { flashcardColors, images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardDelete from './FlashcardDelete'
 
-const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit }) => {
+// `showActions` is the back of the card asking for the edit/delete row. It is an explicit flag
+// rather than a test on `id`, because a blue-card deck's items can arrive without one and the
+// controls still belong there. The front is the exercise, so it never sets it.
+const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit, showActions }) => {
   const { background, foreground } = flashcardColors
 
   return (
@@ -15,7 +18,7 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
       <div data-cy="flashcard-content" className="flashcard-content">
         <div className="flashcard-header">
           <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-            {handleEdit && (
+            {showActions && handleEdit && (
               <button className="flashcard-blended-input" type="button" onClick={handleEdit}>
                 <img src={images.edit03} alt="edit" style={{ width: 20, height: 20 }} />
               </button>
@@ -23,7 +26,7 @@ const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit })
           </div>
           <div style={{ flex: 1, textAlign: 'center' }}>{cardNumbering}</div>
           <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <FlashcardDelete id={id} />
+            {showActions && <FlashcardDelete id={id} />}
           </div>
         </div>
         {children}

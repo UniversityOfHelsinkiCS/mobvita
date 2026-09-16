@@ -20,11 +20,13 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * Long labels never wrap, so a `fullWidth` bar grows past its container rather than clipping them.
  * Put it in an `overflow-x: auto` wrapper to scroll that case.
  *
- * Variants:
- *   - default : no outline — use on the page background where the cream bar reads on its own.
- *   - inner   : pass `bordered` for a 1px green outline around the whole bar, so it stays legible
- *               when nested inside another cream surface (a card or modal — e.g. Flashcards, the
- *               learning-settings modal).
+ * Variants (`variant`):
+ *   - 'default' : separate cream pills with a gap between them. Pass `bordered` for a 1px green
+ *                 outline around the whole bar, so it stays legible when nested inside another
+ *                 cream surface (a card or modal — e.g. Flashcards, the learning-settings modal).
+ *   - 'inner'   : one joined 36px pill — a 2px green outline around the bar, matching dividers
+ *                 between segments and no gap, so the active segment fills its cell edge to edge
+ *                 and takes the bar's rounding at either end.
  */
 const BADGE_ORANGE = '#FF7A45'
 
@@ -38,9 +40,11 @@ const SIZES = {
 const SIZE_KEYS = { xs: 'tiny', sm: 'small', md: 'medium', lg: 'large' }
 const resolveSize = size => SIZES[SIZE_KEYS[size] || size] || SIZES.medium
 
+const INNER_HEIGHT = 36
+
 const TabsBar = styled('div', {
-  shouldForwardProp: prop => !['fullWidth', 'bordered', 'sizing'].includes(prop),
-})(({ fullWidth, bordered, sizing }) => ({
+  shouldForwardProp: prop => !['fullWidth', 'bordered', 'sizing', 'inner'].includes(prop),
+})(({ fullWidth, bordered, sizing, inner }) => ({
   display: fullWidth ? 'flex' : 'inline-flex',
   // fullWidth keeps `width: 100%`. A content-derived width (max-content) breaks when the bar is a
   // flex item: `min-width: 100%` then resolves against a container whose own width depends on the
@@ -49,18 +53,20 @@ const TabsBar = styled('div', {
   // covers every segment when they overflow.
   ...(fullWidth ? { width: '100%', minWidth: 'max-content' } : { width: 'auto' }),
   alignItems: 'center',
-  gap: sizing.barGap,
-  padding: sizing.barPad,
+  gap: inner ? 0 : sizing.barGap,
+  padding: inner ? 0 : sizing.barPad,
   boxSizing: 'border-box',
-  backgroundColor: colors.card,
+  backgroundColor: inner ? 'transparent' : colors.card,
   borderRadius: 999,
   // Optional 1px outline (same green as the active tab) so the whole bar reads on a cream surface.
-  border: bordered ? `1px solid ${colors.green}` : '1px solid transparent',
+  border: `${inner ? 2 : 1}px solid ${bordered || inner ? colors.green : 'transparent'}`,
+  // The segments are square and butt together; clipping to the bar is what rounds the two ends.
+  ...(inner && { height: INNER_HEIGHT, overflow: 'hidden' }),
 }))
 
 const Tab = styled('button', {
-  shouldForwardProp: prop => !['active', 'fullWidth', 'sizing'].includes(prop),
-})(({ active, fullWidth, sizing }) => ({
+  shouldForwardProp: prop => !['active', 'fullWidth', 'sizing', 'inner'].includes(prop),
+})(({ active, fullWidth, sizing, inner }) => ({
   flex: fullWidth ? 1 : 'none',
   // `flex: 1` means flex-basis 0, so segments share the bar equally — but labels don't wrap, and a
   // long one (or a long translation) would otherwise spill outside its pill. The floor keeps the
@@ -82,6 +88,14 @@ const Tab = styled('button', {
   transition: 'background-color 0.15s ease',
   '&:hover': { backgroundColor: active ? colors.greenHover : '#ECE3BE' },
   '& svg, & img': { width: sizing.icon, height: sizing.icon, flexShrink: 0 },
+  ...(inner && {
+    height: '100%',
+    borderRadius: 0,
+    // Divider between segments, matching the bar's own border; the last one would otherwise
+    // double up with it.
+    borderRight: `2px solid ${colors.green}`,
+    '&:last-of-type': { borderRight: 'none' },
+  }),
 }))
 
 const Badge = styled('span', {
@@ -108,12 +122,20 @@ const AppTabs = ({
   onChange,
   fullWidth = false,
   bordered = false,
+  variant = 'default',
   size = 'md',
 }) => {
   const sizing = resolveSize(size)
+  const inner = variant === 'inner'
 
   return (
-    <TabsBar fullWidth={fullWidth} bordered={bordered} sizing={sizing} role="tablist">
+    <TabsBar
+      fullWidth={fullWidth}
+      bordered={bordered}
+      inner={inner}
+      sizing={sizing}
+      role="tablist"
+    >
       {tabs.map(tab => {
         const tabButton = (
           <Tab
@@ -126,6 +148,7 @@ const AppTabs = ({
             className={tab.className}
             data-cy={`tab-${tab.value}`}
             fullWidth={fullWidth}
+            inner={inner}
             sizing={sizing}
             onClick={() => onChange(tab.value)}
           >

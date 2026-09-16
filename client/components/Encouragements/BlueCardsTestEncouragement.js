@@ -9,7 +9,18 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import './Encouragements.css'
 
-const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCount }) => {
+/**
+ * `layout` picks the surface it is drawn for:
+ *   'dialog' (default) - the centred modal: large art, fixed height, side-by-side buttons
+ *   'chat'             - inside an assistant bubble: no frame of its own, narrow-column sizing
+ */
+const BlueCardsTestEncouragement = ({
+  setShow,
+  storyId,
+  storyTitle,
+  blueCardCount,
+  layout = 'dialog',
+}) => {
   const [prevBlueCards, setPrevBlueCards] = useState(null)
 
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
@@ -59,6 +70,56 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
     return null
   }
 
+  const inChat = layout === 'chat'
+
+  const title = (
+    <FormattedMessage
+      id="blue-cards-test-encouragement-title"
+      values={{ nWords: resolvedBlueCardCount }}
+    />
+  )
+
+  const message = (
+    <>
+      <FormattedHTMLMessage id="blue-cards-test-encouragement-message" />
+      {': '}
+      <span style={{ fontStyle: 'italic' }}>{resolvedStoryTitle}</span>
+    </>
+  )
+
+  const actions = (
+    <>
+      <AppButton variant="primary" size={inChat ? 'sm' : undefined} type="button" onClick={startTest}>
+        <FormattedMessage id="start" />
+      </AppButton>
+      <AppButton
+        variant="secondary"
+        size={inChat ? 'sm' : undefined}
+        type="button"
+        onClick={secondaryTestButton}
+      >
+        <FormattedMessage
+          id={inStoryPractice ? 'home' : 'blue-cards-test-encouragement-dismiss-button'}
+        />
+      </AppButton>
+    </>
+  )
+
+  // In the assistant the bubble is the surface, so this renders bare: no container, no fixed
+  // height, and sizes that fit the sidebar's narrow column.
+  if (inChat) {
+    return (
+      <div className="encouragement-chat">
+        <div className="encouragement-chat-head">
+          <img src={images.cardsIcon} alt="" />
+          <strong>{title}</strong>
+        </div>
+        <p className="encouragement-chat-message">{message}</p>
+        <div className="encouragement-chat-actions">{actions}</div>
+      </div>
+    )
+  }
+
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
@@ -67,27 +128,10 @@ const BlueCardsTestEncouragement = ({ setShow, storyId, storyTitle, blueCardCoun
           alt="flashcards"
           style={{ width: 64, height: 64, marginBottom: 24 }}
         />
-        <h2>
-          <FormattedMessage
-            id="blue-cards-test-encouragement-title"
-            values={{ nWords: resolvedBlueCardCount }}
-          />
-        </h2>
-        <h5>
-          <FormattedHTMLMessage id="blue-cards-test-encouragement-message" />{': '}
-          <span style={{ fontStyle: 'italic' }}>{resolvedStoryTitle}</span>
-        </h5>
+        <h2>{title}</h2>
+        <h5>{message}</h5>
       </div>
-      <div className="encouragement-button-group">
-        <AppButton variant="primary" type="button" onClick={startTest}>
-          <FormattedMessage id="start" />
-        </AppButton>
-        <AppButton variant="secondary" type="button" onClick={secondaryTestButton}>
-          <FormattedMessage
-            id={inStoryPractice ? 'home' : 'blue-cards-test-encouragement-dismiss-button'}
-          />
-        </AppButton>
-      </div>
+      <div className="encouragement-button-group">{actions}</div>
     </div>
   )
 }

@@ -620,6 +620,28 @@ const DesignSystem = () => {
                     <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth bordered />
                   </div>
                 </div>
+                <div style={{ maxWidth: 620 }}>
+                  <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                    <code>variant=&quot;inner&quot;</code> — one joined 36px pill: a green outline
+                    around the bar, hairline dividers between the segments and no gap, so the active
+                    segment fills its cell edge to edge and takes the bar&apos;s rounding at either
+                    end. For a switch between views of the same page.
+                  </div>
+                  <div style={{ backgroundColor: colors.card, borderRadius: 30, padding: 20 }}>
+                    <AppTabs
+                      tabs={[
+                        { value: 'public', label: 'Timeline' },
+                        { value: 'private', label: 'Vocabulary Progress' },
+                        { value: 'group', label: 'Exercise History' },
+                        { value: 'test', label: 'Test History' },
+                      ]}
+                      value={tab}
+                      onChange={setTab}
+                      variant="inner"
+                      fullWidth
+                    />
+                  </div>
+                </div>
                 <div>
                   <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
                     Sizes — <code>xs</code> / <code>sm</code> / <code>md</code> (default) /{' '}
@@ -848,38 +870,103 @@ const DesignSystem = () => {
         </Section>
 
         <Section title="ChatBubble variants">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              width: 340,
-              padding: 16,
-              backgroundColor: colors.card,
-              borderRadius: 16,
-            }}
-          >
-            <ChatBubble variant="bot">Hi! I&apos;m Vita. Ask me anything.</ChatBubble>
-            <ChatBubble variant="user">How is my progress?</ChatBubble>
-            <ChatBubble variant="hint">A hint to help you along.</ChatBubble>
-            <ChatBubble variant="note">Feedback note about your sentence.</ChatBubble>
-            <ChatBubble variant="user-note" onRemove={() => {}}>
-              My own note (removable).
-            </ChatBubble>
-            <ChatBubble variant="controlled-note" onEdit={() => {}} onRemove={() => {}}>
-              My controlled note (editable and removable).
-            </ChatBubble>
-            <ChatBubble variant="options">
-              See-through bubble that holds action content (no background/shadow/padding).
-            </ChatBubble>
-            <ChatBubble variant="correction-replacement">
-              Correction: a word swapped for another (also multi-token corrections).
-            </ChatBubble>
-            <ChatBubble variant="correction-insertion">
-              Correction: a missing word/punctuation to add.
-            </ChatBubble>
-            <ChatBubble variant="correction-deletion">Correction: a word to remove.</ChatBubble>
-          </div>
+          {(() => {
+            // Each row names the variant it renders, so the page doubles as the prop reference.
+            const VARIANTS = [
+              {
+                variant: 'bot',
+                note: 'Assistant reply. Left, cream. The default.',
+                body: "Hi! I'm Vita. Ask me anything.",
+              },
+              {
+                variant: 'user',
+                note: 'The user’s message. Right, warm grey, squared top-right corner. Over four lines it collapses behind a fade — click to expand.',
+                body: 'How is my progress?',
+              },
+              {
+                variant: 'hint',
+                note: 'A hint or standing bit of context. Left, warm yellow, squared top-left corner.',
+                body: 'A hint to help you along.',
+              },
+              {
+                variant: 'note',
+                note: 'Feedback / system note. Left, blue panel tint.',
+                body: 'Feedback note about your sentence.',
+              },
+              {
+                variant: 'user-note',
+                note: 'The user’s own note. Right, cream tint.',
+                body: 'My own note (removable).',
+                onRemove: true,
+              },
+              {
+                variant: 'controlled-note',
+                note: 'A pasted note in controlled practice. Right, tan, with a paste glyph and its actions in a ⋮ menu rather than inline.',
+                body: 'My controlled note (editable and removable).',
+                onEdit: true,
+                onRemove: true,
+              },
+              {
+                variant: 'options',
+                note: 'Holds action content rather than a message: full width, no background, shadow, padding or gutter.',
+                body: 'See-through bubble that holds action content.',
+              },
+              {
+                variant: 'correction-replacement',
+                note: 'Essay correction — a word swapped for another, and any multi-token correction.',
+                body: 'Correction: a word swapped for another.',
+              },
+              {
+                variant: 'correction-insertion',
+                note: 'Essay correction — a missing word or mark to add.',
+                body: 'Correction: a missing word/punctuation to add.',
+              },
+              {
+                variant: 'correction-deletion',
+                note: 'Essay correction — a word to remove.',
+                body: 'Correction: a word to remove.',
+              },
+            ]
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <p style={{ fontSize: 13, color: '#666', maxWidth: 560, margin: 0 }}>
+                  Pass <code>onEdit</code> and/or <code>onRemove</code> to show the edit/delete
+                  actions in the top-right (a <code>⋮</code> menu on{' '}
+                  <code>controlled-note</code>). Correction variants carry the matching correction
+                  type’s colour, so a bubble about a correction reads as the same thing as the
+                  correction itself.
+                </p>
+
+                {VARIANTS.map(({ variant, note, body, onEdit, onRemove }) => (
+                  <div key={variant} style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+                    <div style={{ width: 240, flexShrink: 0 }}>
+                      <code style={{ fontSize: 12 }}>variant=&quot;{variant}&quot;</code>
+                      <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>{note}</div>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: 340,
+                        padding: 16,
+                        backgroundColor: colors.card,
+                        borderRadius: 16,
+                      }}
+                    >
+                      <ChatBubble
+                        variant={variant}
+                        onEdit={onEdit ? () => {} : undefined}
+                        onRemove={onRemove ? () => {} : undefined}
+                      >
+                        {body}
+                      </ChatBubble>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          })()}
         </Section>
 
         <Section title="AppToast">
