@@ -303,13 +303,11 @@ const LessonPracticeView = () => {
                 </div>
               </div>
             )}
-            {/* <div className="dictionary-and-annotations-cont">
-              
-              <DictionaryHelp />
-            </div> */}
-            {/* <PracticeChatbot /> */}
-            <HelperSidebar>
-              <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
+            
+            <HelperSidebar>              
+              <div style={{ margin: '20px 20px 0 20px' }}>
+                <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
+              </div>
               <CombinedChatbot />
             </HelperSidebar>
 
