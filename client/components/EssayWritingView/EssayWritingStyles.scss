@@ -381,12 +381,14 @@ $essay-green: #b1d3c2; // border / accent
 }
 
 .essay-writing-selected-passage {
+  font-weight: 400;
   min-width: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .essay-writing-corrected-word-deletion {
+  font-weight: 400;
   padding: 0 3px;
   border-radius: 3px;
   background-color: $essay-bubble-deletion-bg-color;
@@ -406,6 +408,7 @@ $essay-green: #b1d3c2; // border / accent
 }
 
 .essay-writing-corrected-word-insertion {
+  font-weight: 400;
   text-decoration: underline;
   background-color: $essay-bubble-insertion-bg-color;
 }
