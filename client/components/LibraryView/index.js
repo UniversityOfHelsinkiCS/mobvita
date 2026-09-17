@@ -42,7 +42,7 @@ import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
-import ConfirmationWarning from 'Components/ConfirmationWarning'
+import DeleteFolderDialog from './DeleteFolderDialog'
 import FolderCard from './FolderCard'
 import AddFolder from './AddFolder'
 import EssayCard from './EssayCard'
@@ -1268,15 +1268,11 @@ const StoryList = () => {
           className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
           style={{ flex: 1 }}
         >
-          <ConfirmationWarning
+          <DeleteFolderDialog
             open={Boolean(folderDeleteRequest)}
-            setOpen={open => {
-              if (!open) setFolderDeleteRequest(null)
-            }}
-            action={handleConfirmFolderDelete}
-          >
-            <FormattedMessage id="confirm-folder-delete" />
-          </ConfirmationWarning>
+            onClose={() => setFolderDeleteRequest(null)}
+            onConfirm={handleConfirmFolderDelete}
+          />
           {libraryControls}
           <Box
             data-cy="library-container"

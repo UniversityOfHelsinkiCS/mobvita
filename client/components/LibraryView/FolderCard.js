@@ -6,6 +6,13 @@ import AppButton from 'Components/AppButton'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
+import {
+  dialogActionsSx,
+  fieldLabelSx,
+  dialogSx,
+  pillButtonSx,
+  pillOutlineSx,
+} from 'Components/ui/dialogSx'
 import Folder from '../../assets/images/folder-full.svg'
 import FolderEmpty from '../../assets/images/folder-empty.svg'
 import FlipBackward from '../../assets/images/flip-backward.svg'
@@ -79,7 +86,7 @@ const FolderCard = ({
   }
 
   // A leading "go up one level" pill shown inside a subfolder: same size as a folder card, but a green
-  // flip-backward icon and "..." in place of the name (Figma "Library Folder" back variant).
+  // flip-backward icon and "..." in place of the name (the design's "Library Folder" back variant).
   if (isBack) {
     // Also a drop target: dragging a story onto it moves the story to the parent folder, the same
     // way dropping onto a breadcrumb does.
@@ -195,16 +202,15 @@ const FolderCard = ({
           open={renameOpen}
           onClose={closeRenameDialog}
           title={<FormattedMessage id="rename-folder" />}
-          maxWidth="xs"
+          maxWidth="md"
+          data-cy="rename-folder-dialog"
+          {...dialogSx(539)}
         >
-          <Box
-            component="form"
-            onSubmit={handleRenameSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}
-          >
+          <form onSubmit={handleRenameSubmit}>
             <AppTextField
               autoFocus
               label={intl.formatMessage({ id: 'folder-name' })}
+              labelSx={fieldLabelSx}
               value={renameValue}
               error={Boolean(renameError)}
               helperText={renameError}
@@ -212,16 +218,27 @@ const FolderCard = ({
                 setRenameValue(e.target.value)
                 setRenameError('')
               }}
+              inputProps={{ 'data-cy': 'rename-folder-name-input' }}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-              <AppButton variant="outline-secondary" onClick={closeRenameDialog}>
+            <Box sx={{ ...dialogActionsSx, mt: '30px' }}>
+              <AppButton
+                variant="tan-outline"
+                sx={pillOutlineSx()}
+                onClick={closeRenameDialog}
+                data-cy="rename-folder-cancel"
+              >
                 {intl.formatMessage({ id: 'Cancel' })}
               </AppButton>
-              <AppButton type="submit" variant="primary" disabled={!renameValue.trim()}>
+              <AppButton
+                type="submit"
+                sx={pillButtonSx()}
+                disabled={!renameValue.trim()}
+                data-cy="rename-folder-submit"
+              >
                 {intl.formatMessage({ id: 'Save' })}
               </AppButton>
             </Box>
-          </Box>
+          </form>
         </AppDialog>
       )}
     </>

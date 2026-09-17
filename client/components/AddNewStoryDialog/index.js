@@ -5,7 +5,8 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppIcon from 'Components/ui/AppIcon'
 import CustomTooltip from 'Components/CustomTooltip'
 import { images, useIsAnonymous } from 'Utilities/common'
-import { colors, font, shadow } from 'Assets/mui_theme/designTokens'
+import { colors } from 'Assets/mui_theme/designTokens'
+import { dialogSx } from 'Components/ui/dialogSx'
 import NewStoryInputOptions from './NewStoryInputOptions'
 import UploadFromWeb from './UploadFromWeb'
 import UploadFromFile from './UploadFromFile'
@@ -35,28 +36,8 @@ const SOURCES = {
   },
 }
 
-// Card padding per Figma "40px 60px" (sm and up); the phone-width values are derived.
-const PAD_X = { xs: 3, sm: 7.5 }
-const PAD_Y = { xs: 4, sm: 5 }
-
-// Figma "pick a story" chrome over AppDialog's defaults: 568px card, Shadow Mid, H2 title, 16px
-// lead gap, 30px to the content, and a muted X 20px from the corner.
-const FIGMA_DIALOG_SX = {
-  paperSx: { width: 568, boxShadow: shadow.mid },
-  titleSx: {
-    pl: PAD_X,
-    pr: { xs: 7, sm: 7.5 },
-    pt: PAD_Y,
-    pb: 3.75,
-    fontSize: font.h2,
-    fontWeight: 400,
-    lineHeight: 1,
-    letterSpacing: 0,
-  },
-  subtitleSx: { mt: 2 },
-  contentSx: { px: PAD_X, pb: PAD_Y },
-  closeSx: { right: 12, top: 12, color: colors.ink },
-}
+// The shared Figma dialog chrome; the generate source widens the card below.
+const FIGMA_DIALOG_SX = dialogSx()
 
 // AddNewStoryDialog — Figma "pick a story": the story-source pills, or the chosen upload form under
 // a Back row. Controlled via `open`/`onClose`; the view returns to the pills after the close fades.

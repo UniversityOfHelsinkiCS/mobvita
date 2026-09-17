@@ -13,7 +13,7 @@ import { postStory } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, images, learningLanguageSelector } from 'Utilities/common'
 import { updateFavouriteSites } from 'Utilities/redux/userReducer'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { fieldLabelSx, pillButtonSx } from './styles'
+import { fieldLabelSx, pillButtonSx } from 'Components/ui/dialogSx'
 
 const EMPTY_SITES = []
 
