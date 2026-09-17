@@ -1883,7 +1883,7 @@
     "connection-offline": "No connection",
     "interface-settings": "Настройки интерфейса",
     "all-topics-in-text": "All Topics In Text",
-    "rename-folder": "Rename folder",
+    "rename-folder": "Rename Folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
     "customise": "Customise",
     "start-lesson": "Start Lesson",
@@ -1984,5 +1984,6 @@
     "paste-text-label": "Text",
     "paste-title-placeholder": "Enter story title...",
     "paste-text-placeholder": "Paste text here...",
-    "paste-submit": "Submit"
+    "paste-submit": "Submit",
+    "teacher": "Teacher"
 }

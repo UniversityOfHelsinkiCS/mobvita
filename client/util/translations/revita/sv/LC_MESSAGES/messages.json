@@ -1698,11 +1698,11 @@
     "select-story-length": "Length of the story — number of sentences",
     "begin-practice-tailored": "Begin practice",
     "tailored-begin-practice": "Begin practice",
-    "confirm-folder-delete": "Are you sure you want to delete all stories in this folder?",
+    "confirm-folder-delete": "Are you sure you want to delete this folder and all of its contents?",
     "folder-name-required": "Folder name is required",
     "folder-name-invalid": "Folder name cannot contain /",
     "folder-name-exists": "A folder with this name already exists here",
-    "delete-folder": "Delete folder",
+    "delete-folder": "Delete Folder",
     "remove-empty-folder": "Remove empty folder",
     "folder-options": "Folder options",
     "edit-note": "Edit your note",
@@ -1737,7 +1737,7 @@
     "connection-offline": "No connection",
     "interface-settings": "Interface settings",
     "all-topics-in-text": "All Topics In Text",
-    "rename-folder": "Rename folder",
+    "rename-folder": "Rename Folder",
     "add-stories-assistant-lead": "Learn language by adding new stories to the library",
     "customise": "Customise",
     "start-lesson": "Start Lesson",
@@ -1838,5 +1838,6 @@
     "paste-text-label": "Text",
     "paste-title-placeholder": "Enter story title...",
     "paste-text-placeholder": "Paste text here...",
-    "paste-submit": "Submit"
+    "paste-submit": "Submit",
+    "teacher": "Teacher"
 }
