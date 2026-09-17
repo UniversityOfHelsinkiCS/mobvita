@@ -6,12 +6,8 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppDescriptionList from 'Components/ui/AppDescriptionList'
 import AppIcon from 'Components/ui/AppIcon'
 import AppProgressBar from 'Components/ui/AppProgressBar'
-import DifficultyLevel, { difficultyLevelName } from 'Components/DifficultyLevel'
-import { images } from 'Utilities/common'
+import { cefrNum2Cefr, images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
-
-// Backend level names → the i18n ids the difficulty tooltip already uses.
-const LEVEL_LABEL_IDS = { low: 'easy', average: 'average', high: 'difficult' }
 
 // Category names are i18n ids only sometimes; otherwise show the raw text.
 const translateIfKnown = (intl, value) =>
@@ -79,7 +75,7 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
   if (!story) return null
 
   const label = id => <FormattedMessage id={id} />
-  const level = difficultyLevelName(story.difficulty)
+  const cefr = cefrNum2Cefr(story.difficulty_value)
   const covered = toPercent(story.percent_cov)
   const correct = toPercent(story.percent_perf)
 
@@ -91,13 +87,8 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
     { id: 'category', label: label('Category'), value: translateIfKnown(intl, story.category) },
     {
       id: 'difficulty',
-      label: label('Difficulty'),
-      value: level && (
-        <>
-          <DifficultyLevel difficulty={story.difficulty} size={18} />
-          <FormattedMessage id={LEVEL_LABEL_IDS[level]} />
-        </>
-      ),
+      label: label('cefr_grade'),
+      value: cefr && <span style={{ fontWeight: 600 }}>{cefr}</span>,
     },
     {
       id: 'covered',
