@@ -267,10 +267,6 @@ $essay-green: #b1d3c2; // border / accent
   background-color: $essay-textarea-highlight-selection-bg-color;
 }
 
-.essay-writing-word-highlight-selected {
-  filter: brightness(1.1);
-}
-
 // Double underline marking the insertion spot between the two highlighted words.
 .essay-writing-insertion-underline {
   position: absolute;
@@ -381,6 +377,7 @@ $essay-green: #b1d3c2; // border / accent
 }
 
 .essay-writing-selected-passage {
+  font-family: var(--font-ui);
   font-weight: 400;
   min-width: 0;
   white-space: pre-wrap;
