@@ -12,7 +12,8 @@ import AppSelect from 'Components/ui/AppSelect'
 import TopicsSelect from 'Components/StoryView/TopicsSelect'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTabs from 'Components/ui/AppTabs'
-import AppButton from 'Components/AppButton'
+import AppButton, { roundIconButtonSx } from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import { FormattedMessage, useIntl } from 'react-intl'
 import CustomTooltip from 'Components/CustomTooltip'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -54,6 +55,7 @@ import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
+import StoryInfoButton from 'Components/StoryInfoButton'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ScrollArrow from '../ScrollArrow'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
@@ -500,15 +502,21 @@ const ReadViews = ({ match }) => {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
           <StoryFunctionsDropdown />
+          <StoryInfoButton story={routeStory} storyId={id} />
           {!routeStory?.control_story && (
             <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
-              <span
+              <AppButton
+                type="button"
+                variant="tan-outline"
+                size="sm"
+                disableRipple
+                aria-label={intl.formatMessage({ id: 'practice-settings' })}
                 onClick={handle_cog_click}
                 data-cy="story-preview-settings"
-                style={{ display: 'inline-flex', cursor: 'pointer' }}
+                sx={roundIconButtonSx}
               >
-                <img src={images.circleSettings} alt="" style={{ width: 36, height: 36 }} />
-              </span>
+                <AppIcon src={images.settings02} size={24} color="currentColor" />
+              </AppButton>
             </CustomTooltip>
           )}
         </Box>

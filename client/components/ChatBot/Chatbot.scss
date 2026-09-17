@@ -61,22 +61,10 @@ $chatbot-message-gap: 12px;
     letter-spacing: 0.5px;
   }
 
+  // Placement only — the gear is an AppButton, so its size, ring, colour and hover belong to the
+  // `tan-outline` variant.
   .settings-icon {
-    color: #666;
-    cursor: pointer;
-    transition:
-      color 0.15s ease,
-      transform 0.15s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transform-origin: center;
     margin-left: auto;
-
-    &:hover {
-      color: #333;
-      transform: scale(1.18);
-    }
   }
 
   @media (max-width: 900px) {

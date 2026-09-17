@@ -31,22 +31,10 @@
   color: #2d2c2a;
 }
 
-.settings-icon {      
-      color: #666;
-      cursor: pointer;
-      transition: color 0.15s ease, transform 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transform-origin: center;
-      margin-left: auto;
-      width: 36px;
-      height: 36px;
-
-      &:hover {
-        color: #333;
-        opacity: 0.8;        
-      }
+// Placement only — the gear is an AppButton, so its size, ring, colour and hover belong to the
+// `tan-outline` variant.
+.settings-icon {
+  margin-left: auto;
 }
 
 .first-message {

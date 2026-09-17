@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { Box } from '@mui/material'
-import { FormattedDate, FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import AppDialog from 'Components/ui/AppDialog'
 import AppDescriptionList from 'Components/ui/AppDescriptionList'
 import AppIcon from 'Components/ui/AppIcon'
@@ -27,10 +27,17 @@ const sourceHost = url => {
 }
 
 // The date arrives as an RFC 1123 string; an unparseable one hides the row instead of throwing.
-const formattedDate = date => {
+//
+// Composed from two formats rather than one: the design puts the year first ("2026, August 18"),
+// which no locale's own long-date order produces. Month and day are still formatted together, so
+// their order and any locale punctuation stay correct.
+const formattedDate = (intl, date) => {
   const parsed = new Date(date)
   if (!date || Number.isNaN(parsed.getTime())) return null
-  return <FormattedDate value={parsed} year="numeric" month="long" day="numeric" />
+
+  const year = intl.formatDate(parsed, { year: 'numeric' })
+  const monthAndDay = intl.formatDate(parsed, { month: 'long', day: 'numeric' })
+  return `${year}, ${monthAndDay}`
 }
 
 // Integer 0–100 from the backend's percentage, or null when it is missing.
@@ -51,8 +58,10 @@ const SourceLink = ({ url }) => (
 )
 
 // A percentage as a short bar with the number beside it.
+// Number first, then the bar: the figure is the value being read, the bar is the illustration.
 const PercentBar = ({ value }) => (
   <>
+    <span>{value}%</span>
     <AppProgressBar
       value={value}
       height="10px"
@@ -60,7 +69,6 @@ const PercentBar = ({ value }) => (
       trackColor={colors.progressEmpty}
       style={{ flex: '1 1 120px', maxWidth: 220 }}
     />
-    <span>{value}%</span>
   </>
 )
 
@@ -79,7 +87,7 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
   const rows = [
     { id: 'author', label: label('Author'), value: story.author },
     { id: 'source', label: label('Source'), value: story.URL && <SourceLink url={story.URL} /> },
-    { id: 'date', label: label('date-added'), value: formattedDate(story.date) },
+    { id: 'date', label: label('date-added'), value: formattedDate(intl, story.date) },
     { id: 'category', label: label('Category'), value: translateIfKnown(intl, story.category) },
     {
       id: 'difficulty',
@@ -111,11 +119,17 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
       maxWidth="sm"
       closeDataCy="story-info-dialog-close"
       data-cy="story-info-dialog"
+      // Roomier than MUI's 16/24px default: 40px around the card. The title is tight — 22px on a
+      // 1.2 leading — and sits close to the description it introduces.
+      titleSx={{ px: 5, pt: 5, pb: 1, fontSize: '22px', lineHeight: 1.2 }}
+      contentSx={{ px: 5, pb: 5 }}
+      closeSx={{ right: 20, top: 20 }}
       {...rest}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {story.description && (
-          <Box sx={{ fontSize: 14, lineHeight: 1.5, color: colors.ink, whiteSpace: 'pre-line' }}>
+          // Muted, so the title stays the only thing at full strength up here.
+          <Box sx={{ fontSize: 14, lineHeight: 1.5, color: colors.muted, whiteSpace: 'pre-line' }}>
             {story.description}
           </Box>
         )}

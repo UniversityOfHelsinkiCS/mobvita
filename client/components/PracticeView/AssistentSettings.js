@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
+import AppButton, { roundIconButtonSx } from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import AppMenu, { AppMenuCloseContext } from 'Components/ui/AppMenu'
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
@@ -43,7 +45,7 @@ const DictionaryLanguageSelect = ({ value, options, disabled, onChange }) => {
 }
 
 /**
- * AssistentSettings — the assistant's settings gear (Circle-settings icon). Clicking it opens the
+ * AssistentSettings — the assistant's settings gear. Clicking it opens the
  * design-system settings menu (AppMenu). For now the menu holds a single item — the dictionary
  * language selection (AppSelect, which opens its own list) — but it's structured so more settings
  * rows can be added later without changing the entry point.
@@ -75,14 +77,22 @@ const AssistentSettings = ({ className = '' }) => {
     dispatch(updateDictionaryLanguage(value))
   }
 
+  // The same round icon button as the story-page gears and the story-info "i": transparent with a
+  // 2px green ring, filling green on hover. `settings02` rather than the circled asset, which would
+  // draw a second ring inside this one.
   const gear = (
-    <img
-      src={images.circleSettings}
-      alt="settings"
+    <AppButton
+      type="button"
+      variant="tan-outline"
+      size="sm"
+      disableRipple
+      aria-label={intl.formatMessage({ id: 'Settings' })}
       data-cy="ai-assistant-settings-popup"
       className={className}
-      style={{ width: 36, height: 36, cursor: 'pointer', display: 'block' }}
-    />
+      sx={roundIconButtonSx}
+    >
+      <AppIcon src={images.settings02} size={24} color="currentColor" />
+    </AppButton>
   )
 
   return (
@@ -91,6 +101,9 @@ const AssistentSettings = ({ className = '' }) => {
       minWidth={240}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      // Without this MUI locks the page while the menu is open — it hides the body scrollbar and
+      // pads the body by its width, so opening the gear shifts everything behind it sideways.
+      disableScrollLock
     >
       {/* Settings item: dictionary language. Add more items below as needed. */}
       <div style={{ padding: '2px 6px 6px' }}>

@@ -177,4 +177,19 @@ const AppButton = forwardRef(
 
 AppButton.displayName = 'AppButton'
 
+/**
+ * `sx` for a round icon-only AppButton: a 36px circle showing the variant's 2px ring at rest and
+ * its fill on hover. Pair with `variant="tan-outline"`, `size="sm"` and `disableRipple` (the ripple
+ * covers a button this small). Shared so the settings gear and the story-info "i" cannot drift.
+ */
+export const roundIconButtonSx = {
+  minWidth: 36,
+  width: 36,
+  height: 36,
+  p: 0,
+  borderRadius: '50%',
+  borderWidth: 2,
+  backgroundColor: 'transparent',
+}
+
 export default AppButton

@@ -2,7 +2,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import AppButton from './AppButton'
+import AppButton, { roundIconButtonSx } from './AppButton'
 import AppMenu, { AppMenuItem } from './ui/AppMenu'
 import {
   images,
@@ -53,7 +53,7 @@ const SettingButton = ({ style }) => {
       // click leaves the green hover fill as its only feedback.
       disableRipple
       className="flashcard-settings-trigger"
-      sx={{ minWidth: 36, width: 36, height: 36, p: 0, borderRadius: '50%' }}
+      sx={roundIconButtonSx}
       style={style}
     >
       <img src={images.settings02} alt="" style={{ width: 24, height: 24, display: 'block' }} />

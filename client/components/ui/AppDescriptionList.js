@@ -16,16 +16,19 @@ const StyledList = styled('dl', { shouldForwardProp: prop => prop !== 'labelWidt
       columnGap: 16,
       rowGap: 2,
       padding: '9px 0',
-      borderBottom: `1px solid ${colors.cardBorder}`,
       '@media (max-width: 480px)': { gridTemplateColumns: 'minmax(0, 1fr)' },
     },
-    '& .app-description-row:last-of-type': { borderBottom: 0 },
+    // Label and value read as one line: same ink, same 16px. The label column is distinguished by
+    // its position and its colon, not by being smaller or greyer than what it names.
     '& dt': {
       margin: 0,
-      fontSize: font.label,
+      fontSize: 16,
       fontWeight: 500,
-      lineHeight: '20px',
-      color: colors.muted,
+      lineHeight: '24px',
+      color: colors.ink,
+      // Punctuation, not content: adding it here keeps it out of the translations (none of which
+      // carry one) and glued to the label however the label node is built.
+      '&::after': { content: '":"' },
     },
     '& dd': {
       display: 'flex',
@@ -34,10 +37,11 @@ const StyledList = styled('dl', { shouldForwardProp: prop => prop !== 'labelWidt
       gap: 8,
       margin: 0,
       minWidth: 0,
-      minHeight: 20,
-      fontSize: 14,
+      minHeight: 24,
+      fontSize: 16,
       fontWeight: 500,
-      lineHeight: '20px',
+      lineHeight: '24px',
+      color: colors.ink,
       overflowWrap: 'anywhere',
     },
   }),

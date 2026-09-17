@@ -50,6 +50,9 @@ import PracticeTimer from './PracticeTimer'
 import ScrollArrow from '../ScrollArrow'
 import Spinner from 'Components/Spinner'
 import HelperSidebar from './HelperSidebar'
+import AppButton, { roundIconButtonSx } from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
+import StoryInfoButton from 'Components/StoryInfoButton'
 import CombinedChatbot from './CombinedChatbot'
 import StoryTitleTranslate from './StoryTitleTranslate'
 
@@ -275,17 +278,23 @@ const PracticeView = () => {
                   progress={(currentSnippetNum / snippetsTotalNum).toFixed(2)}
                 />
               </div>
+              <StoryInfoButton story={story} storyId={id} />
               {hiddenFeatures && (
                 <CustomTooltip
                   title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
                 >
-                  <span
+                  <AppButton
+                    type="button"
+                    variant="tan-outline"
+                    size="sm"
+                    disableRipple
+                    aria-label={intl.formatMessage({ id: 'practice-settings' })}
                     onClick={() => setSettingsOpen(true)}
                     data-cy="practice-settings"
-                    style={{ display: 'inline-flex', cursor: 'pointer', flexShrink: 0 }}
+                    sx={roundIconButtonSx}
                   >
-                    <img src={images.circleSettings} alt="" style={{ width: 36, height: 36 }} />
-                  </span>
+                    <AppIcon src={images.settings02} size={24} color="currentColor" />
+                  </AppButton>
                 </CustomTooltip>
               )}
             </div>
