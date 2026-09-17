@@ -28,7 +28,6 @@ $essay-bubble-multi-bg-color: #c1dce6;
 $essay-bubble-replacement-bg-color: #c1dce6;
 $essay-bubble-insertion-bg-color: #d1e5b0;
 $essay-bubble-deletion-bg-color: #ffdcca;
-$essay-bubble-selection-bg-color: #ece3be;
 
 // 2026 design tokens (mirrors client/assets/mui_theme/designTokens.js — SCSS can't import the JS).
 $essay-card: #faf8ed; // cream panel
@@ -268,10 +267,6 @@ $essay-green: #b1d3c2; // border / accent
   background-color: $essay-textarea-highlight-selection-bg-color;
 }
 
-.essay-writing-word-highlight-selected {
-  filter: brightness(1.1);
-}
-
 // Double underline marking the insertion spot between the two highlighted words.
 .essay-writing-insertion-underline {
   position: absolute;
@@ -329,22 +324,9 @@ $essay-green: #b1d3c2; // border / accent
   }
 }
 
+// The bubble itself is the ui ChatBubble (correction variants); these classes only add the lift.
 .essay-writing-correction-bubble {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   z-index: 1300;
-  box-sizing: border-box;
-  width: 90%;
-  max-width: min(520px, calc(100vw - 32px));
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
-  border-radius: 16px;
-  background: $essay-card;
-  box-shadow:
-    0 2px 2px -1px rgba(0, 0, 0, 0.2),
-    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 1px 4px 0 rgba(0, 0, 0, 0.12) !important;
   transition: background 0.2s, filter 0.2s;
 
   &:hover {
@@ -355,32 +337,20 @@ $essay-green: #b1d3c2; // border / accent
   }
 
   // Untyped bubbles (pending / error) have no correction colour of their own, so they keep the
-  // generic lift. Typed ones below swap to their token's hover shade instead.
+  // generic lift. Typed ones take their colour from the ChatBubble variant instead.
   &:not([class*='essay-writing-correction-bubble-']):hover {
     filter: brightness(1.05);
   }
 }
 
-.essay-writing-correction-bubble-multi {
-  background: $essay-bubble-multi-bg-color !important;
-}
-
-.essay-writing-correction-bubble-replacement {
-  background: $essay-bubble-replacement-bg-color !important;
-}
-
-.essay-writing-correction-bubble-insertion {
-  background: $essay-bubble-insertion-bg-color !important;
-}
-
-.essay-writing-correction-bubble-deletion {
-  background: $essay-bubble-deletion-bg-color !important;
+// Pinned in the focused view a bubble is already selected, so it keeps still instead of lifting.
+.essay-chatbot-focused-suggestion .essay-writing-correction-bubble {
+  transform: none;
 }
 
 // The pinned bubble for a selected word. It stands for one of the user's own words rather than a
 // correction, and there is nothing behind it to open, so it drops the clickable bubble's lift.
 .essay-writing-correction-bubble-selection {
-  background: $essay-bubble-selection-bg-color !important;
   cursor: default;
 
   &:hover {
@@ -393,34 +363,34 @@ $essay-green: #b1d3c2; // border / accent
   flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: center;
-  min-width: 220px;
-  min-height: 32px;
-  gap: 0.35rem;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  min-width: 0;
+  min-height: 18px;
+  gap: 8px;
 }
 
 // Inline hint shown (instead of the corrected word) inside deletion/insertion bubbles.
 .essay-writing-correction-hint {
   flex: 1 1 auto;
   min-width: 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
 }
 
 // The user's own words — the only language content in the bubble.
 .essay-writing-corrected-word {
   font-family: var(--font-content);
-  font-size: large;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .essay-writing-selected-passage {
+  font-family: var(--font-ui);
+  font-weight: 400;
   min-width: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .essay-writing-corrected-word-deletion {
+  font-weight: 400;
   padding: 0 3px;
   border-radius: 3px;
   background-color: $essay-bubble-deletion-bg-color;
@@ -440,6 +410,7 @@ $essay-green: #b1d3c2; // border / accent
 }
 
 .essay-writing-corrected-word-insertion {
+  font-weight: 400;
   text-decoration: underline;
   background-color: $essay-bubble-insertion-bg-color;
 }
@@ -458,9 +429,17 @@ $essay-green: #b1d3c2; // border / accent
   font-style: italic;
 }
 
+// The feedback icon: a bare 16px glyph at the bubble's right edge, level with the first line.
 .essay-writing-correction-feedback-button {
   flex: 0 0 auto;
   margin-left: auto !important;
+  padding: 1px !important;
+  color: $essay-ink;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .essay-writing-correction-loading {

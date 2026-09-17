@@ -15,6 +15,7 @@ import AppMenu, { AppMenuItem } from './AppMenu'
  *   'note'      - feedback / system note (left, blue panel tint)
  *   'user-note' - the user's own note (right, warm cream tint)
  *   'hint'      - a hint bubble (left, warm yellow)
+ *   'comment'   - the assistant's comment on a correction (left, warm grey, squared top-left corner)
  *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
  *                 left-aligned like a bot reply but no background, shadow, or padding
  *
@@ -38,6 +39,20 @@ export const CORRECTION_COLORS = {
   deletion: '#FFDCCA',
 }
 
+// A correction bubble (2026 design): a compact speech bubble with a squared top-left corner that
+// hugs its content; the caller lays out what goes inside.
+const CORRECTION_SHAPE = {
+  alignSelf: 'flex-start',
+  color: colors.ink,
+  width: 'fit-content',
+  maxWidth: 300,
+  padding: 16,
+  borderRadius: 18,
+  borderTopLeftRadius: 3,
+  fontSize: 15,
+  lineHeight: '18px',
+}
+
 const VARIANT_STYLES = {
   bot: { alignSelf: 'flex-start', backgroundColor: colors.card, color: colors.ink },
   user: { alignSelf: 'flex-end', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopRightRadius: 2, paddingRight: 16 },
@@ -53,21 +68,10 @@ const VARIANT_STYLES = {
     paddingRight: 16,
   },
   hint: { alignSelf: 'flex-start', backgroundColor: '#ECE3BE', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
-  'correction-replacement': {
-    alignSelf: 'flex-start',
-    backgroundColor: CORRECTION_COLORS.replacement,
-    color: colors.ink,
-  },
-  'correction-insertion': {
-    alignSelf: 'flex-start',
-    backgroundColor: CORRECTION_COLORS.insertion,
-    color: colors.ink,
-  },
-  'correction-deletion': {
-    alignSelf: 'flex-start',
-    backgroundColor: CORRECTION_COLORS.deletion,
-    color: colors.ink,
-  },
+  comment: { alignSelf: 'flex-start', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
+  'correction-replacement': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.replacement },
+  'correction-insertion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.insertion },
+  'correction-deletion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.deletion },
   options: {
     alignSelf: 'flex-start',
     backgroundColor: 'transparent',
