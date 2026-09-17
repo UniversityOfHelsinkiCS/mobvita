@@ -49,7 +49,7 @@ const CORRECTION_SHAPE = {
   padding: 16,
   borderRadius: 18,
   borderTopLeftRadius: 3,
-  fontSize: 16,
+  fontSize: 15,
   lineHeight: '18px',
 }
 

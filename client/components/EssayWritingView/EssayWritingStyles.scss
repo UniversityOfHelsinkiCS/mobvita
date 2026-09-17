@@ -343,6 +343,11 @@ $essay-green: #b1d3c2; // border / accent
   }
 }
 
+// Pinned in the focused view a bubble is already selected, so it keeps still instead of lifting.
+.essay-chatbot-focused-suggestion .essay-writing-correction-bubble {
+  transform: none;
+}
+
 // The pinned bubble for a selected word. It stands for one of the user's own words rather than a
 // correction, and there is nothing behind it to open, so it drops the clickable bubble's lift.
 .essay-writing-correction-bubble-selection {
