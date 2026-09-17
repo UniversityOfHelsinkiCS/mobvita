@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Box, Paper } from '@mui/material'
+import { Box } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFlip } from 'swiper/modules'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
@@ -264,17 +264,17 @@ const EssayChatbot = ({
   // focused view reads the same either way. Nothing to click — no correction sits behind it — so
   // it carries no select handlers.
   const renderSelectedText = () => (
-    <Paper
+    <ChatBubble
+      variant="hint"
       className="essay-writing-correction-bubble essay-writing-correction-bubble-selection"
       data-cy="essay-selected-text-bubble"
-      elevation={0}
     >
       <Box className="essay-writing-correction-content">
         <span className="essay-writing-corrected-word essay-writing-selected-passage">
           {essayFocus?.focusedWord}
         </span>
       </Box>
-    </Paper>
+    </ChatBubble>
   )
 
   const handleMessageSubmit = event => {
