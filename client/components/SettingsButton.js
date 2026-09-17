@@ -2,6 +2,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
+import AppButton from './AppButton'
 import AppMenu, { AppMenuItem } from './ui/AppMenu'
 import {
   images,
@@ -13,7 +14,7 @@ import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 
 /**
- * SettingButton — the flashcards translation-language picker. The circleSettings gear opens a small
+ * SettingButton — the flashcards translation-language picker. The round gear button opens a small
  * settings dropdown that shows a "Translate into" heading followed by the language list, instead of
  * dropping straight into the bare options. Selecting a language updates the dictionary language and
  * closes the menu (AppMenuItem defers its own close, so the dispatch always registers first).
@@ -40,19 +41,23 @@ const SettingButton = ({ style }) => {
       }))
     : []
 
+  // A round 36px AppButton: the outline and the hover fill come from the `tan-outline` variant, so
+  // the icon inside is the single-tone DS gear rather than an asset that draws its own ring.
   const gear = (
-    <button
+    <AppButton
       type="button"
       aria-label="Settings"
+      variant="tan-outline"
+      size="sm"
+      // MUI's touch ripple reads as a grey disc washing over a button this small and round, so the
+      // click leaves the green hover fill as its only feedback.
+      disableRipple
       className="flashcard-settings-trigger"
-      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, ...style }}
+      sx={{ minWidth: 36, width: 36, height: 36, p: 0, borderRadius: '50%' }}
+      style={style}
     >
-      <img
-        src={images.circleSettings}
-        alt="settings"
-        style={{ width: 32, height: 32, display: 'block' }}
-      />
-    </button>
+      <img src={images.settings02} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+    </AppButton>
   )
 
   return (

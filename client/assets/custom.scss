@@ -2364,31 +2364,18 @@ label.file-upload-btn {
   font-weight: 600;
 }
 
+// Placement only — the gear is an AppButton, so its fill, border, radius and hover are the
+// `tan-outline` variant's. Callers that put it in a flow row pass `position: static; margin: 0`.
 .flashcard-settings-trigger {
-  padding: 0 !important;
-  background: transparent !important;
-  min-width: 0;
-  min-height: 0;
-  line-height: 1;
   margin: 12px 12px 0 0;
   position: absolute;
   top: 12px;
   right: 12px;
   z-index: 5;
-  box-shadow: none !important;
-  transform-origin: center;
-  transition: transform 0.15s ease;
 
   @media (max-width: 839px) {
     display: none !important;
   }
-}
-
-.flashcard-settings-trigger:hover,
-.flashcard-settings-trigger:focus {
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: scale(1.15);
 }
 
 .test {

@@ -8,8 +8,8 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * selected (not MUI's default). Pass the usual Radio props (checked, value, onChange, disabled, …).
  */
 const RadioCircle = styled('span')({
-  width: 18,
-  height: 18,
+  width: 24,
+  height: 24,
   borderRadius: '50%',
   border: `2px solid ${colors.ink}`,
   backgroundColor: '#fff',

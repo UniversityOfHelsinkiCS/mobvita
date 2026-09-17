@@ -424,13 +424,12 @@ const ReadViews = ({ match }) => {
         className="practice-tour-edit-delete-story"
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
       >
-        <AppButton variant="primary" size="sm" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
+        <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
           <img src={images.iconEdit} alt="" />
           <FormattedMessage id="edit" />
         </AppButton>
         <AppButton
-          variant="alert"
-          size="sm"
+          variant="alert"         
           data-cy="story-delete-button"
           onClick={() => setConfirmationOpen(true)}
           sx={ICON_BUTTON_SX}
@@ -575,19 +574,7 @@ const ReadViews = ({ match }) => {
               </div>
             )}
             <div className={bigScreen && 'space-between'} style={{ alignItems: 'center' }}>
-              <div>
-                {mode === 'practice-preview' && <div />}
-                {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
-                  <FormControlLabel
-                    control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
-                    label={intl.formatMessage({ id: 'show-difficulty-level' })}
-                    sx={{
-                      paddingTop: '.5em',
-                      '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
-                    }}
-                  />
-                )}
-              </div>
+              <div />
               {bigScreen ? (
                 <>
                   {isGroupReview && teacherView && (
@@ -691,6 +678,17 @@ const ReadViews = ({ match }) => {
                 translationId="show preview"
                 checked={previewToggleOn}
                 onChange={updateUserPreviewExer}
+              />
+              <Divider />
+            </>
+          )}
+          {/* Review's highlight switch, alongside preview's — it used to sit loose in the card. */}
+          {!['practice-preview', 'preview'].includes(mode) && hiddenFeatures && (
+            <>
+              <SettingToggle
+                translationId="show-difficulty-level"
+                checked={showDifficulty}
+                onChange={updateUserReviewDiff}
               />
               <Divider />
             </>

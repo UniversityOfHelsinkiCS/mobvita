@@ -12,9 +12,9 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * draws an ink dash in the same box rather than MUI's filled square.
  */
 const CheckBox = styled('span')({
-  width: 18,
-  height: 18,
-  borderRadius: 4,
+  width: 16,
+  height: 16,
+  borderRadius: 3,
   border: `2px solid ${colors.ink}`,
   backgroundColor: '#fff',
   display: 'inline-flex',

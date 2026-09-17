@@ -29,7 +29,7 @@ const primaryButtonSx = {
 const ghostButtonSx = {
   backgroundColor: colors.card,
   color: colors.ink,
-  border: `1px solid ${colors.green}`,
+  border: `2px solid ${colors.green}`,
   borderRadius: `${shape.buttonRadius}px`,
   fontSize: font.button,
   fontWeight: 500,

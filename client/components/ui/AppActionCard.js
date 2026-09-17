@@ -18,7 +18,7 @@ const StyledCard = styled('button')({
   cursor: 'pointer',
   textAlign: 'left',
   fontSize: '24px',
-  fontWeight: 600,
+  fontWeight: 500,
   color: colors.ink,
   boxShadow: '0 2px 10px rgba(0, 0, 0, 0.06)',
   transition: 'box-shadow 0.15s ease, transform 0.15s ease',

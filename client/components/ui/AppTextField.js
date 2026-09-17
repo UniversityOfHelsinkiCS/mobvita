@@ -44,16 +44,17 @@ const StyledTextField = styled(TextField, {
     ...(hasEnd && { paddingRight: shape.inputPaddingX }),
     backgroundColor: colors.card,
     borderRadius: multiline ? '18px' : shape.inputRadius,
-    border: `2px solid ${colors.border}`,
     fontSize: font.input,
     color: colors.ink,
-    '& fieldset': { borderColor: colors.border },
+    // One border, drawn by MUI's notched outline. The root used to carry a 2px border of its own on
+    // top of this, so every field rendered ~3px of ring and any state that recoloured one and not
+    // the other showed two colours at once. The outline inherits the root's radius, so the pill
+    // shape is unaffected.
+    '& fieldset': { borderColor: colors.border, borderWidth: 2 },
     '&:hover fieldset': { borderColor: colors.focus },
-    '&.Mui-focused fieldset': { borderColor: colors.focus, borderWidth: 1 },
-    // The pill and MUI's notched outline are two separate borders sitting on top of each other, so
-    // the error state has to recolour both — otherwise the red fieldset shows inside a green pill.
+    // Same width as at rest, so focusing does not make the ring jump.
+    '&.Mui-focused fieldset': { borderColor: colors.focus, borderWidth: 2 },
     '&.Mui-error fieldset': { borderColor: colors.error },
-    '&.Mui-error': { borderColor: colors.error },
   },
   '& .MuiOutlinedInput-input': {
     padding: multiline ? 0 : '0 18px',

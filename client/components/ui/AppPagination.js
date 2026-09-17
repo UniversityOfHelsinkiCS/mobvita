@@ -28,7 +28,7 @@ const Coin = styled('button', {
   fontWeight: 600,
   color: colors.ink,
   cursor: 'pointer',
-  border: ellipsis ? '1.5px solid transparent' : `1.5px solid ${active ? colors.green : colors.border}`,
+  border: ellipsis ? '2px solid transparent' : `2px solid ${active ? colors.green : colors.border}`,
   backgroundColor: active ? colors.green : 'transparent',
   transition: 'background-color 0.15s ease, border-color 0.15s ease',
   '&:hover': { backgroundColor: active ? colors.greenHover : '#ECE3BE' },

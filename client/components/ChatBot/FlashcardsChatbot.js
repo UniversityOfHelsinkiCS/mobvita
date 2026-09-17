@@ -24,30 +24,6 @@ import CustomTooltip from 'Components/CustomTooltip'
 import { images, sanitizeHtml } from 'Utilities/common'
 import 'Components/PracticeView/CombinedChatbot.scss'
 
-/**
- * FlashcardsChatbot — the assistant on /flashcards. Started as a copy of GeneralChatbot and is
- * expected to diverge from it, so it is a component of its own rather than a mode of that one.
- *
- * Two seams are deliberately isolated:
- *   - `sendFlashcardsDialogue` (dialoguesReducer) is the only place the assistant-api agent is
- *     named, so pointing this at a flashcards agent is a route change there, not a change here.
- *   - `PREDEFINED_REQUEST_IDS` is where flashcard-specific canned prompts go; they render in the
- *     ChatInput burger menu.
- *
- * It differs from GeneralChatbot already in that it carries no "add a story" dock — that belongs
- * to the library, not to flashcards — and that it opens with the deck's story context as a hint
- * bubble, which used to be a floating card (and, on narrow screens, an ⓘ) on the page itself.
- *
- * `showBlueCardsPrompt` / `onDismissBlueCardsPrompt` come from the page, which owns the timing (it
- * is the one that hears back from the practice view). The prompt used to interrupt as a modal; here
- * the assistant raises it as a bot message you can ignore.
- *
- * The card being practised arrives through `flashcards.currentCard`, published by the deck (which
- * tracks its own position in local state). Its word, speaker and word-nest control are laid out
- * like CombinedChatbot's `.current-word` header, and its hints render as the same bulb-and-bubble
- * rows — they used to be a paged modal behind a "Hint" link on the card itself.
- */
-
 // i18n ids for the burger-menu prompts. Each is sent verbatim as the user's message.
 const PREDEFINED_REQUEST_IDS = [
   'chatbot-message-suggestion-next-steps',
@@ -237,8 +213,7 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             <CustomTooltip title={hintsLeftLabel} placement="top" permanent>
               <span style={{ display: 'inline-flex' }}>
                 <AppButton
-                  variant="primary"
-                  size="sm"
+                  variant="primary"                  
                   disabled={!hasHintToShow}
                   onClick={hasHintToShow ? showNextHint : undefined}
                   data-cy="flashcard-hint-button"
