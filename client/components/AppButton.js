@@ -56,28 +56,28 @@ const VARIANT_STYLES = {
   'contrast-outline': {
     backgroundColor: 'transparent',
     color: colors.ink,
-    border: `1px solid ${colors.ink}`,
+    border: `2px solid ${colors.ink}`,
     '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
     '&.Mui-disabled': { backgroundColor: 'transparent', color: DISABLED_TEXT, borderColor: DISABLED_BG },
   },
   'tan-outline': {
     backgroundColor: TAN_OUTLINE_BG,
     color: colors.ink,
-    border: `1px solid ${colors.green}`,
+    border: `2px solid ${colors.green}`,
     '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
     '&.Mui-disabled': { backgroundColor: 'transparent', color: DISABLED_TEXT, borderColor: DISABLED_BG },
   },
   inverse: {
     backgroundColor: 'transparent',
     color: colors.card,
-    border: `1px solid ${colors.card}`,
+    border: `2px solid ${colors.card}`,
     '&:hover': { backgroundColor: colors.green, borderColor: colors.green, color: colors.ink },
     '&.Mui-disabled': { backgroundColor: 'transparent', color: INVERSE_DISABLED, borderColor: INVERSE_DISABLED },
   },
   danger: {
     backgroundColor: colors.error,
     color: '#fff',
-    border: '1px solid transparent',
+    border: '2px solid transparent',
     '&:hover': { backgroundColor: '#B83A3A' },
     '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
@@ -85,21 +85,21 @@ const VARIANT_STYLES = {
   alert: {
     backgroundColor: colors.alert,
     color: '#fff',
-    border: '1px solid transparent',
+    border: '2px solid transparent',
     '&:hover': { backgroundColor: colors.alertHover },
     '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
   alert: {
     backgroundColor: colors.alert,
     color: colors.ink,
-    border: '1px solid transparent',
+    border: '2px solid transparent',
     '&:hover': { backgroundColor: colors.alertHover },
     '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
   link: {
     backgroundColor: 'transparent',
     color: colors.ink,
-    border: '1px solid transparent',
+    border: '2px solid transparent',
     padding: 0,
     minWidth: 0,
     textDecoration: 'underline',
@@ -108,7 +108,7 @@ const VARIANT_STYLES = {
   card: {
     backgroundColor: '#ffffff',
     color: colors.ink,
-    border: `1px solid ${CARD_BORDER}`,
+    border: `2px solid ${CARD_BORDER}`,
     '&:hover': { backgroundColor: CARD_HOVER_BG, borderColor: CARD_HOVER_BORDER },
     '&.Mui-disabled': { backgroundColor: DISABLED_BG, color: DISABLED_TEXT },
   },
@@ -128,9 +128,9 @@ const ALIASES = {
 
 // Sizes per the Figma "Button M" (medium) and "Button Small" sheets; large is derived.
 const SIZE_STYLES = {
-  small: { padding: '5px 16px', fontSize: 14, height: 36 },
-  medium: { padding: '9px 26px', fontSize: font.button, height: 48 },
-  large: { padding: '12px 34px', fontSize: 18, height: 56 },
+  small: { padding: '5px 16px', fontSize: 14, fontWeight: font.weight, height: 24 },
+  medium: { padding: '9px 26px', fontSize: font.button, fontWeight: font.weight, height: 36 },
+  large: { padding: '12px 34px', fontSize: 18, fontWeight: font.weight, height: 48 },
 }
 const SIZE_KEYS = { sm: 'small', lg: 'large' }
 
@@ -140,7 +140,7 @@ const resolveVariant = variant =>
 const StyledButton = styled(Button)({
   textTransform: 'none',
   borderRadius: shape.buttonRadius,
-  fontWeight: 600,
+  fontWeight: 500,
   lineHeight: 1.2,
   boxShadow: 'none',
   gap: 8,

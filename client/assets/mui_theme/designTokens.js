@@ -97,6 +97,7 @@ export const font = {
   label: 12,
   input: 16,
   button: 16,
+  weight: 500, 
 }
 
 export const shape = {
