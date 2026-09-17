@@ -314,7 +314,13 @@ export default function NavBar() {
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger"
           data-cy="hamburger"
-          style={{ width: '24px', height: '24px', cursor: 'pointer', display: 'block', marginLeft: '16px' }}
+          style={{
+            width: '24px',
+            height: '24px',
+            cursor: 'pointer',
+            display: 'block',
+            marginLeft: '16px',
+          }}
         />
         <NavCollapse>
           {/********************************* HAMBURGER *********************************/}
@@ -323,7 +329,10 @@ export default function NavBar() {
               className="navbar-container"
               style={{ display: 'flex', alignItems: 'center', gap: '20px' }}
             >
-              <Link to="/home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+              <Link
+                to="/home"
+                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+              >
                 <Box
                   component="span"
                   data-cy="revita-logo"
@@ -338,7 +347,9 @@ export default function NavBar() {
                   }}
                 >
                   Revita
-                  {hiddenFeatures && <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>}
+                  {hiddenFeatures && (
+                    <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>
+                  )}
                 </Box>
               </Link>
               {user.user.last_used_language && (
@@ -452,9 +463,18 @@ export default function NavBar() {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {intl.formatMessage({ id: 'student-view' })}
+                  {intl.formatMessage({ id: 'teacher' })}
                 </span>
                 <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} />
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: colors.ink,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {intl.formatMessage({ id: 'student' })}
+                </span>
               </Box>
             )}
             <AppMenu

@@ -2,79 +2,24 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Box, Paper } from '@mui/material'
+import { Box } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFlip } from 'swiper/modules'
 import CorrectionSuggestionPopper from 'Components/EssayWritingView/CorrectionSuggestionPopper'
-import {
-  getCorrectedTextFromCorrectionEntry,
-  getCorrectionGroups,
-  getCorrectionGroupType,
-} from 'Components/EssayWritingView/utils/correctionTokens'
+import { getCorrectedTextFromCorrectionEntry } from 'Components/EssayWritingView/utils/correctionTokens'
 import SanitizedHTML from 'Components/SanitizedHTML'
 import ChatInput from 'Components/ui/ChatInput'
-import ChatBubble, { CORRECTION_COLORS } from 'Components/ui/ChatBubble'
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined'
+import ChatBubble from 'Components/ui/ChatBubble'
+import AppIcon from 'Components/ui/AppIcon'
 import Spinner from 'Components/Spinner'
+import { images } from 'Utilities/common'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
-import { getWritingCorrectionWords } from 'Utilities/redux/writingCorrectionReducer'
 
 import 'swiper/css'
 import 'swiper/css/effect-flip'
 import './Chatbot.scss'
 
 const FOLLOW_UP_MESSAGE_ID = 'essay-chatbot-follow-up-question'
-
-// The title bar of the flipped panel takes the selected bubble's own colour, so the two read as the
-// same thing. Read straight from the bubble colours instead of copied: the three maps below used to
-// hold their own hexes and had silently drifted out of step with the bubbles.
-const CORRECTION_TYPE_COLORS = {
-  replacement: CORRECTION_COLORS.replacement,
-  multi: CORRECTION_COLORS.replacement,
-  insertion: CORRECTION_COLORS.insertion,
-  deletion: CORRECTION_COLORS.deletion,
-}
-
-// The conversation and the pinned suggestion sit on a light wash of the same hue — the title colour
-// at L94, so it reads as the same colour family without competing with the message bubbles on it.
-const CORRECTION_TYPE_BG_COLORS = {
-  replacement: '#E9F3F6',
-  multi: '#E9F3F6',
-  insertion: '#F2F7E8',
-  deletion: '#FFEBE0',
-}
-
-// The "back to list" arrow, in the same hue as its title bar. Each is the lightest shade of that hue
-// that still clears 4.5:1 against the bar it sits on, so the arrow stays legible on all three.
-const CORRECTION_TYPE_ACCENT_COLORS = {
-  replacement: '#196480',
-  multi: '#196480',
-  insertion: '#496B0F',
-  deletion: '#AE4109',
-}
-
-// A word the user clicked is one of their own, not a correction, so the focused view takes a
-// neutral sand instead of one of the three correction hues. Same three roles as the maps above:
-// title bar, panel wash, back arrow.
-const TEXT_SELECTION_COLOR = '#ECE3BE'
-const TEXT_SELECTION_BG_COLOR = '#F7F2DF'
-const TEXT_SELECTION_ACCENT_COLOR = '#6B5B2A'
-
-const rangesMatch = (firstRange, secondRange) =>
-  Boolean(firstRange) &&
-  Boolean(secondRange) &&
-  firstRange.startOffset === secondRange.startOffset &&
-  firstRange.endOffset === secondRange.endOffset
-
-// The correction type of the group the focused selection points at — drives the flipped colour.
-const getFocusedCorrectionType = (correctionEntry, sentence, selection) => {
-  if (!correctionEntry || !selection) return null
-  const words = getWritingCorrectionWords(correctionEntry.corrections)
-  const group = getCorrectionGroups(sentence, words).find(candidate =>
-    rangesMatch(selection, candidate.range),
-  )
-  return group ? getCorrectionGroupType(group) : null
-}
 
 // A stable id for one correction bubble (sentence + range), used to keep a separate conversation
 // thread per bubble. The empty string is the "general" thread shown in the list view. A passage
@@ -133,32 +78,14 @@ const EssayChatbot = ({
   const isFocused = Boolean(focusedSuggestion) || Boolean(focusedTextSelection)
   // Each bubble has its own conversation thread; the list view uses the general ('') thread.
   const activeFocusKey = isFocused ? buildFocusKey(essayFocus?.selection) : ''
-  // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) as bot bubbles
-  // in the conversation instead — one bubble per hint line.
+  // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) in the
+  // conversation instead, one grey assistant-side bubble per hint line (2026 design).
   const focusedFeedbackHints = isFocused
     ? (essayFocus?.feedbackText || '')
         .split('\n')
         .map(hint => hint.trim())
         .filter(Boolean)
     : []
-  // In the focused view the whole panel is tinted with the selected suggestion's correction colour.
-  const focusedCorrectionType =
-    focusedSuggestion && !focusedTextSelection
-      ? getFocusedCorrectionType(
-          correctionsByKey[focusedSuggestion.key],
-          focusedSuggestion.sentence,
-          essayFocus?.selection,
-        )
-      : null
-  const focusedColor = focusedTextSelection
-    ? TEXT_SELECTION_COLOR
-    : (focusedCorrectionType && CORRECTION_TYPE_COLORS[focusedCorrectionType]) || null
-  const focusedBgColor = focusedTextSelection
-    ? TEXT_SELECTION_BG_COLOR
-    : (focusedCorrectionType && CORRECTION_TYPE_BG_COLORS[focusedCorrectionType]) || null
-  const focusedAccentColor = focusedTextSelection
-    ? TEXT_SELECTION_ACCENT_COLOR
-    : (focusedCorrectionType && CORRECTION_TYPE_ACCENT_COLORS[focusedCorrectionType]) || null
 
   // Scroll to the latest message when the conversation grows (a new message in either view).
   useEffect(() => {
@@ -264,17 +191,17 @@ const EssayChatbot = ({
   // focused view reads the same either way. Nothing to click — no correction sits behind it — so
   // it carries no select handlers.
   const renderSelectedText = () => (
-    <Paper
+    <ChatBubble
+      variant="hint"
       className="essay-writing-correction-bubble essay-writing-correction-bubble-selection"
       data-cy="essay-selected-text-bubble"
-      elevation={0}
     >
       <Box className="essay-writing-correction-content">
         <span className="essay-writing-corrected-word essay-writing-selected-passage">
           {essayFocus?.focusedWord}
         </span>
       </Box>
-    </Paper>
+    </ChatBubble>
   )
 
   const handleMessageSubmit = event => {
@@ -344,21 +271,7 @@ const EssayChatbot = ({
 
   return (
     <div className="chatbot essay-chatbot vita-chatbot">
-      <div
-        className="ai-assistant-header"
-        style={focusedColor ? { background: focusedColor } : undefined}
-      >
-        {isFocused && (
-          <button
-            type="button"
-            className="essay-chatbot-back"
-            data-cy="essay-chatbot-back"
-            style={focusedAccentColor ? { color: focusedAccentColor } : undefined}
-            onClick={() => onClearFocus?.()}
-          >
-            <ArrowCircleLeftOutlinedIcon sx={{ fontSize: '2.2rem' }} />
-          </button>
-        )}
+      <div className="ai-assistant-header">
         <h3 className="ai-header-title">Vita - AI Assistant</h3>
       </div>
 
@@ -389,26 +302,27 @@ const EssayChatbot = ({
           </div>
         </SwiperSlide>
 
-        {/* Back face: the selected suggestion pinned on top, plus its feedback and the conversation.
-            Both areas take the focused suggestion's correction colour so the view matches its bubble. */}
+        {/* Back face: a back control and the selected bubble pinned on top, then its conversation. */}
         <SwiperSlide className="essay-chatbot-face">
           {isFocused && (
-            <div
-              className="essay-chatbot-focused-suggestion"
-              data-cy="essay-chatbot-focused"
-              style={focusedBgColor ? { background: focusedBgColor } : undefined}
-            >
+            <div className="essay-chatbot-focused-suggestion" data-cy="essay-chatbot-focused">
+              <button
+                type="button"
+                className="essay-chatbot-back"
+                data-cy="essay-chatbot-back"
+                aria-label={intl.formatMessage({ id: 'Back' })}
+                onClick={() => onClearFocus?.()}
+              >
+                <AppIcon src={images.flipBackCircle} size={36} />
+              </button>
               {focusedTextSelection
                 ? renderSelectedText()
                 : renderSuggestion(focusedSuggestion, true)}
             </div>
           )}
-          <div
-            className="chatbot-messages"
-            style={focusedBgColor ? { background: focusedBgColor } : undefined}
-          >
+          <div className="chatbot-messages">
             {focusedFeedbackHints.map((hint, index) => (
-              <ChatBubble variant="bot" key={`focused-feedback-${index}`}>
+              <ChatBubble variant="comment" key={`focused-feedback-${index}`}>
                 <SanitizedHTML html={hint} />
               </ChatBubble>
             ))}

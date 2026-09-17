@@ -1842,7 +1842,7 @@
     "select-story-length": "Valitse tekstin lauseiden määrä",
     "begin-practice-tailored": "Aloita harjoittelu",
     "tailored-begin-practice": "Aloita harjoittelu",
-    "confirm-folder-delete": "Haluatko varmasti poistaa kaikki tämän kansion tekstit?",
+    "confirm-folder-delete": "Haluatko varmasti poistaa tämän kansion ja kaikki sen sisältämät tiedostot?",
     "folder-name-required": "Kansion nimi on pakollinen",
     "folder-name-invalid": "Kansion nimi ei voi sisältää merkkiä /",
     "folder-name-exists": "Tämänniminen kansio on jo olemassa",
@@ -1982,5 +1982,6 @@
     "paste-text-label": "Teksti",
     "paste-title-placeholder": "Syötä tekstin otsikko...",
     "paste-text-placeholder": "Liitä teksti tähän...",
-    "paste-submit": "Lähetä"
+    "paste-submit": "Lähetä",
+    "teacher": "Opettaja"
 }

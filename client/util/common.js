@@ -46,6 +46,7 @@ import place1 from 'Assets/images/place1.svg'
 import place2 from 'Assets/images/place2.svg'
 import place3 from 'Assets/images/place3.svg'
 import flipBackward from 'Assets/images/flip-backward.svg'
+import flipBackCircle from 'Assets/images/flipback-circle.svg'
 import folder from 'Assets/images/folder.svg'
 import folderPlus from 'Assets/images/folder-plus.svg'
 import folderEmpty from 'Assets/images/folder-empty.svg'
@@ -255,6 +256,7 @@ export const images = {
   place2,
   place3,
   flipBackward,
+  flipBackCircle,
   folder,
   folderPlus,
   folderEmpty,

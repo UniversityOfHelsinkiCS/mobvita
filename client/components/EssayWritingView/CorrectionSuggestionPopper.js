@@ -1,10 +1,11 @@
 import React from 'react'
-import { Box, IconButton, Paper } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { FormattedMessage } from 'react-intl'
 
 import CustomTooltip from 'Components/CustomTooltip'
 import CorrectedWord from 'Components/EssayWritingView/CorrectedWord'
+import ChatBubble from 'Components/ui/ChatBubble'
 import SanitizedHTML from 'Components/SanitizedHTML'
 import Spinner from 'Components/Spinner'
 import { hiddenFeatures } from 'Utilities/common'
@@ -25,6 +26,15 @@ const getCorrectionSelectionRequest = (correctionRange, correctionFocus) => ({
   ...(correctionFocus || {}),
 })
 
+// The ChatBubble variant for a correction type; a multi-token chunk reads as a replacement.
+const CORRECTION_VARIANTS = {
+  replacement: 'correction-replacement',
+  multi: 'correction-replacement',
+  insertion: 'correction-insertion',
+  deletion: 'correction-deletion',
+}
+
+// One correction as a ui ChatBubble; the classes stay for the hover/active lift and the tests.
 const CorrectionBubble = ({
   children,
   correctionFocus,
@@ -36,7 +46,8 @@ const CorrectionBubble = ({
   sentence,
   showFeedbackIcon,
 }) => (
-  <Paper
+  <ChatBubble
+    variant={CORRECTION_VARIANTS[correctionType] || 'bot'}
     className={[
       'essay-writing-correction-bubble',
       correctionType ? `essay-writing-correction-bubble-${correctionType}` : '',
@@ -46,8 +57,6 @@ const CorrectionBubble = ({
       .join(' ')}
     data-cy="essay-correction-bubble"
     data-sentence={sentence}
-    // The shadow is set in EssayWritingStyles.scss (half of elevation 3), so MUI contributes none.
-    elevation={0}
     onClick={() =>
       onSentenceSelect?.(getCorrectionSelectionRequest(correctionRange, correctionFocus), 'click')
     }
@@ -57,24 +66,36 @@ const CorrectionBubble = ({
     onMouseLeave={() =>
       onSentenceSelect?.(getCorrectionSelectionRequest(correctionRange, correctionFocus), 'leave')
     }
-    sx={{ cursor: onSentenceSelect ? 'pointer' : 'default' }}
   >
-    {children}
-    {showFeedbackIcon && feedbackText && !isActive && (
-      <CustomTooltip
-        placement="top"
-        title={<SanitizedHTML html={feedbackText} tagName={Box} sx={{ whiteSpace: 'pre-line' }} />}
-      >
-        <IconButton
-          aria-label="Correction feedback"
-          className="essay-writing-correction-feedback-button"
-          size="small"
+    {/* The bubble's inner block resets the cursor, so the row sets it for the clickable area. */}
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 1,
+        cursor: onSentenceSelect ? 'pointer' : 'default',
+      }}
+    >
+      {children}
+      {showFeedbackIcon && feedbackText && !isActive && (
+        <CustomTooltip
+          placement="top"
+          title={
+            <SanitizedHTML html={feedbackText} tagName={Box} sx={{ whiteSpace: 'pre-line' }} />
+          }
         >
-          <InfoOutlinedIcon fontSize="small" />
-        </IconButton>
-      </CustomTooltip>
-    )}
-  </Paper>
+          <IconButton
+            aria-label="Correction feedback"
+            className="essay-writing-correction-feedback-button"
+            size="small"
+          >
+            <InfoOutlinedIcon fontSize="small" />
+          </IconButton>
+        </CustomTooltip>
+      )}
+    </Box>
+  </ChatBubble>
 )
 
 const rangesMatch = (firstRange, secondRange) =>

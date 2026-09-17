@@ -265,6 +265,7 @@ const DesignSystem = () => {
               'place2',
               'place3',
               'flipBackward',
+              'flipBackCircle',
               'folder',
               'folderPlus',
               'bookOpenGreen',
@@ -290,8 +291,6 @@ const DesignSystem = () => {
               'flip',
               'speaker',
               'wordnest',
-              'bulb',
-              'bulbEmpty',
               'plusOutline',
               'quick',
               'translate01',
@@ -332,9 +331,11 @@ const DesignSystem = () => {
               'menu3',
               'infoIcon',
             ]
+            // Alphabetical, so a tile is found by name no matter where it was added above.
+            const sortedIcons = [...newIcons].sort((a, b) => a.localeCompare(b))
             return (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                {newIcons.map(name => (
+                {sortedIcons.map(name => (
                   <div
                     key={name}
                     style={{
@@ -911,6 +912,11 @@ const DesignSystem = () => {
                 variant: 'hint',
                 note: 'A hint or standing bit of context. Left, warm yellow, squared top-left corner.',
                 body: 'A hint to help you along.',
+              },
+              {
+                variant: 'comment',
+                note: "The assistant's comment on a correction. Left, warm grey, squared top-left corner.",
+                body: 'Change the case of this word.',
               },
               {
                 variant: 'note',
