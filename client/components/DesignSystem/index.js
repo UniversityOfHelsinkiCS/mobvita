@@ -644,7 +644,7 @@ const DesignSystem = () => {
                     <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth bordered />
                   </div>
                 </div>
-                <div style={{ maxWidth: 620 }}>
+                <div>
                   <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
                     <code>variant=&quot;inner&quot;</code> — one joined 36px pill: a green outline
                     around the bar, hairline dividers between the segments and no gap, so the active

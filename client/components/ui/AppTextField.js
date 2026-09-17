@@ -28,7 +28,7 @@ const Label = styled('label')({
   display: 'block',
   marginBottom: 6,
   fontSize: font.label,
-  fontWeight: 500,
+  fontWeight: font.weight,
   color: colors.ink,
 })
 
@@ -44,12 +44,16 @@ const StyledTextField = styled(TextField, {
     ...(hasEnd && { paddingRight: shape.inputPaddingX }),
     backgroundColor: colors.card,
     borderRadius: multiline ? '18px' : shape.inputRadius,
+    border: `2px solid ${colors.border}`,
     fontSize: font.input,
     color: colors.ink,
     '& fieldset': { borderColor: colors.border },
     '&:hover fieldset': { borderColor: colors.focus },
     '&.Mui-focused fieldset': { borderColor: colors.focus, borderWidth: 1 },
+    // The pill and MUI's notched outline are two separate borders sitting on top of each other, so
+    // the error state has to recolour both — otherwise the red fieldset shows inside a green pill.
     '&.Mui-error fieldset': { borderColor: colors.error },
+    '&.Mui-error': { borderColor: colors.error },
   },
   '& .MuiOutlinedInput-input': {
     padding: multiline ? 0 : '0 18px',
