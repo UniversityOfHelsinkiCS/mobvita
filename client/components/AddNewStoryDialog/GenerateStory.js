@@ -19,7 +19,7 @@ import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { generateStory } from 'Utilities/redux/storyGenerationReducer'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { pillButtonSx, pillOutlineSx } from './styles'
+import { pillButtonSx, pillOutlineSx } from 'Components/ui/dialogSx'
 
 const MAX_GRAMMAR_TOPICS = 5
 const MAX_IDEAS_LENGTH = 240
