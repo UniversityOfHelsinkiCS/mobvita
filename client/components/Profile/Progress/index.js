@@ -342,7 +342,7 @@ const Progress = () => {
             value={shownChart}
             onChange={handleChartSelect}
             fullWidth
-            bordered
+            variant='inner'
           />
         </div>
         {shownChart === 'progress' ? (
