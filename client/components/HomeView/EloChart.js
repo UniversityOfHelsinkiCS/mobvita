@@ -6,6 +6,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { cefrNum2Cefr } from 'Utilities/common'
+import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import Medal from 'Components/Achievements/Medal'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -274,26 +275,18 @@ const EloChart = ({ width }) => {
         </div>
       </div>
 
-      {/* See all stats */}
-      <button
+      {/* See all stats — `contrast-outline` is this button's look (transparent, ink ring and text),
+          and it adds the green hover fill the hand-rolled version had no state for. */}
+      <AppButton
         type="button"
+        variant="contrast-outline"
+        block
         data-cy="see-all-stats"
         onClick={() => navigate('/profile/progress')}
-        style={{
-          marginTop: 20,
-          width: '100%',
-          padding: '12px',
-          border: `1px solid ${colors.ink}`,
-          borderRadius: 999,
-          backgroundColor: 'transparent',
-          color: colors.ink,
-          fontWeight: 600,
-          fontSize: 16,
-          cursor: 'pointer',
-        }}
+        sx={{ mt: '20px' }}
       >
         <FormattedMessage id="see-all-stats" />
-      </button>
+      </AppButton>
     </div>
   )
 }
