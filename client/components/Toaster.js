@@ -196,12 +196,16 @@ export default function Toaster() {
     if (translationId) {
       // Used for messages that require translations.
 
+      // Render functions, not elements: toastify clones its own props onto an element's DOM node.
       if (contextVariables) {
-        toast(<FormattedHTMLMessage id={translationId} values={{ users: contextVariables.users }} />, {
-          type,
-          ...options })
+        toast(
+          () => (
+            <FormattedHTMLMessage id={translationId} values={{ users: contextVariables.users }} />
+          ),
+          { type, ...options },
+        )
       } else {
-        toast(<FormattedHTMLMessage id={translationId} />, { type, ...options })
+        toast(() => <FormattedHTMLMessage id={translationId} />, { type, ...options })
       }
 
       dispatch({ type: 'RESET_NOTIFICATION' })

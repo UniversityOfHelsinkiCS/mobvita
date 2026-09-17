@@ -228,7 +228,12 @@ const initialState = {
   staleStoryId: null,
   // Set while an answer POST is in flight; promoted to `staleStoryId` once it succeeds.
   answeringStoryId: null,
+  // Stories removed optimistically, by request id, so a failed delete can put one back.
+  removing: {},
 }
+
+// A copy of `obj` without `key`.
+const dropKey = (obj, key) => Object.fromEntries(Object.entries(obj).filter(([k]) => k !== key))
 
 const getStoryIdFromRoute = route => route?.match(/^\/stories\/([^/?]+)/)?.[1]
 
@@ -589,32 +594,39 @@ export default (state = initialState, action) => {
         ...state,
         error: false,
       }
-    case 'REMOVE_STORY_ATTEMPT':
+    // Optimistic delete: the card disappears at once and `pending` is left alone, so the library
+    // keeps rendering instead of swapping to a spinner. The story is stashed for a failed call.
+    case 'REMOVE_STORY_ATTEMPT': {
+      const removedId = action.requestSettings?.route?.match(/^\/stories\/([^/]+)\/remove/)?.[1]
+      const index = state.data.findIndex(story => String(story._id) === String(removedId))
+      if (index === -1) return { ...state, error: false }
       return {
         ...state,
-        pending: true,
+        data: state.data.filter((_, i) => i !== index),
+        removing: { ...state.removing, [action.requestId]: { story: state.data[index], index } },
         error: false,
       }
-    case 'REMOVE_STORY_FAILURE':
+    }
+    // Put the story back where it was; the Toaster reports the error.
+    case 'REMOVE_STORY_FAILURE': {
+      const stashed = state.removing[action.requestId]
+      const data = stashed
+        ? [...state.data.slice(0, stashed.index), stashed.story, ...state.data.slice(stashed.index)]
+        : state.data
+      return { ...state, data, removing: dropKey(state.removing, action.requestId), error: true }
+    }
+    case 'REMOVE_STORY_SUCCESS': {
+      const removedId = String(action.response.story_id)
+      const wasFocused = String(state.focused?._id) === removedId
       return {
         ...state,
-        pending: false,
-        error: true,
-      }
-    case 'REMOVE_STORY_SUCCESS':
-      return {
-        ...state,
-        data: state.data.filter(story => story._id !== action.response.story_id),
-        focused:
-          String(state.focused?._id) === String(action.response.story_id) ? null : state.focused,
-        focusedPending:
-          String(state.focused?._id) === String(action.response.story_id)
-            ? false
-            : state.focusedPending,
-        pending: false,
+        data: state.data.filter(story => String(story._id) !== removedId),
+        focused: wasFocused ? null : state.focused,
+        focusedPending: wasFocused ? false : state.focusedPending,
+        removing: dropKey(state.removing, action.requestId),
         error: false,
       }
-
+    }
     case 'ACCEPT_STORY_ATTEMPT':
       return {
         ...state,

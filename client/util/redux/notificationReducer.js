@@ -173,7 +173,7 @@ export default (state = initialState, action) => {
       }
     case 'REMOVE_STORY_FAILURE':
       return {
-        message: 'story-remove-fail',
+        translationId: 'story-remove-fail',
         type: type.error,
       }
     case 'REMOVE_STORY_SUCCESS':

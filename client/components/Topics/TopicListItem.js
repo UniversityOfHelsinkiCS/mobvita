@@ -206,6 +206,7 @@ const LessonTitle = ({
                 }
               }}
               disabled={disabled}
+              size='sm'
               sx={{
                 gap: '8px',
                 flexShrink: 0,
@@ -263,6 +264,7 @@ const LessonTitle = ({
               }
             }}
             disabled={disabled}
+            size='sm'
             sx={{
               gap: '8px',
               '& svg': { fontSize: 20 },

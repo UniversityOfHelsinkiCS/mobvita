@@ -1,0 +1,243 @@
+// Back row inside the title block: muted flip-backward icon + "Back", 32px above the H2.
+// A <button>: base.scss's form reset gives it `font-family: inherit`, so it rides --font-ui.
+.add-story-dialog-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #9d9b92;
+}
+
+// The H2 text with the optional info icon beside it (Figma gap 12, icon top-aligned).
+.add-story-dialog-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.add-story-dialog-info {
+  display: inline-flex;
+  margin-top: 2px;
+  cursor: help;
+}
+
+.story-input-options-root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.story-input-options-anon-warning {
+  color: #c0392b;
+  font-size: 0.9em;
+}
+
+// Figma "Frame 2087326754": the source pills stack with a 10px gap.
+.story-input-options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+// Figma "Get from Web": selector, URL field, and the actions row, stacked with the card's 30px gap.
+.upload-from-web {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+// The two actions share the row equally (Figma gap 20).
+.upload-from-web-actions {
+  display: flex;
+  gap: 20px;
+
+  > * {
+    flex: 1;
+  }
+}
+
+// Figma "Upload File": tabs, drop zone, flashcard language row, and Submit with the card's 30px gap.
+.upload-from-file {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.upload-drop-zone-wrap {
+  position: relative;
+}
+
+// Figma drop zone: a 448x128 dashed green box with the upload arrow over the underlined hint.
+// A <label> so a click opens the picker; base.scss's label styles are reset here.
+.upload-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+  height: 128px;
+  margin: 0;
+  padding: 0 10px;
+  border: 2px dashed #b1d3c2;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: center;
+  color: #2d2c2a;
+  cursor: pointer;
+
+  &-active {
+    background: #e9f1ec;
+  }
+}
+
+.upload-drop-zone-formats {
+  font-size: 14px;
+}
+
+// Clears the chosen file; outside the label so the click does not reopen the picker.
+.upload-drop-zone-clear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+// "Translation target language:" beside the selector, which takes the remaining width (Figma gap 30).
+.upload-target-language {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #2d2c2a;
+
+  > button {
+    flex: 1;
+  }
+}
+
+// Figma "Generate Story with AI": step content on the left; the stepper is pinned to the card's
+// top-right beside the title (the card is the containing block), or sits above on narrow screens.
+.generate-story {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
+
+  @media (min-width: 900px) {
+    padding-right: 225px; // 195px stepper + 30px gap
+  }
+}
+
+.generate-story-aside {
+  @media (min-width: 900px) {
+    position: absolute;
+    top: 80px;
+    right: 60px;
+    width: 195px;
+  }
+}
+
+.generate-story-label {
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #2d2c2a;
+}
+
+// Character counter under a text field, right-aligned and muted (Figma "0/250", "0/50000").
+.add-story-dialog-counter {
+  margin-top: 6px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 500;
+  color: #9d9b92;
+}
+
+.generate-story-lead {
+  margin: 0;
+  font-size: 16px;
+  line-height: 18px;
+  color: #2d2c2a;
+}
+
+.generate-story-note {
+  color: #d64545;
+}
+
+// Summary: the learner's comment in the Figma "Input bar" box with a muted caption.
+.generate-story-comment {
+  padding: 7px 10px;
+  border: 2px solid #b1d3c2;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #2d2c2a;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  &-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #9d9b92;
+  }
+}
+
+.generate-story-actions {
+  display: flex;
+  gap: 20px;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.generate-story-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+// Takes the view's free height so the spinner sits in the middle of the card.
+.generate-story-spinner {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+// Figma "Paste Text": the two fields (gap 12), then Submit with the card's 30px gap.
+.paste-text {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.paste-text-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Validation message under a field.
+.add-story-dialog-error {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #d64545;
+}

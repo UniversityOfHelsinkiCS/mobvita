@@ -92,8 +92,11 @@ const StyledTextField = styled(TextField, {
   }),
 }))
 
+// AppTextField — labelled pill input; `labelSx` restyles the label (e.g. a muted colour) without
+// touching the field. See the block above for the adornment, password and seamless props.
 const AppTextField = ({
   label,
+  labelSx,
   type = 'text',
   fullWidth = true,
   startIcon,
@@ -143,7 +146,7 @@ const AppTextField = ({
 
   return (
     <div style={{ width: fullWidth ? '100%' : undefined }}>
-      {label && <Label>{label}</Label>}
+      {label && <Label sx={labelSx}>{label}</Label>}
       <StyledTextField
         type={resolvedType}
         fullWidth={fullWidth}
