@@ -15,6 +15,7 @@ import AppMenu, { AppMenuItem } from './AppMenu'
  *   'note'      - feedback / system note (left, blue panel tint)
  *   'user-note' - the user's own note (right, warm cream tint)
  *   'hint'      - a hint bubble (left, warm yellow)
+ *   'comment'   - the assistant's comment on a correction (left, warm grey, squared top-left corner)
  *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
  *                 left-aligned like a bot reply but no background, shadow, or padding
  *
@@ -67,6 +68,7 @@ const VARIANT_STYLES = {
     paddingRight: 16,
   },
   hint: { alignSelf: 'flex-start', backgroundColor: '#ECE3BE', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
+  comment: { alignSelf: 'flex-start', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   'correction-replacement': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.replacement },
   'correction-insertion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.insertion },
   'correction-deletion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.deletion },

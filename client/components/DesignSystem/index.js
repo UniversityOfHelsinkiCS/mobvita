@@ -913,6 +913,11 @@ const DesignSystem = () => {
                 body: 'A hint to help you along.',
               },
               {
+                variant: 'comment',
+                note: "The assistant's comment on a correction. Left, warm grey, squared top-left corner.",
+                body: 'Change the case of this word.',
+              },
+              {
                 variant: 'note',
                 note: 'Feedback / system note. Left, blue panel tint.',
                 body: 'Feedback note about your sentence.',

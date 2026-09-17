@@ -79,7 +79,7 @@ const EssayChatbot = ({
   // Each bubble has its own conversation thread; the list view uses the general ('') thread.
   const activeFocusKey = isFocused ? buildFocusKey(essayFocus?.selection) : ''
   // Once a suggestion is selected, surface its feedback (the info-icon tooltip hints) in the
-  // conversation instead, one grey right-hand bubble per hint line (2026 design).
+  // conversation instead, one grey assistant-side bubble per hint line (2026 design).
   const focusedFeedbackHints = isFocused
     ? (essayFocus?.feedbackText || '')
         .split('\n')
@@ -322,7 +322,7 @@ const EssayChatbot = ({
           )}
           <div className="chatbot-messages">
             {focusedFeedbackHints.map((hint, index) => (
-              <ChatBubble variant="user" key={`focused-feedback-${index}`}>
+              <ChatBubble variant="comment" key={`focused-feedback-${index}`}>
                 <SanitizedHTML html={hint} />
               </ChatBubble>
             ))}
