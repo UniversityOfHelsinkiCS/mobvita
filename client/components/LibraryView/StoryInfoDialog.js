@@ -3,6 +3,7 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppDialog from 'Components/ui/AppDialog'
+import AppTooltip from 'Components/ui/AppTooltip'
 import AppDescriptionList from 'Components/ui/AppDescriptionList'
 import AppIcon from 'Components/ui/AppIcon'
 import AppProgressBar from 'Components/ui/AppProgressBar'
@@ -117,21 +118,23 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {story.description && (
-          // Muted and one line, clipped with an ellipsis; the full text sits in the hover tooltip.
-          <Box
-            title={story.description}
-            sx={{
-              fontSize: 14,
-              lineHeight: 1.5,
-              color: colors.muted,
-              minWidth: 0,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {story.description}
-          </Box>
+          // Muted and one line, clipped with an ellipsis; hover shows the full text in AppTooltip.
+          <AppTooltip title={story.description} placement="bottom-start" maxWidth={480}>
+            <Box
+              data-cy="story-info-description"
+              sx={{
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: colors.muted,
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {story.description}
+            </Box>
+          </AppTooltip>
         )}
         <AppDescriptionList items={rows} />
       </Box>
