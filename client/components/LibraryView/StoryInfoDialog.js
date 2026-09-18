@@ -110,8 +110,6 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
       maxWidth="sm"
       closeDataCy="story-info-dialog-close"
       data-cy="story-info-dialog"
-      // Roomier than MUI's 16/24px default: 40px around the card. The title is tight — 22px on a
-      // 1.2 leading — and sits close to the description it introduces.
       titleSx={{ px: 5, pt: 5, pb: 1, fontSize: '22px', lineHeight: 1.2 }}
       contentSx={{ px: 5, pb: 5 }}
       closeSx={{ right: 20, top: 20 }}
@@ -119,8 +117,19 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {story.description && (
-          // Muted, so the title stays the only thing at full strength up here.
-          <Box sx={{ fontSize: 14, lineHeight: 1.5, color: colors.muted, whiteSpace: 'pre-line' }}>
+          // Muted and one line, clipped with an ellipsis; the full text sits in the hover tooltip.
+          <Box
+            title={story.description}
+            sx={{
+              fontSize: 14,
+              lineHeight: 1.5,
+              color: colors.muted,
+              minWidth: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {story.description}
           </Box>
         )}
