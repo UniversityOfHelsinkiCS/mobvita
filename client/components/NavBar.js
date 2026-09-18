@@ -465,7 +465,7 @@ export default function NavBar() {
                 >
                   {intl.formatMessage({ id: 'teacher' })}
                 </span>
-                <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} />
+                <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} offColor={colors.blue} />
                 <span
                   style={{
                     fontSize: 14,

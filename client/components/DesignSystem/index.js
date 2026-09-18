@@ -585,10 +585,20 @@ const DesignSystem = () => {
             <label
               style={{ display: 'inline-flex', alignItems: 'center', gap: 10, color: colors.ink }}
             >
-              <AppSwitch checked={switchOn} onChange={e => setSwitchOn(e.target.checked)} />
               Interactive
+              <AppSwitch checked={switchOn} onChange={e => setSwitchOn(e.target.checked)} />
             </label>
+            Disabled
             <AppSwitch disabled checked />
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
+              onColor / offColor
+              <AppSwitch
+                checked={switchOn}
+                onChange={e => setSwitchOn(e.target.checked)}
+                onColor={colors.lavender}
+                offColor={colors.alertSoft}
+              />
+            </span>
           </div>
         </Section>
 
@@ -600,7 +610,7 @@ const DesignSystem = () => {
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}>
               dark <AppThemeSwitch checked readOnly />
             </span>
-            <AppThemeSwitch checked={darkMode} onChange={e => setDarkMode(e.target.checked)} />
+            on/off switch<AppThemeSwitch checked={darkMode} onChange={e => setDarkMode(e.target.checked)} />
           </div>
         </Section>
 
@@ -731,7 +741,7 @@ const DesignSystem = () => {
             <AppSpinner
               size={48}
               text="Custom colour"
-              color={colors.ink}
+              color={colors.alert}
               textColor={colors.muted}
             />
           </div>
@@ -747,9 +757,9 @@ const DesignSystem = () => {
               borderRadius: shape.cardRadius,
             }}
           >
-            <AppSpinner size={24} color={colors.card} />
-            <AppSpinner size={48} color={colors.card} />
-            <AppSpinner size={72} color={colors.card} />
+            <AppSpinner size={24} color={colors.ink} />
+            <AppSpinner size={48} color={colors.ink} />
+            <AppSpinner size={72} color={colors.ink} />
           </div>
         </Section>
 
