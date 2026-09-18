@@ -9,10 +9,19 @@ const BASE = 'http://localhost:8000'
 const API_BASE = 'localhost:8000/api'
 const LANGUAGE = 'Finnish'
 
-// #fdea3b -> rgb(253, 234, 59) is the sentence-highlight colour used by HighlightedStoryText.
-const HIGHLIGHT_BG = 'rgb(253, 234, 59)'
-// Correct-answer background in reading practice — design-system green (colors.green #B1D3C2).
-const CORRECT_BG = 'rgb(177, 211, 194)'
+// Reading-practice colours, mirroring `colors.*` in designTokens.js (hex, exactly as the tokens).
+const QUIZ_CARD_BG = '#F7F0D5' // colors.quizCard — the question card behind the options
+const CORRECT_BG = '#C0DB94' // colors.quizCorrect — correct option fill
+const CORRECT_BORDER = '#649219' // colors.quizCorrectBorder
+const WRONG_BG = '#C1DCE6' // colors.quizWrong — tried-and-wrong option fill
+const WRONG_BORDER = '#6FA4BB' // colors.quizWrongBorder
+const HIGHLIGHT_BG = '#FFDD77' // colors.highlight — answer location in the story text
+const TEACHER_HIGHLIGHT_BG = '#fdea3b' // the teacher reading view keeps its own yellow
+// Computed styles come back as rgb(), so a hex constant is converted where it is asserted.
+const rgb = hex => {
+  const n = parseInt(hex.slice(1), 16)
+  return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`
+}
 
 const storiesListUrl = /\/api\/stories(?:\?.*)?$/
 const storyDetailsUrl = /\/api\/stories\/[^/?]+(?:\?.*)?$/
@@ -377,9 +386,9 @@ describe('reading comprehension', function () {
     cy.get('[data-cy="rc-question-title-draft-1"]').should('contain', 'Draft question B')
 
     // Selecting a draft question should highlight the matching (real) story sentence.
-    cy.get(tokenSelector(sentence0Token)).should('not.have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get(tokenSelector(sentence0Token)).should('not.have.css', 'background-color', rgb(TEACHER_HIGHLIGHT_BG))
     cy.get('[data-cy="rc-question-draft-0"]').click()
-    cy.get(tokenSelector(sentence0Token)).should('have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get(tokenSelector(sentence0Token)).should('have.css', 'background-color', rgb(TEACHER_HIGHLIGHT_BG))
 
     // Delete one draft question in Generate tab.
     cy.get('[data-cy="rc-delete-draft-question-btn-1"]').click()
@@ -484,8 +493,14 @@ describe('reading practice', function () {
 
     // After 3 wrong answers the correct option is highlighted and, with the default setting, the
     // answer location is revealed automatically in the text (no manual "show answer" button).
-    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
-    cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get('[data-cy="rp-question-card"]').should('have.css', 'background-color', rgb(QUIZ_CARD_BG))
+    cy.get('[data-cy="rp-choice-btn-0"]')
+      .should('have.css', 'background-color', rgb(WRONG_BG))
+      .and('have.css', 'border-top-color', rgb(WRONG_BORDER))
+    cy.get('[data-cy="rp-choice-btn-1"]')
+      .should('have.css', 'background-color', rgb(CORRECT_BG))
+      .and('have.css', 'border-top-color', rgb(CORRECT_BORDER))
+    cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', rgb(HIGHLIGHT_BG))
     cy.get('[data-cy="rp-show-answer-location-btn"]').should('not.exist')
 
     // answer_question hit the real backend, and no mc_generate requests should be made.
@@ -522,8 +537,13 @@ describe('reading practice', function () {
 
     // Q1: one wrong, then correct, then next.
     cy.get('[data-cy="rp-choice-btn-0"]').click()
+    cy.get('[data-cy="rp-choice-btn-0"]')
+      .should('have.css', 'background-color', rgb(WRONG_BG))
+      .and('have.css', 'border-top-color', rgb(WRONG_BORDER))
     cy.get('[data-cy="rp-choice-btn-1"]').click()
-    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
+    cy.get('[data-cy="rp-choice-btn-1"]')
+      .should('have.css', 'background-color', rgb(CORRECT_BG))
+      .and('have.css', 'border-top-color', rgb(CORRECT_BORDER))
     cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
 
     // Q2: two wrong, then correct, then start over.
@@ -531,13 +551,13 @@ describe('reading practice', function () {
     cy.get('[data-cy="rp-choice-btn-0"]').click()
     cy.get('[data-cy="rp-choice-btn-1"]').click()
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    cy.get('[data-cy="rp-choice-btn-2"]').should('have.css', 'background-color', CORRECT_BG)
+    cy.get('[data-cy="rp-choice-btn-2"]').should('have.css', 'background-color', rgb(CORRECT_BG))
     cy.get('[data-cy="rp-start-over-btn"]').click()
 
     // Back to Q1: correct, then next.
     cy.contains('Mitä koira tekee?').should('be.visible')
     cy.get('[data-cy="rp-choice-btn-1"]').click()
-    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', CORRECT_BG)
+    cy.get('[data-cy="rp-choice-btn-1"]').should('have.css', 'background-color', rgb(CORRECT_BG))
     cy.get('[data-cy="rp-next-btn"]').should('not.be.disabled').click()
 
     // Q2 again: on the correct answer the location auto-reveals in the text (default setting:
@@ -546,10 +566,10 @@ describe('reading practice', function () {
     cy.get(tokenSelector(answerSentenceToken)).should(
       'not.have.css',
       'background-color',
-      HIGHLIGHT_BG,
+      rgb(HIGHLIGHT_BG),
     )
     cy.get('[data-cy="rp-choice-btn-2"]').click()
-    cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', HIGHLIGHT_BG)
+    cy.get(tokenSelector(answerSentenceToken)).should('have.css', 'background-color', rgb(HIGHLIGHT_BG))
     cy.get('[data-cy="rp-show-answer-location-btn"]').should('not.exist')
     cy.get('[data-cy="rp-start-over-btn"]').click()
 
