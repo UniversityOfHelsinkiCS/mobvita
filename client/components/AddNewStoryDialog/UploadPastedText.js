@@ -7,7 +7,7 @@ import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { capitalize, learningLanguageSelector } from 'Utilities/common'
-import { fieldLabelSx, pillButtonSx } from 'Components/ui/dialogSx'
+import { fieldLabelSx, pillButtonSx } from 'Components/ui/sx'
 
 // Backend limits (also stated in the info tooltip): 3+ character title, 50–50 000 character text.
 const MAX_CHARACTERS = 50000

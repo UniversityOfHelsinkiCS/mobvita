@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import Box from '@mui/material/Box'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
-import { dialogActionsSx, dialogSx, pillButtonSx, pillOutlineSx } from 'Components/ui/dialogSx'
+import { dialogActionsSx, dialogSx, pillButtonSx, pillOutlineSx } from 'Components/ui/sx'
 import { colors } from 'Assets/mui_theme/designTokens'
 
 // The delete-folder question under a "Delete Folder" title, then Cancel and an alert Delete.

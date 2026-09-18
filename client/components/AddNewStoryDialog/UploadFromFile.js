@@ -14,7 +14,7 @@ import {
   translatableLanguages,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { pillButtonSx } from 'Components/ui/dialogSx'
+import { pillButtonSx } from 'Components/ui/sx'
 
 // The backend reads .txt and .docx only (see the upload instruction texts).
 const ACCEPT = ['.txt', '.docx']

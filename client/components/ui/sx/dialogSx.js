@@ -23,33 +23,5 @@ export const dialogSx = (width = 568) => ({
   closeSx: { right: 12, top: 12, color: colors.ink },
 })
 
-// Design "Button M IconText": a 36px pill, 16px/500 ink label, in the given fill (green default).
-export const pillButtonSx = (background = colors.green) => ({
-  height: 36,
-  padding: '8px 10px 8px 12px',
-  gap: '10px',
-  fontSize: 16,
-  fontWeight: 500,
-  color: colors.ink,
-  backgroundColor: background,
-  '&:hover': { backgroundColor: background, filter: 'brightness(0.96)' },
-})
-
-// Outline pill (Cancel / Back): the same metrics with a 2px green ring and no fill.
-export const pillOutlineSx = () => ({
-  height: 36,
-  padding: '6px 10px 6px 12px',
-  gap: '10px',
-  fontSize: 16,
-  fontWeight: 500,
-  color: colors.ink,
-  backgroundColor: 'transparent',
-  border: `2px solid ${colors.green}`,
-  '&:hover': { backgroundColor: '#E9F1EC', borderColor: colors.green },
-})
-
-// Field label: muted, inset 10px from the pill's edge, and 2px above the pill.
-export const fieldLabelSx = { color: colors.muted, pl: '10px', mb: '2px' }
-
 // Dialog actions row: two pills sharing the width with a 20px gap.
 export const dialogActionsSx = { display: 'flex', gap: '20px', '& > *': { flex: 1 } }

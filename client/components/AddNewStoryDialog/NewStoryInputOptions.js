@@ -4,7 +4,7 @@ import AppIcon from 'Components/ui/AppIcon'
 import { FormattedMessage } from 'react-intl'
 import { ACCESS, images, useHasAccess } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { pillButtonSx } from 'Components/ui/dialogSx'
+import { pillButtonSx } from 'Components/ui/sx'
 
 // A story-source pill: the shared Figma pill, full width, icon and label left-aligned.
 const optionButtonSx = background => ({
