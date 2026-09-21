@@ -1988,5 +1988,6 @@
     "teacher": "Teacher",
     "title-translation": "Title translation",
     "story-title-translate-explain": "Translate the story title",
-    "story-upload-failed": "Could not add the story. Please try again."
+    "story-upload-failed": "Could not add the story. Please try again.",
+    "chatbot-message-suggestion-daily-stories": "Give me some daily stories"
 }

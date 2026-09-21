@@ -24,7 +24,10 @@ const GeneralChatbot = () => {
   const messages = items.filter(i => i.scope === scope && i.type === 'chatbot-message')
 
   const latestMessageRef = useRef(null)
+  // Burger-menu prompts. The daily-stories one is library-only: that is where a suggested story is
+  // something the user can act on without leaving the page.
   const predefinedChatbotRequests = [
+    ...(scope.startsWith('/library') ? ['chatbot-message-suggestion-daily-stories'] : []),
     'chatbot-message-suggestion-next-steps',
     'chatbot-message-suggestion-performance',
   ].map(msgId => ({
