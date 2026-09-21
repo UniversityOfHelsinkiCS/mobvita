@@ -32,6 +32,15 @@ import AppMenu, { AppMenuItem } from './AppMenu'
 // would sit flush against the left edge and the user's own message flush against the right. It
 // matches the bubble's horizontal padding, so the inset reads as one consistent rhythm.
 const BUBBLE_GUTTER = 14
+// The bubble's own padding, reused by the action row so the icons line up with the text.
+const BUBBLE_PADDING_X = 14
+const BUBBLE_PADDING_Y = 10
+// One line box at 15px / 1.2 — the height the action button matches to sit on the first line.
+const BUBBLE_LINE_HEIGHT = 18
+// Room for the actions plus a clear gap before the text reaches them.
+const BUBBLE_ACTIONS_WIDTH = 54
+// `controlled-note` is taller: its glyph and menu are pinned to this padding, not the shared one.
+const NOTE_PADDING_Y = 14
 
 export const CORRECTION_COLORS = {
   replacement: '#C1DCE6',
@@ -66,6 +75,10 @@ const VARIANT_STYLES = {
     borderTopRightRadius: 2,
     paddingLeft: 42,
     paddingRight: 16,
+    // Roomier than the padding alone gives: a single-row note is otherwise only as tall as its one
+    // line of text, which crowds the glyph on one side and the menu on the other.
+    paddingTop: NOTE_PADDING_Y,
+    paddingBottom: NOTE_PADDING_Y,
   },
   hint: { alignSelf: 'flex-start', backgroundColor: '#ECE3BE', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
   comment: { alignSelf: 'flex-start', backgroundColor: '#E8E5DC', color: colors.ink, borderRadius: 18, borderTopLeftRadius: 2, paddingRight: 16 },
@@ -93,8 +106,7 @@ const Bubble = styled('div', {
   maxWidth: '85%',
   marginLeft: BUBBLE_GUTTER,
   marginRight: BUBBLE_GUTTER,
-  padding: '10px 14px',
-  ...(hasActions && { paddingRight: '58px' }),
+  padding: `${BUBBLE_PADDING_Y}px ${BUBBLE_PADDING_X}px`,
   borderRadius: 18,
   // A bubble holds what the user is reading or wrote themselves — language content, not chrome —
   // so it names the content token rather than inheriting the UI font from <body>.
@@ -125,6 +137,9 @@ const Bubble = styled('div', {
   wordBreak: 'break-word',
   //boxShadow: '0 1px 4px rgba(0, 0, 0, 0.06)',
   ...(VARIANT_STYLES[variant] || VARIANT_STYLES.bot),
+  // After the variant: several of them set their own `paddingRight` (user, note, hint, comment,
+  // controlled-note), which would otherwise win and let the text run under the action icons.
+  ...(hasActions && { paddingRight: `${BUBBLE_ACTIONS_WIDTH}px` }),
   // markdown children shouldn't add outer margins inside the bubble
   '& p:first-of-type': { marginTop: 0 },
   '& p:last-of-type': { marginBottom: 0 },
@@ -154,35 +169,43 @@ const BubbleFade = styled('div')({
   background: 'linear-gradient(to bottom, transparent, #E8E5DC)',
 })
 
+// Aligned to the first line of text: `top` matches the bubble's own padding and the button is the
+// height of one line box, so the glyph centres on that line instead of hovering above it. `right`
+// matches the bubble's side padding, so the actions sit on the same margin as the text.
 const BubbleActions = styled('div')({
   position: 'absolute',
-  top: 4,
-  right: 6,
+  top: BUBBLE_PADDING_Y,
+  right: BUBBLE_PADDING_X,
   display: 'inline-flex',
+  alignItems: 'center',
   gap: 4,
 })
 
 const BubbleMenu = styled('div')({
   position: 'absolute',
-  top: 4,
-  right: 6,
+  top: NOTE_PADDING_Y,
+  right: BUBBLE_PADDING_X,
 })
 
+// Same first-line alignment as the action row: one line box tall, starting at the bubble's own
+// padding, so the glyph centres on the first line of text rather than sitting below it.
 const BubbleLeftIcon = styled('div')({
   position: 'absolute',
   left: 16,
-  top: 16,
+  top: NOTE_PADDING_Y,
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
   width: 18,
-  height: 18,
+  height: BUBBLE_LINE_HEIGHT,
   '& img': { display: 'block', width: 18, height: 18 },
 })
 
 const ActionButton = styled('button')({
+  display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
+  height: BUBBLE_LINE_HEIGHT,
   padding: 0,
   border: 'none',
   background: 'none',
@@ -194,6 +217,8 @@ const ActionButton = styled('button')({
   '& img': { display: 'block', width: 16, height: 16 },
 })
 
+// Ink, at full strength: the paste glyph on the other side of the note is drawn in ink by the asset
+// itself, so a muted, half-transparent trigger read as a different weight of control.
 const BubbleMenuTrigger = styled('button')({
   display: 'inline-flex',
   alignItems: 'center',
@@ -202,10 +227,9 @@ const BubbleMenuTrigger = styled('button')({
   border: 'none',
   background: 'none',
   cursor: 'pointer',
-  color: colors.muted,
-  opacity: 0.7,
+  color: colors.ink,
   transition: 'opacity 0.15s ease',
-  '&:hover': { opacity: 1 },
+  '&:hover': { opacity: 0.7 },
 })
 
 const ChatBubble = React.forwardRef(
