@@ -2,7 +2,9 @@ describe('wordnest modal', function () {
   const previewURL = 'http://localhost:8000/stories/5c082383ff63453c5423f99d/preview'
 
   this.beforeAll(function () {
-    cy.login('Russian')
+    // The word nest and the translations it asserts on live in the assistant sidebar, which is
+    // gated on ACCESS.HIGH.
+    cy.login('Russian', false, 'English', true)
   })
 
   this.beforeEach(function () {
