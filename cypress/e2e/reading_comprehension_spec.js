@@ -174,6 +174,9 @@ describe('reading comprehension', function () {
 
   this.beforeAll(function () {
     stories.length = 0
+    // beforeEach's viewport does not apply here, and at Cypress's default 1000px the assistant
+    // sidebar overlaps the add-story button. Widening is why this hook no longer has to collapse it.
+    cy.viewport(1920, 1080)
     cy.login(LANGUAGE, true, 'English', true).then(user => {
       owner = user
     })
@@ -187,14 +190,6 @@ describe('reading comprehension', function () {
       // Fresh visit resets uploadProgress redux so each Confirm button is enabled.
       cy.visit(`${BASE}/library/private`)
       createStoryViaPaste(spec.title, spec.body)
-      // The AI assistant sidebar overlaps the add-story button on narrow viewports, so close it first.
-      // (Clicking the button re-opens the assistant with the add-story options rendered inside it.)
-      cy.get('.helper-sidebar').then($sidebar => {
-        if ($sidebar.hasClass('open')) {
-          cy.get('[data-cy=helper-sidebar-toggle]').click()
-          cy.get('.helper-sidebar').should('have.class', 'collapsed')
-        }
-      })
       cy.then(() => fetchCreatedStory(owner.token, spec.title)).then(s => stories.push(s))
     })
   })
@@ -434,6 +429,7 @@ describe('reading practice', function () {
 
   this.beforeAll(function () {
     stories.length = 0
+    cy.viewport(1920, 1080)
     // Reading practice runs as the story OWNER: a non-owner is denied (403) access to a
     // private story's details and questions.
     cy.login(LANGUAGE, true, 'English', true).then(user => {
