@@ -74,12 +74,21 @@ const waitStoryReady = (token, storyId, attempts = 30) =>
     return cy.wait(1000).then(() => waitStoryReady(token, storyId, attempts - 1))
   })
 
+// The paste modal closes when the upload request resolves, which is not the same moment the story
+// becomes queryable — so poll the list instead of asserting on the first response.
+const findStoryByTitle = (token, title, attempts = 20) =>
+  authRequest(token, 'GET', `/stories?language=${LANGUAGE}&sort_by=date&order=-1`).then(res => {
+    const match = (res.body?.stories || []).find(s => s.title === title)
+    if (match) return match
+    // Out of attempts: assert so the failure names the story rather than throwing on `undefined`.
+    const neverAppeared = `created story titled "${title}" never appeared in the list`
+    expect(attempts, neverAppeared).to.be.greaterThan(0)
+    return cy.wait(1000).then(() => findStoryByTitle(token, title, attempts - 1))
+  })
+
 // Resolve the real id + content of a story just created via the paste UI, by title.
 const fetchCreatedStory = (token, title) =>
-  authRequest(token, 'GET', `/stories?language=${LANGUAGE}&sort_by=date&order=-1`).then(res => {
-    const list = res.body?.stories || []
-    const match = list.find(s => s.title === title)
-    expect(match, `created story titled "${title}"`).to.exist
+  findStoryByTitle(token, title).then(match => {
     expect(match._id, 'created story id').to.match(/^[a-f0-9]{24}$/)
     return waitStoryReady(token, match._id)
       .then(() => authRequest(token, 'GET', `/stories/${match._id}?user_mode=preview`))
