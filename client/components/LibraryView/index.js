@@ -8,10 +8,6 @@ import AppTabs from 'Components/ui/AppTabs'
 import AppIcon from 'Components/ui/AppIcon'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppSelect from 'Components/ui/AppSelect'
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { capitalize, images, useLearningLanguage, ACCESS, useHasAccess } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
@@ -64,6 +60,7 @@ import {
 } from './folderUtils'
 import useLibraryDragAndDrop from './useLibraryDragAndDrop'
 import './LibraryView.scss'
+import { hiddenFeatures } from 'Utilities/common'
 
 const StoryList = () => {
   const intl = useIntl()
@@ -394,7 +391,12 @@ const StoryList = () => {
           essays: { label: <FormattedMessage id="my-essays" />, icon: <AppIcon src={images.paste} size={24} /> },
           group: { label: <FormattedMessage id="Group" />, icon: <AppIcon src={images.users01} size={24} /> },
         }
-        const tabs = ['public', 'private', 'essays', 'group']
+        const tabs = [
+          'public',
+          'private',
+          ...(hiddenFeatures ? ['essays'] : []),
+          'group'
+        ]
           .filter(key => key in libraries)
           .map(key => ({ value: key, ...meta[key] }))
         return (

@@ -4,7 +4,17 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import AppMenu from 'Components/ui/AppMenu'
-import AppButton from 'Components/AppButton'
+import AppButton, { roundIconButtonSx } from 'Components/AppButton'
+import {
+  quizActionButtonSx,
+  quizActionsSx,
+  quizCardSx,
+  quizHeaderSx,
+  quizOptionSx,
+  quizOptionsSx,
+  quizQuestionSx,
+  quizStackSx,
+} from 'Components/ui/sx'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
@@ -120,6 +130,7 @@ const getQuestionId = question => {
   return String(question.question_id || '')
 }
 
+// The gear menu on the question card: toggles the "Show where the answer is" button.
 const AnswerLocationSettings = ({ checked, onChange }) => (
   <AppMenu
     minWidth={260}
@@ -128,18 +139,17 @@ const AnswerLocationSettings = ({ checked, onChange }) => (
     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
     trigger={
-      <span
+      <AppButton
+        type="button"
+        aria-label="Settings"
         data-cy="rp-settings-popup"
-        role="button"
-        tabIndex={0}
-        style={{ display: 'inline-flex', cursor: 'pointer' }}
+        variant="tan-outline"
+        size="sm"
+        disableRipple
+        sx={roundIconButtonSx}
       >
-        <img
-          src={images.circleSettings}
-          alt=""
-          style={{ width: 26, height: 26, display: 'block' }}
-        />
-      </span>
+        <img src={images.settings02} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+      </AppButton>
     }
   >
     <div
@@ -166,6 +176,7 @@ const AnswerLocationSettings = ({ checked, onChange }) => (
   </AppMenu>
 )
 
+// Student reading practice: the story beside a question card with wrapping answer options.
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
   const canUseAssistant = useHasAccess(ACCESS.HIGH)
@@ -414,6 +425,7 @@ const ReadingPracticeView = () => {
         <HighlightedStoryText
           paragraphs={story.paragraph || []}
           highlightedSentenceIds={highlightedSentenceIds}
+          highlightBgColor={colors.highlight}
           onWordClick={handleWordTranslate}
         />
       </Box>
@@ -427,18 +439,15 @@ const ReadingPracticeView = () => {
       >
         <div style={{ position: 'sticky', top: 16 }}>
           <Box
+            data-cy="rp-question-card"
             sx={{
-              backgroundColor: colors.card,
-              color: colors.ink,
+              ...quizCardSx,
               // Sibling of the story Box, so it inherits no per-language face from getTextStyle();
               // `languageContent` follows the learner's script on its own.
               fontFamily: font.languageContent,
-              border: `1px solid ${colors.border}`,
-              borderRadius: '20px',
-              padding: '1.25em',
             }}
           >
-            <div style={{ maxHeight: 'calc(100vh - 32px)', overflowY: 'auto' }}>
+            <Box sx={{ ...quizStackSx, maxHeight: 'calc(100vh - 72px)', overflowY: 'auto' }}>
               {readingQuestionsPending && total === 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: 20 }}>
                   <Spinner inline size={40} />
@@ -449,128 +458,85 @@ const ReadingPracticeView = () => {
                 </div>
               ) : (
                 <>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      gap: 8,
-                      marginBottom: 12,
-                    }}
-                  >
-                    <div data-cy="rp-question-text" style={{ fontSize: 18 }}>
-                      <span style={{ color: colors.muted, marginRight: 6 }}>
+                  <Box sx={quizHeaderSx}>
+                    {/* One H4 run: the counter sits in the question's own colour. */}
+                    <Box data-cy="rp-question-text" sx={quizQuestionSx}>
+                      <span style={{ marginRight: 6 }}>
                         {idx + 1}/{total}
                       </span>
                       {current?.question}
-                    </div>
+                    </Box>
                     <AnswerLocationSettings
                       checked={showAnswerLocationButtonEnabled}
                       onChange={setShowAnswerLocationButtonEnabled}
                     />
-                  </div>
+                  </Box>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <Box sx={quizOptionsSx}>
                     {(current?.choices || []).map((c, i) => {
                       const isAnswer = c === current?.answer
                       const isWrongTried = attemptedWrongChoices.has(String(c))
                       const isCorrect = showCorrectAnswer && isAnswer
-
-                      // Answer states: white by default, green when correct, blue when tried wrong.
-                      let border = `1px solid ${colors.border}`
-                      let bg = '#ffffff'
-                      let color = colors.ink
-
-                      if (isCorrect) {
-                        border = `1px solid ${colors.greenHover}`
-                        bg = colors.green
-                        color = colors.ink
-                      }
-
-                      if (isWrongTried) {
-                        border = '1px solid #8FBBD0'
-                        bg = colors.panel
-                        color = colors.ink
-                      }
+                      // Plain until answered; green once correct, blue after a wrong try.
+                      const state = isCorrect ? 'correct' : isWrongTried ? 'wrong' : 'default'
 
                       return (
-                        <AppButton
+                        <Box
+                          component="button"
+                          type="button"
                           key={i}
                           data-cy={`rp-choice-btn-${i}`}
-                          block
+                          sx={quizOptionSx(state)}
                           onClick={() => handleChoiceClick(c)}
-                          style={{
-                            textAlign: 'left',
-                            justifyContent: 'flex-start',
-                            borderRadius: 10,
-                            padding: '12px 14px',
-                            border,
-                            backgroundColor: bg,
-                            color,
-                            boxShadow: 'none',
-                            fontWeight: 500,
-                            whiteSpace: 'normal',
-                          }}
                         >
                           {c}
-                        </AppButton>
+                        </Box>
                       )
                     })}
-                  </div>
+                  </Box>
 
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      marginTop: 14,
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      {showAnswerLocationButtonEnabled && showCorrectAnswer && (
-                        <AppButton
-                          data-cy="rp-show-answer-location-btn"
-                          variant="secondary"
-                          onClick={handleShowAnswerLocation}
-                        >
-                          <FormattedMessage id="show-where-answer-is" />
-                        </AppButton>
-                      )}
-                    </div>
-
-                    <div style={{ display: 'flex' }}>
-                      {idx === total - 1 && showCorrectAnswer ? (
-                        <AppButton
-                          style={{ minWidth: 100 }}
-                          data-cy="rp-start-over-btn"
-                          variant="primary"
-                          onClick={() => {
-                            setIdx(0)
-                            setAttemptedWrongChoices(new Set())
-                            setIsCorrectAnswered(false)
-                            setShowCorrectAnswer(false)
-                            setShowAnswerLocation(false)
-                            setHighlightedSentenceIds([])
-                            setLastAttemptAnswer('')
-                          }}
-                        >
-                          <FormattedMessage id="start-over" />
-                        </AppButton>
-                      ) : (
-                        <AppButton
-                          style={{ minWidth: 100 }}
-                          data-cy="rp-next-btn"
-                          onClick={goNext}
-                          disabled={!showCorrectAnswer || idx >= total - 1}
-                        >
-                          <FormattedMessage id="next" />
-                        </AppButton>
-                      )}
-                    </div>
-                  </div>
+                  <Box sx={quizActionsSx}>
+                    {showAnswerLocationButtonEnabled && showCorrectAnswer && (
+                      <AppButton
+                        data-cy="rp-show-answer-location-btn"
+                        variant="secondary"
+                        onClick={handleShowAnswerLocation}
+                        sx={quizActionButtonSx}
+                      >
+                        <FormattedMessage id="show-where-answer-is" />
+                      </AppButton>
+                    )}
+                    {idx === total - 1 && showCorrectAnswer ? (
+                      <AppButton
+                        sx={quizActionButtonSx}
+                        data-cy="rp-start-over-btn"
+                        variant="primary"
+                        onClick={() => {
+                          setIdx(0)
+                          setAttemptedWrongChoices(new Set())
+                          setIsCorrectAnswered(false)
+                          setShowCorrectAnswer(false)
+                          setShowAnswerLocation(false)
+                          setHighlightedSentenceIds([])
+                          setLastAttemptAnswer('')
+                        }}
+                      >
+                        <FormattedMessage id="start-over" />
+                      </AppButton>
+                    ) : (
+                      <AppButton
+                        sx={quizActionButtonSx}
+                        data-cy="rp-next-btn"
+                        onClick={goNext}
+                        disabled={!showCorrectAnswer || idx >= total - 1}
+                      >
+                        <FormattedMessage id="next" />
+                      </AppButton>
+                    )}
+                  </Box>
                 </>
               )}
-            </div>
+            </Box>
           </Box>
         </div>
       </section>

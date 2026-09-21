@@ -10,7 +10,7 @@ import {
   dialogSx,
   pillButtonSx,
   pillOutlineSx,
-} from 'Components/ui/dialogSx'
+} from 'Components/ui/sx'
 import { images } from 'Utilities/common'
 
 // The library's add-folder button and its 539px dialog (name field, Cancel, Add).

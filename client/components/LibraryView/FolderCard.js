@@ -12,7 +12,7 @@ import {
   dialogSx,
   pillButtonSx,
   pillOutlineSx,
-} from 'Components/ui/dialogSx'
+} from 'Components/ui/sx'
 import Folder from '../../assets/images/folder-full.svg'
 import FolderEmpty from '../../assets/images/folder-empty.svg'
 import FlipBackward from '../../assets/images/flip-backward.svg'

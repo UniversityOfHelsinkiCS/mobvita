@@ -149,11 +149,7 @@ export default function Sidebar() {
             data-cy="sidebar-close-hamburger"
             style={{ width: 22, height: 22, cursor: 'pointer' }}
           />
-          <span
-            style={{ fontSize: 24, fontWeight: 500, color: colors.ink }}
-          >
-            Revita
-          </span>
+          <span style={{ fontSize: 24, fontWeight: 500, color: colors.ink }}>Revita</span>
         </Box>
 
         {/* System navigation */}
@@ -247,20 +243,24 @@ export default function Sidebar() {
                   <FormattedMessage id="Lessons" />
                 </MenuRow>
               )}
-              <MenuRow
-                icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
-                selected={isActive('/essay-writing')}
-                onClick={() => go('/essay-writing')}
-              >
-                <FormattedMessage id="essay-writing" />
-              </MenuRow>
-              <MenuRow
-                icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
-                selected={isActive('/writing-clinic')}
-                onClick={() => go('/writing-clinic')}
-              >
-                <FormattedMessage id="writing-clinic-title" defaultMessage="Writing Clinic" />
-              </MenuRow>
+              {hiddenFeatures && (
+                <>
+                  <MenuRow
+                    icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
+                    selected={isActive('/essay-writing')}
+                    onClick={() => go('/essay-writing')}
+                  >
+                    <FormattedMessage id="essay-writing" />
+                  </MenuRow>
+                  <MenuRow
+                    icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
+                    selected={isActive('/writing-clinic')}
+                    onClick={() => go('/writing-clinic')}
+                  >
+                    <FormattedMessage id="writing-clinic-title" defaultMessage="Writing Clinic" />
+                  </MenuRow>
+                </>
+              )}
             </>
           )}
 

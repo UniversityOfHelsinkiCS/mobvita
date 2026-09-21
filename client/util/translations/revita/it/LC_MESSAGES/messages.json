@@ -655,7 +655,7 @@
     "create-new-group": "Crea nuovo gruppo",
     "multiple-emails-can-be-separated-by-space": "Si possono inserire vari indirizzi separati dallo spazio",
     "name-of-group": "Nome del gruppo",
-    "teacher-emails": "Indirizzo degli insegnanti",
+    "teacher-emails": "Indirizzo degli insegnanti (opzionale)",
     "student-emails": "Indirizzo degli studenti",
     "Create": "Creare gruppo",
     "create-account-with-any-username-and-valid-e-mail-2431c14b754083a89fd89f9f962d0713": "Per creare un account inserire l'indirizzo email e <i> qualsiasi<i> nome utente",

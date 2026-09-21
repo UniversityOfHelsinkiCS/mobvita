@@ -3,6 +3,7 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppDialog from 'Components/ui/AppDialog'
+import AppTooltip from 'Components/ui/AppTooltip'
 import AppDescriptionList from 'Components/ui/AppDescriptionList'
 import AppIcon from 'Components/ui/AppIcon'
 import AppProgressBar from 'Components/ui/AppProgressBar'
@@ -110,8 +111,6 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
       maxWidth="sm"
       closeDataCy="story-info-dialog-close"
       data-cy="story-info-dialog"
-      // Roomier than MUI's 16/24px default: 40px around the card. The title is tight — 22px on a
-      // 1.2 leading — and sits close to the description it introduces.
       titleSx={{ px: 5, pt: 5, pb: 1, fontSize: '22px', lineHeight: 1.2 }}
       contentSx={{ px: 5, pb: 5 }}
       closeSx={{ right: 20, top: 20 }}
@@ -119,10 +118,23 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {story.description && (
-          // Muted, so the title stays the only thing at full strength up here.
-          <Box sx={{ fontSize: 14, lineHeight: 1.5, color: colors.muted, whiteSpace: 'pre-line' }}>
-            {story.description}
-          </Box>
+          // Muted and one line, clipped with an ellipsis; hover shows the full text in AppTooltip.
+          <AppTooltip title={story.description} placement="bottom-start" maxWidth={480}>
+            <Box
+              data-cy="story-info-description"
+              sx={{
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: colors.muted,
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {story.description}
+            </Box>
+          </AppTooltip>
         )}
         <AppDescriptionList items={rows} />
       </Box>

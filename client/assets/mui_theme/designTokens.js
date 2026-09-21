@@ -39,6 +39,16 @@ export const colors = {
   progressLabel: '#7C9562', // percentage label inside the progress bar
   emptyState: '#BFBBB0', // icon + text of an empty library folder
 
+  // Reading practice quiz card (Figma "Quiz question" sheet).
+  quizCard: '#F7F0D5', // the question card behind the options
+  quizCorrect: '#C0DB94', // correct option fill
+  quizCorrectBorder: '#649219',
+  quizWrong: '#C1DCE6', // tried-and-wrong option fill
+  quizWrongBorder: '#6FA4BB',
+  quizAlert: '#F6C1B1', // red option state, in the sheet for a hard-wrong answer
+  quizAlertBorder: '#95281E',
+  highlight: '#FFDD77', // answer location highlighted in the story text
+
   scrollbar: 'rgba(45, 44, 42, 0.15)',
   scrollbarHover: 'rgba(45, 44, 42, 0.3)', // derived — Figma gives no hover state
 }
