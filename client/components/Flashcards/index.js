@@ -10,7 +10,7 @@ import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 import AppTabs from 'Components/ui/AppTabs'
 import { FormattedMessage } from 'react-intl'
-import { images } from 'Utilities/common'
+import { images, ACCESS, useHasAccess } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import SettingButton from 'Components/SettingsButton'
 import FlashcardsChatbot from 'Components/ChatBot/FlashcardsChatbot'
@@ -25,6 +25,7 @@ const Flashcards = () => {
   const encouragementTimeoutRef = useRef(null)
 
   const navigate = useNavigate()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const location = useLocation()
 
   const { width } = useWindowDimensions()
@@ -168,14 +169,16 @@ const Flashcards = () => {
         </div>
       </div>
 
-      <HelperSidebar>
-        {/* The blue-cards prompt is raised by the assistant rather than a modal, but its timing
-            still lives here — this is where the practice view reports back. */}
-        <FlashcardsChatbot
-          showBlueCardsPrompt={showBlueCardsTestEncouragement}
-          onDismissBlueCardsPrompt={handleBlueCardsPromptVisibility}
-        />
-      </HelperSidebar>
+      {canUseAssistant && (
+        <HelperSidebar>
+          {/* The blue-cards prompt is raised by the assistant rather than a modal, but its timing
+              still lives here — this is where the practice view reports back. */}
+          <FlashcardsChatbot
+            showBlueCardsPrompt={showBlueCardsTestEncouragement}
+            onDismissBlueCardsPrompt={handleBlueCardsPromptVisibility}
+          />
+        </HelperSidebar>
+      )}
     </div>
   )
 }

@@ -19,7 +19,13 @@ import {
   markQuestionAsSeen,
 } from 'Utilities/redux/testReducer'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { learningLanguageSelector, confettiRain, hiddenFeatures } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  confettiRain,
+  hiddenFeatures,
+  ACCESS,
+  useHasAccess,
+} from 'Utilities/common'
 import ReadingPracticeChatbot from 'Components/ChatBot/ReadingPracticeChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import ReadingTestMC from './ReadingTestMC'
@@ -82,6 +88,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
   const { groups } = useSelector(({ groups }) => groups)
 
   const dispatch = useDispatch()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
 
   const restartTest = () => {
     setShowStats(false)
@@ -568,9 +575,11 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
           </div>
         </div>
       </Paper>
-      <HelperSidebar>
-        <ReadingPracticeChatbot questionDone={questionDone} />
-      </HelperSidebar>
+      {canUseAssistant && (
+        <HelperSidebar>
+          <ReadingPracticeChatbot questionDone={questionDone} />
+        </HelperSidebar>
+      )}
     </div>
   )
 }

@@ -17,9 +17,11 @@ import Settings from './Settings'
 import Following from './Following'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import { ACCESS, useHasAccess } from 'Utilities/common'
 
 export default function Profile({ location }) {
   const dispatch = useDispatch()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const navigate = useNavigate()
   const { teacherView } = useSelector(({ user }) => user.data)
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
@@ -105,9 +107,11 @@ export default function Profile({ location }) {
         {activeTab.render()}
       </Box>
 
-      <HelperSidebar>
-        <GeneralChatbot />
-      </HelperSidebar>
+      {canUseAssistant && (
+        <HelperSidebar>
+          <GeneralChatbot />
+        </HelperSidebar>
+      )}
     </main>
   )
 }

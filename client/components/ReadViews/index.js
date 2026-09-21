@@ -95,6 +95,7 @@ const ReadViews = ({ match }) => {
 
   // Topic window is high-access only (hidden for access <= 1).
   const canSeeTopics = useHasAccess(ACCESS.HIGH)
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
 
   const story = useSelector(state => state.stories.focused)
   const pending = useSelector(state => state.stories.focusedPending)
@@ -659,6 +660,9 @@ const ReadViews = ({ match }) => {
             </div>
           )}
         </div>
+        {/* Both the topics control and the assistant are high-access, so the panel would be empty
+            without them — and an empty sidebar still shows its toggle. */}
+        {canUseAssistant && (
         <HelperSidebar>
           {canSeeTopics && !routeStory?.control_story && (
             <div style={{ margin: '20px 20px 0 20px' }}>
@@ -671,6 +675,7 @@ const ReadViews = ({ match }) => {
           )}
           <CombinedChatbot />
         </HelperSidebar>
+        )}
 
         <FeedbackInfoModal />
       </div>

@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { capitalize, images, useLearningLanguage } from 'Utilities/common'
+import { capitalize, images, useLearningLanguage, ACCESS, useHasAccess } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -67,6 +67,7 @@ import './LibraryView.scss'
 
 const StoryList = () => {
   const intl = useIntl()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -1313,9 +1314,11 @@ const StoryList = () => {
             )}
           </Box>
 
-          <HelperSidebar>
-            <GeneralChatbot />
-          </HelperSidebar>
+          {canUseAssistant && (
+            <HelperSidebar>
+              <GeneralChatbot />
+            </HelperSidebar>
+          )}
         </Box>
       </div>
     </div>

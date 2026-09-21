@@ -232,6 +232,7 @@ const HomeviewButtons = ({
 }
 
 const HomeView = () => {
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
   const dispatch = useDispatch()
@@ -408,9 +409,11 @@ const HomeView = () => {
             )}
           </div>
         )}
-        <HelperSidebar>
-          <GeneralChatbot />
-        </HelperSidebar>
+        {canUseAssistant && (
+          <HelperSidebar>
+            <GeneralChatbot />
+          </HelperSidebar>
+        )}
       </div>
     </div>
   )

@@ -27,6 +27,8 @@ import {
   useMTAvailableLanguage,
   learningLanguageLocaleCodes,
   images,
+  ACCESS,
+  useHasAccess,
 } from 'Utilities/common'
 import HighlightedStoryText from 'Components/ReadingComprehension/HighlightedStoryText'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
@@ -166,6 +168,7 @@ const AnswerLocationSettings = ({ checked, onChange }) => (
 
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const { id: storyId } = useParams()
     const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
@@ -572,15 +575,17 @@ const ReadingPracticeView = () => {
         </div>
       </section>
 
-      <HelperSidebar>
-        <ReadingPracticeChatbot
-          questionDone={showCorrectAnswer}
-          sessionId={readingSessionId || storyId}
-          questionId={getQuestionId(current)}
-          attemptsAndFeedbacks={attemptsAndFeedbacks}
-          translationSlot={<WordTranslationPanel />}
-        />
-      </HelperSidebar>
+      {canUseAssistant && (
+        <HelperSidebar>
+          <ReadingPracticeChatbot
+            questionDone={showCorrectAnswer}
+            sessionId={readingSessionId || storyId}
+            questionId={getQuestionId(current)}
+            attemptsAndFeedbacks={attemptsAndFeedbacks}
+            translationSlot={<WordTranslationPanel />}
+          />
+        </HelperSidebar>
+      )}
     </main>
   )
 }

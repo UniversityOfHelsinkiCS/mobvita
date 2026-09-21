@@ -36,6 +36,8 @@ import {
   hiddenFeatures,
   dictionaryLanguageSelector,
   images,
+  ACCESS,
+  useHasAccess,
 } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import ReportButton from 'Components/ReportButton'
@@ -67,6 +69,7 @@ const PracticeView = () => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { id } = useParams()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
@@ -394,9 +397,13 @@ const PracticeView = () => {
             onStart={() => dispatch(setIsPaused(false))}
           />
         )}
-        <HelperSidebar>
-          <CombinedChatbot />
-        </HelperSidebar>
+        {/* The assistant is the sidebar's only content here, so the whole panel goes with it —
+            an empty sidebar would still show its toggle. */}
+        {canUseAssistant && (
+          <HelperSidebar>
+            <CombinedChatbot />
+          </HelperSidebar>
+        )}
         <FeedbackInfoModal />
       </div>
       <AppDialog

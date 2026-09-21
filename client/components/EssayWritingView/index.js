@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
-import { capitalize, hiddenFeatures, useLearningLanguage } from 'Utilities/common'
+import { capitalize, hiddenFeatures, useLearningLanguage, ACCESS, useHasAccess } from 'Utilities/common'
 import {
   buildWritingEssaySentences,
   clearWritingCorrectionData,
@@ -43,6 +43,7 @@ import './EssayWritingStyles.scss'
 
 const EssayWritingView = () => {
   const intl = useIntl()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -377,15 +378,17 @@ const EssayWritingView = () => {
               </Box>
             )}
 
-            <HelperSidebar>
-              <EssayChatbot
-                essayFocus={essayFocus}
-                essayText={current}
-                onClearFocus={clearEssaySelection}
-                onSentenceSelect={requestSentenceSelection}
-                hideCorrectionSuggestions
-              />
-            </HelperSidebar>
+            {canUseAssistant && (
+              <HelperSidebar>
+                <EssayChatbot
+                  essayFocus={essayFocus}
+                  essayText={current}
+                  onClearFocus={clearEssaySelection}
+                  onSentenceSelect={requestSentenceSelection}
+                  hideCorrectionSuggestions
+                />
+              </HelperSidebar>
+            )}
           </Box>
         </Box>
       </Box>
@@ -453,14 +456,16 @@ const EssayWritingView = () => {
             />
           </Paper>
 
-          <HelperSidebar>
-            <EssayChatbot
-              essayFocus={essayFocus}
-              essayText={essayText}
-              onClearFocus={clearEssaySelection}
-              onSentenceSelect={requestSentenceSelection}
-            />
-          </HelperSidebar>
+          {canUseAssistant && (
+            <HelperSidebar>
+              <EssayChatbot
+                essayFocus={essayFocus}
+                essayText={essayText}
+                onClearFocus={clearEssaySelection}
+                onSentenceSelect={requestSentenceSelection}
+              />
+            </HelperSidebar>
+          )}
 
           <FeedbackInfoModal />
         </Box>

@@ -25,7 +25,14 @@ import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import PracticeChatbot from 'Components/ChatBot/PracticeChatbot'
-import { learningLanguageSelector, getMode, hiddenFeatures, images } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  getMode,
+  hiddenFeatures,
+  images,
+  ACCESS,
+  useHasAccess,
+} from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import ReportButton from 'Components/ReportButton'
@@ -44,6 +51,7 @@ import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 
 const LessonPracticeView = () => {
   const dispatch = useDispatch()
+  const canUseAssistant = useHasAccess(ACCESS.HIGH)
   const navigate = useNavigate()
   const location = useLocation()
   const mode = getMode()
@@ -308,7 +316,7 @@ const LessonPracticeView = () => {
               <div style={{ margin: '20px 20px 0 20px' }}>
                 <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               </div>
-              <CombinedChatbot />
+              {canUseAssistant && <CombinedChatbot />}
             </HelperSidebar>
 
             <FeedbackInfoModal />
