@@ -46,7 +46,6 @@ import {
   getTextStyle,
   getMode,
   hiddenFeatures,
-  cefrNum2Cefr,
   ACCESS,
   useHasAccess,
 } from 'Utilities/common'
@@ -211,13 +210,6 @@ const ReadViews = ({ match }) => {
       ),
     ),
   )
-  const difficultyValueDisplay =
-    routeStory?.difficulty_value === null ||
-    routeStory?.difficulty_value === undefined ||
-    routeStory?.difficulty_value === ''
-      ? ''
-      : cefrNum2Cefr(routeStory?.difficulty_value)
-
   const ownedRouteStory = oid === routeStory?.owner
 
   const readingOn = !!user?.user?.reading_comprehension
@@ -553,9 +545,9 @@ const ReadViews = ({ match }) => {
             style={getTextStyle(learningLanguage)}
           >
             {PreviewToolbar()}
-            {/* Centred, so the level label sits on the same line as the translate button rather
-                than hanging from the top of a title that has wrapped. */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* The difficulty level is not repeated here — it is a row in the story info dialog,
+                which the toolbar's "i" opens. */}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
                   {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
@@ -566,12 +558,6 @@ const ReadViews = ({ match }) => {
                   <StoryTitleTranslate title={routeStory?.title} size={36} />
                 </div>
               </div>
-              {(preProcessingReady || processingFinished) &&
-                String(difficultyValueDisplay).trim() !== '' && (
-                  <div className="cefr-level">
-                    {difficultyValueDisplay}
-                  </div>
-                )}
             </div>
             {underProcessing && preProcessingReady && !processingComplete && (
               <div className="story-not-processed">

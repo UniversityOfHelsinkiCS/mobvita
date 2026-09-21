@@ -174,7 +174,7 @@ describe('reading comprehension', function () {
 
   this.beforeAll(function () {
     stories.length = 0
-    cy.login(LANGUAGE, true, 'English').then(user => {
+    cy.login(LANGUAGE, true, 'English', true).then(user => {
       owner = user
     })
 
@@ -436,7 +436,7 @@ describe('reading practice', function () {
     stories.length = 0
     // Reading practice runs as the story OWNER: a non-owner is denied (403) access to a
     // private story's details and questions.
-    cy.login(LANGUAGE, true, 'English').then(user => {
+    cy.login(LANGUAGE, true, 'English', true).then(user => {
       owner = user
     })
 

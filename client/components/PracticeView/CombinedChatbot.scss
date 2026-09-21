@@ -80,8 +80,19 @@
   justify-content: space-between;  
   border-radius: 8px;
   padding: 12px 15px;
+  // The rule sits under the header's own padding, so the gap below it is the margin alone.
+  border-bottom: 1px solid $color-card-border;
   margin-bottom: 1rem;
   position: relative;
+}
+
+// Caption above a context translation that came from the story title, so the bubble says what it
+// is translating.
+.context-translation-caption {
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-muted;
 }
 
 .bulbs-container {

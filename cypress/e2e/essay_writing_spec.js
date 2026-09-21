@@ -170,7 +170,7 @@ const uploadEssayAs = title => {
 
 describe('essay writing', function () {
   this.beforeAll(function () {
-    cy.login(LANGUAGE, false, 'English')
+    cy.login(LANGUAGE, false, 'English', true)
   })
 
   this.beforeEach(function () {
@@ -625,7 +625,7 @@ describe('essay writing — teacher review', function () {
   const highlighted = () => cy.get('.essay-sentence-highlighted')
 
   this.beforeAll(function () {
-    cy.login(LANGUAGE, true, 'English')
+    cy.login(LANGUAGE, true, 'English', true)
   })
 
   this.beforeEach(function () {

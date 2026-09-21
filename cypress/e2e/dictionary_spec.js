@@ -2,7 +2,7 @@
 
 describe("dictionary", function () {
   this.beforeAll(function () {
-    cy.login('Finnish')
+    cy.login('Finnish', false, 'English', true)
   })
 
   this.beforeEach(function () {

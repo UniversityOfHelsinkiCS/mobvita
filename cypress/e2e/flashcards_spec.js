@@ -3,7 +3,7 @@ describe('flashcards', function () {
   const previewURL = `http://localhost:8000/stories/${storyId}/preview`
 
   this.beforeEach(function () {
-    cy.login()
+    cy.login('Finnish', false, 'English', true)
     cy.intercept('GET', '**/api/**').as('apiCall')
     cy.visit('http://localhost:8000/flashcards')
     cy.wait('@apiCall', { timeout: 30000 })

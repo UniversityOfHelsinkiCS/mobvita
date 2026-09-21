@@ -69,7 +69,7 @@ describe('library progress', function () {
 
   this.beforeAll(function () {
     // A learner, not a teacher: this is the student practice flow.
-    cy.login(LANGUAGE, false, 'English').then(user => {
+    cy.login(LANGUAGE, false, 'English', true).then(user => {
       owner = user
     })
 
@@ -156,7 +156,7 @@ describe('deleting a story from the teacher view', function () {
 
   this.beforeAll(function () {
     // A teacher: the edit/delete controls in the story view are behind teacherView.
-    cy.login(LANGUAGE, true, 'English').then(user => {
+    cy.login(LANGUAGE, true, 'English', true).then(user => {
       owner = user
     })
 

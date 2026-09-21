@@ -7,6 +7,7 @@ import {
   learningLanguageLocaleCodes,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
+import CustomTooltip from 'Components/CustomTooltip'
 import {
   getContextTranslation,
   setContextTranslationVisible,
@@ -31,6 +32,7 @@ const StoryTitleTranslate = ({ title, size }) => {
         title,
         learningLanguageLocaleCodes[learningLanguage],
         learningLanguageLocaleCodes[dictionaryLanguage],
+        'title',
       ),
     )
     dispatch(setContextTranslationVisible(true))
@@ -42,38 +44,42 @@ const StoryTitleTranslate = ({ title, size }) => {
   }
 
   return (
-    <button
-      type="button"
-      data-cy="story-title-translate"
-      aria-label="translate title"
-      onClick={handleClick}
-      style={{
-        // Circular sage-green icon button beside the title (2026 design).
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        width: size ? `${size}px` : '1em',
-        height: size ? `${size}px` : '1em',
-        marginLeft: '0.5em',
-        padding: 0,
-        border: 'none',
-        borderRadius: '50%',
-        backgroundColor: colors.green,
-        cursor: 'pointer',
-        alignSelf: 'center',
-      }}
-    >
-      <img
-        src={images.translate}
-        alt=""
+    // Same tooltip treatment as the speaker and the settings gear it sits with: the design-system
+    // bubble, shown when the user has tooltips on.
+    <CustomTooltip keyId="story-title-translate-explain" placement="top">
+      <button
+        type="button"
+        data-cy="story-title-translate"
+        aria-label="translate title"
+        onClick={handleClick}
         style={{
-          width: size ? `${Math.round(size * 0.55)}px` : '0.65em',
-          height: size ? `${Math.round(size * 0.55)}px` : '0.65em',
-          display: 'block',
+          // Circular sage-green icon button beside the title (2026 design).
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+          width: size ? `${size}px` : '1em',
+          height: size ? `${size}px` : '1em',
+          marginLeft: '0.5em',
+          padding: 0,
+          border: 'none',
+          borderRadius: '50%',
+          backgroundColor: colors.green,
+          cursor: 'pointer',
+          alignSelf: 'center',
         }}
-      />
-    </button>
+      >
+        <img
+          src={images.translate}
+          alt=""
+          style={{
+            width: size ? `${Math.round(size * 0.55)}px` : '0.65em',
+            height: size ? `${Math.round(size * 0.55)}px` : '0.65em',
+            display: 'block',
+          }}
+        />
+      </button>
+    </CustomTooltip>
   )
 }
 

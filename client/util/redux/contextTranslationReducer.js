@@ -24,10 +24,13 @@ export const getMTAvailableLanguage = () => {
   return callBuilder(route, prefix, 'get')
 }
 
+// `kind` says what was sent for translation ('title' for the story title, null for a sentence in
+// the text). The bubble reads it to caption itself; it does not reach the request.
 export const getContextTranslation = (
   sentence,
   learningLanguage,
   dictionaryLanguage,
+  kind = null,
 ) => {
   const data = {
     source: sentence,
@@ -37,7 +40,7 @@ export const getContextTranslation = (
 
   const route = '/ctxTranslate'
   const prefix = 'GET_CONTEXT_TRANSLATION'
-  return callBuilder(route, prefix, 'post', data)
+  return { ...callBuilder(route, prefix, 'post', data), kind }
 }
 
 export const clearContextTranslation = () => ({ type: 'CLEAR_CONTEXT_TRANSLATION' })
@@ -48,12 +51,16 @@ export const setContextTranslationVisible = visible => ({
 })
 
 
-export default (state = { data: null, avail: [], lastTrans: null, visible: false }, action) => {
+export default (
+  state = { data: null, avail: [], lastTrans: null, visible: false, kind: null },
+  action,
+) => {
   switch (action.type) {
     case 'GET_CONTEXT_TRANSLATION_ATTEMPT':
       return {
         ...state,
         lastTrans: action.requestSettings.data.source,
+        kind: action.kind ?? null,
         data: null,
         pending: true,
         error: false,

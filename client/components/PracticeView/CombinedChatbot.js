@@ -903,8 +903,19 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
   const renderContextTranslationContent = () => {
     const d = contextTranslationState.data
     if (!d) return null
+
+    // A caption only when the source was the story title — a sentence translation is self-evident
+    // from the text it was triggered from, the title is not.
+    const caption =
+      contextTranslationState.kind === 'title' ? (
+        <div className="context-translation-caption">
+          <FormattedMessage id="title-translation" />
+        </div>
+      ) : null
+
     const renderHtml = html => (
       <ChatBubble variant="note">
+        {caption}
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </ChatBubble>
     )
@@ -919,6 +930,7 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
     if (d['target-sentences'])
       return (
         <ChatBubble variant="note">
+          {caption}
           {d['target-sentences'].map((s, i) => (
             <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
           ))}

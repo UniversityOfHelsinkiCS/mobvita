@@ -54,7 +54,14 @@ function createRandomUser() {
     })
 }
 
-Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = false, transLang = 'English') {
+// `highAccess` gives the new user ACCESS.HIGH, which several features are gated on — the assistant
+// sidebar most visibly. Opt in from the specs that exercise those, so the gate itself stays testable.
+Cypress.Commands.add('login', function (
+  learningLang = 'Finnish',
+  is_teacher = false,
+  transLang = 'English',
+  highAccess = false,
+) {
   const user = randomCredentials()
   return cy.request(
     {
@@ -100,6 +107,7 @@ Cypress.Commands.add('login', function (learningLang = 'Finnish', is_teacher = f
         },
         body: {
           is_teacher: is_teacher,
+          ...(highAccess ? { high_access: true } : {}),
         },
         retryOnNetworkFailure: true,
         timeout: 120000

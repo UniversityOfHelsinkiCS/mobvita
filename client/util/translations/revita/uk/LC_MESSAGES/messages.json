@@ -1097,5 +1097,7 @@
     "paste-title-placeholder": "Enter story title...",
     "paste-text-placeholder": "Paste text here...",
     "paste-submit": "Submit",
-    "teacher": "Teacher"
+    "teacher": "Teacher",
+    "title-translation": "Title translation",
+    "story-title-translate-explain": "Translate the story title"
 }
