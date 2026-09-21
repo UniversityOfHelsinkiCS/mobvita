@@ -755,6 +755,7 @@
     "learning-settings-saved": "Learning settings saved",
     "validating-url": "Validating text...",
     "processing-story": "Processing...",
+    "story-upload-failed": "Could not add the story. Please try again.",
     "done": "done",
     "failed-to-share-the-story": "Failed to share",
     "group-deleted": "Group deleted",

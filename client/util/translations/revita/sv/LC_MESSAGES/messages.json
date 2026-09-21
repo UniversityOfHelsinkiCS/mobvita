@@ -1841,5 +1841,6 @@
     "paste-submit": "Submit",
     "teacher": "Teacher",
     "title-translation": "Title translation",
-    "story-title-translate-explain": "Translate the story title"
+    "story-title-translate-explain": "Translate the story title",
+    "story-upload-failed": "Could not add the story. Please try again."
 }

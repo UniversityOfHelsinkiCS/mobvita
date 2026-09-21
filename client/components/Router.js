@@ -64,6 +64,7 @@ const EssayWritingView = lazy(() => import('./EssayWritingView'))
 const WritingClinic = lazy(() => import('./WritingClinic'))
 const Dashboard = lazy(() => import('./Dashboard'))
 const NotFound = lazy(() => import('./NotFound'))
+const UploadCachedStory = lazy(() => import('./UploadCachedStory'))
 
 export default () => {
   const userData = useSelector(state => state.user?.data?.user)
@@ -182,6 +183,12 @@ export default () => {
                     <Route
                       path="/flashcards/:mode/:type/:storyId"
                       element={<ProtectedRoute component={Flashcards} />}
+                    />
+                    {/* Backend-composed link: adds the cached story, then opens it. Static, so it
+                        ranks above the /stories/:id/* routes below. */}
+                    <Route
+                      path="/stories/cached"
+                      element={<ProtectedRoute component={UploadCachedStory} />}
                     />
                     <Route
                       path="/stories/:id/practice/"

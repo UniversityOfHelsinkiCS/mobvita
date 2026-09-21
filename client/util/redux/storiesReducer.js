@@ -218,6 +218,8 @@ const initialState = {
   pending: false,
   focusedPending: false,
   focusedRequestId: null,
+  uploadedStoryId: null,
+  uploadCachedError: false,
   error: false,
   currentQuery: '',
   loadingProgress: {}, // { [storyId]: progressData }
@@ -371,6 +373,8 @@ export default (state = initialState, action) => {
         pending: true,
         error: false,
         uploaded: false,
+        uploadedStoryId: null,
+        uploadCachedError: false,
       }
     case 'UPLOAD_CACHED_STORY_FAILURE':
       return {
@@ -378,12 +382,20 @@ export default (state = initialState, action) => {
         pending: false,
         error: true,
         uploaded: false,
+        // `error` is shared with every other story request, so the landing page needs a flag of
+        // its own to tell "this upload failed" from "something else failed earlier".
+        uploadCachedError: true,
       }
     case 'UPLOAD_CACHED_STORY_SUCCESS':
       return {
         ...state,
         pending: false,
         uploaded: true,
+        // The id of the story the upload created, so a caller can open it instead of just
+        // refreshing the library. The field name is not pinned down by the API, so take the first
+        // of the plausible ones that is present.
+        uploadedStoryId:
+          action.response?.story_id ?? action.response?._id ?? action.response?.id ?? null,
       }
     case 'CLEAR_STORY_LIST':
       return initialState
