@@ -9,6 +9,7 @@ import Spinner from 'Components/Spinner'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatbotSuggestions from './ChatbotSuggestions'
+import DailyStoriesBubble from './DailyStoriesBubble'
 
 // The assistant sidebar's general chat: a per-route message thread over the input and suggestions.
 const GeneralChatbot = () => {
@@ -26,8 +27,9 @@ const GeneralChatbot = () => {
   const latestMessageRef = useRef(null)
   // Burger-menu prompts. The daily-stories one is library-only: that is where a suggested story is
   // something the user can act on without leaving the page.
+  const isLibrary = scope.startsWith('/library')
   const predefinedChatbotRequests = [
-    ...(scope.startsWith('/library') ? ['chatbot-message-suggestion-daily-stories'] : []),
+    ...(isLibrary ? ['chatbot-message-suggestion-daily-stories'] : []),
     'chatbot-message-suggestion-next-steps',
     'chatbot-message-suggestion-performance',
   ].map(msgId => ({
@@ -55,6 +57,9 @@ const GeneralChatbot = () => {
       </div>
 
       <div className="chatbot-messages">
+        {/* The library assistant opens with daily stories to import — an offer, not a reply, so it
+            sits above the thread and stays until dismissed. */}
+        {isLibrary && <DailyStoriesBubble scope={scope} />}
         {messages.map((message, index) => (
           <ChatBubble
             key={message.id}

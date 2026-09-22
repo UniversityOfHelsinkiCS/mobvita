@@ -46,6 +46,19 @@ export const sendFlashcardsDialogue = (message, scope) => {
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
 }
 
+// The library assistant's opening offer of daily stories. Same endpoint as a typed question, but
+// the request is automatic, so the reply is stored under its own type instead of the chat thread
+// (metadata's `available_cached_stories` is empty for most languages; the agent has the real list).
+export const requestDailyStories = (message, scope) => {
+  const route = '/chatbot/general'
+  const prefix = 'GET_DAILY_STORIES'
+  const payload = { message }
+  return { ...callBuilder(route, prefix, 'post', payload), scope }
+}
+
+// Pending/lookup key for the automatic request, kept out of the thread's own `pending[scope]`.
+export const dailyStoriesKey = scope => `${scope}#daily-stories`
+
 const initialState = {
   items: [],
   nextId: 1,
@@ -82,6 +95,43 @@ export default (state = initialState, action) => {
         ...state,
         items: action.scope ? state.items.filter(item => item.scope !== action.scope) : [],
       }
+
+    case 'GET_DAILY_STORIES_ATTEMPT':
+      return {
+        ...state,
+        pending: { ...state.pending, [dailyStoriesKey(action.scope)]: true },
+        scopeByRequest: { ...state.scopeByRequest, [action.requestId]: action.scope },
+      }
+
+    case 'GET_DAILY_STORIES_FAILURE': {
+      const scope = state.scopeByRequest[action.requestId]
+      return {
+        ...state,
+        pending: { ...state.pending, [dailyStoriesKey(scope)]: false },
+        scopeByRequest: dropKey(state.scopeByRequest, action.requestId),
+      }
+    }
+
+    case 'GET_DAILY_STORIES_SUCCESS': {
+      const scope = state.scopeByRequest[action.requestId]
+      return {
+        ...state,
+        pending: { ...state.pending, [dailyStoriesKey(scope)]: false },
+        scopeByRequest: dropKey(state.scopeByRequest, action.requestId),
+        items: [
+          ...state.items,
+          {
+            id: state.nextId,
+            type: 'daily-stories',
+            role: 'bot',
+            text: response.response,
+            scope,
+            removable: true,
+          },
+        ],
+        nextId: state.nextId + 1,
+      }
+    }
 
     case 'GET_DIALOGUE_RESPONSE_ATTEMPT':
       return {

@@ -1102,5 +1102,6 @@
     "story-title-translate-explain": "Translate the story title",
     "story-upload-failed": "Could not add the story. Please try again.",
     "chatbot-message-suggestion-daily-stories": "Give me some daily stories",
-    "daily-story-saved-to-private": "This story is saved in your Private folder."
+    "daily-story-saved-to-private": "This story is saved in your Private folder.",
+    "daily-stories-assistant-heading": "Here are some daily stories for you, you can import them into your library for practice"
 }
