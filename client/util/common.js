@@ -629,7 +629,9 @@ export const capitalize = (word = '') => {
 
 export const learningLanguageSelector = ({ user }) =>
   user.data ? user.data.user.last_used_language : null
-export const dictionaryLanguageSelector = ({ user }) => user.data.user.last_trans_language
+// `data` is null for a logged-out session, so mirror learningLanguageSelector and return null.
+export const dictionaryLanguageSelector = ({ user }) =>
+  user.data ? user.data.user.last_trans_language : null
 
 export const useLearningLanguage = () => useSelector(learningLanguageSelector)
 export const useDictionaryLanguage = () => useSelector(dictionaryLanguageSelector)

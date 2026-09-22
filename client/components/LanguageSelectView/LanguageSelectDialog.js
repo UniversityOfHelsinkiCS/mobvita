@@ -26,7 +26,7 @@ const LanguageSelectDialog = ({ open, onClose }) => {
   const [showInterfaceModal, setShowInterfaceModal] = useState(false)
 
   useEffect(() => {
-    setShowInterfaceModal(open && !user.data.user?.interfaceLanguage)
+    setShowInterfaceModal(open && !user.data?.user?.interfaceLanguage)
   }, [open, user])
 
   useEffect(() => {

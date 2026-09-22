@@ -3,6 +3,8 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { colors } from 'Assets/mui_theme/designTokens'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'
+// DEMO ONLY — see the /essay-writing + /writing-clinic routes below.
+import DemoPublicRoute from 'Components/DemoPublicRoute'
 import NavBar from './NavBar'
 import LandingPage from './LandingPage'
 import Footer from './Footer'
@@ -347,13 +349,28 @@ export default () => {
                       path="/reference"
                       element={<ProtectedRoute component={ReferenceView} />}
                     />
+                    {/* DEMO ONLY — these two are public so they can be shown without an account.
+                        DemoPublicRoute stands in for ProtectedRoute: a visitor with no session gets
+                        an anonymous one, since the API needs a token either way.
+                        REVERT BEFORE RELEASE: wrap both back in <ProtectedRoute component={…} />
+                        and delete DemoPublicRoute. Neither component takes props, so ProtectedRoute
+                        was only the auth gate. See also the 'DEMO ONLY' fallback in
+                        EssayWritingView. */}
                     <Route
                       path="/essay-writing"
-                      element={<ProtectedRoute component={EssayWritingView} />}
+                      element={
+                        <DemoPublicRoute>
+                          <EssayWritingView />
+                        </DemoPublicRoute>
+                      }
                     />
                     <Route
                       path="/writing-clinic"
-                      element={<ProtectedRoute component={WritingClinic} />}
+                      element={
+                        <DemoPublicRoute>
+                          <WritingClinic />
+                        </DemoPublicRoute>
+                      }
                     />
                     {/* Hidden admin page — no link in the app; gated to developer_of_language "all" inside the component. */}
                     <Route

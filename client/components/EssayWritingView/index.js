@@ -47,7 +47,9 @@ const EssayWritingView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const learningLanguage = useLearningLanguage()
+  // DEMO ONLY — belt and braces for the public route: DemoPublicRoute sets the same language
+  // on the anonymous account, and `capitalize()` throws on null. REVERT BEFORE RELEASE.
+  const learningLanguage = useLearningLanguage() ?? 'Finnish'
   const [essayFocus, setEssayFocus] = useState(null)
   const [essayText, setEssayText] = useState('')
   const [essaySentences, setEssaySentences] = useState([])

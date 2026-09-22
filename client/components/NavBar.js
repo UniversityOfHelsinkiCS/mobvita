@@ -116,7 +116,7 @@ export default function NavBar() {
   const handleEloClick = () => {
     navigate('/profile/progress')
   }
-  const isTeacher = user?.user.is_teacher
+  const isTeacher = user?.user?.is_teacher
   const teacherView = user?.teacherView
   const check = location.pathname
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
@@ -157,7 +157,7 @@ export default function NavBar() {
         navigate('/profile/progress')
       }
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
-      if (user.user.email === 'anonymous_email') {
+      if (user?.user?.email === 'anonymous_email') {
         dispatch(startAnonymousProgressTour())
       } else {
         dispatch(startProgressTour())
@@ -180,7 +180,7 @@ export default function NavBar() {
   }
 
   const getLearningLanguageFlag = () => {
-    const lastUsedLanguage = user.user.last_used_language
+    const lastUsedLanguage = user?.user?.last_used_language
 
     if (lastUsedLanguage) {
       return images[`flag${capitalize(lastUsedLanguage.toLowerCase().split('-').join(''))}`]
@@ -293,7 +293,11 @@ export default function NavBar() {
   const blackToWhiteFilter =
     'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)'
 
-  if (!user) return null
+  // DEMO ONLY — /essay-writing and /writing-clinic are public for now, and the bar would otherwise
+  // vanish there along with the way back out of the page. The user-dependent parts below fall back
+  // to nothing when there is no account. REVERT BEFORE RELEASE with the routes in Router.js.
+  const onPublicDemoRoute = ['/essay-writing', '/writing-clinic'].includes(location.pathname)
+  if (!user && !onPublicDemoRoute) return null
 
   return (
     <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
@@ -352,7 +356,7 @@ export default function NavBar() {
                   )}
                 </Box>
               </Link>
-              {user.user.last_used_language && (
+              {user?.user?.last_used_language && (
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   <CustomTooltip
                     placement="bottom-end"
@@ -388,7 +392,7 @@ export default function NavBar() {
                           border: 'none',
                         }}
                       />
-                      {user.user.last_used_language}
+                      {user?.user?.last_used_language}
                     </span>
                   </CustomTooltip>
                   <MoreVertIcon
@@ -501,7 +505,7 @@ export default function NavBar() {
                     userSelect: 'none',
                   }}
                 >
-                  {getInitials(user.user.username)}
+                  {getInitials(user?.user?.username)}
                   {numUnreadNews > 0 && (
                     <span
                       style={{

@@ -11,8 +11,9 @@ const useTourRuntime = expectedName => {
   const stepIndex = useSelector(state => state.tour.stepIndex)
   const tourKey = useSelector(state => state.tour.key)
   const continuous = useSelector(state => state.tour.continuous)
-  const teacherView = useSelector(state => state.user.data.teacherView)
-  const user = useSelector(state => state.user.data.user)
+  // `data` is null when nobody is logged in (the tours then simply never run).
+  const teacherView = useSelector(state => state.user.data?.teacherView)
+  const user = useSelector(state => state.user.data?.user)
   const bigScreen = useWindowDimensions().width >= 700
   return {
     isActive: name === expectedName,
