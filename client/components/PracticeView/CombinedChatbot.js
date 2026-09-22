@@ -52,6 +52,7 @@ import {
   getPracticeChatbotResponse,
   setConversationHistory,
   setCurrentContext,
+  setSavedStoryNotice,
 } from 'Utilities/redux/chatbotReducer'
 import { setSnippetChatHistory } from 'Utilities/redux/snippetsReducer'
 import {
@@ -202,7 +203,9 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
     currentAnswers,
     focusedWord: currentWord,
   } = useSelector(({ practice }) => practice)
-  const { messages, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
+  const { messages, isWaitingForResponse, isLoadingHistory, savedStoryNotice } = useSelector(
+    ({ chatbot }) => chatbot,
+  )
 
   const translationState = useSelector(({ translation }) => translation)
   const { data: translationData } = useSelector(({ translation }) => translation)
@@ -943,6 +946,29 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
     )
   }
 
+  // The assistant's opening state: nothing focused, nothing translated yet.
+  const showInitialInstruction =
+    currentWord &&
+    isEmpty(currentWord) &&
+    translationState &&
+    isEmpty(translationState.data) &&
+    isEmpty(translationState.surfaceWord)
+
+  // Any other activity replaces that opening state, and the notice goes with it — cleared in the
+  // store too, so it cannot come back if the learner returns to an empty selection.
+  //
+  // Only once the instruction has actually been on screen: ReadViews swaps the whole page (sidebar
+  // included) for a spinner while a story is still processing, which a freshly added daily story
+  // always is. Clearing on a merely-not-yet-true condition would retire the notice before it showed.
+  const instructionSeen = useRef(false)
+  useEffect(() => {
+    if (showInitialInstruction) {
+      instructionSeen.current = true
+      return
+    }
+    if (instructionSeen.current && savedStoryNotice) dispatch(setSavedStoryNotice(false))
+  }, [savedStoryNotice, showInitialInstruction])
+
   return (
     <div className="combined-chatbot">
       {(learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
@@ -988,17 +1014,20 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
         <AssistentSettings className="settings-icon" />
       </div>
 
-      {currentWord &&
-        isEmpty(currentWord) &&
-        translationState &&
-        isEmpty(translationState.data) &&
-        isEmpty(translationState.surfaceWord) && (
-          <div className="first-message">
-            <ChatBubble variant="bot" data-cy="dictionary-info">
-              <FormattedMessage id="chatbox-initial-instruction" />
+      {showInitialInstruction && (
+        <div className="first-message">
+          <ChatBubble variant="bot" data-cy="dictionary-info">
+            <FormattedMessage id="chatbox-initial-instruction" />
+          </ChatBubble>
+          {/* Raised by the daily-story link, which drops the learner straight onto a story with no
+              sign it was added to their library. It lives and dies with the instruction above. */}
+          {savedStoryNotice && (
+            <ChatBubble variant="bot" data-cy="saved-story-notice">
+              <FormattedMessage id="daily-story-saved-to-private" />
             </ChatBubble>
-          </div>
-        )}
+          )}
+        </div>
+      )}
       {/* Exercise block */}
       {helperActiveTab === 'exercise' && (
         <div className="chatbot-content">

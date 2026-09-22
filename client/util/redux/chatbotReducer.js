@@ -40,6 +40,13 @@ export const getReadingPracticeAgentConversationHistory = (session_id, reading_q
   return callBuilder(route, prefix, 'get')
 }
 
+// A one-off notice the app itself raises, shown beside the assistant's opening instruction — not a
+// thread message, so it disappears with that instruction rather than staying in the conversation.
+export const setSavedStoryNotice = value => ({
+  type: 'SET_SAVED_STORY_NOTICE',
+  value,
+})
+
 export const setConversationHistory = (chatbot_history = []) => ({
   type: 'SET_CHATBOT_HISTORY',
   chatbot_history: chatbot_history,
@@ -120,6 +127,7 @@ export const getEssayChatbotResponse = ({
 
 const initialState = {
   messages: [],
+  savedStoryNotice: false,
   essayMessages: [],
   exerciseContext: '',
   isWaitingForResponse: false,
@@ -211,6 +219,12 @@ export default (state = initialState, action) => {
         ...state,
         isLoadingHistory: false,
         messages: response.history,
+      }
+
+    case 'SET_SAVED_STORY_NOTICE':
+      return {
+        ...state,
+        savedStoryNotice: action.value,
       }
 
     case 'SET_CHATBOT_HISTORY':

@@ -112,12 +112,22 @@ const seedStoryQuestions = (token, storyId, questions) =>
 
 // ---- UI helpers ----
 
-const createStoryViaPaste = (title, body) => {  
+const createStoryViaPaste = (title, body) => {
+  // The paste form closes its modal whether the upload succeeded or not, so without watching the
+  // request a failed upload only shows up much later as "the story never appeared in the list".
+  cy.intercept('POST', /\/api\/stories$/, req => req.continue()).as('postStory')
+
   cy.get('[data-cy=add-story-button]').click()
   cy.get('[data-cy=add-story-paste]').click()
   cy.get('[data-cy=paste-story-title-input] input').clear().type(title)
   cy.get('[data-cy=paste-story-text-input] textarea:visible').clear().type(body)
   cy.get('[data-cy=paste-story-confirm]').should('not.be.disabled').click()
+
+  // Fail here, naming the status, rather than 20s later in the list lookup.
+  cy.wait('@postStory', { timeout: 120000 }).then(({ response }) => {
+    expect(response?.statusCode, `POST /stories for "${title}"`).to.be.oneOf([200, 201])
+  })
+
   // Modal closes once the upload finishes.
   cy.get('[data-cy=paste-story-title-input]', { timeout: 120000 }).should('not.exist')
 }

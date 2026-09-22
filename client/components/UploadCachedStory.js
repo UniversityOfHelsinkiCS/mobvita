@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useIntl } from 'react-intl'
 import { uploadCachedStory } from 'Utilities/redux/storiesReducer'
+import { setSavedStoryNotice } from 'Utilities/redux/chatbotReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Spinner from 'Components/Spinner'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -19,6 +20,9 @@ import { colors } from 'Assets/mui_theme/designTokens'
  *
  * The API returns the id of the story it created, so the user lands on that story's preview. If the
  * response carries no id, the private library is the fallback — the story is there either way.
+ *
+ * The assistant on that page says where the story went, since arriving straight at a story gives no
+ * sign that it was added to the library at all.
  */
 const LIBRARY_FALLBACK = '/library/private'
 
@@ -41,6 +45,7 @@ const UploadCachedStory = () => {
 
   useEffect(() => {
     if (!uploaded) return
+    dispatch(setSavedStoryNotice(true))
     // `replace`, so Back does not re-run the upload.
     navigate(uploadedStoryId ? `/stories/${uploadedStoryId}/preview` : LIBRARY_FALLBACK, {
       replace: true,

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer'
 import { filterOutCachedStory } from 'Utilities/redux/metadataReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
+import { setSavedStoryNotice } from 'Utilities/redux/chatbotReducer'
 import CloseIcon from '@mui/icons-material/Close'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
@@ -12,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { uploaded } = useSelector(({ stories }) => stories)
+  const { uploaded, uploadedStoryId } = useSelector(({ stories }) => stories)
   const learningLanguage = useSelector(learningLanguageSelector)
 
   const truncateStoryTitle = title => {
@@ -28,16 +29,20 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
     dispatch(uploadCachedStory(story_id))
   }
 
+  // Same landing as the backend's daily-story link (see UploadCachedStory): open the story itself,
+  // with the assistant saying where it was saved — arriving straight at a story otherwise gives no
+  // sign it was added to the library. Falls back to the library when the API returns no id.
   useEffect(() => {
-    if (uploaded) {
-      dispatch(
-        getAllStories(learningLanguage, {
-          sort_by: 'date',
-          order: -1 })
-      )
-      navigate('/library/private')
-    }
-  }, [uploaded])
+    if (!uploaded) return
+
+    dispatch(
+      getAllStories(learningLanguage, {
+        sort_by: 'date',
+        order: -1 })
+    )
+    dispatch(setSavedStoryNotice(true))
+    navigate(uploadedStoryId ? `/stories/${uploadedStoryId}/preview` : '/library/private')
+  }, [uploaded, uploadedStoryId])
 
   if (open) {
     return (
