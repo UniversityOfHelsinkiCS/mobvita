@@ -378,7 +378,7 @@ const EssayWritingView = () => {
               </Box>
             )}
 
-            {canUseAssistant && (
+            {/* {canUseAssistant && (
               <HelperSidebar>
                 <EssayChatbot
                   essayFocus={essayFocus}
@@ -388,7 +388,16 @@ const EssayWritingView = () => {
                   hideCorrectionSuggestions
                 />
               </HelperSidebar>
-            )}
+            )} */}
+            <HelperSidebar>
+                <EssayChatbot
+                  essayFocus={essayFocus}
+                  essayText={current}
+                  onClearFocus={clearEssaySelection}
+                  onSentenceSelect={requestSentenceSelection}
+                  hideCorrectionSuggestions
+                />
+              </HelperSidebar>
           </Box>
         </Box>
       </Box>
@@ -456,7 +465,7 @@ const EssayWritingView = () => {
             />
           </Paper>
 
-          {canUseAssistant && (
+          {/* {canUseAssistant && (
             <HelperSidebar>
               <EssayChatbot
                 essayFocus={essayFocus}
@@ -465,7 +474,15 @@ const EssayWritingView = () => {
                 onSentenceSelect={requestSentenceSelection}
               />
             </HelperSidebar>
-          )}
+          )} */}
+          <HelperSidebar>
+              <EssayChatbot
+                essayFocus={essayFocus}
+                essayText={essayText}
+                onClearFocus={clearEssaySelection}
+                onSentenceSelect={requestSentenceSelection}
+              />
+            </HelperSidebar>
 
           <FeedbackInfoModal />
         </Box>
