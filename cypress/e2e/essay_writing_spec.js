@@ -1,9 +1,10 @@
 /**
  * Essay writing, end to end.
  *
- * The backend is real for everything except the two endpoints that spend LLM tokens: POST
- * /writing/{lang}/correction and POST /chatbot/essay are stubbed in every test, and a guard refuses
- * (and reports) any other AI route the page might reach. The correction stub is deterministic — one
+ * The backend is real for everything except the endpoints that spend LLM tokens: POST
+ * /writing/{lang}/correction, POST /chatbot/essay and POST /chatbot/general (the library assistant
+ * asks that one for daily stories by itself) are stubbed in every test, and a guard refuses (and
+ * reports) any other AI route the page might reach. The correction stub is deterministic — one
  * sentence always comes back with the same correction and the same backend sentence id — which is
  * what makes the correction cache, the suggestion list and the sentence lineage assertable.
  *
@@ -20,6 +21,8 @@ const S1_EDITED = 'Minä olen kissat.'
 const S2 = 'Koira juoksee puistossa.'
 const SPLITTABLE = 'Minä olen kissa ja koira.'
 const CHATBOT_REPLY = 'Because the verb has to agree with the subject.'
+// What the library assistant's automatic daily-stories request comes back with.
+const DAILY_STORIES_REPLY = '- [A test story](http://localhost:8000/stories/cached?cached_id=1)'
 
 // What the correction stub flags, per sentence: the word, what it should have been, and the hint
 // shown on the bubble. Keyed by the sentence itself, so retyping one gets the same correction back.
@@ -39,6 +42,8 @@ const FALLBACK_CORRECTION = { word: null, corrected: 'korjattu', hint: 'Check th
 // that ends at the path silently matches none of them.
 const CORRECTION_ROUTE = /\/api\/writing\/[^/]+\/correction(\?|$)/
 const ESSAY_CHATBOT_ROUTE = /\/api\/chatbot\/essay(\?|$)/
+// The library assistant asks this one for daily stories on its own, the moment /library opens.
+const GENERAL_CHATBOT_ROUTE = /\/api\/chatbot\/general(\?|$)/
 const SESSION_ROUTE = /\/api\/writing\/[^/]+\/session(\?|$)/
 const ESSAY_LIST_ROUTE = /\/api\/writing\/[^/]+\/essays(\?|$)/
 const ESSAY_BY_ID_ROUTE = /\/api\/writing\/[^/]+\/essays\/[^/?]+(\?|$)/
@@ -47,7 +52,8 @@ const ESSAY_BY_ID_ROUTE = /\/api\/writing\/[^/]+\/essays\/[^/?]+(\?|$)/
 // stubbed; the rest are here so that a page reaching them fails the test instead of quietly
 // spending tokens.
 const AI_ROUTE = /\/(correction|chatbot|generate|mc_generate)/
-const isStubbedAiRoute = url => CORRECTION_ROUTE.test(url) || ESSAY_CHATBOT_ROUTE.test(url)
+const isStubbedAiRoute = url =>
+  CORRECTION_ROUTE.test(url) || ESSAY_CHATBOT_ROUTE.test(url) || GENERAL_CHATBOT_ROUTE.test(url)
 
 let unstubbedAiCalls = []
 
@@ -112,6 +118,11 @@ const stubLlmEndpoints = () => {
   cy.intercept({ method: 'POST', url: ESSAY_CHATBOT_ROUTE }, request => {
     request.reply({ statusCode: 200, body: { response: CHATBOT_REPLY } })
   }).as('chatbot')
+
+  // The essays library is opened by several tests, and its assistant asks for daily stories.
+  cy.intercept({ method: 'POST', url: GENERAL_CHATBOT_ROUTE }, request => {
+    request.reply({ statusCode: 200, body: { response: DAILY_STORIES_REPLY } })
+  }).as('generalChatbot')
 
   // Registered last, so it is offered every POST first. It replies only to an AI route that has no
   // stub of its own; anything else is left to fall through to the handlers above, or to the backend.

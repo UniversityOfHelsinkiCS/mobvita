@@ -127,7 +127,16 @@ Cypress.Commands.add('login', function (
 })
 
 
+// Re-authenticates the user cy.login() created. Only useful while that user exists: cleanUsers()
+// drops it, and posting an empty body just gets 'Missing username parameter' back from the backend.
 Cypress.Commands.add('loginExisting', function () {
+  if (!currentUser) {
+    throw new Error(
+      'loginExisting: no current user. cy.login() has not run in this suite, or cleanUsers() ' +
+        'already removed it — which is what happens to a later suite when an earlier one aborts.',
+    )
+  }
+
   return cy.request('POST', 'localhost:8000/api/user/session', { ...currentUser })
     .then(response => {
       window.localStorage.setItem('user', JSON.stringify(response.body))
