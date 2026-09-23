@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ExerciseWord from 'Components/PracticeView/CurrentSnippet/ExerciseWord'
 import ControlWord from 'Components/ControlledStoryEditView/PreviousSnippets/ControlWord'
 import Word from 'Components/CommonStoryTextComponents/PreviousSnippets/Word'
+import { getIdxToStyleRange } from 'Utilities/snippetRanges'
 
 const TextWithFeedback = ({
   snippet,
@@ -27,45 +28,6 @@ const TextWithFeedback = ({
   const lineColors = ['blue', 'green', 'black', 'purple', 'cyan']
   const { grade } = useSelector(state => state.user.data.user)
   
-  const getIdxToStyleRange = snippet => {
-    const idx2chunk = {}
-    const idx2pattern = {}
-    
-    if (snippet){
-      const chunkStarts = []
-      const chunkEnds = []
-      const patterns = new Set()
-      for(const word of snippet) {
-        const chunkPosition = word.chunk && word.chunk.split('_')[1]
-        const { pattern, ID } = word
-        if (Number(ID) === NaN) continue
-
-        if (chunkPosition === 'start') {
-          chunkStarts.push(Number(ID))
-        }
-        if (chunkPosition === 'end') {
-          chunkEnds.push(Number(ID))
-        }
-        const pattern_to_remove = new Set()
-        for  (const [key, value] of Object.entries(pattern || {})){
-          if (value === 'pattern_start') patterns.add(key)
-          if (value === 'pattern_end') pattern_to_remove.add(key)
-        }
-        if (patterns.size){
-          if (Object.keys(idx2pattern).includes(String(ID))) idx2pattern[j] = [...idx2pattern[j], ...Array.from(patterns)]
-          else idx2pattern[ID] = Array.from(patterns)
-        }
-        for (const key of pattern_to_remove) patterns.delete(key)
-
-      }
-      
-      for (let i = 0; i < Math.min(chunkStarts.length, chunkEnds.length); i++)
-        for (let j = chunkStarts[i]; j <= chunkEnds[i]; j++)
-          idx2chunk[j] = Array.from({ length: chunkEnds[i] - chunkStarts[i] + 1 }, (_, x) => x + chunkStarts[i])
-    }
-    return {idx2chunk, idx2pattern}
-  }
-
   const getMarkedIdx = idx2style => new Set(snippet?.filter(
     word => Object.keys(idx2style).includes(String(word.ID)) && 
     (word.concepts?.map(x=>x.concept).includes(focusedConcept) || word.analytic_concepts?.includes(focusedConcept) || mode!=='preview')).map(
