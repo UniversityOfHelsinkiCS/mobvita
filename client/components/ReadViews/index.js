@@ -412,9 +412,10 @@ const ReadViews = ({ match }) => {
   }
 
   // Teacher edit/delete controls. They sit in the card's top toolbar now (see PreviewToolbar), in a
-  // row rather than the old stacked column.
+  // row rather than the old stacked column. A story in the public library is not the teacher's to
+  // change, so it gets neither — the library card hides the same controls there.
   const StoryFunctionsDropdown = () =>
-    preProcessingReady && teacherView && !routeStory?.control_story ? (
+    preProcessingReady && teacherView && !routeStory?.control_story && !routeStory?.public ? (
       <div
         className="practice-tour-edit-delete-story"
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}

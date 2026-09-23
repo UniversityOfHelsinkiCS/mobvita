@@ -6,6 +6,9 @@ import Spinner from 'Components/Spinner'
 
 const PracticeText = props => {
   const snippets = useSelector(({ snippets }) => snippets)
+  // The backend sends the chunk / pattern markup with the snippet itself, but it only becomes
+  // feedback once the learner has checked: before the first check it would give the answers away.
+  const checked = useSelector(({ practice }) => practice.attempt > 0)
   const textComponent = useRef(null)
   const [previousHeight, setPreviousHeight] = useState(0)
   const practiceSnippet = useSelector(
@@ -31,7 +34,13 @@ const PracticeText = props => {
   if (snippets?.focused?.practice_snippet?.length > 0) {
     return (
       <div ref={textComponent}>
-        <TextWithFeedback exercise snippet={practiceSnippet} mode="practice" {...props} />
+        <TextWithFeedback
+          exercise
+          snippet={practiceSnippet}
+          mode="practice"
+          {...props}
+          showMarkup={checked}
+        />
       </div>
     )
   } else {

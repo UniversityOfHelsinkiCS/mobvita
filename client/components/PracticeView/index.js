@@ -342,7 +342,17 @@ const PracticeView = () => {
                 <FormattedMessage id="Source" />
               </a>
             )}
-            <PreviousSnippets showDifficulty={showDifficulty} />            
+            <PreviousSnippets showDifficulty={showDifficulty} />
+            {/* Separates what has already been read from the snippet being answered. */}
+            {snippets.previous?.length > 0 && (
+              <hr
+                style={{
+                  border: 'none',
+                  borderTop: `1px solid ${colors.cardBorder}`,
+                  margin: '1.25em 0',
+                }}
+              />
+            )}
             <CurrentSnippet
               storyId={id}
               handleInputChange={handleAnswerChange}

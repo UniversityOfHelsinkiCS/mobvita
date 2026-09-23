@@ -3,7 +3,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
-import { confettiRain, finalConfettiRain, images } from 'Utilities/common'
+import {
+  ACCESS,
+  confettiRain,
+  finalConfettiRain,
+  images,
+  learningLanguageSelector,
+  speak,
+  useHasAccess,
+  voiceLanguages,
+} from 'Utilities/common'
+import {
+  logMissingVoice,
+  logNoSpeechAccess,
+  pickContextToSpeak,
+  withLocalAnswers,
+} from 'Utilities/practiceSpeech'
 import {
   postAnswers,
   resetCurrentSnippet,
@@ -123,6 +138,10 @@ const SnippetActions = ({
     voice,
   } = useSelector(({ practice }) => practice)
   const { irt_dummy_score } = useSelector(({ user }) => user)
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const resourceUsage = useSelector(({ user }) => user.data?.user?.resource_usage)
+  // Pronouncing the checked context is a high-access feature for now.
+  const canHearCheckedContext = useHasAccess(ACCESS.HIGH)
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -156,9 +175,38 @@ const SnippetActions = ({
 
   const formattedTimerValue = timerValue < 0 ? 0 : timerValue
 
+  // Reads a short context aloud — see pickContextToSpeak for which unit wins. Spoken from the
+  // answers as typed, before the check is posted, so the audio starts a request earlier.
+  const speakCheckedContext = lastCheck => {
+    if (!canHearCheckedContext) {
+      logNoSpeechAccess()
+      return
+    }
+
+    const answered = withLocalAnswers(snippets.focused?.practice_snippet ?? [], {
+      currentAnswers,
+      correctAnswerIDs,
+    })
+    const text = pickContextToSpeak(answered, { lastCheck })
+    if (!text) return
+
+    const voice = voiceLanguages[learningLanguage]
+    if (!voice) {
+      logMissingVoice(learningLanguage)
+      return
+    }
+
+    speak(text, voice, 'exercise', resourceUsage)
+  }
+
   const checkAnswers = async lastAttempt => {
     const { starttime, snippetid, practice_snippet } = snippets.focused
     const { sessionId } = snippets
+
+    // Same three ways a check can be the last one as in CurrentSnippet's own bookkeeping.
+    speakCheckedContext(
+      lastAttempt || snippets.focused.skip_second || attempt + 1 >= snippets.focused.max_attempt,
+    )
 
     const filteredCurrentAnswers = Object.keys(currentAnswers)
       .filter(key => !correctAnswerIDs.includes(key))

@@ -67,6 +67,33 @@ const describeUnit = unit => {
   return `via ${unit.kind}${unit.kind === 'pattern' ? ` ${unit.id}` : ''} "${textOf(unit.words)}"`
 }
 
+// The answers as the learner just left them, so the context can be spoken on the click rather than
+// a request later: `tested` / `isWrong` only arrive with the check response. A word answered this
+// round wins over what the backend last said about it; anything else keeps its existing flags.
+export const withLocalAnswers = (snippet, { currentAnswers = {}, correctAnswerIDs = [] } = {}) => {
+  const normalise = value =>
+    String(value ?? '')
+      .trim()
+      .toLowerCase()
+  const alreadyCorrect = new Set(correctAnswerIDs.map(String))
+  const wrongByWord = new Map()
+
+  // Keys are `<word ID>-<candidate id>`, and an untouched exercise still carries its cue as the
+  // answer, so it reads as wrong — which is what the check would say about it too.
+  Object.entries(currentAnswers).forEach(([key, answer]) => {
+    const [wordId] = key.split('-')
+    wrongByWord.set(wordId, normalise(answer?.users_answer) !== normalise(answer?.correct))
+  })
+
+  return snippet.map(word => {
+    const wordId = String(word.ID)
+
+    if (alreadyCorrect.has(wordId)) return { ...word, tested: true, isWrong: false }
+    if (wrongByWord.has(wordId)) return { ...word, tested: true, isWrong: wrongByWord.get(wordId) }
+    return word
+  })
+}
+
 export const pickContextToSpeak = (snippet, { lastCheck = false } = {}) => {
   if (!snippet?.length) {
     log('nothing · no snippet')
@@ -108,6 +135,9 @@ export const pickContextToSpeak = (snippet, { lastCheck = false } = {}) => {
   log('nothing · no fully-correct unit')
   return null
 }
+
+// The feature is limited to high-access users while it is being trialled.
+export const logNoSpeechAccess = () => log('not spoken · needs high access')
 
 // Logged rather than silent: a missing voice for the language looks exactly like a logic failure.
 export const logMissingVoice = learningLanguage =>

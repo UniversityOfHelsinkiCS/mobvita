@@ -14,6 +14,9 @@ const TextWithFeedback = ({
   hideFeedback,
   showPreviewExercises,
   focusedConcept,
+  // Chunk circles and pattern underlines. The snippet being answered hides them until it has been
+  // checked, so they read as feedback rather than as a hint.
+  showMarkup = true,
   ...props
 }) => {
   let lowestLinePosition = 0
@@ -34,8 +37,8 @@ const TextWithFeedback = ({
       word => idx2style[word.ID]).flat().map(x => String(x)))
 
   const {idx2chunk, idx2pattern} = useMemo(() => getIdxToStyleRange(snippet), [snippet])
-  const markedChunks = getMarkedIdx(idx2chunk)
-  const markedPatterns = getMarkedIdx(idx2pattern)
+  const markedChunks = showMarkup ? getMarkedIdx(idx2chunk) : new Set()
+  const markedPatterns = showMarkup ? getMarkedIdx(idx2pattern) : new Set()
   
 
   const getSidePadding = exercise => {

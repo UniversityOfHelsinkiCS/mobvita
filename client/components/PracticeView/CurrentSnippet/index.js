@@ -18,8 +18,7 @@ import { clearContextTranslation } from 'Utilities/redux/contextTranslationReduc
 import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { getTextStyle, learningLanguageSelector, speak, voiceLanguages } from 'Utilities/common'
-import { logMissingVoice, pickContextToSpeak } from 'Utilities/practiceSpeech'
+import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { useLocation } from 'react-router-dom'
 import {
   setAnswers,
@@ -330,20 +329,6 @@ const CurrentSnippet = ({
       fetchSnippet()
   }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
 
-  // Reads a short context aloud after a check — see pickContextToSpeak for which unit wins.
-  const speakCheckedContext = (practiceSnippet, lastCheck) => {
-    const text = pickContextToSpeak(practiceSnippet, { lastCheck })
-    if (!text) return
-
-    const voice = voiceLanguages[learningLanguage]
-    if (!voice) {
-      logMissingVoice(learningLanguage)
-      return
-    }
-
-    speak(text, voice, 'exercise', userData?.resource_usage)
-  }
-
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
     if (currentSnippetIsLoaded) {
@@ -351,9 +336,6 @@ const CurrentSnippet = ({
         snippets.focused.skip_second ||
         snippetFinished ||
         attempt + 1 >= snippets.focused.max_attempt
-
-      // A snippet that has already started is only re-set by an answer response.
-      if (!isNewSnippet) speakCheckedContext(snippets.focused.practice_snippet, wasLastAttempt)
 
       if (wasLastAttempt && willPause) dispatch(setIsPaused(true))
       if (isNewSnippet) setInitialAnswers()
