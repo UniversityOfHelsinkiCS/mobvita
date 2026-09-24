@@ -252,13 +252,16 @@ const recordSpeak = (text, voice_type, source, lang_code, is_success, message) =
   )
 }
 
-export const RVSpeak = (text, lang_code, tone, voice_type) => {
+// `rate` is ResponsiveVoice's own speed control: 1 is normal, lower is slower. Left out entirely
+// unless asked for, so every existing call sounds exactly as before.
+export const RVSpeak = (text, lang_code, tone, voice_type, rate) => {
   const callback_func = is_success => () => {
     recordSpeak(text, voice_type, 'ResponsiveVoice', lang_code, is_success, '')
   }
   const parameters = {
     onend: callback_func(1),
     onerror: callback_func(0),
+    ...(rate ? { rate } : {}),
   }
   window.responsiveVoice.speak(text, `${lang_code} ${tone}`, parameters)
 }

@@ -217,7 +217,8 @@ const SnippetActions = ({
 
     // Only what was actually read out counts as spoken.
     choice.keys.forEach(key => spokenUnits.current.keys.add(key))
-    speak(choice.text, voice, 'exercise', resourceUsage)
+    // A phrase or a whole sentence, so it is read slower than a single word would be.
+    speak(choice.text, voice, 'exercise', resourceUsage, 0, { slow: true })
   }
 
   const checkAnswers = async lastAttempt => {

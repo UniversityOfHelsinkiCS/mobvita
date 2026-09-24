@@ -1017,13 +1017,31 @@ export const consistsOfOnlyWhitespace = text => {
   return false
 }
 
-export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 0) => {
+// `slow` reads a whole phrase or sentence at a gentler pace. Each backend has its own scale: a
+// rate for ResponsiveVoice and Yandex (1 is normal), a duration offset for Tacotron2 — the same
+// knob the repeat-listen counter turns. Coqui has no speed control at all.
+const SLOW_SPEED = { responsive_voice: 0.8, yandex: '0.8', tacotron2: -3 }
+
+export const speak = (
+  surfaceWord,
+  voice,
+  voice_type,
+  resource_usage,
+  nRepeat = 0,
+  { slow = false } = {},
+) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice.cancel()
   Howler.stop()
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
-      RVSpeak(surfaceWord, lang_code, tone, voice_type)
+      RVSpeak(
+        surfaceWord,
+        lang_code,
+        tone,
+        voice_type,
+        slow ? SLOW_SPEED.responsive_voice : undefined,
+      )
     else if (
       source === 'yandex' &&
       Howler.codecs('opus') &&
@@ -1034,14 +1052,27 @@ export const speak = (surfaceWord, voice, voice_type, resource_usage, nRepeat = 
         lang_code,
         tone,
         voice_type,
-        String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3),
+        slow ? SLOW_SPEED.yandex : String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3),
       )
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      tacotronSpeak(surfaceWord, lang_code, tone, voice_type, 0 - ((nRepeat * 3) % 6))
+      tacotronSpeak(
+        surfaceWord,
+        lang_code,
+        tone,
+        voice_type,
+        slow ? SLOW_SPEED.tacotron2 : 0 - ((nRepeat * 3) % 6),
+      )
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
       coquiSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
-      speak(surfaceWord, speakFallbackConfig[voice.join('-')], voice_type, resource_usage)
+      speak(
+        surfaceWord,
+        speakFallbackConfig[voice.join('-')],
+        voice_type,
+        resource_usage,
+        nRepeat,
+        { slow },
+      )
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(`${lang_code} ${tone}`)}`)
   }
