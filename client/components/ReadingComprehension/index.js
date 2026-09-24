@@ -953,7 +953,9 @@ const ReadingComprehensionView = ({ match }) => {
           className="reading-comp__questions"
           style={{
             flex: '2 1 360px',
-            minWidth: 320,
+            // Sized by the tab bar: its labels cannot wrap, so min-content is exactly the width the
+            // two segments need. Everything else in the panel wraps and does not widen it.
+            minWidth: 'min-content',
             width: '100%',
           }}
         >
@@ -969,9 +971,11 @@ const ReadingComprehensionView = ({ match }) => {
               padding: '1.25em',
             }}
           >
-            <div className="rc-tabs" style={{ marginBottom: 12 }}>
+            {/* Below the two-column breakpoint the bar can still outgrow a narrow screen. */}
+            <div className="rc-tabs" style={{ marginBottom: 12, overflowX: 'auto' }}>
               <AppTabs
                 tabs={tabs}
+                variant="inner"
                 value={activeTabIndex}
                 onChange={index => {
                   setActiveTabIndex(index)

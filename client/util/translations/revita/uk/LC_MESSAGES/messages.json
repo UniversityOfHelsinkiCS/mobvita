@@ -543,6 +543,7 @@
     "exercise-density-documentation": "Цей слайдер вказує кількість вправ у кожному параграфі:\n\"Складніше\" означає більше вправ. \"Легше\" означає менше.",
     "choose-settings-template-info": "У <b>Публічній</b> та <b>Приватній</b> бібліотеках: вправи контролюються цими налаштуваннями.<br/>\nУ <b>Груповій бібліотеці</b>, вправи контролюються лише власними налаштуваннями групи, встановленими вчителем.",
     "show-difficulty-level": "Виділити складність вправи",
+    "pronounce-context-after-check": "Pronounce the context after checking answers",
     "set-questions-to-zero": "Обнулити все",
     "notes-library": "Нотатки",
     "notes-header": "Нотатки",

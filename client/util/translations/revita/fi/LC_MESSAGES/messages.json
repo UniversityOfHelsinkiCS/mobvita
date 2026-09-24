@@ -1262,6 +1262,7 @@
     "select-cefr-reminder": "Valitse CEFR-tasosi",
     "update-settings": "Päivitä asetukset",
     "show-difficulty-level": "Näytä tehtävien vaikeustasot",
+    "pronounce-context-after-check": "Pronounce the context after checking answers",
     "story-completed-to-blue-flashcards": "Tässä tekstissä kohtasit {nWords} uutta sanaa!\n<br/>\nTarkistetaanpa, että osaat ne varmasti.\n<br/>\nSaat <a href=\"/profile/progress/flashcards\">pisteet</a> kaikistä näistä sanoista — tarkistamalla vain viisi →",
     "enable-recommendations": "Salli suositusten näyttäminen",
     "notification-settings": "Ilmoitukset",

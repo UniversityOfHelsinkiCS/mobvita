@@ -9,6 +9,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
+import { contextSpeechEnabled, setContextSpeechEnabled } from 'Utilities/practiceSpeech'
 import {
   clearFocusedSnippet,
   resetCachedSnippets,
@@ -70,6 +71,8 @@ const PracticeView = () => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { id } = useParams()
   const canUseAssistant = useHasAccess(ACCESS.HIGH)
+  // Same gate as the pronunciation itself, so the switch only shows where it does something.
+  const canHearCheckedContext = canUseAssistant
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
@@ -97,6 +100,8 @@ const PracticeView = () => {
   const currentSnippetNum = currentSnippetId + 1
 
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
+  // Kept in the browser rather than on the account — see practiceSpeech.
+  const [contextSpeech, setContextSpeech] = useState(contextSpeechEnabled)
   const showPauseButton =
     (snippetsTotalNum - currentSnippetId > 1 && !practiceFinished) ||
     (snippetsTotalNum - currentSnippetId === 1 && isPaused)
@@ -197,6 +202,12 @@ const PracticeView = () => {
     } else {
       dispatch(setWillPause(true))
     }
+  }
+
+  const toggleContextSpeech = () => {
+    const next = !contextSpeech
+    setContextSpeech(next)
+    setContextSpeechEnabled(next)
   }
 
   const updateUserReviewDiff = () => {
@@ -433,6 +444,20 @@ const PracticeView = () => {
               },
             }}
           />
+          {canHearCheckedContext && (
+            <FormControlLabel
+              control={<AppSwitch checked={contextSpeech} onChange={toggleContextSpeech} />}
+              label={intl.formatMessage({ id: 'pronounce-context-after-check' })}
+              data-cy="practice-settings-context-speech"
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  color: colors.ink,
+                },
+              }}
+            />
+          )}
         </div>
       </AppDialog>
     </div>

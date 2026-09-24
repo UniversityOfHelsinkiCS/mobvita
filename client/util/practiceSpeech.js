@@ -1,18 +1,17 @@
 /**
  * What to pronounce after a check on the practice page (issue #1368).
  *
- * One utterance per check, the largest unit the learner has earned:
+ * One utterance per check, the largest unit the learner has earned — a ready sentence, else a
+ * pattern, else a chunk. A unit is "ready" when the check touched at least one word inside it and
+ * marked none of them wrong, so a right answer inside a botched sentence still gets its chunk read
+ * out.
  *
- *   last check          -> the sentence, whatever the answers were
- *   everything correct  -> the sentence
- *   otherwise           -> the first fully correct pattern, else the first fully correct chunk
- *   nothing qualifies   -> silence
+ * Across the checks of one snippet, each ready unit is read once: the caller passes the keys of
+ * what has already been spoken, and the next check takes the next unit instead of repeating the
+ * first. Reading a unit counts for everything inside it — a sentence covers its own chunks and
+ * patterns. So every correct answer is pronounced at least once, and none twice.
  *
- * A unit is "fully correct" when the check touched at least one word inside it and marked none of
- * them wrong — so a right answer inside a botched sentence still gets its chunk read out.
- *
- * "The sentence" is the one holding the first fully correct chunk or pattern, not simply the first
- * sentence of the snippet: that is where the learner just got something right.
+ * The last check always speaks a sentence, whatever the answers were.
  */
 import { hiddenFeatures } from 'Utilities/common'
 import { getChunkSpans, getPatternSpans } from 'Utilities/snippetRanges'
@@ -39,22 +38,39 @@ const isFullyCorrect = ({ words }) => {
   return tested.length > 0 && tested.every(wasCorrect)
 }
 
-// Every fully correct unit, in reading order. Ties keep patterns ahead of chunks, matching the
-// order the units themselves are offered in.
-const correctUnitsInOrder = snippet => {
-  const units = [
-    ...getPatternSpans(snippet)
-      .filter(isFullyCorrect)
-      .map(span => ({ ...span, kind: 'pattern' })),
-    ...getChunkSpans(snippet)
-      .filter(isFullyCorrect)
-      .map(span => ({ ...span, kind: 'chunk' })),
-  ]
+// A snippet can hold several sentences; one without sentence ids counts as a single sentence.
+const getSentenceSpans = snippet => {
+  const wordsBySentence = new Map()
 
-  return units.sort((a, b) => snippet.indexOf(a.words[0]) - snippet.indexOf(b.words[0]))
+  snippet.forEach(word => {
+    const id = word.sentence_id ?? 'all'
+    if (!wordsBySentence.has(id)) wordsBySentence.set(id, [])
+    wordsBySentence.get(id).push(word)
+  })
+
+  return [...wordsBySentence.entries()].map(([id, words]) => ({ id, words }))
 }
 
-// The sentence a word belongs to, not the whole snippet — a snippet can hold several.
+const unitKey = unit => `${unit.kind}:${unit.id}`
+
+// Everything the learner has earned, largest first: ready sentences, then patterns, then chunks,
+// each group in reading order.
+const readyUnitsInOrder = snippet => {
+  const spans = [
+    ...getSentenceSpans(snippet).map(span => ({ ...span, kind: 'sentence' })),
+    ...getPatternSpans(snippet).map(span => ({ ...span, kind: 'pattern' })),
+    ...getChunkSpans(snippet).map(span => ({
+      ...span,
+      kind: 'chunk',
+      id: `${span.ids[0]}-${span.ids[span.ids.length - 1]}`,
+    })),
+  ]
+
+  return spans.filter(isFullyCorrect).map(unit => ({ ...unit, key: unitKey(unit) }))
+}
+
+// The sentence a word belongs to, not the whole snippet — for the last check, when no sentence is
+// ready and there is still something to read out.
 const sentenceAround = (snippet, word) => {
   const sentenceId = word?.sentence_id
 
@@ -62,9 +78,13 @@ const sentenceAround = (snippet, word) => {
   return snippet.filter(other => other.sentence_id === sentenceId)
 }
 
-const describeUnit = unit => {
-  if (!unit) return 'via first exercise'
-  return `via ${unit.kind}${unit.kind === 'pattern' ? ` ${unit.id}` : ''} "${textOf(unit.words)}"`
+// Reading a unit aloud also reads everything nested inside it, so those count as spoken too.
+const keysCoveredBy = (unit, units) => {
+  const spokenIds = new Set(unit.words.map(word => String(word.ID)))
+
+  return units
+    .filter(other => other.words.every(word => spokenIds.has(String(word.ID))))
+    .map(other => other.key)
 }
 
 // The answers as the learner just left them, so the context can be spoken on the click rather than
@@ -94,47 +114,64 @@ export const withLocalAnswers = (snippet, { currentAnswers = {}, correctAnswerID
   })
 }
 
-export const pickContextToSpeak = (snippet, { lastCheck = false } = {}) => {
+// Returns { text, keys } — the utterance and the unit keys it covers, which the caller adds to the
+// set it passes back on the next check. Null when there is nothing new to say.
+export const pickContextToSpeak = (snippet, { lastCheck = false, spoken = new Set() } = {}) => {
   if (!snippet?.length) {
     log('nothing · no snippet')
     return null
   }
 
-  const correctUnits = correctUnitsInOrder(snippet)
-  // Nothing was answered correctly (the last check speaks up anyway), so fall back to the sentence
-  // the exercises are in.
-  const anchor = correctUnits[0]
-  const sentence = textOf(sentenceAround(snippet, anchor?.words[0] ?? snippet.find(wasTested)))
-
-  const tested = snippet.filter(wasTested)
+  const ready = readyUnitsInOrder(snippet)
+  const unspoken = ready.filter(unit => !spoken.has(unit.key))
 
   if (lastCheck) {
-    log(`sentence · last check · ${describeUnit(anchor)} · "${sentence}"`)
-    return sentence
+    // A sentence either way: the one still unspoken, else the sentence the exercises sit in.
+    const unit = unspoken.find(candidate => candidate.kind === 'sentence')
+    const fallbackWord = ready[0]?.words[0] ?? snippet.find(wasTested)
+    const words = unit?.words ?? sentenceAround(snippet, fallbackWord)
+    const text = textOf(words)
+
+    log(`sentence · last check · "${text}"`)
+    return { text, keys: unit ? keysCoveredBy(unit, ready) : [] }
   }
 
-  if (tested.length > 0 && tested.every(wasCorrect)) {
-    log(`sentence · all correct · ${describeUnit(anchor)} · "${sentence}"`)
-    return sentence
+  const unit = unspoken[0]
+  if (!unit) {
+    log(ready.length ? 'nothing · every ready unit already pronounced' : 'nothing · no ready unit')
+    return null
   }
 
-  const pattern = correctUnits.find(unit => unit.kind === 'pattern')
-  if (pattern) {
-    const text = textOf(pattern.words)
-    log(`pattern ${pattern.id} · first correct pattern · "${text}"`)
-    return text
-  }
+  const keys = keysCoveredBy(unit, ready)
+  const text = textOf(unit.words)
+  const left = unspoken.filter(candidate => !keys.includes(candidate.key)).length
 
-  const chunk = correctUnits.find(unit => unit.kind === 'chunk')
-  if (chunk) {
-    const text = textOf(chunk.words)
-    log(`chunk · first correct chunk · "${text}"`)
-    return text
-  }
-
-  log('nothing · no fully-correct unit')
-  return null
+  log(`${unit.kind} ${unit.id}${left ? ` · ${left} more ready` : ''} · "${text}"`)
+  return { text, keys }
 }
+
+// Kept per browser: there is no backend field for it, and it is a listening preference rather than
+// something the learner's account needs to carry around.
+const SPEECH_SETTING_KEY = 'practice-context-speech'
+
+// On unless it has been switched off, so a fresh browser hears the context.
+export const contextSpeechEnabled = () => {
+  try {
+    return window.localStorage.getItem(SPEECH_SETTING_KEY) !== 'off'
+  } catch {
+    return true
+  }
+}
+
+export const setContextSpeechEnabled = enabled => {
+  try {
+    window.localStorage.setItem(SPEECH_SETTING_KEY, enabled ? 'on' : 'off')
+  } catch {
+    // A browser with site data blocked just keeps the default for the session.
+  }
+}
+
+export const logSpeechSwitchedOff = () => log('not spoken · switched off in practice settings')
 
 // The feature is limited to high-access users while it is being trialled.
 export const logNoSpeechAccess = () => log('not spoken · needs high access')

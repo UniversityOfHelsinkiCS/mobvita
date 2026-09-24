@@ -1263,6 +1263,7 @@
     "select-cefr-reminder": "Seleziona il tuo livello QCER",
     "update-settings": "Aggiorna impostazioni",
     "show-difficulty-level": "Evidenzia i livelli di difficoltà",
+    "pronounce-context-after-check": "Pronounce the context after checking answers",
     "story-completed-to-blue-flashcards": "In questa storia hai incontrato {nWords} nuove parole!\n<br/>\nVediamo se le conosci veramente!\n<br/>\nOttieni <a href=\"/profile/progress/flashcards\">credito</a> per tutte queste parole \ncontrollando solo 5 di loro →",
     "enable-recommendations": "Abilita consigli",
     "notification-settings": "Notifiche",

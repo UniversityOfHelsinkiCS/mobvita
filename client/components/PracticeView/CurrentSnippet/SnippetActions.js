@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -14,8 +14,10 @@ import {
   voiceLanguages,
 } from 'Utilities/common'
 import {
+  contextSpeechEnabled,
   logMissingVoice,
   logNoSpeechAccess,
+  logSpeechSwitchedOff,
   pickContextToSpeak,
   withLocalAnswers,
 } from 'Utilities/practiceSpeech'
@@ -142,6 +144,9 @@ const SnippetActions = ({
   const resourceUsage = useSelector(({ user }) => user.data?.user?.resource_usage)
   // Pronouncing the checked context is a high-access feature for now.
   const canHearCheckedContext = useHasAccess(ACCESS.HIGH)
+  // What has already been read out of this snippet, so every correct unit is heard once and
+  // none twice. Reset when the snippet changes.
+  const spokenUnits = useRef({ snippetKey: null, keys: new Set() })
 
   const rightAnswerAmount = useMemo(
     () =>
@@ -183,12 +188,26 @@ const SnippetActions = ({
       return
     }
 
+    // Read on every check, so the practice settings switch takes effect without a reload.
+    if (!contextSpeechEnabled()) {
+      logSpeechSwitchedOff()
+      return
+    }
+
+    const snippetKey = String(snippets.focused?.snippetid)
+    if (spokenUnits.current.snippetKey !== snippetKey) {
+      spokenUnits.current = { snippetKey, keys: new Set() }
+    }
+
     const answered = withLocalAnswers(snippets.focused?.practice_snippet ?? [], {
       currentAnswers,
       correctAnswerIDs,
     })
-    const text = pickContextToSpeak(answered, { lastCheck })
-    if (!text) return
+    const choice = pickContextToSpeak(answered, {
+      lastCheck,
+      spoken: spokenUnits.current.keys,
+    })
+    if (!choice) return
 
     const voice = voiceLanguages[learningLanguage]
     if (!voice) {
@@ -196,7 +215,9 @@ const SnippetActions = ({
       return
     }
 
-    speak(text, voice, 'exercise', resourceUsage)
+    // Only what was actually read out counts as spoken.
+    choice.keys.forEach(key => spokenUnits.current.keys.add(key))
+    speak(choice.text, voice, 'exercise', resourceUsage)
   }
 
   const checkAnswers = async lastAttempt => {

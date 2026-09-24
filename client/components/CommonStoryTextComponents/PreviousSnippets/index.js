@@ -4,6 +4,7 @@ import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
 import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer'
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import Spinner from 'Components/Spinner'
 import { useParams, useLocation } from 'react-router-dom'
 import { Divider } from '@mui/material'
 
@@ -56,7 +57,18 @@ const PreviousSnippets = props => {
     return null
   }
 
-  if (!isLesson && (pending || (focusedSnippet?.snippetid[0] !== 0 && previous?.length === 0))) {
+  // Past this point in the story, the earlier snippets come in a request of their own that can
+  // land seconds after the current snippet — say so, rather than leaving the page looking finished.
+  if (!isLesson && focusedSnippet && focusedSnippet.snippetid[0] !== 0 && previous?.length === 0) {
+    return (
+      <div className="pt-nm justify-center" data-cy="previous-snippets-spinner">
+        <Spinner inline size={40} />
+      </div>
+    )
+  }
+
+  // Nothing to show yet: a request in flight, or no current snippet to hang the earlier ones on.
+  if (!isLesson && (pending || !focusedSnippet)) {
     return null
   }
 
