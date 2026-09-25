@@ -210,7 +210,8 @@ import StoryTopics from 'Components/StoryView/StoryTopics'
 export const inProduction = process.env.NODE_ENV === 'production'
 export const basePath = process.env.BASE_PATH || '/'
 export const isStaging = process.env.ENVIRONMENT === 'staging'
-export const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'development'
+export const isDevelopment = process.env.ENVIRONMENT === 'development'
+export const hiddenFeatures = isStaging || isDevelopment
 
 export const images = {
   revitaLogoTransparent,

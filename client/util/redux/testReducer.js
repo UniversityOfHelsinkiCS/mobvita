@@ -208,6 +208,7 @@ export const markQuestionAsSeen = (learningLanguage, questionId, sessionId) => {
   return callBuilder(route, prefix)
 }
 
+// Test state reducer: adaptive / exhaustive / reading test sessions, answers and reports.
 export default (state = initialState, action) => {
   const {
     currentAdaptiveQuestionIndex,
@@ -588,7 +589,7 @@ export default (state = initialState, action) => {
           }
         }
       }
-      break
+      return state
     case 'MARK_ANSWERED_CHOICE':
       if (state.currentReadingTestQuestion) {
         const updatedChoices = state.currentReadingTestQuestion.choices.map(choice => {
@@ -609,7 +610,7 @@ export default (state = initialState, action) => {
           currentReadingTestQuestion: updatedCurrentReadingTestQuestion,
         };
       }
-      break
+      return state
     case 'MARK_QUESTION_AS_SEEN_SUCCESS':
       return {
         ...state,

@@ -235,11 +235,12 @@ const PracticeView = () => {
 
   const showVirtualKeyboard = width > 500 && keyboardLayouts[learningLanguage]
 
+  // Countdown shown in the practice header; floors at 0 so overtime never renders as a negative.
   const getTimerContent = () => {
     if (snippets.pending || !timer.getTime()) return <Spinner inline size={60} />
     if (practiceFinished) return <ThumbUpIcon sx={{ fontSize: '1.1em', color: colors.ink }} />
 
-    return Math.round(timer.getTime() / 1000)
+    return Math.max(0, Math.round(timer.getTime() / 1000))
   }
 
   return (

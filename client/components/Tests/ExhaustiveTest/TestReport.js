@@ -2,8 +2,13 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import AppDialog from 'Components/ui/AppDialog'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { hiddenFeatures } from 'Utilities/common'
+import { isDevelopment } from 'Utilities/common'
 
+// Objects/arrays in the raw report can't be React children — stringify anything non-primitive.
+const renderValue = value =>
+  value !== null && typeof value === 'object' ? JSON.stringify(value) : value
+
+// Exhaustive test result dialog: totals + accuracy, plus the raw response on staging/dev.
 const TestReport = () => {
   const intl = useIntl()
   const { report, debugReport } = useSelector(({ tests }) => tests)
@@ -35,14 +40,14 @@ const TestReport = () => {
       {report.message !== 'OK' && (
         <>
           <hr />
-          <div data-cy="exhaustive-test-report-message">{report.message}</div>
+          <div data-cy="exhaustive-test-report-message">{renderValue(report.message)}</div>
         </>
       )}
       <hr />
-      {hiddenFeatures &&
-        Object.entries(debugReport).map(([key, value]) => (
+      {isDevelopment &&
+        Object.entries(debugReport || {}).map(([key, value]) => (
           <div key={key}>
-            {key}: {value}
+            {key}: {renderValue(value)}
           </div>
         ))}
     </AppDialog>

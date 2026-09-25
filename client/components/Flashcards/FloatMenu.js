@@ -27,12 +27,13 @@ const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children })
   </CustomTooltip>
 )
 
+// Card management rows of the flashcard FAB menu: dictionary language picker + list/new actions.
 const CardManagementOptions = ({ handleOptionClick }) => {
   const { storyId } = useParams()
 
   return (
     <div className="gap-row-sm">
-      <button type="button" className="flashcard-fab-option gap-col-nm">
+      <div className="flashcard-fab-option gap-col-nm">
         <div
           className="flashcard-fab-icon"
           style={{ paddingBottom: '0.5em', paddingRight: '0.1em' }}
@@ -45,7 +46,7 @@ const CardManagementOptions = ({ handleOptionClick }) => {
           </span>
           <SelectLanguage />
         </span>
-      </button>
+      </div>
       {storyId && (
         <FabOption 
           handleClick={() => handleOptionClick('fillin')} 
