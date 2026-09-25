@@ -14,12 +14,12 @@ $flashcard-height: 35em;
 .flashcard {
   display: flex;
   flex-direction: column;
+  box-sizing: content-box;
   width: $flashcard-width;
   height: $flashcard-height;
   margin: 0 auto 40px auto;
   padding: 1em 1.5em 1.5em 1em;
   border-radius: 0.8em;
-  // Neutral base for the placeholder cards; real cards override it per stage (see flashcardColors).
   background-color: #f1eede;
   color: #2d2c2a;
 
@@ -33,10 +33,6 @@ $flashcard-height: 35em;
     justify-content: center;
     text-align: center;
     gap: 1.25em;
-    // Real cards sit inside `.swiper-wrapper`, which sets `box-sizing: content-box`, and base.scss's
-    // `* { box-sizing: inherit }` hands that to the card — so their 21em/35em excludes the padding.
-    // The placeholder renders outside the swiper, so it has to opt into the same box to match.
-    box-sizing: content-box;
   }
 
   // "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
