@@ -24,7 +24,7 @@ const describe = card => (Array.isArray(card.glosses) ? card.glosses.join(', ') 
 const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
   const [selected, setSelected] = useState(null)
   const [matched, setMatched] = useState([])
-  const [wrong, setWrong] = useState([])
+  const [wrong, setWrong] = useState(null)
   const wrongTimer = useRef(null)
   const dispatch = useDispatch()
 
@@ -36,7 +36,7 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
   useEffect(() => {
     setSelected(null)
     setMatched([])
-    setWrong([])
+    setWrong(null)
   }, [cards])
 
   useEffect(() => () => clearTimeout(wrongTimer.current), [])
@@ -49,7 +49,8 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
     if (onCompleted) onCompleted()
   }, [complete])
 
-  const resolvePair = (termId, glossId) => {
+  // `picked` is the button that closed the pair — the only one flagged when the pair is wrong.
+  const resolvePair = (termId, glossId, picked) => {
     const termCard = cards.find(card => card._id === termId)
     const glossCard = cards.find(card => card._id === glossId)
     const correct = termId === glossId
@@ -69,9 +70,9 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
       return
     }
 
-    setWrong([termId, glossId])
+    setWrong(picked)
     clearTimeout(wrongTimer.current)
-    wrongTimer.current = setTimeout(() => setWrong([]), WRONG_FLASH_MS)
+    wrongTimer.current = setTimeout(() => setWrong(null), WRONG_FLASH_MS)
   }
 
   // Same side moves the selection (or clears it when re-picked); the other side resolves a pair.
@@ -88,17 +89,13 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
 
     const termId = side === 'term' ? card._id : selected.id
     const glossId = side === 'gloss' ? card._id : selected.id
-    resolvePair(termId, glossId)
+    resolvePair(termId, glossId, { side, id: card._id })
   }
 
   const itemClass = (side, card) => {
     const base = 'flashcard-match-item'
-    if (matched.includes(card._id)) {
-      return `${base} ${base}--matched`
-    }
-    if (wrong.includes(card._id)) {
-      return `${base} ${base}--wrong`
-    }
+    if (matched.includes(card._id)) return `${base} ${base}--matched`
+    if (wrong && wrong.side === side && wrong.id === card._id) return `${base} ${base}--wrong`
     if (selected && selected.side === side && selected.id === card._id) {
       return `${base} ${base}--selected`
     }
