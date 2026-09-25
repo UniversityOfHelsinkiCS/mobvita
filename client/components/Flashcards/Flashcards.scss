@@ -4,13 +4,18 @@
 // client/assets/custom.scss) come first, and the page rules below deliberately override some
 // of them. Do not reorder the two halves.
 
+// The card footprint. Shared so any surface that stands in for a card while it loads reserves the
+// same space — see `.flashcard-match-loading`.
+$flashcard-width: 21em;
+$flashcard-height: 35em;
+
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
 .flashcard {
   display: flex;
   flex-direction: column;
-  width: 21em;
-  height: 35em;
+  width: $flashcard-width;
+  height: $flashcard-height;
   margin: 0 auto 40px auto;
   padding: 1em 1.5em 1.5em 1em;
   border-radius: 0.8em;
@@ -28,6 +33,10 @@
     justify-content: center;
     text-align: center;
     gap: 1.25em;
+    // Real cards sit inside `.swiper-wrapper`, which sets `box-sizing: content-box`, and base.scss's
+    // `* { box-sizing: inherit }` hands that to the card — so their 21em/35em excludes the padding.
+    // The placeholder renders outside the swiper, so it has to opt into the same box to match.
+    box-sizing: content-box;
   }
 
   // "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
@@ -549,6 +558,17 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+
+  // Loading: nothing is drawn behind the spinner, but it reserves a card's footprint so the mode
+  // loads into the same space the decks do.
+  &-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $flashcard-width;
+    height: $flashcard-height;
+    margin: 0 auto;
+  }
 
   // Terms and descriptions side by side; one column on a phone.
   &-board {

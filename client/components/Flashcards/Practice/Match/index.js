@@ -31,7 +31,6 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
   // Two independent shuffles so the columns never line up; reshuffled only when the deck changes.
   const terms = useMemo(() => shuffle(cards), [cards])
   const descriptions = useMemo(() => shuffle(cards), [cards])
-  console.log('descriptions', descriptions)
 
   useEffect(() => {
     setSelected(null)

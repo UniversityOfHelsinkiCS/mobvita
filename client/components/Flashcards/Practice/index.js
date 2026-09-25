@@ -281,8 +281,14 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
   if (mode === 'article' && !flashcardArticles) return null
 
+  // Matching has no card face and no swipe arrow, so it loads as a bare spinner — the deck's
+  // placeholder card would otherwise sit behind it as an empty rectangle.
   if (pending || deletePending || !cards)
-    return (
+    return mode === 'match' ? (
+      <div className="flashcard-match-loading">
+        <Spinner size={60} />
+      </div>
+    ) : (
       <div className="grow flex space-evenly">
         <div className="flashcard flashcard--placeholder">
           <Spinner size={60} />
