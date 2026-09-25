@@ -41,6 +41,8 @@ import {
   learningLanguageSelector,
   supportedLearningLanguages,
   getHelpLink,
+  ACCESS,
+  useHasAccess,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { Detector } from 'react-detect-offline'
@@ -117,6 +119,10 @@ export default function NavBar() {
     navigate('/profile/progress')
   }
   const isTeacher = user?.user?.is_teacher
+  // Switching between the teacher and student views is a high-access feature; `is_teacher` alone
+  // is not enough to show the toggle. The hook is called unconditionally, then combined.
+  const hasHighAccess = useHasAccess(ACCESS.HIGH)
+  const canSwitchTeacherView = isTeacher && hasHighAccess
   const teacherView = user?.teacherView
   const check = location.pathname
   const isMajorLanguage = supportedLearningLanguages?.major.includes(
@@ -451,7 +457,7 @@ export default function NavBar() {
                 />
               )}
             />
-            {isTeacher && (
+            {canSwitchTeacherView && (
               <Box
                 sx={{
                   display: 'inline-flex',
@@ -574,7 +580,7 @@ export default function NavBar() {
               >
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
               </AppMenuItem>
-              {isTeacher && (
+              {canSwitchTeacherView && (
                 <MenuRow
                   style={{ justifyContent: 'space-between', cursor: 'default' }}
                   icon={

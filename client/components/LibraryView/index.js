@@ -62,9 +62,13 @@ import useLibraryDragAndDrop from './useLibraryDragAndDrop'
 import './LibraryView.scss'
 import { hiddenFeatures } from 'Utilities/common'
 
+// The one public Finnish folder everyone may browse; see restrictPublicFinnishFolders below.
+const PUBLIC_FINNISH_OPEN_FOLDER = 'vapaa-aika'
+
 const StoryList = () => {
   const intl = useIntl()
-  const canUseAssistant = useHasAccess(ACCESS.HIGH)
+  const hasHighAccess = useHasAccess(ACCESS.HIGH)
+  const canUseAssistant = hasHighAccess
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -494,8 +498,24 @@ const StoryList = () => {
     return librariesToShow.some(value => showLibraries.includes(value))
   }
 
-  const libraryFilteredStories = displayedStories.filter(storyIsInActiveLibrary)
-  const allStoriesInActiveLibrary = stories.filter(storyIsInActiveLibrary)
+  // In the Finnish public library only the free-time folder is open to everyone; the rest of the
+  // shelf is high-access. Filtering the stories (rather than the folder cards) also keeps those
+  // folders out of search results and out of the empty-library check.
+  const restrictPublicFinnishFolders =
+    !hasHighAccess && activeLibrary === 'public' && learningLanguage === 'Finnish'
+
+  const storyIsInOpenFolder = story => {
+    if (!restrictPublicFinnishFolders) return true
+
+    const [topFolder] = normalizeLibraryPath(story.path).split('/')
+    // A story outside any folder is not behind one of the hidden shelves.
+    return !topFolder || topFolder.toLowerCase() === PUBLIC_FINNISH_OPEN_FOLDER
+  }
+
+  const storyIsVisible = story => storyIsInActiveLibrary(story) && storyIsInOpenFolder(story)
+
+  const libraryFilteredStories = displayedStories.filter(storyIsVisible)
+  const allStoriesInActiveLibrary = stories.filter(storyIsVisible)
 
   const stringToDifficulty = difficulty => {
     switch (difficulty) {

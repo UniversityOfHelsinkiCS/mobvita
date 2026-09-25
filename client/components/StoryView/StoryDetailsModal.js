@@ -9,7 +9,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
-import { images } from 'Utilities/common'
+import { ACCESS, images, useHasAccess } from 'Utilities/common'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 
 const EMPTY_LOADING_PROGRESS = {}
@@ -147,10 +147,14 @@ const StoryDetailsModal = ({
 
   // The teacher preview/review block and the controlled-story / reading-comprehension management rows.
   const showTeacherActions = !enableOnlyPractice && !story.flashcardsOnly && isTeacher
+  // Authoring a tailored story or a set of reading-comprehension questions is high-access only.
+  // Editing or cancelling one that already exists is not affected.
+  const canAuthorExercises = useHasAccess(ACCESS.HIGH)
+  const showCreateControlStory = showCreateControlStoryButton && canAuthorExercises
+  const showReadingComprehension =
+    isTeacher && savedLibrarySelection === 'private' && canAuthorExercises
   const showManagementPills =
-    showCreateControlStoryButton ||
-    (isTeacher && savedLibrarySelection === 'private') ||
-    showCancelControlStoryButton
+    showCreateControlStory || showReadingComprehension || showCancelControlStoryButton
   const showManageRow =
     showShareButton || story.user === user.oid || (inGroupLibrary && isTeacher) || showDeleteButton
 
@@ -247,14 +251,14 @@ const StoryDetailsModal = ({
           {/* Controlled-story / reading-comprehension management pills */}
           {showManagementPills && (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75em' }}>
-              {showCreateControlStoryButton && (
+              {showCreateControlStory && (
                 <ActionPill
                   to={`/stories/${story._id}/controlled-story-editor`}
                   labelId="create-controlled-story"
                   icon={<img src={images.iconEdit} alt="" />}
                 />
               )}
-              {isTeacher && savedLibrarySelection === 'private' && (
+              {showReadingComprehension && (
                 <ActionPill
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   labelId="reading-comprehension"
