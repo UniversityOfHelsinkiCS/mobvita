@@ -1495,7 +1495,7 @@
     "flashcard-upload-instructions-2": "Note (for now): the words will be translated only into the language you select above. If you want them to work with another language, upload another deck of cards in another file.",
     "disabled-flashcard-btn-explanation": "This story has no flashcards yet — click on words you don't know in the story to create flashcards!",
     "flashcard-btn-explanation": "Practice with flashcards from this story!",
-    "import-story": "Inherit stories",
+    "import-story": "Import stories",
     "import-success": "Import of library was successful",
     "import-failure": "Failed to import library",
     "story-visibility-success": "Visibility updated",
@@ -1660,7 +1660,7 @@
     "lesson-tour-custom-grammar-button-text": "Click here to customize your Lessons: select which topics to practice",
     "Level title": "Levels",
     "level-title-message": "Select at the level of the topics you want to practice",
-    "story-detail-modal-disabled-delete-btn": "You can deletion the story after processing is finished",
+    "story-detail-modal-disabled-delete-btn": "You can delete the story after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
     "story-not-yet-processed-yellow-box": "Story is still processing, will be completed soon.\n\nYou may begin practice right away.",
     "practice-tour-edit-delete-title": "Edit or delete story",
@@ -1846,5 +1846,13 @@
     "story-upload-failed": "Could not add the story. Please try again.",
     "chatbot-message-suggestion-daily-stories": "Show me some daily stories",
     "daily-story-saved-to-private": "This story is saved in your Private Library.",
-    "daily-stories-assistant-heading": "Here are some daily stories — you can import them into your Private ibrary for practice"
+    "daily-stories-assistant-heading": "Here are some daily stories — you can import them into your Private ibrary for practice",
+    "import-story-tooltip-explanation": "Import the stories from another (earlier) class",
+    "flashcard-reversed": "Reversed",
+    "flashcard-matching": "Matching",
+    "flashcard-match-terms": "Terms",
+    "flashcard-match-descriptions": "Descriptions",
+    "flashcard-match-progress": "Matched:",
+    "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
+    "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description"
 }

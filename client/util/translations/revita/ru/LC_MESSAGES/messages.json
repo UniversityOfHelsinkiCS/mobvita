@@ -1992,5 +1992,13 @@
     "story-upload-failed": "Не удалось добавить историю. Пожалуйста, попробуй еще раз.",
     "chatbot-message-suggestion-daily-stories": "Покажи свежие истории",
     "daily-story-saved-to-private": "Текст сохранен в твоей личной библиотеке.",
-    "daily-stories-assistant-heading": "Вот несколько свежих историй — вы можете добавить их в личную библиотеку для практики."
+    "daily-stories-assistant-heading": "Вот несколько свежих историй — вы можете добавить их в личную библиотеку для практики.",
+    "import-story-tooltip-explanation": "Import the stories from another (earlier) class",
+    "flashcard-reversed": "Reversed",
+    "flashcard-matching": "Matching",
+    "flashcard-match-terms": "Terms",
+    "flashcard-match-descriptions": "Descriptions",
+    "flashcard-match-progress": "Matched:",
+    "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
+    "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description"
 }

@@ -26,6 +26,16 @@ import ArrowButton from './ArrowButton'
 import Fillin from './Fillin'
 import Article from './Article'
 import Quick from './Quick'
+import Reversed from './Reversed'
+import Match from './Match'
+
+// Practice mode -> the backend's `exercise` query value. Article keeps the default request because
+// it filters nouns out of that same deck rather than asking for its own.
+const MODE_EXERCISE = {
+  fillin: 'fillin_trans',
+  learn: 'fillin_learn',
+  match: 'match',
+}
 
 const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
@@ -102,8 +112,8 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   // Publish the visible card so the assistant can show its word, speak it and offer its hints.
   // Cleared on unmount, so leaving practice does not leave a stale word in the sidebar.
   useEffect(() => {
-    dispatch(setCurrentFlashcard(cards[swipeIndex] || null))
-  }, [swipeIndex, cards])
+    dispatch(setCurrentFlashcard(mode === 'match' ? null : cards[swipeIndex] || null))
+  }, [swipeIndex, cards, mode])
 
   useEffect(() => () => dispatch(setCurrentFlashcard(null)), [])
 
@@ -123,6 +133,12 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   }, [swipeIndex, pending, cards.length])
 
   useEffect(() => () => dispatch(setDeckCompleted(false)), [])
+
+  // Switching practice tab reuses this component (same element type and position), so the unmount
+  // cleanup above never runs — clear the assistant's "Deck completed!" prompt for the new deck.
+  useEffect(() => {
+    dispatch(setDeckCompleted(false))
+  }, [mode])
 
   useEffect(() => {
     setSwipeIndex(0)
@@ -179,7 +195,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       setBlueCardsAnswered([])
     } else {
-      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId, MODE_EXERCISE[mode]))
     }
   }, [storyId, dictionaryLanguage, mode])
 
@@ -225,22 +241,27 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
     if (!inBlueCardsTest) {
-      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
+      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId, MODE_EXERCISE[mode]))
     } else {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
     }
   }
 
-  const answerCard = (answer, correct, exercise, displayedHints) => {
-    const { _id: flashcard_id, story, lemma, lan_in, lan_out } = cards[swipeIndex]
+  // Records one answer for `card`. The deck answers whatever card is on screen; Match pairs
+  // arbitrary cards, so it calls this directly. `mode` is the fillin direction (trans / learn).
+  const postAnswer = (
+    card,
+    { answer, correct, exercise, mode: answerMode = 'trans', displayedHints },
+  ) => {
+    const { _id: flashcard_id, story, lemma, lan_in, lan_out } = card
     const answerDetails = {
       flashcard_id,
       correct,
       answer,
       exercise,
       hints_shown: displayedHints?.length || 0,
-      mode: 'trans',
+      mode: answerMode,
       story,
       lemma,
       session_id: sessionId,
@@ -253,6 +274,10 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
     setAmountAnswered(amountAnswered + 1)
   }
+
+  // The deck's answer callback: always answers the card currently being shown.
+  const answerCard = (answer, correct, exercise, displayedHints, answerMode) =>
+    postAnswer(cards[swipeIndex], { answer, correct, exercise, mode: answerMode, displayedHints })
 
   if (mode === 'article' && !flashcardArticles) return null
 
@@ -271,6 +296,20 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       <>
         {renderArrowButton({ hidden: true, disabled: true, onClick: undefined })}
         <FlashcardNoCards setSwipeIndex={setSwipeIndex} />
+      </>
+    )
+  }
+
+  if (mode === 'match') {
+    return (
+      <>
+        {renderArrowButton({ hidden: true, disabled: true, onClick: undefined })}
+        <Match
+          cards={cards}
+          postAnswer={postAnswer}
+          handleNewDeck={handleNewDeck}
+          onCompleted={() => dispatch(setDeckCompleted(true))}
+        />
       </>
     )
   }
@@ -298,6 +337,20 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
             card={cards[index]}
             cardNumbering={`${index + 1} / ${cards.length}`}
             answerCard={answerCard}
+          />
+        )
+      case 'learn':
+        return (
+          <Reversed
+            key={`slide-${index}`}
+            card={cards[index]}
+            cardNumbering={`${index + 1} / ${cards.length}`}
+            swipeIndex={swipeIndex}
+            handleIndexChange={handleIndexChange}
+            setSwipeIndex={setSwipeIndex}
+            focusedAndBigScreen={swipeIndex === index && bigScreen}
+            answerCard={answerCard}
+            deckSize={cards.length}
           />
         )
       case 'quick':

@@ -1,19 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react'
 import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
+import { fieldRinglessSx } from 'Components/ui/sx'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'
 
-const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displayedHints }) => {
+// `answerLanguage` names the language the learner is expected to type in; it defaults to the
+// dictionary language and the reversed deck passes the learning language instead.
+const FlashcardInput = ({
+  checkAnswer,
+  focusedAndBigScreen,
+  answerChecked,
+  displayedHints,
+  answerLanguage,
+}) => {
   const [answer, setAnswer] = useState('')
   const intl = useIntl()
   const selectedLocale = intl.locale
 
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const selectedLanguage = dictionaryLanguage && selectedLocale !== 'en'
-    ? intl.formatMessage({ id: dictionaryLanguage }).toLowerCase()
-    : intl.formatMessage({ id: dictionaryLanguage })
+  const language = answerLanguage || dictionaryLanguage
+  const selectedLanguage = language && selectedLocale !== 'en'
+    ? intl.formatMessage({ id: language }).toLowerCase()
+    : intl.formatMessage({ id: language })
 
   const answerInput = useRef()
 
@@ -47,9 +57,12 @@ const FlashcardInput = ({ checkAnswer, focusedAndBigScreen, answerChecked, displ
           value={answer}
           onChange={event => setAnswer(event.target.value)}
           placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
-          // The placeholder ("Type <language> translation here…") is long; shrink only the
-          // placeholder so it fits, while the typed answer stays full size.
-          sx={{ '& .MuiOutlinedInput-input::placeholder': { fontSize: 13 } }}
+          // No green ring: the card already frames the field. The placeholder ("Type <language>
+          // translation here…") is long, so only it shrinks — the typed answer stays full size.
+          sx={{
+            ...fieldRinglessSx,
+            '& .MuiOutlinedInput-input::placeholder': { fontSize: 13 },
+          }}
         />
         <AppButton
           className="flashcard-button"

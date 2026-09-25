@@ -1,4 +1,315 @@
-// Styles for the Flashcards page; card-face styling still lives in custom.scss.
+// Styles for the Flashcards page.
+//
+// Order matters: the base card faces, practice menus and FAB (moved here from
+// client/assets/custom.scss) come first, and the page rules below deliberately override some
+// of them. Do not reorder the two halves.
+
+// ── Base: card faces, practice menus, FAB ─────────────────────────────────────
+
+.flashcard {
+  display: flex;
+  flex-direction: column;
+  width: 21em;
+  height: 35em;
+  margin: 0 auto 40px auto;
+  padding: 1em 1.5em 1.5em 1em;
+  border-radius: 0.8em;
+  // Neutral base for the placeholder cards; real cards override it per stage (see flashcardColors).
+  background-color: #f1eede;
+  color: #2d2c2a;
+
+  &:focus {
+    outline: none;
+  }
+
+  // Placeholder card (loading / empty): centre its single element instead of top-aligning it.
+  &--placeholder {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.25em;
+  }
+
+  // "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
+  &-no-cards {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0.5em;
+    line-height: 1.5;
+  }
+
+  &-body {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    min-height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 7px 0 7px;
+    padding: 24px 8px 8px 8px;
+  }
+
+  &-main {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 31em;
+  }
+
+  &-list-view {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin-top: -0.5rem;
+    padding: 2px 12px 36px 12px;
+
+    @media (max-width: 900px) {
+      width: 85%;
+    }
+
+    @media (max-width: 839px) {
+      width: 90%;
+    }
+
+    @media (max-width: 640px) {
+      width: 100%;
+    }
+  }
+
+  &-header {
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+
+  &-text-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: auto;
+    padding: 4em 2em;
+    box-sizing: border-box;
+  }
+
+  &-title {
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    position: sticky;
+  }
+
+  &-title-small {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    position: sticky;
+  }
+
+  &-phonetics {
+    height: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    position: sticky;
+  }
+
+  &-translations {
+    width: 100%;
+    height: 100%;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+
+    & > ul {
+      max-height: 16em;
+      padding-left: 0;
+    }
+  }
+
+  &-no-cards {
+    flex: 1;
+    font-size: 1em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+  }
+
+  &-input-and-result-container {
+    height: 25%;
+    display: flex;
+    padding-top: 0.2em;
+    margin-bottom: 3em;
+  }
+
+  &-input {
+    flex-grow: 1;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  &-button {
+    margin-top: 1em;
+    background-color: white;
+  }
+
+  &-result {
+    margin: auto;
+  }
+
+  &-blended-input {
+    background-color: inherit;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-footer {
+    margin-top: auto;
+    height: 2em;
+    display: flex;
+    flex-direction: row;
+
+    & > button {
+      color: white;
+      font-weight: 600;
+      padding-right: 0;
+    }
+
+    & > select {
+      background-color: inherit;
+      border: none;
+      color: white;
+      font-weight: 600;
+      width: 7em;
+
+      &:focus {
+        outline: none;
+      }
+
+      & > option {
+        color: black;
+      }
+    }
+  }
+
+  // Button reset only. The arrow is an <img>, so the old `color` / hover / disabled tints could
+  // never paint it; placement and looks now come from .flashcard-arrow-button in Flashcards.scss.
+  &-arrow-button {
+    margin-left: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 220px;
+    padding: 0 4px 42px 0;
+    margin: 0 auto 32px auto;
+  }
+
+  &-fab-menu {
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+    display: flex;
+    flex-direction: column-reverse;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  &-fab {
+    align-self: flex-start;
+    background-color: #00afdc;
+    border-radius: 500px;
+    border: none;
+    width: 3.5em;
+    height: 3.5em;
+    box-shadow: 0 6px 10px 0 #666;
+    pointer-events: auto;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &-fab-option {
+    align-self: flex-start;
+    display: flex;
+    padding-left: 0;
+    border: none;
+    background-color: transparent;
+    color: #777;
+    align-items: center;
+    pointer-events: auto;
+  }
+
+  &-fab-icon {
+    background-color: white;
+    border-radius: 500px;
+    width: 2.8em;
+    height: 2.8em;
+    box-shadow: 0 6px 10px 0 #666;
+    display: flex;
+    align-items: center;
+    border: 1px solid #777;
+  }
+
+  &-fab-text {
+    background-color: white;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    font-size: 12px;
+    box-shadow: 0 6px 10px 0 #666;
+    border: 1px solid #777;
+  }
+
+}
+
+
+// Placement only — the gear is an AppButton, so its fill, border, radius and hover are the
+// `tan-outline` variant's. Callers that put it in a flow row pass `position: static; margin: 0`.
+.flashcard-settings-trigger {
+  margin: 12px 12px 0 0;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+
+  @media (max-width: 839px) {
+    display: none !important;
+  }
+}
+
+// ── Page layout and overrides ─────────────────────────────────────────────────
 
 // The lemma being drilled: `--font-language` so a learner's script gets a face with its glyphs.
 .flashcard-title,
@@ -229,4 +540,110 @@
 
 .flashcard-template-card--word .flashcard-form-button {
   margin-bottom: 3.6em; // ≈ height of the translations card's Clear / Save row
+}
+
+// ── Matching exercise ─────────────────────────────────────────────────────────
+
+.flashcard-match {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  // Terms and descriptions side by side; one column on a phone.
+  &-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &-column-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $color-muted;
+    padding-left: 2px;
+  }
+
+  // One pairable row: a 2px ring that grows with its text instead of clipping it.
+  &-item {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 56px;
+    padding: 8px 10px 8px 12px;
+    border: 2px solid $color-muted;
+    border-radius: 12px;
+    background-color: transparent;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    color: $color-ink;
+    cursor: pointer;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+      border-color: $color-ink;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-ink;
+      outline-offset: 2px;
+    }
+
+    &--selected {
+      background-color: $color-blue;
+      border-color: $color-ink;
+
+      &:hover:not(:disabled) {
+        background-color: $color-blue-hover;
+      }
+    }
+
+    &--wrong {
+      background-color: $color-quiz-alert;
+      border-color: $color-quiz-alert-border;
+
+      &:hover:not(:disabled) {
+        border-color: $color-quiz-alert-border;
+      }
+    }
+
+    // A matched row stays readable but stops responding.
+    &--matched {
+      background-color: $color-quiz-correct;
+      border-color: $color-quiz-correct-border;
+      opacity: 0.65;
+      pointer-events: none;
+      cursor: default;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 }

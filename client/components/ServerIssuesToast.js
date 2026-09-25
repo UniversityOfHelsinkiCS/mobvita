@@ -11,7 +11,7 @@ const ServerIssuesToast = () => {
   const intl = useIntl()
 
   return (
-    <AppToast message={intl.formatMessage({ id: 'server-issues' })} icon={images.globe04} iconAlt="network" />
+    <AppToast message={intl.formatMessage({ id: 'server-issues' })} icon={images.alert} iconAlt="network" />
   )
 }
 

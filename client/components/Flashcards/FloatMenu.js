@@ -11,9 +11,11 @@ import KeyboardOutlined from '@mui/icons-material/KeyboardOutlined'
 import TextFields from '@mui/icons-material/TextFields'
 import Bolt from '@mui/icons-material/Bolt'
 import ViewList from '@mui/icons-material/ViewList'
+import AppIcon from 'Components/ui/AppIcon'
 import { backgroundColors, images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
 
+// One FAB row: round icon + label, wrapped in its explanation tooltip.
 const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children }) => (
   <CustomTooltip keyId={tooltip} placement="top-start">
     <button type="button" onClick={handleClick} className="flashcard-fab-option gap-col-nm">
@@ -82,6 +84,7 @@ const CardManagementOptions = ({ handleOptionClick }) => {
   )
 }
 
+// Practice-mode rows of the flashcard FAB menu, one per exercise type.
 const PracticeModeOptions = ({ handleOptionClick }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
@@ -99,6 +102,22 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
         tooltip='flashcards-translate-cards-EXPLANATION'
       >
         <KeyboardOutlined sx={{ margin: 'auto' }} />
+      </FabOption>
+      <FabOption
+        handleClick={() => handleOptionClick('learn')}
+        iconStyle={{ paddingBottom: '0.4em', backgroundColor: 'rgb(197, 225, 165)' }}
+        translationId="flashcard-reversed"
+        tooltip="flashcards-reversed-cards-EXPLANATION"
+      >
+        <AppIcon src={images.flip} size={18} style={{ margin: 'auto' }} />
+      </FabOption>
+      <FabOption
+        handleClick={() => handleOptionClick('match')}
+        iconStyle={{ paddingBottom: '0.4em', backgroundColor: 'rgb(179, 214, 234)' }}
+        translationId="flashcard-matching"
+        tooltip="flashcards-match-cards-EXPLANATION"
+      >
+        <AppIcon src={images.inherit} size={18} style={{ margin: 'auto' }} />
       </FabOption>
       {flashcardArticles && (
         <button
@@ -130,6 +149,7 @@ const PracticeModeOptions = ({ handleOptionClick }) => {
   )
 }
 
+// Mobile flashcards menu: a FAB that opens the practice-mode and card-management rows.
 const FloatMenu = () => {
   const [open, setOpen] = useState(false)
 
