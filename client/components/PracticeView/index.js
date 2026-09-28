@@ -333,26 +333,6 @@ const PracticeView = () => {
               {!pending && <span>{story.title}</span>}
               {!pending && <StoryTitleTranslate title={story.title} size={36} />}
             </div>
-            {story.url && !pending && (
-              <a
-                href={story.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  padding: '4px 16px',
-                  borderRadius: 999,
-                  border: `1px solid ${colors.border}`,
-                  fontWeight: 500,
-                  fontSize: 14,
-                  color: colors.ink,
-                  textDecoration: 'none',
-                }}
-              >
-                <FormattedMessage id="Source" />
-              </a>
-            )}
             <PreviousSnippets showDifficulty={showDifficulty} />
             {/* Separates what has already been read from the snippet being answered. */}
             {snippets.previous?.length > 0 && (
