@@ -26,7 +26,11 @@ export const useTimer = ({
     interval: timeToUpdate,
   })
 
-  const { totalMilliseconds, isRunning, start, pause, reset: resetStopwatch } = stopwatch
+  const { totalMilliseconds, start, pause, reset: resetStopwatch } = stopwatch
+
+  // `stopwatch.isRunning` is render state, so a `stop()` earlier in the same tick is invisible to
+  // the callbacks below; this ref tracks it synchronously instead.
+  const isRunningRef = useRef(startImmediately)
 
   const currentTime = useMemo(() => {
     if (direction === 'backward') {
@@ -40,7 +44,7 @@ export const useTimer = ({
     (nextMs) => {
       const value = nextMs == null ? 0 : Number(nextMs)
       const safeValue = Number.isNaN(value) ? 0 : value
-      const shouldRestart = isRunning
+      const shouldRestart = isRunningRef.current
 
       setBaseMs(safeValue)
       prevTimeRef.current = direction === 'backward' ? safeValue : 0
@@ -48,7 +52,7 @@ export const useTimer = ({
 
       resetStopwatch(makeZeroOffset(), shouldRestart)
     },
-    [direction, isRunning, resetStopwatch]
+    [direction, resetStopwatch]
   )
 
   const reset = useCallback(() => {
@@ -91,16 +95,27 @@ export const useTimer = ({
     prevTimeRef.current = current
   }, [currentTime, direction, onExpire])
 
+  // Thin wrappers so the running flag flips synchronously, before any setTime in the same tick.
+  const startTimer = useCallback(() => {
+    isRunningRef.current = true
+    start()
+  }, [start])
+
+  const stopTimer = useCallback(() => {
+    isRunningRef.current = false
+    pause()
+  }, [pause])
+
   const controls = useMemo(
     () => ({
-      start,
-      stop: pause,
+      start: startTimer,
+      stop: stopTimer,
       reset,
       setTime,
       getTime,
       setCheckpoints,
     }),
-    [getTime, pause, reset, setCheckpoints, setTime, start]
+    [getTime, reset, setCheckpoints, setTime, startTimer, stopTimer]
   )
 
   return { controls }

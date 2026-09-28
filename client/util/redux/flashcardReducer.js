@@ -1,14 +1,17 @@
 import { produce } from 'immer'
 import callBuilder from '../apiConnection'
 
-export const getFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
-  const route = `/flashcards/${inputLanguage}/${outputLanguage}?story_id=${storyId}`
+// The query param is `story`, not `story_id` — the backend ignores the latter and returns no cards.
+// `exercise` picks the card set: fillin_trans (default), fillin_learn, match, article, browse.
+export const getFlashcards = (inputLanguage, outputLanguage, storyId = '', exercise = '') => {
+  const exerciseQuery = exercise ? `&exercise=${exercise}` : ''
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}?story=${storyId}${exerciseQuery}`
   const prefix = 'GET_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }
 
 export const getBlueFlashcards = (inputLanguage, outputLanguage, storyId = '') => {
-  const route = `/flashcards/${inputLanguage}/${outputLanguage}?story_id=${storyId}&flashcard_test=True`
+  const route = `/flashcards/${inputLanguage}/${outputLanguage}?story=${storyId}&flashcard_test=True`
   const prefix = 'GET_BLUE_FLASHCARDS'
   return callBuilder(route, prefix, 'get')
 }

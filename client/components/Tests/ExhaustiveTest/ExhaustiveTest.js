@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { Paper } from '@mui/material'
@@ -21,6 +21,8 @@ import Spinner from 'Components/Spinner'
 
 const TIMER_START_DELAY = 3000
 
+// Exhaustive test runner. The clock floors at 0 in the UI; overtime still reaches the backend
+// through `duration` in checkAnswer.
 const ExhaustiveTest = ({ showingInfo }) => {
   const { controls: timer } = useTimer({
     initialTime: 30000,
@@ -53,6 +55,8 @@ const ExhaustiveTest = ({ showingInfo }) => {
 
   const dispatch = useDispatch()
 
+  // Posts the answer (plus overtime duration) and advances. `choice` must be a choice object —
+  // the leave-the-test path passes `{ option: '' }`, not a bare string.
   const checkAnswer = choice => {
     if (!currentExhaustiveTestQuestion) return
 
@@ -91,7 +95,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
       (currentExhaustiveTestQuestion.question_concept_feedbacks || 
       (choice.item_feedbacks && Object.keys(choice.item_feedbacks).length !== 0))
     ) {
-      let mediationFeedbacks = Object.entries(currentExhaustiveTestQuestion.question_concept_feedbacks)
+      let mediationFeedbacks = Object.entries(currentExhaustiveTestQuestion.question_concept_feedbacks || {})
         .filter(([key]) => key.startsWith('mediation_'))
         .map(([, value]) => value);
       const remainFeedbacks = mediationFeedbacks.filter(feedback => !feedbacks.includes(feedback));
@@ -135,8 +139,13 @@ const ExhaustiveTest = ({ showingInfo }) => {
     }
   }, [currentExhaustiveTestQuestion])
 
+  // The unmount cleanup below runs once, so it must not capture the first render's question,
+  // timer and feedbacks — read the current closure through a ref instead.
+  const checkAnswerRef = useRef(checkAnswer)
+  checkAnswerRef.current = checkAnswer
+
   // Send an empty answer if user leaves test
-  useEffect(() => () => checkAnswer(''), [])
+  useEffect(() => () => checkAnswerRef.current({ option: '' }), [])
 
   useEffect(() => {
     if (Math.round(timer.getTime() / 1000) === 0) {
@@ -222,7 +231,7 @@ const ExhaustiveTest = ({ showingInfo }) => {
                 padding: 0,
               }}
             >
-              {Math.round(timer.getTime() / 1000)}
+              {Math.max(0, Math.round(timer.getTime() / 1000))}
             </div>
           </div>
 

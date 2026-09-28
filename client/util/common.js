@@ -198,6 +198,7 @@ import sequre from 'Assets/images/sequre.svg'
 import globe5 from 'Assets/images/globe-5.svg'
 import menu3 from 'Assets/images/menu-03.svg'
 import infoIcon from 'Assets/images/info-icon.svg'
+import alert from 'Assets/images/alert.svg'
 
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -210,7 +211,8 @@ import StoryTopics from 'Components/StoryView/StoryTopics'
 export const inProduction = process.env.NODE_ENV === 'production'
 export const basePath = process.env.BASE_PATH || '/'
 export const isStaging = process.env.ENVIRONMENT === 'staging'
-export const hiddenFeatures = isStaging || process.env.ENVIRONMENT === 'development'
+export const isDevelopment = process.env.ENVIRONMENT === 'development'
+export const hiddenFeatures = isStaging || isDevelopment
 
 export const images = {
   revitaLogoTransparent,
@@ -406,6 +408,7 @@ export const images = {
   globe5,
   menu3,
   infoIcon,
+  alert,
 }
 
 export const backgroundColors = [

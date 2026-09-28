@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import useWindowDimensions from 'Utilities/windowDimensions'
 import FlashcardMenu from './FlashcardMenu'
@@ -15,8 +15,12 @@ import { colors } from 'Assets/mui_theme/designTokens'
 import SettingButton from 'Components/SettingsButton'
 import FlashcardsChatbot from 'Components/ChatBot/FlashcardsChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 
 import './Flashcards.scss'
+
+// Matches the HelperSidebar.scss breakpoint where the sidebar turns into a bottom sheet.
+const SIDEBAR_SHEET_MAX_WIDTH = 768
 
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
@@ -34,7 +38,25 @@ const Flashcards = () => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const { fcOpen } = useSelector(({ encouragement }) => encouragement)
-  const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
+  const { storyBlueCards, deckCompleted } = useSelector(({ flashcards }) => flashcards)
+  const dispatch = useDispatch()
+
+  // Below the sheet breakpoint the sidebar is a bottom sheet over the card, so it is never raised
+  // automatically — only by the learner.
+  const canRaiseAssistant = canUseAssistant && width > SIDEBAR_SHEET_MAX_WIDTH
+
+  // The assistant is where flashcard help lives, so entering the page raises it. Keyed on access
+  // rather than mount: `canUseAssistant` is false until the user loads, and re-collapsing it by
+  // hand must not reopen it (which an isSidebarOpen dependency would do).
+  useEffect(() => {
+    if (canRaiseAssistant) dispatch(setHelperSidebarOpen(true))
+  }, [canRaiseAssistant])
+
+  // A finished deck raises it again — the "Deck completed!" prompt and the next-deck button are
+  // both in the assistant, so a collapsed sidebar would hide the only way on.
+  useEffect(() => {
+    if (deckCompleted && canRaiseAssistant) dispatch(setHelperSidebarOpen(true))
+  }, [deckCompleted])
 
   const inBlueCardsTest = location.pathname.includes('test')
 
@@ -100,6 +122,10 @@ const Flashcards = () => {
         return <Practice mode="article" open={fcOpen} />
       case 'quick':
         return <Practice mode="quick" open={fcOpen} />
+      case 'learn':
+        return <Practice mode="learn" open={fcOpen} />
+      case 'match':
+        return <Practice mode="match" open={fcOpen} />
       default:
         return (
           <Practice mode="fillin" open={fcOpen} setHasAnsweredBlueCards={setHasAnsweredBlueCards} />

@@ -1054,7 +1054,7 @@
     "release-story": "Unhide for students",
     "hide-story": "Hide from students",
     "share-as-a-hidden-story": "Share and hide from students",
-    "import-story": "Inherit stories",
+    "import-story": "Import stories",
     "import-story-label": "Inherit stories from another group",
     "import-story-description": "<h5>Select from which groups to inherit</h5>",
     "import-from": "Inherit stories from ...",
@@ -1183,7 +1183,7 @@
     "lesson-tour-custom-grammar-button-text": "Click here to customize your Lessons: select which topics to practice",
     "Level title": "Levels",
     "level-title-message": "Select at the level of the topics you want to practice",
-    "story-detail-modal-disabled-delete-btn": "You can deletion the story after processing is finished",
+    "story-detail-modal-disabled-delete-btn": "You can delete the story after processing is finished",
     "processing-story-with-percent": "Processing... {progress}% done",
     "story-not-yet-processed-yellow-box": "文章尚未处理结束",
     "practice-tour-edit-delete-title": "Edit or delete story",
@@ -1370,5 +1370,13 @@
     "story-upload-failed": "Could not add the story. Please try again.",
     "chatbot-message-suggestion-daily-stories": "Show me some daily stories",
     "daily-story-saved-to-private": "This story is saved in your Private Library.",
-    "daily-stories-assistant-heading": "Here are some daily stories — you can import them into your Private ibrary for practice"
+    "daily-stories-assistant-heading": "Here are some daily stories — you can import them into your Private ibrary for practice",
+    "import-story-tooltip-explanation": "Import the stories from another (earlier) class",
+    "flashcard-reversed": "Reversed",
+    "flashcard-matching": "Matching",
+    "flashcard-match-terms": "Terms",
+    "flashcard-match-descriptions": "Descriptions",
+    "flashcard-match-progress": "Matched:",
+    "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
+    "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description"
 }
