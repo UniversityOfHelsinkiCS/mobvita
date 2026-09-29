@@ -14,6 +14,11 @@ import { updateHighAccess } from 'Utilities/redux/userReducer'
  * === 'all'). ProtectedRoute handles the "must be logged in" gate; here we additionally redirect
  * anyone without full developer scope away, so non-admins can't view it even by URL.
  */
+// Both lists arrive in whatever order the backend built them, so they are sorted for reading:
+// domains by domain, users by email. localeCompare keeps ä / ö where a reader expects them.
+const byDomain = (a, b) => (a.domain || '').localeCompare(b.domain || '')
+const byEmail = (a, b) => (a.email || '').localeCompare(b.email || '')
+
 const Dashboard = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user?.data?.user)
@@ -34,6 +39,10 @@ const Dashboard = () => {
   } = useSelector(({ partners: partnerState }) => partnerState)
   const [newDomain, setNewDomain] = useState('')
   const [newPartnerName, setNewPartnerName] = useState('')
+
+  // Sorted copies: the store keeps the order the API returned, and a save appends to it.
+  const sortedPartners = [...partners].sort(byDomain)
+  const sortedUsers = [...users].sort(byEmail)
 
   const isAdmin = developerScope === 'all'
 
@@ -194,7 +203,7 @@ const Dashboard = () => {
             style={{ marginTop: '1em', display: 'flex', flexDirection: 'column', gap: 8 }}
             data-cy="partner-list"
           >
-            {partners.map(partner => (
+            {sortedPartners.map(partner => (
               <div
                 key={partner.partner_id}
                 style={{
@@ -286,7 +295,7 @@ const Dashboard = () => {
 
         {!pending && users.length > 0 && (
           <div style={{ marginTop: '1em', display: 'flex', flexDirection: 'column', gap: 8 }} data-cy="admin-user-results">
-            {users.map(u => (
+            {sortedUsers.map(u => (
               <div
                 key={u.uid}
                 style={{
