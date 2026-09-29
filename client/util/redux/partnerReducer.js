@@ -18,6 +18,8 @@ const initialState = {
   pending: false,
   error: false,
   saving: false,
+  // The row being saved (null while a brand-new domain is being added), so only that row spins.
+  savingPartnerId: null,
   saveError: false,
   // What the last save did, so the dashboard can say how many accounts it touched.
   lastSave: null, // { domain, numUsersUpdated }
@@ -42,11 +44,19 @@ export default (state = initialState, action) => {
       return { ...state, pending: false, error: true }
 
     case 'SAVE_PARTNER_ATTEMPT':
-      return { ...state, saving: true, saveError: false, lastSave: null }
+      return {
+        ...state,
+        saving: true,
+        // The payload is on the attempt action, which is how we know whose row is saving.
+        savingPartnerId: action.requestSettings?.data?.partner_id ?? null,
+        saveError: false,
+        lastSave: null,
+      }
     case 'SAVE_PARTNER_SUCCESS':
       return {
         ...state,
         saving: false,
+        savingPartnerId: null,
         saveError: false,
         partners: upsertPartner(state.partners, action.response?.partner),
         lastSave: {
@@ -55,7 +65,7 @@ export default (state = initialState, action) => {
         },
       }
     case 'SAVE_PARTNER_FAILURE':
-      return { ...state, saving: false, saveError: true }
+      return { ...state, saving: false, savingPartnerId: null, saveError: true }
 
     case 'CLEAR_PARTNER_SAVE_RESULT':
       return { ...state, lastSave: null, saveError: false }

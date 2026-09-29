@@ -28,6 +28,7 @@ const Dashboard = () => {
     pending: partnersPending,
     error: partnersError,
     saving: partnerSaving,
+    savingPartnerId,
     saveError: partnerSaveError,
     lastSave: partnerLastSave,
   } = useSelector(({ partners: partnerState }) => partnerState)
@@ -147,6 +148,12 @@ const Dashboard = () => {
             variant="contained"
             disabled={!newDomain.trim() || partnerSaving}
             data-cy="partner-add"
+            // The save re-applies the level to every account on the domain, which is not instant.
+            startIcon={
+              partnerSaving && !savingPartnerId ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : null
+            }
           >
             Add
           </Button>
@@ -208,19 +215,22 @@ const Dashboard = () => {
                     <div style={{ opacity: 0.65, fontSize: '0.9rem' }}>{partner.name}</div>
                   )}
                 </div>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={!!partner.high_access}
-                      disabled={partnerSaving}
-                      onChange={ev => handleTogglePartnerAccess(partner, ev.target.checked)}
-                      inputProps={{ 'data-cy': 'partner-high-access-toggle' }}
-                    />
-                  }
-                  label={`High access: ${partner.high_access ? 'on' : 'off'}`}
-                  labelPlacement="start"
-                  style={{ marginRight: 0, whiteSpace: 'nowrap' }}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {savingPartnerId === partner.partner_id && <CircularProgress size={18} />}
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={!!partner.high_access}
+                        disabled={partnerSaving}
+                        onChange={ev => handleTogglePartnerAccess(partner, ev.target.checked)}
+                        inputProps={{ 'data-cy': 'partner-high-access-toggle' }}
+                      />
+                    }
+                    label={`High access: ${partner.high_access ? 'on' : 'off'}`}
+                    labelPlacement="start"
+                    style={{ marginRight: 0, whiteSpace: 'nowrap' }}
+                  />
+                </div>
               </div>
             ))}
           </div>
