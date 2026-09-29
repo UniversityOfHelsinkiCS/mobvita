@@ -1,4 +1,3 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { learningLanguageSelector } from 'Utilities/common'
@@ -11,10 +10,52 @@ import AppButton from 'Components/AppButton'
 import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
 
-// Match / mismatch cell tints — soft DS green (replaces the legacy bright `.correct` #d3ffd8) and a
-// soft red so differing features stand out at a glance.
-const CORRECT_BG = '#E9F1EC'
-const MISMATCH_BG = '#F8E3E3'
+// Match / mismatch tints for the two answer cells — soft DS green (replaces the legacy bright
+// `.correct` #d3ffd8) and a soft amber so differing features stand out at a glance.
+const CORRECT_BG = '#B4D2AF'
+const MISMATCH_BG = '#F1D0AA'
+
+// The cells are separate tiles rather than one banded row, the whole row tinted by whether the
+// two values agree.
+const FEATURE_TABLE_SX = {
+  tableLayout: 'fixed',
+  borderCollapse: 'separate',
+  borderSpacing: '6px',
+  '& .MuiTableCell-root': {
+    border: 'none',
+    borderRadius: '8px',
+    padding: '10px 12px',
+    // Feature values can be long, and some have no spaces to break at — wrap inside the tile
+    // rather than letting the text run past it.
+    whiteSpace: 'normal',
+    overflowWrap: 'anywhere',
+    verticalAlign: 'top',
+  },
+  '& .MuiTableCell-head': {
+    backgroundColor: colors.green,
+    fontWeight: 600,
+  },
+}
+
+// The backend separates the parts of a message with `---`. They are plain strings, so they are
+// rendered as such: a list only when there is more than one, and no bullet for a single line.
+const renderFeedbackMessage = message => {
+  const parts = String(message ?? '')
+    .split('---')
+    .map(part => part.trim())
+    .filter(Boolean)
+
+  if (parts.length === 0) return null
+  if (parts.length === 1) return <p style={{ margin: 0 }}>{parts[0]}</p>
+
+  return (
+    <ul style={{ margin: 0, paddingLeft: '1.2em' }}>
+      {parts.map(part => (
+        <li key={part}>{part}</li>
+      ))}
+    </ul>
+  )
+}
 
 const DebugTestView = () => {
   const dispatch = useDispatch()
@@ -77,22 +118,20 @@ const DebugTestView = () => {
             </form>
             {feedback && (
               <div style={{ marginTop: '1.5rem' }}>
-                <h4 data-cy="debug-test-feedback" style={{ fontWeight: 600 }}>
-                  Feedback:
-                  <FormattedHTMLMessage
-                    id={'<ul> <li />' + feedback.message.replace(/---/g, '<li />') + '</ul>'}
-                  />
-                </h4>
-                <AppTable bordered data-cy="debug-test-feature-table" sx={{ tableLayout: 'fixed' }}>
+                <div data-cy="debug-test-feedback">
+                  <h4 style={{ fontWeight: 600, marginBottom: '0.5em' }}>Feedback:</h4>
+                  {renderFeedbackMessage(feedback.message)}
+                </div>
+                <AppTable plain data-cy="debug-test-feature-table" sx={FEATURE_TABLE_SX}>
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" style={{ width: '250px' }}>
-                        Features
+                      <TableCell align="left" style={{ width: '40%' }}>
+                        Feature
                       </TableCell>
-                      <TableCell align="center" style={{ width: '250px' }}>
+                      <TableCell align="center" style={{ width: '30%' }}>
                         Correct answer
                       </TableCell>
-                      <TableCell align="center" style={{ width: '250px' }}>
+                      <TableCell align="center" style={{ width: '30%' }}>
                         User answer
                       </TableCell>
                     </TableRow>
@@ -113,17 +152,20 @@ const DebugTestView = () => {
                         const isMatch =
                           feedback.user_features[key]?.toString() ===
                           feedback.true_features[key]?.toString()
-                        const cellSx = { backgroundColor: isMatch ? CORRECT_BG : MISMATCH_BG }
+                        const valueSx = {
+                          backgroundColor: isMatch ? CORRECT_BG : MISMATCH_BG,
+                          fontWeight: isMatch ? 400 : 600,
+                        }
                         return (
                           <TableRow key={key}>
-                            <TableCell align="center" sx={cellSx}>
+                            <TableCell align="left" sx={valueSx}>
                               {key}
                             </TableCell>
-                            <TableCell align="center" sx={cellSx}>
-                              {(feedback.true_features[key] || '').toString()}
+                            <TableCell align="center" sx={valueSx}>
+                              {(feedback.true_features[key] || '—').toString()}
                             </TableCell>
-                            <TableCell align="center" sx={cellSx}>
-                              {(feedback.user_features[key] || '').toString()}
+                            <TableCell align="center" sx={valueSx}>
+                              {(feedback.user_features[key] || '—').toString()}
                             </TableCell>
                           </TableRow>
                         )
