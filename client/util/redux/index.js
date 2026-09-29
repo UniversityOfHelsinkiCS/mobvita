@@ -62,6 +62,7 @@ import helperSidebar from './helperSidebarReducer'
 import notes from './notesReducer'
 import dialogues from './dialoguesReducer'
 import admin from './adminReducer'
+import partners from './partnerReducer'
 
 
 const rootReducer = combineReducers({
@@ -127,6 +128,7 @@ const rootReducer = combineReducers({
   notes,
   dialogues,
   admin,
+  partners,
 })
 
 export default (state, action) =>

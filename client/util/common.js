@@ -646,18 +646,19 @@ export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 // User access hierarchy
 //   0 ANONYMOUS  – not registered (anonymous session)
 //   1 REGISTERED – a registered user
-//   2 HIGH       – registered + `high_access: true` from the backend or email ends with `.helsinki.fi` or `@helsinki.fi`
+//   2 HIGH       – registered + `high_access: true` from the backend
 // Levels are ordered: a higher level passes every lower-level gate.
 // Use `useHasAccess(ACCESS.X)` for feature gates (`>=`), or the named helpers.
+//
+// Domains no longer grant access here: the backend keeps a partner list (GET/POST /api/partner,
+// managed from the admin dashboard) and sets `high_access` on the accounts it covers.
 // =========================================================================
 export const ACCESS = { ANONYMOUS: 0, REGISTERED: 1, HIGH: 2 }
 
 export const userAccessLevelSelector = ({ user }) => {
   const u = user?.data?.user
   if (!u || u.email === 'anonymous_email') return ACCESS.ANONYMOUS
-  const email = u.email?.toLowerCase()
-  if (u.high_access || email?.endsWith('.helsinki.fi') || email?.endsWith('@helsinki.fi'))
-    return ACCESS.HIGH
+  if (u.high_access) return ACCESS.HIGH
   return ACCESS.REGISTERED
 }
 

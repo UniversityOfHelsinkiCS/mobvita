@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { TextField, Button, Switch, FormControlLabel, Alert, CircularProgress } from '@mui/material'
 import { searchUsers, setUserHighAccess, clearUserSearch } from 'Utilities/redux/adminReducer'
+import { getPartners, savePartner } from 'Utilities/redux/partnerReducer'
 import { updateHighAccess } from 'Utilities/redux/userReducer'
 
 /**
@@ -22,9 +23,46 @@ const Dashboard = () => {
   const { users, searched, pending, error, savingUid } = useSelector(({ admin }) => admin)
   const [query, setQuery] = useState('')
 
-  if (developerScope !== 'all') {
+  const {
+    partners,
+    pending: partnersPending,
+    error: partnersError,
+    saving: partnerSaving,
+    saveError: partnerSaveError,
+    lastSave: partnerLastSave,
+  } = useSelector(({ partners: partnerState }) => partnerState)
+  const [newDomain, setNewDomain] = useState('')
+  const [newPartnerName, setNewPartnerName] = useState('')
+
+  const isAdmin = developerScope === 'all'
+
+  useEffect(() => {
+    if (isAdmin) dispatch(getPartners())
+  }, [isAdmin])
+
+  if (!isAdmin) {
     return <Navigate to="/home" replace />
   }
+
+  // A new domain always starts as a high-access partner; the switch on its row turns that off.
+  const handleAddPartner = e => {
+    e.preventDefault()
+    if (!newDomain.trim()) return
+
+    dispatch(
+      savePartner({
+        domain: newDomain.trim().toLowerCase(),
+        name: newPartnerName.trim() || newDomain.trim().toLowerCase(),
+        high_access: true,
+      }),
+    )
+    setNewDomain('')
+    setNewPartnerName('')
+  }
+
+  // Same endpoint, with the id: the backend re-applies the level to every account on the domain.
+  const handleTogglePartnerAccess = (partner, high_access) =>
+    dispatch(savePartner({ ...partner, high_access }))
 
   const handleSearch = e => {
     e.preventDefault()
@@ -69,6 +107,124 @@ const Dashboard = () => {
           }
           label={`High access: ${user?.high_access ? 'on' : 'off'}`}
         />
+      </div>
+
+      <div
+        style={{
+          border: '1px solid #e0e0e0',
+          borderRadius: 12,
+          padding: '1.25em',
+          background: '#fafafa',
+          marginBottom: '1.5em',
+        }}
+        data-cy="partner-domains"
+      >
+        <h3 style={{ marginTop: 0, marginBottom: '0.5em' }}>Partner domains</h3>
+        <p style={{ opacity: 0.7, marginTop: 0, marginBottom: '1em' }}>
+          Every account whose email ends in one of these domains gets that domain&apos;s access
+          level. Saving a domain re-applies it to the accounts already registered on it.
+        </p>
+
+        <form onSubmit={handleAddPartner} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <TextField
+            label="Domain (e.g. laurea.fi)"
+            size="small"
+            value={newDomain}
+            onChange={ev => setNewDomain(ev.target.value)}
+            style={{ flex: 1 }}
+            inputProps={{ 'data-cy': 'partner-domain-input' }}
+          />
+          <TextField
+            label="Name (optional)"
+            size="small"
+            value={newPartnerName}
+            onChange={ev => setNewPartnerName(ev.target.value)}
+            style={{ flex: 1 }}
+            inputProps={{ 'data-cy': 'partner-name-input' }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!newDomain.trim() || partnerSaving}
+            data-cy="partner-add"
+          >
+            Add
+          </Button>
+        </form>
+
+        {partnerSaveError && (
+          <Alert severity="error" style={{ marginTop: '1em' }} data-cy="partner-error">
+            Could not save the domain.
+          </Alert>
+        )}
+
+        {partnerLastSave && (
+          <Alert severity="success" style={{ marginTop: '1em' }} data-cy="partner-saved">
+            {partnerLastSave.domain} saved — {partnerLastSave.numUsersUpdated} account(s) updated.
+          </Alert>
+        )}
+
+        {partnersError && (
+          <Alert severity="error" style={{ marginTop: '1em' }}>
+            Could not load the partner domains.
+          </Alert>
+        )}
+
+        {partnersPending && (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '1.5em' }}>
+            <CircularProgress size={28} />
+          </div>
+        )}
+
+        {!partnersPending && partners.length === 0 && !partnersError && (
+          <Alert severity="info" style={{ marginTop: '1em' }} data-cy="partner-empty">
+            No partner domains yet.
+          </Alert>
+        )}
+
+        {!partnersPending && partners.length > 0 && (
+          <div
+            style={{ marginTop: '1em', display: 'flex', flexDirection: 'column', gap: 8 }}
+            data-cy="partner-list"
+          >
+            {partners.map(partner => (
+              <div
+                key={partner.partner_id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  padding: '0.75em 1em',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: 10,
+                  background: '#fff',
+                }}
+                data-cy="partner-row"
+              >
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 700 }}>{partner.domain}</div>
+                  {partner.name && (
+                    <div style={{ opacity: 0.65, fontSize: '0.9rem' }}>{partner.name}</div>
+                  )}
+                </div>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={!!partner.high_access}
+                      disabled={partnerSaving}
+                      onChange={ev => handleTogglePartnerAccess(partner, ev.target.checked)}
+                      inputProps={{ 'data-cy': 'partner-high-access-toggle' }}
+                    />
+                  }
+                  label={`High access: ${partner.high_access ? 'on' : 'off'}`}
+                  labelPlacement="start"
+                  style={{ marginRight: 0, whiteSpace: 'nowrap' }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div
