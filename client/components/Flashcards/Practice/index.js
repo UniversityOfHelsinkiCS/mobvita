@@ -134,7 +134,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
   // The assistant raises the "Deck completed!" message; this just reports that the deck ran out.
   useEffect(() => {
-    if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
+    if (!pending && !loading && swipeIndex && swipeIndex >= cards.length) {
       dispatch(setDeckCompleted(true))
       setAmountAnswered(0)
     }
