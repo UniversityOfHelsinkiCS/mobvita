@@ -83,11 +83,13 @@ const ExerciseHearing = ({ word }) => {
         data-cy="control-exercise-hearing-speaker"
         fontSize="small"
         onClick={() => speakerClickHandler(word)}
+        // After the blank, not pulled back over it: the input is sized to the word, so a negative
+        // margin put the icon on top of the text it belongs to.
         sx={{
           cursor: 'pointer',
           opacity: iconDisabled ? 0.45 : 1,
-          marginLeft: '-25px',
-          marginRight: '0.6em',
+          marginLeft: '0.25em',
+          marginRight: '0.4em',
           verticalAlign: 'middle',
         }}
       />

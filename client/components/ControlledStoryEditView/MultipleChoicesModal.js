@@ -1,16 +1,66 @@
-/* eslint-disable no-nested-ternary */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
-import Draggable from 'react-draggable'
 import Box from '@mui/material/Box'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import CloseIcon from '@mui/icons-material/Close'
-import AppRadio from 'Components/ui/AppRadio'
-import CustomTooltip from 'Components/CustomTooltip'
-import { FormattedMessage } from 'react-intl'
-import useWindowDimension from 'Utilities/windowDimensions'
+import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppRadio from 'Components/ui/AppRadio'
+import AppTextField from 'Components/ui/AppTextField'
+import CustomTooltip from 'Components/CustomTooltip'
+import { colors } from 'Assets/mui_theme/designTokens'
+import useWindowDimension from 'Utilities/windowDimensions'
 import MCFeedbackList from './MCFeedbackList'
 import AddFeedbackInput from './AddFeedbackInput'
+
+// A ready-made set reads as a row of chips; only the custom set is typed into.
+const ChoiceChip = ({ value }) => (
+  <Box
+    sx={{
+      padding: '6px 14px',
+      borderRadius: 999,
+      backgroundColor: colors.panel,
+      border: `1px solid ${colors.cardBorder}`,
+      fontSize: 15,
+      color: colors.ink,
+      whiteSpace: 'nowrap',
+    }}
+  >
+    {value}
+  </Box>
+)
+
+// One selectable set: its radio, then whatever the set holds. Rows on a wide screen, a column on a
+// narrow one — which is all the two duplicated branches used to differ by.
+const ChoiceSet = ({ checked, onSelect, dataCy, bigScreen, children }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '0.75em',
+      padding: '0.5em 0',
+      borderBottom: `1px solid ${colors.cardBorder}`,
+    }}
+  >
+    <AppRadio
+      slotProps={{ input: { 'data-cy': dataCy } }}
+      sx={{ p: 0, mt: '0.35em' }}
+      onChange={onSelect}
+      checked={checked}
+    />
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: bigScreen ? 'row' : 'column',
+        flexWrap: 'wrap',
+        gap: '0.5em',
+        flex: 1,
+        minWidth: 0,
+      }}
+    >
+      {children}
+    </Box>
+  </Box>
+)
 
 const MultipleChoiceModal = ({
   open,
@@ -20,6 +70,7 @@ const MultipleChoiceModal = ({
   analyticChunkWord,
   showValidationMessage,
 }) => {
+  const intl = useIntl()
   const [customMultiChoice1, setCustomMultiChoice1] = useState('')
   const [customMultiChoice2, setCustomMultiChoice2] = useState('')
   const [customMultiChoice3, setCustomMultiChoice3] = useState('')
@@ -36,26 +87,6 @@ const MultipleChoiceModal = ({
   const removeFeedback = index =>
     setFeedbackList(feedbackList.filter((feedback, feedbackIndex) => feedbackIndex !== index))
 
-  const longInput = () => {
-    let max = word.surface.length
-    if (word.choices) {
-      Object.keys(word.choices).map(key =>
-        word.choices[key].forEach(option => (max = Math.max(max, option.length)))
-      )
-    }
-    if (word.stress && word.stressed) {
-      word.stress.forEach(stressOption => (max = Math.max(max, stressOption.length)))
-    }
-
-    if (max > 15) {
-      return true
-    }
-
-    return false
-  }
-
-  const containsLongInput = longInput()
-
   const closeModal = () => {
     setOpen(false)
   }
@@ -69,10 +100,10 @@ const MultipleChoiceModal = ({
         customMultiChoice3,
       ]
       handleAddMultichoiceExercise(
-        customSet.filter(word => word !== ''),
+        customSet.filter(choice => choice !== ''),
         word.surface,
         'custom_concept_id',
-        feedbackList
+        feedbackList,
       )
     } else if (chosenSet === 'stress') {
       handleAddMultichoiceExercise(word.stress, word.stressed, 'Stress-*', feedbackList)
@@ -81,322 +112,110 @@ const MultipleChoiceModal = ({
     }
   }
 
-  // semantic-ui's <Form> called preventDefault on submit itself; a plain <form> must do it here.
   const handleFormSubmit = event => {
     event.preventDefault()
     handleSubmitChoices()
   }
 
-  const radioSx = {
-    p: 0,
-    alignSelf: 'flex-start',
-    marginTop: '0.9em',
-    marginLeft: '0.5em',
-    marginRight: '0.75em',
-  }
+  const correctChoice = analyticChunkWord?.surface || word.surface
+  const customFields = [
+    [customMultiChoice1, setCustomMultiChoice1],
+    [customMultiChoice2, setCustomMultiChoice2],
+    [customMultiChoice3, setCustomMultiChoice3],
+  ].map(([value, onChange], index) => ({
+    value,
+    onChange,
+    dataCy: `mc-modal-custom-choice-${index + 1}`,
+  }))
 
-  if (open) {
-    return (
-      <Draggable cancel=".interactable">
-        <div className="draggable-modal">
-          <div>
-            <div>
-              <CustomTooltip
-                permanent
-                title={
-                  <div style={{ padding: '0.75em' }}>
-                    <FormattedMessage id="multiple-choice-tooltip" />
-                  </div>
-                }
-              >
-                <span className="interactable" style={{ display: 'inline-flex' }}>
-                  <InfoOutlinedIcon
-                    className="interactable"
-                    sx={{
-                      color: 'grey',
-                      paddingRight: '0.75em',
-                      marginBottom: '0.5em',
-                      marginLeft: '0.75em',
-                      marginTop: '0.75em',
-                    }}
-                  />
-                </span>
-              </CustomTooltip>
-              <span className="pt-sm" style={{ color: '#000000' }}>
-                <FormattedMessage id="pick-choices" />
-              </span>
-              <CloseIcon
-                className="interactable"
-                data-cy="mc-modal-close"
-                sx={{
-                  cursor: 'pointer',
-                  paddingRight: '0.75em',
-                  marginBottom: '0.5em',
-                  marginLeft: '0.75em',
-                  marginTop: '0.75em',
-                }}
-                fontSize="large"
-                onClick={closeModal}
-              />
-            </div>
-          </div>
-          <hr />
-          <div>
-            <div style={{ marginRight: '0.5em' }}>
-              <form
-                className="interactable"
-                style={{
-                  marginBottom: '0.5em',
-                  marginTop: '0.5em',
-                }}
-                onSubmit={handleFormSubmit}
-              >
-                {word.choices && bigScreen ? (
-                  Object.keys(word.choices).map(key => (
-                    <div>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <AppRadio
-                          className="interactable"
-                          slotProps={{ input: { 'data-cy': `mc-modal-choice-set-${key}` } }}
-                          sx={radioSx}
-                          onChange={() => setChosenSet(key)}
-                          checked={chosenSet === key}
-                        />
-                        {word.choices[key]
-                          .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
-                          .map(choice => (
-                            <input
-                              className={`${
-                                containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                              } interactable`}
-                              type="text"
-                              name="disable_field"
-                              disabled
-                              value={choice}
-                            />
-                          ))}
-                      </Box>
-                      <hr />
-                    </div>
-                  ))
-                ) : word.choices ? (
-                  Object.keys(word.choices).map(key => (
-                    <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <AppRadio
-                          className="interactable"
-                          slotProps={{ input: { 'data-cy': `mc-modal-choice-set-${key}` } }}
-                          sx={radioSx}
-                          onChange={() => setChosenSet(key)}
-                          checked={chosenSet === key}
-                        />
-                        <div className="flex-col" style={{ marginLeft: '.5em' }}>
-                          {word.choices[key]
-                            .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
-                            .map(choice => (
-                              <input
-                                className={`${
-                                  containsLongInput
-                                    ? 'multi-choice-long-input'
-                                    : 'multi-choice-input'
-                                } interactable`}
-                                type="text"
-                                name="disable_field"
-                                disabled
-                                value={choice}
-                              />
-                            ))}
-                        </div>
-                      </Box>
-                      <hr />
-                    </div>
-                  ))
-                ) : (
-                  <></>
-                )}
-                {word.stress && word.stressed && bigScreen ? (
-                  <div>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      <AppRadio
-                        className="interactable"
-                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-stress' } }}
-                        sx={radioSx}
-                        onChange={() => setChosenSet('stress')}
-                        checked={chosenSet === 'stress'}
-                      />
-                      {word.stress.map(choice => (
-                        <input
-                          className={`${
-                            containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                          } interactable`}
-                          type="text"
-                          name="disable_field"
-                          disabled
-                          value={choice}
-                        />
-                      ))}
-                    </Box>
-                    <hr />
-                  </div>
-                ) : word.stress && word.stressed ? (
-                  <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      <AppRadio
-                        className="interactable"
-                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-stress' } }}
-                        sx={radioSx}
-                        onChange={() => setChosenSet('stress')}
-                        checked={chosenSet === 'stress'}
-                      />
-                      <div className="flex-col" style={{ marginLeft: '.5em' }}>
-                        {word.stress.map(choice => (
-                          <input
-                            className={`${
-                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                            } interactable`}
-                            type="text"
-                            name="disable_field"
-                            disabled
-                            value={choice}
-                          />
-                        ))}
-                      </div>
-                    </Box>
-                    <hr />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <div style={{ marginRight: '0.5em' }}>
-                  {bigScreen ? (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      <AppRadio
-                        className="interactable"
-                        slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-custom' } }}
-                        sx={radioSx}
-                        onChange={() => setChosenSet('custom')}
-                        checked={chosenSet === 'custom'}
-                      />
-                      <input
-                        className={`${
-                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                        } interactable`}
-                        type="text"
-                        name="disable_field"
-                        value={analyticChunkWord?.surface || word.surface}
-                        disabled
-                      />
-                      <input
-                        className={`${
-                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                        } interactable`}
-                        type="text"
-                        data-cy="mc-modal-custom-choice-1"
-                        value={customMultiChoice1}
-                        onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                      />
-                      <input
-                        className={`${
-                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                        } interactable`}
-                        type="text"
-                        data-cy="mc-modal-custom-choice-2"
-                        value={customMultiChoice2}
-                        onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                      />
-                      <input
-                        className={`${
-                          containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                        } interactable`}
-                        type="text"
-                        data-cy="mc-modal-custom-choice-3"
-                        value={customMultiChoice3}
-                        onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                      />
-                    </Box>
-                  ) : (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      <div className="flex" style={{ alignItems: 'center', marginTop: '.5em' }}>
-                        <AppRadio
-                          className="interactable"
-                          slotProps={{ input: { 'data-cy': 'mc-modal-choice-set-custom' } }}
-                          sx={radioSx}
-                          onChange={() => setChosenSet('custom')}
-                          checked={chosenSet === 'custom'}
-                        />
-                        <div className="col-flex" style={{ marginLeft: '.5em' }}>
-                          <input
-                            className={`${
-                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                            } interactable`}
-                            type="text"
-                            name="disable_field"
-                            value={analyticChunkWord?.surface || word.surface}
-                            disabled
-                          />
-                          <input
-                            className={`${
-                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                            } interactable`}
-                            type="text"
-                            data-cy="mc-modal-custom-choice-1"
-                            value={customMultiChoice1}
-                            onChange={({ target }) => setCustomMultiChoice1(target.value)}
-                          />
-                          <input
-                            className={`${
-                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                            } interactable`}
-                            type="text"
-                            data-cy="mc-modal-custom-choice-2"
-                            value={customMultiChoice2}
-                            onChange={({ target }) => setCustomMultiChoice2(target.value)}
-                          />
-                          <input
-                            className={`${
-                              containsLongInput ? 'multi-choice-long-input' : 'multi-choice-input'
-                            } interactable`}
-                            type="text"
-                            data-cy="mc-modal-custom-choice-3"
-                            value={customMultiChoice3}
-                            onChange={({ target }) => setCustomMultiChoice3(target.value)}
-                          />
-                        </div>
-                      </div>
-                    </Box>
-                  )}
-                  {showValidationMessage && (
-                    <div
-                      style={{ color: '#FF0000', marginLeft: '0.5em', marginBottom: '0.5em' }}
-                      data-cy="mc-modal-validation-message"
-                    >
-                      <FormattedMessage id="multiple-choice-validation" />
-                    </div>
-                  )}
-                  <AddFeedbackInput
-                    addFeedback={addFeedback}
-                    customFeedback={customFeedback}
-                    setCustomFeedback={setCustomFeedback}
-                  />
-                  <MCFeedbackList feedbackList={feedbackList} removeFeedback={removeFeedback} />
-                  <AppButton
-                    className="interactable"
-                    style={{ marginBottom: '0.5em', marginLeft: '0.5em', marginTop: '0.5em' }}
-                    type="submit"
-                    data-cy="mc-modal-submit"
-                  >
-                    Submit
-                  </AppButton>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </Draggable>
-    )
-  }
+  return (
+    <AppDialog
+      open={open}
+      onClose={closeModal}
+      title={
+        // The explanation the info icon used to carry sits on the title itself.
+        <CustomTooltip permanent title={intl.formatMessage({ id: 'multiple-choice-tooltip' })}>
+          <span>
+            <FormattedMessage id="pick-choices" />
+          </span>
+        </CustomTooltip>
+      }
+      subtitle={correctChoice}
+      subtitleSx={{ color: colors.muted, fontSize: 16 }}
+      titleSx={{ px: '40px', pt: '32px' }}
+      contentSx={{ px: '40px', pb: '32px' }}
+      closeDataCy="mc-modal-close"
+      data-cy="mc-modal"
+    >
+      <form onSubmit={handleFormSubmit}>
+        {word.choices &&
+          Object.keys(word.choices).map(key => (
+            <ChoiceSet
+              key={key}
+              dataCy={`mc-modal-choice-set-${key}`}
+              bigScreen={bigScreen}
+              checked={chosenSet === key}
+              onSelect={() => setChosenSet(key)}
+            >
+              {word.choices[key]
+                .filter(choice => choice !== analyticChunkWord?.surface || word.surface)
+                .map(choice => (
+                  <ChoiceChip key={choice} value={choice} />
+                ))}
+            </ChoiceSet>
+          ))}
 
-  return null
+        {word.stress && word.stressed && (
+          <ChoiceSet
+            dataCy="mc-modal-choice-set-stress"
+            bigScreen={bigScreen}
+            checked={chosenSet === 'stress'}
+            onSelect={() => setChosenSet('stress')}
+          >
+            {word.stress.map(choice => (
+              <ChoiceChip key={choice} value={choice} />
+            ))}
+          </ChoiceSet>
+        )}
+
+        {/* The custom set: the correct form is fixed, the three distractors are typed in. */}
+        <ChoiceSet
+          dataCy="mc-modal-choice-set-custom"
+          bigScreen={bigScreen}
+          checked={chosenSet === 'custom'}
+          onSelect={() => setChosenSet('custom')}
+        >
+          <ChoiceChip value={correctChoice} />
+          {customFields.map(field => (
+            <AppTextField
+              key={field.dataCy}
+              value={field.value}
+              onChange={({ target }) => field.onChange(target.value)}
+              inputProps={{ 'data-cy': field.dataCy }}
+              sx={{ flex: bigScreen ? '1 1 120px' : '1 1 auto', minWidth: 120 }}
+            />
+          ))}
+        </ChoiceSet>
+
+        {showValidationMessage && (
+          <Box sx={{ color: colors.error, mt: '0.75em' }} data-cy="mc-modal-validation-message">
+            <FormattedMessage id="multiple-choice-validation" />
+          </Box>
+        )}
+
+        <AddFeedbackInput
+          addFeedback={addFeedback}
+          customFeedback={customFeedback}
+          setCustomFeedback={setCustomFeedback}
+        />
+        <MCFeedbackList feedbackList={feedbackList} removeFeedback={removeFeedback} />
+
+        <AppButton type="submit" data-cy="mc-modal-submit" sx={{ width: '100%', height: 36 }}>
+          <FormattedMessage id="Submit" defaultMessage="Submit" />
+        </AppButton>
+      </form>
+    </AppDialog>
+  )
 }
 
 export default MultipleChoiceModal

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Divider, Paper, FormControlLabel } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { Box, Divider, FormControlLabel } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CustomTooltip from 'Components/CustomTooltip'
-import AppButton from 'Components/AppButton'
+import AppButton, { roundIconButtonSx } from 'Components/AppButton'
+import AppDialog from 'Components/ui/AppDialog'
+import AppIcon from 'Components/ui/AppIcon'
+import StoryInfoButton from 'Components/StoryInfoButton'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -19,11 +21,11 @@ import {
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
-import DictionaryHelp from 'Components/DictionaryHelp'
-import AnnotationBox from 'Components/AnnotationBox'
+import { learningLanguageSelector, getTextStyle, images } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import EditorWordPanel from './EditorWordPanel'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
 import ReportButton from 'Components/ReportButton'
 import ScrollArrow from '../ScrollArrow'
@@ -37,6 +39,7 @@ const ControlledStoryEditView = ({ match }) => {
   const [hideFeedback, setHideFeedback] = useState(false)
   const location = useLocation()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || false)
@@ -50,6 +53,7 @@ const ControlledStoryEditView = ({ match }) => {
     shallowEqual,
   )
   const user = useSelector(state => state.user.data)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
   const { progress, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
 
@@ -121,10 +125,6 @@ const ControlledStoryEditView = ({ match }) => {
     return intl.formatMessage({ id: 'show-exercise-preview' })
   }
 
-  const infoBoxLabel = () => {
-    return intl.formatMessage({ id: 'preview-mode-info' })
-  }
-
   const refreshPage = () => {
     dispatch(getStoryAction(id, 'preview'))
     setShowRefreshButton(false)
@@ -151,70 +151,56 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   return (
-    <div className="cont-tall flex-col space-between align-center pt-sm">
-      <div className="flex mb-nm">
-        <div>
-          <Paper
+    <div className="cont-tall flex-col space-between align-center">
+      {/* Same shell as the story preview: a centred cream card that makes room for the sidebar. */}
+      <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
+        <div className={`cont ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
+          <Box
             data-cy="readmodes-text"
-            className="cont"
-            sx={{ padding: '1em' }}
+            sx={{
+              backgroundColor: colors.card,
+              borderRadius: '30px',
+              padding: { xs: '1em', sm: '1.5em' },
+              marginBottom: '1em',
+            }}
             style={getTextStyle(learningLanguage)}
           >
-            <div className="header-2" style={getTextStyle(learningLanguage, 'title')}>
-              <span className="pr-sm">{story.title}</span>
-              <br />
-              {story.url && (
-                <a
-                  href={story.url}
-                  data-cy="controlled-story-editor-source-link"
-                  style={{ fontSize: '1rem', fontWeight: '300' }}
+            {/* Title and controls share a row; `flex-start` keeps the buttons on the first line
+                when a long title wraps, rather than floating beside its middle. */}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                gap: '0.75em',
+                marginBottom: '1.25em',
+              }}
+            >
+              <div className="story-title" style={getTextStyle(learningLanguage, 'title')}>
+                <span className="header-text">{story.title}</span>
+              </div>
+
+              {/* Never squeezed by the title, and never wrapped onto a line of their own. */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em', flexShrink: 0 }}>
+                <StoryInfoButton story={story} storyId={id} />
+                <CustomTooltip
+                  title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
                 >
-                  <FormattedMessage id="Source" />
-                </a>
-              )}
-            </div>
-            <div className="space-between" style={{ alignItems: 'center' }}>
-              <div>
-                <FormControlLabel
-                  control={
-                    <AppSwitch
-                      checked={!hideFeedback}
-                      onChange={() => setHideFeedback(!hideFeedback)}
-                      slotProps={{
-                        input: { 'data-cy': 'controlled-story-editor-show-preview-toggle' },
-                      }}
-                    />
-                  }
-                  label={checkboxLabel()}
-                  style={{ paddingTop: '.5em' }}
-                />
-                <CustomTooltip title={infoBoxLabel()}>
-                  <span style={{ display: 'inline-flex' }}>
-                    <InfoOutlinedIcon className="pl-sm" sx={{ color: 'grey' }} />
-                  </span>
+                  <AppButton
+                    type="button"
+                    variant="tan-outline"
+                    size="sm"
+                    disableRipple
+                    aria-label={intl.formatMessage({ id: 'practice-settings' })}
+                    onClick={() => setSettingsOpen(true)}
+                    data-cy="controlled-story-editor-settings"
+                    sx={roundIconButtonSx}
+                  >
+                    <AppIcon src={images.settings02} size={24} color="currentColor" />
+                  </AppButton>
                 </CustomTooltip>
-              </div>
-              <div>
-                <FormControlLabel
-                  control={
-                    <AppSwitch
-                      checked={timedExercise}
-                      onChange={() => setTimedExercise(!timedExercise)}
-                      slotProps={{
-                        input: { 'data-cy': 'controlled-story-editor-timed-toggle' },
-                      }}
-                    />
-                  }
-                  label={intl.formatMessage({ id: 'timed-practice-toggle' })}
-                  style={{ paddingTop: '.5em' }}
-                />
-                <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
-                  <span style={{ display: 'inline-flex' }}>
-                    <InfoOutlinedIcon className="pl-sm" sx={{ color: 'grey' }} />
-                  </span>
-                </CustomTooltip>
-              </div>
-            </div>
+              </Box>
+            </Box>
             {progress !== 0 && processingCurrentStory && (
               <div className="bold" data-cy="controlled-story-editor-processing-warning">
                 <span style={{ color: 'red' }}>
@@ -251,7 +237,7 @@ const ControlledStoryEditView = ({ match }) => {
             ))}
 
             <ScrollArrow />
-          </Paper>
+          </Box>
           {width >= 500 ? (
             <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
               <ReportButton />
@@ -262,54 +248,114 @@ const ControlledStoryEditView = ({ match }) => {
             </div>
           )}
         </div>
-        <div className="dictionary-and-annotations-cont">
-          <div className="save-edited-story-box">
-            <Paper sx={{ padding: '1em' }}>
-              <div>
-                {emptySnippets() && (
-                  <span
-                    data-cy="controlled-story-editor-empty-snippets-warning"
-                    style={{ color: '#ff0000', marginBottom: '0.5em' }}
-                  >
-                    <b>
-                      <FormattedMessage id="empty-snippets-warning" />
-                    </b>
-                  </span>
-                )}
-                <AppButton
-                  variant="primary"
-                  onClick={saveControlledStory}
-                  type="button"
-                  data-cy="controlled-story-editor-save-button"
-                  style={{ width: '100%', marginBottom: '.5em', marginTop: '.5em' }}
-                >
-                  <FormattedMessage id="save-controlled-story" />
-                </AppButton>
-              </div>
-              <AppButton
-                variant="secondary"
-                size="sm"
-                onClick={handleEditorReset}
-                data-cy="controlled-story-editor-start-over-button"
-                style={{ marginBottom: '0.5em' }}
-              >
-                <span>
-                  <FormattedMessage id="start-over" /> <ArrowUpwardIcon fontSize="small" />
-                </span>
-              </AppButton>
-            </Paper>
-          </div>
+        {/* Everything that used to sit in the right-hand column: the topics, the clicked word, and
+            the save controls. No dictionary and no assistant — this page is for authoring. */}
+        <HelperSidebar>
+          <div style={{ margin: '20px 20px 0 20px' }}>
             <StoryTopics
               conceptCount={story.concept_count}
               focusedConcept={focusedConcept}
               setFocusedConcept={setFocusedConcept}
-              isControlledStoryEditor={true}
+              isControlledStoryEditor
             />
-          <DictionaryHelp />
-          {/* <AnnotationBox /> */}
-        </div>
+          </div>
+
+          {/* The clicked word's tooltip, repeated here where there is room for it. */}
+          <EditorWordPanel />
+
+          {/* `marginTop: auto` in the sidebar's flex column keeps the save controls at the bottom,
+              however tall the topic list and the word panel above them turn out to be. */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75em',
+              margin: '20px',
+              marginTop: 'auto',
+              paddingTop: '20px',
+            }}
+          >
+            {emptySnippets() && (
+              <span
+                data-cy="controlled-story-editor-empty-snippets-warning"
+                style={{ color: colors.error }}
+              >
+                <b>
+                  <FormattedMessage id="empty-snippets-warning" />
+                </b>
+              </span>
+            )}
+            <AppButton
+              variant="tan"
+              onClick={saveControlledStory}
+              type="button"
+              data-cy="controlled-story-editor-save-button"
+              sx={{ width: '100%', height: 36 }}
+            >
+              <FormattedMessage id="save-controlled-story" />
+            </AppButton>
+            <AppButton
+              variant="contrast-outline"
+              onClick={handleEditorReset}
+              data-cy="controlled-story-editor-start-over-button"
+              sx={{ width: '100%', height: 36, gap: '0.5em' }}
+            >
+              <FormattedMessage id="start-over" />
+              <ArrowUpwardIcon fontSize="small" />
+            </AppButton>
+          </Box>
+        </HelperSidebar>
         <FeedbackInfoModal />
       </div>
+
+      <AppDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        title={<FormattedMessage id="practice-settings" />}
+      >
+        <div className="flex-col gap-row-nm">
+          <FormControlLabel
+            control={
+              <AppSwitch
+                checked={!hideFeedback}
+                onChange={() => setHideFeedback(!hideFeedback)}
+                slotProps={{
+                  input: { 'data-cy': 'controlled-story-editor-show-preview-toggle' },
+                }}
+              />
+            }
+            label={
+              <CustomTooltip title={intl.formatMessage({ id: 'preview-mode-info' })}>
+                <span>{checkboxLabel()}</span>
+              </CustomTooltip>
+            }
+            sx={{
+              m: 0,
+              '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
+            }}
+          />
+          <FormControlLabel
+            control={
+              <AppSwitch
+                checked={timedExercise}
+                onChange={() => setTimedExercise(!timedExercise)}
+                slotProps={{
+                  input: { 'data-cy': 'controlled-story-editor-timed-toggle' },
+                }}
+              />
+            }
+            label={
+              <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
+                <span>{intl.formatMessage({ id: 'timed-practice-toggle' })}</span>
+              </CustomTooltip>
+            }
+            sx={{
+              m: 0,
+              '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
+            }}
+          />
+        </div>
+      </AppDialog>
     </div>
   )
 }

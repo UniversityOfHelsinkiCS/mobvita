@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { Box, Paper } from '@mui/material'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import { styled } from '@mui/material/styles'
+import { colors } from 'Assets/mui_theme/designTokens'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -11,6 +12,30 @@ import AppSelect from 'Components/ui/AppSelect'
 import CustomTooltip from 'Components/CustomTooltip'
 import BatchExerciseControl from 'Components/ControlledStoryEditView/BatchExerciseControl'
 import Spinner from 'Components/Spinner'
+
+// The header doubles as the control that opens the list, so it wears the design system's
+// contrast-outline select pill (same shape, size and hover as AppSelect's trigger).
+const TopicsTrigger = styled('button')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 12,
+  width: '100%',
+  height: 36,
+  padding: '9px 18px',
+  boxSizing: 'border-box',
+  borderRadius: 999,
+  fontSize: 16,
+  fontWeight: 500,
+  textAlign: 'left',
+  cursor: 'pointer',
+  backgroundColor: 'transparent',
+  color: colors.ink,
+  border: `2px solid ${colors.ink}`,
+  transition: 'background-color 0.15s ease, border-color 0.15s ease',
+  '&:hover': { backgroundColor: colors.green, borderColor: colors.green },
+  '& .topics-chevron': { fontSize: 20, flexShrink: 0 },
+})
 
 const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isControlledStoryEditor = false, loadingReady = true }) => {
   const dispatch = useDispatch()
@@ -91,39 +116,26 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
     return (
 
       <div className="story-topics-box">
-        <Paper sx={{ padding: '1em' }}>
-        <div style={{ backgroundColor: '#FFFFFF' }}>
-          <div className="flex space-between">
-            <div style={{ marginBottom: '.5em' }}>
-              <div className="header-3" style={{ fontWeight: '500' }}>
-                  <CustomTooltip permanent keyId="story-top-topics-explain">
-                      <InfoOutlinedIcon
-                        fontSize="small"
-                        sx={{ color: 'grey', mr: '0.5em', verticalAlign: 'middle' }}
-                      />
-                  </CustomTooltip>{' '}
-                  <FormattedMessage id="topics-header" />
-                  {!loadingReady && (
-                    <span style={{ marginLeft: '0.5em' }}>
-                      <Spinner inline size={28} />
-                    </span>
-                  )}
-              </div>
-            </div>
-            <div
-              onClick={() => {
-                handleTopicsBoxClick()}}
-              onKeyDown={() => {handleTopicsBoxClick()}}
-              role="button"
-              tabIndex={0}
-              style={{ cursor: 'pointer' }}
-            >
-              {showTopicsBox ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </div>
-          </div>
+        {/* Transparent: the box sits on the sidebar / card that already supplies the colour. */}
+        <Paper elevation={0} sx={{ padding: '0', backgroundColor: 'transparent' }}>
+        <div>
+          {/* The explanation the info icon used to carry now sits on the pill itself. */}
+          <CustomTooltip permanent keyId="story-top-topics-explain">
+            <TopicsTrigger type="button" onClick={handleTopicsBoxClick}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5em' }}>
+                <FormattedMessage id="topics-header" />
+                {!loadingReady && <Spinner inline size={20} />}
+              </span>
+              {showTopicsBox ? (
+                <KeyboardArrowUpIcon className="topics-chevron" />
+              ) : (
+                <KeyboardArrowDownIcon className="topics-chevron" />
+              )}
+            </TopicsTrigger>
+          </CustomTooltip>
           {showTopicsBox && (
             <>
-              <div className="space-between" style={{ alignItems: 'center' }}>
+              <div className="space-between" style={{ alignItems: 'center', marginTop: '0.75em' }}>
                 <FormattedMessage id="LABEL-sort-by" />
                 <Box sx={{ flexGrow: 1, ml: '0.5em' }}>
                   <AppSelect
@@ -132,11 +144,14 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                     options={sortOptions}
                     onChange={setSortBy}
                     matchTriggerWidth
+                    // Without this MUI hides the page scrollbar while the menu is open, and the
+                    // whole layout jumps sideways by its width.
+                    disableScrollLock
                   />
                 </Box>
               </div>
               <hr />
-              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0, marginBottom: 0 }}>
+              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0, marginBottom: 0, backgroundColor: 'white' }}>
                 {topTopics.map(topic => (
                   <li className="flex space-between" key={topic[0]}>
                     <span

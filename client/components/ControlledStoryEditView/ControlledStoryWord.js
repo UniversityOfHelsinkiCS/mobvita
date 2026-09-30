@@ -16,14 +16,19 @@ import {
 import { setReferences, setExplanation, setExample } from 'Utilities/redux/practiceReducer'
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
-import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
+import {
+  addExercise,
+  removeExercise,
+  requestExerciseOptions,
+  requestExerciseRemoval,
+  setEditorFocusedWord,
+} from 'Utilities/redux/controlledPracticeReducer'
 import {
   setFocusedSpan,
   setHighlightRange,
   addAnnotationCandidates,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
-import Tooltip from 'Components/PracticeView/Tooltip'
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
@@ -61,13 +66,23 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const example = word.hints && word.hints.filter(
     hint => hint.example?.length).reduce((obj, v) => ({ ...obj, [v.keyword || v.easy]: v.example}), {})
   const [showValidationMessage, setShowValidationMessage] = useState(false)
-  const [showRemoveTooltip, setShowRemoveTooltip] = useState(false)
-  const [showEditorTooltip, setShowEditorTooltip] = useState(false)
+  // Only a setter now: ControlExerciseWord closes the (removed) tooltip on its own events, and
+  // removal itself is a button in the sidebar.
+  const [, setShowRemoveTooltip] = useState(false)
+  // Kept as a no-op setter target: the exercise options modal and the word panel both close
+  // on the same events the old tooltip did.
+  const [, setShowEditorTooltip] = useState(false)
   const [showExerciseOptionsModal, setShowExerciseOptionsModal] = useState(false)
   const [analyticChunkWord, setAnalyticChunkWord] = useState(null)
   const [chosen, setChosen] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
+  const exerciseOptionsForWordId = useSelector(
+    ({ controlledPractice }) => controlledPractice.exerciseOptionsForWordId,
+  )
+  const exerciseRemovalForWordId = useSelector(
+    ({ controlledPractice }) => controlledPractice.exerciseRemovalForWordId,
+  )
   const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
@@ -131,10 +146,6 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
 
   const wordIsInSpan = word => {
     return spanAnnotations.some(span => word.ID >= span.startId && word.ID <= span.endId)
-  }
-
-  const handleRemovalTooltip = () => {
-    setShowRemoveTooltip(!showRemoveTooltip)
   }
 
   const getWordBase = word => {
@@ -265,10 +276,28 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     setShowEditorTooltip(false)
   }
 
-  const handleActionClick = () => {    
+  const handleActionClick = () => {
     handleClick()
-    setShowEditorTooltip(true)    
+    setShowEditorTooltip(true)
+    // The sidebar shows the same thing the tooltip does, so it needs the word that was clicked.
+    dispatch(setEditorFocusedWord(word))
   }
+
+  // The sidebar's "add exercise" button names a word id; the word itself opens its own modal, so
+  // the handlers that create the exercise stay here.
+  useEffect(() => {
+    if (exerciseOptionsForWordId === null || exerciseOptionsForWordId !== word.ID) return
+    setShowExerciseOptionsModal(true)
+    setShowEditorTooltip(false)
+    dispatch(requestExerciseOptions(null))
+  }, [exerciseOptionsForWordId])
+
+  // ...and the same for taking it away: choicesMade() removes when the word is already chosen.
+  useEffect(() => {
+    if (exerciseRemovalForWordId === null || exerciseRemovalForWordId !== word.ID) return
+    dispatch(requestExerciseRemoval(null))
+    handleAddClozeExercise()
+  }, [exerciseRemovalForWordId])
 
   const handleTooltipClick = () => {    
     if (ref && Object.keys(ref).length) dispatch(setReferences(ref))
@@ -301,21 +330,6 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
     </div>
   )
 
-  const editorTooltip = (
-    <div>
-      {word.concepts?.length > 0 && <div>{tooltip}</div>}
-      <div
-        style={{ cursor: 'pointer', margin: '0.5em' }}
-        className="select-exercise"
-        onClick={handleExerciseOptionsModal}
-        onKeyDown={handleExerciseOptionsModal}
-        onMouseDown={handleExerciseOptionsModal}
-      >
-        <FormattedMessage id="click-to-add-exercise" />
-      </div>
-    </div>
-  )
-
   const removalTooltip = (
     <div style={{ cursor: 'pointer', margin: '0.5em' }} onMouseDown={handleAddClozeExercise}>
       <FormattedMessage id="click-to-remove-exercise" />
@@ -333,23 +347,20 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
 
     const showAnalyticChunk = !exerciseWord.listen && analyticChunkWord
 
+    // "Remove the exercise" is a button in the sidebar now (EditorWordPanel), so clicking the word
+    // only points the panel at it.
     return (
-      <Tooltip
-        placement="top"
-        tooltip={removalTooltip}
-        trigger="none"
-        tooltipShown={showRemoveTooltip}
-        isControlledStoryWord={true}
+      <span
+        onClick={() => dispatch(setEditorFocusedWord(word))}
+        onBlur={() => setShowRemoveTooltip(false)}
       >
-        <span onClick={handleRemovalTooltip} onBlur={() => setShowRemoveTooltip(false)}>
-          <ControlExerciseWord
-            word={showAnalyticChunk ? analyticChunkWord : exerciseWord}
-            handleAddClozeExercise={handleAddClozeExercise}
-            exerChoices={exerciseWord.choices}
-            setShowRemoveTooltip={setShowRemoveTooltip}
-          />
-        </span>
-      </Tooltip>
+        <ControlExerciseWord
+          word={showAnalyticChunk ? analyticChunkWord : exerciseWord}
+          handleAddClozeExercise={handleAddClozeExercise}
+          exerChoices={exerciseWord.choices}
+          setShowRemoveTooltip={setShowRemoveTooltip}
+        />
+      </span>
     )
   }
 
@@ -367,14 +378,9 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
           showValidationMessage={showValidationMessage}
         />
         <span onBlur={() => setShowEditorTooltip(false)}>
-          <Tooltip
-            placement="top"
-            tooltipShown={showEditorTooltip}
-            trigger="none"
-            tooltip={editorTooltip}
-            isControlledStoryWord={true}
-          >
-
+          {/* The word's topics and "add exercise" are in the sidebar (EditorWordPanel), so nothing
+              pops up over the text any more. */}
+          <>
             <span
               className={`${wordClass}${
                 wordShouldBeHighlighted(word) && ' notes-highlighted-word' || conceptHighlighting && ' concept-highlighted-word'  || ''
@@ -386,7 +392,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
             >
               {surface}
             </span>
-          </Tooltip>
+          </>
         </span>
       </span>
     )
@@ -404,23 +410,14 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
         noConcepts
       />
       <span onBlur={() => setShowEditorTooltip(false)}>
-        <Tooltip
-          placement="top"
-          tooltipShown={showEditorTooltip}
-          trigger="none"
-          tooltip={editorTooltip}
-          isControlledStoryWord={true}
+        <span
+          role="button"
+          onClick={handleActionClick}
+          onKeyDown={handleActionClick}
+          tabIndex={-1}
         >
-
-          <span
-            role="button"
-            onClick={handleActionClick}
-            onKeyDown={handleActionClick}
-            tabIndex={-1}
-          >
-            <PlainWord word={word} annotatingAllowed snippet={snippet} />
-          </span>
-        </Tooltip>
+          <PlainWord word={word} annotatingAllowed snippet={snippet} />
+        </span>
       </span>
     </span>
   )

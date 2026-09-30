@@ -51,6 +51,16 @@ const getHiddenWordIds = frozen_snippets => {
 
 export const resetControlledStory = snippets => ({ type: 'RESET_CONTROLLED_STORY', snippets })
 
+// The word the editor last clicked, so the sidebar can show what the tooltip shows. Null clears it.
+export const setEditorFocusedWord = word => ({ type: 'SET_EDITOR_FOCUSED_WORD', word })
+
+// The sidebar asks a word to open its own exercise-type modal — the handlers that add an exercise
+// live in the word component, so only the request travels through the store.
+export const requestExerciseOptions = wordId => ({ type: 'REQUEST_EXERCISE_OPTIONS', wordId })
+
+// Same round trip for taking an exercise away again.
+export const requestExerciseRemoval = wordId => ({ type: 'REQUEST_EXERCISE_REMOVAL', wordId })
+
 // Reducer
 // You can include more app wide actions such as "selected: []" into the state
 export default (
@@ -65,10 +75,33 @@ export default (
     frozen_snippets: {},
     hiddenWordIds: [],
     reset: false,
+    editorFocusedWord: null,
+    exerciseOptionsForWordId: null,
+    exerciseRemovalForWordId: null,
   },
   action
 ) => {
   switch (action.type) {
+    case 'SET_EDITOR_FOCUSED_WORD':
+      return {
+        ...state,
+        editorFocusedWord: action.word,
+        exerciseOptionsForWordId: null,
+        exerciseRemovalForWordId: null,
+      }
+
+    case 'REQUEST_EXERCISE_OPTIONS':
+      return {
+        ...state,
+        exerciseOptionsForWordId: action.wordId,
+      }
+
+    case 'REQUEST_EXERCISE_REMOVAL':
+      return {
+        ...state,
+        exerciseRemovalForWordId: action.wordId,
+      }
+
     case 'INIT_CONTROLLED_SNIPPETS':
       return {
         ...state,

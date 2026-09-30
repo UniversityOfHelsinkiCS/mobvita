@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import { Box } from '@mui/material'
 import AppDialog from 'Components/ui/AppDialog'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage } from 'react-intl'
+import { colors } from 'Assets/mui_theme/designTokens'
 import MultipleChoiceModal from './MultipleChoicesModal'
+
+const BUTTON_SX = { width: '100%', height: 36 }
 
 const SelectExerciseTypeModal = ({
   showExerciseOptionsModal,
@@ -40,49 +44,44 @@ const SelectExerciseTypeModal = ({
         open={showExerciseOptionsModal}
         onClose={closeModal}
         maxWidth="xs"
+        title={<FormattedMessage id="choose-exercise-type" />}
+        subtitle={word?.surface}
+        subtitleSx={{ color: colors.muted, fontSize: 16 }}
+        titleSx={{ px: '40px', pt: '32px' }}
+        contentSx={{ px: '40px', pb: '32px' }}
         data-cy="select-exercise-type-modal"
         closeDataCy="select-exercise-type-modal-close"
       >
-        <div className="encouragement">
-          <div className="pt-sm" style={{ color: '#000000', marginLeft: '0.5em' }}>
-            <FormattedMessage id="choose-exercise-type" />
-          </div>
-          <hr />
-          <div style={{ marginBottom: '0.5em' }}>
-            {!noConcepts && (
-              <span style={{ marginBottom: '0.5em', marginLeft: '0.5em' }}>
-                <AppButton
-                  type="submit"
-                  onClick={handleAddClozeExercise}
-                  onKeyDown={handleAddClozeExercise}
-                  data-cy="choose-cloze-exercise-button"
-                >
-                  <FormattedMessage id="choose-cloze-exercise" />
-                </AppButton>
-              </span>
-            )}
-            <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-              <AppButton
-                type="submit"
-                onClick={handleAddHearingExercise}
-                onKeyDown={handleAddHearingExercise}
-                data-cy="choose-listening-exercise-button"
-              >
-                <FormattedMessage id="choose-listening-exercise" />
-              </AppButton>
-            </span>
-            <span style={{ marginBottom: '0.5em', marginLeft: '0.45em' }}>
-              <AppButton
-                type="submit"
-                onClick={handleOpenMCModal}
-                onKeyDown={handleOpenMCModal}
-                data-cy="choose-multichoice-exercise-button"
-              >
-                <FormattedMessage id="choose-multichoice-exercise" />
-              </AppButton>
-            </span>
-          </div>
-        </div>
+        {/* One choice per row: the three labels are full sentences, so a button row would wrap
+            unevenly and hide which option is which. */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75em' }}>
+          {!noConcepts && (
+            <AppButton
+              type="button"
+              onClick={handleAddClozeExercise}
+              data-cy="choose-cloze-exercise-button"
+              sx={BUTTON_SX}
+            >
+              <FormattedMessage id="choose-cloze-exercise" />
+            </AppButton>
+          )}
+          <AppButton
+            type="button"
+            onClick={handleAddHearingExercise}
+            data-cy="choose-listening-exercise-button"
+            sx={BUTTON_SX}
+          >
+            <FormattedMessage id="choose-listening-exercise" />
+          </AppButton>
+          <AppButton
+            type="button"
+            onClick={handleOpenMCModal}
+            data-cy="choose-multichoice-exercise-button"
+            sx={BUTTON_SX}
+          >
+            <FormattedMessage id="choose-multichoice-exercise" />
+          </AppButton>
+        </Box>
       </AppDialog>
     </>
   )
