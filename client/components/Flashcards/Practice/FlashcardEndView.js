@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
-import AppButton from 'Components/AppButton'
-import { Link } from 'react-router-dom'
 
-const FlashcardEndView = ({ handleNewDeck, open }) => {
+// `cardBackground` is the deck's colour (blue for the blue-cards test); without it the card keeps
+// the base flashcard colour from `.flashcard`.
+const FlashcardEndView = ({ handleNewDeck, open, cardBackground }) => {
   // A bit hacky way to move to next deck with right arrow or enter
 
   const useKeyPress = targetKey => {
@@ -40,17 +40,10 @@ const FlashcardEndView = ({ handleNewDeck, open }) => {
   //}
 
   return (
-    <div className="flashcard justify-center">
-      <p style={{ fontWeight: '500', fontSize: '1.2em', padding: '1em' }}>
+    <div className="flashcard flashcard-end-view" style={{ backgroundColor: cardBackground }}>
+      <p style={{ fontWeight: '500', fontSize: '1.2em' }}>
         <FormattedMessage id="well-done-flashcards" />
       </p>
-      <div className="flashcard-input" style={{ flex: 0 }}>
-        <Link to="/">
-          <AppButton className="flashcard-button" block variant="outline-primary">
-            <FormattedMessage id="return-to-main-page" />
-          </AppButton>
-        </Link>
-      </div>
     </div>
   )
 }

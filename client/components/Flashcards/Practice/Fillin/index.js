@@ -36,7 +36,7 @@ const Fillin = ({
   const dispatch = useDispatch()
   const intl = useIntl()
 
-  const { glosses, format, _id: id, stage, lemma, phonetics } = card
+  const { glosses, format, _id: id, stage, lemma, phonetics, cardBackground } = card
 
   const getRemovedHints = () => card.hint.filter(h => !hints.includes(h.hint))
   const getNewHints = unsavedHint => {
@@ -143,6 +143,7 @@ const Fillin = ({
     focusedAndBigScreen,
     lemma,
     phonetics,
+    cardBackground,
   }
 
   if (editing) {

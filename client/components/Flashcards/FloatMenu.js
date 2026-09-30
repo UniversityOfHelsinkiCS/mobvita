@@ -154,16 +154,16 @@ const FloatMenu = () => {
   const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
-  const { storyId } = useParams()
+  const { type, storyId } = useParams()
 
   const handleFabClick = () => {
     setOpen(!open)
   }
 
+  // Same rule as the desktop tabs: a story deck keeps its story, the blue-cards test is left.
   const handleOptionClick = mode => {
-    const path = storyId
-      ? `/flashcards/${mode}/story/${storyId}`
-      : `/flashcards/${mode}`
+    const path =
+      storyId && type !== 'test' ? `/flashcards/${mode}/story/${storyId}` : `/flashcards/${mode}`
 
     navigate(path)
     setOpen(false)

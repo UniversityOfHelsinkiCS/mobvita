@@ -51,11 +51,18 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
 // Routes a mode pick to /flashcards/<mode>, keeping any story context in the path.
 const FlashcardMenu = () => {
   const navigate = useNavigate()
-  const { mode, storyId } = useParams()
+  const { mode, type, storyId } = useParams()
 
   const storyUrl = storyId ? `/${storyId}` : ''
 
+  // Switching mode keeps a story deck's story, but leaves the blue-cards test entirely: its story
+  // is the test's subject, and a normal deck scoped to it is usually empty.
   const handleOptionClick = nextMode => {
+    if (type === 'test') {
+      navigate(`/flashcards/${nextMode}`)
+      return
+    }
+
     const path = storyUrl ? `/flashcards/${nextMode}/story${storyUrl}` : `/flashcards/${nextMode}`
 
     navigate(path)

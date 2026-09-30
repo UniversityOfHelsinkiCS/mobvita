@@ -81,17 +81,17 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   )
 
   const latestMessageRef = useRef(null)
+  const messagesEndRef = useRef(null)
   const predefinedChatbotRequests = PREDEFINED_REQUEST_IDS.map(msgId => ({
     msgId,
     func: sendFlashcardsDialogue(intl.formatMessage({ id: msgId }), scope),
   }))
 
-  const scrollToLatestMessage = () =>
-    latestMessageRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToLatestMessage = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 
   useEffect(() => {
     scrollToLatestMessage()
-  }, [messages.length])
+  }, [messages.length, shownHints.length, deckCompleted])
 
   const handleMessageSubmit = () => {
     if (currentMessage.trim() === '') return
@@ -125,6 +125,11 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
       )}
 
       <div className="chatbot-messages">
+        {showBlueCardsPrompt && (
+          <ChatBubble variant="bot">
+            <BlueCardsTestEncouragement layout="chat" setShow={onDismissBlueCardsPrompt} />
+          </ChatBubble>
+        )}
         {showStoryHint && (
           <ChatBubble variant="hint">
             <FlashcardStoryInfoText
@@ -134,6 +139,20 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             />
           </ChatBubble>
         )}
+        {messages.map((message, index) => (
+          <ChatBubble
+            key={message.id}
+            ref={index === messages.length - 1 ? latestMessageRef : null}
+            variant={message.role === 'user' ? 'user' : 'bot'}
+            onRemove={message.removable ? () => dispatch(removeDialogue(message.id)) : undefined}
+          >
+            {message.text ? (
+              <ReactMarkdown children={message.text} />
+            ) : (
+              <FormattedMessage id="Error rendering message" />
+            )}
+          </ChatBubble>
+        ))}
         {shownHints.map(hint => (
           <ChatBubble key={hint} variant="hint" className="message-hint" data-cy="flashcard-hint">
             <div className="hint-item">
@@ -152,30 +171,14 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             />
           </ChatBubble>
         )}
-        {showBlueCardsPrompt && (
-          <ChatBubble variant="bot">
-            <BlueCardsTestEncouragement layout="chat" setShow={onDismissBlueCardsPrompt} />
-          </ChatBubble>
-        )}
-        {messages.map((message, index) => (
-          <ChatBubble
-            key={message.id}
-            ref={index === messages.length - 1 ? latestMessageRef : null}
-            variant={message.role === 'user' ? 'user' : 'bot'}
-            onRemove={message.removable ? () => dispatch(removeDialogue(message.id)) : undefined}
-          >
-            {message.text ? (
-              <ReactMarkdown children={message.text} />
-            ) : (
-              <FormattedMessage id="Error rendering message" />
-            )}
-          </ChatBubble>
-        ))}
         {isWaitingForResponse && (
           <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0 8px' }}>
             <Spinner inline />
           </div>
         )}
+        {/* Scroll target: hints and the deck-completed notice sit below the last message, so
+            scrolling to that message would leave them off-screen. */}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chatbot-footer">
