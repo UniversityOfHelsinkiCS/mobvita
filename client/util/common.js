@@ -758,6 +758,7 @@ export const colors = {}
 export const flashcardColors = {
   background: ['#E5BDAA', '#F1D0AA', '#F2DF9A', '#D9E499', '#B4D2AF'],
   foreground: ['#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A'],
+  blueBackground: '#adc5dd',
 }
 
 const stagingOptions = [

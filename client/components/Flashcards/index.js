@@ -22,6 +22,9 @@ import './Flashcards.scss'
 // Matches the HelperSidebar.scss breakpoint where the sidebar turns into a bottom sheet.
 const SIDEBAR_SHEET_MAX_WIDTH = 768
 
+// The card-practice modes. `undefined` is /flashcards with no mode, which renders fillin.
+const PRACTICE_MODES = ['fillin', 'learn', 'match', 'quick', 'article']
+
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
@@ -69,7 +72,7 @@ const Flashcards = () => {
   }, [mode])
 
   useEffect(() => {
-    if (inBlueCardsTest || type === 'test' || mode !== 'fillin') {
+    if (inBlueCardsTest || type === 'test' || !(!mode || PRACTICE_MODES.includes(mode))) {
       if (encouragementTimeoutRef.current) {
         clearTimeout(encouragementTimeoutRef.current)
         encouragementTimeoutRef.current = null

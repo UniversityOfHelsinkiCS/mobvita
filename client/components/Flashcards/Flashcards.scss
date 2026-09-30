@@ -547,6 +547,15 @@ $flashcard-height: 35em;
   margin-bottom: 3.6em; // ≈ height of the translations card's Clear / Save row
 }
 
+// End-of-deck card: the "well done" message sits in the middle rather than at the top. The card's
+// own padding is asymmetric (1em 1.5em 1.5em 1em), so it is evened out here to centre optically.
+.flashcard-end-view {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5em;
+}
+
 // ── Matching exercise ─────────────────────────────────────────────────────────
 
 .flashcard-match {

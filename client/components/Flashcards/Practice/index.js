@@ -16,7 +16,11 @@ import {
 } from 'Utilities/redux/flashcardReducer'
 import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
-import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
+import {
+  learningLanguageSelector,
+  dictionaryLanguageSelector,
+  flashcardColors,
+} from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import Spinner from 'Components/Spinner'
 import FlashcardEndView from './FlashcardEndView'
@@ -62,6 +66,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     }),
     shallowEqual,
   )
+  const inBlueCardsTest = location.pathname.includes('test')
   const rawCards = useSelector(({ flashcards }) =>
     mode === 'article' ? flashcards.nounCards : flashcards.cards,
   )
@@ -84,10 +89,13 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
             ].includes(card.gender),
           )
         : rawCards
-    return filtered.map(card => ({ ...card, correct: false }))
-  }, [rawCards, mode])
+    return filtered.map(card => ({
+      ...card,
+      correct: false,
+      ...(inBlueCardsTest && { cardBackground: flashcardColors.blueBackground }),
+    }))
+  }, [rawCards, mode, inBlueCardsTest])
 
-  const inBlueCardsTest = location.pathname.includes('test')
   const { width } = useWindowDimensions()
   const bigScreen = width >= 415
   const { storyId } = useParams()
@@ -126,7 +134,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
   // The assistant raises the "Deck completed!" message; this just reports that the deck ran out.
   useEffect(() => {
-    if (!pending && !loading && !inBlueCardsTest && swipeIndex && swipeIndex >= cards.length) {
+    if (!pending && !loading && swipeIndex && swipeIndex >= cards.length) {
       dispatch(setDeckCompleted(true))
       setAmountAnswered(0)
     }
@@ -321,17 +329,18 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   }
 
   const renderSlideAtIndex = index => {
+    // Every swiper deck ends on the same "well done" card; only its colour differs. Matching has
+    // its own completion state and never reaches here.
     if (index >= cards.length) {
-      return inBlueCardsTest ? (
+      return (
         <FlashcardEndView
           key="end-view"
           handleNewDeck={handleNewDeck}
           deckSize={cards.length}
           open={open}
           blueCardsAnswered={blueCardsAnswered}
+          cardBackground={inBlueCardsTest ? flashcardColors.blueBackground : undefined}
         />
-      ) : (
-        <div key="end-placeholder" />
       )
     }
 

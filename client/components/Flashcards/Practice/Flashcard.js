@@ -7,13 +7,23 @@ import FlashcardDelete from './FlashcardDelete'
 // `showActions` is the back of the card asking for the edit/delete row. It is an explicit flag
 // rather than a test on `id`, because a blue-card deck's items can arrive without one and the
 // controls still belong there. The front is the exercise, so it never sets it.
-const Flashcard = ({ flipCard, cardNumbering, stage, children, id, handleEdit, showActions }) => {
+// `cardBackground` overrides the per-stage colour — the blue-cards deck paints every card alike.
+const Flashcard = ({
+  flipCard,
+  cardNumbering,
+  stage,
+  children,
+  id,
+  handleEdit,
+  showActions,
+  cardBackground,
+}) => {
   const { background, foreground } = flashcardColors
 
   return (
     <div
       className="flashcard"
-      style={{ backgroundColor: background[stage], color: foreground[stage] }}
+      style={{ backgroundColor: cardBackground || background[stage], color: foreground[stage] }}
     >
       <div data-cy="flashcard-content" className="flashcard-content">
         <div className="flashcard-header">
