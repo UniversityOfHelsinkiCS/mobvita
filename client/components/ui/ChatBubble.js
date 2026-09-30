@@ -31,7 +31,7 @@ import AppMenu, { AppMenuItem } from './AppMenu'
 // panel width (see .chatbot-messages). Bubbles therefore carry their own gutter, or a bot reply
 // would sit flush against the left edge and the user's own message flush against the right. It
 // matches the bubble's horizontal padding, so the inset reads as one consistent rhythm.
-const BUBBLE_GUTTER = 0
+const BUBBLE_GUTTER = 14
 // The bubble's own padding, reused by the action row so the icons line up with the text.
 const BUBBLE_PADDING_X = 14
 const BUBBLE_PADDING_Y = 10
