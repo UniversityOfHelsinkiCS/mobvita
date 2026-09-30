@@ -329,17 +329,18 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   }
 
   const renderSlideAtIndex = index => {
+    // Every swiper deck ends on the same "well done" card; only its colour differs. Matching has
+    // its own completion state and never reaches here.
     if (index >= cards.length) {
-      return inBlueCardsTest ? (
+      return (
         <FlashcardEndView
           key="end-view"
           handleNewDeck={handleNewDeck}
           deckSize={cards.length}
           open={open}
           blueCardsAnswered={blueCardsAnswered}
+          cardBackground={inBlueCardsTest ? flashcardColors.blueBackground : undefined}
         />
-      ) : (
-        <div key="end-placeholder" />
       )
     }
 
