@@ -69,6 +69,8 @@ export const addToTotal = () => ({ type: 'ADD_TO_TOTAL_ANSWERS' })
 // how anything outside it (the flashcards assistant) learns what the learner is looking at.
 export const setCurrentFlashcard = card => ({ type: 'SET_CURRENT_FLASHCARD', card })
 
+export const setFlashcardAnswered = value => ({ type: 'SET_FLASHCARD_ANSWERED', value })
+
 // Which of the current card's hints the learner has revealed. It lives here rather than in the
 // card because the assistant reveals them too, and the answer payload reports the count as
 // `hints_shown` — so both surfaces have to agree on one list. Selecting a new card clears it.
@@ -91,6 +93,9 @@ const initialState = {
   totalAnswers: 0,
   creditableWordsNum: 0,
   currentCard: null,
+  // Whether the learner has answered (or revealed) the card in front of them — the assistant's
+  // word nest stays shut until then, so it can't give the answer away.
+  currentCardAnswered: false,
   revealedHints: [],
   deckCompleted: false,
   newDeckRequestId: 0,
@@ -102,13 +107,20 @@ const deleteCard = (cards, response) => cards?.filter(card => card._id !== respo
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_CURRENT_FLASHCARD':
+    case 'SET_CURRENT_FLASHCARD': {
+      const sameCard = action.card?._id === state.currentCard?._id
+
       return {
         ...state,
         currentCard: action.card,
-        // A different card means a fresh hint tally.
-        revealedHints: action.card?._id === state.currentCard?._id ? state.revealedHints : [],
+        // A different card means a fresh hint tally, and an unanswered card again.
+        revealedHints: sameCard ? state.revealedHints : [],
+        currentCardAnswered: sameCard ? state.currentCardAnswered : false,
       }
+    }
+
+    case 'SET_FLASHCARD_ANSWERED':
+      return { ...state, currentCardAnswered: action.value }
 
     case 'SET_DECK_COMPLETED':
       return { ...state, deckCompleted: action.value }

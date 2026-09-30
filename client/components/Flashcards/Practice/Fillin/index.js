@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactCardFlip from 'react-card-flip'
-import { updateFlashcard, addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
+import {
+  updateFlashcard,
+  addToCorrectAnswers,
+  setFlashcardAnswered,
+} from 'Utilities/redux/flashcardReducer'
 import { getTranslationAction } from 'Utilities/redux/translationReducer'
 import {
   levenshteinDistance,
@@ -28,13 +32,19 @@ const Fillin = ({
   deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
-  const [answerChecked, setAnswerChecked] = useState(false)
+  const [answerChecked, setAnswerCheckedLocally] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [hints, setHints] = useState(card.hint.map(h => h.hint))
   const [translations, setTranslations] = useState(card.glosses)
   const [infoMessage, setInfoMessage] = useState('')
   const dispatch = useDispatch()
   const intl = useIntl()
+
+  // The assistant's word nest opens only once the card has been answered, so the flag is shared.
+  const setAnswerChecked = value => {
+    setAnswerCheckedLocally(value)
+    dispatch(setFlashcardAnswered(value))
+  }
 
   const { glosses, format, _id: id, stage, lemma, phonetics } = card
 

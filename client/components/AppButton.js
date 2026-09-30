@@ -28,8 +28,10 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  */
 
 // Derived states not directly in designTokens.
-const DISABLED_BG = '#E4E1D3'
-const DISABLED_TEXT = '#B7B4A8'
+// Exported so a caller that paints its own pill (e.g. the flashcards word nest) can grey it out
+// with the same two colours every disabled button uses.
+export const DISABLED_BG = '#E4E1D3'
+export const DISABLED_TEXT = '#B7B4A8'
 const INK_HOVER = '#4A4844'
 const TAN_OUTLINE_BG = '#E9F1EC'
 const INVERSE_DISABLED = '#6B6862'

@@ -21,6 +21,9 @@ const WordNestLauncher = ({
   // the button keeps its default network icon so other call sites are unchanged.
   icon = null,
   label = null,
+  // Callers that only make sense once something has happened (a flashcard answered, say) pass
+  // false here; the button then still shows, greyed, rather than disappearing.
+  disabled = false,
 }) => {
   const intl = useIntl()
 
@@ -51,6 +54,7 @@ const WordNestLauncher = ({
               className={className}
               variant={variant}
               size="sm"
+              disabled={disabled}
               onClick={handleClick}
               data-cy={dataCy}
               sx={{ gap: '0.45em', ...buttonStyle }}
@@ -58,7 +62,13 @@ const WordNestLauncher = ({
               <img
                 src={icon || images.network}
                 alt=""
-                style={{ width: icon ? 20 : 24, height: icon ? 20 : 24 }}
+                style={{
+                  width: icon ? 20 : 24,
+                  height: icon ? 20 : 24,
+                  // The icons are single-colour artwork with their own ink, so a filter is what
+                  // greys them; `color: inherit` would not reach an <img>.
+                  filter: disabled ? 'grayscale(1) opacity(0.45)' : 'none',
+                }}
               />
               {label}
             </AppButton>

@@ -20,6 +20,7 @@ import PracticeCompletedEncouragement from 'Components/Encouragements/PracticeCo
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
 import { WORDNEST_PILL_STYLE } from 'Components/Flashcards/Practice/Fillin/FlashcardBack'
+import { DISABLED_BG, DISABLED_TEXT } from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import { images, sanitizeHtml } from 'Utilities/common'
 import 'Components/PracticeView/CombinedChatbot.scss'
@@ -61,6 +62,7 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   const currentCard = useSelector(({ flashcards }) => flashcards.currentCard)
   const revealedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
   const deckCompleted = useSelector(({ flashcards }) => flashcards.deckCompleted)
+  const currentCardAnswered = useSelector(({ flashcards }) => flashcards.currentCardAnswered)
   const currentLemma = currentCard?.lemma
   const cardHints = [...new Set((currentCard?.hint || []).map(h => h.hint).filter(Boolean))]
 
@@ -115,10 +117,29 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             </CustomTooltip>
             <span className="flashcard-assistant-word-text">{currentLemma}</span>
           </h4>
+          {/* The nest shows the word's relatives, which would give a fill-in answer away — so it
+              waits until the learner has answered the card. */}
           <WordNestLauncher
             lemma={currentLemma}
-            icon={images.wordnest}            
-            buttonStyle={WORDNEST_PILL_STYLE}
+            icon={images.wordnest}
+            disabled={!currentCardAnswered}
+            // The grey has to be written against `.Mui-disabled` too: the variant's own disabled
+            // rule is a class selector, so it outranks a plain `backgroundColor` in sx and would
+            // otherwise blank the pill out instead of greying it.
+            buttonStyle={
+              currentCardAnswered
+                ? WORDNEST_PILL_STYLE
+                : {
+                    ...WORDNEST_PILL_STYLE,
+                    backgroundColor: DISABLED_BG,
+                    color: DISABLED_TEXT,
+                    '&.Mui-disabled': {
+                      backgroundColor: DISABLED_BG,
+                      color: DISABLED_TEXT,
+                      border: 'none',
+                    },
+                  }
+            }
             divStyle={{ display: 'inline-flex', flexShrink: 0 }}
           />
         </div>
