@@ -19,17 +19,32 @@ import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestE
 import PracticeCompletedEncouragement from 'Components/Encouragements/PracticeCompletedEncouragement'
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import WordNestLauncher from 'Components/WordNestModal/WordNestLauncher'
-import { WORDNEST_PILL_STYLE } from 'Components/Flashcards/Practice/Fillin/FlashcardBack'
 import { DISABLED_BG, DISABLED_TEXT } from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import { images, sanitizeHtml } from 'Utilities/common'
 import 'Components/PracticeView/CombinedChatbot.scss'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 // i18n ids for the burger-menu prompts. Each is sent verbatim as the user's message.
 const PREDEFINED_REQUEST_IDS = [
   'chatbot-message-suggestion-next-steps',
   'chatbot-message-suggestion-performance',
 ]
+
+// The green "Word Nest" pill used on the flashcard
+const WORDNEST_PILL_STYLE = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  backgroundColor: colors.green,
+  color: colors.ink,
+  border: 'none',
+  outline: 'none',
+  boxShadow: 'none',
+  borderRadius: 999,
+  padding: '7px 16px',
+  fontWeight: 600,
+  fontSize: 14,
+}
 
 const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsPrompt }) => {
   const intl = useIntl()

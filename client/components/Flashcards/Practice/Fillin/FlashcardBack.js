@@ -1,22 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
-import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
-
-// The green "Word Nest" pill used on the flashcard (design-only styling passed to the shared launcher).
-export const WORDNEST_PILL_STYLE = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  backgroundColor: colors.green,
-  color: colors.ink,
-  border: 'none',
-  outline: 'none',
-  boxShadow: 'none',
-  borderRadius: 999,
-  padding: '7px 16px',
-  fontWeight: 600,
-  fontSize: 14,
-}
 
 const FlashcardBack = ({
   answerCorrect,
