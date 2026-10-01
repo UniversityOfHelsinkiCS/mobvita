@@ -19,6 +19,9 @@ import FlashcardFront from './FlashcardFront'
 import FlashcardBack from './FlashcardBack'
 import Template from '../../Template'
 
+// How long the back is shown before the front gets its verdict face; flipping back sooner cancels it.
+const FRONT_RESULT_DELAY_MS = 500
+
 const Fillin = ({
   card,
   cardNumbering,
@@ -32,6 +35,8 @@ const Fillin = ({
   deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
+  // Latches on the first flip; the front shows the verdict only after the back has been seen.
+  const [hasFlipped, setHasFlipped] = useState(false)
   const [answerChecked, setAnswerCheckedLocally] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [hints, setHints] = useState(card.hint.map(h => h.hint))
@@ -53,6 +58,12 @@ const Fillin = ({
     const newSavedHints = hints.filter(h => !card.hint.some(oh => oh.hint === h))
     return unsavedHint ? newSavedHints.concat(unsavedHint) : newSavedHints
   }
+
+  useEffect(() => {
+    if (!flipped) return undefined
+    const timer = setTimeout(() => setHasFlipped(true), FRONT_RESULT_DELAY_MS)
+    return () => clearTimeout(timer)
+  }, [flipped])
 
   useEffect(() => {
     card.correct = answerCorrect
@@ -176,6 +187,7 @@ const Fillin = ({
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
+        resultVisible={hasFlipped}
         {...cardProps}
       />
       <FlashcardBack

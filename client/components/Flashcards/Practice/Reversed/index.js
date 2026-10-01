@@ -24,6 +24,7 @@ const ReversedFront = ({
   answerCorrect,
   checkAnswer,
   focusedAndBigScreen,
+  resultVisible,
   ...props
 }) => {
   // Shared with the assistant, which reveals the same hints — see revealFlashcardHint.
@@ -34,6 +35,11 @@ const ReversedFront = ({
 
   return (
     <Flashcard {...props}>
+      {resultVisible && (
+        <div className="flashcard-result-float">
+          <FlashcardResult answerCorrect={answerCorrect} />
+        </div>
+      )}
       <div className="flashcard-text-container">
         <div className="flashcard-translations" data-cy="flashcard-reversed-description">
           <ul>
@@ -51,11 +57,14 @@ const ReversedFront = ({
           displayedHints={displayedHints}
           answerLanguage={learningLanguage}
         />
-        <FlashcardResult answerCorrect={answerCorrect} />
       </div>
     </Flashcard>
   )
 }
+
+// How long the back is shown before the front gets its verdict face; flipping back sooner
+// cancels it.
+const FRONT_RESULT_DELAY_MS = 500
 
 // Reversed deck (fillin_learn): read the description, type the term. Answers post as the fillin
 // exercise in "learn" mode, which is how the backend tells the two directions apart.
@@ -70,6 +79,7 @@ const Reversed = ({
   deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
+  const [hasFlipped, setHasFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [infoMessage, setInfoMessage] = useState('')
@@ -77,6 +87,12 @@ const Reversed = ({
   const intl = useIntl()
 
   const { glosses, format, _id: id, stage, lemma } = card
+
+  useEffect(() => {
+    if (!flipped) return undefined
+    const timer = setTimeout(() => setHasFlipped(true), FRONT_RESULT_DELAY_MS)
+    return () => clearTimeout(timer)
+  }, [flipped])
 
   useEffect(() => {
     card.correct = answerCorrect
@@ -159,6 +175,7 @@ const Reversed = ({
         glosses={glosses}
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
+        resultVisible={hasFlipped}
         {...cardProps}
       />
       <FlashcardBack

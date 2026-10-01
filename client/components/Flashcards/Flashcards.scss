@@ -6,20 +6,27 @@
 
 // The card footprint. Shared so any surface that stands in for a card while it loads reserves the
 // same space — see `.flashcard-match-loading`.
-$flashcard-width: 21em;
-$flashcard-height: 35em;
+$flashcard-width: 330px;
+$flashcard-height: 496px;
+$flashcard-padding-y: 20px;
+$flashcard-padding-x: 19px;
+$flashcard-header-height: 36px;
+$flashcard-content-gap: 20px;
 
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
 .flashcard {
   display: flex;
   flex-direction: column;
-  box-sizing: content-box;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+  position: relative;
   width: $flashcard-width;
   height: $flashcard-height;
   margin: 0 auto 40px auto;
-  padding: 1em 1.5em 1.5em 1em;
-  border-radius: 0.8em;
+  padding: $flashcard-padding-y $flashcard-padding-x;
+  border-radius: 30px;
   background-color: #f1eede;
   color: #2d2c2a;
 
@@ -66,10 +73,15 @@ $flashcard-height: 35em;
     min-width: 0;
   }
 
+  // Fills the card below the padding; the flip control moved into the header, so there is no
+  // footer row to leave room for.
   &-content {
     display: flex;
     flex-direction: column;
-    height: 31em;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    gap: $flashcard-content-gap;
   }
 
   &-list-view {
@@ -92,21 +104,61 @@ $flashcard-height: 35em;
     }
   }
 
+  // Three equal slots, so the counter stays optically centred however many controls flank it.
   &-header {
-    height: 2em;
+    flex: 0 0 auto;
+    height: $flashcard-header-height;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  &-header-slot {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+
+    &--center {
+      justify-content: center;
+    }
+
+    &--end {
+      justify-content: flex-end;
+    }
+  }
+
+  // The asset is the whole 36px ink circle, so the button itself draws nothing.
+  &-flip-button {
+    display: flex;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    & > img {
+      display: block;
+      width: 36px;
+      height: 36px;
+    }
   }
 
   &-text-container {
-    height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     overflow: auto;
-    padding: 4em 2em;
+    padding: 70px 28px 13px;
     box-sizing: border-box;
   }
 
@@ -115,6 +167,11 @@ $flashcard-height: 35em;
     justify-content: center;
     align-content: flex-end;
     position: sticky;
+    margin: 0;
+    font-size: 36px;
+    line-height: 36px;
+    font-weight: 400;
+    text-align: center;
   }
 
   &-title-small {
@@ -157,22 +214,77 @@ $flashcard-height: 35em;
     overflow: auto;
   }
 
-  &-input-and-result-container {
-    height: 25%;
+  // Input bar + action button, sitting at the bottom of the card at their natural height.
+  // Back of the card: verdict face centred on top, then the word and its translations ranged left.
+  &-back {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
     display: flex;
-    padding-top: 0.2em;
-    margin-bottom: 3em;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  // Back: in flow under the header, reserving its height from the start so the delayed reveal
+  // does not shift the text below it.
+  &-result-slot {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  // Front: the same height as the slot above, but floated so the word area keeps its full 298px.
+  // Flipping therefore leaves the face exactly where it was.
+  &-result-float {
+    position: absolute;
+    top: $flashcard-padding-y + $flashcard-header-height + $flashcard-content-gap;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  &-back-info {
+    flex: 0 0 auto;
+    padding-bottom: 8px;
+  }
+
+  &-back-lemma {
+    flex: 0 0 auto;
+    margin: 12px 0 8px;
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+
+  &-back-translations {
+    flex: 1 1 auto;
+
+    & > ul {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    li {
+      line-height: 1.6;
+    }
+  }
+
+  &-input-and-result-container {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
   }
 
   &-input {
     flex-grow: 1;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding: 0;
   }
 
   &-button {
-    margin-top: 1em;
-    background-color: white;
+    margin-top: 10px;
   }
 
   &-result {

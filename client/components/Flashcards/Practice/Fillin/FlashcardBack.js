@@ -51,27 +51,17 @@ const FlashcardBack = ({
 
   return (
     <Flashcard showActions {...props}>
-      <span
-        style={{
-          display: 'block',
-          textAlign: 'center',
-          fontWeight: 600,
-          fontSize: '20px',
-          paddingBottom: '1em',
-          paddingTop: '1em',
-          flexShrink: 0,
-        }}
-      >
-        {lemma}
-      </span>
-      {infoMessage && <div className="justify-center">{infoMessage}</div>}
-      <div className="flashcard-text-container">
-        <div className="flashcard-translations">
+      <div className="flashcard-back">
+        <div className="flashcard-result-slot">
+          {/* Both faces stay mounted, so the verdict is rendered only while the back is the side
+              being shown — otherwise it is already there part-way through the turn. */}
+          {flipped && <FlashcardResult answerCorrect={answerCorrect} />}
+        </div>
+        {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
+        <h3 className="flashcard-back-lemma">{lemma}</h3>
+        <div className="flashcard-back-translations">
           <ul>{translations}</ul>
         </div>
-      </div>
-      <div className="flashcard-input-and-result-container">
-        <FlashcardResult answerCorrect={answerCorrect} />
       </div>
     </Flashcard>
   )
