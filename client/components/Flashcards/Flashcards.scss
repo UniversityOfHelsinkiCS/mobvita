@@ -13,6 +13,7 @@ $flashcard-padding-x: 19px;
 $flashcard-header-height: 36px;
 $flashcard-content-gap: 20px;
 $flashcard-actions-height: 82px;
+$flashcard-flip-headroom: 44px;
 
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
@@ -129,21 +130,16 @@ $flashcard-actions-height: 82px;
     }
   }
 
-  // Holds the single flip control over the card. Sized to the card so `right` lands on its edge
-  // rather than the slide's.
-  &-flip-wrapper {
-    position: relative;
-    width: $flashcard-width;
-    margin: 0 auto;
+  &-deck.swiper {
+    padding-top: $flashcard-flip-headroom;
   }
 
-  // One control for both faces, parked above the turning card: it never rotates, never duplicates,
-  // and its hit area stays put while the card flips.
+  &-deck-standin {
+    padding-top: $flashcard-flip-headroom;
+  }
+
+  // The asset is the whole 36px ink circle, so the button itself draws nothing.
   &-flip-button {
-    position: absolute;
-    top: $flashcard-padding-y;
-    right: $flashcard-padding-x;
-    z-index: 2;
     display: flex;
     padding: 0;
     border: none;
@@ -485,7 +481,7 @@ $flashcard-actions-height: 82px;
   gap: 1em;
   // The gap under the bar lives here, not on the menu inside it: a margin on a flex child is part
   // of the box `align-items: center` centres, so it would push the tabs off the gear's centre line.
-  padding: 1.25em 1.5em 1.7em;
+  padding: 1.25em 1.5em 8px;
 
   // Definite width so the fullWidth AppTabs inside resolves its 100%.
   &-menu {
@@ -502,7 +498,9 @@ $flashcard-actions-height: 82px;
 }
 
 .flashcard-main {
-  padding: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
 }
 
 // The card area: takes the remaining height and centres the card both vertically and horizontally.
@@ -708,6 +706,7 @@ $flashcard-actions-height: 82px;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  padding: 20px;
 
   // Loading: nothing is drawn behind the spinner, but it reserves a card's footprint so the mode
   // loads into the same space the decks do.

@@ -151,6 +151,7 @@ const Fillin = ({
   }
 
   const cardProps = {
+    flipCard,
     cardNumbering,
     setSwipeIndex,
     stage,
@@ -180,7 +181,7 @@ const Fillin = ({
   }
 
   return (
-    <FlipCard isFlipped={flipped} onFlip={flipCard}>
+    <FlipCard isFlipped={flipped}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}

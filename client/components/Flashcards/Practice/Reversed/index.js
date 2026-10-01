@@ -163,6 +163,7 @@ const Reversed = ({
   }
 
   const cardProps = {
+    flipCard,
     cardNumbering,
     setSwipeIndex,
     stage,
@@ -174,7 +175,7 @@ const Reversed = ({
   }
 
   return (
-    <FlipCard isFlipped={flipped} onFlip={flipCard}>
+    <FlipCard isFlipped={flipped}>
       <ReversedFront
         glosses={glosses}
         answerChecked={answerChecked}

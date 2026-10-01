@@ -45,6 +45,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   }
 
   const cardProps = {
+    flipCard,
     cardNumbering,
     stage,
     id,
@@ -62,7 +63,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   const ResultIcon = answerCorrect ? ThumbUpAltOutlinedIcon : ThumbDownAltOutlinedIcon
 
   return (
-    <FlipCard isFlipped={flipped} onFlip={flipCard}>
+    <FlipCard isFlipped={flipped}>
       <Flashcard {...cardProps}>
         <div className="flex align-center grow">
           {!answerChecked && <div className="flex-col gap-row-nm">{articleButtons}</div>}

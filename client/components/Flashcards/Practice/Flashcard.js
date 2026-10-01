@@ -7,6 +7,7 @@ import FlashcardDelete from './FlashcardDelete'
 // controls still belong there. The front is the exercise, so it never sets it.
 // `cardBackground` overrides the per-stage colour — the blue-cards deck paints every card alike.
 const Flashcard = ({
+  flipCard,
   cardNumbering,
   stage,
   children,
@@ -33,7 +34,17 @@ const Flashcard = ({
             {showActions && <FlashcardDelete id={id} />}
           </div>
           <div className="flashcard-header-slot flashcard-header-slot--center">{cardNumbering}</div>
-          <div className="flashcard-header-slot flashcard-header-slot--end" />
+          <div className="flashcard-header-slot flashcard-header-slot--end">
+            <button
+              className="flashcard-flip-button"
+              type="button"
+              onClick={() => flipCard()}
+              aria-label="flip card"
+              data-cy="flashcard-flip"
+            >
+              <img src={images.flipBackCircle} alt="" />
+            </button>
+          </div>
         </div>
         {children}
       </div>
