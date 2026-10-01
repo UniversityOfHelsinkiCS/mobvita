@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { Box, Divider, FormControlLabel } from '@mui/material'
+import { Box, FormControlLabel } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CustomTooltip from 'Components/CustomTooltip'
 import AppButton, { roundIconButtonSx } from 'Components/AppButton'
@@ -173,7 +173,6 @@ const ControlledStoryEditView = ({ match }) => {
                 alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 gap: '0.75em',
-                marginBottom: '1.25em',
               }}
             >
               <div className="story-title" style={getTextStyle(learningLanguage, 'title')}>
@@ -220,9 +219,10 @@ const ControlledStoryEditView = ({ match }) => {
                 </AppButton>
               </div>
             )}
-            <Divider sx={{ my: '1em' }} />
+            {/* Rules only between paragraphs — none above the first or below the last, where the
+                card's own edges already frame the text. */}
             {story.paragraph.map((paragraph, index) => (
-              <>
+              <React.Fragment key={index}>
                 <TextWithFeedback
                   exercise
                   hideFeedback={hideFeedback}
@@ -230,10 +230,9 @@ const ControlledStoryEditView = ({ match }) => {
                   snippet={paragraph}
                   focusedConcept={focusedConcept}
                   answers={null}
-                  key={index}
                 />
-                <hr />
-              </>
+                {index < story.paragraph.length - 1 && <hr />}
+              </React.Fragment>
             ))}
 
             <ScrollArrow />

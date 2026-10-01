@@ -64,6 +64,12 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
       }
     }
     
+    // Roomier rows: in the sidebar the list is a column of checkboxes, not running text.
+    .story-topics-box ul > li {
+      align-items: center;
+      padding: 6px 0 6px 4px;
+    }
+
     .story-topics-box ul > li:nth-child(even) {
       background-color: #f5f7fa; 
       transition: background-color 0.2s ease;

@@ -59,7 +59,7 @@ export const colors = {
 const typefaces = {
   ui: { name: 'Geologica', weights: [300, 400, 500, 600, 700], fallback: 'sans-serif' },
 
-  content: { name: 'Rubik', weights: [300, 400, 500, 600, 700], fallback: 'sans-serif' },
+  content: { name: 'Geologica', weights: [300, 400, 500, 600, 700], fallback: 'sans-serif' },
 }
 
 // Quote the family name, then append the fallback, so CSS and JS consumers cannot disagree.
@@ -110,7 +110,7 @@ export const font = {
   label: 12,
   input: 16,
   button: 16,
-  weight: 500, 
+  weight: 400, 
 }
 
 export const shape = {

@@ -151,7 +151,7 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
                 </Box>
               </div>
               <hr />
-              <ul style={{ overflow: 'auto', maxHeight: 171, paddingLeft: 0, marginBottom: 0, backgroundColor: 'white' }}>
+              <ul style={{ overflow: 'auto', maxHeight: 270, paddingLeft: 0, marginBottom: 0, backgroundColor: 'white' }}>
                 {topTopics.map(topic => (
                   <li className="flex space-between" key={topic[0]}>
                     <span

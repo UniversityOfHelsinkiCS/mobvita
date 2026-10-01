@@ -330,7 +330,7 @@ body,
 // container, so a bare `--font-content` would outrank the inherited per-language face.
 .practice-text {
   font-family: var(--font-language, var(--font-content));
-  font-size: 1.3rem;
+  font-size: 16px;
 }
 
 .story-title {
