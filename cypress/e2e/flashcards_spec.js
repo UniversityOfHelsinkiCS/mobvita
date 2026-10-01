@@ -40,7 +40,6 @@ describe('flashcards', function () {
       cy.contains('saapua').click()
       cy.get('[data-cy=translations]').contains('arrive')
       cy.visit('http://localhost:8000/flashcards/')
-      // Close the helper sidebar so it doesn't push/overlay the flashcard practice layout
       cy.get('[data-cy=helper-sidebar-toggle]').click()
     })
 
@@ -61,8 +60,6 @@ describe('flashcards', function () {
     })
 
     it('right answer flips the card and shows thumbs up with correct translations', function () {
-      // Scope to the flashcard's own input/submit — the page also mounts the sidebar chat input and
-      // Swiper renders every slide, so a bare `input`/`.flashcard-button` can grab the wrong field.
       cy.get('.flashcard-input input').eq(0).type('arrive')
       cy.get('.flashcard-input .flashcard-button').eq(0).click()
       cy.get('.flashcard-result > .thumbs.up')
@@ -105,16 +102,11 @@ describe('flashcards', function () {
       cy.contains('viikolla').click()
       cy.get('[data-cy=translations]').contains('week')
       cy.visit('http://localhost:8000/flashcards/')
-      // Close the helper sidebar so it doesn't push/overlay the flashcard practice layout
       cy.get('[data-cy=helper-sidebar-toggle]').click()
     })
 
     it('can get to the next card', function () {
       cy.get('[data-cy=flashcard-title]').eq(0).as('title').then(() => {
-        // The next-arrow floats over the right edge of the card by design. react-card-flip gives the
-        // card a 3D transform (rotateY) that establishes its own stacking context, so cypress's
-        // covered-check reads the card as topmost at the overlap point even though the arrow paints
-        // above it (z-index:10) and is clickable for a real user. force the click past that check.
         cy.get('.flashcard-arrow-button').eq(0).click({ force: true })
         cy.get('[data-cy=flashcard-title]').eq(1).should('not.eq', this.title.text())
       })

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
-import ReactCardFlip from 'react-card-flip'
+import FlipCard from '../FlipCard'
 import { addToCorrectAnswers, setFlashcardAnswered } from 'Utilities/redux/flashcardReducer'
 import {
   levenshteinDistance,
@@ -175,7 +175,7 @@ const Reversed = ({
   }
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <ReversedFront
         glosses={glosses}
         answerChecked={answerChecked}
@@ -191,7 +191,7 @@ const Reversed = ({
         infoMessage={infoMessage}
         {...cardProps}
       />
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 

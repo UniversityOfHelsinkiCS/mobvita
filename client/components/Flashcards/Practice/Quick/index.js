@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ReactCardFlip from 'react-card-flip'
+import FlipCard from '../FlipCard'
 import AppButton from 'Components/AppButton'
 import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
@@ -42,7 +42,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
   const fontClass = lemma.length < 15 ? 'header-2 auto' : 'header-3 auto'
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <Flashcard {...cardProps}>
         <div className="flex-col grow">
           <span className={fontClass}>{lemma}</span>
@@ -79,7 +79,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
           </ul>
         </div>
       </Flashcard>
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 

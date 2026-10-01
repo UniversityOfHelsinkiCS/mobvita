@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ReactCardFlip from 'react-card-flip'
+import FlipCard from '../FlipCard'
 import {
   updateFlashcard,
   addToCorrectAnswers,
@@ -183,7 +183,7 @@ const Fillin = ({
   }
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
@@ -198,7 +198,7 @@ const Fillin = ({
         infoMessage={infoMessage}
         {...cardProps}
       />
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 

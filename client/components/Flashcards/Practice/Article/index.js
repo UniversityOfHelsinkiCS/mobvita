@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import ReactCardFlip from 'react-card-flip'
+import FlipCard from '../FlipCard'
 import AppButton from 'Components/AppButton'
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined'
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined'
@@ -63,7 +63,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   const ResultIcon = answerCorrect ? ThumbUpAltOutlinedIcon : ThumbDownAltOutlinedIcon
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <Flashcard {...cardProps}>
         <div className="flex align-center grow">
           {!answerChecked && <div className="flex-col gap-row-nm">{articleButtons}</div>}
@@ -81,7 +81,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
           )}
         </div>
       </Flashcard>
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 
