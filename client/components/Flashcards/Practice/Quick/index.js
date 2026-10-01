@@ -39,7 +39,9 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
     : glosses
 
-  const fontClass = lemma.length < 15 ? 'header-2 auto' : 'header-3 auto'
+  // Quick keeps its own layout; only the word size matches the translate and reversed decks.
+  const fontClass =
+    lemma.length < 15 ? 'flashcard-quick-word auto' : 'flashcard-quick-word-small auto'
 
   return (
     <FlipCard isFlipped={flipped}>
@@ -73,10 +75,8 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
         </div>
       </Flashcard>
       <Flashcard {...cardProps}>
-        <div className="bold justify-center align-center grow" style={{ overflow: 'auto' }}>
-          <ul style={{ maxHeight: '90%', maxWidth: '100%', paddingRight: '2em' }}>
-            {translations}
-          </ul>
+        <div className="flashcard-quick-translations">
+          <ul>{translations}</ul>
         </div>
       </Flashcard>
     </FlipCard>

@@ -35,22 +35,44 @@ const FlashcardBack = ({
     }
   }, [focusedAndBigScreen, flipped])
 
-  const translations = Array.isArray(glosses)
-    ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
-    : glosses
+  const translationItems = Array.isArray(glosses)
+    ? [...new Set(glosses)]
+    : [glosses].filter(Boolean)
+  // A reversed card had its descriptions on the front, so its back carries no translations — the
+  // word on its own is the whole answer.
+  const answerIsWordOnly = translationItems.length === 0
+
+  // Both faces stay mounted, so the verdict is rendered only while the back is the side being
+  // shown — otherwise it is already there part-way through the turn.
+  const verdict = flipped && <FlashcardResult answerCorrect={answerCorrect} />
+
+  // A word-only answer mirrors the front exactly — floated verdict, same text box, same reserved
+  // actions row — so flipping leaves the text where it was instead of dropping it down the card.
+  if (answerIsWordOnly) {
+    return (
+      <Flashcard showActions {...props}>
+        <div className="flashcard-result-float">{verdict}</div>
+        {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
+        <div className="flashcard-text-container">
+          <h2 className="flashcard-title">{lemma}</h2>
+        </div>
+        <div className="flashcard-input-and-result-container" />
+      </Flashcard>
+    )
+  }
 
   return (
     <Flashcard showActions {...props}>
       <div className="flashcard-back">
-        <div className="flashcard-result-slot">
-          {/* Both faces stay mounted, so the verdict is rendered only while the back is the side
-              being shown — otherwise it is already there part-way through the turn. */}
-          {flipped && <FlashcardResult answerCorrect={answerCorrect} />}
-        </div>
+        <div className="flashcard-result-slot">{verdict}</div>
         {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
         <h3 className="flashcard-back-lemma">{lemma}</h3>
         <div className="flashcard-back-translations">
-          <ul>{translations}</ul>
+          <ul>
+            {translationItems.map(item => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </Flashcard>

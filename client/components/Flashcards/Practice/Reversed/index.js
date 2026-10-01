@@ -184,7 +184,6 @@ const Reversed = ({
         {...cardProps}
       />
       <FlashcardBack
-        glosses={glosses}
         flipped={flipped}
         swipeIndex={swipeIndex}
         handleIndexChange={handleIndexChange}

@@ -12,6 +12,7 @@ $flashcard-padding-y: 20px;
 $flashcard-padding-x: 19px;
 $flashcard-header-height: 36px;
 $flashcard-content-gap: 20px;
+$flashcard-actions-height: 82px;
 
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
@@ -73,8 +74,6 @@ $flashcard-content-gap: 20px;
     min-width: 0;
   }
 
-  // Fills the card below the padding; the flip control moved into the header, so there is no
-  // footer row to leave room for.
   &-content {
     display: flex;
     flex-direction: column;
@@ -104,7 +103,6 @@ $flashcard-content-gap: 20px;
     }
   }
 
-  // Three equal slots, so the counter stays optically centred however many controls flank it.
   &-header {
     flex: 0 0 auto;
     height: $flashcard-header-height;
@@ -131,7 +129,6 @@ $flashcard-content-gap: 20px;
     }
   }
 
-  // The asset is the whole 36px ink circle, so the button itself draws nothing.
   &-flip-button {
     display: flex;
     padding: 0;
@@ -182,6 +179,33 @@ $flashcard-content-gap: 20px;
     position: sticky;
   }
 
+  &-quick-word {
+    font-size: 36px;
+    line-height: 36px;
+  }
+
+  &-quick-word-small {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  &-quick-translations {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: $flashcard-header-height + $flashcard-content-gap;
+    overflow: auto;
+    font-weight: 600;
+
+    & > ul {
+      margin: 0;
+      max-width: 100%;
+      padding-left: 1.2em;
+    }
+  }
+
   &-phonetics {
     height: 1.5em;
     display: flex;
@@ -197,10 +221,10 @@ $flashcard-content-gap: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 1rem;
 
     & > ul {
       max-height: 16em;
+      margin: 0;
       padding-left: 0;
     }
   }
@@ -214,8 +238,6 @@ $flashcard-content-gap: 20px;
     overflow: auto;
   }
 
-  // Input bar + action button, sitting at the bottom of the card at their natural height.
-  // Back of the card: verdict face centred on top, then the word and its translations ranged left.
   &-back {
     flex: 1 1 auto;
     min-height: 0;
@@ -225,8 +247,6 @@ $flashcard-content-gap: 20px;
     overflow-y: auto;
   }
 
-  // Back: in flow under the header, reserving its height from the start so the delayed reveal
-  // does not shift the text below it.
   &-result-slot {
     flex: 0 0 auto;
     display: flex;
@@ -234,8 +254,6 @@ $flashcard-content-gap: 20px;
     min-height: 48px;
   }
 
-  // Front: the same height as the slot above, but floated so the word area keeps its full 298px.
-  // Flipping therefore leaves the face exactly where it was.
   &-result-float {
     position: absolute;
     top: $flashcard-padding-y + $flashcard-header-height + $flashcard-content-gap;
@@ -275,6 +293,7 @@ $flashcard-content-gap: 20px;
   &-input-and-result-container {
     flex: 0 0 auto;
     width: 100%;
+    min-height: $flashcard-actions-height;
     display: flex;
   }
 

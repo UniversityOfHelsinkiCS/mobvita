@@ -146,7 +146,6 @@ const Fillin = ({
       }
     }
 
-    // Hack to get the thumbs up/down icon to render before card flips
     setAnswerChecked(true)
     setTimeout(() => setFlipped(!flipped), 50)
   }
