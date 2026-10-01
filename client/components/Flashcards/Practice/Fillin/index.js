@@ -35,7 +35,6 @@ const Fillin = ({
   deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
-  // Latches on the first flip; the front shows the verdict only after the back has been seen.
   const [hasFlipped, setHasFlipped] = useState(false)
   const [answerChecked, setAnswerCheckedLocally] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)

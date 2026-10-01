@@ -43,17 +43,11 @@ const WORDNEST_PILL_STYLE = {
 const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsPrompt }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
-  const [currentMessage, setCurrentMessage] = useState('')
-
-  // Scoped by URL, so each flashcards mode keeps its own thread. Swap for a constant (e.g.
-  // 'flashcards') to carry one conversation across the tabs instead.
   const scope = useLocation().pathname
+  const [currentMessage, setCurrentMessage] = useState('')
   const items = useSelector(({ dialogues }) => dialogues.items)
   const isWaitingForResponse = useSelector(({ dialogues }) => !!dialogues.pending[scope])
   const messages = items.filter(i => i.scope === scope && i.type === 'chatbot-message')
-
-  // Which deck the user is practising, for the opening hint. Blue-card decks live in a different
-  // slice from regular stories, hence the two lookups.
   const { mode, type, storyId } = useParams()
   const blueCardStory = useSelector(({ flashcards }) =>
     flashcards.storyBlueCards?.find(story => story.story_id === storyId)
@@ -66,8 +60,6 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   const showStoryHint =
     mode !== 'list' && mode !== 'new' && (type === 'story' || type === 'test') && Boolean(title)
 
-  // The card on screen, from the deck. `hint` is [{ hint }]; de-duplicated because the same hint can
-  // be stored more than once for a lemma.
   const currentCard = useSelector(({ flashcards }) => flashcards.currentCard)
   const revealedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
   const deckCompleted = useSelector(({ flashcards }) => flashcards.deckCompleted)
@@ -79,9 +71,6 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
     ? [...new Set(cardGlosses)]
     : [cardGlosses].filter(Boolean)
   const cardHints = [...new Set((currentCard?.hint || []).map(h => h.hint).filter(Boolean))]
-
-  // Revealed one at a time and counted, as in the practice chatbot — the answer payload reports the
-  // tally as `hints_shown`, so showing them all for free would change what an answer is worth.
   const shownHints = cardHints.filter((hint, index) => revealedHints.includes(index))
   const nextHintIndex = cardHints.findIndex((hint, index) => !revealedHints.includes(index))
   const hasHintToShow = nextHintIndex !== -1
@@ -139,15 +128,10 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             </CustomTooltip>
             <span className="flashcard-assistant-word-text">{currentLemma}</span>
           </h4>
-          {/* The nest shows the word's relatives, which would give a fill-in answer away — so it
-              waits until the learner has answered the card. */}
           <WordNestLauncher
             lemma={currentLemma}
             icon={images.wordnest}
             disabled={!currentCardAnswered}
-            // The grey has to be written against `.Mui-disabled` too: the variant's own disabled
-            // rule is a class selector, so it outranks a plain `backgroundColor` in sx and would
-            // otherwise blank the pill out instead of greying it.
             buttonStyle={
               currentCardAnswered
                 ? WORDNEST_PILL_STYLE
@@ -219,15 +203,11 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             <Spinner inline />
           </div>
         )}
-        {/* Scroll target: hints and the deck-completed notice sit below the last message, so
-            scrolling to that message would leave them off-screen. */}
         <div ref={messagesEndRef} />
       </div>
 
       <div className="chatbot-footer">
         {cardHints.length > 0 && (
-          // Same shape as the practice chatbot's hint row: the bulbs tally what is left, and both
-          // they and the button ask for the next one.
           <div className="hint-request-container" style={{ marginBottom: '8px' }}>
             <CustomTooltip title={hintsLeftLabel} placement="top" permanent>
               <div
