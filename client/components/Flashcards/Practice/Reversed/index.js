@@ -169,13 +169,12 @@ const Reversed = ({
     format,
     id,
     answerCorrect,
-    flipCard,
     focusedAndBigScreen,
     lemma,
   }
 
   return (
-    <FlipCard isFlipped={flipped}>
+    <FlipCard isFlipped={flipped} onFlip={flipCard}>
       <ReversedFront
         glosses={glosses}
         answerChecked={answerChecked}

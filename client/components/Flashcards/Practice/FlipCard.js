@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectFlip } from 'swiper/modules'
+import { images } from 'Utilities/common'
 import 'swiper/css'
 import 'swiper/css/effect-flip'
 
@@ -17,7 +18,7 @@ const FLIP_SPEED_MS = 600
  * It lives inside the deck's own Swiper, so `allowTouchMove` is off and `nested` is set: the card
  * only ever turns from its own controls, and a horizontal drag still belongs to the deck.
  */
-const FlipCard = ({ isFlipped, children }) => {
+const FlipCard = ({ isFlipped, onFlip, children }) => {
   const swiperRef = useRef(null)
   const [front, back] = React.Children.toArray(children)
 
@@ -30,23 +31,36 @@ const FlipCard = ({ isFlipped, children }) => {
   }, [isFlipped])
 
   return (
-    <Swiper
-      onSwiper={instance => {
-        swiperRef.current = instance
-      }}
-      className="flashcard-flip"
-      effect="flip"
-      modules={[EffectFlip]}
-      flipEffect={{ slideShadows: false }}
-      speed={FLIP_SPEED_MS}
-      allowTouchMove={false}
-      simulateTouch={false}
-      nested
-      slidesPerView={1}
-    >
-      <SwiperSlide>{front}</SwiperSlide>
-      <SwiperSlide>{back}</SwiperSlide>
-    </Swiper>
+    <div className="flashcard-flip-wrapper">
+      {onFlip && (
+        <button
+          className="flashcard-flip-button"
+          type="button"
+          onClick={() => onFlip()}
+          aria-label="flip card"
+          data-cy="flashcard-flip"
+        >
+          <img src={images.flipBackCircle} alt="" />
+        </button>
+      )}
+      <Swiper
+        onSwiper={instance => {
+          swiperRef.current = instance
+        }}
+        className="flashcard-flip"
+        effect="flip"
+        modules={[EffectFlip]}
+        flipEffect={{ slideShadows: false }}
+        speed={FLIP_SPEED_MS}
+        allowTouchMove={false}
+        simulateTouch={false}
+        nested
+        slidesPerView={1}
+      >
+        <SwiperSlide>{front}</SwiperSlide>
+        <SwiperSlide>{back}</SwiperSlide>
+      </Swiper>
+    </div>
   )
 }
 

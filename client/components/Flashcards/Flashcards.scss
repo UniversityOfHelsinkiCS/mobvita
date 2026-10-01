@@ -129,7 +129,21 @@ $flashcard-actions-height: 82px;
     }
   }
 
+  // Holds the single flip control over the card. Sized to the card so `right` lands on its edge
+  // rather than the slide's.
+  &-flip-wrapper {
+    position: relative;
+    width: $flashcard-width;
+    margin: 0 auto;
+  }
+
+  // One control for both faces, parked above the turning card: it never rotates, never duplicates,
+  // and its hit area stays put while the card flips.
   &-flip-button {
+    position: absolute;
+    top: $flashcard-padding-y;
+    right: $flashcard-padding-x;
+    z-index: 2;
     display: flex;
     padding: 0;
     border: none;

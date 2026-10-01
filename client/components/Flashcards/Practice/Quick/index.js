@@ -32,7 +32,6 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     cardNumbering,
     stage,
     id,
-    flipCard,
   }
 
   const translations = Array.isArray(glosses)
@@ -44,7 +43,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     lemma.length < 15 ? 'flashcard-quick-word auto' : 'flashcard-quick-word-small auto'
 
   return (
-    <FlipCard isFlipped={flipped}>
+    <FlipCard isFlipped={flipped} onFlip={flipCard}>
       <Flashcard {...cardProps}>
         <div className="flex-col grow">
           <span className={fontClass}>{lemma}</span>

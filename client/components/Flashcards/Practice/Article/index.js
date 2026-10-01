@@ -48,7 +48,6 @@ const Article = ({ card, cardNumbering, answerCard }) => {
     cardNumbering,
     stage,
     id,
-    flipCard,
   }
 
   const articleButtons = flashcardArticles.map(article => (
@@ -63,7 +62,7 @@ const Article = ({ card, cardNumbering, answerCard }) => {
   const ResultIcon = answerCorrect ? ThumbUpAltOutlinedIcon : ThumbDownAltOutlinedIcon
 
   return (
-    <FlipCard isFlipped={flipped}>
+    <FlipCard isFlipped={flipped} onFlip={flipCard}>
       <Flashcard {...cardProps}>
         <div className="flex align-center grow">
           {!answerChecked && <div className="flex-col gap-row-nm">{articleButtons}</div>}

@@ -157,7 +157,6 @@ const Fillin = ({
     format,
     id,
     answerCorrect,
-    flipCard,
     handleEdit,
     focusedAndBigScreen,
     lemma,
@@ -181,7 +180,7 @@ const Fillin = ({
   }
 
   return (
-    <FlipCard isFlipped={flipped}>
+    <FlipCard isFlipped={flipped} onFlip={flipCard}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
