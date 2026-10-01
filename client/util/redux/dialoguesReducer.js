@@ -36,13 +36,20 @@ export const sendGeneralDialogue = (message, scope) => {
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
 }
 
-// The flashcards assistant. It shares the general endpoint for now; this is the single place to
-// point it at a flashcards-specific assistant-api agent, and every reducer case is keyed on the
-// shared GET_DIALOGUE_RESPONSE prefix, so only the route has to change.
-export const sendFlashcardsDialogue = (message, scope) => {
-  const route = `/chatbot/general`
+// The flashcards assistant, answered by the vocabulary agent. That endpoint requires `message`,
+// `word` and `session_id` together (anything less is a 404 "Missing parameters"), and `word` only
+// exists while a card is on screen — so the list and new-card views, which have no card, keep
+// asking the general agent. `translations` / `examples` / `nests` are optional context.
+export const sendFlashcardsDialogue = (message, scope, context = {}) => {
+  const { word, sessionId, translations = [], examples = [], nests = [] } = context
+  const askVocabularyAgent = Boolean(word && sessionId)
+
+  const route = askVocabularyAgent ? '/chatbot/vocabulary' : '/chatbot/general'
   const prefix = 'GET_DIALOGUE_RESPONSE'
-  const payload = { message }
+  const payload = askVocabularyAgent
+    ? { message, word, translations, examples, nests, session_id: sessionId }
+    : { message }
+
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
 }
 

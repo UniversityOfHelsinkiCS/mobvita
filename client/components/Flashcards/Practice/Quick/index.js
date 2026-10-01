@@ -3,6 +3,7 @@ import ReactCardFlip from 'react-card-flip'
 import AppButton from 'Components/AppButton'
 import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
+import { setFlashcardAnswered } from 'Utilities/redux/flashcardReducer'
 import Flashcard from '../Flashcard'
 
 const Quick = ({ card, cardNumbering, answerCard }) => {
@@ -23,6 +24,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
   const checkAnswer = answerIsCorrect => {
     answerCard(null, answerIsCorrect, 'fillin')
     setAnswered(true)
+    dispatch(setFlashcardAnswered(true))
     flipCard()
   }
 

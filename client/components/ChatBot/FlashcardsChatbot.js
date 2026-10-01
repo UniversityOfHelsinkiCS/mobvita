@@ -25,12 +25,6 @@ import { images, sanitizeHtml } from 'Utilities/common'
 import 'Components/PracticeView/CombinedChatbot.scss'
 import { colors } from 'Assets/mui_theme/designTokens'
 
-// i18n ids for the burger-menu prompts. Each is sent verbatim as the user's message.
-const PREDEFINED_REQUEST_IDS = [
-  'chatbot-message-suggestion-next-steps',
-  'chatbot-message-suggestion-performance',
-]
-
 // The green "Word Nest" pill used on the flashcard
 const WORDNEST_PILL_STYLE = {
   display: 'inline-flex',
@@ -78,7 +72,12 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   const revealedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
   const deckCompleted = useSelector(({ flashcards }) => flashcards.deckCompleted)
   const currentCardAnswered = useSelector(({ flashcards }) => flashcards.currentCardAnswered)
+  const sessionId = useSelector(({ flashcards }) => flashcards.sessionId)
   const currentLemma = currentCard?.lemma
+  const cardGlosses = currentCard?.glosses
+  const cardTranslations = Array.isArray(cardGlosses)
+    ? [...new Set(cardGlosses)]
+    : [cardGlosses].filter(Boolean)
   const cardHints = [...new Set((currentCard?.hint || []).map(h => h.hint).filter(Boolean))]
 
   // Revealed one at a time and counted, as in the practice chatbot — the answer payload reports the
@@ -99,20 +98,28 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
 
   const latestMessageRef = useRef(null)
   const messagesEndRef = useRef(null)
-  const predefinedChatbotRequests = PREDEFINED_REQUEST_IDS.map(msgId => ({
-    msgId,
-    func: sendFlashcardsDialogue(intl.formatMessage({ id: msgId }), scope),
-  }))
-
   const scrollToLatestMessage = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
 
   useEffect(() => {
     scrollToLatestMessage()
   }, [messages.length, shownHints.length, deckCompleted])
 
+  // Only once the card has been answered or flipped: the vocabulary agent explains the word, so
+  // before that it would hand over the answer. Until then the question goes to the general agent,
+  // which has no card context — see sendFlashcardsDialogue.
+  const vocabularyContext = currentCardAnswered
+    ? {
+        word: currentLemma,
+        sessionId,
+        translations: cardTranslations,
+        examples: cardHints,
+        nests: [],
+      }
+    : {}
+
   const handleMessageSubmit = () => {
     if (currentMessage.trim() === '') return
-    dispatch(sendFlashcardsDialogue(currentMessage, scope))
+    dispatch(sendFlashcardsDialogue(currentMessage, scope, vocabularyContext))
     setCurrentMessage('')
   }
 
@@ -274,7 +281,6 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
           onSubmit={handleMessageSubmit}
           placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
           disabled={isWaitingForResponse}
-          predefinedChatbotRequests={predefinedChatbotRequests}
         />
       </div>
     </div>

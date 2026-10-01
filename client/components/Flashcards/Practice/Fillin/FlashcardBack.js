@@ -13,10 +13,16 @@ const FlashcardBack = ({
   handleIndexChange,
   ...props
 }) => {
+  // Enter advances the deck, but the listener is on `document` — so a press inside any field (the
+  // assistant's chat box, the answer input) belongs to that field, not to the deck.
   const handleEnter = useCallback(event => {
-    if (event.keyCode === 13) {
-      handleIndexChange(swipeIndex + 1)
-    }
+    if (event.keyCode !== 13) return
+
+    const target = event.target
+    const tag = target?.tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || target?.isContentEditable) return
+
+    handleIndexChange(swipeIndex + 1)
   })
 
   useEffect(() => {

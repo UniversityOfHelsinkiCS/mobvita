@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
 import ReactCardFlip from 'react-card-flip'
-import { addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
+import { addToCorrectAnswers, setFlashcardAnswered } from 'Utilities/redux/flashcardReducer'
 import {
   levenshteinDistance,
   normalizeDiacritics,
@@ -87,6 +87,11 @@ const Reversed = ({
   const intl = useIntl()
 
   const { glosses, format, _id: id, stage, lemma } = card
+
+  // Both checking an answer and flipping set `answerChecked`, so this covers either route.
+  useEffect(() => {
+    if (answerChecked) dispatch(setFlashcardAnswered(true))
+  }, [answerChecked])
 
   useEffect(() => {
     if (!flipped) return undefined
