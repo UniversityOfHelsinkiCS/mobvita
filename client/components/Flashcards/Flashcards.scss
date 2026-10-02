@@ -326,6 +326,8 @@ $flashcard-flip-headroom: 44px;
 }
 
 .flashcard-blended-input {
+  display: flex;
+  padding: 0;
   background-color: inherit;
   border: none;
 

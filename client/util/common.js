@@ -760,9 +760,10 @@ export const exerciseMaskedLanguages = ['Chinese']
 export const colors = {}
 
 export const flashcardColors = {
-  background: ['#E5BDAA', '#F1D0AA', '#F2DF9A', '#D9E499', '#B4D2AF'],
+  background: ['#F48E73', '#FCC873', '#FEE680', '#BCD068', '#70AF66'],
   foreground: ['#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A'],
-  blueBackground: '#adc5dd',
+  blueBackground: '#9CC0D6',
+  backBackground: '#F7F0D5',
 }
 
 const stagingOptions = [

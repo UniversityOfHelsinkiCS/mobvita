@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
+import { flashcardColors } from 'Utilities/common'
 import Flashcard from '../Flashcard'
 import cardTranslations from '../cardTranslations'
 import useFittedTitle from '../useFittedTitle'
@@ -65,7 +66,7 @@ const FlashcardBack = ({
   }
 
   return (
-    <Flashcard showActions {...props}>
+    <Flashcard showActions {...props} cardBackground={flashcardColors.backBackground}>
       <div className="flashcard-back">
         <div className="flashcard-result-slot">{verdict}</div>
         {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}

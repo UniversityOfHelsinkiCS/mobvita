@@ -182,7 +182,7 @@ const Flashcards = () => {
             {width >= 840 && mode !== 'list' && (
               <div className="flashcard-top-bar">
                 <div className="flashcard-top-bar-menu">
-                  {mode !== 'new' && <FlashcardMenu />}
+                  {mode !== 'new' && !inBlueCardsTest && <FlashcardMenu />}
                 </div>
                 <SettingButton style={{ position: 'static', margin: 0 }} />
               </div>
