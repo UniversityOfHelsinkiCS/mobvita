@@ -190,6 +190,17 @@ const HomeviewButtons = ({
               content="Home-Flashcards-EXPLANATION"
             />
           </div>
+          {/* Where a student joins a group with the key their teacher gave them; same icon as the
+              teacher's own Groups button. */}
+          <div className="groups-btn-cont">
+            <HomeviewButton
+              imgSrc={images.users01Colored}
+              altText="Groups"
+              translationKey="Groups"
+              handleClick={() => navigate('/groups/student')}
+              dataCy="groups-button-student"
+            />
+          </div>
           {lessons && lessons.length > 0 && canAccessLessons && (
             <div className="lesson-btn-cont tour-lesson">
               <HomeviewButton
