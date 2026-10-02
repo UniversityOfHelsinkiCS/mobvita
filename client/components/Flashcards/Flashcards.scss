@@ -489,18 +489,14 @@ $flashcard-flip-headroom: 44px;
 
 .flashcard-list-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1em;
+  gap: 20px;
+  min-height: 36px;
   padding: 0 0.5rem 0.75rem;
 
   &-pages {
     flex-shrink: 0;
-  }
-
-  // The count and the trailing settings slot each take an equal share so the pagination sits centred.
-  .flashcard-list-count,
-  .flashcard-list-header-settings {
-    flex: 1;
   }
 
   &-settings {
@@ -511,8 +507,12 @@ $flashcard-flip-headroom: 44px;
 }
 
 .flashcard-list-count {
-  font-weight: 600;
-  color: #2d2c2a;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: $color-ink;
   white-space: nowrap;
 }
 

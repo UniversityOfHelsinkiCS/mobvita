@@ -66,6 +66,7 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   const currentCardAnswered = useSelector(({ flashcards }) => flashcards.currentCardAnswered)
   const sessionId = useSelector(({ flashcards }) => flashcards.sessionId)
   const currentLemma = currentCard?.lemma
+  const askingBlocked = Boolean(currentLemma) && !currentCardAnswered
   const cardGlosses = currentCard?.glosses
   const cardTranslations = Array.isArray(cardGlosses)
     ? [...new Set(cardGlosses)]
@@ -260,7 +261,7 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
           onChange={setCurrentMessage}
           onSubmit={handleMessageSubmit}
           placeholder={intl.formatMessage({ id: 'enter-question-to-chatbot' })}
-          disabled={isWaitingForResponse}
+          disabled={isWaitingForResponse || askingBlocked}
         />
       </div>
     </div>

@@ -35,9 +35,16 @@ import bell04 from 'Assets/images/bell-04.svg'
 import brush01 from 'Assets/images/brush-01.svg'
 import logOut01 from 'Assets/images/log-out-01.svg'
 import settings02 from 'Assets/images/settings-02.svg'
+import chevron from 'Assets/images/chevron.svg'
+import chevronCircleColor from 'Assets/images/chevron-circle-color.svg'
+import chevronCircleColorDouble from 'Assets/images/chevron-circle-color-double.svg'
+import chevronCircleGray from 'Assets/images/chevron-circle-gray.svg'
+import chevronCircleGrayDouble from 'Assets/images/chevron-circle-gray-double.svg'
+import threeDotsHorizontal from 'Assets/images/three-dots-horizontal.svg'
 import user01 from 'Assets/images/user-01.svg'
 import users01 from 'Assets/images/users-01.svg'
 import edit03 from 'Assets/images/edit-03.svg'
+import edit from 'Assets/images/edit.svg'
 import fileCheck03 from 'Assets/images/file-check-03.svg'
 import target04 from 'Assets/images/target-04.svg'
 import trophy01 from 'Assets/images/trophy-01.svg'
@@ -249,9 +256,16 @@ export const images = {
   brush01,
   logOut01,
   settings02,
+  chevron,
+  chevronCircleColor,
+  chevronCircleColorDouble,
+  chevronCircleGray,
+  chevronCircleGrayDouble,
+  threeDotsHorizontal,
   user01,
   users01,
   edit03,
+  edit,
   fileCheck03,
   target04,
   trophy01,

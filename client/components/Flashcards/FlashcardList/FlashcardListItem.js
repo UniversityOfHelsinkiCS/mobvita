@@ -9,11 +9,16 @@ import { colors, font } from 'Assets/mui_theme/designTokens'
 import { deleteFlashcard, recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { changeFlashcardStage } from 'Utilities/redux/flashcardListReducer'
 
+// A row's control: a 24px square, the artwork fitted inside it rather than stretched to it.
 const IconImg = ({ src, alt }) => (
-  <img src={src} alt={alt} style={{ width: 24, height: 24, display: 'block' }} />
+  <img
+    src={src}
+    alt={alt}
+    style={{ width: 24, height: 24, display: 'block', objectFit: 'contain' }}
+  />
 )
 
-const FlashcardListItem = ({ card, handleEdit }) => {
+const FlashcardListItem = ({ card, handleEdit, openWordNest }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
   const { background } = flashcardColors
 
@@ -166,6 +171,17 @@ const FlashcardListItem = ({ card, handleEdit }) => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CustomTooltip placement="top" title={<FormattedMessage id="explain-wordnest-modal" />}>
+            <span
+              style={{ display: 'inline-flex', cursor: 'pointer' }}
+              onClick={e => {
+                e.stopPropagation()
+                openWordNest(lemma)
+              }}
+            >
+              <IconImg src={images.wordnest} alt="word nest" />
+            </span>
+          </CustomTooltip>
           <span
             style={{ display: 'inline-flex', cursor: 'pointer' }}
             onClick={e => {
@@ -173,7 +189,7 @@ const FlashcardListItem = ({ card, handleEdit }) => {
               handleEdit(card)
             }}
           >
-            <IconImg src={images.edit03} alt="edit" />
+            <IconImg src={images.edit} alt="edit" />
           </span>
           <CustomTooltip placement="top" title={<FormattedMessage id="remove-card-tooltip" />}>
             <span
