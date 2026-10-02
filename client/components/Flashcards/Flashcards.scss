@@ -197,38 +197,15 @@ $flashcard-flip-headroom: 44px;
   font-family: var(--font-language, var(--font-ui));
 }
 
-
-// The smallest step, for a lemma that still does not fit at 20px.
-.flashcard-title-small {
-  font-size: 18px;
-  line-height: 22px;
-}
-
-.flashcard-quick-word {
-  font-size: 36px;
-  line-height: 36px;
-}
-
-.flashcard-quick-word-small {
-  font-size: 18px;
-  line-height: 22px;
-}
-
-.flashcard-quick-translations {
-  flex: 1 1 auto;
-  min-height: 0;
+// The quick deck's two choices stand where the translate deck's answer row does, so the word above
+// them keeps the same place on the card.
+.flashcard-quick-actions {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: $flashcard-actions-height;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-bottom: $flashcard-header-height + $flashcard-content-gap;
-  overflow: auto;
-  font-weight: 600;
-
-  & > ul {
-    margin: 0;
-    max-width: 100%;
-    padding-left: 1.2em;
-  }
+  justify-content: space-evenly;
 }
 
 // A Latin transliteration, not the learnt script, so it deliberately stays on `--font-content`.

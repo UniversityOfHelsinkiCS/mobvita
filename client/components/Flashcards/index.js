@@ -168,7 +168,6 @@ const Flashcards = () => {
 
   return (
     <div className="cont-tall flex-col space-between align-center">
-      {/* Match ReadViews: stretch the row, center the content block, and let the main card fill it. */}
       <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
         <div className={`cont pb-nm flex-col ${isSidebarOpen ? 'sidebar-pushed' : ''}`} style={{ flex: 1 }}>
           <div data-cy="library-controls" style={{ margin: '0 0 1.7em 0' }}>
@@ -176,9 +175,6 @@ const Flashcards = () => {
           </div>
 
           <div className="flashcard-body" style={{ backgroundColor: colors.card, borderRadius: 30 }}>
-            {/* First item: a row with the practice-mode menu (Translate/Quick) + the settings gear.
-                On the "All cards" list page the gear moves into the pagination header row instead
-                (see FlashcardList), so the top bar is skipped there. */}
             {width >= 840 && mode !== 'list' && (
               <div className="flashcard-top-bar">
                 <div className="flashcard-top-bar-menu">
@@ -200,8 +196,6 @@ const Flashcards = () => {
 
       {canUseAssistant && (
         <HelperSidebar>
-          {/* The blue-cards prompt is raised by the assistant rather than a modal, but its timing
-              still lives here — this is where the practice view reports back. */}
           <FlashcardsChatbot
             showBlueCardsPrompt={showBlueCardsTestEncouragement}
             onDismissBlueCardsPrompt={handleBlueCardsPromptVisibility}

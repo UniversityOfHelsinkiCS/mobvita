@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import { flashcardColors } from 'Utilities/common'
 import Flashcard from '../Flashcard'
+import CardAnswer from '../CardAnswer'
 import cardTranslations from '../cardTranslations'
 import useFittedTitle from '../useFittedTitle'
 
@@ -67,18 +68,13 @@ const FlashcardBack = ({
 
   return (
     <Flashcard showActions {...props} cardBackground={flashcardColors.backBackground}>
-      <div className="flashcard-back">
-        <div className="flashcard-result-slot">{verdict}</div>
-        {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
-        <h3 className="flashcard-back-lemma">{lemma}</h3>
-        <div className="flashcard-back-translations">
-          <ul>
-            {translationItems.map(item => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <CardAnswer
+        answerCorrect={answerCorrect}
+        showVerdict={flipped}
+        lemma={lemma}
+        glosses={glosses}
+        infoMessage={infoMessage}
+      />
     </Flashcard>
   )
 }
