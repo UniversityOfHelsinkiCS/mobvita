@@ -177,7 +177,9 @@ $flashcard-flip-headroom: 44px;
   box-sizing: border-box;
 }
 
-// The lemma being drilled: `--font-language` so a learner's script gets a face with its glyphs.
+// The lemma being drilled. `--font-language` first so a learner's script still gets a face with its
+// glyphs; the fallback is the UI font (Geologica) rather than the reading font (Rubik), because the
+// card's word is design chrome, not body copy.
 .flashcard-title {
   display: flex;
   justify-content: center;
@@ -185,19 +187,17 @@ $flashcard-flip-headroom: 44px;
   position: sticky;
   margin: 0;
   font-size: 36px;
-  line-height: 36px;
+  line-height: 1.1;
   font-weight: 400;
   text-align: center;
-  font-family: var(--font-language, var(--font-content));
+  font-family: var(--font-language, var(--font-ui));
 }
 
+
+// The smallest step, for a lemma that still does not fit at 20px.
 .flashcard-title-small {
   font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-content: flex-end;
-  position: sticky;
-  font-family: var(--font-language, var(--font-content));
+  line-height: 22px;
 }
 
 .flashcard-quick-word {

@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
+import useFittedTitle from '../useFittedTitle'
 
 const FlashcardBack = ({
   answerCorrect,
@@ -35,6 +36,8 @@ const FlashcardBack = ({
     }
   }, [focusedAndBigScreen, flipped])
 
+  const titleRef = useFittedTitle(lemma)
+
   const translationItems = Array.isArray(glosses)
     ? [...new Set(glosses)]
     : [glosses].filter(Boolean)
@@ -54,7 +57,9 @@ const FlashcardBack = ({
         <div className="flashcard-result-float">{verdict}</div>
         {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
         <div className="flashcard-text-container">
-          <h2 className="flashcard-title">{lemma}</h2>
+          <h2 className="flashcard-title" ref={titleRef}>
+            {lemma}
+          </h2>
         </div>
         <div className="flashcard-input-and-result-container" />
       </Flashcard>

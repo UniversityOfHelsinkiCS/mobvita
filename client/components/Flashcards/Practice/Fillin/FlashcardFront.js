@@ -5,6 +5,7 @@ import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/
 import FlashcardInput from './FlashcardInput'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
+import useFittedTitle from '../useFittedTitle'
 
 // `resultVisible` holds the verdict back until the card has been flipped once — before that the
 // learner has not seen the answer yet, so the face would give it away.
@@ -22,7 +23,7 @@ const FlashcardFront = ({
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const sameLanguage = learningLanguage === dictionaryLanguage
-  const fontClass = lemma.length < 15 ? 'flashcard-title' : 'flashcard-title-small'
+  const titleRef = useFittedTitle(lemma)
   // Shared with the assistant, which reveals the same hints — see revealFlashcardHint.
   const displayedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
 
@@ -34,7 +35,7 @@ const FlashcardFront = ({
         </div>
       )}
       <div className="flashcard-text-container">
-        <h2 data-cy="flashcard-title" className={fontClass}>
+        <h2 data-cy="flashcard-title" className="flashcard-title" ref={titleRef}>
           {lemma}
         </h2>
         <h3 className="flashcard-phonetics">{phonetics && phonetics}</h3>
