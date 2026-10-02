@@ -368,6 +368,23 @@ export default function NavBar() {
                   {hiddenFeatures && (
                     <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>
                   )}
+                  <Detector
+                    polling={{ timeout: 20000 }}
+                    render={({ online }) => (
+                      <CircleIcon
+                        titleAccess={intl.formatMessage({
+                          id: online ? 'connection-online' : 'connection-offline',
+                        })}
+                        style={{
+                          display: 'flex',
+                          alignSelf: 'flex-start',
+                          fontSize: 10,
+                          color: online ? '#21A400' : colors.error,
+                          margin: '2px 6px',
+                        }}
+                      />
+                    )}
+                  />
                 </Box>
               </Link>
               {user?.user?.last_used_language && (
@@ -451,22 +468,6 @@ export default function NavBar() {
           </NavGroup>
           {/******************************* USER OPTIONS *******************************/}
           <NavGroup>
-            <Detector
-              polling={{ timeout: 20000 }}
-              render={({ online }) => (
-                <CircleIcon
-                  className="navbar-basic-item"
-                  titleAccess={intl.formatMessage({
-                    id: online ? 'connection-online' : 'connection-offline',
-                  })}
-                  style={{
-                    fontSize: 10,
-                    color: online ? '#37B24D' : colors.error,
-                    margin: '0 10px',
-                  }}
-                />
-              )}
-            />
             {canSwitchTeacherView && (
               <Box
                 sx={{
@@ -485,7 +486,11 @@ export default function NavBar() {
                 >
                   {intl.formatMessage({ id: 'teacher' })}
                 </span>
-                <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} offColor={colors.blue} />
+                <AppSwitch
+                  checked={!teacherView}
+                  onChange={handleStudentViewSwitch}
+                  offColor={colors.blue}
+                />
                 <span
                   style={{
                     fontSize: 14,
