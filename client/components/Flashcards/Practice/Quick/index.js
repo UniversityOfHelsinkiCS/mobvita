@@ -5,6 +5,7 @@ import { images } from 'Utilities/common'
 import { useDispatch } from 'react-redux'
 import { setFlashcardAnswered } from 'Utilities/redux/flashcardReducer'
 import Flashcard from '../Flashcard'
+import cardTranslations from '../cardTranslations'
 
 const Quick = ({ card, cardNumbering, answerCard }) => {
   const [flipped, setFlipped] = useState(false)
@@ -35,9 +36,7 @@ const Quick = ({ card, cardNumbering, answerCard }) => {
     id,
   }
 
-  const translations = Array.isArray(glosses)
-    ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
-    : glosses
+  const translations = cardTranslations(glosses).map(item => <li key={item}>{item}</li>)
 
   // Quick keeps its own layout; only the word size matches the translate and reversed decks.
   const fontClass =

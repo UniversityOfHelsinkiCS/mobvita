@@ -11,35 +11,20 @@ import {
   learningLanguageSelector,
 } from 'Utilities/common'
 import FlashcardInput from '../Fillin/FlashcardInput'
-import FlashcardResult from '../Fillin/FlashcardResult'
 import FlashcardBack from '../Fillin/FlashcardBack'
 import Flashcard from '../Flashcard'
+import cardTranslations from '../cardTranslations'
 
 // Front of a reversed card: the description is the prompt and the learner types the term. It keeps
 // the input even when both languages match, which the regular front hides — Finnish terms are
 // defined in Finnish, so that gate would leave nothing to answer with.
-const ReversedFront = ({
-  glosses,
-  answerChecked,
-  answerCorrect,
-  checkAnswer,
-  focusedAndBigScreen,
-  resultVisible,
-  ...props
-}) => {
-  // Shared with the assistant, which reveals the same hints — see revealFlashcardHint.
+const ReversedFront = ({ glosses, answerChecked, checkAnswer, focusedAndBigScreen, ...props }) => {
   const displayedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
-  // The answer is the term itself, so the prompt names the learning language, not the dictionary.
   const learningLanguage = useSelector(learningLanguageSelector)
-  const descriptions = Array.isArray(glosses) ? [...new Set(glosses)] : [glosses]
+  const descriptions = cardTranslations(glosses)
 
   return (
     <Flashcard {...props}>
-      {resultVisible && (
-        <div className="flashcard-result-float">
-          <FlashcardResult answerCorrect={answerCorrect} />
-        </div>
-      )}
       <div className="flashcard-text-container">
         <div className="flashcard-translations" data-cy="flashcard-reversed-description">
           <ul>
@@ -62,10 +47,6 @@ const ReversedFront = ({
   )
 }
 
-// How long the back is shown before the front gets its verdict face; flipping back sooner
-// cancels it.
-const FRONT_RESULT_DELAY_MS = 500
-
 // Reversed deck (fillin_learn): read the description, type the term. Answers post as the fillin
 // exercise in "learn" mode, which is how the backend tells the two directions apart.
 const Reversed = ({
@@ -79,7 +60,6 @@ const Reversed = ({
   deckSize,
 }) => {
   const [flipped, setFlipped] = useState(false)
-  const [hasFlipped, setHasFlipped] = useState(false)
   const [answerChecked, setAnswerChecked] = useState(false)
   const [answerCorrect, setAnswerCorrect] = useState(null)
   const [infoMessage, setInfoMessage] = useState('')
@@ -92,12 +72,6 @@ const Reversed = ({
   useEffect(() => {
     if (answerChecked) dispatch(setFlashcardAnswered(true))
   }, [answerChecked])
-
-  useEffect(() => {
-    if (!flipped) return undefined
-    const timer = setTimeout(() => setHasFlipped(true), FRONT_RESULT_DELAY_MS)
-    return () => clearTimeout(timer)
-  }, [flipped])
 
   useEffect(() => {
     card.correct = answerCorrect
@@ -157,7 +131,7 @@ const Reversed = ({
       }
     }
 
-    // Hack to get the thumbs up/down icon to render before card flips
+    // Hack to get the result face to render before the card flips
     setAnswerChecked(true)
     setTimeout(() => setFlipped(!flipped), 50)
   }
@@ -180,7 +154,6 @@ const Reversed = ({
         glosses={glosses}
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
-        resultVisible={hasFlipped}
         {...cardProps}
       />
       <FlashcardBack

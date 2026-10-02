@@ -3,21 +3,16 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { learningLanguageSelector, dictionaryLanguageSelector } from 'Utilities/common'
 import FlashcardInput from './FlashcardInput'
-import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
 import useFittedTitle from '../useFittedTitle'
 
-// `resultVisible` holds the verdict back until the card has been flipped once — before that the
-// learner has not seen the answer yet, so the face would give it away.
 const FlashcardFront = ({
   answerChecked,
-  answerCorrect,
   checkAnswer,
   lemma,
   phonetics,
   focusedAndBigScreen,
   stage,
-  resultVisible,
   ...props
 }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -29,11 +24,6 @@ const FlashcardFront = ({
 
   return (
     <Flashcard stage={stage} {...props}>
-      {resultVisible && (
-        <div className="flashcard-result-float">
-          <FlashcardResult answerCorrect={answerCorrect} />
-        </div>
-      )}
       <div className="flashcard-text-container">
         <h2 data-cy="flashcard-title" className="flashcard-title" ref={titleRef}>
           {lemma}

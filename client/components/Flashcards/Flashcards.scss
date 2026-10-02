@@ -8,8 +8,8 @@
 // same space — see `.flashcard-match-loading`.
 $flashcard-width: 330px;
 $flashcard-height: 496px;
-$flashcard-padding-y: 20px;
-$flashcard-padding-x: 19px;
+// 20px all round, per the card design — the back's lemma and translations sit on that edge.
+$flashcard-padding: 20px;
 $flashcard-header-height: 36px;
 $flashcard-content-gap: 20px;
 $flashcard-actions-height: 82px;
@@ -27,7 +27,7 @@ $flashcard-flip-headroom: 44px;
   width: $flashcard-width;
   height: $flashcard-height;
   margin: 0 auto 40px auto;
-  padding: $flashcard-padding-y $flashcard-padding-x;
+  padding: $flashcard-padding;
   border-radius: 30px;
   background-color: #f1eede;
   color: #2d2c2a;
@@ -126,7 +126,7 @@ $flashcard-flip-headroom: 44px;
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 20px;
   min-width: 0;
 
   &--center {
@@ -165,12 +165,14 @@ $flashcard-flip-headroom: 44px;
   }
 }
 
+// The word starts 146px down the card (20 padding + 36 header + 20 gap + 70 here) and is 36px tall,
+// leaving 314px below it — top-aligned rather than centred so those numbers hold.
 .flashcard-text-container {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   overflow: auto;
   padding: 70px 28px 13px;
@@ -187,7 +189,9 @@ $flashcard-flip-headroom: 44px;
   position: sticky;
   margin: 0;
   font-size: 36px;
-  line-height: 1.1;
+  // Fixed, not relative: the line box stays 36px whatever size useFittedTitle lands on, so the
+  // word keeps its 146px-from-top / 314px-from-bottom placement at every length.
+  line-height: 36px;
   font-weight: 400;
   text-align: center;
   font-family: var(--font-language, var(--font-ui));
@@ -259,24 +263,16 @@ $flashcard-flip-headroom: 44px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   overflow-y: auto;
 }
 
+// The back's verdict face is the 90px one from the design; the front floats a small copy instead.
 .flashcard-result-slot {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
-  min-height: 48px;
-}
-
-.flashcard-result-float {
-  position: absolute;
-  top: $flashcard-padding-y + $flashcard-header-height + $flashcard-content-gap;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
+  min-height: 90px;
 }
 
 .flashcard-back-info {
@@ -284,14 +280,16 @@ $flashcard-flip-headroom: 44px;
   padding-bottom: 8px;
 }
 
+// Design "H3", ranged left under the centred face.
 .flashcard-back-lemma {
   flex: 0 0 auto;
-  margin: 12px 0 8px;
-  font-size: 24px;
+  margin: 0;
+  font-size: 26px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
+// Design "text 1 Reg".
 .flashcard-back-translations {
   flex: 1 1 auto;
 
@@ -301,7 +299,9 @@ $flashcard-flip-headroom: 44px;
   }
 
   li {
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import FlashcardResult from './FlashcardResult'
 import Flashcard from '../Flashcard'
+import cardTranslations from '../cardTranslations'
 import useFittedTitle from '../useFittedTitle'
 
 const FlashcardBack = ({
@@ -38,30 +39,27 @@ const FlashcardBack = ({
 
   const titleRef = useFittedTitle(lemma)
 
-  const translationItems = Array.isArray(glosses)
-    ? [...new Set(glosses)]
-    : [glosses].filter(Boolean)
+  const translationItems = cardTranslations(glosses)
   // A reversed card had its descriptions on the front, so its back carries no translations — the
   // word on its own is the whole answer.
   const answerIsWordOnly = translationItems.length === 0
 
   // Both faces stay mounted, so the verdict is rendered only while the back is the side being
   // shown — otherwise it is already there part-way through the turn.
-  const verdict = flipped && <FlashcardResult answerCorrect={answerCorrect} />
+  const verdict = flipped && <FlashcardResult answerCorrect={answerCorrect} size={80} />
 
   // A word-only answer mirrors the front exactly — floated verdict, same text box, same reserved
   // actions row — so flipping leaves the text where it was instead of dropping it down the card.
   if (answerIsWordOnly) {
     return (
       <Flashcard showActions {...props}>
-        <div className="flashcard-result-float">{verdict}</div>
-        {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
-        <div className="flashcard-text-container">
+        <div className="flashcard-back">
+          <div className="flashcard-result-slot">{verdict}</div>
+          {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
           <h2 className="flashcard-title" ref={titleRef}>
             {lemma}
           </h2>
         </div>
-        <div className="flashcard-input-and-result-container" />
       </Flashcard>
     )
   }

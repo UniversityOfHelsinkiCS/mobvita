@@ -1,19 +1,19 @@
 import React from 'react'
 import { images } from 'Utilities/common'
 
-const FlashcardResult = ({ answerCorrect }) => {
+// `size` is the face's px square — the card's back shows it large, the front's floating copy small.
+const FlashcardResult = ({ answerCorrect, size = 20 }) => {
   if (answerCorrect === null) return null
 
-  const src = answerCorrect ? images.faceCorrect : images.faceIncorrect
+  const src = answerCorrect ? images.smileHappy : images.smileSad
 
   return (
     <div className="flashcard-result">
-      {/* `thumbs up` / `thumbs down` classes are kept for flashcards_spec.js selectors. */}
       <img
         src={src}
         alt=""
-        className={answerCorrect ? 'thumbs up' : 'thumbs down'}
-        style={{ width: 48, height: 48 }}
+        className={answerCorrect ? 'smile up' : 'smile down'}
+        style={{ width: size, height: size }}
       />
     </div>
   )
