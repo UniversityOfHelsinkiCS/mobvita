@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ReactCardFlip from 'react-card-flip'
+import FlipCard from '../FlipCard'
 import {
   updateFlashcard,
   addToCorrectAnswers,
@@ -136,19 +136,18 @@ const Fillin = ({
       }
     }
 
-    // Hack to get the thumbs up/down icon to render before card flips
     setAnswerChecked(true)
     setTimeout(() => setFlipped(!flipped), 50)
   }
 
   const cardProps = {
+    flipCard,
     cardNumbering,
     setSwipeIndex,
     stage,
     format,
     id,
     answerCorrect,
-    flipCard,
     handleEdit,
     focusedAndBigScreen,
     lemma,
@@ -172,7 +171,7 @@ const Fillin = ({
   }
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <FlashcardFront
         answerChecked={answerChecked}
         checkAnswer={checkAnswer}
@@ -186,7 +185,7 @@ const Fillin = ({
         infoMessage={infoMessage}
         {...cardProps}
       />
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 

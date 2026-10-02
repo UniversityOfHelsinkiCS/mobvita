@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
-import ReactCardFlip from 'react-card-flip'
-import { addToCorrectAnswers } from 'Utilities/redux/flashcardReducer'
+import FlipCard from '../FlipCard'
+import { addToCorrectAnswers, setFlashcardAnswered } from 'Utilities/redux/flashcardReducer'
 import {
   levenshteinDistance,
   normalizeDiacritics,
@@ -11,26 +11,17 @@ import {
   learningLanguageSelector,
 } from 'Utilities/common'
 import FlashcardInput from '../Fillin/FlashcardInput'
-import FlashcardResult from '../Fillin/FlashcardResult'
 import FlashcardBack from '../Fillin/FlashcardBack'
 import Flashcard from '../Flashcard'
+import displayedTranslations from '../displayedTranslations'
 
 // Front of a reversed card: the description is the prompt and the learner types the term. It keeps
 // the input even when both languages match, which the regular front hides — Finnish terms are
 // defined in Finnish, so that gate would leave nothing to answer with.
-const ReversedFront = ({
-  glosses,
-  answerChecked,
-  answerCorrect,
-  checkAnswer,
-  focusedAndBigScreen,
-  ...props
-}) => {
-  // Shared with the assistant, which reveals the same hints — see revealFlashcardHint.
+const ReversedFront = ({ glosses, answerChecked, checkAnswer, focusedAndBigScreen, ...props }) => {
   const displayedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
-  // The answer is the term itself, so the prompt names the learning language, not the dictionary.
   const learningLanguage = useSelector(learningLanguageSelector)
-  const descriptions = Array.isArray(glosses) ? [...new Set(glosses)] : [glosses]
+  const descriptions = displayedTranslations(glosses)
 
   return (
     <Flashcard {...props}>
@@ -51,7 +42,6 @@ const ReversedFront = ({
           displayedHints={displayedHints}
           answerLanguage={learningLanguage}
         />
-        <FlashcardResult answerCorrect={answerCorrect} />
       </div>
     </Flashcard>
   )
@@ -77,6 +67,11 @@ const Reversed = ({
   const intl = useIntl()
 
   const { glosses, format, _id: id, stage, lemma } = card
+
+  // Both checking an answer and flipping set `answerChecked`, so this covers either route.
+  useEffect(() => {
+    if (answerChecked) dispatch(setFlashcardAnswered(true))
+  }, [answerChecked])
 
   useEffect(() => {
     card.correct = answerCorrect
@@ -136,25 +131,25 @@ const Reversed = ({
       }
     }
 
-    // Hack to get the thumbs up/down icon to render before card flips
+    // Hack to get the result face to render before the card flips
     setAnswerChecked(true)
     setTimeout(() => setFlipped(!flipped), 50)
   }
 
   const cardProps = {
+    flipCard,
     cardNumbering,
     setSwipeIndex,
     stage,
     format,
     id,
     answerCorrect,
-    flipCard,
     focusedAndBigScreen,
     lemma,
   }
 
   return (
-    <ReactCardFlip isFlipped={flipped}>
+    <FlipCard isFlipped={flipped}>
       <ReversedFront
         glosses={glosses}
         answerChecked={answerChecked}
@@ -162,14 +157,13 @@ const Reversed = ({
         {...cardProps}
       />
       <FlashcardBack
-        glosses={glosses}
         flipped={flipped}
         swipeIndex={swipeIndex}
         handleIndexChange={handleIndexChange}
         infoMessage={infoMessage}
         {...cardProps}
       />
-    </ReactCardFlip>
+    </FlipCard>
   )
 }
 

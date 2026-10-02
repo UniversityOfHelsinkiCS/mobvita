@@ -6,297 +6,433 @@
 
 // The card footprint. Shared so any surface that stands in for a card while it loads reserves the
 // same space — see `.flashcard-match-loading`.
-$flashcard-width: 21em;
-$flashcard-height: 35em;
+$flashcard-width: 330px;
+$flashcard-height: 496px;
+// 20px all round, per the card design — the back's lemma and translations sit on that edge.
+$flashcard-padding: 20px;
+$flashcard-header-height: 36px;
+$flashcard-content-gap: 20px;
+$flashcard-actions-height: 82px;
+$flashcard-flip-headroom: 44px;
 
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
 .flashcard {
   display: flex;
   flex-direction: column;
-  box-sizing: content-box;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+  position: relative;
   width: $flashcard-width;
   height: $flashcard-height;
   margin: 0 auto 40px auto;
-  padding: 1em 1.5em 1.5em 1em;
-  border-radius: 0.8em;
+  padding: $flashcard-padding;
+  border-radius: 30px;
   background-color: #f1eede;
   color: #2d2c2a;
 
   &:focus {
     outline: none;
   }
+}
 
-  // Placeholder card (loading / empty): centre its single element instead of top-aligning it.
-  &--placeholder {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 1.25em;
+// Placeholder card (loading / empty): centre its single element instead of top-aligning it.
+.flashcard--placeholder {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.25em;
+}
+
+// "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
+.flashcard-no-cards {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 0.5em;
+  line-height: 1.5;
+  font-size: 1em;
+  font-weight: 600;
+  overflow: auto;
+}
+
+.flashcard-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.flashcard-main {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+.flashcard-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  gap: $flashcard-content-gap;
+}
+
+.flashcard-list-view {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  margin-top: -0.5rem;
+  // No top bar in this view, so keep clear of the cream card's rounded top edge.
+  padding: 1.25em 12px 36px 12px;
+
+  @media (max-width: 900px) {
+    width: 85%;
   }
 
-  // "No flashcards yet" message: centre it in the card body; the footer (language select) stays put.
-  &-no-cards {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 0.5em;
-    line-height: 1.5;
+  @media (max-width: 839px) {
+    width: 90%;
   }
 
-  &-body {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    min-height: 100%;
-    flex: 1 1 auto;
-    min-height: 0;
-    margin: 0 7px 0 7px;
-    padding: 24px 8px 8px 8px;
-  }
-
-  &-main {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 0;
-  }
-
-  &-content {
-    display: flex;
-    flex-direction: column;
-    height: 31em;
-  }
-
-  &-list-view {
-    display: flex;
-    flex-direction: column;
-    width: 75%;
-    margin-top: -0.5rem;
-    padding: 2px 12px 36px 12px;
-
-    @media (max-width: 900px) {
-      width: 85%;
-    }
-
-    @media (max-width: 839px) {
-      width: 90%;
-    }
-
-    @media (max-width: 640px) {
-      width: 100%;
-    }
-  }
-
-  &-header {
-    height: 2em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: 600;
-  }
-
-  &-text-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: auto;
-    padding: 4em 2em;
-    box-sizing: border-box;
-  }
-
-  &-title {
-    display: flex;
-    justify-content: center;
-    align-content: flex-end;
-    position: sticky;
-  }
-
-  &-title-small {
-    font-size: 18px;
-    display: flex;
-    justify-content: center;
-    align-content: flex-end;
-    position: sticky;
-  }
-
-  &-phonetics {
-    height: 1.5em;
-    display: flex;
-    justify-content: center;
-    align-content: flex-end;
-    position: sticky;
-  }
-
-  &-translations {
+  @media (max-width: 640px) {
     width: 100%;
-    height: 100%;
-    font-size: 1em;
-    display: flex;
+  }
+}
+
+.flashcard-header {
+  flex: 0 0 auto;
+  height: $flashcard-header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.flashcard-header-slot {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+
+  &--center {
     justify-content: center;
-    align-items: center;
-    padding-top: 1rem;
-
-    & > ul {
-      max-height: 16em;
-      padding-left: 0;
-    }
   }
 
-  &-no-cards {
-    flex: 1;
-    font-size: 1em;
+  &--end {
+    justify-content: flex-end;
+  }
+}
+
+.flashcard-deck.swiper {
+  padding-top: $flashcard-flip-headroom;
+}
+
+.flashcard-deck-standin {
+  padding-top: $flashcard-flip-headroom;
+}
+
+// The asset is the whole 36px ink circle, so the button itself draws nothing.
+.flashcard-flip-button {
+  display: flex;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  & > img {
+    display: block;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+// The word starts 146px down the card (20 padding + 36 header + 20 gap + 70 here) and is 36px tall,
+// leaving 314px below it — top-aligned rather than centred so those numbers hold.
+.flashcard-text-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: auto;
+  padding: 70px 28px 13px;
+  box-sizing: border-box;
+}
+
+// The lemma being drilled. `--font-language` first so a learner's script still gets a face with its
+// glyphs; the fallback is the UI font (Geologica) rather than the reading font (Rubik), because the
+// card's word is design chrome, not body copy.
+.flashcard-title {
+  display: flex;
+  justify-content: center;
+  align-content: flex-end;
+  position: sticky;
+  margin: 0;
+  font-size: 36px;
+  // Fixed, not relative: the line box stays 36px whatever size useFittedTitle lands on, so the
+  // word keeps its 146px-from-top / 314px-from-bottom placement at every length.
+  line-height: 36px;
+  font-weight: 400;
+  text-align: center;
+  font-family: var(--font-language, var(--font-ui));
+}
+
+// The quick deck's two choices stand where the translate deck's answer row does, so the word above
+// them keeps the same place on the card.
+.flashcard-quick-actions {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: $flashcard-actions-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+// A Latin transliteration, not the learnt script, so it deliberately stays on `--font-content`.
+.flashcard-phonetics {
+  height: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-content: flex-end;
+  position: sticky;
+  font-family: var(--font-content);
+}
+
+.flashcard-translations {
+  width: 100%;
+  height: 100%;
+  font-size: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > ul {
+    max-height: 16em;
+    margin: 0;
+    padding-left: 0;
+  }
+}
+
+
+.flashcard-back {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+// The back's verdict face is the 90px one from the design; the front floats a small copy instead.
+.flashcard-result-slot {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  min-height: 90px;
+}
+
+.flashcard-back-info {
+  flex: 0 0 auto;
+  padding-bottom: 8px;
+}
+
+// Design "H3", ranged left under the centred face.
+.flashcard-back-lemma {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 26px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+// Design "text 1 Reg".
+.flashcard-back-translations {
+  flex: 1 1 auto;
+
+  & > ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  li {
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+}
+
+.flashcard-input-and-result-container {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: $flashcard-actions-height;
+  display: flex;
+}
+
+.flashcard-input {
+  flex-grow: 1;
+  padding: 0;
+}
+
+.flashcard-button {
+  margin-top: 10px;
+}
+
+.flashcard-result {
+  margin: auto;
+}
+
+.flashcard-blended-input {
+  display: flex;
+  padding: 0;
+  background-color: inherit;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.flashcard-footer {
+  margin-top: auto;
+  height: 2em;
+  display: flex;
+  flex-direction: row;
+
+  & > button {
+    color: white;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    overflow: auto;
+    padding-right: 0;
   }
 
-  &-input-and-result-container {
-    height: 25%;
-    display: flex;
-    padding-top: 0.2em;
-    margin-bottom: 3em;
-  }
-
-  &-input {
-    flex-grow: 1;
-    padding-left: 1em;
-    padding-right: 1em;
-  }
-
-  &-button {
-    margin-top: 1em;
-    background-color: white;
-  }
-
-  &-result {
-    margin: auto;
-  }
-
-  &-blended-input {
+  & > select {
     background-color: inherit;
     border: none;
+    color: white;
+    font-weight: 600;
+    width: 7em;
 
     &:focus {
       outline: none;
     }
-  }
 
-  &-footer {
-    margin-top: auto;
-    height: 2em;
-    display: flex;
-    flex-direction: row;
-
-    & > button {
-      color: white;
-      font-weight: 600;
-      padding-right: 0;
-    }
-
-    & > select {
-      background-color: inherit;
-      border: none;
-      color: white;
-      font-weight: 600;
-      width: 7em;
-
-      &:focus {
-        outline: none;
-      }
-
-      & > option {
-        color: black;
-      }
+    & > option {
+      color: black;
     }
   }
+}
 
-  // Button reset only. The arrow is an <img>, so the old `color` / hover / disabled tints could
-  // never paint it; placement and looks now come from .flashcard-arrow-button in Flashcards.scss.
-  &-arrow-button {
-    margin-left: 0;
-    padding: 0;
-    border: none;
-    background: transparent;
+// Button reset plus placement. The arrow is an <img>, so the old `color` / hover / disabled tints
+// could never paint it. Absolutely positioned so the card stays centred; z-index lifts it over the
+// card's z-index: 2.
+.flashcard-arrow-button {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 11em);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  margin-left: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
 
-    &:focus {
-      outline: none;
-    }
+  &:focus {
+    outline: none;
   }
 
-  &-menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    width: 220px;
-    padding: 0 4px 42px 0;
-    margin: 0 auto 32px auto;
+  // Narrow screens: pull it back left so it stays on-screen.
+  @media (max-width: 800px) {
+    left: calc(50% + 11em - 50px);
   }
+}
 
-  &-fab-menu {
-    position: fixed;
-    bottom: 1em;
-    left: 1em;
-    display: flex;
-    flex-direction: column-reverse;
-    pointer-events: none;
-    z-index: 1000;
+.flashcard-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.flashcard-fab-menu {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  display: flex;
+  flex-direction: column-reverse;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.flashcard-fab {
+  align-self: flex-start;
+  background-color: #00afdc;
+  border-radius: 500px;
+  border: none;
+  width: 3.5em;
+  height: 3.5em;
+  box-shadow: 0 6px 10px 0 #666;
+  pointer-events: auto;
+
+  &:focus {
+    outline: 0;
   }
+}
 
-  &-fab {
-    align-self: flex-start;
-    background-color: #00afdc;
-    border-radius: 500px;
-    border: none;
-    width: 3.5em;
-    height: 3.5em;
-    box-shadow: 0 6px 10px 0 #666;
-    pointer-events: auto;
+.flashcard-fab-option {
+  align-self: flex-start;
+  display: flex;
+  padding-left: 0;
+  border: none;
+  background-color: transparent;
+  color: #777;
+  align-items: center;
+  pointer-events: auto;
+}
 
-    &:focus {
-      outline: 0;
-    }
-  }
+.flashcard-fab-icon {
+  background-color: white;
+  border-radius: 500px;
+  width: 2.8em;
+  height: 2.8em;
+  box-shadow: 0 6px 10px 0 #666;
+  display: flex;
+  align-items: center;
+  border: 1px solid #777;
+}
 
-  &-fab-option {
-    align-self: flex-start;
-    display: flex;
-    padding-left: 0;
-    border: none;
-    background-color: transparent;
-    color: #777;
-    align-items: center;
-    pointer-events: auto;
-  }
-
-  &-fab-icon {
-    background-color: white;
-    border-radius: 500px;
-    width: 2.8em;
-    height: 2.8em;
-    box-shadow: 0 6px 10px 0 #666;
-    display: flex;
-    align-items: center;
-    border: 1px solid #777;
-  }
-
-  &-fab-text {
-    background-color: white;
-    padding: 0.5em 1em;
-    border-radius: 0.5em;
-    font-size: 12px;
-    box-shadow: 0 6px 10px 0 #666;
-    border: 1px solid #777;
-  }
-
+.flashcard-fab-text {
+  background-color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  font-size: 12px;
+  box-shadow: 0 6px 10px 0 #666;
+  border: 1px solid #777;
 }
 
 
@@ -316,23 +452,8 @@ $flashcard-height: 35em;
 
 // ── Page layout and overrides ─────────────────────────────────────────────────
 
-// The lemma being drilled: `--font-language` so a learner's script gets a face with its glyphs.
-.flashcard-title,
-.flashcard-title-small {
-  font-family: var(--font-language, var(--font-content));
-}
 
-// A Latin transliteration, not the learnt script, so it deliberately stays on `--font-content`.
-.flashcard-phonetics {
-  font-family: var(--font-content);
-}
 
-.flashcard-body {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-}
 
 .flashcard-top-bar {
   display: flex;
@@ -340,7 +461,7 @@ $flashcard-height: 35em;
   gap: 1em;
   // The gap under the bar lives here, not on the menu inside it: a margin on a flex child is part
   // of the box `align-items: center` centres, so it would push the tabs off the gear's centre line.
-  padding: 1.25em 1.5em 1.7em;
+  padding: 1.25em 1.5em 8px;
 
   // Definite width so the fullWidth AppTabs inside resolves its 100%.
   &-menu {
@@ -350,15 +471,7 @@ $flashcard-height: 35em;
 }
 
 // Wrapper around the AppTabs practice-mode segmented control.
-.flashcard-menu {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
 
-.flashcard-main {
-  padding: 20px;
-}
 
 // The card area: takes the remaining height and centres the card both vertically and horizontally.
 .flashcard-main-row {
@@ -370,28 +483,9 @@ $flashcard-height: 35em;
   justify-content: center;
 }
 
-// Absolutely positioned so the card stays centred; z-index lifts it over the card's z-index: 2.
-.flashcard-arrow-button {
-  position: absolute;
-  top: 50%;
-  left: calc(50% + 11em);
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  z-index: 10;
-
-  // Narrow screens: pull it back left so it stays on-screen.
-  @media (max-width: 800px) {
-    left: calc(50% + 11em - 50px);
-  }
-}
 
 // ── All-cards list ────────────────────────────────────────────────────────────
 
-// No top bar in this view, so keep clear of the cream card's rounded top edge.
-.flashcard-list-view {
-  padding-top: 1.25em;
-}
 
 .flashcard-list-header {
   display: flex;
@@ -563,6 +657,7 @@ $flashcard-height: 35em;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  padding: 20px;
 
   // Loading: nothing is drawn behind the spinner, but it reserves a card's footprint so the mode
   // loads into the same space the decks do.
@@ -575,23 +670,28 @@ $flashcard-height: 35em;
     margin: 0 auto;
   }
 
-  // Terms and descriptions side by side; one column on a phone.
+  // Terms and descriptions share one grid, each item placed by the row and column it was given, so
+  // a pair sits level however long its description runs. A phone falls back to source order: the
+  // terms stacked above the descriptions, one column.
   &-board {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    align-items: start;
+    gap: 8px 12px;
+
+    > * {
+      grid-column: var(--match-col);
+      grid-row: var(--match-row);
+      min-width: 0;
+    }
 
     @media (max-width: 600px) {
       grid-template-columns: 1fr;
-    }
-  }
 
-  &-column {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
+      > * {
+        grid-column: auto;
+        grid-row: auto;
+      }
+    }
   }
 
   &-column-title {
@@ -601,6 +701,13 @@ $flashcard-height: 35em;
     text-transform: uppercase;
     color: $color-muted;
     padding-left: 2px;
+  }
+
+  // The pair's label: on its term from the start, on its description once the pair is made.
+  &-letter {
+    flex: 0 0 auto;
+    margin-right: 6px;
+    font-weight: 600;
   }
 
   // One pairable row: a 2px ring that grows with its text instead of clipping it.

@@ -297,7 +297,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         <Spinner size={60} />
       </div>
     ) : (
-      <div className="grow flex space-evenly">
+      <div className="grow flex space-evenly flashcard-deck-standin">
         <div className="flashcard flashcard--placeholder">
           <Spinner size={60} />
         </div>
@@ -405,6 +405,7 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
         allowTouchMove={!editing}
         simulateTouch={!bigScreen}
         slidesPerView={1}
+        className="flashcard-deck"
         style={{ maxWidth: '40em' }}
       >
         {Array.from({ length: cards.length + 1 }, (_, index) => (

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import AppTextField from 'Components/ui/AppTextField'
 import AppButton from 'Components/AppButton'
 import { fieldRinglessSx } from 'Components/ui/sx'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'
@@ -57,8 +58,6 @@ const FlashcardInput = ({
           value={answer}
           onChange={event => setAnswer(event.target.value)}
           placeholder={intl.formatMessage({ id: 'flashcard-input-placeholder' }, { selectedLanguage })}
-          // No green ring: the card already frames the field. The placeholder ("Type <language>
-          // translation here…") is long, so only it shrinks — the typed answer stays full size.
           sx={{
             ...fieldRinglessSx,
             '& .MuiOutlinedInput-input::placeholder': { fontSize: 13 },
@@ -66,9 +65,13 @@ const FlashcardInput = ({
         />
         <AppButton
           className="flashcard-button"
-          style={{ width: '100%', marginTop: '0.75em' }}
-          variant="outline-primary"
+          style={{ width: '100%' }}
+          variant="contrast"
           type="submit"
+          disabled={!answer.trim()}
+          sx={{
+            '&.Mui-disabled': { backgroundColor: colors.ink, color: colors.card, opacity: 0.2 },
+          }}
         >
           {intl.formatMessage({ id: 'check-answer' })}
         </AppButton>

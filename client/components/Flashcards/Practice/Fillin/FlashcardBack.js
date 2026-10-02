@@ -1,22 +1,10 @@
 import React, { useEffect, useCallback } from 'react'
-import { colors } from 'Assets/mui_theme/designTokens'
 import FlashcardResult from './FlashcardResult'
+import { flashcardColors } from 'Utilities/common'
 import Flashcard from '../Flashcard'
-
-// The green "Word Nest" pill used on the flashcard (design-only styling passed to the shared launcher).
-export const WORDNEST_PILL_STYLE = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  backgroundColor: colors.green,
-  color: colors.ink,
-  border: 'none',
-  outline: 'none',
-  boxShadow: 'none',
-  borderRadius: 999,
-  padding: '7px 16px',
-  fontWeight: 600,
-  fontSize: 14,
-}
+import CardAnswer from '../CardAnswer'
+import displayedTranslations from '../displayedTranslations'
+import useFittedTitle from '../useFittedTitle'
 
 const FlashcardBack = ({
   answerCorrect,
@@ -29,10 +17,16 @@ const FlashcardBack = ({
   handleIndexChange,
   ...props
 }) => {
+  // Enter advances the deck, but the listener is on `document` — so a press inside any field (the
+  // assistant's chat box, the answer input) belongs to that field, not to the deck.
   const handleEnter = useCallback(event => {
-    if (event.keyCode === 13) {
-      handleIndexChange(swipeIndex + 1)
-    }
+    if (event.keyCode !== 13) return
+
+    const target = event.target
+    const tag = target?.tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || target?.isContentEditable) return
+
+    handleIndexChange(swipeIndex + 1)
   })
 
   useEffect(() => {
@@ -45,34 +39,42 @@ const FlashcardBack = ({
     }
   }, [focusedAndBigScreen, flipped])
 
-  const translations = Array.isArray(glosses)
-    ? [...new Set(glosses)].map(item => <li key={item}>{item}</li>)
-    : glosses
+  const titleRef = useFittedTitle(lemma)
+
+  const translationItems = displayedTranslations(glosses)
+  // A reversed card had its descriptions on the front, so its back carries no translations — the
+  // word on its own is the whole answer.
+  const answerIsWordOnly = translationItems.length === 0
+
+  // Both faces stay mounted, so the verdict is rendered only while the back is the side being
+  // shown — otherwise it is already there part-way through the turn.
+  const verdict = flipped && <FlashcardResult answerCorrect={answerCorrect} size={80} />
+
+  // A word-only answer mirrors the front exactly — floated verdict, same text box, same reserved
+  // actions row — so flipping leaves the text where it was instead of dropping it down the card.
+  if (answerIsWordOnly) {
+    return (
+      <Flashcard showActions {...props}>
+        <div className="flashcard-back">
+          <div className="flashcard-result-slot">{verdict}</div>
+          {infoMessage && <div className="flashcard-back-info">{infoMessage}</div>}
+          <h2 className="flashcard-title" ref={titleRef}>
+            {lemma}
+          </h2>
+        </div>
+      </Flashcard>
+    )
+  }
 
   return (
-    <Flashcard showActions {...props}>
-      <span
-        style={{
-          display: 'block',
-          textAlign: 'center',
-          fontWeight: 600,
-          fontSize: '20px',
-          paddingBottom: '1em',
-          paddingTop: '1em',
-          flexShrink: 0,
-        }}
-      >
-        {lemma}
-      </span>
-      {infoMessage && <div className="justify-center">{infoMessage}</div>}
-      <div className="flashcard-text-container">
-        <div className="flashcard-translations">
-          <ul>{translations}</ul>
-        </div>
-      </div>
-      <div className="flashcard-input-and-result-container">
-        <FlashcardResult answerCorrect={answerCorrect} />
-      </div>
+    <Flashcard showActions {...props} cardBackground={flashcardColors.backBackground}>
+      <CardAnswer
+        answerCorrect={answerCorrect}
+        showVerdict={flipped}
+        lemma={lemma}
+        glosses={glosses}
+        infoMessage={infoMessage}
+      />
     </Flashcard>
   )
 }

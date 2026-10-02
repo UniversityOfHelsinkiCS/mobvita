@@ -68,6 +68,8 @@ import trophy01Pick from 'Assets/images/trophy-01-pick.svg'
 import faceCorrect from 'Assets/images/face-correct.svg'
 import faceIncorrect from 'Assets/images/face-incorrect.svg'
 import faceNeutral from 'Assets/images/face-neutral.svg'
+import smileHappy from 'Assets/images/smile-happy.svg'
+import smileSad from 'Assets/images/smile-sad.svg'
 import flip from 'Assets/images/flip.svg'
 import speaker from 'Assets/images/speaker.svg'
 import wordnest from 'Assets/images/wordnest.svg'
@@ -280,6 +282,8 @@ export const images = {
   faceCorrect,
   faceIncorrect,
   faceNeutral,
+  smileHappy,
+  smileSad,
   flip,
   speaker,
   wordnest,
@@ -756,9 +760,10 @@ export const exerciseMaskedLanguages = ['Chinese']
 export const colors = {}
 
 export const flashcardColors = {
-  background: ['#E5BDAA', '#F1D0AA', '#F2DF9A', '#D9E499', '#B4D2AF'],
+  background: ['#F48E73', '#FCC873', '#FEE680', '#BCD068', '#70AF66'],
   foreground: ['#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A', '#2D2C2A'],
-  blueBackground: '#adc5dd',
+  blueBackground: '#9CC0D6',
+  backBackground: '#F7F0D5',
 }
 
 const stagingOptions = [
