@@ -79,6 +79,14 @@ const NavGroup = styled('div')({
 
 const NewsWebSite = 'https://revitaai.github.io/faq-LEARNER-TOC.html'
 
+// The message id for a language name: each segment capitalized, as the keys are written
+// ("north-saami" -> "North-Saami"). Same normalisation the language picker does.
+const localizedLanguageId = language =>
+  (language || '')
+    .split('-')
+    .map(part => capitalize(part))
+    .join('-')
+
 // Initials for the profile avatar, e.g. "roman.yangarber" / "Roman Yangarber" → "RY".
 const getInitials = name => {
   if (!name) return '?'
@@ -398,7 +406,9 @@ export default function NavBar() {
                           border: 'none',
                         }}
                       />
-                      {user?.user?.last_used_language}
+                      {/* Language names are message ids of their own ("Finnish" -> "Suomi"), the
+                          way the language picker renders them. */}
+                      <FormattedMessage id={localizedLanguageId(user?.user?.last_used_language)} />
                     </span>
                   </CustomTooltip>
                   <MoreVertIcon
