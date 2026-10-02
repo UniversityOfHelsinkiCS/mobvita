@@ -9,6 +9,7 @@ import SettingButton from 'Components/SettingsButton'
 import { useLearningLanguage, useDictionaryLanguage } from 'Utilities/common'
 import { getFlashcardListPage, clearFlashcardList } from 'Utilities/redux/flashcardListReducer'
 import Spinner from 'Components/Spinner'
+import WordNestModal from 'Components/WordNestModal'
 import FlashcardListEdit from './FlashcardListEdit'
 import FlashcardListItem from './FlashcardListItem'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -17,6 +18,8 @@ const FlashcardList = () => {
   const [editableCard, setEditableCard] = useState(null)
   const [scrollYPosition, setScrollYPosition] = useState(0)
   const [activePage, setActivePage] = useState(1)
+  const [nestWord, setNestWord] = useState('')
+  const [nestOpen, setNestOpen] = useState(false)
 
   const { cardsInCurrentPage, numberOfCards, numberOfPages, pending } = useSelector(
     ({ flashcardList }) => flashcardList
@@ -45,6 +48,12 @@ const FlashcardList = () => {
     dispatch(getFlashcardListPage(learningLanguage, dictionaryLanguage, 0, storyId))
     setActivePage(1)
   }, [dictionaryLanguage, storyId])
+
+  // One modal for the whole page; a row's nest icon just says which word to open it on.
+  const openWordNest = lemma => {
+    setNestWord(lemma)
+    setNestOpen(true)
+  }
 
   const handleEdit = card => {
     setScrollYPosition(window.scrollY)
@@ -98,12 +107,23 @@ const FlashcardList = () => {
         <div>
           <div className="flashcard-list-rows">
             {cardsInCurrentPage.map(card => (
-              <FlashcardListItem key={card._id} card={card} handleEdit={handleEdit} />
+              <FlashcardListItem
+                key={card._id}
+                card={card}
+                handleEdit={handleEdit}
+                openWordNest={openWordNest}
+              />
             ))}
           </div>
           <div className="flashcard-list-footer">{pagination}</div>
         </div>
       )}
+      <WordNestModal
+        wordToCheck={nestWord}
+        setWordToCheck={setNestWord}
+        open={nestOpen}
+        setOpen={setNestOpen}
+      />
     </div>
   )
 }
