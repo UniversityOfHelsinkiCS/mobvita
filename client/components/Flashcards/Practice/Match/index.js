@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import AppButton from 'Components/AppButton'
 import { addToCorrectAnswers, addToTotal } from 'Utilities/redux/flashcardReducer'
 import { finalConfettiRain } from 'Utilities/common'
+import displayedTranslations from '../displayedTranslations'
 
 const WRONG_FLASH_MS = 700
 
@@ -17,7 +18,16 @@ const shuffle = items => {
   return copy
 }
 
-const describe = card => (Array.isArray(card.glosses) ? card.glosses.join(', ') : card.glosses)
+const describe = card => displayedTranslations(card.glosses).join(', ')
+
+// Spreadsheet-style labels, so a deck longer than the alphabet still gets one label per pair.
+const letterFor = index => {
+  let label = ''
+  for (let n = index; n >= 0; n = Math.floor(n / 26) - 1) {
+    label = String.fromCharCode(65 + (n % 26)) + label
+  }
+  return label
+}
 
 // Matching deck: terms and descriptions in two independently shuffled columns. Pick one from each
 // side to pair them; the backend records every attempt as the `match` exercise.
@@ -31,6 +41,12 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
   // Two independent shuffles so the columns never line up; reshuffled only when the deck changes.
   const terms = useMemo(() => shuffle(cards), [cards])
   const descriptions = useMemo(() => shuffle(cards), [cards])
+
+  // Each pair's label comes from where its term sits; the description shows it once matched.
+  const letterById = useMemo(
+    () => new Map(terms.map((card, index) => [card._id, letterFor(index)])),
+    [terms],
+  )
 
   useEffect(() => {
     setSelected(null)
@@ -101,35 +117,47 @@ const Match = ({ cards, postAnswer, onCompleted, handleNewDeck }) => {
     return base
   }
 
-  const renderColumn = (side, items, titleId, cyPrefix) => (
-    <div className="flashcard-match-column">
-      <div className="flashcard-match-column-title">
+  // Both columns live in one grid: `--match-col` / `--match-row` keep each pair of items level.
+  const renderColumn = (side, items, titleId, cyPrefix, column) => (
+    <>
+      <div
+        className="flashcard-match-column-title"
+        style={{ '--match-col': column, '--match-row': 1 }}
+      >
         <FormattedMessage id={titleId} />
       </div>
-      {items.map(card => (
-        <button
-          key={card._id}
-          type="button"
-          className={itemClass(side, card)}
-          data-cy={`${cyPrefix}-${card._id}`}
-          onClick={() => handlePick(side, card)}
-          disabled={matched.includes(card._id)}
-        >
-          {side === 'term' ? card.lemma : describe(card)}
-        </button>
-      ))}
-    </div>
+      {items.map((card, index) => {
+        const labelled = side === 'term' || matched.includes(card._id)
+        return (
+          <button
+            key={card._id}
+            type="button"
+            className={itemClass(side, card)}
+            style={{ '--match-col': column, '--match-row': index + 2 }}
+            data-cy={`${cyPrefix}-${card._id}`}
+            onClick={() => handlePick(side, card)}
+            disabled={matched.includes(card._id)}
+          >
+            {labelled && (
+              <span className="flashcard-match-letter">{letterById.get(card._id)}.</span>
+            )}
+            <span>{side === 'term' ? card.lemma : describe(card)}</span>
+          </button>
+        )
+      })}
+    </>
   )
 
   return (
     <div className="flashcard-match" data-cy="flashcard-match-board">
       <div className="flashcard-match-board">
-        {renderColumn('term', terms, 'flashcard-match-terms', 'flashcard-match-term')}
+        {renderColumn('term', terms, 'flashcard-match-terms', 'flashcard-match-term', 1)}
         {renderColumn(
           'gloss',
           descriptions,
           'flashcard-match-descriptions',
           'flashcard-match-gloss',
+          2,
         )}
       </div>
 

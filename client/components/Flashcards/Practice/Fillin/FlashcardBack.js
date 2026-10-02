@@ -3,7 +3,7 @@ import FlashcardResult from './FlashcardResult'
 import { flashcardColors } from 'Utilities/common'
 import Flashcard from '../Flashcard'
 import CardAnswer from '../CardAnswer'
-import cardTranslations from '../cardTranslations'
+import displayedTranslations from '../displayedTranslations'
 import useFittedTitle from '../useFittedTitle'
 
 const FlashcardBack = ({
@@ -41,7 +41,7 @@ const FlashcardBack = ({
 
   const titleRef = useFittedTitle(lemma)
 
-  const translationItems = cardTranslations(glosses)
+  const translationItems = displayedTranslations(glosses)
   // A reversed card had its descriptions on the front, so its back carries no translations — the
   // word on its own is the whole answer.
   const answerIsWordOnly = translationItems.length === 0

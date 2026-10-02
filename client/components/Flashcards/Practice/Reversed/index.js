@@ -13,7 +13,7 @@ import {
 import FlashcardInput from '../Fillin/FlashcardInput'
 import FlashcardBack from '../Fillin/FlashcardBack'
 import Flashcard from '../Flashcard'
-import cardTranslations from '../cardTranslations'
+import displayedTranslations from '../displayedTranslations'
 
 // Front of a reversed card: the description is the prompt and the learner types the term. It keeps
 // the input even when both languages match, which the regular front hides — Finnish terms are
@@ -21,7 +21,7 @@ import cardTranslations from '../cardTranslations'
 const ReversedFront = ({ glosses, answerChecked, checkAnswer, focusedAndBigScreen, ...props }) => {
   const displayedHints = useSelector(({ flashcards }) => flashcards.revealedHints)
   const learningLanguage = useSelector(learningLanguageSelector)
-  const descriptions = cardTranslations(glosses)
+  const descriptions = displayedTranslations(glosses)
 
   return (
     <Flashcard {...props}>

@@ -670,23 +670,28 @@ $flashcard-flip-headroom: 44px;
     margin: 0 auto;
   }
 
-  // Terms and descriptions side by side; one column on a phone.
+  // Terms and descriptions share one grid, each item placed by the row and column it was given, so
+  // a pair sits level however long its description runs. A phone falls back to source order: the
+  // terms stacked above the descriptions, one column.
   &-board {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    align-items: start;
+    gap: 8px 12px;
+
+    > * {
+      grid-column: var(--match-col);
+      grid-row: var(--match-row);
+      min-width: 0;
+    }
 
     @media (max-width: 600px) {
       grid-template-columns: 1fr;
-    }
-  }
 
-  &-column {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
+      > * {
+        grid-column: auto;
+        grid-row: auto;
+      }
+    }
   }
 
   &-column-title {
@@ -696,6 +701,13 @@ $flashcard-flip-headroom: 44px;
     text-transform: uppercase;
     color: $color-muted;
     padding-left: 2px;
+  }
+
+  // The pair's label: on its term from the start, on its description once the pair is made.
+  &-letter {
+    flex: 0 0 auto;
+    margin-right: 6px;
+    font-weight: 600;
   }
 
   // One pairable row: a 2px ring that grows with its text instead of clipping it.

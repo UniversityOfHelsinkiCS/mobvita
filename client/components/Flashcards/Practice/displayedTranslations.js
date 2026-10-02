@@ -3,10 +3,10 @@ export const MAX_TRANSLATIONS = 7
 
 // The glosses a card should display: de-duplicated, capped, and tolerant of a card whose glosses
 // arrive as a single string rather than an array.
-const cardTranslations = glosses =>
+const displayedTranslations = glosses =>
   (Array.isArray(glosses) ? [...new Set(glosses)] : [glosses].filter(Boolean)).slice(
     0,
     MAX_TRANSLATIONS,
   )
 
-export default cardTranslations
+export default displayedTranslations
