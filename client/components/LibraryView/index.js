@@ -731,8 +731,9 @@ const StoryList = () => {
           onDragOver={e => handleFolderDragOver('', e)}
           onDrop={e => handleFolderDrop('', e)}
         >
-          <FormattedMessage id={capitalize(activeLibrary)} />&nbsp;
-          <FormattedMessage id="Library" />
+          {/* One key per library root ("public-library"), not two words glued together: the word
+              order of "Public Library" does not survive translation. */}
+          <FormattedMessage id={`${activeLibrary}-library`} />
         </button>
         {libraryPathParts.map((part, index) => {
           const path = libraryPathParts.slice(0, index + 1).join('/')

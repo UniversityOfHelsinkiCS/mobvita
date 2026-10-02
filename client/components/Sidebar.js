@@ -243,16 +243,6 @@ export default function Sidebar() {
                   <FormattedMessage id="Lessons" />
                 </MenuRow>
               )}
-              {/* Where a student joins a group with the key their teacher gave them; same icon as
-                  the teacher's own Groups row. */}
-              <MenuRow
-                data-cy="sidebar-groups-student"
-                icon={<img src={images.users01} alt="" style={imgIconStyle} />}
-                selected={isActive('/groups')}
-                onClick={() => go('/groups/student')}
-              >
-                <FormattedMessage id="Groups" />
-              </MenuRow>
               {hiddenFeatures && (
                 <>
                   <MenuRow

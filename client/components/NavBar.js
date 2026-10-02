@@ -578,9 +578,11 @@ export default function NavBar() {
                   )}
                 </span>
               </AppMenuItem>
+              {/* The two roles are separate pages: a teacher manages groups, a student joins one
+                  with a key. Which one this opens follows the view the user is in. */}
               <AppMenuItem
                 icon={<img src={images.users01} alt="" style={{ width: 22, height: 22 }} />}
-                onClick={() => navigate('/groups/teacher')}
+                onClick={() => navigate(teacherView ? '/groups/teacher' : '/groups/student')}
               >
                 <FormattedMessage id="Groups" defaultMessage="Groups" />
               </AppMenuItem>
