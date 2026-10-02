@@ -5,6 +5,7 @@ import {
   learningLanguageSelector,
   dictionaryLanguageSelector,
   learningLanguageLocaleCodes,
+  useMTAvailableLanguage,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -23,8 +24,13 @@ const StoryTitleTranslate = ({ title, size }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const helperActiveTab = useSelector(state => state.helperSidebar?.activeTab)
+  const mtLanguages = useMTAvailableLanguage()
 
-  if (!title) return null
+  // Nothing to offer when machine translation has no model for this pair — the word-level
+  // translations make the same check before dispatching.
+  const canTranslate = mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))
+
+  if (!title || !canTranslate) return null
 
   const handleClick = () => {
     dispatch(

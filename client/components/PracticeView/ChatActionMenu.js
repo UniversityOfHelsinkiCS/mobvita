@@ -10,11 +10,13 @@ import {
   resetAnnotationCandidates,
   setAnnotationsVisibility,
 } from 'Utilities/redux/annotationsReducer'
-import { 
-  useLearningLanguage, 
-  useDictionaryLanguage, 
+import {
+  useLearningLanguage,
+  useDictionaryLanguage,
   learningLanguageLocaleCodes,
-  images 
+  useMTAvailableLanguage,
+  hiddenFeatures,
+  images
 } from 'Utilities/common'
 import ChatActionMenuSuggestions from './ChatActionMenuSuggestions'
 
@@ -48,6 +50,9 @@ const ChatActionMenu = ({
   const { messages, exerciseContext, isWaitingForResponse, isLoadingHistory } = useSelector(({ chatbot }) => chatbot)
     
   const focused = useSelector(state => state.snippets.focused)
+  // Reading pages have no practice snippet, so the surrounding sentence has to come from the story
+  // itself — without this the menu silently found nothing to translate and sent no request.
+  const storyParagraphs = useSelector(({ stories }) => stories.focused?.paragraph)
   const session_id = useSelector(state => state.snippets.focused?.session_id)
   const storyid = useSelector(state => state.snippets.focused?.storyid)
   const chat_history = useSelector(state => state.snippets.focused_snippet_chat_history)
@@ -55,6 +60,11 @@ const ChatActionMenu = ({
   const translationState = useSelector(({ translation }) => translation)
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  // Machine translation only has models for some pairs; the row is hidden rather than failing.
+  const mtLanguages = useMTAvailableLanguage()
+  const canTranslateSentence = mtLanguages.includes(
+    [learningLanguage, dictionaryLanguage].join('-'),
+  )
   const { 
     message: hintMessage, // not in use! keep for compatibility
     hints, 
@@ -70,11 +80,18 @@ const ChatActionMenu = ({
   const handleSentenceTranslation = () => {
         setShowContextTranslation(true)
         let sentence = ''
-        const safeSnippet = focused?.practice_snippet ? focused.practice_snippet : []       
+        // Practice reads the snippet being answered; preview / review / the dictionary panel fall
+        // back to the story's own words, which carry the same `sentence_id`.
+        const safeSnippet = focused?.practice_snippet?.length
+          ? focused.practice_snippet
+          : storyParagraphs?.flat(1) || []
+        // Outside practice the focused word is whatever was last practised, so its sentence_id
+        // means nothing here: the clicked word is what the branch below locates instead.
+        const inPractice = Boolean(focused?.practice_snippet?.length)
         // `!= null` rather than a truthiness check: sentence_id is 0 for the first sentence, so a
         // plain `&& currentWord.sentence_id` skipped this branch for every word in it and fell
         // through to the surface-match fallback, which returns just the selected word.
-        if (currentWord && currentWord.sentence_id != null) {
+        if (inPractice && currentWord && currentWord.sentence_id != null) {
           sentence = safeSnippet
             .filter(s => currentWord.sentence_id - 1 <= s.sentence_id && s.sentence_id <= currentWord.sentence_id + 1)
             .map(t => t.surface)
@@ -109,6 +126,15 @@ const ChatActionMenu = ({
             learningLanguageLocaleCodes[learningLanguage],
             learningLanguageLocaleCodes[dictionaryLanguage]
           ))
+        } else if (hiddenFeatures) {
+          // Dev/staging: no sentence means no request at all, which looks identical to a broken
+          // endpoint in the network tab. Say which of the two inputs was missing.
+          console.log(
+            '[ctx-translate] nothing to translate ·',
+            `words: ${safeSnippet.length} ·`,
+            `clicked: ${translationState.surfaceWord || '—'} ·`,
+            `focused sentence: ${currentWord?.sentence_id ?? '—'}`,
+          )
         }
 
         setOpen(false)
@@ -206,7 +232,7 @@ const ChatActionMenu = ({
             </button>              
           )}
                 
-          {(
+          {canTranslateSentence && (
             <button
               type="button"
               className="chat-action-item"

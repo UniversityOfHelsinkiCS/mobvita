@@ -87,12 +87,13 @@
 }
 
 // Caption above a context translation that came from the story title, so the bubble says what it
-// is translating.
+// is translating. Styled like the <strong> lead line the translation service itself returns, so a
+// captioned bubble and a plain one read the same way.
 .context-translation-caption {
   margin-bottom: 4px;
-  font-size: 13px;
-  font-weight: 600;
-  color: $color-muted;
+  font-size: inherit;
+  font-weight: 700;
+  color: inherit;
 }
 
 .bulbs-container {
@@ -302,7 +303,10 @@
 
     // Context/Sentence Translation Box
     .context-translation-box {
-      margin: 0 auto;
+      // Left-aligned and full width: `margin: 0 auto` centred the box and shrank it to its
+      // content, so a translation bubble sat narrower and more inset than every other bubble.
+      margin: 0;
+      width: 100%;
 
       .context-translation-title {
         margin: 0 0 0.5em 0;

@@ -18,6 +18,7 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import CustomTooltip from 'Components/CustomTooltip'
 import Spinner from 'Components/Spinner'
+import ChatBubble from 'Components/ui/ChatBubble'
 import WordNestModal from 'Components/WordNestModal'
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import AppLemma from 'Components/ui/AppLemma'
@@ -238,26 +239,45 @@ const WordTranslationPanel = () => {
     return targetSents.join(' ')
   }
 
+  // Same presentation as the assistant's own context translation: the design-system note bubble,
+  // captioned when the source was the story title. This panel used to render a bare grey div, so
+  // the two looked like different features depending on which tab the translation landed in.
   const renderContextTranslationContent = () => {
     const d = contextTranslationState.data
     if (!d) return null
-    if (typeof d === 'string') return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d }} />
-    if (d['alignment'] && d['source-segments'] && d['target-segments']) {
-      const html = highlightTarget(d)
-      return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: html }} />
-    }
-    if (d.translation) return <div className="context-translation-content" dangerouslySetInnerHTML={{ __html: d.translation }} />
-    if (d['target-sentences']) return (
-      <div className="context-translation-content">
-        {d['target-sentences'].map((s, i) => (
-          <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
-        ))}
-      </div>
+
+    const caption =
+      contextTranslationState.kind === 'title' ? (
+        <div className="context-translation-caption">
+          <FormattedMessage id="title-translation" />
+        </div>
+      ) : null
+
+    const renderHtml = html => (
+      <ChatBubble variant="note">
+        {caption}
+        <div dangerouslySetInnerHTML={{ __html: html }} />
+      </ChatBubble>
     )
+
+    if (typeof d === 'string') return renderHtml(d)
+    if (d['alignment'] && d['source-segments'] && d['target-segments']) {
+      return renderHtml(highlightTarget(d))
+    }
+    if (d.translation) return renderHtml(d.translation)
+    if (d['target-sentences'])
+      return (
+        <ChatBubble variant="note">
+          {caption}
+          {d['target-sentences'].map((s, i) => (
+            <p key={i} dangerouslySetInnerHTML={{ __html: s }} />
+          ))}
+        </ChatBubble>
+      )
     return (
-      <div className="context-translation-content">
+      <ChatBubble variant="note">
         <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(d, null, 2)}</pre>
-      </div>
+      </ChatBubble>
     )
   }
 
@@ -408,9 +428,9 @@ const WordTranslationPanel = () => {
                 renderContextTranslationContent()
               ) : window?.location?.hostname === 'localhost' || window?.location?.hostname === '127.0.0.1' ? (
                 // Local dev fallback: the MT backend isn't reachable, so show the original sentence.
-                <div className="context-translation-content">
+                <ChatBubble variant="note">
                   <p>{contextTranslationState.lastTrans || surfaceWord || ''}</p>
-                </div>
+                </ChatBubble>
               ) : null}
             </div>
           )}
