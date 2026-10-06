@@ -39,6 +39,11 @@
 
 .first-message {
       margin: 20px 0;
+      // Stacked bubbles (the story-completed prompt raises two) need the gap the message list
+      // gives its own: without it they sit flush against each other.
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       .message {
         max-width: 100%;
       }

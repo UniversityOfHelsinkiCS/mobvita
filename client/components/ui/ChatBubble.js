@@ -18,6 +18,9 @@ import AppMenu, { AppMenuItem } from './AppMenu'
  *   'comment'   - the assistant's comment on a correction (left, warm grey, squared top-left corner)
  *   'options'   - see-through, full-width bubble that holds action content (e.g. the add-story options):
  *                 left-aligned like a bot reply but no background, shadow, or padding
+ *   'recommendation' - a suggestion the assistant raises itself (practise these cards, take this
+ *                 test): full-width tan card with `icon` in a column of its own and the dismiss X
+ *                 in the corner — pass `onRemove` for it
  *
  * Correction variants carry an essay correction type's colour, so a bubble about a correction reads
  * as the same thing as the correction. A multi-token correction uses 'correction-replacement'.
@@ -40,7 +43,10 @@ const BUBBLE_LINE_HEIGHT = 18
 // Room for the actions plus a clear gap before the text reaches them.
 const BUBBLE_ACTIONS_WIDTH = 54
 // `controlled-note` is taller: its glyph and menu are pinned to this padding, not the shared one.
-const NOTE_PADDING_Y = 14
+const NOTE_PADDING_Y = 16
+// The `recommendation` variant keeps its icon in a column of its own, so the text is indented past
+// it rather than wrapping under it.
+const RECOMMENDATION_ICON_COLUMN = 52
 
 export const CORRECTION_COLORS = {
   replacement: '#C1DCE6',
@@ -85,6 +91,23 @@ const VARIANT_STYLES = {
   'correction-replacement': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.replacement },
   'correction-insertion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.insertion },
   'correction-deletion': { ...CORRECTION_SHAPE, backgroundColor: CORRECTION_COLORS.deletion },
+  // A suggestion the assistant raises by itself (practise these cards, take this test). Full width
+  // with an icon column on the left, so it reads as a card rather than as something said in the
+  // conversation; the X in the corner dismisses it.
+  recommendation: {
+    // `stretch` rather than `width: 100%`: it fills the column *inside* the shared gutter, so the
+    // card is inset like a hint bubble instead of running to the panel edges.
+    alignSelf: 'stretch',
+    backgroundColor: '#ECE3BE',
+    color: colors.ink,
+    maxWidth: '100%',
+    borderRadius: 18,
+    borderTopLeftRadius: 2,
+    paddingRight: 16,
+    paddingTop: NOTE_PADDING_Y,
+    paddingBottom: NOTE_PADDING_Y,
+    paddingLeft: RECOMMENDATION_ICON_COLUMN,
+  },
   options: {
     alignSelf: 'flex-start',
     backgroundColor: 'transparent',
@@ -201,6 +224,19 @@ const BubbleLeftIcon = styled('div')({
   '& img': { display: 'block', width: 18, height: 18 },
 })
 
+// The recommendation's own icon column: top-aligned beside the title, not centred on the bubble.
+const BubbleIconColumn = styled('div')({
+  position: 'absolute',
+  left: 16,
+  top: NOTE_PADDING_Y,
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 24,
+  height: 24,
+  '& img, & svg': { display: 'block', width: 24, height: 24 },
+})
+
 const ActionButton = styled('button')({
   display: 'inline-flex',
   alignItems: 'center',
@@ -240,6 +276,8 @@ const ChatBubble = React.forwardRef(
       onRemove,
       editDataCy,
       removeDataCy,
+      // `recommendation` only: the glyph in its left column, an image src or a node.
+      icon,
       children,
       ...rest
     },
@@ -276,6 +314,12 @@ const ChatBubble = React.forwardRef(
           <BubbleLeftIcon aria-hidden="true">
             <img src={images.paste} alt="" />
           </BubbleLeftIcon>
+        )}
+
+        {variant === 'recommendation' && icon && (
+          <BubbleIconColumn aria-hidden="true">
+            {typeof icon === 'string' ? <img src={icon} alt="" /> : icon}
+          </BubbleIconColumn>
         )}
 
         {variant === 'controlled-note' && (onEdit || onRemove) && (

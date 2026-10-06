@@ -154,7 +154,12 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
 
       <div className="chatbot-messages">
         {showBlueCardsPrompt && (
-          <ChatBubble variant="bot">
+          <ChatBubble
+            variant="recommendation"
+            icon={images.cardsIcon}
+            onRemove={() => onDismissBlueCardsPrompt(false)}
+            removeDataCy="blue-cards-prompt-dismiss"
+          >
             <BlueCardsTestEncouragement layout="chat" setShow={onDismissBlueCardsPrompt} />
           </ChatBubble>
         )}
@@ -190,7 +195,12 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
           </ChatBubble>
         ))}
         {deckCompleted && (
-          <ChatBubble variant="bot">
+          <ChatBubble
+            variant="recommendation"
+            icon={images.trophy01}
+            onRemove={() => dispatch(setDeckCompleted(false))}
+            removeDataCy="deck-completed-dismiss"
+          >
             <PracticeCompletedEncouragement
               layout="chat"
               practiceType="flashcard"

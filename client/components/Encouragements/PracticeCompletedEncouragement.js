@@ -56,17 +56,23 @@ const PracticeCompletedEncouragement = ({
     </>
   )
 
-  // In the assistant the bubble is the surface, so this renders bare.
+  // In the assistant the recommendation bubble is the surface: it draws the icon column and the
+  // dismiss X, so this renders only the title, the message and the one action that continues.
   if (inChat) {
     return (
-      <div className="encouragement-chat">
-        <div className="encouragement-chat-head">
-          <img src={images.encTrophy} alt="" />
-          <strong>{title}</strong>
-        </div>
+      <>
+        <strong className="encouragement-chat-title">{title}</strong>
         <p className="encouragement-chat-message">{message}</p>
-        <div className="encouragement-chat-actions">{actions}</div>
-      </div>
+        <AppButton
+          variant="contrast"
+          size="sm"
+          type="button"
+          onClick={handlePrimaryButtonClick}
+          style={{ marginTop: 10 }}
+        >
+          <FormattedMessage id={practiceType === 'story' ? 'restart-story' : 'Continue'} />
+        </AppButton>
+      </>
     )
   }
 

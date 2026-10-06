@@ -65,6 +65,8 @@ import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatBubble from 'Components/ui/ChatBubble'
+import PracticeCompletedEncouragement from 'Components/Encouragements/PracticeCompletedEncouragement'
+import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import Spinner from 'Components/Spinner'
 
 import './CombinedChatbot.scss'
@@ -192,7 +194,17 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
   )
 }
 
-const CombinedChatbot = ({ inWordNestModal, clue }) => {
+const CombinedChatbot = ({
+  inWordNestModal,
+  clue,
+  // The completion prompt, raised here instead of in the floating card it replaced. Story practice
+  // passes `completedStory` so the blue-cards test can follow it; lesson practice does not.
+  practiceCompleted = false,
+  onDismissPracticeCompleted,
+  onRestartPractice,
+  practiceType = 'story',
+  completedStory,
+}) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
@@ -903,6 +915,43 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
     return targetSents.join(' ')
   }
 
+  // What the floating completion card used to say, as recommendation bubbles: finishing the
+  // practice, and — for a story with blue cards — the test that follows it.
+  const practiceCompletedBubbles = practiceCompleted ? (
+    <>
+      <ChatBubble
+        variant="recommendation"
+        icon={images.trophy01}
+        onRemove={onDismissPracticeCompleted}
+        removeDataCy="practice-completed-dismiss"
+      >
+        <PracticeCompletedEncouragement
+          layout="chat"
+          practiceType={practiceType}
+          setShow={onDismissPracticeCompleted}
+          continueAction={onRestartPractice}
+        />
+      </ChatBubble>
+
+      {completedStory?.id && (
+        <ChatBubble
+          variant="recommendation"
+          icon={images.cardsIcon}
+          onRemove={onDismissPracticeCompleted}
+          removeDataCy="story-blue-cards-dismiss"
+        >
+          <BlueCardsTestEncouragement
+            layout="chat"
+            setShow={onDismissPracticeCompleted}
+            storyId={completedStory.id}
+            storyTitle={completedStory.title}
+            blueCardCount={completedStory.blueCardCount}
+          />
+        </ChatBubble>
+      )}
+    </>
+  ) : null
+
   const renderContextTranslationContent = () => {
     const d = contextTranslationState.data
     if (!d) return null
@@ -1013,6 +1062,10 @@ const CombinedChatbot = ({ inWordNestModal, clue }) => {
         <h3 className="ai-header-title">Vita - AI Assistant</h3>
         <AssistentSettings className="settings-icon" />
       </div>
+
+      {/* Above the tab panels on purpose: `setHelperSidebarTab(null)` runs on every snippet change,
+          so anything inside a panel is hidden at exactly the moment a story ends. */}
+      {practiceCompletedBubbles && <div className="first-message">{practiceCompletedBubbles}</div>}
 
       {showInitialInstruction && (
         <div className="first-message">

@@ -111,7 +111,7 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
       maxWidth="sm"
       closeDataCy="story-info-dialog-close"
       data-cy="story-info-dialog"
-      titleSx={{ px: 5, pt: 5, pb: 1, fontSize: '22px', lineHeight: 1.2 }}
+      titleSx={{ pl: 5, pr: 8, pt: 5, pb: 1, fontSize: '22px', lineHeight: 1.2 }}
       contentSx={{ px: 5, pb: 5 }}
       closeSx={{ right: 20, top: 20 }}
       {...rest}

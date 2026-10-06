@@ -27,6 +27,7 @@ import {
   clearPractice,
 } from 'Utilities/redux/practiceReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
+import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -69,6 +70,7 @@ const PracticeView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+
   const { id } = useParams()
   const canUseAssistant = useHasAccess(ACCESS.HIGH)
   // Same gate as the pronunciation itself, so the switch only shows where it does something.
@@ -83,6 +85,11 @@ const PracticeView = () => {
   const { show_review_diff } = useSelector(({ user }) => user.data.user)
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showMessageDialog, setShowMessageDialog] = useState(false)
+
+  // The prompt is a bubble in the assistant now, so a collapsed sidebar would swallow it.
+  useEffect(() => {
+    if (showMessageDialog && canUseAssistant) dispatch(setHelperSidebarOpen(true))
+  }, [showMessageDialog])
   const [settingsOpen, setSettingsOpen] = useState(false)
   const smallScreen = width < 700
   const snippetsTotalNum = snippets?.focused?.total_num
@@ -381,7 +388,9 @@ const PracticeView = () => {
             </div>
           )}
         </div>
-        {showMessageDialog && (
+        {/* The story-completed prompt lives in the assistant now (see CombinedChatbot); without
+            the assistant there is nowhere to show it, so the old floating dialog stands in. */}
+        {showMessageDialog && !canUseAssistant && (
           <MessageDialog
             continueAction={restartStory}
             setShow={setShowMessageDialog}
@@ -403,7 +412,12 @@ const PracticeView = () => {
             an empty sidebar would still show its toggle. */}
         {canUseAssistant && (
           <HelperSidebar>
-            <CombinedChatbot />
+            <CombinedChatbot
+              practiceCompleted={showMessageDialog}
+              onDismissPracticeCompleted={() => setShowMessageDialog(false)}
+              onRestartPractice={restartStory}
+              completedStory={{ id, title: story?.title, blueCardCount: newVocabulary }}
+            />
           </HelperSidebar>
         )}
         <FeedbackInfoModal />

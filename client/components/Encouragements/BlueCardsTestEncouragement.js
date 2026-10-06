@@ -105,18 +105,17 @@ const BlueCardsTestEncouragement = ({
     </>
   )
 
-  // In the assistant the bubble is the surface, so this renders bare: no container, no fixed
-  // height, and sizes that fit the sidebar's narrow column.
+  // In the assistant the recommendation bubble is the surface: it draws the icon column and the
+  // dismiss X, so this renders only the title, the message and the one action that starts the test.
   if (inChat) {
     return (
-      <div className="encouragement-chat">
-        <div className="encouragement-chat-head">
-          <img src={images.cardsIcon} alt="" />
-          <strong>{title}</strong>
-        </div>
+      <>
+        <strong className="encouragement-chat-title">{title}</strong>
         <p className="encouragement-chat-message">{message}</p>
-        <div className="encouragement-chat-actions">{actions}</div>
-      </div>
+        <AppButton variant="contrast" size="sm" type="button" onClick={startTest} style={{ marginTop: 10 }}>
+          <FormattedMessage id="start" />
+        </AppButton>
+      </>
     )
   }
 

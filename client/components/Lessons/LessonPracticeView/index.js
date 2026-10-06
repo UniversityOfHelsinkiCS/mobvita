@@ -296,7 +296,9 @@ const LessonPracticeView = () => {
               activity="control-story"
               onBackClick={() => navigate('/library')}
             />
-            {showPracticeCompletedEncouragement && (
+            {/* The completion prompt is a bubble in the assistant now; without the assistant there
+                is nowhere to show it, so the floating card stands in. */}
+            {showPracticeCompletedEncouragement && !canUseAssistant && (
               <div
                 className={
                   width > 700 ? 'draggable-encouragement' : 'draggable-encouragement-mobile'
@@ -311,12 +313,19 @@ const LessonPracticeView = () => {
                 </div>
               </div>
             )}
-            
-            <HelperSidebar>              
+
+            <HelperSidebar>
               <div style={{ margin: '20px 20px 0 20px' }}>
                 <LessonPracticeTopicsHelp selectedTopics={snippets?.focused?.topics} />
               </div>
-              {canUseAssistant && <CombinedChatbot />}
+              {canUseAssistant && (
+                <CombinedChatbot
+                  practiceCompleted={showPracticeCompletedEncouragement}
+                  onDismissPracticeCompleted={() => setShowPracticeCompletedEncouragement(false)}
+                  onRestartPractice={startOvertLessonSnippets}
+                  practiceType="lesson"
+                />
+              )}
             </HelperSidebar>
 
             <FeedbackInfoModal />

@@ -62,8 +62,16 @@
   flex-shrink: 0;
 }
 
+/* The `recommendation` bubble draws the icon column and the dismiss X itself, so a prompt rendered
+   inside one supplies only its title, message and single action. */
+.encouragement-chat-title {
+  display: block;
+  margin-bottom: 6px;
+  color: #2d2c2a;
+}
+
 .encouragement-chat-message {
-  margin: 0;
+  margin: 0 0 10px;
   color: #2d2c2a;
 }
 
