@@ -154,12 +154,12 @@ export const pickContextToSpeak = (snippet, { lastCheck = false, spoken = new Se
 // something the learner's account needs to carry around.
 const SPEECH_SETTING_KEY = 'practice-context-speech'
 
-// On unless it has been switched off, so a fresh browser hears the context.
+// Opt-in: off until switched on, so a fresh browser stays silent.
 export const contextSpeechEnabled = () => {
   try {
-    return window.localStorage.getItem(SPEECH_SETTING_KEY) !== 'off'
+    return window.localStorage.getItem(SPEECH_SETTING_KEY) === 'on'
   } catch {
-    return true
+    return false
   }
 }
 
