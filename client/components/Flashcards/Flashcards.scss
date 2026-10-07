@@ -14,6 +14,8 @@ $flashcard-header-height: 36px;
 $flashcard-content-gap: 20px;
 $flashcard-actions-height: 82px;
 $flashcard-flip-headroom: 44px;
+// Side inset of the card's text, shared by the front's text box and the back.
+$flashcard-text-inset: 28px;
 
 // ── Base: card faces, practice menus, FAB ─────────────────────────────────────
 
@@ -175,7 +177,7 @@ $flashcard-flip-headroom: 44px;
   justify-content: flex-start;
   align-items: center;
   overflow: auto;
-  padding: 70px 28px 13px;
+  padding: 70px $flashcard-text-inset 13px;
   box-sizing: border-box;
 }
 
@@ -187,7 +189,9 @@ $flashcard-flip-headroom: 44px;
   justify-content: center;
   align-content: flex-end;
   position: sticky;
+  width: 100%;
   margin: 0;
+  overflow-wrap: anywhere;
   font-size: 36px;
   // Fixed, not relative: the line box stays 36px whatever size useFittedTitle lands on, so the
   // word keeps its 146px-from-top / 314px-from-bottom placement at every length.
@@ -225,6 +229,7 @@ $flashcard-flip-headroom: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-wrap: anywhere;
 
   & > ul {
     max-height: 16em;
@@ -242,6 +247,9 @@ $flashcard-flip-headroom: 44px;
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  padding: 0 $flashcard-text-inset;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 
 // The back's verdict face is the 90px one from the design; the front floats a small copy instead.
