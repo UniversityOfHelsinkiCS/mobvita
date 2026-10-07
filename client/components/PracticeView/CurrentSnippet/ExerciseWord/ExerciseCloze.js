@@ -133,8 +133,10 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     }
   }
 
+  // Editing drops the stale red mark; the next check decides right or wrong again.
   const changeValue = e => {
     setValue(e.target.value)
+    if (tested && isWrong) setClassName('exercise')
   }
   
   const getExerciseClass = (tested, isWrong) => {
@@ -148,9 +150,10 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     setValue(val)
   }, [currentAnswer])
 
+  // Keyed on the word object, which each check response replaces, so a repeat wrong re-marks it.
   useEffect(() => {
     setClassName(getExerciseClass(tested, isWrong))
-  }, [tested])
+  }, [word])
 
   useEffect(() => {
     if (focusedWord !== word) {

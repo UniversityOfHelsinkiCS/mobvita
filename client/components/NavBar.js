@@ -475,6 +475,7 @@ export default function NavBar() {
                   alignItems: 'center',
                   gap: '8px',
                   mr: '10px',
+                  ml: '10px',
                 }}
               >
                 <span

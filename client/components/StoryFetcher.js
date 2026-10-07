@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAllStories } from 'Utilities/redux/storiesReducer'
 import { getSelf } from 'Utilities/redux/userReducer'
 
+// Headless loader: keeps the story list fresh on login and after answers are saved.
 export default function StoryFetcher() {
   const { data: user, refreshed } = useSelector(({ user }) => user)
   const { joinPending } = useSelector(({ groups }) => groups)
@@ -31,10 +32,10 @@ export default function StoryFetcher() {
   //
   // The whole list, not the single story: `getAllStories` is the only response known to carry
   // `percent_cov` — the field is read in five places in this app and written in none, so the
-  // single-story payload's shape is unverified. Running mid-practice means nobody waits on it.
+  // single-story payload's shape is unverified. Background, so practice's title isn't hidden.
   useEffect(() => {
     if (!staleStoryId || !learningLanguage) return
-    dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }))
+    dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }, { background: true }))
   }, [staleStoryId])
 
   return null

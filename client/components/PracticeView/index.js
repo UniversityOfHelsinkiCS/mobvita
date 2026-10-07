@@ -301,7 +301,8 @@ const PracticeView = () => {
                 />
               </div>
               <StoryInfoButton story={story} storyId={id} />
-              {hiddenFeatures && (
+              {/* Production users need the button too: it holds the opt-in speech switch. */}
+              {(hiddenFeatures || canHearCheckedContext) && (
                 <CustomTooltip
                   title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
                 >
@@ -428,17 +429,19 @@ const PracticeView = () => {
         title={<FormattedMessage id="practice-settings" />}
       >
         <div className="flex-col gap-row-nm">
-          <FormControlLabel
-            control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
-            label={intl.formatMessage({ id: 'show-difficulty-level' })}
-            sx={{
-              m: 0,
-              '& .MuiFormControlLabel-label': {
-                marginLeft: '0.5em',
-                color: colors.ink,
-              },
-            }}
-          />
+          {hiddenFeatures && (
+            <FormControlLabel
+              control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
+              label={intl.formatMessage({ id: 'show-difficulty-level' })}
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': {
+                  marginLeft: '0.5em',
+                  color: colors.ink,
+                },
+              }}
+            />
+          )}
           {canHearCheckedContext && (
             <FormControlLabel
               control={<AppSwitch checked={contextSpeech} onChange={toggleContextSpeech} />}
