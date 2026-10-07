@@ -98,7 +98,9 @@ const DailyStoriesBubble = ({ scope }) => {
           {stripLeadIn(offer.text)}
         </ReactMarkdown>
       ) : (
-        <Spinner inline />
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '8px' }}>
+          <Spinner inline />
+        </div>
       )}
     </ChatBubble>
   )
