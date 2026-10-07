@@ -55,13 +55,14 @@ export const getStudentStoryAction = (storyId, groupId, studentId) => {
   return callBuilder(route, prefix)
 }
 
+// `meta.background` refetches without flipping `pending`, so on-screen story views don't blank.
 export const getAllStories = (language, query, meta) => {
   const queryString = Object.keys(query)
     .map(key => `${key}=${query[key]}`)
     .join('&')
   const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
-  return callBuilder(route, prefix, undefined, undefined, meta)
+  return { ...callBuilder(route, prefix), meta }
 }
 
 export const setLastQuery = query => ({
