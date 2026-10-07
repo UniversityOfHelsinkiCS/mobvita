@@ -4,6 +4,7 @@ import { images } from 'Utilities/common'
 import ChatBubble from 'Components/ui/ChatBubble'
 import PracticeCompletedEncouragement from '../Encouragements/PracticeCompletedEncouragement'
 import GroupStoriesEncouragement from '../Encouragements/GroupStoriesEncouragement'
+import ControlledStoriesEncouragement from '../Encouragements/ControlledStoriesEncouragement'
 
 // A story counts as done once its practice coverage (0–100) is full.
 const FULL_COVERAGE = 100
@@ -28,13 +29,20 @@ const useRecommender = ({
   const teacherView = useSelector(({ user }) => !!user.data?.teacherView)
   const stories = useSelector(({ stories }) => stories.data)
   // Dismissal lasts while the assistant is mounted; keyed by group so another group still shows.
+  // The two bubbles dismiss independently, so they keep separate state.
   const [dismissedGroupId, setDismissedGroupId] = useState(null)
+  const [dismissedControlledGroupId, setDismissedControlledGroupId] = useState(null)
 
   // A teacher in teacher mode is not reminded of stories they shared; in student mode they are.
   const unfinishedGroupStories =
-    group && !(group.is_teaching && teacherView) && dismissedGroupId !== groupId
+    group && !(group.is_teaching && teacherView)
       ? (stories ?? []).filter(story => isUnfinishedInGroup(story, groupId))
       : []
+
+  // Teacher-controlled stories are a different task to the learner — the exercises are chosen by
+  // the teacher and timed, and they have their own practice route — so they get their own bubble.
+  const unfinishedRegularStories = unfinishedGroupStories.filter(story => !story.control_story)
+  const unfinishedControlledStories = unfinishedGroupStories.filter(story => story.control_story)
 
   // TEMP DEBUG — remove after diagnosing the missing group-stories bubble.
   console.debug('[useRecommender]', {
@@ -55,16 +63,33 @@ const useRecommender = ({
     unfinished: unfinishedGroupStories.length,
   })
 
-  const incompleteGroupStories = unfinishedGroupStories.length ? (
-    <ChatBubble
-      variant="recommendation"
-      icon={images.users01}
-      onRemove={() => setDismissedGroupId(groupId)}
-      removeDataCy="group-stories-dismiss"
-    >
-      <GroupStoriesEncouragement stories={unfinishedGroupStories} groupName={group.groupName} />
-    </ChatBubble>
-  ) : null
+  const incompleteGroupStories =
+    unfinishedRegularStories.length && dismissedGroupId !== groupId ? (
+      <ChatBubble
+        variant="recommendation"
+        icon={images.users01}
+        onRemove={() => setDismissedGroupId(groupId)}
+        removeDataCy="group-stories-dismiss"
+      >
+        <GroupStoriesEncouragement stories={unfinishedRegularStories} groupName={group.groupName} />
+      </ChatBubble>
+    ) : null
+
+  // Built but deliberately not rendered yet: no view asks for this bubble.
+  const incompleteControlledStories =
+    unfinishedControlledStories.length && dismissedControlledGroupId !== groupId ? (
+      <ChatBubble
+        variant="recommendation"
+        icon={images.target04}
+        onRemove={() => setDismissedControlledGroupId(groupId)}
+        removeDataCy="controlled-stories-dismiss"
+      >
+        <ControlledStoriesEncouragement
+          stories={unfinishedControlledStories}
+          groupName={group.groupName}
+        />
+      </ChatBubble>
+    ) : null
 
   const practiceCompleted = showPracticeCompleted ? (
     <ChatBubble
@@ -82,7 +107,7 @@ const useRecommender = ({
     </ChatBubble>
   ) : null
 
-  return { incompleteGroupStories, practiceCompleted }
+  return { incompleteGroupStories, incompleteControlledStories, practiceCompleted }
 }
 
 // ---- Not yet migrated: the old Recommender's encouragements (SubComponents/*), by view ----

@@ -8,13 +8,14 @@ import './Encouragements.css'
 // How many unfinished stories the bubble names; the rest are counted.
 const MAX_LISTED = 3
 
-// Teacher-controlled stories are split out into ControlledStoriesEncouragement, so everything
-// reaching this bubble takes the ordinary practice route.
-const practicePath = story => `/stories/${story._id}/practice`
+// Every story here is teacher-controlled, so they all take the controlled-practice route.
+const practicePath = story => `/stories/${story._id}/controlled-practice`
 
-// Chat-layout reminder of the group's unfinished stories, drawn inside an assistant recommendation
-// bubble (which owns the icon and the dismiss X).
-const GroupStoriesEncouragement = ({ stories, groupName }) => {
+// Chat-layout reminder of the group's unfinished teacher-controlled stories, drawn inside an
+// assistant recommendation bubble (which owns the icon and the dismiss X). Kept apart from
+// GroupStoriesEncouragement because these are a different task to the learner: the exercises are
+// chosen by the teacher and timed.
+const ControlledStoriesEncouragement = ({ stories, groupName }) => {
   const navigate = useNavigate()
   const inGroupLibrary = useLocation().pathname.startsWith('/library/group')
   const listed = stories.slice(0, MAX_LISTED)
@@ -23,21 +24,29 @@ const GroupStoriesEncouragement = ({ stories, groupName }) => {
   return (
     <>
       <strong className="encouragement-chat-title">
-        <FormattedMessage id="group-stories-recommendation-title" />
+        <FormattedMessage id="controlled-stories-recommendation-title" />
       </strong>
       <p className="encouragement-chat-message">
         <FormattedMessage
-          id="group-stories-recommendation-message"
+          id="controlled-stories-recommendation-message"
           values={{ count: stories.length, group: groupName }}
         />
       </p>
-      <ul data-cy="group-stories-list">
+      <ul data-cy="controlled-stories-list">
         {listed.map(story => (
           <li key={story._id}>
             <Link to={practicePath(story)}>{story.title}</Link>
           </li>
         ))}
-      </ul>      
+      </ul>
+      {notListed > 0 && (
+        <p className="encouragement-chat-message">
+          <FormattedMessage
+            id="controlled-stories-recommendation-more"
+            values={{ count: notListed }}
+          />
+        </p>
+      )}
       {!inGroupLibrary && (
         <AppButton
           variant="contrast"
@@ -46,11 +55,11 @@ const GroupStoriesEncouragement = ({ stories, groupName }) => {
           onClick={() => navigate('/library/group')}
           style={{ marginTop: 10 }}
         >
-          <FormattedMessage id="group-stories-recommendation-open" />
+          <FormattedMessage id="controlled-stories-recommendation-open" />
         </AppButton>
       )}
     </>
   )
 }
 
-export default GroupStoriesEncouragement
+export default ControlledStoriesEncouragement
