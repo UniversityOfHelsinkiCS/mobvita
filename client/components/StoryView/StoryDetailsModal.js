@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/material'
 import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
@@ -11,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { ACCESS, images, useHasAccess } from 'Utilities/common'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
+import { TERMINOLOGY, TERMINOLOGY_DEFAULT_MODE } from 'Components/Flashcards/terminology'
 
 const EMPTY_LOADING_PROGRESS = {}
 
@@ -59,6 +61,7 @@ const ActionPill = ({ to, onClick, icon, labelId, disabled, variant = 'tan', cla
   return content
 }
 
+// Story actions dialog opened from a library card: practice, flashcards, terminology, manage.
 const StoryDetailsModal = ({
   trigger,
   story,
@@ -200,6 +203,14 @@ const StoryDetailsModal = ({
                 tooltipId={
                   story.flashcard_count === 0 ? 'disabled-flashcard-btn-explanation' : undefined
                 }
+              />
+            )}
+            {!enableOnlyPractice && !isTeacher && story.terminology_count > 0 && (
+              <ActionPill
+                to={`/flashcards/${TERMINOLOGY_DEFAULT_MODE}/${TERMINOLOGY}/${story._id}`}
+                icon={<MenuBookOutlinedIcon />}
+                labelId="Terminology"
+                dataCy="story-detail-modal-terminology-button"
               />
             )}
             {!enableOnlyPractice && !isTeacher && hadQuestions && (

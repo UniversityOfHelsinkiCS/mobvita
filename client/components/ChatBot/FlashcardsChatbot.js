@@ -58,7 +58,10 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
   const selectedStory = type === 'test' ? blueCardStory : regularStory
   const { num_of_rewardable_words: numOfRewardableWords, title } = selectedStory || {}
   const showStoryHint =
-    mode !== 'list' && mode !== 'new' && (type === 'story' || type === 'test') && Boolean(title)
+    mode !== 'list' &&
+    mode !== 'new' &&
+    ['story', 'test', 'terminology'].includes(type) &&
+    Boolean(title)
 
   const currentCard = useSelector(({ flashcards }) => flashcards.currentCard)
   const revealedHints = useSelector(({ flashcards }) => flashcards.revealedHints)

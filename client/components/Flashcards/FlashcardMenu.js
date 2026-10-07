@@ -6,11 +6,12 @@ import TextFields from '@mui/icons-material/TextFields'
 import AppTabs from 'Components/ui/AppTabs'
 import AppIcon from 'Components/ui/AppIcon'
 import { images } from 'Utilities/common'
+import { TERMINOLOGY, TERMINOLOGY_EXCLUDED_MODES, flashcardModePath } from './terminology'
 
 const tabIcon = src => <img src={src} alt="" style={{ width: 18, height: 18 }} />
 
-// The desktop practice-mode bar: one tab per flashcard exercise.
-const PracticeModeOptions = ({ handleOptionClick, mode }) => {
+// The desktop practice-mode bar: one tab per flashcard exercise; terminology drops translate cards.
+const PracticeModeOptions = ({ handleOptionClick, mode, inTerminology }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const articleLabel = flashcardArticles && flashcardArticles.join(' / ')
 
@@ -42,7 +43,7 @@ const PracticeModeOptions = ({ handleOptionClick, mode }) => {
       icon: tabIcon(images.quick),
       tooltip: 'flashcards-quick-cards-EXPLANATION',
     },
-  ]
+  ].filter(tab => !inTerminology || !TERMINOLOGY_EXCLUDED_MODES.includes(tab.value))
 
   // 1px green outline around the whole bar so it reads against the cream card.
   return <AppTabs tabs={tabs} value={mode} onChange={handleOptionClick} fullWidth bordered variant='inner' />
@@ -53,26 +54,20 @@ const FlashcardMenu = () => {
   const navigate = useNavigate()
   const { mode, type, storyId } = useParams()
 
-  const storyUrl = storyId ? `/${storyId}` : ''
-
-  // Switching mode keeps a story deck's story, but leaves the blue-cards test entirely: its story
-  // is the test's subject, and a normal deck scoped to it is usually empty.
-  const handleOptionClick = nextMode => {
-    if (type === 'test') {
-      navigate(`/flashcards/${nextMode}`)
-      return
-    }
-
-    const path = storyUrl ? `/flashcards/${nextMode}/story${storyUrl}` : `/flashcards/${nextMode}`
-
-    navigate(path)
-  }
+  // Switching mode keeps a story or terminology deck, but leaves the blue-cards test entirely.
+  const handleOptionClick = nextMode => navigate(flashcardModePath(nextMode, type, storyId))
 
   const isPracticePage = ['fillin', 'learn', 'match', 'quick', 'article'].includes(mode)
 
   return (
     <div className="flashcard-menu">
-      {isPracticePage && <PracticeModeOptions handleOptionClick={handleOptionClick} mode={mode} />}
+      {isPracticePage && (
+        <PracticeModeOptions
+          handleOptionClick={handleOptionClick}
+          mode={mode}
+          inTerminology={type === TERMINOLOGY}
+        />
+      )}
     </div>
   )
 }

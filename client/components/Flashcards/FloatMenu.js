@@ -14,6 +14,7 @@ import ViewList from '@mui/icons-material/ViewList'
 import AppIcon from 'Components/ui/AppIcon'
 import { backgroundColors, images } from 'Utilities/common'
 import SelectLanguage from './SelectLanguage'
+import { TERMINOLOGY, flashcardModePath } from './terminology'
 
 // One FAB row: round icon + label, wrapped in its explanation tooltip.
 const FabOption = ({ handleClick, iconStyle, translationId, tooltip, children }) => (
@@ -84,25 +85,30 @@ const CardManagementOptions = ({ handleOptionClick }) => {
   )
 }
 
-// Practice-mode rows of the flashcard FAB menu, one per exercise type.
-const PracticeModeOptions = ({ handleOptionClick }) => {
+// Practice-mode rows of the flashcard FAB menu, one per exercise; terminology hides translate.
+const PracticeModeOptions = ({ handleOptionClick, inTerminology }) => {
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
 
   const articleLabel = flashcardArticles && flashcardArticles.join('/')
 
   return (
     <div className="gap-row-sm mt-nm">
-      <FabOption
-        handleClick={() => { handleOptionClick('fillin'); }}
-        iconStyle={{
-          paddingBottom: '0.4em',
-          paddingRight: '0.05em',
-          backgroundColor: 'rgb(199, 206, 234)' }}
-        translationId="fill-in"
-        tooltip='flashcards-translate-cards-EXPLANATION'
-      >
-        <KeyboardOutlined sx={{ margin: 'auto' }} />
-      </FabOption>
+      {!inTerminology && (
+        <FabOption
+          handleClick={() => {
+            handleOptionClick('fillin')
+          }}
+          iconStyle={{
+            paddingBottom: '0.4em',
+            paddingRight: '0.05em',
+            backgroundColor: 'rgb(199, 206, 234)',
+          }}
+          translationId="fill-in"
+          tooltip="flashcards-translate-cards-EXPLANATION"
+        >
+          <KeyboardOutlined sx={{ margin: 'auto' }} />
+        </FabOption>
+      )}
       <FabOption
         handleClick={() => handleOptionClick('learn')}
         iconStyle={{ paddingBottom: '0.4em', backgroundColor: 'rgb(197, 225, 165)' }}
@@ -160,12 +166,9 @@ const FloatMenu = () => {
     setOpen(!open)
   }
 
-  // Same rule as the desktop tabs: a story deck keeps its story, the blue-cards test is left.
+  // Same rule as the desktop tabs: story and terminology decks keep their story, the test is left.
   const handleOptionClick = mode => {
-    const path =
-      storyId && type !== 'test' ? `/flashcards/${mode}/story/${storyId}` : `/flashcards/${mode}`
-
-    navigate(path)
+    navigate(flashcardModePath(mode, type, storyId))
     setOpen(false)
   }
 
@@ -176,8 +179,9 @@ const FloatMenu = () => {
       </button>
       {open && (
         <div className="flex-column-reverse pb-sm slide-from-left" style={{ paddingLeft: '0.3em' }}>
-          <PracticeModeOptions 
+          <PracticeModeOptions
             handleOptionClick={handleOptionClick}
+            inTerminology={type === TERMINOLOGY}
           />
           <CardManagementOptions
             handleOptionClick={handleOptionClick}

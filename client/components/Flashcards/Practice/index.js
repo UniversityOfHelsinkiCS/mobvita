@@ -32,6 +32,7 @@ import Article from './Article'
 import Quick from './Quick'
 import Reversed from './Reversed'
 import Match from './Match'
+import { TERMINOLOGY } from '../terminology'
 
 // Practice mode -> the backend's `exercise` query value. Article keeps the default request because
 // it filters nouns out of that same deck rather than asking for its own.
@@ -41,6 +42,7 @@ const MODE_EXERCISE = {
   match: 'match',
 }
 
+// Runs one practice mode over the deck; terminology decks are fetched same-language (fin2fin).
 const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const [swipeIndex, setSwipeIndex] = useState(0)
   const [editing, setEditing] = useState(false)
@@ -51,7 +53,6 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [blueCardsAnswered, setBlueCardsAnswered] = useState([])
   const [latestStories, setLatestStories] = useState([])
-  // const [prevBlueCards, setPrevBlueCards] = useState(null)
   const { flashcardArticles } = useSelector(({ metadata }) => metadata)
   const { totalAnswers, storyBlueCards, newDeckRequestId } = useSelector(
     ({ flashcards }) => flashcards
@@ -98,7 +99,12 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
 
   const { width } = useWindowDimensions()
   const bigScreen = width >= 415
-  const { storyId } = useParams()
+  const { type, storyId } = useParams()
+  // Terminology cards pair a word with an explanation in the learning language itself.
+  const deckLanguage = type === TERMINOLOGY ? learningLanguage : dictionaryLanguage
+  // Quick cards uses the default translate set, which has no terminology; reversed's set does.
+  const exercise =
+    type === TERMINOLOGY && mode === 'quick' ? MODE_EXERCISE.learn : MODE_EXERCISE[mode]
   const dispatch = useDispatch()
   const swiperRef = useRef(null)
   const swipeIndexRef = useRef(0)
@@ -203,9 +209,9 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       setBlueCardsAnswered([])
     } else {
-      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId, MODE_EXERCISE[mode]))
+      dispatch(getFlashcards(learningLanguage, deckLanguage, storyId, exercise))
     }
-  }, [storyId, dictionaryLanguage, mode])
+  }, [storyId, deckLanguage, exercise])
 
   // Limits so that you cant swipe back more than once.
   // Keep navigation one-directional for flashcards while still allowing the forward swipe.
@@ -245,11 +251,12 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     handleNewDeck()
   }, [newDeckRequestId])
 
+  // Fetches a fresh deck (or blue-cards test) for the current mode and resets the swipe position.
   const handleNewDeck = () => {
     setSwipeIndex(0)
     setBlueCardsAnswered([])
     if (!inBlueCardsTest) {
-      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId, MODE_EXERCISE[mode]))
+      dispatch(getFlashcards(learningLanguage, deckLanguage, storyId, exercise))
     } else {
       dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
       dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))

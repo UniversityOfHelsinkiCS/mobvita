@@ -16,6 +16,7 @@ import SettingButton from 'Components/SettingsButton'
 import FlashcardsChatbot from 'Components/ChatBot/FlashcardsChatbot'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
+import { TERMINOLOGY, TERMINOLOGY_DEFAULT_MODE, TERMINOLOGY_EXCLUDED_MODES } from './terminology'
 
 import './Flashcards.scss'
 
@@ -25,6 +26,7 @@ const SIDEBAR_SHEET_MAX_WIDTH = 768
 // The card-practice modes. `undefined` is /flashcards with no mode, which renders fillin.
 const PRACTICE_MODES = ['fillin', 'learn', 'match', 'quick', 'article']
 
+// Flashcards page: practice / list / new tabs, scoped to a story, terminology or blue-cards test.
 const Flashcards = () => {
   const [hasAnsweredBlueCards, setHasAnsweredBlueCards] = useState(false)
   const [showBlueCardsTestEncouragement, setShowBlueCardsTestEncouragement] = useState(false)
@@ -62,6 +64,17 @@ const Flashcards = () => {
   }, [deckCompleted])
 
   const inBlueCardsTest = location.pathname.includes('test')
+  const inTerminology = type === TERMINOLOGY
+  const terminologyModeExcluded = inTerminology && TERMINOLOGY_EXCLUDED_MODES.includes(mode)
+
+  // A terminology deck has no translate cards, so its fill-in URL falls through to matching.
+  useEffect(() => {
+    if (terminologyModeExcluded) {
+      navigate(`/flashcards/${TERMINOLOGY_DEFAULT_MODE}/${TERMINOLOGY}/${storyId}`, {
+        replace: true,
+      })
+    }
+  }, [terminologyModeExcluded, storyId])
 
   // Reset prompt state only when user moves to creation/list views.
   useEffect(() => {
@@ -71,8 +84,14 @@ const Flashcards = () => {
     }
   }, [mode])
 
+  // Offers the blue-cards test after a short delay; never inside the test or a terminology deck.
   useEffect(() => {
-    if (inBlueCardsTest || type === 'test' || !(!mode || PRACTICE_MODES.includes(mode))) {
+    const promptBlocked =
+      inBlueCardsTest ||
+      type === 'test' ||
+      inTerminology ||
+      !(!mode || PRACTICE_MODES.includes(mode))
+    if (promptBlocked) {
       if (encouragementTimeoutRef.current) {
         clearTimeout(encouragementTimeoutRef.current)
         encouragementTimeoutRef.current = null
@@ -115,7 +134,9 @@ const Flashcards = () => {
     }
   }
 
+  // The view for the current mode; nothing while an excluded terminology mode redirects.
   const content = () => {
+    if (terminologyModeExcluded) return null
     switch (mode) {
       case 'new':
         return <FlashcardCreation />
@@ -161,8 +182,10 @@ const Flashcards = () => {
     { value: 'new', label: <FormattedMessage id="Add flashcard" />, icon: tabIcon(images.plusOutline) },
   ]
 
+  // "Practice" opens fill-in, or matching inside a terminology deck.
   const handleTabChange = value => {
     if (value === 'new') navigate('/flashcards/new')
+    else if (value === 'fillin' && inTerminology) pushWithOptionalContext(TERMINOLOGY_DEFAULT_MODE)
     else pushWithOptionalContext(value)
   }
 

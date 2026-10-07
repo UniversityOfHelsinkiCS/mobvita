@@ -1997,7 +1997,7 @@
     "story-upload-failed": "Tarinaa ei voitu lisätä. Yritä uudelleen.",
     "chatbot-message-suggestion-daily-stories": "Näytä uusimmat uutiset",
     "daily-story-saved-to-private": "Tarina on tallennettu yksityiseen kirjastoosi.",
-    "daily-stories-assistant-heading": "Tässä on uusimmia uutisia – voit tuoda ne omaan kirjastoosi harjoittelua varten.",
+    "daily-stories-assistant-heading": "Tässä on joitain päivän uutisia – voit tuoda ne omaan kirjastoosi harjoittelua varten.",
     "group-stories-recommendation-title": "Ryhmäkirjastossa odottaa sinua tarinoita.",
     "group-stories-recommendation-message": "Sinulla on {count, plural, one {# tarina} other {# tarinaa}} viimeisteltävänä ryhmässä {group}:",
     "group-stories-recommendation-more": "…and {count} more in the group library",
@@ -2013,5 +2013,6 @@
     "flashcard-match-descriptions": "Kuvaukset",
     "flashcard-match-progress": "Yhdistetty:",
     "flashcards-reversed-cards-EXPLANATION": "Käänteiset sanakortit: lue kuvaus ja kirjoita termi, jota se tarkoittaa",
-    "flashcards-match-cards-EXPLANATION": "Yhdistäminen: yhdistä jokainen termi sen kuvaukseen"
+    "flashcards-match-cards-EXPLANATION": "Yhdistäminen: yhdistä jokainen termi sen kuvaukseen",
+    "Terminology": "Terminologia"
 }
