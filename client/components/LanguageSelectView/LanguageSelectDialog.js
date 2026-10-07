@@ -72,13 +72,7 @@ const LanguageSelectDialog = ({ open, onClose }) => {
           </span>
         }
       >
-        {pending ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '2em' }}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <LanguageSelectContent onSelect={handleLearningLanguageChange} />
-        )}
+        <LanguageSelectContent onSelect={handleLearningLanguageChange} />
       </AppDialog>
 
       {showInterfaceModal && (

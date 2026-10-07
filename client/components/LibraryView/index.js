@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Breadcrumbs, Typography } from '@mui/material'
 import AppButton from 'Components/AppButton'
@@ -214,6 +214,18 @@ const StoryList = () => {
       setLibrary('private')
     }
   }, [])
+
+  // Later navigations to /library/group or /library/private (e.g. from the assistant) switch the
+  // tab; the mounted view is reused across these routes, so the effect above never sees them.
+  const isFirstLocation = useRef(true)
+  useEffect(() => {
+    if (isFirstLocation.current) {
+      isFirstLocation.current = false
+      return
+    }
+    if (groupsLibrary) handleLibraryChange('group')
+    else if (privateLibrary) handleLibraryChange('private')
+  }, [location.key])
 
   useEffect(() => {
     if (
