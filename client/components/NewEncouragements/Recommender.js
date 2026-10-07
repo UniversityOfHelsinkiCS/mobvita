@@ -1,456 +1,131 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import useWindowDimensions from 'Utilities/windowDimensions'
-import Draggable from 'react-draggable'
-import CloseIcon from '@mui/icons-material/Close'
-import { closeEncouragement, closeFCEncouragement } from 'Utilities/redux/encouragementsReducer'
-import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
-import { getIncompleteStories } from 'Utilities/redux/incompleteStoriesReducer'
-import { useLocation, useParams } from 'react-router-dom'
-import {
-  getStoriesBlueFlashcards,
-  getFlashcards,
-  getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { dictionaryLanguageSelector, showAllEncouragements } from 'Utilities/common'
-import FlashcardsHeaderChooser from 'Components/NewEncouragements/SubComponents/FlashcardView/FlashcardsHeaderChooser'
-import ListOfRecentStoriesFlashcardsEncouragement from 'Components/NewEncouragements/SubComponents/FlashcardView/ListOfRecentStoriesFlashcardsEncouragement'
-import PreviousStoriesBlueFlashcards from 'Components/NewEncouragements/SubComponents/FlashcardView/PreviousStoriesBlueFlashcards'
-import ConfirmBlueCardsEncouragement from './SubComponents/MultiPurpose/ConfirmBlueCardsEncouragement'
-import ReviewStoriesEncouragement from './SubComponents/HomeView/ReviewStoriesEncouragement'
-import UnseenStoriesInGroup from './SubComponents/HomeView/UnseenStoriesInGroup'
-import LatestIncompleteStory from './SubComponents/MultiPurpose/LatestIncompleteStory'
-import TurnOffRecommendations from './SubComponents/MultiPurpose/TurnOffRecommendations'
-import LeaderboardEncouragement from './SubComponents/MultiPurpose/LeaderboardEncouragement'
-import GoodJobEncouragement from './SubComponents/MultiPurpose/GoodJobEncouragement'
-import RedirectHomeEncouragement from './SubComponents/MultiPurpose/RedirectHomeEncouragement'
-import StreakEncouragement from './SubComponents/HomeView/StreakEncouragement'
-import DailyStoriesEncouragement from './SubComponents/HomeView/DailyStoriesEncouragement'
-import DailyStoriesDraggable from './SubComponents/HomeView/DailyStoriesDraggable'
-import WelcomeBackEncouragement from './SubComponents/HomeView/WelcomeBackEncouragement'
-import SharedIncompleteStoryInGroup from './SubComponents/HomeView/SharedIncompleteStoryInGroup'
-import GrammarReviewExerciseEncouragement from './SubComponents/PracticeView/GrammarReviewExerciseEncouragement'
-import WordsSeenEncouragement from './SubComponents/MultiPurpose/WordsSeenEncouragement'
-import StoryCompletedToBluecardsExerciseEncouragement from './SubComponents/PracticeView/StoryCompletedToBluecardsExerciseEncouragement'
-import ExerciseEncouragementHeader from './SubComponents/PracticeView/ExerciseEncouragementHeader'
-import NewWordsInteractedExerciseEncouragement from './SubComponents/PracticeView/NewWordsInteractedExerciseEncouragement'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { images } from 'Utilities/common'
+import ChatBubble from 'Components/ui/ChatBubble'
 import PracticeCompletedEncouragement from '../Encouragements/PracticeCompletedEncouragement'
-import BackToLibraryFromFlashcards from './SubComponents/FlashcardView/BackToLibraryFromFlashcards'
-import TryAnotherBatch from './SubComponents/FlashcardView/TryAnotherBatch'
-import FlashcardsProgress from './SubComponents/FlashcardView/FlashcardsProgress'
-import RecommendSlider from './RecommendSlider'
+import GroupStoriesEncouragement from '../Encouragements/GroupStoriesEncouragement'
 
-const Recommender = ({ continueAction }) => {
-  const userData = useSelector(state => state.user.data.user)
-  const learningLanguage = userData ? userData.last_used_language : null
-  const { cachedStories, pending: metadataPending } = useSelector(({ metadata }) => metadata)
-  const { storyBlueCards, creditableWordsNum } = useSelector(
-    ({ flashcards }) => flashcards
-  )
-  const { open, fcOpen } = useSelector(({ encouragement }) => encouragement)
-  const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
-  const { loading, incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
-    loading: incomplete.pending,
-    incomplete: incomplete.data }))
-  const { newVocabulary } = useSelector(({ newVocabulary }) => newVocabulary)
-  const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
-  const stories = useSelector(({ stories }) => stories.data)
-  const [dailyStoriesDraggableIsOpen, setDailyStoriesDraggableIsOpen] = useState(false)
-  const bigScreen = useWindowDimensions().width > 700
-  const dispatch = useDispatch()
-  const location = useLocation()
+// A story counts as done once its practice coverage (0–100) is full.
+const FULL_COVERAGE = 100
 
-  const isInProgressView = location.pathname.includes('profile/progress')
-  const isInHomeView = location.pathname.includes('/home')
-  const isInWelcomeView = location.pathname.includes('/welcome')
-  const isInPracticeView = location.pathname.includes('practice')
-  const isInFlashcardsView = location.pathname.includes('flashcards')
-  const inBlueCardsTest = location.pathname.includes('test')
-  const inReviewView = location.pathname.includes('review')
-  const inLessonPracticeView = location.pathname.includes('lesson/practice')
-
-  const { storyId } = useParams()
-
-  // See default_activity_modal row 260
-  // This is probably necessary to get the data from BE??
-  // Or would it be better to dispatch these in the individual sub components?
-  useEffect(() => {
-    dispatch(
-      getIncompleteStories(learningLanguage, {
-        sort_by: 'access' })
-    )
-    dispatch(getLeaderboards())
-    dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-  }, [])
-
-  const handleNewDeck = () => {
-    // setSwipeIndex(0)
-    // setBlueCardsAnswered([])
-    dispatch(closeFCEncouragement())
-    dispatch(closeEncouragement())
-    if (!inBlueCardsTest) {
-      dispatch(getFlashcards(learningLanguage, dictionaryLanguage, storyId))
-    } else {
-      dispatch(getBlueFlashcards(learningLanguage, dictionaryLanguage, storyId))
-      dispatch(getStoriesBlueFlashcards(learningLanguage, dictionaryLanguage))
-    }
-  }
-
-  const handleDailyStoriesClick = () => {
-    if (dailyStoriesDraggableIsOpen) {
-      setDailyStoriesDraggableIsOpen(false)
-      return
-    }
-    setDailyStoriesDraggableIsOpen(true)
-  }
-
-  const handleCloseClick = () => {
-    dispatch(closeEncouragement())
-    dispatch(closeFCEncouragement())
-  }
-
-  const welcomeback_encourage = location.pathname.includes('/welcome') ? <WelcomeBackEncouragement /> : undefined;
-
-  const leader_board_encourage = user_rank && user_rank <= 10 ? <LeaderboardEncouragement /> : undefined;
-
-  const daily_stories_encourage = cachedStories?.length > 0 || showAllEncouragements ?
-    <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} /> : undefined;
-
-  const latest_incomplete_story = incompleteStories && incompleteStories?.filter(
-    story => story.last_snippet_id !== story.num_snippets - 1
-  ).length > 0 ? <LatestIncompleteStory /> : undefined;
-
-  const words_seen_encourage = userData.vocabulary_seen > 0 ? <WordsSeenEncouragement /> : undefined;
-
-  const new_words_interacted_exercise_encourage = newVocabulary > 0 ? <NewWordsInteractedExerciseEncouragement /> : undefined;
-
-  const prev_stories_blue_cards_encourage = storyBlueCards && storyBlueCards?.find(
-    story => story.story_id !== storyId && story.num_of_rewardable_words >= 5
-  ) ? <PreviousStoriesBlueFlashcards /> : undefined;
-
-  const confirm_blue_card_encourage = storyBlueCards && storyBlueCards?.length > 0 ? <ConfirmBlueCardsEncouragement /> : undefined;
-
-  const list_of_recent_stories_flashcards_encourage = incompleteStories && incompleteStories?.filter(
-    story => story.last_snippet_id !== story.num_snippets - 1
-  ).length > 0 ? <ListOfRecentStoriesFlashcardsEncouragement /> : undefined;
-
-  const review_stories_encourage = incompleteStories && incompleteStories?.filter(
-    story => story.last_snippet_id === story.num_snippets - 1
-  ).length > 0 ? <ReviewStoriesEncouragement /> : undefined;
-
-  const unseen_stories_inGroup_encourage = stories.find(
-    story => story.shared && !story.has_read && story.groups?.length > 0 && !story.control_story
-  ) ? <UnseenStoriesInGroup /> : undefined;
-
-  const shared_incomplete_story_inGroup_encourage = stories.find(
-    story => story.shared && !story.has_read && story.control_story
-  ) ? <SharedIncompleteStoryInGroup /> : undefined;
-
-  const num_of_rewardable_words = creditableWordsNum >= 5 || (storyBlueCards?.filter(
-    story => story.story_id !== storyId
-  ).length > 0 && storyBlueCards?.filter(
-    story => story.story_id !== storyId
-  )[0]?.num_of_rewardable_words >= 5) ? <StoryCompletedToBluecardsExerciseEncouragement /> : undefined;
-
-  return (
-    <>
-      {loading ? null : showAllEncouragements && open ? (
-        <div>
-          <Draggable cancel=".interactable">
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                <div className="flex-reverse">
-                  <CloseIcon
-                    className="interactable"
-                    data-cy="recommender-close-button"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    fontSize="large"
-                    onClick={handleCloseClick}
-                  />
-                </div>
-
-                <RecommendSlider slides={[
-                  welcomeback_encourage,
-                  <StreakEncouragement />,
-                  leader_board_encourage,
-                  daily_stories_encourage,
-                  latest_incomplete_story,
-                  confirm_blue_card_encourage,
-                  unseen_stories_inGroup_encourage,
-                  shared_incomplete_story_inGroup_encourage,
-                  review_stories_encourage,
-                  leader_board_encourage,
-                  num_of_rewardable_words,
-                  words_seen_encourage,
-                  new_words_interacted_exercise_encourage,
-                  <GrammarReviewExerciseEncouragement />,
-                  prev_stories_blue_cards_encourage,
-                  <FlashcardsProgress />,
-                  <TryAnotherBatch handleNewDeck={handleNewDeck} />,
-                  list_of_recent_stories_flashcards_encourage,
-                  <BackToLibraryFromFlashcards />,
-                  <GoodJobEncouragement />,
-                  <RedirectHomeEncouragement />
-                ]} />
-
-                {/* <WelcomeBackEncouragement />
-                <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                  <StreakEncouragement />
-                  <LeaderboardEncouragement />
-                  <DailyStoriesEncouragement handleDailyStoriesClick={handleDailyStoriesClick} />
-                  <LatestIncompleteStory />
-                  <ConfirmBlueCardsEncouragement />
-                  <UnseenStoriesInGroup />
-                  <SharedIncompleteStoryInGroup />
-                  <ReviewStoriesEncouragement />
-                  <p>end of homeview</p>
-                  <LeaderboardEncouragement />
-                  <StoryCompletedToBluecardsExerciseEncouragement />
-                  <LatestIncompleteStory />
-                  <WordsSeenEncouragement />
-                  <NewWordsInteractedExerciseEncouragement />
-                  <GrammarReviewExerciseEncouragement />
-                  <p>end of practise view</p>
-                  <PreviousStoriesBlueFlashcards />
-                  <WordsSeenEncouragement />
-                  <FlashcardsProgress />
-                  <p>end of bluecard test view</p>
-                  <TryAnotherBatch handleNewDeck={handleNewDeck} />
-                  <ListOfRecentStoriesFlashcardsEncouragement />
-                  <BackToLibraryFromFlashcards />
-                  <p>end of normal flashcard view</p>
-                  <GoodJobEncouragement />
-                  <RedirectHomeEncouragement />
-                  <p>end of lesson</p>
-                </div> */}
-              </div>
-            </div>
-          </Draggable>
-        </div>
-      ) /* : (isInHomeView || isInWelcomeView) && open ? (
-        // home- and welcomeView related encouragements
-        <div>
-          <Draggable cancel=".interactable">
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                <div className="flex-reverse">
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div>
-
-                <RecommendSlider slides={[
-                  welcomeback_encourage,
-                  <StreakEncouragement />,
-                  leader_board_encourage,
-                  daily_stories_encourage,
-                  latest_incomplete_story,
-                  confirm_blue_card_encourage,
-                  unseen_stories_inGroup_encourage,
-                  shared_incomplete_story_inGroup_encourage,
-                  review_stories_encourage,
-                ]} />
-                <TurnOffRecommendations />
-              </div>
-            </div>
-          </Draggable>
-          <DailyStoriesDraggable
-            cachedStories={cachedStories}
-            bigScreen={bigScreen}
-            open={dailyStoriesDraggableIsOpen}
-            setOpen={setDailyStoriesDraggableIsOpen}
-          />
-        </div>
-      ) : open &&
-        storyBlueCards &&
-        storyBlueCards.length > 0 &&
-        (isInProgressView || isInFlashcardsView) ? (
-        // when the user goes to vocabulary chart on progress page and has bluecards to show encouragement
-        // also comes up when user enters the flashcards tab
-        <div>
-          <Draggable cancel=".interactable">
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                <div className="flex-reverse">
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div>
-
-                <RecommendSlider slides={[
-                  confirm_blue_card_encourage,
-                ]} />
-                <TurnOffRecommendations />
-              </div>
-            </div>
-          </Draggable>
-        </div>
-      ) */ : isInPracticeView && open ? (
-        // practice view related encouragements
-        // this is the exercise encouragement draggable
-        // it differs with css from the basic encouragement draggable
-        <div>
-          {/*<Draggable cancel=".interactable">*/}
-            <div
-              className={
-                bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'
-              }
-            >
-              <div className="col-flex">
-                {/* <div className="flex">
-                  <ExerciseEncouragementHeader />
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div> */}
-                <PracticeCompletedEncouragement practiceType="story" continueAction={continueAction} />
-                {/* <RecommendSlider slides={[
-                  leader_board_encourage,
-                  num_of_rewardable_words,
-                  latest_incomplete_story,
-                  words_seen_encourage,
-                  new_words_interacted_exercise_encourage,
-                  <GrammarReviewExerciseEncouragement />
-                ]} />
-                <TurnOffRecommendations /> */}
-              </div>
-            </div>
-          {/*</Draggable>*/}
-        </div>
-      ) : isInFlashcardsView && !inBlueCardsTest && fcOpen ? (
-        // "normal" flashcard view related encouragements
-        <div>
-          {/* <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}> */}
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                {/* <div className="flex-reverse">
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div> */}
-                <PracticeCompletedEncouragement practiceType="flashcard" continueAction={continueAction} />
-                {/*<RecommendSlider slides={[
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
-                  <TryAnotherBatch handleNewDeck={handleNewDeck} />,
-                  list_of_recent_stories_flashcards_encourage,
-                  <BackToLibraryFromFlashcards />
-                ]} />
-                <TurnOffRecommendations /> */}
-
-                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />
-                  <TryAnotherBatch handleNewDeck={handleNewDeck} />
-                  <ListOfRecentStoriesFlashcardsEncouragement />
-                  <BackToLibraryFromFlashcards />
-                </div>
-                <TurnOffRecommendations /> */}
-              </div>
-            </div>
-          {/* </Draggable> */}
-        </div>
-      ) /* : isInFlashcardsView && inBlueCardsTest && fcOpen ? (
-        // bluecards test view related encouragements
-        <div>
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                <div className="flex-reverse">
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div>
-
-                <RecommendSlider slides={[
-                  <FlashcardsHeaderChooser handleNewDeck={handleNewDeck} />,
-                  prev_stories_blue_cards_encourage,
-                  words_seen_encourage,
-                  <FlashcardsProgress />
-                ]} />
-                <TurnOffRecommendations />
-              </div>
-            </div>
-        </div>
-      ) */ : inLessonPracticeView && fcOpen ? (
-        // lesson practice view related encouragements
-        <div /* style={{ position: 'fixed', top: '0', left: '0', /* display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: '100000'}} */>
-          {/* <Draggable cancel=".practice-completed-button-group" positionOffset={{ x: '-50%', y: '-50%' }}> */}
-            <div
-              className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
-            >
-              <div className="col-flex">
-                {/*<div className="flex-reverse">
-                  <Icon
-                    className="interactable"
-                    style={{
-                      cursor: 'pointer',
-                      marginBottom: '.25em' }}
-                    size="large"
-                    name="close"
-                    onClick={handleCloseClick}
-                  />
-                </div> */}
-                <PracticeCompletedEncouragement
-                  practiceType="lesson"
-                  continueAction={continueAction}
-                />
-                {/* <RecommendSlider slides={[
-                  <PracticeCompletedEncouragement startOverLessonSnippets={startOverLessonSnippets} />,
-                  <GoodJobEncouragement />,
-                  <RedirectHomeEncouragement />
-                ]} />
-                <TurnOffRecommendations /> */}
-
-                {/* <div className="interactable" style={{ overflow: 'auto', maxHeight: 300 }}>
-                  <GoodJobEncouragement />
-                  <RedirectHomeEncouragement />
-                </div>
-                <TurnOffRecommendations /> */}
-              </div>
-            </div>
-          {/* </Draggable> */}
-        </div>
-      ) : null}
-    </>
-  )
+// True when the story is shared, visibly, to the group and the user has not finished practising it.
+const isUnfinishedInGroup = (story, groupId) => {
+  const share = story.groups?.find(g => g.group_id === groupId)
+  if (!share || share.hidden) return false
+  return !story.has_read || (story.percent_cov ?? 0) < FULL_COVERAGE
 }
-export default Recommender
+
+// The assistant's recommendations, each a ready recommendation bubble or null; callers render the
+// ones that fit their view. `practiceCompleted` and the props after it drive the completion bubble.
+const useRecommender = ({
+  practiceCompleted: showPracticeCompleted = false,
+  practiceType,
+  continueAction,
+  onDismiss,
+} = {}) => {
+  const groupId = useSelector(({ user }) => user.data?.user?.last_selected_group)
+  const group = useSelector(({ groups }) => groups.groups.find(g => g.group_id === groupId))
+  const teacherView = useSelector(({ user }) => !!user.data?.teacherView)
+  const stories = useSelector(({ stories }) => stories.data)
+  // Dismissal lasts while the assistant is mounted; keyed by group so another group still shows.
+  const [dismissedGroupId, setDismissedGroupId] = useState(null)
+
+  // A teacher in teacher mode is not reminded of stories they shared; in student mode they are.
+  const unfinishedGroupStories =
+    group && !(group.is_teaching && teacherView) && dismissedGroupId !== groupId
+      ? (stories ?? []).filter(story => isUnfinishedInGroup(story, groupId))
+      : []
+
+  // TEMP DEBUG — remove after diagnosing the missing group-stories bubble.
+  console.debug('[useRecommender]', {
+    groupId,
+    groupIdType: typeof groupId,
+    group: group && { name: group.groupName, is_teaching: group.is_teaching },
+    teacherView,
+    dismissedGroupId,
+    storiesTotal: stories?.length,
+    sharedToSomeGroup: (stories ?? [])
+      .filter(s => s.groups?.length)
+      .map(s => ({
+        title: s.title,
+        groups: s.groups.map(g => ({ id: g.group_id, type: typeof g.group_id, hidden: g.hidden })),
+        has_read: s.has_read,
+        percent_cov: s.percent_cov,
+      })),
+    unfinished: unfinishedGroupStories.length,
+  })
+
+  const incompleteGroupStories = unfinishedGroupStories.length ? (
+    <ChatBubble
+      variant="recommendation"
+      icon={images.users01}
+      onRemove={() => setDismissedGroupId(groupId)}
+      removeDataCy="group-stories-dismiss"
+    >
+      <GroupStoriesEncouragement stories={unfinishedGroupStories} groupName={group.groupName} />
+    </ChatBubble>
+  ) : null
+
+  const practiceCompleted = showPracticeCompleted ? (
+    <ChatBubble
+      variant="recommendation"
+      icon={images.trophy01}
+      onRemove={onDismiss}
+      removeDataCy="practice-completed-dismiss"
+    >
+      <PracticeCompletedEncouragement
+        layout="chat"
+        practiceType={practiceType}
+        setShow={onDismiss}
+        continueAction={continueAction}
+      />
+    </ChatBubble>
+  ) : null
+
+  return { incompleteGroupStories, practiceCompleted }
+}
+
+// ---- Not yet migrated: the old Recommender's encouragements (SubComponents/*), by view ----
+// Data it loaded: getIncompleteStories(lang, { sort_by: 'access' }), getLeaderboards(),
+// getStoriesBlueFlashcards(lang, dictLang); also metadata.cachedStories, newVocabulary, flashcards.
+// "Unfinished" (state.incomplete): last_snippet_id !== num_snippets - 1; "read through": === it.
+// user.enable_recmd disables them (TurnOffRecommendations); RecommendSlider was the carousel.
+//
+// Home / welcome:
+// WelcomeBackEncouragement (HomeView) — greeting + stories covered; when path includes /welcome.
+// StreakEncouragement (HomeView) — streak broken/done/undone, links /library, /flashcards; always.
+// LeaderboardEncouragement (MultiPurpose) — rank, link /leaderboard; when user_rank <= 10.
+// DailyStoriesEncouragement + DailyStoriesDraggable (HomeView) — import daily stories; when
+//   metadata.cachedStories is non-empty. Superseded in the library by ChatBot/DailyStoriesBubble.
+// LatestIncompleteStory (MultiPurpose) — continue the latest unfinished story; when one exists.
+// ConfirmBlueCardsEncouragement (MultiPurpose) — blue-card test of a past story; if storyBlueCards.
+// UnseenStoriesInGroup / SharedIncompleteStoryInGroup (HomeView) — unread group / controlled story;
+//   shared && !has_read (&& control_story). Superseded by incompleteGroupStories above.
+// ReviewStoriesEncouragement (HomeView) — review read-through stories; when one exists.
+//
+// Progress page / flashcards tab: ConfirmBlueCardsEncouragement, when storyBlueCards is non-empty.
+//
+// Story practice, after finishing (PracticeCompletedEncouragement is now practiceCompleted):
+// StoryCompletedToBluecardsExerciseEncouragement (PracticeView) — blue-card test of this story when
+//   creditableWordsNum >= 5, else of a past story with num_of_rewardable_words >= 5.
+// LatestIncompleteStory, LeaderboardEncouragement — as on the home view.
+// WordsSeenEncouragement (MultiPurpose) — words seen, link /flashcards; when vocabulary_seen > 0.
+// NewWordsInteractedExerciseEncouragement (PracticeView) — new words, link /profile/progress; > 0.
+// GrammarReviewExerciseEncouragement (PracticeView) — link /profile/progress/grammar; always.
+// ExerciseEncouragementHeader (PracticeView) — title row of the old practice popup.
+//
+// Flashcards, after a deck (handleNewDeck: close encouragements, refetch getFlashcards):
+// FlashcardsHeaderChooser — header by result: MasteringNewWords / WellDone (Headers/*).
+// TryAnotherBatch — next deck via handleNewDeck; always.
+// ListOfRecentStoriesFlashcardsEncouragement — recent unfinished stories; when one exists.
+// BackToLibraryFromFlashcards — link /library; always.
+//
+// Blue-card test, after the test (handleNewDeck refetches getBlueFlashcards + story blue cards):
+// FlashcardsHeaderChooser — GoodJobBlueFlashcards when all correct, else SomeIncorrect (retry).
+// PreviousStoriesBlueFlashcards — test another story: not current, rewardable words >= 5.
+// WordsSeenEncouragement — as above. FlashcardsProgress — /profile/progress/flashcards; always.
+//
+// Lesson practice, after finishing (PracticeCompletedEncouragement 'lesson' is practiceCompleted):
+// GoodJobEncouragement — random praise; always. RedirectHomeEncouragement — take a break, /home.
+
+export default useRecommender

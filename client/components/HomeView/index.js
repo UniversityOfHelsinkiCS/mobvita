@@ -361,9 +361,6 @@ const HomeView = () => {
         language={learningLanguage}
       />
 
-      {/* (!user?.user.is_teacher || (user?.user.is_teacher && !user?.teacherView)) && (
-        <Recommender />
-      ) */}
       {(!teacherAccess || !teacherAccess[learningLanguage]) &&
         !userGrade &&
         !userIsAnonymous &&

@@ -31,7 +31,6 @@ import { useLearningLanguage, useDictionaryLanguage, hiddenFeatures, ACCESS, use
 import VocabularyGraph from 'Components/VocabularyView/VocabularyGraph'
 import HexagonTest from 'Components/GridHexagon'
 import { getPracticeHistory } from 'Utilities/redux/practiceHistoryReducer'
-import Recommender from 'Components/NewEncouragements/Recommender'
 import XpProgressGraph from 'Components/XpProgressGraph'
 import ProgressStats from './ProgressStats'
 import HoursProgressChart from 'Components/HoursProgressChart'
@@ -305,7 +304,6 @@ const Progress = () => {
   // console.log('num of words at end ', endWords)
   return (
     <div>
-      {/* <Recommender /> */}
       <div className="cont ps-nm">
         {/* One responsive row, matching the group analytics page. */}
         <div className="date-pickers-container">

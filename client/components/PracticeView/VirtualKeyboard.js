@@ -22,11 +22,36 @@ const VirtualKeyboard = () => {
 
   const dispatch = useDispatch()
 
+  // Always a string: react-simple-keyboard reads this bucket as `inputName || 'default'` in
+  // setInput/getInput but as `inputName === undefined ? 'default' : inputName` when a key is
+  // pressed, so a numeric 0 (the first token of a snippet) would read and write two buckets.
+  const inputName = focusedWord?.ID === undefined ? undefined : `${focusedWord.ID}`
+
   useEffect(() => {
     const { id, ID } = focusedWord
     if (!keyboard || !currentAnswers[`${ID}-${id}`]) return
-    keyboard.setInput(currentAnswers[`${ID}-${id}`].users_answer)
+    keyboard.setInput(currentAnswers[`${ID}-${id}`].users_answer, inputName)
   }, [focusedWord, keyboard, currentAnswers])
+
+  // The on-screen input is the only honest source of truth when a key is pressed, so re-read
+  // the text and the selection off it first. Two things otherwise desync and the edit lands at
+  // the wrong offset: ExerciseCloze commits to redux on focus/blur only, so physical typing
+  // never reaches `currentAnswers` and the keyboard's copy of the text stays behind; and the
+  // keyboard tracks the caret from document keyup/mouseup, which a redux-driven re-render does
+  // not fire. `beforeInputUpdate` runs before the key is applied, so this lands in time.
+  const syncFromLiveInput = instance => {
+    if (inputName === undefined) return
+
+    const active = document.activeElement
+    const element =
+      active?.tagName === 'INPUT' && active.name === inputName
+        ? active
+        : document.querySelector(`input[name="${inputName}"]`)
+    if (!element) return
+
+    instance.setInput(element.value, inputName)
+    instance.setCaretPosition(element.selectionStart, element.selectionEnd)
+  }
 
   const buildActiveModifersString = () =>
     Object.entries(modifiers)
@@ -78,25 +103,30 @@ const VirtualKeyboard = () => {
     }
   }
 
-  const handleAnswerChange = (value, word = focusedWord) => {
-    const { surface, id, ID, concept, sentence_id, snippet_id } = word
-    const word_cue = currentAnswers[`${ID}-${id}`]?.cue
+  // react-simple-keyboard calls onChange(input, mouseEvent), so a second argument is always
+  // there and is never a word: the exercise being typed into can only come from redux.
+  const handleAnswerChange = value => {
+    const { surface, id, ID, concept, sentence_id, snippet_id } = focusedWord
+    // No exercise focused yet, so the keystroke has nothing to be stored against. Writing it
+    // anyway put the answer under `undefined-undefined` and posted it as a junk entry.
+    if (!id || ID === undefined) return
+
+    const answerKey = `${ID}-${id}`
 
     dispatch(setTouchedIds(ID))
 
     const newAnswer = {
-      [`${ID}-${id}`]: {
+      // Only the typed text changes; the rest of the answer is kept as the view's own handler
+      // left it, so fields it sets and this one does not (story_id) survive a virtual keystroke.
+      [answerKey]: {
         correct: surface,
-        users_answer: value,
-        cue: word_cue,
         id,
         word_id: ID,
         concept,
         sentence_id,
         snippet_id,
-        hintsRequested: currentAnswers[`${ID}-${id}`]?.hintsRequested,
-        requestedHintsList: currentAnswers[`${ID}-${id}`]?.requestedHintsList,
-        penalties: currentAnswers[`${ID}-${id}`]?.penalties,
+        ...currentAnswers[answerKey],
+        users_answer: value,
       },
     }
 
@@ -122,7 +152,9 @@ const VirtualKeyboard = () => {
             keyboardRef={k => setKeyboard(k)}
             layout={keyboardLayout}
             layoutName={layoutName}
-            inputName={focusedWord.ID}
+            inputName={inputName}
+            beforeInputUpdate={syncFromLiveInput}
+            preventMouseDownDefault
             onChange={handleAnswerChange}
             onKeyPress={handleKeyPress}
             display={keyboardDisplay}

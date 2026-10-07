@@ -9,6 +9,7 @@ import Spinner from 'Components/Spinner'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatbotSuggestions from './ChatbotSuggestions'
+import useRecommender from 'Components/NewEncouragements/Recommender'
 import DailyStoriesBubble from './DailyStoriesBubble'
 
 // The assistant sidebar's general chat: a per-route message thread over the input and suggestions.
@@ -23,6 +24,7 @@ const GeneralChatbot = () => {
   const items = useSelector(({ dialogues }) => dialogues.items)
   const isWaitingForResponse = useSelector(({ dialogues }) => !!dialogues.pending[scope])
   const messages = items.filter(i => i.scope === scope && i.type === 'chatbot-message')
+  const { incompleteGroupStories } = useRecommender()
 
   const latestMessageRef = useRef(null)
   // Burger-menu prompts. The daily-stories one is library-only: that is where a suggested story is
@@ -59,6 +61,7 @@ const GeneralChatbot = () => {
       <div className="chatbot-messages">
         {/* The library assistant opens with daily stories to import — an offer, not a reply, so it
             sits above the thread and stays until dismissed. */}
+        {isLibrary && incompleteGroupStories}
         {isLibrary && <DailyStoriesBubble scope={scope} />}
         {messages.map((message, index) => (
           <ChatBubble
