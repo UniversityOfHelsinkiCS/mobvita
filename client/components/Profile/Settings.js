@@ -34,6 +34,7 @@ import {
 } from 'Utilities/redux/userReducer'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
+import { autoSpeakOn, autoSpeakValue } from 'Utilities/practiceSpeech'
 import LearningSettingsModal from '../LearningSettingsModal'
 
 const SettingToggle = ({ translationId, ...props }) => {
@@ -343,30 +344,16 @@ const Settings = ({teacherView}) => {
             </h2>
           </AccordionSummary>
           <AccordionDetails className="add-story-accordion-item-content">
-            <div>
-              <span className="pb-sm bold">
-                <FormattedMessage id="Pronounce clicked words" />:
-              </span>
-              <RadioGroup
-                row
-                className="profile-page-radio-button-group"
-                name="autoSpeak"
-                value={user.auto_speak}
-                onChange={e => dispatch(updateAutoSpeak(e.target.value))}
-              >
-                <FormControlLabel
-                  value="always"
-                  control={<AppRadio />}
-                  label={intl.formatMessage({ id: 'Always' })}
-                />
-                <FormControlLabel
-                  value="demand"
-                  control={<AppRadio />}
-                  label={intl.formatMessage({ id: 'Only on demand' })}
-                />
-              </RadioGroup>
-              <br />
-            </div>
+            {/* A switch on the same key as the practice and preview/review modals, so all three
+                places that write `auto_speak` read identically. */}
+            <SettingToggle
+              translationId="pronounce-context-after-check"
+              checked={autoSpeakOn(user.auto_speak)}
+              onChange={() =>
+                dispatch(updateAutoSpeak(autoSpeakValue(!autoSpeakOn(user.auto_speak))))
+              }
+              disabled={pending}
+            />
           </AccordionDetails>
         </Accordion>)}
         {!teacherView && (<Accordion
