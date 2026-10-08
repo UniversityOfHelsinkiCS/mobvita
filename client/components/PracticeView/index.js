@@ -5,11 +5,12 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import { Box, FormControlLabel } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import AppSwitch from 'Components/ui/AppSwitch'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import AppDialog from 'Components/ui/AppDialog'
 import CustomTooltip from 'Components/CustomTooltip'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
-import { contextSpeechEnabled, setContextSpeechEnabled } from 'Utilities/practiceSpeech'
+import { autoSpeakOn, autoSpeakValue } from 'Utilities/practiceSpeech'
 import {
   clearFocusedSnippet,
   resetCachedSnippets,
@@ -18,7 +19,13 @@ import {
   resetCurrentSnippet,
   resetSnippets,
 } from 'Utilities/redux/snippetsReducer'
-import { updateShowReviewDiff } from 'Utilities/redux/userReducer'
+import {
+  updateAudioTask,
+  updateAutoSpeak,
+  updateBlankFilling,
+  updateMultiChoice,
+  updateShowReviewDiff,
+} from 'Utilities/redux/userReducer'
 import {
   setTouchedIds,
   setAnswers,
@@ -60,6 +67,14 @@ import StoryInfoButton from 'Components/StoryInfoButton'
 import CombinedChatbot from './CombinedChatbot'
 import StoryTitleTranslate from './StoryTitleTranslate'
 
+const SettingToggle = ({ translationId, ...props }) => (
+  <FormControlLabel
+    control={<AppSwitch {...props} />}
+    label={<FormattedHTMLMessage id={translationId} />}
+    sx={{ m: 0, '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink } }}
+  />
+)
+
 const PracticeView = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -73,8 +88,6 @@ const PracticeView = () => {
 
   const { id } = useParams()
   const canUseAssistant = useHasAccess(ACCESS.HIGH)
-  // Same gate as the pronunciation itself, so the switch only shows where it does something.
-  const canHearCheckedContext = canUseAssistant
   const { width } = useWindowDimensions()
   const snippets = useSelector(({ snippets }) => snippets)
   const { focused: story, pending } = useSelector(({ stories }) => stories)
@@ -82,7 +95,18 @@ const PracticeView = () => {
     ({ practice }) => practice,
   )
   const newVocabulary = useSelector(state => state.newVocabulary.newVocabulary)
-  const { show_review_diff } = useSelector(({ user }) => user.data.user)
+  const {
+    show_review_diff,
+    auto_speak: autoSpeak,
+    blank_filling,
+    multi_choice,
+    task_audio,
+    reading_comprehension,
+  } = useSelector(({ user }) => user.data.user)
+  // The user slice's own flag — `pending` above belongs to stories.
+  const userPending = useSelector(({ user }) => user.pending)
+  // Same rule as the preview/review modal: reading comprehension replaces the exercise types.
+  const disableExerciseToggles = userPending || !!reading_comprehension
   const [startModalOpen, setStartModalOpen] = useState(false)
   const [showMessageDialog, setShowMessageDialog] = useState(false)
 
@@ -107,8 +131,9 @@ const PracticeView = () => {
   const currentSnippetNum = currentSnippetId + 1
 
   const [showDifficulty, setShowDifficulty] = useState(show_review_diff || false)
-  // Kept in the browser rather than on the account — see practiceSpeech.
-  const [contextSpeech, setContextSpeech] = useState(contextSpeechEnabled)
+  // On the account, so it stays in step with the same switch in the preview/review settings and
+  // with the radio in the profile's Audio settings.
+  const contextSpeech = autoSpeakOn(autoSpeak)
   const showPauseButton =
     (snippetsTotalNum - currentSnippetId > 1 && !practiceFinished) ||
     (snippetsTotalNum - currentSnippetId === 1 && isPaused)
@@ -212,9 +237,7 @@ const PracticeView = () => {
   }
 
   const toggleContextSpeech = () => {
-    const next = !contextSpeech
-    setContextSpeech(next)
-    setContextSpeechEnabled(next)
+    dispatch(updateAutoSpeak(autoSpeakValue(!contextSpeech)))
   }
 
   const updateUserReviewDiff = () => {
@@ -301,25 +324,21 @@ const PracticeView = () => {
                 />
               </div>
               <StoryInfoButton story={story} storyId={id} />
-              {/* Production users need the button too: it holds the opt-in speech switch. */}
-              {(canHearCheckedContext) && (
-                <CustomTooltip
-                  title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
+              {/* Always shown: it holds the pronunciation switch, which every user has. */}
+              <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
+                <AppButton
+                  type="button"
+                  variant="tan-outline"
+                  size="sm"
+                  disableRipple
+                  aria-label={intl.formatMessage({ id: 'practice-settings' })}
+                  onClick={() => setSettingsOpen(true)}
+                  data-cy="practice-settings"
+                  sx={roundIconButtonSx}
                 >
-                  <AppButton
-                    type="button"
-                    variant="tan-outline"
-                    size="sm"
-                    disableRipple
-                    aria-label={intl.formatMessage({ id: 'practice-settings' })}
-                    onClick={() => setSettingsOpen(true)}
-                    data-cy="practice-settings"
-                    sx={roundIconButtonSx}
-                  >
-                    <AppIcon src={images.settings02} size={24} color="currentColor" />
-                  </AppButton>
-                </CustomTooltip>
-              )}
+                  <AppIcon src={images.settings02} size={24} color="currentColor" />
+                </AppButton>
+              </CustomTooltip>
             </div>
             {timedExercise && (
               <PracticeTimer
@@ -430,32 +449,37 @@ const PracticeView = () => {
       >
         <div className="flex-col gap-row-nm">
           {hiddenFeatures && (
-            <FormControlLabel
-              control={<AppSwitch checked={showDifficulty} onChange={updateUserReviewDiff} />}
-              label={intl.formatMessage({ id: 'show-difficulty-level' })}
-              sx={{
-                m: 0,
-                '& .MuiFormControlLabel-label': {
-                  marginLeft: '0.5em',
-                  color: colors.ink,
-                },
-              }}
+            <SettingToggle
+              translationId="show-difficulty-level"
+              checked={showDifficulty}
+              onChange={updateUserReviewDiff}
             />
           )}
-          {canHearCheckedContext && (
-            <FormControlLabel
-              control={<AppSwitch checked={contextSpeech} onChange={toggleContextSpeech} />}
-              label={intl.formatMessage({ id: 'pronounce-context-after-check' })}
-              data-cy="practice-settings-context-speech"
-              sx={{
-                m: 0,
-                '& .MuiFormControlLabel-label': {
-                  marginLeft: '0.5em',
-                  color: colors.ink,
-                },
-              }}
-            />
-          )}
+          <SettingToggle
+            translationId="practice-grammar-cloze-exercises"
+            checked={blank_filling}
+            onChange={() => dispatch(updateBlankFilling(!blank_filling))}
+            disabled={disableExerciseToggles}
+          />
+          <SettingToggle
+            translationId="practice-grammar-MC-exercises"
+            checked={multi_choice}
+            onChange={() => dispatch(updateMultiChoice(!multi_choice))}
+            disabled={disableExerciseToggles}
+          />
+          <SettingToggle
+            translationId="practice-listening-cloze-exercises"
+            checked={task_audio}
+            onChange={() => dispatch(updateAudioTask(!task_audio))}
+            disabled={disableExerciseToggles}
+          />
+          {/* An audio preference rather than an exercise type, so it is not disabled with them. */}
+          <SettingToggle
+            translationId="pronounce-context-after-check"
+            checked={contextSpeech}
+            onChange={toggleContextSpeech}
+            data-cy="practice-settings-context-speech"
+          />
         </div>
       </AppDialog>
     </div>

@@ -260,12 +260,15 @@ const Settings = ({teacherView}) => {
                 disabled={pending}
               /> */}
               <ListeningExerciseSettings />
-              <SettingToggle
-                translationId="practice-pronunciation-exercises"
-                checked={user.task_speech}
-                onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
-                disabled={pending}
-              />
+              {/* Staging only: superseded for learners by the auto_speak pronunciation switch. */}
+              {hiddenFeatures && (
+                <SettingToggle
+                  translationId="practice-pronunciation-exercises"
+                  checked={user.task_speech}
+                  onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
+                  disabled={pending}
+                />
+              )}
               <SettingToggle
                 translationId="multiple-chances-when-practicing"
                 checked={user.second_try}

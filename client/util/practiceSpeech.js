@@ -150,31 +150,19 @@ export const pickContextToSpeak = (snippet, { lastCheck = false, spoken = new Se
   return { text, keys }
 }
 
-// Kept per browser: there is no backend field for it, and it is a listening preference rather than
-// something the learner's account needs to carry around.
-const SPEECH_SETTING_KEY = 'practice-context-speech'
+// Driven by the account's `auto_speak`, the same field as the radio in the profile's Audio
+// settings, so it follows the learner between devices and every switch for it stays in step.
+export const AUTO_SPEAK_ON = 'always'
+export const AUTO_SPEAK_OFF = 'demand'
 
-// Opt-in: off until switched on, so a fresh browser stays silent.
-export const contextSpeechEnabled = () => {
-  try {
-    return window.localStorage.getItem(SPEECH_SETTING_KEY) === 'on'
-  } catch {
-    return false
-  }
-}
+// On by default: only an explicit 'demand' silences it, so an account that has never touched the
+// setting still hears pronunciation.
+export const autoSpeakOn = autoSpeak => autoSpeak !== AUTO_SPEAK_OFF
 
-export const setContextSpeechEnabled = enabled => {
-  try {
-    window.localStorage.setItem(SPEECH_SETTING_KEY, enabled ? 'on' : 'off')
-  } catch {
-    // A browser with site data blocked just keeps the default for the session.
-  }
-}
+// The value to save for a switch in either position.
+export const autoSpeakValue = enabled => (enabled ? AUTO_SPEAK_ON : AUTO_SPEAK_OFF)
 
-export const logSpeechSwitchedOff = () => log('not spoken · switched off in practice settings')
-
-// The feature is limited to high-access users while it is being trialled.
-export const logNoSpeechAccess = () => log('not spoken · needs high access')
+export const logSpeechSwitchedOff = () => log('not spoken · auto_speak is "demand"')
 
 // Logged rather than silent: a missing voice for the language looks exactly like a logic failure.
 export const logMissingVoice = learningLanguage =>

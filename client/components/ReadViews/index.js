@@ -39,8 +39,10 @@ import {
   updateAudioTask,
   updateSpeechTask,
   updateMultiChoice,
+  updateAutoSpeak,
 } from 'Utilities/redux/userReducer'
 import { startPracticeTour } from 'Utilities/redux/tourReducer'
+import { autoSpeakOn, autoSpeakValue } from 'Utilities/practiceSpeech'
 import {
   learningLanguageSelector,
   getTextStyle,
@@ -719,6 +721,16 @@ const ReadViews = ({ match }) => {
               disabled={disableOtherPracticeToggles}
             />
           )}
+          {/* An audio preference rather than an exercise type, so it is not disabled alongside
+              them, and it writes the same account field as the profile's Audio settings radio. */}
+          <SettingToggle
+            translationId="pronounce-context-after-check"
+            checked={autoSpeakOn(user?.user.auto_speak)}
+            onChange={() =>
+              dispatch(updateAutoSpeak(autoSpeakValue(!autoSpeakOn(user?.user.auto_speak))))
+            }
+            data-cy="preview-settings-context-speech"
+          />
         </div>
       </AppDialog>
       <AppDialog

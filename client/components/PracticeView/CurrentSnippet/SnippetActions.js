@@ -4,19 +4,16 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import {
-  ACCESS,
   confettiRain,
   finalConfettiRain,
   images,
   learningLanguageSelector,
   speak,
-  useHasAccess,
   voiceLanguages,
 } from 'Utilities/common'
 import {
-  contextSpeechEnabled,
+  autoSpeakOn,
   logMissingVoice,
-  logNoSpeechAccess,
   logSpeechSwitchedOff,
   pickContextToSpeak,
   withLocalAnswers,
@@ -142,8 +139,9 @@ const SnippetActions = ({
   const { irt_dummy_score } = useSelector(({ user }) => user)
   const learningLanguage = useSelector(learningLanguageSelector)
   const resourceUsage = useSelector(({ user }) => user.data?.user?.resource_usage)
-  // Pronouncing the checked context is a high-access feature for now.
-  const canHearCheckedContext = useHasAccess(ACCESS.HIGH)
+  // The account setting behind every pronunciation switch; read from the store so flipping one
+  // takes effect on the next check without a reload.
+  const autoSpeak = useSelector(({ user }) => user.data?.user?.auto_speak)
   // What has already been read out of this snippet, so every correct unit is heard once and
   // none twice. Reset when the snippet changes.
   const spokenUnits = useRef({ snippetKey: null, keys: new Set() })
@@ -183,13 +181,7 @@ const SnippetActions = ({
   // Reads a short context aloud — see pickContextToSpeak for which unit wins. Spoken from the
   // answers as typed, before the check is posted, so the audio starts a request earlier.
   const speakCheckedContext = lastCheck => {
-    if (!canHearCheckedContext) {
-      logNoSpeechAccess()
-      return
-    }
-
-    // Read on every check, so the practice settings switch takes effect without a reload.
-    if (!contextSpeechEnabled()) {
+    if (!autoSpeakOn(autoSpeak)) {
       logSpeechSwitchedOff()
       return
     }
