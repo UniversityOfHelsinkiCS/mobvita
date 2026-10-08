@@ -260,12 +260,12 @@ const Settings = ({teacherView}) => {
                 disabled={pending}
               /> */}
               <ListeningExerciseSettings />
-              {hiddenFeatures && (<SettingToggle
+              <SettingToggle
                 translationId="practice-pronunciation-exercises"
                 checked={user.task_speech}
                 onChange={() => dispatch(updateSpeechTask(!user.task_speech))}
                 disabled={pending}
-              />)}
+              />
               <SettingToggle
                 translationId="multiple-chances-when-practicing"
                 checked={user.second_try}

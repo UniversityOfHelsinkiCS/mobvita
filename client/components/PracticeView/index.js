@@ -302,7 +302,7 @@ const PracticeView = () => {
               </div>
               <StoryInfoButton story={story} storyId={id} />
               {/* Production users need the button too: it holds the opt-in speech switch. */}
-              {(hiddenFeatures || canHearCheckedContext) && (
+              {(canHearCheckedContext) && (
                 <CustomTooltip
                   title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
                 >
