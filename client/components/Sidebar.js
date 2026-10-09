@@ -307,6 +307,7 @@ export default function Sidebar() {
           <Box sx={{ borderTop: '1px solid rgba(45, 44, 42, 0.12)', my: '10px', mx: '12px' }} />
 
           <MenuRow
+            className="tour-help"
             icon={<img src={images.helpCircle} alt="" style={imgIconStyle} />}
             href={helpLink}
             target="_blank"

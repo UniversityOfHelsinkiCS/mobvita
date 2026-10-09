@@ -18,6 +18,7 @@ export const stepBlueprints = {
     ),
     skipBeacon: true,
   },
+  // Points at the navbar hamburger; the sidebar itself stays closed.
   sideBar: {
     target: '.tour-sidebar',
     title: <FormattedMessage id="sidebar" />,
@@ -27,9 +28,8 @@ export const stepBlueprints = {
       </div>
     ),
     textAlign: 'center',
-    placement: 'right-start',
+    placement: 'bottom-start',
     disableScrolling: true,
-    floatingOptions: { flipOptions: false },
     skipBeacon: true,
     styles: { options: { zIndex: 10000 } },
   },
@@ -139,6 +139,7 @@ export const stepBlueprints = {
     placementBeacon: 'left',
     placement: 'left',
   },
+  // Points at the Help row in the left sidebar; HomeTour opens the sidebar for this step.
   help: {
     target: '.tour-help',
     title: <FormattedMessage id="tour-step9-HELP-header" />,
@@ -148,9 +149,9 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
-    placement: 'top',
-    opacity: 0,
+    placement: 'right',
     skipBeacon: true,
+    styles: { options: { zIndex: 10000 } },
   },
   beginPracticing: {
     target: '.tour-button',
@@ -161,9 +162,9 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
-    placement: 'top',
-    opacity: 0,
+    placement: 'right',
     skipBeacon: true,
+    styles: { options: { zIndex: 10000 } },
   },
 }
 

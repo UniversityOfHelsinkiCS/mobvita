@@ -4,12 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
+import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { confettiRain } from 'Utilities/common'
 import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/homeSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
+
+// Steps that need the chatbot (helper sidebar) open, and the ones pointing into the left sidebar.
+const CHATBOT_STEPS = ['chatbot', 'help']
+const SIDEBAR_STEPS = ['help', 'beginPracticing']
 
 // Tour for the Home view. Steps come from `stepBlueprints` in the order
 // defined by `STEP_ORDER[role+screen]`.
@@ -26,11 +31,32 @@ const HomeTour = () => {
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
   const order = STEP_ORDER[orderKey]
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
-  const chatbotIndex = order.indexOf('chatbot')
 
-  // Coordinates per-step side effects: sidebar open/close, navigation back to
-  // /home, skipping addNewStories when no topics exist, toggling the chatbot
-  // around its step, and the mobile confetti burst.
+  // Opens/closes the chatbot and left sidebar for step `toId`; true if one of them slides in.
+  const syncPanels = (fromId, toId) => {
+    let slidesIn = false
+    const chatbotNext = CHATBOT_STEPS.includes(toId)
+    if (CHATBOT_STEPS.includes(fromId) !== chatbotNext) {
+      dispatch(setHelperSidebarOpen(chatbotNext))
+      slidesIn = chatbotNext
+    }
+    const sidebarNext = SIDEBAR_STEPS.includes(toId)
+    if (SIDEBAR_STEPS.includes(fromId) !== sidebarNext) {
+      dispatch(sidebarSetOpen(sidebarNext))
+      slidesIn = slidesIn || sidebarNext
+    }
+    return slidesIn
+  }
+
+  // Shows step `nextIndex` after a panel slide-in, so Joyride measures the panel's final position.
+  const advanceAfterSlide = nextIndex =>
+    setTimeout(() => {
+      dispatch(handleNextTourStep(nextIndex))
+      triggerResize()
+    }, 400)
+
+  // Per-step side effects: sidebar and chatbot open/close, navigation back to /home,
+  // skipping addNewStories without topics, and the mobile confetti burst.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||
@@ -44,13 +70,21 @@ const HomeTour = () => {
       dispatch(sidebarSetOpen(false))
       return
     }
+    const currentId = order[index]
+    const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+
+    // A skipped step still has to open/close the panels for the step after it.
     if (type === EVENTS.TARGET_NOT_FOUND) {
-      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+      if (syncPanels(currentId, order[nextIndex])) advanceAfterSlide(nextIndex)
+      else dispatch(handleNextTourStep(nextIndex))
       return
     }
     if (type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
 
-    const currentId = order[index]
+    if (syncPanels(currentId, order[nextIndex])) {
+      advanceAfterSlide(nextIndex)
+      return
+    }
 
     // Teacher desktop only: skip `addNewStories` when no lesson topics.
     if (
@@ -65,23 +99,6 @@ const HomeTour = () => {
     if (bigScreen) {
       if (!location.pathname.includes('/home')) navigate('/home')
 
-      if (currentId === 'welcome') {
-        // Open sidebar so .tour-sidebar mounts before the next step.
-        dispatch(sidebarSetOpen(true))
-        setTimeout(() => {
-          dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-          triggerResize()
-          setTimeout(triggerResize, 50)
-        }, 400)
-        return
-      }
-      if (currentId === 'sideBar') dispatch(sidebarSetOpen(false))
-
-      // Toggle chatbot when entering or leaving the chatbot step.
-      if (index === chatbotIndex || index === chatbotIndex - 1) {
-        dispatch({ type: 'TOGGLE_CHATBOT' })
-      }
-
       dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
       return
     }
@@ -89,17 +106,9 @@ const HomeTour = () => {
     // Mobile flow.
     if (currentId === 'welcome') {
       if (!location.pathname.includes('/home')) navigate('/home')
-      dispatch(sidebarSetOpen(true))
-    } else if (currentId === 'sideBar') {
-      setTimeout(() => {
-        dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-      }, 600)
-      return
     } else if (currentId === 'library') {
       // Mini celebration on the library step.
       ;[0, 0, 400, 600, 800].forEach(delay => setTimeout(confettiRain, delay))
-    } else if (index === chatbotIndex || index === chatbotIndex - 1) {
-      dispatch({ type: 'TOGGLE_CHATBOT' })
     }
 
     dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))

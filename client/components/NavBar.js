@@ -330,7 +330,7 @@ export default function NavBar() {
           src={images.menu2}
           alt="menu"
           onClick={() => dispatch(sidebarSetOpen(!open))}
-          className="sidebar-hamburger"
+          className="sidebar-hamburger tour-sidebar"
           data-cy="hamburger"
           style={{
             width: '24px',
