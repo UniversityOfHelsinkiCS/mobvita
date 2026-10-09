@@ -3,10 +3,12 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Practice tour. Covers desktop + mobile and the
 // in-practice-view portion that the `practice-alt` tour replays.
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcomeDesktop: {
     target: '.tour-button',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
@@ -115,20 +117,6 @@ export const stepBlueprints = {
       </div>
     ),
   },
-  // Both end steps point at the tour button in the left sidebar, which PracticeTour opens.
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    skipBeacon: true,
-    styles: { options: { zIndex: 10000 } },
-  },
   welcomeMobile: {
     target: '.tour-start-finish',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
@@ -160,19 +148,6 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-  },
-  mobileEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import direction from 'Assets/images/direction.png'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 
 // Decorative "start" sign rendered inside welcome/end tour steps.
 export const tourSign = () => (
@@ -31,6 +32,20 @@ export const closeVisibleModal = () => {
     return true
   }
   return false
+}
+
+// Shared tour-end step ids (see steps/endSteps.js); they point into the left sidebar.
+export const END_STEP_IDS = ['desktopEnd', 'mobileEnd']
+
+// How long to wait for the left sidebar to slide in before showing a step inside it.
+export const SIDEBAR_SLIDE_MS = 400
+
+// Opens the left sidebar entering one of `stepIds` and closes it leaving them; true if it opened.
+export const syncLeftSidebar = (dispatch, fromId, toId, stepIds = END_STEP_IDS) => {
+  const opens = stepIds.includes(toId)
+  if (stepIds.includes(fromId) === opens) return false
+  dispatch(sidebarSetOpen(opens))
+  return opens
 }
 
 // Fires a synthetic window resize so Joyride re-measures after DOM mutations.

@@ -10,7 +10,14 @@ import {
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
-import { buildSteps, resolveOrderKey, closeVisibleModal, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  closeVisibleModal,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/lessonsSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
@@ -66,6 +73,13 @@ const LessonsTour = () => {
     }
 
     const currentId = order[index]
+
+    // The end step points into the left sidebar; wait out its slide-in.
+    const nextId = order[index + (action === ACTIONS.PREV ? -1 : 1)]
+    if (syncLeftSidebar(dispatch, currentId, nextId)) {
+      advance(index, action, SIDEBAR_SLIDE_MS)
+      return
+    }
 
     if (currentId === 'welcome' && action !== ACTIONS.PREV) {
       // Students in a group library do not see the setup menu; switch.

@@ -3,9 +3,11 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Lessons tour.
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcome: {
     target: '.cont-tall',
     title: <FormattedMessage id="Welcome to the Lessons mode" />,
@@ -139,30 +141,6 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-  },
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    skipBeacon: true,
-  },
-  mobileEnd: {
-    target: '.tour-mobile-start-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 

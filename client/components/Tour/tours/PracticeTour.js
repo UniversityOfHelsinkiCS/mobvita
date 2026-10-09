@@ -5,14 +5,16 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER, ALT_STEP_ORDER } from '../steps/practiceSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
-
-// End steps point at the tour button inside the left sidebar.
-const END_STEPS = ['desktopEnd', 'mobileEnd']
 
 // Tour for the Practice/Preview/Review views. Serves both the `practice`
 // tour (full walkthrough) and `practice-alt` (in-practice slice).
@@ -48,14 +50,11 @@ const PracticeTour = () => {
     const currentId = order[index]
     const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
-    // Open the sidebar entering an end step, close it stepping back out of one.
-    const opensSidebar = END_STEPS.includes(order[nextIndex])
-    if (opensSidebar) dispatch(sidebarSetOpen(true))
-    else if (END_STEPS.includes(currentId)) dispatch(sidebarSetOpen(false))
+    const opensSidebar = syncLeftSidebar(dispatch, currentId, order[nextIndex])
 
     // Advance (or rewind) the tour after `delay`, or the sidebar's slide-in if longer; resizes.
     const advance = (delay = 0) => {
-      const wait = Math.max(delay, opensSidebar ? 400 : 0)
+      const wait = Math.max(delay, opensSidebar ? SIDEBAR_SLIDE_MS : 0)
       const next = () => {
         dispatch(handleNextTourStep(nextIndex))
         triggerResize()

@@ -3,14 +3,16 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
-import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
-import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER, CHART_ACTION_BY_STEP } from '../steps/progressSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
-
-// End steps point at the tour button inside the left sidebar.
-const END_STEPS = ['desktopEnd', 'mobileEnd']
 
 // Progress tour: each desktop step swaps the chart via `CHART_ACTION_BY_STEP`; the end step opens
 // the sidebar. Mobile uses a shorter list.
@@ -41,10 +43,7 @@ const ProgressTour = () => {
     const currentId = order[index]
     const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
-    // Open the sidebar entering an end step, close it when stepping back out of one.
-    const opensSidebar = END_STEPS.includes(order[nextIndex])
-    if (opensSidebar) dispatch(sidebarSetOpen(true))
-    else if (END_STEPS.includes(currentId)) dispatch(sidebarSetOpen(false))
+    const opensSidebar = syncLeftSidebar(dispatch, currentId, order[nextIndex])
 
     const advance = (delay = 0) => {
       if (!delay) {
@@ -64,7 +63,7 @@ const ProgressTour = () => {
     }
 
     // Wait out the sidebar slide-in, and on mobile the layout shift after the dates step.
-    if (opensSidebar) advance(400)
+    if (opensSidebar) advance(SIDEBAR_SLIDE_MS)
     else if (!bigScreen && !isNotFound && currentId === 'dates') advance(500)
     else advance()
   }

@@ -3,10 +3,12 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Library tour. Targets/copy that vary by role or
 // screen size are blueprints implemented as functions of the context.
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcome: {
     target: '.library-tour-start',
     title: <FormattedMessage id="Welcome to the Library page" />,
@@ -68,33 +70,6 @@ export const stepBlueprints = {
     ),
     placement: 'top',
     placementBeacon: 'left',
-  },
-  // Both end steps point at the tour button in the left sidebar, which LibraryTour opens.
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    skipBeacon: true,
-    styles: { options: { zIndex: 10000 } },
-  },
-  mobileEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 

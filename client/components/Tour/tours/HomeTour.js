@@ -7,7 +7,13 @@ import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { confettiRain } from 'Utilities/common'
-import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/homeSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
@@ -40,12 +46,7 @@ const HomeTour = () => {
       dispatch(setHelperSidebarOpen(chatbotNext))
       slidesIn = chatbotNext
     }
-    const sidebarNext = SIDEBAR_STEPS.includes(toId)
-    if (SIDEBAR_STEPS.includes(fromId) !== sidebarNext) {
-      dispatch(sidebarSetOpen(sidebarNext))
-      slidesIn = slidesIn || sidebarNext
-    }
-    return slidesIn
+    return syncLeftSidebar(dispatch, fromId, toId, SIDEBAR_STEPS) || slidesIn
   }
 
   // Shows step `nextIndex` after a panel slide-in, so Joyride measures the panel's final position.
@@ -53,7 +54,7 @@ const HomeTour = () => {
     setTimeout(() => {
       dispatch(handleNextTourStep(nextIndex))
       triggerResize()
-    }, 400)
+    }, SIDEBAR_SLIDE_MS)
 
   // Per-step side effects: sidebar and chatbot open/close, navigation back to /home,
   // skipping addNewStories without topics, and the mobile confetti burst.

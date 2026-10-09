@@ -3,9 +3,11 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Progress tour (authenticated users).
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcomeDesktop: {
     target: '.progress-tour-start',
     title: <FormattedMessage id="Welcome to the Progress page" />,
@@ -48,19 +50,6 @@ export const stepBlueprints = {
     title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
   },
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    skipBeacon: true,
-    styles: { options: { zIndex: 10000 } },
-  },
   welcomeMobile: {
     target: '.progress-tour-start',
     title: <FormattedMessage id="Welcome to the Progress page" />,
@@ -77,19 +66,6 @@ export const stepBlueprints = {
     target: '.progress-page-graph-cont',
     title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
-  },
-  mobileEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 
