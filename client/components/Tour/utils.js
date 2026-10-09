@@ -20,10 +20,10 @@ export const getSafeTarget = (target, fallbackTarget = 'body') => {
   return fallback instanceof HTMLElement ? fallbackTarget : 'body'
 }
 
-// Clicks the close icon of the first visible Semantic-UI modal. Returns
-// whether a modal was actually closed.
+// Clicks the close button of the first visible MUI modal; true if one closed.
 export const closeVisibleModal = () => {
-  const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
+  const selector = '.MuiDialog-root button[aria-label="close"], .ui.modal .close.icon'
+  const closeButton = Array.from(document.querySelectorAll(selector)).find(
     el => el instanceof HTMLElement && el.offsetParent !== null,
   )
   if (closeButton instanceof HTMLElement) {

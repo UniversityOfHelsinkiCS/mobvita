@@ -69,6 +69,7 @@ export const stepBlueprints = {
     placement: 'top',
     placementBeacon: 'left',
   },
+  // Both end steps point at the tour button in the left sidebar, which LibraryTour opens.
   desktopEnd: {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -78,10 +79,12 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
+    placement: 'right',
     skipBeacon: true,
+    styles: { options: { zIndex: 10000 } },
   },
   mobileEnd: {
-    target: '.tour-mobile-start-button',
+    target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
