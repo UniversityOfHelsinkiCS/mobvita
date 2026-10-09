@@ -233,6 +233,7 @@ const LessonList = () => {
   // Lesson difficulty of vocabulary view
   const lessonVocabularyControls = (
     <VocabDiffSlider
+      className="lesson-tour-vocab-slider"
       value={sliderValue}
       onChange={handleSlider}
       recommendedValue={vocabulary_score}

@@ -48,8 +48,9 @@ export const stepBlueprints = {
     ),
     skipBeacon: true,
   },
+  // The vocabulary difficulty slider shown on setup step 1.
   vocab: {
-    target: '.lesson-vocab-slider-container',
+    target: '.lesson-tour-vocab-slider',
     title: <FormattedMessage id="Lesson vocab" />,
     content: (
       <div>
