@@ -10,7 +10,7 @@ import { endStepBlueprints } from './endSteps'
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcome: {
-    target: '.library-tour-start',
+    target: '.tour-library-welcome',
     title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>
@@ -22,7 +22,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   story: {
-    target: '.tour-story-card',
+    target: '.tour-library-story',
     title: <FormattedMessage id="Story" />,
     content: (
       <div>
@@ -33,7 +33,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   stars: {
-    target: '.library-tour-difficulty-stars',
+    target: '.tour-library-stars',
     title: <FormattedMessage id="Difficulty stars" />,
     content: (
       <div>
@@ -44,10 +44,8 @@ export const stepBlueprints = {
     placement: 'top',
     placementBeacon: 'left',
   },
-  practiceOrPreview: ({ bigScreen, teacherView }) => ({
-    target: bigScreen
-      ? '.story-detail-modal-action-button'
-      : '.library-tour-mobile-practice-button',
+  practiceOrPreview: ({ teacherView }) => ({
+    target: '.tour-library-practice-or-preview',
     title: <FormattedMessage id={teacherView ? 'preview' : 'practice'} />,
     content: (
       <div>
@@ -61,7 +59,7 @@ export const stepBlueprints = {
     placementBeacon: 'left',
   }),
   review: {
-    target: '.library-tour-modal-review-button',
+    target: '.tour-library-review',
     title: <FormattedMessage id="review" />,
     content: (
       <div>

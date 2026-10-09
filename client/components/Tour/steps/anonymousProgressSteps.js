@@ -5,8 +5,8 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 
 // Step blueprints for the anonymous (logged-out) Progress tour.
 export const stepBlueprints = {
-  register: ({ bigScreen }) => ({
-    target: bigScreen ? '.navbar-register-button' : '.sidebar-register-button',
+  register: () => ({
+    target: '.tour-progress-welcome',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -14,7 +14,7 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-    placement: 'right',
+    placement: 'center',
   }),
 }
 

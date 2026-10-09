@@ -419,7 +419,7 @@ const ReadViews = ({ match }) => {
   const StoryFunctionsDropdown = () =>
     preProcessingReady && teacherView && !routeStory?.control_story && !routeStory?.public ? (
       <div
-        className="practice-tour-edit-delete-story"
+        className="tour-practice-edit-delete"
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
       >
         <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
@@ -462,7 +462,7 @@ const ReadViews = ({ match }) => {
               ? `/stories/${id}/reading_practice`
               : `/stories/${id}/practice/`
           }
-          className="practice-tour-start-practice-story"
+          className="tour-practice-start-practice"
           variant="tan"
           disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
           sx={{ gap: '0.5em' }}
@@ -554,7 +554,7 @@ const ReadViews = ({ match }) => {
               <div className="space-between" style={getTextStyle(learningLanguage, 'title')}>
                 <div className="story-title">
                   {(!isStudentPreviewProcessing || !!routeStory?.title || !processingComplete) && (
-                    <span className="header-text practice-tour-start">
+                    <span className="header-text tour-practice-welcome">
                       {routeStory?.title || ''}
                     </span>
                   )}
@@ -654,7 +654,7 @@ const ReadViews = ({ match }) => {
         {canUseAssistant && (
         <HelperSidebar>
           {canSeeTopics && !routeStory?.control_story && (
-            <div className="practice-tour-topics" style={{ margin: '20px 20px 0 20px' }}>
+            <div className="tour-practice-topics" style={{ margin: '20px 20px 0 20px' }}>
             <TopicsSelect
               conceptCount={routeStory?.concept_count || {}}
               focusedConcept={focusedConcept}

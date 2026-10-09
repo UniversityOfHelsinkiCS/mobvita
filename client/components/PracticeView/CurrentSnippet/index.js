@@ -426,7 +426,7 @@ const CurrentSnippet = ({
         {!practiceFinished && (
           <div style={{ width: '100%' }}>
             <div
-              className="practice-container"
+              className="practice-container tour-practice-exercise-box"
               style={getTextStyle(learningLanguage)}
               data-cy="practice-view"
             >

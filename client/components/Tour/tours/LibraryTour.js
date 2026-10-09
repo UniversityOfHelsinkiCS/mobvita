@@ -67,7 +67,7 @@ const LibraryTour = () => {
 
     // After the stars step open the story modal so its in-modal targets exist.
     if (currentId === 'stars' && action !== ACTIONS.PREV) {
-      const trigger = document.querySelector('.library-tour-open-story-modal, .story-item-dots')
+      const trigger = document.querySelector('.tour-library-open-story, .story-item-dots')
       if (trigger) {
         trigger.dispatchEvent(new MouseEvent('click', { bubbles: true }))
         advance(350)

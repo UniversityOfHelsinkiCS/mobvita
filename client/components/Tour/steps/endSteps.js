@@ -6,7 +6,7 @@ import { tourSign } from '../utils'
 
 // Shared last step: points at the tour button in the left sidebar, which the tours open for it.
 const tourEnd = {
-  target: '.tour-button',
+  target: '.tour-shared-end',
   title: <FormattedMessage id="Tour end" />,
   content: (
     <div>

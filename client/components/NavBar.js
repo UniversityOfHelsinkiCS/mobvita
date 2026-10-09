@@ -294,7 +294,7 @@ export default function NavBar() {
         placement="top"
         title={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
       >
-        <div className="navbar-basic-item">
+        <div className="navbar-basic-item tour-practice-elo-score">
           <StarBorderIcon style={{ margin: 0, width: '16px', height: '16px' }} />
           {ability_score}
         </div>
@@ -330,7 +330,7 @@ export default function NavBar() {
           src={images.menu2}
           alt="menu"
           onClick={() => dispatch(sidebarSetOpen(!open))}
-          className="sidebar-hamburger tour-sidebar"
+          className="sidebar-hamburger tour-home-sidebar"
           data-cy="hamburger"
           style={{
             width: '24px',
@@ -354,7 +354,7 @@ export default function NavBar() {
                 <Box
                   component="span"
                   data-cy="revita-logo"
-                  className="navbar-revita-logo tour-start-finish"
+                  className="navbar-revita-logo tour-home-welcome"
                   sx={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -399,7 +399,7 @@ export default function NavBar() {
                       role="button"
                       tabIndex={0}
                       data-cy="navbar-learning-language"
-                      className="tour-navbar-learning-language"
+                      className="tour-home-learning-language"
                       onClick={() => setLangDialogOpen(true)}
                       style={{
                         display: 'inline-flex',

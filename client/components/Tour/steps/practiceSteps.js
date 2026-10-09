@@ -10,7 +10,7 @@ import { endStepBlueprints } from './endSteps'
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.tour-button',
+    target: '.tour-practice-welcome',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -23,7 +23,7 @@ export const stepBlueprints = {
   },
   // The "All topics in text" control at the top of the helper sidebar.
   topics: {
-    target: '.practice-tour-topics',
+    target: '.tour-practice-topics',
     title: <FormattedMessage id="Story Topics Box" />,
     content: (
       <div>
@@ -34,7 +34,7 @@ export const stepBlueprints = {
     placement: 'left',
   },
   translations: {
-    target: '.combined-chatbot',
+    target: '.tour-practice-translations',
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -48,7 +48,7 @@ export const stepBlueprints = {
   storyAction: ({ teacherView }) =>
     teacherView
       ? {
-          target: '.practice-tour-edit-delete-story',
+          target: '.tour-practice-edit-delete',
           title: <FormattedMessage id="practice-tour-edit-delete-title" />,
           content: (
             <div>
@@ -58,7 +58,7 @@ export const stepBlueprints = {
           skipBeacon: true,
         }
       : {
-          target: '.practice-tour-start-practice-story',
+          target: '.tour-practice-start-practice',
           title: <FormattedMessage id="Start Practicing" />,
           content: (
             <div>
@@ -68,7 +68,7 @@ export const stepBlueprints = {
           skipBeacon: true,
         },
   exerciseBox: {
-    target: '.practice-container',
+    target: '.tour-practice-exercise-box',
     title: <FormattedMessage id="Exercises" />,
     content: (
       <div>
@@ -89,7 +89,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   checkAnswers: {
-    target: '.attempt-bar',
+    target: '.tour-practice-check-answers',
     title: <FormattedMessage id="check-answer" />,
     content: (
       <div>
@@ -99,7 +99,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   progressBar: {
-    target: '.progress-bar-cont',
+    target: '.tour-practice-progress-bar',
     title: <FormattedMessage id="Progress bar" />,
     content: (
       <div>
@@ -109,7 +109,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   eloScore: {
-    target: '.navbar-basic-item',
+    target: '.tour-practice-elo-score',
     title: <FormattedMessage id="ELO score" />,
     content: (
       <div>
@@ -118,7 +118,7 @@ export const stepBlueprints = {
     ),
   },
   welcomeMobile: {
-    target: '.tour-start-finish',
+    target: '.tour-practice-welcome',
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -130,7 +130,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   translationsMobile: {
-    target: '.mobile-practice-tour-word',
+    target: '.tour-practice-translations-mobile',
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -140,7 +140,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   startPracticeMobile: {
-    target: '.practice-tour-start-practice-story',
+    target: '.tour-practice-start-practice',
     title: <FormattedMessage id="Start Practicing" />,
     content: (
       <div>

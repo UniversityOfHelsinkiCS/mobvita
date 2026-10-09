@@ -7,7 +7,7 @@
 //   2. Walkthroughs — drives each tour through Joyride and asserts the
 //      tooltip is reached and can be walked to completion. The home tour
 //      auto-starts (via `has_seen_home_tour: false`); the others are
-//      launched by clicking the navbar `.tour-button` while on their page.
+//      launched by clicking the sidebar's start-tour row while on their page.
 
 import {
   homeOrder,
@@ -107,7 +107,7 @@ describe('Tour step ordering — structural', () => {
 const TOOLTIP = '.react-joyride__tooltip'
 const NEXT = `${TOOLTIP} button[data-action="primary"]`
 const CLOSE = `${TOOLTIP} button[data-action="close"]`
-const TOUR_BUTTON = '.tour-button'
+const TOUR_BUTTON = '[data-cy=sidebar-start-tour]'
 
 // Walks Joyride forward until the tooltip disappears or `maxSteps` is hit.
 // Tolerates steps whose target is missing (per-tour handler dispatches

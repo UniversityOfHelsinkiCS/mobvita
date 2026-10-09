@@ -9,7 +9,7 @@ import { endStepBlueprints } from './endSteps'
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.progress-tour-start',
+    target: '.tour-progress-welcome',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -21,37 +21,37 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   timelineButton: {
-    target: '.progress-tour-timeline-button',
+    target: '.tour-progress-timeline-button',
     title: <FormattedMessage id="progress-timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },
   dates: {
-    target: '.date-pickers-container',
+    target: '.tour-progress-dates',
     title: <FormattedMessage id="Dates" />,
     content: <FormattedHTMLMessage id="progress-tour-dates-message" />
   },
   vocabulary: {
-    target: '.progress-tour-vocabulary-button',
+    target: '.tour-progress-vocabulary',
     title: <FormattedMessage id="vocabulary-view" />,
     content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
   },
   grammar: {
-    target: '.progress-tour-grammar-button',
+    target: '.tour-progress-grammar',
     title: <FormattedMessage id="hex-map" />,
     content: <FormattedMessage id="hex-map-explanation" />,
   },
   exerciseHistory: {
-    target: '.progress-tour-exercise-history-button',
+    target: '.tour-progress-exercise-history',
     title: <FormattedMessage id="exercise-history" />,
     content: <FormattedMessage id="exercise-history-explanation" />,
   },
   testHistory: {
-    target: '.progress-tour-test-history-button',
+    target: '.tour-progress-test-history',
     title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
   },
   welcomeMobile: {
-    target: '.progress-tour-start',
+    target: '.tour-progress-welcome',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -63,7 +63,7 @@ export const stepBlueprints = {
     placement: 'center',
   },
   timelineMobile: {
-    target: '.progress-page-graph-cont',
+    target: '.tour-progress-timeline-mobile',
     title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },

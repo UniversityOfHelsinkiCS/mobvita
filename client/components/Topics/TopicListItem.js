@@ -122,7 +122,7 @@ const LessonTitle = ({
             title={intl.formatMessage({ id: 'lesson-performance-info-tooltip' })}
           >
             <div
-              className="lesson-performance"
+              className="tour-lesson-performance"
               style={{
                 minWidth: '50px',
                 maxWidth: '50px',
@@ -159,7 +159,7 @@ const LessonTitle = ({
             </div>
           </CustomTooltip>
         )}
-        <div className="lesson-content" style={{ width: '80%', marginLeft: '15px' }}>
+        <div className="tour-lesson-grammar-topics" style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
           {topicExample ? (
             <div

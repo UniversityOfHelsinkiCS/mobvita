@@ -188,7 +188,7 @@ const StoryDetailsModal = ({
             {/* Student */}
             {!isTeacher && !story.flashcardsOnly && (
               <ActionPill
-                className="story-detail-modal-action-button library-tour-modal-practice-button"
+                className="story-detail-modal-action-button tour-library-practice-or-preview"
                 to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}
                 icon={<img src={images.bookOpen} alt="" />}
                 labelId="practice"
@@ -225,13 +225,13 @@ const StoryDetailsModal = ({
             {showTeacherActions && (
               <>
                 <ActionPill
-                  className="story-detail-modal-action-button"
+                  className="story-detail-modal-action-button tour-library-practice-or-preview"
                   to={inGroupLibrary ? `/stories/${story._id}/group/preview` : `/stories/${story._id}/preview`}
                   icon={<VisibilityOutlinedIcon />}
                   labelId="preview"
                 />
                 <ActionPill
-                  className="library-tour-modal-review-button"
+                  className="tour-library-review"
                   to={inGroupLibrary ? `/stories/${story._id}/group/review` : `/stories/${story._id}/review`}
                   icon={<img src={images.fileCheck} alt="" />}
                   labelId="review"

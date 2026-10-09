@@ -9,7 +9,7 @@ import { endStepBlueprints } from './endSteps'
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcome: {
-    target: '.cont-tall',
+    target: '.tour-lesson-welcome',
     title: <FormattedMessage id="Welcome to the Lessons mode" />,
     content: (
       <div>
@@ -21,7 +21,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   lessonStartButton: {
-    target: '.lesson-tour-start-button',
+    target: '.tour-lesson-start-button',
     title: <FormattedMessage id="lesson-tour-start-button-title" />,
     content: (
       <div>
@@ -31,7 +31,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   lessonSetupButton: {
-    target: '.lesson-tour-setup-button',
+    target: '.tour-lesson-setup-button',
     title: <FormattedMessage id="lesson-tour-setup-button-title" />,
     content: (
       <div>
@@ -41,7 +41,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   storyTopic: {
-    target: '.lesson-story-topic',
+    target: '.tour-lesson-story-topic',
     title: <FormattedMessage id="Lesson setup" />,
     content: (
       <div>
@@ -52,7 +52,7 @@ export const stepBlueprints = {
   },
   // The vocabulary difficulty slider shown on setup step 1.
   vocab: {
-    target: '.lesson-tour-vocab-slider',
+    target: '.tour-lesson-vocab',
     title: <FormattedMessage id="Lesson vocab" />,
     content: (
       <div>
@@ -62,7 +62,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   topic: {
-    target: '.grammar-buttons-container',
+    target: '.tour-lesson-topic',
     title: <FormattedMessage id="Lesson topic" />,
     content: (
       <div>
@@ -72,7 +72,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   customGrammar: ({ bigScreen }) => ({
-    target: '.lesson-tour-custom-grammar-button',
+    target: '.tour-lesson-custom-grammar',
     title: bigScreen ? (
       <FormattedMessage id="lesson-tour-custom-grammar-button-topic" />
     ) : (
@@ -92,7 +92,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   }),
   levelTitle: {
-    target: '.level-content',
+    target: '.tour-lesson-level-title',
     title: <FormattedMessage id="Level title" />,
     content: (
       <div>
@@ -102,7 +102,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   grammarTopics: {
-    target: '.lesson-content',
+    target: '.tour-lesson-grammar-topics',
     title: <FormattedMessage id="Grammar topics" />,
     content: (
       <div>
@@ -112,7 +112,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   performance: {
-    target: '.lesson-performance',
+    target: '.tour-lesson-performance',
     title: <FormattedMessage id="Grammar performance" />,
     content: (
       <div>
@@ -122,7 +122,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   resetLesson: {
-    target: '.lesson-tour-stepper',
+    target: '.tour-lesson-reset',
     title: <FormattedMessage id="Reset Lesson" />,
     content: (
       <div>
@@ -133,7 +133,7 @@ export const stepBlueprints = {
     placement: 'left',
   },
   practiceLesson: {
-    target: '.lesson-setup-start-btn',
+    target: '.tour-lesson-practice',
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>
