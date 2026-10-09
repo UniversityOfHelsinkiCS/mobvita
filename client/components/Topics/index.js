@@ -243,8 +243,11 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
                   '&:last-of-type': { borderBottom: 'none' },
                 }}
               >
-                <AccordionSummary className="level-content" expandIcon={<ExpandMoreIcon />}>
-                  <h4 className="lesson-topic-item" style={{ margin: 0 }}>
+                <AccordionSummary
+                  className="tour-lesson-level-title"
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <h4 className="tour-lesson-topic-item" style={{ margin: 0 }}>
                     <FormattedMessage id="lesson-group" values={{ group }} />
                   </h4>
                 </AccordionSummary>

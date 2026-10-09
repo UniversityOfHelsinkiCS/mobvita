@@ -10,13 +10,20 @@ import {
   clearLessonInstanceState,
 } from 'Utilities/redux/lessonInstanceReducer'
 import { updateLibrarySelect, saveSelfIntermediate } from 'Utilities/redux/userReducer'
-import { buildSteps, resolveOrderKey, closeVisibleModal, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  closeVisibleModal,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/lessonsSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
 // Tour for the Lessons view. Walks the setup flow; targets unmount between
-// transitions, so `buildSteps` falls back to `.lesson-story-topic`.
+// transitions, so `buildSteps` falls back to `.tour-lesson-story-topic`.
 const LessonsTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, user, bigScreen } =
@@ -30,7 +37,12 @@ const LessonsTour = () => {
 
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
   const order = STEP_ORDER[orderKey]
-  const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView }, '.lesson-story-topic')
+  const steps = buildSteps(
+    stepBlueprints,
+    order,
+    { bigScreen, teacherView },
+    '.tour-lesson-story-topic',
+  )
   const nextLessonStepByTourStep = {
     storyTopic: 1,
     vocab: 2,
@@ -67,6 +79,13 @@ const LessonsTour = () => {
 
     const currentId = order[index]
 
+    // The end step points into the left sidebar; wait out its slide-in.
+    const nextId = order[index + (action === ACTIONS.PREV ? -1 : 1)]
+    if (syncLeftSidebar(dispatch, currentId, nextId)) {
+      advance(index, action, SIDEBAR_SLIDE_MS)
+      return
+    }
+
     if (currentId === 'welcome' && action !== ACTIONS.PREV) {
       // Students in a group library do not see the setup menu; switch.
       if (!teacherView && user?.last_selected_library !== 'private') {
@@ -87,7 +106,7 @@ const LessonsTour = () => {
       action !== ACTIONS.PREV
     ) {
       setTimeout(() => {
-        const setupButton = document.querySelector('.lesson-tour-setup-button')
+        const setupButton = document.querySelector('.tour-lesson-setup-button')
         if (setupButton instanceof HTMLElement) {
           setupButton.click()
           advance(index, action, 300)
@@ -107,7 +126,7 @@ const LessonsTour = () => {
     }
 
     if (currentId === 'customGrammar' && action !== ACTIONS.PREV) {
-      const button = document.querySelector('.lesson-tour-custom-grammar-button')
+      const button = document.querySelector('.tour-lesson-custom-grammar')
       if (button instanceof HTMLElement) {
         button.click()
         advance(index, action, 250)
@@ -116,7 +135,7 @@ const LessonsTour = () => {
     }
 
     if (currentId === 'levelTitle' && action !== ACTIONS.PREV) {
-      const firstTopic = document.querySelector('.lesson-topic-item')
+      const firstTopic = document.querySelector('.tour-lesson-topic-item')
       if (firstTopic instanceof HTMLElement) {
         firstTopic.click()
         advance(index, action, 250)

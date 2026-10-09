@@ -51,4 +51,7 @@ store.subscribe(() => {
   return localStorage.setItem('user', JSON.stringify(user.data))
 })
 
+// Cypress reads app state (e.g. the current tour step) from here; never set outside test runs.
+if (typeof window !== 'undefined' && window.Cypress) window.store = store
+
 export default store

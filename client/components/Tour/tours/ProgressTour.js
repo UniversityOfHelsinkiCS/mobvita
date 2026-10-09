@@ -3,13 +3,19 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
-import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER, CHART_ACTION_BY_STEP } from '../steps/progressSteps'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
-// Tour for the Progress view (authenticated users). Each desktop step swaps
-// the visible chart via `CHART_ACTION_BY_STEP`. Mobile uses a shorter list.
+// Progress tour: each desktop step swaps the chart via `CHART_ACTION_BY_STEP`; the end step opens
+// the sidebar. Mobile uses a shorter list.
 const ProgressTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, bigScreen } =
@@ -21,8 +27,7 @@ const ProgressTour = () => {
   const order = STEP_ORDER[orderKey]
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
 
-  // Closes the profile dropdown, swaps the chart, and on mobile delays the
-  // date-pickers step for layout stability.
+  // Swaps the chart, opens the sidebar for the end step, and delays steps whose layout is moving.
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||
@@ -32,30 +37,35 @@ const ProgressTour = () => {
       dispatch(stopTour())
       return
     }
-    if (type === EVENTS.TARGET_NOT_FOUND) {
-      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-      return
-    }
-    if (type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
+    const isNotFound = type === EVENTS.TARGET_NOT_FOUND
+    if (!isNotFound && type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
 
     const currentId = order[index]
+    const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
-    if (bigScreen) {
+    const opensSidebar = syncLeftSidebar(dispatch, currentId, order[nextIndex])
+
+    const advance = (delay = 0) => {
+      if (!delay) {
+        dispatch(handleNextTourStep(nextIndex))
+        return
+      }
+      setTimeout(() => {
+        dispatch(handleNextTourStep(nextIndex))
+        triggerResize()
+      }, delay)
+    }
+
+    if (bigScreen && !isNotFound) {
       dispatch({ type: 'CLOSE_PROFILE_DROPDOWN' })
       const chartAction = CHART_ACTION_BY_STEP[currentId]
       if (chartAction) dispatch({ type: chartAction })
-      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-      return
     }
 
-    if (currentId === 'dates') {
-      setTimeout(() => {
-        dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-        triggerResize()
-      }, 500)
-      return
-    }
-    dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+    // Wait out the sidebar slide-in, and on mobile the layout shift after the dates step.
+    if (opensSidebar) advance(SIDEBAR_SLIDE_MS)
+    else if (!bigScreen && !isNotFound && currentId === 'dates') advance(500)
+    else advance()
   }
 
   return (

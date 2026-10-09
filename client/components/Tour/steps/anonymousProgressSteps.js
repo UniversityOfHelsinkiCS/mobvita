@@ -2,11 +2,12 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import { anonymousProgressTargets } from './stepOrders'
 
 // Step blueprints for the anonymous (logged-out) Progress tour.
 export const stepBlueprints = {
-  register: ({ bigScreen }) => ({
-    target: bigScreen ? '.navbar-register-button' : '.sidebar-register-button',
+  register: () => ({
+    target: anonymousProgressTargets.register,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -14,7 +15,9 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-    placement: 'right',
+    placement: 'center',
+    // Auto-starts on the first visit while the page still shows its spinner; wait for the content.
+    targetWaitTimeout: 10000,
   }),
 }
 

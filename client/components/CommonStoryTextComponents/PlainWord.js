@@ -212,7 +212,7 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
         tabIndex={-1}
         onKeyDown={() => handleWordClick()}
         onClick={() => handleWordClick()}
-        className={`word-interactive mobile-practice-tour-word ${
+        className={`word-interactive tour-practice-translations-mobile ${
           wordShouldBeHighlighted(word, conceptHighlighting, listeningHighlighting)}` }
         {...props}
       >

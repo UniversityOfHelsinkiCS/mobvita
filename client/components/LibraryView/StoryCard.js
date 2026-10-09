@@ -218,7 +218,7 @@ const StoryCard = ({
       data-cy={`library-story-card-${story._id}`}
       className={`library-item-card ${
         isControlledStory ? 'card-controlled-story' : ''
-      } ${isDragging ? 'library-story-card-dragging' : ''} tour-story-card`}
+      } ${isDragging ? 'library-story-card-dragging' : ''} tour-library-story`}
       elevation={0}
       draggable={draggable}
       onDragEnd={onDragEnd}
@@ -240,7 +240,7 @@ const StoryCard = ({
         savedLibrarySelection={savedLibrarySelection}
         triggerContent={
           <div
-            className="library-story-card-body library-tour-open-story-modal"
+            className="library-story-card-body tour-library-open-story"
             role="button"
             tabIndex={0}
           >
@@ -316,7 +316,7 @@ const StoryCard = ({
                   </CustomTooltip>
                 )}
                 {hasDifficultyLevel(story.difficulty) && (
-                  <span className="library-tour-difficulty-stars">
+                  <span className="tour-library-stars">
                     <CustomTooltip title={<FormattedMessage id="difficulty-level-tooltip" />}>
                       <DifficultyLevel difficulty={story.difficulty} />
                     </CustomTooltip>

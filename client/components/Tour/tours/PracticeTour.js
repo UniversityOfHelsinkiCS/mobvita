@@ -5,13 +5,21 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { handleNextTourStep, stopTour } from 'Utilities/redux/tourReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
-import { buildSteps, resolveOrderKey, triggerResize } from '../utils'
+import {
+  buildSteps,
+  resolveOrderKey,
+  triggerResize,
+  syncLeftSidebar,
+  SIDEBAR_SLIDE_MS,
+} from '../utils'
 import { stepBlueprints, STEP_ORDER, ALT_STEP_ORDER } from '../steps/practiceSteps'
+import { anonymousHiddenSteps, highAccessSteps, visibleOrder } from '../steps/stepOrders'
+import { ACCESS, useHasAccess, useIsAnonymous } from 'Utilities/common'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
-// Tour for the Practice/Preview/Review views. Serves both the `practice`
-// tour (full walkthrough) and `practice-alt` (in-practice slice).
+// Tour for the Practice/Preview/Review views: the `practice` walkthrough and the `practice-alt`
+// in-practice slice. Assistant steps are left out for users without high access.
 const PracticeTour = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -20,15 +28,22 @@ const PracticeTour = () => {
   const alt = useTourRuntime('practice-alt')
   const isAlt = alt.isActive
   const runtime = isAlt ? alt : main
+  const highAccess = useHasAccess(ACCESS.HIGH)
+  const anonymous = useIsAnonymous()
 
   if (!main.isActive && !isAlt) return null
 
   const { teacherView, bigScreen } = runtime
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
-  const order = (isAlt ? ALT_STEP_ORDER : STEP_ORDER)[orderKey]
+  const fullOrder = (isAlt ? ALT_STEP_ORDER : STEP_ORDER)[orderKey]
+  const order = visibleOrder(
+    visibleOrder(fullOrder, highAccessSteps.practice, highAccess),
+    anonymousHiddenSteps.practice,
+    !anonymous,
+  )
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
 
-  // Drives side effects between steps (sidebar, dropdowns, navigation).
+  // Drives side effects between steps (sidebars, dropdowns, navigation).
   const handleEvent = ({ action, index, type, status }) => {
     if (
       action === ACTIONS.CLOSE ||
@@ -38,33 +53,36 @@ const PracticeTour = () => {
       dispatch(stopTour())
       return
     }
-    if (type === EVENTS.TARGET_NOT_FOUND) {
-      dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
-      return
-    }
-    if (type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
+    const isNotFound = type === EVENTS.TARGET_NOT_FOUND
+    if (!isNotFound && type !== EVENTS.STEP_AFTER && type !== EVENTS.STEP_AFTER_HOOK) return
 
-    // Advance (or rewind) the tour, optionally after a delay; always resizes.
+    const currentId = order[index]
+    const nextIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+
+    const opensSidebar = syncLeftSidebar(dispatch, currentId, order[nextIndex])
+
+    // Advance (or rewind) the tour after `delay`, or the sidebar's slide-in if longer; resizes.
     const advance = (delay = 0) => {
+      const wait = Math.max(delay, opensSidebar ? SIDEBAR_SLIDE_MS : 0)
       const next = () => {
-        dispatch(handleNextTourStep(index + (action === ACTIONS.PREV ? -1 : 1)))
+        dispatch(handleNextTourStep(nextIndex))
         triggerResize()
       }
-      if (delay > 0) setTimeout(next, delay)
+      if (wait > 0) setTimeout(next, wait)
       else next()
     }
 
-    const currentId = order[index]
+    if (isNotFound) {
+      advance()
+      return
+    }
 
     if (!isAlt && bigScreen) {
       if (currentId === 'welcomeDesktop') {
+        // The topics step points into the helper sidebar; wait out its slide-in.
         dispatch(setHelperSidebarOpen(true))
-        dispatch({ type: 'SHOW_TOPICS_BOX' })
-        advance(300)
+        advance(400)
         return
-      }
-      if (currentId === 'topics' && action !== ACTIONS.PREV) {
-        dispatch({ type: 'CLOSE_TOPICS_BOX' })
       }
       if (currentId === 'translations') {
         dispatch({ type: 'SHOW_PRACTICE_DROPDOWN' })

@@ -3,11 +3,18 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { progressTargets } from './stepOrders'
+import { endStepBlueprints } from './endSteps'
+
+// The tour auto-starts on the first visit while the page still shows its spinner; wait for it.
+const PAGE_LOAD_WAIT = { targetWaitTimeout: 10000 }
 
 // Step blueprints for the Progress tour (authenticated users).
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.progress-button',
+    ...PAGE_LOAD_WAIT,
+    target: progressTargets.welcomeDesktop,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -15,56 +22,42 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
+    placement: 'center',
     skipBeacon: true,
   },
   timelineButton: {
-    target: '.progress-tour-timeline-button',
+    target: progressTargets.timelineButton,
     title: <FormattedMessage id="progress-timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },
   dates: {
-    target: '.date-pickers-container',
+    target: progressTargets.dates,
     title: <FormattedMessage id="Dates" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="progress-tour-dates-message" />
-      </div>
-    ),
-    placement: 'left',
+    content: <FormattedHTMLMessage id="progress-tour-dates-message" />
   },
   vocabulary: {
-    target: '.progress-tour-vocabulary-button',
+    target: progressTargets.vocabulary,
     title: <FormattedMessage id="vocabulary-view" />,
     content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
   },
   grammar: {
-    target: '.progress-tour-grammar-button',
+    target: progressTargets.grammar,
     title: <FormattedMessage id="hex-map" />,
     content: <FormattedMessage id="hex-map-explanation" />,
   },
   exerciseHistory: {
-    target: '.progress-tour-exercise-history-button',
+    target: progressTargets.exerciseHistory,
     title: <FormattedMessage id="exercise-history" />,
     content: <FormattedMessage id="exercise-history-explanation" />,
   },
   testHistory: {
-    target: '.progress-tour-test-history-button',
+    target: progressTargets.testHistory,
     title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
   },
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    skipBeacon: true,
-  },
   welcomeMobile: {
-    target: '.sidebar-profile-button',
+    ...PAGE_LOAD_WAIT,
+    target: progressTargets.welcomeMobile,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -73,24 +66,12 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-    placement: 'right',
+    placement: 'center',
   },
   timelineMobile: {
-    target: '.progress-page-graph-cont',
+    target: progressTargets.timelineMobile,
     title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
-  },
-  mobileEnd: {
-    target: '.tour-mobile-start-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'top-end',
-    placementBeacon: 'left',
   },
 }
 

@@ -293,7 +293,7 @@ const PracticeView = () => {
             }}
           >
             <div
-              className="progress-bar-cont"
+              className="progress-bar-cont tour-practice-progress-bar"
               style={{
                 top: smallScreen ? '.25em' : '3.25em',
                 display: 'flex',

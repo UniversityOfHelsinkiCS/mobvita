@@ -104,7 +104,7 @@ const HomeviewButtons = ({
               dataCy="groups-button"
             />
           </div>
-          <div className="add-new-stories-btn-cont tour-add-new-stories">
+          <div className="add-new-stories-btn-cont tour-home-add-new-stories">
             <HomeviewButton
               imgSrc={images.star06Colored}
               altText="Add stories"
@@ -113,7 +113,7 @@ const HomeviewButtons = ({
               dataCy="add-story-button"
             />
           </div>
-          <div className="library-btn-cont tour-library">
+          <div className="library-btn-cont tour-home-library">
             <HomeviewButton
               imgSrc={images.libraryBigColored}
               altText="two books in a pile"
@@ -124,7 +124,7 @@ const HomeviewButtons = ({
             />
           </div>
           {lessons && lessons.length > 0 && canAccessLessons && (
-            <div className="lesson-btn-cont tour-lesson">
+            <div className="lesson-btn-cont tour-home-lesson">
               <HomeviewButton
                 imgSrc={images.lessonsColored}
                 altText="reading a book"
@@ -161,7 +161,7 @@ const HomeviewButtons = ({
               />
             </div>
           )}
-          <div className="practice-btn-cont tour-practice-now">
+          <div className="practice-btn-cont tour-home-practice-now">
             <HomeviewButton
               imgSrc={images.wavesColored}
               altText="dive in"
@@ -171,7 +171,7 @@ const HomeviewButtons = ({
               content="Home-Dive-In-EXPLANATION"
             />
           </div>
-          <div className="library-btn-cont tour-library">
+          <div className="library-btn-cont tour-home-library">
             <HomeviewButton
               imgSrc={images.libraryBigColored}
               altText="two books in a pile"
@@ -181,7 +181,7 @@ const HomeviewButtons = ({
               content="Home-Library-EXPLANATION"
             />
           </div>
-          <div className="flashcards-btn-cont tour-flashcards">
+          <div className="flashcards-btn-cont tour-home-flashcards">
             <HomeviewButton
               imgSrc={images.flashcardsColored}
               altText="three playing cards"
@@ -191,7 +191,7 @@ const HomeviewButtons = ({
             />
           </div>
           {lessons && lessons.length > 0 && canAccessLessons && (
-            <div className="lesson-btn-cont tour-lesson">
+            <div className="lesson-btn-cont tour-home-lesson">
               <HomeviewButton
                 imgSrc={images.lessonsColored}
                 altText="reading a book"

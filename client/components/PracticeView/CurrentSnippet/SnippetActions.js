@@ -91,7 +91,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         }
       >
         <div
-          className="attempt-bar"
+          className="attempt-bar tour-practice-check-answers"
           style={{
             width: `${attemptRatioPercentage}%`,
             height: '100%',

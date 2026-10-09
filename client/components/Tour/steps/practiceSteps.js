@@ -3,12 +3,19 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { practiceTargets } from './stepOrders'
+import { endStepBlueprints } from './endSteps'
+
+// In-practice targets load after the snippet and may be scrolled away on a long story: wait for
+// them, and scroll to them clear of the fixed navbar (tours otherwise skip scrolling).
+const PRACTICE_VIEW_OPTIONS = { targetWaitTimeout: 8000, skipScroll: false, scrollOffset: 80 }
 
 // Step blueprints for the Practice tour. Covers desktop + mobile and the
 // in-practice-view portion that the `practice-alt` tour replays.
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.tour-button',
+    target: practiceTargets.welcomeDesktop,
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -19,8 +26,9 @@ export const stepBlueprints = {
     placement: 'center',
     skipBeacon: true,
   },
+  // The "All topics in text" control at the top of the helper sidebar.
   topics: {
-    target: '.story-topics-box',
+    target: practiceTargets.topics,
     title: <FormattedMessage id="Story Topics Box" />,
     content: (
       <div>
@@ -31,7 +39,7 @@ export const stepBlueprints = {
     placement: 'left',
   },
   translations: {
-    target: '.combined-chatbot',
+    target: practiceTargets.translations,
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -45,7 +53,7 @@ export const stepBlueprints = {
   storyAction: ({ teacherView }) =>
     teacherView
       ? {
-          target: '.practice-tour-edit-delete-story',
+          target: practiceTargets.storyAction,
           title: <FormattedMessage id="practice-tour-edit-delete-title" />,
           content: (
             <div>
@@ -55,7 +63,7 @@ export const stepBlueprints = {
           skipBeacon: true,
         }
       : {
-          target: '.practice-tour-start-practice-story',
+          target: practiceTargets.storyAction,
           title: <FormattedMessage id="Start Practicing" />,
           content: (
             <div>
@@ -65,7 +73,8 @@ export const stepBlueprints = {
           skipBeacon: true,
         },
   exerciseBox: {
-    target: '.practice-container',
+    ...PRACTICE_VIEW_OPTIONS,
+    target: practiceTargets.exerciseBox,
     title: <FormattedMessage id="Exercises" />,
     content: (
       <div>
@@ -76,7 +85,8 @@ export const stepBlueprints = {
     placement: 'right',
   },
   exercise: {
-    target: '.exercise',
+    ...PRACTICE_VIEW_OPTIONS,
+    target: practiceTargets.exercise,
     title: <FormattedMessage id="Exercise" />,
     content: (
       <div>
@@ -86,7 +96,8 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   checkAnswers: {
-    target: '.attempt-bar',
+    ...PRACTICE_VIEW_OPTIONS,
+    target: practiceTargets.checkAnswers,
     title: <FormattedMessage id="check-answer" />,
     content: (
       <div>
@@ -96,7 +107,8 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   progressBar: {
-    target: '.progress-bar-cont',
+    ...PRACTICE_VIEW_OPTIONS,
+    target: practiceTargets.progressBar,
     title: <FormattedMessage id="Progress bar" />,
     content: (
       <div>
@@ -106,7 +118,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   eloScore: {
-    target: '.navbar-basic-item',
+    target: practiceTargets.eloScore,
     title: <FormattedMessage id="ELO score" />,
     content: (
       <div>
@@ -114,19 +126,8 @@ export const stepBlueprints = {
       </div>
     ),
   },
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    skipBeacon: true,
-  },
   welcomeMobile: {
-    target: '.tour-start-finish',
+    target: practiceTargets.welcomeMobile,
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -138,7 +139,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   translationsMobile: {
-    target: '.mobile-practice-tour-word',
+    target: practiceTargets.translationsMobile,
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -148,7 +149,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   startPracticeMobile: {
-    target: '.practice-tour-start-practice-story',
+    target: practiceTargets.startPracticeMobile,
     title: <FormattedMessage id="Start Practicing" />,
     content: (
       <div>
@@ -156,19 +157,6 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-  },
-  mobileEnd: {
-    target: '.tour-mobile-start-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 

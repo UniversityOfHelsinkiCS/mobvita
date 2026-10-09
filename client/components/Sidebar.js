@@ -307,6 +307,7 @@ export default function Sidebar() {
           <Box sx={{ borderTop: '1px solid rgba(45, 44, 42, 0.12)', my: '10px', mx: '12px' }} />
 
           <MenuRow
+            className="tour-home-help"
             icon={<img src={images.helpCircle} alt="" style={imgIconStyle} />}
             href={helpLink}
             target="_blank"
@@ -316,7 +317,8 @@ export default function Sidebar() {
             <FormattedMessage id="help" />
           </MenuRow>
           <MenuRow
-            className="tour-button"
+            className="tour-shared-end tour-home-begin-practicing"
+            data-cy="sidebar-start-tour"
             icon={<img src={images.route} alt="" style={imgIconStyle} />}
             onClick={handleTourStart}
           >
