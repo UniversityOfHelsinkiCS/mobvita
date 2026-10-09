@@ -131,6 +131,11 @@ export const highAccessSteps = {
   practice: ['topics', 'translations'],
 }
 
+// Steps anonymous users cannot see (their navbar has no grammar score to explain).
+export const anonymousHiddenSteps = {
+  practice: ['eloScore'],
+}
+
 // The order a user actually walks: without high access, the steps they cannot see are left out.
 export const visibleOrder = (order, hiddenIds = [], highAccess = true) =>
   highAccess ? order : order.filter(id => !hiddenIds.includes(id))

@@ -21,6 +21,7 @@ import {
   lessonsTargets,
   anonymousProgressTargets,
   highAccessSteps,
+  anonymousHiddenSteps,
   visibleOrder,
 } from '../../client/components/Tour/steps/stepOrders'
 import {
@@ -382,8 +383,13 @@ describe('Tour walkthroughs — anonymous', function () {
   it('practice tour leaves out the assistant steps anonymous users cannot see', function () {
     const ready = () => cy.get(practiceTargets.storyAction, { timeout: 60000 })
     startTour(`/stories/${PUBLIC_STORY_ID}/preview`, ready, loginAnonymous)
-    const order = visibleOrder(practiceOrder.desktopStudent, highAccessSteps.practice, false)
+    const order = visibleOrder(
+      visibleOrder(practiceOrder.desktopStudent, highAccessSteps.practice, false),
+      anonymousHiddenSteps.practice,
+      false,
+    )
     expect(order, 'anonymous practice order').to.not.include.members(highAccessSteps.practice)
+    expect(order, 'anonymous practice order').to.not.include.members(anonymousHiddenSteps.practice)
     expectFullTour(order, practiceTargets)
   })
 

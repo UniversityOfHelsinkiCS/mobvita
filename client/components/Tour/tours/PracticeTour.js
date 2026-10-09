@@ -13,8 +13,8 @@ import {
   SIDEBAR_SLIDE_MS,
 } from '../utils'
 import { stepBlueprints, STEP_ORDER, ALT_STEP_ORDER } from '../steps/practiceSteps'
-import { highAccessSteps, visibleOrder } from '../steps/stepOrders'
-import { ACCESS, useHasAccess } from 'Utilities/common'
+import { anonymousHiddenSteps, highAccessSteps, visibleOrder } from '../steps/stepOrders'
+import { ACCESS, useHasAccess, useIsAnonymous } from 'Utilities/common'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
@@ -29,13 +29,18 @@ const PracticeTour = () => {
   const isAlt = alt.isActive
   const runtime = isAlt ? alt : main
   const highAccess = useHasAccess(ACCESS.HIGH)
+  const anonymous = useIsAnonymous()
 
   if (!main.isActive && !isAlt) return null
 
   const { teacherView, bigScreen } = runtime
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
   const fullOrder = (isAlt ? ALT_STEP_ORDER : STEP_ORDER)[orderKey]
-  const order = visibleOrder(fullOrder, highAccessSteps.practice, highAccess)
+  const order = visibleOrder(
+    visibleOrder(fullOrder, highAccessSteps.practice, highAccess),
+    anonymousHiddenSteps.practice,
+    !anonymous,
+  )
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
 
   // Drives side effects between steps (sidebars, dropdowns, navigation).
