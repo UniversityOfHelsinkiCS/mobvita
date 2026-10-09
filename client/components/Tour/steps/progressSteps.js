@@ -3,13 +3,14 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { progressTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Progress tour (authenticated users).
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.tour-progress-welcome',
+    target: progressTargets.welcomeDesktop,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -21,37 +22,37 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   timelineButton: {
-    target: '.tour-progress-timeline-button',
+    target: progressTargets.timelineButton,
     title: <FormattedMessage id="progress-timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },
   dates: {
-    target: '.tour-progress-dates',
+    target: progressTargets.dates,
     title: <FormattedMessage id="Dates" />,
     content: <FormattedHTMLMessage id="progress-tour-dates-message" />
   },
   vocabulary: {
-    target: '.tour-progress-vocabulary',
+    target: progressTargets.vocabulary,
     title: <FormattedMessage id="vocabulary-view" />,
     content: <FormattedHTMLMessage id="vocabulary-view-explanation" />,
   },
   grammar: {
-    target: '.tour-progress-grammar',
+    target: progressTargets.grammar,
     title: <FormattedMessage id="hex-map" />,
     content: <FormattedMessage id="hex-map-explanation" />,
   },
   exerciseHistory: {
-    target: '.tour-progress-exercise-history',
+    target: progressTargets.exerciseHistory,
     title: <FormattedMessage id="exercise-history" />,
     content: <FormattedMessage id="exercise-history-explanation" />,
   },
   testHistory: {
-    target: '.tour-progress-test-history',
+    target: progressTargets.testHistory,
     title: <FormattedMessage id="Test History" />,
     content: <FormattedMessage id="test-history-explanation" />,
   },
   welcomeMobile: {
-    target: '.tour-progress-welcome',
+    target: progressTargets.welcomeMobile,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -63,7 +64,7 @@ export const stepBlueprints = {
     placement: 'center',
   },
   timelineMobile: {
-    target: '.tour-progress-timeline-mobile',
+    target: progressTargets.timelineMobile,
     title: <FormattedMessage id="Timeline" />,
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },

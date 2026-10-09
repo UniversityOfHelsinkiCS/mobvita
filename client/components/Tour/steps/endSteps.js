@@ -3,10 +3,11 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { endTargets } from './stepOrders'
 
 // Shared last step: points at the tour button in the left sidebar, which the tours open for it.
 const tourEnd = {
-  target: '.tour-shared-end',
+  target: endTargets.desktopEnd,
   title: <FormattedMessage id="Tour end" />,
   content: (
     <div>

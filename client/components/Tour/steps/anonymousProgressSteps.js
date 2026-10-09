@@ -2,11 +2,12 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
+import { anonymousProgressTargets } from './stepOrders'
 
 // Step blueprints for the anonymous (logged-out) Progress tour.
 export const stepBlueprints = {
   register: () => ({
-    target: '.tour-progress-welcome',
+    target: anonymousProgressTargets.register,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>

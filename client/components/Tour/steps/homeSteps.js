@@ -4,11 +4,12 @@ import { FormattedMessage } from 'react-intl'
 import Sparkle from 'react-sparkle'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { homeTargets } from './stepOrders'
 
 // Step blueprints for the Home tour, keyed by stable id.
 export const stepBlueprints = {
   welcome: {
-    target: '.tour-home-welcome',
+    target: homeTargets.welcome,
     title: <FormattedMessage id="welcome" />,
     content: (
       <div className="tour-mobile-message">
@@ -20,7 +21,7 @@ export const stepBlueprints = {
   },
   // Points at the navbar hamburger; the sidebar itself stays closed.
   sideBar: {
-    target: '.tour-home-sidebar',
+    target: homeTargets.sideBar,
     title: <FormattedMessage id="sidebar" />,
     content: (
       <div className="tour-mobile-message">
@@ -34,7 +35,7 @@ export const stepBlueprints = {
     styles: { options: { zIndex: 10000 } },
   },
   learningLanguage: {
-    target: '.tour-home-learning-language',
+    target: homeTargets.learningLanguage,
     title: <FormattedMessage id="Learning-language" />,
     content: (
       <div>
@@ -47,7 +48,7 @@ export const stepBlueprints = {
     styles: { options: { zIndex: 10000 } },
   },
   addNewStories: {
-    target: '.tour-home-add-new-stories',
+    target: homeTargets.addNewStories,
     title: <FormattedMessage id="add-content" />,
     content: (
       <div className="tour-mobile-message">
@@ -70,7 +71,7 @@ export const stepBlueprints = {
     },
   },
   library: {
-    target: '.tour-home-library',
+    target: homeTargets.library,
     title: <FormattedMessage id="Library" />,
     content: (
       <div>
@@ -82,7 +83,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   lesson: {
-    target: '.tour-home-lesson',
+    target: homeTargets.lesson,
     title: <FormattedMessage id="Lessons" />,
     content: (
       <div>
@@ -94,7 +95,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   practiceNow: {
-    target: '.tour-home-practice-now',
+    target: homeTargets.practiceNow,
     title: <FormattedMessage id="practice-now" />,
     content: (
       <div>
@@ -106,7 +107,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   flashcards: {
-    target: '.tour-home-flashcards',
+    target: homeTargets.flashcards,
     title: <FormattedMessage id="Flashcards" />,
     content: (
       <div>
@@ -118,7 +119,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   progress: {
-    target: '.tour-home-progress',
+    target: homeTargets.progress,
     title: <FormattedMessage id="Progress" />,
     content: (
       <div>
@@ -128,7 +129,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   chatbot: {
-    target: '.tour-home-chatbot',
+    target: homeTargets.chatbot,
     title: <FormattedMessage id="tour-chatbot-message-title" />,
     content: (
       <div>
@@ -141,7 +142,7 @@ export const stepBlueprints = {
   },
   // Points at the Help row in the left sidebar; HomeTour opens the sidebar for this step.
   help: {
-    target: '.tour-home-help',
+    target: homeTargets.help,
     title: <FormattedMessage id="tour-step9-HELP-header" />,
     content: (
       <div>
@@ -154,7 +155,7 @@ export const stepBlueprints = {
     styles: { options: { zIndex: 10000 } },
   },
   beginPracticing: {
-    target: '.tour-home-begin-practicing',
+    target: homeTargets.beginPracticing,
     title: <FormattedMessage id="begin-practicing" />,
     content: (
       <div>

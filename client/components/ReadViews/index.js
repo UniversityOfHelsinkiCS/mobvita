@@ -419,7 +419,7 @@ const ReadViews = ({ match }) => {
   const StoryFunctionsDropdown = () =>
     preProcessingReady && teacherView && !routeStory?.control_story && !routeStory?.public ? (
       <div
-        className="tour-practice-edit-delete"
+        className="tour-practice-story-action"
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
       >
         <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
@@ -462,7 +462,7 @@ const ReadViews = ({ match }) => {
               ? `/stories/${id}/reading_practice`
               : `/stories/${id}/practice/`
           }
-          className="tour-practice-start-practice"
+          className="tour-practice-story-action"
           variant="tan"
           disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
           sx={{ gap: '0.5em' }}

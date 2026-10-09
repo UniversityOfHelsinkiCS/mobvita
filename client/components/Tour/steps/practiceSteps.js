@@ -3,14 +3,18 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { practiceTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
+
+// In-practice targets render after the practice view loads its snippet; wait for them, don't skip.
+const PRACTICE_VIEW_WAIT = { targetWaitTimeout: 8000 }
 
 // Step blueprints for the Practice tour. Covers desktop + mobile and the
 // in-practice-view portion that the `practice-alt` tour replays.
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcomeDesktop: {
-    target: '.tour-practice-welcome',
+    target: practiceTargets.welcomeDesktop,
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -23,7 +27,7 @@ export const stepBlueprints = {
   },
   // The "All topics in text" control at the top of the helper sidebar.
   topics: {
-    target: '.tour-practice-topics',
+    target: practiceTargets.topics,
     title: <FormattedMessage id="Story Topics Box" />,
     content: (
       <div>
@@ -34,7 +38,7 @@ export const stepBlueprints = {
     placement: 'left',
   },
   translations: {
-    target: '.tour-practice-translations',
+    target: practiceTargets.translations,
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -48,7 +52,7 @@ export const stepBlueprints = {
   storyAction: ({ teacherView }) =>
     teacherView
       ? {
-          target: '.tour-practice-edit-delete',
+          target: practiceTargets.storyAction,
           title: <FormattedMessage id="practice-tour-edit-delete-title" />,
           content: (
             <div>
@@ -58,7 +62,7 @@ export const stepBlueprints = {
           skipBeacon: true,
         }
       : {
-          target: '.tour-practice-start-practice',
+          target: practiceTargets.storyAction,
           title: <FormattedMessage id="Start Practicing" />,
           content: (
             <div>
@@ -68,7 +72,8 @@ export const stepBlueprints = {
           skipBeacon: true,
         },
   exerciseBox: {
-    target: '.tour-practice-exercise-box',
+    ...PRACTICE_VIEW_WAIT,
+    target: practiceTargets.exerciseBox,
     title: <FormattedMessage id="Exercises" />,
     content: (
       <div>
@@ -79,7 +84,8 @@ export const stepBlueprints = {
     placement: 'right',
   },
   exercise: {
-    target: '.exercise',
+    ...PRACTICE_VIEW_WAIT,
+    target: practiceTargets.exercise,
     title: <FormattedMessage id="Exercise" />,
     content: (
       <div>
@@ -89,7 +95,8 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   checkAnswers: {
-    target: '.tour-practice-check-answers',
+    ...PRACTICE_VIEW_WAIT,
+    target: practiceTargets.checkAnswers,
     title: <FormattedMessage id="check-answer" />,
     content: (
       <div>
@@ -99,7 +106,8 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   progressBar: {
-    target: '.tour-practice-progress-bar',
+    ...PRACTICE_VIEW_WAIT,
+    target: practiceTargets.progressBar,
     title: <FormattedMessage id="Progress bar" />,
     content: (
       <div>
@@ -109,7 +117,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   eloScore: {
-    target: '.tour-practice-elo-score',
+    target: practiceTargets.eloScore,
     title: <FormattedMessage id="ELO score" />,
     content: (
       <div>
@@ -118,7 +126,7 @@ export const stepBlueprints = {
     ),
   },
   welcomeMobile: {
-    target: '.tour-practice-welcome',
+    target: practiceTargets.welcomeMobile,
     title: <FormattedMessage id="Welcome to the Practice mode" />,
     content: (
       <div>
@@ -130,7 +138,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   translationsMobile: {
-    target: '.tour-practice-translations-mobile',
+    target: practiceTargets.translationsMobile,
     title: <FormattedMessage id="Translations" />,
     content: (
       <div>
@@ -140,7 +148,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   startPracticeMobile: {
-    target: '.tour-practice-start-practice',
+    target: practiceTargets.startPracticeMobile,
     title: <FormattedMessage id="Start Practicing" />,
     content: (
       <div>

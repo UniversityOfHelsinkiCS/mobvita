@@ -1,7 +1,5 @@
-// Pure-data step ordering tables for every tour. No JSX, no path aliases —
-// safe to import from Cypress (which uses its own webpack, not Vite). Each
-// `*Steps.js` re-exports its `STEP_ORDER` from here so there's still one
-// source of truth.
+// Pure-data step orders and targets for every tour. No JSX, no path aliases — safe to import
+// from Cypress, which checks each shown step's spotlight against these same targets.
 
 export const homeOrder = {
   desktopStudent: [
@@ -124,4 +122,85 @@ export const anonymousProgressOrder = {
   desktopTeacher: ['register'],
   mobileStudent: ['register'],
   mobileTeacher: ['register'],
+}
+
+// ── Step targets ───────────────────────────────────────────────────────────
+// Each tour's step id → the selector its tooltip points at. The `*Steps.js` blueprints read their
+// `target` from here, so the walkthrough tests assert against exactly what the app uses.
+
+// The shared last step points at the start-tour row in the left sidebar.
+const sharedEndTarget = '.tour-shared-end'
+export const endTargets = { desktopEnd: sharedEndTarget, mobileEnd: sharedEndTarget }
+
+export const homeTargets = {
+  welcome: '.tour-home-welcome',
+  sideBar: '.tour-home-sidebar',
+  learningLanguage: '.tour-home-learning-language',
+  addNewStories: '.tour-home-add-new-stories',
+  library: '.tour-home-library',
+  lesson: '.tour-home-lesson',
+  practiceNow: '.tour-home-practice-now',
+  flashcards: '.tour-home-flashcards',
+  progress: '.tour-home-progress',
+  chatbot: '.tour-home-chatbot',
+  help: '.tour-home-help',
+  beginPracticing: '.tour-home-begin-practicing',
+}
+
+export const libraryTargets = {
+  ...endTargets,
+  welcome: '.tour-library-welcome',
+  story: '.tour-library-story',
+  stars: '.tour-library-stars',
+  practiceOrPreview: '.tour-library-practice-or-preview',
+  review: '.tour-library-review',
+}
+
+export const progressTargets = {
+  ...endTargets,
+  welcomeDesktop: '.tour-progress-welcome',
+  welcomeMobile: '.tour-progress-welcome',
+  timelineButton: '.tour-progress-timeline-button',
+  timelineMobile: '.tour-progress-timeline-mobile',
+  dates: '.tour-progress-dates',
+  vocabulary: '.tour-progress-vocabulary',
+  grammar: '.tour-progress-grammar',
+  exerciseHistory: '.tour-progress-exercise-history',
+  testHistory: '.tour-progress-test-history',
+}
+
+export const practiceTargets = {
+  ...endTargets,
+  welcomeDesktop: '.tour-practice-welcome',
+  welcomeMobile: '.tour-practice-welcome',
+  topics: '.tour-practice-topics',
+  translations: '.tour-practice-translations',
+  translationsMobile: '.tour-practice-translations-mobile',
+  storyAction: '.tour-practice-story-action',
+  startPracticeMobile: '.tour-practice-story-action',
+  exerciseBox: '.tour-practice-exercise-box',
+  exercise: '.exercise',
+  checkAnswers: '.tour-practice-check-answers',
+  progressBar: '.tour-practice-progress-bar',
+  eloScore: '.tour-practice-elo-score',
+}
+
+export const lessonsTargets = {
+  ...endTargets,
+  welcome: '.tour-lesson-welcome',
+  lessonStartButton: '.tour-lesson-start-button',
+  lessonSetupButton: '.tour-lesson-setup-button',
+  storyTopic: '.tour-lesson-story-topic',
+  vocab: '.tour-lesson-vocab',
+  topic: '.tour-lesson-topic',
+  customGrammar: '.tour-lesson-custom-grammar',
+  levelTitle: '.tour-lesson-level-title',
+  grammarTopics: '.tour-lesson-grammar-topics',
+  performance: '.tour-lesson-performance',
+  resetLesson: '.tour-lesson-reset',
+  practiceLesson: '.tour-lesson-practice',
+}
+
+export const anonymousProgressTargets = {
+  register: '.tour-progress-welcome',
 }

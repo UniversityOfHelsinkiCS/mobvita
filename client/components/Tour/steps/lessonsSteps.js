@@ -3,13 +3,14 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { lessonsTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Lessons tour.
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcome: {
-    target: '.tour-lesson-welcome',
+    target: lessonsTargets.welcome,
     title: <FormattedMessage id="Welcome to the Lessons mode" />,
     content: (
       <div>
@@ -21,7 +22,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   lessonStartButton: {
-    target: '.tour-lesson-start-button',
+    target: lessonsTargets.lessonStartButton,
     title: <FormattedMessage id="lesson-tour-start-button-title" />,
     content: (
       <div>
@@ -31,7 +32,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   lessonSetupButton: {
-    target: '.tour-lesson-setup-button',
+    target: lessonsTargets.lessonSetupButton,
     title: <FormattedMessage id="lesson-tour-setup-button-title" />,
     content: (
       <div>
@@ -41,7 +42,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   storyTopic: {
-    target: '.tour-lesson-story-topic',
+    target: lessonsTargets.storyTopic,
     title: <FormattedMessage id="Lesson setup" />,
     content: (
       <div>
@@ -52,7 +53,7 @@ export const stepBlueprints = {
   },
   // The vocabulary difficulty slider shown on setup step 1.
   vocab: {
-    target: '.tour-lesson-vocab',
+    target: lessonsTargets.vocab,
     title: <FormattedMessage id="Lesson vocab" />,
     content: (
       <div>
@@ -62,7 +63,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   topic: {
-    target: '.tour-lesson-topic',
+    target: lessonsTargets.topic,
     title: <FormattedMessage id="Lesson topic" />,
     content: (
       <div>
@@ -72,7 +73,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   customGrammar: ({ bigScreen }) => ({
-    target: '.tour-lesson-custom-grammar',
+    target: lessonsTargets.customGrammar,
     title: bigScreen ? (
       <FormattedMessage id="lesson-tour-custom-grammar-button-topic" />
     ) : (
@@ -92,7 +93,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   }),
   levelTitle: {
-    target: '.tour-lesson-level-title',
+    target: lessonsTargets.levelTitle,
     title: <FormattedMessage id="Level title" />,
     content: (
       <div>
@@ -102,7 +103,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   grammarTopics: {
-    target: '.tour-lesson-grammar-topics',
+    target: lessonsTargets.grammarTopics,
     title: <FormattedMessage id="Grammar topics" />,
     content: (
       <div>
@@ -112,7 +113,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   performance: {
-    target: '.tour-lesson-performance',
+    target: lessonsTargets.performance,
     title: <FormattedMessage id="Grammar performance" />,
     content: (
       <div>
@@ -122,7 +123,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   resetLesson: {
-    target: '.tour-lesson-reset',
+    target: lessonsTargets.resetLesson,
     title: <FormattedMessage id="Reset Lesson" />,
     content: (
       <div>
@@ -133,7 +134,7 @@ export const stepBlueprints = {
     placement: 'left',
   },
   practiceLesson: {
-    target: '.tour-lesson-practice',
+    target: lessonsTargets.practiceLesson,
     title: <FormattedMessage id="Practice lesson" />,
     content: (
       <div>

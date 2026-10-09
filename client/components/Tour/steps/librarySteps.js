@@ -3,6 +3,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { libraryTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Library tour. Targets/copy that vary by role or
@@ -10,7 +11,7 @@ import { endStepBlueprints } from './endSteps'
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcome: {
-    target: '.tour-library-welcome',
+    target: libraryTargets.welcome,
     title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>
@@ -22,7 +23,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   story: {
-    target: '.tour-library-story',
+    target: libraryTargets.story,
     title: <FormattedMessage id="Story" />,
     content: (
       <div>
@@ -33,7 +34,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   stars: {
-    target: '.tour-library-stars',
+    target: libraryTargets.stars,
     title: <FormattedMessage id="Difficulty stars" />,
     content: (
       <div>
@@ -45,7 +46,7 @@ export const stepBlueprints = {
     placementBeacon: 'left',
   },
   practiceOrPreview: ({ teacherView }) => ({
-    target: '.tour-library-practice-or-preview',
+    target: libraryTargets.practiceOrPreview,
     title: <FormattedMessage id={teacherView ? 'preview' : 'practice'} />,
     content: (
       <div>
@@ -59,7 +60,7 @@ export const stepBlueprints = {
     placementBeacon: 'left',
   }),
   review: {
-    target: '.tour-library-review',
+    target: libraryTargets.review,
     title: <FormattedMessage id="review" />,
     content: (
       <div>
