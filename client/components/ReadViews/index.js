@@ -654,7 +654,7 @@ const ReadViews = ({ match }) => {
         {canUseAssistant && (
         <HelperSidebar>
           {canSeeTopics && !routeStory?.control_story && (
-            <div style={{ margin: '20px 20px 0 20px' }}>
+            <div className="practice-tour-topics" style={{ margin: '20px 20px 0 20px' }}>
             <TopicsSelect
               conceptCount={routeStory?.concept_count || {}}
               focusedConcept={focusedConcept}

@@ -19,8 +19,9 @@ export const stepBlueprints = {
     placement: 'center',
     skipBeacon: true,
   },
+  // The "All topics in text" control at the top of the helper sidebar.
   topics: {
-    target: '.story-topics-box',
+    target: '.practice-tour-topics',
     title: <FormattedMessage id="Story Topics Box" />,
     content: (
       <div>
@@ -114,6 +115,7 @@ export const stepBlueprints = {
       </div>
     ),
   },
+  // Both end steps point at the tour button in the left sidebar, which PracticeTour opens.
   desktopEnd: {
     target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
@@ -123,7 +125,9 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
+    placement: 'right',
     skipBeacon: true,
+    styles: { options: { zIndex: 10000 } },
   },
   welcomeMobile: {
     target: '.tour-start-finish',
@@ -158,7 +162,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   mobileEnd: {
-    target: '.tour-mobile-start-button',
+    target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
