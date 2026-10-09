@@ -304,7 +304,7 @@ const Progress = () => {
   // console.log('num of words at end ', endWords)
   return (
     <div>
-      <div className="cont ps-nm">
+      <div className="cont ps-nm progress-tour-start">
         {/* One responsive row, matching the group analytics page. */}
         <div className="date-pickers-container">
           <span className="group-analytics-daterow-label">

@@ -7,7 +7,7 @@ import { tourSign } from '../utils'
 // Step blueprints for the Progress tour (authenticated users).
 export const stepBlueprints = {
   welcomeDesktop: {
-    target: '.progress-button',
+    target: '.progress-tour-start',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -15,6 +15,7 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
+    placement: 'center',
     skipBeacon: true,
   },
   timelineButton: {
@@ -25,12 +26,7 @@ export const stepBlueprints = {
   dates: {
     target: '.date-pickers-container',
     title: <FormattedMessage id="Dates" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="progress-tour-dates-message" />
-      </div>
-    ),
-    placement: 'left',
+    content: <FormattedHTMLMessage id="progress-tour-dates-message" />
   },
   vocabulary: {
     target: '.progress-tour-vocabulary-button',
@@ -61,10 +57,12 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
+    placement: 'right',
     skipBeacon: true,
+    styles: { options: { zIndex: 10000 } },
   },
   welcomeMobile: {
-    target: '.sidebar-profile-button',
+    target: '.progress-tour-start',
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
       <div>
@@ -73,7 +71,7 @@ export const stepBlueprints = {
       </div>
     ),
     skipBeacon: true,
-    placement: 'right',
+    placement: 'center',
   },
   timelineMobile: {
     target: '.progress-page-graph-cont',
@@ -81,7 +79,7 @@ export const stepBlueprints = {
     content: <FormattedHTMLMessage id="timeline-explanation" />,
   },
   mobileEnd: {
-    target: '.tour-mobile-start-button',
+    target: '.tour-button',
     title: <FormattedMessage id="Tour end" />,
     content: (
       <div>
@@ -89,8 +87,9 @@ export const stepBlueprints = {
         <div>{tourSign()}</div>
       </div>
     ),
-    placement: 'top-end',
+    placement: 'right',
     placementBeacon: 'left',
+    styles: { options: { zIndex: 10000 } },
   },
 }
 
