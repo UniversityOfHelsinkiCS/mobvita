@@ -138,15 +138,16 @@ const Progress = () => {
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
 
+  // Anonymous users get the register prompt tour on every visit; registered users once.
   useEffect(() => {
+    if (user.user.email === 'anonymous_email') {
+      dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      return
+    }
     if (!user.user.has_seen_progress_tour) {
       dispatch(progressTourViewed())
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
-      if (user.user.email === 'anonymous_email') {
-        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
-      } else {
-        dispatch(startProgressTour())
-      }
+      dispatch(startProgressTour())
     }
   }, [])
 

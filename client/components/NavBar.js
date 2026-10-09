@@ -274,6 +274,7 @@ export default function NavBar() {
       ? flashcardHistory[flashcardHistory.length - 1].score
       : 0
 
+  // Navbar grammar score (IRT where supported, else ELO) with its explanation tooltip.
   const get_student_ability_score_component = () => {
     if (storyLanguage == undefined) {
       return <div />
@@ -294,7 +295,7 @@ export default function NavBar() {
         placement="top"
         title={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
       >
-        <div className="navbar-basic-item tour-practice-elo-score">
+        <div className="navbar-basic-item tour-practice-elo-score" style={{ marginRight: '10px' }}>
           <StarBorderIcon style={{ margin: 0, width: '16px', height: '16px' }} />
           {ability_score}
         </div>
@@ -475,7 +476,6 @@ export default function NavBar() {
                   alignItems: 'center',
                   gap: '8px',
                   mr: '10px',
-                  ml: '10px',
                 }}
               >
                 <span

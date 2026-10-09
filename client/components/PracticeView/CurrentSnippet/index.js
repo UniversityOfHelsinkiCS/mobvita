@@ -422,7 +422,8 @@ const CurrentSnippet = ({
 
   return (
     <div>
-      <form ref={practiceForm}>
+      {/* scrollMarginTop keeps the auto-scrolled snippet below the fixed navbar. */}
+      <form ref={practiceForm} style={{ scrollMarginTop: '5rem' }}>
         {!practiceFinished && (
           <div style={{ width: '100%' }}>
             <div

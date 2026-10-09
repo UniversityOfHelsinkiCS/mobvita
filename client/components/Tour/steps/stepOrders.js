@@ -124,6 +124,17 @@ export const anonymousProgressOrder = {
   mobileTeacher: ['register'],
 }
 
+// Steps whose targets render only for high-access users: the assistant sidebar (chatbot, topics,
+// translations) and lessons. Anonymous and other users never see them, so their tours drop them.
+export const highAccessSteps = {
+  home: ['lesson', 'chatbot'],
+  practice: ['topics', 'translations'],
+}
+
+// The order a user actually walks: without high access, the steps they cannot see are left out.
+export const visibleOrder = (order, hiddenIds = [], highAccess = true) =>
+  highAccess ? order : order.filter(id => !hiddenIds.includes(id))
+
 // ── Step targets ───────────────────────────────────────────────────────────
 // Each tour's step id → the selector its tooltip points at. The `*Steps.js` blueprints read their
 // `target` from here, so the walkthrough tests assert against exactly what the app uses.

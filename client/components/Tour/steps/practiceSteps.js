@@ -6,8 +6,9 @@ import { tourSign } from '../utils'
 import { practiceTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
 
-// In-practice targets render after the practice view loads its snippet; wait for them, don't skip.
-const PRACTICE_VIEW_WAIT = { targetWaitTimeout: 8000 }
+// In-practice targets load after the snippet and may be scrolled away on a long story: wait for
+// them, and scroll to them clear of the fixed navbar (tours otherwise skip scrolling).
+const PRACTICE_VIEW_OPTIONS = { targetWaitTimeout: 8000, skipScroll: false, scrollOffset: 80 }
 
 // Step blueprints for the Practice tour. Covers desktop + mobile and the
 // in-practice-view portion that the `practice-alt` tour replays.
@@ -72,7 +73,7 @@ export const stepBlueprints = {
           skipBeacon: true,
         },
   exerciseBox: {
-    ...PRACTICE_VIEW_WAIT,
+    ...PRACTICE_VIEW_OPTIONS,
     target: practiceTargets.exerciseBox,
     title: <FormattedMessage id="Exercises" />,
     content: (
@@ -84,7 +85,7 @@ export const stepBlueprints = {
     placement: 'right',
   },
   exercise: {
-    ...PRACTICE_VIEW_WAIT,
+    ...PRACTICE_VIEW_OPTIONS,
     target: practiceTargets.exercise,
     title: <FormattedMessage id="Exercise" />,
     content: (
@@ -95,7 +96,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   checkAnswers: {
-    ...PRACTICE_VIEW_WAIT,
+    ...PRACTICE_VIEW_OPTIONS,
     target: practiceTargets.checkAnswers,
     title: <FormattedMessage id="check-answer" />,
     content: (
@@ -106,7 +107,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   progressBar: {
-    ...PRACTICE_VIEW_WAIT,
+    ...PRACTICE_VIEW_OPTIONS,
     target: practiceTargets.progressBar,
     title: <FormattedMessage id="Progress bar" />,
     content: (

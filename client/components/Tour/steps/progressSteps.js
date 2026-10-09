@@ -6,10 +6,14 @@ import { tourSign } from '../utils'
 import { progressTargets } from './stepOrders'
 import { endStepBlueprints } from './endSteps'
 
+// The tour auto-starts on the first visit while the page still shows its spinner; wait for it.
+const PAGE_LOAD_WAIT = { targetWaitTimeout: 10000 }
+
 // Step blueprints for the Progress tour (authenticated users).
 export const stepBlueprints = {
   ...endStepBlueprints,
   welcomeDesktop: {
+    ...PAGE_LOAD_WAIT,
     target: progressTargets.welcomeDesktop,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (
@@ -52,6 +56,7 @@ export const stepBlueprints = {
     content: <FormattedMessage id="test-history-explanation" />,
   },
   welcomeMobile: {
+    ...PAGE_LOAD_WAIT,
     target: progressTargets.welcomeMobile,
     title: <FormattedMessage id="Welcome to the Progress page" />,
     content: (

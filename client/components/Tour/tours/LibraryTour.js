@@ -12,11 +12,27 @@ import {
   SIDEBAR_SLIDE_MS,
 } from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/librarySteps'
+import { libraryTargets } from '../steps/stepOrders'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
-// Library tour: opens the story modal after the stars step, then closes it and opens the sidebar
-// for the end step. Teachers get an extra review step.
+// A folder the tour can open to reach stories (not the "back" card, not an empty folder).
+const OPENABLE_FOLDER =
+  '.library-folder-card:not(.library-folder-card-back):not(.library-folder-card-empty)'
+
+// Opens folders until a story card shows (libraries often hold stories only in folders), then
+// calls `done`; gives up after ~5s so an empty library just skips the story steps.
+const revealStoryCard = (done, attemptsLeft = 20) => {
+  if (document.querySelector(libraryTargets.story) || attemptsLeft === 0) {
+    done()
+    return
+  }
+  document.querySelector(OPENABLE_FOLDER)?.click()
+  setTimeout(() => revealStoryCard(done, attemptsLeft - 1), 250)
+}
+
+// Library tour: reveals a story card, opens the story modal after the stars step, then closes it
+// and opens the sidebar for the end step. Teachers get an extra review step.
 const LibraryTour = () => {
   const dispatch = useDispatch()
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, bigScreen } =
@@ -64,6 +80,12 @@ const LibraryTour = () => {
     }
 
     const lastInModalId = order.includes('review') ? 'review' : 'practiceOrPreview'
+
+    // The story steps need a story card; open folders until one shows.
+    if (currentId === 'welcome' && action !== ACTIONS.PREV) {
+      revealStoryCard(() => advance(100))
+      return
+    }
 
     // After the stars step open the story modal so its in-modal targets exist.
     if (currentId === 'stars' && action !== ACTIONS.PREV) {

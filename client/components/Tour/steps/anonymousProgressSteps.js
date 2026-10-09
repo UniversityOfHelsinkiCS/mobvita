@@ -16,6 +16,8 @@ export const stepBlueprints = {
     ),
     skipBeacon: true,
     placement: 'center',
+    // Auto-starts on the first visit while the page still shows its spinner; wait for the content.
+    targetWaitTimeout: 10000,
   }),
 }
 

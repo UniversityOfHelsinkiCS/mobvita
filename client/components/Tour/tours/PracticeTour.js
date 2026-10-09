@@ -13,11 +13,13 @@ import {
   SIDEBAR_SLIDE_MS,
 } from '../utils'
 import { stepBlueprints, STEP_ORDER, ALT_STEP_ORDER } from '../steps/practiceSteps'
+import { highAccessSteps, visibleOrder } from '../steps/stepOrders'
+import { ACCESS, useHasAccess } from 'Utilities/common'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
-// Tour for the Practice/Preview/Review views. Serves both the `practice`
-// tour (full walkthrough) and `practice-alt` (in-practice slice).
+// Tour for the Practice/Preview/Review views: the `practice` walkthrough and the `practice-alt`
+// in-practice slice. Assistant steps are left out for users without high access.
 const PracticeTour = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -26,12 +28,14 @@ const PracticeTour = () => {
   const alt = useTourRuntime('practice-alt')
   const isAlt = alt.isActive
   const runtime = isAlt ? alt : main
+  const highAccess = useHasAccess(ACCESS.HIGH)
 
   if (!main.isActive && !isAlt) return null
 
   const { teacherView, bigScreen } = runtime
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
-  const order = (isAlt ? ALT_STEP_ORDER : STEP_ORDER)[orderKey]
+  const fullOrder = (isAlt ? ALT_STEP_ORDER : STEP_ORDER)[orderKey]
+  const order = visibleOrder(fullOrder, highAccessSteps.practice, highAccess)
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
 
   // Drives side effects between steps (sidebars, dropdowns, navigation).

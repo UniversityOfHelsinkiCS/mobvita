@@ -15,6 +15,8 @@ import {
   SIDEBAR_SLIDE_MS,
 } from '../utils'
 import { stepBlueprints, STEP_ORDER } from '../steps/homeSteps'
+import { highAccessSteps, visibleOrder } from '../steps/stepOrders'
+import { ACCESS, useHasAccess } from 'Utilities/common'
 import JoyrideShared from '../JoyrideShared'
 import useTourRuntime from '../useTourRuntime'
 
@@ -22,8 +24,8 @@ import useTourRuntime from '../useTourRuntime'
 const CHATBOT_STEPS = ['chatbot', 'help']
 const SIDEBAR_STEPS = ['help', 'beginPracticing']
 
-// Tour for the Home view. Steps come from `stepBlueprints` in the order
-// defined by `STEP_ORDER[role+screen]`.
+// Home view tour: `STEP_ORDER[role+screen]` minus the high-access steps (chatbot, lessons)
+// for users who cannot see them.
 const HomeTour = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,11 +33,12 @@ const HomeTour = () => {
   const { isActive, run, stepIndex, tourKey, continuous, teacherView, bigScreen } =
     useTourRuntime('home')
   const lesson_topics = useSelector(state => state.metadata.lesson_topics)
+  const highAccess = useHasAccess(ACCESS.HIGH)
 
   if (!isActive) return null
 
   const orderKey = resolveOrderKey({ bigScreen, teacherView })
-  const order = STEP_ORDER[orderKey]
+  const order = visibleOrder(STEP_ORDER[orderKey], highAccessSteps.home, highAccess)
   const steps = buildSteps(stepBlueprints, order, { bigScreen, teacherView })
 
   // Opens/closes the chatbot and left sidebar for step `toId`; true if one of them slides in.

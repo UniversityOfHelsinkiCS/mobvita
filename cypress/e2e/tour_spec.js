@@ -20,6 +20,8 @@ import {
   practiceTargets,
   lessonsTargets,
   anonymousProgressTargets,
+  highAccessSteps,
+  visibleOrder,
 } from '../../client/components/Tour/steps/stepOrders'
 import {
   createStoryViaPaste,
@@ -115,6 +117,11 @@ describe('Tour step ordering — structural', () => {
     expect(lessonsOrder.desktopTeacher).to.not.include('performance')
   })
 
+  it('high-access steps are real steps of their tours', () => {
+    expect(homeOrder.desktopStudent).to.include.members(highAccessSteps.home)
+    expect(practiceOrder.desktopStudent).to.include.members(highAccessSteps.practice)
+  })
+
   it('every tour starts with a welcome step', () => {
     Object.entries(TABLES).forEach(([name, table]) => {
       // progress-anonymous is a single 'register' step; practice-alt
@@ -206,26 +213,45 @@ const walkTour = (order, targets, maxSteps = 30) => {
   return cy.wrap(shown)
 }
 
-// Opens the page, waits until it is ready, then starts its tour from the sidebar like a user.
-const startTour = (path, ready) => {
-  cy.loginExisting()
+// Opens the page and waits until it is ready; starts its tour from the sidebar like a user,
+// unless the page already started it by itself (first visits do).
+const startTour = (path, ready, login = () => cy.loginExisting()) => {
+  login()
   cy.visit(`http://localhost:8000${path}`)
   ready()
-  // The sidebar may already be open (it covers the hamburger then).
   cy.window()
     .its('store')
     .invoke('getState')
-    .its('sidebar.open')
-    .then(open => {
-      if (!open) cy.get('[data-cy=hamburger]').click()
+    .then(({ tour, sidebar }) => {
+      if (tour.run) return
+      // The sidebar may already be open (it covers the hamburger then).
+      if (!sidebar.open) cy.get('[data-cy=hamburger]').click()
+      cy.get(START_TOUR).click()
     })
-  cy.get(START_TOUR).click()
   cy.get(TOOLTIP, { timeout: 15000 }).should('be.visible')
 }
 
 // Walks a tour and asserts it showed exactly its steps, none skipped for a missing target.
 const expectFullTour = (order, targets) =>
   walkTour(order, targets).then(shown => expect(shown, 'shown steps').to.deep.equal(order))
+
+// Starts an anonymous session (the landing page's no-account login) learning Finnish.
+const loginAnonymous = () =>
+  cy
+    .request('POST', 'localhost:8000/api/user/session', { is_anonymous: true, interface_language: 'en' })
+    .then(({ body }) =>
+      cy
+        .request({
+          method: 'POST',
+          url: 'localhost:8000/api/user',
+          headers: { Authorization: `Bearer ${body.access_token}` },
+          body: { last_used_lang: 'Finnish', last_trans_lang: 'English', interface_lang: 'Finnish' },
+        })
+        .then(() => {
+          const user = { ...body, user: { ...body.user, last_used_language: 'Finnish' } }
+          window.localStorage.setItem('user', JSON.stringify(user))
+        }),
+    )
 
 const metadataLoaded = key =>
   cy
@@ -295,6 +321,12 @@ const walkthroughs = (role, isTeacher) =>
       expectFullTour(libraryOrder[key], libraryTargets)
     })
 
+    // The default tab mostly holds stories inside folders; the tour has to open one.
+    it('library tour on the default tab reaches a story through a folder', function () {
+      startTour('/library', () => cy.get('.library-folder-card', { timeout: 60000 }))
+      expectFullTour(libraryOrder[key], libraryTargets)
+    })
+
     it('progress tour shows every step on its target', function () {
       startTour('/profile/progress', ready.progress)
       expectFullTour(progressOrder[key], progressTargets)
@@ -313,3 +345,62 @@ const walkthroughs = (role, isTeacher) =>
 
 walkthroughs('student', false)
 walkthroughs('teacher', true)
+
+// A public story anonymous users can open (the one dictionary_spec uses).
+const PUBLIC_STORY_ID = '5c407e9eff634503466b0dde'
+
+// Anonymous users get a one-step progress tour telling them to register. It starts by itself on
+// every visit to the progress page; "End tour" takes them home, the X just closes it.
+const openProgressAsNewAnonymous = () => {
+  loginAnonymous()
+  cy.visit('http://localhost:8000/profile/progress')
+  cy.get(TOOLTIP, { timeout: 30000 }).should('be.visible')
+  tourState().its('name').should('equal', 'progress-anonymous')
+}
+
+describe('Tour walkthroughs — anonymous', function () {
+  this.beforeEach(function () {
+    cy.viewport(1920, 1080)
+  })
+
+  it('progress tour starts on the first visit, and "End tour" ends it on the home page', function () {
+    openProgressAsNewAnonymous()
+    expectFullTour(anonymousProgressOrder.desktopStudent, anonymousProgressTargets)
+    cy.location('pathname').should('equal', '/home')
+    cy.get(homeTargets.practiceNow, { timeout: 30000 }).should('be.visible')
+    tourState().its('run').should('equal', false)
+    cy.get(TOOLTIP).should('not.exist')
+  })
+
+  it('home tour leaves out the steps anonymous users cannot see', function () {
+    startTour('/home', () => cy.get(homeTargets.practiceNow, { timeout: 60000 }), loginAnonymous)
+    const order = visibleOrder(homeOrder.desktopStudent, highAccessSteps.home, false)
+    expect(order, 'anonymous home order').to.not.include.members(highAccessSteps.home)
+    expectFullTour(order, homeTargets)
+  })
+
+  it('practice tour leaves out the assistant steps anonymous users cannot see', function () {
+    const ready = () => cy.get(practiceTargets.storyAction, { timeout: 60000 })
+    startTour(`/stories/${PUBLIC_STORY_ID}/preview`, ready, loginAnonymous)
+    const order = visibleOrder(practiceOrder.desktopStudent, highAccessSteps.practice, false)
+    expect(order, 'anonymous practice order').to.not.include.members(highAccessSteps.practice)
+    expectFullTour(order, practiceTargets)
+  })
+
+  it('progress tour starts again on every visit', function () {
+    openProgressAsNewAnonymous()
+    cy.get(CLOSE).click({ scrollBehavior: false })
+    cy.get(TOOLTIP).should('not.exist')
+    cy.visit('http://localhost:8000/profile/progress')
+    cy.get(TOOLTIP, { timeout: 30000 }).should('be.visible')
+    tourState().its('name').should('equal', 'progress-anonymous')
+  })
+
+  it('the close button ends the tour without leaving the page', function () {
+    openProgressAsNewAnonymous()
+    cy.get(CLOSE).click({ scrollBehavior: false })
+    cy.get(TOOLTIP).should('not.exist')
+    tourState().its('run').should('equal', false)
+    cy.location('pathname').should('equal', '/profile/progress')
+  })
+})
