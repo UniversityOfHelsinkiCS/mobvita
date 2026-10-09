@@ -16,6 +16,7 @@ import { setReferences, setExplanation, setExample } from 'Utilities/redux/pract
 import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
+import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
   const {
@@ -45,7 +46,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
 
   const learningLanguage = useSelector(learningLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
-  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
+  const { resource_usage, auto_speak: autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
 
   const intl = useIntl()
@@ -58,7 +59,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, snippet }) => {
 
   const handleClick = () => {
     if (word.isWrong || word.mc_correct) setShow(true)
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       const prefLemma = word.pref_lemma
       dispatch(setWords({ surface, lemmas }))

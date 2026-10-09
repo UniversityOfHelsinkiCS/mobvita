@@ -23,6 +23,7 @@ import {
   resetAnnotationCandidates } from 'Utilities/redux/annotationsReducer'
 import { setNotes, buildWordNotes } from 'Utilities/redux/notesReducer'
 import { setHelperSidebarTab } from 'Utilities/redux/helperSidebarReducer'
+import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
 const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippet, hideDifficulty }) => {
   const {
@@ -50,9 +51,13 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const location = useLocation()
   const isPreviewMode = location.pathname.includes('preview')
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer, grade } = useSelector(
-    state => state.user.data.user
-  )
+  const {
+    resource_usage,
+    auto_speak: autoSpeak,
+    show_review_diff,
+    show_preview_exer,
+    grade,
+  } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -80,7 +85,7 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
   const handleClick = () => {
     dispatch(setHelperSidebarTab('translation'))
     dispatch(setNotes(buildWordNotes(word, { answer, tiedAnswer, isPreviewMode, hiddenFeatures })))
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas, snippet_id, sentence_id, word_id: wordId, session_id, storyid: storyId }))
       if (allowTranslating) {

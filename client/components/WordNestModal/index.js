@@ -16,6 +16,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import ReportButton from 'Components/ReportButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
+import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
 const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
@@ -30,7 +31,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     translation_lemmas: translationLemmas,
   } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
+  const { resource_usage, auto_speak: autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
   const voice = voiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
@@ -53,7 +54,7 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
   }
 
   const handleWordClick = (surface, lemma) => {
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
 
     dispatch(
       getTranslationAction({

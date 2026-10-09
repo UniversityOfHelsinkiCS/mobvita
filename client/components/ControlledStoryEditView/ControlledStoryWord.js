@@ -32,6 +32,7 @@ import {
 import SelectExerciseTypeModal from 'Components/ControlledStoryEditView/SelectExerciseTypeModal'
 import ControlExerciseWord from 'Components/ControlledStoryEditView/CurrentSnippet/ControlExerciseWord'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
+import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
 const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const {
@@ -83,7 +84,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const exerciseRemovalForWordId = useSelector(
     ({ controlledPractice }) => controlledPractice.exerciseRemovalForWordId,
   )
-  const { resource_usage, autoSpeak } = useSelector(state => state.user.data.user)
+  const { resource_usage, auto_speak: autoSpeak } = useSelector(state => state.user.data.user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
   const { spanAnnotations, highlightRange } = useSelector(({ annotations }) => annotations)
@@ -224,7 +225,7 @@ const ControlledStoryWord = ({ word, snippet, focusedConcept }) => {
   const handleClick = () => {
     // if (word.isWrong) setShow(true)
     // if (isPreviewMode && word.concepts) setShow(true)
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       dispatch(setWords({ surface, lemmas }))
 

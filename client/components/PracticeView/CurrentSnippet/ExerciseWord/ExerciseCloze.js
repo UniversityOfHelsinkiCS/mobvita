@@ -32,6 +32,7 @@ import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer
 import { setHelperSidebarTab, setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'
 import AppButton from 'Components/AppButton'
 import Tooltip from 'Components/PracticeView/Tooltip'
+import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
 const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const [value, setValue] = useState('')
@@ -44,7 +45,13 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const mtLanguages = useMTAvailableLanguage()
   const mode = getMode()
-  const { resource_usage, autoSpeak, show_review_diff, show_preview_exer, grade } = useSelector(state => state.user.data.user)
+  const {
+    resource_usage,
+    auto_speak: autoSpeak,
+    show_review_diff,
+    show_preview_exer,
+    grade,
+  } = useSelector(state => state.user.data.user)
   const currentAnswer = useSelector(
     ({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`]
   )
@@ -104,7 +111,7 @@ const ExerciseCloze = ({ word, snippet, handleChange }) => {
     const maskSymbol = exerciseMaskedLanguages.includes(learningLanguage)
       ? word.base || word.bases
       : null
-    if (autoSpeak === 'always' && voice) speak(surface, voice, 'dictionary', resource_usage)
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
     if (lemmas) {
       const prefLemma = word.pref_lemma
       dispatch(setWords({ surface: showAsSurface, lemmas, maskSymbol }))
