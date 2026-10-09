@@ -4,9 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { Box, FormControlLabel } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CustomTooltip from 'Components/CustomTooltip'
-import AppButton, { roundIconButtonSx } from 'Components/AppButton'
-import AppDialog from 'Components/ui/AppDialog'
-import AppIcon from 'Components/ui/AppIcon'
+import AppButton from 'Components/AppButton'
 import StoryInfoButton from 'Components/StoryInfoButton'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -21,7 +19,7 @@ import {
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'
 import { clearContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import { resetAnnotations, setAnnotations } from 'Utilities/redux/annotationsReducer'
-import { learningLanguageSelector, getTextStyle, images } from 'Utilities/common'
+import { learningLanguageSelector, getTextStyle } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
@@ -32,14 +30,13 @@ import ScrollArrow from '../ScrollArrow'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import { colors } from 'Assets/mui_theme/designTokens'
 
+// Tailored story editor: pick exercises per snippet, save them (timed or not) from the sidebar.
 const ControlledStoryEditView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const { width } = useWindowDimensions()
-  const [hideFeedback, setHideFeedback] = useState(false)
   const location = useLocation()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
-  const [settingsOpen, setSettingsOpen] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
   const controlledPractice = useSelector(({ controlledPractice }) => controlledPractice)
   const [timedExercise, setTimedExercise] = useState(controlledPractice?.timedExercise || false)
@@ -61,6 +58,10 @@ const ControlledStoryEditView = ({ match }) => {
   const { id } = match.params
   const tailoredStoryView = location.pathname.includes('controlled-practice')
 
+  useEffect(() => {
+    setTimedExercise(controlledPractice.timedExercise)
+  }, [controlledPractice?.timedExercise])
+
   const initAcceptedTokens = emptySnippets => {
     const initialAcceptedTokensList = {}
     for (let i = 0; i < story?.paragraph.length; i++) {
@@ -77,13 +78,6 @@ const ControlledStoryEditView = ({ match }) => {
   }
 
   useEffect(() => {
-    setTimedExercise(controlledPractice.timedExercise)
-  }, [controlledPractice?.timedExercise])
-
-  useEffect(() => {
-    if (user?.teacherView) {
-      setHideFeedback(false)
-    }
     dispatch(getFrozenTokens(id))
     dispatch(getStoryAction(id, 'preview'))
     dispatch(clearTranslationAction())
@@ -120,10 +114,6 @@ const ControlledStoryEditView = ({ match }) => {
 
   const url = location.pathname
   const processingCurrentStory = id === storyId
-
-  const checkboxLabel = () => {
-    return intl.formatMessage({ id: 'show-exercise-preview' })
-  }
 
   const refreshPage = () => {
     dispatch(getStoryAction(id, 'preview'))
@@ -182,22 +172,6 @@ const ControlledStoryEditView = ({ match }) => {
               {/* Never squeezed by the title, and never wrapped onto a line of their own. */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em', flexShrink: 0 }}>
                 <StoryInfoButton story={story} storyId={id} />
-                <CustomTooltip
-                  title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}
-                >
-                  <AppButton
-                    type="button"
-                    variant="tan-outline"
-                    size="sm"
-                    disableRipple
-                    aria-label={intl.formatMessage({ id: 'practice-settings' })}
-                    onClick={() => setSettingsOpen(true)}
-                    data-cy="controlled-story-editor-settings"
-                    sx={roundIconButtonSx}
-                  >
-                    <AppIcon src={images.settings02} size={24} color="currentColor" />
-                  </AppButton>
-                </CustomTooltip>
               </Box>
             </Box>
             {progress !== 0 && processingCurrentStory && (
@@ -225,7 +199,7 @@ const ControlledStoryEditView = ({ match }) => {
               <React.Fragment key={index}>
                 <TextWithFeedback
                   exercise
-                  hideFeedback={hideFeedback}
+                  hideFeedback={false}
                   mode="practice"
                   snippet={paragraph}
                   focusedConcept={focusedConcept}
@@ -284,6 +258,26 @@ const ControlledStoryEditView = ({ match }) => {
                 </b>
               </span>
             )}
+            <FormControlLabel
+              control={
+                <AppSwitch
+                  checked={timedExercise}
+                  onChange={() => setTimedExercise(!timedExercise)}
+                  slotProps={{
+                    input: { 'data-cy': 'controlled-story-editor-timed-toggle' },
+                  }}
+                />
+              }
+              label={
+                <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
+                  <span>{intl.formatMessage({ id: 'timed-practice-toggle' })}</span>
+                </CustomTooltip>
+              }
+              sx={{
+                m: 0,
+                '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
+              }}
+            />
             <AppButton
               variant="tan"
               onClick={saveControlledStory}
@@ -306,55 +300,6 @@ const ControlledStoryEditView = ({ match }) => {
         </HelperSidebar>
         <FeedbackInfoModal />
       </div>
-
-      <AppDialog
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        title={<FormattedMessage id="practice-settings" />}
-      >
-        <div className="flex-col gap-row-nm">
-          <FormControlLabel
-            control={
-              <AppSwitch
-                checked={!hideFeedback}
-                onChange={() => setHideFeedback(!hideFeedback)}
-                slotProps={{
-                  input: { 'data-cy': 'controlled-story-editor-show-preview-toggle' },
-                }}
-              />
-            }
-            label={
-              <CustomTooltip title={intl.formatMessage({ id: 'preview-mode-info' })}>
-                <span>{checkboxLabel()}</span>
-              </CustomTooltip>
-            }
-            sx={{
-              m: 0,
-              '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
-            }}
-          />
-          <FormControlLabel
-            control={
-              <AppSwitch
-                checked={timedExercise}
-                onChange={() => setTimedExercise(!timedExercise)}
-                slotProps={{
-                  input: { 'data-cy': 'controlled-story-editor-timed-toggle' },
-                }}
-              />
-            }
-            label={
-              <CustomTooltip title={intl.formatMessage({ id: 'timed-practice-toggle-tooltip' })}>
-                <span>{intl.formatMessage({ id: 'timed-practice-toggle' })}</span>
-              </CustomTooltip>
-            }
-            sx={{
-              m: 0,
-              '& .MuiFormControlLabel-label': { marginLeft: '0.5em', color: colors.ink },
-            }}
-          />
-        </div>
-      </AppDialog>
     </div>
   )
 }
