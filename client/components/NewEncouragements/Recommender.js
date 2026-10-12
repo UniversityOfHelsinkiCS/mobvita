@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { images } from 'Utilities/common'
 import ChatBubble from 'Components/ui/ChatBubble'
-import PracticeCompletedEncouragement from '../Encouragements/PracticeCompletedEncouragement'
 import GroupStoriesEncouragement from '../Encouragements/GroupStoriesEncouragement'
 import ControlledStoriesEncouragement from '../Encouragements/ControlledStoriesEncouragement'
 
@@ -17,13 +16,8 @@ const isUnfinishedInGroup = (story, groupId) => {
 }
 
 // The assistant's recommendations, each a ready recommendation bubble or null; callers render the
-// ones that fit their view. `practiceCompleted` and the props after it drive the completion bubble.
-const useRecommender = ({
-  practiceCompleted: showPracticeCompleted = false,
-  practiceType,
-  continueAction,
-  onDismiss,
-} = {}) => {
+// ones that fit their view.
+const useRecommender = () => {
   const groupId = useSelector(({ user }) => user.data?.user?.last_selected_group)
   const group = useSelector(({ groups }) => groups.groups.find(g => g.group_id === groupId))
   const teacherView = useSelector(({ user }) => !!user.data?.teacherView)
@@ -43,25 +37,6 @@ const useRecommender = ({
   // the teacher and timed, and they have their own practice route — so they get their own bubble.
   const unfinishedRegularStories = unfinishedGroupStories.filter(story => !story.control_story)
   const unfinishedControlledStories = unfinishedGroupStories.filter(story => story.control_story)
-
-  // TEMP DEBUG — remove after diagnosing the missing group-stories bubble.
-  console.debug('[useRecommender]', {
-    groupId,
-    groupIdType: typeof groupId,
-    group: group && { name: group.groupName, is_teaching: group.is_teaching },
-    teacherView,
-    dismissedGroupId,
-    storiesTotal: stories?.length,
-    sharedToSomeGroup: (stories ?? [])
-      .filter(s => s.groups?.length)
-      .map(s => ({
-        title: s.title,
-        groups: s.groups.map(g => ({ id: g.group_id, type: typeof g.group_id, hidden: g.hidden })),
-        has_read: s.has_read,
-        percent_cov: s.percent_cov,
-      })),
-    unfinished: unfinishedGroupStories.length,
-  })
 
   const incompleteGroupStories =
     unfinishedRegularStories.length && dismissedGroupId !== groupId ? (
@@ -91,23 +66,7 @@ const useRecommender = ({
       </ChatBubble>
     ) : null
 
-  const practiceCompleted = showPracticeCompleted ? (
-    <ChatBubble
-      variant="recommendation"
-      icon={images.trophy01}
-      onRemove={onDismiss}
-      removeDataCy="practice-completed-dismiss"
-    >
-      <PracticeCompletedEncouragement
-        layout="chat"
-        practiceType={practiceType}
-        setShow={onDismiss}
-        continueAction={continueAction}
-      />
-    </ChatBubble>
-  ) : null
-
-  return { incompleteGroupStories, incompleteControlledStories, practiceCompleted }
+  return { incompleteGroupStories, incompleteControlledStories }
 }
 
 // ---- Not yet migrated: the old Recommender's encouragements (SubComponents/*), by view ----
@@ -130,7 +89,7 @@ const useRecommender = ({
 //
 // Progress page / flashcards tab: ConfirmBlueCardsEncouragement, when storyBlueCards is non-empty.
 //
-// Story practice, after finishing (PracticeCompletedEncouragement is now practiceCompleted):
+// Story practice, after finishing (PracticeCompletedEncouragement, used directly by the views):
 // StoryCompletedToBluecardsExerciseEncouragement (PracticeView) — blue-card test of this story when
 //   creditableWordsNum >= 5, else of a past story with num_of_rewardable_words >= 5.
 // LatestIncompleteStory, LeaderboardEncouragement — as on the home view.
@@ -150,7 +109,7 @@ const useRecommender = ({
 // PreviousStoriesBlueFlashcards — test another story: not current, rewardable words >= 5.
 // WordsSeenEncouragement — as above. FlashcardsProgress — /profile/progress/flashcards; always.
 //
-// Lesson practice, after finishing (PracticeCompletedEncouragement 'lesson' is practiceCompleted):
+// Lesson practice, after finishing (PracticeCompletedEncouragement 'lesson', used directly):
 // GoodJobEncouragement — random praise; always. RedirectHomeEncouragement — take a break, /home.
 
 export default useRecommender
