@@ -44,6 +44,7 @@ const AdaptiveTest = ({ showingInfo }) => {
     currentAdaptiveQuestion,
     currentAdaptiveQuestionIndex,
     timedTest,
+    cefrLevel,
   } = useSelector(({ tests }) => tests)
 
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -202,8 +203,22 @@ const AdaptiveTest = ({ showingInfo }) => {
             <div className="test-top-info space-between">
               <div>
                 <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
-              </div>
+              </div>              
             </div>
+            {cefrLevel && (
+                <div style={{ color: colors.ink }} data-cy="adaptive-test-running-cefr">
+                  <FormattedMessage id="your-estimated-cefr-level" />: <b>{cefrLevel}</b>
+                </div>
+              )}
+
+            {/* The backend starts returning `cefr` partway through the test (around the 30th
+                answer) while questions keep coming, so label it as provisional rather than
+                letting it read like the final result. */}
+            {cefrLevel && (
+              <div style={{ color: colors.muted, fontSize: '0.9em', marginTop: '0.25em' }}>
+                <FormattedMessage id="adaptive-test-approximate-cefr-note" />
+              </div>
+            )}
 
 
             <div className="test-question-container">

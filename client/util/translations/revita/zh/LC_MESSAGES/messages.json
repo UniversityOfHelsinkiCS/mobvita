@@ -10,6 +10,7 @@
     "question-level": "问题等级",
     "test-results": "测试结果",
     "your-estimated-cefr-level": "你的CEFR等级预估",
+    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
     "network-error-click-to-resume": "网络故障，请单击恢复测试",
     "question": "问题",
     "all-notes": "所有注释",
