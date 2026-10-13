@@ -10,7 +10,7 @@ import {
   requestNewFlashcardDeck,
   setDeckCompleted,
 } from 'Utilities/redux/flashcardReducer'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import ChatBubble from 'Components/ui/ChatBubble'
 import AppButton from 'Components/AppButton'
 import ChatInput from 'Components/ui/ChatInput'
@@ -212,11 +212,7 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
             />
           </ChatBubble>
         )}
-        {isWaitingForResponse && (
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0 8px' }}>
-            <Spinner inline />
-          </div>
-        )}
+        {isWaitingForResponse && <ChatSpinner />}
         <div ref={messagesEndRef} />
       </div>
 

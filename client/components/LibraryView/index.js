@@ -313,14 +313,16 @@ const StoryList = () => {
   const sortDropdownOptions = [
     { key: 'title', text: intl.formatMessage({ id: 'sort-by-title-option' }), value: 'title' },
     { key: 'progress', text: intl.formatMessage({ id: 'Progress' }), value: 'progress' },
-  ]
-
-  if (savedLibrarySelection === 'private' || savedLibrarySelection === 'group') {
-    sortDropdownOptions.push({
+    // Stories carry the same difficulty scale in every library, so the level sort is offered in
+    // all of them. `date` stays private/group-only — see the public guard further down.
+    {
       key: 'difficulty',
       text: intl.formatMessage({ id: 'story-difficulty' }),
       value: 'difficulty',
-    })
+    },
+  ]
+
+  if (savedLibrarySelection === 'private' || savedLibrarySelection === 'group') {
     sortDropdownOptions.push({
       key: 'date',
       text: intl.formatMessage({ id: 'date-added' }),
@@ -371,6 +373,9 @@ const StoryList = () => {
   const essaySorter = essaySortDropdownOptions.some(option => option.value === sorter)
     ? `${sorter}:${sortDirection}`
     : 'title:asc'
+  // Folders have only a name, so the title sort is the only one they can follow; date, difficulty
+  // and progress have no folder equivalent and leave them A-Z.
+  const foldersDescending = sorter === 'title' && sortDirection === 'desc'
   const storySorter = sortDropdownOptions.some(option => option.value === sorter)
     ? `${sorter}:${sortDirection}`
     : `${sortDropdownOptions[0].value}:asc`
@@ -973,6 +978,7 @@ const StoryList = () => {
       libraryFilteredStories,
       currentLibraryPath,
       localFolderPathsForLibrary,
+      foldersDescending,
     )
     // Add/rename name-collision checks must see every sibling folder, not just the ones matching the
     // active search, so a rename can't silently merge into a folder the search is currently hiding.
@@ -1166,6 +1172,7 @@ const StoryList = () => {
       sortedEssays,
       currentLibraryPath,
       localFolderPathsForLibrary,
+      foldersDescending,
     )
     // Collision checks use the full essay set (not the search-filtered one) so a rename can't silently
     // merge into a sibling folder the active search is hiding.

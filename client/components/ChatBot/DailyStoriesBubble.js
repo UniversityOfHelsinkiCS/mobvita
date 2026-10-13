@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { FormattedMessage, useIntl } from 'react-intl'
 import ChatBubble from 'Components/ui/ChatBubble'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import { dailyStoriesKey, requestDailyStories } from 'Utilities/redux/dialoguesReducer'
 
 // The prompt the assistant-api agent answers with a daily-story list. Localised, so it matches the
@@ -98,9 +98,7 @@ const DailyStoriesBubble = ({ scope }) => {
           {stripLeadIn(offer.text)}
         </ReactMarkdown>
       ) : (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '8px' }}>
-          <Spinner inline />
-        </div>
+        <ChatSpinner padding="8px 0 0" />
       )}
     </ChatBubble>
   )

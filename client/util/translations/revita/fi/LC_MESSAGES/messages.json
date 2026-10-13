@@ -1122,7 +1122,7 @@
     "question-level": "Kysymysten taso",
     "%-correct": "Prosentuaalisesti oikein",
     "your-estimated-cefr-level": "Arvioitu tasosi CEFR-asteikolla",
-    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
+    "adaptive-test-approximate-cefr-note": "Tämä on arvio CEFR-tasostasi, mutta se ei ole kovin varma. Arvio muuttuu luotettavammaksi, jos jatkat testiä ja vastaat muutamaan lisäkysymykseen!",
     "questions-correct": "Oikein",
     "overall": "Yhteensä",
     "explanations": "Explanations",

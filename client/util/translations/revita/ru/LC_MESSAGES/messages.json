@@ -1125,7 +1125,7 @@
     "question-level": "Уровень вопросов",
     "%-correct": "% correct",
     "your-estimated-cefr-level": "Оценка твоего уровня на шкале CEFR",
-    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
+    "adaptive-test-approximate-cefr-note": "Это предварительная оценка твоего уровня по шкале CEFR, однако она не отличается высокой точностью. Оценка станет более достоверной, если ты продолжишь тест и ответишь еще на несколько вопросов!",
     "questions-correct": "Correct",
     "overall": "Overall",
     "explanations": "Explanations",

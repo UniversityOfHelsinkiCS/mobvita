@@ -10,7 +10,7 @@ import {
 import ChatbotSuggestions from './ChatbotSuggestions'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatBubble from 'Components/ui/ChatBubble'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import AssistentSettings from 'Components/PracticeView/AssistentSettings'
 
 const ReadingPracticeChatBot = ({
@@ -109,9 +109,7 @@ const ReadingPracticeChatBot = ({
                         </ChatBubble>
                     )
                 ) : isLoadingHistory ? (
-                    <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-                        <Spinner inline />
-                    </div>
+                    <ChatSpinner />
                 ) : (
                     <>
                         {messages.map((message, index) => (
@@ -123,11 +121,7 @@ const ReadingPracticeChatBot = ({
                                 {message.text ? <ReactMarkdown children={message.text} /> : <FormattedMessage id="Error rendering message" />}
                             </ChatBubble>
                         ))}
-                        {isWaitingForResponse && (
-                            <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                                <Spinner inline />
-                            </div>
-                        )}
+            {isWaitingForResponse && <ChatSpinner />}
                     </>
                 )}
             </div>

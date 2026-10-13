@@ -31,7 +31,7 @@ import {
     setSnippetChatHistory
 } from 'Utilities/redux/snippetsReducer'
 import ChatbotSuggestions from './ChatbotSuggestions'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import { set } from 'lodash';
 
 const PracticeChatbot = () => {
@@ -259,7 +259,7 @@ const PracticeChatbot = () => {
           {/************************* BELOW BANNER: BUBBLES *************************/}
           <div className="chatbot-messages">
             {isLoadingHistory ? (
-              <Spinner inline />
+              <ChatSpinner />
             ) : (
               <>
                 {/* hintMessageIdx === 0 means FIRST ATTEMPT */}
@@ -338,11 +338,7 @@ const PracticeChatbot = () => {
                     )}
                   </>
                 ))}
-                {isWaitingForResponse && (
-                  <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-                    <Spinner inline />
-                  </div>
-                )}
+                {isWaitingForResponse && <ChatSpinner />}
               </>
             )}
           </div>

@@ -1121,7 +1121,7 @@
     "question-level": "Question level",
     "%-correct": "% correct",
     "your-estimated-cefr-level": "Your estimated level on the CEFR scale",
-    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
+    "adaptive-test-approximate-cefr-note": "This is an estimate of your CEFR level, however, it is not very confident.  This estimate will become more reliable if you continue and answer some more questions!",
     "questions-correct": "Correct",
     "overall": "Overall",
     "explanations": "Explanations",

@@ -650,7 +650,7 @@
     "test-results": "Результати тесту",
     "question-level": "Рівень питань",
     "your-estimated-cefr-level": "Оцінка твого рівня на шкалі CEFR",
-    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
+    "adaptive-test-approximate-cefr-note": "This is an estimate of your CEFR level, however, it is not very confident.  This estimate will become more reliable if you continue and answer some more questions!",
     "question": "Питання",
     "network-error-click-to-resume": "Проблеми з сервером або мережею...\n<br/>Будь ласка, натисніть, щоб продовжити тест",
     "Category": "Категорія",

@@ -67,7 +67,7 @@ import ChatInput from 'Components/ui/ChatInput'
 import ChatBubble from 'Components/ui/ChatBubble'
 import PracticeCompletedEncouragement from 'Components/Encouragements/PracticeCompletedEncouragement'
 import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 
 import './CombinedChatbot.scss'
 import AssistentSettings from './AssistentSettings'
@@ -185,11 +185,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
           </ChatBubble>
         )
       })}
-      {busy && (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '6px' }}>
-          <Spinner inline />
-        </div>
-      )}
+      {busy && <ChatSpinner padding="6px" />}
     </>
   )
 }
@@ -1152,9 +1148,7 @@ const CombinedChatbot = ({
 
           <div className="chatbot-messages-container">
             {isLoadingHistory ? (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-                <Spinner inline />
-              </div>
+              <ChatSpinner />
             ) : (
               <>
                 {!isEmpty(currentWord.frozen_messages) && (
@@ -1231,7 +1225,7 @@ const CombinedChatbot = ({
                 {(showContexTranslation || contextTranslationState.visible) && (
                   <div className="context-translation-box">
                     {contextTranslationState.pending ? (
-                      <Spinner inline />
+                      <ChatSpinner />
                     ) : contextTranslationState.data ? (
                       renderContextTranslationContent()
                     ) : window?.location?.hostname === 'localhost' ||
@@ -1392,11 +1386,7 @@ const CombinedChatbot = ({
                   </>
                 )}
 
-                {isWaitingForResponse && (
-                  <div className="message message-bot">
-                    <Spinner inline />
-                  </div>
-                )}
+                {isWaitingForResponse && <ChatSpinner />}
               </>
             )}
             <UserNotes
@@ -1628,9 +1618,7 @@ const CombinedChatbot = ({
                   busy={annotationPending && !noteModalOpen}
                 />
                 {isLoadingHistory ? (
-                  <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-                    <Spinner inline />
-                  </div>
+                  <ChatSpinner />
                 ) : (
                   <>
                     {/* Chat Messages */}
@@ -1648,17 +1636,13 @@ const CombinedChatbot = ({
                       </ChatBubble>
                     ))}
 
-                    {isWaitingForResponse && (
-                      <div className="message message-bot">
-                        <Spinner inline />
-                      </div>
-                    )}
+                    {isWaitingForResponse && <ChatSpinner />}
                   </>
                 )}
                 {(showContexTranslation || contextTranslationState.visible) && (
                   <div className="context-translation-box">
                     {contextTranslationState.pending ? (
-                      <Spinner inline />
+                      <ChatSpinner />
                     ) : contextTranslationState.data ? (
                       renderContextTranslationContent()
                     ) : window?.location?.hostname === 'localhost' ||

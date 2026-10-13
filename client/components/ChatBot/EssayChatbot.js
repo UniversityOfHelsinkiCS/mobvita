@@ -11,7 +11,7 @@ import SanitizedHTML from 'Components/SanitizedHTML'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatBubble from 'Components/ui/ChatBubble'
 import AppIcon from 'Components/ui/AppIcon'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import { images } from 'Utilities/common'
 import { getEssayChatbotResponse } from 'Utilities/redux/chatbotReducer'
 
@@ -262,12 +262,7 @@ const EssayChatbot = ({
     )
   }
 
-  const renderWaitingSpinner = () =>
-    isWaitingForEssayResponse ? (
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 10px' }}>
-        <Spinner inline />
-      </div>
-    ) : null
+  const renderWaitingSpinner = () => (isWaitingForEssayResponse ? <ChatSpinner /> : null)
 
   return (
     <div className="chatbot essay-chatbot vita-chatbot">

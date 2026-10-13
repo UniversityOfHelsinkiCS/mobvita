@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import { useIntl, FormattedMessage } from 'react-intl'
 import './Chatbot.scss'
 import { sendGeneralDialogue, removeDialogue } from 'Utilities/redux/dialoguesReducer'
-import Spinner from 'Components/Spinner'
+import ChatSpinner from 'Components/ui/ChatSpinner'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatbotSuggestions from './ChatbotSuggestions'
@@ -77,11 +77,7 @@ const GeneralChatbot = () => {
             )}
           </ChatBubble>
         ))}
-        {isWaitingForResponse && (
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0 8px' }}>
-            <Spinner inline />
-          </div>
-        )}
+        {isWaitingForResponse && <ChatSpinner />}
       </div>
 
       <div className="chatbot-footer">

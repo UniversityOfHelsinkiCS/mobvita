@@ -1123,7 +1123,7 @@
     "question-level": "Livello delle domande",
     "%-correct": "% correct",
     "your-estimated-cefr-level": "La stima del tuo livello QCER",
-    "adaptive-test-approximate-cefr-note": "You now have an approximate estimate. If you answer more questions, we will give you a more confident estimate.",
+    "adaptive-test-approximate-cefr-note": "Questa è una stima del tuo livello QCER; tuttavia, non è molto precisa. La stima diventerà più affidabile se continuerai il test e risponderai ad altre domande!",
     "questions-correct": "Correct",
     "overall": "Overall",
     "explanations": "Spiegazioni",

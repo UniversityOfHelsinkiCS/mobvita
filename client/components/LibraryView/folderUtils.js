@@ -42,7 +42,14 @@ export const saveStoredLocalFolders = (storageKey, folders) => {
   }
 }
 
-export const getFoldersForPath = (storiesForLibrary, currentPath, folderPaths = []) => {
+// A folder carries nothing but its name, so name order is the only thing that can be sorted here.
+// `descending` flips A-Z to Z-A; the caller passes it only for the title sort.
+export const getFoldersForPath = (
+  storiesForLibrary,
+  currentPath,
+  folderPaths = [],
+  descending = false,
+) => {
   const folderNames = new Set()
   const currentParts = currentPath ? currentPath.split('/') : []
 
@@ -70,7 +77,9 @@ export const getFoldersForPath = (storiesForLibrary, currentPath, folderPaths = 
     }
   })
 
-  return Array.from(folderNames).sort((a, b) => a.localeCompare(b))
+  const sortedNames = Array.from(folderNames).sort((a, b) => a.localeCompare(b))
+
+  return descending ? sortedNames.reverse() : sortedNames
 }
 
 export const getStoriesForPath = (storiesForLibrary, currentPath) =>
