@@ -177,6 +177,7 @@ const EloChart = ({ width }) => {
 
   return (
     <div
+      className="tour-home-progress"
       style={{
         width,
         boxSizing: 'border-box',

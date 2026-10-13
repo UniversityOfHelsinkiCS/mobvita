@@ -25,7 +25,7 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
 
   return (
     <div
-      className="lesson-story-topic"
+      className="tour-lesson-story-topic"
       data-cy="practice-categories"
       style={{
         display: 'grid',

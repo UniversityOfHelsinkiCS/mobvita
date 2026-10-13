@@ -223,7 +223,7 @@ const SelectGrammarLevel = ({
           topicsPane
         )}
       </AppDialog>
-      <div className="grammar-buttons-container">
+      <div className="grammar-buttons-container tour-lesson-topic">
         <div className="grammar-level-button-group">
           {GRAMMAR_LEVELS.map(level => {
             const button = (
@@ -268,7 +268,7 @@ const SelectGrammarLevel = ({
           })}
         </div>
         <ToggleButton
-          className="lesson-tour-custom-grammar-button"
+          className="tour-lesson-custom-grammar"
           handleClick={() => setModal(true)}
           name="custom"
           width="100%"

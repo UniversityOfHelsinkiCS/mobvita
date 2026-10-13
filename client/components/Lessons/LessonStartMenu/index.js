@@ -88,7 +88,7 @@ const LessonStartMenu = ({ setOpen }) => {
     >
       <CustomTooltip title={<FormattedMessage id="lesson-quick-start-info" />}>
         <AppButton
-          className="lesson-tour-start-button"
+          className="tour-lesson-start-button"
           variant="card"
           type="button"
           onClick={handleStartClick}
@@ -106,7 +106,7 @@ const LessonStartMenu = ({ setOpen }) => {
 
       <CustomTooltip title={<FormattedMessage id="lesson-customize-info" />}>
         <AppButton
-          className="lesson-tour-setup-button"
+          className="tour-lesson-setup-button"
           variant="card"
           type="button"
           onClick={handleLessonSetupClick}

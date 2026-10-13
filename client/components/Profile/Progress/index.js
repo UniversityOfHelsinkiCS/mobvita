@@ -138,15 +138,16 @@ const Progress = () => {
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
 
+  // Anonymous users get the register prompt tour on every visit; registered users once.
   useEffect(() => {
+    if (user.user.email === 'anonymous_email') {
+      dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
+      return
+    }
     if (!user.user.has_seen_progress_tour) {
       dispatch(progressTourViewed())
       dispatch({ type: 'SHOW_PROFILE_DROPDOWN' })
-      if (user.user.email === 'anonymous_email') {
-        dispatch({ type: 'ANONYMOUS_PROGRESS_TOUR_RESTART' })
-      } else {
-        dispatch(startProgressTour())
-      }
+      dispatch(startProgressTour())
     }
   }, [])
 
@@ -253,13 +254,13 @@ const Progress = () => {
       value: 'progress',
       labelId: 'progress-timeline',
       action: 'SET_TIMELINE_CHART',
-      className: 'progress-tour-timeline-button',
+      className: 'tour-progress-timeline-button',
     },
     {
       value: 'vocabulary',
       labelId: 'vocabulary-view',
       action: 'SET_VOCABULARY_CHART',
-      className: 'progress-tour-vocabulary-button',
+      className: 'tour-progress-vocabulary',
     },
     ...(canSeeHexmap
       ? [
@@ -267,7 +268,7 @@ const Progress = () => {
             value: 'hex-map',
             labelId: 'hex-map',
             action: 'SET_GRAMMAR_CHART',
-            className: 'progress-tour-grammar-button',
+            className: 'tour-progress-grammar',
           },
         ]
       : []),
@@ -275,13 +276,13 @@ const Progress = () => {
       value: 'exercise-history',
       labelId: 'exercise-history',
       action: 'SET_EXERCISE_HISTORY_CHART',
-      className: 'progress-tour-exercise-history-button',
+      className: 'tour-progress-exercise-history',
     },
     {
       value: 'test-history',
       labelId: 'Test History',
       action: 'SET_TEST_HISTORY_CHART',
-      className: 'progress-tour-test-history-button',
+      className: 'tour-progress-test-history',
     },
   ]
 
@@ -304,9 +305,9 @@ const Progress = () => {
   // console.log('num of words at end ', endWords)
   return (
     <div>
-      <div className="cont ps-nm">
+      <div className="cont ps-nm tour-progress-welcome">
         {/* One responsive row, matching the group analytics page. */}
-        <div className="date-pickers-container">
+        <div className="date-pickers-container tour-progress-dates">
           <span className="group-analytics-daterow-label">
             <FormattedMessage id="Showing results for" />
           </span>
@@ -350,7 +351,7 @@ const Progress = () => {
               tooltip={<FormattedHTMLMessage id="timeline-explanation" />}
             />
             <ProgressStats startDate={startDate} endDate={endDate} />
-            <div className="progress-page-graph-cont">
+            <div className="progress-page-graph-cont tour-progress-timeline-mobile">
               <ProgressGraph
                 exerciseHistory={irtExerciseHistory}
                 flashcardHistory={flashcardHistory}

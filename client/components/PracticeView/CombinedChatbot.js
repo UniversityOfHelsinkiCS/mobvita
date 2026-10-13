@@ -1019,7 +1019,7 @@ const CombinedChatbot = ({
   }, [savedStoryNotice, showInitialInstruction])
 
   return (
-    <div className="combined-chatbot">
+    <div className="combined-chatbot tour-practice-translations">
       {(learningLanguage === 'Russian' || learningLanguage === 'Finnish') && (
         <WordNestModal
           wordToCheck={wordNestChosenWord}

@@ -28,8 +28,8 @@ export default function Profile({ location }) {
 
   const path = location.pathname
 
-  // All profile tabs. `teacherHidden` drops the tab in teacher view (no Progress for teachers).
-  const allTabs = [
+  // All profile tabs; teachers see the same tabs as students.
+  const tabDefs = [
     {
       value: 'main',
       label: <FormattedMessage id="Profile" />,
@@ -43,7 +43,6 @@ export default function Profile({ location }) {
       icon: <InsightsIcon />,
       path: '/profile/progress',
       render: () => <Progress />,
-      teacherHidden: true,
     },
     {
       value: 'following',
@@ -67,8 +66,6 @@ export default function Profile({ location }) {
       render: () => <Settings teacherView={teacherView} />,
     },
   ]
-  const tabDefs = allTabs.filter(tab => !(teacherView && tab.teacherHidden))
-
   // Which tab the current route maps to.
   let activeValue = 'progress'
   if (path.includes('/profile/main')) activeValue = 'main'
@@ -76,7 +73,6 @@ export default function Profile({ location }) {
   else if (path.includes('/profile/account')) activeValue = 'account'
   else if (path.includes('/profile/settings')) activeValue = 'settings'
   else if (path.includes('/profile/progress')) activeValue = 'progress'
-  if (teacherView && activeValue === 'progress') activeValue = 'main'
 
   // Progress sub-routes select which chart to show.
   useEffect(() => {

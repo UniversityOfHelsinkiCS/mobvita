@@ -426,7 +426,7 @@ const StoryList = () => {
 
   const addStoryButton = (
     <AppButton
-      className="tour-add-new-stories library-action-button"
+      className="library-action-button"
       variant="contrast"
       block
       onClick={() => dispatch(openAddStoryOptions())}
@@ -1301,7 +1301,7 @@ const StoryList = () => {
       {/* Match ReadViews: stretch the row, center the content block, and let the main card fill it. */}
       <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
         <Box
-          className={`library-dashboard library-tour-start ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+          className={`library-dashboard tour-library-welcome ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
           style={{ flex: 1 }}
         >
           <DeleteFolderDialog

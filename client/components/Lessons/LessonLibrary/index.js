@@ -233,6 +233,7 @@ const LessonList = () => {
   // Lesson difficulty of vocabulary view
   const lessonVocabularyControls = (
     <VocabDiffSlider
+      className="tour-lesson-vocab"
       value={sliderValue}
       onChange={handleSlider}
       recommendedValue={vocabulary_score}
@@ -427,7 +428,7 @@ const LessonList = () => {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div className="tour-lesson-welcome" style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: bigScreen ? '60%' : '100%' }}>
         {metaPending || groupPending ? (
           <Spinner fullHeight size={60} spinnerColor={colors.ink} textColor={colors.ink} text={intl.formatMessage({ id: 'loading' })} />
@@ -557,7 +558,7 @@ const LessonList = () => {
                       </AppButton>
                       {goStep === 2 ? (
                         <AppButton
-                          className="lesson-setup-start-btn"
+                          className="tour-lesson-practice"
                           variant="primary"
                           type="button"
                           onClick={handleBeginClick}
@@ -591,7 +592,7 @@ const LessonList = () => {
                 </div>
                 {bigScreen && (
                   <div
-                    className="lesson-tour-stepper"
+                    className="tour-lesson-reset"
                     style={{ flex: 0.3, marginTop: '24px', marginRight: '2.5em' }}
                   >
                     <AppStepper

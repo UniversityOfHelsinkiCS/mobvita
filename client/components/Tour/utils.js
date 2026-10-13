@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import direction from 'Assets/images/direction.png'
+import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 
 // Decorative "start" sign rendered inside welcome/end tour steps.
 export const tourSign = () => (
@@ -20,10 +21,10 @@ export const getSafeTarget = (target, fallbackTarget = 'body') => {
   return fallback instanceof HTMLElement ? fallbackTarget : 'body'
 }
 
-// Clicks the close icon of the first visible Semantic-UI modal. Returns
-// whether a modal was actually closed.
+// Clicks the close button of the first visible MUI modal; true if one closed.
 export const closeVisibleModal = () => {
-  const closeButton = Array.from(document.querySelectorAll('.ui.modal .close.icon')).find(
+  const selector = '.MuiDialog-root button[aria-label="close"], .ui.modal .close.icon'
+  const closeButton = Array.from(document.querySelectorAll(selector)).find(
     el => el instanceof HTMLElement && el.offsetParent !== null,
   )
   if (closeButton instanceof HTMLElement) {
@@ -31,6 +32,20 @@ export const closeVisibleModal = () => {
     return true
   }
   return false
+}
+
+// Shared tour-end step ids (see steps/endSteps.js); they point into the left sidebar.
+export const END_STEP_IDS = ['desktopEnd', 'mobileEnd']
+
+// How long to wait for the left sidebar to slide in before showing a step inside it.
+export const SIDEBAR_SLIDE_MS = 400
+
+// Opens the left sidebar entering one of `stepIds` and closes it leaving them; true if it opened.
+export const syncLeftSidebar = (dispatch, fromId, toId, stepIds = END_STEP_IDS) => {
+  const opens = stepIds.includes(toId)
+  if (stepIds.includes(fromId) === opens) return false
+  dispatch(sidebarSetOpen(opens))
+  return opens
 }
 
 // Fires a synthetic window resize so Joyride re-measures after DOM mutations.

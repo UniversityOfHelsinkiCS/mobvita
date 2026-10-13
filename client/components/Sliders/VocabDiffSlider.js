@@ -39,6 +39,7 @@ const roundToNearestInt = number => Math.round(number)
  *   recommendedValue – user's baseline score; shown as a marker
  *   disabled        – (optional) disables the slider
  *   style           – (optional) style for the outer container div
+ *   className       – (optional) class for the outer container div (e.g. a tour target)
  *   skillLevels     – array of skill levels to display on the slider
  *                     IF all levels should not be shown, empty strings can be used for the levels that should be hidden.
  *                     For example: ["Pre-A1", "A1", "", "A2", "", "B1", "", "B2", "", "C1", "", "C2", "C2+"]
@@ -53,6 +54,7 @@ const VocabDiffSlider = ({
   recommendedValue,
   disabled,
   style,
+  className,
   skillLevels,
   min = 0,
   max = 100,
@@ -63,7 +65,7 @@ const VocabDiffSlider = ({
   const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
 
   return (
-    <div style={style}>
+    <div className={className} style={style}>
       <ReactSlider
         className="exercise-density-slider"
         thumbClassName={thumbClassName}

@@ -3,12 +3,15 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
+import { libraryTargets } from './stepOrders'
+import { endStepBlueprints } from './endSteps'
 
 // Step blueprints for the Library tour. Targets/copy that vary by role or
 // screen size are blueprints implemented as functions of the context.
 export const stepBlueprints = {
+  ...endStepBlueprints,
   welcome: {
-    target: '.library-tour-start',
+    target: libraryTargets.welcome,
     title: <FormattedMessage id="Welcome to the Library page" />,
     content: (
       <div>
@@ -20,7 +23,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   story: {
-    target: '.tour-story-card',
+    target: libraryTargets.story,
     title: <FormattedMessage id="Story" />,
     content: (
       <div>
@@ -31,7 +34,7 @@ export const stepBlueprints = {
     skipBeacon: true,
   },
   stars: {
-    target: '.library-tour-difficulty-stars',
+    target: libraryTargets.stars,
     title: <FormattedMessage id="Difficulty stars" />,
     content: (
       <div>
@@ -42,10 +45,8 @@ export const stepBlueprints = {
     placement: 'top',
     placementBeacon: 'left',
   },
-  practiceOrPreview: ({ bigScreen, teacherView }) => ({
-    target: bigScreen
-      ? '.story-detail-modal-action-button'
-      : '.library-tour-mobile-practice-button',
+  practiceOrPreview: ({ teacherView }) => ({
+    target: libraryTargets.practiceOrPreview,
     title: <FormattedMessage id={teacherView ? 'preview' : 'practice'} />,
     content: (
       <div>
@@ -59,7 +60,7 @@ export const stepBlueprints = {
     placementBeacon: 'left',
   }),
   review: {
-    target: '.library-tour-modal-review-button',
+    target: libraryTargets.review,
     title: <FormattedMessage id="review" />,
     content: (
       <div>
@@ -68,30 +69,6 @@ export const stepBlueprints = {
     ),
     placement: 'top',
     placementBeacon: 'left',
-  },
-  desktopEnd: {
-    target: '.tour-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    skipBeacon: true,
-  },
-  mobileEnd: {
-    target: '.tour-mobile-start-button',
-    title: <FormattedMessage id="Tour end" />,
-    content: (
-      <div>
-        <FormattedHTMLMessage id="tour-end-message" />
-        <div>{tourSign()}</div>
-      </div>
-    ),
-    placement: 'right',
-    placementBeacon: 'left',
-    styles: { options: { zIndex: 10000 } },
   },
 }
 
