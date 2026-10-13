@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import CircularProgress from '@mui/material/CircularProgress'
 import { capitalize, dictionaryLanguageSelector, translatableLanguages } from 'Utilities/common'
@@ -14,26 +15,35 @@ import InterfaceLanguageView from './InterfaceLanguageView'
 
 /**
  * LanguageSelectDialog — learning-language picker in an AppDialog. Owns the redux logic; renders the
- * pure <LanguageSelectContent>. Selecting a language updates it and closes the dialog. Used by the
- * navbar (controlled open) and the /learningLanguage route (rendered always-open).
+ * pure <LanguageSelectContent>. Selecting a language updates it, closes the dialog and sends the
+ * user home. Used by the navbar (controlled open) and the /learningLanguage route (always-open).
  */
 const LanguageSelectDialog = ({ open, onClose }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const user = useSelector(({ user }) => user)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { pending, learningLanguageChanged } = user
 
   const [showInterfaceModal, setShowInterfaceModal] = useState(false)
+  // Only a pick made in this dialog should move the user. `learningLanguageChanged` also fires for
+  // programmatic changes — DemoPublicRoute sets the demo language for fresh anonymous sessions —
+  // and this dialog is mounted by the navbar on every `*` route, demo pages included.
+  const changedByUser = useRef(false)
 
   useEffect(() => {
     setShowInterfaceModal(open && !user.data?.user?.interfaceLanguage)
   }, [open, user])
 
   useEffect(() => {
-    if (learningLanguageChanged) {
-      dispatch(resetLearningLanguageChanged())
-      onClose()
-    }
+    if (!learningLanguageChanged) return
+    dispatch(resetLearningLanguageChanged())
+    onClose()
+    if (!changedByUser.current) return
+    changedByUser.current = false
+    // Whatever the user was doing belonged to the old language — a story, a test, a lesson — so
+    // `replace` rather than push: going Back would otherwise return to that dead context.
+    navigate('/home', { replace: true })
   }, [learningLanguageChanged])
 
   const checkForTranslatableLanguages = lang => {
@@ -56,6 +66,7 @@ const LanguageSelectDialog = ({ open, onClose }) => {
   }
 
   const handleLearningLanguageChange = lang => {
+    changedByUser.current = true
     checkForTranslatableLanguages(capitalize(lang))
     dispatch(updateLearningLanguage(lang))
   }
