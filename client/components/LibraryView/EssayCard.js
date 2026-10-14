@@ -101,7 +101,7 @@ const EssayCard = ({
         open={detailsOpen}
         onClose={() => setDetailsOpen(false)}
         maxWidth="xs"
-        title={title || ''}
+        title={<span className="library-dialog-title">{title || ''}</span>}
         closeDataCy="essay-detail-modal-close"
       >
         <Box

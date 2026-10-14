@@ -168,7 +168,7 @@ const StoryDetailsModal = ({
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         maxWidth="xs"
-        title={title}
+        title={<span className="library-dialog-title">{title}</span>}
         sx={{
           // 530px content + 60px padding on each side = 650px paper, so the bottom
           // Share/Edit/Delete row fits on one line even with the longer Russian labels; anything

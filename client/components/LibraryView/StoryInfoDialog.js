@@ -9,6 +9,8 @@ import AppIcon from 'Components/ui/AppIcon'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import { cefrNum2Cefr, images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
+// Imported here too: StoryInfoButton opens this dialog outside the library.
+import './LibraryView.scss'
 
 // Category names are i18n ids only sometimes; otherwise show the raw text.
 const translateIfKnown = (intl, value) =>
@@ -107,7 +109,7 @@ const StoryInfoDialog = ({ story, open, onClose, ...rest }) => {
     <AppDialog
       open={open}
       onClose={onClose}
-      title={story.title}
+      title={<span className="library-dialog-title">{story.title}</span>}
       maxWidth="sm"
       closeDataCy="story-info-dialog-close"
       data-cy="story-info-dialog"

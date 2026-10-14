@@ -543,3 +543,12 @@ $menu-hover: $color-menu-hover;
     text-align: center;
   }
 }
+
+// Story/essay dialog titles: at most two lines, the rest cut with an ellipsis.
+.library-dialog-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
