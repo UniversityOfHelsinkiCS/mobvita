@@ -602,6 +602,10 @@ export const useMTAvailableLanguage = () =>
   useSelector(({ contextTranslation }) => contextTranslation.avail)
 export const useCurrentUser = () => useSelector(({ user }) => user.data.user)
 
+// Story text limits checked before upload; 200 chars ≈ two sentences (backend refuses < 50).
+export const STORY_MIN_CHARACTERS = 200
+export const STORY_MAX_CHARACTERS = 50000
+
 // =========================================================================
 // User access hierarchy
 //   0 ANONYMOUS  – not registered (anonymous session)

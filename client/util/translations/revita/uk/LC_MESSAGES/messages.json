@@ -294,7 +294,7 @@
     "warning-for-anonymous-users": "Будь ласка, зверніть увагу, що збереження історій для подальшого використання можливе лише для зареєстрованих користувачів.",
     "story-title-already-taken": "Назва історії вже використовується.\nБудь ласка, оберіть іншу.",
     "file-upload-instructions": "Виберіть текстовий файл, який містить історію:<ul><li>Виберіть файл з розширенням .TXT або .DOCX (інші розширення не підтримуються)</li><li>Перший рядок повинен містити <b>назву</b> історії</li></ul>",
-    "paste-text-upload-instructions": "Будь ласка, введіть <b>заголовок</b> - назву тексту. Введіть текст історії - довжина тексту: 50 - 50 000 символів.",
+    "paste-text-upload-instructions": "Будь ласка, введіть <b>заголовок</b> - назву тексту. Введіть текст історії - довжина тексту: 200 - 50 000 символів.",
     "upload-from-web-instructions": "Ревіта спробує знайти історію з URL. Якщо це не вдасться, або якщо результат містить небажаний текст, будь ласка, використовуйте поле \"Вставити текст\" нижче, щоб ввести історію вручну.",
     "username": "Ім'я користувача",
     "added-to-the-group": "Додано до групи",
@@ -1129,5 +1129,6 @@
     "flashcard-match-progress": "Matched:",
     "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
     "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description",
-    "Terminology": "Terminology"
+    "Terminology": "Terminology",
+    "this-text-is-too-short-minimum-200-characters": "Цей текст занадто короткий. Мінімум: 200 символів."
 }

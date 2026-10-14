@@ -11,9 +11,15 @@ import { Box, Divider } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppTextField from 'Components/ui/AppTextField'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import {
+  capitalize,
+  learningLanguageSelector,
+  STORY_MIN_CHARACTERS,
+  STORY_MAX_CHARACTERS,
+} from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
+// Edits a story's title and text and re-uploads it; text outside the length limits can't be saved.
 const EditStoryView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -30,8 +36,6 @@ const EditStoryView = ({ match }) => {
   const [titleMissing, setTitleMissing] = useState(false)
   const [initTitle, setInitTitle] = useState('')
   const [initContent, setInitContent] = useState('')
-  const maxCharacters = 50000
-  const [charactersLeft, setCharactersLeft] = useState(maxCharacters)
   const [modified, setModified] = useState(false)
   const bigScreen = width > 700
 
@@ -78,10 +82,6 @@ const EditStoryView = ({ match }) => {
   }, [])
 
   useEffect(() => {
-    setCharactersLeft(maxCharacters - content.length)
-  }, [content])
-
-  useEffect(() => {
     if (content !== initContent || title !== initTitle) {
       setModified(true)
     } else {
@@ -95,9 +95,9 @@ const EditStoryView = ({ match }) => {
     }
   }, [story])
 
-  const textTooLong = charactersLeft < 0
-  const submitDisabled =
-    !content || textTooLong || charactersLeft > 49950 || titleMissing || !modified
+  const textTooLong = content.length > STORY_MAX_CHARACTERS
+  const textTooShort = content.trim().length < STORY_MIN_CHARACTERS
+  const submitDisabled = textTooLong || textTooShort || titleMissing || !modified
 
   if (!story || pending) {
     return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
@@ -153,18 +153,18 @@ const EditStoryView = ({ match }) => {
             {submitDisabled && (
               <div>
                 {titleMissing && (
-                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
+                  <div style={{ color: colors.alert, marginLeft: '.5rem' }}>
                     <FormattedMessage id="story-title-validation" />
                   </div>
                 )}
                 {textTooLong && (
-                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
+                  <div style={{ color: colors.alert, marginLeft: '.5rem' }}>
                     <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
                   </div>
                 )}
-                {charactersLeft > 49950 && (
-                  <div style={{ color: colors.error, marginLeft: '.5rem' }}>
-                    <FormattedMessage id="this-text-is-too-short-minimum-50-characters" />
+                {textTooShort && (
+                  <div style={{ color: colors.alert, marginLeft: '.5rem' }}>
+                    <FormattedMessage id="this-text-is-too-short-minimum-200-characters" />
                   </div>
                 )}
               </div>

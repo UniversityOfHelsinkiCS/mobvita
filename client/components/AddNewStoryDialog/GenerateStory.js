@@ -12,7 +12,13 @@ import AppButton from 'Components/AppButton'
 import AppStepper from 'Components/ui/AppStepper'
 import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
-import { useLearningLanguage, capitalize, ACCESS, useHasAccess } from 'Utilities/common'
+import {
+  useLearningLanguage,
+  capitalize,
+  ACCESS,
+  useHasAccess,
+  STORY_MIN_CHARACTERS,
+} from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -269,8 +275,8 @@ const GenerateStory = ({ closeModal }) => {
       return (
         <div className="generate-story-spinner">
           <Spinner
-            spinnerColor={colors.green}
-            textColor={colors.green}
+            spinnerColor={colors.ink}
+            textColor={colors.ink}
             size={60}
             text={<FormattedMessage id="story-generating" />}
             delayedMessage={[
@@ -283,6 +289,7 @@ const GenerateStory = ({ closeModal }) => {
     }
 
     const failed = error || !text
+    const storyTooShort = generatedStory.trim().length < STORY_MIN_CHARACTERS
     return (
       <>
         <p className="generate-story-lead">
@@ -301,12 +308,17 @@ const GenerateStory = ({ closeModal }) => {
             inputProps={{ 'data-cy': 'story-generation-story-input' }}
           />
         )}
+        {!failed && storyTooShort && (
+          <div className="add-story-dialog-error" data-cy="story-generation-too-short">
+            <FormattedMessage id="this-text-is-too-short-minimum-200-characters" />
+          </div>
+        )}
         <div className="generate-story-actions-stack">
           {!failed && (
             <AppButton
               block
               sx={pillButtonSx()}
-              disabled={!generatedStory.trim()}
+              disabled={storyTooShort}
               onClick={saveToLibrary}
               data-cy="story-generation-upload-button"
             >
@@ -330,7 +342,7 @@ const GenerateStory = ({ closeModal }) => {
   if (metaPending) {
     return (
       <div className="generate-story-spinner">
-        <Spinner spinnerColor={colors.green} size={60} />
+        <Spinner spinnerColor={colors.ink} size={60} />
       </div>
     )
   }

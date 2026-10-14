@@ -11,7 +11,9 @@ const BASE = 'http://localhost:8000'
 const API_BASE = 'localhost:8000/api'
 const LANGUAGE = 'Finnish'
 const STORY_BODY =
-  'Koira juoksee nopeasti suuressa puistossa. Kissa nukkuu pehmeällä sohvalla koko päivän.'
+  'Koira juoksee nopeasti suuressa puistossa. Kissa nukkuu pehmeällä sohvalla koko päivän. ' +
+  'Lapset leikkivät pihalla ja nauravat iloisesti. Äiti valmistaa keittiössä herkullista ruokaa. ' +
+  'Isä lukee sanomalehteä olohuoneessa ja juo kahvia.'
 
 const authRequest = (token, method, path) =>
   cy.request({

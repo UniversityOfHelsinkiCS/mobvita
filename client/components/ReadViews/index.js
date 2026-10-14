@@ -613,11 +613,11 @@ const ReadViews = ({ match }) => {
             </div>
             {isStudentPreviewProcessing ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>
-                <Spinner size={60} text={intl.formatMessage({ id: 'loading-story' })} />
+                <Spinner spinnerColor={colors.ink} textColor={colors.ink} size={60} text={intl.formatMessage({ id: 'loading-story' })} />
               </div>
             ) : studentPending ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>
-                <Spinner inline size={60} />
+                <Spinner spinnerColor={colors.ink} inline size={60} />
               </div>
             ) : (
               (routeStory?.paragraph || []).map((paragraph, index) => (

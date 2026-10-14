@@ -931,7 +931,7 @@
     "test-results-remove-confirmation": "Tämä poistaa nämä koetulokset pysyvästi. Oletko varma?",
     "enable-test-for": "Ota testi käyttöön",
     "multiple-chances-when-practicing": "Monta yritystä harjoitellessa",
-    "paste-text-upload-instructions": "Otsikon on oltava vähintään kolme merkkiä pitkä. Kopioi tähän teksti, jonka haluat lisätä. Tekstin tulee olla samalla kielellä, joka on valittuna opiskelukieleksi. Tekstin sallittu pituus 50 - 50 000 merkkiä.",
+    "paste-text-upload-instructions": "Otsikon on oltava vähintään kolme merkkiä pitkä. Kopioi tähän teksti, jonka haluat lisätä. Tekstin tulee olla samalla kielellä, joka on valittuna opiskelukieleksi. Tekstin sallittu pituus 200 - 50 000 merkkiä.",
     "recommended-sites": "Sivustosuositukset",
     "story-remove-confirm": "Oletko varma, että haluat poistaa tekstin?",
     "tests": "Kokeet",
@@ -2015,5 +2015,6 @@
     "flashcard-match-progress": "Yhdistetty:",
     "flashcards-reversed-cards-EXPLANATION": "Käänteiset sanakortit: lue kuvaus ja kirjoita termi, jota se tarkoittaa",
     "flashcards-match-cards-EXPLANATION": "Yhdistäminen: yhdistä jokainen termi sen kuvaukseen",
-    "Terminology": "Terminologia"
+    "Terminology": "Terminologia",
+    "this-text-is-too-short-minimum-200-characters": "Tämä teksti on liian lyhyt. Minimi: 200 merkkiä."
 }

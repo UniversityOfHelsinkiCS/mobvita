@@ -934,7 +934,7 @@
     "test-results-remove-confirmation": "Удалить результаты этого теста?",
     "enable-test-for": "Включить тест на",
     "multiple-chances-when-practicing": "Когда я отвечаю на упражнения, допустить многократные попытки",
-    "paste-text-upload-instructions": "Пожалуйста введи <b>заголовок</b> — название текста.  Введи текст истории — длина текста: 50 - 50 000 букв.",
+    "paste-text-upload-instructions": "Пожалуйста введи <b>заголовок</b> — название текста.  Введи текст истории — длина текста: 200 - 50 000 букв.",
     "recommended-sites": "Рекомендуемые сайты",
     "story-remove-confirm": "Удалить этот текст из библиотеки?",
     "tests": "Тесты",
@@ -2017,5 +2017,6 @@
     "flashcard-match-progress": "Совпадение:",
     "flashcards-reversed-cards-EXPLANATION": "Обратные карточки: прочитай описание и введи термин, который они определяют.",
     "flashcards-match-cards-EXPLANATION": "Сочетание: соотнеси каждый термин с его описанием.",
-    "Terminology": "Терминология"
+    "Terminology": "Терминология",
+    "this-text-is-too-short-minimum-200-characters": "Текст слишком короткий. Минимум: 200 букв."
 }

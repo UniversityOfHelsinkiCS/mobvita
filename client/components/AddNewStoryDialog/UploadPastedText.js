@@ -6,12 +6,14 @@ import AppButton from 'Components/AppButton'
 import AppTextField from 'Components/ui/AppTextField'
 import Spinner from 'Components/Spinner'
 import { postStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
-import { capitalize, learningLanguageSelector } from 'Utilities/common'
+import {
+  capitalize,
+  learningLanguageSelector,
+  STORY_MIN_CHARACTERS,
+  STORY_MAX_CHARACTERS,
+} from 'Utilities/common'
 import { fieldLabelSx, pillButtonSx } from 'Components/ui/sx'
 
-// Backend limits (also stated in the info tooltip): 3+ character title, 50–50 000 character text.
-const MAX_CHARACTERS = 50000
-const MIN_CHARACTERS = 50
 const MIN_TITLE_LENGTH = 3
 
 // Figma "Paste Text": labelled title and text fields with a character counter, then Submit.
@@ -26,12 +28,10 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   const stories = useSelector(({ stories }) => stories.data)
 
   const uploading = Boolean(pending || storyId)
-  const textTooLong = text.length > MAX_CHARACTERS
+  const textTooLong = text.length > STORY_MAX_CHARACTERS
+  const textTooShort = text.trim().length < STORY_MIN_CHARACTERS
   const submitDisabled =
-    uploading ||
-    textTooLong ||
-    text.length < MIN_CHARACTERS ||
-    title.trim().length < MIN_TITLE_LENGTH
+    uploading || textTooLong || textTooShort || title.trim().length < MIN_TITLE_LENGTH
 
   const handleTitleChange = event => {
     setTitle(event.target.value)
@@ -85,11 +85,16 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
             data-cy="paste-story-text-input"
           />
           <div className="add-story-dialog-counter">
-            {text.length}/{MAX_CHARACTERS}
+            {text.length}/{STORY_MAX_CHARACTERS}
           </div>
           {textTooLong && (
             <div className="add-story-dialog-error">
               <FormattedMessage id="this-text-is-too-long-maximum-50000-characters" />
+            </div>
+          )}
+          {text && textTooShort && (
+            <div className="add-story-dialog-error" data-cy="paste-story-too-short">
+              <FormattedMessage id="this-text-is-too-short-minimum-200-characters" />
             </div>
           )}
         </div>

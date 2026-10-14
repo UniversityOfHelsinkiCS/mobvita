@@ -958,7 +958,7 @@
     "enable-test-for": "Enable test for",
     "no-test-enabled-groups": "No groups have a test enabled. A teacher can enable the test from the Groups Page.",
     "multiple-chances-when-practicing": "Allow multiple attempts when I practice with exercises in stories",
-    "paste-text-upload-instructions": "The title must contain at least three characters.  Paste the text of the story.  Allowed length for the story: 50 - 50 000 characters.",
+    "paste-text-upload-instructions": "The title must contain at least three characters.  Paste the text of the story.  Allowed length for the story: 200 - 50 000 characters.",
     "recommended-sites": "Recommended sites",
     "story-remove-confirm": "This will permanently remove this story from your collection, are you sure you want to proceed?",
     "tests": "Tests",
@@ -2015,5 +2015,6 @@
     "flashcard-match-progress": "Matched:",
     "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
     "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description",
-    "Terminology": "Terminology"
+    "Terminology": "Terminology",
+    "this-text-is-too-short-minimum-200-characters": "This text is too short. Minimum: 200 characters."
 }

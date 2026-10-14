@@ -32,12 +32,14 @@ const rgb = hex => {
 
 const storyDetailsUrl = /\/api\/stories\/[^/?]+(?:\?.*)?$/
 
-// Two sentences. The backend strips the first pasted line into `title`, so the body below
-// becomes paragraph 0 with sentence_id 0 (first sentence) and 1 (second sentence).
+// The backend strips the first pasted line into `title`, so the body below becomes paragraph 0
+// with sentence_id 0 (first sentence) and 1 (second sentence); later sentences are padding.
 // Tokenisation is deterministic: each word / whitespace / punctuation mark is its own token.
-// Must be > 50 characters for the paste form to enable the Confirm button.
+// Must be >= 200 characters for the paste form to enable the Confirm button.
 const STORY_BODY =
-  'Koira juoksee nopeasti suuressa puistossa. Kissa nukkuu pehmeällä sohvalla koko päivän.'
+  'Koira juoksee nopeasti suuressa puistossa. Kissa nukkuu pehmeällä sohvalla koko päivän. ' +
+  'Lapset leikkivät pihalla ja nauravat iloisesti. Äiti valmistaa keittiössä herkullista ruokaa. ' +
+  'Isä lukee sanomalehteä olohuoneessa ja juo kahvia.'
 
 // Locate the first non-whitespace token of a given sentence in a real (fetched) story so we
 // can assert against its story-token-p<p>-t<t> element regardless of exact tokenisation.

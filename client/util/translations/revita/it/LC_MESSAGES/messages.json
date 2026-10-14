@@ -932,7 +932,7 @@
     "test-results-remove-confirmation": "Sicuro/a di voler cancellare i risultati del test?",
     "enable-test-for": "Abilita il test per",
     "multiple-chances-when-practicing": "Abilita più tentativi mentre ti eserciti con le storie",
-    "paste-text-upload-instructions": "Inserisci il titolo e il testo della storia.  Lunghezza del testo consentita: 50 - 50 000 caratteri.",
+    "paste-text-upload-instructions": "Inserisci il titolo e il testo della storia.  Lunghezza del testo consentita: 200 - 50 000 caratteri.",
     "recommended-sites": "Siti web raccomandati",
     "story-remove-confirm": "Sei sicuro/a di voler eliminare la seguente storia dalla tua lista?",
     "tests": "Test",
@@ -2014,5 +2014,6 @@
     "flashcard-match-progress": "Abbinato:",
     "flashcards-reversed-cards-EXPLANATION": "Flashcard invertite: leggi la descrizione e digita il termine che essa definisce.",
     "flashcards-match-cards-EXPLANATION": "Abbinamento: associa ogni termine alla sua descrizione.",
-    "Terminology": "Terminologia"
+    "Terminology": "Terminologia",
+    "this-text-is-too-short-minimum-200-characters": "Il testo è troppo breve. Minimo: 200 caratteri."
 }
