@@ -1,8 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import useGroupLibraryLink from './useGroupLibraryLink'
 
 import './Encouragements.css'
 
@@ -16,10 +16,7 @@ const practicePath = story => `/stories/${story._id}/practice`
 // Chat-layout reminder of the group's unfinished stories, drawn inside an assistant recommendation
 // bubble (which owns the icon and the dismiss X).
 const GroupStoriesEncouragement = ({ stories, groupName }) => {
-  const navigate = useNavigate()
-  const savedLibrary = useSelector(({ user }) => user.data?.user?.last_selected_library)
-  // Library tabs don't change the URL, so the open tab comes from the saved selection.
-  const inGroupLibrary = useLocation().pathname.startsWith('/library') && savedLibrary === 'group'
+  const { inGroupLibrary, openGroupLibrary } = useGroupLibraryLink()
   const listed = stories.slice(0, MAX_LISTED)
   const notListed = stories.length - listed.length
 
@@ -46,7 +43,7 @@ const GroupStoriesEncouragement = ({ stories, groupName }) => {
           variant="contrast"
           size="sm"
           type="button"
-          onClick={() => navigate('/library/group')}
+          onClick={openGroupLibrary}
           style={{ marginTop: 10 }}
         >
           <FormattedMessage id="group-stories-recommendation-open" />

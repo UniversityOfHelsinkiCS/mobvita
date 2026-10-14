@@ -112,8 +112,9 @@ const StoryList = () => {
     useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
   const [essaySearchQuery, setEssaySearchQuery] = useState('')
-  const groupsLibrary = location.pathname.includes('group')
-  const privateLibrary = location.pathname.includes('private')
+  const requestedLibrary = location.state?.library
+  const groupsLibrary = location.pathname.includes('group') || requestedLibrary === 'group'
+  const privateLibrary = location.pathname.includes('private') || requestedLibrary === 'private'
   const [libraries, setLibraries] = useState({
     public: false,
     private: false,
@@ -225,6 +226,11 @@ const StoryList = () => {
     }
     if (groupsLibrary) handleLibraryChange('group')
     else if (privateLibrary) handleLibraryChange('private')
+  }, [location.key])
+
+  // The state request is one-off: clear it so a reload doesn't override a tab picked since.
+  useEffect(() => {
+    if (requestedLibrary) navigate(location.pathname, { replace: true, state: null })
   }, [location.key])
 
   useEffect(() => {

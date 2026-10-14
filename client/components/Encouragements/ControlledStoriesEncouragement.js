@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import useGroupLibraryLink from './useGroupLibraryLink'
 
 import './Encouragements.css'
 
@@ -16,8 +17,7 @@ const practicePath = story => `/stories/${story._id}/controlled-practice`
 // GroupStoriesEncouragement because these are a different task to the learner: the exercises are
 // chosen by the teacher and timed.
 const ControlledStoriesEncouragement = ({ stories, groupName }) => {
-  const navigate = useNavigate()
-  const inGroupLibrary = useLocation().pathname.startsWith('/library/group')
+  const { inGroupLibrary, openGroupLibrary } = useGroupLibraryLink()
   const listed = stories.slice(0, MAX_LISTED)
   const notListed = stories.length - listed.length
 
@@ -52,7 +52,7 @@ const ControlledStoriesEncouragement = ({ stories, groupName }) => {
           variant="contrast"
           size="sm"
           type="button"
-          onClick={() => navigate('/library/group')}
+          onClick={openGroupLibrary}
           style={{ marginTop: 10 }}
         >
           <FormattedMessage id="controlled-stories-recommendation-open" />
