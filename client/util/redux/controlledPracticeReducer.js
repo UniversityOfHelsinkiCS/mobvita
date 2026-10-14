@@ -208,7 +208,9 @@ export default (
         pending: false,
         error: false,
         frozen_snippets: action.response.frozen_snippets,
-        timedExercise: action.response.timed_exercise,
+        timedExercise:
+          Object.keys(action.response.frozen_snippets || {}).length > 0 &&
+          action.response.timed_exercise === true,
       }
 
     case 'GET_FROZEN_SNIPPETS_PREVIEW_ATTEMPT':
