@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import AppIcon from 'Components/ui/AppIcon'
 import { images } from 'Utilities/common'
 import { deleteFlashcard } from 'Utilities/redux/flashcardReducer'
 
+// Trash button on a flashcard; confirms in a dialog before deleting the card.
 const FlashcardDelete = ({ id }) => {
   const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
@@ -16,8 +18,13 @@ const FlashcardDelete = ({ id }) => {
 
   return (
     <>
-      <button className="flashcard-blended-input" type="button" onClick={() => setOpen(true)}>
-        <img src={images.trash03} alt="delete" style={{ width: 20, height: 20 }} />
+      <button
+        className="flashcard-blended-input"
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="delete"
+      >
+        <AppIcon src={images.trash03} size={20} />
       </button>
       <AppDialog open={open} onClose={() => setOpen(false)} title={<FormattedMessage id="Warning" />}>
         <FormattedMessage id="this-will-permanently-remove-this-flashcard-are-you-sure-you-want-to-proceed" />

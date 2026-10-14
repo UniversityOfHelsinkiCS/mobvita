@@ -18,8 +18,10 @@ import {
   hiddenFeatures,
   images
 } from 'Utilities/common'
+import AppIcon from 'Components/ui/AppIcon'
 import ChatActionMenuSuggestions from './ChatActionMenuSuggestions'
 
+// Per-word action popup in the chatbot: hint, word nest, sentence translation and add-note.
 const ChatActionMenu = ({
   handleShowHint,
   hasHints,
@@ -224,7 +226,7 @@ const ChatActionMenu = ({
               data-cy="nest-button"
               onClick={handleWordNestClick}>
               <div className="chat-action-icon">
-                <img src={images.wordnest} alt="" width="24" height="24" style={{ display: 'block' }} />
+                <AppIcon src={images.wordnest} size={24} style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="display-word-nest" defaultMessage="Word Nest" />
@@ -240,7 +242,7 @@ const ChatActionMenu = ({
               onClick={handleSentenceTranslation}
             >
               <div className="chat-action-icon">
-                <img src={images.translate01} alt="" width="24" height="24" style={{ display: 'block' }} />
+                <AppIcon src={images.translate01} size={24} style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="dictionaryhelp-show-context-translation" defaultMessage="Translate Sentence" />
@@ -255,7 +257,7 @@ const ChatActionMenu = ({
               onClick={() => { onAddNote(); setOpen(false) }}
             >
               <div className="chat-action-icon">
-                <img src={images.paste} alt="" width="24" height="24" style={{ display: 'block' }} />
+                <AppIcon src={images.paste} size={24} style={{ display: 'block' }} />
               </div>
               <span className="chat-action-text">
                 <FormattedMessage id="create-a-note" defaultMessage="Add a note" />

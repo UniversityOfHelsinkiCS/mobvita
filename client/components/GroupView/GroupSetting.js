@@ -19,12 +19,14 @@ import ReportButton from 'Components/ReportButton'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppRadio from 'Components/ui/AppRadio'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 
 import TotalTestQuestions from 'Components/Concepts/TotalTestQuestions'
 import Concepts from 'Components/Concepts'
 import Topics from 'Components/Topics'
 
+// Group learning settings page: exercise and test settings shared by the whole group.
 const GroupSetting = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -102,7 +104,12 @@ const GroupSetting = () => {
             to="/groups/teacher"
             aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
           >
-            <img src={images.arrowLeft} alt="" />
+            <AppIcon
+              src={images.arrowLeft}
+              size={20}
+              color={colors.muted}
+              style={{ display: 'block' }}
+            />
           </Link>
           <div className="group-analytics-heading">
             <div className="header-2">

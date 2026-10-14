@@ -65,6 +65,7 @@ import { hiddenFeatures } from 'Utilities/common'
 // The one public Finnish folder everyone may browse; see restrictPublicFinnishFolders below.
 const PUBLIC_FINNISH_OPEN_FOLDER = 'vapaa-aika'
 
+// The library page: library tabs, folders and the story/essay lists for the active library.
 const StoryList = () => {
   const intl = useIntl()
   const hasHighAccess = useHasAccess(ACCESS.HIGH)
@@ -443,7 +444,7 @@ const StoryList = () => {
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
     >
-      <img src={images.star06} alt="" />
+      <AppIcon src={images.star06} size={24} color={colors.card} />
       {intl.formatMessage({ id: 'add-your-stories' })}
     </AppButton>
   )
@@ -457,7 +458,7 @@ const StoryList = () => {
       onClick={() => navigate('/essay-writing')}
       data-cy="write-essay-button"
     >
-      <img src={images.edit03} alt="" style={{ filter: 'brightness(0) invert(1)' }} />
+      <AppIcon src={images.edit03} size={24} color={colors.surface} />
       {intl.formatMessage({ id: 'write-new-essay' })}
     </AppButton>
   )
@@ -1094,6 +1095,7 @@ const StoryList = () => {
     )
   }
 
+  // Story cards at the current path, or the empty-folder message.
   const renderStoriesGrid = () => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
@@ -1110,7 +1112,12 @@ const StoryList = () => {
       return (
         <Box className="no-stories-found">
           <div className="no-stories-found-inner">
-            <img src={images.openBook} alt="" className="no-stories-found-icon" />
+            <AppIcon
+              src={images.openBook}
+              size={36}
+              color={colors.emptyState}
+              className="no-stories-found-icon"
+            />
             <span className="no-stories-found-text">
               <FormattedMessage id="no-stories-found" />
             </span>
@@ -1260,6 +1267,7 @@ const StoryList = () => {
     )
   }
 
+  // Essay cards at the current path, or the empty-folder message.
   const renderEssayItems = () => {
     const query = essaySearchQuery.trim().toLowerCase()
     const sortedEssays = getSortedEssaysInView()
@@ -1278,7 +1286,12 @@ const StoryList = () => {
       return (
         <Box className="no-stories-found">
           <div className="no-stories-found-inner">
-            <img src={images.letter} alt="" className="no-stories-found-icon" />
+            <AppIcon
+              src={images.letter}
+              size={36}
+              color={colors.emptyState}
+              className="no-stories-found-icon"
+            />
             <span className="no-stories-found-text">
               <FormattedMessage id="no-essays-found" />
             </span>

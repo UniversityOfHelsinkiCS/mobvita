@@ -9,6 +9,7 @@ import FloatMenu from './FloatMenu'
 import Practice from './Practice'
 import FlashcardList from './FlashcardList'
 import AppTabs from 'Components/ui/AppTabs'
+import AppIcon from 'Components/ui/AppIcon'
 import { FormattedMessage } from 'react-intl'
 import { images, ACCESS, useHasAccess } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -167,7 +168,8 @@ const Flashcards = () => {
 
   const activeTab = mode === 'new' ? 'new' : mode === 'list' ? 'list' : 'fillin'
 
-  const tabIcon = src => <img src={src} alt="" style={{ width: 20, height: 20 }} />
+  // Tab icon at the 20px the tab bar uses.
+  const tabIcon = src => <AppIcon src={src} size={20} />
   const flashcardTabs = [
     {
       value: 'fillin',

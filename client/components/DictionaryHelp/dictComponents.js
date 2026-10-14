@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import { useLearningLanguage, speak, voiceLanguages, images } from 'Utilities/common'
 import { setAnnotationvisibilityMobile } from 'Utilities/redux/annotationsReducer'
 
+// Speaker button that reads `word` aloud in the learning language's voice.
 export const Speaker = ({ word }) => {
   const learningLanguage = useLearningLanguage()
   const voice = voiceLanguages[learningLanguage]
@@ -42,7 +44,7 @@ export const Speaker = ({ word }) => {
         verticalAlign: 'middle',
       }}
     >
-      <img src={images.speaker} alt="" style={{ width: 22, height: 22, display: 'block' }} />
+      <AppIcon src={images.speaker} size={22} style={{ display: 'block' }} />
     </button>
   )
 }

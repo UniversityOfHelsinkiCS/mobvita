@@ -3,11 +3,13 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { images, useCurrentUser } from 'Utilities/common'
 import { useNavigate } from 'react-router-dom'
 import GroupActionModal from './GroupActionModal'
 
+// Empty state of the groups page: explains groups and offers create/join for the role.
 const NoGroupsView = ({ role }) => {
   const user = useCurrentUser()
   const isAnonymousUser = user.email === 'anonymous_email'
@@ -56,9 +58,8 @@ const NoGroupsView = ({ role }) => {
                     size={role === 'teacher' ? 'sm' : 'lg'}
                     data-cy={role === 'student' ? 'join-group-button' : 'create-group-button'}
                     style={{ float: 'right' }}
-                    sx={role === 'teacher' ? { '& img': { width: 20, height: 20 } } : undefined}
                   >
-                    {role === 'teacher' && <img src={images.plusOutline} alt="" />}
+                    {role === 'teacher' && <AppIcon src={images.plusOutline} size={20} />}
                     <FormattedMessage
                       id={role === 'student' ? 'join-a-group' : 'create-new-group'}
                     />

@@ -7,6 +7,7 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import AppIcon from 'Components/ui/AppIcon'
 import CustomTooltip from 'Components/CustomTooltip'
 import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
@@ -33,7 +34,7 @@ const ActionPill = ({ to, onClick, icon, labelId, disabled, variant = 'tan', cla
         px: '1.1em',
         py: '0.55em',
         whiteSpace: 'nowrap',
-        '& img, & > svg': { flexShrink: 0 },
+        '& > svg': { flexShrink: 0 },
       }}
     >
       {icon}
@@ -139,11 +140,10 @@ const StoryDetailsModal = ({
         whiteSpace: 'nowrap',
         backgroundColor: colors.alert,
         color: '#fff',
-        '& img': { flexShrink: 0, filter: 'brightness(0) invert(1)' },
         '&:hover': { backgroundColor: colors.alertHover },
       }}
     >
-      <img src={images.trash03} alt="" />
+      <AppIcon src={images.trash03} size={24} color={colors.surface} />
       <FormattedMessage id="Delete" />
     </AppButton>
   )
@@ -190,14 +190,14 @@ const StoryDetailsModal = ({
               <ActionPill
                 className="story-detail-modal-action-button tour-library-practice-or-preview"
                 to={`/stories/${story._id}/${story.percent_cov > 0 ? 'review' : 'preview'}`}
-                icon={<img src={images.bookOpen} alt="" />}
+                icon={<AppIcon src={images.bookOpen} size={24} />}
                 labelId="practice"
               />
             )}
             {!enableOnlyPractice && !isTeacher && (
               <ActionPill
                 to={`/flashcards/fillin/story/${story._id}/`}
-                icon={<img src={images.cardsIcon} alt="" />}
+                icon={<AppIcon src={images.cardsIcon} size={24} />}
                 labelId="Flashcards"
                 disabled={story.flashcard_count === 0}
                 tooltipId={
@@ -216,7 +216,7 @@ const StoryDetailsModal = ({
             {!enableOnlyPractice && !isTeacher && hadQuestions && (
               <ActionPill
                 to={`/stories/${story._id}/reading_practice`}
-                icon={<img src={images.fileCheck} alt="" />}
+                icon={<AppIcon src={images.fileCheck} size={24} />}
                 labelId="reading-comprehension"
               />
             )}
@@ -233,7 +233,7 @@ const StoryDetailsModal = ({
                 <ActionPill
                   className="tour-library-review"
                   to={inGroupLibrary ? `/stories/${story._id}/group/review` : `/stories/${story._id}/review`}
-                  icon={<img src={images.fileCheck} alt="" />}
+                  icon={<AppIcon src={images.fileCheck} size={24} />}
                   labelId="review"
                   disabled={!inGroupLibrary && story.percent_cov === 0}
                 />
@@ -246,13 +246,13 @@ const StoryDetailsModal = ({
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75em' }}>
               <ActionPill
                 to={`/stories/${story._id}/compete`}
-                icon={<img src={images.flag01} alt="" />}
+                icon={<AppIcon src={images.flag01} size={24} />}
                 labelId="compete"
                 disabled={enableOnlyPractice}
               />
               <ActionPill
                 to={`/crossword/${story._id}`}
-                icon={<img src={images.grid01} alt="" />}
+                icon={<AppIcon src={images.grid01} size={24} />}
                 labelId="Crossword"
                 disabled={enableOnlyPractice}
               />
@@ -266,21 +266,21 @@ const StoryDetailsModal = ({
                 <ActionPill
                   to={`/stories/${story._id}/controlled-story-editor`}
                   labelId="create-controlled-story"
-                  icon={<img src={images.iconEdit} alt="" />}
+                  icon={<AppIcon src={images.iconEdit} size={24} />}
                 />
               )}
               {showReadingComprehension && (
                 <ActionPill
                   to={`/stories/${story._id}/reading-comprehension-options`}
                   labelId="reading-comprehension"
-                  icon={<img src={images.fileCheck} alt="" />}
+                  icon={<AppIcon src={images.fileCheck} size={24} />}
                 />
               )}
               {showCancelControlStoryButton && (
                 <ActionPill
                   to={`/stories/${story._id}/controlled-story-editor`}
                   labelId="edit-controlled-story"
-                  icon={<img src={images.iconEdit} alt="" />}
+                  icon={<AppIcon src={images.iconEdit} size={24} />}
                 />
               )}
               {showCancelControlStoryButton && (
@@ -320,11 +320,8 @@ const StoryDetailsModal = ({
               )}
               {story.user === user.oid && (
                 <Link to={`/stories/${story._id}/edit`}>
-                  <AppButton
-                    variant="contrast-outline"
-                    sx={{ gap: '0.5em', whiteSpace: 'nowrap', '& img': { flexShrink: 0 } }}
-                  >
-                    <img src={images.iconEdit} alt="" />
+                  <AppButton variant="contrast-outline" sx={{ gap: '0.5em', whiteSpace: 'nowrap' }}>
+                    <AppIcon src={images.iconEdit} size={24} />
                     <FormattedMessage id="edit-story" />
                   </AppButton>
                 </Link>

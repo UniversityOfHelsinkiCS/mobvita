@@ -3,6 +3,7 @@ import { debounce } from 'lodash'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AppTextField from './AppTextField'
+import AppIcon from './AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
 
@@ -18,15 +19,7 @@ import { images } from 'Utilities/common'
  *     after the user pauses typing. Enter flushes the pending debounce rather than racing it.
  *   - `onClear` runs after the value is cleared, for callers with teardown beyond the text itself.
  */
-const SearchIcon = (
-  <img
-    src={images.searchTextfield}
-    alt=""
-    width={20}
-    height={20}
-    style={{ display: 'block', flexShrink: 0 }}
-  />
-)
+const SearchIcon = <AppIcon src={images.searchTextfield} size={20} style={{ display: 'block' }} />
 
 const AppSearchField = ({
   value,

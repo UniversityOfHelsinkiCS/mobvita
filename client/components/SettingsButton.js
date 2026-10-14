@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import AppButton, { roundIconButtonSx } from './AppButton'
 import AppMenu, { AppMenuItem } from './ui/AppMenu'
+import AppIcon from './ui/AppIcon'
 import {
   images,
   learningLanguageSelector,
@@ -28,6 +29,7 @@ const headingStyle = {
   whiteSpace: 'nowrap',
 }
 
+// Gear button + translation-language dropdown for flashcards.
 const SettingButton = ({ style }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -56,7 +58,7 @@ const SettingButton = ({ style }) => {
       sx={roundIconButtonSx}
       style={style}
     >
-      <img src={images.settings02} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+      <AppIcon src={images.settings02} size={24} style={{ display: 'block' }} />
     </AppButton>
   )
 

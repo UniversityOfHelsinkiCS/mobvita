@@ -11,6 +11,7 @@ import {
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import AppIcon from 'Components/ui/AppIcon'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 
 // A single essay in the "My Essays" library: icon + title + sentence count. Clicking the card opens
@@ -117,9 +118,9 @@ const EssayCard = ({
               variant="primary"
               data-cy="essay-detail-modal-edit-button"
               onClick={handleEdit}
-              sx={{ gap: '0.5em', whiteSpace: 'nowrap', '& img': { flexShrink: 0 } }}
+              sx={{ gap: '0.5em', whiteSpace: 'nowrap' }}
             >
-              <img src={images.iconEdit} alt="" />
+              <AppIcon src={images.iconEdit} size={24} />
               <FormattedMessage id={teacherView ? 'review' : 'edit'} />
             </AppButton>
           )}
@@ -133,11 +134,10 @@ const EssayCard = ({
                 whiteSpace: 'nowrap',
                 backgroundColor: colors.alert,
                 color: '#fff',
-                '& img': { flexShrink: 0, filter: 'brightness(0) invert(1)' },
                 '&:hover': { backgroundColor: colors.alertHover },
               }}
             >
-              <img src={images.trash03} alt="" />
+              <AppIcon src={images.trash03} size={24} color={colors.surface} />
               <FormattedMessage id="Delete" />
             </AppButton>
           )}

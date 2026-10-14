@@ -3,6 +3,7 @@ import { Box, Divider } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import * as Sentry from '@sentry/react'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import { images } from 'Utilities/common'
 import { colors, shape } from 'Assets/mui_theme/designTokens'
 
@@ -24,6 +25,7 @@ export default class ErrorBoundary extends Component {
     })
   }
 
+  // Children until one throws, then the error card with a Sentry report button.
   render() {
     const { hasError, eventId } = this.state
     const { children } = this.props
@@ -54,7 +56,7 @@ export default class ErrorBoundary extends Component {
             textAlign: 'center',
           }}
         >
-          <img src={images.alertCircle} alt="" width={44} height={44} />
+          <AppIcon src={images.alertCircle} size={44} />
 
           <Box
             component="h2"

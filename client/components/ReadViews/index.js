@@ -67,9 +67,9 @@ import StoryTitleTranslate from 'Components/PracticeView/StoryTitleTranslate'
 
 import './ReadViewsStyles.css'
 
-// Toolbar buttons are the DS small size (36px); their leading glyph is 20px rather than the
+// Toolbar buttons are the DS small size (36px); their leading AppIcon is 20px rather than the
 // button's default 24 so the label stays the dominant element.
-const ICON_BUTTON_SX = { gap: '0.5em', '& img': { width: 20, height: 20 } }
+const ICON_BUTTON_SX = { gap: '0.5em' }
 
 const SettingToggle = ({ translationId, ...props }) => {
   return (
@@ -81,6 +81,7 @@ const SettingToggle = ({ translationId, ...props }) => {
   )
 }
 
+// Story preview/review page: toolbar, story text, practice settings and the helper sidebar.
 const ReadViews = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -423,7 +424,7 @@ const ReadViews = ({ match }) => {
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
       >
         <AppButton variant="primary" as={Link} to={`/stories/${id}/edit/`} sx={ICON_BUTTON_SX}>
-          <img src={images.iconEdit} alt="" />
+          <AppIcon src={images.iconEdit} size={20} />
           <FormattedMessage id="edit" />
         </AppButton>
         <AppButton
@@ -432,7 +433,7 @@ const ReadViews = ({ match }) => {
           onClick={() => setConfirmationOpen(true)}
           sx={ICON_BUTTON_SX}
         >
-          <img src={images.trash03} alt="" />
+          <AppIcon src={images.trash03} size={20} />
           <FormattedMessage id="Delete" />
         </AppButton>
       </div>
@@ -450,7 +451,7 @@ const ReadViews = ({ match }) => {
         variant="tan"
         sx={{ gap: '0.5em' }}
       >
-        <img src={images.play} alt="" />
+        <AppIcon src={images.play} size={24} />
         <FormattedMessage id="tailored-begin-practice" />
       </AppButton>
     ) : (
@@ -467,7 +468,7 @@ const ReadViews = ({ match }) => {
           disabled={(routeStory?.topics || []).length === 0 && ownedRouteStory}
           sx={{ gap: '0.5em' }}
         >
-          <img src={images.play} alt="" />
+          <AppIcon src={images.play} size={24} />
           <FormattedMessage id="start-practice-story" />
         </AppButton>
       )
@@ -492,7 +493,7 @@ const ReadViews = ({ match }) => {
             style={{ display: 'inline-flex' }}
           >
             {/* The asset draws its own ring, so this is the circled arrow from the design. */}
-            <img src={images.arrowLeft} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+            <AppIcon src={images.arrowLeft} size={24} color={colors.muted} style={{ display: 'block' }} />
           </Link>
           {practiceCta}
         </Box>

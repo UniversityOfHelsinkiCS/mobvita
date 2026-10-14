@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
 import AppMenu from './AppMenu'
+import AppIcon from './AppIcon'
 import ChatActionMenuSuggestions from 'Components/PracticeView/ChatActionMenuSuggestions'
 
 /**
@@ -81,6 +82,7 @@ export const PredefinedRequestButton = styled('button')({
   '&:disabled': { cursor: 'not-allowed', opacity: 0.6 },
 })
 
+// Bare button behind the burger glyph that opens the canned-request menu.
 const SuggestionButton = styled('button')({
   flexShrink: 0,
   display: 'inline-flex',
@@ -90,10 +92,10 @@ const SuggestionButton = styled('button')({
   border: 'none',
   background: 'none',
   cursor: 'pointer',
-  '& img': { width: 24, height: 24, display: 'block' },
   '&:disabled': { cursor: 'not-allowed' },
 })
 
+// Pill text field + send button; optional burger menu of canned requests on the left.
 const ChatInput = ({
   value,
   onChange,
@@ -118,7 +120,7 @@ const ChatInput = ({
         <AppMenu
           trigger={
             <SuggestionButton type="button" aria-label="Suggestion" disabled={disabled}>
-              <img src={images.menu3} alt="Suggestion" />
+              <AppIcon src={images.menu3} size={24} style={{ display: 'block' }} />
             </SuggestionButton>
           }
           anchorOrigin={{ vertical: 'top', horizontal: 'left' }}

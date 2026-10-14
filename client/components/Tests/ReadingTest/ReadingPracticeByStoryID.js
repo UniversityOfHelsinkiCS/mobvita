@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import AppMenu from 'Components/ui/AppMenu'
+import AppIcon from 'Components/ui/AppIcon'
 import AppButton, { roundIconButtonSx } from 'Components/AppButton'
 import {
   quizActionButtonSx,
@@ -148,7 +149,7 @@ const AnswerLocationSettings = ({ checked, onChange }) => (
         disableRipple
         sx={roundIconButtonSx}
       >
-        <img src={images.settings02} alt="" style={{ width: 24, height: 24, display: 'block' }} />
+        <AppIcon src={images.settings02} size={24} style={{ display: 'block' }} />
       </AppButton>
     }
   >

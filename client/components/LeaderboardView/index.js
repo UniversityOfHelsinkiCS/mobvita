@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
+import AppIcon from 'Components/ui/AppIcon'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import LeaderboardList from './LeaderboardList'
 import LastWeeksWinners from './LastWeeksWinners'
@@ -11,10 +12,10 @@ import Spinner from 'Components/Spinner'
 
 // A small section heading: image + muted uppercase label + a subtle divider (replaces the old
 // shared Subheader/hr so it sits cleanly inside the cream card).
-const SectionTitle = ({ imgSource, imgAlt, translationId }) => (
+const SectionTitle = ({ imgSource, translationId }) => (
   <Box sx={{ mt: '1.5em' }}>
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5em', mb: '0.4em' }}>
-      {imgSource && <img src={imgSource} alt={imgAlt} height="18" />}
+      {imgSource && <AppIcon src={imgSource} size={18} />}
       <span
         style={{
           color: colors.muted,
@@ -31,6 +32,7 @@ const SectionTitle = ({ imgSource, imgAlt, translationId }) => (
   </Box>
 )
 
+// Leaderboard page: last week's winners and this week's top people.
 const Leaderboard = () => {
   const dispatch = useDispatch()
 
@@ -66,14 +68,10 @@ const Leaderboard = () => {
           )}
         </Box>
 
-        <SectionTitle imgSource={images.trophy01} imgAlt="trophy" translationId="last-weeks-winners" />
+        <SectionTitle imgSource={images.trophy01} translationId="last-weeks-winners" />
         <LastWeeksWinners />
 
-        <SectionTitle
-          imgSource={images.users01}
-          imgAlt="leaderboard"
-          translationId="Top people this week"
-        />
+        <SectionTitle imgSource={images.users01} translationId="Top people this week" />
         <LeaderboardList amountToShow={25} />
       </Box>
     </div>

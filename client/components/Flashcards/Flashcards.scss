@@ -159,12 +159,6 @@ $flashcard-text-inset: 28px;
   &:focus {
     outline: none;
   }
-
-  & > img {
-    display: block;
-    width: 36px;
-    height: 36px;
-  }
 }
 
 // The word starts 146px down the card (20 padding + 36 header + 20 gap + 70 here) and is 36px tall,

@@ -12,6 +12,7 @@ import {
 } from 'Utilities/redux/flashcardReducer'
 import ChatSpinner from 'Components/ui/ChatSpinner'
 import ChatBubble from 'Components/ui/ChatBubble'
+import AppIcon from 'Components/ui/AppIcon'
 import AppButton from 'Components/AppButton'
 import ChatInput from 'Components/ui/ChatInput'
 import { FlashcardStoryInfoText } from 'Components/Flashcards/FlashcardStoryInfo'
@@ -40,6 +41,7 @@ const WORDNEST_PILL_STYLE = {
   fontSize: 14,
 }
 
+// Flashcards assistant sidebar: chat, revealed hints, prompts and the hint bulbs/button.
 const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsPrompt }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -234,16 +236,27 @@ const FlashcardsChatbot = ({ showBlueCardsPrompt = false, onDismissBlueCardsProm
                   }
                 }}
               >
-                {cardHints.map((hint, index) => (
-                  <img
-                    key={hint}
-                    src={revealedHints.includes(index) ? images.bulbEmpty : images.bulb}
-                    alt=""
-                    width="22"
-                    height="22"
-                    style={{ display: 'block' }}
-                  />
-                ))}
+                {/* The lit bulb is two-colour, so only the spent one can be an AppIcon. */}
+                {cardHints.map((hint, index) =>
+                  revealedHints.includes(index) ? (
+                    <AppIcon
+                      key={hint}
+                      src={images.bulbEmpty}
+                      size={22}
+                      color={colors.emptyState}
+                      style={{ display: 'block' }}
+                    />
+                  ) : (
+                    <img
+                      key={hint}
+                      src={images.bulb}
+                      alt=""
+                      width="22"
+                      height="22"
+                      style={{ display: 'block' }}
+                    />
+                  ),
+                )}
               </div>
             </CustomTooltip>
             <CustomTooltip title={hintsLeftLabel} placement="top" permanent>

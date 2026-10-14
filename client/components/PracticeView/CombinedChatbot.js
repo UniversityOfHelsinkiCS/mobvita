@@ -65,6 +65,7 @@ import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import ChatbotSuggestions from 'Components/ChatBot/ChatbotSuggestions'
 import ChatInput from 'Components/ui/ChatInput'
 import ChatBubble from 'Components/ui/ChatBubble'
+import AppIcon from 'Components/ui/AppIcon'
 import PracticeCompletedEncouragement from 'Components/Encouragements/PracticeCompletedEncouragement'
 import BlueCardsTestEncouragement from 'Components/Encouragements/BlueCardsTestEncouragement'
 import ChatSpinner from 'Components/ui/ChatSpinner'
@@ -190,6 +191,7 @@ const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
   )
 }
 
+// Practice chatbot: per-word feedback, hints and actions for the focused exercise.
 const CombinedChatbot = ({
   inWordNestModal,
   clue,
@@ -1452,12 +1454,11 @@ const CombinedChatbot = ({
                       />
                     ))}
                     {spentHints.map(hint => (
-                      <img
+                      <AppIcon
                         key={`spent-${hint}`}
                         src={images.bulbEmpty}
-                        alt=""
-                        width="22"
-                        height="22"
+                        size={22}
+                        color={colors.emptyState}
                         style={{ display: 'block' }}
                       />
                     ))}

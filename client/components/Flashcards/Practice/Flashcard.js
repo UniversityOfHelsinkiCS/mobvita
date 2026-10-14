@@ -1,11 +1,10 @@
 import React from 'react'
 import { flashcardColors, images } from 'Utilities/common'
+import AppIcon from 'Components/ui/AppIcon'
 import FlashcardDelete from './FlashcardDelete'
 
-// `showActions` is the back of the card asking for the edit/delete row. It is an explicit flag
-// rather than a test on `id`, because a blue-card deck's items can arrive without one and the
-// controls still belong there. The front is the exercise, so it never sets it.
-// `cardBackground` overrides the per-stage colour — the blue-cards deck paints every card alike.
+// A card face; `showActions` (back only, not an `id` test since blue cards may lack one) adds
+// edit/delete, and `cardBackground` overrides the per-stage colour.
 const Flashcard = ({
   flipCard,
   cardNumbering,
@@ -27,8 +26,13 @@ const Flashcard = ({
         <div className="flashcard-header">
           <div className="flashcard-header-slot">
             {showActions && handleEdit && (
-              <button className="flashcard-blended-input" type="button" onClick={handleEdit}>
-                <img src={images.edit03} alt="edit" style={{ width: 20, height: 20 }} />
+              <button
+                className="flashcard-blended-input"
+                type="button"
+                onClick={handleEdit}
+                aria-label="edit"
+              >
+                <AppIcon src={images.edit03} size={20} />
               </button>
             )}
             {showActions && <FlashcardDelete id={id} />}
@@ -42,7 +46,7 @@ const Flashcard = ({
               aria-label="flip card"
               data-cy="flashcard-flip"
             >
-              <img src={images.flipBackCircle} alt="" />
+              <AppIcon src={images.flipBackCircle} size={36} style={{ display: 'block' }} />
             </button>
           </div>
         </div>

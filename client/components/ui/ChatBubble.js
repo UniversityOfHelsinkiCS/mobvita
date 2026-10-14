@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
 import AppMenu, { AppMenuItem } from './AppMenu'
+import AppIcon from './AppIcon'
 
 /**
  * ChatBubble — a single chat message bubble, shared across the chatbots.
@@ -221,7 +222,6 @@ const BubbleLeftIcon = styled('div')({
   justifyContent: 'center',
   width: 18,
   height: BUBBLE_LINE_HEIGHT,
-  '& img': { display: 'block', width: 18, height: 18 },
 })
 
 // The recommendation's own icon column: top-aligned beside the title, not centred on the bubble.
@@ -237,6 +237,7 @@ const BubbleIconColumn = styled('div')({
   '& img, & svg': { display: 'block', width: 24, height: 24 },
 })
 
+// Faint edit/remove control in a bubble's top-right action row.
 const ActionButton = styled('button')({
   display: 'inline-flex',
   alignItems: 'center',
@@ -250,7 +251,6 @@ const ActionButton = styled('button')({
   opacity: 0.6,
   transition: 'opacity 0.15s ease',
   '&:hover': { opacity: 1 },
-  '& img': { display: 'block', width: 16, height: 16 },
 })
 
 // Ink, at full strength: the paste glyph on the other side of the note is drawn in ink by the asset
@@ -268,6 +268,7 @@ const BubbleMenuTrigger = styled('button')({
   '&:hover': { opacity: 0.7 },
 })
 
+// One chat message bubble; `variant` picks the look, onEdit/onRemove add its action controls.
 const ChatBubble = React.forwardRef(
   (
     {
@@ -276,7 +277,7 @@ const ChatBubble = React.forwardRef(
       onRemove,
       editDataCy,
       removeDataCy,
-      // `recommendation` only: the glyph in its left column, an image src or a node.
+      // `recommendation` only: the left-column glyph, a single-colour SVG src (inked) or a node.
       icon,
       children,
       ...rest
@@ -312,13 +313,17 @@ const ChatBubble = React.forwardRef(
       >
         {variant === 'controlled-note' && (
           <BubbleLeftIcon aria-hidden="true">
-            <img src={images.paste} alt="" />
+            <AppIcon src={images.paste} size={18} style={{ display: 'block' }} />
           </BubbleLeftIcon>
         )}
 
         {variant === 'recommendation' && icon && (
           <BubbleIconColumn aria-hidden="true">
-            {typeof icon === 'string' ? <img src={icon} alt="" /> : icon}
+            {typeof icon === 'string' ? (
+              <AppIcon src={icon} size={24} style={{ display: 'block' }} />
+            ) : (
+              icon
+            )}
           </BubbleIconColumn>
         )}
 
@@ -337,7 +342,7 @@ const ChatBubble = React.forwardRef(
             >
               {onEdit && (
                 <AppMenuItem
-                  icon={<img src={images.edit03} alt="" style={{ width: 24, height: 24 }} />}
+                  icon={<AppIcon src={images.edit03} size={24} />}
                   onClick={onEdit}
                   data-cy={editDataCy}
                 >
@@ -347,7 +352,7 @@ const ChatBubble = React.forwardRef(
 
               {onRemove && (
                 <AppMenuItem
-                  icon={<img src={images.trash03} alt="" style={{ width: 24, height: 24 }} />}
+                  icon={<AppIcon src={images.trash03} size={24} />}
                   onClick={onRemove}
                   data-cy={removeDataCy}
                 >
@@ -367,7 +372,7 @@ const ChatBubble = React.forwardRef(
                 onClick={onEdit}
                 data-cy={editDataCy}
               >
-                <img src={images.edit03} alt="" />
+                <AppIcon src={images.edit03} size={16} style={{ display: 'block' }} />
               </ActionButton>
             )}
 
@@ -378,7 +383,7 @@ const ChatBubble = React.forwardRef(
                 onClick={onRemove}
                 data-cy={removeDataCy}
               >
-                <img src={images.xClose} alt="" />
+                <AppIcon src={images.xClose} size={16} style={{ display: 'block' }} />
               </ActionButton>
             )}
           </BubbleActions>

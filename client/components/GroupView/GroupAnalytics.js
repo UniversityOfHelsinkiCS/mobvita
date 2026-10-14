@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/material'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
@@ -46,6 +47,7 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
   />
 )
 
+// Group analytics page: summary and per-student progress views for one group.
 const GroupAnalytics = ({ role }) => {
   const intl = useIntl()
   const [content, setContent] = useState('summary')
@@ -257,7 +259,12 @@ const GroupAnalytics = ({ role }) => {
             to={`/groups/${groupRole}`}
             aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
           >
-            <img src={images.arrowLeft} alt="" />
+            <AppIcon
+              src={images.arrowLeft}
+              size={20}
+              color={colors.muted}
+              style={{ display: 'block' }}
+            />
           </Link>
           <div className="group-analytics-heading">
             <div className="header-2">{currentGroup.groupName}</div>
@@ -324,7 +331,7 @@ const GroupAnalytics = ({ role }) => {
                 data-cy="show-all-students-button"
                 sx={{ flexShrink: 0, fontSize: 16 }}
               >
-                <img src={images.users01} alt="" />
+                <AppIcon src={images.users01} size={24} />
                 <FormattedMessage id="show-all-students" />
               </AppButton>
             </div>

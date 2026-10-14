@@ -3,6 +3,7 @@ import React, { useMemo, useCallback, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import CustomTooltip from 'Components/CustomTooltip'
+import AppIcon from 'Components/ui/AppIcon'
 import { FormattedMessage } from 'react-intl'
 import { sanitizeHtml, flashcardColors, images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
@@ -18,6 +19,7 @@ const IconImg = ({ src, alt }) => (
   />
 )
 
+// One flashcard row: know/don't-know marks, lemma, word nest/edit/delete, translations below.
 const FlashcardListItem = ({ card, handleEdit, openWordNest }) => {
   const { lemma, _id, stage, lan_in, lan_out } = card
   const { background } = flashcardColors
@@ -174,29 +176,32 @@ const FlashcardListItem = ({ card, handleEdit, openWordNest }) => {
           <CustomTooltip placement="top" title={<FormattedMessage id="explain-wordnest-modal" />}>
             <span
               style={{ display: 'inline-flex', cursor: 'pointer' }}
+              aria-label="word nest"
               onClick={e => {
                 e.stopPropagation()
                 openWordNest(lemma)
               }}
             >
-              <IconImg src={images.wordnest} alt="word nest" />
+              <AppIcon src={images.wordnest} size={24} style={{ display: 'block' }} />
             </span>
           </CustomTooltip>
           <span
             style={{ display: 'inline-flex', cursor: 'pointer' }}
+            aria-label="edit"
             onClick={e => {
               e.stopPropagation()
               handleEdit(card)
             }}
           >
-            <IconImg src={images.edit} alt="edit" />
+            <AppIcon src={images.edit} size={24} style={{ display: 'block' }} />
           </span>
           <CustomTooltip placement="top" title={<FormattedMessage id="remove-card-tooltip" />}>
             <span
               style={{ display: 'inline-flex', cursor: 'pointer' }}
+              aria-label="delete"
               onClick={handleDelete}
             >
-              <IconImg src={images.trash03} alt="delete" />
+              <AppIcon src={images.trash03} size={24} style={{ display: 'block' }} />
             </span>
           </CustomTooltip>
         </div>

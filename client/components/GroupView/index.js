@@ -136,6 +136,7 @@ const GroupInfoModal = ({
   )
 }
 
+// One group's card: header with the leave/delete menu, info, and the group function buttons.
 const GroupCard = ({
   group,
   setDeleteGroupId,
@@ -268,7 +269,7 @@ const GroupCard = ({
                 <AppMenuItem
                   data-cy="leave-group"
                   onClick={() => setLeaveGroupId(id)}
-                  icon={<img src={images.logOut01} alt="" style={{ width: 22, height: 22 }} />}
+                  icon={<AppIcon src={images.logOut01} size={22} />}
                 >
                   <FormattedMessage id="leave-group" defaultMessage="Leave Group" />
                 </AppMenuItem>
@@ -276,7 +277,7 @@ const GroupCard = ({
                   <AppMenuItem
                     data-cy="delete-group"
                     onClick={() => setDeleteGroupId(id)}
-                    icon={<img src={images.trash03} alt="" style={{ width: 22, height: 22 }} />}
+                    icon={<AppIcon src={images.trash03} size={22} />}
                   >
                     <FormattedMessage id="delete-group" defaultMessage="Delete Group" />
                   </AppMenuItem>
@@ -312,6 +313,7 @@ const GroupCard = ({
   )
 }
 
+// Groups page for the current role: the group cards, or NoGroupsView when there are none.
 const GroupView = () => {
   const { groups: totalGroups, lastAddInfo, pending } = useSelector(({ groups }) => groups)
   const { role } = useParams()
@@ -425,9 +427,8 @@ const GroupView = () => {
                       <AppButton
                         data-cy={role === 'teacher' ? 'create-group-button' : 'join-group-button'}
                         size={role === 'teacher' ? 'sm' : 'lg'}
-                        sx={role === 'teacher' ? { '& img': { width: 20, height: 20 } } : undefined}
                       >
-                        {role === 'teacher' && <img src={images.plusOutline} alt="" />}
+                        {role === 'teacher' && <AppIcon src={images.plusOutline} size={20} />}
                         <FormattedMessage
                           id={role === 'teacher' ? 'create-new-group' : 'join-a-group'}
                         />

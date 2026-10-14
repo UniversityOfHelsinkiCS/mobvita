@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
 
+// Button that opens the word nest for `lemma`; owns the modal unless the caller controls it.
 const WordNestLauncher = ({
   lemma,
   wordNestModalOpen,
@@ -17,8 +19,8 @@ const WordNestLauncher = ({
   divStyle = { alignSelf: 'flex-start', marginLeft: '1em' },
   variant = 'tan-outline',
   dataCy = 'nest-button',
-  // Optional: a custom icon + label (used by the flashcard's green "Word Nest" pill). When omitted,
-  // the button keeps its default network icon so other call sites are unchanged.
+  // Optional: a custom single-colour SVG icon (painted ink) + label, used by the flashcard's green
+  // "Word Nest" pill. When omitted, the button keeps its default multi-colour network icon.
   icon = null,
   label = null,
   // Callers that only make sense once something has happened (a flashcard answered, say) pass
@@ -59,17 +61,24 @@ const WordNestLauncher = ({
               data-cy={dataCy}
               sx={{ gap: '0.45em', ...buttonStyle }}
             >
-              <img
-                src={icon || images.network}
-                alt=""
-                style={{
-                  width: icon ? 20 : 24,
-                  height: icon ? 20 : 24,
-                  // The icons are single-colour artwork with their own ink, so a filter is what
-                  // greys them; `color: inherit` would not reach an <img>.
-                  filter: disabled ? 'grayscale(1) opacity(0.45)' : 'none',
-                }}
-              />
+              {/* Same grey-out filter on both, so a disabled icon dims exactly as before. */}
+              {icon ? (
+                <AppIcon
+                  src={icon}
+                  size={20}
+                  style={{ filter: disabled ? 'grayscale(1) opacity(0.45)' : 'none' }}
+                />
+              ) : (
+                <img
+                  src={images.network}
+                  alt=""
+                  style={{
+                    width: 24,
+                    height: 24,
+                    filter: disabled ? 'grayscale(1) opacity(0.45)' : 'none',
+                  }}
+                />
+              )}
               {label}
             </AppButton>
           </span>

@@ -793,12 +793,14 @@ const DesignSystem = () => {
         <Section title="AppTooltip">
           {(() => {
             // Every demo uses the alertCircle (i-in-a-circle) icon as the trigger.
-            const iconStyle = { width: 26, height: 26, cursor: 'pointer' }
             const cell = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }
             const label = { fontSize: 12, color: '#666', textAlign: 'center' }
-            // forwardRef + prop spread so MUI Tooltip can anchor to (and drive) the icon.
+            // forwardRef + prop spread so MUI Tooltip can anchor to (and drive) the icon; the
+            // inline-flex span holds the ref AppIcon can't take and keeps the 26px box.
             const Icon = React.forwardRef((props, ref) => (
-              <img ref={ref} src={images.alertCircle} alt="info" style={iconStyle} {...props} />
+              <span ref={ref} style={{ display: 'inline-flex', cursor: 'pointer' }} {...props}>
+                <AppIcon src={images.alertCircle} size={26} />
+              </span>
             ))
 
             return (
@@ -1213,32 +1215,20 @@ const DesignSystem = () => {
         <Section title="AppMenu (click the burger)">
           <AppMenu
             trigger={
-              <img
+              <AppIcon
                 src={images.menu2}
-                alt="menu"
-                style={{ width: 24, height: 24, cursor: 'pointer', display: 'block' }}
+                size={24}
+                style={{ cursor: 'pointer', display: 'block' }}
               />
             }
-            closeIcon={<img src={images.xClose} alt="close" />}
+            closeIcon={<AppIcon src={images.xClose} size={22} style={{ display: 'block' }} />}
           >
-            <AppMenuItem
-              icon={<img src={images.helpCircle} alt="" style={{ width: 22, height: 22 }} />}
-            >
-              Help
-            </AppMenuItem>
-            <AppMenuItem
-              icon={<img src={images.asterisk02} alt="" style={{ width: 22, height: 22 }} />}
-            >
+            <AppMenuItem icon={<AppIcon src={images.helpCircle} size={22} />}>Help</AppMenuItem>
+            <AppMenuItem icon={<AppIcon src={images.asterisk02} size={22} />}>
               About Revita
             </AppMenuItem>
-            <AppMenuItem
-              icon={<img src={images.mail05} alt="" style={{ width: 22, height: 22 }} />}
-            >
-              Contact Us
-            </AppMenuItem>
-            <AppMenuItem
-              icon={<img src={images.alertCircle} alt="" style={{ width: 22, height: 22 }} />}
-            >
+            <AppMenuItem icon={<AppIcon src={images.mail05} size={22} />}>Contact Us</AppMenuItem>
+            <AppMenuItem icon={<AppIcon src={images.alertCircle} size={22} />}>
               Terms &amp; Conditions, Privacy Policy
             </AppMenuItem>
           </AppMenu>

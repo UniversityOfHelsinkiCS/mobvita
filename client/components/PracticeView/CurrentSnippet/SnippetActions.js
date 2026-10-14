@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
+import { colors } from 'Assets/mui_theme/designTokens'
 import {
   confettiRain,
   finalConfettiRain,
@@ -37,6 +39,7 @@ import {
 import { setIrtDummyScore } from 'Utilities/redux/userReducer'
 import Spinner from 'Components/Spinner'
 
+// Full-width Check Answers button; its fill bar shows how many attempts are used.
 const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   const { attempt, isNewSnippet } = useSelector(({ practice }) => practice)
   const {
@@ -101,7 +104,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
         <span
           style={{ ...getFontStyle(), display: 'inline-flex', alignItems: 'center', gap: '0.5em' }}
         >
-          <img src={images.checkIcon} alt="" style={{ width: 20, height: 20 }} />
+          <AppIcon src={images.checkIcon} size={20} />
           <FormattedMessage id="check-answer" />
         </span>
       </button>
@@ -109,6 +112,7 @@ const CheckAnswersButton = ({ handleClick, checkAnswersButtonTempDisable }) => {
   )
 }
 
+// Snippet controls under the story: Check Answers, then Next Snippet / Start Over.
 const SnippetActions = ({
   storyId,
   exerciseCount,
@@ -357,7 +361,7 @@ const SnippetActions = ({
               disabled={snippets.answersPending || snippets.pending}
               sx={{ height: 36 }}
             >
-              <img src={images.flipBackward} alt="" style={{ width: 18, height: 18 }} />
+              <AppIcon src={images.flipBackward} size={18} color={colors.folderIconStroke} />
               <FormattedMessage id="start-over" />
             </AppButton>
           )}

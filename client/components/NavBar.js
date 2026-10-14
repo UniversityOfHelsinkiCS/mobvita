@@ -4,6 +4,7 @@ import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { MenuRow } from 'Components/ui/menuRow'
+import AppIcon from 'Components/ui/AppIcon'
 import Headroom from 'react-headroom'
 import { Box } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
@@ -101,6 +102,7 @@ const getInitials = name => {
   return (letters || name.slice(0, 2)).toUpperCase()
 }
 
+// Top app bar: sidebar toggle, learning language, Elo score and the user-options menu.
 export default function NavBar() {
   const user = useSelector(({ user }) => user.data)
   const {
@@ -327,15 +329,16 @@ export default function NavBar() {
       >
         <Tour />
         <LanguageSelectDialog open={langDialogOpen} onClose={() => setLangDialogOpen(false)} />
-        <img
+        <AppIcon
           src={images.menu2}
-          alt="menu"
+          size={24}
+          role="img"
+          aria-label="menu"
+          aria-hidden={false}
           onClick={() => dispatch(sidebarSetOpen(!open))}
           className="sidebar-hamburger tour-home-sidebar"
           data-cy="hamburger"
           style={{
-            width: '24px',
-            height: '24px',
             cursor: 'pointer',
             display: 'block',
             marginLeft: '16px',
@@ -546,13 +549,13 @@ export default function NavBar() {
               }
             >
               <AppMenuItem
-                icon={<img src={images.user01} alt="" style={{ width: 22, height: 22 }} />}
+                icon={<AppIcon src={images.user01} size={22} />}
                 onClick={() => navigate('/profile/main')}
               >
                 <FormattedMessage id="your-profile" defaultMessage="Your Profile" />
               </AppMenuItem>
               <AppMenuItem
-                icon={<img src={images.bell04} alt="" style={{ width: 22, height: 22 }} />}
+                icon={<AppIcon src={images.bell04} size={22} />}
                 href={NewsWebSite}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -587,13 +590,13 @@ export default function NavBar() {
               {/* The two roles are separate pages: a teacher manages groups, a student joins one
                   with a key. Which one this opens follows the view the user is in. */}
               <AppMenuItem
-                icon={<img src={images.users01} alt="" style={{ width: 22, height: 22 }} />}
+                icon={<AppIcon src={images.users01} size={22} />}
                 onClick={() => navigate(teacherView ? '/groups/teacher' : '/groups/student')}
               >
                 <FormattedMessage id="Groups" defaultMessage="Groups" />
               </AppMenuItem>
               <AppMenuItem
-                icon={<img src={images.settings02} alt="" style={{ width: 22, height: 22 }} />}
+                icon={<AppIcon src={images.settings02} size={22} />}
                 onClick={() => navigate('/profile/settings')}
               >
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
@@ -615,17 +618,14 @@ export default function NavBar() {
                 style={{ justifyContent: 'space-between', cursor: 'default' }}
                 icon={
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                    <img src={images.brush01} alt="" style={{ width: 22, height: 22 }} />
+                    <AppIcon src={images.brush01} size={22} />
                     <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
                   </span>
                 }
               >
                 <AppSwitch checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
               </MenuRow>
-              <AppMenuItem
-                icon={<img src={images.logOut01} alt="" style={{ width: 22, height: 22 }} />}
-                onClick={signOut}
-              >
+              <AppMenuItem icon={<AppIcon src={images.logOut01} size={22} />} onClick={signOut}>
                 <FormattedMessage id="Logout" defaultMessage="Logout" />
               </AppMenuItem>
             </AppMenu>

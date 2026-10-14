@@ -19,6 +19,7 @@ import { getWordNestAction } from 'Utilities/redux/wordNestReducer'
 import CustomTooltip from 'Components/CustomTooltip'
 import Spinner from 'Components/Spinner'
 import ChatBubble from 'Components/ui/ChatBubble'
+import AppIcon from 'Components/ui/AppIcon'
 import WordNestModal from 'Components/WordNestModal'
 import { Speaker } from 'Components/DictionaryHelp/dictComponents'
 import AppLemma from 'Components/ui/AppLemma'
@@ -26,6 +27,7 @@ import 'Components/PracticeView/CombinedChatbot.scss'
 
 const glossCheckLanguage = ['English']
 
+// Chatbot dictionary panel: the clicked word's lemma cards, sentence translation and word nest.
 const WordTranslationPanel = () => {
   const dispatch = useDispatch()
   const learningLanguage = useLearningLanguage()
@@ -365,13 +367,7 @@ const WordTranslationPanel = () => {
                     data-cy="word-translation-translate-sentence-button"
                   >
                     <div className="chat-action-icon">
-                      <img
-                        src={images.translate01}
-                        alt=""
-                        width="24"
-                        height="24"
-                        style={{ display: 'block' }}
-                      />
+                      <AppIcon src={images.translate01} size={24} style={{ display: 'block' }} />
                     </div>
                     <span className="chat-action-text">
                       <FormattedMessage id="dictionaryhelp-show-context-translation" defaultMessage="Translate Sentence" />

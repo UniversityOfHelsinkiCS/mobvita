@@ -18,16 +18,16 @@ import PracticeModal from './HomeView/PracticeModal'
 import { assembleActivityLink } from 'Utilities/activityLink'
 import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { MenuRow } from 'Components/ui/menuRow'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors, shape } from 'Assets/mui_theme/designTokens'
+
+const DRAWER_WIDTH = 320
 
 /**
  * Sidebar — the left "system" menu (Revita features + info), overlay drawer styled like AppMenu.
  * User-account items (Profile, Groups, Settings, Notifications, Dark Theme, Logout) live in the
  * navbar's user-options menu instead. Rows reuse the shared `MenuRow` so they match the dropdowns.
  */
-const DRAWER_WIDTH = 320
-const imgIconStyle = { width: 22, height: 22 } // for the landing-menu SVG icons (help, about, …)
-
 export default function Sidebar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -142,12 +142,15 @@ export default function Sidebar() {
       >
         {/* Header: close + Revita wordmark */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '4px 12px 16px' }}>
-          <img
+          <AppIcon
             src={images.xClose}
-            alt="close"
+            size={22}
+            role="img"
+            aria-label="close"
+            aria-hidden={false}
             onClick={closeSidebar}
             data-cy="sidebar-close-hamburger"
-            style={{ width: 22, height: 22, cursor: 'pointer' }}
+            style={{ cursor: 'pointer' }}
           />
           <span style={{ fontSize: 24, fontWeight: 500, color: colors.ink }}>Revita</span>
         </Box>
@@ -155,7 +158,7 @@ export default function Sidebar() {
         {/* System navigation */}
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', flexGrow: 1 }}>
           <MenuRow
-            icon={<img src={images.iconHome} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.iconHome} size={22} />}
             selected={isActive('/home') || isActive('/welcome')}
             onClick={() => go('/home')}
           >
@@ -166,14 +169,14 @@ export default function Sidebar() {
             <>
               {/* Teacher view: Groups - Add new stories - Library - Lessons - Progress */}
               <MenuRow
-                icon={<img src={images.users01} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.users01} size={22} />}
                 selected={isActive('/groups')}
                 onClick={() => go('/groups/teacher')}
               >
                 <FormattedMessage id="Groups" />
               </MenuRow>
               <MenuRow
-                icon={<img src={images.starBlack} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.starBlack} size={22} />}
                 onClick={() => {
                   dispatch(openAddStoryOptions())
                   closeSidebar()
@@ -183,7 +186,7 @@ export default function Sidebar() {
               </MenuRow>
               <MenuRow
                 data-cy="sidebar-library"
-                icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.libraryBig} size={22} />}
                 selected={isActive('/library')}
                 onClick={() => go('/library')}
               >
@@ -191,7 +194,7 @@ export default function Sidebar() {
               </MenuRow>
               {canAccessLessons && (
                 <MenuRow
-                  icon={<img src={images.bookOpen} alt="" style={imgIconStyle} />}
+                  icon={<AppIcon src={images.bookOpen} size={22} />}
                   selected={isActive('/lessons')}
                   onClick={() => go('/lessons/library')}
                 >
@@ -204,14 +207,14 @@ export default function Sidebar() {
               {/* Student view: Continue - Dive In! - Library - Flashcards - Lessons - Essay */}
               {activityLink && (
                 <MenuRow
-                  icon={<img src={images.playCircle} alt="" style={imgIconStyle} />}
+                  icon={<AppIcon src={images.playCircle} size={22} />}
                   onClick={() => go(activityLink)}
                 >
                   <FormattedMessage id="continue-activity" />
                 </MenuRow>
               )}
               <MenuRow
-                icon={<img src={images.waves} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.waves} size={22} />}
                 onClick={() => {
                   setPracticeModalOpen(true)
                   closeSidebar()
@@ -221,14 +224,14 @@ export default function Sidebar() {
               </MenuRow>
               <MenuRow
                 data-cy="sidebar-library"
-                icon={<img src={images.libraryBig} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.libraryBig} size={22} />}
                 selected={isActive('/library')}
                 onClick={() => go('/library')}
               >
                 <FormattedMessage id="Library" />
               </MenuRow>
               <MenuRow
-                icon={<img src={images.cardsIcon} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.cardsIcon} size={22} />}
                 selected={isActive('/flashcards')}
                 onClick={() => go('/flashcards/fillin')}
               >
@@ -236,7 +239,7 @@ export default function Sidebar() {
               </MenuRow>
               {canAccessLessons && (
                 <MenuRow
-                  icon={<img src={images.bookOpen} alt="" style={imgIconStyle} />}
+                  icon={<AppIcon src={images.bookOpen} size={22} />}
                   selected={isActive('/lessons')}
                   onClick={() => go('/lessons/library')}
                 >
@@ -246,14 +249,14 @@ export default function Sidebar() {
               {hiddenFeatures && (
                 <>
                   <MenuRow
-                    icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
+                    icon={<AppIcon src={images.edit03} size={22} />}
                     selected={isActive('/essay-writing')}
                     onClick={() => go('/essay-writing')}
                   >
                     <FormattedMessage id="essay-writing" />
                   </MenuRow>
                   <MenuRow
-                    icon={<img src={images.edit03} alt="" style={imgIconStyle} />}
+                    icon={<AppIcon src={images.edit03} size={22} />}
                     selected={isActive('/writing-clinic')}
                     onClick={() => go('/writing-clinic')}
                   >
@@ -267,7 +270,7 @@ export default function Sidebar() {
           {/* Quick test is student-only; Progress closes both menus. */}
           {!inTeacherView && hasAdaptiveTests && (
             <MenuRow
-              icon={<img src={images.trophy01} alt="" style={imgIconStyle} />}
+              icon={<AppIcon src={images.trophy01} size={22} />}
               selected={isActive('/adaptive-test')}
               onClick={() => go('/adaptive-test')}
             >
@@ -275,7 +278,7 @@ export default function Sidebar() {
             </MenuRow>
           )}
           <MenuRow
-            icon={<img src={images.rocket} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.rocket} size={22} />}
             selected={isActive('/profile/progress')}
             onClick={() => go('/profile/progress')}
           >
@@ -284,19 +287,19 @@ export default function Sidebar() {
           {hiddenFeatures && (
             <>
               <MenuRow
-                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.fileCheck03} size={22} />}
                 onClick={() => go('/test-construction')}
               >
                 Grammar check
               </MenuRow>
               <MenuRow
-                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.fileCheck03} size={22} />}
                 onClick={() => go('/test-debug')}
               >
                 Feedback check
               </MenuRow>
               <MenuRow
-                icon={<img src={images.fileCheck03} alt="" style={imgIconStyle} />}
+                icon={<AppIcon src={images.fileCheck03} size={22} />}
                 onClick={() => go('/correction-debug')}
               >
                 Correction check
@@ -308,7 +311,7 @@ export default function Sidebar() {
 
           <MenuRow
             className="tour-home-help"
-            icon={<img src={images.helpCircle} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.helpCircle} size={22} />}
             href={helpLink}
             target="_blank"
             rel="noopener noreferrer"
@@ -319,13 +322,13 @@ export default function Sidebar() {
           <MenuRow
             className="tour-shared-end tour-home-begin-practicing"
             data-cy="sidebar-start-tour"
-            icon={<img src={images.route} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.route} size={22} />}
             onClick={handleTourStart}
           >
             <FormattedMessage id="start-tour" />
           </MenuRow>
           <MenuRow
-            icon={<img src={images.asterisk02} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.asterisk02} size={22} />}
             href="https://revitaai.github.io/"
             target="_blank"
             rel="noopener noreferrer"
@@ -335,7 +338,7 @@ export default function Sidebar() {
             <FormattedMessage id="about" />
           </MenuRow>
           <MenuRow
-            icon={<img src={images.mail05} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.mail05} size={22} />}
             data-cy="navbar-tc-button"
             onClick={() => {
               setContactUsOpen(true)
@@ -345,7 +348,7 @@ export default function Sidebar() {
             <FormattedMessage id="contact-us" />
           </MenuRow>
           <MenuRow
-            icon={<img src={images.activityHeart} alt="" style={imgIconStyle} />}
+            icon={<AppIcon src={images.activityHeart} size={22} />}
             href="https://revitaai.github.io/SERVER-STATUS.html"
             target="_blank"
             rel="noopener noreferrer"

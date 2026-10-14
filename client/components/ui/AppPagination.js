@@ -2,6 +2,7 @@ import React from 'react'
 import { styled } from '@mui/material/styles'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 import { images } from 'Utilities/common'
+import AppIcon from './AppIcon'
 
 /**
  * AppPagination — the 2026 numbered pagination: round page "coins" between first/previous and
@@ -103,6 +104,7 @@ const gapTarget = (gap, page, count) => {
   return Math.min(count, Math.max(1, half))
 }
 
+// Numbered pagination row: step buttons around a windowed run of page coins.
 const AppPagination = ({ page, count, onChange }) => {
   if (!count || count <= 1) return null
 
@@ -149,11 +151,7 @@ const AppPagination = ({ page, count, onChange }) => {
             aria-label={`Jump to page ${gapTarget(item, page, count)}`}
             onClick={() => onChange(gapTarget(item, page, count))}
           >
-            <img
-              src={images.threeDotsHorizontal}
-              alt=""
-              style={{ width: SIZE, height: SIZE, display: 'block' }}
-            />
+            <AppIcon src={images.threeDotsHorizontal} size={SIZE} style={{ display: 'block' }} />
           </Coin>
         ) : (
           <Coin

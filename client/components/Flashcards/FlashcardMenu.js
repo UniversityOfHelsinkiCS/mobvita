@@ -8,7 +8,8 @@ import AppIcon from 'Components/ui/AppIcon'
 import { images } from 'Utilities/common'
 import { TERMINOLOGY, TERMINOLOGY_EXCLUDED_MODES, flashcardModePath } from './terminology'
 
-const tabIcon = src => <img src={src} alt="" style={{ width: 18, height: 18 }} />
+// Practice-mode tab icon at 18px.
+const tabIcon = src => <AppIcon src={src} size={18} />
 
 // The desktop practice-mode bar: one tab per flashcard exercise; terminology drops translate cards.
 const PracticeModeOptions = ({ handleOptionClick, mode, inTerminology }) => {

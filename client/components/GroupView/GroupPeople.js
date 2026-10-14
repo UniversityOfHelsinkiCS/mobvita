@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import AppButton from 'Components/AppButton'
 import AppTable from 'Components/ui/AppTable'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
 import NoGroupsView from './NoGroupsView'
@@ -25,6 +26,7 @@ import { images } from 'Utilities/common'
 
 const ADD_GREEN = '#2E9E6E'
 
+// Group people page: teacher and student lists with add/remove controls.
 const GroupPeople = ({ role }) => {
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const dispatch = useDispatch()
@@ -91,7 +93,7 @@ const GroupPeople = ({ role }) => {
             to={`/groups/${groupRole}`}
             aria-label={intl.formatMessage({ id: 'groups', defaultMessage: 'Back to groups' })}
           >
-            <img src={images.arrowLeft} alt="" />
+            <AppIcon src={images.arrowLeft} size={22} color={colors.muted} />
           </Link>
           <div className="header-2">{currentGroup.groupName}</div>
           <p style={{ paddingLeft: '0.2rem', fontStyle: 'italic' }}>{currentGroup?.description}</p>

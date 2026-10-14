@@ -2,6 +2,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import CustomTooltip from 'Components/CustomTooltip'
+import AppIcon from './AppIcon'
 import { images } from 'Utilities/common'
 import { colors, font } from 'Assets/mui_theme/designTokens'
 
@@ -39,6 +40,7 @@ const IconButton = ({ src, label, onClick, tooltip }) =>
     tooltip,
   )
 
+// Action pill (link or button) with a single-colour SVG `icon`, painted ink.
 const Pill = ({ icon, children, onClick, href, bg, tooltip }) => {
   const style = {
     display: 'inline-flex',
@@ -61,7 +63,7 @@ const Pill = ({ icon, children, onClick, href, bg, tooltip }) => {
   }
   const inner = (
     <>
-      <img src={icon} alt="" style={{ width: 15, height: 15, display: 'block' }} />
+      <AppIcon src={icon} size={15} style={{ display: 'block' }} />
       <span>{children}</span>
     </>
   )

@@ -91,6 +91,7 @@ const ShareInfoPopupContent = ({ infoObj }) => {
   )
 }
 
+// Group icon whose tooltip lists the groups the story is shared with; the span anchors the tooltip.
 const GroupsSharedTo = ({ groups }) => {
   return (
     <CustomTooltip
@@ -106,7 +107,9 @@ const GroupsSharedTo = ({ groups }) => {
         </Box>
       }
     >
-      <img src={images.group} alt="" className="library-story-card-meta-icon" />
+      <span className="library-story-card-meta-icon">
+        <AppIcon src={images.group} size={20} color={colors.muted} />
+      </span>
     </CustomTooltip>
   )
 }
@@ -290,32 +293,38 @@ const StoryCard = ({
                 )}
                 {isControlledStory && (
                   <CustomTooltip title={<FormattedMessage id="control-story" />}>
-                    <img
-                      src={images.screwdriverAndWrench}
-                      alt=""
-                      className="library-story-card-meta-icon"
-                    />
+                    <span className="library-story-card-meta-icon">
+                      <AppIcon src={images.screwdriverAndWrench} size={20} color={colors.muted} />
+                    </span>
                   </CustomTooltip>
                 )}
                 {showGroupNames && <GroupsSharedTo groups={story.groups} />}
                 {commentsOnStory && (
                   <CustomTooltip title={<FormattedMessage id="comments-on-story-explanation" />}>
-                    <img src={images.note} alt="" className="library-story-card-meta-icon" />
+                    <span className="library-story-card-meta-icon">
+                      <AppIcon src={images.note} size={20} color={colors.muted} />
+                    </span>
                   </CustomTooltip>
                 )}
                 {libraryShown.group && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={storyGroupShareInfo} />}>
-                    <img src={images.envelope} alt="" className="library-story-card-meta-icon" />
+                    <span className="library-story-card-meta-icon">
+                      <AppIcon src={images.envelope} size={20} color={colors.muted} />
+                    </span>
                   </CustomTooltip>
                 )}
                 {!libraryShown.group && story?.sharedwith?.includes(userId) && !story?.public && (
                   <CustomTooltip title={<ShareInfoPopupContent infoObj={story.sharing_info} />}>
-                    <img src={images.envelope} alt="" className="library-story-card-meta-icon" />
+                    <span className="library-story-card-meta-icon">
+                      <AppIcon src={images.envelope} size={20} color={colors.muted} />
+                    </span>
                   </CustomTooltip>
                 )}
                 {story?.has_questions && (
                   <CustomTooltip title={<FormattedMessage id="story-card-has-rc-questions" />}>
-                    <img src={images.openBook} alt="" className="library-story-card-meta-icon" />
+                    <span className="library-story-card-meta-icon">
+                      <AppIcon src={images.openBook} size={20} color={colors.muted} />
+                    </span>
                   </CustomTooltip>
                 )}
                 {hasDifficultyLevel(story.difficulty) && (

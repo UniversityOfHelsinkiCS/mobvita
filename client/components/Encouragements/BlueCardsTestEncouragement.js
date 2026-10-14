@@ -2,6 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import { dictionaryLanguageSelector, images, showAllEncouragements } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
 import AppButton from 'Components/AppButton'
+import AppIcon from 'Components/ui/AppIcon'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
@@ -9,11 +10,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import './Encouragements.css'
 
-/**
- * `layout` picks the surface it is drawn for:
- *   'dialog' (default) - the centred modal: large art, fixed height, side-by-side buttons
- *   'chat'             - inside an assistant bubble: no frame of its own, narrow-column sizing
- */
+// Blue-cards test prompt. `layout` 'dialog' (default) is the centred modal with large art;
+// 'chat' draws only title, message and start button inside an assistant bubble.
 const BlueCardsTestEncouragement = ({
   setShow,
   storyId,
@@ -122,10 +120,11 @@ const BlueCardsTestEncouragement = ({
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
-        <img
+        {/* The 30% caps mirror `.encouragement-container img`, which skips this span. */}
+        <AppIcon
           src={images.cardsIcon}
-          alt="flashcards"
-          style={{ width: 64, height: 64, marginBottom: 24 }}
+          size={64}
+          style={{ maxWidth: '30%', maxHeight: '30%', marginBottom: 24 }}
         />
         <h2>{title}</h2>
         <h5>{message}</h5>

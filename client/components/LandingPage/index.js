@@ -10,11 +10,10 @@ import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { setLocale } from 'Utilities/redux/localeReducer'
 import ContactUs from '../StaticContent/ContactUs'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
+import AppIcon from 'Components/ui/AppIcon'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
 const BRAND_TAGLINE_ID = 'Revita: for language learning and supporting endangered languages'
-
-const menuIconStyle = { width: '22px', height: '22px' }
 
 const LANG_BUTTON_STYLE = {
   backgroundColor: colors.green,
@@ -31,6 +30,7 @@ const LANG_BUTTON_STYLE = {
   marginLeft: '40px',
 }
 
+// Signed-out landing: info menu, UI-language switcher, brand panel and login/register card.
 const LandingPage = () => {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -110,25 +110,26 @@ const LandingPage = () => {
           // Nudge the panel in px: +marginTop moves down, +marginLeft moves right (negatives = up/left)
           slotProps={{ paper: { sx: { marginTop: '-10px', marginLeft: '-30px' } } }}
           trigger={
-            <img
+            <AppIcon
               src={images.menu2}
-              alt="menu"
+              size={24}
+              role="img"
+              aria-label="menu"
+              aria-hidden={false}
               style={{
-                width: '24px',
-                height: '24px',
                 cursor: 'pointer',
                 display: 'block',
                 marginLeft: '16px',
               }}
             />
           }
-          closeIcon={<img src={images.xClose} alt="close" />}
+          closeIcon={<AppIcon src={images.xClose} size={22} style={{ display: 'block' }} />}
         >
           <AppMenuItem
             href="https://drive.google.com/drive/folders/1vnfFfUd4UCBkbli25krwcKwxExDjWOeY"
             target="_blank"
             rel="noopener noreferrer"
-            icon={<img src={images.helpCircle} alt="" style={menuIconStyle} />}
+            icon={<AppIcon src={images.helpCircle} size={22} />}
           >
             <FormattedMessage id="help" />
           </AppMenuItem>
@@ -137,13 +138,13 @@ const LandingPage = () => {
             href="https://revitaai.github.io/"
             target="_blank"
             rel="noopener noreferrer"
-            icon={<img src={images.asterisk02} alt="" style={menuIconStyle} />}
+            icon={<AppIcon src={images.asterisk02} size={22} />}
           >
             <FormattedMessage id="about-revita" />
           </AppMenuItem>
 
           <AppMenuItem
-            icon={<img src={images.mail05} alt="" style={menuIconStyle} />}
+            icon={<AppIcon src={images.mail05} size={22} />}
             onClick={() => setContactOpen(true)}
           >
             <FormattedMessage id="contact-us" />
@@ -151,7 +152,7 @@ const LandingPage = () => {
 
           <AppMenuItem
             data-cy="navbar-tc-button"
-            icon={<img src={images.alertCircle} alt="" style={menuIconStyle} />}
+            icon={<AppIcon src={images.alertCircle} size={22} />}
             onClick={() => setTermsOpen(true)}
           >
             <span>
@@ -164,7 +165,7 @@ const LandingPage = () => {
             href="https://revitaai.github.io/SERVER-STATUS.html"
             target="_blank"
             rel="noopener noreferrer"
-            icon={<img src={images.activityHeart} alt="" style={menuIconStyle} />}
+            icon={<AppIcon src={images.activityHeart} size={22} />}
           >
             <FormattedMessage id="server-status" />
           </AppMenuItem>
@@ -265,10 +266,10 @@ const LandingPage = () => {
                   color: colors.ink,
                 }}
               >
-                <img
+                {/* 40px tall at the logo's 73:68 artwork ratio */}
+                <AppIcon
                   src={images.universityOfHelsinki}
-                  alt="University of Helsinki"
-                  style={{ height: '40px', display: 'block' }}
+                  style={{ width: (40 * 73) / 68, height: 40, display: 'block' }}
                 />
                 <div style={{ lineHeight: 1.4 }}>
                   © 2020–{new Date().getFullYear()}

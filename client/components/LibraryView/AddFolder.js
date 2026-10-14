@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
+import AppIcon from 'Components/ui/AppIcon'
 import AppTextField from 'Components/ui/AppTextField'
 import {
   dialogActionsSx,
@@ -54,7 +55,7 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
         onClick={openDialog}
         data-cy="add-folder-button"
       >
-        <img src={images.folderPlus} alt="" />
+        <AppIcon src={images.folderPlus} size={24} />
         {intl.formatMessage({ id: 'add-folder' })}
       </AppButton>
 
