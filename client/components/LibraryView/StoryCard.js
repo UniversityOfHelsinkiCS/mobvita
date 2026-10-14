@@ -145,7 +145,6 @@ const StoryCard = ({
     uploadUnfinished || (isUnderProcessingDescription && !processingDescription)
   const showProcessingLabel = shouldPollForLiveDescription && !processingDescription
   const description = processingDescription || story.description
-  const timedExercise = story?.timed_exercise
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
   const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
@@ -289,9 +288,13 @@ const StoryCard = ({
                     <VisibilityOffIcon color="error" fontSize="small" />
                   </CustomTooltip>
                 )}
-                {timedExercise && (
-                  <CustomTooltip title={<FormattedMessage id="timed-practice-explanation" />}>
-                    <img src={images.clock} alt="" className="library-story-card-meta-icon" />
+                {isControlledStory && (
+                  <CustomTooltip title={<FormattedMessage id="control-story" />}>
+                    <img
+                      src={images.screwdriverAndWrench}
+                      alt=""
+                      className="library-story-card-meta-icon"
+                    />
                   </CustomTooltip>
                 )}
                 {showGroupNames && <GroupsSharedTo groups={story.groups} />}

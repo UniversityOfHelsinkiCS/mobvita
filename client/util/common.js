@@ -89,7 +89,7 @@ import playCircle from 'Assets/images/play-circle.svg'
 import arrowLeft from 'Assets/images/arrow-left.svg'
 import arrowRight from 'Assets/images/arrow-right.svg'
 import checkCircle from 'Assets/images/check-circle.svg'
-import clock from 'Assets/images/clock.svg'
+import screwdriverAndWrench from 'Assets/images/screwdriver-and-wrench.svg'
 import note from 'Assets/images/note.svg'
 import group from 'Assets/images/group.svg'
 import envelope from 'Assets/images/envelope.svg'
@@ -311,7 +311,7 @@ export const images = {
   arrowRight,
   checkCircle,
   checkIcon,
-  clock,
+  screwdriverAndWrench,
   note,
   group,
   envelope,

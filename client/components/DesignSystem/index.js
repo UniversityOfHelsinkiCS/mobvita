@@ -299,7 +299,7 @@ const DesignSystem = () => {
               'arrowLeft',
               'arrowRight',
               'checkCircle',
-              'clock',
+              'screwdriverAndWrench',
               'note',
               'group',
               'envelope',
