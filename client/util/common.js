@@ -35,11 +35,8 @@ import bell04 from 'Assets/images/bell-04.svg'
 import brush01 from 'Assets/images/brush-01.svg'
 import logOut01 from 'Assets/images/log-out-01.svg'
 import settings02 from 'Assets/images/settings-02.svg'
-import chevron from 'Assets/images/chevron.svg'
 import chevronCircleColor from 'Assets/images/chevron-circle-color.svg'
 import chevronCircleColorDouble from 'Assets/images/chevron-circle-color-double.svg'
-import chevronCircleGray from 'Assets/images/chevron-circle-gray.svg'
-import chevronCircleGrayDouble from 'Assets/images/chevron-circle-gray-double.svg'
 import threeDotsHorizontal from 'Assets/images/three-dots-horizontal.svg'
 import user01 from 'Assets/images/user-01.svg'
 import users01 from 'Assets/images/users-01.svg'
@@ -143,33 +140,14 @@ import flagSyriac from 'Assets/images/flags/Aramaic.svg'
 import flagChinese from 'Assets/images/flags/CHINA.svg'
 import flagEnglish from 'Assets/images/flags/UNITED-KINGDOM.svg'
 // ---
-import culture1 from 'Assets/images/culture.png'
-import politics1 from 'Assets/images/politics.png'
-import science1 from 'Assets/images/science.png'
-import sport1 from 'Assets/images/sport.png'
 import flashcards from 'Assets/images/flashcards.png'
 import library from 'Assets/images/library.png'
-import public1 from 'Assets/images/public.png'
-import group1 from 'Assets/images/group.png'
-import private1 from 'Assets/images/private.png'
-import dices from 'Assets/images/dices.png'
-import diveIn from 'Assets/images/diveIn.png'
-import addStoriesIcon from 'Assets/images/add-orange.png'
 
 import practice from 'Assets/images/practice.png'
-import adaptiveTest from 'Assets/images/adaptive_test.png'
-import exhaustiveTest from 'Assets/images/exhaustive_test.png'
 import help from 'Assets/images/help.png'
-import settingsIcon from 'Assets/images/settings_icon.png'
-import bellIcon from 'Assets/images/bell_icon.png'
-import notesIcon from 'Assets/images/notes.png'
-import lightbulbIcon from 'Assets/images/light-bulb.png'
 // ---
-import addStory from 'Assets/images/add_story.jpg'
 import tests from 'Assets/images/tests.jpg'
 import testsColored from 'Assets/images/tests.svg'
-import logo from 'Assets/images/logo_transparent.png'
-import navbarLogo from 'Assets/images/logo_navbar_transparent.png'
 import flashcardIcon from 'Assets/images/flashcard_icon.png'
 import bronzeMedal from 'Assets/images/medals/bronze_medal.png'
 import silverMedal from 'Assets/images/medals/silver_medal.png'
@@ -180,27 +158,20 @@ import unlockedMedal from 'Assets/images/medals/unlocked_medal.png'
 import firstMedal from 'Assets/images/medals/first_medal.svg'
 import secondMedal from 'Assets/images/medals/second_medal.svg'
 import thirdMedal from 'Assets/images/medals/third_medal.svg'
-import wreadth from 'Assets/images/wreadth.png'
-import fancyWreadth from 'Assets/images/fancy_wreadth.png'
 import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
-import nestIcon from 'Assets/images/nest.png'
 import balloons from 'Assets/images/balloons.png'
 import fireworks from 'Assets/images/fireworks.png'
 import encTrophy from 'Assets/images/enc_trophy.png'
-import racingFlag from 'Assets/images/racing_flag.png'
 import direction from 'Assets/images/direction.png'
 import exclamationMark from 'Assets/images/exclamation.png'
 import magnifyingGlass from 'Assets/images/glass.png'
 import beeHive from 'Assets/images/bee_hive.png'
 import barChart from 'Assets/images/bar_chart.png'
 import readingBook from 'Assets/images/reading-book.png'
-import flameIcon from 'Assets/images/flame_icon.png'
 import flame from 'Assets/images/flame.png'
 import flameColorless from 'Assets/images/flame_colorless.png'
 import greenArrow from 'Assets/images/green_arrow.png'
-import heartbeat from 'Assets/images/heartbeat.png'
-import uhLogo from 'Assets/images/uh_logo.png'
 import network from 'Assets/images/network.svg'
 import external from 'Assets/images/external.svg'
 import sequre from 'Assets/images/sequre.svg'
@@ -256,11 +227,8 @@ export const images = {
   brush01,
   logOut01,
   settings02,
-  chevron,
   chevronCircleColor,
   chevronCircleColorDouble,
-  chevronCircleGray,
-  chevronCircleGrayDouble,
   threeDotsHorizontal,
   user01,
   users01,
@@ -365,10 +333,6 @@ export const images = {
   flagEnglish,
   tests,
   testsColored,
-  addStory,
-  addStoriesIcon,
-  logo,
-  navbarLogo,
   flashcardIcon,
   bronzeMedal,
   silverMedal,
@@ -379,35 +343,16 @@ export const images = {
   firstMedal,
   secondMedal,
   thirdMedal,
-  wreadth,
-  fancyWreadth,
   trophy,
   leaderboard,
-  dices, // practice now modal ->
-  diveIn, // new practice now modal -> dive in modal
-  public1,
-  private1,
-  group1,
-  culture1,
-  politics1,
-  science1,
-  sport1,
   practice, // homeview -->
   flashcards,
   library,
-  adaptiveTest,
-  exhaustiveTest,
   help,
   // icons -->
-  bellIcon,
-  settingsIcon,
-  nestIcon,
-  lightbulbIcon,
   balloons,
   fireworks,
-  notesIcon,
   encTrophy,
-  racingFlag,
   direction,
   exclamationMark,
   magnifyingGlass,
@@ -416,10 +361,7 @@ export const images = {
   readingBook,
   flame,
   flameColorless,
-  flameIcon,
   greenArrow,
-  heartbeat,
-  uhLogo,
   network,
   external,
   sequre,
