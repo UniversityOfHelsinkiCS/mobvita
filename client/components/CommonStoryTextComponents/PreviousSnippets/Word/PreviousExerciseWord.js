@@ -14,7 +14,11 @@ import {
   useMTAvailableLanguage,
   learningLanguageLocaleCodes
 } from 'Utilities/common'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import {
+  getTranslationAction,
+  getMweTranslationAction,
+  setWords,
+} from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   setFocusedSpan,
@@ -101,6 +105,17 @@ const PreviousExerciseWord = ({ word, answer, tiedAnswer, focusedConcept, snippe
             inflectionRef,
             prefLemma })
         )
+        if (typeof word.mwe === 'string' && word.mwe) {
+          dispatch(
+            getMweTranslationAction({
+              mwe: word.mwe,
+              learningLanguage,
+              dictionaryLanguage,
+              storyId,
+              wordId,
+            })
+          )
+        }
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(

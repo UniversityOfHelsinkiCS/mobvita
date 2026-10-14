@@ -150,6 +150,22 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
   )
 }
 
+// Translation of the multi-word expression the clicked word belongs to. Shown in addition to the
+// single-word dictionary cards, and only once the BE returned glosses for it.
+const MweTranslation = ({ mwe }) => {
+  if (!mwe?.expression) return null
+  if (mwe.pending) return <ChatSpinner padding="6px" />
+  if (!mwe.glosses?.length) return null
+  return (
+    <ChatBubble variant="note" data-cy="chatbot-mwe-translation">
+      <div>
+        <b>{mwe.expression}</b>
+        <div>{mwe.glosses.join('; ')}</div>
+      </div>
+    </ChatBubble>
+  )
+}
+
 const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
   if (!notes.length && !busy) return null
   return (
@@ -1610,6 +1626,7 @@ const CombinedChatbot = ({
                 )}
               </div>
               <div className="chatbot-messages-container">
+                <MweTranslation mwe={translationState.mwe} />
                 <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />
                 <UserNotes
                   notes={wordNotesList}
