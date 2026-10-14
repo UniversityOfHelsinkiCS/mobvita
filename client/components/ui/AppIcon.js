@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { colors } from 'Assets/mui_theme/designTokens'
 
@@ -15,15 +14,17 @@ import { colors } from 'Assets/mui_theme/designTokens'
  *   color – any CSS colour; defaults to the ink token
  *
  * Only for single-colour icons: a mask keeps the alpha and discards the artwork's own colours.
+ * Forwards its ref, so a Tooltip can anchor to the icon directly.
  */
-const AppIcon = ({ src, size = 24, color = colors.ink, style, ...rest }) => {
+const AppIcon = React.forwardRef(({ src, size = 24, color = colors.ink, style, ...rest }, ref) => {
   // The URL must be quoted: Vite inlines small SVGs as `data:image/svg+xml,...` containing literal
-  // `'` characters, and a quote inside an unquoted url() is invalid CSS — the browser then drops the
-  // whole mask declaration and the bare background colour shows as a solid block.
+  // `'` characters, and a quote inside an unquoted url() is invalid CSS — the browser then drops
+  // the whole mask declaration and the bare background colour shows as a solid block.
   const mask = `url("${src}") center / contain no-repeat`
 
   return (
     <span
+      ref={ref}
       aria-hidden
       style={{
         display: 'inline-block',
@@ -38,6 +39,8 @@ const AppIcon = ({ src, size = 24, color = colors.ink, style, ...rest }) => {
       {...rest}
     />
   )
-}
+})
+
+AppIcon.displayName = 'AppIcon'
 
 export default AppIcon

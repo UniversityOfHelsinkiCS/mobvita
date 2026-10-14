@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react'
 import { images } from 'Utilities/common'
+import AppIcon from 'Components/ui/AppIcon'
+import { colors } from 'Assets/mui_theme/designTokens'
 
 /**
  * DifficultyLevel — story difficulty as a single level icon.
@@ -30,19 +32,19 @@ export const difficultyLevelName = difficulty => LEVELS[difficulty] || null
 // wrapper is still a flex item and would eat the icon row's gap.
 export const hasDifficultyLevel = difficulty => Boolean(LEVELS[difficulty])
 
-// forwardRef so it can sit directly inside a Tooltip/Popper: MUI hands the ref to the component,
-// not to the element it returns, and a plain function component would drop it.
+// The level icon in muted ink; forwards its ref so it can sit directly inside a Tooltip.
 const DifficultyLevel = forwardRef(({ difficulty, size = 20, style, ...props }, ref) => {
   const level = LEVELS[difficulty]
   if (!level) return null
 
   return (
-    <img
+    <AppIcon
       ref={ref}
       src={LEVEL_ICONS[level]}
-      alt=""
+      size={size}
+      color={colors.muted}
       data-cy={`difficulty-level-${level}`}
-      style={{ width: size, height: size, flexShrink: 0, objectFit: 'contain', ...style }}
+      style={style}
       {...props}
     />
   )

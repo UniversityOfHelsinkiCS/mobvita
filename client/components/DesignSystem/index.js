@@ -795,12 +795,15 @@ const DesignSystem = () => {
             // Every demo uses the alertCircle (i-in-a-circle) icon as the trigger.
             const cell = { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }
             const label = { fontSize: 12, color: '#666', textAlign: 'center' }
-            // forwardRef + prop spread so MUI Tooltip can anchor to (and drive) the icon; the
-            // inline-flex span holds the ref AppIcon can't take and keeps the 26px box.
+            // forwardRef + prop spread so MUI Tooltip can anchor to (and drive) the icon.
             const Icon = React.forwardRef((props, ref) => (
-              <span ref={ref} style={{ display: 'inline-flex', cursor: 'pointer' }} {...props}>
-                <AppIcon src={images.alertCircle} size={26} />
-              </span>
+              <AppIcon
+                ref={ref}
+                src={images.alertCircle}
+                size={26}
+                style={{ cursor: 'pointer' }}
+                {...props}
+              />
             ))
 
             return (

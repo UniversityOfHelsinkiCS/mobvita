@@ -21,7 +21,6 @@ const Footer = () => {
           className="footer-item"
           style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
         >
-          {/* 36px tall at the logo's 73:68 artwork ratio */}
           <AppIcon
             src={images.universityOfHelsinki}
             style={{ width: (36 * 73) / 68, height: 36 }}
