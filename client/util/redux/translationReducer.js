@@ -99,14 +99,29 @@ export const setWords = ({ surface, lemmas, clue, maskSymbol, snippet_id, senten
   }
 }
 
-const initialMwe = { expression: null, glosses: [], pending: false, error: false }
+// `stage` is set locally by know / don't know (SET_TRANSLATION_STAGE); /mwe itself returns none.
+const initialMwe = {
+  expression: null,
+  glosses: [],
+  langLearn: null,
+  langTarget: null,
+  stage: undefined,
+  pending: false,
+  error: false,
+}
 
 export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, action) => {
   switch (action.type) {
     case 'GET_MWE_TRANSLATION_ATTEMPT':
       return {
         ...state,
-        mwe: { ...initialMwe, expression: action.requestSettings.query.MWE, pending: true },
+        mwe: {
+          ...initialMwe,
+          expression: action.requestSettings.query.MWE,
+          langLearn: action.requestSettings.query.lang_learn,
+          langTarget: action.requestSettings.query.lang_target,
+          pending: true,
+        },
       }
     case 'GET_MWE_TRANSLATION_SUCCESS':
       // A later click may have moved on to another expression (or a word without one).
@@ -210,6 +225,12 @@ export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, 
             translated.language_in !== action.lang_learn || 
             translated.language_out !== action.lang_target)
           && translated || { ...translated, stage: action.stage, is_new_word: false }),
+        mwe:
+          state.mwe?.expression === action.lemma &&
+          state.mwe.langLearn === action.lang_learn &&
+          state.mwe.langTarget === action.lang_target
+            ? { ...state.mwe, stage: action.stage }
+            : state.mwe,
       }
     }
 
