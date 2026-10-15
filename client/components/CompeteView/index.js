@@ -18,7 +18,6 @@ import { clearContextTranslation } from 'Utilities/redux/contextTranslationReduc
 import { setTouchedIds, setAnswers, clearPractice } from 'Utilities/redux/practiceReducer'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
 
-import ReportButton from 'Components/ReportButton'
 import { keyboardLayouts } from 'Components/PracticeView/KeyboardLayouts'
 import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
 import PreviousSnippets from 'Components/CompeteView/PreviousSnippets'
@@ -184,15 +183,6 @@ const CompeteView = ({ match }) => {
           {showVirtualKeyboard && (
             <div>
               <VirtualKeyboard />
-            </div>
-          )}
-          {width >= 500 ? (
-            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
-              <ReportButton />
-            </div>
-          ) : (
-            <div style={{ marginBottom: '0.5em' }}>
-              <ReportButton />
             </div>
           )}
         </div>

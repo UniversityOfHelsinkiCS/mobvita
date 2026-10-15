@@ -21,7 +21,6 @@ import Spinner from 'Components/Spinner'
 import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
 import ExhaustiveTest from './ExhaustiveTest'
 import TestReport from './TestReport'
@@ -275,7 +274,6 @@ const ExhaustiveTestView = () => {
           activity="exhaustive-test"
           onBackClick={() => dispatch(resetTests())}
         />
-        <ReportButton extraClass="align-self-end mb-sm" />
       </div>
     </div>
   )

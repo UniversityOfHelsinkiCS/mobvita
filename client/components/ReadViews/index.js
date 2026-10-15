@@ -55,7 +55,6 @@ import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
-import ReportButton from 'Components/ReportButton'
 import StoryInfoButton from 'Components/StoryInfoButton'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ScrollArrow from '../ScrollArrow'
@@ -640,15 +639,6 @@ const ReadViews = ({ match }) => {
             )}
             <ScrollArrow />
           </Box>
-          {width >= 500 ? (
-            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
-              <ReportButton />
-            </div>
-          ) : (
-            <div style={{ marginBottom: '0.5em' }}>
-              <ReportButton />
-            </div>
-          )}
         </div>
         {/* Both the topics control and the assistant are high-access, so the panel would be empty
             without them — and an empty sidebar still shows its toggle. */}

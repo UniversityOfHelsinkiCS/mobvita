@@ -2018,5 +2018,15 @@
     "flashcards-reversed-cards-EXPLANATION": "Обратные карточки: прочитай описание и введи термин, который они определяют.",
     "flashcards-match-cards-EXPLANATION": "Сочетание: соотнеси каждый термин с его описанием.",
     "Terminology": "Терминология",
-    "this-text-is-too-short-minimum-200-characters": "Текст слишком короткий. Минимум: 200 букв."
+    "this-text-is-too-short-minimum-200-characters": "Текст слишком короткий. Минимум: 200 букв.",
+    "feedback-and-suggestions": "Feedback and Suggestions",
+    "feedback-intro": "We would love to hear your thoughts",
+    "feedback-option-contact": "I’d like to contact you",
+    "feedback-option-bug": "I found a bug",
+    "feedback-option-suggestion": "I have a suggestion",
+    "feedback-describe-contact": "Write your message",
+    "feedback-describe-bug": "Describe the bug",
+    "feedback-describe-suggestion": "Describe your suggestion",
+    "write-here": "Write here",
+    "send-feedback": "Send Feedback"
 }

@@ -13,7 +13,6 @@ import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/word
 import { dictionaryLanguageSelector, learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { FormattedMessage, useIntl } from 'react-intl';
-import ReportButton from 'Components/ReportButton'
 import CustomTooltip from 'Components/CustomTooltip'
 import AdditionalInfoToggle from './AdditionalInfoToggle'
 import { autoSpeakOn } from 'Utilities/practiceSpeech'
@@ -374,9 +373,6 @@ const WordNestModal = ({
             }}
           >
             <DictionaryHelp inWordNestModal />
-            <div className="align-self-end">
-              <ReportButton />
-            </div>
           </div>
         </div>
       ) : (
@@ -394,10 +390,6 @@ const WordNestModal = ({
                 showCompounds={showCompounds}
               />
             ))}
-          </div>
-          <hr />
-          <div>
-            <ReportButton extraClass="auto-top" />
           </div>
         </div>
       )}

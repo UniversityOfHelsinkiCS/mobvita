@@ -35,7 +35,6 @@ import {
 } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
 import PreviousSnippets from 'Components/CommonStoryTextComponents/PreviousSnippets'
 import VirtualKeyboard from 'Components/PracticeView/VirtualKeyboard'
@@ -278,15 +277,6 @@ const LessonPracticeView = () => {
               {showVirtualKeyboard && (
                 <div>
                   <VirtualKeyboard />
-                </div>
-              )}
-              {width >= 500 ? (
-                <div className="flex-col align-end">
-                  <ReportButton />
-                </div>
-              ) : (
-                <div className="mb-nm">
-                  <ReportButton />
                 </div>
               )}
             </div>

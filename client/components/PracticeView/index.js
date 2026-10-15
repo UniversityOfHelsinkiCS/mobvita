@@ -49,7 +49,6 @@ import {
   useHasAccess,
 } from 'Utilities/common'
 import CurrentSnippet from 'Components/PracticeView/CurrentSnippet'
-import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
 import MessageDialog from 'Components/MessageDialog/MessageDialog'
 import PreviousSnippets from '../CommonStoryTextComponents/PreviousSnippets'
@@ -396,15 +395,6 @@ const PracticeView = () => {
           {showVirtualKeyboard && (
             <div>
               <VirtualKeyboard />
-            </div>
-          )}
-          {width >= 500 ? (
-            <div className="flex-col align-end">
-              <ReportButton />
-            </div>
-          ) : (
-            <div className="mb-nm">
-              <ReportButton />
             </div>
           )}
         </div>
