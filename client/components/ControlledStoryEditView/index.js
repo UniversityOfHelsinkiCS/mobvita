@@ -8,7 +8,6 @@ import AppButton from 'Components/AppButton'
 import StoryInfoButton from 'Components/StoryInfoButton'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { FormattedMessage, useIntl } from 'react-intl'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { getStoryAction, getAllStories } from 'Utilities/redux/storiesReducer'
 import {
   freezeControlledStory,
@@ -25,7 +24,6 @@ import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedb
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import EditorWordPanel from './EditorWordPanel'
 import FeedbackInfoModal from 'Components/CommonStoryTextComponents/FeedbackInfoModal'
-import ReportButton from 'Components/ReportButton'
 import ScrollArrow from '../ScrollArrow'
 import StoryTopics from 'Components/StoryView/StoryTopics'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -34,7 +32,6 @@ import { colors } from 'Assets/mui_theme/designTokens'
 const ControlledStoryEditView = ({ match }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
-  const { width } = useWindowDimensions()
   const location = useLocation()
   const [showRefreshButton, setShowRefreshButton] = useState(false)
   const [focusedConcept, setFocusedConcept] = useState(null)
@@ -211,15 +208,6 @@ const ControlledStoryEditView = ({ match }) => {
 
             <ScrollArrow />
           </Box>
-          {width >= 500 ? (
-            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
-              <ReportButton />
-            </div>
-          ) : (
-            <div style={{ marginBottom: '0.5em' }}>
-              <ReportButton />
-            </div>
-          )}
         </div>
         {/* Everything that used to sit in the right-hand column: the topics, the clicked word, and
             the save controls. No dictionary and no assistant — this page is for authoring. */}

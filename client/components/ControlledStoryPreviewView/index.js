@@ -6,9 +6,7 @@ import { Paper } from '@mui/material'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'
 import { getFrozenSnippetsPreview } from 'Utilities/redux/controlledPracticeReducer'
-import useWindowDimensions from 'Utilities/windowDimensions'
 import { getTextStyle, learningLanguageSelector, getMode } from 'Utilities/common'
-import ReportButton from 'Components/ReportButton'
 import PreviousSnippets from '../ControlledStoryEditView/PreviousSnippets'
 import ScrollArrow from '../ScrollArrow'
 
@@ -16,7 +14,6 @@ const ControlledStoryEditView = () => {
   const learningLanguage = useSelector(learningLanguageSelector)
   const dispatch = useDispatch()
   const { id } = useParams()
-  const { width } = useWindowDimensions()
   const mode = getMode()
 
   const { focused: story, pending } = useSelector(({ stories }) => stories)
@@ -58,15 +55,6 @@ const ControlledStoryEditView = () => {
 
             <ScrollArrow />
           </Paper>
-          {width >= 500 ? (
-            <div className="flex-col align-end" style={{ marginTop: '0.5em' }}>
-              <ReportButton />
-            </div>
-          ) : (
-            <div style={{ marginBottom: '0.5em' }}>
-              <ReportButton />
-            </div>
-          )}
         </div>
       </div>
     </div>

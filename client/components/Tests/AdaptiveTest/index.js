@@ -8,7 +8,6 @@ import { Box, FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { colors } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
-import ReportButton from 'Components/ReportButton'
 import StartModal from 'Components/TimedActivityStartModal'
 import TestView from './AdaptiveTest'
 import ResultModal from './ResultModal'
@@ -88,7 +87,6 @@ const AdaptiveTestView = () => {
           activity="adaptive-test"
           onBackClick={() => dispatch(resetTests())}
         />
-        <ReportButton extraClass="align-self-end mb-sm" />
       </Box>
     </div>
   )

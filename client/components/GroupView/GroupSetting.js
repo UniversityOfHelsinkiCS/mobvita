@@ -15,7 +15,6 @@ import {
 
 import { images, learningLanguageSelector } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
-import ReportButton from 'Components/ReportButton'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppRadio from 'Components/ui/AppRadio'
@@ -199,8 +198,6 @@ const GroupSetting = () => {
             />
           )}
         </div>
-
-        <ReportButton extraClass="align-self-end auto-top" />
       </Box>
     </div>
   )

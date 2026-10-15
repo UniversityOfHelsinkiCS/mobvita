@@ -3126,30 +3126,6 @@ label.file-upload-btn {
   margin-bottom: 1em;
 }
 
-.report-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 1em;
-  border-radius: 999px;
-  padding: 0.45rem 1.1rem;
-  background-color: transparent;
-  color: #9d9b92; // muted
-  font-weight: 600;
-  border: 1px solid #9d9b92; // muted, visible on the blue page
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
-
-  &:hover {
-    background-color: #f1eeda;
-    color: #2d2c2a; // ink
-    border-color: #b1d3c2; // green
-  }
-}
-
 .group-management-buttons {
   display: flex;
   flex-wrap: wrap;

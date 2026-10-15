@@ -271,6 +271,7 @@ const DesignSystem = () => {
               'bookOpenGreen',
               'bulb',
               'bulbEmpty',
+              'bug',
               'star06',
               'starBlack',
               'globe',

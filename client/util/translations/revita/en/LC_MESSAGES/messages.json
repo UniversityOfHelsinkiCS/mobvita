@@ -198,7 +198,7 @@
     },
     "thank-you-for-your-message-we-will-get-back-to-you-shortly": "",
     "give-us-feedback": "Give us feedback",
-    "contact-us": "Contact",
+    "contact-us": "Contact us",
     "Name": "Name",
     "Email": "Email",
     "Subject": "",
@@ -2016,5 +2016,15 @@
     "flashcards-reversed-cards-EXPLANATION": "Reversed flashcards: read the description and type the term it defines",
     "flashcards-match-cards-EXPLANATION": "Matching: pair each term with its description",
     "Terminology": "Terminology",
-    "this-text-is-too-short-minimum-200-characters": "This text is too short. Minimum: 200 characters."
+    "this-text-is-too-short-minimum-200-characters": "This text is too short. Minimum: 200 characters.",
+    "feedback-and-suggestions": "Feedback and Suggestions",
+    "feedback-intro": "We would love to hear your thoughts",
+    "feedback-option-contact": "I’d like to contact you",
+    "feedback-option-bug": "I found a bug",
+    "feedback-option-suggestion": "I have a suggestion",
+    "feedback-describe-contact": "Write your message",
+    "feedback-describe-bug": "Describe the bug",
+    "feedback-describe-suggestion": "Describe your suggestion",
+    "write-here": "Write here",
+    "send-feedback": "Send Feedback"
 }

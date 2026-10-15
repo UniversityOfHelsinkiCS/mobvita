@@ -49,6 +49,11 @@ export const colors = {
   quizAlertBorder: '#95281E',
   highlight: '#FFDD77', // answer location highlighted in the story text
 
+  // Contact form choice icons (Figma "Feedback & Suggestions").
+  feedbackContact: '#B4D2AF',
+  feedbackBug: '#E5BDAA',
+  feedbackSuggestion: '#9DA8CA',
+
   scrollbar: 'rgba(45, 44, 42, 0.15)',
   scrollbarHover: 'rgba(45, 44, 42, 0.3)', // derived — Figma gives no hover state
 }

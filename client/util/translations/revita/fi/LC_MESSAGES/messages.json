@@ -2016,5 +2016,14 @@
     "flashcards-reversed-cards-EXPLANATION": "Käänteiset sanakortit: lue kuvaus ja kirjoita termi, jota se tarkoittaa",
     "flashcards-match-cards-EXPLANATION": "Yhdistäminen: yhdistä jokainen termi sen kuvaukseen",
     "Terminology": "Terminologia",
-    "this-text-is-too-short-minimum-200-characters": "Tämä teksti on liian lyhyt. Minimi: 200 merkkiä."
+    "this-text-is-too-short-minimum-200-characters": "Tämä teksti on liian lyhyt. Minimi: 200 merkkiä.",
+    "feedback-intro": "Haluaisimme kuulla ajatuksiasi",
+    "feedback-option-contact": "Haluan ottaa yhteyttä",
+    "feedback-option-bug": "Löysin virheen",
+    "feedback-option-suggestion": "Minulla on ehdotus",
+    "feedback-describe-contact": "Kirjoita viestisi",
+    "feedback-describe-bug": "Kuvaile virhe",
+    "feedback-describe-suggestion": "Kuvaile ehdotuksesi",
+    "write-here": "Kirjoita tähän",
+    "send-feedback": "Lähetä palaute"
 }

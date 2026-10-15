@@ -25,6 +25,7 @@ import bookOpen from 'Assets/images/book-open-01.svg'
 import bookOpenGreen from 'Assets/images/book-open-green.svg'
 import bulb from 'Assets/images/bulb.svg'
 import bulbEmpty from 'Assets/images/bulb-empty.svg'
+import bug from 'Assets/images/bug.svg'
 import cardsIcon from 'Assets/images/cards.svg'
 import fileCheck from 'Assets/images/file-check-02.svg'
 import flag01 from 'Assets/images/flag-01.svg'
@@ -217,6 +218,7 @@ export const images = {
   bookOpenGreen,
   bulb,
   bulbEmpty,
+  bug,
   cardsIcon,
   fileCheck,
   flag01,
