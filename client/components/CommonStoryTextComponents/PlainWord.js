@@ -14,7 +14,11 @@ import {
   useMTAvailableLanguage,
   hiddenFeatures
 } from 'Utilities/common'
-import { getTranslationAction, setWords } from 'Utilities/redux/translationReducer'
+import {
+  getTranslationAction,
+  getMweTranslationAction,
+  setWords,
+} from 'Utilities/redux/translationReducer'
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import {
   setFocusedSpan,
@@ -169,6 +173,17 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
             inflectionRef,
             prefLemma })
         )
+        if (typeof word.mwe === 'string' && word.mwe) {
+          dispatch(
+            getMweTranslationAction({
+              mwe: word.mwe,
+              learningLanguage,
+              dictionaryLanguage,
+              storyId,
+              wordId,
+            })
+          )
+        }
         dispatch(setHelperSidebarTab('translation'))
         dispatch(setHelperSidebarOpen(true))
         if (mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) {

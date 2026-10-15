@@ -151,6 +151,29 @@ const WordNotes = ({ notes, handleTooltipClick }) => {
   )
 }
 
+// Translation of the multi-word expression the clicked word belongs to, as one more lemma card
+// after the single-word ones. Know / don't know record the expression itself as the flashcard.
+// Until one is clicked it shows the "don't know" colour (stage 0): the learner clicked a word in it,
+// so the expression is unclear to them. Display only — nothing is recorded for that default.
+const MweLemma = ({ mwe, onKnow, onDontKnow }) => {
+  if (!mwe?.expression) return null
+  if (mwe.pending) return <ChatSpinner padding="6px" />
+  if (!mwe.glosses?.length) return null
+  return (
+    <AppLemma
+      lemma={mwe.expression}
+      translations={mwe.glosses}
+      speaker={<Speaker word={mwe.expression} />}
+      onKnow={() => onKnow(mwe.expression)}
+      onDontKnow={() => onDontKnow(mwe.expression)}
+      showInflactionLink={false}
+      background={`${flashcardColors.background[mwe.stage ?? 0]}4D`}
+      style={{ marginBottom: '8px' }}
+      className="mwe-lemma"
+    />
+  )
+}
+
 const UserNotes = ({ notes, onEdit, onDelete, busy }) => {
   if (!notes.length && !busy) return null
   return (
@@ -1609,6 +1632,11 @@ const CombinedChatbot = ({
                 ) : (
                   <p className="no-translation-text" data-cy="chatbot-no-translation-text"></p>
                 )}
+                <MweLemma
+                  mwe={translationState.mwe}
+                  onKnow={handleKnowningClick}
+                  onDontKnow={handleNotKnowningClick}
+                />
               </div>
               <div className="chatbot-messages-container">
                 <WordNotes notes={notes} handleTooltipClick={handleTooltipClick} />

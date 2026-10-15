@@ -30,6 +30,27 @@ export const getTranslationAction = ({
   return callBuilder(route, prefix, 'get', null, query)
 }
 
+// Multi-word expression the clicked word belongs to (BE attaches `word.mwe` as a string).
+// Fetched alongside the single-word translation and kept in `state.mwe` so it never replaces it.
+export const getMweTranslationAction = ({
+  mwe,
+  learningLanguage,
+  dictionaryLanguage,
+  storyId,
+  wordId,
+}) => {
+  const query = {
+    MWE: mwe,
+    lang_learn: learningLanguage,
+    lang_target: dictionaryLanguage,
+    story_id: storyId,
+    word_id: wordId,
+  }
+  const route = '/mwe'
+  const prefix = 'GET_MWE_TRANSLATION'
+  return callBuilder(route, prefix, 'get', null, query)
+}
+
 export const getClueTranslationAction = ({
   wordLemmas,
   learningLanguage,
@@ -78,8 +99,43 @@ export const setWords = ({ surface, lemmas, clue, maskSymbol, snippet_id, senten
   }
 }
 
-export default (state = { data: [], showDictionaryBox: true }, action) => {
+// `stage` is set locally by know / don't know (SET_TRANSLATION_STAGE); /mwe itself returns none.
+const initialMwe = {
+  expression: null,
+  glosses: [],
+  langLearn: null,
+  langTarget: null,
+  stage: undefined,
+  pending: false,
+  error: false,
+}
+
+export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, action) => {
   switch (action.type) {
+    case 'GET_MWE_TRANSLATION_ATTEMPT':
+      return {
+        ...state,
+        mwe: {
+          ...initialMwe,
+          expression: action.requestSettings.query.MWE,
+          langLearn: action.requestSettings.query.lang_learn,
+          langTarget: action.requestSettings.query.lang_target,
+          pending: true,
+        },
+      }
+    case 'GET_MWE_TRANSLATION_SUCCESS':
+      // A later click may have moved on to another expression (or a word without one).
+      if (action.query?.MWE !== state.mwe?.expression) return state
+      return {
+        ...state,
+        mwe: { ...state.mwe, glosses: action.response?.glosses || [], pending: false },
+      }
+    case 'GET_MWE_TRANSLATION_FAILURE':
+      if (action.query?.MWE !== state.mwe?.expression) return state
+      return {
+        ...state,
+        mwe: { ...state.mwe, pending: false, error: true },
+      }
     case 'GET_TRANSLATION_ATTEMPT':
       return {
         ...state,
@@ -140,6 +196,9 @@ export default (state = { data: [], showDictionaryBox: true }, action) => {
         word_id: action.word_id,
         session_id: action.session_id,
         storyid: action.storyid,  
+        // A new word was clicked: drop the previous word's expression. The click handler
+        // dispatches `getMweTranslationAction` right after when the new word has one.
+        mwe: initialMwe,
       }
     case 'CLEAR_TRANSLATION': {
       return {
@@ -155,6 +214,7 @@ export default (state = { data: [], showDictionaryBox: true }, action) => {
         word_id: null,
         session_id: null,
         storyid: null,
+        mwe: initialMwe,
       }
     }
     case 'SET_TRANSLATION_STAGE': {
@@ -165,6 +225,12 @@ export default (state = { data: [], showDictionaryBox: true }, action) => {
             translated.language_in !== action.lang_learn || 
             translated.language_out !== action.lang_target)
           && translated || { ...translated, stage: action.stage, is_new_word: false }),
+        mwe:
+          state.mwe?.expression === action.lemma &&
+          state.mwe.langLearn === action.lang_learn &&
+          state.mwe.langTarget === action.lang_target
+            ? { ...state.mwe, stage: action.stage }
+            : state.mwe,
       }
     }
 
