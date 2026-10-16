@@ -343,7 +343,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           </div>
         )}
 
-        <div >
+        {/* Lemmas and context translation; the word nest makes this the scrolling part. */}
+        <div className="dictionary-help-content">
           {!mobileDisplayAnnotations ? (
            <>
            {showDictionaryBox && (

@@ -1,16 +1,35 @@
 // Word nest dialog: nest panel (title, toggles, tree) | dictionary panel.
 
+// Figma "word nesting" frame: 872 × 619 (width set on the dialog paper), panels in a row.
+// Height is capped to the viewport so short windows still fit.
 .wordnest-layout {
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0;
   width: 100%;
-  min-height: min(360px, 80vh);
-  max-height: min(80vh, 760px);
+  height: min(619px, calc(100vh - 64px));
+
+  // Top-aligned per the frame; each panel fills the height so its own list can scroll.
+  > .wordnest-main,
+  > .wordnest-dictionary {
+    box-sizing: border-box;
+    height: 100%;
+  }
 
   // Narrow: one scrolling column, the dictionary above the nest.
   @media (max-width: 860px) {
     flex-direction: column-reverse;
     justify-content: flex-end;
+    align-items: stretch;
+    height: auto;
+    max-height: calc(100vh - 64px);
     overflow-y: auto;
+
+    > .wordnest-main,
+    > .wordnest-dictionary {
+      height: auto;
+    }
   }
 }
 
@@ -48,7 +67,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 4px 28px 24px 0;
+  padding: 4px 28px 24px 60px;
 
   // Narrow: the whole dialog column scrolls instead.
   @media (max-width: 860px) {
@@ -57,24 +76,53 @@
   }
 }
 
+// Dictionary heading stays put; only the lemma container below it scrolls.
 .wordnest-dictionary {
   flex: 0 0 320px;
   min-width: 0;
-  overflow-y: auto;
-  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0 0 20px;
   border-left: 1px solid #e8e5dc; // colors.cardBorder
 
-  // Keep the gear row clear of the dialog's close (X) in this panel's corner.
+  // Each wrapper down to the content passes the panel height on, so the content can scroll.
+  .dictionary-help,
+  .dictionary-help-card {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Clears the dialog's close (X) in this panel's corner.
   .dictionary-help-header {
-    padding-right: 36px;
+    flex: none;
+    padding-right: 56px;
+  }
+
+  // Right padding lives here so the scrollbar sits against the dialog edge.
+  .dictionary-help-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 20px 24px 0;
   }
 
   @media (max-width: 860px) {
     flex: none;
-    overflow: visible;
     padding: 16px 20px;
     border-left: 0;
     border-bottom: 1px solid #e8e5dc;
+
+    .dictionary-help-header {
+      padding-right: 36px;
+    }
+
+    // Narrow: the whole dialog column scrolls instead.
+    .dictionary-help-content {
+      overflow: visible;
+      padding: 0;
+    }
   }
 }
 
@@ -117,16 +165,6 @@
   }
 }
 
-// Compound words make the list long, so it flows into two columns.
-.wordnest-list-columns {
-  column-count: 2;
-  column-gap: 2em;
-
-  @media (max-width: 639px) {
-    column-count: 1;
-  }
-}
-
 .wordnest {
   // Top-level rows start flush; each level below steps in.
   .wordnest {
@@ -139,7 +177,6 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 1.45;
-    break-inside: avoid;
 
     @media (max-width: 760px) {
       font-size: 14px;

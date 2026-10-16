@@ -328,6 +328,7 @@ const WordNestModal = ({
       maxWidth="md"
       data-cy="wordnest-modal"
       closeDataCy="wordnest-close"
+      paperSx={{ width: 872, maxWidth: 'calc(100% - 64px)' }}
       titleSx={{ p: 0 }}
       contentSx={{ p: 0, overflow: 'hidden', display: 'flex' }}
       closeSx={{ top: 14, right: 12 }}
@@ -365,25 +366,18 @@ const WordNestModal = ({
               </div>
             )}
           </div>
-          {/* Outer box scrolls; the inner one holds the columns so they never overflow sideways. */}
+          {/* One list: compounds sort under the basic words; markup is the only second column. */}
           <div className="wordnest-list">
-            {/* Compounds flow into two columns, unless markup already takes the second column. */}
-            <div
-              className={`wordnest-list-words${
-                showCompounds && !showMoreInfo ? ' wordnest-list-columns' : ''
-              }`}
-            >
-              {topNodes?.map((n, index) => (
-                <WordNest
-                  key={`${n.word}-${index}`}
-                  wordNest={n}
-                  hasSeveralRoots={hasSeveralRoots}
-                  wordToCheck={wordToCheck}
-                  showMoreInfo={showMoreInfo}
-                  showCompounds={showCompounds}
-                />
-              ))}
-            </div>
+            {topNodes?.map((n, index) => (
+              <WordNest
+                key={`${n.word}-${index}`}
+                wordNest={n}
+                hasSeveralRoots={hasSeveralRoots}
+                wordToCheck={wordToCheck}
+                showMoreInfo={showMoreInfo}
+                showCompounds={showCompounds}
+              />
+            ))}
           </div>
         </div>
         <div className="wordnest-dictionary">
