@@ -25,7 +25,8 @@ const initialState = {
   currentAdaptiveQuestionIndex: 0,
   adaptiveTestResults: null,
 
-  timedTest: true,
+  // Adaptive test: the "Timed test" switch starts off.
+  timedTest: false,
   report: null,
   feedbacks: [],
   attempt_and_feedbacks: [],

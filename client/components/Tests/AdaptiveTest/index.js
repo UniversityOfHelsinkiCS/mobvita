@@ -1,3 +1,4 @@
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useState, useEffect } from 'react'
 import AppButton from 'Components/AppButton'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -5,10 +6,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { InitAdaptiveTest, resetTests, updateTimed } from 'Utilities/redux/testReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import { Box, FormControlLabel } from '@mui/material'
+import AlarmOutlinedIcon from '@mui/icons-material/AlarmOutlined'
 import AppSwitch from 'Components/ui/AppSwitch'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { colors, font } from 'Assets/mui_theme/designTokens'
 import Spinner from 'Components/Spinner'
-import StartModal from 'Components/TimedActivityStartModal'
+import HelperSidebar from 'Components/PracticeView/HelperSidebar'
+import ChatBubble from 'Components/ui/ChatBubble'
 import TestView from './AdaptiveTest'
 import ResultModal from './ResultModal'
 
@@ -25,11 +28,12 @@ const AdaptiveTestView = () => {
     timedTest,
     currentAdaptiveQuestion,
   } = useSelector(({ tests }) => tests)
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
 
-  const [startModalOpen, setStartModalOpen] = useState(false)
   const [isTimed, setIsTimed] = useState(timedTest)
+  // The intro below replaced the TimedActivityStartModal: starting fetches the first question
+  // straight away, with no dialog in between.
   const startTest = () => {
-    setStartModalOpen(true)
     dispatch(InitAdaptiveTest(learningLanguage))
   }
 
@@ -44,50 +48,139 @@ const AdaptiveTestView = () => {
   }, [learningLanguage])
 
   if (pending) {
-    return <Spinner fullHeight spinnerColor={colors.ink} size={60}/>
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
   }
 
   return (
-    <div className="cont-tall cont flex-col auto gap-row-sm">
-      <Box
-        sx={{
-          mt: '1.5em',
-          backgroundColor: colors.card,
-          borderRadius: '30px',
-          padding: { xs: '1.25em', sm: '1.75em' },
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}
-      >
-        {!adaptiveTestSessionId && (
-          <div className="align-center flex space-between">
-            <AppButton size="lg" onClick={startTest} data-cy="start-test">
-              <FormattedMessage id="start-a-new-test" />
-            </AppButton>
-            <FormControlLabel
-              control={<AppSwitch checked={timedTest} onChange={() => setIsTimed(!isTimed)} />}
-              label={intl.formatMessage({ id: 'timed-adaptive-test' })}
-              sx={{
-                '& .MuiFormControlLabel-label': {
-                  marginLeft: '0.5em',
-                  color: colors.ink,
-                },
+    <div className="cont-tall flex-col">
+      {/* Top-aligned, level with the helper sidebar (navbar + page padding = its `top`). Centred by
+          the row, not by auto margins: an auto margin stops a flex item stretching, which let the
+          card shrink to its content — full width on the intro, ~500px on the question screen.
+          `flex: 1` fills up to `.cont`'s 1024px on both (the Flashcards layout). */}
+      <div className="flex" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
+        <div
+          className={`cont flex-col gap-row-sm ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+          style={{ flex: 1 }}
+        >
+          <Box
+            sx={{
+              backgroundColor: colors.card,
+              borderRadius: '30px',
+              padding: { xs: '1.25em', sm: '1.75em' },
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            {!adaptiveTestSessionId && (
+              <div data-cy="adaptive-test-intro">
+                <h1
+                  style={{
+                    margin: '0 0 0.5em',
+                    fontSize: '2.25rem',
+                    fontWeight: 500,
+                    lineHeight: 1.2,
+                    color: colors.ink,
+                  }}
+                >
+                  <FormattedMessage id="adaptive-test" />
+                </h1>
+                <div style={{ color: colors.ink, lineHeight: 1.5 }}>
+                  <FormattedHTMLMessage id="adaptive-test-info-text" />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '1em',
+                    marginTop: '2em',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
+                    <AlarmOutlinedIcon sx={{ fontSize: 22, color: colors.muted }} />
+                    <FormControlLabel
+                      labelPlacement="start"
+                      control={
+                        <AppSwitch checked={timedTest} onChange={() => setIsTimed(!isTimed)} />
+                      }
+                      label={intl.formatMessage({ id: 'timed-adaptive-test' })}
+                      sx={{
+                        m: 0,
+                        '& .MuiFormControlLabel-label': {
+                          marginRight: '0.5em',
+                          color: colors.ink,
+                          fontSize: '0.9em',
+                        },
+                      }}
+                    />
+                  </div>
+                  <AppButton
+                    onClick={startTest}
+                    data-cy="start-test"
+                    sx={{ minWidth: { xs: '100%', sm: '14em' } }}
+                  >
+                    <FormattedMessage id="start-test" />
+                  </AppButton>
+                </div>
+              </div>
+            )}
+            {!currentAdaptiveQuestion && adaptiveTestResults && (
+              <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
+            )}
+            {adaptiveTestSessionId && <TestView />}
+          </Box>
+        </div>
+      </div>
+
+      {/* The sidebar holds the provisional CEFR estimate during the test — no assistant. The
+          backend starts returning `cefr` partway through (around the 30th answer) while questions
+          keep coming, so it is labelled as approximate rather than reading like the final result. */}
+      <HelperSidebar>
+        {adaptiveTestSessionId && cefrLevel && (
+          <div style={{ padding: '1.4rem', paddingTop: 'calc(1.4rem + 10px)' }}>
+            {/* Full-width tan card (2026 design): no variant has this shape, so the bot bubble is
+                restyled inline — inline style wins over the variant's. */}
+            <ChatBubble
+              variant="bot"
+              data-cy="adaptive-test-running-cefr"
+              style={{
+                alignSelf: 'stretch',
+                maxWidth: '100%',
+                backgroundColor: colors.menuHover,
+                padding: '12px 20px',
               }}
-            />
+            >
+              <div
+                style={{
+                  color: colors.ink,
+                  fontFamily: font.family,
+                  fontSize: 16,
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  lineHeight: '18px',
+                }}
+              >
+                <FormattedMessage id="your-estimated-cefr-level" />: {cefrLevel}
+              </div>
+              <div
+                style={{
+                  marginTop: 4,
+                  color: colors.ink,
+                  fontFamily: font.family,
+                  fontSize: 16,
+                  fontStyle: 'normal',
+                  fontWeight: 400,
+                  lineHeight: '18px',
+                }}
+              >
+                <FormattedMessage id="adaptive-test-approximate-cefr-note" />
+              </div>
+            </ChatBubble>
           </div>
         )}
-        {!currentAdaptiveQuestion && adaptiveTestResults && (
-          <ResultModal cefrLevel={cefrLevel} adaptiveTestResults={adaptiveTestResults} />
-        )}
-        {adaptiveTestSessionId && <TestView showingInfo={startModalOpen} />}
-        <StartModal
-          open={startModalOpen}
-          setOpen={setStartModalOpen}
-          activity="adaptive-test"
-          onBackClick={() => dispatch(resetTests())}
-        />
-      </Box>
+      </HelperSidebar>
     </div>
   )
 }

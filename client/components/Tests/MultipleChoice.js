@@ -5,7 +5,8 @@ import { sanitizeHtml } from 'Utilities/common';
 // import { FormattedMessage } from 'react-intl';
 // import { nextTestQuestion } from 'Utilities/redux/testReducer';
 
-const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
+// `outlineLastChoice`: the last option is "I don't know" — drawn as a green-bordered outline.
+const MultipleChoice = ({ exercise, onAnswer, answerPending, outlineLastChoice = false }) => {
   const { choices, question, prephrase, test_text } = exercise;
 
   const {
@@ -46,16 +47,22 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending }) => {
 
       {choices && (choices
         // .filter(choice => choice?.isSelected != true)
-        .map(choice => (
+        .map((choice, index) => {
+          const outlined = outlineLastChoice && index === choices.length - 1
+          return (
           <div key={choice?.option} style={{ marginBottom: '0.75em' }}>
             <AppButton
               className="test-choice-button"
+              variant={outlined ? 'tan-outline' : undefined}
+              // Cream through, not tan-outline's pale-green fill; hover still fills green.
+              sx={outlined ? { backgroundColor: 'transparent' } : undefined}
               onClick={!answerPending ? () => onAnswer(choice) : undefined}
             >
-              <span style={{ fontSize: '0.77em' }}>{choice?.option}</span>
+              <span className="test-choice-text">{choice?.option}</span>
             </AppButton>
           </div>
-        ))
+          )
+        })
       )}
 
       {/* {showFeedbacks && (

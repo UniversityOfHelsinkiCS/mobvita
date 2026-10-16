@@ -1,23 +1,40 @@
-import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTimer } from 'Utilities/reactTimerHookCompat'
 import { Box } from '@mui/material'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import PauseIcon from '@mui/icons-material/Pause'
-import StopIcon from '@mui/icons-material/Stop'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { resetTests, sendAdaptiveTestAnswer, resumeAdaptiveTest } from 'Utilities/redux/testReducer'
-import { learningLanguageSelector } from 'Utilities/common'
-import { FormattedMessage } from 'react-intl';
+import { learningLanguageSelector, images } from 'Utilities/common'
+import { FormattedMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
 import Spinner from 'Components/Spinner'
 
 const TIMER_START_DELAY = 3000
 
-const AdaptiveTest = ({ showingInfo }) => {
+// ":30" under a minute (the design), "1:05" above.
+const formatSeconds = totalSeconds => {
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = String(totalSeconds % 60).padStart(2, '0')
+  return minutes ? `${minutes}:${seconds}` : `:${seconds}`
+}
+
+// Round 36px timer control: the original SVG as drawn, no hover recolouring.
+const TimerButton = ({ icon, label, onClick, pending, ...rest }) => (
+  <button
+    type="button"
+    aria-label={label}
+    onClick={onClick}
+    className={`adaptive-test-timer-button${pending ? ' pending' : ''}`}
+    {...rest}
+  >
+    <img src={icon} alt="" width={36} height={36} style={{ display: 'block' }} />
+  </button>
+)
+
+const AdaptiveTest = () => {
   const { controls: timer } = useTimer({
     initialTime: 30000,
     direction: 'backward',
@@ -44,7 +61,6 @@ const AdaptiveTest = ({ showingInfo }) => {
     currentAdaptiveQuestion,
     currentAdaptiveQuestionIndex,
     timedTest,
-    cefrLevel,
   } = useSelector(({ tests }) => tests)
 
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -72,8 +88,8 @@ const AdaptiveTest = ({ showingInfo }) => {
         duration,
         currentAdaptiveQuestion.question_id,
         timedTest,
-        willStop
-      )
+        willStop,
+      ),
     )
   }
 
@@ -84,7 +100,7 @@ const AdaptiveTest = ({ showingInfo }) => {
   }, [timer.getTime()])
 
   useEffect(() => {
-    if (!adaptiveTestSessionId || showingInfo) return
+    if (!adaptiveTestSessionId) return
     if (!currentAdaptiveQuestion) {
       timer.stop()
     } else if (willPause) {
@@ -105,12 +121,8 @@ const AdaptiveTest = ({ showingInfo }) => {
     () => () => {
       dispatch(resetTests())
     },
-    []
+    [],
   )
-
-  useEffect(() => {
-    if (!showingInfo) timer.start()
-  }, [showingInfo])
 
   const pauseTimer = () => {
     if (willPause) {
@@ -140,86 +152,70 @@ const AdaptiveTest = ({ showingInfo }) => {
     currentAdaptiveQuestionIndex + 1 >= 64
       ? 'green'
       : currentAdaptiveQuestionIndex + 1 >= 40
-      ? 'yellow'
-      : 'red'
+        ? 'yellow'
+        : 'red'
 
   return (
-    <div className="cont mt-nm">
-      <Box sx={{ minHeight: '700px', position: 'relative' }}>
+    // `adaptive-test-screen` scopes the 2026 question-screen styles (custom.scss): MultipleChoice and
+    // the `.test-*` classes are shared with the exhaustive test, which keeps its old look.
+    <div className="cont adaptive-test-screen">
+      <Box sx={{ position: 'relative' }}>
         <div className="align-center justify-center">
-          {timedTest && (
-            <div
-              className="flex align-start"
-              style={{ position: 'absolute', top: '1em', right: '1em', gap: '.5em' }}
-            >
-              <div className="test-controls">
-                {paused ? (
-                  <PlayArrowIcon
-                    onClick={resumeTimer}
-                    sx={{
-                      fontSize: 28,
-                      color: willPause ? 'grey.600' : colors.ink,
-                      cursor: 'pointer',
-                      m: '0.25em',
-                    }}
-                  />
-                ) : (
-                  <PauseIcon
-                    onClick={pauseTimer}
-                    sx={{
-                      fontSize: 28,
-                      color: willPause ? 'grey.600' : colors.ink,
-                      cursor: 'pointer',
-                      m: '0.25em',
-                    }}
-                  />
-                )}
-                <StopIcon
-                  onClick={() => setWillStop(true)}
-                  sx={{ fontSize: 28, color: colors.ink, cursor: 'pointer', m: '0.25em' }}
-                />
-              </div>
-              <div
-                className="test-counter"
-                style={{
-                  fontSize: '2em',
-                  fontWeight: 'bold',
-                  color: '#212529',
-                  padding: 0,
-                }}
-              >
-                {Math.max(0, Math.round(timer.getTime() / 1000))}
-              </div>
-            </div>
-          )}
           <div className="test-container">
-            <AppProgressBar
-              value={pct}
-              fillColor={
-                progress === 'green' ? colors.green : progress === 'yellow' ? '#E8D08A' : '#E0A9A9'
-              }
-            />
-            
-            <div className="test-top-info space-between">
-              <div>
+            {/* Question number, then the progress bar on the same row. */}
+            <div className="adaptive-test-top-row">
+              <div
+                className="adaptive-test-question-number"
+                data-cy="adaptive-test-question-number"
+              >
                 <FormattedHTMLMessage id="question" /> #{currentAdaptiveQuestionIndex + 1}
-              </div>              
-            </div>
-            {cefrLevel && (
-                <div style={{ color: colors.ink }} data-cy="adaptive-test-running-cefr">
-                  <FormattedMessage id="your-estimated-cefr-level" />: <b>{cefrLevel}</b>
+              </div>
+              <AppProgressBar
+                value={pct}
+                height="10px"
+                style={{ flex: 1 }}
+                fillColor={
+                  progress === 'green'
+                    ? colors.green
+                    : progress === 'yellow'
+                      ? '#E8D08A'
+                      : '#E0A9A9'
+                }
+              />
+              {/* Timer controls inline at the end of the row. A pause / stop requested mid-question
+                  takes effect after the answer, so the button greys out (`pending`) until then. */}
+              {timedTest && (
+                <div className="adaptive-test-timer">
+                  {paused ? (
+                    <TimerButton
+                      icon={images.playTimer}
+                      label="resume"
+                      onClick={resumeTimer}
+                      data-cy="adaptive-test-resume"
+                    />
+                  ) : (
+                    <TimerButton
+                      icon={images.pauseTimer}
+                      label="pause"
+                      onClick={pauseTimer}
+                      pending={willPause}
+                      data-cy="adaptive-test-pause"
+                    />
+                  )}
+                  <TimerButton
+                    icon={images.stopTimer}
+                    label="stop"
+                    onClick={() => setWillStop(true)}
+                    pending={willStop}
+                    data-cy="adaptive-test-stop"
+                  />
+                  <div className="adaptive-test-time" data-cy="adaptive-test-time">
+                    {formatSeconds(Math.max(0, Math.round(timer.getTime() / 1000)))}
+                  </div>
                 </div>
               )}
-
-            {/* The backend starts returning `cefr` partway through the test (around the 30th
-                answer) while questions keep coming, so label it as provisional rather than
-                letting it read like the final result. */}
-            {cefrLevel && (
-              <div style={{ color: colors.muted, fontSize: '0.9em', marginTop: '0.25em' }}>
-                <FormattedMessage id="adaptive-test-approximate-cefr-note" />
-              </div>
-            )}
-
+            </div>
+            {/* The provisional CEFR estimate is a bubble in the helper sidebar now (index.js). */}
 
             <div className="test-question-container">
               {willPause && !willStop && (
@@ -251,6 +247,7 @@ const AdaptiveTest = ({ showingInfo }) => {
                     exercise={currentAdaptiveQuestion}
                     onAnswer={checkAnswer}
                     answerPending={answerPending}
+                    outlineLastChoice
                   />
                 </div>
               )}
