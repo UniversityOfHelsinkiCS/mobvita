@@ -1,0 +1,194 @@
+// Word nest dialog: nest panel (title, toggles, tree) | dictionary panel.
+
+.wordnest-layout {
+  display: flex;
+  width: 100%;
+  min-height: min(360px, 80vh);
+  max-height: min(80vh, 760px);
+
+  // Narrow: one scrolling column, the dictionary above the nest.
+  @media (max-width: 860px) {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    overflow-y: auto;
+  }
+}
+
+// Header stays put; only the word list below it scrolls.
+.wordnest-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0 0 28px;
+
+  @media (max-width: 860px) {
+    padding: 16px 20px;
+  }
+
+  // Title on the left; the view toggles sit in the empty space to its right.
+  &-header {
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5em 1.5em;
+    margin-bottom: 1em;
+    padding-right: 28px;
+
+    @media (max-width: 860px) {
+      padding-right: 0;
+    }
+  }
+}
+
+// Right padding lives here so the scrollbar sits against the panel divider.
+.wordnest-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 28px 24px 0;
+
+  // Narrow: the whole dialog column scrolls instead.
+  @media (max-width: 860px) {
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+.wordnest-dictionary {
+  flex: 0 0 320px;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 20px 20px 24px;
+  border-left: 1px solid #e8e5dc; // colors.cardBorder
+
+  // Keep the gear row clear of the dialog's close (X) in this panel's corner.
+  .dictionary-help-header {
+    padding-right: 36px;
+  }
+
+  @media (max-width: 860px) {
+    flex: none;
+    overflow: visible;
+    padding: 16px 20px;
+    border-left: 0;
+    border-bottom: 1px solid #e8e5dc;
+  }
+}
+
+.wordnest-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #2d2c2a; // colors.ink
+
+  &-label {
+    font-weight: 500;
+    color: #9d9b92; // colors.muted
+  }
+
+  &-info {
+    display: inline-flex;
+    margin-left: 0.2em;
+  }
+}
+
+.wordnest-toggles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.wordnest-toggle.MuiFormControlLabel-root {
+  margin: 0;
+  gap: 10px;
+
+  .MuiFormControlLabel-label {
+    font-size: 14px;
+    color: #2d2c2a;
+  }
+}
+
+// Compound words make the list long, so it flows into two columns.
+.wordnest-list-columns {
+  column-count: 2;
+  column-gap: 2em;
+
+  @media (max-width: 639px) {
+    column-count: 1;
+  }
+}
+
+.wordnest {
+  // Top-level rows start flush; each level below steps in.
+  .wordnest {
+    padding-left: 1.5em;
+  }
+
+  &-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2em 0.4em;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.45;
+    break-inside: avoid;
+
+    @media (max-width: 760px) {
+      font-size: 14px;
+    }
+  }
+
+  &-word-button {
+    cursor: pointer;
+  }
+
+  &-word {
+    &:hover {
+      color: black !important;
+    }
+
+    &:focus {
+      color: black;
+    }
+  }
+
+  &-additional-info {
+    color: #3b3b3b;
+    font-size: 0.85em;
+    font-weight: 400;
+    background-color: #f1f1f1;
+    border-radius: 0.5em;
+    padding: 0em 0.15em;
+    margin: 0.075em;
+  }
+
+  &-link {
+    color: #3b3b3b;
+    font-size: 0.85em;
+    background-color: #e6effa;
+    border-radius: 0.5em;
+    padding: 0em 0.15em;
+    margin: 0.075em;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c2ddfc;
+    }
+
+    &:focus {
+      transition-delay: 1.5s;
+      color: rgb(247, 62, 62);
+      background-color: #c2ddfc;
+    }
+  }
+}

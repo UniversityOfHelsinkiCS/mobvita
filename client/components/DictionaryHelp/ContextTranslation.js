@@ -14,6 +14,7 @@ import {
 import { getContextTranslation } from 'Utilities/redux/contextTranslationReducer'
 import Spinner from 'Components/Spinner'
 
+// Sentence translation of the clicked word's context, opened with the + button.
 const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const glossCheckLanguage = ['English']
 
@@ -138,8 +139,7 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     )
 
     return (
-        <div className="flex space-between">
-            <div className="flex">
+        <div className="context-translation">
             { !pending ? (
                 <p style={{
                     color: '#555555',
@@ -160,7 +160,6 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
                     <Spinner inline />
                 </div>
             )}
-            </div>
         </div>
     )
 

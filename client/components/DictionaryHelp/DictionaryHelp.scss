@@ -1,0 +1,86 @@
+// Dictionary card (DictionaryHelp): beside stories, in the crossword and inside the word nest.
+
+.dictionary-help {
+  width: 350px;
+  margin-left: 1em;
+  height: auto;
+
+  &-overlay {
+    position: fixed;
+    top: auto;
+    right: 1em;
+    bottom: 3em;
+    width: calc(100vw - 2em);
+  }
+
+  @media (max-width: 639px) {
+    bottom: 1%;
+    width: 95%;
+    margin-bottom: 1em;
+  }
+
+  &-card {
+    background-color: #faf8ed; // colors.card
+    border-radius: 20px;
+    padding: 1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: #2d2c2a; // colors.ink
+  }
+
+  // Gear + "Dictionary" + info on the left, the collapse chevron (if any) on the right.
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5em;
+    margin-bottom: 0.75em;
+  }
+
+  &-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+  }
+
+  &-body {
+    padding-top: 0.5em;
+  }
+
+  // Inside the word nest the dialog is the card: no own width, fill, shadow or padding.
+  &-in-nest {
+    width: auto;
+    margin: 0;
+
+    .dictionary-help-card {
+      background: none;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    .dictionary-help-body {
+      padding-top: 0;
+    }
+  }
+}
+
+.dictionary-translations {
+  & > * {
+    padding-top: 1rem;
+  }
+
+  &-overlay {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -2rem;
+
+    & > * {
+      margin-left: 2rem;
+    }
+  }
+}
+
+.context-translation {
+  display: flex;
+}

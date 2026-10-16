@@ -1483,26 +1483,6 @@ body .app-datepicker.react-datepicker {
   align-self: flex-start;
 }
 
-.dictionary-help {
-  width: 350px;
-  margin-left: 1em;
-  height: auto;
-
-  &-overlay {
-    position: fixed;
-    top: auto;
-    right: 1em;
-    bottom: 3em;
-    width: calc(100vw - 2em);
-  }
-
-  @media (max-width: 639px) {
-    bottom: 1%;
-    width: 95%;
-    margin-bottom: 1em;
-  }
-}
-
 .save-edited-story-box,
 .story-topics-box,
 .annotations-box,
@@ -1564,22 +1544,6 @@ body .app-datepicker.react-datepicker {
   font-style: italic;
   background-color: lightyellow;
   padding: 0.25rem;
-}
-
-.dictionary-translations {
-  & > * {
-    padding-top: 1rem;
-  }
-
-  &-overlay {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -2rem;
-
-    & > * {
-      margin-left: 2rem;
-    }
-  }
 }
 
 .source-word {
@@ -2314,103 +2278,6 @@ label.file-upload-btn {
 
   &-caret {
     width: 1.5em;
-  }
-}
-
-.wordnest-modal-header {
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.wordnest-modal-header-items {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 1em;
-}
-
-.wordnest-cont {
-  overflow-y: auto;
-  padding: 1em 6em 1em 1em;
-  width: 100%;
-}
-
-.wordnest {
-  padding-left: 3.5em;
-
-  &-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-  }
-
-  &-word {
-    margin-right: 0.5em;
-
-    &:hover {
-      color: black !important;
-    }
-
-    &:focus {
-      color: black;
-    }
-  }
-
-  &-chosen-word {
-    color: #388a3d;
-    padding: 0.15em;
-    border: 1.8px solid #388a3d;
-    border-radius: 10px;
-    background-color: #e6fce7;
-  }
-
-  // Second column (additional info on): the word split into morphemes. A fixed width, not a
-  // min-width: rows share their right edge, so a column that grew with a long word
-  // (`nukkumaanmeno#aika`) would start further left than the rest. Longer words wrap instead.
-  &-word-parts {
-    flex: 0 0 14em;
-    margin-left: 1.5em;
-    overflow-wrap: anywhere;
-    cursor: pointer;
-  }
-
-  &-additional-info {
-    color: #3b3b3b;
-    font-size: 0.85em;
-    background-color: #f1f1f1;
-    border-radius: 0.5em;
-    padding: 0em 0.15em;
-    margin: 0.075em;
-  }
-
-  &-link {
-    color: #3b3b3b;
-    font-size: 0.85em;
-    background-color: #e6effa;
-    border-radius: 0.5em;
-    padding: 0em 0.15em;
-    margin: 0.075em;
-
-    &:hover {
-      background-color: #c2ddfc;
-    }
-
-    &:focus {
-      transition-delay: 1.5s;
-      color: rgb(247, 62, 62);
-      background-color: #c2ddfc;
-    }
-  }
-
-  @media (max-width: 760px) {
-    padding-left: 2em;
-
-    &-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-    }
   }
 }
 

@@ -29,8 +29,13 @@ const headingStyle = {
   whiteSpace: 'nowrap',
 }
 
-// Gear button + translation-language dropdown for flashcards.
-const SettingButton = ({ style }) => {
+// Gear button + translation-language dropdown; `onSelect` replaces the default language update.
+const SettingButton = ({
+  style,
+  className = 'flashcard-settings-trigger',
+  dataCy = 'flashcards-dictionary-language',
+  onSelect,
+}) => {
   const dispatch = useDispatch()
   const intl = useIntl()
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -54,7 +59,7 @@ const SettingButton = ({ style }) => {
       // MUI's touch ripple reads as a grey disc washing over a button this small and round, so the
       // click leaves the green hover fill as its only feedback.
       disableRipple
-      className="flashcard-settings-trigger"
+      className={className}
       sx={roundIconButtonSx}
       style={style}
     >
@@ -66,7 +71,7 @@ const SettingButton = ({ style }) => {
     // inline-flex, not the default block: a block wrapper's line box is taller than the 32px icon,
     // which left the gear off the centre line of whatever it sits beside.
     <div
-      data-cy="flashcards-dictionary-language"
+      data-cy={dataCy}
       style={{ display: 'inline-flex', alignItems: 'center', flexShrink: 0 }}
     >
       <AppMenu trigger={gear} minWidth={220}>
@@ -77,7 +82,9 @@ const SettingButton = ({ style }) => {
           <AppMenuItem
             key={option.value}
             selected={String(option.value) === String(dictionaryLanguage)}
-            onClick={() => dispatch(updateDictionaryLanguage(option.value))}
+            onClick={() =>
+              onSelect ? onSelect(option.value) : dispatch(updateDictionaryLanguage(option.value))
+            }
           >
             {option.label}
           </AppMenuItem>

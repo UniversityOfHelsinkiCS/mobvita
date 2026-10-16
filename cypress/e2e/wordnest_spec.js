@@ -24,8 +24,7 @@ describe('wordnest modal', function () {
   })
 
   it('fetches, displays and translates word nest modal correctly', function () {
-    // Desktop layout: below 1024px the modal has no "Show additional information" switch, and so
-    // no second (word parts) column.
+    // Desktop layout: nest panel beside the dictionary.
     cy.viewport(1280, 900)
 
     cy.contains('спортсменка', { timeout: 30000 }).click()
@@ -51,7 +50,7 @@ describe('wordnest modal', function () {
         // (Russian), so the label is not in English.
         cy.get('[data-cy=wordnest-additional-info-toggle]').click()
 
-        // Second column: the word split into morphemes, translating on click like the first.
+        // Markup on: each word shows split into morphemes and still translates on click.
         cy.contains('[data-cy="wordnest-word-parts"]', 'не⋅спорти́вный', { timeout: 30000 })
           .scrollIntoView()
           .should('be.visible')
