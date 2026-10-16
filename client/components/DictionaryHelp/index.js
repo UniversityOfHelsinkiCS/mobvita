@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -27,8 +26,10 @@ import AppLemma from 'Components/ui/AppLemma'
 import ContextTranslation from './ContextTranslation'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
+import SettingButton from 'Components/SettingsButton'
+import './DictionaryHelp.scss'
 
-
+// Dictionary card: gear language picker, lemma translations and (outside the nest) its nest modal.
 const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const [showHelp, setShow] = useState(false)
   const { width: windowWidth } = useWindowDimensions()
@@ -140,14 +141,6 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       )
   }, [translation, wordNestModalOpen])
 
-  const dictionaryOptions = translatableLanguages[learningLanguage]
-    ? translatableLanguages[learningLanguage].map(element => ({
-        key: element,
-        value: element,
-        text: intl.formatMessage({ id: element }),
-      }))
-    : []
-
   const translationEntries = useMemo(() => {
     return Array.isArray(translation) && translation !== 'no-clue-translation' ? translation : []
   }, [translation])
@@ -162,7 +155,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     translation !== 'no-clue-translation' &&
     sortedTranslation.map(translated => {
         return (
-          <div className="space-between" key={translated.URL || translated.lemma}>
+          <div key={translated.URL || translated.lemma}>
             {clue ? (
               <div
                 data-cy="translations"
@@ -217,6 +210,7 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         )
       })
 
+  // Switches the dictionary language and re-translates the shown lemmas into it.
   const handleDropdownChange = value => {
     if (translation) {
       const lemmas = translation?.map(t => t?.lemma).join('+')
@@ -309,35 +303,27 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     <div
       className={`dictionary-help${
         smallWindow && !inWordNestModal ? ' dictionary-help-overlay' : ''
-      }`}
+      }${inWordNestModal ? ' dictionary-help-in-nest' : ''}`}
     >
-      <Box
-        sx={{
-          backgroundColor: colors.card,
-          borderRadius: '20px',
-          padding: '1em',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-          color: colors.ink,
-        }}
-      >
+      <div className="dictionary-help-card">
         {!mobileDisplayAnnotations && (
-          <div className="flex space-between">
-            <div style={{ marginBottom: '.5em' }}>
-              <div
-                className="header-3"
-                style={{ fontWeight: '500', color: colors.ink, display: 'flex', alignItems: 'center' }}
+          <div className="dictionary-help-header">
+            <div className="dictionary-help-title header-3">
+              <SettingButton
+                className="dictionary-help-settings"
+                dataCy="dictionary-language"
+                onSelect={handleDropdownChange}
+              />
+              <FormattedMessage id="dictionary-header" />
+              <CustomTooltip
+                keyId="click-on-words-near-the-exercises-to-explore-their-meaning"
+                permanent
               >
-                <CustomTooltip
-                  keyId="click-on-words-near-the-exercises-to-explore-their-meaning"
-                  permanent
-                >
-                  <InfoOutlinedIcon
-                    data-cy="dictionary-info"
-                    sx={{ fontSize: 18, color: colors.muted, cursor: 'pointer', mr: '0.5em' }}
-                  />
-                </CustomTooltip>
-                <FormattedMessage id="dictionary-header" />
-              </div>
+                <InfoOutlinedIcon
+                  data-cy="dictionary-info"
+                  sx={{ fontSize: 18, color: colors.muted, cursor: 'pointer' }}
+                />
+              </CustomTooltip>
             </div>
             {!inWordNestModal && translationResults() && (
               <div
@@ -357,51 +343,12 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           </div>
         )}
 
-        {!mobileDisplayAnnotations && showDictionaryBox && translationResults() && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              gap: '0.5em',
-              marginBottom: '1em',
-            }}
-          >
-            <span style={{ color: colors.muted }}>
-              <FormattedMessage id="translation-target-language" />
-            </span>
-            {/* Kept as a native <select> (not AppSelect) so Cypress `.select()` in
-                dictionary_spec.js keeps working; styled to the design system. */}
-            <select
-              disabled={dictionaryOptions.length <= 1}
-              defaultValue={translationLanguageCode}
-              data-cy="dictionary-dropdown"
-              style={{
-                fontSize: font.input,
-                color: colors.ink,
-                backgroundColor: colors.card,
-                border: `1px solid ${colors.border}`,
-                borderRadius: '999px',
-                padding: '4px 12px',
-                cursor: dictionaryOptions.length <= 1 ? 'default' : 'pointer',
-              }}
-              onChange={e => handleDropdownChange(e.target.value)}
-            >
-              {dictionaryOptions.map(option => (
-                <option key={option.key} value={option.value}>
-                  {option.text}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
         <div >
           {!mobileDisplayAnnotations ? (
            <>
            {showDictionaryBox && (
             <div>
-              <div className="space-between pt-sm">
+              <div className="dictionary-help-body">
                 <div>
                   {showSurfaceWord() && !inWordNestModal && (
                     <div
@@ -447,29 +394,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
             </div>
           ) /* ??? WHAT IS THIS? why NOTES ??? */}
 
-          {/* smallWindow && !inWordNestModal ? (
-            <div className="flex align-self-end">
-              {focusedSpan && (
-                <Button
-                  icon
-                  basic
-                  onClick={() => dispatch(setAnnotationvisibilityMobile(!mobileDisplayAnnotations))}
-                  style={{ margin: '0em 1em' }}
-                >
-                  <Icon
-                    name={mobileDisplayAnnotations ? 'translate' : 'sticky note outline'}
-                    size="large"
-                    color="blue"
-                  />
-                </Button>
-              )}
-              <Button icon basic onClick={() => setShow(false)}>
-                <Icon name="angle down" size="large" color="blue" />
-              </Button>
-            </div>
-          ) : null */}
         </div>
-      </Box>
+      </div>
     </div>
   )
 }
