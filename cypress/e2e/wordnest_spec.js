@@ -24,6 +24,10 @@ describe('wordnest modal', function () {
   })
 
   it('fetches, displays and translates word nest modal correctly', function () {
+    // Desktop layout: below 1024px the modal has no "Show additional information" switch, and so
+    // no second (word parts) column.
+    cy.viewport(1280, 900)
+
     cy.contains('спортсменка', { timeout: 30000 }).click()
     cy.contains('sportswoman', { timeout: 30000 })
     cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
@@ -34,13 +38,19 @@ describe('wordnest modal', function () {
       .within(() => {
         cy.contains('спорт', { timeout: 30000 })
 
-        cy.contains('[data-cy="wordnest-word"]', 'спорт⋅сме́н', { timeout: 30000 })
+        // First column: plain words (the stress mark is optional — the BE may or may not send it).
+        cy.contains('[data-cy="wordnest-word"]', /^спортсме́?н$/, { timeout: 30000 })
           .scrollIntoView()
           .click()
 
         cy.contains('sportsman', { timeout: 30000 })
 
-        cy.contains('[data-cy="wordnest-word"]', 'не⋅спорти́вный', { timeout: 30000 })
+        // Off by default: no word parts until the switch is turned on.
+        cy.get('[data-cy="wordnest-word-parts"]').should('not.exist')
+        cy.contains('Show additional information').click()
+
+        // Second column: the word split into morphemes, translating on click like the first.
+        cy.contains('[data-cy="wordnest-word-parts"]', 'не⋅спорти́вный', { timeout: 30000 })
           .scrollIntoView()
           .should('be.visible')
           .click()
