@@ -601,6 +601,18 @@ const DesignSystem = () => {
               />
             </span>
           </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 28, marginTop: 16 }}>
+            {['sm', 'md', 'lg'].map(size => (
+              <span
+                key={size}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#666' }}
+              >
+                {size}
+                <AppSwitch size={size} checked={false} readOnly />
+                <AppSwitch size={size} checked readOnly />
+              </span>
+            ))}
+          </div>
         </Section>
 
         <Section title="AppThemeSwitch (light / dark)">
