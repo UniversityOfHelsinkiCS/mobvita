@@ -100,43 +100,52 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     <div className="wordnest">
       {ancestors.length === 0 && hasSeveralRoots && <Divider style={{ width: '95%' }} />}
       <div className="wordnest-row">
-        {/* Markup on: the word split into morphemes (`juoks⋅ija`, `aita#juoksija`) replaces it. */}
-        <span
-          className="wordnest-word-button"
-          onClick={() => handleWordClick(word, translationLemmas || word)}
-          onKeyPress={() => setOpen(!open)}
-          role="button"
-          tabIndex="0"
-        >
-          {showMoreInfo ? (
+        <div className="wordnest-row-main">
+          <span
+            className="wordnest-word-button"
+            onClick={() => handleWordClick(word, translationLemmas || word)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+          >
+            <span data-cy="wordnest-word" className="wordnest-word" style={wordStyle}>
+              {word}
+            </span>
+          </span>
+
+          {linkedNestsCleaned.map(nestLink => (
+            <span
+              key={nestLink}
+              className="wordnest-additional-info wordnest-link"
+              onClick={() => handleNestLinkClick(nestLink)}
+              onKeyPress={() => setOpen(!open)}
+              role="button"
+              tabIndex="0"
+            >
+              ⇒ {nestLink}
+            </span>
+          ))}
+
+          {showMoreInfo && additionalInfoCleaned.length > 0 && (
+            <span className="wordnest-additional-info">{additionalInfoString}</span>
+          )}
+        </div>
+        {/* Second column: the word split into morphemes (`juoks⋅ija`, `aita#juoksija`). */}
+        {showMoreInfo && (
+          <span
+            className="wordnest-word-button wordnest-word-parts"
+            onClick={() => handleWordClick(word, translationLemmas || word)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+          >
             <span
               data-cy="wordnest-word-parts"
               className="wordnest-word"
               style={wordStyle}
               dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
             />
-          ) : (
-            <span data-cy="wordnest-word" className="wordnest-word" style={wordStyle}>
-              {word}
-            </span>
-          )}
-        </span>
-
-        {linkedNestsCleaned.map(nestLink => (
-          <span
-            key={nestLink}
-            className="wordnest-additional-info wordnest-link"
-            onClick={() => handleNestLinkClick(nestLink)}
-            onKeyPress={() => setOpen(!open)}
-            role="button"
-            tabIndex="0"
-          >
-            ⇒ {nestLink}
           </span>
-        ))}
-
-        {showMoreInfo && additionalInfoCleaned.length > 0 && (
-          <span className="wordnest-additional-info">{additionalInfoString}</span>
         )}
       </div>
       {/* Plain render, not react-collapse: its 50ms fixed-height pass flickered on every toggle. */}
@@ -166,6 +175,16 @@ const NestBranch = ({
   )
 }
 
+// A node's children to show: compounds only when asked for, plain words first, then A–Z.
+const visibleChildren = (node, showCompounds) =>
+  [...(node.children || [])]
+    .filter(c => showCompounds || !c.is_compound)
+    .sort((a, b) => {
+      if (a.is_compound !== b.is_compound) return a.is_compound ? 1 : -1
+      return a.word.localeCompare(b.word)
+    })
+
+// A nest node and, recursively, its visible children.
 const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, showCompounds }) => {
   return (
     <NestBranch
@@ -175,25 +194,16 @@ const WordNest = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, showCo
       hasSeveralRoots={hasSeveralRoots}
       showMoreInfo={showMoreInfo}
     >
-      {wordNest.children &&
-        [...wordNest.children]
-          ?.filter(c => (showCompounds ? true : !c.is_compound))
-          .sort((a, b) => {
-            if (a.is_compound !== b.is_compound) {
-              return a.is_compound ? 1 : -1
-            }
-            return a.word.localeCompare(b.word)
-          })
-          .map((n, index) => (
-            <WordNest
-              key={`${wordNest.word}-${index}`}
-              wordNest={n}
-              hasSeveralRoots={hasSeveralRoots}
-              wordToCheck={wordToCheck}
-              showMoreInfo={showMoreInfo}
-              showCompounds={showCompounds}
-            />
-          ))}
+      {visibleChildren(wordNest, showCompounds).map((n, index) => (
+        <WordNest
+          key={`${wordNest.word}-${index}`}
+          wordNest={n}
+          hasSeveralRoots={hasSeveralRoots}
+          wordToCheck={wordToCheck}
+          showMoreInfo={showMoreInfo}
+          showCompounds={showCompounds}
+        />
+      ))}
     </NestBranch>
   )
 }
@@ -239,6 +249,13 @@ const WordNestModal = ({
     (rootLemmas?.length > 1 && rootLemmas?.length > 1) || secondRootLemmas?.length > 1
   const wordNest = makeWordNest((rootLemmas?.length > 1 && rootLemmas) || secondRootLemmas, words)
   const wordNestHasCompounds = words.some(w => w.is_compound)
+  // A lone top word that repeats the title (TILA → tila) is skipped and its children lead the
+  // list, unless none are visible (only compounds, toggle off): then the word stays.
+  const repeatsTitle =
+    wordNest?.length === 1 &&
+    rootLemmas.some(r => r.word.toLowerCase() === wordNest[0].word.toLowerCase())
+  const titleChildren = repeatsTitle ? visibleChildren(wordNest[0], showCompounds) : []
+  const topNodes = titleChildren.length > 0 ? titleChildren : wordNest
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
@@ -350,8 +367,13 @@ const WordNestModal = ({
           </div>
           {/* Outer box scrolls; the inner one holds the columns so they never overflow sideways. */}
           <div className="wordnest-list">
-            <div className={`wordnest-list-words${showCompounds ? ' wordnest-list-columns' : ''}`}>
-              {wordNest?.map((n, index) => (
+            {/* Compounds flow into two columns, unless markup already takes the second column. */}
+            <div
+              className={`wordnest-list-words${
+                showCompounds && !showMoreInfo ? ' wordnest-list-columns' : ''
+              }`}
+            >
+              {topNodes?.map((n, index) => (
                 <WordNest
                   key={`${n.word}-${index}`}
                   wordNest={n}

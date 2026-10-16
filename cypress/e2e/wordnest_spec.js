@@ -50,7 +50,7 @@ describe('wordnest modal', function () {
         // (Russian), so the label is not in English.
         cy.get('[data-cy=wordnest-additional-info-toggle]').click()
 
-        // Markup on: each word shows split into morphemes and still translates on click.
+        // Second column: the word split into morphemes, translating on click like the first.
         cy.contains('[data-cy="wordnest-word-parts"]', 'не⋅спорти́вный', { timeout: 30000 })
           .scrollIntoView()
           .should('be.visible')

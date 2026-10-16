@@ -135,9 +135,7 @@
 
   &-row {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.2em 0.4em;
     font-size: 16px;
     font-weight: 500;
     line-height: 1.45;
@@ -146,6 +144,24 @@
     @media (max-width: 760px) {
       font-size: 14px;
     }
+
+    // Plain word, its nest links and extra info; wraps within the first column.
+    &-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.2em 0.4em;
+    }
+  }
+
+  // Second column (markup on). Fixed width, so every row's column starts at the same x
+  // whatever its nesting depth; long words wrap instead of pushing it left.
+  &-word-parts {
+    flex: 0 0 14em;
+    margin-left: 1.5em;
+    overflow-wrap: anywhere;
   }
 
   &-word-button {
