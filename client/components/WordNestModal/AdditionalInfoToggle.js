@@ -10,6 +10,7 @@ const AdditionalInfoToggle = ({ showMoreInfo, setShowMoreInfo }) => {
   return (
     <div className="concept-toggles">
       <FormControlLabel
+        data-cy="wordnest-additional-info-toggle"
         control={<AppSwitch checked={showMoreInfo} onChange={() => setShowMoreInfo(!showMoreInfo)} />}
         label={intl.formatMessage({ id: 'show-additional-info' })}
         sx={{

@@ -47,7 +47,9 @@ describe('wordnest modal', function () {
 
         // Off by default: no word parts until the switch is turned on.
         cy.get('[data-cy="wordnest-word-parts"]').should('not.exist')
-        cy.contains('Show additional information').click()
+        // By data-cy, not label text: the test user's interface language is the learning language
+        // (Russian), so the label is not in English.
+        cy.get('[data-cy=wordnest-additional-info-toggle]').click()
 
         // Second column: the word split into morphemes, translating on click like the first.
         cy.contains('[data-cy="wordnest-word-parts"]', 'не⋅спорти́вный', { timeout: 30000 })
