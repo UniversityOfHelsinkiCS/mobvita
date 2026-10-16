@@ -108,12 +108,9 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
             role="button"
             tabIndex="0"
           >
-            <span
-              data-cy="wordnest-word"
-              className="wordnest-word"
-              style={wordStyle}
-              dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
-            />{' '}
+            <span data-cy="wordnest-word" className="wordnest-word" style={wordStyle}>
+              {word}
+            </span>{' '}
           </span>
 
           {linkedNestsCleaned.map(nestLink => (
@@ -133,6 +130,25 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
             <span className="wordnest-additional-info">{additionalInfoString}</span>
           )}
         </div>
+        {/* Second column: the word split into morphemes (`juoks⋅ija`, `aita#juoksija`). Rows all
+            end at the container's right edge whatever their nesting depth, so it lines up. Same
+            frequency colour, current-word highlight and click (translate) as the plain word. */}
+        {showMoreInfo && (
+          <span
+            className="wordnest-word-parts"
+            onClick={() => handleWordClick(word, translationLemmas || word)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+          >
+            <span
+              data-cy="wordnest-word-parts"
+              className="wordnest-word"
+              style={wordStyle}
+              dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
+            />
+          </span>
+        )}
       </div>
       <Collapse isOpened={open}>{children}</Collapse>
     </div>
@@ -233,7 +249,6 @@ const WordNestModal = ({
   )
   const hasSeveralRoots =
     (rootLemmas?.length > 1 && rootLemmas?.length > 1) || secondRootLemmas?.length > 1
-  const hasAdditionalInfo = words.some(word => word.others?.length > 0)
   const wordNest = makeWordNest((rootLemmas?.length > 1 && rootLemmas) || secondRootLemmas, words)
   const wordNestHasCompounds = words.some(w => w.is_compound)
 
@@ -321,7 +336,7 @@ const WordNestModal = ({
         </span>
       }
     >
-      {(wordNestHasCompounds || (!smallWindow && hasAdditionalInfo)) && (
+      {(wordNestHasCompounds || (!smallWindow && words.length > 0)) && (
         <div
           className="wordnest-modal-header-items"
           style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5em', marginBottom: '1em' }}
@@ -344,7 +359,8 @@ const WordNestModal = ({
               }}
             />
           )}
-          {!smallWindow && hasAdditionalInfo && (
+          {/* Every nest has segmented forms, so the switch no longer waits for `others`. */}
+          {!smallWindow && (
             <AdditionalInfoToggle showMoreInfo={showMoreInfo} setShowMoreInfo={setShowMoreInfo} />
           )}
         </div>

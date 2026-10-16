@@ -2247,6 +2247,16 @@ label.file-upload-btn {
     background-color: #e6fce7;
   }
 
+  // Second column (additional info on): the word split into morphemes. A fixed width, not a
+  // min-width: rows share their right edge, so a column that grew with a long word
+  // (`nukkumaanmeno#aika`) would start further left than the rest. Longer words wrap instead.
+  &-word-parts {
+    flex: 0 0 14em;
+    margin-left: 1.5em;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+
   &-additional-info {
     color: #3b3b3b;
     font-size: 0.85em;

@@ -14,6 +14,7 @@ services:
       CHOKIDAR_USEPOLLING: "true"
       VITE_HMR_HOST: "localhost"
       VITE_HMR_CLIENT_PORT: "8000"
+      WRITING_CLINIC_URL: "${WRITING_CLINIC_URL:-http://svm-58.cs.helsinki.fi:1234}"
       TZ: "Europe/Helsinki"
     volumes:
       - ./:/usr/src/app
