@@ -117,25 +117,16 @@
   }
 }
 
-// Compound words make the list long, so it flows into two columns.
-.wordnest-list-columns {
-  column-count: 2;
-  column-gap: 2em;
-
-  @media (max-width: 639px) {
-    column-count: 1;
-  }
-}
-
 .wordnest {
   // Top-level rows start flush; each level below steps in.
   .wordnest {
     padding-left: 1.5em;
   }
 
+  // Two columns: the plain word with its links / notes (wraps), then — additional info on — the
+  // word parts at a fixed width on the right.
   &-row {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
     gap: 0.2em 0.4em;
     font-size: 16px;
@@ -145,6 +136,26 @@
 
     @media (max-width: 760px) {
       font-size: 14px;
+    }
+
+    &-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.2em 0.4em;
+    }
+  }
+
+  // Fixed width, not min-width: every row ends at the list's right edge, so a column that grew with
+  // a long word (`nukkumaanmeno#aika`) would start further left than the rest. Long words wrap.
+  &-word-parts {
+    flex: 0 0 14em;
+    overflow-wrap: anywhere;
+
+    @media (max-width: 760px) {
+      flex-basis: 11em;
     }
   }
 

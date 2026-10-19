@@ -15,7 +15,8 @@ import NestToggle from './NestToggle'
 import './WordNestModal.scss'
 import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
-// One nest row: the word (or its markup), links to related nests and its child rows.
+// One nest row: the plain word, links to related nests and (additional info on) its notes and a second
+// column with the word split into morphemes; then its child rows.
 const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
   const {
@@ -100,43 +101,56 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     <div className="wordnest">
       {ancestors.length === 0 && hasSeveralRoots && <Divider style={{ width: '95%' }} />}
       <div className="wordnest-row">
-        {/* Markup on: the word split into morphemes (`juoks⋅ija`, `aita#juoksija`) replaces it. */}
-        <span
-          className="wordnest-word-button"
-          onClick={() => handleWordClick(word, translationLemmas || word)}
-          onKeyPress={() => setOpen(!open)}
-          role="button"
-          tabIndex="0"
-        >
-          {showMoreInfo ? (
+        {/* First column: always the plain word. */}
+        <div className="wordnest-row-main">
+          <span
+            className="wordnest-word-button"
+            onClick={() => handleWordClick(word, translationLemmas || word)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+          >
+            <span data-cy="wordnest-word" className="wordnest-word" style={wordStyle}>
+              {word}
+            </span>
+          </span>
+
+          {linkedNestsCleaned.map(nestLink => (
+            <span
+              key={nestLink}
+              className="wordnest-additional-info wordnest-link"
+              onClick={() => handleNestLinkClick(nestLink)}
+              onKeyPress={() => setOpen(!open)}
+              role="button"
+              tabIndex="0"
+            >
+              ⇒ {nestLink}
+            </span>
+          ))}
+
+          {showMoreInfo && additionalInfoCleaned.length > 0 && (
+            <span className="wordnest-additional-info">{additionalInfoString}</span>
+          )}
+        </div>
+
+        {/* Second column (additional info on): the word split into morphemes (`juoks⋅ija`,
+            `aita#juoksija`), with the same colour, highlight and click as the plain word. Rows
+            share their right edge at any depth, so a fixed-width column lines up. */}
+        {showMoreInfo && (
+          <span
+            className="wordnest-word-button wordnest-word-parts"
+            onClick={() => handleWordClick(word, translationLemmas || word)}
+            onKeyPress={() => setOpen(!open)}
+            role="button"
+            tabIndex="0"
+          >
             <span
               data-cy="wordnest-word-parts"
               className="wordnest-word"
               style={wordStyle}
               dangerouslySetInnerHTML={sanitizeHtml(cleanedWord)}
             />
-          ) : (
-            <span data-cy="wordnest-word" className="wordnest-word" style={wordStyle}>
-              {word}
-            </span>
-          )}
-        </span>
-
-        {linkedNestsCleaned.map(nestLink => (
-          <span
-            key={nestLink}
-            className="wordnest-additional-info wordnest-link"
-            onClick={() => handleNestLinkClick(nestLink)}
-            onKeyPress={() => setOpen(!open)}
-            role="button"
-            tabIndex="0"
-          >
-            ⇒ {nestLink}
           </span>
-        ))}
-
-        {showMoreInfo && additionalInfoCleaned.length > 0 && (
-          <span className="wordnest-additional-info">{additionalInfoString}</span>
         )}
       </div>
       {/* Plain render, not react-collapse: its 50ms fixed-height pass flickered on every toggle. */}
@@ -348,9 +362,10 @@ const WordNestModal = ({
               </div>
             )}
           </div>
-          {/* Outer box scrolls; the inner one holds the columns so they never overflow sideways. */}
+          {/* Outer box scrolls. "Show compound words" only adds compound rows to the tree; each of
+              them gets both columns like any other row. */}
           <div className="wordnest-list">
-            <div className={`wordnest-list-words${showCompounds ? ' wordnest-list-columns' : ''}`}>
+            <div className="wordnest-list-words">
               {wordNest?.map((n, index) => (
                 <WordNest
                   key={`${n.word}-${index}`}
