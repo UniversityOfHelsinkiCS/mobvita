@@ -220,7 +220,7 @@ const EloChart = ({ width }) => {
 
       {/* Streak / ability / flashcard scores */}
       {/* Wraps in a narrow column (sidebar open, phones) instead of running off the card. */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 28px', marginTop: 16 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 22px', marginTop: 16 }}>
         <CustomTooltip permanent placement="top" keyId="progress-streak-explanation">
           <span style={statStyle}>
             <LocalFireDepartmentIcon style={{ fontSize: 18 }} />
