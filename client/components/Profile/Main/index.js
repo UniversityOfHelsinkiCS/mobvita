@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Box } from '@mui/material'
 import EloChart from 'Components/HomeView/EloChart'
 import MedalSummary from 'Components/HomeView/MedalSummary'
@@ -83,9 +84,18 @@ const MobileView = ({teacherView}) => {
   )
 }
 
+// The open helper sidebar takes 400px (380px + gap) of the window between its bottom-sheet
+// breakpoint (≤768px) and the width where it fits beside the page (≥1856px) — see
+// `.cont.sidebar-pushed`. Pick the layout from the width left for the content, not the window:
+// two columns squeezed into ~390px (a 884px window) overflowed the Progress card.
+const SIDEBAR_SPACE = 400
+
 const Main = ({teacherView}) => {
   const { width } = useWindowDimensions()
-  const bigScreen = width >= 700
+  const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const sidebarTakesSpace = isSidebarOpen && width > 768 && width < 1856
+  const contentWidth = width - (sidebarTakesSpace ? SIDEBAR_SPACE : 0)
+  const bigScreen = contentWidth >= 700
   return <>{bigScreen ? <DesktopView teacherView={teacherView} /> : <MobileView teacherView={teacherView} />}</>
 }
 

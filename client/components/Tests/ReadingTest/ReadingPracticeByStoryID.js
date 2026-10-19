@@ -177,6 +177,9 @@ const AnswerLocationSettings = ({ checked, onChange }) => (
   </AppMenu>
 )
 
+// Where the question card pins on big screens: level with the HelperSidebar's top.
+const STICKY_TOP = '5.83rem'
+
 // Student reading practice: the story beside a question card with wrapping answer options.
 const ReadingPracticeView = () => {
   const dispatch = useDispatch()
@@ -396,7 +399,7 @@ const ReadingPracticeView = () => {
       style={{
         maxWidth: 1108,
         // 1.5em top aligns the card with the assistant panel (HelperSidebar sits at top: 4.5em).
-        margin: '1.5em auto',
+        margin: '0 auto',
         width: '100%',
         display: 'flex',
         gap: 20,
@@ -430,15 +433,26 @@ const ReadingPracticeView = () => {
           onWordClick={handleWordTranslate}
         />
       </Box>
-      <section
-        style={{
+      {/* Big screens: the question card stays level with the assistant panel while the story
+          scrolls. Sticky needs room to travel, so the column stretches to the story's height (it
+          used to be `flex-start`, as tall as the card, so the card never moved). Below `md` the
+          columns wrap and the card scrolls with the page as before. */}
+      <Box
+        component="section"
+        sx={{
           flex: '2 1 300px',
           minWidth: 300,
           width: '100%',
-          alignSelf: 'flex-start',
+          alignSelf: { xs: 'flex-start', md: 'stretch' },
         }}
       >
-        <div style={{ position: 'sticky', top: 16 }}>
+        <Box
+          sx={{
+            position: { md: 'sticky' },
+            // HelperSidebar's `top`: navbar (4.125em) + page padding (1.7em).
+            top: { md: STICKY_TOP },
+          }}
+        >
           <Box
             data-cy="rp-question-card"
             sx={{
@@ -448,7 +462,14 @@ const ReadingPracticeView = () => {
               fontFamily: font.languageContent,
             }}
           >
-            <Box sx={{ ...quizStackSx, maxHeight: 'calc(100vh - 72px)', overflowY: 'auto' }}>
+            <Box
+              sx={{
+                ...quizStackSx,
+                // Fits under the pinned top on big screens; long question sets scroll inside.
+                maxHeight: { xs: 'calc(100vh - 72px)', md: `calc(100vh - ${STICKY_TOP} - 24px)` },
+                overflowY: 'auto',
+              }}
+            >
               {readingQuestionsPending && total === 0 ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: 20 }}>
                   <Spinner inline size={40} />
@@ -539,8 +560,8 @@ const ReadingPracticeView = () => {
               )}
             </Box>
           </Box>
-        </div>
-      </section>
+        </Box>
+      </Box>
 
       {canUseAssistant && (
         <HelperSidebar>

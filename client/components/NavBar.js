@@ -13,7 +13,6 @@ import CustomTooltip from 'Components/CustomTooltip'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   logout,
@@ -601,30 +600,20 @@ export default function NavBar() {
               >
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
               </AppMenuItem>
-              {canSwitchTeacherView && (
+              {/* Staging/dev only: the switch is visual-only for now (no theme behind it). */}
+              {hiddenFeatures && (
                 <MenuRow
                   style={{ justifyContent: 'space-between', cursor: 'default' }}
                   icon={
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                      <SchoolOutlinedIcon />
-                      {intl.formatMessage({ id: 'student-view' })}
+                      <AppIcon src={images.brush01} size={22} />
+                      <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
                     </span>
                   }
                 >
-                  <AppSwitch checked={!teacherView} onChange={handleStudentViewSwitch} />
+                  <AppSwitch checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
                 </MenuRow>
               )}
-              <MenuRow
-                style={{ justifyContent: 'space-between', cursor: 'default' }}
-                icon={
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 14 }}>
-                    <AppIcon src={images.brush01} size={22} />
-                    <FormattedMessage id="dark-theme" defaultMessage="Dark Theme" />
-                  </span>
-                }
-              >
-                <AppSwitch checked={darkVisual} onChange={() => setDarkVisual(v => !v)} />
-              </MenuRow>
               <AppMenuItem icon={<AppIcon src={images.logOut01} size={22} />} onClick={signOut}>
                 <FormattedMessage id="Logout" defaultMessage="Logout" />
               </AppMenuItem>

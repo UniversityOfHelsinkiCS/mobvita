@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined'
 import { cefrNum2Cefr } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -157,8 +158,12 @@ const EloChart = ({ width }) => {
 
   const latestHours = weeks.length ? weeks[weeks.length - 1].hours : 0
 
+  // Current level: the backend's estimate from exercise history.
   const cefrScore = user.current_proficiency_score ?? user.current_cefr
   const cefr = cefrNum2Cefr(cefrScore) || '—'
+  // Latest level test result (#1389): `grade`, an index into `skillLevels` (0 = pre-A1, so a
+  // number check, not a truthiness one). Absent until the learner set or tested a level.
+  const testCefr = typeof user.grade === 'number' ? cefrNum2Cefr(user.grade) : null
 
   const level = user.level ?? 0
   const requiredXp = (((level + 1) * 50 - 25) ** 2 - 625) / 100
@@ -188,15 +193,34 @@ const EloChart = ({ width }) => {
       }}
     >
       {/* Header: title + CEFR ring */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+        }}
+      >
         <h2 style={{ margin: 0, fontSize: 28, fontWeight: 500 }}>
           <FormattedMessage id="Progress" />
         </h2>
-        <CefrRing cefr={cefr} progress={xpProgress} />
+        <CustomTooltip permanent placement="top" keyId="progress-current-level-explanation">
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'default' }}
+            data-cy="progress-current-level"
+          >
+            <span style={{ color: colors.muted, fontSize: 14 }}>
+              <FormattedMessage id="progress-current-level" />
+            </span>
+            <CefrRing cefr={cefr} progress={xpProgress} />
+          </div>
+        </CustomTooltip>
       </div>
 
       {/* Streak / ability / flashcard scores */}
-      <div style={{ display: 'flex', gap: 28, marginTop: 16 }}>
+      {/* Wraps in a narrow column (sidebar open, phones) instead of running off the card. */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 28px', marginTop: 16 }}>
         <CustomTooltip permanent placement="top" keyId="progress-streak-explanation">
           <span style={statStyle}>
             <LocalFireDepartmentIcon style={{ fontSize: 18 }} />
@@ -215,6 +239,14 @@ const EloChart = ({ width }) => {
             {flashcardScore}
           </span>
         </CustomTooltip>
+        {testCefr && (
+          <CustomTooltip permanent placement="top" keyId="progress-test-level-explanation">
+            <span style={statStyle} data-cy="progress-test-level">
+              <AssignmentTurnedInOutlinedIcon style={{ fontSize: 18 }} />
+              {testCefr}
+            </span>
+          </CustomTooltip>
+        )}
       </div>
 
       {/* Practiced hours */}

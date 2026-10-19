@@ -156,7 +156,9 @@ const Settings = ({teacherView}) => {
           </AccordionDetails>
         </Accordion>
 
-        {!teacherView && (
+        {/* Learning settings (manual CEFR) only during onboarding — #1389: afterwards exercise
+            history drives the exercise picker and a manual level would have no effect. */}
+        {!teacherView && user?.is_new_user && (
           <Accordion
             className="add-story-accordion-item"
             expanded={accordionState === 8}

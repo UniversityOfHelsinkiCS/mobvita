@@ -3309,6 +3309,12 @@ label.file-upload-btn {
   justify-content: center;
   gap: 16px;
   padding: 2rem 0;
+  max-width: 100%;
+
+  @media (max-width: 480px) {
+    gap: 12px;
+    padding: 1.25rem 0;
+  }
 }
 
 // No border or frame — the flag artwork carries its own edges.
@@ -3316,6 +3322,10 @@ label.file-upload-btn {
   display: block;
   height: 72px;
   border-radius: 8px;
+
+  @media (max-width: 480px) {
+    height: 56px;
+  }
 }
 
 // Value first, label under it: the number is what the tile is for.
@@ -3324,13 +3334,23 @@ label.file-upload-btn {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  min-width: 190px;
+  // `min()` + border-box: 190px on wide screens, but never wider than the row — padding and border
+  // used to sit on top of the 190px and pushed the tile off a phone-width page.
+  box-sizing: border-box;
+  min-width: min(190px, 100%);
+  max-width: 100%;
   padding: 14px 24px;
   background-color: #ffffff;
   border: 1px solid #e8e5dc;
   border-radius: 16px;
 
+  @media (max-width: 480px) {
+    padding: 12px 16px;
+  }
+
   .progress-stat-value {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: 34px;
     font-weight: 600;
     line-height: 1.1;
@@ -3341,6 +3361,7 @@ label.file-upload-btn {
     font-size: 14px;
     color: #9d9b92;
     text-align: center;
+    overflow-wrap: anywhere;
   }
 }
 
