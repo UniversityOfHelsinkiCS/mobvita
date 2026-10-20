@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
   getTranslationAction,
+  getNestTranslationAction,
   setWords,
   changeTranslationStageAction,
 } from 'Utilities/redux/translationReducer'
@@ -41,15 +42,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
 
-  const {
-    pending,
-    data: translation,
-    surfaceWord,
-    lemmas,
-    clue,
-    maskSymbol,
-    showDictionaryBox,
-  } = useSelector(({ translation }) => translation)
+  const translationState = useSelector(({ translation }) => translation)
+  const { surfaceWord, lemmas, clue, maskSymbol, showDictionaryBox } = translationState
+  // Inside the nest, lemma cards come from the nest's own slot, never the story word's.
+  const { pending, data: translation } =
+    (inWordNestModal && translationState.nest) || translationState
 
   const { focusedSpan, mobileDisplayAnnotations } = useSelector(({ annotations }) => annotations)
 
@@ -210,15 +207,14 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         )
       })
 
-  // Switches the dictionary language and re-translates the shown lemmas into it.
+  // Switches the dictionary language and re-translates the shown lemmas (in the nest, both panes).
   const handleDropdownChange = value => {
-    if (translation) {
-      const lemmas = translation?.map(t => t?.lemma).join('+')
-      if (lemmas !== '')
-        dispatch(
-          getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas })
-        )
-    }
+    const joinLemmas = data => (Array.isArray(data) ? data.map(t => t?.lemma).join('+') : '')
+    const query = { learningLanguage, dictionaryLanguage: value }
+    const storyLemmas = joinLemmas(translationState.data)
+    const nestLemmas = inWordNestModal ? joinLemmas(translation) : ''
+    if (storyLemmas) dispatch(getTranslationAction({ ...query, wordLemmas: storyLemmas }))
+    if (nestLemmas) dispatch(getNestTranslationAction({ ...query, wordLemmas: nestLemmas }))
     dispatch(updateDictionaryLanguage(value))
   }
 

@@ -200,6 +200,7 @@ export default (state = initialState, action) => {
         ...state,
         spanAnnotations: state.spanAnnotations.concat(action.spanAnnotations),
       }
+    case 'GET_NEST_TRANSLATION_ATTEMPT':
     case 'GET_TRANSLATION_ATTEMPT': // always switch to translation view when fetching them
       return {
         ...state,

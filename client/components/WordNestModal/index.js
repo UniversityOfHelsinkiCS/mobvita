@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AppDialog from 'Components/ui/AppDialog'
 import { colors } from 'Assets/mui_theme/designTokens'
 import DictionaryHelp from 'Components/DictionaryHelp'
-import { getTranslationAction } from 'Utilities/redux/translationReducer'
+import { getNestTranslationAction } from 'Utilities/redux/translationReducer'
 import { getWordNestAction, getLinkedWordNestAction } from 'Utilities/redux/wordNestReducer'
 import { dictionaryLanguageSelector, learningLanguageSelector, speak, voiceLanguages, sanitizeHtml } from 'Utilities/common'
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -51,11 +51,12 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     if (rank >= 16000) return { color: '#00afe8' }
   }
 
+  // Speaks the word and shows it in the nest's own dictionary pane.
   const handleWordClick = (surface, lemma) => {
     if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
 
     dispatch(
-      getTranslationAction({
+      getNestTranslationAction({
         learningLanguage,
         wordLemmas: lemma,
         dictionaryLanguage,
@@ -226,7 +227,6 @@ const WordNestModal = ({
   wordToCheck,
   setWordToCheck,
   restoreTranslationOnClose = true,
-  prefLemma,
   ...props
 }) => {
 
@@ -259,25 +259,9 @@ const WordNestModal = ({
 
   const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
 
+  // Closes the nest; the story's cards were never touched, so only the chosen word resets.
   const handleModalclose = () => {
-    const restoreWord = props.storyWord || ''
-
-    // In some contexts (e.g. assistant sidebar) we want closing the modal to NOT touch
-    // the current dictionary/translation cards.
-    if (restoreTranslationOnClose && restoreWord) {
-      dispatch(
-        getTranslationAction({
-          learningLanguage,
-          wordLemmas: restoreWord,
-          dictionaryLanguage,
-          prefLemma,
-        })
-      )
-    }
-
-    if (restoreTranslationOnClose) {
-      setWordToCheck(restoreWord)
-    }
+    if (restoreTranslationOnClose) setWordToCheck(props.storyWord || '')
 
     setOpen(false)
   }
@@ -313,7 +297,7 @@ const WordNestModal = ({
     if (!wordToCheck || wordToCheck === '-') return
 
     dispatch(
-      getTranslationAction({
+      getNestTranslationAction({
         learningLanguage,
         wordLemmas: wordToCheck,
         dictionaryLanguage,
