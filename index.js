@@ -71,6 +71,8 @@ const setupFrontend = async (httpServer) => {
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
   app.use(express.static(DIST_PATH))
+  // Missing hashed assets must 404, not fall through to index.html served as CSS/JS with a 200.
+  app.use('/assets', (_, res) => res.sendStatus(404))
   app.get('/{*path}', (req, res) => res.sendFile(INDEX_PATH))
 }
 

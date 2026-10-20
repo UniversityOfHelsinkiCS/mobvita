@@ -11,6 +11,7 @@ import 'regenerator-runtime/runtime'
 import 'Assets/custom.scss'
 import store from 'Utilities/store'
 import { basePath, inProduction, isStaging } from 'Utilities/common'
+import { watchForDeploys } from 'Utilities/deployUpdates'
 import App from 'Components/App'
 import ErrorBoundary from 'Components/ErrorBoundary'
 import ConnectedIntlProvider from 'Components/ConnectedIntlProvider'
@@ -66,6 +67,8 @@ Sentry.init({
 })
 
 console.log(process.env.ENVIRONMENT)
+
+watchForDeploys()
 
 // This removes most of responsivevoice's logging.
 if (window.responsiveVoice) {
