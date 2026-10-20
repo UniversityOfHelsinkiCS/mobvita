@@ -27,28 +27,31 @@ const initialState = {
   step: -1,
 }
 
+// Holds the user's lesson setup (themes, topics, vocab difficulty) and the current setup step.
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case 'TOGGLE_LESSON_SEMANTIC':
-      const { semantic } = action;
-      if (state.lesson.semantic.includes(semantic)) {
+    case 'TOGGLE_LESSON_SEMANTIC': {
+      const { semantic } = action
+      // No semantic list before the lesson loads or after a save without one (FRONTEND-76).
+      const currentSemantics = state.lesson.semantic || []
+      if (currentSemantics.includes(semantic)) {
         return {
           ...state,
           lesson: {
             ...state.lesson,
-            semantic: state.lesson.semantic.filter(item => item !== semantic),
+            semantic: currentSemantics.filter(item => item !== semantic),
           },
-        };
-      } else {
-        return {
-          ...state,
-          lesson: {
-            ...state.lesson,
-            semantic: [...state.lesson.semantic, semantic],
-          },
-        };
+        }
       }
+      return {
+        ...state,
+        lesson: {
+          ...state.lesson,
+          semantic: [...currentSemantics, semantic],
+        },
+      }
+    }
 
 
     case 'SET_LESSON_SELECTED_TOPICS':
