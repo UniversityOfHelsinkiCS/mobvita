@@ -70,9 +70,14 @@ const setupFrontend = async (httpServer) => {
   const DIST_PATH = path.resolve(__dirname, './dist')
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
+  // Asset names are content hashes (a change gets a new name), so browsers may keep them a year.
+  app.use(
+    '/assets',
+    express.static(path.resolve(DIST_PATH, 'assets'), { maxAge: '1y', immutable: true }),
+  )
   app.use(express.static(DIST_PATH))
   // Missing hashed assets must 404, not fall through to index.html served as CSS/JS with a 200.
-  app.use('/assets', (_, res) => res.sendStatus(404))
+  app.use('/assets', (_, res) => res.set('Cache-Control', 'no-store').sendStatus(404))
   app.get('/{*path}', (req, res) => res.sendFile(INDEX_PATH))
 }
 
