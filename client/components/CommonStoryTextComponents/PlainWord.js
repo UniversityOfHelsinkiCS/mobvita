@@ -190,11 +190,15 @@ const PlainWord = ({ word, snippet, annotatingAllowed, focusedConcept, hideDiffi
           const safeSnippet = Array.isArray(snippet) ? snippet : []
           const sentence = safeSnippet.filter(
             s => sentence_id - 1 <= s.sentence_id && s.sentence_id <= sentence_id + 1).map(t=>t.surface).join('').replaceAll('\n', ' ').trim()
-          dispatch(
-            getContextTranslation(sentence,
-              learningLanguageLocaleCodes[learningLanguage],
-              learningLanguageLocaleCodes[dictionaryLanguage])
-          )
+          // No snippet (the crossword's story text, Compete with feedback hidden) means no sentence:
+          // skip the prefetch — an empty `source` makes /ctxTranslate answer 500.
+          if (sentence) {
+            dispatch(
+              getContextTranslation(sentence,
+                learningLanguageLocaleCodes[learningLanguage],
+                learningLanguageLocaleCodes[dictionaryLanguage])
+            )
+          }
         }
         setAllowTranslating(false)
         setTimeout(() => {

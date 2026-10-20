@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
   getTranslationAction,
+  getClueTranslationAction,
   setWords,
   changeTranslationStageAction,
 } from 'Utilities/redux/translationReducer'
@@ -211,13 +212,33 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
       })
 
   // Switches the dictionary language and re-translates the shown lemmas into it.
+  // `translation` is not always an array: a crossword clue with no result is the string
+  // 'no-clue-translation'. The gear is always on screen now (the old <select> only showed with
+  // results), so mapping it unguarded crashed the crossword page on a language change.
   const handleDropdownChange = value => {
-    if (translation) {
-      const lemmas = translation?.map(t => t?.lemma).join('+')
-      if (lemmas !== '')
+    const shownLemmas = translationEntries
+      .map(t => t?.lemma)
+      .filter(Boolean)
+      .join('+')
+
+    if (clue) {
+      // Crossword clue: ask again in clue mode (unrecorded, like CrosswordView), falling back to the
+      // clue's own lemmas when the last language had no translation for it.
+      const clueLemmas = shownLemmas || lemmas
+      if (clueLemmas) {
         dispatch(
-          getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas })
+          getClueTranslationAction({
+            learningLanguage,
+            dictionaryLanguage: value,
+            wordLemmas: clueLemmas,
+            record: 0,
+          })
         )
+      }
+    } else if (shownLemmas) {
+      dispatch(
+        getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: shownLemmas })
+      )
     }
     dispatch(updateDictionaryLanguage(value))
   }
@@ -355,6 +376,9 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
                       style={{
                         paddingBottom: '0.5em',
                         display: 'flex',
+                        alignItems: 'center',
+                        // Space between the speaker and the clicked word.
+                        gap: '0.5em',
                         ...getTextStyle(learningLanguage),
                       }}
                     >

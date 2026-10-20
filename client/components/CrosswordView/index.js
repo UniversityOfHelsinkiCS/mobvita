@@ -278,7 +278,7 @@ const CrosswordView = () => {
           className="practice-card"
           sx={{
             position: 'relative',
-            marginTop: '1.5em',
+            marginTop: '0',
             backgroundColor: colors.card,
             borderRadius: '30px',
             padding: '1.5em',
