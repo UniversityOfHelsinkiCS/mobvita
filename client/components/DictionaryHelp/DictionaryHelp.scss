@@ -63,6 +63,13 @@
       padding-top: 0;
     }
   }
+
+  // Nest lookup in flight: old lemmas are gone, the spinner sits centred at the top.
+  &-loading {
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+  }
 }
 
 .dictionary-translations {

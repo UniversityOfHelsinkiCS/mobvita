@@ -26,6 +26,7 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
 import AppLemma from 'Components/ui/AppLemma'
 import ContextTranslation from './ContextTranslation'
+import Spinner from 'Components/Spinner'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
 import SettingButton from 'Components/SettingsButton'
@@ -247,7 +248,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   // arrow inverts relative to the desktop layout.
   const cornerArrowUp = windowWidth < 1024 ? !showDictionaryBox : showDictionaryBox
 
+  // Lemma cards for the shown word; in the nest a new lookup clears them behind a spinner.
   const translationResults = () => {
+    if (inWordNestModal && pending) {
+      return (
+        <div className="dictionary-help-loading" data-cy="dictionary-help-loading">
+          <Spinner size={60}/>
+        </div>
+      )
+    }
     if (translation === 'no-clue-translation') {
       return (
         <>

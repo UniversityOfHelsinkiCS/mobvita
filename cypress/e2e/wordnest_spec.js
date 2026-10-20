@@ -106,8 +106,16 @@ describe('wordnest modal', function () {
     cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
       .should('be.visible')
       .within(() => {
+        cy.contains('[data-cy=translations]', 'sportswoman', { timeout: 30000 })
+
+        // Slowed down so the loading state can be seen: old lemmas go, a spinner shows.
+        cy.intercept('GET', '**/api/translate*', req => {
+          req.on('response', res => res.setDelay(1500))
+        })
         // The title is the uppercase heading; its lemma is the lowercase word under it.
         cy.contains('[data-cy=wordnest-title-word]', 'СПОРТ', { timeout: 30000 }).click()
+        cy.get('[data-cy=dictionary-help-loading]').should('be.visible')
+        cy.contains('sportswoman').should('not.exist')
         cy.contains('[data-cy=translations] a, [data-cy=translations] span', /^спорт$/, {
           timeout: 30000,
         }).should('be.visible')
