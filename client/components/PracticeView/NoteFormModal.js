@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { consistsOfOnlyWhitespace } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
+// Dialog for writing or editing a practice note, with an optional make-public toggle.
 const NoteFormModal = ({ open, onClose, onSubmit, initialText = '', initialPublic = false, isEdit = false, loading = false, canMakePublic = false }) => {
   const intl = useIntl()
   const maxCharacters = 1000
@@ -91,7 +92,14 @@ const NoteFormModal = ({ open, onClose, onSubmit, initialText = '', initialPubli
         disabled={saveDisabled || loading}
         data-cy="save-note-button"
       >
-        {loading ? <Spinner inline /> : <FormattedMessage id="Save" />}
+        {/* A span, not bare text: browser translate/extensions rewrite text nodes. */}
+        {loading ? (
+          <Spinner inline />
+        ) : (
+          <span>
+            <FormattedMessage id="Save" />
+          </span>
+        )}
       </AppButton>
     </AppDialog>
   )
