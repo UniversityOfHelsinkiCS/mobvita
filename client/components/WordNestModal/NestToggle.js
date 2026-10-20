@@ -7,7 +7,7 @@ const NestToggle = ({ checked, onChange, label, dataCy }) => (
   <FormControlLabel
     className="wordnest-toggle"
     data-cy={dataCy}
-    labelPlacement="start"
+    labelPlacement="end"
     control={<AppSwitch size="md" checked={checked} onChange={onChange} />}
     label={label}
   />

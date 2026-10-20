@@ -30,6 +30,12 @@ export const getTranslationAction = ({
   return callBuilder(route, prefix, 'get', null, query)
 }
 
+// Word nest's own lookup, kept in `state.nest` so it never replaces the story word's cards.
+export const getNestTranslationAction = ({ wordLemmas, learningLanguage, dictionaryLanguage }) => {
+  const query = { w: wordLemmas, lang_learn: learningLanguage, lang_target: dictionaryLanguage }
+  return callBuilder('/translate', 'GET_NEST_TRANSLATION', 'get', null, query)
+}
+
 // Multi-word expression the clicked word belongs to (BE attaches `word.mwe` as a string).
 // Fetched alongside the single-word translation and kept in `state.mwe` so it never replaces it.
 export const getMweTranslationAction = ({
@@ -99,6 +105,8 @@ export const setWords = ({ surface, lemmas, clue, maskSymbol, snippet_id, senten
   }
 }
 
+const initialNest = { data: [], pending: false, error: false }
+
 // `stage` is set locally by know / don't know (SET_TRANSLATION_STAGE); /mwe itself returns none.
 const initialMwe = {
   expression: null,
@@ -110,7 +118,22 @@ const initialMwe = {
   error: false,
 }
 
-export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, action) => {
+// Sets the know / don't know stage on the matching lemma card.
+const withStage = (data, action) =>
+  Array.isArray(data)
+    ? data.map(translated =>
+        translated.lemma === action.lemma &&
+        translated.language_in === action.lang_learn &&
+        translated.language_out === action.lang_target
+          ? { ...translated, stage: action.stage, is_new_word: false }
+          : translated,
+      )
+    : data
+
+export default (
+  state = { data: [], showDictionaryBox: true, mwe: initialMwe, nest: initialNest },
+  action,
+) => {
   switch (action.type) {
     case 'GET_MWE_TRANSLATION_ATTEMPT':
       return {
@@ -136,6 +159,15 @@ export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, 
         ...state,
         mwe: { ...state.mwe, pending: false, error: true },
       }
+    case 'GET_NEST_TRANSLATION_ATTEMPT':
+      return { ...state, nest: { ...(state.nest || initialNest), pending: true, error: false } }
+    case 'GET_NEST_TRANSLATION_SUCCESS':
+      return {
+        ...state,
+        nest: { data: action.response['responses'], pending: false, error: false },
+      }
+    case 'GET_NEST_TRANSLATION_FAILURE':
+      return { ...state, nest: { ...(state.nest || initialNest), pending: false, error: true } }
     case 'GET_TRANSLATION_ATTEMPT':
       return {
         ...state,
@@ -220,11 +252,8 @@ export default (state = { data: [], showDictionaryBox: true, mwe: initialMwe }, 
     case 'SET_TRANSLATION_STAGE': {
       return {
         ...state,
-        data: state.data.map(
-          translated => (translated.lemma !== action.lemma || 
-            translated.language_in !== action.lang_learn || 
-            translated.language_out !== action.lang_target)
-          && translated || { ...translated, stage: action.stage, is_new_word: false }),
+        data: withStage(state.data, action),
+        nest: state.nest && { ...state.nest, data: withStage(state.nest.data, action) },
         mwe:
           state.mwe?.expression === action.lemma &&
           state.mwe.langLearn === action.lang_learn &&

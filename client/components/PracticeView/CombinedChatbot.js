@@ -271,10 +271,7 @@ const CombinedChatbot = ({
 
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
-  // When opening WordNestModal, capture the current translation lemmas so we can restore
-  // all translation cards (important for compound words).
   const [wordNestRestoreWord, setWordNestRestoreWord] = useState('')
-  const [wordNestRestorePrefLemma, setWordNestRestorePrefLemma] = useState('')
   const [showContexTranslation, setShowContextTranslation] = useState(false)
 
   const wordNest = useSelector(({ wordNest }) => wordNest)
@@ -757,11 +754,9 @@ const CombinedChatbot = ({
     )
   }
 
+  // Opens the nest on `lemma`, remembering the shown lemmas to reset to on close.
   const openWordNest = lemma => {
     setWordNestRestoreWord(computeWordNestRestoreWord())
-    setWordNestRestorePrefLemma(
-      translationState?.data?.find(translated => translated?.preferred)?.lemma || '',
-    )
     setWordNestChosenWord(lemma)
     setWordNestModalOpen(true)
   }
@@ -1054,7 +1049,6 @@ const CombinedChatbot = ({
             currentWord?.lemmas ||
             currentWord?.surface
           }
-          prefLemma={wordNestRestorePrefLemma}
         />
       )}
 
