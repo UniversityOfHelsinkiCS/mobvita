@@ -99,11 +99,24 @@ const getCommitHash = () => {
 export default defineConfig(({ mode }) => {
   const BASE_PATH = process.env.BASE_PATH || '/'
   const ENVIRONMENT = process.env.ENVIRONMENT || ''
-  const COMMIT_HASH = getCommitHash()
+  const COMMIT_HASH = getCommitHash().substring(0, 7)
+
+  // Emits dist/version.json, which open tabs poll to notice a newer deploy (see deployUpdates.js).
+  const versionFilePlugin = {
+    name: 'mobvita-version-file',
+    apply: 'build',
+    generateBundle() {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'version.json',
+        source: JSON.stringify({ commit: COMMIT_HASH }),
+      })
+    },
+  }
 
   return {
     base: BASE_PATH,
-    plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ }), fontLinkPlugin],
+    plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ }), fontLinkPlugin, versionFilePlugin],
     optimizeDeps: {
       include: [
         'react-router-dom',

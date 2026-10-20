@@ -50,6 +50,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
 import Tour from './Tour'
+import { reloadIfNewDeploy } from 'Utilities/deployUpdates'
 
 const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
   return (
@@ -150,6 +151,12 @@ export default function NavBar() {
   const [helpLink, setHelpLink] = useState(null)
   const [darkVisual, setDarkVisual] = useState(false) // Dark Theme toggle — visual only for now
   const [langDialogOpen, setLangDialogOpen] = useState(false)
+
+  // User-menu navigation; after a new deploy it becomes a full page load of the new version.
+  const goFromMenu = path => {
+    navigate(path)
+    reloadIfNewDeploy()
+  }
 
   const signOut = () => {
     dispatch(logout())
@@ -549,7 +556,7 @@ export default function NavBar() {
             >
               <AppMenuItem
                 icon={<AppIcon src={images.user01} size={22} />}
-                onClick={() => navigate('/profile/main')}
+                onClick={() => goFromMenu('/profile/main')}
               >
                 <FormattedMessage id="your-profile" defaultMessage="Your Profile" />
               </AppMenuItem>
@@ -590,13 +597,13 @@ export default function NavBar() {
                   with a key. Which one this opens follows the view the user is in. */}
               <AppMenuItem
                 icon={<AppIcon src={images.users01} size={22} />}
-                onClick={() => navigate(teacherView ? '/groups/teacher' : '/groups/student')}
+                onClick={() => goFromMenu(teacherView ? '/groups/teacher' : '/groups/student')}
               >
                 <FormattedMessage id="Groups" defaultMessage="Groups" />
               </AppMenuItem>
               <AppMenuItem
                 icon={<AppIcon src={images.settings02} size={22} />}
-                onClick={() => navigate('/profile/settings')}
+                onClick={() => goFromMenu('/profile/settings')}
               >
                 <FormattedMessage id="Settings" defaultMessage="Settings" />
               </AppMenuItem>

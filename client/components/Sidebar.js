@@ -16,6 +16,7 @@ import {
 import ContactUs from './StaticContent/ContactUs'
 import PracticeModal from './HomeView/PracticeModal'
 import { assembleActivityLink } from 'Utilities/activityLink'
+import { reloadIfNewDeploy } from 'Utilities/deployUpdates'
 import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
 import { MenuRow } from 'Components/ui/menuRow'
 import AppIcon from 'Components/ui/AppIcon'
@@ -66,9 +67,11 @@ export default function Sidebar() {
 
   const closeSidebar = () => dispatch(sidebarSetOpen(false))
 
+  // Menu navigation; after a new deploy it becomes a full page load of the new version.
   const go = path => {
     navigate(path)
     closeSidebar()
+    reloadIfNewDeploy()
   }
 
   const handleTourStart = () => {
