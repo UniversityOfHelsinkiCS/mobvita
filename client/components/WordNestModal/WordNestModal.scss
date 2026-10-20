@@ -145,6 +145,15 @@
     display: inline-flex;
     margin-left: 0.2em;
   }
+
+  // Each root word translates on click, like the words in the list.
+  &-word {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .wordnest-toggles {

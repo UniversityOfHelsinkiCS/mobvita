@@ -96,6 +96,24 @@ describe('wordnest modal', function () {
     expectChatbotUnchanged()
   })
 
+  it('translates the nest word in the title when it is clicked', function () {
+    cy.viewport(1280, 900)
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    cy.contains('sportswoman', { timeout: 30000 })
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
+
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
+      .should('be.visible')
+      .within(() => {
+        // The title is the uppercase heading; its lemma is the lowercase word under it.
+        cy.contains('[data-cy=wordnest-title-word]', 'СПОРТ', { timeout: 30000 }).click()
+        cy.contains('[data-cy=translations] a, [data-cy=translations] span', /^спорт$/, {
+          timeout: 30000,
+        }).should('be.visible')
+      })
+  })
+
   it("doesn't display nest icon when nest is not available", function () {
     cy.contains('метровку', { timeout: 30000 }).click()
     cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()

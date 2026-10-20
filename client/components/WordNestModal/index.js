@@ -15,9 +15,24 @@ import NestToggle from './NestToggle'
 import './WordNestModal.scss'
 import { autoSpeakOn } from 'Utilities/practiceSpeech'
 
+// Click handler for a nest word: speaks it and shows it in the nest's own dictionary pane.
+const useNestWordClick = () => {
+  const dispatch = useDispatch()
+  const learningLanguage = useSelector(learningLanguageSelector)
+  const { resource_usage, auto_speak: autoSpeak } = useSelector(state => state.user.data.user)
+  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
+  const voice = voiceLanguages[learningLanguage]
+
+  return (surface, lemma) => {
+    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
+    dispatch(getNestTranslationAction({ learningLanguage, wordLemmas: lemma, dictionaryLanguage }))
+  }
+}
+
 // One nest row: the word (or its markup), links to related nests and its child rows.
 const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, children }) => {
   const dispatch = useDispatch()
+  const handleWordClick = useNestWordClick()
   const {
     word,
     raw,
@@ -29,9 +44,6 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     translation_lemmas: translationLemmas,
   } = wordNest
   const learningLanguage = useSelector(learningLanguageSelector)
-  const { resource_usage, auto_speak: autoSpeak } = useSelector(state => state.user.data.user)
-  const dictionaryLanguage = useSelector(({ user }) => user.data.user.last_trans_language)
-  const voice = voiceLanguages[learningLanguage]
   const [open, setOpen] = useState(true)
 
   const getWordStyle = word => {
@@ -49,19 +61,6 @@ const NestWord = ({ wordNest, hasSeveralRoots, wordToCheck, showMoreInfo, childr
     if (rank < 8000) return { color: '#0045a4' }
     if (rank < 16000) return { color: '#007acc' }
     if (rank >= 16000) return { color: '#00afe8' }
-  }
-
-  // Speaks the word and shows it in the nest's own dictionary pane.
-  const handleWordClick = (surface, lemma) => {
-    if (autoSpeakOn(autoSpeak) && voice) speak(surface, voice, 'dictionary', resource_usage)
-
-    dispatch(
-      getNestTranslationAction({
-        learningLanguage,
-        wordLemmas: lemma,
-        dictionaryLanguage,
-      })
-    )
   }
 
   const handleNestLinkClick = word => {
@@ -232,11 +231,11 @@ const WordNestModal = ({
 
   const intl = useIntl()
   const dispatch = useDispatch()
+  const handleWordClick = useNestWordClick()
   const learningLanguage = useSelector(learningLanguageSelector)
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const { data: nests } = useSelector(({ wordNest }) => wordNest)
 
-  const [modalTitle, setModalTitle] = useState()
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [previousCheckedWord, setPreviousCheckedWord] = useState('')
   const [showCompounds, setShowCompounds] = useState(false)
@@ -257,7 +256,14 @@ const WordNestModal = ({
   const titleChildren = repeatsTitle ? visibleChildren(wordNest[0], showCompounds) : []
   const topNodes = titleChildren.length > 0 ? titleChildren : wordNest
 
-  const formatModalTitle = () => [...new Set(rootLemmas?.map(w => w.word))]?.join(', ')
+  // Title roots are uppercase headings (СПОРТ); their lemma is the same-named child (спорт).
+  const titleRoots = [...new Map(rootLemmas.map(r => [r.word, r])).values()].map(root => {
+    const lower = root.word.toLowerCase()
+    const child = words.find(
+      w => w.parents?.includes(root.nest_id) && w.word.toLowerCase() === lower,
+    )
+    return { word: root.word, lemma: child?.translation_lemmas || child?.word || lower }
+  })
 
   // Closes the nest; the story's cards were never touched, so only the chosen word resets.
   const handleModalclose = () => {
@@ -269,12 +275,7 @@ const WordNestModal = ({
 
   useEffect(() => {
     setShowMoreInfo(false)
-    if (wordToCheck) setModalTitle(formatModalTitle())
   }, [open])
-
-  useEffect(() => {
-    setModalTitle(formatModalTitle())
-  }, [rootLemmas])
 
   useEffect(() => {
     if (wordToCheck) {
@@ -324,7 +325,23 @@ const WordNestModal = ({
               <span className="wordnest-title-label">
                 <FormattedMessage id="nest" />:
               </span>
-              <span className="wordnest-title-root">{modalTitle}</span>
+              <span className="wordnest-title-root">
+                {titleRoots.map((root, index) => (
+                  <React.Fragment key={root.word}>
+                    {index > 0 && ', '}
+                    <span
+                      className="wordnest-title-word"
+                      data-cy="wordnest-title-word"
+                      onClick={() => handleWordClick(root.lemma, root.lemma)}
+                      onKeyDown={e => e.key === 'Enter' && handleWordClick(root.lemma, root.lemma)}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      {root.word}
+                    </span>
+                  </React.Fragment>
+                ))}
+              </span>
               <CustomTooltip title={intl.formatMessage({ id: 'wordnest-info-text' })}>
                 <span className="wordnest-title-info">
                   <InfoOutlinedIcon sx={{ fontSize: 18, color: colors.muted }} />
