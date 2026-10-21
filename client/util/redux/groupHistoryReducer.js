@@ -17,6 +17,7 @@ export const getGroupHistory = (group_id, startDate, endDate, view) => {
   return callBuilder(route, prefix, 'get')
 }
 
+// A teacher's view of one student's (or the whole group's) test and exercise history.
 export default (state = {}, action) => {
   switch (action.type) {
     case 'GET_GROUP_TEST_HISTORY_ATTEMPT':
@@ -70,7 +71,7 @@ export default (state = {}, action) => {
         pending: false,
         error: false,
       }
-    case 'GET_GROUPP_EXERCISE_HISTORY_FAILURE':
+    case 'GET_GROUP_EXERCISE_HISTORY_FAILURE':
       return {
         ...state,
         pending: false,
