@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { FormattedMessage, useIntl } from 'react-intl'
-
 import { cefrNumberToLevel } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppDialog from 'Components/ui/AppDialog'
@@ -14,6 +13,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import Topics from 'Components/Topics'
 import ListeningExerciseSettings from 'Components/ListeningExerciseSettings'
 import ToggleButton from '../ToggleButton'
+import AppSwitch from 'Components/ui/AppSwitch'
 
 import './SelectGrammarLevelStyles.css'
 
@@ -28,6 +28,7 @@ const getLessonTopicItemLevel = lessonTopicItem => {
   return group.startsWith('4') ? '4' : group
 }
 
+// Lesson setup step 2: grammar level buttons and the topic picker dialog.
 const SelectGrammarLevel = ({
   currentStepIndex,
   lessons,
@@ -40,6 +41,7 @@ const SelectGrammarLevel = ({
 }) => {
   const [modal, setModal] = useState(false)
   const [activeTab, setActiveTab] = useState('grammar')
+  const [showExamples, setShowExamples] = useState(true)
   const intl = useIntl()
   const lessonTopicItems = lessons || []
   const { grade, current_cefr: currentCefr } = useSelector(state => state.user.data.user)
@@ -141,6 +143,7 @@ const SelectGrammarLevel = ({
       editable={editable}
       setSelectedTopics={handleCustomTopicsChange}
       showPerf={showPerf}
+      showExamples={showExamples}
     />
   )
 
@@ -162,7 +165,17 @@ const SelectGrammarLevel = ({
           color: colors.ink,
         }}
       >
-        <FormattedMessage id="customise" defaultMessage="Customise" />
+        <div className="grammar-level-title">
+          <FormattedMessage id="customise" defaultMessage="Customise" />
+          <div className="grammar-level-show-examples-switch">
+            <AppSwitch
+              size="md"
+              checked={showExamples}
+              onChange={e => setShowExamples(e.target.checked)}
+            />
+            <FormattedMessage id="Show examples" />
+          </div>
+        </div>
       </span>
       <span
         style={{

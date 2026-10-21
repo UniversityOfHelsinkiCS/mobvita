@@ -2,7 +2,6 @@
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useIntl, FormattedMessage } from 'react-intl'
-import { List, WindowScroller } from 'react-virtualized'
 import React, { useEffect, useState } from 'react'
 import AppStepper from 'Components/ui/AppStepper'
 import ScrollArrow from 'Components/ScrollArrow'
@@ -14,18 +13,14 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import AppButton from 'Components/AppButton'
 import { Link, useNavigate } from 'react-router-dom'
-
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
   setLessonInstance,
   clearLessonInstanceState,
   setLessonStep } from 'Utilities/redux/lessonInstanceReducer'
-
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { startLessonsTour } from 'Utilities/redux/tourReducer'
 import {
-  lessonsTourViewed,
   updateGroupSelect,
   updateLibrarySelect } from 'Utilities/redux/userReducer'
 import styled from 'styled-components'
@@ -34,7 +29,6 @@ import ThemeView from '../ThemeView'
 import SelectGrammarLevel from '../SelectGrammarLevel'
 import LessonStartMenu from '../LessonStartMenu'
 import Spinner from 'Components/Spinner'
-
 import './LessonLibraryStyles.css'
 
 
