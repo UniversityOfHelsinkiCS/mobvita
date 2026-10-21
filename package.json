@@ -106,7 +106,7 @@
     "googleapis": "^171.4.0",
     "nodemon": "^1.14.10",
     "prettier": "^3.8.3",
-    "vite": "^8.0.10",
+    "vite": "^8.3.4",
     "wait-on": "^9.0.5"
   },
   "nodemonConfig": {
