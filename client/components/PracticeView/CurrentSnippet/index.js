@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux'
 import {
   getCurrentSnippet,
   cacheStorySnippet,
@@ -58,6 +58,7 @@ const CurrentSnippet = ({
   const [exerciseCount, setExerciseCount] = useState(0)
   const practiceForm = useRef(null)
   const dispatch = useDispatch()
+  const store = useStore()
   const snippets = useSelector(({ snippets }) => snippets)
   const {
     answersPending,
@@ -67,6 +68,7 @@ const CurrentSnippet = ({
     cachedSnippetIds,
     cacheSize,
     cacheRequesting,
+    cacheFailed,
     focused,
   } = snippets
   const {
@@ -217,6 +219,7 @@ const CurrentSnippet = ({
     }
   }
 
+  // Wraps up the snippet and moves to the next one from the cache, fetching it if it isn't there.
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
     dispatch(addToPrevious([snippets?.focused.practice_snippet]))
@@ -262,6 +265,9 @@ const CurrentSnippet = ({
       const nextSnippet = cachedSnippets[nextSnippetKey]
       dispatch(dropCachedSnippet(nextSnippetKey))
       dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
+      // Not cached and nothing in flight (e.g. its cache request failed): nothing would deliver it.
+      // Read the live flag, since the caching effect may have just started a request this commit.
+      if (!nextSnippet && !store.getState().snippets.cacheRequesting) fetchSnippet()
     } else {
       setShowMessageDialog(true)
       dispatch(setPracticeFinished(true))
@@ -324,10 +330,16 @@ const CurrentSnippet = ({
     }
   }
 
+  // Keeps the cache topped up; after a failed request it waits for the next snippet to retry.
   useEffect(() => {
-    if (snippets.focused && !cacheRequesting && cachedSnippetIds.length < CACHE_LIMIT)
+    if (
+      snippets.focused &&
+      !cacheRequesting &&
+      !cacheFailed &&
+      cachedSnippetIds.length < CACHE_LIMIT
+    )
       fetchSnippet()
-  }, [lastCachedSnippetKey, cacheSize, cacheRequesting, snippets.focused?.snippetid])
+  }, [lastCachedSnippetKey, cacheSize, cacheRequesting, cacheFailed, snippets.focused?.snippetid])
 
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
