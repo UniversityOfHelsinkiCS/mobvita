@@ -53,14 +53,15 @@ export const sendFlashcardsDialogue = (message, scope, context = {}) => {
   return { ...callBuilder(route, prefix, 'post', payload), scope, message }
 }
 
-// The library assistant's opening offer of daily stories. Same endpoint as a typed question, but
-// the request is automatic, so the reply is stored under its own type instead of the chat thread
-// (metadata's `available_cached_stories` is empty for most languages; the agent has the real list).
-export const requestDailyStories = (message, scope) => {
-  const route = '/chatbot/general'
+// The library assistant's opening offer of recent (cached) stories, straight from the stories API —
+// not an agent reply. Same path as the import link, but without `cached_id` it lists instead of
+// importing: `{ cached_stories: [...] }`. Stored under its own item type, outside the chat thread.
+// `language`: the learning language; `size`: how many cached stories to return.
+export const requestDailyStories = (scope, language, size) => {
+  const route = '/stories/cached'
   const prefix = 'GET_DAILY_STORIES'
-  const payload = { message }
-  return { ...callBuilder(route, prefix, 'post', payload), scope }
+  const query = { language, size }
+  return { ...callBuilder(route, prefix, 'get', null, query), scope }
 }
 
 // Pending/lookup key for the automatic request, kept out of the thread's own `pending[scope]`.
@@ -131,7 +132,9 @@ export default (state = initialState, action) => {
             id: state.nextId,
             type: 'daily-stories',
             role: 'bot',
-            text: response.response,
+            // The query echoes back on _SUCCESS: the offer belongs to the language it was asked for.
+            language: action.query?.language,
+            stories: Array.isArray(response?.cached_stories) ? response.cached_stories : [],
             scope,
             removable: true,
           },
