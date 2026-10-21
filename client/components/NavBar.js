@@ -10,7 +10,6 @@ import { Box } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
-import StarBorderIcon from '@mui/icons-material/StarBorder'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
@@ -283,10 +282,11 @@ export default function NavBar() {
     let ability_score = elo_score
     let grammar_score_type = 'elo'
     if (irt_support_languages.includes(storyLanguage)) {
+      // IRT is on a 0–100 scale, so it reads as "x/100"; Elo is an open-ended rating and stays bare.
       ability_score = irtCalculationPending
         ? '...'
         : irt_dummy_score != undefined
-          ? Math.round(irt_dummy_score * 10) / 10
+          ? `${Math.round(irt_dummy_score * 10) / 10}/100`
           : '...'
       grammar_score_type = 'irt'
     }
@@ -295,9 +295,21 @@ export default function NavBar() {
         permanent
         placement="top"
         title={<FormattedHTMLMessage id={`explanations-popup-story-${grammar_score_type}`} />}
-      >
-        <div className="navbar-basic-item tour-practice-elo-score" style={{ marginRight: '10px' }}>
-          <StarBorderIcon style={{ margin: 0, width: '16px', height: '16px' }} />
+      >       
+        <div
+          className="navbar-basic-item tour-practice-elo-score"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            marginRight: 40,
+            // Same size as the switch labels, so both rows share a centre line.
+            fontSize: 14,
+            lineHeight: 1,
+            color: colors.ink,
+          }}
+        >
+          <img src={images.star01} alt="" width={24} height={24} style={{ display: 'block' }} />
           {ability_score}
         </div>
       </CustomTooltip>
@@ -441,12 +453,13 @@ export default function NavBar() {
             </div>
           </NavGroup>
           {/********************************* ELO SCORE *********************************/}
-          <NavGroup>
-            <div className="navbar-container">
+          <NavGroup>            
+            <div className="navbar-container" style={{ display: 'flex', alignItems: 'center' }}>
               <Box
                 component="span"
                 onClick={handleEloClick}
                 onKeyDown={() => dispatch(setAnnotationsVisibility(true))}
+                sx={{ display: 'inline-flex', alignItems: 'center' }}
               >
                 {showStoryElo && get_student_ability_score_component()}
                 {showFlashcardElo && (
@@ -459,9 +472,26 @@ export default function NavBar() {
                         value={{ score_type: 'ELO' }}
                       />
                     }
-                  >
-                    <div className="navbar-basic-item">
-                      <img src={images.flashcardIcon} alt="three cards" width="16px" />{' '}
+                  >                    
+                    <div
+                      className="navbar-basic-item"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,                        
+                        marginRight: 40,
+                        fontSize: 14,
+                        lineHeight: 1,
+                        color: colors.ink,
+                      }}
+                    >
+                      <img
+                        src={images.cardsIcon}
+                        alt=""
+                        width={24}
+                        height={24}
+                        style={{ display: 'block' }}
+                      />
                       {flashcardElo}
                     </div>
                   </CustomTooltip>
@@ -476,8 +506,8 @@ export default function NavBar() {
                 sx={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  mr: '10px',
+                  gap: '8px',                  
+                  mr: '40px',
                 }}
               >
                 <span

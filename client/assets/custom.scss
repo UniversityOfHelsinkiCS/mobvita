@@ -1741,6 +1741,12 @@ label.file-upload-btn {
       display: none;
     }
   }
+  
+  .add-story-accordion-item-content {
+    box-sizing: border-box;
+    width: calc(100% - 150px);
+    margin: 0 auto;
+  }
 }
 
 .library-toggle-button {

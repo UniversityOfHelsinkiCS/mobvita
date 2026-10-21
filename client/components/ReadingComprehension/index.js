@@ -907,7 +907,7 @@ const ReadingComprehensionView = ({ match }) => {
         className="reading-comp auto"
         style={{
           maxWidth: 1250,
-          //margin: '1.5em auto',
+          margin: '1.5em auto',
           width: '100%',
           display: 'flex',
           gap: 16,

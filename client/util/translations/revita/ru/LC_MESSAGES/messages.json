@@ -2003,7 +2003,7 @@
     "story-upload-failed": "Не удалось добавить историю. Пожалуйста, попробуй еще раз.",
     "chatbot-message-suggestion-daily-stories": "Покажи свежие истории",
     "daily-story-saved-to-private": "Текст сохранен в твоей личной библиотеке",
-    "daily-stories-assistant-heading": "Вот несколько свежих историй — вы можете добавить их в личную библиотеку для практики",
+    "daily-stories-assistant-heading": "Вот несколько свежих историй — ты можешь добавить их в личную библиотеку для практики",
     "group-stories-recommendation-title": "В групповой библиотеке для тебя готовы тексты.",
     "group-stories-recommendation-message": "В групповой библиотеке для тебя подготовлено {count, plural, one {# текст} few {# текста} many {# текстов} other {# текста}}:",
     "group-stories-recommendation-more": "…and {count} more in the group library",

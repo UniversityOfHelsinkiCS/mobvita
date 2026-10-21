@@ -25,6 +25,7 @@ import bookOpen from 'Assets/images/book-open-01.svg'
 import bookOpenGreen from 'Assets/images/book-open-green.svg'
 import bulb from 'Assets/images/bulb.svg'
 import bulbEmpty from 'Assets/images/bulb-empty.svg'
+import star01 from 'Assets/images/star-01.svg'
 import playTimer from 'Assets/images/play-timer.svg'
 import pauseTimer from 'Assets/images/pause-timer.svg'
 import stopTimer from 'Assets/images/stop-timer.svg'
@@ -221,6 +222,7 @@ export const images = {
   bookOpenGreen,
   bulb,
   bulbEmpty,
+  star01,
   playTimer,
   pauseTimer,
   stopTimer,
