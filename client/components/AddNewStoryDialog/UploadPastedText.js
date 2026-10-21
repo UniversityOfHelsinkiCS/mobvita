@@ -107,7 +107,14 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
         onClick={submit}
         data-cy="paste-story-confirm"
       >
-        {uploading ? <Spinner inline size={20} /> : <FormattedMessage id="paste-submit" />}
+        {/* A span, not bare text: browser translate/extensions rewrite text nodes. */}
+        {uploading ? (
+          <Spinner inline size={20} />
+        ) : (
+          <span>
+            <FormattedMessage id="paste-submit" />
+          </span>
+        )}
       </AppButton>
     </div>
   )

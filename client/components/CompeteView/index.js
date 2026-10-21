@@ -69,9 +69,10 @@ const CompeteView = ({ match }) => {
     initializeCompetition()
   }, [])
 
+  // Starts the opponent timer when the start modal closes; it's null if the opponent didn't load.
   useEffect(() => {
     if (!startModalOpen) {
-      timerControls.start()
+      timerControls?.start()
     }
   }, [startModalOpen])
 
@@ -97,10 +98,11 @@ const CompeteView = ({ match }) => {
     dispatch(setAnswers(newAnswer))
   }
 
+  // Resumes a paused competition, or asks it to pause after the current snippet.
   const handlePauseOrResumeClick = () => {
     if (isPaused) {
       dispatch(setIsPaused(false))
-      timerControls.start()
+      timerControls?.start()
     } else {
       dispatch(setWillPause(true))
     }

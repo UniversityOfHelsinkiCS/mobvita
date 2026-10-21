@@ -171,7 +171,14 @@ const UploadFromFile = ({ closeModal, setActiveComponent, setInfoId }) => {
         onClick={handleSubmit}
         data-cy="upload-file-submit"
       >
-        {uploading ? <Spinner inline size={20} /> : <FormattedMessage id="Submit" />}
+        {/* A span, not bare text: browser translate/extensions rewrite text nodes. */}
+        {uploading ? (
+          <Spinner inline size={20} />
+        ) : (
+          <span>
+            <FormattedMessage id="Submit" />
+          </span>
+        )}
       </AppButton>
     </div>
   )

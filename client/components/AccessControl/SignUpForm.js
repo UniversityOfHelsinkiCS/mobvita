@@ -6,12 +6,6 @@ import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
-/**
- * SignUpForm — presentational sign-up card (2026 auth design).
- *
- * Pure: props only, no redux/navigation. The container (Register.js) owns registration logic and
- * provides `onSwitchToLogin` (the in-card link). Mirrors LoginForm's styling.
- */
 const primaryButtonSx = {
   backgroundColor: colors.green,
   color: colors.ink,
@@ -36,6 +30,8 @@ const linkStyle = {
   padding: 0,
 }
 
+// Presentational sign-up card, styled like LoginForm: props only.
+// Register.js owns registration logic and passes `onSwitchToLogin`.
 const SignUpForm = ({
   email,
   username,
@@ -147,7 +143,14 @@ const SignUpForm = ({
           fullWidth
           sx={primaryButtonSx}
         >
-          {pending ? <Spinner inline /> : <FormattedMessage id="landing-page-sign-up" />}
+          {/* A span, not bare text: browser translate/extensions rewrite text nodes. */}
+          {pending ? (
+            <Spinner inline />
+          ) : (
+            <span>
+              <FormattedMessage id="landing-page-sign-up" />
+            </span>
+          )}
         </AppButton>
       </form>
     </div>

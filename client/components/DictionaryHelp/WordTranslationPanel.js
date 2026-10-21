@@ -35,6 +35,7 @@ const WordTranslationPanel = () => {
 
   const translationState = useSelector(({ translation }) => translation) || {}
   const { data, surfaceWord, pending, maskSymbol } = translationState
+  const entries = Array.isArray(data) ? data : []
   const wordId = translationState.word_id ?? translationState.wordId
 
   const contextTranslationState = useSelector(({ contextTranslation }) => contextTranslation) || {}
@@ -156,11 +157,12 @@ const WordTranslationPanel = () => {
     }
   }, [data, dispatch, learningLanguage, wordNestModalOpen])
 
+  // Highlights the clicked word and its glosses in the sentence translation.
   const highlightTarget = translation => {
     if (!translation || !translation['source-segments'] || !translation['target-segments'] || !translation['alignment']) return ''
     const surface = surfaceWord || ''
 
-    const translated_glosses = (data || []).map(t => t.glosses || []).flat().map(g => g.toLowerCase())
+    const translated_glosses = entries.map(t => t.glosses || []).flat().map(g => g.toLowerCase())
     const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
       ...translated_glosses,
       ...translated_glosses.map(gloss => gloss.includes(' ') && [gloss, ...gloss.split(' '), ...gloss.split(' ').map(g => lemmatizer(g))] || [lemmatizer(gloss)]).flat(),
@@ -379,8 +381,8 @@ const WordTranslationPanel = () => {
           </div>
 
           <div className="inline-translation" data-cy="translations">
-            {data && data.length > 0 ? (
-              data.map((translated, idx) => (
+            {entries.length > 0 ? (
+              entries.map((translated, idx) => (
                 <AppLemma
                   key={translated.URL || translated.lemma || idx}
                   lemma={translated.lemma}

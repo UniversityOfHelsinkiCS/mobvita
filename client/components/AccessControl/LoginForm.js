@@ -6,13 +6,6 @@ import AppButton from 'Components/AppButton'
 import Spinner from 'Components/Spinner'
 import { colors, font, shape } from 'Assets/mui_theme/designTokens'
 
-/**
- * LoginForm — presentational login card (2026 auth design).
- *
- * Pure: no redux, no navigation, no side effects. Every value/callback arrives as a prop, so it
- * renders in isolation on /design. The connected container (Login.js) owns redux, effects, modals,
- * and provides `onSwitchToSignUp` (the in-card link). i18n is allowed (IntlProvider is global).
- */
 const primaryButtonSx = {
   backgroundColor: colors.green,
   color: colors.ink,
@@ -52,6 +45,8 @@ const linkStyle = {
   lineHeight: 1.5, // match the label's inherited line-height so both sit on the same level
 }
 
+// Presentational login card: props only, so it renders on /design.
+// Login.js owns redux, effects and modals and passes `onSwitchToSignUp`.
 const LoginForm = ({
   email,
   password,
@@ -152,7 +147,14 @@ const LoginForm = ({
         )}
 
         <AppButton data-cy="login" type="submit" disabled={pending} fullWidth sx={primaryButtonSx}>
-          {pending ? <Spinner inline /> : <FormattedMessage id="Login" />}
+          {/* A span, not bare text: browser translate/extensions rewrite text nodes. */}
+          {pending ? (
+            <Spinner inline />
+          ) : (
+            <span>
+              <FormattedMessage id="Login" />
+            </span>
+          )}
         </AppButton>
       </form>
 

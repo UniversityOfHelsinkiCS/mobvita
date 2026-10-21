@@ -26,8 +26,8 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
     const [translatable, setTranslatable] = useState(mtLanguages.includes([learningLanguage, dictionaryLanguage].join('-'))) 
     const [show, setShow] = useState(false)
 
-    const translated_glosses =  wordTranslated ? wordTranslated.map(
-        translated=>translated.glosses).flat().map(gloss=>gloss.toLowerCase()) : []
+    const translated_glosses = (Array.isArray(wordTranslated) ? wordTranslated : [])
+        .flatMap(translated => translated.glosses || []).map(gloss => gloss.toLowerCase())
     const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
         ...translated_glosses,
         ...translated_glosses.map(

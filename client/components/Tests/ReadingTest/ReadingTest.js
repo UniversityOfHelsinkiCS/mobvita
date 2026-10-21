@@ -289,6 +289,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
     }
   }
 
+  // Resumes a reading test from the saved status; previous_status may come without responses.
   useEffect(() => {
     if (!currentReadingTestQuestion) {
       return
@@ -305,7 +306,7 @@ const ReadingTest = ({ setCycle, setShowCyclePopup }) => {
 
       if (
         previousStatus.last_question_id === currentReadingTestQuestion.question_id &&
-        previousStatus.responses.length === 1
+        previousStatus.responses?.length === 1
       ) {
         setAttempts(prev => prev + 1)
         return

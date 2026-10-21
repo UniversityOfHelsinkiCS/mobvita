@@ -6,6 +6,7 @@ export const sendEmail = (payload) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+// Contact-form send state and the error shown under the form.
 export default (state = { data: [], pending: false, error: false }, action) => {
   switch (action.type) {
     case 'POST_EMAIL_ATTEMPT':
@@ -19,7 +20,9 @@ export default (state = { data: [], pending: false, error: false }, action) => {
         ...state,
         pending: false,
         error: true,
-        errorMessage: action.response.response.statusText,
+        // The failure payload is the response body (or undefined), not an axios error.
+        errorMessage:
+          typeof action.response?.message === 'string' ? action.response.message : 'Server error',
       }
     case 'POST_EMAIL_SUCCESS':
       return {

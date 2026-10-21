@@ -173,6 +173,8 @@ const initialState = {
   pending: false, 
   error: false,
   cacheRequesting: false,
+  // Set when a cache request fails, so the caching effect stops instead of retrying in a loop.
+  cacheFailed: false,
 }
 
 // Reducer
@@ -371,6 +373,7 @@ export default (state = initialState, action) => {
         nextSnippetKeyFromCache: action.nextSnippetKey,
         pending: action.nextSnippet == null,
         error: false,
+        cacheFailed: false,
       }
     case 'SET_INITIAL_ELO_HEARTS':
       return {
@@ -428,6 +431,7 @@ export default (state = initialState, action) => {
           pending: false,
           error: false,
           cacheRequesting: false,
+          cacheFailed: false,
         }
       }
       const snippets = {
@@ -437,9 +441,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cacheRequesting: false,
+        cacheFailed: false,
         cachedSnippets: snippets,
         lastCachedSnippetKey: snippetKey,
         ...processCachedSnippets(snippets),
+      }
+
+    case 'CACHE_NEXT_SNIPPET_FAILURE':
+      return {
+        ...state,
+        cacheRequesting: false,
+        cacheFailed: true,
       }
 
     case 'DROP_CACHED_SNIPPET':
@@ -459,6 +471,7 @@ export default (state = initialState, action) => {
         lastCachedSnippetKey: null,
         nextSnippetKeyFromCache: null,
         cacheSize: 0,
+        cacheFailed: false,
       }
     default:
       return state

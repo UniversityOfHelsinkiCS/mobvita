@@ -9,6 +9,7 @@ import { updateDictionaryLanguage } from 'Utilities/redux/userReducer'
 import {
   getTranslationAction,
   getClueTranslationAction,
+  getNestTranslationAction,
   setWords,
   changeTranslationStageAction,
 } from 'Utilities/redux/translationReducer'
@@ -25,6 +26,7 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import { Speaker, DictionaryButton } from './dictComponents'
 import AppLemma from 'Components/ui/AppLemma'
 import ContextTranslation from './ContextTranslation'
+import Spinner from 'Components/Spinner'
 import WordNestModal from 'Components/WordNestModal'
 import CustomTooltip from 'Components/CustomTooltip'
 import SettingButton from 'Components/SettingsButton'
@@ -42,15 +44,11 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
 
-  const {
-    pending,
-    data: translation,
-    surfaceWord,
-    lemmas,
-    clue,
-    maskSymbol,
-    showDictionaryBox,
-  } = useSelector(({ translation }) => translation)
+  const translationState = useSelector(({ translation }) => translation)
+  const { surfaceWord, lemmas, clue, maskSymbol, showDictionaryBox } = translationState
+  // Inside the nest, lemma cards come from the nest's own slot, never the story word's.
+  const { pending, data: translation } =
+    (inWordNestModal && translationState.nest) || translationState
 
   const { focusedSpan, mobileDisplayAnnotations } = useSelector(({ annotations }) => annotations)
 
@@ -132,11 +130,12 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
+  // Keeps the word-nest word in sync; a clue left from the crossword is a string, not lemmas.
   useEffect(() => {
-    if (!inCrossword && translation && !wordNestModalOpen)
+    if (!inCrossword && Array.isArray(translation) && !wordNestModalOpen)
       setWordNestChosenWord(
         translation
-          ?.filter(t => t.lemma)
+          .filter(t => t.lemma)
           .map(t => t.lemma)
           .join('+')
       )
@@ -211,35 +210,20 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
         )
       })
 
-  // Switches the dictionary language and re-translates the shown lemmas into it.
-  // `translation` is not always an array: a crossword clue with no result is the string
-  // 'no-clue-translation'. The gear is always on screen now (the old <select> only showed with
-  // results), so mapping it unguarded crashed the crossword page on a language change.
+  // Switches the dictionary language and re-translates the shown lemmas (in the nest, both panes).
+  // A crossword clue is asked again in clue mode; with no result its data is a string, not lemmas.
   const handleDropdownChange = value => {
-    const shownLemmas = translationEntries
-      .map(t => t?.lemma)
-      .filter(Boolean)
-      .join('+')
-
+    const joinLemmas = data =>
+      Array.isArray(data) ? data.map(t => t?.lemma).filter(Boolean).join('+') : ''
+    const query = { learningLanguage, dictionaryLanguage: value }
+    const storyLemmas = joinLemmas(translationState.data)
+    const nestLemmas = inWordNestModal ? joinLemmas(translation) : ''
     if (clue) {
-      // Crossword clue: ask again in clue mode (unrecorded, like CrosswordView), falling back to the
-      // clue's own lemmas when the last language had no translation for it.
-      const clueLemmas = shownLemmas || lemmas
-      if (clueLemmas) {
-        dispatch(
-          getClueTranslationAction({
-            learningLanguage,
-            dictionaryLanguage: value,
-            wordLemmas: clueLemmas,
-            record: 0,
-          })
-        )
-      }
-    } else if (shownLemmas) {
-      dispatch(
-        getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: shownLemmas })
-      )
-    }
+      const clueLemmas = storyLemmas || lemmas
+      if (clueLemmas)
+        dispatch(getClueTranslationAction({ ...query, wordLemmas: clueLemmas, record: 0 }))
+    } else if (storyLemmas) dispatch(getTranslationAction({ ...query, wordLemmas: storyLemmas }))
+    if (nestLemmas) dispatch(getNestTranslationAction({ ...query, wordLemmas: nestLemmas }))
     dispatch(updateDictionaryLanguage(value))
   }
 
@@ -265,7 +249,15 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
   // arrow inverts relative to the desktop layout.
   const cornerArrowUp = windowWidth < 1024 ? !showDictionaryBox : showDictionaryBox
 
+  // Lemma cards for the shown word; in the nest a new lookup clears them behind a spinner.
   const translationResults = () => {
+    if (inWordNestModal && pending) {
+      return (
+        <div className="dictionary-help-loading" data-cy="dictionary-help-loading">
+          <Spinner size={60}/>
+        </div>
+      )
+    }
     if (translation === 'no-clue-translation') {
       return (
         <>
@@ -364,7 +356,8 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
           </div>
         )}
 
-        <div >
+        {/* Lemmas and context translation; the word nest makes this the scrolling part. */}
+        <div className="dictionary-help-content">
           {!mobileDisplayAnnotations ? (
            <>
            {showDictionaryBox && (

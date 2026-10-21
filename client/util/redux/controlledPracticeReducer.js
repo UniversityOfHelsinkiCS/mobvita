@@ -207,7 +207,7 @@ export default (
         ...state,
         pending: false,
         error: false,
-        frozen_snippets: action.response.frozen_snippets,
+        frozen_snippets: action.response.frozen_snippets || {},
         timedExercise:
           Object.keys(action.response.frozen_snippets || {}).length > 0 &&
           action.response.timed_exercise === true,

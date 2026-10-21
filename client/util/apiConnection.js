@@ -8,6 +8,30 @@ import { Howl } from 'howler'
 
 const getAxios = axios.create({ baseURL: `${basePath}api` })
 
+let pendingWrites = 0
+
+// Writes are anything but GET; reads are left out (/mtStatus stays open long, reads just refetch).
+const isWrite = config => (config?.method || 'get').toLowerCase() !== 'get'
+
+// Counts writes in flight so a deploy reload never cancels a save (see deployUpdates.js).
+getAxios.interceptors.request.use(config => {
+  if (isWrite(config)) pendingWrites += 1
+  return config
+})
+getAxios.interceptors.response.use(
+  response => {
+    if (isWrite(response.config)) pendingWrites -= 1
+    return response
+  },
+  error => {
+    if (isWrite(error.config)) pendingWrites -= 1
+    return Promise.reject(error)
+  },
+)
+
+// True while any API write is still in flight.
+export const hasPendingWrites = () => pendingWrites > 0
+
 // Dev/staging only: log every writing-correction response from hints so that
 // easy, meta, example, penalty can be inspected.
 // if (hiddenFeatures) {

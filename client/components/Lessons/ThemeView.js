@@ -18,6 +18,7 @@ const INACTIVE_ICON_FILTER = {
   sport: 'brightness(0.75)',
 }
 
+// Lesson setup step 0: theme cards; metadata has no lesson_semantics if its fetch failed.
 const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, toggleSemantic }) => {
   if (currentStepIndex !== 0) {
     return null
@@ -35,7 +36,7 @@ const ThemeView = ({ currentStepIndex, selectedSemantics, lesson_semantics, togg
         maxWidth: 480,
       }}
     >
-      {lesson_semantics.map(name => {
+      {(lesson_semantics || []).map(name => {
         const key = name.toLowerCase()
         const active = selectedSemantics?.includes(name)
         return (

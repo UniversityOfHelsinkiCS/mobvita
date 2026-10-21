@@ -102,7 +102,9 @@ const StoryTopics = ({ conceptCount, focusedConcept, setFocusedConcept, isContro
     setTopTopics(keysSorted)
   }
 
+  // Re-sorts the topics; an unprocessed story has no concept_count yet, so the list stays empty.
   useEffect(() => {
+    if (!conceptCount) return
     if (sortBy == 'freq') {
       sortByFrequency()
     } else if (sortBy == 'cefr') {

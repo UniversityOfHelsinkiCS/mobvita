@@ -3,9 +3,10 @@ import { useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
 import { useSelector } from 'react-redux'
 
+// Level-up toast; it can outlive a logout, which sets user.data to null.
 const LevelUpToast = () => {
   const intl = useIntl()
-  const { level } = useSelector(({ user }) => user.data.user)
+  const level = useSelector(({ user }) => user.data?.user?.level)
   const levelUpHeader = `${intl.formatMessage({
     id: 'just-leveled-up',
   })}`

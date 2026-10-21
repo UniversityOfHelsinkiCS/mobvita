@@ -67,9 +67,11 @@ const AssistentSettings = ({ className = '' }) => {
       }))
     : []
 
+  // Switches dictionary language and re-translates the shown lemmas.
+  // After a clue lookup with no result, data is the string 'no-clue-translation', not lemmas.
   const handleDropdownChange = value => {
-    if (translation) {
-      const lemmas = translation?.map(t => t?.lemma).join('+')
+    if (Array.isArray(translation)) {
+      const lemmas = translation.map(t => t?.lemma).join('+')
       if (lemmas !== '') {
         dispatch(getTranslationAction({ learningLanguage, dictionaryLanguage: value, wordLemmas: lemmas }))
       }

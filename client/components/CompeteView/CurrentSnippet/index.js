@@ -224,6 +224,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     fetchSnippet()
   }, [snippetToCacheId])
 
+  // Pauses, finishes or retries the snippet after each check; no timer if the opponent didn't load.
   useEffect(() => {
     const currentSnippetIsLoaded = !!snippets.focused
     if (currentSnippetIsLoaded) {
@@ -234,7 +235,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
       if (wasLastAttempt && willPause) {
         dispatch(setIsPaused(true))
         dispatch(setWillPause(false))
-        timerControls.stop()
+        timerControls?.stop()
       }
       if (isNewSnippet) setInitialAnswers()
       else if (wasLastAttempt) finishSnippet()

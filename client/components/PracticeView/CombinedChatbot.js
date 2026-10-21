@@ -271,10 +271,7 @@ const CombinedChatbot = ({
 
   const [wordNestModalOpen, setWordNestModalOpen] = useState(false)
   const [wordNestChosenWord, setWordNestChosenWord] = useState('')
-  // When opening WordNestModal, capture the current translation lemmas so we can restore
-  // all translation cards (important for compound words).
   const [wordNestRestoreWord, setWordNestRestoreWord] = useState('')
-  const [wordNestRestorePrefLemma, setWordNestRestorePrefLemma] = useState('')
   const [showContexTranslation, setShowContextTranslation] = useState(false)
 
   const wordNest = useSelector(({ wordNest }) => wordNest)
@@ -493,6 +490,7 @@ const CombinedChatbot = ({
     }
   }, [currentWord, attempt])
 
+  // Loads the current word's saved chat; a word's history can be null, which would break messages.
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
       const { ID: wordId } = currentWord
@@ -502,7 +500,7 @@ const CombinedChatbot = ({
         typeof wordId !== 'undefined' &&
         chat_history.hasOwnProperty(wordId.toString())
       ) {
-        word_chat_history = chat_history[wordId.toString()]
+        word_chat_history = chat_history[wordId.toString()] || []
       }
       dispatch(setConversationHistory(word_chat_history))
     }
@@ -680,10 +678,12 @@ const CombinedChatbot = ({
   const showAllHintsUsed = eloScoreHearts.length === 0 && spentHints.length > 0
 
   const currentLemmas = currentWord?.lemmas?.split('|') || []
+  // Data is the string 'no-clue-translation' after a clue lookup with no result, not lemmas.
   const isCurrentWordTranslated =
     (translationState.surfaceWord || translationState.surface) === currentWord?.surface &&
     !translationState.pending &&
-    translationState.data?.some(item => currentLemmas.includes(item.lemma))
+    Array.isArray(translationState.data) &&
+    translationState.data.some(item => currentLemmas.includes(item.lemma))
 
   const getLemmaCandidates = lemmaOrLemmas => {
     if (!lemmaOrLemmas || typeof lemmaOrLemmas !== 'string') return []
@@ -757,11 +757,9 @@ const CombinedChatbot = ({
     )
   }
 
+  // Opens the nest on `lemma`, remembering the shown lemmas to reset to on close.
   const openWordNest = lemma => {
     setWordNestRestoreWord(computeWordNestRestoreWord())
-    setWordNestRestorePrefLemma(
-      translationState?.data?.find(translated => translated?.preferred)?.lemma || '',
-    )
     setWordNestChosenWord(lemma)
     setWordNestModalOpen(true)
   }
@@ -815,6 +813,7 @@ const CombinedChatbot = ({
 
   const glossCheckLanguage = ['English']
 
+  // Highlights the clicked word and its glosses in the sentence translation.
   const highlightTarget = translation => {
     if (
       !translation ||
@@ -825,7 +824,7 @@ const CombinedChatbot = ({
       return ''
     const surface = translationState.surfaceWord || currentWord?.surface || ''
 
-    const translated_glosses = (translationState.data || [])
+    const translated_glosses = (Array.isArray(translationState.data) ? translationState.data : [])
       .map(t => t.glosses || [])
       .flat()
       .map(g => g.toLowerCase())
@@ -1054,7 +1053,6 @@ const CombinedChatbot = ({
             currentWord?.lemmas ||
             currentWord?.surface
           }
-          prefLemma={wordNestRestorePrefLemma}
         />
       )}
 
@@ -1596,7 +1594,7 @@ const CombinedChatbot = ({
               <div className="inline-translation" data-cy="translations">
                 {/* Translation Results */}
 
-                {translationState.data && translationState.data.length > 0 ? (
+                {Array.isArray(translationState.data) && translationState.data.length > 0 ? (
                   translationState.data.map((translated, idx) => (
                     <AppLemma
                       key={translated.URL || translated.lemma || idx}

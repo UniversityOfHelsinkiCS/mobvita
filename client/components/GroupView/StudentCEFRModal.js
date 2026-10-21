@@ -10,9 +10,12 @@ import { capitalize, isToday, skillLevels } from 'Utilities/common'
 import moment from 'moment'
 import CEFRDropdown from './CEFRDropdown'
 
+// Edits a student's CEFR history; Summary.js turns a null history into -Number.MAX_VALUE.
 const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId, sid }) => {
   const dispatch = useDispatch()
-  const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(cefrHistory ?? [])
+  const [updatedCEFRHistory, setUpdatedCEFRHistory] = useState(
+    Array.isArray(cefrHistory) ? cefrHistory : [],
+  )
   const [modified, setModified] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
@@ -35,8 +38,9 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
     setModified(true)
   }
 
+  // Drops unsaved edits and goes back to the history passed in.
   const undoChanges = () => {
-    setUpdatedCEFRHistory(cefrHistory ?? [])
+    setUpdatedCEFRHistory(Array.isArray(cefrHistory) ? cefrHistory : [])
     setModified(false)
   }
 

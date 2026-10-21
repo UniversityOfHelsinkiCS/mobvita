@@ -14,14 +14,13 @@ const MedalAmount = ({ medal, amount }) => (
   </div>
 )
 
+// Medal counts per level; the early return sits below useMemo so the hook order never changes.
 const MedalSummary = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
-  if (!achievements) return null
-
   const medals = useMemo(
     () =>
-      achievements?.reduce(
+      (achievements || []).reduce(
         (medalObject, achievement) => {
           const tempObject = medalObject
           const { level } = achievement
@@ -42,6 +41,8 @@ const MedalSummary = () => {
       ),
     [achievements]
   )
+
+  if (!achievements) return null
 
   return (
     <Link

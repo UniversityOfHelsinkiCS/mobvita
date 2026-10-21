@@ -39,6 +39,7 @@ const clearLocalStorage = () => {
   window.localStorage.removeItem('testLanguage')
 }
 
+// Not cached: the reading test resumes server-side, and 'questions' belongs to the exhaustive test.
 export const getReadingTestQuestions = (language, is_continue = true, cycle = null) => {
   const route = `/test/${language}/reading`
   const prefix = 'GET_READING_TEST_QUESTIONS'
@@ -52,7 +53,7 @@ export const getReadingTestQuestions = (language, is_continue = true, cycle = nu
 
   console.log("check the query", query)
 
-  const call = callBuilder(route, prefix, 'get', undefined, query, 'questions')
+  const call = callBuilder(route, prefix, 'get', undefined, query)
   return { ...call, language, startingIndex: 0 }
 }
 

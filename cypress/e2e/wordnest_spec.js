@@ -59,6 +59,69 @@ describe('wordnest modal', function () {
       })
   })
 
+  it('keeps the chatbot on the word that opened the nest while nest words are clicked', function () {
+    // The chatbot's dictionary cards, not the nest's own dictionary pane.
+    const chatbotCards = () =>
+      cy
+        .get('[data-cy=translations]')
+        .filter((_, el) => !el.closest('[data-cy=wordnest-modal]'))
+    // Its glosses can overlap the nest word's, so compare the whole card text, not single words.
+    const expectChatbotUnchanged = () =>
+      cy.get('@chatbotText').then(before => {
+        chatbotCards().invoke('text').should('eq', before)
+      })
+
+    cy.viewport(1280, 900)
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    chatbotCards().should('contain', 'sportswoman').invoke('text').as('chatbotText')
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
+
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
+      .should('be.visible')
+      .within(() => {
+        cy.contains('[data-cy="wordnest-word"]', /^спортсме́?н$/, { timeout: 30000 })
+          .scrollIntoView()
+          .click()
+        cy.contains('[data-cy=translations]', 'sportsman', { timeout: 30000 })
+          .should('be.visible')
+          .and('not.contain', 'sportswoman')
+      })
+
+    expectChatbotUnchanged()
+
+    cy.get('[data-cy=wordnest-close]').click()
+    cy.get('[data-cy=wordnest-modal]', { timeout: 2000 }).should('not.exist')
+
+    expectChatbotUnchanged()
+  })
+
+  it('translates the nest word in the title when it is clicked', function () {
+    cy.viewport(1280, 900)
+    cy.contains('спортсменка', { timeout: 30000 }).click()
+    cy.contains('sportswoman', { timeout: 30000 })
+    cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()
+    cy.get('[data-cy=nest-button]', { timeout: 30000 }).should('be.visible').click()
+
+    cy.get('[data-cy=wordnest-modal]', { timeout: 30000 })
+      .should('be.visible')
+      .within(() => {
+        cy.contains('[data-cy=translations]', 'sportswoman', { timeout: 30000 })
+
+        // Slowed down so the loading state can be seen: old lemmas go, a spinner shows.
+        cy.intercept('GET', '**/api/translate*', req => {
+          req.on('response', res => res.setDelay(1500))
+        })
+        // The title is the uppercase heading; its lemma is the lowercase word under it.
+        cy.contains('[data-cy=wordnest-title-word]', 'СПОРТ', { timeout: 30000 }).click()
+        cy.get('[data-cy=dictionary-help-loading]').should('be.visible')
+        cy.contains('sportswoman').should('not.exist')
+        cy.contains('[data-cy=translations] a, [data-cy=translations] span', /^спорт$/, {
+          timeout: 30000,
+        }).should('be.visible')
+      })
+  })
+
   it("doesn't display nest icon when nest is not available", function () {
     cy.contains('метровку', { timeout: 30000 }).click()
     cy.get('[data-cy=chat-action-menu-popup]', { timeout: 30000 }).click()

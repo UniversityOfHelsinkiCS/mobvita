@@ -1002,6 +1002,7 @@ export const consistsOfOnlyWhitespace = text => {
 // knob the repeat-listen counter turns. Coqui has no speed control at all.
 const SLOW_SPEED = { responsive_voice: 0.8, yandex: '0.8', tacotron2: -3 }
 
+// Speaks a word with the language's TTS source; responsiveVoice is absent if its script is blocked.
 export const speak = (
   surfaceWord,
   voice,
@@ -1011,7 +1012,7 @@ export const speak = (
   { slow = false } = {},
 ) => {
   const [source, lang_code, tone] = voice
-  window.responsiveVoice.cancel()
+  window.responsiveVoice?.cancel()
   Howler.stop()
   try {
     if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())

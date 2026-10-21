@@ -7,15 +7,12 @@ import React, {
   useState,
   useMemo,
 } from 'react'
-
 import { produce } from 'immer'
 import styled, { ThemeContext, ThemeProvider } from 'styled-components'
 import { confettiRain } from 'Utilities/common'
 import { font } from 'Assets/mui_theme/designTokens'
-
 import Cell from './Cell'
 import DirectionClues from './DirectionClues'
-
 import {
   bothDirections,
   createGridData,
@@ -26,7 +23,6 @@ import {
   loadGuesses,
   findCorrectAnswers,
 } from './util'
-
 import { CrosswordContext, CrosswordSizeContext } from './context'
 
 // TODO: make this a component property!
@@ -438,7 +434,9 @@ const Crossword = React.forwardRef(
           case 'Home':
           case 'End': {
             // move to beginning/end of this entry?
-            const info = data[currentDirection][currentNumber]
+            // The reset 1-across may not exist in this puzzle.
+            const info = getClueInfo(currentDirection, currentNumber)
+            if (!info) break
             const {
               answer: { length },
             } = info
