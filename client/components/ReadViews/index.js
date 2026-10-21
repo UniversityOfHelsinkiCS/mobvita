@@ -264,9 +264,10 @@ const ReadViews = ({ match }) => {
     dispatch(resetAnnotations())
   }, [dispatch, id, isPreviewMode, mode, shouldFetchStoryDirectly, teacherView])
 
+  // Loads the story's notes; paragraph is missing while a student's story is still processing.
   useEffect(() => {
     if (routeStory) {
-      const storyWords = routeStory.paragraph.flat(1)
+      const storyWords = (routeStory.paragraph || []).flat(1)
       dispatch(setAnnotations(storyWords))
     }
   }, [dispatch, routeStory])

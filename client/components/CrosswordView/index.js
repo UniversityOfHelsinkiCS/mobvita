@@ -208,9 +208,11 @@ const CrosswordView = () => {
     return clue
   }
 
+  // Tab / Shift+Tab jumps to the next or previous clue; listening starts before the puzzle loads.
   const handleKeyDown = event => {
     if (event.key === 'Tab') {
       event.preventDefault()
+      if (!clues || !currentClue) return
       const index = clues.findIndex(clue => clue.ID === currentClue.ID)
       const nextClue = findNextClue(index, event.shiftKey)
 

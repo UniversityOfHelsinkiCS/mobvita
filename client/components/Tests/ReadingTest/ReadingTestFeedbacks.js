@@ -10,6 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 
+// Feedback slides for the reading test; a question without synthesis adds an undefined feedback.
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
     const { feedbacks } = useSelector(({ tests }) => tests);
     const [current, setCurrent] = useState(0);
@@ -168,7 +169,7 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
 
     return (
         <div style={{ display: 'flex', position: 'relative' }}>
-            {showFeedbacks && feedbacks.length > 0 && renderFeedback()}
+            {showFeedbacks && filteredSlides.length > 0 && renderFeedback()}
         </div>
     );
 };

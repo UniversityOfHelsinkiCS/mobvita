@@ -94,11 +94,12 @@ const GroupAnalytics = ({ role }) => {
     label: `${student?.userName} (${student?.email})`,
   }))
 
+  // Shows another student's charts; a student with no summary row has no CEFR history.
   const handleStudentChange = studentId => {
     const student = currentGroup?.students.find(s => s._id === studentId)
-    const studentSummary = summary?.find(s => s.Email === student.email)
+    const studentSummary = summary?.find(s => s.Email === student?.email)
     setCurrentStudent(student)
-    setCefrHistory(studentSummary[intl.formatMessage({ id: 'cefr_grade' })])
+    setCefrHistory(studentSummary?.[intl.formatMessage({ id: 'cefr_grade' })])
     setFirstFetch(true)
   }
 

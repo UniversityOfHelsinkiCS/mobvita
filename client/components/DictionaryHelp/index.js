@@ -130,11 +130,12 @@ const DictionaryHelp = ({ minimized, inWordNestModal, inCrossword }) => {
     dispatch(changeTranslationStageAction(lemma, learningLanguage, dictionaryLanguage, 0))
   }
 
+  // Keeps the word-nest word in sync; a clue left from the crossword is a string, not lemmas.
   useEffect(() => {
-    if (!inCrossword && translation && !wordNestModalOpen)
+    if (!inCrossword && Array.isArray(translation) && !wordNestModalOpen)
       setWordNestChosenWord(
         translation
-          ?.filter(t => t.lemma)
+          .filter(t => t.lemma)
           .map(t => t.lemma)
           .join('+')
       )

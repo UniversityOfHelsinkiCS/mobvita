@@ -22,26 +22,15 @@ const LEGEND_LABEL_IDS = {
   'vocabulary-flashcard-explanation': 'vocabulary-flashcard',
 }
 
-const VocabularyGraph = ({
+// Vocabulary charts; the spinner and empty returns sit in the wrapper below to keep hook order.
+const VocabularyGraphContent = ({
   vocabularyData,
-  vocabularyPending,
   newerVocabularyData,
-  newerVocabularyPending,
   graphType,
   setGraphType,
   xAxisLength,
   element,
-}) => {  if (vocabularyPending || newerVocabularyPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
-
-  if (
-    !vocabularyData ||
-    vocabularyData?.length < 1 ||
-    !newerVocabularyData ||
-    newerVocabularyData?.length < 1
-  ) {
-    return <div>No data to show</div>
-  }
-
+}) => {
   const currentPerc = newerVocabularyData.mastering_percentage
   const previousPerc = vocabularyData.mastering_percentage
 
@@ -567,6 +556,24 @@ const VocabularyGraph = ({
       </div>
     </div>
   )
+}
+
+// Shows a spinner or "No data" until both vocabulary snapshots are loaded, then the charts.
+const VocabularyGraph = props => {
+  const { vocabularyData, vocabularyPending, newerVocabularyData, newerVocabularyPending } = props
+  if (vocabularyPending || newerVocabularyPending)
+    return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
+
+  if (
+    !vocabularyData ||
+    vocabularyData?.length < 1 ||
+    !newerVocabularyData ||
+    newerVocabularyData?.length < 1
+  ) {
+    return <div>No data to show</div>
+  }
+
+  return <VocabularyGraphContent {...props} />
 }
 
 export default VocabularyGraph

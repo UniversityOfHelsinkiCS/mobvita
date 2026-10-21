@@ -490,6 +490,7 @@ const CombinedChatbot = ({
     }
   }, [currentWord, attempt])
 
+  // Loads the current word's saved chat; a word's history can be null, which would break messages.
   useEffect(() => {
     if (currentWord && Object.keys(currentWord).length) {
       const { ID: wordId } = currentWord
@@ -499,7 +500,7 @@ const CombinedChatbot = ({
         typeof wordId !== 'undefined' &&
         chat_history.hasOwnProperty(wordId.toString())
       ) {
-        word_chat_history = chat_history[wordId.toString()]
+        word_chat_history = chat_history[wordId.toString()] || []
       }
       dispatch(setConversationHistory(word_chat_history))
     }
@@ -812,6 +813,7 @@ const CombinedChatbot = ({
 
   const glossCheckLanguage = ['English']
 
+  // Highlights the clicked word and its glosses in the sentence translation.
   const highlightTarget = translation => {
     if (
       !translation ||
@@ -822,7 +824,7 @@ const CombinedChatbot = ({
       return ''
     const surface = translationState.surfaceWord || currentWord?.surface || ''
 
-    const translated_glosses = (translationState.data || [])
+    const translated_glosses = (Array.isArray(translationState.data) ? translationState.data : [])
       .map(t => t.glosses || [])
       .flat()
       .map(g => g.toLowerCase())

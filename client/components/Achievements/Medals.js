@@ -2,12 +2,13 @@ import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import MedalInfo from './MedalInfo'
 
+// Medal counts per level; users without achievements show zeros.
 const Medals = () => {
   const achievements = useSelector(state => state.user.data.user.achievements)
 
   const medals = useMemo(
     () =>
-      achievements?.reduce(
+      (achievements || []).reduce(
         (medalObject, achievement) => {
           const tempObject = medalObject
           const { level } = achievement

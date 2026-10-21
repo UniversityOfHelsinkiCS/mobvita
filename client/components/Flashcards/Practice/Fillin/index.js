@@ -85,20 +85,22 @@ const Fillin = ({
     setEditing(true)
   }
 
+  // Grades the typed answer against the glosses, which can arrive as one string, not an array.
   const checkAnswer = (answer, displayedHints) => {
+    const glossList = Array.isArray(glosses) ? glosses : [glosses].filter(Boolean)
     if (answer !== '') {
-      let correct = glosses.some(
+      let correct = glossList.some(
         gloss => gloss.toLowerCase().trim() === answer.toLowerCase().trim()
       )
 
       const normalizedAnswer = normalizeDiacritics(answer)
 
-      const normalizedCorrect = glosses.find(
+      const normalizedCorrect = glossList.find(
         gloss =>
           normalizeDiacritics(gloss).toLowerCase().trim() === normalizedAnswer.toLowerCase().trim()
       )
 
-      const levenshteinCorrect = glosses.find(
+      const levenshteinCorrect = glossList.find(
         gloss =>
           levenshteinDistance(gloss.toLowerCase().trim(), normalizedAnswer.toLowerCase().trim()) ===
           1
