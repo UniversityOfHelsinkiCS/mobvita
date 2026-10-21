@@ -677,10 +677,12 @@ const CombinedChatbot = ({
   const showAllHintsUsed = eloScoreHearts.length === 0 && spentHints.length > 0
 
   const currentLemmas = currentWord?.lemmas?.split('|') || []
+  // Data is the string 'no-clue-translation' after a clue lookup with no result, not lemmas.
   const isCurrentWordTranslated =
     (translationState.surfaceWord || translationState.surface) === currentWord?.surface &&
     !translationState.pending &&
-    translationState.data?.some(item => currentLemmas.includes(item.lemma))
+    Array.isArray(translationState.data) &&
+    translationState.data.some(item => currentLemmas.includes(item.lemma))
 
   const getLemmaCandidates = lemmaOrLemmas => {
     if (!lemmaOrLemmas || typeof lemmaOrLemmas !== 'string') return []
@@ -1590,7 +1592,7 @@ const CombinedChatbot = ({
               <div className="inline-translation" data-cy="translations">
                 {/* Translation Results */}
 
-                {translationState.data && translationState.data.length > 0 ? (
+                {Array.isArray(translationState.data) && translationState.data.length > 0 ? (
                   translationState.data.map((translated, idx) => (
                     <AppLemma
                       key={translated.URL || translated.lemma || idx}
