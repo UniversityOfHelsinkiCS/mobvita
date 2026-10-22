@@ -1,11 +1,5 @@
 import callBuilder from '../apiConnection'
 
-export const getProgress = storyId => {
-  const route = `/stories/${storyId}/loading`
-  const prefix = 'GET_PROGRESS'
-  return callBuilder(route, prefix)
-}
-
 export const postStory = newStory => {
   const route = '/stories'
   const prefix = 'POST_NEW_STORY'
@@ -35,21 +29,28 @@ const initialState = {
   exerciseReady: false,
 }
 
+// Upload lifecycle; progress comes from the shared /loading action, for the uploaded story only.
 export default (state = initialState, action) => {
+  const isUploadedStory =
+    state.storyId !== null && String(action.meta?.storyId) === String(state.storyId)
+
   switch (action.type) {
-    case 'GET_PROGRESS_ATTEMPT':
+    case 'GET_STORY_LOADING_PROGRESS_ATTEMPT':
+      if (!isUploadedStory) return state
       return {
         ...state,
         pending: true,
         error: false,
       }
-    case 'GET_PROGRESS_FAILURE':
+    case 'GET_STORY_LOADING_PROGRESS_FAILURE':
+      if (!isUploadedStory) return state
       return {
         ...state,
         pending: false,
         error: true,
       }
-    case 'GET_PROGRESS_SUCCESS':
+    case 'GET_STORY_LOADING_PROGRESS_SUCCESS':
+      if (!isUploadedStory) return state
       return {
         ...state,
         progress: action.response.progress,

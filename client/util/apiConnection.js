@@ -124,7 +124,8 @@ const sendSentryEvent = (message, fingerprint) => {
   Sentry.captureException(new EndpointError(message), { fingerprint })
 }
 
-const handleError = (store, error, prefix, query, requestId) => {
+// Reports 500s and gateway errors to Sentry, then dispatches the request's _FAILURE action.
+const handleError = (store, error, prefix, query, requestId, meta) => {
   console.log('handle error')
   if (error?.response?.status === SERVER_INTERNAL_ERROR_STATUS) {
     const sentryMessage = `500 @ ${prefix}`
@@ -137,9 +138,15 @@ const handleError = (store, error, prefix, query, requestId) => {
     const sentryFingerprint = ['Type: 502/503/504']
     sendSentryEvent(sentryMessage, sentryFingerprint)
     store.dispatch({ type: 'SET_SERVER_ERROR' })
-    store.dispatch({ type: `${prefix}_FAILURE`, query, requestId })
+    store.dispatch({ type: `${prefix}_FAILURE`, query, requestId, meta })
   } else {
-    store.dispatch({ type: `${prefix}_FAILURE`, response: error.response?.data, query, requestId })
+    store.dispatch({
+      type: `${prefix}_FAILURE`,
+      response: error.response?.data,
+      query,
+      requestId,
+      meta,
+    })
   }
 
   if (error?.response?.status === 401) {
@@ -204,7 +211,6 @@ const handleNewVocabulary = (store, newVocabulary) => {
 /**
  * This is a redux middleware used for tracking api calls
  */
-
 export const handleRequest = store => next => async action => {
   if (action) {
     next(action)
@@ -219,7 +225,7 @@ export const handleRequest = store => next => async action => {
       }
     }
 
-    const { requestSettings, requestId } = action
+    const { requestSettings, requestId, meta } = action
     if (requestSettings) {
       const { route, method, data, prefix, query, cache } = requestSettings
       try {
@@ -260,20 +266,24 @@ export const handleRequest = store => next => async action => {
         const requestSentAt = new Date()
         window.localStorage.setItem('last_request', requestSentAt)
 
-        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query, requestId })
+        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query, requestId, meta })
       } catch (err) {
-        handleError(store, err, prefix, query, requestId)
+        handleError(store, err, prefix, query, requestId, meta)
       }
     }
   }
 }
 
+// Best-effort TTS usage log; a failed log (e.g. backend down) must not become an unhandled error.
 const recordSpeak = (text, voice_type, source, lang_code, is_success, message) => {
-  callApi(
-    `/listen?text=${encodeURIComponent(
-      text,
-    )}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`,
-  )
+  callApi('/listen', 'get', undefined, {
+    text,
+    voice_type,
+    source,
+    lang_code,
+    is_success,
+    message,
+  }).catch(() => {})
 }
 
 // `rate` is ResponsiveVoice's own speed control: 1 is normal, lower is slower. Left out entirely

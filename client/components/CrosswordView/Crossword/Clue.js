@@ -5,12 +5,13 @@ import styled, { ThemeContext } from 'styled-components'
 import { CrosswordContext } from './context'
 
 const ClueWrapper = styled.div.attrs(props => ({
-  className: `clue${props.correct ? ' correct' : ''}`,
+  className: `clue${props.$correct ? ' correct' : ''}`,
 }))`
   cursor: default;
-  background-color: ${props => (props.highlight ? props.highlightBackground : 'transparent')};
+  background-color: ${props => (props.$highlight ? props.$highlightBackground : 'transparent')};
 `
 
+// Single clue row; highlights when selected and marks itself correct when solved.
 export default function Clue({ direction, number, children, correct, ...props }) {
   const { highlightBackground } = useContext(ThemeContext)
   const { focused, selectedDirection, selectedNumber, onClueSelected } =
@@ -28,9 +29,9 @@ export default function Clue({ direction, number, children, correct, ...props })
 
   return (
     <ClueWrapper
-      highlightBackground={highlightBackground}
-      highlight={focused && direction === selectedDirection && number === selectedNumber}
-      correct={correct}
+      $highlightBackground={highlightBackground}
+      $highlight={focused && direction === selectedDirection && number === selectedNumber}
+      $correct={correct}
       {...props}
       onClick={handleClick}
       aria-label={`clue-${number}-${direction}`}

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { Box } from '@mui/material'
 import Spinner from 'Components/Spinner'
 import AppButton from 'Components/AppButton'
@@ -23,6 +23,7 @@ import { setWords, getClueTranslationAction } from 'Utilities/redux/translationR
 import EndModal from './EndModal'
 
 const CrosswordView = () => {
+  const intl = useIntl()
   const { storyId } = useParams()
   const crosswordRef = useRef()
   const [currentClue, setCurrentClue] = useState(null)
@@ -265,10 +266,7 @@ const CrosswordView = () => {
           alignItems: 'center',
         }}
       >
-        <h1 style={{ fontWeight: 600, fontSize: '26px', color: colors.ink }}>
-          <FormattedMessage id="building-your-crossword" />
-        </h1>
-        <Spinner inline size={60} />
+        <Spinner fullHeight size={60} spinnerColor={colors.ink} text={intl.formatMessage({ id: 'building-your-crossword' })} textColor={colors.ink} />
       </div>
     )
 

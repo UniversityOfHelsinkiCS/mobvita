@@ -42,7 +42,7 @@ const defaultTheme = {
 
 // eslint-disable-next-line
 const OuterWrapper = styled.div.attrs(props => ({
-  className: `crossword${props.correct ? ' correct' : ''}`,
+  className: `crossword${props.$correct ? ' correct' : ''}`,
 }))`
   margin: 0;
   padding: 0;
@@ -87,10 +87,7 @@ const CluesWrapper = styled.div.attrs(props => ({ className: 'clues' }))`
   }
 `
 
-/**
- * The primary, and default, export from the react-crossword library, Crossword
- * renders an answer grid and clues, and manages data and user interaction.
- */
+// Main crossword: renders the grid and clues and manages guesses and interaction.
 const Crossword = React.forwardRef(
   (
     {
@@ -780,7 +777,7 @@ const Crossword = React.forwardRef(
           value={sizeContext}
         >
           <ThemeProvider theme={finalTheme}>
-            <OuterWrapper correct={crosswordCorrect} ref={outerWrapperRef}>
+            <OuterWrapper $correct={crosswordCorrect} ref={outerWrapperRef}>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div
                   style={{
