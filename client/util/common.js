@@ -29,6 +29,7 @@ import star01 from 'Assets/images/star-01.svg'
 import playTimer from 'Assets/images/play-timer.svg'
 import pauseTimer from 'Assets/images/pause-timer.svg'
 import stopTimer from 'Assets/images/stop-timer.svg'
+import stopTimer2 from 'Assets/images/stop-timer2.svg'
 import bug from 'Assets/images/bug.svg'
 import cardsIcon from 'Assets/images/cards.svg'
 import fileCheck from 'Assets/images/file-check-02.svg'
@@ -226,6 +227,7 @@ export const images = {
   playTimer,
   pauseTimer,
   stopTimer,
+  stopTimer2,
   bug,
   cardsIcon,
   fileCheck,

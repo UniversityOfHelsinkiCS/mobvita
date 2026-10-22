@@ -226,7 +226,7 @@ const AdaptiveTest = () => {
                   values={cefrLevel ? { level: cefrLevel } : undefined}
                 >
                   <TimerButton
-                    icon={images.stopTimer}
+                    icon={images.stopTimer2}
                     label="stop"
                     onClick={() => setWillStop(true)}
                     pending={willStop}
