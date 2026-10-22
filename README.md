@@ -38,6 +38,8 @@ If HMR websocket reconnects keep failing in Docker, restart the local stack so t
 - `docker compose -f docker-compose-local.yml down -v`
 - `docker compose -f docker-compose-local.yml up --build --force-recreate`
 
+To get Finnish and English text-to-speech working on localhost from outside the university network, see [documentation/LocalTTS.md](documentation/LocalTTS.md).
+
 # Testing
 
 Open app with docker and then run tests:
