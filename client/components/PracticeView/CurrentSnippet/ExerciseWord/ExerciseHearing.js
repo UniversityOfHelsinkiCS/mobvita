@@ -24,6 +24,7 @@ const ExerciseHearing = ({ word, handleChange }) => {
   const [count, setCount] = useState(0)
   const [lastWord, setLastWord] = useState('')
   const inputRef = useRef(null)
+  const skipFocusSample = useRef(false)
   const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const { answersPending } = useSelector(({ snippets }) => snippets)
@@ -65,9 +66,40 @@ const ExerciseHearing = ({ word, handleChange }) => {
     }
   }, [voiceSampleOnCooldown])
 
-  const speakerClickHandler = word => {
-    speak(word.audio, voice)
+  // Returning to the tab or window re-fires focus on the blank; that is no new visit, so no audio.
+  useEffect(() => {
+    const onWindowBlur = () => {
+      if (document.activeElement === inputRef.current) skipFocusSample.current = true
+    }
+    const onWindowFocus = () => setTimeout(() => (skipFocusSample.current = false))
+    window.addEventListener('blur', onWindowBlur)
+    window.addEventListener('focus', onWindowFocus)
+    return () => {
+      window.removeEventListener('blur', onWindowBlur)
+      window.removeEventListener('focus', onWindowFocus)
+    }
+  }, [])
+
+  // Plays the exercise audio; the repeat counter switches between the fast and slow speeds.
+  const playSample = () => {
+    if (lastWord === '') {
+      setCount(count + 1)
+      setLastWord(word)
+    } else if (word === lastWord) setCount(count + 1)
+    else {
+      setCount(0)
+      setLastWord(word)
+    }
+    speak(word.audio, voice, 'exercise', resource_usage, count)
+  }
+
+  // One request per click: the focus this triggers must not play the audio a second time.
+  const speakerClickHandler = () => {
+    playSample()
+    if (document.activeElement === inputRef.current) return
+    skipFocusSample.current = true
     inputRef.current.focus()
+    skipFocusSample.current = false
   }
 
   // Font is changed to 16px and back to disable iOS safari zoom in effect
@@ -75,6 +107,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
     element.style.fontSize = size
   }
 
+  // Focusing the blank plays its audio, unless the icon already did, focus came back with the
+  // window, or the cooldown is on.
   const handleInputFocus = e => {
     if (!touched) {
       if (!tested) setClassName('exercise')
@@ -82,17 +116,8 @@ const ExerciseHearing = ({ word, handleChange }) => {
       handleChange(value, word)
     }
     dispatch(setFocusedWord(word))
-    if (!focusTimeout && !voiceSampleOnCooldown) {
-      if (lastWord === ''){
-        setCount(count + 1)
-        setLastWord(word)
-      }
-      else if (word === lastWord) setCount(count + 1)
-      else{
-        setCount(0)
-        setLastWord(word)
-      }
-      speak(word.audio, voice, 'exercise', resource_usage, count)
+    if (!skipFocusSample.current && !focusTimeout && !voiceSampleOnCooldown) {
+      playSample()
       setFocusTimeout(true)
       dispatch(handleVoiceSampleCooldown())
       setTimeout(() => {
@@ -186,7 +211,9 @@ const ExerciseHearing = ({ word, handleChange }) => {
         <VolumeUpIcon
           data-cy="exercise-hearing-speaker"
           fontSize="small"
-          onClick={() => speakerClickHandler(word)}
+          // Keeps focus and the caret in the blank, so the click doesn't blur and re-focus it.
+          onMouseDown={e => e.preventDefault()}
+          onClick={speakerClickHandler}
           sx={{
             cursor: 'pointer',
             opacity: iconDisabled ? 0.45 : 1,
