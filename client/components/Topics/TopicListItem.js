@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useSelector } from 'react-redux'
+import AppButton from 'Components/AppButton'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import CustomTooltip from 'Components/CustomTooltip'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
+import { colors } from 'Assets/mui_theme/designTokens'
 import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -187,6 +189,42 @@ const LessonTitle = ({
             dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
           />
         </div>
+        {/* Select All: includes / excludes every topic of this lesson at once. */}
+        <div className="lesson-card-actions-cont" style={{ flexShrink: 0 }}>
+          <div className="lesson-actions">
+            <AppButton
+              variant={selected ? 'primary' : 'card'}
+              onClick={() => {
+                if (selected) {
+                  excludeLesson(lesson.ID)
+                } else {
+                  includeLesson(lesson.ID)
+                }
+              }}
+              disabled={disabled}
+              size="sm"
+              data-cy="lesson-select-all"
+              sx={{
+                gap: '8px',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                // Not-selected: cream fill with an ink border matching the text colour.
+                ...(selected
+                  ? {}
+                  : {
+                      backgroundColor: '#F7F0D5',
+                      border: `1px solid ${colors.ink}`,
+                      '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
+                    }),
+              }}
+              style={{
+                cursor: !disabled ? 'pointer' : 'not-allowed',
+              }}
+            >
+              <FormattedMessage id="select-all" defaultMessage="Select All" />
+            </AppButton>
+          </div>
+        </div>
       </span>
       {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
     </div>
@@ -209,6 +247,41 @@ const LessonTitle = ({
         </div>
       </span>
       {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
+      {/* Select All: includes / excludes every topic of this lesson at once. */}
+      <div className="lesson-card-actions-cont">
+        <div className="lesson-actions">
+          <AppButton
+            variant={selected ? 'primary' : 'card'}
+            onClick={() => {
+              if (selected) {
+                excludeLesson(lesson.ID)
+              } else {
+                includeLesson(lesson.ID)
+              }
+            }}
+            disabled={disabled}
+            size="sm"
+            data-cy="lesson-select-all"
+            sx={{
+              gap: '8px',
+              // Not-selected: cream fill with an ink border matching the text colour.
+              ...(selected
+                ? {}
+                : {
+                    backgroundColor: '#F7F0D5',
+                    border: `1px solid ${colors.ink}`,
+                    '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
+                  }),
+            }}
+            style={{
+              width: '100%',
+              cursor: !disabled ? 'pointer' : 'not-allowed',
+            }}
+          >
+            <FormattedMessage id="select-all" defaultMessage="Select All" />
+          </AppButton>
+        </div>
+      </div>
     </div>
   )
 }
