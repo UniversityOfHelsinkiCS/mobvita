@@ -128,7 +128,6 @@ const ReadViews = ({ match }) => {
   const studentStoryPollingRef = useRef(false)
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
-  const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
   const loadingProgressByStory = useSelector(
     ({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS,
   )
@@ -174,36 +173,21 @@ const ReadViews = ({ match }) => {
   const storyLoadingProgress = loadingProgressByStory[id] || {}
   const hasRenderableStoryContent =
     !!routeStory?.title || (Array.isArray(routeStory?.paragraph) && routeStory.paragraph.length > 0)
-  const storyProgress = Number(routeStory?.progress ?? 0)
-  const polledProgress = Number(storyLoadingProgress.progress)
-  const processingProgress = Number.isFinite(polledProgress) ? polledProgress : storyProgress
-  const processingCurrentStory = String(id) === String(storyId)
-  const processingComplete =
-    processingProgress >= 1 || (processingCurrentStory && Number(progress) >= 1)
-  const preProcessingReadyFromEndpoint = Number(storyLoadingProgress.progress) >= 0.4
-  const loadingReadyFromEndpoint =
-    storyLoadingProgress.exercise_ready === true || Number(storyLoadingProgress.progress) >= 1
-  const preProcessingReadyFromUploadState = processingCurrentStory && Number(progress) >= 0.4
-  const loadingReadyFromUploadState =
-    processingCurrentStory && (exerciseReady === true || Number(progress) >= 1)
-  const preProcessingReady =
-    preProcessingReadyFromEndpoint || preProcessingReadyFromUploadState || storyProgress >= 0.4
-  const loadingReady = loadingReadyFromEndpoint || loadingReadyFromUploadState || storyProgress >= 1
+  // Processing status comes only from /loading; story.progress stays 0 on old public stories.
+  const loadingProgress = Number(storyLoadingProgress.progress)
+  const preProcessingReady = loadingProgress >= 0.4
+  const processingComplete = loadingProgress >= 1
   const isPreviewMode = mode === 'preview'
   const isStudentPreview = mode === 'preview' && !teacherView
-  const teacherLoadingProgress = Number(storyLoadingProgress.progress)
-  const teacherProcessingComplete = Number.isFinite(teacherLoadingProgress)
-    ? teacherLoadingProgress === 1
-    : false
   const shouldFetchStoryDirectly =
     !isPreviewMode ||
     hasRenderableStoryContent ||
-    (isStudentPreview ? preProcessingReady : teacherProcessingComplete)
+    (isStudentPreview ? preProcessingReady : processingComplete)
   const isStudentPreviewProcessing =
     isStudentPreview && !preProcessingReady && !hasShownStoryContent && !hasRenderableStoryContent
 
-  const isTeacherPreviewProcessing = isPreviewMode && teacherView && !teacherProcessingComplete
-  const rawProcessingProgress = Number.isFinite(teacherLoadingProgress) ? teacherLoadingProgress : 0
+  const isTeacherPreviewProcessing = isPreviewMode && teacherView && !processingComplete
+  const rawProcessingProgress = Number.isFinite(loadingProgress) ? loadingProgress : 0
   const processingPercent = Math.round(
     Math.max(
       0,
@@ -289,17 +273,16 @@ const ReadViews = ({ match }) => {
     navigate('/library', { replace: true })
   }, [error, navigate, pending, routeStory])
 
+  // Polls /loading in every mode until the story is processed; it drives all processing UI.
   useEffect(() => {
     if (loadingPollRef.current) {
       clearInterval(loadingPollRef.current)
       loadingPollRef.current = null
     }
 
-    if (!id || !isPreviewMode) return
+    if (!id || processingComplete) return
 
     dispatch(getStoryLoadingProgress(id))
-
-    if (isStudentPreview ? processingComplete : teacherProcessingComplete) return
 
     loadingPollRef.current = setInterval(() => {
       dispatch(getStoryLoadingProgress(id))
@@ -311,7 +294,7 @@ const ReadViews = ({ match }) => {
         loadingPollRef.current = null
       }
     }
-  }, [dispatch, id, isPreviewMode, isStudentPreview, processingComplete, teacherProcessingComplete])
+  }, [dispatch, id, processingComplete])
 
   useEffect(() => {
     if (storyPollRef.current) {
@@ -323,7 +306,7 @@ const ReadViews = ({ match }) => {
 
     if (isStudentPreview) {
       if (!preProcessingReady) return
-      // Done per /loading (old public stories keep story.progress at 0); refetch once if we polled.
+      // Processing ended: refetch once if we polled, so the finished story replaces the partial one.
       if (processingComplete) {
         if (studentStoryPollingRef.current) dispatch(getStoryAction(id, mode))
         studentStoryPollingRef.current = false
@@ -343,7 +326,7 @@ const ReadViews = ({ match }) => {
       }
     }
 
-    if (!teacherProcessingComplete || hasRenderableStoryContent) return
+    if (!processingComplete || hasRenderableStoryContent) return
 
     storyPollRef.current = setInterval(() => {
       dispatch(getStoryAction(id, mode))
@@ -364,7 +347,6 @@ const ReadViews = ({ match }) => {
     mode,
     preProcessingReady,
     processingComplete,
-    teacherProcessingComplete,
   ])
 
   if (!user || groupsPending) return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
@@ -377,7 +359,7 @@ const ReadViews = ({ match }) => {
         size={60}
         textDelay={1000}
         text={
-          Number.isFinite(teacherLoadingProgress)
+          Number.isFinite(loadingProgress)
             ? intl.formatMessage(
                 { id: 'processing-story-with-percent' },
                 { progress: processingPercent },
@@ -388,10 +370,6 @@ const ReadViews = ({ match }) => {
     )
   if (!routeStory && !isStudentPreview)
     return <Spinner fullHeight spinnerColor={colors.ink} size={60} />
-
-  const underProcessing = isStudentPreview
-    ? !loadingReady || storyProgress !== 1
-    : (progress !== 0 && processingCurrentStory) || storyProgress !== 1
 
   const updateUserReviewDiff = () => {
     dispatch(updateShowReviewDiff(!showDifficulty))
@@ -572,7 +550,7 @@ const ReadViews = ({ match }) => {
                 </div>
               </div>
             </div>
-            {underProcessing && preProcessingReady && !processingComplete && (
+            {preProcessingReady && !processingComplete && (
               <div className="story-not-processed">
                 <div className="story-not-processed-text">
                   {intl
