@@ -12,7 +12,15 @@ import TopicListItem from './TopicListItem'
 
 const TOPIC_ROW_DIVIDER = '#E4E1D3'
 
-const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) => {
+// Searchable lesson topic list grouped by level; showExamples toggles each topic's "— …" example.
+const Topics = ({
+  topicInstance,
+  editable,
+  setSelectedTopics,
+  showPerf,
+  note,
+  showExamples = true,
+}) => {
   const intl = useIntl()
   const { lessons } = useSelector(({ metadata }) => metadata)
   const { topics } = useSelector(({ lessons }) => lessons)
@@ -151,6 +159,7 @@ const Topics = ({ topicInstance, editable, setSelectedTopics, showPerf, note }) 
           excludeLesson={excludeLesson}
           disabled={!editable}
           showPerf={showPerf}
+          showExamples={showExamples}
         />
       </div>
     )

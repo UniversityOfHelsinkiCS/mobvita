@@ -1,19 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { useSelector } from 'react-redux'
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined'
-import AppButton from 'Components/AppButton'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import CustomTooltip from 'Components/CustomTooltip'
-
-import { useIntl, FormattedMessage } from 'react-intl'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { useIntl } from 'react-intl'
 import { getTextStyle, learningLanguageSelector, ACCESS, useHasAccess } from 'Utilities/common'
-
 import useWindowDimensions from 'Utilities/windowDimensions'
-
-// import ConfirmationWarning from 'Components/ConfirmationWarning'
-// import useWindowDimensions from 'Utilities/windowDimensions'
 
 const get_lesson_performance = (correct_count, total_count) => {
   let correct_perc = 0.0
@@ -32,6 +24,7 @@ const get_lesson_performance_style = (correct_count, total_count) => {
   else return '#000000'
 }
 
+// A lesson's title row and its topics, with performance and (optionally) each topic's example.
 const LessonTitle = ({
   lesson,
   lesson_instance,
@@ -41,6 +34,7 @@ const LessonTitle = ({
   includeLesson,
   excludeLesson,
   showPerf,
+  showExamples = true,
 }) => {
   const { width } = useWindowDimensions()
   const bigScreen = width >= 700
@@ -50,7 +44,6 @@ const LessonTitle = ({
   const canSeeTopics = useHasAccess(ACCESS.HIGH)
   const { topics } = useSelector(({ lessons }) => lessons)
   const { lesson_topics: all_topics } = useSelector(({ metadata }) => metadata)
-
   const topic2info = topics.reduce((obj, topic) => ({ ...obj, [topic.topic_id]: topic }), {})
   const topicId2Name = all_topics.reduce(
     (obj, topic) => ({ ...obj, [topic.topic_id]: topic.topic }),
@@ -161,7 +154,7 @@ const LessonTitle = ({
         )}
         <div className="tour-lesson-grammar-topics" style={{ width: '80%', marginLeft: '15px' }}>
           <div dangerouslySetInnerHTML={{ __html: topicTitle }} />
-          {topicExample ? (
+          {showExamples && topicExample ? (
             <div
               style={{ fontWeight: '400' }}
               dangerouslySetInnerHTML={{ __html: `— ${topicExample}` }}
@@ -194,42 +187,6 @@ const LessonTitle = ({
             dangerouslySetInnerHTML={{ __html: lesson.name.split('—')[0].trim() }}
           />
         </div>
-        <div className="lesson-card-actions-cont" style={{ flexShrink: 0 }}>
-          <div className="lesson-actions">
-            <AppButton
-              variant={selected ? 'primary' : 'card'}
-              onClick={() => {
-                if (selected) {
-                  excludeLesson(lesson.ID)
-                } else {
-                  includeLesson(lesson.ID)
-                }
-              }}
-              disabled={disabled}
-              size='sm'
-              sx={{
-                gap: '8px',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-                '& svg': { fontSize: 20 },
-                // Not-selected: cream fill with an ink border matching the text colour.
-                ...(selected
-                  ? {}
-                  : {
-                      backgroundColor: '#F7F0D5',
-                      border: `1px solid ${colors.ink}`,
-                      '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
-                    }),
-              }}
-              style={{
-                cursor: !disabled ? 'pointer' : 'not-allowed',
-              }}
-            >
-              <CheckBoxOutlinedIcon />
-              <FormattedMessage id="select-all" defaultMessage="Select All" />
-            </AppButton>
-          </div>
-        </div>
       </span>
       {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
     </div>
@@ -252,45 +209,11 @@ const LessonTitle = ({
         </div>
       </span>
       {canSeeTopics && <span style={{ overflow: 'hidden', width: '100%' }}>{topic_rows}</span>}
-      <div className="lesson-card-actions-cont">
-        <div className="lesson-actions">
-          <AppButton
-            variant={selected ? 'primary' : 'card'}
-            onClick={() => {
-              if (selected) {
-                excludeLesson(lesson.ID)
-              } else {
-                includeLesson(lesson.ID)
-              }
-            }}
-            disabled={disabled}
-            size='sm'
-            sx={{
-              gap: '8px',
-              '& svg': { fontSize: 20 },
-              // Not-selected: cream fill with an ink border matching the text colour.
-              ...(selected
-                ? {}
-                : {
-                    backgroundColor: '#F7F0D5',
-                    border: `1px solid ${colors.ink}`,
-                    '&:hover': { backgroundColor: '#EFE7C6', borderColor: colors.ink },
-                  }),
-            }}
-            style={{
-              width: '100%',
-              cursor: !disabled ? 'pointer' : 'not-allowed',
-            }}
-          >
-            <CheckBoxOutlinedIcon />
-            <FormattedMessage id="select-all" defaultMessage="Select All" />
-          </AppButton>
-        </div>
-      </div>
     </div>
   )
 }
 
+// One lesson card in the topic list; tinted green once the lesson is mostly answered correctly.
 const TopicListItem = ({
   lesson,
   lesson_instance,
@@ -300,6 +223,7 @@ const TopicListItem = ({
   excludeLesson,
   disabled,
   showPerf,
+  showExamples = true,
 }) => {
   const correct_perc = get_lesson_performance(lesson.correct, lesson.total)
   // Cards sit on a soft cream tint; high-scoring lessons get a green tint instead.
@@ -326,6 +250,7 @@ const TopicListItem = ({
           includeLesson={includeLesson}
           excludeLesson={excludeLesson}
           showPerf={showPerf}
+          showExamples={showExamples}
         />
       </div>
     </div>
