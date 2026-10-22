@@ -483,6 +483,84 @@ const DesignSystem = () => {
           </div>
         </Section>
 
+        <Section title="AppButton — multiline (long labels wrap onto several rows)">
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 14,
+              maxWidth: 320,
+            }}
+          >
+            {/* Default: a fixed height, so a long label spills out of the button. */}
+            <AppButton variant="tan" block>
+              Default — this long answer text does not fit on one row and spills out
+            </AppButton>
+            {/* `multiline`: the height is a minimum and the label wraps, one row stays as tall. */}
+            <AppButton variant="tan" block multiline>
+              multiline — this long answer text does not fit on one row, so the button grows
+            </AppButton>
+            <AppButton variant="tan" block multiline>
+              multiline, one row
+            </AppButton>
+            <AppButton variant="tan-outline" size="sm" block multiline>
+              size sm, multiline — a long label in the small size wraps as well
+            </AppButton>
+            <AppButton variant="contrast" size="lg" block multiline>
+              size lg, multiline — a long label in the large size wraps as well
+            </AppButton>
+          </div>
+
+          {/* How to use — beside the examples (wraps below them on narrow screens). */}
+          <div style={{ flex: '1 1 300px', maxWidth: 460, fontSize: 14, lineHeight: 1.5 }}>
+            <p style={{ marginTop: 0 }}>
+              Every <code>AppButton</code> size has a <b>fixed height</b> (24 / 36 / 48px), so by
+              default a label longer than the button spills out of it. Add <code>multiline</code>{' '}
+              wherever the label can be long — answer options, user content, translated text:
+            </p>
+            <ul style={{ paddingLeft: '1.2em', margin: '0 0 1em' }}>
+              <li>
+                the height becomes a <b>minimum</b>: a one-row label stays exactly as tall as
+                without it;
+              </li>
+              <li>the label wraps onto several rows and stays centred;</li>
+              <li>a single very long word breaks instead of widening the button;</li>
+              <li>
+                works with every <code>variant</code> and <code>size</code>; pair with{' '}
+                <code>block</code> (or a width) so there is a width to wrap at.
+              </li>
+            </ul>
+            <pre
+              style={{
+                margin: 0,
+                padding: '12px 14px',
+                overflowX: 'auto',
+                backgroundColor: '#ffffff',
+                border: '1px solid #e8e5dc',
+                borderRadius: 8,
+                fontFamily: 'monospace',
+                fontSize: 13,
+                lineHeight: 1.45,
+              }}
+            >
+              {`import AppButton from 'Components/AppButton'
+
+<AppButton variant="tan" block multiline onClick={onAnswer}>
+  {choice.option}
+</AppButton>
+
+// Small / large sizes wrap the same way:
+<AppButton size="sm" variant="tan-outline" multiline>
+  {longLabel}
+</AppButton>`}
+            </pre>
+            <p style={{ marginBottom: 0 }}>
+              In use: the test answer buttons (<code>Tests/MultipleChoice.js</code>). Leave it off for
+              icon-only and short fixed labels — those rely on the exact height.
+            </p>
+          </div>
+        </Section>
+
         <Section title="AppButton — inverse (dark background)" noCard>
           <div
             style={{
