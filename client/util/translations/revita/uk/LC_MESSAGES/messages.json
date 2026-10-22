@@ -660,6 +660,8 @@
     "Group": "Група",
     "resume-test": "Відновити тест",
     "quitting-after-this-question": "Тест закінчиться після цього питання...",
+    "adaptive-test-stop-no-estimate": "If you stop now, there is not enough data to estimate your level yet, so we will assume you are at the beginner level.",
+    "adaptive-test-stop-with-estimate": "Your level estimate ({level}) is still approximate, but if you stop now, we will take it as your level.",
     "pause-after-you-answer-this-question": "Пауза почнеться після цього питання",
     "paused-click-to-resume": "Пауза.<br/><br/> Натисніть ► для продовження",
     "start-a-new-test": "Почати новий тест",
@@ -1143,5 +1145,7 @@
     "feedback-describe-bug": "Describe the bug",
     "feedback-describe-suggestion": "Describe your suggestion",
     "write-here": "Write here",
-    "send-feedback": "Send Feedback"
+    "send-feedback": "Send Feedback",
+    "show-examples": "Show examples",
+    "preprocessing-story-with-percent": "Preprocessing... {progress} % done"
 }

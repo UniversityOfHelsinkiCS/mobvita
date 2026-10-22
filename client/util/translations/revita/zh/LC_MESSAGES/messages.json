@@ -460,6 +460,8 @@
     "please-input-non-negative-integer": "请输入一个非负整数",
     "questions": "问题",
     "quitting-after-this-question": "回答此问题后结束",
+    "adaptive-test-stop-no-estimate": "If you stop now, there is not enough data to estimate your level yet, so we will assume you are at the beginner level.",
+    "adaptive-test-stop-with-estimate": "Your level estimate ({level}) is still approximate, but if you stop now, we will take it as your level.",
     "resume-test": "继续测试",
     "start-a-new-test": "新测试",
     "start-test": "开始测试",
@@ -1409,5 +1411,7 @@
     "feedback-describe-bug": "Describe the bug",
     "feedback-describe-suggestion": "Describe your suggestion",
     "write-here": "Write here",
-    "send-feedback": "Send Feedback"
+    "send-feedback": "Send Feedback",
+    "show-examples": "Show examples",
+    "preprocessing-story-with-percent": "Preprocessing... {progress} % done"
 }

@@ -497,6 +497,8 @@
     "resume-test": "Jatka testi",
     "quit-test": "Lopeta testi.",
     "quitting-after-this-question": "Lopetetaan tämän kysymyksen jälkeen...",
+    "adaptive-test-stop-no-estimate": "If you stop now, there is not enough data to estimate your level yet, so we will assume you are at the beginner level.",
+    "adaptive-test-stop-with-estimate": "Your level estimate ({level}) is still approximate, but if you stop now, we will take it as your level.",
     "pause-after-you-answer-this-question": "Tauko alkaa tämän kysymyksen jälkeen",
     "paused-click-to-resume-27ac769f5d88934067af4294483b9807": "Tauko. Klikkaa ►jatkamiseksi...",
     "practice-with-your-favourite-stories-to-improve-your-skills": "Harjoittele suosikkikertomuksillasi parantaaksesi taitojasi!",
@@ -2028,5 +2030,7 @@
     "feedback-describe-bug": "Kuvaile virhe",
     "feedback-describe-suggestion": "Kuvaile ehdotuksesi",
     "write-here": "Kirjoita tähän",
-    "send-feedback": "Lähetä palaute"
+    "send-feedback": "Lähetä palaute",
+    "show-examples": "Näytä esimerkit",
+    "preprocessing-story-with-percent": "Esikäsittellään... {progress} % valmis"
 }

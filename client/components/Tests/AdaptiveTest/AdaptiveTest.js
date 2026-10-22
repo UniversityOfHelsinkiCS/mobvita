@@ -11,6 +11,7 @@ import { learningLanguageSelector, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
 import MultipleChoice from '../MultipleChoice'
 import Spinner from 'Components/Spinner'
+import CustomTooltip from 'Components/CustomTooltip'
 
 const TIMER_START_DELAY = 3000
 
@@ -22,17 +23,24 @@ const formatSeconds = totalSeconds => {
 }
 
 // Round 36px timer control: the original SVG as drawn, no hover recolouring.
-const TimerButton = ({ icon, label, onClick, pending, ...rest }) => (
-  <button
-    type="button"
-    aria-label={label}
-    onClick={onClick}
-    className={`adaptive-test-timer-button${pending ? ' pending' : ''}`}
-    {...rest}
-  >
-    <img src={icon} alt="" width={36} height={36} style={{ display: 'block' }} />
-  </button>
+// forwardRef: it sits directly inside a tooltip, which anchors to its child by ref.
+// `className` is merged, not overridden: a wrapping tooltip passes its own (often empty) one, which
+// spread after ours used to drop the button's styles and leave a default grey button.
+const TimerButton = React.forwardRef(
+  ({ icon, label, onClick, pending, className = '', ...rest }, ref) => (
+    <button
+      ref={ref}
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      {...rest}
+      className={`adaptive-test-timer-button${pending ? ' pending' : ''} ${className}`.trim()}
+    >
+      <img src={icon} alt="" width={36} height={36} style={{ display: 'block' }} />
+    </button>
+  ),
 )
+TimerButton.displayName = 'TimerButton'
 
 const AdaptiveTest = () => {
   const { controls: timer } = useTimer({
@@ -61,6 +69,7 @@ const AdaptiveTest = () => {
     currentAdaptiveQuestion,
     currentAdaptiveQuestionIndex,
     timedTest,
+    cefrLevel,
   } = useSelector(({ tests }) => tests)
 
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -184,9 +193,11 @@ const AdaptiveTest = () => {
               />
               {/* Timer controls inline at the end of the row. A pause / stop requested mid-question
                   takes effect after the answer, so the button greys out (`pending`) until then. */}
-              {timedTest && (
-                <div className="adaptive-test-timer">
-                  {paused ? (
+              {/* Stop in every test (timed or not): the test ends after the current answer and the
+                  result shows, as when it finishes by itself. Pause and the countdown are timed only. */}
+              <div className="adaptive-test-timer">
+                {timedTest &&
+                  (paused ? (
                     <TimerButton
                       icon={images.playTimer}
                       label="resume"
@@ -201,7 +212,19 @@ const AdaptiveTest = () => {
                       pending={willPause}
                       data-cy="adaptive-test-pause"
                     />
-                  )}
+                  ))}
+                {/* What stopping means for the level: no estimate yet (~first 30 answers) vs the
+                    current, still approximate one. */}
+                <CustomTooltip
+                  permanent
+                  placement="top"
+                  keyId={
+                    cefrLevel
+                      ? 'adaptive-test-stop-with-estimate'
+                      : 'adaptive-test-stop-no-estimate'
+                  }
+                  values={cefrLevel ? { level: cefrLevel } : undefined}
+                >
                   <TimerButton
                     icon={images.stopTimer}
                     label="stop"
@@ -209,11 +232,13 @@ const AdaptiveTest = () => {
                     pending={willStop}
                     data-cy="adaptive-test-stop"
                   />
+                </CustomTooltip>
+                {timedTest && (
                   <div className="adaptive-test-time" data-cy="adaptive-test-time">
                     {formatSeconds(Math.max(0, Math.round(timer.getTime() / 1000)))}
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
             {/* The provisional CEFR estimate is a bubble in the helper sidebar now (index.js). */}
 

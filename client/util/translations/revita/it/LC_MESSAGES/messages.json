@@ -496,6 +496,8 @@
     "resume-test": "Riprendi il test",
     "quit-test": "Esci dal test",
     "quitting-after-this-question": "Abbandonare il test dopo questa domanda…",
+    "adaptive-test-stop-no-estimate": "If you stop now, there is not enough data to estimate your level yet, so we will assume you are at the beginner level.",
+    "adaptive-test-stop-with-estimate": "Your level estimate ({level}) is still approximate, but if you stop now, we will take it as your level.",
     "pause-after-you-answer-this-question": "La pausa inizierà dopo questa domanda",
     "paused-click-to-resume-27ac769f5d88934067af4294483b9807": "Pausa... Fai clic su ► per riprendere ...",
     "practice-with-your-favourite-stories-to-improve-your-skills": "Esercitati con le tue storie preferite per migliorare le tue abilità!",
@@ -2028,5 +2030,7 @@
     "feedback-describe-bug": "Describe the bug",
     "feedback-describe-suggestion": "Describe your suggestion",
     "write-here": "Write here",
-    "send-feedback": "Send Feedback"
+    "send-feedback": "Send Feedback",
+    "show-examples": "Show examples",
+    "preprocessing-story-with-percent": "Preprocessing... {progress} % done"
 }
