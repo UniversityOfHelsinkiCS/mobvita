@@ -268,12 +268,16 @@ export const handleRequest = store => next => async action => {
   }
 }
 
+// Best-effort TTS usage log; a failed log (e.g. backend down) must not become an unhandled error.
 const recordSpeak = (text, voice_type, source, lang_code, is_success, message) => {
-  callApi(
-    `/listen?text=${encodeURIComponent(
-      text,
-    )}&voice_type=${voice_type}&source=${source}&lang_code=${lang_code}&is_success=${is_success}&message=${message}`,
-  )
+  callApi('/listen', 'get', undefined, {
+    text,
+    voice_type,
+    source,
+    lang_code,
+    is_success,
+    message,
+  }).catch(() => {})
 }
 
 // `rate` is ResponsiveVoice's own speed control: 1 is normal, lower is slower. Left out entirely
