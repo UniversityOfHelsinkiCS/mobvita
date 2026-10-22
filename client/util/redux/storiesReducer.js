@@ -1,8 +1,8 @@
-// Action to fetch story loading progress
+// Fetches a story's processing status; storyId rides in meta since responses may lack it.
 export const getStoryLoadingProgress = storyId => {
   const route = `/stories/${storyId}/loading`
   const prefix = 'GET_STORY_LOADING_PROGRESS'
-  return callBuilder(route, prefix, 'get', undefined, { storyId })
+  return { ...callBuilder(route, prefix), meta: { storyId } }
 }
 import { produce } from 'immer'
 import callBuilder from '../apiConnection'
@@ -260,7 +260,7 @@ export default (state = initialState, action) => {
       }
     case 'GET_STORY_LOADING_PROGRESS_SUCCESS': {
       const response = action.response?.response || action.response || {}
-      const storyId = response.story_id || response.story?._id || action.query?.storyId
+      const storyId = response.story_id || response.story?._id || action.meta?.storyId
 
       if (!storyId) {
         return state

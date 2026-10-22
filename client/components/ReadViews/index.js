@@ -128,6 +128,7 @@ const ReadViews = ({ match }) => {
   const studentStoryPollingRef = useRef(false)
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
+  const uploadStoryId = useSelector(({ uploadProgress }) => uploadProgress.storyId)
   const loadingProgressByStory = useSelector(
     ({ stories }) => stories.loadingProgress ?? EMPTY_LOADING_PROGRESS,
   )
@@ -175,6 +176,8 @@ const ReadViews = ({ match }) => {
     !!routeStory?.title || (Array.isArray(routeStory?.paragraph) && routeStory.paragraph.length > 0)
   // Processing status comes only from /loading; story.progress stays 0 on old public stories.
   const loadingProgress = Number(storyLoadingProgress.progress)
+  // The Toaster already polls /loading for a story the user just uploaded.
+  const toasterPollsStory = uploadStoryId !== null && String(uploadStoryId) === String(id)
   const preProcessingReady = loadingProgress >= 0.4
   const processingComplete = loadingProgress >= 1
   const isPreviewMode = mode === 'preview'
@@ -273,7 +276,7 @@ const ReadViews = ({ match }) => {
     navigate('/library', { replace: true })
   }, [error, navigate, pending, routeStory])
 
-  // Polls /loading in every mode until the story is processed; it drives all processing UI.
+  // Polls /loading in every mode until the story is processed, unless the Toaster already does.
   useEffect(() => {
     if (loadingPollRef.current) {
       clearInterval(loadingPollRef.current)
@@ -283,6 +286,7 @@ const ReadViews = ({ match }) => {
     if (!id || processingComplete) return
 
     dispatch(getStoryLoadingProgress(id))
+    if (toasterPollsStory) return
 
     loadingPollRef.current = setInterval(() => {
       dispatch(getStoryLoadingProgress(id))
@@ -294,7 +298,7 @@ const ReadViews = ({ match }) => {
         loadingPollRef.current = null
       }
     }
-  }, [dispatch, id, processingComplete])
+  }, [dispatch, id, processingComplete, toasterPollsStory])
 
   useEffect(() => {
     if (storyPollRef.current) {

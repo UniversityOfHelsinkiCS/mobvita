@@ -4,8 +4,11 @@ import 'react-toastify/dist/ReactToastify.css'
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProgress } from 'Utilities/redux/uploadProgressReducer'
-import { getAllStories, setStoryUploadUnfinished } from 'Utilities/redux/storiesReducer'
+import {
+  getAllStories,
+  getStoryLoadingProgress,
+  setStoryUploadUnfinished,
+} from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
@@ -16,6 +19,7 @@ import StreakToast from 'Components/Streak/StreakToast'
 import LevelUpToast from './LevelUpToast'
 import ServerIssuesToast from './ServerIssuesToast'
 
+// App-wide toasts; also polls an uploaded story's /loading until processing ends.
 export default function Toaster() {
   const dispatch = useDispatch()
   const intl = useIntl()
@@ -102,7 +106,7 @@ export default function Toaster() {
       }
 
       const progressCheckInterval = setInterval(() => {
-        dispatch(getProgress(storyId))
+        dispatch(getStoryLoadingProgress(storyId))
       }, 5000)
       saveInterval(progressCheckInterval)
     }
