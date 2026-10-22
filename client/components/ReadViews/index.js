@@ -124,6 +124,8 @@ const ReadViews = ({ match }) => {
   const initialPreviewStoryFetchedRef = useRef(false)
   const loadingPollRef = useRef(null)
   const storyPollRef = useRef(null)
+  // True while a student preview refetches a processing story, so it fetches once more when done.
+  const studentStoryPollingRef = useRef(false)
   const { lesson_topics, lessons } = useSelector(({ metadata }) => metadata)
   const { data: user, pending: userPending } = useSelector(({ user }) => user)
   const { progress, storyId, exerciseReady } = useSelector(({ uploadProgress }) => uploadProgress)
@@ -187,7 +189,6 @@ const ReadViews = ({ match }) => {
   const preProcessingReady =
     preProcessingReadyFromEndpoint || preProcessingReadyFromUploadState || storyProgress >= 0.4
   const loadingReady = loadingReadyFromEndpoint || loadingReadyFromUploadState || storyProgress >= 1
-  const processingFinished = storyProgress >= 1
   const isPreviewMode = mode === 'preview'
   const isStudentPreview = mode === 'preview' && !teacherView
   const teacherLoadingProgress = Number(storyLoadingProgress.progress)
@@ -239,6 +240,7 @@ const ReadViews = ({ match }) => {
 
   useEffect(() => {
     initialPreviewStoryFetchedRef.current = false
+    studentStoryPollingRef.current = false
     if (loadingPollRef.current) {
       clearInterval(loadingPollRef.current)
       loadingPollRef.current = null
@@ -320,8 +322,15 @@ const ReadViews = ({ match }) => {
     if (!id || !isPreviewMode) return
 
     if (isStudentPreview) {
-      if (!preProcessingReady || processingFinished) return
+      if (!preProcessingReady) return
+      // Done per /loading (old public stories keep story.progress at 0); refetch once if we polled.
+      if (processingComplete) {
+        if (studentStoryPollingRef.current) dispatch(getStoryAction(id, mode))
+        studentStoryPollingRef.current = false
+        return
+      }
 
+      studentStoryPollingRef.current = true
       storyPollRef.current = setInterval(() => {
         dispatch(getStoryAction(id, mode))
       }, 3000)
@@ -354,7 +363,7 @@ const ReadViews = ({ match }) => {
     isStudentPreview,
     mode,
     preProcessingReady,
-    processingFinished,
+    processingComplete,
     teacherProcessingComplete,
   ])
 
