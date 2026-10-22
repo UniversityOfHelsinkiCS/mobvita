@@ -24,7 +24,15 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * automatically (primary→tan, secondary/dark→contrast, outline*→contrast-outline, …).
  *
  * Props: variant, size ('sm' | 'lg' — else medium), block (full width), as (→ MUI `component`),
- * sx (wins over variant/size styles), plus type/onClick/disabled/className/data-cy/children.
+ * multiline (long text wraps onto several rows), sx (wins over variant/size styles), plus
+ * type/onClick/disabled/className/data-cy/children.
+ *
+ * Every size has a fixed height, so by default text longer than the button spills out of it. Pass
+ * `multiline` where the label can be long (answer options, user content): the size's height becomes
+ * a minimum, the text wraps and stays centred, and a single-line label keeps the same height.
+ *   multiline            - keeps the pill radius (999), so a wrapped button turns into a stadium
+ *   multiline="rounded"  - the radius a one-row pill shows (half the size's height: 12/18/24px), so
+ *                          a wrapped button is a rounded rectangle with the standard button's corners
  */
 
 // Derived states not directly in designTokens.
@@ -136,6 +144,22 @@ const SIZE_STYLES = {
 }
 const SIZE_KEYS = { sm: 'small', lg: 'large' }
 
+// `multiline`: the size's height as a minimum, with vertical padding that keeps a one-line label at
+// that height (line height 1.2 + a 1px border) and gives wrapped rows room to breathe.
+const MULTILINE_PADDING_Y = { small: 2, medium: 7, large: 10 }
+const multilineSx = (sizeKey, shape) => ({
+  // 'rounded': the corners a one-row pill shows, kept when the button grows taller.
+  ...(shape === 'rounded' && { borderRadius: `${SIZE_STYLES[sizeKey].height / 2}px` }),
+  height: 'auto',
+  minHeight: SIZE_STYLES[sizeKey].height,
+  paddingTop: `${MULTILINE_PADDING_Y[sizeKey]}px`,
+  paddingBottom: `${MULTILINE_PADDING_Y[sizeKey]}px`,
+  whiteSpace: 'normal',
+  textAlign: 'center',
+  // A single very long word breaks instead of widening the button.
+  overflowWrap: 'anywhere',
+})
+
 const resolveVariant = variant =>
   VARIANT_STYLES[variant] ? variant : ALIASES[variant] || 'tan'
 
@@ -155,9 +179,15 @@ const StyledButton = styled(Button)({
 // forwardRef so it can sit directly inside a Tooltip/Popper: MUI hands the ref to the component,
 // not to the element it renders, and a plain function component would drop it.
 const AppButton = forwardRef(
-  ({ variant = 'primary', size, block = false, as, sx, children, ...rest }, ref) => {
+  (
+    { variant = 'primary', size, block = false, multiline = false, as, sx, children, ...rest },
+    ref,
+  ) => {
     const variantSx = VARIANT_STYLES[resolveVariant(variant)]
-    const sizeSx = SIZE_STYLES[SIZE_KEYS[size] || 'medium']
+    const sizeKey = SIZE_KEYS[size] || 'medium'
+    const sizeSx = multiline
+      ? { ...SIZE_STYLES[sizeKey], ...multilineSx(sizeKey, multiline) }
+      : SIZE_STYLES[sizeKey]
     const userSx = Array.isArray(sx) ? sx : [sx]
 
     return (

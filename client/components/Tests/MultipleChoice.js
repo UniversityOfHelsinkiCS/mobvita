@@ -52,9 +52,9 @@ const MultipleChoice = ({ exercise, onAnswer, answerPending, outlineLastChoice =
           return (
           <div key={choice?.option} style={{ marginBottom: '0.75em' }}>
             <AppButton
-              className="test-choice-button"
-              variant={outlined ? 'tan-outline' : undefined}
-              // Cream through, not tan-outline's pale-green fill; hover still fills green.
+              className="test-choice-button"              
+              multiline="rounded"
+              variant={outlined ? 'tan-outline' : undefined}              
               sx={outlined ? { backgroundColor: 'transparent' } : undefined}
               onClick={!answerPending ? () => onAnswer(choice) : undefined}
             >
