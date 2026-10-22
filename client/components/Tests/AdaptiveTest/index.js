@@ -93,15 +93,16 @@ const AdaptiveTestView = () => {
                     display: 'flex',
                     flexWrap: 'wrap',
                     alignItems: 'center',
+                    // Timed-test switch on the left edge, Start on the right edge.
                     justifyContent: 'space-between',
-                    gap: '1em',
+                    gap: '1em 2em',
                     marginTop: '2em',
                   }}
                 >
+                  {/* Switch, then its label, then the timer icon. */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
-                    <AlarmOutlinedIcon sx={{ fontSize: 22, color: colors.muted }} />
                     <FormControlLabel
-                      labelPlacement="start"
+                      labelPlacement="end"
                       control={
                         <AppSwitch checked={timedTest} onChange={() => setIsTimed(!isTimed)} />
                       }
@@ -109,12 +110,13 @@ const AdaptiveTestView = () => {
                       sx={{
                         m: 0,
                         '& .MuiFormControlLabel-label': {
-                          marginRight: '0.5em',
+                          marginLeft: '0.5em',
                           color: colors.ink,
                           fontSize: '0.9em',
                         },
                       }}
                     />
+                    <AlarmOutlinedIcon sx={{ fontSize: 22, color: colors.muted }} />
                   </div>
                   <AppButton
                     onClick={startTest}

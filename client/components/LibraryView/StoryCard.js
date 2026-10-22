@@ -17,7 +17,10 @@ import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
 import StoryDetailsModal from 'Components/StoryView/StoryDetailsModal'
-import DifficultyLevel, { hasDifficultyLevel } from 'Components/DifficultyLevel'
+import DifficultyLevel, {
+  hasDifficultyLevel,
+  difficultyLevelName,
+} from 'Components/DifficultyLevel'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppIcon from 'Components/ui/AppIcon'
 import AppTooltip from 'Components/ui/AppTooltip'
@@ -347,7 +350,14 @@ const StoryCard = ({
                 )}
                 {hasDifficultyLevel(story.difficulty) && (
                   <span className="tour-library-stars">
-                    <CustomTooltip title={<FormattedMessage id="difficulty-level-tooltip" />}>
+                    {/* The story's own level ("Difficulty level: Easy"), not the list of all three. */}
+                    <CustomTooltip
+                      title={
+                        <FormattedMessage
+                          id={`difficulty-level-tooltip-${difficultyLevelName(story.difficulty)}`}
+                        />
+                      }
+                    >
                       <DifficultyLevel difficulty={story.difficulty} />
                     </CustomTooltip>
                   </span>
