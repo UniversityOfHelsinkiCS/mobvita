@@ -1143,5 +1143,7 @@
     "feedback-describe-bug": "Describe the bug",
     "feedback-describe-suggestion": "Describe your suggestion",
     "write-here": "Write here",
-    "send-feedback": "Send Feedback"
+    "send-feedback": "Send Feedback",
+    "show-examples": "Show examples",
+    "preprocessing-story-with-percent": "Preprocessing... {progress} % done"
 }

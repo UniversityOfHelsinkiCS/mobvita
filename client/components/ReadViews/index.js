@@ -188,6 +188,9 @@ const ReadViews = ({ match }) => {
     (isStudentPreview ? preProcessingReady : processingComplete)
   const isStudentPreviewProcessing =
     isStudentPreview && !preProcessingReady && !hasShownStoryContent && !hasRenderableStoryContent
+  // Preprocessing is the first 40% of processing, so scale it to a full 0–100% for students.
+  const isPreprocessing = Number.isFinite(loadingProgress) && loadingProgress < 0.4
+  const preprocessingPercent = Math.round(loadingProgress * 250)
 
   const isTeacherPreviewProcessing = isPreviewMode && teacherView && !processingComplete
   const rawProcessingProgress = Number.isFinite(loadingProgress) ? loadingProgress : 0
@@ -605,7 +608,19 @@ const ReadViews = ({ match }) => {
             </div>
             {isStudentPreviewProcessing ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>
-                <Spinner spinnerColor={colors.ink} textColor={colors.ink} size={60} text={intl.formatMessage({ id: 'loading-story' })} />
+                <Spinner
+                  spinnerColor={colors.ink}
+                  textColor={colors.ink}
+                  size={60}
+                  text={
+                    isPreprocessing
+                      ? intl.formatMessage(
+                          { id: 'preprocessing-story-with-percent' },
+                          { progress: preprocessingPercent },
+                        )
+                      : intl.formatMessage({ id: 'loading-story' })
+                  }
+                />
               </div>
             ) : studentPending ? (
               <div className="justify-center" style={{ minHeight: '16rem' }}>

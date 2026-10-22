@@ -2028,5 +2028,7 @@
     "feedback-describe-bug": "Kuvaile virhe",
     "feedback-describe-suggestion": "Kuvaile ehdotuksesi",
     "write-here": "Kirjoita tähän",
-    "send-feedback": "Lähetä palaute"
+    "send-feedback": "Lähetä palaute",
+    "show-examples": "Näytä esimerkit",
+    "preprocessing-story-with-percent": "Esikäsittellään... {progress} % valmis"
 }
