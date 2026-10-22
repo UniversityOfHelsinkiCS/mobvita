@@ -4,6 +4,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import {
   useTextWidth,
   speak,
+  isProtectedSpeechPlaying,
   learningLanguageSelector,
   voiceLanguages,
   formatGreenFeedbackText,
@@ -11,20 +12,19 @@ import {
   skillLevels,
   getMode
 } from 'Utilities/common'
-import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
+import { setFocusedWord } from 'Utilities/redux/practiceReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
 const ExerciseHearing = ({ word, handleChange }) => {
   const [value, setValue] = useState('')
   const [className, setClassName] = useState('exercise')
   const [touched, setTouched] = useState(false)
-  const [iconDisabled, setIconDisabled] = useState(false)
   const [show, setShow] = useState(false)
-  const [focusTimeout, setFocusTimeout] = useState(false)
   const [count, setCount] = useState(0)
-  const [lastWord, setLastWord] = useState('')
   const inputRef = useRef(null)
-  const { voiceSampleOnCooldown, focusedWord } = useSelector(({ practice }) => practice)
+  const skipFocusSample = useRef(false)
+  const leftWithWindow = useRef(false)
+  const { focusedWord } = useSelector(({ practice }) => practice)
   const currentAnswer = useSelector(({ practice }) => practice.currentAnswers[`${word.ID}-${word.id}`])
   const { answersPending } = useSelector(({ snippets }) => snippets)
   const learningLanguage = useSelector(learningLanguageSelector)
@@ -57,17 +57,28 @@ const ExerciseHearing = ({ word, handleChange }) => {
     setClassName(getExerciseClass(tested, isWrong))
   }, [tested])
 
+  // Focus landing anywhere else means the learner moved on, so a later focus here is a real visit.
   useEffect(() => {
-    if (voiceSampleOnCooldown) {
-      setIconDisabled(true)
-    } else {
-      setIconDisabled(false)
+    const onFocusElsewhere = e => {
+      if (e.target !== inputRef.current) leftWithWindow.current = false
     }
-  }, [voiceSampleOnCooldown])
+    document.addEventListener('focusin', onFocusElsewhere)
+    return () => document.removeEventListener('focusin', onFocusElsewhere)
+  }, [])
 
-  const speakerClickHandler = word => {
-    speak(word.audio, voice)
+  // Plays this blank's audio, cutting off any other; its replays alternate fast and slow.
+  const playSample = () => {
+    speak(word.audio, voice, 'exercise', resource_usage, count)
+    setCount(count + 1)
+  }
+
+  // One request per click: the focus this triggers must not play the audio a second time.
+  const speakerClickHandler = () => {
+    playSample()
+    if (document.activeElement === inputRef.current) return
+    skipFocusSample.current = true
     inputRef.current.focus()
+    skipFocusSample.current = false
   }
 
   // Font is changed to 16px and back to disable iOS safari zoom in effect
@@ -75,33 +86,18 @@ const ExerciseHearing = ({ word, handleChange }) => {
     element.style.fontSize = size
   }
 
+  // Focusing the blank plays its audio, unless the icon already did, the browser is restoring it
+  // after a tab switch, or the sentence read after a check is still playing.
   const handleInputFocus = e => {
+    const restored = leftWithWindow.current
+    leftWithWindow.current = false
     if (!touched) {
       if (!tested) setClassName('exercise')
       setTouched(true)
       handleChange(value, word)
     }
     dispatch(setFocusedWord(word))
-    if (!focusTimeout && !voiceSampleOnCooldown) {
-      if (lastWord === ''){
-        setCount(count + 1)
-        setLastWord(word)
-      }
-      else if (word === lastWord) setCount(count + 1)
-      else{
-        setCount(0)
-        setLastWord(word)
-      }
-      speak(word.audio, voice, 'exercise', resource_usage, count)
-      setFocusTimeout(true)
-      dispatch(handleVoiceSampleCooldown())
-      setTimeout(() => {
-        setFocusTimeout(false)
-      }, 500)
-      setTimeout(() => {
-        dispatch(handleVoiceSampleCooldown())
-      }, 4000)
-    }
+    if (!restored && !skipFocusSample.current && !isProtectedSpeechPlaying()) playSample()
     setShow(!show)
     changeElementFont(e.target)
   }
@@ -114,7 +110,9 @@ const ExerciseHearing = ({ word, handleChange }) => {
     setValue(e.target.value)
   }
 
+  // Saves the answer; blurring because the whole page lost focus marks the next focus as restored.
   const handleBlur = () => {
+    leftWithWindow.current = !document.hasFocus()
     handleChange(value, word)
     setShow(false)
   }
@@ -186,10 +184,11 @@ const ExerciseHearing = ({ word, handleChange }) => {
         <VolumeUpIcon
           data-cy="exercise-hearing-speaker"
           fontSize="small"
-          onClick={() => speakerClickHandler(word)}
+          // Keeps focus and the caret in the blank, so the click doesn't blur and re-focus it.
+          onMouseDown={e => e.preventDefault()}
+          onClick={speakerClickHandler}
           sx={{
             cursor: 'pointer',
-            opacity: iconDisabled ? 0.45 : 1,
             marginLeft: '-25px',
             marginRight: '0.5em',
             verticalAlign: 'middle',

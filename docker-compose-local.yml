@@ -15,6 +15,9 @@ services:
       VITE_HMR_HOST: "localhost"
       VITE_HMR_CLIENT_PORT: "8000"
       WRITING_CLINIC_URL: "${WRITING_CLINIC_URL:-http://svm-58.cs.helsinki.fi:1234}"
+      FIN_TTS_URL: "http://host.docker.internal:6000"
+      ENG_TTS_URL: "http://host.docker.internal:6001"
+      YANDEX_KEY: "${YANDEX_KEY:-}"
       TZ: "Europe/Helsinki"
     volumes:
       - ./:/usr/src/app

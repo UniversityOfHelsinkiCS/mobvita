@@ -1004,20 +1004,40 @@ export const consistsOfOnlyWhitespace = text => {
 // knob the repeat-listen counter turns. Coqui has no speed control at all.
 const SLOW_SPEED = { responsive_voice: 0.8, yandex: '0.8', tacotron2: -3 }
 
+// The sentence read after a check: a Howl, 'responsive_voice', or null when there is none.
+let protectedSpeech = null
+
+// Follows a Howl until it ends or fails, so a failed load cannot block other audio forever.
+const protectHowl = howl => {
+  protectedSpeech = howl
+  const release = () => {
+    if (protectedSpeech === howl) protectedSpeech = null
+  }
+  ;['end', 'stop', 'loaderror', 'playerror'].forEach(event => howl.once(event, release))
+}
+
+// True while the sentence read after a check is still loading or playing.
+export const isProtectedSpeechPlaying = () =>
+  protectedSpeech === 'responsive_voice'
+    ? Boolean(window.responsiveVoice?.isPlaying())
+    : Boolean(protectedSpeech)
+
 // Speaks a word with the language's TTS source; responsiveVoice is absent if its script is blocked.
+// `protect` marks an utterance a focus change must not cut off (see isProtectedSpeechPlaying).
 export const speak = (
   surfaceWord,
   voice,
   voice_type,
   resource_usage,
   nRepeat = 0,
-  { slow = false } = {},
+  { slow = false, protect = false } = {},
 ) => {
   const [source, lang_code, tone] = voice
   window.responsiveVoice?.cancel()
   Howler.stop()
+  protectedSpeech = null
   try {
-    if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport())
+    if (source === 'responsive_voice' && window.responsiveVoice.voiceSupport()) {
       RVSpeak(
         surfaceWord,
         lang_code,
@@ -1025,12 +1045,13 @@ export const speak = (
         voice_type,
         slow ? SLOW_SPEED.responsive_voice : undefined,
       )
-    else if (
-      source === 'yandex' &&
-      Howler.codecs('opus') &&
-      (resource_usage.tts.Yandex?.access ?? true)
-    )
-      yandexSpeak(
+      if (protect) protectedSpeech = 'responsive_voice'
+      return
+    }
+
+    let howl
+    if (source === 'yandex' && Howler.codecs('opus') && (resource_usage.tts.Yandex?.access ?? true))
+      howl = yandexSpeak(
         surfaceWord,
         lang_code,
         tone,
@@ -1038,7 +1059,7 @@ export const speak = (
         slow ? SLOW_SPEED.yandex : String(1.1 - (nRepeat % 3) * 0.2).slice(0, 3),
       )
     else if (source === 'tacotron2' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      tacotronSpeak(
+      howl = tacotronSpeak(
         surfaceWord,
         lang_code,
         tone,
@@ -1046,7 +1067,7 @@ export const speak = (
         slow ? SLOW_SPEED.tacotron2 : 0 - ((nRepeat * 3) % 6),
       )
     else if (source === 'coqui_ai' && Howler.codecs('mp3') && surfaceWord.length > 4)
-      coquiSpeak(surfaceWord, lang_code, tone, voice_type)
+      howl = coquiSpeak(surfaceWord, lang_code, tone, voice_type)
     else if (speakFallbackConfig.hasOwnProperty(voice.join('-')))
       speak(
         surfaceWord,
@@ -1054,8 +1075,10 @@ export const speak = (
         voice_type,
         resource_usage,
         nRepeat,
-        { slow },
+        { slow, protect },
       )
+
+    if (howl && protect) protectHowl(howl)
   } catch (e) {
     console.log(`Failed to speak ${surfaceWord} in ${capitalize(`${lang_code} ${tone}`)}`)
   }

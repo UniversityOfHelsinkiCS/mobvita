@@ -300,11 +300,12 @@ export const RVSpeak = (text, lang_code, tone, voice_type, rate) => {
   window.responsiveVoice.speak(text, `${lang_code} ${tone}`, parameters)
 }
 
+// Plays Tacotron2 speech and returns the Howl, so callers can follow its playback.
 export const tacotronSpeak = (text, lang_code, tone, voice_type, speed) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'tacotron2', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
-  new Howl({
+  return new Howl({
     src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}&speed=${speed}`],
     format: ['mp3'],
     autoplay: true,
@@ -316,11 +317,12 @@ export const tacotronSpeak = (text, lang_code, tone, voice_type, speed) => {
   })
 }
 
-export const yandexSpeak = async (text, lang_code, tone, voice_type, speed) => {
+// Plays Yandex speech and returns the Howl, so callers can follow its playback.
+export const yandexSpeak = (text, lang_code, tone, voice_type, speed) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'Yandex', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
-  new Howl({
+  return new Howl({
     src: [
       `${basePath}api/yandex_tts?text=${encodeURIComponent(
         text,
@@ -336,11 +338,12 @@ export const yandexSpeak = async (text, lang_code, tone, voice_type, speed) => {
   })
 }
 
-export const coquiSpeak = async (text, lang_code, tone, voice_type) => {
+// Plays Coqui speech and returns the Howl, so callers can follow its playback.
+export const coquiSpeak = (text, lang_code, tone, voice_type) => {
   const error_func = error_type => (sound_id, e) => {
     recordSpeak(text, voice_type, 'Coqui-AI', lang_code, 0, `${error_type}: ${sound_id}->${e}`)
   }
-  new Howl({
+  return new Howl({
     src: [`${basePath}api/${lang_code}_tts?text=${encodeURIComponent(text)}`],
     format: ['mp3'],
     autoplay: true,
