@@ -70,6 +70,8 @@ const ReadingTestMC = ({
               <div key={choice?.option}>
                 <AppButton
                   className={`test-choice-button ${getChoiceClass(choice)}`}
+                  // Long answers wrap: without it the fixed 36px height clipped the extra rows.
+                  multiline="rounded"
                   onClick={!answerPending ? () => onAnswer(choice) : undefined}
                   disabled={
                     answerPending ||

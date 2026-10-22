@@ -30,6 +30,9 @@ import { colors, font, shape } from 'Assets/mui_theme/designTokens'
  * Every size has a fixed height, so by default text longer than the button spills out of it. Pass
  * `multiline` where the label can be long (answer options, user content): the size's height becomes
  * a minimum, the text wraps and stays centred, and a single-line label keeps the same height.
+ *   multiline            - keeps the pill radius (999), so a wrapped button turns into a stadium
+ *   multiline="rounded"  - the radius a one-row pill shows (half the size's height: 12/18/24px), so
+ *                          a wrapped button is a rounded rectangle with the standard button's corners
  */
 
 // Derived states not directly in designTokens.
@@ -144,7 +147,9 @@ const SIZE_KEYS = { sm: 'small', lg: 'large' }
 // `multiline`: the size's height as a minimum, with vertical padding that keeps a one-line label at
 // that height (line height 1.2 + a 1px border) and gives wrapped rows room to breathe.
 const MULTILINE_PADDING_Y = { small: 2, medium: 7, large: 10 }
-const multilineSx = sizeKey => ({
+const multilineSx = (sizeKey, shape) => ({
+  // 'rounded': the corners a one-row pill shows, kept when the button grows taller.
+  ...(shape === 'rounded' && { borderRadius: `${SIZE_STYLES[sizeKey].height / 2}px` }),
   height: 'auto',
   minHeight: SIZE_STYLES[sizeKey].height,
   paddingTop: `${MULTILINE_PADDING_Y[sizeKey]}px`,
@@ -181,7 +186,7 @@ const AppButton = forwardRef(
     const variantSx = VARIANT_STYLES[resolveVariant(variant)]
     const sizeKey = SIZE_KEYS[size] || 'medium'
     const sizeSx = multiline
-      ? { ...SIZE_STYLES[sizeKey], ...multilineSx(sizeKey) }
+      ? { ...SIZE_STYLES[sizeKey], ...multilineSx(sizeKey, multiline) }
       : SIZE_STYLES[sizeKey]
     const userSx = Array.isArray(sx) ? sx : [sx]
 

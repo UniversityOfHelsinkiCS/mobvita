@@ -77,6 +77,8 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
                                 <AppButton
                                     key={index}
                                     data-cy={`reading-test-elicitation-option-${index}`}
+                                    // Each option is a whole feedback sentence.
+                                    multiline="rounded"
                                     variant={key === selectedConstruct ? 'tan' : 'contrast-outline'}
                                     style={{
                                         margin: "5px",

@@ -509,6 +509,20 @@ const DesignSystem = () => {
             <AppButton variant="contrast" size="lg" block multiline>
               size lg, multiline — a long label in the large size wraps as well
             </AppButton>
+            {/* `multiline="rounded"`: same wrapping, but the corners of a one-row pill. */}
+            <AppButton variant="tan" block multiline="rounded">
+              multiline=&quot;rounded&quot; — the long answer wraps, but keeps the corners of the
+              standard button
+            </AppButton>
+            <AppButton variant="tan" block multiline="rounded">
+              multiline=&quot;rounded&quot;, one row
+            </AppButton>
+            <AppButton variant="tan-outline" size="sm" block multiline="rounded">
+              size sm, multiline=&quot;rounded&quot; — 12px corners when it grows
+            </AppButton>
+            <AppButton variant="contrast" size="lg" block multiline="rounded">
+              size lg, multiline=&quot;rounded&quot; — 24px corners when it grows
+            </AppButton>
           </div>
 
           {/* How to use — beside the examples (wraps below them on narrow screens). */}
@@ -530,6 +544,18 @@ const DesignSystem = () => {
                 <code>block</code> (or a width) so there is a width to wrap at.
               </li>
             </ul>
+            <p>Two shapes for the wrapped button:</p>
+            <ul style={{ paddingLeft: '1.2em', margin: '0 0 1em' }}>
+              <li>
+                <code>multiline</code> — keeps the pill radius (999), so several rows make a
+                stadium with fully round ends;
+              </li>
+              <li>
+                <code>multiline=&quot;rounded&quot;</code> — the radius a one-row pill shows (half
+                the height: 12 / 18 / 24px for sm / md / lg), so it grows as a rounded rectangle with
+                the standard button&apos;s corners. A one-row label looks the same either way.
+              </li>
+            </ul>
             <pre
               style={{
                 margin: 0,
@@ -549,8 +575,13 @@ const DesignSystem = () => {
   {choice.option}
 </AppButton>
 
+// Same wrapping, standard-button corners (rounded rectangle):
+<AppButton variant="tan" block multiline="rounded">
+  {choice.option}
+</AppButton>
+
 // Small / large sizes wrap the same way:
-<AppButton size="sm" variant="tan-outline" multiline>
+<AppButton size="sm" variant="tan-outline" multiline="rounded">
   {longLabel}
 </AppButton>`}
             </pre>
