@@ -9,7 +9,7 @@ import { images } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
 import './FeedbackForm.scss'
 
-export const BUG_REPORT_MAX_CHARACTERS = 1000
+export const BUG_REPORT_MAX_CHARACTERS = 5000
 
 // The three choices, each with its icon, icon colour and the label shown above the message box.
 export const FEEDBACK_TOPICS = [
