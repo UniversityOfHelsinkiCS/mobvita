@@ -1,20 +1,27 @@
-import { connect } from 'react-redux'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import translations from 'Utilities/translations'
 import { localeNameToCode } from '../util/common'
 
-const mapStateToProps = ({ locale, user }) => {
-  let actualLocale = locale.locale
+// IntlProvider fed by the logged-in user's interface language, else the locale reducer.
+const ConnectedIntlProvider = ({ children }) => {
+  const storeLocale = useSelector(({ locale }) => locale.locale)
+  const interfaceLanguage = useSelector(({ user }) => user.data?.user?.interfaceLanguage)
+  const locale = interfaceLanguage ? localeNameToCode(interfaceLanguage) : storeLocale
 
-  if (user.data && user.data.user && user.data.user.interfaceLanguage) {
-    // If user has logged in, use locale from user object, else use value from localeReducer
-    actualLocale = localeNameToCode(user.data.user.interfaceLanguage)
-  }
+  // English is the base; other locales fall back to it for missing keys.
+  const messages = useMemo(
+    () => (locale === 'en' ? translations.en : { ...translations.en, ...translations[locale] }),
+    [locale],
+  )
 
-  const messages =
-    actualLocale === 'en' ? translations.en : { ...translations.en, ...translations[actualLocale] }
-
-  return { key: actualLocale, locale: actualLocale, messages }
+  // `key` remounts the tree on a language switch, as the connect() version did.
+  return (
+    <IntlProvider key={locale} locale={locale} messages={messages}>
+      {children}
+    </IntlProvider>
+  )
 }
 
-export default connect(mapStateToProps)(IntlProvider)
+export default ConnectedIntlProvider
