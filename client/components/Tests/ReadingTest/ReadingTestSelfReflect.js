@@ -5,8 +5,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
-
-import ReactSlider from 'react-slider'
+import AppSlider from 'Components/ui/AppSlider'
+import useSliderDraft from 'Components/Sliders/useSliderDraft'
 
 
 const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
@@ -33,11 +33,9 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
     );
 };
 
+// 0–10 usefulness rating; null until answered (the thumb then rests at 0).
 const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, setDoNotKnow }) => {
-    const handleSliderChange = (value) => {
-        setSliderValue(value);
-    };
-    const marks = Array.from({ length: 11 }, (_, i) => i)
+    const draft = useSliderDraft(sliderValue ?? 0, setSliderValue)
   
     return (
         <div className="slider-and-controls-container" style={{
@@ -55,24 +53,8 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
                 <span style={{ textAlign: 'left' }}><FormattedMessage id='not-useful-at-all' /></span>
                 <span style={{ textAlign: 'right' }}><FormattedMessage id='very-useful' /></span>
             </div>
-            <div className="useful-slider-container" data-cy="reading-test-self-reflect-usefulness-slider" style={{
-                marginBottom: '3em'
-            }}>
-                <ReactSlider
-                    className="useful-slider"
-                    thumbClassName="exercise-density-slider-thumb"
-                    trackClassName="exercise-density-slider-track"
-                    onAfterChange={value => handleSliderChange(value)}
-                    onSliderClick={value => handleSliderChange(value)}
-                    snapDragDisabled={false}
-                    markClassName="exercise-density-slider-mark"
-                    marks={marks}
-                    min={0}
-                    max={10}
-                    step={1}
-                    value={sliderValue}
-                    disabled={doNotKnow}
-                />
+            <div className="useful-slider-container interactable" data-cy="reading-test-self-reflect-usefulness-slider">
+                <AppSlider {...draft} min={0} max={10} step={1} disabled={doNotKnow} />
             </div>
             <div style={{ marginTop: '20px' }}>
                 <input

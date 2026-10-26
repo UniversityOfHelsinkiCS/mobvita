@@ -1,12 +1,11 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { MenuRow } from 'Components/ui/menuRow'
 import AppIcon from 'Components/ui/AppIcon'
-import Headroom from 'react-headroom'
-import { Box } from '@mui/material'
+import { Box, Slide, useScrollTrigger } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
@@ -76,6 +75,32 @@ const NavGroup = styled('div')({
   display: 'flex',
   alignItems: 'center',
 })
+
+// Fixed top bar plus an in-flow spacer of its height.
+// With hideOnScroll it slides away while scrolling down.
+const FixedTopBar = ({ hideOnScroll, children }) => {
+  const barRef = useRef(null)
+  const [height, setHeight] = useState(null)
+  const scrollingDown = useScrollTrigger()
+
+  useLayoutEffect(() => {
+    const bar = barRef.current
+    setHeight(bar.offsetHeight)
+    const observer = new ResizeObserver(() => setHeight(bar.offsetHeight))
+    observer.observe(bar)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <Box sx={{ height }}>
+      <Slide appear={false} direction="down" in={!(hideOnScroll && scrollingDown)}>
+        <Box ref={barRef} sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 99 }}>
+          {children}
+        </Box>
+      </Slide>
+    </Box>
+  )
+}
 
 const NewsWebSite = 'https://revitaai.github.io/faq-LEARNER-TOC.html'
 
@@ -323,8 +348,6 @@ export default function NavBar() {
     )
   }
 
-  const navBarStyle = smallWindow ? {} : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
-
   const blackToWhiteFilter =
     'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)'
 
@@ -335,7 +358,7 @@ export default function NavBar() {
   if (!user && !onPublicDemoRoute) return null
 
   return (
-    <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
+    <FixedTopBar hideOnScroll={smallWindow}>
       <Box
         component="nav"
         className="navbar"
@@ -659,6 +682,6 @@ export default function NavBar() {
           {/******************************* END *******************************/}
         </NavCollapse>
       </Box>
-    </Headroom>
+    </FixedTopBar>
   )
 }

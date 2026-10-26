@@ -650,10 +650,6 @@ body .app-datepicker.react-datepicker {
   }
 }
 
-.headroom {
-  z-index: 99 !important;
-}
-
 .tour-mobile-message {
   font-size: 1rem;
 }
@@ -3528,40 +3524,6 @@ table.history-table .MuiTableCell-root {
   .generate-story & {
     max-width: none;
   }
-
-  &-thumb {
-    cursor: pointer;
-    position: absolute;
-    z-index: 100;
-    width: 1.5em;
-    height: 1.5em;
-    background: #faf8ed; // cream fill
-    border: 2px solid #8fbba6; // sage-green ring
-    border-radius: 100%;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
-    top: 11px;
-    outline: none;
-  }
-
-  &-track {
-    position: relative;
-    background: #e5ede4; // pale-green track
-    top: 20px;
-    height: 6px;
-    border-radius: 999px;
-  }
-
-  &-track-0 {
-    background: #a6cdb4; // sage-green fill up to the thumb
-    border-radius: 999px;
-  }
-}
-
-.disabled-track {
-  position: relative;
-  background: #ddd;
-  top: 20px;
-  height: 4px;
 }
 
 // General classes

@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactSlider from 'react-slider'
-import './SliderStyles.scss'
+import AppSlider from 'Components/ui/AppSlider'
+import useSliderDraft from './useSliderDraft'
 
 /**
  * Reusable slider component for selecting a count value.
@@ -15,19 +15,13 @@ import './SliderStyles.scss'
  * - style: Optional inline styles for the container.
  */
 const CountSlider = ({ value, onChange, minValue, maxValue, step, sliderMarks = [], style }) => {
+  const draft = useSliderDraft(value, onChange)
+
   return (
     <div className="lesson-vocab-slider-container" style={style}>
-      <ReactSlider
-        className="exercise-density-slider"
-        trackClassName="exercise-density-slider-track"
-        thumbClassName="exercise-density-slider-thumb"
-        onAfterChange={onChange}
-        onSliderClick={onChange}
-        min={minValue}
-        max={maxValue}
-        step={step}
-        value={value}
-      />
+      <div className="exercise-density-slider">
+        <AppSlider {...draft} min={minValue} max={maxValue} step={step} />
+      </div>
       <div className="space-between exercise-density-slider-label-cont bold">
         {sliderMarks.map(level => (
           <span key={level}>{level}</span>

@@ -25,6 +25,7 @@ import ChatInput, { PredefinedRequestButton } from 'Components/ui/ChatInput'
 import AppToast from 'Components/ui/AppToast'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
+import AppSlider from 'Components/ui/AppSlider'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
 import AppTabs from 'Components/ui/AppTabs'
 import AppPagination from 'Components/ui/AppPagination'
@@ -135,6 +136,7 @@ const DesignSystem = () => {
   const [titleDemo, setTitleDemo] = useState('My summer in Helsinki')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
+  const [sliderValue, setSliderValue] = useState(40)
   const [darkMode, setDarkMode] = useState(false)
   const [radioValue, setRadioValue] = useState('a')
   const [pageDemo, setPageDemo] = useState(3)
@@ -721,6 +723,21 @@ const DesignSystem = () => {
                 <AppSwitch size={size} checked readOnly />
               </span>
             ))}
+          </div>
+        </Section>
+
+        <Section title="AppSlider">
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>Interactive ({sliderValue})</div>
+            <AppSlider value={sliderValue} onChange={(_, v) => setSliderValue(v)} />
+          </div>
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>Disabled</div>
+            <AppSlider value={60} disabled />
+          </div>
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>muted (locked setting)</div>
+            <AppSlider value={60} disabled muted />
           </div>
         </Section>
 

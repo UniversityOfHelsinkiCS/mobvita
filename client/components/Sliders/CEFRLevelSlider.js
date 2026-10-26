@@ -1,7 +1,9 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react'
-import ReactSlider from 'react-slider'
+import AppSlider from 'Components/ui/AppSlider'
+import useSliderDraft from './useSliderDraft'
 
+// CEFR level slider (A1–C2); with noExtremeValue a release on A1 or C2 snaps back inside.
 const CERFLevelSlider = ({ isDisabled, sliderValue, setSliderValue, noExtremeValue=true }) => {
   const handleSlider = value => {
     if (value < 121 && noExtremeValue) {
@@ -12,20 +14,20 @@ const CERFLevelSlider = ({ isDisabled, sliderValue, setSliderValue, noExtremeVal
       setSliderValue(value)
     }
   }
+  const draft = useSliderDraft(sliderValue, handleSlider)
 
   return (
     <>
-      <ReactSlider
-        className="exercise-density-slider"
-        thumbClassName="exercise-density-slider-thumb"
-        trackClassName={!isDisabled ? 'exercise-density-slider-track' : 'disabled-track'}
-        onAfterChange={value => handleSlider(value)}
-        min={0}
-        max={1210}
-        step={121}
-        value={sliderValue}
-        disabled={isDisabled}
-      />
+      <div className="exercise-density-slider">
+        <AppSlider
+          {...draft}
+          min={0}
+          max={1210}
+          step={121}
+          disabled={isDisabled}
+          muted={isDisabled}
+        />
+      </div>
 
       <div className="space-between exercise-density-slider-label-cont bold">
         <span style={{ color: noExtremeValue ? 'lightgrey' : '#000000' }}>A1</span>
