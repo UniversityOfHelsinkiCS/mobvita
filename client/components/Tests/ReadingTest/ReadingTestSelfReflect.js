@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
 import AppSlider from 'Components/ui/AppSlider'
@@ -75,7 +75,10 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 };
   
 
+// Draggable self-reflection carousel (usefulness slider and open questions) after reading-test feedback.
 const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, currentReadingSet, readingSetLength, currentQuestionIdxinSet, questionDone, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
+    // react-draggable needs a ref to the dragged node (React 19 removed findDOMNode).
+    const dragRef = useRef(null)
     const [current, setCurrent] = useState(0);
     const [isEndSetQuestionair, setIsEndSetQuestionair] = useState(false);
     const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
@@ -203,9 +206,11 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
         }
     }
 
+    // Draggable card with the reflection slides, arrows and dot pagination.
     const renderReflection = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 style={{
                     position: 'absolute',
                     left: '0%',

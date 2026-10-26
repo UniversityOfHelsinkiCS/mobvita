@@ -1,13 +1,15 @@
 import Draggable from 'react-draggable';
 import CloseIcon from '@mui/icons-material/Close';
 import { useIntl } from 'react-intl';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import useWindowDimensions from 'Utilities/windowDimensions';
 
 import { getGroups } from 'Utilities/redux/groupsReducer'
 
+// Draggable DDLang intro text; its wording depends on the experimental or control group.
 const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
+    const dragRef = useRef(null)
     const intl = useIntl();
     const dispatch = useDispatch()
 
@@ -33,9 +35,11 @@ const DDLangIntroductory = ({ setShowDDLangIntroductory }) => {
         }
     }, [groups]);
 
+    // Draggable intro card with a close icon.
     const renderIntroductory = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 style={{
                     position: 'absolute',
                     top: '40%',

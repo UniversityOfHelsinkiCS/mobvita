@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import { useSelector } from 'react-redux';
 import { sanitizeHtml } from 'Utilities/common';
@@ -8,7 +8,10 @@ import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
 
 
+// Draggable elicitation dialog of the reading test; submits the chosen construct.
 const ReadingTestElicationDialog = ({ question, showElication, submitElication }) => {
+    // react-draggable needs a ref to the dragged node (React 19 removed findDOMNode).
+    const dragRef = useRef(null)
     const bigScreen = useWindowDimensions().width >= 700;
 
     const [selectedConstruct, setSelectedConstruct] = useState(null)
@@ -19,9 +22,11 @@ const ReadingTestElicationDialog = ({ question, showElication, submitElication }
         }
     }
 
+    // Draggable card with the elicitation content and submit button.
     const renderElication = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 data-cy="reading-test-elicitation-dialog"
                 style={{
                     position: 'absolute',

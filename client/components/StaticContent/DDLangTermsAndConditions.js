@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Box, MenuItem, Select } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
@@ -12,7 +12,10 @@ import {
   ddlang_grade
 } from 'Utilities/redux/userReducer'
 
+// Draggable DD-LANG research consent and background-questions dialog.
 const DDLangTermsAndConditions = ({ openModal, setOpenModal }) => {
+  // react-draggable needs a ref to the dragged node (React 19 removed findDOMNode).
+  const dragRef = useRef(null)
   const dispatch = useDispatch()  // Define dispatch
   
   const yearsOptions = [
@@ -85,8 +88,8 @@ const DDLangTermsAndConditions = ({ openModal, setOpenModal }) => {
   }, [openModal, setOpenModal])
 
   return (
-    <Draggable>
-      <div>
+    <Draggable nodeRef={dragRef}>
+      <div ref={dragRef}>
         <AppDialog
           data-cy="ddlang-terms-dialog"
           closeDataCy="ddlang-terms-dialog-close"

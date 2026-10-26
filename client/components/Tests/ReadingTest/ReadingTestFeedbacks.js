@@ -1,5 +1,5 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -12,6 +12,7 @@ import useWindowDimensions from 'Utilities/windowDimensions';
 
 // Feedback slides for the reading test; a question without synthesis adds an undefined feedback.
 const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
+    const dragRef = useRef(null)
     const { feedbacks } = useSelector(({ tests }) => tests);
     const [current, setCurrent] = useState(0);
     const [length, setLength] = useState(undefined);
@@ -56,9 +57,11 @@ const ReadingTestFeedbacks = ({ showFeedbacks, closeFeedbacks }) => {
         }
     }
 
+    // Draggable card with the feedback slides.
     const renderFeedback = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 style={{
                     position: 'absolute',
                     top: '40%',
