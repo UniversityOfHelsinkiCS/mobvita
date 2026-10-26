@@ -1,7 +1,7 @@
 {
   "name": "mobvita",
   "version": "1.0.0",
-  "description": "Mobile frontend for Revita",
+  "description": "Frontend for Revita",
   "main": "index.js",
   "scripts": {
     "dev": "docker compose -f docker-compose-local.yml up",
@@ -104,7 +104,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.5.0",
     "googleapis": "^171.4.0",
-    "nodemon": "^1.14.10",
+    "nodemon": "^3.1.14",
     "prettier": "^3.8.3",
     "vite": "^8.0.10",
     "wait-on": "^9.0.5"
@@ -127,5 +127,14 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-arm64-gnu": "^4.60.1"
+  },
+  "allowScripts": {
+    "sqlite3": true,
+    "cypress": true,
+    "@sentry/cli": false,
+    "@parcel/watcher": false,
+    "fsevents": false,
+    "@scarf/scarf": false,
+    "core-js": false
   }
 }

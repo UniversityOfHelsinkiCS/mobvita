@@ -24,7 +24,7 @@ COPY package.json package-lock.json ./
 
 # install deps into the IMAGE (this is fine, but will be overwritten by volumes unless you mount a volume)
 RUN npm ci --include=dev
-RUN npm rebuild sqlite3 --build-from-source
+RUN npm run rebuild --prefix node_modules/sqlite3
 
 # copy source and build frontend assets so dist exists in pushed images
 COPY . .

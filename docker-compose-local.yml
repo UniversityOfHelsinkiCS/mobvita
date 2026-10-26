@@ -24,7 +24,7 @@ services:
       - ./:/usr/src/app
       # IMPORTANT: use a named volume for node_modules so you don't use host node_modules
       - mobvita_node_modules:/usr/src/app/node_modules
-    command: ["sh", "-lc", "npm ci --include=dev && npm rebuild sqlite3 --build-from-source && npm run start:dev"]
+    command: ["sh", "-lc", "npm ci --include=dev && { npm run rebuild --prefix node_modules/sqlite3 > /tmp/sqlite3-build.log 2>&1 || { cat /tmp/sqlite3-build.log; exit 1; }; } && npm run start:dev"]
 
 volumes:
   mobvita_node_modules: {}
