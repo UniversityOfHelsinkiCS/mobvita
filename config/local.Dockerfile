@@ -1,4 +1,4 @@
-FROM node:22-bullseye
+FROM node:26-bookworm
 
 # Set timezone to Europe/Helsinki
 RUN echo "Europe/Helsinki" > /etc/timezone

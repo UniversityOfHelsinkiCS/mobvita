@@ -22,7 +22,7 @@
     "add-translation": "node addTranslation.js"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=26.12.1"
   },
   "author": "Olli-Pekka Turtio",
   "license": "ISC",

@@ -4,7 +4,7 @@ Revita frontend v2
 
 # Setup development
 
-Install Node.js (version 22 or newer), Docker and docker-compose
+Install Node.js (version 26.12.1 or newer), Docker and docker-compose
 
 Run `npm ci`
 

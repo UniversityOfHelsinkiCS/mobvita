@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      pull: true
     container_name: mobvita_local
     ports:
       - "8000:8000"
