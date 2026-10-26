@@ -177,6 +177,7 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
     }
   }
 
+  // Moves to the next snippet; fetches it directly if the cache hasn't caught up (fast answers).
   const finishSnippet = () => {
     dispatch(setPreviousAnswers(currentSnippetId()))
     dispatch(addToPrevious(snippets.focused))
@@ -187,6 +188,10 @@ const CurrentSnippet = ({ storyId, handleInputChange, setYouWon, finished }) => 
       const nextSnippet = cachedSnippets[nextSnippetKey]
       dispatch(dropCachedSnippet(nextSnippetKey))
       dispatch(getNextSnippetFromCache(nextSnippetKey, nextSnippet))
+
+      if (!nextSnippet) {
+        dispatch(cacheStorySnippet(storyId, currentSnippetId(), false, null, 'all'))
+      }
     } else {
       setYouWon(true)
     }
