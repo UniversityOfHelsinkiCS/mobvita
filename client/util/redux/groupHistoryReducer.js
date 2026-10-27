@@ -1,18 +1,18 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import callBuilder from '../apiConnection'
 
 export const getStudentHistory = (student_id, group_id, startDate, endDate, view) => {
-  const route = `/groups/${group_id}/${view}?uid=${student_id}&start_time=${moment(
+  const route = `/groups/${group_id}/${view}?uid=${student_id}&start_time=${dayjs(
     startDate
-  ).format('YYYY-MM-DD')}&end_time=${moment(endDate).format('YYYY-MM-DD')}`
+  ).format('YYYY-MM-DD')}&end_time=${dayjs(endDate).format('YYYY-MM-DD')}`
   const prefix = `GET_GROUP_${view.toUpperCase()}_HISTORY`
   return callBuilder(route, prefix, 'get')
 }
 
 export const getGroupHistory = (group_id, startDate, endDate, view) => {
-  const route = `groups/${group_id}/${view}?start_time=${moment(startDate).format(
+  const route = `groups/${group_id}/${view}?start_time=${dayjs(startDate).format(
     'YYYY-MM-DD'
-  )}&end_time=${moment(endDate).format('YYYY-MM-DD')}`
+  )}&end_time=${dayjs(endDate).format('YYYY-MM-DD')}`
   const prefix = `GET_WHOLE_GROUP_${view.toUpperCase()}_HISTORY`
   return callBuilder(route, prefix, 'get')
 }

@@ -7,7 +7,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import AppButton from 'Components/AppButton'
 import AppTable from 'Components/ui/AppTable'
 import CustomTooltip from 'Components/CustomTooltip'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { skillLevels } from 'Utilities/common'
@@ -414,7 +414,7 @@ const History = ({ history, testView, dateFormat, handleDelete = null }) => {
             {calculatePage().map((col, colIndex) => (
               <TableCell key={`${col.date}-${col.test_session ?? col.story_id ?? colIndex}`}>
                 <span className="justify-center align-center">
-                  {moment(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
+                  {dayjs(col.date).format(dateFormat || 'YYYY.MM.DD HH:mm')}
                   {handleDelete && (
                     <CloseIcon
                       fontSize="small"

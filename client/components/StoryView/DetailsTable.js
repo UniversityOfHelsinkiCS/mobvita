@@ -1,7 +1,7 @@
 import React from 'react'
 import { TableBody } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTable from 'Components/ui/AppTable'
 import DifficultyStars from 'Components/DifficultyStars'
@@ -33,7 +33,7 @@ export default ({
         </Row>
       )}
       {!publicStory && date && (
-        <Row translationId="date-added">{moment(date).format('YYYY-MM-DD')}</Row>
+        <Row translationId="date-added">{dayjs(date).format('YYYY-MM-DD')}</Row>
       )}
       {author && <Row translationId="Author">{author}</Row>}
       {category && (

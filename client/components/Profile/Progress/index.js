@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, shallowEqual, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useIntl, FormattedMessage } from 'react-intl';
 import {
   getSelf,
@@ -77,8 +77,8 @@ const Progress = () => {
   )
 
   useEffect(() => {
-    const date_now = moment().toDate()
-    const start_query_date = moment('2021-01-01').toDate()
+    const date_now = dayjs().toDate()
+    const start_query_date = dayjs('2021-01-01').toDate()
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
@@ -108,12 +108,12 @@ const Progress = () => {
   }, [irtExerciseHistory])
 
   const getStartDate = () => {
-    const sixMonthsAgo = moment(originalEndPoint).subtract(6, 'months').toDate()
+    const sixMonthsAgo = dayjs(originalEndPoint).subtract(6, 'months').toDate()
 
     if (!irtExerciseHistory) {
       return sixMonthsAgo
     }
-    const firstPractice = moment(irtExerciseHistory[0]?.date).toDate()
+    const firstPractice = dayjs(irtExerciseHistory[0]?.date).toDate()
 
     if (firstPractice < sixMonthsAgo || !irtExerciseHistory) {
       return sixMonthsAgo
@@ -134,10 +134,10 @@ const Progress = () => {
   const [xAxisLength, setXAxisLength] = useState(102)
   const originalEndPoint =
     irtExerciseHistory?.length > 0
-      ? moment(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
+      ? dayjs(irtExerciseHistory[irtExerciseHistory.length - 1]?.date)
           .add(1, 'days')
           .toDate()
-      : moment().toDate()
+      : dayjs().toDate()
   const [startDate, setStartDate] = useState(getStartDate)
   const [endDate, setEndDate] = useState(originalEndPoint)
 
@@ -156,7 +156,7 @@ const Progress = () => {
 
   const filterTestHistoryByDate = () =>
     testHistory?.filter(test => {
-      const testTime = moment(test.date)
+      const testTime = dayjs(test.date)
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
 
@@ -165,13 +165,13 @@ const Progress = () => {
   )
 
   const handlePreviousVocabulary = () => {
-    if (moment(startDate, 'MM/DD/YYYY', true).isValid()) {
+    if (dayjs(startDate ?? null).isValid()) {
       dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))
     }
   }
 
   const handleVocabulary = () => {
-    if (moment(endDate, 'MM/DD/YYYY', true).isValid()) {
+    if (dayjs(endDate ?? null).isValid()) {
       dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
     }
   }
@@ -193,8 +193,8 @@ const Progress = () => {
   useEffect(() => {
     if (
       firstFetch &&
-      moment(endDate, 'MM/DD/YYYY', true).isValid() &&
-      moment(startDate, 'MM/DD/YYYY', true).isValid()
+      dayjs(endDate ?? null).isValid() &&
+      dayjs(startDate ?? null).isValid()
     ) {
       dispatch(getNewerVocabularyData(endDate.toJSON().slice(0, 10)))
       dispatch(getPreviousVocabularyData(startDate.toJSON().slice(0, 10)))

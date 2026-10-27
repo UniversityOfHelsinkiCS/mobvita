@@ -2,7 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import 'Utilities/chartTheme'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useIntl } from 'react-intl'
 import { hiddenFeatures } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
@@ -11,9 +11,9 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
   const intl = useIntl()
   const smallScreen = useWindowDimensions().width < 640
 
-  const storyData = exerciseHistory && exerciseHistory.map(e => [moment(e.date).valueOf(), e.score])
+  const storyData = exerciseHistory && exerciseHistory.map(e => [dayjs(e.date).valueOf(), e.score])
   // const flashcardData =
-  //   flashcardHistory && flashcardHistory.map(e => [moment(e.date).valueOf(), e.score])
+  //   flashcardHistory && flashcardHistory.map(e => [dayjs(e.date).valueOf(), e.score])
 
   const series = []
   // Set explicitly rather than taken from the shared palette in chartTheme: this is the timeline's
@@ -91,8 +91,8 @@ const ProgressGraph = ({ exerciseHistory, flashcardHistory, startDate, endDate }
     xAxis: {
       type: 'datetime',
       allowDecimals: false,
-      min: moment(startDate).valueOf(),
-      max: moment(endDate).valueOf(),
+      min: dayjs(startDate).valueOf(),
+      max: dayjs(endDate).valueOf(),
     },
     plotOptions: {
       series: {

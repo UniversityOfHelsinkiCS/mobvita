@@ -26,7 +26,7 @@ import {
 import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
 import AppDatePicker from 'Components/ui/AppDatePicker'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import StudentCEFRModal from './StudentCEFRModal'
@@ -59,14 +59,14 @@ const GroupAnalytics = ({ role }) => {
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
-    moment().startOf('month').subtract(6, 'month').toDate(),
+    dayjs().startOf('month').subtract(6, 'month').toDate(),
   )
   const [cefrHistory, setCefrHistory] = useState([])
   const [graphType, setGraphType] = useState('column mastered')
   const [shownChart, setShownChart] = useState('timeline')
   const [openEditModal, setOpenEditModal] = useState(false)
   const [firstFetch, setFirstFetch] = useState(true)
-  const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
+  const [endDate, setEndDate] = useState(dayjs().add(1, 'days').toDate())
   const dispatch = useDispatch()
   // Hex-map / beehive chart is high-access only (hidden for access <= 1).
   const canSeeHexmap = useHasAccess(ACCESS.HIGH)
@@ -107,7 +107,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handlePreviousVocabulary = () => {
-    if (moment(startDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
+    if (dayjs(startDate ?? null).isValid() && currentStudent) {
       dispatch(
         getPreviousStudentVocabulary(
           currentStudent._id,
@@ -119,7 +119,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handleVocabulary = () => {
-    if (moment(endDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
+    if (dayjs(endDate ?? null).isValid() && currentStudent) {
       dispatch(
         getStudentVocabulary(
           currentStudent._id,
@@ -141,8 +141,8 @@ const GroupAnalytics = ({ role }) => {
       firstFetch &&
       currentGroup &&
       currentStudent &&
-      moment(endDate, 'MM/DD/YYYY', true).isValid() &&
-      moment(startDate, 'MM/DD/YYYY', true).isValid()
+      dayjs(endDate ?? null).isValid() &&
+      dayjs(startDate ?? null).isValid()
     ) {
       dispatch(
         getPreviousStudentVocabulary(
@@ -165,11 +165,11 @@ const GroupAnalytics = ({ role }) => {
 
   useEffect(() => {
     if (start_date) {
-      setStartDate(moment.unix(start_date).toDate())
+      setStartDate(dayjs.unix(start_date).toDate())
     }
 
     if (end_date) {
-      setEndDate(moment.unix(end_date).add(1, 'days').toDate())
+      setEndDate(dayjs.unix(end_date).add(1, 'days').toDate())
     }
   }, [start_date, end_date])
 

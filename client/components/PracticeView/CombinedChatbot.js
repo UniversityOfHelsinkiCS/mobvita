@@ -8,7 +8,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useIntl, FormattedMessage } from 'react-intl'
 import ReactMarkdown from 'react-markdown'
-import { lemmatizer } from 'lemmatizer'
+import useLemmatizer from 'Utilities/useLemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getTranslationAction,
@@ -258,6 +258,9 @@ const CombinedChatbot = ({
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  // Lemmas only matter for English glosses; the dictionary loads once a translation arrives.
+  const hasGlosses = Array.isArray(translationState.data) && translationState.data.length > 0
+  const lemmatizer = useLemmatizer(dictionaryLanguage === 'English' && hasGlosses)
 
   const [validToChat, setValidToChat] = useState(false)
   const [eloScoreHearts, setEloScoreHearts] = useState([])

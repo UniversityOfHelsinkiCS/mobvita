@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add'
 import AppButton from 'Components/AppButton'
 import CustomTooltip from 'Components/CustomTooltip'
-import { lemmatizer } from 'lemmatizer'
+import useLemmatizer from 'Utilities/useLemmatizer'
 import {
   useDictionaryLanguage,
   useLearningLanguage,
@@ -28,6 +28,9 @@ const ContextTranslation = ({surfaceWord, wordTranslated}) => {
 
     const translated_glosses = (Array.isArray(wordTranslated) ? wordTranslated : [])
         .flatMap(translated => translated.glosses || []).map(gloss => gloss.toLowerCase())
+    const lemmatizer = useLemmatizer(
+        glossCheckLanguage.includes(dictionaryLanguage) && translated_glosses.length > 0
+    )
     const glosses = glossCheckLanguage.includes(dictionaryLanguage) ? [
         ...translated_glosses,
         ...translated_glosses.map(

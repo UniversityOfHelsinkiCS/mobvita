@@ -1,6 +1,6 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useSelector, useDispatch } from 'react-redux'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { MenuRow } from 'Components/ui/menuRow'
@@ -283,8 +283,8 @@ export default function NavBar() {
   }, [learningLanguage])
 
   useEffect(() => {
-    const date_now = moment().toDate()
-    const start_query_date = moment('2021-01-01').toDate()
+    const date_now = dayjs().toDate()
+    const start_query_date = dayjs('2021-01-01').toDate()
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 

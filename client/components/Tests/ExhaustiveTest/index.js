@@ -16,7 +16,7 @@ import {
 import { updateGroupSelect } from 'Utilities/redux/userReducer'
 import { useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import Spinner from 'Components/Spinner'
 import AppDatePicker from 'Components/ui/AppDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
@@ -35,8 +35,8 @@ const PickDate = ({ date, setDate }) => (
 
 const ExhaustiveTestView = () => {
   const dispatch = useDispatch()
-  const [startDate, setStartDate] = useState(moment().subtract(2, 'months').toDate())
-  const [endDate, setEndDate] = useState(moment().endOf('day').toDate())
+  const [startDate, setStartDate] = useState(dayjs().subtract(2, 'months').toDate())
+  const [endDate, setEndDate] = useState(dayjs().endOf('day').toDate())
   const learningLanguage = useLearningLanguage()
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
   const [selectedGroup, setSelectedGroup] = useState(currentGroupId || '')
@@ -122,7 +122,7 @@ const ExhaustiveTestView = () => {
 
   const filterHistoryByDate = () =>
     history.filter(test => {
-      const testTime = moment(test.date)
+      const testTime = dayjs(test.date)
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
 

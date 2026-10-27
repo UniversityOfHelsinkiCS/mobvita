@@ -1,8 +1,10 @@
 @use 'sass:map';
 @use 'sass:meta';
 
-@import './base.scss';
-@import './rc-slider.css';
+@use './base' with (
+  $color-scrollbar: $color-scrollbar,
+  $color-scrollbar-hover: $color-scrollbar-hover
+);
 
 // The family alias comes from `bundledTypefaces` in designTokens.js so it cannot drift from the
 // inline family `getTextStyle()` hands to Syriac surfaces. The `local()` name is deliberately

@@ -1,5 +1,5 @@
 import callBuilder from 'Utilities/apiConnection'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const initialState = {
   irtExerciseHistory: [],
@@ -13,9 +13,9 @@ const initialState = {
 }
 
 export const getPracticeHistory = (startDate, endDate) => {
-  const route = `/user/practice_history?start_time=${moment(startDate).format(
+  const route = `/user/practice_history?start_time=${dayjs(startDate).format(
     'YYYY-MM-DD'
-  )}&end_time=${moment(endDate).format('YYYY-MM-DD')}`
+  )}&end_time=${dayjs(endDate).format('YYYY-MM-DD')}`
   const prefix = 'GET_PRACTICE_HISTORY'
   return callBuilder(route, prefix, 'get')
 }
