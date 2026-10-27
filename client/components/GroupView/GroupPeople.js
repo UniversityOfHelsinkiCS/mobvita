@@ -20,7 +20,7 @@ import PeopleAddResultModal from './PeopleAddResultModal'
 import GroupFunctions from './GroupFunctions'
 import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { images } from 'Utilities/common'
 

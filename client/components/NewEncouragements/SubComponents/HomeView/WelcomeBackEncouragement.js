@@ -2,7 +2,7 @@ import { images } from 'Utilities/common'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
 
 const WelcomeBackEncouragement = () => {

@@ -10,7 +10,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { downloadCsv } from 'Utilities/csv'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
   learningLanguageSelector,

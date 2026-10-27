@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Box, RadioGroup, FormControlLabel } from '@mui/material'
 import {

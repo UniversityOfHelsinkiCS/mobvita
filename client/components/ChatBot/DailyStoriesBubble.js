@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import ChatBubble from 'Components/ui/ChatBubble'
 import ChatSpinner from 'Components/ui/ChatSpinner'

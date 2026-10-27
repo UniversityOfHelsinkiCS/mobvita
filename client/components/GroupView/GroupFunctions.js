@@ -1,7 +1,7 @@
 // React must remain in scope because Vite compiles this project's JSX with the classic runtime.
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Box } from '@mui/material'
 import SettingsIcon from '@mui/icons-material/Settings'

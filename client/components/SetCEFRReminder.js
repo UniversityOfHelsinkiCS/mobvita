@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AppDialog from 'Components/ui/AppDialog'
 import AppButton from 'Components/AppButton'
 import { colors, font } from 'Assets/mui_theme/designTokens'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { useLearningLanguage } from 'Utilities/common'
 import { InitAdaptiveTest } from 'Utilities/redux/testReducer'

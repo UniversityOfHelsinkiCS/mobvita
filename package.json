@@ -55,7 +55,7 @@
     "react-joyride": "^3.2.0",
     "react-markdown": "^10.1.0",
     "react-redux": "^9.3.0",
-    "react-router-dom": "^7.14.2",
+    "react-router": "^8.5.0",
     "react-simple-keyboard": "^3.8.290",
     "react-svg-pan-zoom": "^3.13.1",
     "react-timer-hook": "^4.0.9",

@@ -6,7 +6,7 @@ import AppButton from 'Components/AppButton'
 import AppIcon from 'Components/ui/AppIcon'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { images, useCurrentUser } from 'Utilities/common'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import GroupActionModal from './GroupActionModal'
 
 // Empty state of the groups page: explains groups and offers create/join for the role.

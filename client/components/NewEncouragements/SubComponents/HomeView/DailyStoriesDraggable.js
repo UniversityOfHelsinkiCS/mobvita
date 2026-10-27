@@ -8,7 +8,7 @@ import { setSavedStoryNotice } from 'Utilities/redux/chatbotReducer'
 import CloseIcon from '@mui/icons-material/Close'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 
 // Draggable home-view card listing up to three daily stories to add to the library.
 const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {

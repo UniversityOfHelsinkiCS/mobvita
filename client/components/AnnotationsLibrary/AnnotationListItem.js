@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card, CardContent } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import { useDispatch } from 'react-redux'

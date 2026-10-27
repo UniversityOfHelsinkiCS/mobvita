@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { images, supportedLearningLanguages, ACCESS, useHasAccess } from 'Utilities/common'
 import { useDispatch, useSelector } from 'react-redux'

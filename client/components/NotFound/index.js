@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Box } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'

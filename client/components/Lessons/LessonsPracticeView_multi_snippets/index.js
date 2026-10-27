@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { Paper, Divider } from '@mui/material'
 
 import { clearTranslationAction } from 'Utilities/redux/translationReducer'

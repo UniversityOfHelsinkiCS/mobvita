@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { useIntl } from 'react-intl'
 import { Box } from '@mui/material'
 import Spinner from 'Components/Spinner'

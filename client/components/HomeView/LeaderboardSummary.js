@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { getLeaderboards } from 'Utilities/redux/leaderboardReducer'
 import LeaderboardList from 'Components/LeaderboardView/LeaderboardList'

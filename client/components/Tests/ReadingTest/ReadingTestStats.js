@@ -1,6 +1,6 @@
 import React from 'react'
 import AppButton from 'Components/AppButton'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { Paper } from '@mui/material'
 import { useSelector } from 'react-redux'

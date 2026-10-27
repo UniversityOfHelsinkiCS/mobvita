@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { unfollowStorySender } from 'Utilities/redux/userReducer'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const UnfollowStorySender = ({ queryParams }) => {
   const dispatch = useDispatch()

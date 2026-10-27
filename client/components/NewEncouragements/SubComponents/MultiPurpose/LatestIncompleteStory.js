@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const LatestIncompleteStory = () => {
   const userData = useSelector(state => state.user.data.user)

@@ -139,7 +139,7 @@ export default defineConfig(({ mode }) => {
     plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ }), fontLinkPlugin, versionFilePlugin],
     optimizeDeps: {
       include: [
-        'react-router-dom',
+        'react-router',
         'swiper',
       ],
       // Vite's Rolldown-based dep scanner does not run main `transform`

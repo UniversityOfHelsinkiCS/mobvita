@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import Medal from 'Components/Achievements/Medal'
 
 const MedalAmount = ({ medal, amount }) => (

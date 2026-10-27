@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import AppIcon from 'Components/ui/AppIcon'

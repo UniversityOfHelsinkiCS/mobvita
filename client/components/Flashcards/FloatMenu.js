@@ -2,7 +2,7 @@ import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import CustomTooltip from 'Components/CustomTooltip'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl';
 import Language from '@mui/icons-material/Language'
 import ListAltOutlined from '@mui/icons-material/ListAltOutlined'

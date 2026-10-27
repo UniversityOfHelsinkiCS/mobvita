@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { addExercise, removeExercise } from 'Utilities/redux/controlledPracticeReducer'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 const BatchExerciseControl = () => {
   const dispatch = useDispatch()

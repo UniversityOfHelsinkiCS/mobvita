@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import TextFields from '@mui/icons-material/TextFields'
 import AppTabs from 'Components/ui/AppTabs'

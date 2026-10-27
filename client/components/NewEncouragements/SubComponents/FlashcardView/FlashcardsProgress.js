@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { images, backgroundColors } from 'Utilities/common'
 
 const FlashcardsProgress = () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { TableCell, TableRow } from '@mui/material'

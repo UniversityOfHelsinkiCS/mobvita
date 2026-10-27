@@ -12,7 +12,7 @@ import CustomTooltip from 'Components/CustomTooltip'
 import AppTooltip from 'Components/ui/AppTooltip'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router'
 import {
   logout,
   getLatestIRTScore,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import AppSelect from 'Components/ui/AppSelect'
 import AppButton from 'Components/AppButton'
 import { colors, font } from 'Assets/mui_theme/designTokens'

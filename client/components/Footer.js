@@ -1,6 +1,6 @@
 import React from 'react'
 import { images } from 'Utilities/common'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import TermsAndConditions from 'Components/StaticContent/TermsAndConditions'
 import { colors } from 'Assets/mui_theme/designTokens'
 import AppIcon from 'Components/ui/AppIcon'

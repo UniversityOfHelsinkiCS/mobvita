@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router'
 import { Box, FormControlLabel } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppDialog from 'Components/ui/AppDialog'

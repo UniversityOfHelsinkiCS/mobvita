@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { images, backgroundColors } from 'Utilities/common'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { FormattedMessage } from 'react-intl';
 
 const GoodJobEncouragement = () => {

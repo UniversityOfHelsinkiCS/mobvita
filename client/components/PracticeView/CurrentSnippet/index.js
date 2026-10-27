@@ -19,7 +19,7 @@ import 'react-simple-keyboard/build/css/index.css'
 import { FormattedMessage } from 'react-intl'
 import { getSelf } from 'Utilities/redux/userReducer'
 import { getTextStyle, learningLanguageSelector } from 'Utilities/common'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import {
   setAnswers,
   clearPractice,

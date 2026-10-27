@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import { useIntl } from 'react-intl'
 import { uploadCachedStory } from 'Utilities/redux/storiesReducer'
 import { setSavedStoryNotice } from 'Utilities/redux/chatbotReducer'

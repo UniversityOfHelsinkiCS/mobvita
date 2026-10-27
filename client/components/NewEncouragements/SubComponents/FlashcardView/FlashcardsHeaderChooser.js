@@ -4,7 +4,7 @@ import WellDoneFlashcardsHeader from 'Components/NewEncouragements/SubComponents
 import SomeIncorrectBlueFlashcardsHeader from 'Components/NewEncouragements/SubComponents/FlashcardView/Headers/SomeIncorrectBlueFlashcardsHeader'
 import GoodJobBlueFlashcardsHeader from 'Components/NewEncouragements/SubComponents/FlashcardView/Headers/GoodJobBlueFlashcardsHeader'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 
 const FlashcardsHeaderChooser = ({ handleNewDeck }) => {
   const flashcards = useSelector(({ flashcards }) => flashcards)

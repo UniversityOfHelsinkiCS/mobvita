@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Box from '@mui/material/Box'
 import AppMenu from 'Components/ui/AppMenu'
