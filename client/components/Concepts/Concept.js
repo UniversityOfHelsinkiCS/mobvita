@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
-import { Collapse } from 'react-collapse'
+import { Collapse } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -110,9 +110,7 @@ const Concept = ({
       <div className="concept-row">
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="concept-caret" style={{ paddingRight: '32px' }}>
-            {!isLeaf && (
-              <CaretIcon sx={{ cursor: 'pointer' }} onClick={() => setOpen(!open)} />
-            )}
+            {!isLeaf && <CaretIcon sx={{ cursor: 'pointer' }} onClick={() => setOpen(!open)} />}
           </div>
           <AppCheckbox
             sx={{ p: 0, mr: '0.5em', ...hidden }}
@@ -130,9 +128,7 @@ const Concept = ({
           >
             {name.length > CONCEPT_NAME_MAX_LEN ? (
               <span>{truncateConceptName(name)}</span>
-            ) : !isLeaf ||
-              (maxNumQuestions > 0 && showTestConcepts) ||
-              !showTestConcepts ? (
+            ) : !isLeaf || (maxNumQuestions > 0 && showTestConcepts) || !showTestConcepts ? (
               <span>{name}</span>
             ) : (
               <span className="disabled-text">{name}</span>
@@ -182,7 +178,7 @@ const Concept = ({
           )}
         </div>
       </div>
-      <Collapse isOpened={open}>{children}</Collapse>
+      <Collapse in={open}>{children}</Collapse>
     </div>
   )
 }

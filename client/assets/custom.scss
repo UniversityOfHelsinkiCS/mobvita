@@ -2141,8 +2141,117 @@ label.file-upload-btn {
   border: 1px solid #d9d9d9;
 }
 
+// PracticeView/Tooltip's base look, carried over from react-popper-tooltip's styles.css.
+.tooltip-container {
+  --tooltipBackground: #fff;
+  --tooltipBorder: #c0c0c0;
+  --tooltipColor: #000;
+
+  background-color: var(--tooltipBackground);
+  border-radius: 3px;
+  border: 1px solid var(--tooltipBorder);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  color: var(--tooltipColor);
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem;
+  transition: opacity 0.3s;
+  z-index: 9999;
+}
+
+.tooltip-arrow {
+  height: 1rem;
+  position: absolute;
+  width: 1rem;
+  pointer-events: none;
+
+  &::before,
+  &::after {
+    border-style: solid;
+    content: '';
+    display: block;
+    height: 0;
+    margin: auto;
+    width: 0;
+  }
+
+  &::after {
+    position: absolute;
+  }
+}
+
+.tooltip-container[data-popper-placement*='bottom'] .tooltip-arrow {
+  left: 0;
+  margin-top: -0.4rem;
+  top: 0;
+
+  &::before {
+    border-color: transparent transparent var(--tooltipBorder) transparent;
+    border-width: 0 0.5rem 0.4rem 0.5rem;
+    position: absolute;
+    top: -1px;
+  }
+
+  &::after {
+    border-color: transparent transparent var(--tooltipBackground) transparent;
+    border-width: 0 0.5rem 0.4rem 0.5rem;
+  }
+}
+
+.tooltip-container[data-popper-placement*='top'] .tooltip-arrow {
+  bottom: 0;
+  left: 0;
+  margin-bottom: -1rem;
+
+  &::before {
+    border-color: var(--tooltipBorder) transparent transparent transparent;
+    border-width: 0.4rem 0.5rem 0 0.5rem;
+    position: absolute;
+    top: 1px;
+  }
+
+  &::after {
+    border-color: var(--tooltipBackground) transparent transparent transparent;
+    border-width: 0.4rem 0.5rem 0 0.5rem;
+  }
+}
+
+.tooltip-container[data-popper-placement*='right'] .tooltip-arrow {
+  left: 0;
+  margin-left: -0.7rem;
+
+  &::before {
+    border-color: transparent var(--tooltipBorder) transparent transparent;
+    border-width: 0.5rem 0.4rem 0.5rem 0;
+  }
+
+  &::after {
+    border-color: transparent var(--tooltipBackground) transparent transparent;
+    border-width: 0.5rem 0.4rem 0.5rem 0;
+    left: 6px;
+    top: 0;
+  }
+}
+
+.tooltip-container[data-popper-placement*='left'] .tooltip-arrow {
+  margin-right: -0.7rem;
+  right: 0;
+
+  &::before {
+    border-color: transparent transparent transparent var(--tooltipBorder);
+    border-width: 0.5rem 0 0.5rem 0.4em;
+  }
+
+  &::after {
+    border-color: transparent transparent transparent var(--tooltipBackground);
+    border-width: 0.5rem 0 0.5rem 0.4em;
+    left: 3px;
+    top: 0;
+  }
+}
+
 .tooltip {
-  //Overwrites react-popper-tooltip styles.
+  // Overrides the base tooltip styles above.
 
   &-container {
     padding: 0.3em !important;

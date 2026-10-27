@@ -1,45 +1,44 @@
-import React from 'react'
-import { usePopperTooltip } from 'react-popper-tooltip'
-import 'react-popper-tooltip/dist/styles.css'
+import React, { useState } from 'react'
+import { Popper } from '@mui/material'
 
-// Usage:
-// additionalClassnames defines the varians of the Tooptip
-
-const Tooltip = ({ children, tooltip, hideArrow, additionalClassnames = '', tooltipShown, isControlledStoryWord = false, ...props }) => {
-  // Support legacy `tooltipShown` prop by mapping it to `visible` for usePopperTooltip
-  const hookOptions = { ...props }
-  if (typeof tooltipShown !== 'undefined') hookOptions.visible = tooltipShown
-  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } = usePopperTooltip(hookOptions)
-
-  // Only allow the tooltip to open when explicitly marked by controlled-story word
-  const isVisible = Boolean(visible && isControlledStoryWord)
+// Controlled popover anchored to `children`; only controlled-story words may open it.
+// Callers' `trigger`, `onVisibilityChange`, `closeOnOutOfBoundaries` never took effect; ignored.
+const Tooltip = ({
+  children,
+  tooltip,
+  hideArrow,
+  additionalClassnames = '',
+  tooltipShown,
+  isControlledStoryWord = false,
+  placement = 'bottom',
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [arrowEl, setArrowEl] = useState(null)
+  const open = Boolean(tooltipShown && isControlledStoryWord && anchorEl)
 
   return (
     <>
-      <span ref={setTriggerRef} className="trigger">
+      <span ref={setAnchorEl} className="trigger">
         {children}
       </span>
-
-      {isVisible && (
-        <div
-          {...getTooltipProps({
-                      ref: setTooltipRef,
-                      className: `tooltip-container ${additionalClassnames}`,
-                      tabIndex: -1,
-                      role: 'dialog',
-                      style: { zIndex: 1200, pointerEvents: 'auto' }
-                    })}
-        >
-          {!hideArrow && (
-            <div
-              {...getArrowProps({
-                className: 'tooltip-arrow',
-              })}
-            />
-          )}
-          {tooltip}
-        </div>
-      )}
+      {/* Inline, not portalled, and offset 6px: what react-popper-tooltip rendered. */}
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        placement={placement}
+        disablePortal
+        className={`tooltip-container ${additionalClassnames}`}
+        role="dialog"
+        tabIndex={-1}
+        style={{ zIndex: 1200, pointerEvents: 'auto' }}
+        modifiers={[
+          { name: 'offset', options: { offset: [0, 6] } },
+          { name: 'arrow', enabled: !hideArrow, options: { element: arrowEl } },
+        ]}
+      >
+        {!hideArrow && <div ref={setArrowEl} className="tooltip-arrow" />}
+        {tooltip}
+      </Popper>
     </>
   )
 }
