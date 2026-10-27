@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl'
 import { skillLevels } from 'Utilities/common'
 import { Box } from '@mui/material'
 import AppSelect from 'Components/ui/AppSelect'
-import { isNumber } from 'lodash'
 
 const CEFRDropdown = ({
   addNew = false,
@@ -42,7 +41,7 @@ const CEFRDropdown = ({
         tagger: userId,
       }
       setUpdatedCEFRHistory(newList)
-    } else if (isNumber(chosenValue)) {
+    } else if (typeof chosenValue === 'number') {
       const newList = [
         {
           grade: chosenValue,

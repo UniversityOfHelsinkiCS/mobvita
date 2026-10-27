@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { debounce } from 'lodash'
+import { debounce } from '@mui/material/utils'
 import { FormattedMessage } from 'react-intl'
 import AppPagination from 'Components/ui/AppPagination'
 import useWindowDimensions from 'Utilities/windowDimensions'

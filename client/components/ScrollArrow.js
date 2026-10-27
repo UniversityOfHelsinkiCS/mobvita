@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { throttle } from 'lodash'
+import throttle from 'Utilities/throttle'
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
 const ScrollArrow = () => {
   const smallWindow = useWindowDimensions().width < 700
-  // semantic's size="big" was 2em and size="huge" 4em; keep the same responsive step.
   const iconFontSize = smallWindow ? 32 : 64
   const [showScroll, setShowScroll] = useState(false)
 

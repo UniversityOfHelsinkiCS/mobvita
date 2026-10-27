@@ -16,7 +16,7 @@ import {
 import { getCrossword, revealClue, sendActivity } from 'Utilities/redux/crosswordReducer'
 import Crossword from 'Components/CrosswordView/Crossword'
 import PlainWord from 'Components/CommonStoryTextComponents/PlainWord'
-import { isEmpty } from 'lodash'
+import isEmpty from 'Utilities/isEmpty'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import HelperSidebar from 'Components/PracticeView/HelperSidebar'
 import { setWords, getClueTranslationAction } from 'Utilities/redux/translationReducer'

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { debounce } from 'lodash'
+import { debounce } from '@mui/material/utils'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import AppTextField from './AppTextField'
@@ -40,7 +40,7 @@ const AppSearchField = ({
     [debounceMs],
   )
 
-  useEffect(() => () => debouncedSearch?.cancel(), [debouncedSearch])
+  useEffect(() => () => debouncedSearch?.clear(), [debouncedSearch])
 
   const handleChange = event => {
     const nextValue = event.target.value
@@ -50,12 +50,12 @@ const AppSearchField = ({
 
   const handleKeyDown = event => {
     if (event.key !== 'Enter') return
-    debouncedSearch?.cancel()
+    debouncedSearch?.clear()
     onSearch?.(value)
   }
 
   const handleClear = () => {
-    debouncedSearch?.cancel()
+    debouncedSearch?.clear()
     onChange?.('')
     onClear?.()
   }

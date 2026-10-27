@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import CustomTooltip from 'Components/CustomTooltip'
 import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { isEmpty } from 'lodash'
+import isEmpty from 'Utilities/isEmpty'
 import { Skeleton } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
