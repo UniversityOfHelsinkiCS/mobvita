@@ -1,13 +1,33 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import moment from 'moment-timezone'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
 import { bundledTypography, colors, font, typography } from './client/assets/mui_theme/designTokens.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
-const buildtime = moment.tz(new Date(), 'Europe/Helsinki').format('ddd, DD MMM YYYY, HH:mm')
+
+// Helsinki time as "Tue, 27 Oct 2026, 14:05", the format the build stamp has always used.
+const formatBuildTime = date => {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Helsinki',
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    })
+      .formatToParts(date)
+      .map(({ type, value }) => [type, value]),
+  )
+  const { weekday, day, month, year, hour, minute } = parts
+  return `${weekday}, ${day} ${month} ${year}, ${hour}:${minute}`
+}
+
+const buildtime = formatBuildTime(new Date())
 
 // Hot-update ids carry a `?t=` query; match the bare path, or HMR of JSX inside .js files fails.
 const isClientJs = id => /\/client\/.*\.js$/.test(id.split('?')[0])

@@ -18,7 +18,7 @@ import { useLearningLanguage } from 'Utilities/common'
 import useWindowDimension from 'Utilities/windowDimensions'
 import moment from 'moment'
 import Spinner from 'Components/Spinner'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
+import AppDatePicker from 'Components/ui/AppDatePicker'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import StartModal from 'Components/TimedActivityStartModal'
@@ -28,8 +28,9 @@ import History from '../../History'
 
 const linkStyle = { color: colors.ink, textDecoration: 'underline', fontWeight: 600 }
 
+// One date of the test-history range.
 const PickDate = ({ date, setDate }) => (
-  <ResponsiveDatePicker selected={date} onChange={date => setDate(date)} />
+  <AppDatePicker value={date} onChange={date => setDate(date)} />
 )
 
 const ExhaustiveTestView = () => {

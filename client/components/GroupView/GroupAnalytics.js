@@ -7,7 +7,7 @@ import AppIcon from 'Components/ui/AppIcon'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import { CSVLink } from 'react-csv'
+import { downloadCsv } from 'Utilities/csv'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
@@ -25,7 +25,7 @@ import {
 } from 'Utilities/redux/groupVocabularyReducer'
 import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
+import AppDatePicker from 'Components/ui/AppDatePicker'
 import moment from 'moment'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
@@ -39,11 +39,14 @@ import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
 import ChartHeading from 'Components/ChartHeading'
 
+// One date of the range; onCalendarClose refetches once the picked date has rendered.
+// The offset drops the calendar below the pill's border rather than the field inside it.
 const PickDate = ({ date, setDate, onCalendarClose }) => (
-  <ResponsiveDatePicker
-    selected={date}
+  <AppDatePicker
+    value={date}
     onChange={date => setDate(date)}
-    onCalendarClose={onCalendarClose}
+    onClose={onCalendarClose}
+    popperOffset={6}
   />
 )
 
@@ -391,12 +394,17 @@ const GroupAnalytics = ({ role }) => {
             </label>
           </div>
           {showSummaryTable && summary?.length > 0 && (
-            <CSVLink className="group-analytics-csv" filename={csvFilename} data={summary}>
+            <span className="group-analytics-csv">
               {/* Sized to the date pills beside it rather than the default 36px small button. */}
-              <AppButton size="sm" sx={{ height: 24, padding: '0 12px', fontSize: 12 }}>
+              <AppButton
+                size="sm"
+                sx={{ height: 24, padding: '0 12px', fontSize: 12 }}
+                onClick={() => downloadCsv(summary, csvFilename)}
+                data-cy="group-summary-csv"
+              >
                 <FormattedMessage id="download-csv" />
               </AppButton>
-            </CSVLink>
+            </span>
           )}
         </div>
 

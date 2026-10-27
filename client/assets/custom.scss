@@ -422,157 +422,11 @@ body,
   justify-content: space-between;
 }
 
-.react-datepicker__input-container > input {
-  width: 120px;
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  border-radius: 0.25em;
-  padding-left: 0.5em;
-}
-
-// react-datepicker and react-simple-keyboard hardcode their own Helvetica stack, so they have to be
-// named. The `body` prefix is load-bearing: their sheets land after this file in the bundle, so the
-// extra specificity is what wins the tie without `!important`.
-body .react-datepicker,
+// react-simple-keyboard hardcodes its own Helvetica stack, so it has to be named. The `body` prefix
+// is load-bearing: its sheet lands after this file in the bundle, so the extra specificity is what
+// wins the tie without `!important`.
 body .hg-theme-default {
   font-family: var(--font-ui);
-}
-
-// Themed calendar, applied via `calendarClassName="app-datepicker"` in ResponsiveDatePicker.
-// The vendor sheet loads after this file, so every rule here needs the `body` prefix to outrank it
-// (see the note above) — that is the only reason for the repetition.
-$dp-line: #E8E5DC;
-$dp-ink: #2d2c2a;
-$dp-muted: #9d9b92;
-$dp-outside: #c9c6bc;
-$dp-selected: #4e6e59;
-$dp-hover: #eef4f0;
-
-body .app-datepicker.react-datepicker {
-  border: 2px solid $dp-line;
-  border-radius: 15px;
-  background-color: #ffffff;
-  color: $dp-ink;
-  box-shadow: 0 8px 24px rgba(45, 44, 42, 0.12);
-  // Clip the grid's own hairlines to the rounded outline.
-  overflow: hidden;
-
-  .react-datepicker__header {
-    padding: 0;
-    border-bottom: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    background-color: #ffffff;
-  }
-
-  .react-datepicker__current-month {
-    padding: 12px 40px;
-    font-size: 15px;
-    font-weight: 600;
-    color: $dp-ink;
-  }
-
-  .react-datepicker__navigation {
-    top: 10px;
-    width: 28px;
-    height: 28px;
-  }
-
-  .react-datepicker__navigation--previous {
-    left: 6px;
-  }
-
-  .react-datepicker__navigation--next {
-    right: 6px;
-  }
-
-  .react-datepicker__navigation-icon::before {
-    border-color: $dp-muted;
-    border-width: 2px 2px 0 0;
-    width: 7px;
-    height: 7px;
-  }
-
-  .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
-    border-color: $dp-ink;
-  }
-
-  // Weekday strip and day grid share one cell metric so the hairlines line up column by column.
-  .react-datepicker__day-names,
-  .react-datepicker__week {
-    display: flex;
-    margin: 0;
-  }
-
-  // Fixed 40px cells rather than flex-sized ones: the popper shrinks to its content, so the cells
-  // are what give the calendar its 280px width.
-  .react-datepicker__day-name,
-  .react-datepicker__day {
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    border-right: 1px solid $dp-line;
-    border-bottom: 1px solid $dp-line;
-    border-radius: 0;
-    line-height: 40px;
-    font-size: 14px;
-
-    &:last-child {
-      border-right: 0;
-    }
-  }
-
-  .react-datepicker__day-name {
-    border-top: 1px solid $dp-line;
-    color: $dp-muted;
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .react-datepicker__month {
-    margin: 0;
-  }
-
-  .react-datepicker__week:last-child .react-datepicker__day {
-    border-bottom: 0;
-  }
-
-  .react-datepicker__day {
-    color: $dp-ink;
-
-    &:hover {
-      border-radius: 0;
-      background-color: $dp-hover;
-    }
-  }
-
-  .react-datepicker__day--outside-month {
-    color: $dp-outside;
-  }
-
-  .react-datepicker__day--today {
-    font-weight: 700;
-  }
-
-  // The vendor sheet colours these too, so both states are restated here.
-  .react-datepicker__day--selected,
-  .react-datepicker__day--keyboard-selected {
-    border-radius: 0;
-    background-color: $dp-selected;
-    color: #ffffff;
-
-    &:hover {
-      background-color: $dp-selected;
-    }
-  }
-
-  .react-datepicker__day--disabled {
-    color: $dp-outside;
-
-    &:hover {
-      background-color: transparent;
-    }
-  }
 }
 
 // REACT VIRTUALIZED OVERRIDES:
@@ -2602,7 +2456,7 @@ label.file-upload-btn {
     font-weight: 400;
   }
 
-  // The pill owns the border; the react-datepicker input inside it goes borderless.
+  // The pill owns the border; the AppDatePicker field inside it goes borderless.
   .group-analytics-date-pill {
     display: inline-flex;
     align-items: center;
@@ -2619,7 +2473,7 @@ label.file-upload-btn {
       flex-shrink: 0;
     }
 
-    .react-datepicker__input-container > input {
+    .app-date-picker-field {
       width: 78px;
       padding: 0;
       border: 0;
@@ -2628,7 +2482,8 @@ label.file-upload-btn {
       line-height: 1;
       color: #2d2c2a;
 
-      &:focus {
+      // A mouse click shows no ring, as before; keyboard focus keeps one.
+      &:focus:not(:focus-visible) {
         outline: none;
       }
     }

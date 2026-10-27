@@ -6,6 +6,8 @@ import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
 import AppSearchField from 'Components/ui/AppSearchField'
+import AppDatePicker from 'Components/ui/AppDatePicker'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppRadio from 'Components/ui/AppRadio'
 import AppTable from 'Components/ui/AppTable'
@@ -133,6 +135,7 @@ const DesignSystem = () => {
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
   const [searchDemo, setSearchDemo] = useState('Kalevala')
+  const [dateDemo, setDateDemo] = useState(new Date())
   const [titleDemo, setTitleDemo] = useState('My summer in Helsinki')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
@@ -671,6 +674,20 @@ const DesignSystem = () => {
           </div>
           <div style={{ width: 360 }}>
             <AppSearchField value="disabled" onChange={() => {}} disabled />
+          </div>
+        </Section>
+
+        <Section title="AppDatePicker">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+            <AppDatePicker value={dateDemo} onChange={setDateDemo} />
+            {/* Inside the analytics date pill, which restyles the field via custom.scss. */}
+            <div className="date-pickers-container" style={{ margin: 0 }}>
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
+                <AppDatePicker value={dateDemo} onChange={setDateDemo} popperOffset={6} />
+              </span>
+            </div>
+            <AppDatePicker value={dateDemo} onChange={() => {}} disabled />
           </div>
         </Section>
 

@@ -23,7 +23,7 @@ import AppTabs from 'Components/ui/AppTabs'
 import ChartHeading from 'Components/ChartHeading'
 import Spinner from 'Components/Spinner'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
+import AppDatePicker from 'Components/ui/AppDatePicker'
 import History from 'Components/History'
 import { getHistory as getExerciseHistory } from 'Utilities/redux/exerciseHistoryReducer'
 import { getHistory as getTestHistory } from 'Utilities/redux/testReducer'
@@ -36,11 +36,14 @@ import ProgressStats from './ProgressStats'
 import HoursProgressChart from 'Components/HoursProgressChart'
 import { colors } from 'Assets/mui_theme/designTokens'
 
+// One date of the range; onCalendarClose refetches once the picked date has rendered.
+// The offset drops the calendar below the pill's border rather than the field inside it.
 const PickDate = ({ date, setDate, onCalendarClose }) => (
-  <ResponsiveDatePicker
-    selected={date}
+  <AppDatePicker
+    value={date}
     onChange={date => setDate(date)}
-    onCalendarClose={onCalendarClose}
+    onClose={onCalendarClose}
+    popperOffset={6}
   />
 )
 

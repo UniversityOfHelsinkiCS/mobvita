@@ -1,4 +1,9 @@
-require('dotenv').config()
+// Loads .env when present; values already in the environment win, as with dotenv.
+try {
+  process.loadEnvFile()
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error
+}
 require('module-alias/register')
 const chokidar = require('chokidar')
 const express = require('express')
