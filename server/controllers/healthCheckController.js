@@ -1,4 +1,4 @@
-const { axios } = require('@util/common')
+const { axios } = require('#util/common')
 
 const STATUS_TIMEOUT_MS = 10000
 const STATUS_CACHE_MS = 5000

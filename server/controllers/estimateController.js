@@ -1,5 +1,5 @@
 const { DatabaseSync } = require('node:sqlite')
-const { axios } = require('@util/common')
+const { axios } = require('#util/common')
 
 const wordCountLimit = 5000
 

@@ -5,9 +5,10 @@
     "allowSyntheticDefaultImports": false,
     "baseUrl": "./",
     "paths": {
-      "@controllers/*": ["server/controllers/*"],
-      "@middleware/*": ["server/middleware/*"],
-      "@util/*": ["server/util/*"],
+      "#controllers/*": ["server/controllers/*"],
+      "#middleware/*": ["server/middleware/*"],
+      "#util/*": ["server/util/*"],
+      "#root/*": ["*"],
       "Utilities/*": ["client/util/*"],
       "Components/*": ["client/components/*"],
       "Assets/*": ["client/assets/*"],

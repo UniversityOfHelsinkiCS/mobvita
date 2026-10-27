@@ -4,14 +4,14 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
 
-const { checkRevitaStatus } = require('@controllers/healthCheckController')
-const proxyController = require('@controllers/proxyController')
-const { getYandexTTS, getFinTTS, getEngTTS } = require('@controllers/ttsController')
+const { checkRevitaStatus } = require('#controllers/healthCheckController')
+const proxyController = require('#controllers/proxyController')
+const { getYandexTTS, getFinTTS, getEngTTS } = require('#controllers/ttsController')
 const {
   getWritingClinicMeta,
   analyzeWritingClinicText,
-} = require('@controllers/writingClinicController')
-// const { estimate } = require('@controllers/estimateController')
+} = require('#controllers/writingClinicController')
+// const { estimate } = require('#controllers/estimateController')
 
 const router = Router()
 

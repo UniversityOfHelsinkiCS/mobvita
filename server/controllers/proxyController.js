@@ -1,4 +1,4 @@
-const { axios } = require('@util/common')
+const { axios } = require('#util/common')
 
 const TIMEOUT = 180000
 const useMockContextTranslation = process.env.MOCK_CTX_TRANSLATE === 'true'
