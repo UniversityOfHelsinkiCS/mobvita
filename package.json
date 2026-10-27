@@ -61,7 +61,6 @@
     "react-copy-to-clipboard": "^5.1.1",
     "react-csv": "^2.2.2",
     "react-datepicker": "^9.1.0",
-    "react-detect-offline": "^2.4.5",
     "react-dom": "^19.3.1",
     "react-draggable": "^4.7.2",
     "react-intl": "^12.1.5",

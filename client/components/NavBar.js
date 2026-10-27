@@ -9,6 +9,7 @@ import { Box, Slide, useScrollTrigger } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
+import AppTooltip from 'Components/ui/AppTooltip'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
@@ -43,22 +44,26 @@ import {
   useHasAccess,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { Detector } from 'react-detect-offline'
+import useConnectionStatus from 'Utilities/useConnectionStatus'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
 import Tour from './Tour'
 import { reloadIfNewDeploy } from 'Utilities/deployUpdates'
 
-const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
-  return (
-    <img
-      className={extraClass ?? ''}
-      src={imgSrc}
-      alt={altText}
-      style={{ width: '21px', height: '21px' }}
-    />
-  )
+// Label, tooltip key and colour of the navbar connection dot for each useConnectionStatus() state.
+const CONNECTION_DOT = {
+  online: { id: 'connection-online', tooltipId: 'connection-online-tooltip', color: '#21A400' },
+  'server-down': {
+    id: 'connection-server-down',
+    tooltipId: 'connection-server-down-tooltip',
+    color: colors.alert,
+  },
+  offline: {
+    id: 'connection-offline',
+    tooltipId: 'connection-offline-tooltip',
+    color: colors.error,
+  },
 }
 
 // Layout wrappers that replace react-bootstrap's <Navbar.Collapse> / <Nav>. All the visual styling
@@ -149,6 +154,7 @@ export default function NavBar() {
 
   const smallWindow = useWindowDimensions().width < 700
   const intl = useIntl()
+  const connectionStatus = useConnectionStatus()
   const handleEloClick = () => {
     navigate('/profile/progress')
   }
@@ -413,23 +419,24 @@ export default function NavBar() {
                   {hiddenFeatures && (
                     <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>
                   )}
-                  <Detector
-                    polling={{ timeout: 20000 }}
-                    render={({ online }) => (
-                      <CircleIcon
-                        titleAccess={intl.formatMessage({
-                          id: online ? 'connection-online' : 'connection-offline',
-                        })}
-                        style={{
-                          display: 'flex',
-                          alignSelf: 'flex-start',
-                          fontSize: 10,
-                          color: online ? '#21A400' : colors.error,
-                          margin: '2px 6px',
-                        }}
-                      />
-                    )}
-                  />
+                  <AppTooltip
+                    keyId={CONNECTION_DOT[connectionStatus].tooltipId}
+                    placement="bottom"
+                  >
+                    <CircleIcon
+                      role="img"
+                      aria-hidden={false}
+                      aria-label={intl.formatMessage({ id: CONNECTION_DOT[connectionStatus].id })}
+                      data-cy="connection-status-dot"
+                      style={{
+                        display: 'flex',
+                        alignSelf: 'flex-start',
+                        fontSize: 10,
+                        color: CONNECTION_DOT[connectionStatus].color,
+                        margin: '2px 6px',
+                      }}
+                    />
+                  </AppTooltip>
                 </Box>
               </Link>
               {user?.user?.last_used_language && (

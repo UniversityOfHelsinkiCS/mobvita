@@ -10,7 +10,6 @@ import {
   setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
-import { clearServerError, setServerError } from 'Utilities/redux/serverErrorReducer'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 import { useIntl } from 'react-intl';
 import { learningLanguageSelector } from 'Utilities/common'
@@ -164,7 +163,7 @@ export default function Toaster() {
     }
   }, [processingErrorMsgId, error])
 
-  // Handles server error toast
+  // Shows the server-issues toast on a server error; dismisses it once the error clears.
   useEffect(() => {
     if (serverError && !serverErrorToastId) {
       setServerErrorToastId(
@@ -173,11 +172,11 @@ export default function Toaster() {
           className: 'server-issues-toast',
           position: 'bottom-left',
           autoClose: false,
-          onClose: () => {
-            dispatch(clearServerError())
-            setServerErrorToastId(null)
-          } })
+          onClose: () => setServerErrorToastId(null),
+        })
       )
+    } else if (!serverError && serverErrorToastId) {
+      toast.dismiss(serverErrorToastId)
     }
   }, [serverError])
 
