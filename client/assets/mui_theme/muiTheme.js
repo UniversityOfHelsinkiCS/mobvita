@@ -3,7 +3,7 @@
 // through the MUI `ThemeProvider` component.
 
 import { createTheme } from '@mui/material/styles'
-import { font } from './designTokens'
+import { font } from './designTokens.js'
 
 const muiTheme = createTheme({
   // MUI defaults to Roboto, a font this app never loads, so point it at the app's own family.
