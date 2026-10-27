@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { IntlProvider } from 'react-intl'
-import translations from 'Utilities/translations'
+import { getLoadedMessages, loadMessages } from 'Utilities/translations'
 import { localeNameToCode } from '../util/common'
 
 // IntlProvider fed by the logged-in user's interface language, else the locale reducer.
@@ -10,15 +10,26 @@ const ConnectedIntlProvider = ({ children }) => {
   const interfaceLanguage = useSelector(({ user }) => user.data?.user?.interfaceLanguage)
   const locale = interfaceLanguage ? localeNameToCode(interfaceLanguage) : storeLocale
 
-  // English is the base; other locales fall back to it for missing keys.
-  const messages = useMemo(
-    () => (locale === 'en' ? translations.en : { ...translations.en, ...translations[locale] }),
-    [locale],
-  )
+  // The language on screen; on a switch the old one stays until the new file has arrived.
+  const [shown, setShown] = useState(() => ({ locale, messages: getLoadedMessages(locale) }))
+
+  useEffect(() => {
+    if (shown.locale === locale && shown.messages) return undefined
+    let current = true
+    loadMessages(locale)
+      .catch(() => getLoadedMessages('en'))
+      .then(messages => current && setShown({ locale, messages }))
+    return () => {
+      current = false
+    }
+  }, [locale])
+
+  // Only the very first load of a non-English language waits here, for one small file.
+  if (!shown.messages) return null
 
   // `key` remounts the tree on a language switch, as the connect() version did.
   return (
-    <IntlProvider key={locale} locale={locale} messages={messages}>
+    <IntlProvider key={shown.locale} locale={shown.locale} messages={shown.messages}>
       {children}
     </IntlProvider>
   )
