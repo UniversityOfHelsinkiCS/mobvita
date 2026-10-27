@@ -16,7 +16,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "design:screenshots": "cypress run --browser chrome --config-file cypress.design.config.js",
-    "design:screenshots:teacher": "cypress run --browser chrome --config-file cypress.design.config.js --env mode=teacher",
+    "design:screenshots:teacher": "cypress run --browser chrome --config-file cypress.design.config.js --expose mode=teacher",
     "design:screenshots:open": "cypress open --browser chrome --config-file cypress.design.config.js",
     "add-translation": "node addTranslation.js"
   },
@@ -55,7 +55,7 @@
     "react-joyride": "^3.2.0",
     "react-markdown": "^10.1.0",
     "react-redux": "^9.3.0",
-    "react-router": "^8.5.0",
+    "react-router": "^8.5.1",
     "react-simple-keyboard": "^3.8.290",
     "react-svg-pan-zoom": "^3.13.1",
     "react-timer-hook": "^4.0.9",

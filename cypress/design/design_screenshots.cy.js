@@ -16,7 +16,7 @@
  *   npm run design:screenshots:teacher  # teacher only
  *   npm run design:screenshots:open     # interactive
  *
- * Tunables via Cypress env (e.g. `--env mode=teacher,maxPages=40`):
+ * Tunables via Cypress expose (e.g. `--expose mode=teacher,maxPages=40`):
  *   mode               'student' | 'teacher' — run only that role  (default: run BOTH)
  *                      teacher runs with student-view OFF (teacherView defaults on for teachers)
  *   maxPages           hard cap on total pages visited            (default 30)
@@ -31,8 +31,8 @@
  *   learningLanguage   language to log in with                      (default 'Finnish')
  */
 
-const env = Cypress.env()
-// By default run BOTH scenarios for the full picture; `--env mode=student|teacher` runs just one.
+const env = Cypress.expose()
+// By default run BOTH scenarios for the full picture; `--expose mode=student|teacher` runs just one.
 const MODES = env.mode ? [env.mode === 'teacher' ? 'teacher' : 'student'] : ['student', 'teacher']
 const MAX_PAGES = Number(env.maxPages ?? 30)
 const DISCOVER_DEPTH = Number(env.discoverDepth ?? 0)
