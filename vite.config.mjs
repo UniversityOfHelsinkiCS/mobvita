@@ -3,6 +3,9 @@ import { fileURLToPath } from 'url'
 import { defineConfig, transformWithOxc } from 'vite'
 import react from '@vitejs/plugin-react'
 import { execSync } from 'child_process'
+import { readFile, writeFile } from 'fs/promises'
+import { promisify } from 'util'
+import { brotliCompress, gzip, constants as zlibConstants } from 'zlib'
 import { bundledTypography, colors, font, typography } from './client/assets/mui_theme/designTokens.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
@@ -93,6 +96,31 @@ const fontLinkPlugin = {
   },
 }
 
+const PRECOMPRESS_MIN_BYTES = 1024
+const brotli = promisify(brotliCompress)
+const gzipAsync = promisify(gzip)
+
+// Writes max-level .br/.gz copies of built text assets, so the server never compresses per request.
+const precompressPlugin = {
+  name: 'mobvita-precompress',
+  apply: 'build',
+  async writeBundle(options, bundle) {
+    const files = Object.keys(bundle).filter(name => /^assets\/.*\.(js|css|svg|json)$/.test(name))
+    await Promise.all(
+      files.map(async name => {
+        const file = path.join(options.dir, name)
+        const source = await readFile(file)
+        if (source.length < PRECOMPRESS_MIN_BYTES) return
+        const [br, gz] = await Promise.all([
+          brotli(source, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 11 } }),
+          gzipAsync(source, { level: 9 }),
+        ])
+        await Promise.all([writeFile(`${file}.br`, br), writeFile(`${file}.gz`, gz)])
+      }),
+    )
+  },
+}
+
 const getPackageChunkName = (id) => {
   const afterNodeModules = id.split('node_modules/')[1]
   if (!afterNodeModules) return undefined
@@ -136,7 +164,13 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: BASE_PATH,
-    plugins: [jsxInJsPlugin, react({ include: /\.[jt]sx?$/ }), fontLinkPlugin, versionFilePlugin],
+    plugins: [
+      jsxInJsPlugin,
+      react({ include: /\.[jt]sx?$/ }),
+      fontLinkPlugin,
+      versionFilePlugin,
+      precompressPlugin,
+    ],
     optimizeDeps: {
       include: [
         'react-router',

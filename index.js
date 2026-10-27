@@ -31,10 +31,33 @@ watcher.on('ready', () => {
   })
 })
 
+// Preferred first; the build writes them beside each asset (precompressPlugin in vite.config.mjs).
+const PRECOMPRESSED = [
+  { encoding: 'br', ext: '.br' },
+  { encoding: 'gzip', ext: '.gz' },
+]
+
+// Serves an asset's pre-built .br/.gz copy when the browser accepts it; else falls through.
+const servePrecompressed = (dir, cacheOptions) => {
+  const available = new Set(fs.existsSync(dir) ? fs.readdirSync(dir) : [])
+
+  return (req, res, next) => {
+    const name = req.path.slice(1)
+    const variants = PRECOMPRESSED.filter(({ ext }) => available.has(name + ext))
+    if (!variants.length) return next()
+
+    res.vary('Accept-Encoding')
+    const match = variants.find(({ encoding }) => req.acceptsEncodings(encoding))
+    if (!match) return next()
+
+    res.type(path.extname(name))
+    res.set('Content-Encoding', match.encoding)
+    res.sendFile(name + match.ext, { root: dir, ...cacheOptions }, error => error && next(error))
+  }
+}
+
+// Frontend: Vite middleware in development, otherwise the built dist/ (pre-compressed first).
 const setupFrontend = async (httpServer) => {
-  /**
-   * For frontend use Vite middleware when in development, else serve static content.
-   */
   if (!inProduction) {
     const { createServer: createViteServer } = require('vite')
     const hmrHost = process.env.VITE_HMR_HOST || 'localhost'
@@ -74,11 +97,12 @@ const setupFrontend = async (httpServer) => {
   const DIST_PATH = path.resolve(__dirname, './dist')
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
+  const ASSETS_PATH = path.resolve(DIST_PATH, 'assets')
   // Asset names are content hashes (a change gets a new name), so browsers may keep them a year.
-  app.use(
-    '/assets',
-    express.static(path.resolve(DIST_PATH, 'assets'), { maxAge: '1y', immutable: true }),
-  )
+  const ASSET_CACHE = { maxAge: '1y', immutable: true }
+
+  app.use('/assets', servePrecompressed(ASSETS_PATH, ASSET_CACHE))
+  app.use('/assets', express.static(ASSETS_PATH, ASSET_CACHE))
   app.use(express.static(DIST_PATH))
   // Missing hashed assets must 404, not fall through to index.html served as CSS/JS with a 200.
   app.use('/assets', (_, res) => res.set('Cache-Control', 'no-store').sendStatus(404))
