@@ -1,9 +1,5 @@
 FROM node:26-bookworm
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends tzdata python3 make g++ \
-  && rm -rf /var/lib/apt/lists/*
-
 ENV TZ=Europe/Helsinki
 WORKDIR /usr/src/app
 
@@ -24,7 +20,6 @@ COPY package.json package-lock.json ./
 
 # install deps into the IMAGE (this is fine, but will be overwritten by volumes unless you mount a volume)
 RUN npm ci --include=dev
-RUN npm run rebuild --prefix node_modules/sqlite3
 
 # copy source and build frontend assets so dist exists in pushed images
 COPY . .
