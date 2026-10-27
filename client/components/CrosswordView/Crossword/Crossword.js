@@ -8,7 +8,7 @@ import React, {
   useMemo,
 } from 'react'
 import { produce } from 'immer'
-import styled, { ThemeContext, ThemeProvider } from 'styled-components'
+import { styled } from '@mui/material/styles'
 import { confettiRain } from 'Utilities/common'
 import { font } from 'Assets/mui_theme/designTokens'
 import Cell from './Cell'
@@ -23,7 +23,7 @@ import {
   loadGuesses,
   findCorrectAnswers,
 } from './util'
-import { CrosswordContext, CrosswordSizeContext } from './context'
+import { CrosswordContext, CrosswordSizeContext, CrosswordThemeContext } from './context'
 
 // TODO: make this a component property!
 const defaultStorageKey = 'guesses'
@@ -40,52 +40,30 @@ const defaultTheme = {
   correctBackground: 'rgb(119,221,119)',
 }
 
-// eslint-disable-next-line
-const OuterWrapper = styled.div.attrs(props => ({
-  className: `crossword${props.$correct ? ' correct' : ''}`,
-}))`
-  margin: 0;
-  padding: 0;
-  border: 0;
-  /* position: relative; */
-  /* width: 40%; */
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  max-height: 100%;
+const OuterWrapper = styled('div')({
+  margin: 0,
+  padding: 0,
+  border: 0,
+  display: 'flex',
+  flexDirection: 'row',
+  height: '100%',
+  maxHeight: '100%',
+})
 
-  // @media (max-width: ${props => props.theme.columnBreakpoint}) {
-  //   flex-direction: column;
-  // }
-`
-
-const CluesWrapper = styled.div.attrs(props => ({ className: 'clues' }))`
-  padding-left: 1em;
-  flex: 1;
-
-  > div {
-    background: #fff;
-  }
-
-  @media (max-width: ${props => props.theme.columnBreakpoint}) {
-    margin-top: 2em;
-  }
-
-  .direction {
-    margin-bottom: 2em;
-    /* padding: 0 1em;
-    flex: 1 1 20%; */
-
-    .header {
-      margin-top: 0;
-      margin-bottom: 0.5em;
-    }
-
-    div {
-      margin-top: 0.5em;
-    }
-  }
-`
+// `$columnBreakpoint` comes from the crossword theme and is kept off the DOM element.
+const CluesWrapper = styled('div', { shouldForwardProp: prop => !prop.startsWith('$') })(
+  ({ $columnBreakpoint }) => ({
+    paddingLeft: '1em',
+    flex: 1,
+    '& > div': { background: '#fff' },
+    [`@media (max-width: ${$columnBreakpoint})`]: { marginTop: '2em' },
+    '& .direction': {
+      marginBottom: '2em',
+      '& .header': { marginTop: 0, marginBottom: '0.5em' },
+      '& div': { marginTop: '0.5em' },
+    },
+  }),
+)
 
 // Main crossword: renders the grid and clues and manages guesses and interaction.
 const Crossword = React.forwardRef(
@@ -131,7 +109,7 @@ const Crossword = React.forwardRef(
     const inputRef = useRef()
     const outerWrapperRef = useRef()
 
-    const contextTheme = useContext(ThemeContext)
+    const contextTheme = useContext(CrosswordThemeContext)
 
     const getCellData = useCallback(
       (row, col) => {
@@ -745,7 +723,7 @@ const Crossword = React.forwardRef(
 
     // The final theme is the merger of three values: the "theme" property
     // passed to the component (which takes precedence), any values from
-    // ThemeContext, and finally the "defaultTheme" values fill in for any
+    // CrosswordThemeContext, and finally the "defaultTheme" values fill in for any
     // needed ones that are missing.  (We create this in standard last-one-wins
     // order in Javascript, of course.)
     const finalTheme = { ...defaultTheme, ...contextTheme, ...theme }
@@ -776,8 +754,11 @@ const Crossword = React.forwardRef(
         <CrosswordSizeContext.Provider
           value={sizeContext}
         >
-          <ThemeProvider theme={finalTheme}>
-            <OuterWrapper $correct={crosswordCorrect} ref={outerWrapperRef}>
+          <CrosswordThemeContext.Provider value={finalTheme}>
+            <OuterWrapper
+              className={`crossword${crosswordCorrect ? ' correct' : ''}`}
+              ref={outerWrapperRef}
+            >
               <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div
                   style={{
@@ -834,7 +815,7 @@ const Crossword = React.forwardRef(
                   }}
                 />
                 <div style={{ width: '50%' }}>
-                  <CluesWrapper>
+                  <CluesWrapper className="clues" $columnBreakpoint={finalTheme.columnBreakpoint}>
                     {customClues ||
                       (clues &&
                         bothDirections.map(direction => (
@@ -848,7 +829,7 @@ const Crossword = React.forwardRef(
                 </div>
               </div>
             </OuterWrapper>
-          </ThemeProvider>
+          </CrosswordThemeContext.Provider>
         </CrosswordSizeContext.Provider>
       </CrosswordContext.Provider>
     )

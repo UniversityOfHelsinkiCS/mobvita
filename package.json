@@ -68,7 +68,6 @@
     "sass": "^1.106.1",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1",
-    "styled-components": "^6.6.0",
     "swagger-ui-express": "^5.0.1",
     "swiper": "^14.3.0",
     "winston": "^3.19.0",

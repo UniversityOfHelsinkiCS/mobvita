@@ -5,7 +5,6 @@ import AppButton from 'Components/AppButton'
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined'
 import ThumbDownAltOutlinedIcon from '@mui/icons-material/ThumbDownAltOutlined'
 import Flashcard from '../Flashcard'
-import { set } from 'lodash'
 
 const Article = ({ card, cardNumbering, answerCard }) => {
   const [flipped, setFlipped] = useState(false)

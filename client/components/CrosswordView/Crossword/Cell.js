@@ -1,7 +1,6 @@
 import React, { useCallback, useContext } from 'react'
-import { ThemeContext } from 'styled-components'
 
-import { CrosswordSizeContext } from './context'
+import { CrosswordSizeContext, CrosswordThemeContext } from './context'
 
 // expected props: row, col, answer, crossword, cellSize
 
@@ -23,7 +22,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     focusBackground,
     highlightBackground,
     correctBackground,
-  } = useContext(ThemeContext)
+  } = useContext(CrosswordThemeContext)
 
   const handleClick = useCallback(
     event => {

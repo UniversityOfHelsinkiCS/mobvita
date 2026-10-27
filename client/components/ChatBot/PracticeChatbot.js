@@ -32,7 +32,6 @@ import {
 } from 'Utilities/redux/snippetsReducer'
 import ChatbotSuggestions from './ChatbotSuggestions'
 import ChatSpinner from 'Components/ui/ChatSpinner'
-import { set } from 'lodash';
 
 const PracticeChatbot = () => {
   const intl = useIntl()

@@ -23,7 +23,6 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
   updateGroupSelect,
   updateLibrarySelect } from 'Utilities/redux/userReducer'
-import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ThemeView from '../ThemeView'
 import SelectGrammarLevel from '../SelectGrammarLevel'
