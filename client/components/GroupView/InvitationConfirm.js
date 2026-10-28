@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { confirmGroupInvitation } from 'Utilities/redux/groupsReducer'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router'
 import Spinner from 'Components/Spinner'
 import { colors } from 'Assets/mui_theme/designTokens'
 import useOpenJoinedGroup from './useOpenJoinedGroup'
