@@ -395,15 +395,20 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
         ...state,
         token: action.response.token,
       }
+    // Token join and invitation link both use this prefix. `joinedGroupId` / `joinFailed` are the
+    // last join's result, read by useOpenJoinedGroup to open the joined group's library.
     case 'JOIN_GROUP_ATTEMPT':
       return {
         ...state,
         joinPending: true,
+        joinedGroupId: null,
+        joinFailed: false,
       }
     case 'JOIN_GROUP_FAILURE':
       return {
         ...state,
         joinPending: false,
+        joinFailed: true,
       }
     case 'JOIN_GROUP_SUCCESS':
       return {
@@ -412,6 +417,7 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
         joinPending: false,
+        joinedGroupId: action.response.group?.group_id ?? null,
       }
     case 'LEAVE_FROM_GROUP_ATTEMPT':
       return {

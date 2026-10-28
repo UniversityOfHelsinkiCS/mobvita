@@ -6,6 +6,7 @@ import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
 import { createGroup, joinGroup } from 'Utilities/redux/groupsReducer'
+import useOpenJoinedGroup from './useOpenJoinedGroup'
 
 const FIELD_SPACING = { mt: '0.5em', mb: '1.5em' }
 
@@ -19,12 +20,15 @@ const GroupActionModal = ({ trigger, role }) => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const expectJoin = useOpenJoinedGroup()
 
+  // On success the student lands in the joined group's library (useOpenJoinedGroup); a wrong token
+  // keeps them on the groups page with the error toast.
   const join = event => {
     event.preventDefault()
+    expectJoin()
     dispatch(joinGroup(token))
     setOpen(false)
-    navigate(`/groups/${role}`)
   }
 
   const addGroup = event => {
