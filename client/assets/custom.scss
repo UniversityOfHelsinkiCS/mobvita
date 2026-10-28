@@ -71,6 +71,10 @@ $navbar-height: 4.125em;
 $footer-height: 50px;
 $application-content-top-padding: 1.7em;
 
+// Narrowest phone layout: the navbar's compact mode (flag without name, small switch, no switch
+// labels). Same breakpoint as `tinyWindow` (width <= 400) in NavBar.js — change both together.
+$breakpoint-xs: 450px;
+
 body {
   // The one place the application font is applied; everything else inherits it. Reading surfaces
   // override it with --font-content. The emoji faces stay last so emoji still resolve.
@@ -1008,6 +1012,10 @@ body .app-datepicker.react-datepicker {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
+    @media (max-width: $breakpoint-xs) {
+      gap: 0.2em;
+    }
   }
 
   &-level {
@@ -1025,6 +1033,7 @@ body .app-datepicker.react-datepicker {
     color: black !important;
     margin-left: 1.5em;
     margin-right: 3em;
+    font-size: 42px;
 
     @media (max-width: 850px) {
       margin-left: 0.5em;
@@ -1034,6 +1043,12 @@ body .app-datepicker.react-datepicker {
     @media (max-width: 1050px) {
       margin-left: 0.3em;
       margin-right: 0.5em;
+    }
+
+    @media (max-width: $breakpoint-xs) {
+      margin-left: 0.2em;
+      margin-right: 0.1em;
+      font-size: 24px;
     }
   }
 
@@ -1099,17 +1114,41 @@ body .app-datepicker.react-datepicker {
   }
 
   &-flag {
-    border-radius: 4px;
-    height: 21px;
-    border: 2px solid black;
+    display: block;
+    box-sizing: border-box;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.15s ease;
+
+    @media (max-width: $breakpoint-xs) {
+      width: 24px;
+      height: 24px;
+    }
 
     &:hover {
-      border: 2px solid $btn-highlight-color-primary;
+      border-color: $btn-highlight-color-primary;
+    }
+  }
+
+  &-language-name {
+    @media (max-width: $breakpoint-xs) {
+      display: none;
     }
   }
 
   &-news-label {
     font-size: 0.7em !important;
+  }
+
+  .sidebar-hamburger {
+    margin-left: 16px;
+    @media (max-width: $breakpoint-xs) {  
+      margin-left: 4px;
+      margin-right: 4px;
+    }
   }
 }
 
@@ -3160,7 +3199,7 @@ label.file-upload-btn {
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: $breakpoint-xs) {
     flex-direction: column;
 
     & > button {

@@ -122,7 +122,9 @@ export default function NavBar() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const smallWindow = useWindowDimensions().width < 700
+  const { width: windowWidth } = useWindowDimensions()
+  const smallWindow = windowWidth < 700
+  const tinyWindow = windowWidth <= 450   
   const intl = useIntl()
   const handleEloClick = () => {
     navigate('/profile/progress')
@@ -309,7 +311,7 @@ export default function NavBar() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            marginRight: 40,
+            marginRight: tinyWindow ? 16 : 40,
             // Same size as the switch labels, so both rows share a centre line.
             fontSize: 14,
             lineHeight: 1,
@@ -358,8 +360,7 @@ export default function NavBar() {
           data-cy="hamburger"
           style={{
             cursor: 'pointer',
-            display: 'block',
-            marginLeft: '16px',
+            display: 'block',            
           }}
         />
         <NavCollapse>
@@ -367,7 +368,7 @@ export default function NavBar() {
           <NavGroup sx={{ mr: 'auto' }}>
             <div
               className="navbar-container"
-              style={{ display: 'flex', alignItems: 'center', gap: '20px' }}
+              style={{ display: 'flex', alignItems: 'center' }}
             >
               <Link
                 to="/home"
@@ -379,8 +380,7 @@ export default function NavBar() {
                   className="navbar-revita-logo tour-home-welcome"
                   sx={{
                     display: 'inline-flex',
-                    alignItems: 'center',
-                    fontSize: '42px',
+                    alignItems: 'center',                    
                     fontWeight: 400,
                     lineHeight: 1,
                     color: colors.ink,
@@ -437,24 +437,20 @@ export default function NavBar() {
                       <img
                         src={getLearningLanguageFlag()}
                         alt=""
-                        style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: '50%',
-                          objectFit: 'cover',
-                          border: 'none',
-                        }}
+                        className="navbar-flag"
                       />
-                      {/* Language names are message ids of their own ("Finnish" -> "Suomi"), the
-                          way the language picker renders them. */}
-                      <FormattedMessage id={localizedLanguageId(user?.user?.last_used_language)} />
+                      <span className="navbar-language-name">
+                        <FormattedMessage id={localizedLanguageId(user?.user?.last_used_language)} />
+                      </span>
                     </span>
                   </CustomTooltip>
-                  <MoreVertIcon
-                    data-cy="language-options"
-                    onClick={() => setLangDialogOpen(true)}
-                    style={{ color: colors.ink, cursor: 'pointer', fontSize: 22 }}
-                  />
+                  {!tinyWindow && (
+                    <MoreVertIcon
+                      data-cy="language-options"
+                      onClick={() => setLangDialogOpen(true)}
+                      style={{ color: colors.ink, cursor: 'pointer', fontSize: 22 }}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -486,7 +482,7 @@ export default function NavBar() {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: 6,                        
-                        marginRight: 40,
+                        marginRight: tinyWindow ? 8 : 40,
                         fontSize: 14,
                         lineHeight: 1,
                         color: colors.ink,
@@ -514,32 +510,43 @@ export default function NavBar() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',                  
-                  mr: '40px',
+                  mr: tinyWindow ? '8px' : '40px',
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 14,
-                    color: colors.ink,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {intl.formatMessage({ id: 'teacher' })}
-                </span>
+                {/* ≤400px: no labels, only the switch (it keeps an aria-label). */}
+                {!tinyWindow && (
+                  <span
+                    style={{
+                      fontSize: 14,
+                      color: colors.ink,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'teacher' })}
+                  </span>
+                )}
                 <AppSwitch
                   checked={!teacherView}
                   onChange={handleStudentViewSwitch}
                   offColor={colors.blue}
-                />
-                <span
-                  style={{
-                    fontSize: 14,
-                    color: colors.ink,
-                    whiteSpace: 'nowrap',
+                  size={tinyWindow ? 'sm' : undefined}
+                  inputProps={{
+                    'aria-label': `${intl.formatMessage({ id: 'teacher' })} / ${intl.formatMessage({
+                      id: 'student',
+                    })}`,
                   }}
-                >
-                  {intl.formatMessage({ id: 'student' })}
-                </span>
+                />
+                {!tinyWindow && (
+                  <span
+                    style={{
+                      fontSize: 14,
+                      color: colors.ink,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'student' })}
+                  </span>
+                )}
               </Box>
             )}
             <AppMenu
