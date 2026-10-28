@@ -1,10 +1,10 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import callBuilder from '../apiConnection'
 
 export const getHistory = (language, startDate, endDate) => {
-  const route = `/user/history/${language}?start_time=${moment(startDate).format(
+  const route = `/user/history/${language}?start_time=${dayjs(startDate).format(
     'YYYY-MM-DD'
-  )}&end_time=${moment(endDate).format('YYYY-MM-DD')}`
+  )}&end_time=${dayjs(endDate).format('YYYY-MM-DD')}`
   const prefix = 'GET_EXERCISE_HISTORY'
   return callBuilder(route, prefix, 'get')
 }

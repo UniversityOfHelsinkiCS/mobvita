@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { followStorySender } from 'Utilities/redux/userReducer'
 import { acceptSharedStory } from 'Utilities/redux/storiesReducer'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const AcceptStoryFollowUser = ({ queryParams }) => {
   const dispatch = useDispatch()

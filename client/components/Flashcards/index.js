@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
 
 import useWindowDimensions from 'Utilities/windowDimensions'

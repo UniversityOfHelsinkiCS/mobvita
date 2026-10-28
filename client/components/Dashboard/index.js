@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router'
 import { TextField, Button, Switch, FormControlLabel, Alert, CircularProgress } from '@mui/material'
 import { searchUsers, setUserHighAccess, clearUserSearch } from 'Utilities/redux/adminReducer'
 import { getPartners, savePartner } from 'Utilities/redux/partnerReducer'

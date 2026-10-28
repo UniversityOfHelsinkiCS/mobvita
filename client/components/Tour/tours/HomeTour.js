@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { sidebarSetOpen } from 'Utilities/redux/sidebarReducer'
 import { setHelperSidebarOpen } from 'Utilities/redux/helperSidebarReducer'

@@ -1,19 +1,20 @@
 import React, { useCallback, useContext } from 'react'
 
-import styled, { ThemeContext } from 'styled-components'
+import { styled } from '@mui/material/styles'
 
-import { CrosswordContext } from './context'
+import { CrosswordContext, CrosswordThemeContext } from './context'
 
-const ClueWrapper = styled.div.attrs(props => ({
-  className: `clue${props.$correct ? ' correct' : ''}`,
-}))`
-  cursor: default;
-  background-color: ${props => (props.$highlight ? props.$highlightBackground : 'transparent')};
-`
+// `$` props only drive the style and are kept off the DOM element.
+const ClueWrapper = styled('div', { shouldForwardProp: prop => !prop.startsWith('$') })(
+  ({ $highlight, $highlightBackground }) => ({
+    cursor: 'default',
+    backgroundColor: $highlight ? $highlightBackground : 'transparent',
+  }),
+)
 
 // Single clue row; highlights when selected and marks itself correct when solved.
-export default function Clue({ direction, number, children, correct, ...props }) {
-  const { highlightBackground } = useContext(ThemeContext)
+export default function Clue({ direction, number, children, correct, className, ...props }) {
+  const { highlightBackground } = useContext(CrosswordThemeContext)
   const { focused, selectedDirection, selectedNumber, onClueSelected } =
     useContext(CrosswordContext)
 
@@ -31,8 +32,8 @@ export default function Clue({ direction, number, children, correct, ...props })
     <ClueWrapper
       $highlightBackground={highlightBackground}
       $highlight={focused && direction === selectedDirection && number === selectedNumber}
-      $correct={correct}
       {...props}
+      className={[`clue${correct ? ' correct' : ''}`, className].filter(Boolean).join(' ')}
       onClick={handleClick}
       aria-label={`clue-${number}-${direction}`}
     >

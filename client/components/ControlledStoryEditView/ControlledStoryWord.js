@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import {
   learningLanguageSelector,

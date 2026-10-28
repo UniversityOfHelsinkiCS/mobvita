@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ACTIONS, EVENTS, STATUS } from 'react-joyride'
 import { stopTour } from 'Utilities/redux/tourReducer'
 import { homeTourViewed } from 'Utilities/redux/userReducer'

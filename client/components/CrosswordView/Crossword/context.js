@@ -9,6 +9,9 @@ export const CrosswordContext = React.createContext({
   // correct answers?
 })
 
+// The crossword's colours (Crossword merges its `theme` prop over the defaults and provides them).
+export const CrosswordThemeContext = React.createContext({})
+
 export const CrosswordSizeContext = React.createContext({
   cellSize: 0,
   cellPadding: 0,

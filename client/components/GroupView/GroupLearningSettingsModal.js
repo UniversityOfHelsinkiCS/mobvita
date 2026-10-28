@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'

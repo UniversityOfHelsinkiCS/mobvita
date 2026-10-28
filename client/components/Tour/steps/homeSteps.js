@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Sparkle from 'react-sparkle'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import { tourSign } from '../utils'
 import { homeTargets } from './stepOrders'
@@ -52,7 +51,6 @@ export const stepBlueprints = {
     title: <FormattedMessage id="add-content" />,
     content: (
       <div className="tour-mobile-message">
-        <Sparkle flicker={false} />
         <FormattedHTMLMessage id="tour-add-content-message" />
       </div>
     ),
@@ -63,7 +61,7 @@ export const stepBlueprints = {
       options: {
         arrowColor: 'rgb(50, 170, 248)',
         primaryColor: 'rgb(50, 170, 248)',
-        backgroundColor: 'rgb(50, 170, 248',
+        backgroundColor: 'rgb(50, 170, 248)',
         zIndex: 1000,
         textColor: 'white',
       },

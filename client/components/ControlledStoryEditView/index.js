@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { Box, FormControlLabel } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import CustomTooltip from 'Components/CustomTooltip'

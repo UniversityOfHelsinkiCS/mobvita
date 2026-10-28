@@ -444,6 +444,11 @@ textarea::selection {
 // transparent for the same reason. The colour lives in designTokens.js as `$color-scrollbar`, so
 // every scrolling surface in the app picks it up from one place.
 
+// This file is a module (`@use`d by custom.scss), so it can't see the token variables Vite adds to
+// custom.scss; custom.scss passes them in with `@use './base' with (...)`.
+$color-scrollbar: null !default;
+$color-scrollbar-hover: null !default;
+
 // Firefox has no ::-webkit pseudo-elements; both of these inherit, hence the descendant selector
 // rather than `body` itself, which some engines propagate to the viewport.
 body * {

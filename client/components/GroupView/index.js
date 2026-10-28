@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Box, Card, Chip, TableBody } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'

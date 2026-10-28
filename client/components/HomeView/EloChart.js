@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import AppButton from 'Components/AppButton'
 import useGroupLibraryLink from './useGroupLibraryLink'

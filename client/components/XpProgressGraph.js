@@ -2,7 +2,7 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import 'Utilities/chartTheme'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -13,7 +13,7 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
 
   let xpSum = 0
 
-  const xpData = xpHistory && xpHistory.map(e => [moment(e.date).valueOf(), (xpSum += e.xp)])
+  const xpData = xpHistory && xpHistory.map(e => [dayjs(e.date).valueOf(), (xpSum += e.xp)])
 
   const series = []
   series.push({ name: 'XP', data: xpData })
@@ -35,8 +35,8 @@ const XpProgressGraph = ({ xpHistory, startDate, endDate }) => {
     xAxis: {
       type: 'datetime',
       allowDecimals: false,
-      min: moment(startDate).valueOf(),
-      max: moment(endDate).valueOf(),
+      min: dayjs(startDate).valueOf(),
+      max: dayjs(endDate).valueOf(),
     },
     plotOptions: {
       series: {

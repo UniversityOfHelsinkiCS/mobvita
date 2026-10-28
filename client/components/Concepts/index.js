@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux'
 import UserConcept from './UserConcept'
 import GroupConcept from './GroupConcept'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { updateExerciseSettings } from 'Utilities/redux/storiesReducer'
 import Concept from './Concept'
 import conceptToggle from './recursiveInferring'

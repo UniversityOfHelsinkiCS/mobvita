@@ -1,13 +1,11 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 import * as Sentry from '@sentry/react'
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
 import 'Assets/custom.scss'
 import store from 'Utilities/store'
 import { basePath, inProduction, isStaging } from 'Utilities/common'
@@ -54,6 +52,9 @@ const filterReduxStateForSentry = event => {
   return event
 }
 
+// v10's SDK defaults (sendDefaultPii unset); v11 otherwise collects user info, cookies and bodies.
+const PII_HEADER_DENY = ['forwarded', '-ip', 'remote-', 'via', '-user']
+
 Sentry.init({
   dsn,
   environment: process.env.ENVIRONMENT,
@@ -61,6 +62,15 @@ Sentry.init({
   maxBreadcrumbs: 30,
   normalizeDepth: 4,
   maxValueLength: 500,
+  dataCollection: {
+    userInfo: false,
+    cookies: false,
+    httpHeaders: { request: { deny: PII_HEADER_DENY }, response: { deny: PII_HEADER_DENY } },
+    httpBodies: [],
+    urlQueryParams: { deny: PII_HEADER_DENY },
+  },
+  // v11 defaults to one session per page load; keep v10's per-navigation release-health sessions.
+  integrations: [Sentry.browserSessionIntegration({ lifecycle: 'route' })],
   beforeSend(event, hint) {
     return filterReduxStateForSentry(event)
   },

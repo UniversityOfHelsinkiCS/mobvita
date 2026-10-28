@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 const ConfirmBlueCardsEncouragement = () => {
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)

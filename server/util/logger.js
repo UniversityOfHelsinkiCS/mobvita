@@ -1,5 +1,5 @@
 const winston = require('winston')
-const { inProduction } = require('@util/common')
+const { inProduction } = require('#util/common')
 
 const logger = winston.createLogger({
   level: 'info',

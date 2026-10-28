@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import { updateLibrarySelect } from 'Utilities/redux/userReducer'
 
 // Whether the group library tab is open, and a callback opening it on /library (tabs keep the URL).

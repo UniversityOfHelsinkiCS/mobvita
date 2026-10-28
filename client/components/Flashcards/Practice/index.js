@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router'
 import {
   getFlashcards,
   getBlueFlashcards,

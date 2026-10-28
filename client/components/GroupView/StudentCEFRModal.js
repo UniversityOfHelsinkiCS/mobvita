@@ -7,7 +7,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
 import { updateStudentCEFRLevels } from 'Utilities/redux/groupSummaryReducer'
 import { capitalize, isToday, skillLevels } from 'Utilities/common'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import CEFRDropdown from './CEFRDropdown'
 
 // Edits a student's CEFR history; Summary.js turns a null history into -Number.MAX_VALUE.
@@ -46,7 +46,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
 
   useEffect(() => {
     const includesToday = updatedCEFRHistory.find(estimate =>
-      isToday(moment.unix(estimate.timestamp).toDate())
+      isToday(dayjs.unix(estimate.timestamp).toDate())
     )
 
     if (includesToday) {
@@ -94,7 +94,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
         <TableBody>
           {showForm && (
             <TableRow>
-              <TableCell>{moment().format('YYYY/MM/DD')}</TableCell>
+              <TableCell>{dayjs().format('YYYY/MM/DD')}</TableCell>
               <TableCell sx={{ width: '100px' }} />
               <TableCell>
                 <CEFRDropdown
@@ -108,7 +108,7 @@ const StudentCEFRModal = ({ open, setOpen, cefrHistory, setCefrHistory, groupId,
           )}
           {updatedCEFRHistory.map((estimate, index) => (
             <TableRow key={`${estimate.timestamp}-${estimate.source}`}>
-              <TableCell>{moment.unix(estimate.timestamp).format('YYYY/MM/DD')}</TableCell>
+              <TableCell>{dayjs.unix(estimate.timestamp).format('YYYY/MM/DD')}</TableCell>
               <TableCell sx={{ width: '100px' }}>
                 {estimate.source === 'self_estimation'
                   ? 'Self'

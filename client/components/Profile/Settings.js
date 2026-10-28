@@ -16,7 +16,7 @@ import { localeNameToCode, localeOptions, hiddenFeatures } from 'Utilities/commo
 import AppButton from 'Components/AppButton'
 import AppSwitch from 'Components/ui/AppSwitch'
 import AppSelect from 'Components/ui/AppSelect'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import {
   updateLocale,
   updateBlankFilling,

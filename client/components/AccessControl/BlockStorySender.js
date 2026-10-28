@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { blockStorySender } from 'Utilities/redux/userReducer'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const BlockStorySender = ({ queryParams }) => {
   const dispatch = useDispatch()

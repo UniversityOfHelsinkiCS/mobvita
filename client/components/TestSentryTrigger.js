@@ -13,7 +13,7 @@ const TestSentryTrigger = ({ message = 'Test Sentry error', extra = {}, dsn = nu
   const [explode, setExplode] = useState(false)
   const ensureSentry = (dsnToUse) => {
     try {
-      const client = Sentry.getCurrentHub && Sentry.getCurrentHub().getClient()
+      const client = Sentry.getClient()
       if (!client && dsnToUse) {
         Sentry.init({ dsn: dsnToUse })
       }

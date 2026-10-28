@@ -1,19 +1,26 @@
 /* eslint-disable */
 const fs = require('fs');
 const path = require('path')
-const { google } = require('googleapis');
+const { auth: googleAuth, sheets: googleSheets } = require('@googleapis/sheets');
 const sanitize = require('sanitize-html');
 const { exit } = require('process');
-require('dotenv').config()
 
-const apiClient = new google.auth.GoogleAuth({
+// Loads .env when present; values already in the environment win, as with dotenv.
+try {
+  process.loadEnvFile()
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error
+}
+
+const apiClient = new googleAuth.GoogleAuth({
   keyFile: path.resolve(__dirname, 'creds.json'),
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
 })
 addTranslations(apiClient)
 const languages = ['fi', 'en', 'ru', 'it', 'zh', 'sv', 'uk']
+// Reads the three translation sheets and merges their rows into each language's messages.json.
 async function addTranslations(auth) {
-  const sheets = google.sheets({version: 'v4', auth});
+  const sheets = googleSheets({version: 'v4', auth});
   Promise.all([
     sheets.spreadsheets.values.get({
       spreadsheetId: '1OVtLSEpLA6gmwS1LSRGQ1P6MwmhU1xAxOe6fsetCRZk',

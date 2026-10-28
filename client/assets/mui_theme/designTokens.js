@@ -54,6 +54,11 @@ export const colors = {
   feedbackBug: '#E5BDAA',
   feedbackSuggestion: '#9DA8CA',
 
+  // Date picker calendar (AppDatePicker); grid lines use cardBorder.
+  calendarSelected: '#4E6E59', // derived — selected day fill
+  calendarHover: '#EEF4F0', // derived — day hover
+  calendarOutsideDay: '#C9C6BC', // derived — days of the previous/next month
+
   scrollbar: 'rgba(45, 44, 42, 0.15)',
   scrollbarHover: 'rgba(45, 44, 42, 0.3)', // derived — Figma gives no hover state
 }

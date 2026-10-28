@@ -2,7 +2,7 @@ import React from 'react'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import CustomTooltip from 'Components/CustomTooltip'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { FormattedMessage } from 'react-intl';
 
 const NoAnnotationsView = ({ handleAnnotationBoxCollapse }) => {

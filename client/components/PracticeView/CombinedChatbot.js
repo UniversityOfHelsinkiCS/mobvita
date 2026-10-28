@@ -1,14 +1,14 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import CustomTooltip from 'Components/CustomTooltip'
 import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { isEmpty } from 'lodash'
+import isEmpty from 'Utilities/isEmpty'
 import { Skeleton } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { useIntl, FormattedMessage } from 'react-intl'
 import ReactMarkdown from 'react-markdown'
-import { lemmatizer } from 'lemmatizer'
+import useLemmatizer from 'Utilities/useLemmatizer'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getTranslationAction,
@@ -43,7 +43,7 @@ import { recordFlashcardAnswer } from 'Utilities/redux/flashcardReducer'
 import ChatActionMenu from './ChatActionMenu'
 import NoteFormModal from './NoteFormModal'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import AppLemma from 'Components/ui/AppLemma'
 import AppButton from 'Components/AppButton'
@@ -258,6 +258,9 @@ const CombinedChatbot = ({
 
   const learningLanguage = useLearningLanguage()
   const dictionaryLanguage = useDictionaryLanguage()
+  // Lemmas only matter for English glosses; the dictionary loads once a translation arrives.
+  const hasGlosses = Array.isArray(translationState.data) && translationState.data.length > 0
+  const lemmatizer = useLemmatizer(dictionaryLanguage === 'English' && hasGlosses)
 
   const [validToChat, setValidToChat] = useState(false)
   const [eloScoreHearts, setEloScoreHearts] = useState([])

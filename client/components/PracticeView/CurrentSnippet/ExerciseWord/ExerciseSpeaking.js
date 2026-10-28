@@ -12,12 +12,13 @@ import {
   skillLevels,
   getMode,
 } from 'Utilities/common'
-import { useAudioRecorder } from 'react-audio-voice-recorder'
+import useAudioRecorder from 'Utilities/useAudioRecorder'
 import { setFocusedWord, handleVoiceSampleCooldown } from 'Utilities/redux/practiceReducer'
 import { setCurrentContext } from 'Utilities/redux/chatbotReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'
 import Tooltip from 'Components/PracticeView/Tooltip'
 
+// Speaking exercise: the mic icon records the learner and sends the audio as a data-URL answer.
 const ExerciseSpeaking = ({ word, handleChange }) => {
   const [recorded, setRecorded] = useState(false)
   const [className, setClassName] = useState('exercise')
@@ -41,16 +42,7 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
   const listeningHighlighting =
     (focusedWord.audio_wids?.start <= word.ID && word.ID <= focusedWord.audio_wids?.end) ||
     word.ID === focusedWord.ID
-  const {
-    startRecording,
-    stopRecording,
-    togglePauseResume,
-    recordingBlob,
-    isRecording,
-    isPaused,
-    recordingTime,
-    mediaRecorder,
-  } = useAudioRecorder({
+  const { startRecording, stopRecording, recordingBlob, isRecording } = useAudioRecorder({
     noiseSuppression: true,
     echoCancellation: true,
   })
@@ -95,7 +87,6 @@ const ExerciseSpeaking = ({ word, handleChange }) => {
 
   useEffect(() => {
     if (!recordingBlob) return
-    console.log(recordingTime, mediaRecorder, recordingBlob.size)
     encoder.readAsDataURL(recordingBlob)
     // if (recordingTime > word.audio_wids.length * 1.5 + 1) dispatch(setNotification('Audio is too long', 'error', { autoClose: 10000 }))
     // else if (recordingTime < 0.5) dispatch(setNotification('Audio is too short', 'error', { autoClose: 10000 }))

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useMediaQuery from '@mui/material/useMediaQuery'
 // eslint-disable-next-line max-len
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'

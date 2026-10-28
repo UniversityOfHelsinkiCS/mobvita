@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router'
 import { Box, FormControlLabel } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import AppSwitch from 'Components/ui/AppSwitch'

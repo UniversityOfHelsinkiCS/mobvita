@@ -6,7 +6,7 @@ import AppIcon from 'Components/ui/AppIcon'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router'
 
 import './Encouragements.css'
 

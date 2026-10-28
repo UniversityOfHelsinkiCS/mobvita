@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box } from '@mui/material'

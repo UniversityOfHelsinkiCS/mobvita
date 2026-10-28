@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
@@ -32,7 +32,6 @@ import {
 } from 'Utilities/redux/snippetsReducer'
 import ChatbotSuggestions from './ChatbotSuggestions'
 import ChatSpinner from 'Components/ui/ChatSpinner'
-import { set } from 'lodash';
 
 const PracticeChatbot = () => {
   const intl = useIntl()

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Draggable from 'react-draggable'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadCachedStory, getAllStories } from 'Utilities/redux/storiesReducer'
@@ -8,9 +8,11 @@ import { setSavedStoryNotice } from 'Utilities/redux/chatbotReducer'
 import CloseIcon from '@mui/icons-material/Close'
 import { learningLanguageSelector } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 
+// Draggable home-view card listing up to three daily stories to add to the library.
 const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
+  const dragRef = useRef(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { uploaded, uploadedStoryId } = useSelector(({ stories }) => stories)
@@ -46,8 +48,9 @@ const DailyStoriesDraggable = ({ cachedStories, bigScreen, open, setOpen }) => {
 
   if (open) {
     return (
-      <Draggable cancel=".interactable">
+      <Draggable nodeRef={dragRef} cancel=".interactable">
         <div
+          ref={dragRef}
           className={bigScreen ? 'draggable-encouragement' : 'draggable-encouragement-mobile'}
           style={{ zIndex: 104, left: '55%' }}
         >

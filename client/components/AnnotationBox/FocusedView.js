@@ -12,7 +12,7 @@ import {
   setHighlightRange,
   resetAnnotationCandidates,
 } from 'Utilities/redux/annotationsReducer'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { addEditStoryAnnotation, removeStoryAnnotation } from 'Utilities/redux/storiesReducer'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import AnnotationForm from './AnnotationForm'

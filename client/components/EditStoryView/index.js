@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { editStory, setCustomUpload } from 'Utilities/redux/uploadProgressReducer'
 import { setNotification } from 'Utilities/redux/notificationReducer'

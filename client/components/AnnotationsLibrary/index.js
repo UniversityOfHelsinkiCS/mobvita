@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Box } from '@mui/material'
 import { getAllAnnotations } from 'Utilities/redux/annotationsReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { List, WindowScroller } from 'react-virtualized'
+import { List } from 'react-virtualized'
 import { FormattedMessage } from 'react-intl'
 import LibraryTabs from 'Components/LibraryTabs'
 import AnnotationListItem from './AnnotationListItem'
 import AnnotationsLibrarySearch from './AnnotationsLibrarySearch'
 
+// Annotation library page; the list is virtualized against window scroll.
 const AnnotationsLibrary = () => {
   const dispatch = useDispatch()
   const [category, setCategory] = useState('All')
@@ -123,21 +124,13 @@ const AnnotationsLibrary = () => {
         sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}
         style={{ marginTop: '.5em' }}
       >
-        <WindowScroller>
-          {({ height, isScrolling, onChildScroll, scrollTop }) => (
-            <List
-              autoHeight
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={annotationsList.length}
-              rowHeight={130}
-              rowRenderer={rowRenderer}
-              scrollTop={scrollTop}
-              width={10000}
-            />
-          )}
-        </WindowScroller>
+        <List
+          scrollElement="window"
+          rowCount={annotationsList.length}
+          rowHeight={130}
+          rowRenderer={rowRenderer}
+          width={10000}
+        />
       </Box>
     </div>
   )

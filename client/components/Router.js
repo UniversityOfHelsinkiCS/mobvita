@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { colors } from 'Assets/mui_theme/designTokens'
 import ProtectedRoute from 'Components/AccessControl/ProtectedRoute'

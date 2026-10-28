@@ -11,7 +11,7 @@ import AppSelect from 'Components/ui/AppSelect'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { capitalize, images, useLearningLanguage, ACCESS, useHasAccess } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import {
   updateLibrarySelect,
   updateGroupSelect,

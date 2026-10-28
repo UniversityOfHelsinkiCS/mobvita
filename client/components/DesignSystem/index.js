@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router'
 import MicNoneIcon from '@mui/icons-material/MicNone'
 import AppButton from 'Components/AppButton'
 import AppProgressBar from 'Components/ui/AppProgressBar'
 import AppTextField from 'Components/ui/AppTextField'
 import AppSearchField from 'Components/ui/AppSearchField'
+import AppDatePicker from 'Components/ui/AppDatePicker'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import AppRadio from 'Components/ui/AppRadio'
 import AppTable from 'Components/ui/AppTable'
@@ -25,6 +27,7 @@ import ChatInput, { PredefinedRequestButton } from 'Components/ui/ChatInput'
 import AppToast from 'Components/ui/AppToast'
 import AppSelect from 'Components/ui/AppSelect'
 import AppSwitch from 'Components/ui/AppSwitch'
+import AppSlider from 'Components/ui/AppSlider'
 import AppThemeSwitch from 'Components/ui/AppThemeSwitch'
 import AppTabs from 'Components/ui/AppTabs'
 import AppPagination from 'Components/ui/AppPagination'
@@ -132,9 +135,11 @@ const DesignSystem = () => {
   const [chatMessage, setChatMessage] = useState('')
   const [selectValue, setSelectValue] = useState('')
   const [searchDemo, setSearchDemo] = useState('Kalevala')
+  const [dateDemo, setDateDemo] = useState(new Date())
   const [titleDemo, setTitleDemo] = useState('My summer in Helsinki')
   const [tab, setTab] = useState('public')
   const [switchOn, setSwitchOn] = useState(true)
+  const [sliderValue, setSliderValue] = useState(40)
   const [darkMode, setDarkMode] = useState(false)
   const [radioValue, setRadioValue] = useState('a')
   const [pageDemo, setPageDemo] = useState(3)
@@ -672,6 +677,20 @@ const DesignSystem = () => {
           </div>
         </Section>
 
+        <Section title="AppDatePicker">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+            <AppDatePicker value={dateDemo} onChange={setDateDemo} />
+            {/* Inside the analytics date pill, which restyles the field via custom.scss. */}
+            <div className="date-pickers-container" style={{ margin: 0 }}>
+              <span className="group-analytics-date-pill">
+                <CalendarTodayOutlinedIcon className="group-analytics-date-icon" />
+                <AppDatePicker value={dateDemo} onChange={setDateDemo} popperOffset={6} />
+              </span>
+            </div>
+            <AppDatePicker value={dateDemo} onChange={() => {}} disabled />
+          </div>
+        </Section>
+
         <Section title="AppActionCard">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 420 }}>
             <AppActionCard icon={<img src={images.wavesColored} alt="" />}>Dive in</AppActionCard>
@@ -721,6 +740,21 @@ const DesignSystem = () => {
                 <AppSwitch size={size} checked readOnly />
               </span>
             ))}
+          </div>
+        </Section>
+
+        <Section title="AppSlider">
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>Interactive ({sliderValue})</div>
+            <AppSlider value={sliderValue} onChange={(_, v) => setSliderValue(v)} />
+          </div>
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>Disabled</div>
+            <AppSlider value={60} disabled />
+          </div>
+          <div style={{ width: 320 }}>
+            <div style={{ color: '#666' }}>muted (locked setting)</div>
+            <AppSlider value={60} disabled muted />
           </div>
         </Section>
 

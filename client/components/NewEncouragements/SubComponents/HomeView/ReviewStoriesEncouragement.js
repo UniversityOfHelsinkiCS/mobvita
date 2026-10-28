@@ -1,6 +1,6 @@
 import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 

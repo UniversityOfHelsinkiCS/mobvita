@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import VocabDiffSlider from 'Components/Sliders/VocabDiffSlider'
 import AppButton from 'Components/AppButton'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import {
   getLessonInstance,
@@ -23,7 +23,6 @@ import { getGroups } from 'Utilities/redux/groupsReducer'
 import {
   updateGroupSelect,
   updateLibrarySelect } from 'Utilities/redux/userReducer'
-import styled from 'styled-components'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import ThemeView from '../ThemeView'
 import SelectGrammarLevel from '../SelectGrammarLevel'

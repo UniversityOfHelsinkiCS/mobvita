@@ -5,7 +5,7 @@ import { getPersonalSummary, getPersonalOverallSummary } from 'Utilities/redux/g
 import { learningLanguageSelector, images, capitalize } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 
 const ProgressStats = ({ startDate, endDate }) => {
   const learningLanguage = useSelector(learningLanguageSelector)

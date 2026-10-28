@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import History from 'Components/History'
 import Spinner from 'Components/Spinner'
 import ChartHeading from 'Components/ChartHeading'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { colors } from 'Assets/mui_theme/designTokens'
 
 const StudentHistory = ({ student, startDate, endDate, group, view }) => {
@@ -14,7 +14,7 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
 
   const filterTestHistoryByDate = () =>
     history?.filter(test => {
-      const testTime = moment(test.date)
+      const testTime = dayjs(test.date)
       return testTime.isAfter(startDate) && testTime.isBefore(endDate)
     })
 
@@ -22,19 +22,6 @@ const StudentHistory = ({ student, startDate, endDate, group, view }) => {
     object?.sort((a, b) => {
       return new Date(a.date) - new Date(b.date)
     })
-
-  /*
-  const windowWidth = useWindowDimensions().width
-  useEffect(() => {
-    if (windowWidth > 1040) setPageSize(6)
-    else if (windowWidth > 950) setPageSize(6)
-    else if (windowWidth > 800) setPageSize(5)
-    else if (windowWidth > 675) setPageSize(4)
-    else if (windowWidth > 550) setPageSize(2)
-    else if (windowWidth > 425) setPageSize(2)
-    else setPageSize(1)
-  }, [windowWidth])
-  */
 
   const dispatch = useDispatch()
 

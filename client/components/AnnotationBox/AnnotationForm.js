@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { Box, FormControlLabel } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppCheckbox from 'Components/ui/AppCheckbox'

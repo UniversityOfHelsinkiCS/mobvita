@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import AppDialog from 'Components/ui/AppDialog'
 import { resetTests } from 'Utilities/redux/testReducer'
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { Paper } from '@mui/material'
 import { getStoryAction } from 'Utilities/redux/storiesReducer'
 import { resetAnnotations } from 'Utilities/redux/annotationsReducer'

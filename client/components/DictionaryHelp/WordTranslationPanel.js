@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Skeleton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { lemmatizer } from 'lemmatizer'
+import useLemmatizer from 'Utilities/useLemmatizer'
 import {
   flashcardColors,
   useLearningLanguage,
@@ -36,6 +36,9 @@ const WordTranslationPanel = () => {
   const translationState = useSelector(({ translation }) => translation) || {}
   const { data, surfaceWord, pending, maskSymbol } = translationState
   const entries = Array.isArray(data) ? data : []
+  const lemmatizer = useLemmatizer(
+    glossCheckLanguage.includes(dictionaryLanguage) && entries.length > 0,
+  )
   const wordId = translationState.word_id ?? translationState.wordId
 
   const contextTranslationState = useSelector(({ contextTranslation }) => contextTranslation) || {}

@@ -7,7 +7,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTextField from 'Components/ui/AppTextField'
 import CustomTooltip from 'Components/CustomTooltip'
-import { debounce } from 'lodash'
+import { debounce } from '@mui/material/utils'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions'
 
@@ -48,10 +48,10 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
     debounce(searchValue => applyFilterRef.current(searchValue), 250)
   ).current
 
-  useEffect(() => () => debouncedFilter.cancel(), [debouncedFilter])
+  useEffect(() => () => debouncedFilter.clear(), [debouncedFilter])
 
   const cancelSearch = () => {
-    debouncedFilter.cancel()
+    debouncedFilter.clear()
     setLastQuery(false)
     setSearchString('')
 
@@ -63,7 +63,7 @@ const AnnotationsLibrarySearch = ({ category, setCategory, setAnnotationsList, a
   }
 
   const handleAnnotationsSearch = () => {
-    debouncedFilter.cancel()
+    debouncedFilter.clear()
     if (searchString !== '') {
       applyFilter(searchString)
       setLastQuery(true)

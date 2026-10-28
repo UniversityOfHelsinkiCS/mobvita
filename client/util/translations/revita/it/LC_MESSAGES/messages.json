@@ -2035,5 +2035,9 @@
     "write-here": "Write here",
     "send-feedback": "Send Feedback",
     "show-examples": "Show examples",
-    "preprocessing-story-with-percent": "Preprocessing... {progress} % done"
+    "preprocessing-story-with-percent": "Preprocessing... {progress} % done",
+    "connection-server-down": "Revita server unreachable",
+    "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
+    "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online."
 }

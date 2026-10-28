@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useNavigate, Navigate, useParams, useLocation } from 'react-router-dom'
+import { useNavigate, Navigate, useParams, useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
 
 const ProtectedRoute = ({ component: Component, languageRequired = true }) => {

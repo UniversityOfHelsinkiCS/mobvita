@@ -1,8 +1,8 @@
 const axios = require('axios');
-const FormData = require('form-data')
 
 
 
+// Proxies a Yandex speech request as multipart form data; axios sets the boundary header.
 const getYandexTTS = async (req, res) => {
     try{
         const { text, lang_code, tone, speed } = req.query
@@ -14,9 +14,8 @@ const getYandexTTS = async (req, res) => {
         var config = {
             method: 'post',
             url: 'https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize',
-            headers: { 
+            headers: {
                 'Authorization': process.env.YANDEX_KEY,
-                ...form.getHeaders()
             },
             data : form,
             responseType: 'arraybuffer'

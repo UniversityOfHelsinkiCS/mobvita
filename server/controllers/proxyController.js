@@ -1,5 +1,4 @@
-const { axios } = require('@util/common')
-const FormData = require('form-data')
+const { axios } = require('#util/common')
 
 const TIMEOUT = 180000
 const useMockContextTranslation = process.env.MOCK_CTX_TRANSLATE === 'true'
@@ -23,23 +22,18 @@ const proxyPost = async (req, res) => {
   res.send(response.data)
 }
 
+// Re-sends an uploaded file and its form fields to the backend; axios sets the multipart headers.
 const proxyFilePost = async (req, res) => {
   const url = req.url.slice(5)
 
   const data = new FormData()
-  data.append('file', req.file.buffer, {
-    filename: req.file.originalname,
-    knownLength: req.file.buffer.size,
-  })
+  const file = new Blob([req.file.buffer], { type: req.file.mimetype })
+  data.append('file', file, req.file.originalname)
   Object.entries(req.body).forEach(entry => data.append(entry[0], entry[1]))
 
   const response = await axios.post(url, data, {
-    headers: {
-      authorization: req.headers.authorization,
-      'Content-Length': data.getLengthSync(),
-      'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-      timeout: TIMEOUT,
-    },
+    headers: { authorization: req.headers.authorization },
+    timeout: TIMEOUT,
   })
   res.send(response.data)
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import AppButton from 'Components/AppButton'
 
 export const CustomButton = ({ condition = true, translationId, ...props }) => {

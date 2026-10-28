@@ -1,17 +1,22 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
-import React from 'react';
+import React, { useRef } from 'react';
 import Draggable from 'react-draggable';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
 
 
+// Draggable prompt to confirm moving on to the next reading-test set.
 const ReadingTestNextSetDialog = ({ showNextSetDialog, confirmNextSet }) => {
+    // react-draggable needs a ref to the dragged node (React 19 removed findDOMNode).
+    const dragRef = useRef(null)
     const bigScreen = useWindowDimensions().width >= 700;
 
+    // Draggable card with the next-set message and confirm button.
     const renderNextSetDialog = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 style={{
                     position: 'absolute',
                     left: '0%',

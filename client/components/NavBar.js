@@ -1,18 +1,18 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import React, { useEffect, useRef, useState } from 'react'
-import moment from 'moment'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import dayjs from 'dayjs'
 import { useSelector, useDispatch } from 'react-redux'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import { MenuRow } from 'Components/ui/menuRow'
 import AppIcon from 'Components/ui/AppIcon'
-import Headroom from 'react-headroom'
-import { Box } from '@mui/material'
+import { Box, Slide, useScrollTrigger } from '@mui/material'
 import AppSwitch from 'Components/ui/AppSwitch'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
+import AppTooltip from 'Components/ui/AppTooltip'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import CircleIcon from '@mui/icons-material/Circle'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router'
 import {
   logout,
   getLatestIRTScore,
@@ -44,22 +44,26 @@ import {
   useHasAccess,
 } from 'Utilities/common'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { Detector } from 'react-detect-offline'
+import useConnectionStatus from 'Utilities/useConnectionStatus'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
 import Tour from './Tour'
 import { reloadIfNewDeploy } from 'Utilities/deployUpdates'
 
-const NavbarIcon = ({ imgSrc, altText, extraClass }) => {
-  return (
-    <img
-      className={extraClass ?? ''}
-      src={imgSrc}
-      alt={altText}
-      style={{ width: '21px', height: '21px' }}
-    />
-  )
+// Label, tooltip key and colour of the navbar connection dot for each useConnectionStatus() state.
+const CONNECTION_DOT = {
+  online: { id: 'connection-online', tooltipId: 'connection-online-tooltip', color: '#21A400' },
+  'server-down': {
+    id: 'connection-server-down',
+    tooltipId: 'connection-server-down-tooltip',
+    color: colors.alert,
+  },
+  offline: {
+    id: 'connection-offline',
+    tooltipId: 'connection-offline-tooltip',
+    color: colors.error,
+  },
 }
 
 // Layout wrappers that replace react-bootstrap's <Navbar.Collapse> / <Nav>. All the visual styling
@@ -76,6 +80,32 @@ const NavGroup = styled('div')({
   display: 'flex',
   alignItems: 'center',
 })
+
+// Fixed top bar plus an in-flow spacer of its height.
+// With hideOnScroll it slides away while scrolling down.
+const FixedTopBar = ({ hideOnScroll, children }) => {
+  const barRef = useRef(null)
+  const [height, setHeight] = useState(null)
+  const scrollingDown = useScrollTrigger()
+
+  useLayoutEffect(() => {
+    const bar = barRef.current
+    setHeight(bar.offsetHeight)
+    const observer = new ResizeObserver(() => setHeight(bar.offsetHeight))
+    observer.observe(bar)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <Box sx={{ height }}>
+      <Slide appear={false} direction="down" in={!(hideOnScroll && scrollingDown)}>
+        <Box ref={barRef} sx={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 99 }}>
+          {children}
+        </Box>
+      </Slide>
+    </Box>
+  )
+}
 
 const NewsWebSite = 'https://revitaai.github.io/faq-LEARNER-TOC.html'
 
@@ -126,6 +156,7 @@ export default function NavBar() {
   const smallWindow = windowWidth < 700
   const tinyWindow = windowWidth <= 450   
   const intl = useIntl()
+  const connectionStatus = useConnectionStatus()
   const handleEloClick = () => {
     navigate('/profile/progress')
   }
@@ -254,8 +285,8 @@ export default function NavBar() {
   }, [learningLanguage])
 
   useEffect(() => {
-    const date_now = moment().toDate()
-    const start_query_date = moment('2021-01-01').toDate()
+    const date_now = dayjs().toDate()
+    const start_query_date = dayjs('2021-01-01').toDate()
     dispatch(getPracticeHistory(start_query_date, date_now))
   }, [])
 
@@ -325,8 +356,6 @@ export default function NavBar() {
     )
   }
 
-  const navBarStyle = smallWindow ? {} : { position: 'fixed', top: 0, width: '100%', zIndex: '100' }
-
   const blackToWhiteFilter =
     'invert(92%) sepia(94%) saturate(29%) hue-rotate(251deg) brightness(108%) contrast(100%)'
 
@@ -337,7 +366,7 @@ export default function NavBar() {
   if (!user && !onPublicDemoRoute) return null
 
   return (
-    <Headroom disableInlineStyles={!smallWindow} style={navBarStyle}>
+    <FixedTopBar hideOnScroll={smallWindow}>
       <Box
         component="nav"
         className="navbar"
@@ -390,23 +419,24 @@ export default function NavBar() {
                   {hiddenFeatures && (
                     <sup style={{ fontSize: '0.45em', lineHeight: 1 }}>&beta;</sup>
                   )}
-                  <Detector
-                    polling={{ timeout: 20000 }}
-                    render={({ online }) => (
-                      <CircleIcon
-                        titleAccess={intl.formatMessage({
-                          id: online ? 'connection-online' : 'connection-offline',
-                        })}
-                        style={{
-                          display: 'flex',
-                          alignSelf: 'flex-start',
-                          fontSize: 10,
-                          color: online ? '#21A400' : colors.error,
-                          margin: '2px 6px',
-                        }}
-                      />
-                    )}
-                  />
+                  <AppTooltip
+                    keyId={CONNECTION_DOT[connectionStatus].tooltipId}
+                    placement="bottom"
+                  >
+                    <CircleIcon
+                      role="img"
+                      aria-hidden={false}
+                      aria-label={intl.formatMessage({ id: CONNECTION_DOT[connectionStatus].id })}
+                      data-cy="connection-status-dot"
+                      style={{
+                        display: 'flex',
+                        alignSelf: 'flex-start',
+                        fontSize: 10,
+                        color: CONNECTION_DOT[connectionStatus].color,
+                        margin: '2px 6px',
+                      }}
+                    />
+                  </AppTooltip>
                 </Box>
               </Link>
               {user?.user?.last_used_language && (
@@ -666,6 +696,6 @@ export default function NavBar() {
           {/******************************* END *******************************/}
         </NavCollapse>
       </Box>
-    </Headroom>
+    </FixedTopBar>
   )
 }

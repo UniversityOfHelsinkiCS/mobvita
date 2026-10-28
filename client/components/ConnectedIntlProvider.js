@@ -1,20 +1,38 @@
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { IntlProvider } from 'react-intl'
-import translations from 'Utilities/translations'
+import { getLoadedMessages, loadMessages } from 'Utilities/translations'
 import { localeNameToCode } from '../util/common'
 
-const mapStateToProps = ({ locale, user }) => {
-  let actualLocale = locale.locale
+// IntlProvider fed by the logged-in user's interface language, else the locale reducer.
+const ConnectedIntlProvider = ({ children }) => {
+  const storeLocale = useSelector(({ locale }) => locale.locale)
+  const interfaceLanguage = useSelector(({ user }) => user.data?.user?.interfaceLanguage)
+  const locale = interfaceLanguage ? localeNameToCode(interfaceLanguage) : storeLocale
 
-  if (user.data && user.data.user && user.data.user.interfaceLanguage) {
-    // If user has logged in, use locale from user object, else use value from localeReducer
-    actualLocale = localeNameToCode(user.data.user.interfaceLanguage)
-  }
+  // The language on screen; on a switch the old one stays until the new file has arrived.
+  const [shown, setShown] = useState(() => ({ locale, messages: getLoadedMessages(locale) }))
 
-  const messages =
-    actualLocale === 'en' ? translations.en : { ...translations.en, ...translations[actualLocale] }
+  useEffect(() => {
+    if (shown.locale === locale && shown.messages) return undefined
+    let current = true
+    loadMessages(locale)
+      .catch(() => getLoadedMessages('en'))
+      .then(messages => current && setShown({ locale, messages }))
+    return () => {
+      current = false
+    }
+  }, [locale])
 
-  return { key: actualLocale, locale: actualLocale, messages }
+  // Only the very first load of a non-English language waits here, for one small file.
+  if (!shown.messages) return null
+
+  // `key` remounts the tree on a language switch, as the connect() version did.
+  return (
+    <IntlProvider key={shown.locale} locale={shown.locale} messages={shown.messages}>
+      {children}
+    </IntlProvider>
+  )
 }
 
-export default connect(mapStateToProps)(IntlProvider)
+export default ConnectedIntlProvider

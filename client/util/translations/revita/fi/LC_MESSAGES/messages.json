@@ -2035,5 +2035,9 @@
     "write-here": "Kirjoita tähän",
     "send-feedback": "Lähetä palaute",
     "show-examples": "Näytä esimerkit",
-    "preprocessing-story-with-percent": "Esikäsittellään... {progress} % valmis"
+    "preprocessing-story-with-percent": "Esikäsittellään... {progress} % valmis",
+    "connection-server-down": "Revita-palvelinta ei tavoiteta",
+    "connection-online-tooltip": "Olet verkkoyhteydessä, ja Revita-palvelin toimii normaalisti.",
+    "connection-server-down-tooltip": "Internet-yhteytesi toimii, mutta Revita-palvelin ei vastaa juuri nyt. Piste muuttuu vihreäksi, kun palvelin on taas käytettävissä.",
+    "connection-offline-tooltip": "Laitteesi ei ole verkossa. Tarkista internet-yhteytesi; piste muuttuu taas vihreäksi, kun olet takaisin verkossa."
 }

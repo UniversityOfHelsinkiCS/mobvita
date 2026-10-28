@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import CircularProgress from '@mui/material/CircularProgress'
 import { capitalize, dictionaryLanguageSelector, translatableLanguages } from 'Utilities/common'

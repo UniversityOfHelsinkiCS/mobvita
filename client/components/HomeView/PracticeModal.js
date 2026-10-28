@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Box } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useSelector, shallowEqual } from 'react-redux'
 import { capitalize, images } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl'

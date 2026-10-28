@@ -1,9 +1,9 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
 import callBuilder from '../apiConnection'
 
 export const getSummary = (groupId, startDate, endDate) => {
-  const start = moment(startDate).format('YYYY-MM-DD')
-  const end = moment(endDate).format('YYYY-MM-DD')
+  const start = dayjs(startDate).format('YYYY-MM-DD')
+  const end = dayjs(endDate).format('YYYY-MM-DD')
 
   const route = `/groups/${groupId}/summary?start_time=${start}&end_time=${end}`
   const prefix = 'GET_SUMMARY'
@@ -17,8 +17,8 @@ export const getInitSummary = groupId => {
 }
 
 export const getPersonalSummary = (language, startDate, endDate) => {
-  const start = moment(startDate).format('YYYY-MM-DD')
-  const end = moment(endDate).format('YYYY-MM-DD')
+  const start = dayjs(startDate).format('YYYY-MM-DD')
+  const end = dayjs(endDate).format('YYYY-MM-DD')
 
   const route = `/user/summary?start_time=${start}&end_time=${end}&language=${language}`
   const prefix = 'GET_PERSONAL_SUMMARY'
@@ -32,8 +32,8 @@ export const getPersonalOverallSummary = (language) => {
 }
 
 export const getWeekSummary = groupId => {
-  const end = moment().toDate()
-  const start = moment().subtract(7, 'days').toDate()
+  const end = dayjs().toDate()
+  const start = dayjs().subtract(7, 'days').toDate()
   return getSummary(groupId, start, end)
 }
 

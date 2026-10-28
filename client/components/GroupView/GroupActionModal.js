@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'

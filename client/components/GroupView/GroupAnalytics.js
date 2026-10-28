@@ -7,10 +7,10 @@ import AppIcon from 'Components/ui/AppIcon'
 import AppSelect from 'Components/ui/AppSelect'
 import AppTabs from 'Components/ui/AppTabs'
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
-import { CSVLink } from 'react-csv'
+import { downloadCsv } from 'Utilities/csv'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { getSummary, getInitSummary } from 'Utilities/redux/groupSummaryReducer'
 import {
   learningLanguageSelector,
@@ -25,8 +25,8 @@ import {
 } from 'Utilities/redux/groupVocabularyReducer'
 import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
-import ResponsiveDatePicker from 'Components/ResponsiveDatePicker'
-import moment from 'moment'
+import AppDatePicker from 'Components/ui/AppDatePicker'
+import dayjs from 'dayjs'
 import Summary from './Summary'
 import StudentProgress from './StudentProgress'
 import StudentCEFRModal from './StudentCEFRModal'
@@ -39,11 +39,14 @@ import GroupKey from './GroupKey'
 import EnableTestMenu from './EnableTestMenu'
 import ChartHeading from 'Components/ChartHeading'
 
+// One date of the range; onCalendarClose refetches once the picked date has rendered.
+// The offset drops the calendar below the pill's border rather than the field inside it.
 const PickDate = ({ date, setDate, onCalendarClose }) => (
-  <ResponsiveDatePicker
-    selected={date}
+  <AppDatePicker
+    value={date}
     onChange={date => setDate(date)}
-    onCalendarClose={onCalendarClose}
+    onClose={onCalendarClose}
+    popperOffset={6}
   />
 )
 
@@ -56,14 +59,14 @@ const GroupAnalytics = ({ role }) => {
   const [groupSummaryShown, setGroupSummaryShown] = useState(true)
   const [currentStudent, setCurrentStudent] = useState(null)
   const [startDate, setStartDate] = useState(
-    moment().startOf('month').subtract(6, 'month').toDate(),
+    dayjs().startOf('month').subtract(6, 'month').toDate(),
   )
   const [cefrHistory, setCefrHistory] = useState([])
   const [graphType, setGraphType] = useState('column mastered')
   const [shownChart, setShownChart] = useState('timeline')
   const [openEditModal, setOpenEditModal] = useState(false)
   const [firstFetch, setFirstFetch] = useState(true)
-  const [endDate, setEndDate] = useState(moment().add(1, 'days').toDate())
+  const [endDate, setEndDate] = useState(dayjs().add(1, 'days').toDate())
   const dispatch = useDispatch()
   // Hex-map / beehive chart is high-access only (hidden for access <= 1).
   const canSeeHexmap = useHasAccess(ACCESS.HIGH)
@@ -104,7 +107,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handlePreviousVocabulary = () => {
-    if (moment(startDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
+    if (dayjs(startDate ?? null).isValid() && currentStudent) {
       dispatch(
         getPreviousStudentVocabulary(
           currentStudent._id,
@@ -116,7 +119,7 @@ const GroupAnalytics = ({ role }) => {
   }
 
   const handleVocabulary = () => {
-    if (moment(endDate, 'MM/DD/YYYY', true).isValid() && currentStudent) {
+    if (dayjs(endDate ?? null).isValid() && currentStudent) {
       dispatch(
         getStudentVocabulary(
           currentStudent._id,
@@ -138,8 +141,8 @@ const GroupAnalytics = ({ role }) => {
       firstFetch &&
       currentGroup &&
       currentStudent &&
-      moment(endDate, 'MM/DD/YYYY', true).isValid() &&
-      moment(startDate, 'MM/DD/YYYY', true).isValid()
+      dayjs(endDate ?? null).isValid() &&
+      dayjs(startDate ?? null).isValid()
     ) {
       dispatch(
         getPreviousStudentVocabulary(
@@ -162,11 +165,11 @@ const GroupAnalytics = ({ role }) => {
 
   useEffect(() => {
     if (start_date) {
-      setStartDate(moment.unix(start_date).toDate())
+      setStartDate(dayjs.unix(start_date).toDate())
     }
 
     if (end_date) {
-      setEndDate(moment.unix(end_date).add(1, 'days').toDate())
+      setEndDate(dayjs.unix(end_date).add(1, 'days').toDate())
     }
   }, [start_date, end_date])
 
@@ -391,12 +394,17 @@ const GroupAnalytics = ({ role }) => {
             </label>
           </div>
           {showSummaryTable && summary?.length > 0 && (
-            <CSVLink className="group-analytics-csv" filename={csvFilename} data={summary}>
+            <span className="group-analytics-csv">
               {/* Sized to the date pills beside it rather than the default 36px small button. */}
-              <AppButton size="sm" sx={{ height: 24, padding: '0 12px', fontSize: 12 }}>
+              <AppButton
+                size="sm"
+                sx={{ height: 24, padding: '0 12px', fontSize: 12 }}
+                onClick={() => downloadCsv(summary, csvFilename)}
+                data-cy="group-summary-csv"
+              >
                 <FormattedMessage id="download-csv" />
               </AppButton>
-            </CSVLink>
+            </span>
           )}
         </div>
 

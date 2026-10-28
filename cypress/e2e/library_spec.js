@@ -7,32 +7,16 @@
  * exercises with deterministic NLP, not AI, so nothing here triggers generation and each suite owns
  * a story guaranteed to exist. Same approach reading_comprehension_spec.js uses.
  */
+import { fetchCreatedStory } from '../support/stories'
+
 const BASE = 'http://localhost:8000'
-const API_BASE = 'localhost:8000/api'
 const LANGUAGE = 'Finnish'
 const STORY_BODY =
   'Koira juoksee nopeasti suuressa puistossa. Kissa nukkuu pehmeällä sohvalla koko päivän. ' +
   'Lapset leikkivät pihalla ja nauravat iloisesti. Äiti valmistaa keittiössä herkullista ruokaa. ' +
   'Isä lukee sanomalehteä olohuoneessa ja juo kahvia.'
 
-const authRequest = (token, method, path) =>
-  cy.request({
-    method,
-    url: `${API_BASE}${path}`,
-    headers: { Authorization: `Bearer ${token}` },
-    timeout: 120000,
-    failOnStatusCode: false,
-  })
-
-// Upload returns before the exercises exist; practising too early yields an empty snippet.
-const waitStoryReady = (token, storyId, attempts = 30) =>
-  authRequest(token, 'GET', `/stories/${storyId}/loading`).then(res => {
-    const ready = res.body?.exercise_ready === true || Number(res.body?.progress) >= 1
-    if (ready) return null
-    if (attempts <= 0) throw new Error(`Story ${storyId} never finished processing`)
-    return cy.wait(1000).then(() => waitStoryReady(token, storyId, attempts - 1))
-  })
-
+// Pastes a story; collapses the assistant sidebar first so it can't cover the add-story button.
 const createStoryViaPaste = (title, body) => {
   // The assistant sidebar overlaps the add-story button on narrow viewports.
   cy.get('.helper-sidebar').then($sidebar => {
@@ -48,13 +32,6 @@ const createStoryViaPaste = (title, body) => {
   cy.get('[data-cy=paste-story-confirm]').should('not.be.disabled').click()
   cy.get('[data-cy=paste-story-title-input]', { timeout: 120000 }).should('not.exist')
 }
-
-const fetchCreatedStory = (token, title) =>
-  authRequest(token, 'GET', `/stories?language=${LANGUAGE}&sort_by=date&order=-1`).then(res => {
-    const match = (res.body?.stories || []).find(s => s.title === title)
-    expect(match, `created story titled "${title}"`).to.exist
-    return waitStoryReady(token, match._id).then(() => ({ id: match._id, title }))
-  })
 
 describe('library progress', function () {
   let owner

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { FormattedMessage } from 'react-intl'
 import AppCheckbox from 'Components/ui/AppCheckbox'
 import { updateExerciseSettings as updateUserSettings } from 'Utilities/redux/userReducer'

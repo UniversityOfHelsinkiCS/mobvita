@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import useWindowDimensions from 'Utilities/windowDimensions';
 import AppButton from 'Components/AppButton';
-
-import ReactSlider from 'react-slider'
+import AppSlider from 'Components/ui/AppSlider'
+import useSliderDraft from 'Components/Sliders/useSliderDraft'
 
 
 const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
@@ -33,11 +33,9 @@ const OpenEndedQuestion = ({ idx, question, answer, onAnswerChange }) => {
     );
 };
 
+// 0–10 usefulness rating; null until answered (the thumb then rests at 0).
 const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, setDoNotKnow }) => {
-    const handleSliderChange = (value) => {
-        setSliderValue(value);
-    };
-    const marks = Array.from({ length: 11 }, (_, i) => i)
+    const draft = useSliderDraft(sliderValue ?? 0, setSliderValue)
   
     return (
         <div className="slider-and-controls-container" style={{
@@ -55,24 +53,8 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
                 <span style={{ textAlign: 'left' }}><FormattedMessage id='not-useful-at-all' /></span>
                 <span style={{ textAlign: 'right' }}><FormattedMessage id='very-useful' /></span>
             </div>
-            <div className="useful-slider-container" data-cy="reading-test-self-reflect-usefulness-slider" style={{
-                marginBottom: '3em'
-            }}>
-                <ReactSlider
-                    className="useful-slider"
-                    thumbClassName="exercise-density-slider-thumb"
-                    trackClassName="exercise-density-slider-track"
-                    onAfterChange={value => handleSliderChange(value)}
-                    onSliderClick={value => handleSliderChange(value)}
-                    snapDragDisabled={false}
-                    markClassName="exercise-density-slider-mark"
-                    marks={marks}
-                    min={0}
-                    max={10}
-                    step={1}
-                    value={sliderValue}
-                    disabled={doNotKnow}
-                />
+            <div className="useful-slider-container interactable" data-cy="reading-test-self-reflect-usefulness-slider">
+                <AppSlider {...draft} min={0} max={10} step={1} disabled={doNotKnow} />
             </div>
             <div style={{ marginTop: '20px' }}>
                 <input
@@ -93,7 +75,10 @@ const UsefulSlider = ({ sliderQuestion, sliderValue, setSliderValue, doNotKnow, 
 };
   
 
+// Draggable self-reflection carousel (usefulness slider and open questions) after reading-test feedback.
 const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, currentReadingSet, readingSetLength, currentQuestionIdxinSet, questionDone, in_control_grp, in_experimental_grp, receieved_feedback, showSelfReflect, submitSelfReflection }) => {
+    // react-draggable needs a ref to the dragged node (React 19 removed findDOMNode).
+    const dragRef = useRef(null)
     const [current, setCurrent] = useState(0);
     const [isEndSetQuestionair, setIsEndSetQuestionair] = useState(false);
     const [endSetSliderDoNotKnow, setEndSetSliderDoNotKnow] = useState(false)
@@ -221,9 +206,11 @@ const ReadingTestSelfReflect = ({ currentReadingTestQuestion, prevReadingSet, cu
         }
     }
 
+    // Draggable card with the reflection slides, arrows and dot pagination.
     const renderReflection = () => (
-        <Draggable cancel=".interactable">
+        <Draggable nodeRef={dragRef} cancel=".interactable">
             <div
+                ref={dragRef}
                 style={{
                     position: 'absolute',
                     left: '0%',

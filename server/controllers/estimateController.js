@@ -1,9 +1,9 @@
-const sqlite3 = require('sqlite3').verbose()
-const { axios } = require('@util/common')
-const { open } = require('sqlite')
+const { DatabaseSync } = require('node:sqlite')
+const { axios } = require('#util/common')
 
 const wordCountLimit = 5000
 
+// Estimates a text's difficulty, limiting each IP to `wordCountLimit` words a day (kept in SQLite).
 const estimate = async (req, res) => {
   const { ip } = req
   const { text } = req.body
@@ -15,12 +15,11 @@ const estimate = async (req, res) => {
 
   const wordCount = text.trim().split(/\s+/).length
 
+  let db
   try {
-    const db = await open({ filename: 'estimate.db', driver: sqlite3.Database })
-    await db.exec(
-      'CREATE TABLE IF NOT EXISTS users (ip TEXT, word_count INTEGER, last_reset INTEGER)'
-    )
-    const user = await db.get('SELECT * FROM users WHERE ip = ?', ip)
+    db = new DatabaseSync('estimate.db')
+    db.exec('CREATE TABLE IF NOT EXISTS users (ip TEXT, word_count INTEGER, last_reset INTEGER)')
+    const user = db.prepare('SELECT * FROM users WHERE ip = ?').get(ip)
 
     if (!user) {
       if (wordCount > wordCountLimit) {
@@ -30,11 +29,11 @@ const estimate = async (req, res) => {
         return
       }
 
-      await db.run('INSERT INTO users(ip, word_count, last_reset) VALUES(?, ?, ?)', [
+      db.prepare('INSERT INTO users(ip, word_count, last_reset) VALUES(?, ?, ?)').run(
         ip,
         wordCount,
         Date.now(),
-      ])
+      )
     } else {
       let totalWordCount = wordCount + user.word_count
       let lastReset = user.last_reset
@@ -51,16 +50,17 @@ const estimate = async (req, res) => {
         return
       }
 
-      await db.run('UPDATE users SET word_count = ?, last_reset = ? WHERE ip = ?', [
+      db.prepare('UPDATE users SET word_count = ?, last_reset = ? WHERE ip = ?').run(
         totalWordCount,
         lastReset,
         ip,
-      ])
+      )
     }
-
-    await db.close()
   } catch (error) {
     console.error(error.message)
+  } finally {
+    // Also closes after the early limit responses, which previously left the database open.
+    db?.close()
   }
 
   const estimatorHost =

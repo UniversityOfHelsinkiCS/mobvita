@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createRealToken } from 'Utilities/redux/userReducer'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router'
 import { localeCodeToName } from 'Utilities/common'
 import LoginForm from './LoginForm'
 import ForgotPassword from './ForgotPassword'

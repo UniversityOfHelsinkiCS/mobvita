@@ -5,7 +5,7 @@ import { setPrevious, initializePrevious } from 'Utilities/redux/snippetsReducer
 import { setAnnotations } from 'Utilities/redux/annotationsReducer'
 import TextWithFeedback from 'Components/CommonStoryTextComponents/TextWithFeedback'
 import Spinner from 'Components/Spinner'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router'
 import { Divider } from '@mui/material'
 
 const PreviousSnippets = props => {

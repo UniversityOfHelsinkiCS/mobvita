@@ -1,7 +1,7 @@
 import FormattedHTMLMessage from 'Components/FormattedHTMLMessage';
 import React, { useState, useEffect } from 'react'
 import { FormattedMessage } from 'react-intl';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router'
 import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { useSelector, useDispatch } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'

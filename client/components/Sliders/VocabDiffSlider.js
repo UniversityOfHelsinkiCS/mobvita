@@ -1,34 +1,37 @@
 import React from 'react'
-import ReactSlider from 'react-slider'
 import { useIntl } from 'react-intl'
-import styled from 'styled-components'
-import './SliderStyles.scss'
+import AppSlider from 'Components/ui/AppSlider'
+import useSliderDraft from './useSliderDraft'
 
-const StyledMark = localizedMarkString => props => {
-  const StyledMarkSpan = styled.span`
-    background: transparent;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 15px solid #000;
-    padding: 0;
-    &:hover::before {
-      content: '${localizedMarkString}';
-      position: absolute;
-      background-color: #333;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0.9;
-      z-index: 1;
-    }
-  `
-  return <StyledMarkSpan {...props} />
-}
-
-const roundToNearestInt = number => Math.round(number)
+// Black down-pointing triangle above the track at the recommended value; hover shows `hint`.
+const recommendedMarkSx = hint => ({
+  '& .MuiSlider-mark, & .MuiSlider-markActive': {
+    top: 0,
+    width: 0,
+    height: 0,
+    transform: 'translateX(-50%)',
+    backgroundColor: 'transparent',
+    borderRadius: 0,
+    opacity: 1,
+    borderLeft: '10px solid transparent',
+    borderRight: '10px solid transparent',
+    borderTop: '15px solid #000',
+    pointerEvents: 'auto', // keep the hint on hover while the slider is disabled
+    '&:hover::before': {
+      content: JSON.stringify(hint),
+      position: 'absolute',
+      backgroundColor: '#333',
+      color: '#fff',
+      padding: '5px 10px',
+      borderRadius: '4px',
+      bottom: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      opacity: 0.9,
+      zIndex: 1,
+    },
+  },
+})
 
 /**
  * Shared vocabulary difficulty slider (0–100 scale).
@@ -60,27 +63,23 @@ const VocabDiffSlider = ({
   max = 100,
 }) => {
   const intl = useIntl()
-  // Plain design-system thumb (cream fill, green ring) — no value-based colouring (2026 design).
-  const thumbClassName = 'exercise-density-slider-thumb'
-  const markComp = StyledMark(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))
+  const draft = useSliderDraft(value, onChange)
+  const recommended = Math.round(recommendedValue)
+  const marks = Number.isFinite(recommended) ? [{ value: recommended }] : false
 
   return (
     <div className={className} style={style}>
-      <ReactSlider
-        className="exercise-density-slider"
-        thumbClassName={thumbClassName}
-        trackClassName="exercise-density-slider-track"
-        renderMark={markComp}
-        marks={[roundToNearestInt(recommendedValue)]}
-        snapDragDisabled={false}
-        onAfterChange={onChange}
-        onSliderClick={onChange}
-        min={min}
-        max={max}
-        step={1}
-        value={value}
-        disabled={disabled}
-      />
+      <div className="exercise-density-slider">
+        <AppSlider
+          {...draft}
+          marks={marks}
+          min={min}
+          max={max}
+          step={1}
+          disabled={disabled}
+          sx={recommendedMarkSx(intl.formatMessage({ id: 'Recommended vocabulary difficulty' }))}
+        />
+      </div>
       <div className="space-between exercise-density-slider-label-cont bold">
         {skillLevels.map(level => (
           <span key={level}>{level}</span>

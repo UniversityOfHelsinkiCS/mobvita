@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const EndModal = ({ open, setOpen, restart }) => {
   const intl = useIntl()

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Divider } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
 import { FormattedMessage } from 'react-intl'
