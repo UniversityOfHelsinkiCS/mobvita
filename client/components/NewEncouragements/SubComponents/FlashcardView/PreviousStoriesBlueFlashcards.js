@@ -7,6 +7,7 @@ import AppButton from 'Components/AppButton'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
 import { backgroundColors, images, showAllEncouragements } from "Utilities/common"
 
+// Offers a blue-flashcard review of a previous story's words.
 const PreviousStoriesBlueFlashcards = () => {
   const flashcards = useSelector(({ flashcards }) => flashcards)
   const { storyId } = useParams()
@@ -41,9 +42,9 @@ const PreviousStoriesBlueFlashcards = () => {
               backgroundColor: backgroundColors[2] }}
           >
             <img
-              src={images.flashcards}
+              src={images.flashcardsColored}
               alt="flashcard batch"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedHTMLMessage

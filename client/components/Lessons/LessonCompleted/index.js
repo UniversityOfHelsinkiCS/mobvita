@@ -7,6 +7,7 @@ import { images } from 'Utilities/common'
 
 import './LessonCompletedStyles.css'
 
+// Lesson-finished screen: trophy, then back to the lesson library or continue.
 const LessonCompleted = ({ startOvertLessonSnippets, setShowLessonCompleted }) => {
   const navigate = useNavigate()
 
@@ -17,7 +18,7 @@ const LessonCompleted = ({ startOvertLessonSnippets, setShowLessonCompleted }) =
 
   return (
     <div className="lesson-completed-container">
-      <img src={images.encTrophy} alt="encouraging trophy" />
+      <img src={images.trophy} alt="encouraging trophy" />
       <h2>Lesson completed!</h2>
       <h5>Do you want to continue practicing with another set of 10 snippets?</h5>
       <div className="lesson-completed-button-group">

@@ -4,6 +4,7 @@ import { images, backgroundColors } from 'Utilities/common'
 import { useLocation } from 'react-router'
 import { FormattedMessage } from 'react-intl';
 
+// Random words of praise with a trophy.
 const GoodJobEncouragement = () => {
   const location = useLocation()
 
@@ -28,7 +29,7 @@ const GoodJobEncouragement = () => {
         style={{ alignItems: 'center', backgroundColor: backgroundColors[4] }}
         >
         <img
-            src={images.encTrophy}
+            src={images.trophy}
             alt="encouraging trophy"
             style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
         />

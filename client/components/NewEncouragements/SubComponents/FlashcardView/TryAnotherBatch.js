@@ -5,6 +5,7 @@ import { images, backgroundColors } from 'Utilities/common'
 import AppButton from 'Components/AppButton'
 
 
+// Flashcard-view prompt to deal the next batch of cards.
 const TryAnotherBatch = ({ handleNewDeck }) => {
   return (
     <div className="pt-md">
@@ -16,9 +17,9 @@ const TryAnotherBatch = ({ handleNewDeck }) => {
         }}
       >
         <img
-          src={images.flashcards}
+          src={images.flashcardsColored}
           alt="bar chart"
-          style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+          style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
         />
         <div>
           <FormattedHTMLMessage id="well-done-click-next-card-to-play-another-set-of-cards-2" />

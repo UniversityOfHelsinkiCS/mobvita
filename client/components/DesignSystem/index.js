@@ -329,7 +329,7 @@ const DesignSystem = () => {
               'flashcardsColored',
               'lessonsColored',
               'libraryBigColored',
-              'searchTextfield',
+              'magnifier',
               'star06Colored',
               'users01Colored',
               'sequre',

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { dictionaryLanguageSelector } from 'Utilities/common'
 import { getBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 
+// After a story: links to blue flashcards of this story, or of a past one.
 const StoryCompletedToBluecardsExerciseEncouragement = () => {
   const [prevBlueCards, setPrevBlueCards] = useState(null)
   const userData = useSelector(state => state.user.data.user)
@@ -38,9 +39,9 @@ const StoryCompletedToBluecardsExerciseEncouragement = () => {
             style={{ alignItems: 'center', backgroundColor: backgroundColors[2] }}
           >
             <img
-              src={images.flashcards}
+              src={images.flashcardsColored}
               alt="flashcard batch"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedHTMLMessage
@@ -62,9 +63,9 @@ const StoryCompletedToBluecardsExerciseEncouragement = () => {
               style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
             >
               <img
-                src={images.flashcards}
+                src={images.flashcardsColored}
                 alt="flashcard batch"
-                style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+                style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
               />
               <div>
                 <FormattedHTMLMessage

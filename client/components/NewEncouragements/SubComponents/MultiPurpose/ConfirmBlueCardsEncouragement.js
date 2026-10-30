@@ -12,6 +12,7 @@ import { getStoriesBlueFlashcards } from 'Utilities/redux/flashcardReducer'
 import { closeEncouragement, closeFCEncouragement } from "Utilities/redux/encouragementsReducer"
 import { useNavigate } from "react-router"
 
+// Offers a blue-flashcard test of a past story's words.
 const ConfirmBlueCardsEncouragement = () => {
   const { storyBlueCards } = useSelector(({ flashcards }) => flashcards)
   const userData = useSelector(state => state.user.data.user)
@@ -49,9 +50,9 @@ const ConfirmBlueCardsEncouragement = () => {
             style={{ alignItems: 'center', backgroundColor: backgroundColors[0] }}
           >
             <img
-              src={images.flashcards}
+              src={images.flashcardsColored}
               alt="flashcard batch"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedHTMLMessage

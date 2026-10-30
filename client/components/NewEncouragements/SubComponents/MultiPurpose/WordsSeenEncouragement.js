@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 import { useSelector } from 'react-redux'
 
+// Tells how many words were seen and links to the flashcards review.
 const WordsSeenEncouragement = () => {
   const userData = useSelector(state => state.user.data.user)
   const { enable_recmd } = useSelector(({ user }) => user.data.user)
@@ -20,9 +21,9 @@ const WordsSeenEncouragement = () => {
             style={{ alignItems: 'center', backgroundColor: backgroundColors[2] }}
           >
             <img
-              src={images.flashcards}
+              src={images.flashcardsColored}
               alt="flashcards"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedHTMLMessage

@@ -6,11 +6,8 @@ import AppButton from 'Components/AppButton'
 
 import './Encouragements.css'
 
-/**
- * `layout` picks the surface it is drawn for:
- *   'dialog' (default) - the centred modal: large art, fixed height, side-by-side buttons
- *   'chat'             - inside an assistant bubble: no frame of its own, narrow-column sizing
- */
+// End-of-practice message. `layout`: 'dialog' (default) is the centred modal with large art and
+// side-by-side buttons; 'chat' sits inside an assistant bubble with no frame of its own.
 const PracticeCompletedEncouragement = ({
   continueAction,
   practiceType,
@@ -79,7 +76,7 @@ const PracticeCompletedEncouragement = ({
   return (
     <div className="encouragement-container">
       <div className="encouragement-message-container">
-        <img src={images.encTrophy} alt="encouraging trophy" />
+        <img src={images.trophy} alt="encouraging trophy" />
         <h2>{title}</h2>
         <h5>{message}</h5>
       </div>

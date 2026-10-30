@@ -5,6 +5,7 @@ import React from "react"
 import useWindowDimensions from "Utilities/windowDimensions"
 import { useSelector } from "react-redux"
 
+// Flashcard header praising newly mastered words.
 const MasteringNewWordsHeader = () => {
   const bigScreen = useWindowDimensions().width > 700
   const flashcards = useSelector(({ flashcards }) => flashcards)
@@ -26,7 +27,7 @@ const MasteringNewWordsHeader = () => {
             />
           </div>
           <img
-            src={images.encTrophy}
+            src={images.trophy}
             alt="encouraging trophy"
             className={bigScreen ? "enc-picture" : "enc-picture-mobile"}
           />

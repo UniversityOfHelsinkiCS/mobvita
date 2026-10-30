@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { images, backgroundColors, showAllEncouragements } from "Utilities/common"
 
 
+// Lists recent stories with links to practise them again.
 const ListOfRecentStoriesFlashcardsEncouragement = () => {
   const [latestStories, setLatestStories] = useState([])
   const { incomplete, loading } = useSelector(({ incomplete }) => ({
@@ -42,9 +43,9 @@ const ListOfRecentStoriesFlashcardsEncouragement = () => {
             }}
           >
             <img
-              src={images.magnifyingGlass}
+              src={images.magnifier}
               alt="magnifying glass"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedMessage id="list-of-recent-stories" />

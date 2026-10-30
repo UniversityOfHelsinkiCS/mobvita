@@ -5,6 +5,7 @@ import { images, backgroundColors } from 'Utilities/common'
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux'
 
+// The user's leaderboard rank, with a link to the leaderboard.
 const LeaderboardEncouragement = () => {
 
   const { user_rank } = useSelector(({ leaderboard }) => leaderboard.data)
@@ -26,7 +27,7 @@ const LeaderboardEncouragement = () => {
             style={{ alignItems: 'center', backgroundColor: backgroundColors[4] }}
           >
             <img
-              src={images.encTrophy}
+              src={images.trophy}
               alt="encouraging trophy"
               style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
             />

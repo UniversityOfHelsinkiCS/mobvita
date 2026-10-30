@@ -19,7 +19,7 @@ import { images } from 'Utilities/common'
  *     after the user pauses typing. Enter flushes the pending debounce rather than racing it.
  *   - `onClear` runs after the value is cleared, for callers with teardown beyond the text itself.
  */
-const SearchIcon = <AppIcon src={images.searchTextfield} size={20} style={{ display: 'block' }} />
+const SearchIcon = <AppIcon src={images.magnifier} size={20} style={{ display: 'block' }} />
 
 const AppSearchField = ({
   value,

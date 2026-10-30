@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
+// Lists recently read-through stories with links to review them.
 const ReviewStoriesEncouragement = () => {
   const [storiesToReview, setStoriesToReview] = useState([])
   const { incomplete: incompleteStories } = useSelector(({ incomplete }) => ({
@@ -34,9 +35,9 @@ const ReviewStoriesEncouragement = () => {
             style={{ alignItems: 'center', backgroundColor: backgroundColors[1] }}
           >
             <img
-              src={images.magnifyingGlass}
+              src={images.magnifier}
               alt="magnifying glass"
-              style={{ maxWidth: '8%', maxHeight: '8%', marginRight: '1em' }}
+              style={{ width: '8%', flexShrink: 0, marginRight: '1em' }}
             />
             <div>
               <FormattedMessage id="review-recent-stories" />

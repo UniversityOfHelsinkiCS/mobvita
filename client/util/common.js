@@ -3,7 +3,7 @@
  */
 import DOMPurify from 'dompurify'
 import { font } from 'Assets/mui_theme/designTokens'
-import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.png'
+import revitaLogoTransparent from 'Assets/images/revita_logo_transparent.webp'
 import universityOfHelsinki from 'Assets/images/university_of_helsinki.svg'
 import menu2 from 'Assets/images/menu-02.svg'
 import buttonCircle from 'Assets/images/button-circle.svg'
@@ -118,7 +118,7 @@ import layersThreeColored from 'Assets/images/layers-three-01-colored.svg'
 import flashcardsColored from 'Assets/images/flashcards-colored.svg'
 import lessonsColored from 'Assets/images/lessons-colored.svg'
 import libraryBigColored from 'Assets/images/library-big-colored.svg'
-import searchTextfield from 'Assets/images/search-textfield.svg'
+import magnifier from 'Assets/images/magnifier.svg'
 import star06Colored from 'Assets/images/star-06-colored.svg'
 import users01Colored from 'Assets/images/users-01-colored.svg'
 import flagFinnish from 'Assets/images/flags/FINLAND.svg'
@@ -146,35 +146,29 @@ import flagSyriac from 'Assets/images/flags/Aramaic.svg'
 import flagChinese from 'Assets/images/flags/CHINA.svg'
 import flagEnglish from 'Assets/images/flags/UNITED-KINGDOM.svg'
 // ---
-import flashcards from 'Assets/images/flashcards.png'
-import library from 'Assets/images/library.png'
 
-import practice from 'Assets/images/practice.png'
-import help from 'Assets/images/help.png'
+import practice from 'Assets/images/practice.webp'
 // ---
 import tests from 'Assets/images/tests.jpg'
 import testsColored from 'Assets/images/tests.svg'
 import flashcardIcon from 'Assets/images/flashcard_icon.png'
-import bronzeMedal from 'Assets/images/medals/bronze_medal.png'
-import silverMedal from 'Assets/images/medals/silver_medal.png'
-import goldMedal from 'Assets/images/medals/gold_medal.png'
-import platinumMedal from 'Assets/images/medals/platinum_medal.png'
-import diamondMedal from 'Assets/images/medals/diamond_medal.png'
-import unlockedMedal from 'Assets/images/medals/unlocked_medal.png'
+import bronzeMedal from 'Assets/images/medals/bronze_medal.webp'
+import silverMedal from 'Assets/images/medals/silver_medal.webp'
+import goldMedal from 'Assets/images/medals/gold_medal.webp'
+import platinumMedal from 'Assets/images/medals/platinum_medal.webp'
+import diamondMedal from 'Assets/images/medals/diamond_medal.webp'
+import unlockedMedal from 'Assets/images/medals/unlocked_medal.webp'
 import firstMedal from 'Assets/images/medals/first_medal.svg'
 import secondMedal from 'Assets/images/medals/second_medal.svg'
 import thirdMedal from 'Assets/images/medals/third_medal.svg'
 import trophy from 'Assets/images/trophy.svg'
 import leaderboard from 'Assets/images/leaderboard.svg'
-import balloons from 'Assets/images/balloons.png'
-import fireworks from 'Assets/images/fireworks.png'
-import encTrophy from 'Assets/images/enc_trophy.png'
+import balloons from 'Assets/images/balloons.webp'
+import fireworks from 'Assets/images/fireworks.webp'
 import direction from 'Assets/images/direction.png'
 import exclamationMark from 'Assets/images/exclamation.png'
-import magnifyingGlass from 'Assets/images/glass.png'
-import beeHive from 'Assets/images/bee_hive.png'
-import barChart from 'Assets/images/bar_chart.png'
-import readingBook from 'Assets/images/reading-book.png'
+import beeHive from 'Assets/images/bee_hive.webp'
+import barChart from 'Assets/images/bar_chart.webp'
 import flame from 'Assets/images/flame.png'
 import flameColorless from 'Assets/images/flame_colorless.png'
 import greenArrow from 'Assets/images/green_arrow.png'
@@ -316,7 +310,7 @@ export const images = {
   flashcardsColored,
   lessonsColored,
   libraryBigColored,
-  searchTextfield,
+  magnifier,
   star06Colored,
   users01Colored,
   flagFinnish,
@@ -358,19 +352,13 @@ export const images = {
   trophy,
   leaderboard,
   practice, // homeview -->
-  flashcards,
-  library,
-  help,
   // icons -->
   balloons,
   fireworks,
-  encTrophy,
   direction,
   exclamationMark,
-  magnifyingGlass,
   beeHive,
   barChart,
-  readingBook,
   flame,
   flameColorless,
   greenArrow,

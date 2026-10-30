@@ -217,7 +217,7 @@ const HomeviewButtons = ({
             aReadingComprehensionEnabled && (
               <div className="reading-test-btn-cont">
                 <HomeviewButton
-                  imgSrc={images.readingBook}
+                  imgSrc={images.bookOpenColored}
                   altText="reading test"
                   translationKey="reading-test"
                   handleClick={() => navigate('/reading-test')}

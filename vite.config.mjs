@@ -232,6 +232,9 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
+      // Only tiny images go inline; larger ones load when shown (not every one up front), and
+      // 1 KB keeps the request count low on our HTTP/1.1 servers.
+      assetsInlineLimit: 1024,
       sourcemap: mode !== 'production',
       cssMinify: false,
       cssCodeSplit: true, // Keep this ON!!!
