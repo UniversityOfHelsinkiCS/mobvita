@@ -19,6 +19,7 @@ const LEVEL_ICONS = {
 const LEVELS = {
   1: 'low',
   low: 'low',
+  dummy: 'low',
   2: 'average',
   average: 'average',
   3: 'high',
