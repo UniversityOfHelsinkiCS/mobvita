@@ -135,6 +135,28 @@ export const removeLocalFolder = (localFolders, activeLibrary, folderPath) => {
 
 // When a folder is renamed (oldFolderPath -> newFolderPath), an item/path either sits exactly at the
 // folder or inside it (a deeper sub-path); its prefix is swapped. Anything else is returned unchanged.
+// Every folder path (with all its parent folders) used by these stories, e.g. "a/b" → "a", "a/b".
+export const getFolderPathsOfStories = stories => {
+  const paths = new Set()
+  ;(stories || []).forEach(story => {
+    const parts = normalizeLibraryPath(story.path).split('/').filter(Boolean)
+    parts.forEach((_, index) => paths.add(parts.slice(0, index + 1).join('/')))
+  })
+  return paths
+}
+
+export const getCopyFolderPath = (folderPath, takenPaths) => {
+  const normalized = normalizeLibraryPath(folderPath)
+  const parts = normalized.split('/')
+  const name = parts.pop()
+  const parent = parts.join('/')
+  const pathFor = suffix => (parent ? `${parent}/${name} ${suffix}` : `${name} ${suffix}`)
+
+  let candidate = pathFor('(copy)')
+  for (let n = 2; takenPaths.has(candidate); n += 1) candidate = pathFor(`(copy ${n})`)
+  return candidate
+}
+
 export const getRenamedItemPath = (itemPath, oldFolderPath, newFolderPath) => {
   const normalizedItemPath = normalizeLibraryPath(itemPath)
   const normalizedOldPath = normalizeLibraryPath(oldFolderPath)

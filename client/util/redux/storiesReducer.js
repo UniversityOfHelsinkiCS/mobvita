@@ -195,6 +195,20 @@ export const updateStoryPath = (storyId, path) => {
   return callBuilder(route, prefix, 'post', { path })
 }
 
+export const duplicateStories = storyIds => {
+  const route = '/stories/duplicate'
+  const prefix = 'DUPLICATE_STORIES'
+  return callBuilder(route, prefix, 'post', { story_ids: storyIds })
+}
+
+export const setCopyInProgress = inProgress => ({ type: 'SET_COPY_IN_PROGRESS', inProgress })
+
+export const renameStory = (storyId, title) => {
+  const route = `/stories/${storyId}`
+  const prefix = 'RENAME_STORY'
+  return callBuilder(route, prefix, 'post', { title })
+}
+
 export const removeStory = storyId => {
   const route = `/stories/${storyId}/remove`
   const prefix = 'REMOVE_STORY'
@@ -305,6 +319,13 @@ const initialState = {
 const dropKey = (obj, key) => Object.fromEntries(Object.entries(obj).filter(([k]) => k !== key))
 
 const getStoryIdFromRoute = route => route?.match(/^\/stories\/([^/?]+)/)?.[1]
+
+const updateStoryTitleInList = (stories, storyId, title) =>
+  Array.isArray(stories)
+    ? stories.map(story =>
+        String(story._id) === String(storyId) ? { ...story, title, shortTitle: title } : story,
+      )
+    : stories
 
 const updateStoryPathInList = (stories, storyId, path) => {
   if (!Array.isArray(stories)) return stories
@@ -686,6 +707,60 @@ export default (state = initialState, action) => {
         error: false,
       }
     }
+
+    case 'DUPLICATE_STORIES_ATTEMPT':
+      return { ...state, duplicatePending: true, duplicateResult: null, duplicateError: null }
+    case 'DUPLICATE_STORIES_SUCCESS':
+      return {
+        ...state,
+        duplicatePending: false,
+        duplicateResult: {
+          succeeded: action.response?.succeeded_story_ids || [],
+          inserted: action.response?.inserted_story_ids || [],
+          failed: action.response?.failed_story_ids || [],
+        },
+      }
+    case 'DUPLICATE_STORIES_FAILURE':
+      return {
+        ...state,
+        duplicatePending: false,
+        duplicateError: (typeof action.response === 'string' && action.response) || true,
+      }
+    case 'SET_COPY_IN_PROGRESS':
+      return { ...state, copyInProgress: action.inProgress }
+
+    case 'RENAME_STORY_ATTEMPT': {
+      const storyId = getStoryIdFromRoute(action.requestSettings?.route)
+      const title = action.requestSettings?.data?.title || ''
+      const previous = (state.data || []).find(story => String(story._id) === String(storyId))
+      return {
+        ...state,
+        data: updateStoryTitleInList(state.data, storyId, title),
+        searchResults: updateStoryTitleInList(state.searchResults, storyId, title),
+        focused:
+          String(state.focused?._id) === String(storyId)
+            ? { ...state.focused, title }
+            : state.focused,
+        renameUndo: previous ? { storyId, title: previous.title } : null,
+      }
+    }
+    case 'RENAME_STORY_SUCCESS':
+      return { ...state, renameUndo: null }
+    case 'RENAME_STORY_FAILURE': {
+      const undo = state.renameUndo
+      if (!undo) return state
+      return {
+        ...state,
+        data: updateStoryTitleInList(state.data, undo.storyId, undo.title),
+        searchResults: updateStoryTitleInList(state.searchResults, undo.storyId, undo.title),
+        focused:
+          String(state.focused?._id) === String(undo.storyId)
+            ? { ...state.focused, title: undo.title }
+            : state.focused,
+        renameUndo: null,
+      }
+    }
+
     case 'UPDATE_STORY_PATH_FAILURE':
       return {
         ...state,
