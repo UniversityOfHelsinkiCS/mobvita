@@ -47,6 +47,7 @@ const PickDate = ({ date, setDate, onCalendarClose }) => (
   />
 )
 
+// Progress page: timeline, vocabulary and grammar charts for a chosen date range.
 const Progress = () => {
   const dispatch = useDispatch()
   // Hex-map / beehive chart is high-access only (hidden for access <= 1).
@@ -103,8 +104,12 @@ const Progress = () => {
     pending: conceptsPending,
   } = useSelector(({ metadata }) => metadata)
 
+  // Keeps the same Date when the start is unchanged, so the date-keyed fetches below don't repeat.
   useEffect(() => {
-    setStartDate(getStartDate)
+    setStartDate(prev => {
+      const next = getStartDate()
+      return prev instanceof Date && prev.getTime() === next.getTime() ? prev : next
+    })
   }, [irtExerciseHistory])
 
   const getStartDate = () => {

@@ -262,8 +262,20 @@ export default function NavBar() {
     }
   }, [answersPending])
 
+  // Refreshes the user on mount and whenever an IRT request settles. The read NavBar itself starts
+  // on mount changes nothing server-side, so the refresh after it would repeat the mount one.
+  const isFirstIrtRun = useRef(true)
+  const skipNextUserRefresh = useRef(false)
   useEffect(() => {
-    if (!irtCalculationPending) dispatch(getSelf())
+    const firstRun = isFirstIrtRun.current
+    isFirstIrtRun.current = false
+    if (irtCalculationPending) return
+    if (skipNextUserRefresh.current) {
+      skipNextUserRefresh.current = false
+      return
+    }
+    dispatch(getSelf())
+    if (firstRun) skipNextUserRefresh.current = true
   }, [irtCalculationPending])
 
   useEffect(() => {

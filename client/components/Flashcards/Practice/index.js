@@ -199,9 +199,9 @@ const Practice = ({ mode, open, setHasAnsweredBlueCards }) => {
     }
   }, [blueCardsAnswered])
 
-  // Updates elo after every 10 answers
+  // Updates elo after every 10 answers (not on mount, when nothing has been answered yet)
   useEffect(() => {
-    if (amountAnswered % 10 === 0) dispatch(getSelf())
+    if (amountAnswered > 0 && amountAnswered % 10 === 0) dispatch(getSelf())
   }, [amountAnswered])
 
   useEffect(() => {
