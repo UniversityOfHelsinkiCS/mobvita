@@ -9,7 +9,14 @@ import AppIcon from 'Components/ui/AppIcon'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppSelect from 'Components/ui/AppSelect'
 import { colors } from 'Assets/mui_theme/designTokens'
-import { capitalize, images, useLearningLanguage, ACCESS, useHasAccess } from 'Utilities/common'
+import {
+  capitalize,
+  images,
+  useLearningLanguage,
+  ACCESS,
+  useHasAccess,
+  useIsAnonymous,
+} from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router'
 import {
@@ -40,6 +47,7 @@ import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
 import DeleteFolderDialog from './DeleteFolderDialog'
 import FolderCard from './FolderCard'
+import useCopyStories from './useCopyStories'
 import AddFolder from './AddFolder'
 import EssayCard from './EssayCard'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
@@ -122,7 +130,9 @@ const StoryList = () => {
     essays: false,
     group: false,
   })
-  const dispatch = useDispatch()
+  const dispatch = useDispatch()  
+  const { copyStories, copying } = useCopyStories()
+  const isAnonymous = useIsAnonymous()
   const librariesToShow = Object.entries(libraries)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
@@ -838,6 +848,12 @@ const StoryList = () => {
 
   // Rename a folder: re-path every story inside it (folder itself + sub-paths) and rename any matching
   // empty local-folder entries. The item drag/move endpoint (updateStoryPath) is reused for the re-path.
+  const copyableFolderHandler = (storiesInFolder, folderPath) => {
+    if (isAnonymous) return undefined
+    const ids = storiesInFolder.filter(story => story.user !== userId).map(story => story._id)
+    return ids.length ? () => copyStories(ids, { folderPath }) : undefined
+  }
+
   const handleRenameFolder = (folderPath, newName) => {
     if (!libraryIsMutable) return
 
@@ -1085,6 +1101,8 @@ const StoryList = () => {
                       ? newName => handleRenameFolder(normalizedFolderPath, newName)
                       : undefined
                   }
+                  onCopy={copyableFolderHandler(storiesInFolder, normalizedFolderPath)}
+                  copying={copying}
                   existingFolderNames={allFolderNamesInCurrentPath}
                 />
               )

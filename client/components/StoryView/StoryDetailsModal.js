@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined'
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
+import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import { colors } from 'Assets/mui_theme/designTokens'
@@ -11,9 +13,11 @@ import AppIcon from 'Components/ui/AppIcon'
 import CustomTooltip from 'Components/CustomTooltip'
 import { Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
-import { ACCESS, images, useHasAccess } from 'Utilities/common'
+import { ACCESS, images, useHasAccess, useIsAnonymous } from 'Utilities/common'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 import { TERMINOLOGY, TERMINOLOGY_DEFAULT_MODE } from 'Components/Flashcards/terminology'
+import useCopyStories from 'Components/LibraryView/useCopyStories'
+import RenameStoryDialog from './RenameStoryDialog'
 
 const EMPTY_LOADING_PROGRESS = {}
 
@@ -83,6 +87,13 @@ const StoryDetailsModal = ({
 }) => {
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [renameOpen, setRenameOpen] = useState(false)
+  const isAnonymous = useIsAnonymous()
+  const { copyStories, copying } = useCopyStories()
+  const isOwner = story.user === user?.oid
+  // #1400: any story the user can see but does not own (public, shared with them, group) can be
+  // copied into their private library, where the copy is theirs to edit.
+  const canCopy = !isOwner && !isAnonymous
   const storyLoadingProgress = useSelector(
     ({ stories }) => stories.loadingProgress?.[story?._id] || EMPTY_LOADING_PROGRESS
   )
@@ -159,7 +170,7 @@ const StoryDetailsModal = ({
   const showManagementPills =
     showCreateControlStory || showReadingComprehension || showCancelControlStoryButton
   const showManageRow =
-    showShareButton || story.user === user.oid || (inGroupLibrary && isTeacher) || showDeleteButton
+    showShareButton || isOwner || canCopy || (inGroupLibrary && isTeacher) || showDeleteButton
 
   return (
     <>
@@ -318,7 +329,34 @@ const StoryDetailsModal = ({
                   <FormattedMessage id="Share" />
                 </AppButton>
               )}
-              {story.user === user.oid && (
+              {canCopy && (
+                <AppButton
+                  variant="contrast-outline"
+                  onClick={() => copyStories([story._id])}
+                  disabled={copying}
+                  data-cy="story-copy-to-library"
+                  sx={{ gap: '0.5em', whiteSpace: 'nowrap', '& > svg': { flexShrink: 0 } }}
+                >
+                  {copying ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <ContentCopyOutlinedIcon />
+                  )}
+                  <FormattedMessage id={copying ? 'copying-stories' : 'copy-to-my-library'} />
+                </AppButton>
+              )}
+              {isOwner && (
+                <AppButton
+                  variant="contrast-outline"
+                  onClick={() => setRenameOpen(true)}
+                  data-cy="story-rename"
+                  sx={{ gap: '0.5em', whiteSpace: 'nowrap', '& > svg': { flexShrink: 0 } }}
+                >
+                  <DriveFileRenameOutlineOutlinedIcon />
+                  <FormattedMessage id="rename-story" />
+                </AppButton>
+              )}
+              {isOwner && (
                 <Link to={`/stories/${story._id}/edit`}>
                   <AppButton variant="contrast-outline" sx={{ gap: '0.5em', whiteSpace: 'nowrap' }}>
                     <AppIcon src={images.iconEdit} size={24} />
@@ -346,6 +384,9 @@ const StoryDetailsModal = ({
           )}
         </Box>
       </AppDialog>
+      {isOwner && (
+        <RenameStoryDialog story={story} open={renameOpen} onClose={() => setRenameOpen(false)} />
+      )}
     </>
   )
 }

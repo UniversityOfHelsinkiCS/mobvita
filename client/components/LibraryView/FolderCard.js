@@ -28,6 +28,8 @@ const FolderCard = ({
   onDelete,
   onRemove,
   onRename,
+  onCopy,
+  copying = false,
   existingFolderNames = [],
   draggable = false,
   isDragging = false,
@@ -41,7 +43,7 @@ const FolderCard = ({
   const [renameOpen, setRenameOpen] = useState(false)
   const [renameValue, setRenameValue] = useState(name)
   const [renameError, setRenameError] = useState('')
-  const hasMenu = Boolean(onRename || onDelete || onRemove)
+  const hasMenu = Boolean(onRename || onDelete || onRemove || onCopy)
 
   const handleKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -176,7 +178,19 @@ const FolderCard = ({
                   <MoreVertIcon />
                 </IconButton>
               }
-            >
+            >              
+              {onCopy && (
+                <AppMenuItem
+                  onClick={copying ? undefined : onCopy}
+                  data-cy="folder-copy-to-library"
+                  aria-disabled={copying}
+                  style={copying ? { opacity: 0.5, cursor: 'default' } : undefined}
+                >
+                  <FormattedMessage
+                    id={copying ? 'copying-stories' : 'copy-folder-to-my-library'}
+                  />
+                </AppMenuItem>
+              )}
               {onRename && (
                 <AppMenuItem onClick={openRenameDialog}>
                   <FormattedMessage id="rename-folder" />

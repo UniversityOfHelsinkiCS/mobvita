@@ -115,6 +115,11 @@ export default (state = initialState, action) => {
         translationId: 'email-sent',
         type: type.success,
       }
+    case 'RENAME_STORY_FAILURE':
+      return {
+        message: failureMessage(action.response),
+        type: type.error,
+      }
     case 'JOIN_GROUP_SUCCESS':
       return {
         translationId: 'joined-group',
