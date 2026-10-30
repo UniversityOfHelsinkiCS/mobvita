@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllStories } from 'Utilities/redux/storiesReducer'
+import { getAllStories, restoreCachedStories } from 'Utilities/redux/storiesReducer'
+import { readStoryCache } from 'Utilities/storyCache'
 
 // Headless loader: keeps the story list fresh on login and after answers are saved.
 // The user itself is refreshed once on load by NavBar, so it is not fetched here too.
@@ -9,26 +10,37 @@ export default function StoryFetcher() {
   const { joinPending } = useSelector(({ groups }) => groups)
   const staleStoryId = useSelector(({ stories }) => stories.staleStoryId)
   const learningLanguage = user ? user.user.last_used_language : null
+  const userId = user?.user?.oid
   const dispatch = useDispatch()
+  // Language whose cached list is on screen; its fresh fetch runs in the background (no spinner).
+  const restoredLanguage = useRef(null)
+
+  // Shows the last-known list at once; the fetch below always replaces it with the current one.
+  useEffect(() => {
+    const cached = readStoryCache(userId, learningLanguage)
+    if (!cached) return
+    dispatch(restoreCachedStories(learningLanguage, cached))
+    restoredLanguage.current = learningLanguage
+  }, [userId, learningLanguage])
 
   useEffect(() => {
     if (learningLanguage && refreshed && !joinPending) {
+      const meta = restoredLanguage.current === learningLanguage ? { background: true } : undefined
       dispatch(
-        getAllStories(learningLanguage, {
-          sort_by: 'date',
-          order: -1,
-        }),
+        getAllStories(
+          learningLanguage,
+          {
+            sort_by: 'date',
+            order: -1,
+          },
+          meta,
+        ),
       )
     }
   }, [learningLanguage, refreshed, joinPending])
 
-  // Answering exercises marks the story stale. Refetch here, in the background, while the user is
-  // still practising — by the time they reach the library the progress bar is already current, so
-  // the library never fetches (or spins) on open.
-  //
-  // The whole list, not the single story: `getAllStories` is the only response known to carry
-  // `percent_cov` — the field is read in five places in this app and written in none, so the
-  // single-story payload's shape is unverified. Background, so practice's title isn't hidden.
+  // Answers normally patch their story's progress from the answer response (see the reducer); only
+  // when that response lacks it is the story marked stale and the list refetched here.
   useEffect(() => {
     if (!staleStoryId || !learningLanguage) return
     dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }, { background: true }))

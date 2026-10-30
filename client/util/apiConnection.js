@@ -208,9 +208,7 @@ const handleNewVocabulary = (store, newVocabulary) => {
   }
 }
 
-/**
- * This is a redux middleware used for tracking api calls
- */
+// Redux middleware that runs an action's API request and dispatches its SUCCESS or FAILURE.
 export const handleRequest = store => next => async action => {
   if (action) {
     next(action)
@@ -227,9 +225,10 @@ export const handleRequest = store => next => async action => {
 
     const { requestSettings, requestId, meta } = action
     if (requestSettings) {
-      const { route, method, data, prefix, query, cache } = requestSettings
+      const { route, method, data, prefix, query, cache, fetcher } = requestSettings
       try {
-        const res = await callApi(route, method, data, query)
+        // An action may bring its own fetch (e.g. the story list's parallel pages); the rest is shared.
+        const res = fetcher ? await fetcher() : await callApi(route, method, data, query)
 
         if (prefix === 'GET_CHATBOT_RESPONSE' && !res.data.response) {
           Sentry.captureException(new ChatbotError(`Chatbot response missing: ${res.data.message}`))

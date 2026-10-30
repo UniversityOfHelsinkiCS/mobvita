@@ -5,7 +5,8 @@ export const getStoryLoadingProgress = storyId => {
   return { ...callBuilder(route, prefix), meta: { storyId } }
 }
 import { produce } from 'immer'
-import callBuilder from '../apiConnection'
+import callBuilder, { callApi } from '../apiConnection'
+import { currentUserId, readStoryCache } from '../storyCache'
 /**
  * Actions and reducers are in the same file for readability
  */
@@ -55,6 +56,60 @@ export const getStudentStoryAction = (storyId, groupId, studentId) => {
   return callBuilder(route, prefix)
 }
 
+// Five at a time leaves one of the browser's six HTTP/1.1 connections free for other API calls.
+const PARALLEL_STORY_REQUESTS = 5
+const MIN_STORY_PAGE_SIZE = 20
+const STORY_PAGE_RETRIES = 2
+
+// One page; retried on network errors, 5xx and bodies without a list, never on 4xx (e.g. a 401
+// must still reach handleError, which logs out). The last error passes on unchanged.
+const fetchStoryPage = async (url, retriesLeft = STORY_PAGE_RETRIES) => {
+  try {
+    const res = await callApi(url)
+    if (!Array.isArray(res.data?.stories)) throw new Error(`No story list in ${url}`)
+    return res
+  } catch (error) {
+    const status = error.response?.status
+    if (retriesLeft === 0 || (status >= 400 && status < 500)) throw error
+    await new Promise(resolve => setTimeout(resolve, 500 * (STORY_PAGE_RETRIES - retriesLeft + 1)))
+    return fetchStoryPage(url, retriesLeft - 1)
+  }
+}
+
+// Fetches a story query as at most five parallel pages, sized from the cached count so one round
+// usually covers it; any further round uses pages as large as everything fetched so far.
+const fetchStoriesInPages = async (route, language) => {
+  const expected = readStoryCache(currentUserId(), language)?.length ?? 100
+  let count = Math.min(
+    PARALLEL_STORY_REQUESTS,
+    Math.max(1, Math.ceil((expected + 1) / MIN_STORY_PAGE_SIZE)),
+  )
+  let size = Math.ceil((expected + 1) / count)
+  let firstPage = 0
+  const pages = []
+  for (;;) {
+    const results = await Promise.all(
+      Array.from({ length: count }, (_, i) =>
+        fetchStoryPage(`${route}&page=${firstPage + i}&page_size=${size}`),
+      ),
+    )
+    results.forEach(res => pages.push(res.data.stories))
+    if (results[results.length - 1].data.stories.length < size) break
+    // Pages of the size fetched so far start exactly where this round ended (page 1).
+    size *= firstPage + count
+    firstPage = 1
+    count = PARALLEL_STORY_REQUESTS
+  }
+  // A story added mid-fetch can shift a page boundary and repeat; keep its first copy.
+  const seen = new Set()
+  const stories = pages.flat().filter(story => {
+    if (seen.has(story._id)) return false
+    seen.add(story._id)
+    return true
+  })
+  return { data: { stories, total_num: stories.length, language } }
+}
+
 // `meta.background` refetches without flipping `pending`, so on-screen story views don't blank.
 export const getAllStories = (language, query, meta) => {
   const queryString = Object.keys(query)
@@ -62,8 +117,17 @@ export const getAllStories = (language, query, meta) => {
     .join('&')
   const route = `/stories?language=${language}&${queryString}`
   const prefix = 'GET_STORIES'
-  return { ...callBuilder(route, prefix), meta }
+  const action = callBuilder(route, prefix)
+  action.requestSettings.fetcher = () => fetchStoriesInPages(route, language)
+  return { ...action, meta }
 }
+
+// Shows a cached list at once; StoryFetcher still fetches the fresh one right after.
+export const restoreCachedStories = (language, stories) => ({
+  type: 'RESTORE_CACHED_STORIES',
+  language,
+  stories,
+})
 
 export const setLastQuery = query => ({
   type: 'SET_LAST_QUERY',
@@ -226,13 +290,15 @@ const initialState = {
   loadingProgress: {}, // { [storyId]: progressData }
   readingQuestions: null, // response of /get_questions: { questions, session_id, ... }
   readingQuestionsPending: false,
-  // Id of the story whose progress changed elsewhere, or null. StoryFetcher refreshes just that one
-  // story in the background, so neither browsing nor practising costs a full list request.
+  // Story whose progress changed but could not be patched from the answer; StoryFetcher then
+  // refetches the list in the background. Normally null: answers carry the new progress.
   staleStoryId: null,
-  // Set while an answer POST is in flight; promoted to `staleStoryId` once it succeeds.
+  // Set while an answer POST is in flight, so its SUCCESS knows which list entry to patch.
   answeringStoryId: null,
   // Stories removed optimistically, by request id, so a failed delete can put one back.
   removing: {},
+  // Language of the full list in `data`, so store.js caches it under the right key.
+  dataLanguage: null,
 }
 
 // A copy of `obj` without `key`.
@@ -248,6 +314,7 @@ const updateStoryPathInList = (stories, storyId, path) => {
   )
 }
 
+// Story list, focused story and their request states.
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'GET_STORY_LOADING_PROGRESS_ATTEMPT':
@@ -305,9 +372,22 @@ export default (state = initialState, action) => {
       return answeredId ? { ...state, answeringStoryId: answeredId } : state
     }
 
-    // Promote only once the answer is actually persisted, so the refresh cannot race the POST.
-    case 'GET_SNIPPET_ANSWERS_SUCCESS':
-      return { ...state, staleStoryId: state.answeringStoryId, answeringStoryId: null }
+    // The answer response carries the story's new percent_cov / percent_perf (the same values the
+    // list returns), so patch its entry in place; only a response without them refetches the list.
+    case 'GET_SNIPPET_ANSWERS_SUCCESS': {
+      const id = state.answeringStoryId
+      const { percent_cov, percent_perf } = action.response ?? {}
+      if (!id || percent_cov === undefined || percent_perf === undefined) {
+        return { ...state, staleStoryId: id, answeringStoryId: null }
+      }
+      return {
+        ...state,
+        answeringStoryId: null,
+        data: state.data.map(story =>
+          String(story._id) === String(id) ? { ...story, percent_cov, percent_perf } : story,
+        ),
+      }
+    }
 
     case 'GET_SNIPPET_ANSWERS_FAILURE':
       return { ...state, answeringStoryId: null }
@@ -335,9 +415,18 @@ export default (state = initialState, action) => {
         staleStoryId: null,
         data: action.response.stories,
         totalNum: action.response.total_num,
+        dataLanguage: action.response.language ?? null,
         pending: false,
         error: false,
         uploaded: false,
+      }
+
+    case 'RESTORE_CACHED_STORIES':
+      return {
+        ...state,
+        data: action.stories,
+        totalNum: action.stories.length,
+        dataLanguage: action.language,
       }
 
     case 'SET_STORY_UPLOAD_UNFINISHED':

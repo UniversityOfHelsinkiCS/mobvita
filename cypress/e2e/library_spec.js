@@ -62,7 +62,7 @@ describe('library progress', function () {
 
   this.beforeEach(function () {
     cy.loginExisting()
-    // The refetch this feature relies on: the story list, requested again once an answer lands.
+    // The story list. An answer must NOT refetch it: the answer response carries the new progress.
     cy.intercept('GET', '**/stories?language=**').as('storiesList')
     cy.intercept('POST', '**/snippets/answer').as('postAnswers')
   })
@@ -91,19 +91,36 @@ describe('library progress', function () {
     cy.get('[data-cy=story-info-dialog]').should('not.exist')
   })
 
-  it('refetches the story list in the background as soon as an answer is submitted', function () {
+  // The list entry this story has in the store (window.store is exposed to Cypress runs).
+  const listEntry = () =>
+    cy.window().its('store').invoke('getState').its('stories').then(stories =>
+      stories.data.find(entry => entry._id === story.id),
+    )
+
+  it('takes the story progress from the answer, without refetching the list', function () {
     cy.visit(`${BASE}/stories/${story.id}/practice`)
+    // The startup list fetch has landed once the store knows the list's language.
+    cy.window().its('store').invoke('getState').its('stories.dataLanguage', { timeout: 60000 })
+      .should('eq', LANGUAGE)
+    let listRequestsAfterAnswer = 0
+    cy.intercept('GET', '**/stories?language=**', () => {
+      listRequestsAfterAnswer++
+    })
     answerCurrentSnippet()
 
-    // Still on the practice page — the refetch must not wait for the library to be opened.
-    cy.wait('@storiesList', { timeout: 60000 })
+    cy.get('@postAnswers').its('response.body').then(body => {
+      listEntry().its('percent_cov').should('eq', body.percent_cov)
+      listEntry().its('percent_perf').should('eq', body.percent_perf)
+    })
+    cy.wait(3000)
+    cy.then(() => expect(listRequestsAfterAnswer, 'list requests after the answer').to.equal(0))
     cy.location('pathname').should('include', '/practice')
   })
 
   it('shows the progress bar in the library without reloading the page', function () {
     cy.visit(`${BASE}/stories/${story.id}/practice`)
     answerCurrentSnippet()
-    cy.wait('@storiesList', { timeout: 60000 })
+    listEntry().its('percent_cov').should('be.greaterThan', 0)
 
     // A reload wipes this property, so if it survives the library was reached by routing alone.
     cy.window().then(win => {

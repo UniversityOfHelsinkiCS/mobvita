@@ -3,6 +3,7 @@ import { thunk } from 'redux-thunk'
 import * as Sentry from '@sentry/react'
 
 import { handleRequest } from 'Utilities/apiConnection'
+import { writeStoryCache } from 'Utilities/storyCache'
 import combinedReducers from 'Utilities/redux'
 import userMiddleware from 'Utilities/redux/userMiddleware'
 
@@ -49,6 +50,16 @@ store.subscribe(() => {
   if (!user.data) return localStorage.clear()
 
   return localStorage.setItem('user', JSON.stringify(user.data))
+})
+
+// Mirrors the story list into its cache on every change (fetches, progress updates, deletes, moves),
+// so the cache always matches what the app shows. Lists of unknown language are not cached.
+let cachedStoryList = null
+store.subscribe(() => {
+  const { user, stories } = store.getState()
+  if (stories.data === cachedStoryList) return
+  cachedStoryList = stories.data
+  writeStoryCache(user?.data?.user?.oid, stories.dataLanguage, stories.data)
 })
 
 // Cypress reads app state (e.g. the current tour step) from here; never set outside test runs.
