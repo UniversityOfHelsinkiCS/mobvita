@@ -10,15 +10,17 @@ const escapeHtml = value => String(value || '')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#039;')
 
+// Forwards a GET to the Revita backend with the trimmed headers.
 const proxyGet = async (req, res) => {
   const { url } = req
-  const response = await axios.get(url, { headers: req.headers, timeout: TIMEOUT })
+  const response = await axios.get(url, { headers: req.proxyHeaders, timeout: TIMEOUT })
   res.send(response.data)
 }
 
+// Forwards a POST and its body to the Revita backend with the trimmed headers.
 const proxyPost = async (req, res) => {
   const { url } = req
-  const response = await axios.post(url, req.body, { headers: req.headers, timeout: TIMEOUT })
+  const response = await axios.post(url, req.body, { headers: req.proxyHeaders, timeout: TIMEOUT })
   res.send(response.data)
 }
 
@@ -38,6 +40,7 @@ const proxyFilePost = async (req, res) => {
   res.send(response.data)
 }
 
+// Context translation via the MT service, echoing the request fields back with the result.
 const mtProxyPost = async (req, res) => {
   if (useMockContextTranslation) {
     return res.send({
@@ -47,13 +50,14 @@ const mtProxyPost = async (req, res) => {
   }
 
   const url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/translate'
-  const response = await axios.post(url, req.body, { headers: req.headers, timeout: TIMEOUT })
+  const response = await axios.post(url, req.body, { headers: req.proxyHeaders, timeout: TIMEOUT })
   res.send({
     ...response.data,
     ...req.body,
   })    
 }
 
+// Languages the MT service supports.
 const mtStatus = async (req, res) => {
   if (useMockContextTranslation) {
     return res.send({
@@ -71,7 +75,7 @@ const mtStatus = async (req, res) => {
   }
 
   const url = (process.env.MT_URL || 'http://svm-58.cs.helsinki.fi:8888') + '/api/languages'
-  const response = await axios.get(url, { headers: req.headers, timeout: TIMEOUT })
+  const response = await axios.get(url, { headers: req.proxyHeaders, timeout: TIMEOUT })
   res.send(response.data)    
 }
 

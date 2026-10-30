@@ -1,3 +1,5 @@
+// Picks the only headers the proxy forwards to the backend. req.headers itself stays intact, so
+// Express still sees the browser's Accept-Encoding for compression.
 const headers = (req, res, next) => {
   const newHeaders = {}
 
@@ -9,7 +11,7 @@ const headers = (req, res, next) => {
   if (req.headers['content-type']) newHeaders['content-type'] = req.headers['content-type']
   if (req.headers['content-length']) newHeaders['content-length'] = req.headers['content-length']
 
-  req.headers = newHeaders
+  req.proxyHeaders = newHeaders
   next()
 }
 

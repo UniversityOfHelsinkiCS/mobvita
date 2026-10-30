@@ -5,6 +5,7 @@ try {
   if (error.code !== 'ENOENT') throw error
 }
 const chokidar = require('chokidar')
+const compression = require('compression')
 const express = require('express')
 const http = require('http')
 const fs = require('fs')
@@ -14,6 +15,9 @@ const { PORT, inProduction } = require('#util/common')
 const logger = require('#util/logger')
 
 const app = express()
+
+// API responses are made per request, so they are compressed on the fly (brotli/gzip, over 1 KB).
+app.use('/api', compression())
 
 // Require is here so we can delete it from cache when files change (*)
 app.use('/api', (req, res, next) => require('./server')(req, res, next)) // eslint-disable-line
