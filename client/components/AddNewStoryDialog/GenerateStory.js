@@ -18,6 +18,7 @@ import {
   ACCESS,
   useHasAccess,
   STORY_MIN_CHARACTERS,
+  hiddenFeatures,
 } from 'Utilities/common'
 import { getLessonTopics } from 'Utilities/redux/lessonsReducer'
 import { getMetadata } from 'Utilities/redux/metadataReducer'
@@ -28,7 +29,7 @@ import { colors } from 'Assets/mui_theme/designTokens'
 import { pillButtonSx, pillOutlineSx } from 'Components/ui/sx'
 
 const MAX_GRAMMAR_TOPICS = 5
-const MAX_IDEAS_LENGTH = 240
+const MAX_IDEAS_LENGTH = hiddenFeatures ? 10000 : 240
 // Step numbers stay fixed; low-access users skip GRAMMAR (SETTINGS -> SUMMARY).
 const SETTINGS = 0
 const GRAMMAR = 1
