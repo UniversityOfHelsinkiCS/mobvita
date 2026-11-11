@@ -57,8 +57,7 @@ const AddNewStoryDialog = ({ open, onClose, ...rest }) => {
     setView(nextView)
   }
   const backToMain = () => showView('main')
-
-  // Figma header: a muted Back row above the H2 (sub-views only) and an info icon by the title.
+  
   const title = (
     <>
       {source && (

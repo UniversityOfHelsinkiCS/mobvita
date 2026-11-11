@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate } from 'react-router'
-import useMediaQuery from '@mui/material/useMediaQuery'
 // eslint-disable-next-line max-len
 import LessonPracticeTopicsHelp from 'Components/Lessons/LessonPracticeView/LessonPracticeTopicsHelp'
 import Topics from 'Components/Topics'
@@ -46,7 +45,6 @@ const GenerateStory = ({ closeModal }) => {
   const vocabularyScore = useSelector(({ user }) => user.data.user.vocabulary_score)
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: generating, text, error } = useSelector(({ storyGeneration }) => storyGeneration)
-  const narrow = useMediaQuery('(max-width: 899px)')
 
   const [step, setStep] = useState(SETTINGS)
   const [instance, setInstance] = useState({
@@ -358,13 +356,14 @@ const GenerateStory = ({ closeModal }) => {
 
   return (
     <div className="generate-story">
-      <aside className="generate-story-aside">
+      <div className="generate-story-steps">
         <AppStepper
           steps={stepItems}
           activeIndex={activeStepIndex}
-          orientation={narrow ? 'horizontal' : 'vertical'}
+          orientation="horizontal"
+          connected
         />
-      </aside>
+      </div>
       {renderStep()}
     </div>
   )

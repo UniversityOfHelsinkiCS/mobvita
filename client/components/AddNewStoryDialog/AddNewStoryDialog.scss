@@ -132,26 +132,26 @@
   }
 }
 
-// Figma "Generate Story with AI": step content on the left; the stepper is pinned to the card's
-// top-right beside the title (the card is the containing block), or sits above on narrow screens.
 .generate-story {
   display: flex;
   flex-direction: column;
   gap: 30px;
   flex: 1;
-
-  @media (min-width: 900px) {
-    padding-right: 225px; // 195px stepper + 30px gap
-  }
 }
 
-.generate-story-aside {
-  @media (min-width: 900px) {
-    position: absolute;
-    top: 80px;
-    right: 60px;
-    width: 195px;
-  }
+.generate-story-steps {
+  width: 100%;
+}
+
+.generate-story .lesson-item-topics .tour-lesson-grammar-topics {
+  flex: 1;
+  width: auto !important;
+  min-width: 0;
+}
+
+.generate-story .lesson-topic-box {
+  width: 100%;
+  margin-left: 0;
 }
 
 .generate-story-label {
@@ -222,7 +222,6 @@
   justify-content: center;
 }
 
-// Figma "Paste Text": the two fields (gap 12), then Submit with the card's 30px gap.
 .paste-text {
   display: flex;
   flex-direction: column;

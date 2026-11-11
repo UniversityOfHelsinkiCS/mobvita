@@ -941,6 +941,18 @@ const DesignSystem = () => {
                     <AppStepper orientation="horizontal" activeIndex={1} steps={steps} />
                   </div>
                 </div>
+                <div>
+                  <div style={label}>horizontal, connected</div>
+                  <div style={{ maxWidth: 520 }}>
+                    <AppStepper orientation="horizontal" activeIndex={1} steps={steps} connected />
+                  </div>
+                </div>
+                <div>
+                  <div style={label}>vertical, connected</div>
+                  <div style={{ width: 260 }}>
+                    <AppStepper activeIndex={1} steps={steps} connected />
+                  </div>
+                </div>
               </div>
             )
           })()}

@@ -8,11 +8,45 @@ import { colors } from 'Assets/mui_theme/designTokens'
  *   orientation="vertical" (default) — right-aligned label + numbered circle per row.
  *   orientation="horizontal"          — numbered circles in a row, label centred beneath.
  *
- * The current step's circle is filled green; every other step is a green-outlined circle. No
- * connecting lines. Controlled: `steps` (array of { label }) + `activeIndex` (0-based).
+ * The current step's circle is filled green; every other step is a green-outlined circle.
+ * `connected` joins the circles with a line in the same green and width as their borders (default:
+ * no lines). Controlled: `steps` (array of { label }) + `activeIndex` (0-based).
  */
 const ROW_H = 54
 const CIRCLE = 30
+const LINE = 2
+
+// One half of the line between two circles. Each step draws the halves on its own sides (none
+// before the first step, none after the last); neighbouring halves meet at the step boundary, and
+// every half stops at its circle's border, so the line never crosses a circle.
+const Connector = ({ style }) => (
+  <span aria-hidden style={{ position: 'absolute', backgroundColor: colors.green, ...style }} />
+)
+
+const horizontalConnectors = (i, count) => {
+  const common = { top: CIRCLE / 2 - LINE / 2, height: LINE, width: `calc(50% - ${CIRCLE / 2}px)` }
+  return (
+    <>
+      {i > 0 && <Connector style={{ ...common, left: 0 }} />}
+      {i < count - 1 && <Connector style={{ ...common, right: 0 }} />}
+    </>
+  )
+}
+
+const verticalConnectors = (i, count) => {
+  // The circle is the row's last item, so its centre is CIRCLE / 2 in from the right edge.
+  const common = {
+    right: CIRCLE / 2 - LINE / 2,
+    width: LINE,
+    height: `calc(50% - ${CIRCLE / 2}px)`,
+  }
+  return (
+    <>
+      {i > 0 && <Connector style={{ ...common, top: 0 }} />}
+      {i < count - 1 && <Connector style={{ ...common, bottom: 0 }} />}
+    </>
+  )
+}
 
 const StepCircle = ({ index, active }) => (
   <span
@@ -35,7 +69,12 @@ const StepCircle = ({ index, active }) => (
   </span>
 )
 
-const AppStepper = ({ steps = [], activeIndex = 0, orientation = 'vertical' }) => {
+const AppStepper = ({
+  steps = [],
+  activeIndex = 0,
+  orientation = 'vertical',
+  connected = false,
+}) => {
   if (orientation === 'horizontal') {
     return (
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -50,8 +89,10 @@ const AppStepper = ({ steps = [], activeIndex = 0, orientation = 'vertical' }) =
               alignItems: 'center',
               gap: 8,
               padding: '0 6px',
+              position: 'relative',
             }}
           >
+            {connected && horizontalConnectors(i, steps.length)}
             <StepCircle index={i} active={i === activeIndex} />
             <span
               style={{
@@ -73,7 +114,11 @@ const AppStepper = ({ steps = [], activeIndex = 0, orientation = 'vertical' }) =
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {steps.map((step, i) => (
-        <div key={step.label} style={{ display: 'flex', alignItems: 'center', height: ROW_H }}>
+        <div
+          key={step.label}
+          style={{ display: 'flex', alignItems: 'center', height: ROW_H, position: 'relative' }}
+        >
+          {connected && verticalConnectors(i, steps.length)}
           <span
             style={{
               flex: 1,
