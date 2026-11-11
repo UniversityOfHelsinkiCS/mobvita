@@ -86,10 +86,11 @@ const ShareInfoPopupContent = ({ infoObj }) => {
       </b>{' '}
       {infoObj?.sender}
       <br />
-      <b>
-        <FormattedMessage id="message" />:
-      </b>{' '}
-      {infoObj?.message}
+      {infoObj.message && <>
+        <b>
+          <FormattedMessage id="message" />:
+        </b>{' '}{infoObj.message}
+      </>}      
     </Box>
   )
 }
