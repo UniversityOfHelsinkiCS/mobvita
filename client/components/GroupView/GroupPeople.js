@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  getGroups,
   removeFromGroup,
   resendGroupInvitation,
   setGroupTestDeadline,
@@ -32,6 +33,11 @@ const GroupPeople = ({ role }) => {
   const dispatch = useDispatch()
 
   const [addToGroupId, setAddToGroupId] = useState(null)
+
+  // Opened directly (or reloaded), no other page has loaded the groups yet.
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
   const { groups: totalGroups, lastAddInfo, pending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
   const [showTokenGroupId, setShowTokenGroupId] = useState(null)

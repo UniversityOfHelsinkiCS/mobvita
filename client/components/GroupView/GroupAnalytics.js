@@ -23,7 +23,7 @@ import {
   getStudentVocabulary,
   getPreviousStudentVocabulary,
 } from 'Utilities/redux/groupVocabularyReducer'
-import { setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
+import { getGroups, setGroupTestDeadline } from 'Utilities/redux/groupsReducer'
 import Spinner from 'Components/Spinner'
 import AppDatePicker from 'Components/ui/AppDatePicker'
 import dayjs from 'dayjs'
@@ -68,6 +68,11 @@ const GroupAnalytics = ({ role }) => {
   const [firstFetch, setFirstFetch] = useState(true)
   const [endDate, setEndDate] = useState(dayjs().add(1, 'days').toDate())
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getGroups())
+  }, [])
+
   // Hex-map / beehive chart is high-access only (hidden for access <= 1).
   const canSeeHexmap = useHasAccess(ACCESS.HIGH)
   const currentGroupId = useSelector(({ user }) => user.data.user.last_selected_group)
