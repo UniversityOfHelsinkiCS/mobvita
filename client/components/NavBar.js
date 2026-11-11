@@ -50,6 +50,7 @@ import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
 import LanguageSelectDialog from './LanguageSelectView/LanguageSelectDialog'
 import Tour from './Tour'
 import { reloadIfNewDeploy } from 'Utilities/deployUpdates'
+import {isStaging} from 'Utilities/common'
 
 // Label, tooltip key and colour of the navbar connection dot for each useConnectionStatus() state.
 const CONNECTION_DOT = {
@@ -385,7 +386,9 @@ export default function NavBar() {
         style={{
           padding: '8px 14px 8px 8px',
           flexWrap: 'nowrap',
-          backgroundColor: colors.card,
+          background: isStaging
+            ? `linear-gradient(to bottom, #FF0900 0 7px, ${colors.card} 7px)`
+            : colors.card,
         }}
       >
         <Tour />
