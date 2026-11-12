@@ -34,7 +34,6 @@ const GroupPeople = ({ role }) => {
 
   const [addToGroupId, setAddToGroupId] = useState(null)
 
-  // Opened directly (or reloaded), no other page has loaded the groups yet.
   useEffect(() => {
     dispatch(getGroups())
   }, [])

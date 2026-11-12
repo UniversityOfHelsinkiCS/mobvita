@@ -8,6 +8,7 @@ import Spinner from 'Components/Spinner'
 import { useParams, useLocation } from 'react-router'
 import { Divider } from '@mui/material'
 
+// The already-practised story text above the current snippet (or the whole text once finished).
 const PreviousSnippets = props => {
   const isLesson = props.isLesson
   const location = useLocation()
@@ -53,7 +54,9 @@ const PreviousSnippets = props => {
     return null
   }
 
-  if (!isLesson && focusedSnippet && focusedSnippet.snippetid[0] === 0) {
+  // On the first snippet there's nothing before it — unless it was also the last one and has just
+  // been finished, when it's in `previous` and is the whole story text.
+  if (!isLesson && focusedSnippet && focusedSnippet.snippetid[0] === 0 && previous.length === 0) {
     return null
   }
 
