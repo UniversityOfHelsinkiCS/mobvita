@@ -209,6 +209,7 @@ const handleNewVocabulary = (store, newVocabulary) => {
 }
 
 // Redux middleware that runs an action's API request and dispatches its SUCCESS or FAILURE.
+// Resolves to the SUCCESS action, so `await dispatch(...)` can read the response.
 export const handleRequest = store => next => async action => {
   if (action) {
     next(action)
@@ -265,7 +266,15 @@ export const handleRequest = store => next => async action => {
         const requestSentAt = new Date()
         window.localStorage.setItem('last_request', requestSentAt)
 
-        store.dispatch({ type: `${prefix}_SUCCESS`, response: res.data, query, requestId, meta })
+        const successAction = {
+          type: `${prefix}_SUCCESS`,
+          response: res.data,
+          query,
+          requestId,
+          meta,
+        }
+        store.dispatch(successAction)
+        return successAction
       } catch (err) {
         handleError(store, err, prefix, query, requestId, meta)
       }

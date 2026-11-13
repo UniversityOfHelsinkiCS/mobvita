@@ -22,13 +22,20 @@ export const closeAddStoryOptions = () => ({
   type: 'CLOSE_ADD_STORY_OPTIONS',
 })
 
+// The private-library folder the user is in ('' = root); new stories are uploaded into it.
+export const setAddStoryPath = path => ({
+  type: 'SET_ADD_STORY_PATH',
+  path,
+})
+
 const initialState = {
   isOpen: typeof window !== 'undefined' && window.innerWidth >= 450 ? true : false,
   activeTab: undefined,
   addStoryOptionsOpen: false,
+  addStoryPath: '',
 }
 
-// Assistant sidebar state: open/collapsed, the active tab, and the add-story dialog flag.
+// Assistant sidebar state: open/collapsed, active tab, add-story dialog flag and target folder.
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'SET_HELPER_SIDEBAR_OPEN':
@@ -55,6 +62,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         addStoryOptionsOpen: false,
+      }
+    case 'SET_ADD_STORY_PATH':
+      return {
+        ...state,
+        addStoryPath: action.path,
       }
     default:
       return state

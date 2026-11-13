@@ -45,6 +45,7 @@ const GenerateStory = ({ closeModal }) => {
   const vocabularyScore = useSelector(({ user }) => user.data.user.vocabulary_score)
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: generating, text, error } = useSelector(({ storyGeneration }) => storyGeneration)
+  const addStoryPath = useSelector(({ helperSidebar }) => helperSidebar.addStoryPath)
 
   const [step, setStep] = useState(SETTINGS)
   const [instance, setInstance] = useState({
@@ -86,15 +87,19 @@ const GenerateStory = ({ closeModal }) => {
     setStep(RESULT)
   }
 
+  // Saves the generated story to the private library (into the open folder) and opens its preview.
   const saveToLibrary = async () => {
     dispatch(updateLibrarySelect('private'))
     dispatch(setCustomUpload(true))
     const action = await dispatch(
-      postStory({
-        language: capitalize(learningLanguage),
-        text: generatedStory,
-        topics: instance.topic_ids,
-      }),
+      postStory(
+        {
+          language: capitalize(learningLanguage),
+          text: generatedStory,
+          topics: instance.topic_ids,
+        },
+        addStoryPath,
+      ),
     )
     const storyIds = action?.response?.story_ids
     const createdStoryId = storyIds?.[storyIds.length - 1]

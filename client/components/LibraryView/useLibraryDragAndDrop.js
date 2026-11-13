@@ -1,7 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const STORY_DRAG_MIME_TYPE = 'application/x-mobvita-story-ids'
 const FOLDER_DRAG_MIME_TYPE = 'application/x-mobvita-folder-path'
+// Auto-scroll band at the window's top (below the sticky navbar) and bottom, and its top speed.
+const EDGE_SCROLL_ZONE_PX = 80
+const EDGE_SCROLL_MAX_STEP_PX = 20
+
+// Pixels to scroll this frame for a pointer at clientY: faster the deeper it is in an edge band.
+const getEdgeScrollStep = clientY => {
+  const topEdge = document.querySelector('.navbar')?.getBoundingClientRect().bottom || 0
+  const fromTop = clientY - topEdge
+  const fromBottom = window.innerHeight - clientY
+  const speed = distance =>
+    EDGE_SCROLL_MAX_STEP_PX * Math.min(1, 1 - distance / EDGE_SCROLL_ZONE_PX)
+
+  if (fromTop < EDGE_SCROLL_ZONE_PX) return -speed(fromTop)
+  if (fromBottom < EDGE_SCROLL_ZONE_PX) return speed(fromBottom)
+  return 0
+}
 
 const getStoryIdStrings = storyIds => storyIds.map(storyId => String(storyId))
 
@@ -15,6 +31,42 @@ const useLibraryDragAndDrop = ({ libraryIsMutable, onMoveStories, onMoveFolder, 
     setDraggedFolderPath(null)
     setDragOverFolderPath(null)
   }
+
+  const isDragging = draggedStoryIds.length > 0 || Boolean(draggedFolderPath)
+
+  // During a drag, scrolls the page near the window edges (browsers barely do it for native drags)
+  // and clears drag state on any drag end, including a cancelled folder drag.
+  useEffect(() => {
+    if (!isDragging) return undefined
+
+    let pointerY = null
+    let frameId = null
+
+    const scrollFrame = () => {
+      const step = pointerY === null ? 0 : getEdgeScrollStep(pointerY)
+      if (step) window.scrollBy(0, step)
+      frameId = window.requestAnimationFrame(scrollFrame)
+    }
+    const handleDragOver = e => {
+      pointerY = e.clientY
+    }
+    // relatedTarget is null only when the pointer leaves the window, so stop scrolling then.
+    const handleDragLeave = e => {
+      if (!e.relatedTarget) pointerY = null
+    }
+
+    document.addEventListener('dragover', handleDragOver)
+    document.addEventListener('dragleave', handleDragLeave)
+    document.addEventListener('dragend', clearDragState)
+    frameId = window.requestAnimationFrame(scrollFrame)
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+      document.removeEventListener('dragover', handleDragOver)
+      document.removeEventListener('dragleave', handleDragLeave)
+      document.removeEventListener('dragend', clearDragState)
+    }
+  }, [isDragging])
 
   const storyDragDataIsAvailable = e => {
     if (!libraryIsMutable) return false

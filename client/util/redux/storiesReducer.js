@@ -189,16 +189,20 @@ export const updateExerciseTopics = (topics, storyId) => {
 
 export const updateTempExerciseTopics = topics => ({ type: 'SAVE_STORY_INTERMEDIATE', topics })
 
-export const updateStoryPath = (storyId, path) => {
+// Moves a story to folder `path`. `target` says whose path: { groupId } = that group's share path,
+// { sharedWithMe: true } = the receiver's private share path, none = the owner's own path.
+export const updateStoryPath = (storyId, path, target = {}) => {
   const route = `/stories/${storyId}`
   const prefix = 'UPDATE_STORY_PATH'
-  return callBuilder(route, prefix, 'post', { path })
+  const payload = target.groupId ? { path, is_group_path: true } : { path }
+  return { ...callBuilder(route, prefix, 'post', payload), meta: target }
 }
 
-export const duplicateStories = storyIds => {
+// Copies stories into the private library, all into folder `path` ('' = top level).
+export const duplicateStories = (storyIds, path = '') => {
   const route = '/stories/duplicate'
   const prefix = 'DUPLICATE_STORIES'
-  return callBuilder(route, prefix, 'post', { story_ids: storyIds })
+  return callBuilder(route, prefix, 'post', { story_ids: storyIds, path })
 }
 
 export const setCopyInProgress = inProgress => ({ type: 'SET_COPY_IN_PROGRESS', inProgress })
@@ -327,11 +331,25 @@ const updateStoryTitleInList = (stories, storyId, title) =>
       )
     : stories
 
-const updateStoryPathInList = (stories, storyId, path) => {
+// Sets the path field the move targeted (see updateStoryPath): a group share, the receiver's
+// share, or the story's own path.
+const setStoryPath = (story, path, target = {}) => {
+  if (target.groupId) {
+    const groups = story.groups?.map(group =>
+      String(group.group_id) === String(target.groupId) ? { ...group, path } : group,
+    )
+    return { ...story, groups }
+  }
+  if (target.sharedWithMe) return { ...story, sharing_info: { ...story.sharing_info, path } }
+  return { ...story, path }
+}
+
+// Applies setStoryPath to the story with `storyId` in a story list.
+const updateStoryPathInList = (stories, storyId, path, target) => {
   if (!Array.isArray(stories)) return stories
 
   return stories.map(story =>
-    String(story._id) === String(storyId) ? { ...story, path } : story,
+    String(story._id) === String(storyId) ? setStoryPath(story, path, target) : story,
   )
 }
 
@@ -698,11 +716,11 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        data: updateStoryPathInList(state.data, storyId, path),
-        searchResults: updateStoryPathInList(state.searchResults, storyId, path),
+        data: updateStoryPathInList(state.data, storyId, path, action.meta),
+        searchResults: updateStoryPathInList(state.searchResults, storyId, path, action.meta),
         focused:
           String(state.focused?._id) === String(storyId)
-            ? { ...state.focused, path }
+            ? setStoryPath(state.focused, path, action.meta)
             : state.focused,
         error: false,
       }

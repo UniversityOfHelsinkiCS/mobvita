@@ -25,6 +25,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   const [titleTaken, setTitleTaken] = useState(false)
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const addStoryPath = useSelector(({ helperSidebar }) => helperSidebar.addStoryPath)
   const stories = useSelector(({ stories }) => stories.data)
 
   const uploading = Boolean(pending || storyId)
@@ -39,6 +40,7 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
   }
 
   // The title becomes the story's first line; a title already in the library is refused.
+  // Uploads the pasted text into the library folder the user is in; titles must be unique.
   const submit = async () => {
     if (submitDisabled) return
     if (stories.some(story => story.title === title)) {
@@ -47,7 +49,10 @@ const UploadPastedText = ({ closeModal, setActiveComponent }) => {
     }
     dispatch(setCustomUpload(true))
     await dispatch(
-      postStory({ language: capitalize(learningLanguage), text: `${title}\n\n${text}` }),
+      postStory(
+        { language: capitalize(learningLanguage), text: `${title}\n\n${text}` },
+        addStoryPath,
+      ),
     )
     setActiveComponent()
     closeModal()

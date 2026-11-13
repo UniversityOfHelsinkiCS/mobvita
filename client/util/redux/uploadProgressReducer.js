@@ -1,9 +1,13 @@
 import callBuilder from '../apiConnection'
 
-export const postStory = newStory => {
+// Uploads a story (JSON or FormData); a non-empty `path` files it into that private-library folder.
+export const postStory = (newStory, path) => {
   const route = '/stories'
   const prefix = 'POST_NEW_STORY'
-  return callBuilder(route, prefix, 'post', newStory)
+  let payload = newStory
+  if (path && newStory instanceof FormData) newStory.append('path', path)
+  else if (path) payload = { ...newStory, path }
+  return callBuilder(route, prefix, 'post', payload)
 }
 
 export const postFlashcard = newFlashcards => {

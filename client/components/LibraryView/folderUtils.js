@@ -42,6 +42,26 @@ export const saveStoredLocalFolders = (storageKey, folders) => {
   }
 }
 
+const OPEN_FOLDER_STORAGE_KEY = 'mobvita-library-open-folder'
+
+// Remembers the open folder for this tab, so the story page's back link can return to it.
+export const saveOpenLibraryFolder = path => {
+  try {
+    window.sessionStorage.setItem(OPEN_FOLDER_STORAGE_KEY, normalizeLibraryPath(path))
+  } catch {
+    // Convenience state only; blocked storage just means returning to the library root.
+  }
+}
+
+// The folder saved by saveOpenLibraryFolder, or '' (the library root).
+export const getOpenLibraryFolder = () => {
+  try {
+    return normalizeLibraryPath(window.sessionStorage.getItem(OPEN_FOLDER_STORAGE_KEY))
+  } catch {
+    return ''
+  }
+}
+
 // A folder carries nothing but its name, so name order is the only thing that can be sorted here.
 // `descending` flips A-Z to Z-A; the caller passes it only for the title sort.
 export const getFoldersForPath = (
@@ -80,6 +100,18 @@ export const getFoldersForPath = (
   const sortedNames = Array.from(folderNames).sort((a, b) => a.localeCompare(b))
 
   return descending ? sortedNames.reverse() : sortedNames
+}
+
+// A story's folder for this viewer: a group's or receiver's own share path when the BE has one,
+// else the owner's path. `library` is the active tab; `groupId` the selected group.
+export const getStoryLibraryPath = (story, { library, userId, groupId }) => {
+  let sharePath
+  if (library === 'group') {
+    sharePath = story.groups?.find(group => String(group.group_id) === String(groupId))?.path
+  } else if (library === 'private' && story.user !== userId) {
+    sharePath = story.sharing_info?.path
+  }
+  return normalizeLibraryPath(sharePath ?? story.path)
 }
 
 export const getStoriesForPath = (storiesForLibrary, currentPath) =>

@@ -36,6 +36,7 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
   const [storyUrl, setStoryUrl] = useState('')
   const learningLanguage = useSelector(learningLanguageSelector)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const addStoryPath = useSelector(({ helperSidebar }) => helperSidebar.addStoryPath)
   const favouriteSites = useSelector(({ user }) => user?.data?.user?.favourite_sites ?? EMPTY_SITES)
 
   const storyUploading = pending || storyId
@@ -47,10 +48,11 @@ const UploadFromWeb = ({ closeModal, setActiveComponent }) => {
     !selectedBookmark &&
     !favouriteSites.some(site => site.url.toLowerCase() === bookmarkUrl)
 
+  // Uploads the URL as a story into the library folder the user is in.
   const handleStorySubmit = event => {
     event.preventDefault()
     if (!storyUrl.trim() || storyUploading) return
-    dispatch(postStory({ language: capitalize(learningLanguage), url: storyUrl }))
+    dispatch(postStory({ language: capitalize(learningLanguage), url: storyUrl }, addStoryPath))
     setStoryUrl('')
     setActiveComponent()
     closeModal()

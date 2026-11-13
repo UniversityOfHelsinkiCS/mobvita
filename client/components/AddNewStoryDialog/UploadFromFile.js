@@ -33,6 +33,7 @@ const UploadFromFile = ({ closeModal, setActiveComponent, setInfoId }) => {
   const dictionaryLanguage = useSelector(dictionaryLanguageSelector)
   const [flashcardLanguage, setFlashcardLanguage] = useState(dictionaryLanguage)
   const { pending, storyId } = useSelector(({ uploadProgress }) => uploadProgress)
+  const addStoryPath = useSelector(({ helperSidebar }) => helperSidebar.addStoryPath)
 
   // The dialog's info tooltip explains the active tab's file format.
   useEffect(() => {
@@ -60,6 +61,7 @@ const UploadFromFile = ({ closeModal, setActiveComponent, setInfoId }) => {
     pickFile(event.dataTransfer.files[0])
   }
 
+  // Uploads the file as a story (into the open library folder) or as a flashcard pack.
   const handleSubmit = () => {
     if (!file || uploading) return
     const data = new FormData()
@@ -67,7 +69,7 @@ const UploadFromFile = ({ closeModal, setActiveComponent, setInfoId }) => {
     dispatch(setCustomUpload(true))
     if (mode === 'story') {
       data.append('language', learningLanguage)
-      dispatch(postStory(data))
+      dispatch(postStory(data, addStoryPath))
       setActiveComponent()
     } else {
       data.append('lan_in', learningLanguage)

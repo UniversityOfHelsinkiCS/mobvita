@@ -41,7 +41,7 @@ import {
   removeWritingEssay,
   updateWritingEssayPath,
 } from 'Utilities/redux/writingCorrectionReducer'
-import { openAddStoryOptions } from 'Utilities/redux/helperSidebarReducer'
+import { openAddStoryOptions, setAddStoryPath } from 'Utilities/redux/helperSidebarReducer'
 import { startLibraryTour } from 'Utilities/redux/tourReducer'
 import LibrarySearch from './LibrarySearch'
 import Spinner from 'Components/Spinner'
@@ -57,13 +57,16 @@ import {
   getFoldersForPath,
   getLocalFolderPathsForLibrary,
   getLocalFolderStorageKey,
+  getOpenLibraryFolder,
   getRenamedItemPath,
   getStoriesForPath,
   getStoriesInFolder,
+  getStoryLibraryPath,
   getStoredLocalFolders,
   normalizeLibraryPath,
   removeLocalFolder,
   renameLocalFolder,
+  saveOpenLibraryFolder,
   saveStoredLocalFolders,
 } from './folderUtils'
 import useLibraryDragAndDrop from './useLibraryDragAndDrop'
@@ -112,7 +115,10 @@ const StoryList = () => {
   )
   const [displayedStories, setDisplayedStories] = useState(stories)
   const [displaySearchResults, setDisplaySearchResults] = useState(false)
-  const [currentLibraryPath, setCurrentLibraryPath] = useState('')
+  // The story page's back link asks to reopen the folder the user left from.
+  const [currentLibraryPath, setCurrentLibraryPath] = useState(() =>
+    location.state?.restoreFolder ? getOpenLibraryFolder() : '',
+  )
   const [selectedFolderPath, setSelectedFolderPath] = useState(null)
   const [localFolders, setLocalFolders] = useState(() =>
     getStoredLocalFolders(localFolderStorageKey),
@@ -137,7 +143,12 @@ const StoryList = () => {
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
   const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
-  const libraryIsMutable = activeLibrary !== 'public'
+  // The BE lets only the group's teachers arrange a group library; public is read-only.
+  const libraryIsMutable =
+    activeLibrary === 'group' ? Boolean(currentGroup?.is_teaching) : activeLibrary !== 'public'
+  // Empty (browser-only) folders are kept per group, since each group has its own structure.
+  const localFolderLibrary =
+    activeLibrary === 'group' ? `group:${savedGroupSelection}` : activeLibrary
   const essaysLibraryActive = activeLibrary === 'essays'
   const uploadedEssays = essays.filter(writingEssayHasContent)
   const {
@@ -241,8 +252,21 @@ const StoryList = () => {
 
   // The state request is one-off: clear it so a reload doesn't override a tab picked since.
   useEffect(() => {
-    if (requestedLibrary) navigate(location.pathname, { replace: true, state: null })
+    if (requestedLibrary || location.state?.restoreFolder) {
+      navigate(location.pathname, { replace: true, state: null })
+    }
   }, [location.key])
+
+  useEffect(() => {
+    saveOpenLibraryFolder(currentLibraryPath)
+  }, [currentLibraryPath])
+
+  // Uploads land in the private library, so only a private folder is an upload target.
+  useEffect(() => {
+    dispatch(setAddStoryPath(activeLibrary === 'private' ? currentLibraryPath : ''))
+  }, [activeLibrary, currentLibraryPath])
+
+  useEffect(() => () => dispatch(setAddStoryPath('')), [])
 
   useEffect(() => {
     if (
@@ -548,8 +572,22 @@ const StoryList = () => {
 
   const storyIsVisible = story => storyIsInActiveLibrary(story) && storyIsInOpenFolder(story)
 
-  const libraryFilteredStories = displayedStories.filter(storyIsVisible)
-  const allStoriesInActiveLibrary = stories.filter(storyIsVisible)
+  // Lists below carry the path for this tab (group / receiver share path), so every folder helper
+  // keeps reading `story.path`.
+  const pathContext = { library: activeLibrary, userId, groupId: savedGroupSelection }
+  const withLibraryPath = story => {
+    const path = getStoryLibraryPath(story, pathContext)
+    return path === normalizeLibraryPath(story.path) ? story : { ...story, path }
+  }
+  // Which path a move in this tab changes; see updateStoryPath.
+  const getPathTarget = story => {
+    if (activeLibrary === 'group') return { groupId: savedGroupSelection }
+    if (activeLibrary === 'private' && story.user !== userId) return { sharedWithMe: true }
+    return {}
+  }
+
+  const libraryFilteredStories = displayedStories.filter(storyIsVisible).map(withLibraryPath)
+  const allStoriesInActiveLibrary = stories.filter(storyIsVisible).map(withLibraryPath)
 
   const stringToDifficulty = difficulty => {
     switch (difficulty) {
@@ -571,7 +609,7 @@ const StoryList = () => {
   const localFolderPathsForLibrary = getLocalFolderPathsForLibrary(
     localFolders,
     libraryIsMutable,
-    activeLibrary,
+    localFolderLibrary,
   )
 
   libraryFilteredStories.sort((a, b) => {
@@ -616,6 +654,7 @@ const StoryList = () => {
     navigateInto(folderPath)
   }
 
+  // Moves dropped stories into targetPath, changing the path this tab shows (own, share or group).
   function handleMoveStoriesToPath(storyIds, targetPath) {
     if (!libraryIsMutable) return
 
@@ -640,7 +679,7 @@ const StoryList = () => {
     )
 
     storiesToMove.forEach(story => {
-      dispatch(updateStoryPath(story._id, normalizedTargetPath))
+      dispatch(updateStoryPath(story._id, normalizedTargetPath, getPathTarget(story)))
     })
   }
 
@@ -703,11 +742,12 @@ const StoryList = () => {
     const newFolderPath = normalizeLibraryPath(target ? `${target}/${folderName}` : folderName)
 
     getStoriesInFolder(allStoriesInActiveLibrary, source).forEach(story => {
-      dispatch(updateStoryPath(story._id, getRenamedItemPath(story.path, source, newFolderPath)))
+      const newPath = getRenamedItemPath(story.path, source, newFolderPath)
+      dispatch(updateStoryPath(story._id, newPath, getPathTarget(story)))
     })
 
     setLocalFolders(currentLocalFolders =>
-      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+      renameLocalFolder(currentLocalFolders, localFolderLibrary, source, newFolderPath),
     )
     setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
     clearDragState()
@@ -739,7 +779,7 @@ const StoryList = () => {
     })
 
     setLocalFolders(currentLocalFolders =>
-      renameLocalFolder(currentLocalFolders, activeLibrary, source, newFolderPath),
+      renameLocalFolder(currentLocalFolders, localFolderLibrary, source, newFolderPath),
     )
     setCurrentLibraryPath(currentPath => getRenamedItemPath(currentPath, source, newFolderPath))
     clearEssayDragState()
@@ -810,7 +850,7 @@ const StoryList = () => {
     )
 
     setLocalFolders(currentLocalFolders =>
-      addLocalFolder(currentLocalFolders, activeLibrary, newFolderPath),
+      addLocalFolder(currentLocalFolders, localFolderLibrary, newFolderPath),
     )
 
     if (selectedFolderPath) {
@@ -825,7 +865,7 @@ const StoryList = () => {
     const normalizedFolderPath = normalizeLibraryPath(folderPath)
 
     setLocalFolders(currentLocalFolders =>
-      removeLocalFolder(currentLocalFolders, activeLibrary, normalizedFolderPath),
+      removeLocalFolder(currentLocalFolders, localFolderLibrary, normalizedFolderPath),
     )
   }
 
@@ -846,14 +886,15 @@ const StoryList = () => {
     })
   }
 
-  // Rename a folder: re-path every story inside it (folder itself + sub-paths) and rename any matching
-  // empty local-folder entries. The item drag/move endpoint (updateStoryPath) is reused for the re-path.
+  // Copy action for a folder of others' stories; their paths here are this tab's (share) paths.
   const copyableFolderHandler = (storiesInFolder, folderPath) => {
     if (isAnonymous) return undefined
-    const ids = storiesInFolder.filter(story => story.user !== userId).map(story => story._id)
-    return ids.length ? () => copyStories(ids, { folderPath }) : undefined
+    const toCopy = storiesInFolder.filter(story => story.user !== userId)
+    const ids = toCopy.map(story => story._id)
+    return ids.length ? () => copyStories(ids, { folderPath, stories: toCopy }) : undefined
   }
 
+  // Rename a folder: re-path every story inside it (this tab's path) and its empty local entries.
   const handleRenameFolder = (folderPath, newName) => {
     if (!libraryIsMutable) return
 
@@ -868,12 +909,13 @@ const StoryList = () => {
         updateStoryPath(
           story._id,
           getRenamedItemPath(story.path, normalizedOldPath, newFolderPath),
+          getPathTarget(story),
         ),
       )
     })
 
     setLocalFolders(currentLocalFolders =>
-      renameLocalFolder(currentLocalFolders, activeLibrary, normalizedOldPath, newFolderPath),
+      renameLocalFolder(currentLocalFolders, localFolderLibrary, normalizedOldPath, newFolderPath),
     )
     setCurrentLibraryPath(currentPath =>
       getRenamedItemPath(currentPath, normalizedOldPath, newFolderPath),
@@ -904,7 +946,7 @@ const StoryList = () => {
     })
 
     setLocalFolders(currentLocalFolders =>
-      renameLocalFolder(currentLocalFolders, activeLibrary, normalizedOldPath, newFolderPath),
+      renameLocalFolder(currentLocalFolders, localFolderLibrary, normalizedOldPath, newFolderPath),
     )
     setCurrentLibraryPath(currentPath =>
       getRenamedItemPath(currentPath, normalizedOldPath, newFolderPath),

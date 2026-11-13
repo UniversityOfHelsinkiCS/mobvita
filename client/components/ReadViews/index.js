@@ -482,6 +482,7 @@ const ReadViews = ({ match }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.75em' }}>
           <Link
             to="/library"
+            state={{ restoreFolder: true }}
             data-cy="story-preview-back"
             aria-label={intl.formatMessage({ id: 'back-to-library' })}
             style={{ display: 'inline-flex' }}
