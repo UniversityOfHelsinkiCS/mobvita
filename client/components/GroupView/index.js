@@ -51,10 +51,12 @@ const formatCreationDate = value => {
   })
 }
 
+// Result of the last add-people request, shown on the group card.
 const GroupInviteInfo = ({ group }) => {
   const anyPeopleAdded = !!group.addedPeople.length
   const anyPendingInvitations = !!group.pendingInvitations.length
   const anyFailedInvitations = !!group.failedInvitations.length
+  const anyNotAllowed = !!group.notAllowedInvitations?.length
 
   return (
     <CardSection>
@@ -82,6 +84,17 @@ const GroupInviteInfo = ({ group }) => {
           ))}
           <span style={{ display: 'block', fontSize: '12px', paddingLeft: '.5rem' }}>
             <FormattedMessage id="invitation-failure-explanation" />
+          </span>
+        </div>
+      )}
+      {anyNotAllowed && (
+        <div>
+          <Subheader translationId="not-allowed-in-group-for" color="#dc3545" iconName="ban" />
+          {group.notAllowedInvitations.map(email => (
+            <Chip key={email} label={email} size="small" sx={{ mb: '.5rem', mr: '.5rem' }} />
+          ))}
+          <span style={{ display: 'block', fontSize: '12px', paddingLeft: '.5rem' }}>
+            <FormattedMessage id="not-allowed-in-group-explanation" />
           </span>
         </div>
       )}

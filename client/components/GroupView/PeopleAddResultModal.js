@@ -5,6 +5,21 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Box, Divider } from '@mui/material'
 import AppDialog from 'Components/ui/AppDialog'
 
+// Result lists per role, in display order: [translation id, lastAddInfo field].
+const TEACHER_SECTIONS = [
+  ['teachers-added-to-the-group', 'teachersAdded'],
+  ['teachers-awaiting-confirmation', 'toBeConfirmedTeachers'],
+  ['teachers-not-registered-in-revita', 'addingFailedTeachers'],
+  ['teachers-not-allowed-in-group', 'notAllowedTeachers'],
+]
+const STUDENT_SECTIONS = [
+  ['students-added-to-the-group', 'studentsAdded'],
+  ['students-awaiting-confirmation', 'toBeConfirmedStudents'],
+  ['students-not-registered-in-revita', 'addingFailedStudents'],
+  ['students-not-allowed-in-group', 'notAllowedStudents'],
+]
+
+// One labelled list of e-mails.
 const ResultItem = ({ label, resultList }) => {
   return (
     <div style={{ marginTop: '1em' }}>
@@ -20,11 +35,27 @@ const ResultItem = ({ label, resultList }) => {
   )
 }
 
+// Summary of an add-people / create-group request; empty lists are not shown.
 const PeopleAddResultModal = ({ lastAddInfo }) => {
   const dispatch = useDispatch()
   const intl = useIntl()
 
   if (!lastAddInfo) return null
+
+  const info = lastAddInfo[0]
+  const nonEmpty = sections => sections.filter(([, field]) => info[field]?.length)
+  const teacherSections = nonEmpty(TEACHER_SECTIONS)
+  const studentSections = nonEmpty(STUDENT_SECTIONS)
+
+  // Renders the given sections as ResultItems.
+  const renderSections = sections =>
+    sections.map(([labelId, field]) => (
+      <ResultItem
+        key={field}
+        label={intl.formatMessage({ id: labelId })}
+        resultList={info[field]}
+      />
+    ))
 
   return (
     <AppDialog
@@ -35,31 +66,9 @@ const PeopleAddResultModal = ({ lastAddInfo }) => {
       title={<FormattedMessage id="summary-people-added-to-group" />}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', margin: '1em' }}>
-        <ResultItem
-          label={intl.formatMessage({ id: 'teachers-added-to-the-group' })}
-          resultList={lastAddInfo[0].teachersAdded}
-        />
-        <ResultItem
-          label={intl.formatMessage({ id: 'teachers-awaiting-confirmation' })}
-          resultList={lastAddInfo[0].toBeConfirmedTeachers}
-        />
-        <ResultItem
-          label={intl.formatMessage({ id: 'teachers-not-registered-in-revita' })}
-          resultList={lastAddInfo[0].addingFailedTeachers}
-        />
-        <Divider sx={{ my: '1em' }} />
-        <ResultItem
-          label={intl.formatMessage({ id: 'students-added-to-the-group' })}
-          resultList={lastAddInfo[0].studentsAdded}
-        />
-        <ResultItem
-          label={intl.formatMessage({ id: 'students-awaiting-confirmation' })}
-          resultList={lastAddInfo[0].toBeConfirmedStudents}
-        />
-        <ResultItem
-          label={intl.formatMessage({ id: 'students-not-registered-in-revita' })}
-          resultList={lastAddInfo[0].addingFailedStudents}
-        />
+        {renderSections(teacherSections)}
+        {teacherSections.length > 0 && studentSections.length > 0 && <Divider sx={{ my: '1em' }} />}
+        {renderSections(studentSections)}
       </Box>
     </AppDialog>
   )

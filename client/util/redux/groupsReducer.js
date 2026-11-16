@@ -141,10 +141,25 @@ export const importStoriesFromGroup = (groupId, selectedGroups, message) => {
   return callBuilder(route, prefix, 'post', payload)
 }
 
+// Maps an add/create-group response to the lists shown in PeopleAddResultModal.
+const toLastAddInfo = response => [
+  {
+    studentsAdded: response.added_students,
+    toBeConfirmedStudents: response.to_be_confirmed_students,
+    addingFailedStudents: response.failed_students,
+    notAllowedStudents: response.not_allowed_as_students ?? [],
+    teachersAdded: response.added_teachers,
+    toBeConfirmedTeachers: response.to_be_confirmed_teachers,
+    addingFailedTeachers: response.failed_teachers,
+    notAllowedTeachers: response.not_allowed_as_teachers ?? [],
+  },
+]
+
 export const emptyLastAddInfo = () => ({
   type: 'EMPTY_LAST_ADD_INFO',
 })
 
+// Groups state: group list, current group, last add-people result and join status.
 export default (state = { groups: [], joinPending: false, deleteSuccessful: false}, action) => {
   switch (action.type) {
     case 'GET_GROUPS_ATTEMPT':
@@ -193,16 +208,7 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
     case 'ADD_PEOPLE_SUCCESS':
       return {
         ...state,
-        lastAddInfo: [
-          {
-            studentsAdded: action.response.added_students,
-            toBeConfirmedStudents: action.response.to_be_confirmed_students,
-            addingFailedStudents: action.response.failed_students,
-            teachersAdded: action.response.added_teachers,
-            toBeConfirmedTeachers: action.response.to_be_confirmed_teachers,
-            addingFailedTeachers: action.response.failed_teachers,
-          },
-        ],
+        lastAddInfo: toLastAddInfo(action.response),
         groups: state.groups
           .filter(g => g.group_id !== action.response.group.group_id)
           .concat({
@@ -214,6 +220,9 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
             ),
             pendingInvitations: action.response.to_be_confirmed_students.concat(
               action.response.to_be_confirmed_teachers
+            ),
+            notAllowedInvitations: (action.response.not_allowed_as_students ?? []).concat(
+              action.response.not_allowed_as_teachers ?? [],
             ),
           })
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
@@ -232,16 +241,7 @@ export default (state = { groups: [], joinPending: false, deleteSuccessful: fals
     case 'CREATE_GROUP_SUCCESS':
       return {
         ...state,
-        lastAddInfo: [
-          {
-            studentsAdded: action.response.added_students,
-            toBeConfirmedStudents: action.response.to_be_confirmed_students,
-            addingFailedStudents: action.response.failed_students,
-            teachersAdded: action.response.added_teachers,
-            toBeConfirmedTeachers: action.response.to_be_confirmed_teachers,
-            addingFailedTeachers: action.response.failed_teachers,
-          },
-        ],
+        lastAddInfo: toLastAddInfo(action.response),
         groups: state.groups
           .concat(action.response.group)
           .sort((a, b) => a.groupName.localeCompare(b.groupName)),
