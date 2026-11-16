@@ -77,8 +77,11 @@ const LanguageSelectDialog = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
         maxWidth="md"
+        paperSx={{ p: '40px 60px' }}
+        titleSx={{ p: 0, pb: 2 }}
+        contentSx={{ p: 0 }}
         title={
-          <span style={{ display: 'block', fontSize: 34, fontWeight: 700, lineHeight: 1.15 }}>
+          <span style={{ display: 'block', fontSize: 36, fontWeight: 400, lineHeight: 1.15 }}>
             <FormattedMessage id="what-language-would-you-like-to-learn" />
           </span>
         }

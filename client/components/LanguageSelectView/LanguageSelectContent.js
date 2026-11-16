@@ -5,9 +5,8 @@ import { images, capitalize, supportedLearningLanguages, hiddenFeatures } from '
 
 /**
  * LanguageSelectContent — presentational learning-language picker (2026 design). A flag + name row
- * per language: the two main languages up top, then two labelled columns (Beta versions /
- * Endangered languages). Pure: `onSelect(lang)` only. Shared by the /learningLanguage route and the
- * navbar's language dialog.
+ * per language: the two main languages up top, then one "Beta versions" grid (beta + endangered).
+ * Pure: `onSelect(lang)` only. Shared by the /learningLanguage route and the navbar's dialog.
  */
 const LanguageOption = ({ lang, onSelect }) => (
   <div
@@ -50,30 +49,17 @@ const LanguageSelectContent = ({ onSelect }) => {
 
       <div className="lang-select-divider" />
 
-      {/* Beta versions + Endangered languages, side by side */}
-      <div className="lang-select-columns">
-        <section className="lang-select-section">
-          <div className="lang-select-heading">
-            <FormattedMessage id="beta-versions" defaultMessage="Beta versions" />
-          </div>
-          <div className="lang-select-grid">
-            {supportedLearningLanguages.majorBeta.map(lang => (
-              <LanguageOption key={lang} lang={lang} onSelect={onSelect} />
-            ))}
-          </div>
-        </section>
-
-        <section className="lang-select-section">
-          <div className="lang-select-heading">
-            <FormattedMessage id="endangered-languages" defaultMessage="Endangered languages" />
-          </div>
-          <div className="lang-select-grid">
-            {endangered.map(lang => (
-              <LanguageOption key={lang} lang={lang} onSelect={onSelect} />
-            ))}
-          </div>
-        </section>
-      </div>
+      {/* Beta + endangered languages share one grid under the Beta heading */}
+      <section className="lang-select-section">
+        <div className="lang-select-heading">
+          <FormattedMessage id="beta-versions" defaultMessage="Beta versions" />
+        </div>
+        <div className="lang-select-grid">
+          {[...supportedLearningLanguages.majorBeta, ...endangered].map(lang => (
+            <LanguageOption key={lang} lang={lang} onSelect={onSelect} />
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

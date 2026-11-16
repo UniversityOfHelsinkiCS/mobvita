@@ -2917,8 +2917,6 @@ label.file-upload-btn {
   }
 }
 
-// ── Learning-language picker (2026 design) ──────────────────────────────────────
-// Flag + name rows: two main languages up top, then Beta / Endangered columns.
 .lang-select {
   font-family: 'Geologica', sans-serif;
   color: #2d2c2a;
@@ -2936,17 +2934,6 @@ label.file-upload-btn {
     margin: 12px 0 20px;
   }
 
-  &-columns {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5em 3em;
-  }
-
-  &-section {
-    flex: 1 1 300px;
-    min-width: 0;
-  }
-
   &-heading {
     font-size: 1.25rem;
     font-weight: 600;
@@ -2956,7 +2943,7 @@ label.file-upload-btn {
 
   &-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     column-gap: 1.5em;
     row-gap: 2px;
   }
