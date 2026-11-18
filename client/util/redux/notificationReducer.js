@@ -71,7 +71,7 @@ export default (state = initialState, action) => {
         type: type.error,
       }
     case 'SHARE_STORY_SUCCESS':
-      if (action.response.not_existed_users.length > 0) {
+      if (action.response.not_existed_users?.length > 0) {
         const notFoundEmails = action.response.not_existed_users.map(e => e.email).join(', ')
         return {
           translationId: 'following-users-not-found',

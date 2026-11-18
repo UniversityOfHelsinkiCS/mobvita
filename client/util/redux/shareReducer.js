@@ -1,8 +1,10 @@
 import callBuilder from '../apiConnection'
 
-export const shareStory = (storyId, groups, users, message, hidden_story) => {
-  const route = `/stories/${storyId}/share`
+// Shares a batch of stories with groups and/or users via POST /stories/share.
+export const shareStory = (storyIds, groups, users, message, hidden_story) => {
+  const route = '/stories/share'
   const payload = {
+    story_ids: storyIds,
     share_groups: groups,
     share_users: users,
     share_message: message,

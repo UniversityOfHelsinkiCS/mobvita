@@ -55,6 +55,7 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setShareTargetGroupId(null)
   }, [isOpen])
 
+  // Shares this story with the chosen group or e-mail list, then closes the dialog.
   const share = event => {
     event.preventDefault()
 
@@ -62,9 +63,11 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       setShowSelfAddWarning(true)
     } else {
       if (showOption === 'group') {
-        dispatch(shareStory(story._id, [shareTargetGroupId], [], message, isHiddenStory))
+        dispatch(shareStory([story._id], [shareTargetGroupId], [], message, isHiddenStory))
       } else {
-        dispatch(shareStory(story._id, [], formatEmailList(shareTargetUserEmails), message, false))
+        dispatch(
+          shareStory([story._id], [], formatEmailList(shareTargetUserEmails), message, false),
+        )
       }
       setMessage('')
       setOpen(false)
