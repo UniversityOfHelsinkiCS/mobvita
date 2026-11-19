@@ -72,7 +72,10 @@ export default (state = initialState, action) => {
       }
     case 'SHARE_STORY_SUCCESS':
       if (action.response.not_existed_users?.length > 0) {
-        const notFoundEmails = action.response.not_existed_users.map(e => e.email).join(', ')
+        // Plain e-mails per the batch API; older responses sent { email } objects.
+        const notFoundEmails = action.response.not_existed_users
+          .map(user => user?.email ?? user)
+          .join(', ')
         return {
           translationId: 'following-users-not-found',
           type: type.info,
@@ -166,14 +169,14 @@ export default (state = initialState, action) => {
         type: type.error,
         options: { autoClose: 10000 },
       }
-    case 'UNSHARE_STORY_FAILURE':
+    case 'UNSHARE_STORIES_FAILURE':
       return {
         message: failureMessage(action.response),
         type: type.error,
       }
-    case 'UNSHARE_STORY_SUCCESS':
+    case 'UNSHARE_STORIES_SUCCESS':
       return {
-        translationId: 'story-unshared',
+        translationId: action.meta?.storyIds?.length > 1 ? 'stories-unshared' : 'story-unshared',
         type: type.success,
       }
     case 'REMOVE_STORY_FAILURE':
@@ -274,11 +277,13 @@ export default (state = initialState, action) => {
         type: type.success,
       }
 
-    case 'ACCEPT_STORY_FAILURE':
-      return {
-        translationId: 'could-not-find-story-to-accept',
-        type: type.error,
-      }
+    // Shows the BE's reason (expired / used token, not found, …) when it sends one.
+    case 'ACCEPT_STORY_FAILURE': {
+      const reason = action.response?.message ?? action.response
+      return typeof reason === 'string' && reason
+        ? { message: reason, type: type.error, options: { autoClose: 15000 } }
+        : { translationId: 'could-not-find-story-to-accept', type: type.error }
+    }
 
     case 'BLOCK_STORY_SENDER_SUCCESS':
       return {

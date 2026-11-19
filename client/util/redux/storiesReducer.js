@@ -207,6 +207,7 @@ export const duplicateStories = (storyIds, path = '') => {
 
 export const setCopyInProgress = inProgress => ({ type: 'SET_COPY_IN_PROGRESS', inProgress })
 
+// Renames a story (owner or a teacher of a group holding it) with POST /stories/{id} { title }.
 export const renameStory = (storyId, title) => {
   const route = `/stories/${storyId}`
   const prefix = 'RENAME_STORY'
@@ -219,16 +220,21 @@ export const removeStory = storyId => {
   return callBuilder(route, prefix)
 }
 
-export const acceptSharedStory = (storyId, token) => {
-  const route = `/stories/${storyId}/accept?token=${token}`
+// Accepts a story shared by e-mail; the token alone identifies the share(s).
+export const acceptSharedStory = token => {
+  const route = `/stories/accept?token=${token}`
   const prefix = 'ACCEPT_STORY'
   return callBuilder(route, prefix, 'get')
 }
 
-export const unshareStory = (groupId, storyId) => {
-  const route = `/groups/${groupId}/unshare/${storyId}`
-  const prefix = 'UNSHARE_STORY'
-  return callBuilder(route, prefix, 'post', {})
+// Removes stories from a group's library (owners keep them); ids ride in meta for the reducer.
+export const unshareStories = (groupId, storyIds) => {
+  const route = `/groups/${groupId}/unshare`
+  const prefix = 'UNSHARE_STORIES'
+  return {
+    ...callBuilder(route, prefix, 'post', { story_ids: storyIds }),
+    meta: { groupId, storyIds },
+  }
 }
 
 export const storyVisibilityChange = (groupId, storyId, visibility) => {
@@ -847,27 +853,29 @@ export default (state = initialState, action) => {
         lastQuery: action.query,
       }
 
-    case 'UNSHARE_STORY_ATTEMPT':
+    // No global `pending`: the library stays rendered; cards leave the group once the BE confirms.
+    case 'UNSHARE_STORIES_ATTEMPT':
       return {
         ...state,
-        pending: true,
         error: false,
       }
-    case 'UNSHARE_STORY_FAILURE':
+    case 'UNSHARE_STORIES_FAILURE':
       return {
         ...state,
-        pending: false,
         error: true,
       }
-    case 'UNSHARE_STORY_SUCCESS':
+    // Drops the group from each unshared story; ids not in the loaded list are skipped.
+    case 'UNSHARE_STORIES_SUCCESS': {
+      const { groupId, storyIds = [] } = action.meta || {}
+      const unshared = new Set(storyIds.map(String))
       return produce(state, draft => {
-        const story = draft.data.find(story => story._id === action.response.removed)
-        story.groups = story.groups.filter(
-          group => group.group_id !== action.response.group.group_id,
-        )
-        draft.pending = false
+        draft.data.forEach(story => {
+          if (!unshared.has(String(story._id)) || !story.groups) return
+          story.groups = story.groups.filter(group => group.group_id !== groupId)
+        })
         draft.error = false
       })
+    }
 
     case 'SET_STORY_VISIBILITY_ATTEMPT':
       return {

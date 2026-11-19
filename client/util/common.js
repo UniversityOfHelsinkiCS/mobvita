@@ -37,6 +37,8 @@ import flag01 from 'Assets/images/flag-01.svg'
 import grid01 from 'Assets/images/grid-01.svg'
 import iconEdit from 'Assets/images/icon-edit-2.svg'
 import trash03 from 'Assets/images/trash-03.svg'
+import isClosedYes from 'Assets/images/is_closed_yes.svg'
+import isClosedNo from 'Assets/images/is_closed_no.svg'
 import bell04 from 'Assets/images/bell-04.svg'
 import brush01 from 'Assets/images/brush-01.svg'
 import logOut01 from 'Assets/images/log-out-01.svg'
@@ -229,6 +231,8 @@ export const images = {
   grid01,
   iconEdit,
   trash03,
+  isClosedYes,
+  isClosedNo,
   bell04,
   brush01,
   logOut01,

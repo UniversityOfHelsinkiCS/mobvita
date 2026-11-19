@@ -23,6 +23,7 @@ import {
   getStoryLoadingProgress,
   getStudentStoryAction,
   removeStory,
+  unshareStories,
   updateExerciseTopics,
   updateTempExerciseTopics,
 } from 'Utilities/redux/storiesReducer'
@@ -136,6 +137,9 @@ const ReadViews = ({ match }) => {
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
   const { groups: totalGroups, pending: groupsPending } = useSelector(({ groups }) => groups)
   const currentGroup = totalGroups.find(group => group.group_id === currentGroupId)
+  // Opened while the Group tab is active: the story is removed from that group, not deleted.
+  const savedLibrarySelection = useSelector(({ user }) => user.data.user.last_selected_library)
+  const inGroupLibrary = savedLibrarySelection === 'group' && Boolean(currentGroup)
   const [open, setOpen] = useState(false)
   const [topicsModal, setTopicsModal] = useState(false)
   const [topicsTab, setTopicsTab] = useState('grammar')
@@ -400,17 +404,20 @@ const ReadViews = ({ match }) => {
     setOpen(true)
   }
 
-  // Awaited, then refetched: navigating straight away lets the library's list request race the
-  // delete, and GET_STORIES_SUCCESS replaces the list wholesale — putting the story back.
+  // Group tab: unshares from that group. Otherwise deletes; awaited and refetched so the library's
+  // list request can't race the delete and put the story back.
   const handleDeleteStory = async () => {
-    await dispatch(removeStory(id))
+    if (inGroupLibrary) {
+      await dispatch(unshareStories(currentGroupId, [id]))
+    } else {
+      await dispatch(removeStory(id))
+    }
     await dispatch(getAllStories(learningLanguage, { sort_by: 'date', order: -1 }))
     navigate('/library', { replace: true })
   }
 
-  // Teacher edit/delete controls. They sit in the card's top toolbar now (see PreviewToolbar), in a
-  // row rather than the old stacked column. A story in the public library is not the teacher's to
-  // change, so it gets neither — the library card hides the same controls there.
+  // Teacher edit/delete controls in the top toolbar; none for public stories. From the Group tab
+  // Delete becomes Remove (unshare), shown only to that group's teachers.
   const StoryFunctionsDropdown = () =>
     preProcessingReady && teacherView && !routeStory?.control_story && !routeStory?.public ? (
       <div
@@ -421,22 +428,25 @@ const ReadViews = ({ match }) => {
           <AppIcon src={images.iconEdit} size={20} />
           <FormattedMessage id="edit" />
         </AppButton>
-        <AppButton
-          variant="alert"         
-          data-cy="story-delete-button"
-          onClick={() => setConfirmationOpen(true)}
-          sx={ICON_BUTTON_SX}
-        >
-          <AppIcon src={images.trash03} size={20} />
-          <FormattedMessage id="Delete" />
-        </AppButton>
+        {(!inGroupLibrary || currentGroup?.is_teaching) && (
+          <AppButton
+            variant="alert"
+            data-cy="story-delete-button"
+            onClick={() => setConfirmationOpen(true)}
+            sx={ICON_BUTTON_SX}
+          >
+            <AppIcon src={images.trash03} size={20} />
+            <FormattedMessage id={inGroupLibrary ? 'Remove' : 'Delete'} />
+          </AppButton>
+        )}
       </div>
     ) : null
 
-  // Top toolbar of the story card: practice CTA on the left, topics select + settings gear on the
-  // right (matches the 2026 preview design).
+  // Story card toolbar: back + practice CTA left, edit/delete, info and settings right. Group
+  // preview/review have no edit/delete there; those live in the story dialog.
   const PreviewToolbar = () => {
-    if (!preProcessingReady || isGroupReview || isGroupPreview) return null
+    if (!preProcessingReady) return null
+    const onGroupRoute = isGroupReview || isGroupPreview
 
     const practiceCta = routeStory?.control_story ? (
       <AppButton
@@ -493,7 +503,7 @@ const ReadViews = ({ match }) => {
           {practiceCta}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75em' }}>
-          <StoryFunctionsDropdown />
+          {!onGroupRoute && <StoryFunctionsDropdown />}
           <StoryInfoButton story={routeStory} storyId={id} />
           {!routeStory?.control_story && (
             <CustomTooltip title={intl.formatMessage({ id: 'customize-story-practice-EXPLAIN' })}>
@@ -784,8 +794,16 @@ const ReadViews = ({ match }) => {
         open={confirmationOpen}
         setOpen={setConfirmationOpen}
         action={handleDeleteStory}
+        acceptLabel={inGroupLibrary ? <FormattedMessage id="Remove" /> : undefined}
       >
-        <FormattedMessage id="story-remove-confirm" />
+        {inGroupLibrary ? (
+          <FormattedMessage
+            id="remove-story-from-group-warning"
+            values={{ group: currentGroup.groupName }}
+          />
+        ) : (
+          <FormattedMessage id="story-remove-confirm" />
+        )}
       </ConfirmationWarning>
     </div>
   )

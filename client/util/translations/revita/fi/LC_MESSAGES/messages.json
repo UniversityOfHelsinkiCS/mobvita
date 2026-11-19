@@ -755,6 +755,10 @@
     "completed-snippets": "Suoritetut osat",
     "story-unshared": "Teksti poistettu ryhmän kirjastosta",
     "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?",
+    "remove-from-group": "Remove from group",
+    "remove-folder-from-group": "Remove folder from group",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Valitse opiskelija listasta",
     "take-me-to-old-revita": "Palaa vanhaan käyttöliittymään",
     "practice-random-story": "Harjoittele satunnaisella tekstillä",
@@ -2050,5 +2054,6 @@
     "connection-server-down": "Revita-palvelinta ei tavoiteta",
     "connection-online-tooltip": "Olet verkkoyhteydessä, ja Revita-palvelin toimii normaalisti.",
     "connection-server-down-tooltip": "Internet-yhteytesi toimii, mutta Revita-palvelin ei vastaa juuri nyt. Piste muuttuu vihreäksi, kun palvelin on taas käytettävissä.",
-    "connection-offline-tooltip": "Laitteesi ei ole verkossa. Tarkista internet-yhteytesi; piste muuttuu taas vihreäksi, kun olet takaisin verkossa."
+    "connection-offline-tooltip": "Laitteesi ei ole verkossa. Tarkista internet-yhteytesi; piste muuttuu taas vihreäksi, kun olet takaisin verkossa.",
+    "story-TAILORED-completed-message": "Haluatko aloittaa alusta ja harjoitella tätä tekstiä uudelleen?"
 }

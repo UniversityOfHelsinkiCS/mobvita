@@ -91,6 +91,8 @@ const StoryDetailsModal = ({
   const isAnonymous = useIsAnonymous()
   const { copyStories, copying } = useCopyStories()
   const isOwner = story.user === user?.oid
+  // Owners edit their stories; the group's teachers may also rename/edit group-shared ones.
+  const canEdit = isOwner || (inGroupLibrary && Boolean(currentGroup?.is_teaching))
   // #1400: any story the user can see but does not own (public, shared with them, group) can be
   // copied into their private library, where the copy is theirs to edit.
   const canCopy = !isOwner && !isAnonymous
@@ -155,7 +157,7 @@ const StoryDetailsModal = ({
       }}
     >
       <AppIcon src={images.trash03} size={24} color={colors.surface} />
-      <FormattedMessage id="Delete" />
+      <FormattedMessage id={inGroupLibrary ? 'Remove' : 'Delete'} />
     </AppButton>
   )
 
@@ -170,7 +172,7 @@ const StoryDetailsModal = ({
   const showManagementPills =
     showCreateControlStory || showReadingComprehension || showCancelControlStoryButton
   const showManageRow =
-    showShareButton || isOwner || canCopy || (inGroupLibrary && isTeacher) || showDeleteButton
+    showShareButton || canEdit || canCopy || (inGroupLibrary && isTeacher) || showDeleteButton
 
   return (
     <>
@@ -345,7 +347,7 @@ const StoryDetailsModal = ({
                   <FormattedMessage id={copying ? 'copying-stories' : 'copy-to-my-library'} />
                 </AppButton>
               )}
-              {isOwner && (
+              {canEdit && (
                 <AppButton
                   variant="contrast-outline"
                   onClick={() => setRenameOpen(true)}
@@ -356,7 +358,7 @@ const StoryDetailsModal = ({
                   <FormattedMessage id="rename-story" />
                 </AppButton>
               )}
-              {isOwner && (
+              {canEdit && (
                 <Link to={`/stories/${story._id}/edit`}>
                   <AppButton variant="contrast-outline" sx={{ gap: '0.5em', whiteSpace: 'nowrap' }}>
                     <AppIcon src={images.iconEdit} size={24} />
@@ -368,7 +370,9 @@ const StoryDetailsModal = ({
                 <AppButton
                   variant="contrast-outline"
                   onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
+                  sx={{ gap: '0.5em', whiteSpace: 'nowrap' }}
                 >
+                  <AppIcon src={hidden ? images.isClosedNo : images.isClosedYes} size={24} />
                   <FormattedMessage id={(hidden && 'release-story') || 'hide-story'} />
                 </AppButton>
               )}
@@ -384,7 +388,7 @@ const StoryDetailsModal = ({
           )}
         </Box>
       </AppDialog>
-      {isOwner && (
+      {canEdit && (
         <RenameStoryDialog story={story} open={renameOpen} onClose={() => setRenameOpen(false)} />
       )}
     </>

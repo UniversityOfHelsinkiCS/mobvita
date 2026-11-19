@@ -757,6 +757,10 @@
     "completed-snippets": "Выполненные абзацы",
     "story-unshared": "Текст удален из библиотеки группы",
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
+    "remove-from-group": "Remove from group",
+    "remove-folder-from-group": "Remove folder from group",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Выбери ученика из списка",
     "take-me-to-old-revita": "К старой версии Ревиты",
     "practice-random-story": "Открыть любую историю",
@@ -2053,5 +2057,6 @@
     "connection-server-down": "Revita server unreachable",
     "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online."
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "story-TAILORED-completed-message": "Хочешь поработать над этим текстом еще раз?"
 }

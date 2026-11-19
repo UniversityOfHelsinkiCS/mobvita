@@ -271,6 +271,10 @@
     "XXX": "上传的文件太大。最大文件大小为{:.2f} KB",
     "story-remove-confirm": "文章将从收藏中永久删除，您要继续吗？",
     "remove-story-from-group-warning": "文章将从小组图书馆中被删除{group}",
+    "remove-from-group": "Remove from group",
+    "remove-folder-from-group": "Remove folder from group",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "stories-unshared": "Removed stories from group library",
     "upload-stories": "从文件中上传文章",
     "Weather": "天气",
     "need-to-be-teacher-in-group-to-share": "只有成为老师才能分享文章到小组",
@@ -1431,5 +1435,6 @@
     "connection-server-down": "Revita server unreachable",
     "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online."
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "story-TAILORED-completed-message": "Would you like to practice this story again?"
 }

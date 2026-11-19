@@ -6,19 +6,23 @@ import AppDialog from 'Components/ui/AppDialog'
 import { dialogActionsSx, dialogSx, pillButtonSx, pillOutlineSx } from 'Components/ui/sx'
 import { colors } from 'Assets/mui_theme/designTokens'
 
-// The delete-folder question under a "Delete Folder" title, then Cancel and an alert Delete.
-// Controlled via `open`/`onClose`; `onConfirm` runs the deletion and the caller closes it.
-const DeleteFolderDialog = ({ open, onClose, onConfirm }) => (
+// Folder delete confirmation; with `inGroup` it asks to unshare the folder from `groupName`.
+// Controlled via `open`/`onClose`; `onConfirm` runs the action and the caller closes it.
+const DeleteFolderDialog = ({ open, onClose, onConfirm, inGroup = false, groupName = '' }) => (
   <AppDialog
     open={open}
     onClose={onClose}
-    title={<FormattedMessage id="delete-folder" />}
+    title={<FormattedMessage id={inGroup ? 'remove-folder-from-group' : 'delete-folder'} />}
     maxWidth="md"
     data-cy="delete-folder-dialog"
     {...dialogSx(539)}
   >
     <Box sx={{ fontSize: 16, fontWeight: 500, lineHeight: '18px', color: colors.ink }}>
-      <FormattedMessage id="confirm-folder-delete" />
+      {inGroup ? (
+        <FormattedMessage id="confirm-folder-remove-from-group" values={{ group: groupName }} />
+      ) : (
+        <FormattedMessage id="confirm-folder-delete" />
+      )}
     </Box>
     <Box sx={{ ...dialogActionsSx, mt: '30px' }}>
       <AppButton
@@ -35,7 +39,7 @@ const DeleteFolderDialog = ({ open, onClose, onConfirm }) => (
         onClick={onConfirm}
         data-cy="confirm-folder-delete"
       >
-        <FormattedMessage id="Delete" />
+        <FormattedMessage id={inGroup ? 'Remove' : 'Delete'} />
       </AppButton>
     </Box>
   </AppDialog>

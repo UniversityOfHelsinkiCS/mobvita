@@ -255,6 +255,8 @@ const DesignSystem = () => {
               'grid01',
               'iconEdit',
               'trash03',
+              'isClosedYes',
+              'isClosedNo',
               'bell04',
               'brush01',
               'logOut01',

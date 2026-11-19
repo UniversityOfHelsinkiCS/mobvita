@@ -18,6 +18,7 @@ import FolderEmpty from '../../assets/images/folder-empty.svg'
 import FlipBackward from '../../assets/images/flip-backward.svg'
 import './LibraryView.scss'
 
+// Library folder tile with an options menu; `deleteLabelId` names the delete menu item.
 const FolderCard = ({
   name,
   onClick,
@@ -26,6 +27,7 @@ const FolderCard = ({
   onDragOver,
   onDrop,
   onDelete,
+  deleteLabelId = 'delete-folder',
   onRemove,
   onRename,
   onCopy,
@@ -198,7 +200,7 @@ const FolderCard = ({
               )}
               {onDelete && (
                 <AppMenuItem onClick={onDelete}>
-                  <FormattedMessage id="delete-folder" />
+                  <FormattedMessage id={deleteLabelId} />
                 </AppMenuItem>
               )}
               {onRemove && (

@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import {
   removeStory,
   getAllStories,
-  unshareStory as unshare,
+  unshareStories,
   storyVisibilityChange,
   setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
@@ -31,6 +31,7 @@ import './LibraryView.scss'
 
 const liveDescriptionCache = {}
 
+// Story card title: opens the details modal and decides which actions it offers.
 const StoryTitle = ({
   story,
   triggerContent,
@@ -47,7 +48,9 @@ const StoryTitle = ({
   const { user, teacherView } = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
   const isControlledStory = !!story?.control_story
-  const showDeleteButton = libraryShown.private || (!libraryShown.public && teacherView)
+  // Private: own/received stories can be deleted; Group: only the group's teachers can unshare.
+  const showDeleteButton =
+    libraryShown.private || (libraryShown.group && Boolean(currentGroup?.is_teaching))
   const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     teacherView && !isControlledStory && story.user === user?.oid && !story.flashcardsOnly
@@ -145,8 +148,10 @@ const StoryCard = ({
   const learningLanguage = useSelector(learningLanguageSelector)
   const isControlledStory = !!story?.control_story
   const currentGroup = groups.find(g => g.group_id === selectedGroup)
-  const inGroupLibrary = libraryShown.group && !!story.groups
-  const showGroupNames = story.groups && libraryShown.private
+  // An empty `groups` array (e.g. after the last unshare) means not shared with any group.
+  const sharedToGroups = story.groups?.length > 0
+  const inGroupLibrary = libraryShown.group && sharedToGroups
+  const showGroupNames = sharedToGroups && libraryShown.private
   const uploadUnfinished = story?.uploadUnfinished
   const isUnderProcessingDescription =
     typeof story?.description === 'string' &&
@@ -157,7 +162,7 @@ const StoryCard = ({
   const description = processingDescription || story.description
   const commentsOnStory = story?.annotation_count > 0
   const deleteStory = () => dispatch(removeStory(story._id))
-  const unshareStory = () => dispatch(unshare(selectedGroup, story._id))
+  const unshareStory = () => dispatch(unshareStories(selectedGroup, [story._id]))
 
   useEffect(() => {
     setProcessingDescription(liveDescriptionCache[story._id] || null)
@@ -388,6 +393,7 @@ const StoryCard = ({
         setOpen={setConfirmationOpen}
         storyId={story._id}
         action={inGroupLibrary ? unshareStory : deleteStory}
+        acceptLabel={inGroupLibrary ? <FormattedMessage id="Remove" /> : undefined}
       >
         {inGroupLibrary && currentGroup ? (
           <FormattedMessage

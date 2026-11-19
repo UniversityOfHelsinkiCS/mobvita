@@ -7,6 +7,7 @@ import AppDialog from 'Components/ui/AppDialog'
 import AppTextField from 'Components/ui/AppTextField'
 import { renameStory } from 'Utilities/redux/storiesReducer'
 
+// Dialog that renames a story; closes without a request when the title is empty or unchanged.
 const RenameStoryDialog = ({ story, open, onClose }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
@@ -19,6 +20,7 @@ const RenameStoryDialog = ({ story, open, onClose }) => {
   const trimmed = title.trim()
   const unchanged = trimmed === (story?.title || '').trim()
 
+  // Sends the new title and closes the dialog.
   const handleSubmit = event => {
     event.preventDefault()
     if (!trimmed || unchanged) {

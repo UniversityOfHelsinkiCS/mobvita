@@ -253,6 +253,10 @@
     "recommended-sites": "Рекомендовані сайти",
     "story-unshared": "Історію видалено з бібліотеки групи",
     "remove-story-from-group-warning": "Цей текст буде видалено з бібліотеки групи {group}",
+    "remove-from-group": "Remove from group",
+    "remove-folder-from-group": "Remove folder from group",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "stories-unshared": "Removed stories from group library",
     "practice-random-story": "Практикуватися з випадковою історією",
     "Back to library": "Назад до бібліотеки",
     "click-to-add-site-to-favourites": "Натисніть тут, щоб додати веб-сайт до ваших улюблених!",
@@ -1165,5 +1169,6 @@
     "connection-server-down": "Revita server unreachable",
     "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online."
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "story-TAILORED-completed-message": "Хочеш знову опрацювати цю історію?"
 }

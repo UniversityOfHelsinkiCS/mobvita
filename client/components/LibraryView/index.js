@@ -31,6 +31,7 @@ import {
   clearFocusedStory,
   updateStoryPath,
   removeStory,
+  unshareStories,
 } from 'Utilities/redux/storiesReducer'
 import {
   getWritingEssays,
@@ -971,11 +972,16 @@ const StoryList = () => {
     })
   }
 
+  // Group tab: unshares the folder's stories from the group in one call (owners keep them).
+  // Private tab: really deletes the stories; essays folders delete their essays.
   const handleConfirmFolderDelete = () => {
     if (!folderDeleteRequest) return
-    ;(folderDeleteRequest.storyIds || []).forEach(storyId => {
-      dispatch(removeStory(storyId))
-    })
+    const storyIds = folderDeleteRequest.storyIds || []
+    if (activeLibrary === 'group') {
+      if (storyIds.length) dispatch(unshareStories(savedGroupSelection, storyIds))
+    } else {
+      storyIds.forEach(storyId => dispatch(removeStory(storyId)))
+    }
     if (learningLanguage) {
       ;(folderDeleteRequest.essayIds || []).forEach(essayId => {
         dispatch(removeWritingEssay(capitalize(learningLanguage), essayId))
@@ -1133,6 +1139,7 @@ const StoryList = () => {
                       ? () => handleDeleteFolderRequest(normalizedFolderPath)
                       : undefined
                   }
+                  deleteLabelId={activeLibrary === 'group' ? 'remove-from-group' : undefined}
                   onRemove={
                     folderIsEmptyLocal
                       ? () => handleRemoveLocalFolder(normalizedFolderPath)
@@ -1394,6 +1401,8 @@ const StoryList = () => {
             open={Boolean(folderDeleteRequest)}
             onClose={() => setFolderDeleteRequest(null)}
             onConfirm={handleConfirmFolderDelete}
+            inGroup={activeLibrary === 'group'}
+            groupName={currentGroup?.groupName}
           />
           {libraryControls}
           <Box

@@ -755,6 +755,10 @@
     "completed-snippets": "Frammento completato",
     "story-unshared": "Rimuovi la storia dalla biblioteca del gruppo",
     "remove-story-from-group-warning": "Questo rimuoverà la storia dalla biblioteca del gruppo {group}",
+    "remove-from-group": "Remove from group",
+    "remove-folder-from-group": "Remove folder from group",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Seleziona uno studente dalla lista",
     "take-me-to-old-revita": "Vecchia Revita",
     "practice-random-story": "Allenati con storie casuali",
@@ -2050,5 +2054,6 @@
     "connection-server-down": "Revita server unreachable",
     "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online."
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "story-TAILORED-completed-message": "Vuoi ricominciare e mettere in pratica questa storia di nuovo?"
 }
