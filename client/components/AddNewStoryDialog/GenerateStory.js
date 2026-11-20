@@ -36,7 +36,7 @@ const SUMMARY = 2
 const RESULT = 3
 
 // Figma "Generate Story with AI": settings, (grammar topics), summary, result, with a side stepper.
-const GenerateStory = ({ closeModal }) => {
+const GenerateStory = ({ closeModal, setFormBack }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -78,8 +78,16 @@ const GenerateStory = ({ closeModal }) => {
 
   const nextStep = () =>
     setStep(current => (!canSelectGrammar && current === SETTINGS ? SUMMARY : current + 1))
+  // One step back (result → summary, …); the options entered so far stay as they are.
   const previousStep = () =>
     setStep(current => (!canSelectGrammar && current === SUMMARY ? SETTINGS : current - 1))
+
+  // The dialog's Back goes to the previous step; on the first step it returns to the story sources.
+  useEffect(() => {
+    if (!setFormBack) return undefined
+    setFormBack(step === SETTINGS ? null : () => previousStep)
+    return () => setFormBack(null)
+  }, [step, canSelectGrammar])
 
   const generate = () => {
     setGeneratedStory('')
@@ -223,6 +231,7 @@ const GenerateStory = ({ closeModal }) => {
             setSelectedTopics={setSelectedTopics}
             showPerf
             note={topicsNote}
+            openSelectedGroups
           />
           <div className="generate-story-actions">
             {backButton}

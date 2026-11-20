@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -13,6 +13,7 @@ import TopicListItem from './TopicListItem'
 const TOPIC_ROW_DIVIDER = '#E4E1D3'
 
 // Searchable lesson topic list grouped by level; showExamples toggles each topic's "— …" example.
+// openSelectedGroups: groups holding selected topics start open, and several groups may stay open.
 const Topics = ({
   topicInstance,
   editable,
@@ -20,12 +21,15 @@ const Topics = ({
   showPerf,
   note,
   showExamples = true,
+  openSelectedGroups = false,
 }) => {
   const intl = useIntl()
   const { lessons } = useSelector(({ metadata }) => metadata)
   const { topics } = useSelector(({ lessons }) => lessons)
   const [filteredLessons, setFilteredLessons] = useState(lessons)
-  const [accordionState, setAccordionState] = useState(-1)
+  // Names of the expanded level groups (by name, so a search filter doesn't shift them).
+  const [openGroups, setOpenGroups] = useState([])
+  const openedSelectedRef = useRef(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   const lesson2info = lessons.reduce((obj, lesson) => ({ ...obj, [lesson.ID]: lesson }), {})
@@ -93,6 +97,23 @@ const Topics = ({
         return x
       }, {})) ||
     {}
+
+  // Once lessons are loaded, open every group that already holds a selected topic.
+  useEffect(() => {
+    if (!openSelectedGroups || openedSelectedRef.current || !lessons?.length) return
+    openedSelectedRef.current = true
+    const groups = lessons
+      .filter(lesson => lesson.topics?.some(topic => selectedTopicSet.has(topic)))
+      .map(lesson => lesson.group)
+    setOpenGroups([...new Set(groups)])
+  }, [lessons, openSelectedGroups])
+
+  // Opens/closes a group; without openSelectedGroups opening one closes the others (as before).
+  const toggleGroup = group =>
+    setOpenGroups(current => {
+      if (current.includes(group)) return current.filter(name => name !== group)
+      return openSelectedGroups ? [...current, group] : [group]
+    })
 
   const handleSearchChange = event => {
     setSearchQuery(event.target.value)
@@ -238,11 +259,11 @@ const Topics = ({
         <div style={{ background: 'transparent', borderRadius: 12, overflow: 'hidden' }}>
           {Object.keys(lessonGroups)
             .sort()
-            .map((group, index) => (
+            .map(group => (
               <Accordion
                 key={`lesson-group-${group}`}
-                expanded={accordionState === index}
-                onChange={() => setAccordionState(accordionState === index ? -1 : index)}
+                expanded={openGroups.includes(group)}
+                onChange={() => toggleGroup(group)}
                 disableGutters
                 elevation={0}
                 sx={{
