@@ -1113,7 +1113,7 @@
     "students-added-to-the-group": "Ryhmään lisätyt opiskelijat:",
     "students-awaiting-confirmation": "Vahvistusta odottavat opiskelijat:",
     "students-not-registered-in-revita": "Opiskelijat, joita ei tavoiteta seuraavista sähköpostiosoitteista:",
-    "teachers-not-allowed-in-group": "Not allowed to join as teachers:",
+    "teachers-not-allowed-in-group": "Ei saa liittyä mukaan opettajina:",
     "students-not-allowed-in-group": "Not allowed to join as students:",
     "not-allowed-in-group-for": "Not allowed to join",
     "not-allowed-in-group-explanation": "These accounts can't be added with the selected role (for example, only teacher accounts can be added as teachers).",
