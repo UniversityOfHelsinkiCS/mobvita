@@ -173,7 +173,19 @@ const initialState = {
   pending: false, 
   error: false,
   cacheRequesting: false,
+  // requestId of the cache request in flight; a reset forgets it, so that answer is ignored.
+  cacheRequestId: null,
   // Set when a cache request fails, so the caching effect stops instead of retrying in a loop.
+  cacheFailed: false,
+}
+
+// The empty cache, shared by the explicit reset and the reset after an exercise-setting change.
+const EMPTY_CACHE = {
+  cachedSnippets: {},
+  cachedSnippetIds: [],
+  candidatesInCache: [],
+  lastCachedSnippetKey: null,
+  cacheSize: 0,
   cacheFailed: false,
 }
 
@@ -415,9 +427,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cacheRequesting: true,
+        cacheRequestId: action.requestId,
       }
 
-    case 'CACHE_NEXT_SNIPPET_SUCCESS':
+    // A stale answer (requested before a settings reset) only serves a user already waiting for it.
+    case 'CACHE_NEXT_SNIPPET_SUCCESS': {
+      const stale = action.requestId !== state.cacheRequestId
       const snippet = {...action.response, 
         practice_snippet: action.response.practice_snippet.map(
           token => ({...token, story_id: action.response.storyid}))}
@@ -430,10 +445,10 @@ export default (state = initialState, action) => {
           nextSnippetKeyFromCache: null,
           pending: false,
           error: false,
-          cacheRequesting: false,
-          cacheFailed: false,
+          ...(stale ? {} : { cacheRequesting: false, cacheRequestId: null, cacheFailed: false }),
         }
       }
+      if (stale) return state
       const snippets = {
         ...state.cachedSnippets,
         [snippetKey]: snippet,
@@ -441,17 +456,32 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cacheRequesting: false,
+        cacheRequestId: null,
         cacheFailed: false,
         cachedSnippets: snippets,
         lastCachedSnippetKey: snippetKey,
         ...processCachedSnippets(snippets),
       }
+    }
 
     case 'CACHE_NEXT_SNIPPET_FAILURE':
+      if (action.requestId !== state.cacheRequestId) return state
       return {
         ...state,
         cacheRequesting: false,
+        cacheRequestId: null,
         cacheFailed: true,
+      }
+
+    // An exercise switch was saved: snippets cached with the old settings (and the one in flight)
+    // are dropped; the caching effect refills. A user waiting for the next snippet keeps waiting.
+    case 'SAVE_SELF_SUCCESS':
+      if (!action.meta?.resetsSnippetCache) return state
+      return {
+        ...state,
+        ...EMPTY_CACHE,
+        cacheRequesting: false,
+        cacheRequestId: null,
       }
 
     case 'DROP_CACHED_SNIPPET':
@@ -465,13 +495,8 @@ export default (state = initialState, action) => {
     case 'RESET_CACHED_SNIPPETS':
       return {
         ...state,
-        cachedSnippets: {}, 
-        cachedSnippetIds: [], 
-        candidatesInCache: [],
-        lastCachedSnippetKey: null,
+        ...EMPTY_CACHE,
         nextSnippetKeyFromCache: null,
-        cacheSize: 0,
-        cacheFailed: false,
       }
     default:
       return state
