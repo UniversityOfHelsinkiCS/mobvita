@@ -22,19 +22,24 @@ const FlashcardCreation = () => {
   const dispatch = useDispatch()
 
   const wordRef = useRef()
+  const requestedWordRef = useRef(null)
 
   useEffect(() => {
-    if (glosses) {
-      setTranslations(glosses)
-    } else {
+    if (!glosses) {
       setTranslations([])
+    } else if (word && requestedWordRef.current === word) {
+      setTranslations(glosses)
     }
   }, [glosses])
 
-  useEffect(() => () => dispatch(clearTranslationAction()), [])
+  useEffect(() => {
+    dispatch(clearTranslationAction())
+    return () => dispatch(clearTranslationAction())
+  }, [])
 
   const getTranslations = () => {
     dispatch(clearTranslationAction())
+    requestedWordRef.current = word || null
     if (word) {
       const prefLemma = word.pref_lemma
       dispatch(
@@ -50,6 +55,7 @@ const FlashcardCreation = () => {
       hints: hint ? hints.concat(hint) : hints,
     }
     dispatch(createFlashcard(learningLanguage, dictionaryLanguage, cardObject))
+    requestedWordRef.current = null
     setWord('')
     setHints([])
     setTranslations([])
@@ -57,6 +63,7 @@ const FlashcardCreation = () => {
   }
 
   const clearAction = () => {
+    requestedWordRef.current = null
     setWord('')
     setHints([])
     setTranslations([])

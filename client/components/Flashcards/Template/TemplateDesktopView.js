@@ -4,8 +4,6 @@ import TemplateHints from './TemplateHints'
 import TemplateTranslations from './TemplateTranslations'
 import TemplateActions from './TemplateActions'
 
-// Two-card "Add flashcard" layout: lavender word/hints card on the left, cream translations card
-// on the right (2026 design). Card colours/rounding live in Flashcards.scss.
 const TemplateDesktopView = props => (
   <div className="flashcard-template">
     <div className="flashcard flashcard-template-card flashcard-template-card--word">
