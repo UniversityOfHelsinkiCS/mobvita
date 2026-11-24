@@ -19,6 +19,7 @@ import FlipBackward from '../../assets/images/flip-backward.svg'
 import './LibraryView.scss'
 
 // Library folder tile with an options menu; `deleteLabelId` names the delete menu item.
+// onShare: "Share folder" (Private tab, own stories).
 const FolderCard = ({
   name,
   onClick,
@@ -31,6 +32,7 @@ const FolderCard = ({
   onRemove,
   onRename,
   onCopy,
+  onShare,
   copying = false,
   existingFolderNames = [],
   draggable = false,
@@ -45,7 +47,7 @@ const FolderCard = ({
   const [renameOpen, setRenameOpen] = useState(false)
   const [renameValue, setRenameValue] = useState(name)
   const [renameError, setRenameError] = useState('')
-  const hasMenu = Boolean(onRename || onDelete || onRemove || onCopy)
+  const hasMenu = Boolean(onRename || onDelete || onRemove || onCopy || onShare)
 
   const handleKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -191,6 +193,11 @@ const FolderCard = ({
                   <FormattedMessage
                     id={copying ? 'copying-stories' : 'copy-folder-to-my-library'}
                   />
+                </AppMenuItem>
+              )}
+              {onShare && (
+                <AppMenuItem onClick={onShare} data-cy="folder-share">
+                  <FormattedMessage id="share-folder" />
                 </AppMenuItem>
               )}
               {onRename && (

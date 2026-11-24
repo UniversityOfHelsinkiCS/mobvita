@@ -27,7 +27,9 @@ const CHECKBOX_LABEL_SX = {
 // The caption above a field: muted and small, inset to line up with the pill's own padding.
 const FIELD_LABEL_STYLE = { color: colors.muted, fontSize: 12, paddingLeft: 10 }
 
-const ShareStory = ({ story, isOpen, setOpen }) => {
+// Share dialog for one `story`, or for a folder: `stories` go into folder `folderName` on the
+// receiving side in one request (subfolders flattened).
+const ShareStory = ({ story, stories = [], folderName = null, isOpen, setOpen }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -55,7 +57,11 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
     setShareTargetGroupId(null)
   }, [isOpen])
 
-  // Shares this story with the chosen group or e-mail list, then closes the dialog.
+  const isFolder = folderName !== null
+  const storyIds = isFolder ? stories.map(item => item._id) : [story._id]
+  const targetPath = isFolder ? folderName : undefined
+
+  // Shares the story (or folder) with the chosen group or e-mail list, then closes the dialog.
   const share = event => {
     event.preventDefault()
 
@@ -63,11 +69,12 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       setShowSelfAddWarning(true)
     } else {
       if (showOption === 'group') {
-        dispatch(shareStory([story._id], [shareTargetGroupId], [], message, isHiddenStory))
-      } else {
         dispatch(
-          shareStory([story._id], [], formatEmailList(shareTargetUserEmails), message, false),
+          shareStory(storyIds, [shareTargetGroupId], [], message, isHiddenStory, targetPath),
         )
+      } else {
+        const emails = formatEmailList(shareTargetUserEmails)
+        dispatch(shareStory(storyIds, [], emails, message, false, targetPath))
       }
       setMessage('')
       setOpen(false)
@@ -88,9 +95,8 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       ? canShareWithAGroup && !!shareTargetGroupId
       : shareTargetUserEmails?.length >= EMAIL_MIN_LENGTH
 
-  const hiddenStoryLabel = story.flashcardsOnly
-    ? 'share-as-a-hidden-flashcards'
-    : 'share-as-a-hidden-story'
+  const hiddenStoryLabel =
+    !isFolder && story.flashcardsOnly ? 'share-as-a-hidden-flashcards' : 'share-as-a-hidden-story'
 
   return (
     <AppDialog
@@ -101,7 +107,14 @@ const ShareStory = ({ story, isOpen, setOpen }) => {
       // Fills the width up to 540px, and shrinks with the screen below that.
       paperSx={{ maxWidth: 540 }}
       // No heading: the story's own title is the only caption the dialog needs.
-      title={story.shortTitle}
+      title={
+        isFolder
+          ? intl.formatMessage(
+              { id: 'share-folder-title' },
+              { folder: folderName, count: storyIds.length },
+            )
+          : story.shortTitle
+      }
       titleSx={{ px: '60px', pt: '40px', color: colors.muted, fontSize: 22, fontWeight: 400 }}
       contentSx={{ px: '60px', pb: '40px' }}
       closeSx={{ right: 24, top: 24 }}

@@ -84,10 +84,14 @@ export default (state = initialState, action) => {
         }
       }
 
-      return {
-        translationId: 'story-shared',
-        type: type.success,
-      }
+      // A folder share sends several stories in one request.
+      return action.meta?.storyCount > 1
+        ? {
+            translationId: 'stories-shared',
+            type: type.success,
+            contextVariables: { count: action.meta.storyCount },
+          }
+        : { translationId: 'story-shared', type: type.success }
     case 'REMOVE_FROM_GROUP_FAILURE':
       return {
         message: failureMessage(action.response),

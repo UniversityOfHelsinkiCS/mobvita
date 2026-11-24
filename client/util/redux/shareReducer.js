@@ -1,7 +1,8 @@
 import callBuilder from '../apiConnection'
 
-// Shares a batch of stories with groups and/or users via POST /stories/share.
-export const shareStory = (storyIds, groups, users, message, hidden_story) => {
+// Shares a batch of stories with groups and/or users via POST /stories/share; `path` (optional)
+// is the folder they get on the receiving side (group folder / recipient's private folder).
+export const shareStory = (storyIds, groups, users, message, hidden_story, path) => {
   const route = '/stories/share'
   const payload = {
     story_ids: storyIds,
@@ -9,9 +10,10 @@ export const shareStory = (storyIds, groups, users, message, hidden_story) => {
     share_users: users,
     share_message: message,
     hidden_story,
+    ...(path !== undefined && { path }),
   }
   const prefix = 'SHARE_STORY'
-  return callBuilder(route, prefix, 'post', payload)
+  return { ...callBuilder(route, prefix, 'post', payload), meta: { storyCount: storyIds.length } }
 }
 
 export default (state = { sharedToGroupSinceLastFetch: false }, action) => {

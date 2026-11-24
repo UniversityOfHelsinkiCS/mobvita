@@ -286,6 +286,9 @@
     "share-story-with-a-group": "Поділитися з групою",
     "failed-to-share-the-story": "Не вдалося поділитися",
     "story-shared": "Історія поділена",
+    "share-folder": "Share folder",
+    "share-folder-title": "Share folder “{folder}” ({count, plural, one {# story} other {# stories}})",
+    "stories-shared": "{count, plural, one {# story} other {# stories}} shared",
     "share-story-with-user-default": "Я хотів поділитися цією історією з вами!",
     "share-story-with-group-default": "Будь ласка, проробіть вправи!",
     "this-text-is-too-short-minimum-50-characters": "Цей текст занадто короткий. Мінімум: 50 символів.",
@@ -1167,8 +1170,8 @@
     "show-examples": "Show examples",
     "preprocessing-story-with-percent": "Preprocessing... {progress} % done",
     "connection-server-down": "Revita server unreachable",
-    "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
-    "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "connection-online-tooltip": "You are online, the server is responding normally.",
+    "connection-server-down-tooltip": "Your internet works, but the server is not responding right now. The dot turns green when the server is back.",
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green once you are back online.",
     "story-TAILORED-completed-message": "Хочеш знову опрацювати цю історію?"
 }

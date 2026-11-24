@@ -851,6 +851,9 @@
     "Joint vs. hyphenated spelling": "Joint vs. hyphenated vs. separate spelling",
     "Joint vs. separate spelling of negation 'не'": "Joint vs. separate spelling of negation \"не\"",
     "story-shared": "Story shared",
+    "share-folder": "Share folder",
+    "share-folder-title": "Share folder “{folder}” ({count, plural, one {# story} other {# stories}})",
+    "stories-shared": "{count, plural, one {# story} other {# stories}} shared",
     "report-sent": "Report sent",
     "last-weeks-winners": "Last week's winners",
     "invitation-email-sent-to": "Invitation email sent to",
@@ -1909,8 +1912,8 @@
     "show-examples": "Show examples",
     "preprocessing-story-with-percent": "Preprocessing... {progress} % done",
     "connection-server-down": "Revita server unreachable",
-    "connection-online-tooltip": "You are online, and the Revita server is responding normally.",
-    "connection-server-down-tooltip": "Your internet works, but the Revita server is not responding right now. The dot turns green when the server is back.",
-    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green again once you are back online.",
+    "connection-online-tooltip": "You are online, the server is responding normally.",
+    "connection-server-down-tooltip": "Your internet works, but the server is not responding right now. The dot turns green when the server is back.",
+    "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green once you are back online.",
     "story-TAILORED-completed-message": "Would you like to practice this story again?"
 }

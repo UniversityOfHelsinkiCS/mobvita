@@ -49,6 +49,7 @@ import Spinner from 'Components/Spinner'
 import DeleteFolderDialog from './DeleteFolderDialog'
 import FolderCard from './FolderCard'
 import useCopyStories from './useCopyStories'
+import ShareStory from 'Components/StoryView/ShareStory'
 import AddFolder from './AddFolder'
 import EssayCard from './EssayCard'
 import GeneralChatbot from 'Components/ChatBot/GeneralChatbot'
@@ -127,6 +128,8 @@ const StoryList = () => {
   const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] =
     useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
+  // { name, stories } of the folder being shared; null = share dialog closed.
+  const [folderShareRequest, setFolderShareRequest] = useState(null)
   const [essaySearchQuery, setEssaySearchQuery] = useState('')
   const requestedLibrary = location.state?.library
   const groupsLibrary = location.pathname.includes('group') || requestedLibrary === 'group'
@@ -893,6 +896,18 @@ const StoryList = () => {
     })
   }
 
+  // "Share folder" in the Private tab: own, processed stories of the folder and its subfolders go
+  // into a folder of the same name on the receiving side. Stories shared with me are not re-shared.
+  const shareableFolderHandler = (storiesInFolder, folderName) => {
+    if (activeLibrary !== 'private' || isAnonymous) return undefined
+    const toShare = storiesInFolder.filter(
+      story => story.user === userId && !story.uploadUnfinished,
+    )
+    return toShare.length
+      ? () => setFolderShareRequest({ name: folderName, stories: toShare })
+      : undefined
+  }
+
   // Copy action for a folder of others' stories; their paths here are this tab's (share) paths.
   const copyableFolderHandler = (storiesInFolder, folderPath) => {
     if (isAnonymous) return undefined
@@ -1157,6 +1172,7 @@ const StoryList = () => {
                       : undefined
                   }
                   onCopy={copyableFolderHandler(storiesInFolder, normalizedFolderPath)}
+                  onShare={shareableFolderHandler(storiesInFolder, folderName)}
                   copying={copying}
                   existingFolderNames={allFolderNamesInCurrentPath}
                 />
@@ -1403,6 +1419,14 @@ const StoryList = () => {
           className={`library-dashboard tour-library-welcome ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
           style={{ flex: 1 }}
         >
+          {folderShareRequest && (
+            <ShareStory
+              stories={folderShareRequest.stories}
+              folderName={folderShareRequest.name}
+              isOpen
+              setOpen={open => !open && setFolderShareRequest(null)}
+            />
+          )}
           <DeleteFolderDialog
             open={Boolean(folderDeleteRequest)}
             onClose={() => setFolderDeleteRequest(null)}
