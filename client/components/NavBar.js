@@ -43,7 +43,7 @@ import {
   ACCESS,
   useHasAccess,
 } from 'Utilities/common'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { colors, breakpoints } from 'Assets/mui_theme/designTokens'
 import useConnectionStatus from 'Utilities/useConnectionStatus'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { setAnnotationsVisibility } from 'Utilities/redux/annotationsReducer'
@@ -155,7 +155,7 @@ export default function NavBar() {
 
   const { width: windowWidth } = useWindowDimensions()
   const smallWindow = windowWidth < 700
-  const tinyWindow = windowWidth <= 450   
+  const tinyWindow = windowWidth <= breakpoints.xs
   const intl = useIntl()
   const connectionStatus = useConnectionStatus()
   const handleEloClick = () => {
@@ -558,7 +558,7 @@ export default function NavBar() {
                   mr: tinyWindow ? '8px' : '40px',
                 }}
               >
-                {/* ≤400px: no labels, only the switch (it keeps an aria-label). */}
+                {/* ≤breakpoints.xs: no labels, only the switch (it keeps an aria-label). */}
                 {!tinyWindow && (
                   <span
                     style={{

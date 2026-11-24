@@ -464,7 +464,13 @@ const StoryList = () => {
           .map(key => ({ value: key, ...meta[key] }))
         return (
           <div style={{ margin: '0 0 1.7em 0' }}>
-            <AppTabs tabs={tabs} value={activeLibrary} onChange={handleLibraryChange} fullWidth />
+            <AppTabs
+              tabs={tabs}
+              value={activeLibrary}
+              onChange={handleLibraryChange}
+              fullWidth
+              iconOnlyXs
+            />
           </div>
         )
       })()}

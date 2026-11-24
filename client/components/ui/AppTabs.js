@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
 import CustomTooltip from 'Components/CustomTooltip'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { colors, breakpoints } from 'Assets/mui_theme/designTokens'
 
 /**
  * AppTabs — the 2026 segmented tab bar: a cream rounded container of pill segments. The active
@@ -16,6 +16,9 @@ import { colors } from 'Assets/mui_theme/designTokens'
  * size, icon and badge — the same shorthand AppButton uses. Reach for 'sm' when a `fullWidth` bar
  * carries long labels (e.g. the group-analytics summary tabs), 'xs' when it also has to fit a
  * narrow column or sidebar, and 'lg' for a primary page-level switch.
+ *
+ * `iconOnlyXs` collapses inactive tabs to their icon on the smallest screens (≤450px); the active
+ * tab keeps its label. Tabs without an icon always show their label.
  *
  * Long labels never wrap, so a `fullWidth` bar grows past its container rather than clipping them.
  * Put it in an `overflow-x: auto` wrapper to scroll that case.
@@ -42,6 +45,22 @@ const resolveSize = size => SIZES[SIZE_KEYS[size] || size] || SIZES.medium
 
 const INNER_HEIGHT = 36
 
+// The smallest-screen layout — same breakpoint as the navbar's compact mode.
+const XS_QUERY = `@media (max-width: ${breakpoints.xs}px)`
+
+// Visually hidden but still read by screen readers, so an icon-only tab keeps its name.
+const VISUALLY_HIDDEN = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+}
+
 const TabsBar = styled('div', {
   shouldForwardProp: prop => !['fullWidth', 'bordered', 'sizing', 'inner'].includes(prop),
 })(({ fullWidth, bordered, sizing, inner }) => ({
@@ -64,9 +83,11 @@ const TabsBar = styled('div', {
   ...(inner && { height: INNER_HEIGHT, overflow: 'hidden' }),
 }))
 
+// One segment; with `iconOnly` an inactive tab drops to its icon on xs screens.
 const Tab = styled('button', {
-  shouldForwardProp: prop => !['active', 'fullWidth', 'sizing', 'inner'].includes(prop),
-})(({ active, fullWidth, sizing, inner }) => ({
+  shouldForwardProp: prop => !['active', 'fullWidth', 'sizing', 'inner', 'iconOnly'].includes(prop),
+})(({ active, fullWidth, sizing, inner, iconOnly }) => ({
+  position: 'relative',
   flex: fullWidth ? 1 : 'none',
   // `flex: 1` means flex-basis 0, so segments share the bar equally — but labels don't wrap, and a
   // long one (or a long translation) would otherwise spill outside its pill. The floor keeps the
@@ -96,6 +117,10 @@ const Tab = styled('button', {
     borderRight: `2px solid ${colors.green}`,
     '&:last-of-type': { borderRight: 'none' },
   }),
+  ...(iconOnly &&
+    !active && {
+      [XS_QUERY]: { '& .app-tab-label': VISUALLY_HIDDEN },
+    }),
 }))
 
 const Badge = styled('span', {
@@ -116,6 +141,7 @@ const Badge = styled('span', {
   lineHeight: 1,
 }))
 
+// Segmented tab bar; see the header comment for props and variants.
 const AppTabs = ({
   tabs = [],
   value,
@@ -124,6 +150,7 @@ const AppTabs = ({
   bordered = false,
   variant = 'default',
   size = 'md',
+  iconOnlyXs = false,
 }) => {
   const sizing = resolveSize(size)
   const inner = variant === 'inner'
@@ -150,10 +177,11 @@ const AppTabs = ({
             fullWidth={fullWidth}
             inner={inner}
             sizing={sizing}
+            iconOnly={iconOnlyXs && !!tab.icon}
             onClick={() => onChange(tab.value)}
           >
             {tab.icon}
-            <span>{tab.label}</span>
+            <span className="app-tab-label">{tab.label}</span>
             {tab.badge != null && <Badge sizing={sizing}>{tab.badge}</Badge>}
           </Tab>
         )

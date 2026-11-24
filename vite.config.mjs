@@ -6,7 +6,13 @@ import { execSync } from 'child_process'
 import { readFile, writeFile } from 'fs/promises'
 import { promisify } from 'util'
 import { brotliCompress, gzip, constants as zlibConstants } from 'zlib'
-import { bundledTypography, colors, font, typography } from './client/assets/mui_theme/designTokens.js'
+import {
+  breakpoints,
+  bundledTypography,
+  colors,
+  font,
+  typography,
+} from './client/assets/mui_theme/designTokens.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
@@ -208,7 +214,9 @@ export default defineConfig(({ mode }) => {
               .join('') +
             `$font-ui: ${font.family};\n` +
             `$font-content: ${font.content};\n` +
-            `$font-syriac: '${bundledTypography.syriac.name}';\n`,
+            `$font-syriac: '${bundledTypography.syriac.name}';\n` +
+            // Smallest-phone breakpoint, shared with NavBar and AppTabs.
+            `$breakpoint-xs: ${breakpoints.xs}px;\n`,
         },
       },
     },

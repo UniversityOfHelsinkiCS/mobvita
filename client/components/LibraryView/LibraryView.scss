@@ -46,6 +46,17 @@ $menu-hover: $color-menu-hover;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+
+  // Smallest phones: wrap instead of overflowing. A row wider than the screen widens the page
+  // and pushes the navbar's switch and avatar off-screen (the Group tab's dropdown did this).
+  @media (max-width: $breakpoint-xs) {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+
+    .library-folder-breadcrumbs {
+      min-width: 0;
+    }
+  }
 }
 
 .library-folder-grid {
@@ -490,6 +501,19 @@ $menu-hover: $color-menu-hover;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  // Smallest phones: its own full-width row under the breadcrumbs and add-folder button; drops
+  // AppSelect's inline 200px floor so it fits the screen.
+  @media (max-width: $breakpoint-xs) {
+    order: 1;
+    flex-basis: 100%;
+    max-width: none;
+    margin-left: 0;
+
+    button {
+      min-width: 0 !important;
+    }
   }
 }
 

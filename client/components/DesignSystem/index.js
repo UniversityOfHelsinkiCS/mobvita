@@ -873,6 +873,14 @@ const DesignSystem = () => {
                     />
                   </div>
                 </div>
+                <div style={{ maxWidth: 620 }}>
+                  <div style={{ fontSize: 13, color: colors.muted, marginBottom: 6 }}>
+                    <code>iconOnlyXs</code> — on the smallest screens (≤450px) inactive tabs show
+                    only their icon and the active tab keeps its label (e.g. the library tabs).
+                    Narrow the window to see it.
+                  </div>
+                  <AppTabs tabs={tabs} value={tab} onChange={setTab} fullWidth iconOnlyXs />
+                </div>
                 <div
                   style={{
                     backgroundColor: colors.card,

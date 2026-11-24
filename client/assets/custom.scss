@@ -73,9 +73,8 @@ $navbar-height: 4.125em;
 $footer-height: 50px;
 $application-content-top-padding: 1.7em;
 
-// Narrowest phone layout: the navbar's compact mode (flag without name, small switch, no switch
-// labels). Same breakpoint as `tinyWindow` (width <= 400) in NavBar.js — change both together.
-$breakpoint-xs: 450px;
+// `$breakpoint-xs` (narrowest phone layout: navbar compact mode, icon-only AppTabs) is injected
+// from `breakpoints.xs` in designTokens.js by vite.config.mjs — change it there.
 
 body {
   // The one place the application font is applied; everything else inherits it. Reading surfaces
