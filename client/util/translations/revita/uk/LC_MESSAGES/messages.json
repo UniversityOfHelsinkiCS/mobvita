@@ -255,7 +255,7 @@
     "remove-story-from-group-warning": "Цей текст буде видалено з бібліотеки групи {group}",
     "remove-from-group": "Remove from group",
     "remove-folder-from-group": "Remove folder from group",
-    "confirm-folder-remove-from-group": "Remove the stories in this folder from group<br/>{group}?<br/>(It will not be removed from the owner's library.)",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group\n<br/>{group} ?<br/> \n(It will not be removed from the owner's library.)",
     "stories-unshared": "Removed stories from group library",
     "practice-random-story": "Практикуватися з випадковою історією",
     "Back to library": "Назад до бібліотеки",

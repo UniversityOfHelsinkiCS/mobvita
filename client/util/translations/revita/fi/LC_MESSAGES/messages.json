@@ -757,7 +757,7 @@
     "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?",
     "remove-from-group": "Remove from group",
     "remove-folder-from-group": "Remove folder from group",
-    "confirm-folder-remove-from-group": "Poista tämän kansion tekstit ryhmästä<br/>{group}?<br/>(Niitä ei poisteta omistajan kirjastosta.)",
+    "confirm-folder-remove-from-group": "Poista tämän kansion tekstit ryhmästä\n<br/>{group} ?<br/>\n(Niitä ei poisteta omistajan kirjastosta.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Valitse opiskelija listasta",
     "take-me-to-old-revita": "Palaa vanhaan käyttöliittymään",

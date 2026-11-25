@@ -759,7 +759,7 @@
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
     "remove-from-group": "Remove from group",
     "remove-folder-from-group": "Remove folder from group",
-    "confirm-folder-remove-from-group": "Удалить истории из этой папки из группы<br/>{group}?<br/>(Из библиотеки владельца они удалены не будут.)",
+    "confirm-folder-remove-from-group": "Удалить истории из этой папки из группы\n<br/>{group} ?<br/>\n(Из библиотеки владельца они удалены не будут.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Выбери ученика из списка",
     "take-me-to-old-revita": "К старой версии Ревиты",
