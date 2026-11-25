@@ -46,6 +46,8 @@ const GenerateStory = ({ closeModal, setFormBack }) => {
   const { pending: metaPending, lesson_topics } = useSelector(({ metadata }) => metadata)
   const { pending: generating, text, error } = useSelector(({ storyGeneration }) => storyGeneration)
   const addStoryPath = useSelector(({ helperSidebar }) => helperSidebar.addStoryPath)
+  // Own topic performance (%) is for learners: students, or teachers switched to user mode.
+  const teacherView = useSelector(({ user }) => Boolean(user.data?.teacherView))
 
   const [step, setStep] = useState(SETTINGS)
   const [instance, setInstance] = useState({
@@ -229,7 +231,7 @@ const GenerateStory = ({ closeModal, setFormBack }) => {
             topicInstance={instance}
             editable
             setSelectedTopics={setSelectedTopics}
-            showPerf
+            showPerf={!teacherView}
             note={topicsNote}
             openSelectedGroups
           />
