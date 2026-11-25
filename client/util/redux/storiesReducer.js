@@ -214,11 +214,19 @@ export const renameStory = (storyId, title) => {
   return callBuilder(route, prefix, 'post', { title })
 }
 
-export const removeStory = storyId => {
+// Removes a story from my library / shared list; `meta.userId` lets the reducer keep group shares.
+export const removeStory = storyId => (dispatch, getState) => {
   const route = `/stories/${storyId}/remove`
   const prefix = 'REMOVE_STORY'
-  return callBuilder(route, prefix)
+  const userId = getState().user?.data?.user?.oid
+  return dispatch({ ...callBuilder(route, prefix), meta: { userId } })
 }
+
+// The BE keeps a removed story in its groups and only drops my link to it (owner or recipient).
+const withoutMyLink = (story, userId) =>
+  story.user === userId
+    ? { ...story, user: undefined, owner: 'unknown' }
+    : { ...story, sharedwith: (story.sharedwith || []).filter(id => id !== userId) }
 
 // Accepts a story shared by e-mail; the token alone identifies the share(s).
 export const acceptSharedStory = token => {
@@ -546,7 +554,12 @@ export default (state = initialState, action) => {
     case 'GET_STORY_READING_QUESTIONS_FAILURE':
       return { ...state, readingQuestionsPending: false, error: true }
     case 'GET_STORY_READING_QUESTIONS_SUCCESS':
-      return { ...state, readingQuestions: action.response, readingQuestionsPending: false, error: false }
+      return {
+        ...state,
+        readingQuestions: action.response,
+        readingQuestionsPending: false,
+        error: false,
+      }
     case 'GET_STORY_ATTEMPT': {
       const route = action.requestSettings?.route || ''
       const match = route.match(/^\/stories\/([^/?]+)/)
@@ -664,7 +677,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         annotationPending: false,
-        focused: { ...state.focused, ...action.response, _id: action.response?._id ?? state.focused?._id },
+        focused: {
+          ...state.focused,
+          ...action.response,
+          _id: action.response?._id ?? state.focused?._id,
+        },
         error: false,
       }
     case 'REMOVE_STORY_ANNOTATION_ATTEMPT':
@@ -683,7 +700,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         annotationPending: false,
-        focused: { ...state.focused, ...action.response, _id: action.response?._id ?? state.focused?._id },
+        focused: {
+          ...state.focused,
+          ...action.response,
+          _id: action.response?._id ?? state.focused?._id,
+        },
         error: false,
       }
     case 'SAVE_STORY_INTERMEDIATE':
@@ -797,26 +818,42 @@ export default (state = initialState, action) => {
       }
     // Optimistic delete: the card disappears at once and `pending` is left alone, so the library
     // keeps rendering instead of swapping to a spinner. The story is stashed for a failed call.
+    // Optimistic: a story shared to groups stays (for the Group tab) without my link; others go.
     case 'REMOVE_STORY_ATTEMPT': {
       const removedId = action.requestSettings?.route?.match(/^\/stories\/([^/]+)\/remove/)?.[1]
       const index = state.data.findIndex(story => String(story._id) === String(removedId))
       if (index === -1) return { ...state, error: false }
+      const story = state.data[index]
+      const kept = story.groups?.length > 0
       return {
         ...state,
-        data: state.data.filter((_, i) => i !== index),
-        removing: { ...state.removing, [action.requestId]: { story: state.data[index], index } },
+        data: kept
+          ? state.data.map((item, i) =>
+              i === index ? withoutMyLink(item, action.meta?.userId) : item,
+            )
+          : state.data.filter((_, i) => i !== index),
+        removing: { ...state.removing, [action.requestId]: { story, index, kept } },
         error: false,
       }
     }
-    // Put the story back where it was; the Toaster reports the error.
+    // Put the story back as it was; the Toaster reports the error.
     case 'REMOVE_STORY_FAILURE': {
       const stashed = state.removing[action.requestId]
-      const data = stashed
-        ? [...state.data.slice(0, stashed.index), stashed.story, ...state.data.slice(stashed.index)]
-        : state.data
+      let { data } = state
+      if (stashed?.kept) {
+        data = data.map(item =>
+          String(item._id) === String(stashed.story._id) ? stashed.story : item,
+        )
+      } else if (stashed) {
+        data = [...data.slice(0, stashed.index), stashed.story, ...data.slice(stashed.index)]
+      }
       return { ...state, data, removing: dropKey(state.removing, action.requestId), error: true }
     }
+    // A story kept for its groups stays in the list; any other is dropped.
     case 'REMOVE_STORY_SUCCESS': {
+      if (state.removing[action.requestId]?.kept) {
+        return { ...state, removing: dropKey(state.removing, action.requestId), error: false }
+      }
       const removedId = String(action.response.story_id)
       const wasFocused = String(state.focused?._id) === removedId
       return {
