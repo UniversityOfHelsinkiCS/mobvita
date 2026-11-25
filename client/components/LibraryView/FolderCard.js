@@ -18,7 +18,7 @@ import FolderEmpty from '../../assets/images/folder-empty.svg'
 import FlipBackward from '../../assets/images/flip-backward.svg'
 import './LibraryView.scss'
 
-// Library folder tile with an options menu; `deleteLabelId` names the delete menu item.
+// Library folder tile with an options menu; `deleteLabelId` names its one delete item.
 // onShare: "Share folder" (Private tab, own stories).
 const FolderCard = ({
   name,
@@ -29,7 +29,6 @@ const FolderCard = ({
   onDrop,
   onDelete,
   deleteLabelId = 'delete-folder',
-  onRemove,
   onRename,
   onCopy,
   onShare,
@@ -47,7 +46,7 @@ const FolderCard = ({
   const [renameOpen, setRenameOpen] = useState(false)
   const [renameValue, setRenameValue] = useState(name)
   const [renameError, setRenameError] = useState('')
-  const hasMenu = Boolean(onRename || onDelete || onRemove || onCopy || onShare)
+  const hasMenu = Boolean(onRename || onDelete || onCopy || onShare)
 
   const handleKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -208,11 +207,6 @@ const FolderCard = ({
               {onDelete && (
                 <AppMenuItem onClick={onDelete}>
                   <FormattedMessage id={deleteLabelId} />
-                </AppMenuItem>
-              )}
-              {onRemove && (
-                <AppMenuItem onClick={onRemove}>
-                  <FormattedMessage id="remove-empty-folder" />
                 </AppMenuItem>
               )}
             </AppMenu>
