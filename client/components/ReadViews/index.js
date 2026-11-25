@@ -797,7 +797,7 @@ const ReadViews = ({ match }) => {
         acceptLabel={inGroupLibrary ? <FormattedMessage id="Remove" /> : undefined}
       >
         {inGroupLibrary ? (
-          <FormattedMessage
+          <FormattedHTMLMessage
             id="remove-story-from-group-warning"
             values={{ group: currentGroup.groupName }}
           />

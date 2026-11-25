@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import Box from '@mui/material/Box'
 import AppButton from 'Components/AppButton'
 import AppDialog from 'Components/ui/AppDialog'
@@ -19,7 +20,7 @@ const DeleteFolderDialog = ({ open, onClose, onConfirm, inGroup = false, groupNa
   >
     <Box sx={{ fontSize: 16, fontWeight: 500, lineHeight: '18px', color: colors.ink }}>
       {inGroup ? (
-        <FormattedMessage id="confirm-folder-remove-from-group" values={{ group: groupName }} />
+        <FormattedHTMLMessage id="confirm-folder-remove-from-group" values={{ group: groupName }} />
       ) : (
         <FormattedMessage id="confirm-folder-delete" />
       )}

@@ -273,7 +273,7 @@
     "remove-story-from-group-warning": "文章将从小组图书馆中被删除{group}",
     "remove-from-group": "Remove from group",
     "remove-folder-from-group": "Remove folder from group",
-    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "confirm-folder-remove-from-group": "Remove the stories in this folder from group<br/>{group}?<br/>(It will not be removed from the owner's library.)",
     "stories-unshared": "Removed stories from group library",
     "upload-stories": "从文件中上传文章",
     "Weather": "天气",

@@ -4,6 +4,7 @@ import { Box, Card, IconButton } from '@mui/material'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { FormattedMessage, useIntl } from 'react-intl'
+import FormattedHTMLMessage from 'Components/FormattedHTMLMessage'
 import {
   removeStory,
   getAllStories,
@@ -396,7 +397,7 @@ const StoryCard = ({
         acceptLabel={inGroupLibrary ? <FormattedMessage id="Remove" /> : undefined}
       >
         {inGroupLibrary && currentGroup ? (
-          <FormattedMessage
+          <FormattedHTMLMessage
             id="remove-story-from-group-warning"
             values={{ group: currentGroup.groupName }}
           />

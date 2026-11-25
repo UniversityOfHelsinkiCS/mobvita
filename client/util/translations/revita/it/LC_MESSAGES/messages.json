@@ -757,7 +757,7 @@
     "remove-story-from-group-warning": "Questo rimuoverà la storia dalla biblioteca del gruppo {group}",
     "remove-from-group": "Remove from group",
     "remove-folder-from-group": "Remove folder from group",
-    "confirm-folder-remove-from-group": "Remove the stories in this folder from group {group}? They won't be deleted and stay in their owners' libraries.",
+    "confirm-folder-remove-from-group": "Rimuovere le storie presenti in questa cartella dal gruppo<br/>{group}?<br/>(Non verranno rimosse dalla libreria del proprietario.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Seleziona uno studente dalla lista",
     "take-me-to-old-revita": "Vecchia Revita",
