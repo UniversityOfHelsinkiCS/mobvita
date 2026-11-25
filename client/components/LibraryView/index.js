@@ -128,7 +128,7 @@ const StoryList = () => {
   const [loadedLocalFolderStorageKey, setLoadedLocalFolderStorageKey] =
     useState(localFolderStorageKey)
   const [folderDeleteRequest, setFolderDeleteRequest] = useState(null)
-  // { name, stories } of the folder being shared; null = share dialog closed.
+  // { name, stories, pathDict } of the folder being shared; null = share dialog closed.
   const [folderShareRequest, setFolderShareRequest] = useState(null)
   const [essaySearchQuery, setEssaySearchQuery] = useState('')
   const requestedLibrary = location.state?.library
@@ -670,17 +670,6 @@ const StoryList = () => {
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
 
-    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
-      const directStories = getStoriesForPath(allStoriesInActiveLibrary, currentLibraryPath)
-      const movingIds = new Set(storyIds.map(String))
-      if (
-        directStories.length > 0 &&
-        directStories.every(story => movingIds.has(String(story._id)))
-      ) {
-        return
-      }
-    }
-
     const storyIdSet = new Set(storyIds.map(storyId => String(storyId)))
     const storiesToMove = libraryFilteredStories.filter(
       story =>
@@ -693,21 +682,11 @@ const StoryList = () => {
     })
   }
 
+  // Moves dropped essays into targetPath (also into subfolders of the open folder).
   function handleMoveEssaysToPath(essayIds, targetPath) {
     if (!essaysLibraryActive || !learningLanguage) return
 
     const normalizedTargetPath = normalizeLibraryPath(targetPath)
-
-    if (currentLibraryPath && normalizedTargetPath.startsWith(`${currentLibraryPath}/`)) {
-      const directEssays = getStoriesForPath(uploadedEssays, currentLibraryPath)
-      const movingIds = new Set(essayIds.map(String))
-      if (
-        directEssays.length > 0 &&
-        directEssays.every(essay => movingIds.has(String(getWritingEssayId(essay))))
-      ) {
-        return
-      }
-    }
 
     const essayIdSet = new Set(essayIds.map(id => String(id)))
     const essaysToMove = uploadedEssays.filter(essay => {
@@ -896,16 +875,18 @@ const StoryList = () => {
     })
   }
 
-  // "Share folder" in the Private tab: own, processed stories of the folder and its subfolders go
-  // into a folder of the same name on the receiving side. Stories shared with me are not re-shared.
-  const shareableFolderHandler = (storiesInFolder, folderName) => {
+  // "Share folder" (Private tab): own, processed stories keep the folder's structure, rooted at its
+  // name on the receiving side. Stories shared with me are not re-shared.
+  const shareableFolderHandler = (storiesInFolder, folderPath, folderName) => {
     if (activeLibrary !== 'private' || isAnonymous) return undefined
     const toShare = storiesInFolder.filter(
       story => story.user === userId && !story.uploadUnfinished,
     )
-    return toShare.length
-      ? () => setFolderShareRequest({ name: folderName, stories: toShare })
-      : undefined
+    if (!toShare.length) return undefined
+    const pathDict = Object.fromEntries(
+      toShare.map(story => [story._id, getRenamedItemPath(story.path, folderPath, folderName)]),
+    )
+    return () => setFolderShareRequest({ name: folderName, stories: toShare, pathDict })
   }
 
   // Copy action for a folder of others' stories; their paths here are this tab's (share) paths.
@@ -1155,24 +1136,24 @@ const StoryList = () => {
                   onDrop={
                     libraryIsMutable ? e => handleFolderDrop(normalizedFolderPath, e) : undefined
                   }
+                  // One delete item: with stories it confirms, an empty local folder goes at once.
                   onDelete={
-                    libraryIsMutable && storiesInFolder.length > 0
+                    libraryIsMutable && (storiesInFolder.length > 0 || folderIsEmptyLocal)
                       ? () => handleDeleteFolderRequest(normalizedFolderPath)
                       : undefined
                   }
                   deleteLabelId={activeLibrary === 'group' ? 'remove-from-group' : undefined}
-                  onRemove={
-                    folderIsEmptyLocal
-                      ? () => handleRemoveLocalFolder(normalizedFolderPath)
-                      : undefined
-                  }
                   onRename={
                     libraryIsMutable
                       ? newName => handleRenameFolder(normalizedFolderPath, newName)
                       : undefined
                   }
                   onCopy={copyableFolderHandler(storiesInFolder, normalizedFolderPath)}
-                  onShare={shareableFolderHandler(storiesInFolder, folderName)}
+                  onShare={shareableFolderHandler(
+                    storiesInFolder,
+                    normalizedFolderPath,
+                    folderName,
+                  )}
                   copying={copying}
                   existingFolderNames={allFolderNamesInCurrentPath}
                 />
@@ -1336,13 +1317,8 @@ const StoryList = () => {
                   onDragOver={e => handleEssayFolderDragOver(normalizedFolderPath, e)}
                   onDrop={e => handleEssayFolderDrop(normalizedFolderPath, e)}
                   onDelete={
-                    essaysInFolder.length > 0
+                    essaysInFolder.length > 0 || folderIsEmptyLocal
                       ? () => handleDeleteEssayFolderRequest(normalizedFolderPath)
-                      : undefined
-                  }
-                  onRemove={
-                    folderIsEmptyLocal
-                      ? () => handleRemoveLocalFolder(normalizedFolderPath)
                       : undefined
                   }
                   onRename={newName => handleRenameEssayFolder(normalizedFolderPath, newName)}
@@ -1423,6 +1399,7 @@ const StoryList = () => {
             <ShareStory
               stories={folderShareRequest.stories}
               folderName={folderShareRequest.name}
+              pathDict={folderShareRequest.pathDict}
               isOpen
               setOpen={open => !open && setFolderShareRequest(null)}
             />

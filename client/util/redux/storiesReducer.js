@@ -198,11 +198,11 @@ export const updateStoryPath = (storyId, path, target = {}) => {
   return { ...callBuilder(route, prefix, 'post', payload), meta: target }
 }
 
-// Copies stories into the private library, all into folder `path` ('' = top level).
-export const duplicateStories = (storyIds, path = '') => {
+// Copies stories into the private library; `pathDict`: story id → folder (missing → top level).
+export const duplicateStories = (storyIds, pathDict = {}) => {
   const route = '/stories/duplicate'
   const prefix = 'DUPLICATE_STORIES'
-  return callBuilder(route, prefix, 'post', { story_ids: storyIds, path })
+  return callBuilder(route, prefix, 'post', { story_ids: storyIds, path_dict: pathDict })
 }
 
 export const setCopyInProgress = inProgress => ({ type: 'SET_COPY_IN_PROGRESS', inProgress })

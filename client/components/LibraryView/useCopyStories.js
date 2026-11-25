@@ -14,10 +14,10 @@ const useCopyStories = () => {
   const learningLanguage = useLearningLanguage()
   const copying = useSelector(({ stories }) => Boolean(stories.copyInProgress))
 
-  // Story ids grouped by the folder their copy goes to. A folder copy keeps its sub-folders under
-  // "<name> (copy)"; `shownStories` carry the paths as shown (share paths), else the store's.
-  const getCopyGroups = (ids, folderPath, shownStories) => {
-    if (!folderPath) return new Map([['', ids]])
+  // Story id → folder of its copy: a folder copy keeps its sub-folders under "<name> (copy)";
+  // `shownStories` carry the paths as shown (share paths). Single copies: {} = top level.
+  const getCopyPathDict = (ids, folderPath, shownStories) => {
+    if (!folderPath) return {}
 
     const { stories, user } = store.getState()
     const userId = user?.data?.user?.oid
@@ -26,31 +26,26 @@ const useCopyStories = () => {
     const targetPath = getCopyFolderPath(folderPath, ownFolders)
     const byId = new Map((shownStories || allStories).map(story => [String(story._id), story]))
 
-    const groups = new Map()
-    ids.forEach(id => {
-      const original = byId.get(String(id))
-      const path = original ? getRenamedItemPath(original.path, folderPath, targetPath) : targetPath
-      groups.set(path, [...(groups.get(path) || []), id])
-    })
-    return groups
+    return Object.fromEntries(
+      ids.map(id => {
+        const original = byId.get(String(id))
+        const path = original
+          ? getRenamedItemPath(original.path, folderPath, targetPath)
+          : targetPath
+        return [id, path]
+      }),
+    )
   }
 
-  // One duplicate request per target folder; the API files every story of a request into its path.
-  const duplicateIntoFolders = async groups => {
-    const result = { inserted: [], failed: [], error: null }
-    for (const [path, groupIds] of groups) {
-      // The request middleware resolves after it has dispatched _SUCCESS / _FAILURE.
-      await dispatch(duplicateStories(groupIds, path))
-      const { duplicateResult, duplicateError } = store.getState().stories
-      if (duplicateResult) {
-        result.inserted.push(...duplicateResult.inserted)
-        result.failed.push(...duplicateResult.failed)
-      } else {
-        result.failed.push(...groupIds)
-        result.error = duplicateError
-      }
+  // One duplicate request for all ids; each copy goes into its `path_dict` folder.
+  const duplicateWithPaths = async (ids, pathDict) => {
+    // The request middleware resolves after it has dispatched _SUCCESS / _FAILURE.
+    await dispatch(duplicateStories(ids, pathDict))
+    const { duplicateResult, duplicateError } = store.getState().stories
+    if (duplicateResult) {
+      return { inserted: duplicateResult.inserted, failed: duplicateResult.failed, error: null }
     }
-    return result
+    return { inserted: [], failed: ids, error: duplicateError }
   }
 
   // Copies stories into the private library; with `folderPath`, as a "(copy)" of that folder.
@@ -62,8 +57,9 @@ const useCopyStories = () => {
     const toastId = toast.loading(intl.formatMessage({ id: 'copying-stories' }))
 
     try {
-      const { inserted, failed, error } = await duplicateIntoFolders(
-        getCopyGroups(ids, folderPath, shownStories),
+      const { inserted, failed, error } = await duplicateWithPaths(
+        ids,
+        getCopyPathDict(ids, folderPath, shownStories),
       )
 
       if (!inserted.length) {

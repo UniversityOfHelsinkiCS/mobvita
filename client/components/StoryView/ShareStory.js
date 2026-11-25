@@ -27,9 +27,9 @@ const CHECKBOX_LABEL_SX = {
 // The caption above a field: muted and small, inset to line up with the pill's own padding.
 const FIELD_LABEL_STYLE = { color: colors.muted, fontSize: 12, paddingLeft: 10 }
 
-// Share dialog for one `story`, or for a folder: `stories` go into folder `folderName` on the
-// receiving side in one request (subfolders flattened).
-const ShareStory = ({ story, stories = [], folderName = null, isOpen, setOpen }) => {
+// Share dialog for one `story`, or for folder `folderName`: `stories` are shared in one request,
+// each into its `pathDict` folder on the receiving side.
+const ShareStory = ({ story, stories = [], folderName = null, pathDict, isOpen, setOpen }) => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
@@ -59,7 +59,7 @@ const ShareStory = ({ story, stories = [], folderName = null, isOpen, setOpen })
 
   const isFolder = folderName !== null
   const storyIds = isFolder ? stories.map(item => item._id) : [story._id]
-  const targetPath = isFolder ? folderName : undefined
+  const targetPaths = isFolder ? pathDict : undefined
 
   // Shares the story (or folder) with the chosen group or e-mail list, then closes the dialog.
   const share = event => {
@@ -70,11 +70,11 @@ const ShareStory = ({ story, stories = [], folderName = null, isOpen, setOpen })
     } else {
       if (showOption === 'group') {
         dispatch(
-          shareStory(storyIds, [shareTargetGroupId], [], message, isHiddenStory, targetPath),
+          shareStory(storyIds, [shareTargetGroupId], [], message, isHiddenStory, targetPaths),
         )
       } else {
         const emails = formatEmailList(shareTargetUserEmails)
-        dispatch(shareStory(storyIds, [], emails, message, false, targetPath))
+        dispatch(shareStory(storyIds, [], emails, message, false, targetPaths))
       }
       setMessage('')
       setOpen(false)
