@@ -215,8 +215,9 @@ export default defineConfig(({ mode }) => {
             `$font-ui: ${font.family};\n` +
             `$font-content: ${font.content};\n` +
             `$font-syriac: '${bundledTypography.syriac.name}';\n` +
-            // Smallest-phone breakpoint, shared with NavBar and AppTabs.
-            `$breakpoint-xs: ${breakpoints.xs}px;\n`,
+            // Smallest-phone breakpoint (AppTabs) and the bottom-sheet / compact-navbar one.
+            `$breakpoint-xs: ${breakpoints.xs}px;\n` +
+            `$breakpoint-sheet: ${breakpoints.sheet}px;\n`,
         },
       },
     },

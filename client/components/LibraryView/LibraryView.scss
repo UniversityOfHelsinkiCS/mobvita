@@ -24,6 +24,39 @@ $menu-hover: $color-menu-hover;
   }
 }
 
+// Squeezed by the open assistant rail (`narrowLayout` in index.js): one column, like mobile.
+.library-narrow {
+  .library-story-grid,
+  .library-folder-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// ≤768px the assistant is a bottom sheet (HelperSidebar.scss): the card goes full width and
+// reserves the sheet + its 30px tab at the bottom: 40vh open, the 64px header collapsed.
+@media (max-width: $breakpoint-sheet) {
+  // Tabs and the main card run edge to edge: no side padding, on the library page only.
+  .application-content:has(.library-dashboard) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .library-dashboard,
+  .library-dashboard.sidebar-pushed {
+    margin-right: 0;
+    max-width: none;
+  }
+
+  .library-dashboard.has-assistant {
+    padding-bottom: calc(64px + 30px + 20px);
+    transition: padding-bottom 0.3s ease;
+  }
+
+  .library-dashboard.has-assistant.sidebar-pushed {
+    padding-bottom: calc(40vh + 30px + 20px);
+  }
+}
+
 .library-story-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -32,7 +65,6 @@ $menu-hover: $color-menu-hover;
 
   @media (max-width: 699px) {
     grid-template-columns: minmax(0, 1fr);
-    margin-bottom: 5.5em;
   }
 }
 
@@ -55,6 +87,24 @@ $menu-hover: $color-menu-hover;
 
     .library-folder-breadcrumbs {
       min-width: 0;
+    }
+  }
+}
+
+// Group tab: breadcrumbs and group selector split the row 50/50 (Add folder lives in the sort row).
+.library-folder-header--group {
+  > .library-folder-breadcrumbs,
+  > .library-group-dropdown-container {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  > .library-group-dropdown-container {
+    max-width: none;
+    margin-left: 0;
+
+    > * {
+      width: 100%;
     }
   }
 }
@@ -241,14 +291,18 @@ $menu-hover: $color-menu-hover;
   gap: 20px;  
 }
 
-.library-sort-select {
-  flex: 2 1 0;
+// Every cell in the control rows is a 50% column; a lone action stays half-width, left-aligned.
+.library-sort-select,
+.library-sort-search,
+.library-sort-action {
+  flex: 0 0 calc(50% - 10px);
   min-width: 0;
 }
 
-.library-sort-action {
-  flex: 1 1 0;
-  min-width: 0;
+// Library mobile mode: the label is dropped (kept as aria-label), so centre the lone icon.
+.library-action-button.library-action-button--icon {
+  padding: 6px !important;
+  justify-content: center;
 }
 
 .library-sort-action .library-action-button {

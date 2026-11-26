@@ -134,9 +134,11 @@ export const shape = {
   cardPadding: '40px 60px', // Figma "40,60" — assumed vertical/horizontal; confirm
 }
 
-// Screen widths in px. `xs` is the smallest-phone layout; vite also publishes it as `$breakpoint-xs`.
+// Screen widths in px, published by vite as `$breakpoint-<key>`. `xs` is the smallest-phone layout;
+// `sheet` is where the helper sidebar becomes a bottom sheet and the navbar goes compact.
 export const breakpoints = {
   xs: 450,
+  sheet: 768,
 }
 
 // Figma shadow styles.

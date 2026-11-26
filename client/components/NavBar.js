@@ -155,7 +155,8 @@ export default function NavBar() {
 
   const { width: windowWidth } = useWindowDimensions()
   const smallWindow = windowWidth < 700
-  const tinyWindow = windowWidth <= breakpoints.xs
+  // Compact navbar from the same width the helper sidebar turns into a bottom sheet.
+  const tinyWindow = windowWidth <= breakpoints.sheet
   const intl = useIntl()
   const connectionStatus = useConnectionStatus()
   const handleEloClick = () => {
@@ -558,7 +559,7 @@ export default function NavBar() {
                   mr: tinyWindow ? '8px' : '40px',
                 }}
               >
-                {/* ≤breakpoints.xs: no labels, only the switch (it keeps an aria-label). */}
+                {/* ≤breakpoints.sheet: no labels, only the switch (it keeps an aria-label). */}
                 {!tinyWindow && (
                   <span
                     style={{

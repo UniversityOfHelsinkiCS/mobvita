@@ -18,7 +18,8 @@ import { colors, breakpoints } from 'Assets/mui_theme/designTokens'
  * narrow column or sidebar, and 'lg' for a primary page-level switch.
  *
  * `iconOnlyXs` collapses inactive tabs to their icon on the smallest screens (≤450px); the active
- * tab keeps its label. Tabs without an icon always show their label.
+ * tab keeps its label. Tabs without an icon always show their label. `iconOnly` does the same at
+ * every width (for a page squeezed by a sidebar).
  *
  * Long labels never wrap, so a `fullWidth` bar grows past its container rather than clipping them.
  * Put it in an `overflow-x: auto` wrapper to scroll that case.
@@ -44,7 +45,7 @@ const SIZE_KEYS = { xs: 'tiny', sm: 'small', md: 'medium', lg: 'large' }
 const resolveSize = size => SIZES[SIZE_KEYS[size] || size] || SIZES.medium
 
 const INNER_HEIGHT = 36
-
+// The smallest-screen layout (`breakpoints.xs`).
 // The smallest-screen layout — same breakpoint as the navbar's compact mode.
 const XS_QUERY = `@media (max-width: ${breakpoints.xs}px)`
 
@@ -83,10 +84,11 @@ const TabsBar = styled('div', {
   ...(inner && { height: INNER_HEIGHT, overflow: 'hidden' }),
 }))
 
-// One segment; with `iconOnly` an inactive tab drops to its icon on xs screens.
+// One segment; an inactive tab drops to its icon on xs screens (`iconOnly`) or always (`iconOnlyAll`).
 const Tab = styled('button', {
-  shouldForwardProp: prop => !['active', 'fullWidth', 'sizing', 'inner', 'iconOnly'].includes(prop),
-})(({ active, fullWidth, sizing, inner, iconOnly }) => ({
+  shouldForwardProp: prop =>
+    !['active', 'fullWidth', 'sizing', 'inner', 'iconOnly', 'iconOnlyAll'].includes(prop),
+})(({ active, fullWidth, sizing, inner, iconOnly, iconOnlyAll }) => ({
   position: 'relative',
   flex: fullWidth ? 1 : 'none',
   // `flex: 1` means flex-basis 0, so segments share the bar equally — but labels don't wrap, and a
@@ -121,6 +123,7 @@ const Tab = styled('button', {
     !active && {
       [XS_QUERY]: { '& .app-tab-label': VISUALLY_HIDDEN },
     }),
+  ...(iconOnlyAll && !active && { '& .app-tab-label': VISUALLY_HIDDEN }),
 }))
 
 const Badge = styled('span', {
@@ -151,6 +154,7 @@ const AppTabs = ({
   variant = 'default',
   size = 'md',
   iconOnlyXs = false,
+  iconOnly = false,
 }) => {
   const sizing = resolveSize(size)
   const inner = variant === 'inner'
@@ -178,6 +182,7 @@ const AppTabs = ({
             inner={inner}
             sizing={sizing}
             iconOnly={iconOnlyXs && !!tab.icon}
+            iconOnlyAll={iconOnly && !!tab.icon}
             onClick={() => onChange(tab.value)}
           >
             {tab.icon}

@@ -5,6 +5,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { toggleHelperSidebar } from 'Utilities/redux/helperSidebarReducer'
 import './HelperSidebar.scss'
 
+// The assistant panel: a right rail on desktop, a bottom sheet ≤768px; toggled via Redux.
 const HelperSidebar = ({ children, accentColor }) => {
   const dispatch = useDispatch()
 
@@ -30,9 +31,11 @@ const HelperSidebar = ({ children, accentColor }) => {
         {isOpen ? <ChevronRightIcon /> : <ChevronLeftIcon />}
       </button>
 
+      {/* A collapsed bottom sheet still shows the assistant header: a tap opens the sheet. */}
       <div
         className="helper-sidebar-content"
         style={accentColor ? { background: accentColor } : undefined}
+        onClick={isOpen ? undefined : handleToggle}
       >
         {children}
       </div>
