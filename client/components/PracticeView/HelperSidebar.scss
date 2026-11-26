@@ -3,6 +3,7 @@ $hs-card: #faf8ed; // cream panel
 $hs-ink: #2d2c2a; // text / chevron
 $hs-radius: 30px; // card radius
 $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
+$hs-sheet-peek: 64px; // assistant header height = what a collapsed bottom sheet leaves on screen
 
 .helper-sidebar {
   position: fixed;
@@ -145,7 +146,7 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
     width: calc(100% - 400px);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $breakpoint-sheet) {
     margin-right: 30px;
     &.sidebar-open {
       margin-right: 0; 
@@ -155,10 +156,12 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-sheet) {
+  // Bottom sheet; the toggle tab hangs above its top edge (like the left-edge tab on desktop).
+  // Collapsed, only the assistant header ($hs-sheet-peek) stays on screen, with the tab above it.
   .helper-sidebar {
     top: auto;
-    bottom: 30px;
+    bottom: 0;
     right: 0;
     width: 100%;
     height: 40vh;
@@ -166,18 +169,23 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     border-top-left-radius: $hs-sheet-radius;
     border-top-right-radius: $hs-sheet-radius;
-        transform: translateY(calc(100% - 30px));
+    border-bottom-left-radius: 0;
+    transform: translateY(calc(100% - #{$hs-sheet-peek}));
     &.open {
       transform: translateY(0);
-      bottom: 0;
     }
     &.collapsed {
-      transform: translateY(calc(100% - 30px));
+      transform: translateY(calc(100% - #{$hs-sheet-peek}));
+
+      // The peeking header opens the sheet on tap (HelperSidebar.js).
+      .helper-sidebar-content {
+        cursor: pointer;
+      }
     }
     .sidebar-toggle {
       position: absolute;
       left: 50%;
-      top: 0;
+      top: -30px;
       transform: translateX(-50%);
       width: 60px;
       height: 30px;
@@ -186,6 +194,7 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
       outline: none;
       background: $hs-card;
       border-bottom: none;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
       z-index: 1100;
 
       svg {
@@ -201,12 +210,14 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
       }
     }
 
-    /* Rotate chevron for the horizontal (bottom-sheet) handle */
+    // Chevron: collapsed (ChevronLeft) points up to open, open (ChevronRight) points down to close.
     .sidebar-toggle svg {
       transform: rotate(90deg);
     }
-    .helper-sidebar.open .sidebar-toggle svg {
-      transform: rotate(-90deg);
+
+    // Open: the tab sits on the sheet's top edge, so a lighter shadow than when it floats alone.
+    &.open .sidebar-toggle {
+      box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.06);
     }
 
     .helper-sidebar-content {
@@ -214,13 +225,21 @@ $hs-sheet-radius: 8px; // card radius as a bottom sheet (mobile)
       .combined-chatbot {
         border-radius: $hs-sheet-radius $hs-sheet-radius 0 0;
       }
+
+      // Fixed height so the collapsed peek shows exactly the header, whichever chatbot it is.
+      .ai-assistant-header {
+        height: $hs-sheet-peek;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
+        flex-shrink: 0;
+      }
     }
-  }   
+  }
 
   .helper-sidebar-content {
     height: 100%;
     flex: none;
     overflow-y: auto;
-    padding-top: 30px;
   }
 }

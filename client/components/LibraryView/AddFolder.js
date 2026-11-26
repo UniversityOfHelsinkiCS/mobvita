@@ -14,8 +14,8 @@ import {
 } from 'Components/ui/sx'
 import { images } from 'Utilities/common'
 
-// The library's add-folder button and its 539px dialog (name field, Cancel, Add).
-const AddFolder = ({ existingFolderNames, onAddFolder }) => {
+// The library's add-folder button (icon-only with `iconOnly`) and its 539px dialog.
+const AddFolder = ({ existingFolderNames, onAddFolder, iconOnly = false }) => {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
   const [folderName, setFolderName] = useState('')
@@ -51,12 +51,13 @@ const AddFolder = ({ existingFolderNames, onAddFolder }) => {
     <>
       <AppButton
         variant="tan"
-        className="library-action-button"
+        className={`library-action-button${iconOnly ? ' library-action-button--icon' : ''}`}
         onClick={openDialog}
         data-cy="add-folder-button"
+        aria-label={iconOnly ? intl.formatMessage({ id: 'add-folder' }) : undefined}
       >
         <AppIcon src={images.folderPlus} size={24} />
-        {intl.formatMessage({ id: 'add-folder' })}
+        {!iconOnly && intl.formatMessage({ id: 'add-folder' })}
       </AppButton>
 
       <AppDialog

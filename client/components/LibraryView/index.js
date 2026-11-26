@@ -8,7 +8,8 @@ import AppTabs from 'Components/ui/AppTabs'
 import AppIcon from 'Components/ui/AppIcon'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppSelect from 'Components/ui/AppSelect'
-import { colors } from 'Assets/mui_theme/designTokens'
+import { breakpoints, colors } from 'Assets/mui_theme/designTokens'
+import useWindowDimensions from 'Utilities/windowDimensions'
 import {
   capitalize,
   images,
@@ -77,6 +78,8 @@ import { hiddenFeatures } from 'Utilities/common'
 
 // The one public Finnish folder everyone may browse; see restrictPublicFinnishFolders below.
 const PUBLIC_FINNISH_OPEN_FOLDER = 'vapaa-aika'
+// Below this window width an open assistant rail switches the library to its mobile layout.
+const NARROW_LAYOUT_MAX = 1000
 
 // The library page: library tabs, folders and the story/essay lists for the active library.
 const StoryList = () => {
@@ -107,6 +110,16 @@ const StoryList = () => {
   const { sharedToGroupSinceLastFetch } = useSelector(({ share }) => share)
   const learningLanguage = useLearningLanguage()
   const isSidebarOpen = useSelector(state => state.helperSidebar?.isOpen ?? false)
+  const { width: windowWidth } = useWindowDimensions()
+  // The open side rail (769–999px window) leaves too little room: use the mobile layout.
+  const narrowLayout =
+    canUseAssistant &&
+    isSidebarOpen &&
+    windowWidth > breakpoints.sheet &&
+    windowWidth < NARROW_LAYOUT_MAX
+  // Library mobile mode (icon-only inactive tabs and action buttons): narrow layout or bottom sheet.
+  const mobileLayout = narrowLayout || windowWidth <= breakpoints.sheet
+  const actionButtonClass = `library-action-button${mobileLayout ? ' library-action-button--icon' : ''}`
   const localFolderStorageKey = getLocalFolderStorageKey(userId, learningLanguage)
 
   const [sorter, setSorter] = useState(
@@ -473,6 +486,7 @@ const StoryList = () => {
               onChange={handleLibraryChange}
               fullWidth
               iconOnlyXs
+              iconOnly={mobileLayout}
             />
           </div>
         )
@@ -480,62 +494,76 @@ const StoryList = () => {
     </Box>
   )
 
+  const addStoryLabel = intl.formatMessage({ id: 'add-your-stories' })
   const addStoryButton = (
     <AppButton
-      className="library-action-button"
+      className={actionButtonClass}
       variant="contrast"
       block
       onClick={() => dispatch(openAddStoryOptions())}
       data-cy="add-story-button"
+      aria-label={mobileLayout ? addStoryLabel : undefined}
     >
       <AppIcon src={images.star06} size={24} color={colors.card} />
-      {intl.formatMessage({ id: 'add-your-stories' })}
+      {!mobileLayout && addStoryLabel}
     </AppButton>
   )
 
-
+  const writeEssayLabel = intl.formatMessage({ id: 'write-new-essay' })
   const writeEssayButton = (
     <AppButton
-      className="library-action-button"
+      className={actionButtonClass}
       variant="contrast"
       block
       onClick={() => navigate('/essay-writing')}
       data-cy="write-essay-button"
+      aria-label={mobileLayout ? writeEssayLabel : undefined}
     >
       <AppIcon src={images.edit03} size={24} color={colors.surface} />
-      {intl.formatMessage({ id: 'write-new-essay' })}
+      {!mobileLayout && writeEssayLabel}
     </AppButton>
   )
 
-  const renderSortAndAddRow = (sortValue, options, actionButton = addStoryButton) => (
-    <div className="library-sort-add-row">
-      <div className="library-sort-select">
-        <AppSelect
-          className="library-menu"
-          borderRadius="30px"
-          variant="contrast-outline"
-          value={sortValue}
-          onChange={handleSortChange}
-          options={buildSortOptions(options)}
-          minWidth={0}
-        />
-      </div>
-      <div className="library-sort-action">{actionButton}</div>
-    </div>
-  )
-
-  // Sort (title/date) + title search for the "My Essays" library, styled like the story controls.
-  const essaySearchAndSortControls = (
+  // Two 50/50 rows: [Add folder | action button], then [sort | search].
+  const renderLibraryControls = ({ sortValue, options, search, actionButton, addFolderButton }) => (
     <>
-      <AppSearchField
-        className="library-search-field"
-        placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
-        value={essaySearchQuery}
-        onChange={setEssaySearchQuery}
-      />
-      {renderSortAndAddRow(essaySorter, essaySortDropdownOptions, writeEssayButton)}
+      <div className="library-sort-add-row">
+        {addFolderButton && <div className="library-sort-action">{addFolderButton}</div>}
+        <div className="library-sort-action">{actionButton}</div>
+      </div>
+      <div className="library-sort-add-row">
+        <div className="library-sort-select">
+          <AppSelect
+            className="library-menu"
+            borderRadius="30px"
+            variant="contrast-outline"
+            value={sortValue}
+            onChange={handleSortChange}
+            options={buildSortOptions(options)}
+            minWidth={0}
+          />
+        </div>
+        <div className="library-sort-search">{search}</div>
+      </div>
     </>
   )
+
+  // Controls for "My Essays", styled like the story controls (Write essay instead of Add story).
+  const renderEssaySearchAndSortControls = addFolderButton =>
+    renderLibraryControls({
+      sortValue: essaySorter,
+      options: essaySortDropdownOptions,
+      actionButton: writeEssayButton,
+      addFolderButton,
+      search: (
+        <AppSearchField
+          className="library-search-field"
+          placeholder={intl.formatMessage({ id: 'search-input-placeholder' })}
+          value={essaySearchQuery}
+          onChange={setEssaySearchQuery}
+        />
+      ),
+    })
 
   if (pending || !refreshed) {
     return <Spinner fullHeight size={60} spinnerColor={colors.ink} textColor={colors.ink} text={intl.formatMessage({ id: 'loading' })} />
@@ -1044,9 +1072,9 @@ const StoryList = () => {
   // The folder section (breadcrumbs + the folder pills) sits at the TOP of the library card, above the
   // search/sort row. The stories that live in the current folder render separately, BELOW that row (see
   // renderStoriesGrid), per the 2026 library layout.
-  // `controls` renders between the breadcrumb header and the folder grid — the search field and
-  // the sort/add row sit there, per the Figma directory order.
-  const renderFolderSection = controls => {
+  // `renderControls(addFolderButton)` fills the slot under the header; Add folder lives in the sort
+  // row, so on the Group tab the selector shares the header 50/50 with the breadcrumbs.
+  const renderFolderSection = renderControls => {
     const foldersInCurrentPath = getFoldersForPath(
       libraryFilteredStories,
       currentLibraryPath,
@@ -1061,27 +1089,30 @@ const StoryList = () => {
       localFolderPathsForLibrary,
     )
 
+    const groupTab = Boolean(libraries.group)
+    const addFolderButton = libraryIsMutable && (
+      <AddFolder
+        existingFolderNames={
+          selectedFolderPath
+            ? getFoldersForPath(
+                allStoriesInActiveLibrary,
+                selectedFolderPath,
+                localFolderPathsForLibrary,
+              )
+            : allFolderNamesInCurrentPath
+        }
+        onAddFolder={handleAddFolder}
+        iconOnly={mobileLayout}
+      />
+    )
+
     return (
       <>
-        <Box className="library-folder-header">
+        <Box className={`library-folder-header${groupTab ? ' library-folder-header--group' : ''}`}>
           {renderLibraryPathBreadcrumbs()}
           {renderGroupDropdown()}
-          {libraryIsMutable && (
-            <AddFolder
-              existingFolderNames={
-                selectedFolderPath
-                  ? getFoldersForPath(
-                      allStoriesInActiveLibrary,
-                      selectedFolderPath,
-                      localFolderPathsForLibrary,
-                    )
-                  : allFolderNamesInCurrentPath
-              }
-              onAddFolder={handleAddFolder}
-            />
-          )}
         </Box>
-        {controls}
+        {renderControls(addFolderButton)}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="library-folders" className="library-folder-grid">
             {libraryPathParts.length > 0 && (
@@ -1248,8 +1279,8 @@ const StoryList = () => {
     })
   }
 
-  // Breadcrumbs + essay folder pills — rendered at the TOP of the essay card.
-  const renderEssayFolderSection = controls => {
+  // Breadcrumbs + essay folder pills at the top of the essay card; Add folder goes to renderControls.
+  const renderEssayFolderSection = renderControls => {
     const sortedEssays = getSortedEssaysInView()
     const foldersInCurrentPath = getFoldersForPath(
       sortedEssays,
@@ -1267,8 +1298,8 @@ const StoryList = () => {
 
     return (
       <>
-        <Box className="library-folder-header">
-          {renderEssayPathBreadcrumbs()}
+        <Box className="library-folder-header">{renderEssayPathBreadcrumbs()}</Box>
+        {renderControls(
           <AddFolder
             existingFolderNames={
               selectedFolderPath
@@ -1276,9 +1307,9 @@ const StoryList = () => {
                 : allFolderNamesInCurrentPath
             }
             onAddFolder={handleAddFolder}
-          />
-        </Box>
-        {controls}
+            iconOnly={mobileLayout}
+          />,
+        )}
         {(libraryPathParts.length > 0 || foldersInCurrentPath.length > 0) && (
           <Box data-cy="essay-folders" className="library-folder-grid">
             {libraryPathParts.length > 0 && (
@@ -1392,7 +1423,11 @@ const StoryList = () => {
       {/* Match ReadViews: stretch the row, center the content block, and let the main card fill it. */}
       <div className="flex mb-nm" style={{ alignSelf: 'stretch', justifyContent: 'center' }}>
         <Box
-          className={`library-dashboard tour-library-welcome ${isSidebarOpen ? 'sidebar-pushed' : ''}`}
+          className={`library-dashboard tour-library-welcome${
+            canUseAssistant ? ' has-assistant' : ''
+          }${canUseAssistant && isSidebarOpen ? ' sidebar-pushed' : ''}${
+            narrowLayout ? ' library-narrow' : ''
+          }`}
           style={{ flex: 1 }}
         >
           {folderShareRequest && (
@@ -1425,19 +1460,24 @@ const StoryList = () => {
           >
             {activeLibrary === 'essays' ? (
               <>
-                {renderEssayFolderSection(essaySearchAndSortControls)}
+                {renderEssayFolderSection(renderEssaySearchAndSortControls)}
                 {renderEssayItems()}
               </>
             ) : (
               <>
-                {renderFolderSection(
-                  <>
-                    <LibrarySearch
-                      setDisplayedStories={setDisplayedStories}
-                      setDisplaySearchResults={setDisplaySearchResults}
-                    />
-                    {renderSortAndAddRow(storySorter, sortDropdownOptions)}
-                  </>,
+                {renderFolderSection(addFolderButton =>
+                  renderLibraryControls({
+                    sortValue: storySorter,
+                    options: sortDropdownOptions,
+                    actionButton: addStoryButton,
+                    addFolderButton,
+                    search: (
+                      <LibrarySearch
+                        setDisplayedStories={setDisplayedStories}
+                        setDisplaySearchResults={setDisplaySearchResults}
+                      />
+                    ),
+                  }),
                 )}
                 {lastQuery && (
                   <Box>

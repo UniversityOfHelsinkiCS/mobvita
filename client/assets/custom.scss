@@ -73,8 +73,8 @@ $navbar-height: 4.125em;
 $footer-height: 50px;
 $application-content-top-padding: 1.7em;
 
-// `$breakpoint-xs` (narrowest phone layout: navbar compact mode, icon-only AppTabs) is injected
-// from `breakpoints.xs` in designTokens.js by vite.config.mjs — change it there.
+// `$breakpoint-xs` (icon-only AppTabs) and `$breakpoint-sheet` (helper-sidebar bottom sheet, compact
+// navbar) are injected from `breakpoints` in designTokens.js by vite.config.mjs — change them there.
 
 body {
   // The one place the application font is applied; everything else inherits it. Reading surfaces
@@ -865,7 +865,7 @@ body .hg-theme-default {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    @media (max-width: $breakpoint-xs) {
+    @media (max-width: $breakpoint-sheet) {
       gap: 0.2em;
     }
   }
@@ -897,7 +897,7 @@ body .hg-theme-default {
       margin-right: 0.5em;
     }
 
-    @media (max-width: $breakpoint-xs) {
+    @media (max-width: $breakpoint-sheet) {
       margin-left: 0.2em;
       margin-right: 0.1em;
       font-size: 24px;
@@ -975,7 +975,7 @@ body .hg-theme-default {
     border: 2px solid transparent;
     transition: border-color 0.15s ease;
 
-    @media (max-width: $breakpoint-xs) {
+    @media (max-width: $breakpoint-sheet) {
       width: 24px;
       height: 24px;
     }
@@ -986,7 +986,7 @@ body .hg-theme-default {
   }
 
   &-language-name {
-    @media (max-width: $breakpoint-xs) {
+    @media (max-width: $breakpoint-sheet) {
       display: none;
     }
   }
@@ -997,7 +997,7 @@ body .hg-theme-default {
 
   .sidebar-hamburger {
     margin-left: 16px;
-    @media (max-width: $breakpoint-xs) {  
+    @media (max-width: $breakpoint-sheet) {  
       margin-left: 4px;
       margin-right: 4px;
     }
