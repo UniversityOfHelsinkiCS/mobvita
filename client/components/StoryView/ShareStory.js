@@ -10,7 +10,7 @@ import AppSelect from 'Components/ui/AppSelect'
 import AppTextField from 'Components/ui/AppTextField'
 import { colors } from 'Assets/mui_theme/designTokens'
 import { shareStory } from 'Utilities/redux/shareReducer'
-import { formatEmailList } from 'Utilities/common'
+import { formatEmailList, useIsDeveloper } from 'Utilities/common'
 
 // Control labels, matching the menu rows the selects open (16px / 500); the checkbox reads as body
 // text next to them, so it keeps the regular weight.
@@ -43,8 +43,11 @@ const ShareStory = ({ story, stories = [], folderName = null, pathDict, isOpen, 
   const EMAIL_MIN_LENGTH = 6
   const ownEmail = useSelector(({ user }) => user.data.user.email)
 
+  const isDeveloper = useIsDeveloper()
+  // Only developers may share into a repo group (#1406).
   const groupsUserCanShareWith = useSelector(
-    ({ groups }) => groups.groups.filter(group => group.is_teaching),
+    ({ groups }) =>
+      groups.groups.filter(group => group.is_teaching && (!group.is_repo || isDeveloper)),
     shallowEqual
   )
 

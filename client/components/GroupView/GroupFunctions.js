@@ -17,11 +17,12 @@ import { getTestQuestions } from 'Utilities/redux/testReducer'
 import AppButton from 'Components/AppButton'
 import AppMenu, { AppMenuItem } from 'Components/ui/AppMenu'
 import AppIcon from 'Components/ui/AppIcon'
-import { images } from 'Utilities/common'
+import { images, useIsDeveloper } from 'Utilities/common'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import GroupLearningSettingsModal from './GroupLearningSettingsModal'
 import ImportStoryModal from './ImportStoryModal'
 
+// A group card's teacher/student actions: analytics, people, settings, token, test and import.
 const GroupFunctions = ({
   group,
   showToken,
@@ -39,6 +40,9 @@ const GroupFunctions = ({
   const teacherView = useSelector(({ user }) => user.data.user.is_teacher)
   const [learningModalGroupId, setLearningModalGroupId] = useState(null)
   const [importStoryModalOpen, setImportStoryModalOpen] = useState(false)
+  const isDeveloper = useIsDeveloper()
+  // Importing stories into a repo group is sharing into it, which only developers may do (#1406).
+  const canImportStories = isTeaching && teacherView && (!group.is_repo || isDeveloper)
   const { width } = useWindowDimensions()
   const testEnabled = currTestDeadline - Date.now() > 0
   const testButtonTextKey = testEnabled ? 'disable-test' : 'enable-test'
@@ -188,7 +192,7 @@ const GroupFunctions = ({
                 <FormattedMessage id="show-group-token" />
               </AppButton>
             )}
-            {isTeaching && teacherView && (
+            {canImportStories && (
               <AppButton
                 className="group-function-button group-function-inherit"
                 variant="link"

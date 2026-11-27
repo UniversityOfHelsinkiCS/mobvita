@@ -757,8 +757,8 @@
     "completed-snippets": "Выполненные абзацы",
     "story-unshared": "Текст удален из библиотеки группы",
     "remove-story-from-group-warning": "Текст будет удален из библиотеки группы {group}",
-    "remove-from-group": "Remove from group",
-    "remove-folder-from-group": "Remove folder from group",
+    "remove-from-group": "Удалить из группы",
+    "remove-folder-from-group": "Удалить папку из группы",
     "confirm-folder-remove-from-group": "Удалить истории из этой папки из группы\n<br/>{group} ?<br/>\n(Из библиотеки владельца они удалены не будут.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Выбери ученика из списка",
@@ -2061,5 +2061,7 @@
     "connection-online-tooltip": "You are online, the server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the server is not responding right now. The dot turns green when the server is back.",
     "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green once you are back online.",
-    "story-TAILORED-completed-message": "Хочешь поработать над этим текстом еще раз?"
+    "story-TAILORED-completed-message": "Хочешь поработать над этим текстом еще раз?",
+    "repo-group-hover-notice": "This story comes from a repository group, so it can't be edited directly. You can copy the story to your own library or share it with another group.",
+    "repo-story-edit-notice": "This story comes from a repository group, so it can't be edited directly. Saving uploads your edited version to your own library and replaces the original story in the group you last opened."
 }

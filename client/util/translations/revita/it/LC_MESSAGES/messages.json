@@ -755,8 +755,8 @@
     "completed-snippets": "Frammento completato",
     "story-unshared": "Rimuovi la storia dalla biblioteca del gruppo",
     "remove-story-from-group-warning": "Questo rimuoverà la storia dalla biblioteca del gruppo {group}",
-    "remove-from-group": "Remove from group",
-    "remove-folder-from-group": "Remove folder from group",
+    "remove-from-group": "Rimuovere dal gruppo",
+    "remove-folder-from-group": "Rimuovere cartella dal gruppo",
     "confirm-folder-remove-from-group": "Rimuovere le storie presenti in questa cartella dal gruppo\n<br/>{group} ?<br/>\n(Non verranno rimosse dalla libreria del proprietario.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Seleziona uno studente dalla lista",
@@ -2058,5 +2058,7 @@
     "connection-online-tooltip": "You are online, the server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the server is not responding right now. The dot turns green when the server is back.",
     "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green once you are back online.",
-    "story-TAILORED-completed-message": "Vuoi ricominciare e mettere in pratica questa storia di nuovo?"
+    "story-TAILORED-completed-message": "Vuoi ricominciare e mettere in pratica questa storia di nuovo?",
+    "repo-group-hover-notice": "This story comes from a repository group, so it can't be edited directly. You can copy the story to your own library or share it with another group.",
+    "repo-story-edit-notice": "This story comes from a repository group, so it can't be edited directly. Saving uploads your edited version to your own library and replaces the original story in the group you last opened."
 }

@@ -2059,5 +2059,7 @@
     "connection-online-tooltip": "You are online, the server is responding normally.",
     "connection-server-down-tooltip": "Your internet works, but the server is not responding right now. The dot turns green when the server is back.",
     "connection-offline-tooltip": "Your device is offline. Check your internet connection; the dot turns green once you are back online.",
-    "story-TAILORED-completed-message": "Would you like to practice this story again?"
+    "story-TAILORED-completed-message": "Would you like to practice this story again?",
+    "repo-group-hover-notice": "This story comes from a repository group, so it can't be edited directly. You can copy the story to your own library or share it with another group.",
+    "repo-story-edit-notice": "This story comes from a repository group, so it can't be edited directly. Saving uploads your edited version to your own library and replaces the original story in the group you last opened."
 }

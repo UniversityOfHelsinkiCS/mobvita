@@ -755,8 +755,8 @@
     "completed-snippets": "Suoritetut osat",
     "story-unshared": "Teksti poistettu ryhmän kirjastosta",
     "remove-story-from-group-warning": "Oletko varma että haluat poistaa tekstin ryhmän {group} kirjastosta?",
-    "remove-from-group": "Remove from group",
-    "remove-folder-from-group": "Remove folder from group",
+    "remove-from-group": "Poista ryhmästä",
+    "remove-folder-from-group": "Poista kansio ryhmästä",
     "confirm-folder-remove-from-group": "Poista tämän kansion tekstit ryhmästä\n<br/>{group} ?<br/>\n(Niitä ei poisteta omistajan kirjastosta.)",
     "stories-unshared": "Removed stories from group library",
     "select-a-student-from-list": "Valitse opiskelija listasta",
@@ -2058,5 +2058,7 @@
     "connection-online-tooltip": "Olet verkkoyhteydessä, ja Revita-palvelin toimii normaalisti.",
     "connection-server-down-tooltip": "Internet-yhteytesi toimii, mutta Revita-palvelin ei vastaa juuri nyt. Piste muuttuu vihreäksi, kun palvelin on taas käytettävissä.",
     "connection-offline-tooltip": "Laitteesi ei ole verkossa. Tarkista internet-yhteytesi; piste muuttuu taas vihreäksi, kun olet takaisin verkossa.",
-    "story-TAILORED-completed-message": "Haluatko aloittaa alusta ja harjoitella tätä tekstiä uudelleen?"
+    "story-TAILORED-completed-message": "Haluatko aloittaa alusta ja harjoitella tätä tekstiä uudelleen?",
+    "repo-group-hover-notice": "Tämä teksti on peräisin repositorioryhmästä, joten sitä ei voi muokata suoraan. Voit kopioida tekstin omaan kirjastoosi tai jakaa sen toiselle ryhmälle.",
+    "repo-story-edit-notice": "Tämä teksti on peräisin repositorioryhmästä, joten sitä ei voi muokata suoraan. Tallentaminen lataa muokatun version omaan kirjastoosi ja korvaa alkuperäisen tekstin viimeksi avaamassasi ryhmässä."
 }

@@ -13,7 +13,7 @@ import AppIcon from 'Components/ui/AppIcon'
 import CustomTooltip from 'Components/CustomTooltip'
 import { Link } from 'react-router'
 import { FormattedMessage } from 'react-intl'
-import { ACCESS, images, useHasAccess, useIsAnonymous } from 'Utilities/common'
+import { ACCESS, images, useHasAccess, useIsAnonymous, useIsDeveloper } from 'Utilities/common'
 import { getStoryLoadingProgress } from 'Utilities/redux/storiesReducer'
 import { TERMINOLOGY, TERMINOLOGY_DEFAULT_MODE } from 'Components/Flashcards/terminology'
 import useCopyStories from 'Components/LibraryView/useCopyStories'
@@ -91,10 +91,11 @@ const StoryDetailsModal = ({
   const isAnonymous = useIsAnonymous()
   const { copyStories, copying } = useCopyStories()
   const isOwner = story.user === user?.oid
-  // Owners edit their stories; the group's teachers may also rename/edit group-shared ones.
-  const canEdit = isOwner || (inGroupLibrary && Boolean(currentGroup?.is_teaching))
-  // #1400: any story the user can see but does not own (public, shared with them, group) can be
-  // copied into their private library, where the copy is theirs to edit.
+  const isDeveloper = useIsDeveloper()
+  const repoLocked = inGroupLibrary && Boolean(currentGroup?.is_repo) && !isDeveloper
+  const canEdit = (isOwner || (inGroupLibrary && Boolean(currentGroup?.is_teaching))) && !repoLocked
+  const canRename = canEdit && (isDeveloper || !story.in_repo)
+  const canToggleVisibility = inGroupLibrary && isTeacher && !repoLocked
   const canCopy = !isOwner && !isAnonymous
   const storyLoadingProgress = useSelector(
     ({ stories }) => stories.loadingProgress?.[story?._id] || EMPTY_LOADING_PROGRESS
@@ -172,7 +173,7 @@ const StoryDetailsModal = ({
   const showManagementPills =
     showCreateControlStory || showReadingComprehension || showCancelControlStoryButton
   const showManageRow =
-    showShareButton || canEdit || canCopy || (inGroupLibrary && isTeacher) || showDeleteButton
+    showShareButton || canEdit || canCopy || canToggleVisibility || showDeleteButton
 
   return (
     <>
@@ -347,7 +348,7 @@ const StoryDetailsModal = ({
                   <FormattedMessage id={copying ? 'copying-stories' : 'copy-to-my-library'} />
                 </AppButton>
               )}
-              {canEdit && (
+              {canRename && (
                 <AppButton
                   variant="contrast-outline"
                   onClick={() => setRenameOpen(true)}
@@ -366,7 +367,7 @@ const StoryDetailsModal = ({
                   </AppButton>
                 </Link>
               )}
-              {inGroupLibrary && isTeacher && (
+              {canToggleVisibility && (
                 <AppButton
                   variant="contrast-outline"
                   onClick={() => setSharedStoryVisibility(story._id, hidden === true)}
@@ -388,7 +389,7 @@ const StoryDetailsModal = ({
           )}
         </Box>
       </AppDialog>
-      {canEdit && (
+      {canRename && (
         <RenameStoryDialog story={story} open={renameOpen} onClose={() => setRenameOpen(false)} />
       )}
     </>

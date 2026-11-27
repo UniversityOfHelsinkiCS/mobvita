@@ -51,6 +51,7 @@ import {
   hiddenFeatures,
   ACCESS,
   useHasAccess,
+  useIsDeveloper,
 } from 'Utilities/common'
 import DictionaryHelp from 'Components/DictionaryHelp'
 import Spinner from 'Components/Spinner'
@@ -140,6 +141,9 @@ const ReadViews = ({ match }) => {
   // Opened while the Group tab is active: the story is removed from that group, not deleted.
   const savedLibrarySelection = useSelector(({ user }) => user.data.user.last_selected_library)
   const inGroupLibrary = savedLibrarySelection === 'group' && Boolean(currentGroup)
+  const isDeveloper = useIsDeveloper()
+  // #1406: a repo group's stories can't be edited or removed by non-developers.
+  const repoLocked = inGroupLibrary && Boolean(currentGroup?.is_repo) && !isDeveloper
   const [open, setOpen] = useState(false)
   const [topicsModal, setTopicsModal] = useState(false)
   const [topicsTab, setTopicsTab] = useState('grammar')
@@ -416,10 +420,14 @@ const ReadViews = ({ match }) => {
     navigate('/library', { replace: true })
   }
 
-  // Teacher edit/delete controls in the top toolbar; none for public stories. From the Group tab
-  // Delete becomes Remove (unshare), shown only to that group's teachers.
+  // Teacher edit/delete controls in the top toolbar; none for public or locked repo stories.
+  // From the Group tab Delete becomes Remove (unshare), shown only to that group's teachers.
   const StoryFunctionsDropdown = () =>
-    preProcessingReady && teacherView && !routeStory?.control_story && !routeStory?.public ? (
+    preProcessingReady &&
+    teacherView &&
+    !repoLocked &&
+    !routeStory?.control_story &&
+    !routeStory?.public ? (
       <div
         className="tour-practice-story-action"
         style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
