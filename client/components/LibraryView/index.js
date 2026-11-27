@@ -8,6 +8,7 @@ import AppTabs from 'Components/ui/AppTabs'
 import AppIcon from 'Components/ui/AppIcon'
 import AppSearchField from 'Components/ui/AppSearchField'
 import AppSelect from 'Components/ui/AppSelect'
+import AppTooltip from 'Components/ui/AppTooltip'
 import { breakpoints, colors } from 'Assets/mui_theme/designTokens'
 import useWindowDimensions from 'Utilities/windowDimensions'
 import {
@@ -17,6 +18,7 @@ import {
   ACCESS,
   useHasAccess,
   useIsAnonymous,
+  useIsDeveloper,
 } from 'Utilities/common'
 import { getGroups } from 'Utilities/redux/groupsReducer'
 import { useLocation, useNavigate } from 'react-router'
@@ -156,13 +158,36 @@ const StoryList = () => {
   const dispatch = useDispatch()  
   const { copyStories, copying } = useCopyStories()
   const isAnonymous = useIsAnonymous()
+  const isDeveloper = useIsDeveloper()
   const librariesToShow = Object.entries(libraries)
     .filter(entry => entry[1])
     .map(([key]) => capitalize(key))
   const activeLibrary = Object.entries(libraries).find(([, isActive]) => isActive)?.[0] || 'public'
-  // The BE lets only the group's teachers arrange a group library; public is read-only.
+  // The BE lets only the group's teachers arrange a group library (a repo group only developers,
+  // #1406); public is read-only.
+  const repoLocked = activeLibrary === 'group' && Boolean(currentGroup?.is_repo) && !isDeveloper
+  // A repo group's teachers reshare its folders to their own groups (#1406).
+  const sharesFromRepo =
+    activeLibrary === 'group' && Boolean(currentGroup?.is_repo && currentGroup?.is_teaching)
   const libraryIsMutable =
-    activeLibrary === 'group' ? Boolean(currentGroup?.is_teaching) : activeLibrary !== 'public'
+    activeLibrary === 'group'
+      ? Boolean(currentGroup?.is_teaching) && !repoLocked
+      : activeLibrary !== 'public'
+  // In a locked repo group, hovering a story or folder explains how editing repo stories works.
+  const withRepoNotice = (key, node) =>
+    repoLocked ? (
+      <AppTooltip
+        key={key}
+        keyId="repo-group-hover-notice"
+        placement="top"
+        enterDelay={500}
+        disableInteractive
+      >
+        <div>{node}</div>
+      </AppTooltip>
+    ) : (
+      node
+    )
   // Empty (browser-only) folders are kept per group, since each group has its own structure.
   const localFolderLibrary =
     activeLibrary === 'group' ? `group:${savedGroupSelection}` : activeLibrary
@@ -903,12 +928,12 @@ const StoryList = () => {
     })
   }
 
-  // "Share folder" (Private tab): own, processed stories keep the folder's structure, rooted at its
-  // name on the receiving side. Stories shared with me are not re-shared.
+  // "Share folder" (Private tab, or a repo group's teachers): processed stories keep the folder's
+  // structure, rooted at its name on the receiving side. In Private only own stories are shared.
   const shareableFolderHandler = (storiesInFolder, folderPath, folderName) => {
-    if (activeLibrary !== 'private' || isAnonymous) return undefined
+    if ((activeLibrary !== 'private' && !sharesFromRepo) || isAnonymous) return undefined
     const toShare = storiesInFolder.filter(
-      story => story.user === userId && !story.uploadUnfinished,
+      story => (sharesFromRepo || story.user === userId) && !story.uploadUnfinished,
     )
     if (!toShare.length) return undefined
     const pathDict = Object.fromEntries(
@@ -1137,7 +1162,8 @@ const StoryList = () => {
               const folderIsEmptyLocal =
                 folderIsLocalOnly(normalizedFolderPath) && storiesInFolder.length === 0
 
-              return (
+              return withRepoNotice(
+                normalizedFolderPath,
                 <FolderCard
                   key={normalizedFolderPath}
                   draggable={libraryIsMutable}
@@ -1187,7 +1213,7 @@ const StoryList = () => {
                   )}
                   copying={copying}
                   existingFolderNames={allFolderNamesInCurrentPath}
-                />
+                />,
               )
             })}
           </Box>
@@ -1229,19 +1255,22 @@ const StoryList = () => {
 
     return (
       <Box data-cy="story-items" className="library-story-grid">
-        {storiesInCurrentPath.map(story => (
-          <StoryCard
-            key={story._id}
-            draggable={libraryIsMutable}
-            isDragging={draggedStoryIds.includes(story._id)}
-            libraryShown={libraries}
-            onDragEnd={handleStoryDragEnd}
-            onDragStart={handleStoryDragStart}
-            story={story}
-            selectedGroup={savedGroupSelection}
-            savedLibrarySelection={savedLibrarySelection}
-          />
-        ))}
+        {storiesInCurrentPath.map(story =>
+          withRepoNotice(
+            story._id,
+            <StoryCard
+              key={story._id}
+              draggable={libraryIsMutable}
+              isDragging={draggedStoryIds.includes(story._id)}
+              libraryShown={libraries}
+              onDragEnd={handleStoryDragEnd}
+              onDragStart={handleStoryDragStart}
+              story={story}
+              selectedGroup={savedGroupSelection}
+              savedLibrarySelection={savedLibrarySelection}
+            />,
+          ),
+        )}
       </Box>
     )
   }

@@ -13,7 +13,7 @@ import {
   setStoryUploadUnfinished,
 } from 'Utilities/redux/storiesReducer'
 import { callApi } from 'Utilities/apiConnection'
-import { getTextStyle, images, learningLanguageSelector } from 'Utilities/common'
+import { getTextStyle, images, learningLanguageSelector, useIsDeveloper } from 'Utilities/common'
 import CustomTooltip from 'Components/CustomTooltip'
 import ConfirmationWarning from 'Components/ConfirmationWarning'
 import ShareStory from 'Components/StoryView/ShareStory'
@@ -49,10 +49,19 @@ const StoryTitle = ({
   const { user, teacherView } = useSelector(({ user }) => user.data)
   const { email: userEmail } = user
   const isControlledStory = !!story?.control_story
-  // Private: own/received stories can be deleted; Group: only the group's teachers can unshare.
+  const isDeveloper = useIsDeveloper()
+  // Private: own/received stories can be deleted; Group: only the group's teachers can unshare,
+  // and in a repo group (#1406) only developers.
   const showDeleteButton =
-    libraryShown.private || (libraryShown.group && Boolean(currentGroup?.is_teaching))
-  const showShareButton = !story.public && !inGroupLibrary && userEmail !== 'anonymous_email'
+    libraryShown.private ||
+    (libraryShown.group &&
+      Boolean(currentGroup?.is_teaching) &&
+      (!currentGroup?.is_repo || isDeveloper))
+  // A repo group's teachers reshare its stories to their own groups (#1406).
+  const sharesFromRepo =
+    inGroupLibrary && Boolean(currentGroup?.is_repo && currentGroup?.is_teaching)
+  const showShareButton =
+    !story.public && (!inGroupLibrary || sharesFromRepo) && userEmail !== 'anonymous_email'
   const showCreateControlStoryButton =
     teacherView && !isControlledStory && story.user === user?.oid && !story.flashcardsOnly
   const showCancelControlStoryButton =

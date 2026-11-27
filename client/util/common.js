@@ -637,6 +637,10 @@ export const useIsAnonymous = () => useAccessLevel() === ACCESS.ANONYMOUS
 export const useIsRegistered = () => useAccessLevel() >= ACCESS.REGISTERED
 export const useIsHighAccess = () => useAccessLevel() >= ACCESS.HIGH
 
+// Developers may change repo-group stories (#1406); everyone else only reads or imports them.
+export const useIsDeveloper = () =>
+  useSelector(({ user }) => Boolean(user.data?.user?.is_developer))
+
 export const supportedLearningLanguages = {
   major: ['finnish', 'russian'].sort((a, b) => a.localeCompare(b)),
   majorBeta: [

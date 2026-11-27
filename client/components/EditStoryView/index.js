@@ -16,6 +16,7 @@ import {
   learningLanguageSelector,
   STORY_MIN_CHARACTERS,
   STORY_MAX_CHARACTERS,
+  useIsDeveloper,
 } from 'Utilities/common'
 import Spinner from 'Components/Spinner'
 
@@ -38,6 +39,15 @@ const EditStoryView = ({ match }) => {
   const [initContent, setInitContent] = useState('')
   const [modified, setModified] = useState(false)
   const bigScreen = width > 700
+  const isDeveloper = useIsDeveloper()
+  // The library list carries `in_repo`; the focused story may not, so check both.
+  const inRepo = useSelector(
+    ({ stories }) =>
+      Boolean(stories.focused?.in_repo) ||
+      Boolean(stories.data?.find(libraryStory => libraryStory._id === id)?.in_repo),
+  )
+  // #1406: the BE saves a non-developer's repo-story edit as their own copy and reshares it.
+  const showRepoEditNotice = inRepo && !isDeveloper
 
   const initialSettings = () => {
     let string = ''
@@ -139,6 +149,20 @@ const EditStoryView = ({ match }) => {
             </div>
           </div>
           <Divider sx={{ my: '1em', borderColor: colors.border }} />
+          {showRepoEditNotice && (
+            <Box
+              data-cy="repo-story-edit-notice"
+              sx={{
+                backgroundColor: colors.alertSoft,
+                color: colors.ink,
+                borderRadius: '12px',
+                p: '12px 16px',
+                mb: '1em',
+              }}
+            >
+              <FormattedMessage id="repo-story-edit-notice" />
+            </Box>
+          )}
           <div className="flex align-center">
             <span style={{ marginRight: '.5rem', color: colors.ink }}>
               <FormattedMessage id="story-title" />:
