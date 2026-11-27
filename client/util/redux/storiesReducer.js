@@ -119,7 +119,8 @@ export const getAllStories = (language, query, meta) => {
   const prefix = 'GET_STORIES'
   const action = callBuilder(route, prefix)
   action.requestSettings.fetcher = () => fetchStoriesInPages(route, language)
-  return { ...action, meta }
+  // `meta.language` lets the reducer drop a slower response for a language no longer requested.
+  return { ...action, meta: { ...meta, language } }
 }
 
 // Shows a cached list at once; StoryFetcher still fetches the fresh one right after.
@@ -394,21 +395,26 @@ export default (state = initialState, action) => {
         },
       }
     }
+    // Remembers the newest request's language; a background fetch leaves `pending` alone.
     case 'GET_STORIES_ATTEMPT': {
-      // If background polling, do not set pending to true
+      const requestedLanguage = action.meta?.language ?? state.requestedLanguage
       if (action.meta && action.meta.background) {
         return {
           ...state,
+          requestedLanguage,
           error: false,
         }
       }
       return {
         ...state,
+        requestedLanguage,
         pending: true,
         error: false,
       }
     }
     case 'GET_STORIES_FAILURE':
+      // A failure for a language no longer requested must not end the newer fetch's spinner.
+      if (action.meta?.language && action.meta.language !== state.requestedLanguage) return state
       return {
         ...state,
         pending: false,
@@ -463,6 +469,8 @@ export default (state = initialState, action) => {
     case 'REFRESH_STORY_PROGRESS_FAILURE':
       return { ...state, staleStoryId: null }
     case 'GET_STORIES_SUCCESS':
+      // A list for a language no longer requested (switched mid-fetch) must not overwrite the list.
+      if (action.meta?.language && action.meta.language !== state.requestedLanguage) return state
       return {
         ...state,
         staleStoryId: null,
